@@ -436,7 +436,6 @@ cache:
 
 variables:
   HELM_VERSION: 3.7.1
-  KUBE_CONTEXT: lidonation/www.kamichurch.org:kami
   #  DOCKER_HOST: unix:///var/run/docker.sock
   DEPLOY_INFRA:
     value: 'False'
@@ -489,6 +488,8 @@ workflow:
   - install_dependencies
   - ensure_namespace
   - create_secret
+  - kubectl config get-contexts
+  - kubectl config use-context lidonation/lidonation:lidonation
 
 .infra_rules: &infra_rules
   - if: '$CI_COMMIT_BRANCH == "mainnet" &&
@@ -864,7 +865,6 @@ review:
       optional: true
   script:
     - *setup
-    - kubectl config get-contexts
     - deploy_services
     - persist_environment_url
   environment:
@@ -893,7 +893,6 @@ testnet:
       optional: true
   script:
     - *setup
-    - kubectl config get-contexts
     - deploy_services
     - persist_environment_url
   environment:
