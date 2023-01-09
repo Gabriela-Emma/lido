@@ -434,6 +434,7 @@ cache:
 
 variables:
   HELM_VERSION: 3.7.1
+  KUBE_CONTEXT: lidonation/www.kamichurch.org:kami
   #  DOCKER_HOST: unix:///var/run/docker.sock
   DEPLOY_INFRA:
     value: 'False'
