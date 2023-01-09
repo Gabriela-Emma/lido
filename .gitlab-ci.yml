@@ -572,6 +572,7 @@ composer:
 
 cnode_base:
   stage: build_app
+  image: docker:20.10.8-git
   retry: 1
   cache: { }
   script:
@@ -593,6 +594,7 @@ cnode_base:
 
 cdbsync_base:
   stage: build_app
+  image: docker:20.10.8-git
   retry: 1
   cache: { }
   script:
