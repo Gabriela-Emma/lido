@@ -486,10 +486,9 @@ workflow:
   - *auto_devops_custom
   - check_kube_domain
   - install_dependencies
-  - ensure_namespace
-  - create_secret
   - kubectl config get-contexts
   - kubectl config use-context lidonation/lidonation:lidonation
+  - create_secret
 
 .infra_rules: &infra_rules
   - if: '$CI_COMMIT_BRANCH == "main" &&
