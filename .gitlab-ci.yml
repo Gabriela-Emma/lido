@@ -864,6 +864,7 @@ review:
       optional: true
   script:
     - *setup
+    - kubectl config get-contexts
     - deploy_services
     - persist_environment_url
   environment:
@@ -892,6 +893,7 @@ testnet:
       optional: true
   script:
     - *setup
+    - kubectl config get-contexts
     - deploy_services
     - persist_environment_url
   environment:
