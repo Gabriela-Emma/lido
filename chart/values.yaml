@@ -44,7 +44,7 @@ services:
         cpu: 1
     storage:
       size: 10Gi
-      storageClass: ssd
+      storageClass: longhorn
   kibana:
     name: kibana
     version: 7.9.3
@@ -54,7 +54,7 @@ services:
   web_db:
     persistence:
       enabled: true
-      size: 8Gi
+      size: 20Gi
     secret:
       POSTGRESQL_DB: lidoweb
       POSTGRESQL_USERNAME: lnation
@@ -300,8 +300,8 @@ services:
       zoom_api_key:
       zoom_api_secret:
     persistence:
-      size: 2Gi
-      storageClass: ssd
+      size: 100Gi
+      storageClass: longhorn
       accessMode: ReadWriteMany
       subPath: "storage"
       mountPath: "/var/www/storage"
@@ -369,15 +369,8 @@ services:
     image:
       repository: registry.lidonation.com/lidonation/lidonation/cardano
     persistence:
-      size: 40Gi
-      storageClass: ssd
+      size: 100Gi
+      storageClass: longhorn
       accessMode: ReadWriteOnce
       subPath: "db"
       mountPath: "/data"
-  tolerations:
-    - key: "tier"
-      operator: "Equal"
-      value: "t2"
-    - key: "tier"
-      operator: "Equal"
-      value: "t0"
