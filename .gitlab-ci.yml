@@ -191,7 +191,6 @@ include:
       --set services.cardano.config.NODE_PORT="$CARDANO_NODE_PORT" \
       --set services.cardano.config.RELAY2_PORT="$RELAY2_PORT" \
       --set services.cardano.config.POOL_ID="$POOL_ID" \
-      --set services.cardano.config.POOL_PLEDGE="$POOL_PLEDGE" \
       --set services.cardano.config.STAKE_ADDR="$STAKE_ADDR" \
       --set services.cardano.config.PAYMENT_ADDR="$PAYMENT_ADDR" \
       --set services.elasticsearch.realm.user="$ES_ADMIN_USER" \
@@ -221,7 +220,6 @@ include:
          -f ./chart/values.yaml \
          --set application.track="$track" \
          --set certmanager.server="$cert_server" \
-         --set services.dbsync.tier="$CARDANO_SERVICE_TIER" \
          --set postgresqlPassword="$POSTGRESQL_DB_SYNC_PASSWORD" \
          --set postgresqlPostgresPassword="$POSTGRESQL_DB_SYNC_POSTGRES_PASSWORD" \
          --set postgresqlDatabase="$POSTGRESQL_DB_SYNC_DB" \
@@ -300,7 +298,6 @@ include:
       --timeout 300s \
       --set application.track="$track" \
       --set certmanager.server="$cert_server" \
-      --set services.dbsync.tier="$CARDANO_SERVICE_TIER" \
       --set postgresqlPostgresPassword="$POSTGRESQL_DB_SYNC_POSTGRES_PASSWORD" \
       --set postgresqlPassword="$POSTGRESQL_DB_SYNC_PASSWORD" \
       --set postgresqlDatabase="$POSTGRESQL_DB_SYNC_DB" \
@@ -310,7 +307,6 @@ include:
       --set services.dbsync.db.secret.POSTGRESQL_POSTGRES_PASSWORD="$POSTGRESQL_DB_SYNC_POSTGRES_PASSWORD" \
       --set services.redis.secret.REDIS_PASSWORD="$REDIS_PASSWORD" \
       --set services.cardano.replicaCount="$replicas" \
-      --set services.cardano.tier="$CARDANO_SERVICE_TIER" \
       --set services.cardano.image.repository="$CI_APPLICATION_REPOSITORY/cardano" \
       --set services.cardano.config.AUTO_TOPOLOGY="$AUTO_TOPOLOGY" \
       --set services.cardano.config.METADATA_URL="$METADATA_URL" \
@@ -320,7 +316,6 @@ include:
       --set services.cardano.config.RELAY2_PORT="$RELAY2_PORT" \
       --set services.cardano.config.SUBMIT_TX_PORT="$SUBMIT_TX_PORT" \
       --set services.cardano.config.POOL_ID="$POOL_ID" \
-      --set services.cardano.config.POOL_PLEDGE="$POOL_PLEDGE" \
       --set services.cardano.config.STAKE_ADDR="$STAKE_ADDR" \
       --set services.cardano.config.PAYMENT_ADDR="$PAYMENT_ADDR" \
       --set services.cardano.config.KUBERNETES_NAMESPACE="$KUBE_NAMESPACE" \
@@ -359,7 +354,6 @@ include:
        --timeout 300s \
        --set application.track="$track" \
        --set certmanager.server="$cert_server" \
-       --set services.dbsync.tier="$CARDANO_SERVICE_TIER" \
        --set postgresqlPostgresPassword="$POSTGRESQL_DB_SYNC_POSTGRES_PASSWORD" \
        --set postgresqlPassword="$POSTGRESQL_DB_SYNC_PASSWORD" \
        --set postgresqlDatabase="$POSTGRESQL_DB_SYNC_DB" \
@@ -369,7 +363,6 @@ include:
        --set services.dbsync.db.secret.POSTGRESQL_POSTGRES_PASSWORD="$POSTGRESQL_DB_SYNC_POSTGRES_PASSWORD" \
        --set services.redis.secret.REDIS_PASSWORD="$REDIS_PASSWORD" \
        --set services.cardano.replicaCount="$replicas" \
-       --set services.cardano.tier="$CARDANO_SERVICE_TIER" \
        --set services.cardano.image.repository="$CI_APPLICATION_REPOSITORY/cardano" \
        --set services.cardano.config.AUTO_TOPOLOGY="$AUTO_TOPOLOGY" \
        --set services.cardano.config.METADATA_URL="$METADATA_URL" \
@@ -378,7 +371,6 @@ include:
        --set services.cardano.config.NODE_PORT="$CARDANO_NODE_PORT" \
        --set services.cardano.config.RELAY2_PORT="$RELAY2_PORT" \
        --set services.cardano.config.POOL_ID="$POOL_ID" \
-       --set services.cardano.config.POOL_PLEDGE="$POOL_PLEDGE" \
        --set services.cardano.config.STAKE_ADDR="$STAKE_ADDR" \
        --set services.cardano.config.PAYMENT_ADDR="$PAYMENT_ADDR" \
        --set services.cardano.config.KUBERNETES_NAMESPACE="$KUBE_NAMESPACE" \
