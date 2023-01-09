@@ -1,4 +1,4 @@
-FROM registry.raddcreative.io/lidonation/lidonation/ubuntu-ghc-cabal-libsodium-cardano:1.35.4
+FROM registry.lidonation.com/lidonation/lidonation/ubuntu-ghc-cabal-libsodium-cardano:1.35.4
 
 SHELL ["/bin/bash", "-c"]
 # Expose ports

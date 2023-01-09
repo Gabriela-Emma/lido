@@ -62,7 +62,7 @@ services:
       POSTGRESQL_POSTGRES_PASSWORD:
   cncli:
     image:
-      repository: registry.raddcreative.io/lidonation/lidonation/cncli
+      repository: registry.lidonation.com/lidonation/lidonation/cncli
   queue:
     replicaCount: 2
   dbsync:
@@ -78,7 +78,7 @@ services:
         POSTGRESQL_PASSWORD:
         POSTGRESQL_POSTGRES_PASSWORD:
     image:
-      repository: registry.raddcreative.io/lidonation/lidonation/cardano-db-sync
+      repository: registry.lidonation.com/lidonation/lidonation/cardano-db-sync
     ogmios:
       replicaCount: 1
       image:
@@ -142,13 +142,13 @@ services:
         secretName: ncdb-lidonation-com-tls
   lucid:
     image:
-      repository: registry.raddcreative.io/lidonation/lidonation/lucid.lidonation.com
+      repository: registry.lidonation.com/lidonation/lidonation/lucid.lidonation.com
     replicaCount: 1
     secret:
       blockfront_project_id:
   web:
     image:
-      repository: registry.raddcreative.io/lidonation/lidonation/www.lidonation.com
+      repository: registry.lidonation.com/lidonation/lidonation/www.lidonation.com
     ingress:
       controller:
         headers:
@@ -367,7 +367,7 @@ services:
       WALLET: "ken"
     }
     image:
-      repository: registry.raddcreative.io/lidonation/lidonation/cardano
+      repository: registry.lidonation.com/lidonation/lidonation/cardano
     persistence:
       size: 40Gi
       storageClass: ssd

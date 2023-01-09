@@ -579,7 +579,7 @@ cnode_base:
     - *auto_devops_custom
     - |
       docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
-      docker build \
+      docker build --network host \
         --build-arg VERSION="${CARDANO_BASE_IMAGE_VER}" \
         --build-arg BRANCH="${CARDANO_BASE_IMAGE_BRANCH:-${CARDANO_BASE_IMAGE_VER}}" \
         -f cardano.base.Dockerfile \
@@ -601,7 +601,7 @@ cdbsync_base:
     - *auto_devops_custom
     - |
       docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
-      docker build \
+      docker build --network host \
         --build-arg VERSION=${CARDANO_DB_SYNC_BASE_IMAGE_VER} \
       -f cardano.dbSync.base.Dockerfile \
       -t ${CI_APPLICATION_REPOSITORY}/cardano-db-sync-base:latest \
@@ -623,7 +623,7 @@ web_base:
     - |
       docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
       echo "Building web BASE Dockerfile..."
-      docker build  \
+      docker build --network host  \
         -f ./src/www.lidonation.com/Dockerfile.base \
         -t "$CI_APPLICATION_REPOSITORY/www.lidonation.com.base:${WEB_BASE_IMAGE_VER}" \
         -t "$CI_APPLICATION_REPOSITORY/www.lidonation.com.base:latest" \
@@ -667,7 +667,7 @@ web:
 
       docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
       echo "Building web Dockerfile..."
-      docker build  \
+      docker build --network host  \
         -f ./src/www.lidonation.com/Dockerfile -t "$CI_APPLICATION_REPOSITORY/www.lidonation.com:$CI_APPLICATION_TAG" \
         -t "$CI_APPLICATION_REPOSITORY/www.lidonation.com:latest" ./src/www.lidonation.com/.
 
@@ -692,7 +692,7 @@ lucid:
     - |
       docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
       echo "Building lucid Dockerfile..."
-      docker build  \
+      docker build --network host  \
         -f ./src/lucid.lidonation.com/Dockerfile -t "$CI_APPLICATION_REPOSITORY/lucid.lidonation.com:$CI_APPLICATION_TAG" \
         -t "$CI_APPLICATION_REPOSITORY/lucid.lidonation.com:latest" ./src/lucid.lidonation.com/.
 
@@ -719,7 +719,7 @@ cnode_submit_api:
     - setup_docker
     - |
       docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"      
-      docker build -f submitTx.Dockerfile \
+      docker build --network host -f submitTx.Dockerfile \
       -t "$CI_APPLICATION_REPOSITORY/cardano-submit-tx-api:$CI_APPLICATION_TAG" \
       -t "$CI_APPLICATION_REPOSITORY/cardano-submit-tx-api:latest" \
       .
@@ -741,7 +741,7 @@ cnode:
     - setup_docker
     - |
       docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
-      docker build -f cardano.Dockerfile \
+      docker build --network host -f cardano.Dockerfile \
       -t "$CI_APPLICATION_REPOSITORY/cardano:$CI_APPLICATION_TAG" \
       -t "$CI_APPLICATION_REPOSITORY/cardano:latest" \
       .
@@ -766,7 +766,7 @@ cncli:
     - setup_docker
     - |
       docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
-      docker build -f cncli.Dockerfile \
+      docker build --network host -f cncli.Dockerfile \
       -t "$CI_APPLICATION_REPOSITORY/cncli:$CI_APPLICATION_TAG" \
       -t "$CI_APPLICATION_REPOSITORY/cncli:latest" \
       .
@@ -791,7 +791,7 @@ cdbsync:
     - setup_docker
     - |
       docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
-      docker build -f cardano.dbSync.Dockerfile \
+      docker build --network host -f cardano.dbSync.Dockerfile \
       --build-arg NETWORK_CONFIG="./src/pool/config/$CARDANO_NETWORK/config.json" \
       -t "$CI_APPLICATION_REPOSITORY/cardano-db-sync:$CI_APPLICATION_TAG" \
       -t "$CI_APPLICATION_REPOSITORY/cardano-db-sync:latest" \
@@ -810,7 +810,7 @@ cdbsync:
 
 #test_phpunit:
 #  stage: test
-#  image: registry.raddcreative.io/lidonation/lidonation/www.lidonation.com:latest
+#  image: registry.lidonation.com/lidonation/lidonation/www.lidonation.com:latest
 #  retry: 1
 #  script:
 #    - |

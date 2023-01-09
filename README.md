@@ -44,7 +44,7 @@ echo v8hlDV0yMAHHlIurYupj > src/pool/config/db-sync/secrets/postgres_password
 
 ### login into docker registry [your gitlab login]  
 ```bash
-docker login registry.raddcreative.io
+docker login registry.lidonation.com
 ```
 
 Install laravel dependencies
@@ -117,7 +117,7 @@ git error: `fatal: unable to access 'https://git.raddcreative.io/lidonation/lido
 Solution: run `git config --global http.sslverify false`
 
 docker registry `denied: access forbidden` error
-Solution: run `docker login registry.raddcreative.io` and log in using your gitlab credentials
+Solution: run `docker login registry.lidonation.com` and log in using your gitlab credentials
 
 Errors about search index not existing.
 Search indexes should be created in a seeder. If your seeder errored while running, you may have to run the seeder for search index directly to resolve this error.

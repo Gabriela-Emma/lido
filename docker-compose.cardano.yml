@@ -253,7 +253,7 @@ services:
   ## Nodes
   relay:
     container_name: relay
-    image: registry.raddcreative.io/lidonation/lidonation/cardano:latest
+    image: registry.lidonation.com/lidonation/lidonation/cardano:latest
     build: *cardano-build
     expose:
       - 3010
@@ -311,7 +311,7 @@ services:
   ## Cardano Backend Services
   dbsync:
     container_name: dbsync
-    image: registry.raddcreative.io/lidonation/lidonation/cardano-db-sync
+    image: registry.lidonation.com/lidonation/lidonation/cardano-db-sync
     command: [
       "--config", "/config/db-sync-config.json",
       "--socket-path", "/ipc/node.socket"
