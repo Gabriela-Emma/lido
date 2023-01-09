@@ -1,5 +1,5 @@
 certmanager:
-  issuer: letsencrypt-prod-issuer
+  issuer: letsencrypt-issuer
   email: webmaster@lidonation.com
   server: https://acme-staging-v02.api.letsencrypt.org/directory
 
@@ -97,7 +97,7 @@ services:
           kubernetes.io/ingress.class: nginx,
           nginx.ingress.kubernetes.io/ssl-redirect: "true",
           nginx.ingress.kubernetes.io/from-to-www-redirect: "false",
-          cert-manager.io/cluster-issuer: letsencrypt-prod-issuer
+          cert-manager.io/cluster-issuer: letsencrypt-issuer
         }
         host: graphql.preview.lidonation.com
         tls:
@@ -115,7 +115,7 @@ services:
           kubernetes.io/ingress.class: nginx,
           nginx.ingress.kubernetes.io/ssl-redirect: "true",
           nginx.ingress.kubernetes.io/from-to-www-redirect: "false",
-          cert-manager.io/cluster-issuer: letsencrypt-prod-issuer
+          cert-manager.io/cluster-issuer: letsencrypt-issuer
         }
         host: graphql.preview.lidonation.com
         tls:
@@ -135,7 +135,7 @@ services:
         kubernetes.io/ingress.class: nginx,
         nginx.ingress.kubernetes.io/ssl-redirect: "true",
         nginx.ingress.kubernetes.io/from-to-www-redirect: "false",
-        cert-manager.io/cluster-issuer: letsencrypt-prod-issuer
+        cert-manager.io/cluster-issuer: letsencrypt-issuer
       }
       host: ncdb.lidonation.com
       tls:
@@ -158,7 +158,7 @@ services:
         nginx.ingress.kubernetes.io/ssl-redirect: "true",
         ingress.kubernetes.io/rewrite-target: /,
         nginx.ingress.kubernetes.io/from-to-www-redirect: "true",
-        cert-manager.io/cluster-issuer: letsencrypt-prod-issuer
+        cert-manager.io/cluster-issuer: letsencrypt-issuer
       }
       hosts:
         - www.lidonation.com
@@ -327,7 +327,7 @@ services:
         kubernetes.io/ingress.class: nginx,
         nginx.ingress.kubernetes.io/ssl-redirect: "true",
         nginx.ingress.kubernetes.io/from-to-www-redirect: "false",
-        cert-manager.io/cluster-issuer: letsencrypt-prod-issuer
+        cert-manager.io/cluster-issuer: letsencrypt-issuer
       }
       host: tx.lidonation.com
       tls:
