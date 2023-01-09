@@ -1,5 +1,7 @@
 include:
-  - remote: 'https://git.raddcreative.io/raddcreative-open-source/autodevops/raw/master/gitlab-ci-20221205.yml'
+  - remote: 'https://gitlab.lidonation.com/infra-ops/autodevop/raw/main/gitlab-ci-20230108.yml'
+
+image: registry.lidonation.com/infra-ops/gitlab-runner:main
 
 # ---------------------------------------------------------------------------
 .auto_devops_custom: &auto_devops_custom |
