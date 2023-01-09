@@ -210,10 +210,10 @@ image: registry.lidonation.com/infra-ops/gitlab-runner:main
        echo "install $DEPLOYMENT_NAME via helm with cert manger $cert_server and $replicas replicas in $KUBE_NAMESPACE"
        echo "POSTGRESQL_DB_SYNC_USER: $POSTGRESQL_DB_SYNC_USER \n"
 
-      if [ "${CI_ENVIRONMENT_NAME}" != "mainnet" ]; then
+      if [ "${CI_ENVIRONMENT_NAME}" != "main" ]; then
         export RESTORE_SNAPSHOT="$RESTORE_SNAPSHOT_TESTNET"
       fi
-      if [ "${CI_ENVIRONMENT_NAME}" == "mainnet" ]; then
+      if [ "${CI_ENVIRONMENT_NAME}" == "main" ]; then
         export RESTORE_SNAPSHOT="$RESTORE_SNAPSHOT_MAINNET"
       fi
 
@@ -492,10 +492,10 @@ workflow:
   - kubectl config use-context lidonation/lidonation:lidonation
 
 .infra_rules: &infra_rules
-  - if: '$CI_COMMIT_BRANCH == "mainnet" &&
+  - if: '$CI_COMMIT_BRANCH == "main" &&
               ($DEPLOY_INFRA == "True" || $DEPLOY_INFRA == "true")'
     when: manual
-  - if: '$CI_COMMIT_BRANCH != "mainnet" &&
+  - if: '$CI_COMMIT_BRANCH != "main" &&
             ($DEPLOY_INFRA == "True" || $DEPLOY_INFRA == "true")'
     when: manual
 
@@ -550,8 +550,8 @@ yarn:
       - ./src/www.lidonation.com/var/www/public
     expire_in: 6 days
   rules:
-    - if: '$CI_COMMIT_BRANCH != "mainnet" && ($DEPLOY_WEBSITE == "True" || $DEPLOY_WEBSITE == "true")'
-    - if: '$CI_COMMIT_BRANCH == "mainnet" && ($DEPLOY_WEBSITE == "True" || $DEPLOY_WEBSITE == "true")'
+    - if: '$CI_COMMIT_BRANCH != "main" && ($DEPLOY_WEBSITE == "True" || $DEPLOY_WEBSITE == "true")'
+    - if: '$CI_COMMIT_BRANCH == "main" && ($DEPLOY_WEBSITE == "True" || $DEPLOY_WEBSITE == "true")'
 
 composer:
   stage: build_app
@@ -571,8 +571,8 @@ composer:
       - ./src/www.lidonation.com/var/www/vendor
     expire_in: 6 days
   rules:
-    - if: '$CI_COMMIT_BRANCH != "mainnet" && ($DEPLOY_WEBSITE == "True" || $DEPLOY_WEBSITE == "true")'
-    - if: '$CI_COMMIT_BRANCH == "mainnet" && ($DEPLOY_WEBSITE == "True" || $DEPLOY_WEBSITE == "true")'
+    - if: '$CI_COMMIT_BRANCH != "main" && ($DEPLOY_WEBSITE == "True" || $DEPLOY_WEBSITE == "true")'
+    - if: '$CI_COMMIT_BRANCH == "main" && ($DEPLOY_WEBSITE == "True" || $DEPLOY_WEBSITE == "true")'
 
 cnode_base:
   stage: build_app
@@ -680,9 +680,9 @@ web:
       docker push "$CI_APPLICATION_REPOSITORY/www.lidonation.com:latest"
       echo ""
   rules:
-    - if: '$CI_COMMIT_BRANCH == "mainnet" &&
+    - if: '$CI_COMMIT_BRANCH == "main" &&
               ($DEPLOY_WEBSITE == "True" || $DEPLOY_WEBSITE == "true")'
-    - if: '$CI_COMMIT_BRANCH != "mainnet" &&
+    - if: '$CI_COMMIT_BRANCH != "main" &&
               ($DEPLOY_WEBSITE == "True" || $DEPLOY_WEBSITE == "true")'
 
 lucid:
@@ -705,9 +705,9 @@ lucid:
       docker push "$CI_APPLICATION_REPOSITORY/lucid.lidonation.com:latest"
       echo ""
   rules:
-    - if: '$CI_COMMIT_BRANCH == "mainnet" &&
+    - if: '$CI_COMMIT_BRANCH == "main" &&
               ($DEPLOY_LUCID == "True" || $DEPLOY_LUCID == "true")'
-    - if: '$CI_COMMIT_BRANCH != "mainnet" &&
+    - if: '$CI_COMMIT_BRANCH != "main" &&
               ($DEPLOY_LUCID == "True" || $DEPLOY_LUCID == "true")'
 
 cnode_submit_api:
@@ -752,9 +752,9 @@ cnode:
       docker push "$CI_APPLICATION_REPOSITORY/cardano:$CI_APPLICATION_TAG"
       docker push "$CI_APPLICATION_REPOSITORY/cardano:latest"
   rules:
-    - if: '$CI_COMMIT_BRANCH == "mainnet" &&
+    - if: '$CI_COMMIT_BRANCH == "main" &&
               ($DEPLOY_CARDANO_SERVICES == "True" || $DEPLOY_CARDANO_SERVICES == "true")'
-    - if: '$CI_COMMIT_BRANCH != "mainnet" &&
+    - if: '$CI_COMMIT_BRANCH != "main" &&
               ($DEPLOY_CARDANO_SERVICES == "True" || $DEPLOY_CARDANO_SERVICES == "true")'
 
 cncli:
@@ -777,9 +777,9 @@ cncli:
       docker push "$CI_APPLICATION_REPOSITORY/cncli:$CI_APPLICATION_TAG"
       docker push "$CI_APPLICATION_REPOSITORY/cncli:latest"
   rules:
-    - if: '$CI_COMMIT_BRANCH == "mainnet" &&
+    - if: '$CI_COMMIT_BRANCH == "main" &&
               ($DEPLOY_CARDANO_CNCLI == "True" || $DEPLOY_CARDANO_CNCLI == "true")'
-    - if: '$CI_COMMIT_BRANCH != "mainnet" &&
+    - if: '$CI_COMMIT_BRANCH != "main" &&
               ($DEPLOY_CARDANO_CNCLI == "True" || $DEPLOY_CARDANO_CNCLI == "true")'
 
 cdbsync:
@@ -803,9 +803,9 @@ cdbsync:
       docker push "$CI_APPLICATION_REPOSITORY/cardano-db-sync:$CI_APPLICATION_TAG"
       docker push "$CI_APPLICATION_REPOSITORY/cardano-db-sync:latest"
   rules:
-    - if: '$CI_COMMIT_BRANCH == "mainnet" &&
+    - if: '$CI_COMMIT_BRANCH == "main" &&
               ($DEPLOY_CARDANO_DBSYNC == "True" || $DEPLOY_CARDANO_DBSYNC == "true")'
-    - if: '$CI_COMMIT_BRANCH != "mainnet" &&
+    - if: '$CI_COMMIT_BRANCH != "main" &&
               ($DEPLOY_CARDANO_DBSYNC == "True" || $DEPLOY_CARDANO_DBSYNC == "true")'
 
 
@@ -898,12 +898,12 @@ testnet:
   environment:
     name: testnet
   rules:
-    - if: '$CI_COMMIT_BRANCH == "mainnet" && (
+    - if: '$CI_COMMIT_BRANCH == "main" && (
               ($DEPLOY_WEBSITE == "True" || $DEPLOY_WEBSITE == "true")
               || ($DEPLOY_LUCID == "True" || $DEPLOY_LUCID == "true")
               )'
       when: manual
-    - if: '$CI_COMMIT_BRANCH != "mainnet" && (
+    - if: '$CI_COMMIT_BRANCH != "main" && (
               ($DEPLOY_WEBSITE == "True" || $DEPLOY_WEBSITE == "true")
               || ($DEPLOY_LUCID == "True" || $DEPLOY_LUCID == "true")
               )'
@@ -950,7 +950,7 @@ mainnet:
   environment:
     name: mainnet
   rules:
-    - if: '$CI_COMMIT_BRANCH == "mainnet" && (
+    - if: '$CI_COMMIT_BRANCH == "main" && (
               ($DEPLOY_CARDANO_SERVICES == "True" || $DEPLOY_CARDANO_SERVICES == "true")
               || ($DEPLOY_CARDANO_DBSYNC == "True" || $DEPLOY_CARDANO_DBSYNC == "true")
               || ($DEPLOY_CARDANO_TX_SUBMIT == "True" || $DEPLOY_CARDANO_TX_SUBMIT == "true")
@@ -970,7 +970,7 @@ production:
   environment:
     name: mainnet
   rules:
-    - if: '$CI_COMMIT_BRANCH == "mainnet" && (
+    - if: '$CI_COMMIT_BRANCH == "main" && (
               ($DEPLOY_WEBSITE == "True" || $DEPLOY_WEBSITE == "true")
               || ($DEPLOY_LUCID == "True" || $DEPLOY_LUCID == "true")
           )'
