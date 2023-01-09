@@ -1,0 +1,105 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{ $.Chart.Name }}-queue"
+  namespace: {{ .Values.namespace }}
+  labels:
+    service: "{{ $.Chart.Name }}-queue"
+    app: "{{ $.Chart.Name }}"
+spec:
+  replicas: {{ .Values.services.web.replicaCount }}
+  selector:
+    matchLabels:
+      app: "{{ $.Chart.Name }}"
+      service: "{{ $.Chart.Name }}-queue"
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 2
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        service: "{{ $.Chart.Name }}-queue"
+        app: "{{ $.Chart.Name }}"
+    spec:
+      imagePullSecrets:
+        - name: {{ .Values.image.pullSecret }}
+      containers:
+      - name: queue
+        image: "{{ .Values.services.web.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        command: ["/bin/bash", "-c"]
+        volumeMounts:
+          - name: gcloud-service-account
+            mountPath: /tmp/gcloud
+            readOnly: false
+          - name: "{{ $.Chart.Name }}-storage-web-volume"
+            mountPath: {{ .Values.services.web.persistence.mountPath }}
+            subPath: "lido/{{.Values.services.cardano.config.CARDANO_NETWORK}}/web/storage"
+            readOnly: false
+          - name: "{{ $.Chart.Name }}-storage-web-volume"
+            mountPath: /data
+            subPath: "lido/{{.Values.services.cardano.config.CARDANO_NETWORK}}/web/data"
+            readOnly: false
+        args:
+          - |
+            #!/bin/bash
+            set -xe
+
+            until $(nc -zv $POSTGRESQL_WEB_DB_HOST 5432 &>/dev/null); do
+              sleep 2s
+            done
+
+            # chown -R nginx:nginx /var/www;
+            # find ${APP_DIR} -type d -print0|xargs -0 chmod 755; find ${APP_DIR} -type f -print0|xargs -0 chmod 644;
+
+            if [ -d "/tmp/gcloud" ]; then
+              mkdir -p /gcloud
+              cp /tmp/gcloud/* /gcloud
+              find /gcloud -type d -print0|xargs -0 chmod 755; find /gcloud -type f -print0|xargs -0 chmod 644;
+            fi
+
+            php artisan package:discover;
+            # php artisan optimize;
+            php artisan route:clear;
+
+            php ${APP_DIR}/artisan horizon
+        lifecycle:
+            preStop:
+              exec:
+                command: ["php", "/var/www/artisan", "horizon:terminate"]
+        resources:
+          limits:
+            memory: 8192Mi
+            cpu: 4
+          requests:
+            cpu: 80m
+            memory: 300Mi
+        env:
+          - name: CONTAINER_ROLE
+            value: queue
+          - name: NEWRELIC_APP_NAME
+            value: Lighthouse Queue
+          - name: PHP_MEMORY_LIMIT
+            value: 2048M
+        envFrom:
+          - configMapRef:
+              name: "{{ $.Chart.Name }}-configmap"
+          - secretRef:
+              name: "{{ $.Chart.Name }}-secrets"
+      tolerations:
+        - key: "tier"
+          operator: "Equal"
+          value: "t0"
+        - key: "tier"
+          operator: "Equal"
+          value: "t2"
+      volumes:
+        - name: gcloud-service-account
+          secret:
+            defaultMode: 0400
+            secretName: "{{ $.Chart.Name }}-gcloud-service-account"
+        - name: "{{ $.Chart.Name }}-storage-web-volume"
+          persistentVolumeClaim:
+            claimName: "{{ .Values.namespace }}-storage-web-pvc"

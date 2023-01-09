@@ -1,0 +1,27 @@
+#voter-tool-wrapper {
+    .search-groups-wrapper {
+        .search-groups{
+            > a {
+                @apply font-normal;
+            }
+        }
+    }
+    .quick-pitch-wrapper {
+        .quick-pitch-text{
+            @apply pt-4;
+
+            svg {
+                &.downvoted, &.upvoted {
+                    @apply text-slate-700;
+                }
+            }
+        }
+    }
+    #bookmarkResults {
+        #bookmark-helper{
+            input {
+
+            }
+        }
+    }
+}

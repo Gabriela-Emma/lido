@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DatabaseSettings">
+    <option name="databaseSourceIds">
+      <set>
+        <option value="566c1d1f-5726-4381-952d-3e5c4e847e47" />
+      </set>
+    </option>
+    <option name="fetchMigrationsForEloquent" value="true" />
+  </component>
+</project>

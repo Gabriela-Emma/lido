@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: "{{ $.Chart.Name }}-ncdb"
+  namespace: {{ .Values.namespace }}
+spec:
+  selector:
+    matchLabels:
+      service: "{{ $.Chart.Name }}-ncdb"
+  serviceName: "{{ $.Chart.Name }}-ncdb-service"
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        service: "{{ $.Chart.Name }}-ncdb"
+    spec:
+      terminationGracePeriodSeconds: 10
+      volumes:
+        - name: "{{ $.Chart.Name }}-ncdb-pv"
+          persistentVolumeClaim:
+            claimName: "{{ .Values.namespace }}-ncdb-pvc"
+      containers:
+        - name: ncdb
+          image: nocodb/nocodb:0.100.2
+          env:
+            - name: NC_REDIS_URL
+              value: {{ .Values.services.ncdb.redisUrl }}
+            - name: NC_INVITE_ONLY_SIGNUP
+              value: "Yes"
+            - name: DB_QUERY_LIMIT_DEFAULT
+              value: "100"
+            - name: NC_MIGRATIONS_DISABLED
+              value: "yes"
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: redis
+                  key: redis-password
+                  optional: false
+          resources:
+            limits:
+              memory: 4096Mi
+              cpu: 2
+            requests:
+              cpu: 50m
+              memory: 1024Mi
+          ports:
+            - containerPort: 8080
+              name: ncdb
+          volumeMounts:
+            - name: "{{ $.Chart.Name }}-ncdb-pv"
+              mountPath: /usr/app/data
+              subPath: "lido/{{.Values.services.cardano.config.CARDANO_NETWORK}}/ncdb"
+              readOnly: false
+      tolerations:
+        - key: "tier"
+          operator: "Equal"
+          value: "t0"
+        - key: "tier"
+          operator: "Equal"
+          value: "t1"
+        - key: "tier"
+          operator: "Equal"
+          value: "t2"
+      imagePullSecrets:
+        - name: {{ .Values.image.pullSecret }}

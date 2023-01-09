@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "{{ $.Chart.Name }}-configurations-configmap"
+  labels:
+    name: "{{ $.Chart.Name }}-configurations-configmap"
+  namespace: {{ .Values.namespace }}
+data:
+  db-sync-config.json: |-
+  {{- .Values.configurationFiles.dbSyncConfig | nindent 4}}
+  config.ogmios.json: |-
+  {{- .Values.configurationFiles.ogmiosConfig | nindent 4}}
+  config.json: |-
+  {{- .Values.configurationFiles.config | nindent 4}}
+  topology.json: |-
+  {{- .Values.configurationFiles.topology | nindent 4}}

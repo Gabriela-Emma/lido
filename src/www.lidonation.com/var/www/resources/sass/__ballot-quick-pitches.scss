@@ -1,0 +1,53 @@
+#ballot-quick-pitches {
+    .pitch{
+        @apply relative justify-start bg-teal-900/[0.80] overflow-clip text-white w-full;
+
+        .quick-pitch-wrapper {
+            h2 {
+                @apply text-lg leading-tight xl:text-xl xl:leading-normal;
+            }
+
+            h2 a {
+                @apply text-white hover:text-yellow-700;
+            }
+        }
+
+        .quick-pitch-text {
+            @apply px-4 py-2  h-full;
+
+            svg {
+                &.downvoted, &.upvoted {
+                    @apply text-white;
+                }
+            }
+        }
+
+        &:first-child {
+            @apply col-span-2 row-span-3 xl:row-span-3 pb-6;
+        }
+
+        &:nth-child(-n+4):not(:first-child) {
+            @apply col-span-2 row-span-1;
+
+            .plyr--video {
+                @apply  min-w-[18rem] sm:min-w-[16rem] lg:min-w-[32rem] xl:min-w-[16rem];
+            }
+
+            .quick-pitch-wrapper {
+                @apply flex flex-row gap-2 h-full w-full;
+
+                .quick-pitch-text {
+                    @apply px-1;
+                }
+            }
+        }
+
+        &:nth-child(n+5) {
+            @apply col-span-1 row-span-2 pb-3 xl:row-span-2;
+        }
+
+        .details-toggle-wrapper {
+            @apply hidden;
+        }
+    }
+}

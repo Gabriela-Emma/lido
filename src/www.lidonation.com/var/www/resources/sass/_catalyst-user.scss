@@ -1,0 +1,21 @@
+body.catalyst-user{
+    main {
+        > header {
+            a {
+                @apply text-teal-600;
+
+                &:hover{
+                    @apply text-yellow-500
+                }
+            }
+        }
+    }
+}
+
+body.catalyst-user #monthly-reports-wrapper .monthly-reports {
+    //-webkit-column-break-inside: avoid;
+    //before:content-[''] before:rounded-md before:absolute before:inset-0 before:bg-black before:bg-opacity-20
+    //display: grid;
+    //grid-template-columns: repeat(4, 1fr);
+    //grid-template-rows: masonry;
+}

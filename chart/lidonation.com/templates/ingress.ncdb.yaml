@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: "{{ $.Chart.Name }}-ncdb-ingress"
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: "{{ $.Chart.Name }}"
+  annotations:
+    {{- range $key, $value := .Values.services.ncdb.ingress.annotations }}
+    {{ $key }}: {{ $value | quote }}
+    {{- end }}
+spec:
+  tls:
+    - hosts:
+        - {{ .Values.services.ncdb.ingress.host }}
+      secretName: {{ .Values.services.ncdb.ingress.tls.secretName }}
+  rules:
+    - host: {{ .Values.services.ncdb.ingress.host }}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: "{{ $.Chart.Name }}-ncdb-service"
+                port:
+                  number: 8080

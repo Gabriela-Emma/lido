@@ -1,0 +1,555 @@
+version: "3.9"
+
+x-build:
+  &cardano-build
+  context: ./
+  dockerfile: cardano.Dockerfile
+  args: {}
+
+services:
+  traefik:
+    image: "traefik:v2.6"
+    command:
+      - "--log.level=INFO"
+      - "--providers.docker=true"
+      - "--api.insecure=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--entryPoints.web.forwardedHeaders.insecure"
+      - "traefik.backend.loadbalancer.stickiness.sameSite=none"
+      #      - "--providers.file.directory=/configuration/"
+      #      - "--providers.file.watch=true"
+      - "traefik.http.routers.http-catchall.rule=hostregexp(`{host:.+}`)"
+      - "traefik.http.routers.http-catchall.entrypoints=web"
+    ports:
+      # - "80:80"
+      - "8880:80"
+      - "8008:8080"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+    networks:
+      - lido
+
+  ## Databases
+  lidolovelace-search-service:
+    container_name: meili
+    image: getmeili/meilisearch:v0.28.0
+    ports:
+      - "7700:7700"
+    environment:
+      MEILI_MASTER_KEY: v8hlDV0yMAHHlIurYupj
+      MEILI_ENV: development
+    networks:
+      - lido
+
+  pgAdmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=hello@lidonation.com
+      - PGADMIN_DEFAULT_PASSWORD=alj2340aaALJAF2341408AUUZLJK
+    ports:
+      - "8888:80"
+    networks:
+      - lido
+
+  redis:
+    image: redis:7.0.2-alpine3.16
+    command: [ sh, -c, "rm -f /data/dump.rdb && redis-server --save ''" ]
+    networks:
+      - lido
+
+  webdb:
+    image: postgres:14.4-alpine3.16
+    container_name: lido_web_db
+    environment:
+      - POSTGRES_LOGGING=true
+      - POSTGRES_DB=lidoweb
+      - POSTGRES_PASSWORD=ASLJ023470AlserLFH
+      - POSTGRES_USER=llovelace
+      - POSTGRES_POSTGRES_PASSWORD=alj2340aaALJAF2341408AUUZLJK
+    ports:
+      - "5436:5432"
+    volumes:
+      - type: volume
+        source: web_db
+        target: /var/lib/postgresql/data
+        volume:
+          nocopy: true
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "10"
+    networks:
+      - lido
+
+  postgres_dbsync:
+    image: bitnami/postgresql:13.3.0-debian-10-r35
+    environment:
+      - POSTGRES_LOGGING=true
+      - POSTGRES_DB_FILE=/run/secrets/postgres_db
+      - POSTGRES_PASSWORD_FILE=/run/secrets/postgres_password
+      - POSTGRES_USER_FILE=/run/secrets/postgres_user
+    secrets:
+      - postgres_password
+      - postgres_user
+      - postgres_db
+    ports:
+      - "5432:5432"
+    # volumes:
+    #   - type: volume
+    #     source: db_syncdb
+    #     target: /bitnami/postgresql/data
+    #     volume:
+    #       nocopy: true
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "10"
+    networks:
+      - lido
+
+  ## Website
+  lidolovelace-scheduler:
+    image: lidonation
+    depends_on:
+      - webdb
+      - redis
+    env_file:
+      - ./src/www.lidonation.com/opt/app.env
+    environment:
+      APP_URL: 'http://localhost:8880'
+      APP_SETUP: "true"
+      PHP_OPCACHE_ENABLE: 0
+      PHP_OPCACHE_VALIDATE_TIMESTAMPS: 1
+      CARDANO_NETWORK_ARGUMENT: "--testnet-magic 2"
+      CARDANO_NETWORK: "testnet"
+      CARDANO_NODE_SOCKET_PATH: /ipc/node.socket
+      CONTAINER_ROLE: "scheduler"
+      DB_CONNECTION: pgsqlWeb
+      FPM_SERVICE: '127.0.0.1'
+      POSTGRESQL_DB_SYNC_DB_HOST: postgres_dbsync
+      POSTGRESQL_DB_SYNC_PASSWORD: v8hlDV0yMAHHlIurYupj
+      POSTGRESQL_DB_SYNC_DB: cexplorer
+      POSTGRESQL_DB_SYNC_USER: postgres
+      POSTGRESQL_WEB_DB_HOST: webdb
+      POSTGRESQL_WEB_DB: lidoweb
+      POSTGRESQL_WEB_USER: llovelace
+      POSTGRESQL_WEB_PASSWORD: ASLJ023470AlserLFH
+      MEDIA_DISK: public
+      TELESCOPE_USE_DARK_THEME: "true"
+    build:
+      context: ./src/www.lidonation.com
+      args: {}
+      dockerfile: ./Dockerfile.dev
+    volumes:
+      - type: volume
+        source: node-ipc
+        target: /ipc
+        volume:
+          nocopy: true
+      - ./src/www.lidonation.com/var/www:/var/www/html:cached
+      - ./data/www/data:/data
+    networks:
+      - lido
+
+  lidolovelace-queue:
+    image: lidonation
+    depends_on:
+      - webdb
+      - redis
+    env_file:
+      - ./src/www.lidonation.com/opt/app.env
+    environment:
+      APP_URL: 'http://localhost:8880'
+      APP_SETUP: "true"
+      PHP_OPCACHE_ENABLE: 0
+      PHP_OPCACHE_VALIDATE_TIMESTAMPS: 1
+      CARDANO_NETWORK_ARGUMENT: "--testnet-magic 2"
+      CARDANO_NETWORK: "testnet"
+      CARDANO_NODE_SOCKET_PATH: /ipc/node.socket
+      CONTAINER_ROLE: "queue"
+      DB_CONNECTION: pgsqlWeb
+      FPM_SERVICE: '127.0.0.1'
+      POSTGRESQL_DB_SYNC_DB_HOST: postgres_dbsync
+      POSTGRESQL_DB_SYNC_PASSWORD: v8hlDV0yMAHHlIurYupj
+      MEILISEARCH_KEY: v8hlDV0yMAHHlIurYupj
+      MEILISEARCH_HOST: "lidolovelace-search-service:7700"
+      POSTGRESQL_DB_SYNC_DB: cexplorer
+      POSTGRESQL_DB_SYNC_USER: postgres
+      POSTGRESQL_WEB_DB_HOST: webdb
+      POSTGRESQL_WEB_DB: lidoweb
+      POSTGRESQL_WEB_USER: llovelace
+      POSTGRESQL_WEB_PASSWORD: ASLJ023470AlserLFH
+      MEDIA_DISK: public
+      TELESCOPE_USE_DARK_THEME: "true"
+    build:
+      context: ./src/www.lidonation.com
+      args: {}
+      dockerfile: ./Dockerfile.dev
+    volumes:
+      - type: volume
+        source: node-ipc
+        target: /ipc
+        volume:
+          nocopy: true
+      - ./src/www.lidonation.com/var/www:/var/www/html:cached
+      - ./data/www/data:/data
+    networks:
+      - lido
+
+  lidolovelace-web-fpm-service:
+    image: lidonation
+    labels:
+      - "traefik.enable=true"
+      - "traefik.port=80"
+      - "traefik.docker.network=lido"
+      - "traefik.frontend.passHostHeader=true"
+      - "traefik.backend.loadbalancer.stickiness.sameSite=none"
+      - "traefik.http.routers.lidolovelace-web-fpm-service.rule=Host(`localhost`)"
+      - "traefik.http.routers.lidolovelace-web-fpm-service.entrypoints=web"
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
+    depends_on:
+      - webdb
+      - redis
+    env_file:
+      - ./src/www.lidonation.com/opt/app.env
+    environment:
+      APP_SETUP: "true"
+      PHP_OPCACHE_ENABLE: 0
+      PHP_OPCACHE_VALIDATE_TIMESTAMPS: 1
+      GOOGLE_APPLICATION_CREDENTIALS: '/data/google-credentials.json'
+      CARDANO_NETWORK_ARGUMENT: "--testnet-magic 2"
+      CARDANO_NETWORK: "testnet"
+      CARDANO_NODE_SOCKET_PATH: /ipc/node.socket
+      CONTAINER_ROLE: "app"
+      FPM_SERVICE: '127.0.0.1'
+      MEDIA_DISK: public
+      TELESCOPE_USE_DARK_THEME: "true"
+    build:
+      context: ./src/www.lidonation.com
+      args: {}
+      dockerfile: ./Dockerfile.dev
+    expose:
+      - 80
+    volumes:
+      - type: volume
+        source: node-ipc
+        target: /ipc
+        volume:
+          nocopy: true
+      - ./src/www.lidonation.com/var/www:/var/www/html:cached
+      - ./data/www/data:/data
+    networks:
+      - lido
+    deploy:
+      mode: replicated
+      replicas: ${LIDO_APP_REPLICAS:-3}
+
+  ## API
+  ## Nodes
+  relay:
+    container_name: relay
+    image: registry.raddcreative.io/lidonation/lidonation/cardano:latest
+    build: *cardano-build
+    expose:
+      - 3010
+      - 12798
+      - 12788
+    environment:
+      AUTO_TOPOLOGY: "False"
+      CARDANO_NETWORK: "test"
+      CARDANO_POOL_HASH: 'pool1h7quxt2t35z48pp3wsceqssmtc8uywzvvpwzmha74w7458y4hpy'
+      CNODE_HOME: '/cntools/cnode'
+      EKG_PORT: 12788
+      HARDFORK_EPOCH: 1
+      METADATA_URL: "https://test.lidonation.com/metadata.json"
+      NETWORK_ARGUMENT: "--testnet-magic 2"
+      NODE_PATH: "/data"
+      NODE_PORT: 3010
+      NODE_NAME: "relay"
+      NODE_TOPOLOGY: "producer.node:3000"
+      NODE_RELAY: "true"
+      POOL_COST: "10000000000"
+      POOL_PLEDGE: "50000000000"
+      POOL_MARGIN: "0.05"
+      PROMETHEUS_PORT: "12798"
+      PROMETHEUS_HOST: "0.0.0.0"
+      PUBLIC_RELAY_IP: "PUBLIC"
+      RESOLVE_HOSTNAMES: "False"
+      REPLACE_EXISTING_CONFIG: "False"
+      WAIT_FOR_SYNC: "False"
+    hostname: relay.node
+    volumes:
+      - ./data/relay/data:/data
+      - type: volume
+        source: node-ipc
+        target: /ipc
+        volume:
+          nocopy: true
+      - type: bind
+        source: ./src/pool/scripts
+        target: /scripts
+        volume:
+          nocopy: true
+      - type: bind
+        source: ./src/pool/config/local
+        target: /config
+        volume:
+          nocopy: true
+      - type: bind
+        source: ./src/pool/cntools
+        target: /cntools
+        volume:
+          nocopy: true
+    networks:
+      - lido
+
+  ## Cardano Backend Services
+  dbsync:
+    container_name: dbsync
+    image: registry.raddcreative.io/lidonation/lidonation/cardano-db-sync
+    command: [
+      "--config", "/config/db-sync-config.json",
+      "--socket-path", "/ipc/node.socket"
+    ]
+    env_file:
+      - ./.cardano.env
+    environment:
+      - EXTENDED=true
+      - POSTGRES_HOST=postgres_dbsync
+      - POSTGRES_PORT=5432
+      - RESTORE_RECREATE_DB=N
+    depends_on:
+      - relay
+      - postgres_dbsync
+    secrets:
+      - postgres_password
+      - postgres_user
+      - postgres_db
+    volumes:
+      - type: volume
+        source: node-ipc
+        target: /ipc
+        volume:
+          nocopy: true
+      - type: bind
+        source: ./src/pool/config/local
+        target: /config
+        volume:
+          nocopy: true
+      - type: bind
+        source: ./src/pool/config/local
+        target: /tmp/config
+        volume:
+          nocopy: true
+      - type: bind
+        source: ./data/dbsync/tmp
+        target: /tmp
+        volume:
+          nocopy: true
+      - type: volume
+        source: dbsync
+        target: /var/lib/cexplorer
+        volume:
+          nocopy: true
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "10"
+    networks:
+      - lido
+
+  cardano-wallet:
+    container_name: wallet
+    image: inputoutput/cardano-wallet:2022.7.1
+    volumes:
+      - type: bind
+        source: ./data/wallet/db
+        target: /wallet-db
+        volume:
+          nocopy: true
+      - type: volume
+        source: node-ipc
+        target: /ipc
+        volume:
+          nocopy: true
+      - type: bind
+        source: ./src/pool/config/local
+        target: /config
+        volume:
+          nocopy: true
+    ports:
+      - 8890:8090
+    entrypoint: /bin/bash
+    command: [
+      "-c",
+      "([[ $$NETWORK == \"mainnet\" ]] && $$CMD --mainnet) || ($$CMD --testnet /config/testnet-byron-genesis.json)"
+    ]
+    environment:
+      CMD: "cardano-wallet serve --node-socket /ipc/node.socket --database /wallet-db --listen-address 0.0.0.0"
+      NETWORK: testnet
+    logging:
+      driver: "json-file"
+      options:
+        compress: "true"
+        max-file: "10"
+        max-size: "50m"
+    networks:
+      - lido
+
+  lidolovelace-ogmios-sevice:
+    container_name: ogmios
+    image: cardanosolutions/ogmios:v5.5.2-testnet
+    command: [
+      "--host", "0.0.0.0",
+      "--node-socket", "/ipc/node.socket",
+      "--node-config", "/config/config.json"
+    ]
+    volumes:
+      - type: bind
+        source: ./src/pool/config/local
+        target: /config
+        volume:
+          nocopy: true
+      - type: volume
+        source: node-ipc
+        target: /ipc
+        volume:
+          nocopy: true
+    depends_on:
+      - relay
+    ports:
+      - ${OGMIOS_PORT:-1337}:1337
+    networks:
+      - lido
+
+  lidolovelace-hasura-sevice:
+    container_name: hasura
+    image: inputoutput/cardano-graphql-hasura:${CARDANO_GRAPHQL_VERSION:-6.2.0}
+    ports:
+      - ${HASURA_PORT:-8090}:8080
+    depends_on:
+      - "dbsync"
+      - lidolovelace-ogmios-sevice
+    environment:
+      - POSTGRES_HOST=postgres_dbsync
+      - HASURA_GRAPHQL_ENABLE_CONSOLE=true
+      - HASURA_GRAPHQL_CORS_DOMAIN=http://localhost:9695
+    secrets:
+      - postgres_db
+      - postgres_password
+      - postgres_user
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "10"
+    networks:
+      - lido
+
+  cardano-graphql:
+    container_name: graphql
+    image: inputoutput/cardano-graphql:${CARDANO_GRAPHQL_VERSION:-6.2.0}-${NETWORK:-testnet}
+    environment:
+      - POSTGRES_HOST=postgres_dbsync
+      - ALLOW_INTROSPECTION=true
+      - CACHE_ENABLED=false
+      #      - CARDANO_NODE_CONFIG_PATH=/config/config.json
+      - LOGGER_MIN_SEVERITY=${LOGGER_MIN_SEVERITY:-info}
+    depends_on:
+      - "dbsync"
+      - lidolovelace-hasura-sevice
+    expose:
+      - ${API_PORT:-3100}
+    ports:
+      - ${API_PORT:-3400}:3100
+    secrets:
+      - postgres_db
+      - postgres_password
+      - postgres_user
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "10"
+    volumes:
+      - ./src/pool/config/local/config.json:/config/config.json
+      - ./src/pool/config/local/testnet-shelley-genesis.json:/config/testnet-shelley-genesis.json
+      - ./src/pool/config/local/testnet-alonzo-genesis.json:/config/testnet-alonzo-genesis.json
+      - ./src/pool/config/local/testnet-byron-genesis.json:/config/testnet-byron-genesis.json
+      - type: volume
+        source: node-ipc
+        target: /ipc
+        volume:
+          nocopy: true
+    networks:
+      - lido
+
+  ## SRE / Infrastructure
+  prom:
+    image: prom/prometheus:v2.37.0
+    ports:
+      - 9090:9090
+    volumes:
+      - ./build/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - lido
+
+  grafana:
+    image: grafana/grafana:7.4.1
+    depends_on:
+      - prom
+    ports:
+      - "3000:3000"
+    environment:
+      GF_INSTALL_PLUGINS: "grafana-clock-panel,grafana-simple-json-datasource,grafana-piechart-panel"
+    volumes:
+      - ./build/grafana/provisioning:/etc/grafana/provisioning/
+    user: "472"
+    networks:
+      - lido
+  #  promtail:
+  #    image: grafana/promtail:master-76e713f
+  #    restart: on-failure
+  #    volumes:
+  #      - ./build/promtail/promtail.yml:/etc/promtail/docker-config.yaml
+  #    command: -config.file=/etc/promtail/docker-config.yaml
+  #  loki:
+  #    image: grafana/loki:2.1.0
+  #    container_name: loki
+  #    ports:
+  #      - 3100:3100
+  #    restart: on-failure
+  #    volumes:
+  #      - ./config/loki.yaml:/etc/loki/loki-config.yaml
+  #    command: -config.file=/etc/loki/loki-config.yaml
+  #    depends_on:
+  #      - promtail
+
+secrets:
+  postgres_db:
+    file: ./src/pool/config/db-sync/secrets/postgres_db
+  postgres_password:
+    file: ./src/pool/config/db-sync/secrets/postgres_password
+  postgres_user:
+    file: ./src/pool/config/db-sync/secrets/postgres_user
+
+volumes:
+  node-ipc:
+  ogmios-db:
+  producer:
+  relay:
+  web_db:
+  db_syncdb:
+  dbsync:
+  relay_data:
+  producer_data:
+
+networks:
+  lido:
+    driver: bridge

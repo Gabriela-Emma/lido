@@ -1,0 +1,36 @@
+{
+  "LocalRoots": {
+    "groups": [
+      {
+        "localRoots": {
+          "accessPoints": [
+            {
+              "address": "lidolovelace-cardano-producer-service.lidolovelace-test.svc.cluster.local",
+              "port": 3010
+            },
+            {
+              "address": "lidolovelace-cardano-relay-1-service.lidolovelace-test.svc.cluster.local",
+              "port": 3010
+            }
+          ],
+          "advertise": false
+        },
+        "valency": 1
+      }
+    ]
+  },
+  "PublicRoots": [
+    {
+      "publicRoots": {
+        "accessPoints": [
+          {
+            "address": "preview-node.world.dev.cardano.org",
+            "port": 30002
+          }
+        ],
+        "advertise": true
+      }
+    }
+  ],
+  "useLedgerAfterSlot": 322000
+}

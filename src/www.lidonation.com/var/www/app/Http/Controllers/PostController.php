@@ -1,0 +1,50 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Category;
+use App\Models\Post;
+use App\Repositories\PostRepository;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\Request;
+use Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist;
+use Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig;
+
+class PostController extends Controller
+{
+    /**
+     * @throws FileDoesNotExist
+     * @throws FileIsTooBig
+     */
+    public function storeAudio(Request $request, Post $post)
+    {
+        $date = now('UTC')->format('Y-m-d-H:i:s');
+        $locale = app()->getLocale();
+        $post->addMediaFromRequest('media')
+            ->usingFileName("{$post->slug}-$date-$locale")
+            ->withCustomProperties(['mime-type' => 'audio/wav'])
+            ->toMediaCollection('audio');
+
+        return $post;
+    }
+
+    public function category(Request $request, Category $category)
+    {
+        $category->load(['posts']);
+        $section = 'posts';
+
+        return view('category')->with(compact('category', 'section'));
+    }
+
+    public function show(Request $request, PostRepository $postRepository, string $slug): Factory|View|Application
+    {
+        $post = $postRepository->get($slug);
+        $post->load(['categories', 'tags']);
+
+        $section = 'posts';
+
+        return view('post')->with(compact('post', 'section'));
+    }
+}

@@ -1,0 +1,98 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{ $.Chart.Name }}-nginx"
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: "{{ $.Chart.Name }}"
+    service: "{{ $.Chart.Name }}-nginx"
+spec:
+  selector:
+    matchLabels:
+      app: "{{ $.Chart.Name }}"
+      service: "{{ $.Chart.Name }}-nginx"
+  replicas: {{ .Values.services.web.replicaCount }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 2
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: "{{ $.Chart.Name }}"
+        service: "{{ $.Chart.Name }}-nginx"
+    spec:
+      imagePullSecrets:
+        - name: {{ .Values.image.pullSecret }}
+      containers:
+      - name: app
+        image: "{{ .Values.services.web.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        command: ["/bin/sh", "-c"]
+        args:
+          - |
+            #!/bin/bash
+            set -xe
+
+            # chown -R nginx:nginx /var/www;
+
+            until $(nc -zv $FPM_SERVICE 9000 &>/dev/null); do
+              sleep 2s;
+            done
+
+            php artisan storage:link
+
+            /usr/sbin/nginx;
+        resources:
+          limits:
+            memory: 1024Mi
+            cpu: 600
+          requests:
+            cpu: 10m
+            memory: 64Mi
+        envFrom:
+          - configMapRef:
+              name: "{{ $.Chart.Name }}-configmap"
+        env:
+          - name: FPM_SERVICE
+            value: "{{ $.Chart.Name }}-fpm-service"
+        ports:
+          - name: http
+            containerPort: 8080
+            protocol: TCP
+        volumeMounts:
+          - name: "{{ $.Chart.Name }}-storage-web-volume"
+            mountPath: {{ .Values.services.web.persistence.mountPath }}
+            subPath: "lido/{{.Values.services.cardano.config.CARDANO_NETWORK}}/web/storage"
+            readOnly: false
+        startupProbe: # queue have up to 7.5 mins to start
+          tcpSocket:
+            port: 8080
+          failureThreshold: 90
+          periodSeconds: 15
+          timeoutSeconds: 10
+        livenessProbe:
+          initialDelaySeconds: 45
+          periodSeconds: 15
+          tcpSocket:
+            port: 8080
+        readinessProbe:
+          initialDelaySeconds: 45
+          periodSeconds: 20
+          tcpSocket:
+            port: 8080
+      volumes:
+        - name: "{{ $.Chart.Name }}-storage-web-volume"
+          persistentVolumeClaim:
+            claimName: "{{ .Values.namespace }}-storage-web-pvc"
+      tolerations:
+        - key: "tier"
+          operator: "Equal"
+          value: "t0"
+        - key: "tier"
+          operator: "Equal"
+          value: "t1"
+        - key: "tier"
+          operator: "Equal"
+          value: "t2"

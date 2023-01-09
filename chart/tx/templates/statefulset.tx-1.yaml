@@ -1,0 +1,128 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: "{{ $.Chart.Name }}-1"
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: "{{ $.Chart.Name }}"
+    role: relay
+    network: {{ .Values.services.cardano.config.CARDANO_NETWORK }}    
+spec:
+  selector:
+    matchLabels:
+      app: "{{ $.Chart.Name }}"
+      release: {{ .Release.Name }}
+  replicas: 1
+  updateStrategy:
+    type: RollingUpdate
+  serviceName: "{{ $.Chart.Name }}-service"
+  template:
+    metadata:
+      labels:
+        app: "{{ $.Chart.Name }}"
+        chart: "{{ $.Chart.Name }}-{{ $.Chart.Version }}"
+        role: relay
+        network: {{ .Values.services.cardano.config.CARDANO_NETWORK }}
+        release: {{ .Release.Name }}
+        client: {{.Values.labels.client}}
+        domain: {{.Values.labels.domain}}
+        service: "relay"
+    spec:      
+      serviceAccountName: ""
+      volumes:
+        - name: node-ipc
+          emptyDir: {}
+        - name: "{{ $.Chart.Name }}-1-pv"
+          persistentVolumeClaim:
+            claimName: "{{ .Values.namespace }}-data-txrelay1-pvc"
+        - name: node-configurations
+          configMap:
+            name: "lidolovelace-cardano-configurations-configmap"
+        - name: submit-api-configurations
+          configMap:
+            name: "{{ $.Chart.Name }}-configurations-configmap"
+      containers:
+        - name: relay
+          image: "{{ .Values.services.submitApi.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ["entrypoint"]
+          args: ["--start"]
+          resources:
+            requests:
+              cpu: 50m
+              memory: 511Mi
+            limits:
+              cpu: 4000m
+              memory: 16384Mi
+          env:
+            - name: NODE_PORT
+              value: "{{ .Values.services.cardano.config.SUBMIT_TX_PORT }}"
+            - name: NODE_NAME
+              value: submittx
+            - name: HOST_ADDR
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+          envFrom:
+            - configMapRef:
+                name: "lidolovelace-cardano-configurations-configmap"
+          ports:
+            - name: prometheus
+              containerPort: 11798
+            - name: submittx
+              containerPort: {{ .Values.services.cardano.config.SUBMIT_TX_PORT }}
+          volumeMounts:
+            - mountPath: /ipc
+              name: node-ipc
+            - name: node-configurations
+              mountPath: /tmp/config
+            - name: "{{ $.Chart.Name }}-1-pv"
+              mountPath: /data
+              subPath: "lido/{{.Values.services.cardano.config.CARDANO_NETWORK}}/txrelay1/data"
+              readOnly: false
+        - name: submit-tx
+          image: "{{ .Values.services.submitApi.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          env:
+            - name: CARDANO_NETWORK_ARGUMENT
+              value: {{ .Values.services.submitApi.networkArg}}            
+          command: [
+              "sh",
+              "-c",
+              "cardano-submit-api --config /tmp/config/submit-api-config.json --socket-path /ipc/node.socket --listen-address 0.0.0.0 --port 8080 $CARDANO_NETWORK_ARGUMENT"
+          ]  
+          volumeMounts:
+            - name: node-ipc
+              mountPath: /ipc
+            - name: submit-api-configurations
+              mountPath: /tmp/config
+              readOnly: true
+        - name: ipc
+          image: alpine/socat:1.7.4.4-r0
+          env:
+            - name: PORT
+              value: "30112"
+          command: [
+            "sh",
+            "-c",
+            "socat TCP-LISTEN:${PORT},fork UNIX-CLIENT:/ipc/node.socket,ignoreeof"
+          ]
+          volumeMounts:
+            - name: node-ipc
+              mountPath: /ipc
+          ports:
+            - name: ipc
+              containerPort: 30130
+      tolerations:
+        - key: "tier"
+          operator: "Equal"
+          value: "t0"   
+        - key: "tier"
+          operator: "Equal"
+          value: "t2"
+      imagePullSecrets:
+        - name: {{ .Values.image.pullSecret }}

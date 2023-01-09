@@ -1,0 +1,78 @@
+body.labs {
+    @apply bg-white;
+    font-family: Inter, sans-serif, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
+body.labs #header {
+    @apply border-slate-800;
+
+    #primary-menu .menu-item .menu-link {
+        @apply text-slate-800;
+
+        .search-btn{
+            @apply text-slate-800 border-slate-800 hover:bg-labs-black hover:text-white;
+        }
+
+        &.active{
+            @apply text-labs-black;
+        }
+    }
+    .brand-logo-wrapper .brand-link {
+        :last-child {
+            &:hover {
+                @apply text-labs-black;
+            }
+        }
+
+        :first-child {
+            @apply  text-labs-red;
+        }
+    }
+}
+
+body.labs header#header .brand-logo-wrapper .brand-logo-link img:last-of-type {
+    @apply hidden;
+}
+
+body.labs #top-blob{
+    display: none;
+}
+
+body.labs #header {
+    @apply bg-white;
+}
+
+body.labs > footer,
+body.labs #footer {
+    @apply bg-labs-black;
+
+    dt, .copyright {
+        @apply text-slate-300;
+    }
+
+    .border-b.left {
+        @apply border-slate-300;
+    }
+
+    h3, a, dd{
+        @apply text-slate-300;
+    }
+
+    .second {
+        h3, a, dd{
+            @apply border-slate-300;
+        }
+    }
+}
+
+body.labs .button.primary{
+    @apply bg-labs-black outline-labs-black text-slate-800;
+}
+body.labs footer .pool-id-picker .wallet-picker{
+    @apply bg-labs-black border-labs-black;
+}
+body.labs footer .pool-graphic > div,
+body.labs-marathon footer .pool-graphic > div,
+body.labs footer .pool-graphic > div{
+    @apply text-labs-black;
+}

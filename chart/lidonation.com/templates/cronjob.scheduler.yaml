@@ -1,0 +1,58 @@
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  namespace: {{ .Values.namespace }}
+  name: "{{ $.Chart.Name }}-scheduler"
+rules:
+  - apiGroups:
+      - extensions
+      - apps
+    resources:
+      - deployments
+      - replicasets
+    verbs:
+      - 'get'
+      - 'exec'
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: "{{ $.Chart.Name }}-scheduler"
+  namespace: {{ .Values.namespace }}
+subjects:
+  - kind: ServiceAccount
+    name: "sa-{{ $.Chart.Name }}-scheduler"
+    namespace: {{ .Values.namespace }}
+roleRef:
+  kind: Role
+  name: "{{ $.Chart.Name }}-scheduler"
+  apiGroup: ""
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: "sa-{{ $.Chart.Name }}-scheduler"
+  namespace: {{ .Values.namespace }}
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: "{{ $.Chart.Name }}-scheduler"
+  namespace: {{ .Values.namespace }}
+spec:
+  schedule: "*/5 * * * *"
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: "sa-{{ $.Chart.Name }}-scheduler"
+          containers:
+            - name: topology-updater
+              image: bitnami/kubectl:1.22.3-debian-10-r17
+              imagePullPolicy: IfNotPresent
+              command:
+                - /bin/sh
+                - -c
+                - kubectl exec $(kubectl get pods -l service=lidolovelace-web-fpm --field-selector=status.phase=Running -o=jsonpath='{.items[0].metadata.name}') -c app -- php /var/www/artisan schedule:run
+          restartPolicy: Never

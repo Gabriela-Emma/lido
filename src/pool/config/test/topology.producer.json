@@ -1,0 +1,9 @@
+{
+  "Producers": [
+    {
+      "addr": "relay.test.lidonation.com",
+      "port": 3010,
+      "valency": 1
+    }
+  ]
+}

@@ -1,0 +1,153 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: "{{ $.Chart.Name }}-cardano-db-sync"
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: "{{ $.Chart.Name }}-cardano-db-sync"
+    chart: "{{ $.Chart.Name }}-{{ $.Chart.Version }}"
+    release: {{ .Release.Name }}
+    client: {{.Values.labels.client}}
+    domain: {{.Values.labels.domain}}
+    service: {{.Values.labels.service}}
+spec:
+  selector:
+    matchLabels:
+      app: "{{ $.Chart.Name }}-cardano-db-sync"
+      chart: "{{ $.Chart.Name }}-{{ $.Chart.Version }}"
+      release: {{ .Release.Name }}
+  replicas: 1
+  updateStrategy:
+    type: RollingUpdate
+  serviceName: "{{ $.Chart.Name }}-cardano-db-sync-service"
+  template:
+    metadata:
+      labels:
+        app: "{{ $.Chart.Name }}-cardano-db-sync"
+        chart: "{{ $.Chart.Name }}-{{ $.Chart.Version }}"
+        release: {{ .Release.Name }}
+        client: {{.Values.labels.client}}
+        domain: {{.Values.labels.domain}}
+        service: "relay"
+    spec:
+      volumes:
+        - name: node-ipc
+          emptyDir: {}
+        - name: db-sync-postgresql
+          secret:
+            defaultMode: 400
+            secretName: "{{ $.Chart.Name }}-secrets"
+            items:
+              - key: postgres_db
+                path: postgres_db
+              - key: postgres_password
+                path: postgres_password
+              - key: postgres_user
+                path: postgres_user
+        - name: dbsync-configurations
+          configMap:
+            name: "{{ $.Chart.Name }}-configurations-configmap"
+        - name: node-configurations
+          configMap:
+            name: "lidolovelace-cardano-configurations-configmap"
+        - name: "{{ $.Chart.Name }}-cardano-db-sync-pv"
+          persistentVolumeClaim:
+            claimName: "{{ .Values.namespace }}-data-db-sync-pvc"
+      containers:
+        - name: "db-sync"
+          image: "{{ .Values.services.dbsync.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args: [
+              "--config", "/tmp/config/db-sync-config.json",
+              "--socket-path", "/ipc/node.socket"
+          ]
+          resources:
+            requests:
+              cpu: 900m
+              memory: 8192Mi
+            limits:
+              cpu: 8000m
+              memory: 65536Mi
+          env:
+            - name: POSTGRES_HOST
+              value: "lidolovelace-db-sync-db-postgresql"
+            - name: POSTGRES_PORT
+              value: "5432"
+            - name: EXTENDED
+              value: "true"
+            - name: RESTORE_SNAPSHOT
+              value: {{ .Values.services.dbsync.restore_snapshot }}
+            - name: RESTORE_RECREATE_DB
+              value: "N"
+            - name: HOST_ADDR
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+          envFrom:
+            - secretRef:
+                name:  "{{ $.Chart.Name }}-secrets"
+            - configMapRef:
+                name: "lidolovelace-cardano-configmap"
+          ports:
+            - name: prometheus
+              containerPort: 12798
+          lifecycle:
+            postStart:
+              exec:
+                command: [
+                    "/bin/bash", "-c",
+                    "cp /tmp/config/* /config"
+                ]
+            preStop:
+              exec:
+                command: [
+                    "/bin/bash",
+                    "-c",
+                    "cp -rf /tmp/migrate-* /var/lib/cexplorer/tmp"
+                ]
+          volumeMounts:
+            - name: node-ipc
+              mountPath: /ipc
+              readOnly: false
+            - name: db-sync-postgresql
+              mountPath: /run/secrets
+              readOnly: false
+            - name: dbsync-configurations
+              mountPath: /tmp/config
+              readOnly: true
+            - name: "{{ $.Chart.Name }}-cardano-db-sync-pv"
+              mountPath: /var/lib/cexplorer
+              subPath: "lido/{{.Values.services.cardano.config.CARDANO_NETWORK}}/cdbsync/data"
+              readOnly: false
+            # - name: "{{ $.Chart.Name }}-cardano-db-sync-pv"
+            #   mountPath: /tmp/opt
+            #   subPath: "lido/{{.Values.services.cardano.config.CARDANO_NETWORK}}/cdbsync/opt"
+            #   readOnly: false
+            - name: "{{ $.Chart.Name }}-cardano-db-sync-pv"
+              mountPath: /tmp
+              subPath: "lido/{{.Values.services.cardano.config.CARDANO_NETWORK}}/tmpcdbsync"
+              readOnly: false
+        - name: ipc
+          image: alpine/socat:1.7.4.4-r0
+          env:
+          - name: CARDANO_NODE_SOCKET_TCP_HOST
+            value: "lidolovelace-cardano-producer-service"
+          - name: CARDANO_NODE_SOCKET_TCP_PORT
+            value: "30111"
+          - name: SOCAT_TIMEOUT
+            value: "3600"
+          command: [
+              "sh",
+              "-c",
+              "socat UNIX-LISTEN:/ipc/node.socket,fork TCP:${CARDANO_NODE_SOCKET_TCP_HOST}:${CARDANO_NODE_SOCKET_TCP_PORT},ignoreeof"
+          ]
+          volumeMounts:
+          - mountPath: /ipc
+            name: node-ipc
+            readOnly: false
+      tolerations:
+        - key: "tier"
+          operator: "Equal"
+          value: "t2"
+      imagePullSecrets:
+        - name: {{ .Values.image.pullSecret }}

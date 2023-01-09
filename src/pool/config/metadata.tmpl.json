@@ -1,0 +1,7 @@
+{
+  "name": "Lido Nation",
+  "description": "The Future is for Everyone.",
+  "ticker": "LIDO",
+  "homepage": "$POOL_HOMEPAGE",
+  "extended": "$POOL_HOMEPAGE/metadata-extended.json"
+}

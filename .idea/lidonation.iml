@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="WEB_MODULE" version="4">
+  <component name="NewModuleRootManager">
+    <content url="file://$MODULE_DIR$">
+      <excludeFolder url="file://$MODULE_DIR$/src/www.lidonation.com/var/www/vendor/composer" />
+      <excludeFolder url="file://$MODULE_DIR$/src/www.lidonation.com/var/www/storage/app" />
+      <excludeFolder url="file://$MODULE_DIR$/src/www.lidonation.com/var/www/storage/json" />
+      <excludeFolder url="file://$MODULE_DIR$/src/www.lidonation.com/var/www/storage/framework" />
+      <excludeFolder url="file://$MODULE_DIR$/src/www.lidonation.com/var/www/storage/media-library" />
+      <excludeFolder url="file://$MODULE_DIR$/src/new.lidonation.com" />
+      <excludeFolder url="file://$MODULE_DIR$/src/apis.lidonation.com" />
+      <excludeFolder url="file://$MODULE_DIR$/src/library.lidonation.com" />
+      <excludeFolder url="file://$MODULE_DIR$/data" />
+      <excludeFolder url="file://$MODULE_DIR$/src/www.lidonation.com/var/www/vendor/_laravel_idea" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+</module>

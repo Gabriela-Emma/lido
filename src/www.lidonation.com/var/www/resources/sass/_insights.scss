@@ -1,0 +1,15 @@
+body {
+    &.post,
+    &.news,
+    &.insights {
+        main > header {
+            h1 {
+                @apply mb-0;
+            }
+        }
+
+        .menu-item.global-search a > *{
+            @apply text-teal-700 border-teal-700 hover:text-white;
+        }
+    }
+}

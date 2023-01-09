@@ -1,0 +1,4 @@
+name: lidolovelace-dbsync
+apiVersion: v1
+version: "0.0.1"
+description: 'A community cardano staking pool'

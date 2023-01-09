@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: "{{ $.Chart.Name }}-search"
+  namespace: {{ .Values.namespace }}
+spec:
+  selector:
+    matchLabels:
+      app: "{{ $.Chart.Name }}-search"
+  serviceName: "{{ $.Chart.Name }}-search-service"
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: "{{ $.Chart.Name }}-search"
+    spec:
+      terminationGracePeriodSeconds: 10
+      volumes:
+        - name: "{{ $.Chart.Name }}-search-pv"
+          persistentVolumeClaim:
+            claimName: "{{ .Values.namespace }}-search-pvc"
+      containers:
+        - name: meilisearch
+          image: getmeili/meilisearch:v0.30.5
+          resources:
+            limits:
+              memory: 12288Mi
+              cpu: 4
+            requests:
+              cpu: 600m
+              memory: 2048Mi
+          envFrom:
+            - secretRef:
+                name: "{{ $.Chart.Name }}-search-secret"
+          env:
+            - name: MEILI_ENV
+              value: "production"
+          ports:
+            - containerPort: 7700
+              name: meilisearch
+          volumeMounts:
+            - name: "{{ $.Chart.Name }}-search-pv"
+              mountPath: /data.ms
+              subPath: "lido/{{.Values.services.cardano.config.CARDANO_NETWORK}}/search"
+              readOnly: false
+      tolerations:
+        - key: "tier"
+          operator: "Equal"
+          value: "t0"
+        - key: "tier"
+          operator: "Equal"
+          value: "t2"
+      imagePullSecrets:
+        - name: {{ .Values.image.pullSecret }}

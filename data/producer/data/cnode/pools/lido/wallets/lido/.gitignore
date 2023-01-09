@@ -1,0 +1,11 @@
+*
+!.gitignore
+!base.addr
+!deleg.cert
+!payment.addr
+!payment.skey
+!payment.vkey
+!reward.addr
+!stake.cert
+!stake.skey
+!stake.vkey

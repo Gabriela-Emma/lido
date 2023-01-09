@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: "{{ $.Chart.Name }}-graphql-ingress"
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: "{{ $.Chart.Name }}"
+  annotations:
+    {{- range $key, $value := .Values.services.dbsync.graphql.ingress.annotations }}
+    {{ $key }}: {{ $value | quote }}
+    {{- end }}
+spec:
+  tls:
+    - hosts:
+        - {{ .Values.services.dbsync.graphql.ingress.host }}
+      secretName: {{ .Values.services.dbsync.graphql.ingress.tls.secretName }}
+  rules:
+    - host: {{ .Values.services.dbsync.graphql.ingress.host }}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: "{{ $.Chart.Name }}-graphql-service"
+                port:
+                  number: 3100

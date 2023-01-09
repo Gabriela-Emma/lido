@@ -1,0 +1,79 @@
+<?php
+
+namespace App\Policies;
+
+use App\Enums\PermissionEnum;
+use App\Models\Fund;
+use App\Models\User;
+
+class FundPolicy extends AppPolicy
+{
+    /**
+     * Determine whether the user can view any models.
+     *
+     * @param  User  $user
+     * @return bool
+     *
+     * @throws \Exception
+     */
+    public function viewAny(User $user): bool
+    {
+        return $user->hasAnyPermission([PermissionEnum::read_funds()->value]) ||
+            $this->canViewAny($user);
+    }
+
+    /**
+     * Determine whether the user can view the model.
+     *
+     * @param  User  $user
+     * @param  Fund  $fund
+     * @return mixed
+     *
+     * @throws \Exception
+     */
+    public function view(User $user, Fund $fund): mixed
+    {
+        return $user->hasAnyPermission([PermissionEnum::read_funds()->value]) ||
+            $this->canView($user, $fund);
+    }
+
+    /**
+     * Determine whether the user can create models.
+     *
+     * @param  User  $user
+     * @return bool
+     *
+     * @throws \Exception
+     */
+    public function create(User $user): bool
+    {
+        return $user->hasAnyPermission([PermissionEnum::create_funds()->value]) || $this->canCreate($user);
+    }
+
+    /**
+     * Determine whether the user can update the model.
+     *
+     * @param  User  $user
+     * @param  Fund  $fund
+     * @return mixed
+     *
+     * @throws \Exception
+     */
+    public function update(User $user, Fund $fund): mixed
+    {
+        return $user->hasAnyPermission([PermissionEnum::update_funds()->value]) ||
+            $this->canUpdate($user);
+    }
+
+    /**
+     * Determine whether the user can delete the model.
+     *
+     * @param  User  $user
+     * @param  Fund  $fund
+     * @return mixed
+     */
+    public function delete(User $user, Fund $fund): mixed
+    {
+        return $this->canDelete($user);
+    }
+}

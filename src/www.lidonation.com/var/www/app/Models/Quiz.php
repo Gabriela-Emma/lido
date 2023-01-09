@@ -1,0 +1,68 @@
+<?php
+
+namespace App\Models;
+
+use App\Models\Traits\HasAuthor;
+use App\Models\Traits\HasGiveaways;
+use App\Models\Traits\HasHero;
+use App\Models\Traits\HasMetaData;
+use App\Models\Traits\HasTranslations;
+use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+
+class Quiz extends Model implements HasMedia
+{
+    use HasAuthor,
+        HasHero,
+        HasMetaData,
+        HasTimestamps,
+        HasTranslations,
+        HasGiveaways,
+        InteractsWithMedia,
+        SoftDeletes;
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'updated_at' => 'datetime:M d y',
+        'published_at' => 'datetime:M d y',
+    ];
+
+    public $translatable = [
+        'title',
+        'content'
+    ];
+
+    public function questions(): BelongsToMany
+    {
+        return $this->belongsToMany(Question::class);
+    }
+
+//    public function giveaways(): MorphToMany
+//    {
+//        return $this->morphToMany(Giveaway::class, 'giveaways', 'giveaway_model', 'model_id', 'giveaway_id')
+//            ->wherePivot('type', static::class);
+//    }
+
+    public function models(): MorphToMany
+    {
+        return $this->morphedByMany(Model::class, 'model', 'model_quiz', 'quiz_id', 'model_id');
+    }
+
+    public function everyEpochs(): MorphToMany
+    {
+        return $this->morphedByMany(EveryEpoch::class, 'model', 'model_quiz', 'quiz_id', 'model_id');
+    }
+
+    public function posts(): MorphToMany
+    {
+        return $this->morphedByMany(Post::class, 'model', 'model_quiz', 'quiz_id', 'model_id');
+    }
+}

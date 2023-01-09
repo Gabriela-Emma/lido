@@ -1,0 +1,41 @@
+.catalyst-proposals-bookmarks-wrapper {
+    .choices {
+        @apply bg-primary-600;
+
+        .choices__inner {
+            @apply inline-flex flex-col-reverse bg-primary-600 border-primary-300;
+            padding: 0 !important;
+            margin: 0 !important;
+
+            .choices__list {
+                @apply px-2 pb-2;
+            }
+
+            .choices__item {
+                @apply bg-teal-600;
+
+                .is-highlighted {
+                    @apply bg-primary-200;
+                }
+            }
+        }
+
+        .choices__list {
+            @apply bg-primary-600;
+            .choices__item {
+                &.is-highlighted {
+                    @apply bg-primary-50 bg-opacity-30;
+                }
+            }
+        }
+
+        input[type=search] {
+            @apply rounded-sm border-primary-300 border-0 outline-0 ring-0 mb-0 m-0 bg-primary-600 text-white placeholder-white;
+            min-width: 100% !important;
+
+            &:active, &:focus {
+                @apply border-0 outline-0 ring-0;
+            }
+        }
+    }
+}

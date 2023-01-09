@@ -1,0 +1,31 @@
+body.catalyst-api-spec {
+    #swagger-ui {
+        .topbar {
+            @apply hidden;
+        }
+
+        .opblock-tag-section{
+            @apply border-t border-teal-500;
+        }
+
+        .opblock-tag{
+            @apply border-b-0 border-transparent;
+        }
+
+        .opblock-summary {
+            @apply rounded-sm bg-slate-100;
+        }
+
+        .opblock-summary-method {
+            @apply bg-teal-600 rounded-sm;
+        }
+
+        .opblock {
+            @apply border-none shadow-inherit shadow-none bg-slate-100 rounded-sm;
+        }
+
+        .opblock.opblock-get .opblock-summary-method {
+
+        }
+    }
+}

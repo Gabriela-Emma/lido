@@ -1,0 +1,9 @@
+{
+  "Producers": [
+    {
+      "addr": "relay.node",
+      "port": 3010,
+      "valency": 1
+    }
+  ]
+}

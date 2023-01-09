@@ -1,0 +1,23 @@
+<?php
+
+namespace Database\Seeders;
+
+use App\Models\Podcast;
+use Illuminate\Database\Seeder;
+
+class PodcastSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
+    public function run(): void
+    {
+        Podcast::factory()
+            ->count(24)
+            ->forShow()
+            ->forSeason()
+            ->create();
+    }
+}

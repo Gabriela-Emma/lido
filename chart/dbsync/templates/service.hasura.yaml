@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: "{{ $.Chart.Name }}-hasura-service"
+  namespace: {{ .Values.namespace }}
+  labels:
+    service: "{{ $.Chart.Name }}-hasura"
+spec:
+  ports:
+    - port: 8080
+      name: hasura
+      targetPort: hasura
+      protocol: TCP
+  selector:
+    service: "{{ $.Chart.Name }}-hasura"

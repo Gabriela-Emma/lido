@@ -1,0 +1,40 @@
+#!/bin/bash
+
+#chmod -R +x /scripts/
+
+if [ -d "/tmp/config" ]; then
+  cp /tmp/config/* /config
+fi
+
+sudo chown -R cardano-node /data
+
+sudo chown -R cardano-node /ipc
+
+[[ -z "${CNODE_HOME}" ]] && CNODE_HOME="/cntools/cnode"
+
+if [[ "$NODE_NAME" == "producer" ]]; then
+
+  echo "Starting block producer node";
+else
+  echo "Starting relay node";
+fi
+
+if [[ -f /data/cnode/pools/lido/vrf.skey ]]; then
+    sudo chmod og-rwx /data/cnode/pools/lido/vrf.skey
+fi
+
+. "${CNODE_HOME}"/scripts/env offline
+
+# This should be running in a sidecar entrypoint script
+#if $(printenv | sed 's/^\(.*\)$/export \1/g' > /root/.env); then
+#    echo "generated envs for cron jobs"
+#fi
+#if $(chmod 700 /opt/scripts/cron.sh); then
+#    echo "set permission cron jobs proxy script"
+#fi
+#env > /root/.cron_env
+#if $(crontab /etc/crontab); then
+#    echo "crontab loaded"
+#fi
+
+/cntools/cnode/scripts/cnode.sh

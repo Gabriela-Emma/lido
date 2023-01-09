@@ -1,0 +1,115 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: "{{ $.Chart.Name }}-cardano-producer"
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: "{{ $.Chart.Name }}-cardano-producer"
+    chart: "{{ $.Chart.Name }}-{{ $.Chart.Version }}"
+    role: producer
+    network: {{ .Values.services.cardano.config.CARDANO_NETWORK }}
+    release: {{ .Release.Name }}
+    client: {{.Values.labels.client}}
+    domain: {{.Values.labels.domain}}
+    service: {{.Values.labels.service}}
+spec:
+  selector:
+    matchLabels:
+      app: "{{ $.Chart.Name }}-cardano-producer"
+      chart: "{{ $.Chart.Name }}-{{ $.Chart.Version }}"
+      release: {{ .Release.Name }}
+  replicas: 1
+  updateStrategy:
+    type: RollingUpdate
+  serviceName: "{{ $.Chart.Name }}-cardano-producer-service"
+  template:
+    metadata:
+      labels:
+        app: "{{ $.Chart.Name }}-cardano-producer"
+        role: producer
+        network: {{ .Values.services.cardano.config.CARDANO_NETWORK }}
+        chart: "{{ $.Chart.Name }}-{{ $.Chart.Version }}"
+        release: {{ .Release.Name }}
+        client: {{.Values.labels.client}}
+        domain: {{.Values.labels.domain}}
+        service: {{.Values.labels.service}}
+    spec:
+      volumes:
+        - name: node-ipc
+          emptyDir: {}
+        - name: pool-vars
+          configMap:
+            name: "{{ $.Chart.Name }}-cardano-pool-vars-configmap"
+        - name: node-configurations
+          configMap:
+            name: "{{ $.Chart.Name }}-cardano-configurations-configmap"
+        - name: "{{ $.Chart.Name }}-cardano-producer-pvc"
+          persistentVolumeClaim:
+            claimName: "{{ .Values.namespace }}-data-producer-pvc"
+      containers:
+        - name: "producer"
+          image: "{{ .Values.services.cardano.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ["entrypoint"]
+          args: ["--start", "--staking"]
+          resources:
+            requests:
+              cpu: 1
+              memory: 16384Mi
+            limits:
+              cpu: 7000m
+              memory: 36864Mi
+          env:
+            - name: NODE_RELAY
+              value: "False"
+            - name: NODE_NAME
+              value: "producer"
+            - name: HOST_ADDR
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+          envFrom:
+            - configMapRef:
+                name: "{{ $.Chart.Name }}-cardano-configmap"
+          ports:
+            - name: cproducer
+              containerPort: {{ .Values.services.cardano.config.NODE_PORT }}
+            - name: prometheus
+              containerPort: 12798
+          volumeMounts:
+            - name: node-ipc
+              mountPath: /ipc
+            - name: pool-vars
+              mountPath: /data/pool/lido/VARS
+            - name: node-configurations
+              mountPath: /tmp/config
+              readOnly: false
+            - name: "{{ $.Chart.Name }}-cardano-producer-pvc"
+              mountPath: {{ .Values.services.cardano.persistence.mountPath }}
+              subPath: "lido/{{.Values.services.cardano.config.CARDANO_NETWORK}}/producer/data"
+              readOnly: false
+        - name: ipc
+          image: alpine/socat:1.7.4.4-r0
+          env:
+            - name: PORT
+              value: "30111"
+          command: [
+              "sh",
+              "-c",
+              "socat TCP-LISTEN:${PORT},fork UNIX-CLIENT:/ipc/node.socket,ignoreeof"
+          ]
+          volumeMounts:
+            - name: node-ipc
+              mountPath: /ipc
+          ports:
+            - name: ipc
+              containerPort: 30111
+      tolerations:
+        - key: "tier"
+          operator: "Equal"
+          value: "t0"
+        - key: "tier"
+          operator: "Equal"
+          value: "t2"
+      imagePullSecrets:
+        - name: {{ .Values.image.pullSecret }}

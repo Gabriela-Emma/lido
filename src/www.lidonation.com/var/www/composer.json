@@ -1,0 +1,173 @@
+{
+    "name": "laravel/laravel",
+    "type": "project",
+    "description": "The Laravel Framework.",
+    "keywords": [
+        "framework",
+        "laravel"
+    ],
+    "license": "MIT",
+    "require": {
+        "php": "^7.3|^8.0",
+        "aalaap/faker-youtube": "^2.0",
+        "atymic/twitter": "^3.1",
+        "blade-ui-kit/blade-icons": "^1.2",
+        "blade-ui-kit/blade-ui-kit": "^0.3",
+        "bluemmb/faker-picsum-photos-provider": "^2.0",
+        "brick/math": "^0.9.3",
+        "calebporzio/parental": "^1.2",
+        "cartalyst/stripe-laravel": "^14.0",
+        "chelout/laravel-relationship-events": "^1.5",
+        "darkaonline/l5-swagger": "^8.4",
+        "doctrine/dbal": "^3.4",
+        "ebess/advanced-nova-media-library": "^4.0",
+        "guzzlehttp/guzzle": "^7.3",
+        "halaxa/json-machine": "^1.1",
+        "http-interop/http-factory-guzzle": "^1.2",
+        "inertiajs/inertia-laravel": "^0.6.3",
+        "laraeast/laravel-bootstrap-forms": "^5.2",
+        "laraeast/laravel-locales": "^3.2",
+        "laravel/framework": "^9.40",
+        "laravel/horizon": "^5.9",
+        "laravel/jetstream": "^2.7",
+        "laravel/nova": "^4.17.1",
+        "laravel/sanctum": "^2.15",
+        "laravel/scout": "^9.4",
+        "laravel/socialite": "^5.5",
+        "laravel/telescope": "^4.9",
+        "laravel/tinker": "^2.7",
+        "league/flysystem-aws-s3-v3": "^3.0",
+        "league/html-to-markdown": "^5.1",
+        "livewire/livewire": "^2.10",
+        "maatwebsite/excel": "^3.1",
+        "macsidigital/laravel-zoom": "^5.0",
+        "mcamara/laravel-localization": "^1.7",
+        "mediconesystems/livewire-datatables": "^0.9",
+        "meilisearch/meilisearch-php": "^0.26.1",
+        "michael-rubel/laravel-value-objects": "^4.0",
+        "mtownsend/read-time": "^2.0",
+        "nullpunkt/lz-string-php": "^1.3",
+        "outl1ne/nova-translatable": "^2.1",
+        "psr/simple-cache": "2.0",
+        "rennokki/laravel-eloquent-query-cache": "^3.3",
+        "revolution/laravel-google-sheets": "^6.0",
+        "simplesoftwareio/simple-qrcode": "^4.2",
+        "spatie/browsershot": "^3.52",
+        "spatie/laravel-backup": "^8.1",
+        "spatie/laravel-comments": "^1.2.0",
+        "spatie/laravel-comments-livewire": "^1.0",
+        "spatie/laravel-enum": "^3.0",
+        "spatie/laravel-feed": "^4.1",
+        "spatie/laravel-google-cloud-storage": "^2.0",
+        "spatie/laravel-honeypot": "^4.2",
+        "spatie/laravel-markdown": "^2.2",
+        "spatie/laravel-medialibrary": "^10.3",
+        "spatie/laravel-medialibrary-pro": "^2.0.0",
+        "spatie/laravel-model-info": "^1.4",
+        "spatie/laravel-newsletter": "^4.11",
+        "spatie/laravel-permission": "^5.5",
+        "spatie/laravel-ray": "^1.29",
+        "spatie/laravel-robots-middleware": "^1.3",
+        "spatie/laravel-sitemap": "^6.1",
+        "spatie/laravel-translatable": "^6.0",
+        "staudenmeir/eloquent-has-many-deep": "^1.17",
+        "stevegrunwell/time-constants": "^1.1",
+        "symfony/http-client": "^6.0",
+        "symfony/mailgun-mailer": "^6.0",
+        "timehunter/laravel-google-recaptcha-v3": "^2.5",
+        "tpetry/laravel-postgresql-enhanced": "^0.23.0",
+        "webwizo/laravel-shortcodes": "^1.0",
+        "wire-elements/modal": "^1.0"
+    },
+    "require-dev": {
+        "barryvdh/laravel-ide-helper": "^2.12",
+        "beyondcode/helo-laravel": "^1.4",
+        "davidbadura/faker-markdown-generator": "^1.1",
+        "fakerphp/faker": "^1.9.1",
+        "laravel/pint": "^1.2",
+        "mockery/mockery": "^1.4.4",
+        "nunomaduro/collision": "^6.1",
+        "opcodesio/log-viewer": "^1.2",
+        "phpunit/phpunit": "^9.5.10",
+        "salopot/image-generator": "^1.1",
+        "spatie/laravel-horizon-watcher": "^1.0",
+        "spatie/laravel-ignition": "^1.1"
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true,
+        "gitlab-domains": [
+            "git.raddcreative.io"
+        ]
+    },
+    "extra": {
+        "laravel": {
+            "dont-discover": [
+                "barryvdh/laravel-ide-helper"
+            ]
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/",
+            "Database\\Factories\\": "database/factories/",
+            "Database\\Seeders\\": "database/seeders/",
+            "Database\\Migrations\\": "database/migrations/"
+        },
+        "files": [
+            "app/helpers.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "scripts": {
+        "post-autoload-dump": [
+            "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
+            "@php artisan package:discover --ansi"
+        ],
+        "post-root-package-install": [
+            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+        ],
+        "post-create-project-cmd": [
+            "@php artisan key:generate --ansi"
+        ],
+        "post-update-cmd": [
+            "Illuminate\\Foundation\\ComposerScripts::postUpdate",
+            "@php artisan vendor:publish --force --tag=livewire:assets --ansi",
+            "@php artisan vendor:publish --provider='Spatie\\MediaLibrary\\MediaLibraryServiceProvider' --tag='views'",
+            "@php artisan ide-helper:generate",
+            "@php artisan ide-helper:meta",
+            "php artisan telescope:publish",
+            "@php artisan nova:publish",
+            "@php artisan horizon:publish",
+            "@php artisan vendor:publish --tag=livewire-ui-modal-views",
+            "@php artisan vendor:publish --provider='TimeHunter\\LaravelGoogleReCaptchaV3\\Providers\\GoogleReCaptchaV3ServiceProvider' --tag=googlerecaptchav3.config",
+            "@php artisan vendor:publish --tag=laravel-assets --ansi --force",
+            "php artisan vendor:publish --provider=\"Spatie\\Feed\\FeedServiceProvider\" --tag=\"feed-views\" --force"
+        ]
+    },
+    "repositories": {
+        "spatie/laravel-comments": {
+            "type": "composer",
+            "url": "https://satis.spatie.be"
+        },
+        "nova.laravel.com": {
+            "type": "composer",
+            "url": "https://nova.laravel.com"
+        },
+        "git.raddcreative.io/55": {
+            "type": "composer",
+            "url": "https://git.raddcreative.io/api/v4/group/55/-/packages/composer/packages.json"
+        },
+        "git.raddcreative.io/118": {
+            "type": "composer",
+            "url": "https://git.raddcreative.io/api/v4/group/118/-/packages/composer/packages.json"
+        }
+    }
+}

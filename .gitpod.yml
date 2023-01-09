@@ -1,0 +1,67 @@
+image:
+  file: .gitpod.Dockerfile
+
+tasks:
+  - name: tailscaled
+    command: |
+      sudo tailscaled
+
+  - name: tailscale
+    openMode: split-right
+    command: |
+      sudo -E tailscale up --hostname "gitpod-${GITPOD_WORKSPACE_ID}" \
+                          --authkey "${TAILSCALE_AUTHKEY}"
+
+  - name: Redis Server
+    command: redis-server
+
+  - name: install deps
+    init: |
+      mysql -u root -e "create database php" && git config --global http.sslverify false
+      yarn --cwd ./src/www.lidonation.com/var/www/ install
+      composer install -o --ignore-platform-reqs -d ./src/www.lidonation.com/var/www/
+      mkdir -p ./data/dbsync/datas
+      mkdir -p ./data/dbsync/tmp
+      mkdir -p ./data/postgres/cdbsync/data
+      mkdir -p ./data/relay/data/db
+      mkdir -p ./data/relay/data/ipc
+      mkdir -p ./data/www/data
+      mkdir -p ./data/www/db/data
+      cp ./src/www.lidonation.com/var/www/.env.example ./src/www.lidonation.com/var/www/.env
+      cp ./example.cardano.env ./.cardano.env
+      echo -n cexplorer > src/pool/config/db-sync/secrets/postgres_db
+      echo -n postgres > src/pool/config/db-sync/secrets/postgres_user
+      echo -n v8hlDV0yMAHHlIurYupj > src/pool/config/db-sync/secrets/postgres_password
+    command: git config --global http.sslverify false  && git config pull.ff only --global
+
+experimentalNetwork: true
+
+ports:
+  - port: 1300-8999
+    onOpen: ignore
+  - port: 8888
+    visibility: public 
+  - port: 8880 
+    visibility: public  
+  - port: 3000 
+    visibility: public
+  - port: 3001 
+    visibility: public
+
+vscode:
+  extensions:
+    - bmewburn.vscode-intelephense-client
+    - onecentlin.laravel-blade
+    - onecentlin.laravel5-snippets
+    - aurorabiz.blade-ui-kit
+    - amiralizadeh9480.laravel-extra-intellisense
+    - stef-k.laravel-goto-controller
+    - codingyu.laravel-goto-view
+    - mikestead.dotenv
+    - bradlc.vscode-tailwindcss
+    - heybourn.headwind
+    - oderwat.indent-rainbow
+    - ms-azuretools.vscode-docker
+    - GitLab.gitlab-workflow
+    - donjayamanne.git-extension-pack
+    - adrianwilczynski.alpine-js-intellisense

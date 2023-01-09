@@ -1,0 +1,48 @@
+{
+  "LocalRoots": {
+    "groups": [
+      {
+        "localRoots": {
+          "accessPoints": [
+            {
+              "address": "lidolovelace-cardano-producer-service.lidolovelace.svc.cluster.local",
+              "port": 3011
+            },
+            {
+              "address": "lidolovelace-cardano-relay-1-service.lidolovelace.svc.cluster.local",
+              "port": 3011
+            },
+            {
+              "address": "lidolovelace-cardano-relay-2-service.lidolovelace.svc.cluster.local",
+              "port": 3012
+            }
+          ],
+          "advertise": false
+        },
+        "valency": 1
+      }
+    ]
+  },
+  "PublicRoots": [
+    {
+      "publicRoots": {
+        "accessPoints": [
+          {
+            "address": "relay2.lidonation.com",
+            "port": 3012
+          },
+          {
+            "address": "relays-new.cardano-mainnet.iohk.io",
+            "port": 3001
+          },
+          {
+            "address": "relay1.lidonation.com",
+            "port": 3011
+          }
+        ],
+        "advertise": true
+      }
+    }
+  ],
+  "useLedgerAfterSlot": 322000
+}

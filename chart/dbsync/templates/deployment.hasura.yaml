@@ -1,0 +1,77 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{ $.Chart.Name }}-hasura"
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: "{{ $.Chart.Name }}"
+    service: "{{ $.Chart.Name }}-hasura"
+spec:
+  selector:
+    matchLabels:
+      app: "{{ $.Chart.Name }}"
+      service: "{{ $.Chart.Name }}-hasura"
+  replicas: {{ .Values.services.dbsync.hasura.replicaCount }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: "{{ $.Chart.Name }}"
+        service: "{{ $.Chart.Name }}-hasura"
+    spec:
+      imagePullSecrets:
+        - name: {{ .Values.image.pullSecret }}
+      volumes:
+        - name: dbsync-postgresql
+          secret:
+            defaultMode: 400
+            secretName: "{{ $.Chart.Name }}-secrets"
+            items:
+              - key: postgres_db
+                path: postgres_db
+              - key: postgres_password
+                path: postgres_password
+              - key: postgres_user
+                path: postgres_user
+      containers:
+      - name: app
+        image: "{{ .Values.services.dbsync.hasura.image.repository }}:{{ .Values.services.dbsync.hasura.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        resources:
+          limits:
+            memory: 2048Mi
+            cpu: 400
+          requests:
+            cpu: 50m
+            memory: 128Mi
+        envFrom:
+          - configMapRef:
+              name: "lidolovelace-cardano-configmap"
+        env:
+          - name: OGMIOS_HOST
+            value: "lidolovelace-dbsync-ogmios-service"
+          - name: POSTGRES_HOST
+            value: "lidolovelace-db-sync-db-postgresql"
+          - name: HASURA_GRAPHQL_ENABLE_CONSOLE
+            value: "true"
+          - name: HASURA_GRAPHQL_CORS_DOMAIN
+            value: "http://localhost:9695"
+        ports:
+          - name: hasura
+            containerPort: 8080
+            protocol: TCP
+        volumeMounts:
+          - name: dbsync-postgresql
+            mountPath: /run/secrets
+            readOnly: false
+      tolerations:
+        - key: "tier"
+          operator: "Equal"
+          value: "t0"
+        - key: "tier"
+          operator: "Equal"
+          value: "t2"

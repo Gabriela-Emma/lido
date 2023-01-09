@@ -1,0 +1,23 @@
+body.proposal{
+    article {
+        a, li {
+            @apply break-all;
+        }
+    }
+}
+
+body.proposal #discussions {
+    @apply w-full;
+
+    p {
+        @apply break-normal;
+    }
+
+    a {
+        @apply break-all;
+    }
+}
+
+.proposal-drip {
+    --plyr-badge-background: #FFF;
+}

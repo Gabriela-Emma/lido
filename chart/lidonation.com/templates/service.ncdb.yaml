@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: "{{ $.Chart.Name }}-ncdb-service"
+  namespace: {{ .Values.namespace }}
+  labels:
+    service: "{{ $.Chart.Name }}-ncdb"
+spec:
+  ports:
+    - port: 8080
+      name: ncdb
+      targetPort: ncdb
+      protocol: TCP
+  selector:
+    service: "{{ $.Chart.Name }}-ncdb"

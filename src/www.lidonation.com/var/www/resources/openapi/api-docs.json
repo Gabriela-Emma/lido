@@ -1,0 +1,434 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Catalyst Explorer API",
+        "description": "Cardano Project Catalyst Explorer openapi served by LIDO Nation",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "/api/catalyst-explorer"
+        }
+    ],
+    "paths": {
+        "/funds": {
+            "get": {
+                "tags": [
+                    "fund"
+                ],
+                "summary": "Get all funds",
+                "description": "Returns all funds",
+                "operationId": "funds",
+                "responses": {
+                    "200": {
+                        "description": "successful"
+                    }
+                }
+            }
+        },
+        "/funds/{fund_id}": {
+            "get": {
+                "tags": [
+                    "fund"
+                ],
+                "summary": "Get fund by id",
+                "description": "Returns a single fund",
+                "operationId": "fund",
+                "parameters": [
+                    {
+                        "name": "fund_id",
+                        "in": "path",
+                        "description": "id of fund to return",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful"
+                    },
+                    "404": {
+                        "description": "Fund not found"
+                    }
+                }
+            }
+        },
+        "/proposals/{proposal_id}": {
+            "get": {
+                "tags": [
+                    "proposal"
+                ],
+                "summary": "Get proposal by id",
+                "description": "Returns a single proposal",
+                "operationId": "proposal",
+                "parameters": [
+                    {
+                        "name": "proposal_id",
+                        "in": "path",
+                        "description": "id of proposal to return",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful"
+                    },
+                    "404": {
+                        "description": "Proposal not found"
+                    }
+                }
+            }
+        },
+        "/proposals": {
+            "get": {
+                "tags": [
+                    "proposal"
+                ],
+                "summary": "Get all proposals",
+                "description": "Returns all proposals with filtering abilities",
+                "operationId": "proposals",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "query",
+                        "description": "<p>Filters content by user_id<p>",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "challenge_id",
+                        "in": "query",
+                        "description": "<p>Filter content by challenge_id<p>",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "fund_id",
+                        "in": "query",
+                        "description": "<p>Filter content by fund_id<p>",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "<p> Filters content by title<p>",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "<p>Number of content to be returned per page url ranging from 1 to 60<p>",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 24,
+                            "maximum": 60,
+                            "minimum": 1
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "<p>Page number to be returned from content pages which is relative to the number of content to be returned and per_page setting as per the request<p>",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/proposals"
+                                        },
+                                        "links": {
+                                            "$ref": "#/components/schemas/proposals_links"
+                                        },
+                                        "meta": {
+                                            "$ref": "#/components/schemas/proposals_meta"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status_code": {
+                                            "type": "string",
+                                            "example": 404
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Detailed message of errors, when available"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status_code": {
+                                            "type": "string",
+                                            "example": 404
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Detailed message of errors, when available"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "proposal": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": "687"
+                    },
+                    "user_id": {
+                        "type": "integer",
+                        "example": "543"
+                    },
+                    "challenge_id": {
+                        "type": "integer",
+                        "example": "90"
+                    },
+                    "fund_id": {
+                        "type": "integer",
+                        "example": "97"
+                    },
+                    "title": {
+                        "type": "string",
+                        "example": "DeFi and Microlending for Africa"
+                    },
+                    "website": {
+                        "type": "string",
+                        "example": "mfa.com"
+                    },
+                    "link": {
+                        "type": "string",
+                        "example": "https://www.lidonation.com/en/proposals/cardano-blockchain-lab-in-kenya-f7"
+                    },
+                    "embedded_uris": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "example": "['https://mlabs.city', 'https://github.com/zygomeb']"
+                    },
+                    "ideascale_link": {
+                        "type": "string",
+                        "example": "https://cardano.ideascale.com/a/dtd/369449-48080"
+                    },
+                    "ideascale_user": {
+                        "type": "string",
+                        "example": "lidonation"
+                    },
+                    "ideascale_id": {
+                        "type": "integer",
+                        "example": "383975"
+                    },
+                    "amount_requested": {
+                        "type": "integer",
+                        "example": "25000"
+                    },
+                    "amount_received": {
+                        "type": "integer",
+                        "example": "12000"
+                    },
+                    "project_status": {
+                        "type": "string",
+                        "example": "in_progress"
+                    },
+                    "funding_status": {
+                        "type": "string",
+                        "example": "funded"
+                    },
+                    "yes_votes_count": {
+                        "type": "integer",
+                        "example": "42654779"
+                    },
+                    "no_votes_count": {
+                        "type": "integer",
+                        "example": "20335604"
+                    },
+                    "average_rating": {
+                        "type": "number",
+                        "format": "float",
+                        "example": "4.49"
+                    },
+                    "unique_wallets": {
+                        "type": "integer",
+                        "example": "264"
+                    },
+                    "type": {
+                        "type": "string",
+                        "example": "challenge"
+                    },
+                    "problem": {
+                        "type": "string",
+                        "example": "How can we enable the creation of micro-lending and Defi dApp solutions that fit the African setting?"
+                    },
+                    "solution": {
+                        "type": "string",
+                        "example": "Extend existing NGO community student hub to add a Cardano Blockchain Lab with dedicated computers, developer mentorship, & community ed."
+                    },
+                    "experience": {
+                        "type": "string",
+                        "example": "14+ Yrs Software & Cloud Engring, Blockchain development, business consulting, world languages, technical writing, teaching, mentored 3 ft ."
+                    },
+                    "tags": {
+                        "type": "array",
+                        "items": {
+                            "properties": {
+                                "id": {
+                                    "type": "integer",
+                                    "example": "17"
+                                },
+                                "slug": {
+                                    "type": "string",
+                                    "example": "defi"
+                                },
+                                "title": {
+                                    "type": "string",
+                                    "example": "DeFi"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "proposals": {
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/proposal"
+                }
+            },
+            "proposals_links": {
+                "properties": {
+                    "first": {
+                        "type": "string",
+                        "example": "http://lidonatio.com/api/catalyst-explorer/proposals?page=1"
+                    },
+                    "last": {
+                        "type": "string",
+                        "example": "http://lidonatio.com/api/catalyst-explorer/proposals?page=21"
+                    },
+                    "prev": {
+                        "type": "string",
+                        "example": "null"
+                    },
+                    "next": {
+                        "type": "string",
+                        "example": "http://lidonatio.com/api/catalyst-explorer/proposals?page=2"
+                    }
+                },
+                "type": "object"
+            },
+            "proposals_meta": {
+                "properties": {
+                    "current_page": {
+                        "type": "integer",
+                        "example": 3
+                    },
+                    "from": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "last_page": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "links": {
+                        "$ref": "#/components/schemas/proposals_meta_links_array"
+                    },
+                    "path": {
+                        "type": "string",
+                        "example": "http://localhost:8880/api/catalyst-explorer/proposals"
+                    },
+                    "per_page": {
+                        "type": "integer",
+                        "example": 24
+                    },
+                    "to": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "total": {
+                        "type": "integer",
+                        "example": 1
+                    }
+                },
+                "type": "object"
+            },
+            "proposals_meta_links_array": {
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/proposals_meta_links_array_object"
+                }
+            },
+            "proposals_meta_links_array_object": {
+                "properties": {
+                    "url": {
+                        "type": "string",
+                        "example": "http://localhost:8880/api/catalyst-explorer/proposals?page=1"
+                    },
+                    "label": {
+                        "type": "string",
+                        "example": "1"
+                    },
+                    "active": {
+                        "type": "boolean",
+                        "example": false
+                    }
+                },
+                "type": "object"
+            }
+        }
+    }
+}

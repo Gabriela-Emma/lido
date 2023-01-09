@@ -1,0 +1,17 @@
+.idea
+.DS_Store
+.env
+node_modules
+temp
+wiki
+package-lock.json
+src/config
+src/pool/config/db-sync/secrets/*
+!src/pool/config/db-sync/secrets/.gitkeep
+
+docker_volumes/*
+!docker_volumes/.gitkeep
+
+# cntools
+logs/archive/
+!.gitkeep

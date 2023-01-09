@@ -1,0 +1,4 @@
+name: lidolovelace-submit-tx
+apiVersion: v1
+version: "0.0.1"
+description: 'tx submit api'

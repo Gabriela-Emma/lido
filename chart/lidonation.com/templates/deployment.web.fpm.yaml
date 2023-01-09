@@ -1,0 +1,163 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{ $.Chart.Name }}-fpm"
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: "{{ $.Chart.Name }}"
+    service: "{{ $.Chart.Name }}-fpm"
+spec:
+  selector:
+    matchLabels:
+      app: "{{ $.Chart.Name }}"
+      service: "{{ $.Chart.Name }}-fpm"
+  replicas: {{ .Values.services.web.replicaCount }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 2
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: "{{ $.Chart.Name }}"
+        service: "{{ $.Chart.Name }}-fpm"
+    spec:
+      imagePullSecrets:
+        - name: {{ .Values.image.pullSecret }}
+      containers:
+      - name: app
+        image: "{{ .Values.services.web.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        command: ["/bin/bash", "-c"]
+        args:
+          - |
+            #!/bin/bash
+            set -xe
+
+            until $(nc -zv $POSTGRESQL_WEB_DB_HOST 5432 &>/dev/null); do
+              sleep 2s
+            done
+
+            # chown -R nginx:nginx /var/www;
+            # find ${APP_DIR} -type d -print0|xargs -0 chmod 755; find ${APP_DIR} -type f -print0|xargs -0 chmod 644;
+
+            if [ -d "/tmp/gcloud" ]; then
+              mkdir -p /gcloud
+              cp /tmp/gcloud/* /gcloud
+              find /gcloud -type d -print0|xargs -0 chmod 755; find /gcloud -type f -print0|xargs -0 chmod 644;
+            fi
+
+            php artisan package:discover
+
+            php artisan view:clear
+            php artisan storage:link
+
+            php artisan migrate --force --isolated
+
+            # php artisan ln:sitemap-generate --no-interaction
+
+            # php artisan optimize;
+            # php artisan route:trans:cache;
+            php artisan route:clear;
+            php artisan event:cache;
+
+            php-fpm --allow-to-run-as-root -y /etc/php-fpm/php-fpm.conf
+        lifecycle:
+          preStop:
+            exec:
+              command: ["/bin/sleep","5"]
+        resources:
+          limits:
+            memory: 8192Mi
+            cpu: 1
+          requests:
+            cpu: 120m
+            memory: 512Mi
+        envFrom:
+          - configMapRef:
+              name: "{{ $.Chart.Name }}-configmap"
+          - secretRef:
+              name: "{{ $.Chart.Name }}-secrets"
+        env:
+          - name: CONTAINER_ROLE
+            value: app
+          - name: PHP_MEMORY_LIMIT
+            value: 2048M
+          - name: PHP_DISABLED_FUNCTION
+            value: "exec, passthru, proc_open, proc_close, shell_exec, show_source, symlink, system"
+        ports:
+          - name: fpm
+            containerPort: 9000
+            protocol: TCP
+        volumeMounts:
+          - name: node-ipc
+            mountPath: /ipc
+            readOnly: false
+          - name: gcloud-service-account
+            mountPath: /tmp/gcloud
+            readOnly: false
+          - name: "{{ $.Chart.Name }}-storage-web-volume"
+            mountPath: {{ .Values.services.web.persistence.mountPath }}
+            subPath: "lido/{{.Values.services.cardano.config.CARDANO_NETWORK}}/web/storage"
+            readOnly: false
+          - name: "{{ $.Chart.Name }}-storage-web-volume"
+            mountPath: /data
+            subPath: "lido/{{.Values.services.cardano.config.CARDANO_NETWORK}}/web/data"
+            readOnly: false
+        livenessProbe:
+          exec:
+            command:
+              - /opt/php-fpm-healthcheck
+          initialDelaySeconds: 90
+          failureThreshold: 5
+          timeoutSeconds: 60
+          periodSeconds: 10
+        readinessProbe:
+          exec:
+            command:
+              - /opt/php-fpm-healthcheck
+          initialDelaySeconds: 60
+          timeoutSeconds: 120
+          successThreshold: 1
+          failureThreshold: 5
+      - name: ipc
+        image: alpine/socat:1.7.4.4-r0
+        env:
+        - name: CARDANO_NODE_SOCKET_TCP_HOST
+          value: "lidolovelace-cardano-relay-1-service"
+        - name: CARDANO_NODE_SOCKET_TCP_PORT
+          value: "30111"
+        - name: SOCAT_TIMEOUT
+          value: "3600"
+        command: [
+            "sh",
+            "-c",
+            "socat UNIX-LISTEN:/ipc/node.socket,fork TCP:${CARDANO_NODE_SOCKET_TCP_HOST}:${CARDANO_NODE_SOCKET_TCP_PORT},ignoreeof"
+        ]
+#        command: [
+#            "sh",
+#            "-c",
+#            "socat -d -d -d -d -v UNIX-LISTEN:/ipc/node.socket TCP:${CARDANO_NODE_SOCKET_TCP_HOST}:${CARDANO_NODE_SOCKET_TCP_PORT},ignoreeof,keepalive,keepidle=10,keepintvl=10,keepcnt=100"
+#        ]
+        volumeMounts:
+        - mountPath: /ipc
+          name: node-ipc
+          readOnly: false
+      volumes:
+        - name: gcloud-service-account
+          secret:
+            defaultMode: 0400
+            secretName: "{{ $.Chart.Name }}-gcloud-service-account"
+        - name: node-ipc
+          emptyDir: {}
+        - name: "{{ $.Chart.Name }}-storage-web-volume"
+          persistentVolumeClaim:
+            claimName: "{{ .Values.namespace }}-storage-web-pvc"
+      tolerations:
+        - key: "tier"
+          operator: "Equal"
+          value: "t0"
+        - key: "tier"
+          operator: "Equal"
+          value: "t2"

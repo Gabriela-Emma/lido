@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: "{{ .Values.namespace }}-search-pv"
+  namespace: {{ .Values.namespace }}
+spec:
+  storageClassName: ""
+  claimRef:
+    name: "{{ .Values.namespace }}-search-pvc"
+    namespace: {{ .Values.namespace }}
+  capacity:
+    storage: {{ .Values.services.web.persistence.size }}
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  nfs:
+    server: nfs-server-svc.atlas-raddcreative-io.svc.cluster.local
+    path: "/"
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: "{{ .Values.namespace }}-search-pvc"
+  namespace: {{ .Values.namespace }}
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: ""
+  volumeName: "{{ .Values.namespace }}-search-pv"
+  resources:
+    requests:
+      storage: 20Gi

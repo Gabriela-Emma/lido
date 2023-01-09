@@ -1,0 +1,383 @@
+certmanager:
+  issuer: letsencrypt-prod-issuer
+  email: webmaster@lidonation.com
+  server: https://acme-staging-v02.api.letsencrypt.org/directory
+
+GOOGLE_CLOUD_KEY_FILE:
+
+namespace: lidolovelace
+
+network: mainnet
+
+image:
+  pullSecret: 'deploy-token-lidonation'
+  pullPolicy: IfNotPresent
+  tag: latest
+
+labels:
+  client: "LIDOLOVELACE"
+  domain: lidonation.com
+  service: internal
+
+DEPLOY_INFRA: False
+
+services:
+  elasticsearch:
+    version: 7.9.3
+    replicas: 1
+    allow_mmap: true
+    realm:
+      fuffyUser:
+      user:
+      # [required]
+      passwordSha256:
+      # [required]
+      config: {
+        ES_JAVA_OPTS: '-Xms512m -Xmx512m',
+      }
+    resources:
+      requests:
+        memory: 1Gi
+        cpu: 100
+      limits:
+        memory: 4Gi
+        cpu: 1
+    storage:
+      size: 10Gi
+      storageClass: ssd
+  kibana:
+    name: kibana
+    version: 7.9.3
+  redis:
+    secret:
+      REDIS_PASSWORD:
+  web_db:
+    persistence:
+      enabled: true
+      size: 8Gi
+    secret:
+      POSTGRESQL_DB: lidoweb
+      POSTGRESQL_USERNAME: lnation
+      POSTGRESQL_PASSWORD:
+      POSTGRESQL_POSTGRES_PASSWORD:
+  cncli:
+    image:
+      repository: registry.raddcreative.io/lidonation/lidonation/cncli
+  queue:
+    replicaCount: 2
+  dbsync:
+    tier: "t2"
+    restore_snapshot: ''
+    db:
+      persistence:
+        enabled: true
+        size: 20Gi
+      secret:
+        POSTGRESQL_DB:
+        POSTGRESQL_USERNAME:
+        POSTGRESQL_PASSWORD:
+        POSTGRESQL_POSTGRES_PASSWORD:
+    image:
+      repository: registry.raddcreative.io/lidonation/lidonation/cardano-db-sync
+    ogmios:
+      replicaCount: 1
+      image:
+        repository: cardanosolutions/ogmios
+        tag: latest-preview
+    hasura:
+      replicaCount: 1
+      image:
+        repository: inputoutput/cardano-graphql-hasura
+        tag: 7.0.2
+      ingress:
+        controller:
+          headers:
+            HTTPS: "on"
+        annotations: {
+          kubernetes.io/ingress.class: nginx,
+          nginx.ingress.kubernetes.io/ssl-redirect: "true",
+          nginx.ingress.kubernetes.io/from-to-www-redirect: "false",
+          cert-manager.io/cluster-issuer: letsencrypt-prod-issuer
+        }
+        host: graphql.preview.lidonation.com
+        tls:
+          secretName: graphql-lidonation-com-tls
+    graphql:
+      replicaCount: 1
+      image:
+        repository: inputoutput/cardano-graphql
+        tag: master
+      ingress:
+        controller:
+          headers:
+            HTTPS: "on"
+        annotations: {
+          kubernetes.io/ingress.class: nginx,
+          nginx.ingress.kubernetes.io/ssl-redirect: "true",
+          nginx.ingress.kubernetes.io/from-to-www-redirect: "false",
+          cert-manager.io/cluster-issuer: letsencrypt-prod-issuer
+        }
+        host: graphql.preview.lidonation.com
+        tls:
+          secretName: graphql-lidonation-com-tls
+  ncdb:
+    redisUrl:
+    persistence:
+      size: 2Gi
+      accessMode: ReadWriteMany
+      subPath: "data"
+      mountPath: "/usr/app/data"
+    ingress:
+      controller:
+        headers:
+          HTTPS: "on"
+      annotations: {
+        kubernetes.io/ingress.class: nginx,
+        nginx.ingress.kubernetes.io/ssl-redirect: "true",
+        nginx.ingress.kubernetes.io/from-to-www-redirect: "false",
+        cert-manager.io/cluster-issuer: letsencrypt-prod-issuer
+      }
+      host: ncdb.lidonation.com
+      tls:
+        secretName: ncdb-lidonation-com-tls
+  lucid:
+    image:
+      repository: registry.raddcreative.io/lidonation/lidonation/lucid.lidonation.com
+    replicaCount: 1
+    secret:
+      blockfront_project_id:
+  web:
+    image:
+      repository: registry.raddcreative.io/lidonation/lidonation/www.lidonation.com
+    ingress:
+      controller:
+        headers:
+          HTTPS: "on"
+      annotations: {
+        kubernetes.io/ingress.class: nginx,
+        nginx.ingress.kubernetes.io/ssl-redirect: "true",
+        ingress.kubernetes.io/rewrite-target: /,
+        nginx.ingress.kubernetes.io/from-to-www-redirect: "true",
+        cert-manager.io/cluster-issuer: letsencrypt-prod-issuer
+      }
+      hosts:
+        - www.lidonation.com
+      tls:
+        - secretName: lidonation-com-tls
+          hosts:
+            - www.lidonation.com
+            - lidonation.com
+    replicaCount: 2
+    config: {
+      APP_NAME: 'Lido Nation',
+      APP_ENV: production,
+      APP_DEBUG: "false",
+      APP_DIR: "/var/www",
+      APP_LOG_LEVEL: "warning",
+      APP_URL: "https://www.lidonation.com",
+      ANALYTICS_ID: "",
+      BLOCKFROST_PROJECT_ID: "",
+      CARDANO_GRAPHQL_ENDPOINT: 'http://lidolovelace-dbsync-hasura-service:8080/v1/graphql',
+      CARDANO_NETWORK_ARGUMENT: '--testnet-magic 2',
+      CARDANO_NODE_SOCKET_PATH: "/ipc/node.socket",
+      CARDANO_POOL_HASH: 'pool1kks6sgxvx7p6fe3hhnne68xzwa9jg8qgy50yt3w3lrelvns7390',
+      CARDANO_PHUFFY_CAUSE_PAYMENT_ADDRESS: '',
+      CARDANO_LUCID_ENDPOINT: 'http://lidolovelace-lucid-service',
+      CARDANO_PHUFFY_TREASURER_ADDRESS: '',
+      CARDANO_PHUFFY_GOVERNOR_ADDRESS: '',
+      CARDANO_PHUFFY_ESCROW_ADDRESS: '',
+      CARDANO_PHUFFY_COIN_POLICY_ID: '',
+      CARDANO_BLOCK_EXPLORER: '',
+      CARDANO_WALLET_PORT: 8090,
+      CARDANO_WALLET_SERVICE: 'cardano-wallet-service',
+      CATALYST_REPORTING_SPREADSHEET_ID: '',
+
+      CARDANO_MINT_PAYMENT_ADDRESS: '',
+      CARDANO_MINT_POLICY_ID: '',
+      CARDANO_LIDO_DELEGATE_POLICY_ID: '',
+      CARDANO_PHUFFY_VOTER_POLICY_ID: '',
+
+      CACHE_DRIVER: redis,
+      CLOUDFLARE_TOKEN: "",
+      COIN_MARKET_CAP_API_KEY: "",
+
+
+      DEPLOYMENT: production,
+      DB_CONNECTION: pgsqlWeb,
+      DB_SYNC_DB_CONNECTION: pgsqlDbSync,
+
+      FACEBOOK_APP_ID: '',
+
+      GOOGLE_APPLICATION_NAME: 'LIDO Nation Site',
+      GOOGLE_CLIENT_ID: '',
+      GOOGLE_CLIENT_SECRET: '',
+      GOOGLE_REDIRECT_URL: 'https://lidonation.com/login/google/callback',
+      GOOGLE_CLOUD_KEY_FILE: '/gcloud/gcloud-service-account.json',
+      GOOGLE_APPLICATION_CREDENTIALS: '/gcloud/gcloud-service-account.json',
+      GOOGLE_SERVICE_ACCOUNT_JSON_LOCATION: '/data/catalyst-service-account.json',
+      GOOGLE_CLOUD_STORAGE_BUCKET: 'test.lidonation.com',
+      GOOGLE_CLOUD_STORAGE_BUCKET_BACKUPS: 'backups.www.lidonation.com',
+
+      POSTGRESQL_DB_SYNC_DB_HOST: lidolovelace-db-sync-db-postgresql,
+      POSTGRESQL_DB_SYNC_DB: cexplorer,
+      POSTGRESQL_DB_SYNC_USER: postgres,
+      POSTGRESQL_WEB_DB_HOST: lidolovelace-web-db-postgresql,
+      POSTGRESQL_WEB_DB: lidoweb,
+      POSTGRESQL_WEB_USER: lnation,
+
+      KUBERNETES_NAMESPACE: lidonation,
+
+      LOG_CHANNEL: stack,
+
+      MAIL_DRIVER: smtp,
+      MAIL_HOST: smtp.mailtrap.io,
+      MAIL_PORT: 2525,
+
+      MAIL_FROM_ADDRESS: 'team@lidonation.com',
+      MAIL_FROM_NAME: 'Lido Nation',
+      MEDIA_DISK: 'gcs',
+
+      MAILCHIMP_APIKEY: '',
+      MAILGUN_SECRET: '',
+      MAILGUN_DOMAIN: 'lidonation.com',
+      MEILISEARCH_HOST: 'http://lidolovelace-web-search-service:7700',
+      MEILI_ENV: production,
+
+      PHP_OPCACHE_ENABLE: 1,
+      PHP_OPCACHE_SAVE_COMMENTS: 1,
+      PHP_OPCACHE_VALIDATE_TIMESTAMPS: 0,
+      PHP_MEMORY_LIMIT: 2048M,
+      PHP_DISABLE_FUNCTIONS: "passthru,shell_exec,show_source,symlink,system",
+
+      PUSHER_CLUSTER:  us2,
+
+      QUEUE_DRIVER: redis,
+      QUEUE_CONNECTION: redis,
+      QUEUE_NAMES: "default",
+
+      REDIS_PREFIX: "lido",
+
+      REDIS_HOST: redis-master,
+      REDIS_PORT: 6379,
+
+      RESTORE_DB: true,
+      RUN_SCHEDULER: true,
+
+      SCOUT_PREFIX: ln__,
+
+      SET_PERMISSIONS: false,
+
+      SESSION_DRIVER: redis,
+      SESSION_CONNECTION: session,
+      STRIPE_MODEL: App\User,
+      STRIPE_KEY: "",
+
+      STRIPE_SECRET: "",
+
+      TELESCOPE_ENABLED: "false",
+      TWITTER_API_VERSION: 2,
+      TWITTER_API_USER_ID: 1334373952584638465,
+
+      ZOOM_DEFAULT_MEETING_USER: ''
+    }
+    secret:
+      app_key:
+      DEEPL_AUTH_KEY:      
+      MAIL_PASSWORD: 'password'
+      MAIL_USERNAME: 'username'
+      RECAPTCHA_V3_SECRET_KEY:
+      RECAPTCHA_V3_SITE_KEY:
+      STRIPE_SK:
+      STRIPE_PK:
+      TWITTER_CONSUMER_SECRET:
+      TWITTER_CONSUMER_KEY:
+      TWITTER_ACCESS_TOKEN_SECRET:
+      TWITTER_ACCESS_TOKEN:
+      TWITTER_BEARER_TOKEN:
+      TWITTER_OAUTH_CLIENT_ID:
+      TWITTER_OAUTH_CLIENT_SECRET:
+      TWITTER_OAUTH_CALLBACK_URL:
+      zoom_api_key:
+      zoom_api_secret:
+    persistence:
+      size: 2Gi
+      storageClass: ssd
+      accessMode: ReadWriteMany
+      subPath: "storage"
+      mountPath: "/var/www/storage"
+  dbsync_db:
+    persistence:
+      enabled: true
+      size: 20Gi
+    secret:
+      POSTGRESQL_DB: lidoweb
+      POSTGRESQL_USERNAME: lnation
+      POSTGRESQL_PASSWORD:
+      POSTGRESQL_POSTGRES_PASSWORD:
+  submitApi:
+    image:
+      repository:
+      tag:
+    networkArg: '--testnet-magic 2'
+    ingress:
+      controller:
+        headers:
+          HTTPS: "on"
+      annotations: {
+        kubernetes.io/ingress.class: nginx,
+        nginx.ingress.kubernetes.io/ssl-redirect: "true",
+        nginx.ingress.kubernetes.io/from-to-www-redirect: "false",
+        cert-manager.io/cluster-issuer: letsencrypt-prod-issuer
+      }
+      host: tx.lidonation.com
+      tls:
+        secretName: tx-lidonation-com-tls
+  cardano:
+    replicaCount: 2
+    tier: "t0"
+    config: {
+      AUTO_TOPOLOGY: "False",
+      CARDANO_NETWORK: "preview",
+      CNODE_HOME: '/cntools/cnode',
+      CARDANO_NODE_SOCKET_PATH: "/ipc/node.socket",
+      EKG_PORT: 12788,
+      HARDFORK_EPOCH: 1,
+      PUBLIC_IP: "104.198.217.123",
+      KUBERNETES_NAMESPACE: lidonation,
+      METADATA_URL: "https://test.lidonation.com/metadata.json",
+      NODE_PORT: 3010,
+      RELAY2_PORT: 3012,
+      SUBMIT_TX_PORT: 3030,
+      NODE_PATH: "/data",
+      NODE_NAME: "relay",
+      NODE_RELAY: "true",
+      NETWORK_ARGUMENT: "",
+      POOL_PLEDGE: '41000000000',
+      POOL_COST: '340000000',
+      POOL_ID: "",
+      STAKE_ADDR: "",
+      POOL_MARGIN: "0.02",
+      PAYMENT_ADDR: "",
+      PROMETHEUS_HOST: "0.0.0.0",
+      PROMETHEUS_PORT: 12798,
+      PUBLIC_RELAY_IP: "PUBLIC",
+      RESOLVE_HOSTNAMES: "False",
+      REPLACE_EXISTING_CONFIG: "False",
+      WAIT_FOR_SYNC: "False",
+      WALLET: "ken"
+    }
+    image:
+      repository: registry.raddcreative.io/lidonation/lidonation/cardano
+    persistence:
+      size: 40Gi
+      storageClass: ssd
+      accessMode: ReadWriteOnce
+      subPath: "db"
+      mountPath: "/data"
+  tolerations:
+    - key: "tier"
+      operator: "Equal"
+      value: "t2"
+    - key: "tier"
+      operator: "Equal"
+      value: "t0"

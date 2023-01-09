@@ -1,0 +1,109 @@
+body.phuffycoin header#header .brand-link > span:last-of-type,
+body.phuffycoin-roadmap header#header .brand-link > span:last-of-type {
+    @apply text-white md:text-teal-400;
+}
+body.phuffycoin header#header .brand-logo-wrapper .brand-logo-link img:first-of-type {
+    @apply block;
+}
+body.phuffycoin header#header .brand-logo-wrapper .brand-logo-link img:last-of-type {
+    @apply hidden;
+}
+body.phuffycoin-roadmap section h1, body.phuffycoin-roadmap section h2, body.phuffycoin-roadmap section h3,
+body.phuffycoin-roadmap section h4, body.phuffycoin-roadmap section h5, body.phuffycoin-roadmap section h6,
+body.phuffycoin section h1, body.phuffycoin section h2, body.phuffycoin section h3,
+body.phuffycoin section h4, body.phuffycoin section h5, body.phuffycoin section h6 {
+    @apply font-title;
+}
+
+body.phuffycoin #top-blob,
+body.phuffycoin-roadmap #top-blob{
+    display: none;
+}
+
+body.phuffycoin-roadmap #header,
+body.phuffycoin-roadmap footer,
+body.phuffycoin #header,
+body.phuffycoin footer {
+    @apply bg-primary-1000;
+}
+body.phuffycoin-roadmap #header .login-btn,
+body.phuffycoin-roadmap #header .portal-btn,
+body.phuffycoin #header .login-btn,
+body.phuffycoin #header .portal-btn{
+    @apply font-extrabold text-black bg-teal-600 focus:animate-pulse;
+}
+body.phuffycoin-roadmap footer .pool-graphic > div,
+body.phuffycoin footer .pool-graphic > div {
+    @apply text-primary-1000;
+}
+
+body.phuffycoin .section-2 {
+    @apply bg-left-bottom bg-no-repeat bg-contain bg-blend-luminosity bg-teal-800;
+    background-image: url('/img/bleu.png');
+}
+
+body.phuffycoin .section-3 {
+    @apply bg-left-bottom bg-no-repeat bg-auto;
+    background-image: url('/img/mint-ribbons.png');
+}
+body.phuffycoin #current-campaign .phuffy-causes ul li .added{
+    @apply text-phuffy2-300;
+}
+body.phuffycoin #current-campaign .phuffy-causes ul li .votes{
+    @apply font-semibold text-phuffy-600;
+}
+
+body.phuffycoin #current-campaign .phuffy-causes ul li .title{
+    @apply text-2xl text-gray-800;
+}
+
+body.phuffycoin #current-campaign .phuffy-causes ul li a {
+    @apply  hover:text-phuffy-500;
+}
+
+body.phuffycoin dl a {
+    @apply font-semibold text-teal-600 hover:text-phuffy-600;
+}
+
+/* PHUFFY COIN: Roadmap */
+body.phuffycoin-roadmap .section-1 {
+    @apply bg-right bg-no-repeat bg-contain bg-primary-700;
+    background-image: url('/img/galaxy.png');
+}
+body.phuffycoin-roadmap .section-2 {
+    @apply bg-left-top bg-no-repeat bg-cover bg-primary-900;
+    background-image: url('/img/night-sky-mountain.jpeg');
+
+    // background-image: url('/img/rocket-launch.jpeg');
+}
+body.phuffycoin-roadmap .section-3 {
+    @apply bg-top bg-no-repeat bg-cover bg-blend-soft-light bg-primary-900;
+    background-image: url('/img/blue-stratosphere.png');
+    // background-image: url('/img/stratosphere.jpeg');
+}
+
+body.phuffycoin-roadmap .section-4 {
+    @apply bg-left-top bg-no-repeat bg-cover bg-primary-700;
+    background-image: url('/img/rocket-launch.jpeg');
+    // background-image: url('/img/star-cluster.png');
+}
+
+body.phuffycoin-roadmap .section-5,
+body.phuffycoin .section-7 {
+    @apply bg-right bg-contain bg-blend-overlay bg-primary-1000;
+    background-image: url('/img/star-cluster-closeup.png');
+}
+
+body.phuffycoin-roadmap .section-6,
+body.phuffycoin .section-6 {
+    @apply bg-fixed bg-right bg-no-repeat bg-cover bg-blend-soft-light bg-primary-1000;
+    background-image: url('/img/spiral-galaxy.jpeg');
+}
+
+body.phuffycoin-roadmap footer .pool-graphic > div{
+    @apply text-primary-1000;
+}
+body.phuffycoin-roadmap #header,
+body.phuffycoin-roadmap footer {
+    @apply bg-primary-1000;
+}

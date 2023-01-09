@@ -1,0 +1,91 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{ $.Chart.Name }}-cncli"
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: "{{ $.Chart.Name }}"
+    service: "{{ $.Chart.Name }}-cncli"
+spec:
+  selector:
+    matchLabels:
+      app: "{{ $.Chart.Name }}"
+      service: "{{ $.Chart.Name }}-cncli"
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: "{{ $.Chart.Name }}"
+        service: "{{ $.Chart.Name }}-cncli"
+    spec:
+      imagePullSecrets:
+        - name: {{ .Values.image.pullSecret }}
+      volumes:
+        - name: config
+          emptyDir: {}
+        - name: node-ipc
+          emptyDir: {}
+        - name: "{{ $.Chart.Name }}-cardano-cncli-pv"
+          persistentVolumeClaim:
+            claimName: "{{ .Values.namespace }}-data-cncli-pvc"
+      containers:
+      - name: app
+        image: "{{ .Values.services.cncli.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        args:
+          - |
+            #!/bin/bash
+            set -xe
+            
+            /usr/local/bin/cncli sync --host lidolovelace-cardano-producer-service --port ${CARDANO_NODE_PORT} --db /data/cncli.db
+        resources:
+          limits:
+            memory: 2048Mi
+            cpu: 300
+          requests:
+            cpu: 100m
+            memory: 256Mi
+        env:
+          - name: CARDANO_NODE_PORT
+            value: "{{ .Values.services.cardano.config.NODE_PORT }}"
+        volumeMounts:
+          - name: "{{ $.Chart.Name }}-cardano-cncli-pv"
+            mountPath: /data
+            subPath: "lido/{{.Values.services.cardano.config.CARDANO_NETWORK}}/cncli/data"
+            readOnly: false
+          - name: node-ipc
+            mountPath: /ipc
+            readOnly: false
+      - name: ipc
+        image: alpine/socat:1.7.4.4-r0
+        env:
+        - name: CARDANO_NODE_SOCKET_TCP_HOST
+          value: "lidolovelace-cardano-producer-service"
+        - name: CARDANO_NODE_SOCKET_TCP_PORT
+          value: "30111"
+        - name: SOCAT_TIMEOUT
+          value: "3600"
+        command: [
+            "sh",
+            "-c",
+            "socat UNIX-LISTEN:/ipc/node.socket,fork TCP:${CARDANO_NODE_SOCKET_TCP_HOST}:${CARDANO_NODE_SOCKET_TCP_PORT},ignoreeof"
+        ]
+        volumeMounts:
+        - mountPath: /ipc
+          name: node-ipc
+          readOnly: false
+      tolerations:
+        - key: "tier"
+          operator: "Equal"
+          value: "t0"
+        - key: "tier"
+          operator: "Equal"
+          value: "t1"
+        - key: "tier"
+          operator: "Equal"
+          value: "t2"

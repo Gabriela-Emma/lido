@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "{{ $.Chart.Name }}-configurations-configmap"
+  labels:
+    name: "{{ $.Chart.Name }}-configurations-configmap"
+  namespace: {{ .Values.namespace }}
+data:
+  submit-api-config.json: |-
+  {{- .Values.configurationFiles.submitApiConfig | nindent 4}}

@@ -1,0 +1,30 @@
+{
+  "LocalRoots": {
+    "groups": [
+      {
+        "localRoots": {
+          "accessPoints": [
+            {
+              "address": "lidolovelace-cardano-relay-1-service.lidolovelace-test.svc.cluster.local",
+              "port": 3010
+            },
+            {
+              "address": "lidolovelace-submit-tx-relay-service.lidolovelace-test.svc.cluster.local",
+              "port": 3030
+            }
+          ],
+          "advertise": false
+        },
+        "valency": 1
+      }
+    ]
+  },
+  "PublicRoots": [
+    {
+      "publicRoots": {
+        "accessPoints": [],
+        "advertise": false
+      }
+    }
+  ]
+}

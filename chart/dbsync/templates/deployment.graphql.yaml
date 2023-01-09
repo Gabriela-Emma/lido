@@ -1,0 +1,140 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{ $.Chart.Name }}-graphql"
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: "{{ $.Chart.Name }}"
+    service: "{{ $.Chart.Name }}-graphql"
+spec:
+  selector:
+    matchLabels:
+      app: "{{ $.Chart.Name }}"
+      service: "{{ $.Chart.Name }}-graphql"
+  replicas: {{ .Values.services.dbsync.graphql.replicaCount }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: "{{ $.Chart.Name }}"
+        service: "{{ $.Chart.Name }}-graphql"
+    spec:
+      automountServiceAccountToken: false
+      imagePullSecrets:
+        - name: {{ .Values.image.pullSecret }}
+      initContainers:
+        - name: setup
+          image: busybox
+          command: [ "/bin/sh" ]
+          args:
+            - -c
+            - >-
+              mkdir -p /config &&
+              cat /tmp/config/config.json > /config/config.json
+          volumeMounts:
+            - name: dbsync-configurations
+              mountPath: /tmp/config
+              readOnly: true
+            - name: "{{ $.Chart.Name }}-cardano-db-sync-pv"
+              mountPath: /config
+              subPath: "lido/{{.Values.services.cardano.config.CARDANO_NETWORK}}/cdbsync/config"
+              readOnly: false
+#            - name: config
+#              mountPath: /config
+#              readOnly: false
+      volumes:
+        - name: config
+          emptyDir: {}
+        - name: node-ipc
+          emptyDir: {}
+        - name: "{{ $.Chart.Name }}-cardano-db-sync-pv"
+          persistentVolumeClaim:
+            claimName: "{{ .Values.namespace }}-data-db-sync-pvc"
+        - name: dbsync-postgresql
+          secret:
+            secretName: "{{ $.Chart.Name }}-secrets"
+            items:
+              - key: postgres_db
+                path: postgres_db
+              - key: postgres_password
+                path: postgres_password
+              - key: postgres_user
+                path: postgres_user
+        - name: dbsync-configurations
+          configMap:
+            name: "{{ $.Chart.Name }}-configurations-configmap"
+      containers:
+      - name: app
+        image: "{{ .Values.services.dbsync.graphql.image.repository }}:{{ .Values.services.dbsync.graphql.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        resources:
+          limits:
+            memory: 10240Mi
+            cpu: 3
+          requests:
+            cpu: 300m
+            memory: 1024Mi
+        envFrom:
+          - secretRef:
+                name:  "{{ $.Chart.Name }}-secrets"
+          - configMapRef:
+              name: "lidolovelace-cardano-configmap"
+        env:
+          - name: POSTGRES_HOST
+            value: "lidolovelace-db-sync-db-postgresql"
+          - name: HASURA_URI
+            value: "http://lidolovelace-dbsync-hasura-service.{{ .Values.namespace }}.svc.cluster.local:8080"
+          - name: OGMIOS_HOST
+            value: "lidolovelace-dbsync-ogmios-service.{{ .Values.namespace }}.svc.cluster.local"
+          - name: ALLOW_INTROSPECTION
+            value: "true"
+          - name: CACHE_ENABLED
+            value: "true"
+          - name: LOGGER_MIN_SEVERITY
+            value: info
+          - name: CARDANO_NODE_CONFIG_PATH
+            value: "/config/config.json"
+        ports:
+          - name: graphql
+            containerPort: 3100
+            protocol: TCP
+        volumeMounts:
+          - name: node-ipc
+            mountPath: /ipc
+            readOnly: false
+          - name: dbsync-postgresql
+            mountPath: /run/secrets
+            readOnly: false
+          - name: "{{ $.Chart.Name }}-cardano-db-sync-pv"
+            mountPath: /config
+            subPath: "lido/{{.Values.services.cardano.config.CARDANO_NETWORK}}/cdbsync/config"
+            readOnly: false
+      - name: ipc
+        image: alpine/socat:1.7.4.4-r0
+        env:
+        - name: CARDANO_NODE_SOCKET_TCP_HOST
+          value: "lidolovelace-cardano-relay-1-service"
+        - name: CARDANO_NODE_SOCKET_TCP_PORT
+          value: "30111"
+        - name: SOCAT_TIMEOUT
+          value: "3600"
+        command: [
+            "sh",
+            "-c",
+            "socat UNIX-LISTEN:/ipc/node.socket,fork TCP:${CARDANO_NODE_SOCKET_TCP_HOST}:${CARDANO_NODE_SOCKET_TCP_PORT},ignoreeof"
+        ]
+        volumeMounts:
+        - mountPath: /ipc
+          name: node-ipc
+          readOnly: false
+      tolerations:
+        - key: "tier"
+          operator: "Equal"
+          value: "t0"
+        - key: "tier"
+          operator: "Equal"
+          value: "t2"
