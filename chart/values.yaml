@@ -112,7 +112,7 @@ services:
         annotations: {
           kubernetes.io/ingress.class: traefik,
           cert-manager.io/cluster-issuer: letsencrypt-issuer,
-          traefik.ingress.kubernetes.io/router.middlewares: traefik-redirect-http-to-https@kubernetescrd
+#          traefik.ingress.kubernetes.io/router.middlewares: traefik-redirect-http-to-https@kubernetescrd
         }
         host: graphql.preview.lidonation.com
         tls:
@@ -131,7 +131,7 @@ services:
       annotations: {
         kubernetes.io/ingress.class: traefik,
         cert-manager.io/cluster-issuer: letsencrypt-issuer,
-        traefik.ingress.kubernetes.io/router.middlewares: traefik-redirect-http-to-https@kubernetescrd
+#        traefik.ingress.kubernetes.io/router.middlewares: traefik-redirect-http-to-https@kubernetescrd
       }
       host: ncdb.lidonation.com
       tls:
@@ -153,7 +153,7 @@ services:
         kubernetes.io/ingress.class: traefik,
         ingress.kubernetes.io/rewrite-target: /,
         cert-manager.io/cluster-issuer: letsencrypt-issuer,
-        traefik.ingress.kubernetes.io/router.middlewares: traefik-redirect-http-to-https@kubernetescrd,traefik-redirect-to-www@kubernetescrd
+#        traefik.ingress.kubernetes.io/router.middlewares: traefik-redirect-http-to-https@kubernetescrd,traefik-redirect-to-www@kubernetescrd
       }
       hosts:
         - www.lidonation.com
@@ -320,8 +320,6 @@ services:
           HTTPS: "on"
       annotations: {
         kubernetes.io/ingress.class: traefik,
-        nginx.ingress.kubernetes.io/ssl-redirect: "true",
-        nginx.ingress.kubernetes.io/from-to-www-redirect: "false",
         cert-manager.io/cluster-issuer: letsencrypt-issuer
       }
       host: tx.lidonation.com
