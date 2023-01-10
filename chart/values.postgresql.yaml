@@ -615,7 +615,7 @@ primary:
     enabled: true
     ## @param primary.persistence.existingClaim Name of an existing PVC to use
     ##
-    existingClaim: ""
+#    existingClaim: ""
     ## @param primary.persistence.mountPath The path the volume will be mounted at
     ## Note: useful when using custom PostgreSQL images
     ##
@@ -938,14 +938,14 @@ readReplicas:
     ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
     ##   GKE, AWS & OpenStack)
     ##
-    storageClass: ""
+    storageClass: "longhorn"
     ## @param readReplicas.persistence.accessModes PVC Access Mode for PostgreSQL volume
     ##
     accessModes:
       - ReadWriteOnce
     ## @param readReplicas.persistence.size PVC Storage Request for PostgreSQL volume
     ##
-    size: 8Gi
+    size: 20Gi
     ## @param readReplicas.persistence.annotations Annotations for the PVC
     ##
     annotations: {}
