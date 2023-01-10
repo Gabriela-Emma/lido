@@ -34,11 +34,13 @@ spec:
           - name: gcloud-service-account
             mountPath: /tmp/gcloud
             readOnly: false
-          - name: "{{ .Values.namespace }}-storage-pv"
+          - name: "{{ .Values.namespace }}-web-storage-pv"
             mountPath: {{ .Values.services.web.persistence.mountPath }}
+            subPath: "storage"
             readOnly: false
-          - name: "{{ .Values.namespace }}-storage-pv"
+          - name: "{{ .Values.namespace }}-web-storage-pv"
             mountPath: /data
+            subPath: "data"
             readOnly: false
         args:
           - |
@@ -91,6 +93,6 @@ spec:
           secret:
             defaultMode: 0400
             secretName: "{{ $.Chart.Name }}-gcloud-service-account"
-        - name: "{{ .Values.namespace }}-storage-pv"
+        - name: "{{ .Values.namespace }}-web-storage-pv"
           persistentVolumeClaim:
-            claimName: "{{ .Values.namespace }}-storage-pvc"
+            claimName: "{{ .Values.namespace }}-web-storage-pvc"

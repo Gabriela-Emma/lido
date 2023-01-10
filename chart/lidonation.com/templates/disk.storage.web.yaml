@@ -1,13 +1,13 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: "{{ .Values.namespace }}-storage-pvc"
+  name: "{{ .Values.namespace }}-web-storage-pvc"
   namespace: {{ .Values.namespace }}
 spec:
   accessModes:
     - ReadWriteMany
   storageClassName: "longhorn"
-  volumeName: "{{ .Values.namespace }}-storage-pv"
+  volumeName: "{{ .Values.namespace }}-web-storage-pv"
   resources:
     requests:
       storage: {{ .Values.services.cardano.persistence.size }}

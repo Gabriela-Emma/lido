@@ -97,10 +97,10 @@ spec:
           - name: gcloud-service-account
             mountPath: /tmp/gcloud
             readOnly: false
-          - name: "{{ .Values.namespace }}-storage-pv"
+          - name: "{{ .Values.namespace }}-web-storage-pv"
             mountPath: {{ .Values.services.web.persistence.mountPath }}
             readOnly: false
-          - name: "{{ .Values.namespace }}-storage-pv"
+          - name: "{{ .Values.namespace }}-web-storage-pv"
             mountPath: /data
             readOnly: false
         livenessProbe:
@@ -149,6 +149,6 @@ spec:
             secretName: "{{ $.Chart.Name }}-gcloud-service-account"
         - name: node-ipc
           emptyDir: {}
-        - name: "{{ .Values.namespace }}-storage-pv"
+        - name: "{{ .Values.namespace }}-web-storage-pv"
           persistentVolumeClaim:
-            claimName: "{{ .Values.namespace }}-storage-pvc"
+            claimName: "{{ .Values.namespace }}-web-storage-pvc"
