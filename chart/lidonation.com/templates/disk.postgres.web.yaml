@@ -7,7 +7,6 @@ spec:
   accessModes:
     - ReadWriteMany
   storageClassName: "longhorn"
-  volumeName: "{{ .Values.namespace }}-postgres-web-pv"
   resources:
     requests:
       storage: 100Gi

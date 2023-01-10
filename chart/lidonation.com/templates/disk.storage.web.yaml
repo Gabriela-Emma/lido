@@ -7,7 +7,6 @@ spec:
   accessModes:
     - ReadWriteMany
   storageClassName: "longhorn"
-  volumeName: "{{ .Values.namespace }}-storage-web-pv"
   resources:
     requests:
       storage: {{ .Values.services.cardano.persistence.size }}

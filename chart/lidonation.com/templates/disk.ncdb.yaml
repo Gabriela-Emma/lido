@@ -7,7 +7,6 @@ spec:
   accessModes:
     - ReadWriteMany
   storageClassName: "longhorn"
-  volumeName: "{{ .Values.namespace }}-ncdb-pv"
   resources:
     requests:
       storage: {{ .Values.services.ncdb.persistence.size }}
