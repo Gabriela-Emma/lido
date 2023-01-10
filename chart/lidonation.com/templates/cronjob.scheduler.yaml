@@ -10,6 +10,7 @@ rules:
     resources:
       - deployments
       - replicasets
+      - pods
     verbs:
       - 'list'
       - 'get'
