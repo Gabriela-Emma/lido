@@ -51,15 +51,5 @@ spec:
             - name: "{{ $.Chart.Name }}-ncdb-pv"
               mountPath: /usr/app/data
               readOnly: false
-      tolerations:
-        - key: "tier"
-          operator: "Equal"
-          value: "t0"
-        - key: "tier"
-          operator: "Equal"
-          value: "t1"
-        - key: "tier"
-          operator: "Equal"
-          value: "t2"
       imagePullSecrets:
         - name: {{ .Values.image.pullSecret }}

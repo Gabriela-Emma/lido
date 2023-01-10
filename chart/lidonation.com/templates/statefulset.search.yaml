@@ -42,12 +42,5 @@ spec:
             - name: "{{ $.Chart.Name }}-search-pv"
               mountPath: /data.ms
               readOnly: false
-      tolerations:
-        - key: "tier"
-          operator: "Equal"
-          value: "t0"
-        - key: "tier"
-          operator: "Equal"
-          value: "t2"
       imagePullSecrets:
         - name: {{ .Values.image.pullSecret }}
