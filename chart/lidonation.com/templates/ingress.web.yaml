@@ -14,7 +14,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: {{- if eq .Values.services.cardano.config.CARDANO_NETWORK "main" -}}Host(`lidonation.com`) || Host(`www.lidonation.com`){{- end -}} {{- if eq .Values.services.cardano.config.CARDANO_NETWORK "test" -}}Host(`test.lidonation.com`){{- end -}}
+    - match: {{- if eq .Values.services.cardano.config.CARDANO_NETWORK "main" -}}Host(`lidonation.com`) || Host(`www.lidonation.com`){{- end -}}{{- if eq .Values.services.cardano.config.CARDANO_NETWORK "preview" -}}Host(`test.lidonation.com`){{- end -}}
       kind: Rule
       middlewares:
         - name: traefik-redirect-http-to-https
