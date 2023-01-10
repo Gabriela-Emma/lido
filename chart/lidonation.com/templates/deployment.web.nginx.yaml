@@ -64,6 +64,7 @@ spec:
         volumeMounts:
           - name: "{{ .Values.namespace }}-web-storage-pv"
             mountPath: {{ .Values.services.web.persistence.mountPath }}
+            subPath: "storage"
             readOnly: false
         startupProbe: # queue have up to 7.5 mins to start
           tcpSocket:

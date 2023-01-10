@@ -99,9 +99,11 @@ spec:
             readOnly: false
           - name: "{{ .Values.namespace }}-web-storage-pv"
             mountPath: {{ .Values.services.web.persistence.mountPath }}
+            subPath: "storage"
             readOnly: false
           - name: "{{ .Values.namespace }}-web-storage-pv"
             mountPath: /data
+            subPath: data
             readOnly: false
         livenessProbe:
           exec:
