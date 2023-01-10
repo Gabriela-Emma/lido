@@ -5,8 +5,8 @@ metadata:
   namespace: {{ .Values.namespace }}
 spec:
   accessModes:
-    - ReadWriteMany
-  storageClassName: ""
+    - ReadWriteOnce
+  storageClassName: "longhorn"
   volumeName: "{{ .Values.namespace }}-search-pv"
   resources:
     requests:
