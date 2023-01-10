@@ -28,7 +28,7 @@ subjects:
 roleRef:
   kind: Role
   name: "{{ $.Chart.Name }}-scheduler"
-  apiGroup: ""
+  apiGroup: "*"
 ---
 apiVersion: v1
 kind: ServiceAccount
