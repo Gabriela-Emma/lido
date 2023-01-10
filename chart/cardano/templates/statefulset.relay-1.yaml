@@ -88,7 +88,6 @@ spec:
               mountPath: /tmp/config
             - name: "{{ $.Chart.Name }}-cardano-relay-1-pv"
               mountPath: /data
-              subPath: "lido/{{.Values.services.cardano.config.CARDANO_NETWORK}}/relay1/data"
               readOnly: false
         - name: ipc
           image: alpine/socat:1.7.4.4-r0

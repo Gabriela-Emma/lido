@@ -117,15 +117,12 @@ spec:
               readOnly: true
             - name: "{{ $.Chart.Name }}-cardano-db-sync-pv"
               mountPath: /var/lib/cexplorer
-              subPath: "lido/{{.Values.services.cardano.config.CARDANO_NETWORK}}/cdbsync/data"
               readOnly: false
             # - name: "{{ $.Chart.Name }}-cardano-db-sync-pv"
             #   mountPath: /tmp/opt
-            #   subPath: "lido/{{.Values.services.cardano.config.CARDANO_NETWORK}}/cdbsync/opt"
             #   readOnly: false
             - name: "{{ $.Chart.Name }}-cardano-db-sync-pv"
               mountPath: /tmp
-              subPath: "lido/{{.Values.services.cardano.config.CARDANO_NETWORK}}/tmpcdbsync"
               readOnly: false
         - name: ipc
           image: alpine/socat:1.7.4.4-r0

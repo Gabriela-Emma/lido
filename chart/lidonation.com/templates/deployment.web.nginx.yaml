@@ -64,7 +64,6 @@ spec:
         volumeMounts:
           - name: "{{ $.Chart.Name }}-storage-web-volume"
             mountPath: {{ .Values.services.web.persistence.mountPath }}
-            subPath: "lido/{{.Values.services.cardano.config.CARDANO_NETWORK}}/web/storage"
             readOnly: false
         startupProbe: # queue have up to 7.5 mins to start
           tcpSocket:

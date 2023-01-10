@@ -50,7 +50,6 @@ spec:
           volumeMounts:
             - name: "{{ $.Chart.Name }}-ncdb-pv"
               mountPath: /usr/app/data
-              subPath: "lido/{{.Values.services.cardano.config.CARDANO_NETWORK}}/ncdb"
               readOnly: false
       tolerations:
         - key: "tier"

@@ -56,7 +56,6 @@ spec:
         volumeMounts:
           - name: "{{ $.Chart.Name }}-cardano-cncli-pv"
             mountPath: /data
-            subPath: "lido/{{.Values.services.cardano.config.CARDANO_NETWORK}}/cncli/data"
             readOnly: false
           - name: node-ipc
             mountPath: /ipc

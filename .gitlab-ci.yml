@@ -56,8 +56,7 @@ image: registry.lidonation.com/infra-ops/gitlab-runner:main
         --set services.dbsync.db.secret.POSTGRESQL_USERNAME="$POSTGRESQL_DB_SYNC_USER" \
         --set services.dbsync.db.secret.POSTGRESQL_PASSWORD="$POSTGRESQL_DB_SYNC_PASSWORD" \
         --set services.dbsync.db.secret.POSTGRESQL_POSTGRES_PASSWORD="$POSTGRESQL_DB_SYNC_POSTGRES_PASSWORD" \
-        --set primary.persistence.existingClaim="$KUBE_NAMESPACE-postgres-db-sync-pvc" \
-        --set primary.persistence.subPath="lido/$CARDANO_NETWORK/postgres/cdbsync" \
+        --set primary.persistence.existingClaim="$KUBE_NAMESPACE-postgres-db-sync-pvc" \        
         --set primary.persistence.selector.matchLabels.name="lidolovelace-postgres-cdbsync-pv" \
         lidolovelace-db-sync-db \
         bitnami/postgresql
@@ -78,8 +77,7 @@ image: registry.lidonation.com/infra-ops/gitlab-runner:main
         --set global.postgresql.auth.username="$POSTGRESQL_WEB_USER" \
         --set global.postgresql.auth.password="$POSTGRESQL_WEB_PASSWORD" \
         --set global.postgresql.auth.postgresPassword="$POSTGRESQL_WEB_POSTGRES_PASSWORD" \
-        --set primary.persistence.existingClaim="$KUBE_NAMESPACE-postgres-web-pvc" \
-        --set primary.persistence.subPath="lido/$CARDANO_NETWORK/postgres/web" \
+        --set primary.persistence.existingClaim="$KUBE_NAMESPACE-postgres-web-pvc" \        
         --set primary.persistence.selector.matchLabels.name="lidolovelace-postgres-web-pv" \
         lidolovelace-web-db \
         bitnami/postgresql

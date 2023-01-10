@@ -78,7 +78,6 @@ spec:
               mountPath: /tmp/config
             - name: "{{ $.Chart.Name }}-1-pv"
               mountPath: /data
-              subPath: "lido/{{.Values.services.cardano.config.CARDANO_NETWORK}}/txrelay1/data"
               readOnly: false
         - name: submit-tx
           image: "{{ .Values.services.submitApi.image.repository }}:{{ .Values.image.tag }}"
