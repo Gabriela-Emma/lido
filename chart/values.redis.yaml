@@ -364,7 +364,7 @@ master:
       - ReadWriteOnce
     ## @param master.persistence.size Persistent Volume size
     ##
-    size: 20Gi
+    size: 40Gi
     ## @param master.persistence.annotations Additional custom annotations for the PVC
     ##
     annotations: {}
