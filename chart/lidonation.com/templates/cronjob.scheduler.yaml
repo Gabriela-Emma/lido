@@ -4,9 +4,7 @@ metadata:
   namespace: {{ .Values.namespace }}
   name: "{{ $.Chart.Name }}-scheduler"
 rules:
-  - apiGroups:
-      - extensions
-      - apps
+  - apiGroups: [""]
     resources:
       - deployments
       - replicasets
@@ -28,7 +26,7 @@ subjects:
 roleRef:
   kind: Role
   name: "{{ $.Chart.Name }}-scheduler"
-  apiGroup: "*"
+  apiGroup: rbac.authorization.k8s.io
 ---
 apiVersion: v1
 kind: ServiceAccount
