@@ -62,7 +62,7 @@ spec:
             containerPort: 8080
             protocol: TCP
         volumeMounts:
-          - name: "{{ $.Chart.Name }}-storage-web-volume"
+          - name: "{{ .Values.namespace }}-storage-pv"
             mountPath: {{ .Values.services.web.persistence.mountPath }}
             readOnly: false
         startupProbe: # queue have up to 7.5 mins to start
@@ -82,6 +82,6 @@ spec:
           tcpSocket:
             port: 8080
       volumes:
-        - name: "{{ $.Chart.Name }}-storage-web-volume"
+        - name: "{{ .Values.namespace }}-storage-pv"
           persistentVolumeClaim:
             claimName: "{{ .Values.namespace }}-storage-pvc"

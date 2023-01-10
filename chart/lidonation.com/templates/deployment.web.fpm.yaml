@@ -149,6 +149,6 @@ spec:
             secretName: "{{ $.Chart.Name }}-gcloud-service-account"
         - name: node-ipc
           emptyDir: {}
-        - name: "{{ $.Chart.Name }}-storage-web-volume"
+        - name: "{{ .Values.namespace }}-storage-pv"
           persistentVolumeClaim:
             claimName: "{{ .Values.namespace }}-storage-pvc"
