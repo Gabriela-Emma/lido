@@ -97,10 +97,10 @@ spec:
           - name: gcloud-service-account
             mountPath: /tmp/gcloud
             readOnly: false
-          - name: "{{ $.Chart.Name }}-storage-web-volume"
+          - name: "{{ .Values.namespace }}-storage-pv"
             mountPath: {{ .Values.services.web.persistence.mountPath }}
             readOnly: false
-          - name: "{{ $.Chart.Name }}-storage-web-volume"
+          - name: "{{ .Values.namespace }}-storage-pv"
             mountPath: /data
             readOnly: false
         livenessProbe:
