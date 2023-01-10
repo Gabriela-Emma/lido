@@ -299,7 +299,7 @@ services:
       storageClass: longhorn
       accessMode: ReadWriteMany
       subPath: "storage"
-      mountPath: "/var/www/storage"
+      mountPath: "/var/www/storage/app/public"
   dbsync_db:
     persistence:
       enabled: true
