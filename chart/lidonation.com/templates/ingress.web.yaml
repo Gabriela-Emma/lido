@@ -1,5 +1,5 @@
-apiVersion: networking.k8s.io/v1
-kind: Ingress
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRouteTCP
 metadata:
   name: "{{ $.Chart.Name }}-ingress"
   namespace: {{ .Values.namespace }}
@@ -8,28 +8,22 @@ metadata:
     chart: "{{ $.Chart.Name }}-{{ $.Chart.Version }}"
     release: "{{ $.Release.Name }}"
   annotations:
-    {{- range $key, $value := .Values.services.web.ingress.annotations }}
-    {{ $key }}: {{ $value | quote }}
-    {{- end }}
+    kubernetes.io/ingress.class: traefik,
+    cert-manager.io/cluster-issuer: letsencrypt-issuer
 spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: {{- if eq .Values.services.cardano.config.CARDANO_NETWORK "main" -}}Host(`lidonation.com`) || Host(`www.lidonation.com`){{- end -}} {{- if eq .Values.services.cardano.config.CARDANO_NETWORK "test" -}}Host(`test.lidonation.com`){{- end -}}
+      kind: Rule
+      middlewares:
+        - name: traefik-redirect-http-to-https
+          namespace: traefik
+        - name: traefik-redirect-to-www
+          namespace: traefik
+      services:
+        - name: "{{ $.Chart.Name }}-nginx-service"
+          namespace: {{ .Values.namespace }}
+          port: 8080
   tls:
-  {{- range .Values.services.web.ingress.tls }}
-    - hosts:
-    {{- range .hosts }}
-      - {{ . }}
-    {{- end }}
-      secretName: {{ .secretName }}
-  {{- end }}
-  rules:
-    {{- range .Values.services.web.ingress.hosts }}
-    - host: {{ . }}
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: "{{ $.Chart.Name }}-nginx-service"
-                port:
-                  number: 8080
-    {{- end }}
+    secretName: lidonation-com-tls
