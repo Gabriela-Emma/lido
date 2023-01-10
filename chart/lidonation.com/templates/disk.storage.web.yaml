@@ -1,7 +1,7 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: "{{ .Values.namespace }}-storage-web-pvc"
+  name: "{{ .Values.namespace }}-storage-pvc"
   namespace: {{ .Values.namespace }}
 spec:
   accessModes:

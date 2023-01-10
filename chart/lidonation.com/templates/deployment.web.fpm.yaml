@@ -151,4 +151,4 @@ spec:
           emptyDir: {}
         - name: "{{ $.Chart.Name }}-storage-web-volume"
           persistentVolumeClaim:
-            claimName: "{{ .Values.namespace }}-storage-web-pvc"
+            claimName: "{{ .Values.namespace }}-storage-pvc"

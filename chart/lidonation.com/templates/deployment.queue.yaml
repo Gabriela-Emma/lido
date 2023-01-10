@@ -93,4 +93,4 @@ spec:
             secretName: "{{ $.Chart.Name }}-gcloud-service-account"
         - name: "{{ $.Chart.Name }}-storage-volume"
           persistentVolumeClaim:
-            claimName: "{{ .Values.namespace }}-storage-web-pvc"
+            claimName: "{{ .Values.namespace }}-storage-pvc"
