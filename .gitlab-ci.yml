@@ -422,6 +422,7 @@ image: registry.lidonation.com/infra-ops/gitlab-runner:main
 
 
 
+
 cache:
   key: ${CI_COMMIT_REF_SLUG}
   paths:
