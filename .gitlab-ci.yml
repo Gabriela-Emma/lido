@@ -340,6 +340,58 @@ image: registry.lidonation.com/infra-ops/gitlab-runner:main
       --version="$APP_VERSION"
   }
 
+  
+  function deploy_cardano_configs() {
+    DEPLOYMENT_NAME="$AUTO_DEVOPS_APP_PREFIX-cardano-configs.$CI_ENVIRONMENT_SLUG"
+      
+    helm upgrade "$DEPLOYMENT_NAME" ./chart/tx \
+      --wait \
+      --install \
+      --atomic \
+      -f ./chart/values.yaml \
+      --timeout 300s \
+      --set application.track="$track" \
+      --set postgresqlPostgresPassword="$POSTGRESQL_DB_SYNC_POSTGRES_PASSWORD" \
+      --set postgresqlPassword="$POSTGRESQL_DB_SYNC_PASSWORD" \
+      --set postgresqlDatabase="$POSTGRESQL_DB_SYNC_DB" \
+      --set services.dbsync.db.secret.POSTGRESQL_DB="$POSTGRESQL_DB_SYNC_DB" \
+      --set services.dbsync.db.secret.POSTGRESQL_USERNAME="$POSTGRESQL_DB_SYNC_USER" \
+      --set services.dbsync.db.secret.POSTGRESQL_PASSWORD="$POSTGRESQL_DB_SYNC_PASSWORD" \
+      --set services.dbsync.db.secret.POSTGRESQL_POSTGRES_PASSWORD="$POSTGRESQL_DB_SYNC_POSTGRES_PASSWORD" \
+      --set services.redis.secret.REDIS_PASSWORD="$REDIS_PASSWORD" \
+      --set services.cardano.replicaCount="$replicas" \
+      --set services.cardano.image.repository="$CI_APPLICATION_REPOSITORY/cardano" \
+      --set services.cardano.config.AUTO_TOPOLOGY="$AUTO_TOPOLOGY" \
+      --set services.cardano.config.METADATA_URL="$METADATA_URL" \
+      --set services.cardano.config.NETWORK_ARGUMENT="$NETWORK_ARGUMENT" \
+      --set services.cardano.config.CARDANO_NETWORK="$CARDANO_NETWORK" \
+      --set services.cardano.config.NODE_PORT="$CARDANO_NODE_PORT" \
+      --set services.cardano.config.RELAY2_PORT="$RELAY2_PORT" \
+      --set services.cardano.config.SUBMIT_TX_PORT="$SUBMIT_TX_PORT" \
+      --set services.cardano.config.POOL_ID="$POOL_ID" \
+      --set services.cardano.config.STAKE_ADDR="$STAKE_ADDR" \
+      --set services.cardano.config.PAYMENT_ADDR="$PAYMENT_ADDR" \
+      --set services.cardano.config.KUBERNETES_NAMESPACE="$KUBE_NAMESPACE" \
+      --set services.elasticsearch.realm.user="$ES_ADMIN_USER" \
+      --set services.submitApi.image.repository="$CI_APPLICATION_REPOSITORY/cardano-submit-tx-api" \
+      --set services.submitApi.networkArg="$NETWORK_ARGUMENT" \
+      --set services.submitApi.ingress.host="$SUBMIT_API_HOSTS" \
+      --set-file configurationFiles.config=./src/pool/config/$CARDANO_NETWORK/config.json \
+      --set-file configurationFiles.config=./src/pool/config/$CARDANO_NETWORK/config.producer.json \
+      --set-file configurationFiles.dbSyncConfig=./src/pool/config/$CARDANO_NETWORK/db-sync-config.json \
+      --set-file configurationFiles.submitApiConfig=./src/pool/config/$CARDANO_NETWORK/submit-api-config.json \
+      --set-file configurationFiles.topology.relay=./src/pool/config/$CARDANO_NETWORK/topology.relay.json \
+      --set-file configurationFiles.topology.producer=./src/pool/config/$CARDANO_NETWORK/topology.producer.json \
+      --set-file configurationFiles.testnetByronGenesis=./src/pool/config/build/preview-byron-genesis.json \
+      --set-file configurationFiles.testnetShelleyGenesis=./src/pool/config/build/preview-shelley-genesis.json \
+      --set-file configurationFiles.mainnetShelleyGenesis=./src/pool/config/build/mainnet-shelley-genesis.json \
+      --set-file configurationFiles.testnetAlonzoGenesis=./src/pool/config/build/preview-alonzo-genesis.json \
+      --set-file configurationFiles.mainnetAlonzoGenesis=./src/pool/config/build/mainnet-alonzo-genesis.json \
+      --set namespace=${KUBE_NAMESPACE} \
+      --namespace="$KUBE_NAMESPACE" \
+      --version="$APP_VERSION"
+  }
+
   function deploy_relays() {
     DEPLOYMENT_NAME="$AUTO_DEVOPS_APP_PREFIX-cardano-relays.$CI_ENVIRONMENT_SLUG"  
     echo "Deploying $DEPLOYMENT_NAME"
@@ -452,7 +504,12 @@ image: registry.lidonation.com/infra-ops/gitlab-runner:main
 
   function deploy_services() {
     if [[ "$DEPLOY_CARDANO_SERVICES" == 'True' || "$DEPLOY_CARDANO_SERVICES" == 'true' ]]; then
+      deploy_cardano_configs
       deploy_relays
+      deploy_producer
+    fi
+    if [[ "$DEPLOY_CARDANO_CONFIGS" == 'True' || "$DEPLOY_CARDANO_CONFIGS" == 'true' ]]; then
+      deploy_cardano_configs
     fi
     if [[ "$DEPLOY_CARDANO_TX_SUBMIT" == 'True' || "$DEPLOY_CARDANO_TX_SUBMIT" == 'true' ]]; then
       deploy_tx_sumit_api
@@ -497,9 +554,18 @@ variables:
   DEPLOY_LUCID:
     value: 'False'
     description: 'Build and deploy lucid nestjs backend'
+  DEPLOY_CARDANO_CONFIGS:
+    value: 'False'
+    description: 'Deploy shared configurations and secrets for cardano services.'
   DEPLOY_CARDANO_SERVICES:
     value: 'False'
     description: 'Install or recreate cardano pool (relays, producer)'
+  DEPLOY_CARDANO_RELAYS:
+    value: 'False'
+    description: 'Install or recreate cardano pool relay(s)'
+  DEPLOY_CARDANO_PRODUCER:
+    value: 'False'
+    description: 'Install or recreate cardano pool producer'
   DEPLOY_CARDANO_TX_SUBMIT:
     value: 'False'
     description: 'Install tx submit api.'
@@ -803,9 +869,13 @@ cnode:
       docker push "$CI_APPLICATION_REPOSITORY/cardano:latest"
   rules:
     - if: '$CI_COMMIT_BRANCH == "main" &&
-              ($DEPLOY_CARDANO_SERVICES == "True" || $DEPLOY_CARDANO_SERVICES == "true")'
+              ($DEPLOY_CARDANO_SERVICES == "True" || $DEPLOY_CARDANO_SERVICES == "true")
+              || ($DEPLOY_CARDANO_RELAYS == "True" || $DEPLOY_CARDANO_RELAYS == "true")
+              || ($DEPLOY_CARDANO_PRODUCER == "True" || $DEPLOY_CARDANO_PRODUCER == "true")
     - if: '$CI_COMMIT_BRANCH != "main" &&
-              ($DEPLOY_CARDANO_SERVICES == "True" || $DEPLOY_CARDANO_SERVICES == "true")'
+              ($DEPLOY_CARDANO_SERVICES == "True" || $DEPLOY_CARDANO_SERVICES == "true")'            
+            || ($DEPLOY_CARDANO_RELAYS == "True" || $DEPLOY_CARDANO_RELAYS == "true")
+            || ($DEPLOY_CARDANO_PRODUCER == "True" || $DEPLOY_CARDANO_PRODUCER == "true")
 
 cncli:
   stage: build_image
@@ -921,7 +991,11 @@ review:
     name: preview
   rules:
     - if: '(
-              ($DEPLOY_CARDANO_SERVICES == "True" || $DEPLOY_CARDANO_SERVICES == "true")
+              ($DEPLOY_CARDANO_CONFIGS == "True" || $DEPLOY_CARDANO_CONFIGS == "true")
+              || ($DEPLOY_CARDANO_SERVICES == "True" || $DEPLOY_CARDANO_SERVICES == "true")
+              || ($DEPLOY_CARDANO_RELAYS == "True" || $DEPLOY_CARDANO_RELAYS == "true")
+              || ($DEPLOY_CARDANO_PRODUCER == "True" || $DEPLOY_CARDANO_PRODUCER == "true")
+              || ($DEPLOY_CARDANO_DBSYNC == "True" || $DEPLOY_CARDANO_DBSYNC == "true")
               || ($DEPLOY_CARDANO_DBSYNC == "True" || $DEPLOY_CARDANO_DBSYNC == "true")
               || ($DEPLOY_CARDANO_TX_SUBMIT == "True" || $DEPLOY_CARDANO_TX_SUBMIT == "true")
               || ($DEPLOY_CARDANO_CNCLI == "True" || $DEPLOY_CARDANO_CNCLI == "true")              
@@ -1001,7 +1075,10 @@ mainnet:
     name: mainnet
   rules:
     - if: '$CI_COMMIT_BRANCH == "main" && (
-              ($DEPLOY_CARDANO_SERVICES == "True" || $DEPLOY_CARDANO_SERVICES == "true")
+              ($DEPLOY_CARDANO_CONFIGS == "True" || $DEPLOY_CARDANO_CONFIGS == "true")
+              || ($DEPLOY_CARDANO_SERVICES == "True" || $DEPLOY_CARDANO_SERVICES == "true")
+              || ($DEPLOY_CARDANO_RELAYS == "True" || $DEPLOY_CARDANO_RELAYS == "true")
+              || ($DEPLOY_CARDANO_PRODUCER == "True" || $DEPLOY_CARDANO_PRODUCER == "true")
               || ($DEPLOY_CARDANO_DBSYNC == "True" || $DEPLOY_CARDANO_DBSYNC == "true")
               || ($DEPLOY_CARDANO_TX_SUBMIT == "True" || $DEPLOY_CARDANO_TX_SUBMIT == "true")
               )'
