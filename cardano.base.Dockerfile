@@ -52,9 +52,9 @@ RUN wget https://downloads.haskell.org/~ghc/8.10.7/ghc-8.10.7-x86_64-deb10-linux
 
 # Install cabal
 ENV PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/root/.cabal/bin:/root/.ghcup/bin:/root/.local/bin:/scripts:/scripts/functions"
-RUN wget https://downloads.haskell.org/cabal/cabal-install-3.6.2.0/cabal-install-3.6.2.0-x86_64-linux-deb10.tar.xz \
-    && tar -xf cabal-install-3.6.2.0-x86_64-linux-deb10.tar.xz \
-    && rm cabal-install-3.6.2.0-x86_64-linux-deb10.tar.xz \
+RUN wget https://downloads.haskell.org/cabal/cabal-install-3.8.1.0/cabal-install-3.8.1.0-x86_64-linux-deb10.tar.xz \
+    && tar -xf cabal-install-3.8.1.0-x86_64-linux-deb10.tar.xz \
+    && rm cabal-install-3.8.1.0-x86_64-linux-deb10.tar.xz \
     && mkdir -p ~/.local/bin \
     && mv cabal ~/.local/bin/ \
     && chmod +x /root/.local/bin/cabal \
@@ -102,6 +102,7 @@ RUN echo "Compiling tags/$BRANCH..." \
     && ls $(./scripts/bin-path.sh) \
     && cp -p "$(./scripts/bin-path.sh cardano-node)" /root/.cabal/bin/ \
     && cp -p "$(./scripts/bin-path.sh cardano-cli)" /root/.cabal/bin/ \
+    && cp -p "$(./scripts/bin-path.sh cardano-submit-api)" /root/.cabal/bin/ \
     && rm -rf /root/.cabal/packages \
     && rm -rf /usr/local/lib/ghc-8.10.7/ \
     && rm -rf /cardano-node/dist-newstyle/ \

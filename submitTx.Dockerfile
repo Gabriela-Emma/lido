@@ -13,7 +13,7 @@ RUN mkdir -p /config # && apt-get install sqlite3
 COPY src/pool/config/build/ /config/
 COPY src/pool/cntools/ /cntools/
 
-COPY --from=base /root/.cabal/bin/cardano-node /scripts/
+COPY --from=base /root/.cabal/bin/ /scripts/
 
 #RUN cd /scripts && wget https://hydra.iohk.io/build/16159630/download/1/cardano-node-1.35.4-linux.tar.gz &&\
 #    tar -xf cardano-node-1.35.4-linux.tar.gz &&\
