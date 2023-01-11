@@ -6,7 +6,7 @@ SHELL ["/bin/bash", "-c"]
 
 RUN apt-get update -y \
   && DEBIAN_FRONTEND="noninteractive" apt-get install -y \
-    sudo libssl-dev iproute2
+    sudo libssl-dev iproute2 libssl-dev
 
 EXPOSE 8080
 
