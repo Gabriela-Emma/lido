@@ -4,6 +4,10 @@ FROM ubuntu:20.04
 
 SHELL ["/bin/bash", "-c"]
 
+RUN apt-get update -y \
+  && DEBIAN_FRONTEND="noninteractive" apt-get install -y \
+    sudo
+
 EXPOSE 8080
 
 # Add scripts
@@ -14,6 +18,8 @@ COPY src/pool/config/build/ /config/
 COPY src/pool/cntools/ /cntools/
 
 COPY --from=base /root/.cabal/bin/ /scripts/
+
+ENV PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/scripts"
 
 #RUN cd /scripts && wget https://hydra.iohk.io/build/16159630/download/1/cardano-node-1.35.4-linux.tar.gz &&\
 #    tar -xf cardano-node-1.35.4-linux.tar.gz &&\
