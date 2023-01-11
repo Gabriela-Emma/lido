@@ -9,10 +9,11 @@ rules:
       - deployments
       - replicasets
       - pods
+      - "pods/list"
+      - "pods/exec"
     verbs:
       - 'list'
       - 'get'
-      - 'exec'
 ---
 kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
