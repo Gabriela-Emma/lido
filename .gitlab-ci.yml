@@ -344,7 +344,7 @@ image: registry.lidonation.com/infra-ops/gitlab-runner:main
   function deploy_cardano_configs() {
     DEPLOYMENT_NAME="$AUTO_DEVOPS_APP_PREFIX-cardano-configs.$CI_ENVIRONMENT_SLUG"
       
-    helm upgrade "$DEPLOYMENT_NAME" ./chart/tx \
+    helm upgrade "$DEPLOYMENT_NAME" ./chart/cardano-configs \
       --wait \
       --install \
       --atomic \
