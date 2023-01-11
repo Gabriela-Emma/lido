@@ -6,7 +6,7 @@ SHELL ["/bin/bash", "-c"]
 
 RUN apt-get update -y \
   && DEBIAN_FRONTEND="noninteractive" apt-get install -y \
-    sudo libssl-dev iproute2 libssl-dev jq bc git
+    sudo libssl-dev iproute2 libssl-dev jq bc git libtool
 
 # Install libsodium
 RUN git clone https://github.com/input-output-hk/libsodium \
