@@ -38,7 +38,7 @@ global:
 
 ## @param kubeVersion Override Kubernetes version
 ##
-kubeVersion: "1.20.12"
+kubeVersion: "1.24.9"
 ## @param nameOverride String to partially override common.names.fullname template (will maintain the release name)
 ##
 nameOverride: ""
@@ -87,7 +87,7 @@ diagnosticMode:
 image:
   registry: docker.io
   repository: bitnami/postgresql
-  tag: 15.0.0-debian-11-r1
+  tag: 15.1.0-debian-11-r20
   ## Specify a imagePullPolicy
   ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
   ## ref: https://kubernetes.io/docs/user-guide/images/#pre-pulling-images
@@ -504,13 +504,13 @@ primary:
   ## @param primary.tolerations Tolerations for PostgreSQL primary pods assignment
   ## ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
   ##
-  tolerations:
-    - key: "tier"
-      operator: "Equal"
-      value: "t2"
-    - key: "tier"
-      operator: "Equal"
-      value: "t0"
+  #  tolerations:
+  #    - key: "tier"
+  #      operator: "Equal"
+  #      value: "t2"
+  #    - key: "tier"
+  #      operator: "Equal"
+  #      value: "t0"
 
   ## @param primary.topologySpreadConstraints Topology Spread Constraints for pod assignment spread across your cluster among failure-domains. Evaluated as a template
   ## Ref: https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/#spread-constraints-for-pods
@@ -615,7 +615,7 @@ primary:
     enabled: true
     ## @param primary.persistence.existingClaim Name of an existing PVC to use
     ##
-    existingClaim: ""
+#    existingClaim: ""
     ## @param primary.persistence.mountPath The path the volume will be mounted at
     ## Note: useful when using custom PostgreSQL images
     ##
@@ -635,10 +635,10 @@ primary:
     ## @param primary.persistence.accessModes PVC Access Mode for PostgreSQL volume
     ##
     accessModes:
-      - ReadWriteMany
+      - ReadWriteOnce
     ## @param primary.persistence.size PVC Storage Request for PostgreSQL volume
     ##
-    size: 30Gi
+    size: 60Gi
     ## @param primary.persistence.annotations Annotations for the PVC
     ##
     annotations: {}
@@ -938,14 +938,14 @@ readReplicas:
     ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
     ##   GKE, AWS & OpenStack)
     ##
-    storageClass: ""
+    storageClass: "longhorn"
     ## @param readReplicas.persistence.accessModes PVC Access Mode for PostgreSQL volume
     ##
     accessModes:
       - ReadWriteOnce
     ## @param readReplicas.persistence.size PVC Storage Request for PostgreSQL volume
     ##
-    size: 8Gi
+    size: 20Gi
     ## @param readReplicas.persistence.annotations Annotations for the PVC
     ##
     annotations: {}

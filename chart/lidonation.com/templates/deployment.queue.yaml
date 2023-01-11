@@ -34,13 +34,13 @@ spec:
           - name: gcloud-service-account
             mountPath: /tmp/gcloud
             readOnly: false
-          - name: "{{ $.Chart.Name }}-storage-web-volume"
+          - name: "{{ .Values.namespace }}-web-storage-pv"
             mountPath: {{ .Values.services.web.persistence.mountPath }}
-            subPath: "lido/{{.Values.services.cardano.config.CARDANO_NETWORK}}/web/storage"
+            subPath: "storage"
             readOnly: false
-          - name: "{{ $.Chart.Name }}-storage-web-volume"
+          - name: "{{ .Values.namespace }}-web-storage-pv"
             mountPath: /data
-            subPath: "lido/{{.Values.services.cardano.config.CARDANO_NETWORK}}/web/data"
+            subPath: "data"
             readOnly: false
         args:
           - |
@@ -88,18 +88,11 @@ spec:
               name: "{{ $.Chart.Name }}-configmap"
           - secretRef:
               name: "{{ $.Chart.Name }}-secrets"
-      tolerations:
-        - key: "tier"
-          operator: "Equal"
-          value: "t0"
-        - key: "tier"
-          operator: "Equal"
-          value: "t2"
       volumes:
         - name: gcloud-service-account
           secret:
             defaultMode: 0400
             secretName: "{{ $.Chart.Name }}-gcloud-service-account"
-        - name: "{{ $.Chart.Name }}-storage-web-volume"
+        - name: "{{ .Values.namespace }}-web-storage-pv"
           persistentVolumeClaim:
-            claimName: "{{ .Values.namespace }}-storage-web-pvc"
+            claimName: "{{ .Values.namespace }}-web-storage-pvc"

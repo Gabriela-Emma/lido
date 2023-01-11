@@ -4,15 +4,19 @@ metadata:
   namespace: {{ .Values.namespace }}
   name: "{{ $.Chart.Name }}-scheduler"
 rules:
-  - apiGroups:
-      - extensions
-      - apps
+  - apiGroups: ["", "extensions", "apps"]
     resources:
       - deployments
       - replicasets
+      - pods
+      - pods/list
+      - pods/exec
     verbs:
+      - 'list'
       - 'get'
-      - 'exec'
+  - apiGroups: [ "" ]
+    resources: [ "pods/exec" ]
+    verbs: [ "create" ]
 ---
 kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
@@ -22,11 +26,11 @@ metadata:
 subjects:
   - kind: ServiceAccount
     name: "sa-{{ $.Chart.Name }}-scheduler"
-    namespace: {{ .Values.namespace }}
+    apiGroup: ""
 roleRef:
   kind: Role
   name: "{{ $.Chart.Name }}-scheduler"
-  apiGroup: ""
+  apiGroup: rbac.authorization.k8s.io
 ---
 apiVersion: v1
 kind: ServiceAccount
@@ -34,7 +38,7 @@ metadata:
   name: "sa-{{ $.Chart.Name }}-scheduler"
   namespace: {{ .Values.namespace }}
 ---
-apiVersion: batch/v1beta1
+apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: "{{ $.Chart.Name }}-scheduler"
@@ -49,7 +53,7 @@ spec:
           serviceAccountName: "sa-{{ $.Chart.Name }}-scheduler"
           containers:
             - name: topology-updater
-              image: bitnami/kubectl:1.22.3-debian-10-r17
+              image: bitnami/kubectl:1.24.9-debian-11-r10
               imagePullPolicy: IfNotPresent
               command:
                 - /bin/sh

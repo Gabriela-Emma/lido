@@ -33,3 +33,33 @@ spec:
                 port:
                   number: 8080
     {{- end }}
+{{/*---    */}}
+{{/*apiVersion: traefik.containo.us/v1alpha1*/}}
+{{/*kind: IngressRouteTCP*/}}
+{{/*metadata:*/}}
+{{/*  name: "{{ $.Chart.Name }}-ingress"*/}}
+{{/*  namespace: {{ .Values.namespace }}*/}}
+{{/*  labels:*/}}
+{{/*    app: "{{ $.Chart.Name }}"*/}}
+{{/*    chart: "{{ $.Chart.Name }}-{{ $.Chart.Version }}"*/}}
+{{/*    release: "{{ $.Release.Name }}"*/}}
+{{/*  annotations:*/}}
+{{/*    kubernetes.io/ingress.class: traefik,*/}}
+{{/*    cert-manager.io/cluster-issuer: letsencrypt-issuer*/}}
+{{/*spec:*/}}
+{{/*  entryPoints:*/}}
+{{/*    - websecure*/}}
+{{/*  routes:*/}}
+{{/*    - match: {{- if eq .Values.services.cardano.config.CARDANO_NETWORK "main" -}}Host(`lidonation.com`) || Host(`www.lidonation.com`){{- end -}}{{- if eq .Values.services.cardano.config.CARDANO_NETWORK "preview" -}}Host(`test.lidonation.com`){{- end -}}*/}}
+{{/*      kind: Rule*/}}
+{{/*      middlewares:*/}}
+{{/*        - name: traefik-redirect-http-to-https*/}}
+{{/*          namespace: traefik*/}}
+{{/*        - name: traefik-redirect-to-www*/}}
+{{/*          namespace: traefik*/}}
+{{/*      services:*/}}
+{{/*        - name: "{{ $.Chart.Name }}-nginx-service"*/}}
+{{/*          namespace: {{ .Values.namespace }}*/}}
+{{/*          port: 8080*/}}
+{{/*  tls:*/}}
+{{/*    secretName: lidonation-com-tls*/}}

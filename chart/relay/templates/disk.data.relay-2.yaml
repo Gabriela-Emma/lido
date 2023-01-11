@@ -1,12 +1,15 @@
+{{- if eq .Values.services.cardano.config.CARDANO_NETWORK "main" -}}
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: "{{ .Values.namespace }}-data-txrelay1-pvc"
+  name: "{{ .Values.namespace }}-data-relay2-pvc"
   namespace: {{ .Values.namespace }}
 spec:
   accessModes:
     - ReadWriteOnce
   storageClassName: "longhorn"
+  volumeName: "{{ .Values.namespace }}-data-relay2-pv"
   resources:
     requests:
       storage: {{ .Values.services.cardano.persistence.size }}
+{{- end -}}
