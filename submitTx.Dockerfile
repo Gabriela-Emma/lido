@@ -1,56 +1,18 @@
-FROM registry.lidonation.com/lidonation/lidonation/ubuntu-ghc-cabal-libsodium-cardano:1.35.4 as base
-
-FROM ubuntu:20.04
+FROM registry.lidonation.com/lidonation/lidonation/ubuntu-ghc-cabal-libsodium-cardano:1.35.4
 
 SHELL ["/bin/bash", "-c"]
-
-RUN apt-get update -y \
-    && DEBIAN_FRONTEND="noninteractive" apt-get install -y \
-        automake \
-        build-essential \
-        pkg-config \
-        libffi-dev \
-        dnsutils \
-        libgmp-dev \
-        libssl-dev \
-        libtinfo-dev \
-        libsystemd-dev \
-        zlib1g-dev \
-        make \
-        g++ \
-        tmux \
-        git \
-        jq \
-        wget \
-        libncursesw5 \
-        bc \
-        libtool \
-        autoconf \
-        curl procps bsdmainutils build-essential iproute2 tcptraceroute libffi-dev libc6 libgmp-dev libgmp10 libncurses-dev libncurses5 libtinfo5 \
-    && apt-get clean
-
-# Install libsodium
-RUN git clone https://github.com/input-output-hk/libsodium \
-    && cd libsodium \
-    && git checkout 66f017f1 \
-    && ./autogen.sh \
-    && ./configure \
-    && make \
-    && make install \
-    && cd .. && rm -rf libsodium
 
 EXPOSE 8080
 
 # Add scripts
 ADD src/pool/scripts/ /scripts/
 
-RUN mkdir -p /config # && apt-get install sqlite3
+RUN mkdir -p /config && apt-get update && apt-get install sudo -y
+
 COPY src/pool/config/build/ /config/
 COPY src/pool/cntools/ /cntools/
 
-COPY --from=base /root/.cabal/bin/ /scripts/
-
-ENV PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/scripts"
+RUN chmod -R +x /scripts/
 
 #RUN cd /scripts && wget https://hydra.iohk.io/build/16159630/download/1/cardano-node-1.35.4-linux.tar.gz &&\
 #    tar -xf cardano-node-1.35.4-linux.tar.gz &&\
@@ -58,11 +20,12 @@ ENV PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/scripts"
 
 WORKDIR /scripts
 
-RUN chmod -R +x /scripts/
+
+ENV PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/root/.cabal/bin:/root/.ghcup/bin:/root/.local/bin:/scripts:/scripts/functions"
 
 RUN useradd -ms /bin/bash cardano-node \
     && echo "cardano-node ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/cardano-node \
     && chmod 0440 /etc/sudoers.d/cardano-node \
     && chown cardano-node /config
 
-CMD ["/bin/bash", "/scripts/entrypoint", "--start"]
+CMD ["/bin/bash", "/entrypoint", "--start"]
