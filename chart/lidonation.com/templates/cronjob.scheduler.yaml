@@ -9,9 +9,10 @@ rules:
       - deployments
       - replicasets
       - pods
-      - "pods/list"
-      - "pods/exec"
+      - pods/list
+      - pods/exec
     verbs:
+      - 'create'
       - 'list'
       - 'get'
 ---
