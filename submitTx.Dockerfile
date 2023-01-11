@@ -19,6 +19,8 @@ COPY --from=base /root/.cabal/bin/cardano-node /scripts/
 #    tar -xf cardano-node-1.35.4-linux.tar.gz &&\
 #    rm cardano-node-1.35.4-linux.tar.gz
 
+WORKDIR /scripts
+
 RUN chmod -R +x /scripts/
 
 CMD ["/bin/bash", "/scripts/entrypoint", "--start"]
