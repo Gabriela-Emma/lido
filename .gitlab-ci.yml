@@ -340,8 +340,8 @@ image: registry.lidonation.com/infra-ops/gitlab-runner:main
       --version="$APP_VERSION"
   }
 
-  function deploy_cardano_services() {
-    DEPLOYMENT_NAME="$AUTO_DEVOPS_APP_PREFIX-cardano.$CI_ENVIRONMENT_SLUG"  
+  function deploy_relays() {
+    DEPLOYMENT_NAME="$AUTO_DEVOPS_APP_PREFIX-cardano-relays.$CI_ENVIRONMENT_SLUG"  
     echo "Deploying $DEPLOYMENT_NAME"
     
     helm upgrade "$DEPLOYMENT_NAME" ./chart/cardano \
@@ -393,12 +393,66 @@ image: registry.lidonation.com/infra-ops/gitlab-runner:main
        --set namespace=${KUBE_NAMESPACE} \
        --namespace="$KUBE_NAMESPACE" \
        --version="$APP_VERSION"
+  }
 
+  function deploy_producer() {
+    DEPLOYMENT_NAME="$AUTO_DEVOPS_APP_PREFIX-cardano-producer.$CI_ENVIRONMENT_SLUG"  
+    echo "Deploying $DEPLOYMENT_NAME"
+    
+    helm upgrade "$DEPLOYMENT_NAME" ./chart/cardano \
+       --wait \
+       --install \
+       --atomic \
+       -f ./chart/values.yaml \
+       --timeout 300s \
+       --set application.track="$track" \
+       --set certmanager.server="$cert_server" \
+       --set postgresqlPostgresPassword="$POSTGRESQL_DB_SYNC_POSTGRES_PASSWORD" \
+       --set postgresqlPassword="$POSTGRESQL_DB_SYNC_PASSWORD" \
+       --set postgresqlDatabase="$POSTGRESQL_DB_SYNC_DB" \
+       --set services.dbsync.db.secret.POSTGRESQL_DB="$POSTGRESQL_DB_SYNC_DB" \
+       --set services.dbsync.db.secret.POSTGRESQL_USERNAME="$POSTGRESQL_DB_SYNC_USER" \
+       --set services.dbsync.db.secret.POSTGRESQL_PASSWORD="$POSTGRESQL_DB_SYNC_PASSWORD" \
+       --set services.dbsync.db.secret.POSTGRESQL_POSTGRES_PASSWORD="$POSTGRESQL_DB_SYNC_POSTGRES_PASSWORD" \
+       --set services.redis.secret.REDIS_PASSWORD="$REDIS_PASSWORD" \
+       --set services.cardano.replicaCount="$replicas" \
+       --set services.cardano.image.repository="$CI_APPLICATION_REPOSITORY/cardano" \
+       --set services.cardano.config.AUTO_TOPOLOGY="$AUTO_TOPOLOGY" \
+       --set services.cardano.config.METADATA_URL="$METADATA_URL" \
+       --set services.cardano.config.NETWORK_ARGUMENT="$NETWORK_ARGUMENT" \
+       --set services.cardano.config.CARDANO_NETWORK="$CARDANO_NETWORK" \
+       --set services.cardano.config.NODE_PORT="$CARDANO_NODE_PORT" \
+       --set services.cardano.config.RELAY2_PORT="$RELAY2_PORT" \
+       --set services.cardano.config.POOL_ID="$POOL_ID" \
+       --set services.cardano.config.STAKE_ADDR="$STAKE_ADDR" \
+       --set services.cardano.config.PAYMENT_ADDR="$PAYMENT_ADDR" \
+       --set services.cardano.config.KUBERNETES_NAMESPACE="$KUBE_NAMESPACE" \
+       --set services.elasticsearch.realm.user="$ES_ADMIN_USER" \
+       --set services.elasticsearch.realm.passwordSha256="$(printf ${ES_ADMIN_PASSWORD} | base64 -d)" \
+       --set-file configurationFiles.config=./src/pool/config/$CARDANO_NETWORK/config.json \
+       --set-file configurationFiles.configProducer=./src/pool/config/$CARDANO_NETWORK/config.producer.json \
+       --set-file configurationFiles.configRelay2=./src/pool/config/$CARDANO_NETWORK/config.relay2.json \
+       --set-file configurationFiles.dbSyncConfig=./src/pool/config/$CARDANO_NETWORK/db-sync-config.json \
+       --set-file configurationFiles.submitApiConfig=./src/pool/config/$CARDANO_NETWORK/submit-api-config.json \
+       --set-file configurationFiles.topology.relay=./src/pool/config/$CARDANO_NETWORK/topology.relay.json \
+       --set-file configurationFiles.topology.relay2=./src/pool/config/$CARDANO_NETWORK/topology.relay2.json \
+       --set-file configurationFiles.topology.submittx=./src/pool/config/$CARDANO_NETWORK/topology.submittx.json \
+       --set-file configurationFiles.topology.producer=./src/pool/config/$CARDANO_NETWORK/topology.producer.json \
+       --set-file configurationFiles.testnetByronGenesis=./src/pool/config/build/preview-byron-genesis.json \
+       --set-file configurationFiles.testnetShelleyGenesis=./src/pool/config/build/preview-shelley-genesis.json \
+       --set-file configurationFiles.mainnetShelleyGenesis=./src/pool/config/build/mainnet-shelley-genesis.json \
+       --set-file configurationFiles.testnetAlonzoGenesis=./src/pool/config/build/preview-alonzo-genesis.json \
+       --set-file configurationFiles.mainnetAlonzoGenesis=./src/pool/config/build/mainnet-alonzo-genesis.json \       
+       --set image.tag="$CI_APPLICATION_TAG" \
+       --set image.pullSecret="$secret_name" \
+       --set namespace=${KUBE_NAMESPACE} \
+       --namespace="$KUBE_NAMESPACE" \
+       --version="$APP_VERSION"
   }
 
   function deploy_services() {
     if [[ "$DEPLOY_CARDANO_SERVICES" == 'True' || "$DEPLOY_CARDANO_SERVICES" == 'true' ]]; then
-      deploy_cardano_services
+      deploy_relays
     fi
     if [[ "$DEPLOY_CARDANO_TX_SUBMIT" == 'True' || "$DEPLOY_CARDANO_TX_SUBMIT" == 'true' ]]; then
       deploy_tx_sumit_api

@@ -1,0 +1,116 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: "{{ $.Chart.Name }}-cardano-relay-1"
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: "{{ $.Chart.Name }}-cardano-relay-1"
+    chart: "{{ $.Chart.Name }}-{{ $.Chart.Version }}"
+    role: relay
+    network: {{ .Values.services.cardano.config.CARDANO_NETWORK }}
+    release: {{ .Release.Name }}
+    client: {{.Values.labels.client}}
+    domain: {{.Values.labels.domain}}
+    service: {{.Values.labels.service}}
+spec:
+  selector:
+    matchLabels:
+      app: "{{ $.Chart.Name }}-cardano-relay-1"
+      release: {{ .Release.Name }}
+  replicas: 1
+  updateStrategy:
+    type: RollingUpdate
+  serviceName: "{{ $.Chart.Name }}-cardano-relay-1-service"
+  template:
+    metadata:
+      labels:
+        app: "{{ $.Chart.Name }}-cardano-relay-1"
+        chart: "{{ $.Chart.Name }}-{{ $.Chart.Version }}"
+        role: relay
+        network: {{ .Values.services.cardano.config.CARDANO_NETWORK }}
+        release: {{ .Release.Name }}
+        client: {{.Values.labels.client}}
+        domain: {{.Values.labels.domain}}
+        service: "relay"
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: app
+                    operator: In
+                    values:
+                      - "{{ $.Chart.Name }}-cardano-relay-1"
+              topologyKey: kubernetes.io/hostname
+      serviceAccountName: ""
+      volumes:
+        - name: node-ipc
+          emptyDir: { }
+        - name: "{{ $.Chart.Name }}-cardano-relay-1-pv"
+          persistentVolumeClaim:
+            claimName: "{{ .Values.namespace }}-data-relay1-pvc"
+        - name: node-configurations
+          configMap:
+            name: "{{ $.Chart.Name }}-cardano-configurations-configmap"
+      containers:
+        - name: relay
+          image: "{{ .Values.services.cardano.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: [ "entrypoint" ]
+          args: [ "--start" ]
+          resources:
+            requests:
+              cpu: 50m
+              memory: 511Mi
+            limits:
+              cpu: 4000m
+              memory: 16384Mi
+          env:
+            - name: NODE_PORT
+              value: "{{ .Values.services.cardano.config.NODE_PORT }}"
+            - name: HOST_ADDR
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+          envFrom:
+            - configMapRef:
+                name: "{{ $.Chart.Name }}-cardano-configmap"
+          ports:
+            - name: prometheus
+              containerPort: 11798
+            - name: crelay1
+              containerPort: {{ .Values.services.cardano.config.NODE_PORT }}
+          volumeMounts:
+            - mountPath: /ipc
+              name: node-ipc
+            - name: node-configurations
+              mountPath: /tmp/config
+            - name: "{{ $.Chart.Name }}-cardano-relay-1-pv"
+              mountPath: /data
+              readOnly: false
+        - name: ipc
+          image: alpine/socat:1.7.4.4-r0
+          env:
+            - name: PORT
+              value: "30111"
+          command: [
+            "sh",
+            "-c",
+            "socat TCP-LISTEN:${PORT},fork UNIX-CLIENT:/ipc/node.socket,ignoreeof"
+          ]
+          volumeMounts:
+            - name: node-ipc
+              mountPath: /ipc
+          ports:
+            - name: ipc
+              containerPort: 30111
+      tolerations:
+        - key: "tier"
+          operator: "Equal"
+          value: "t0"
+        - key: "tier"
+          operator: "Equal"
+          value: "t2"
+      imagePullSecrets:
+        - name: {{ .Values.image.pullSecret }}
