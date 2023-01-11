@@ -6,7 +6,7 @@ SHELL ["/bin/bash", "-c"]
 
 RUN apt-get update -y \
   && DEBIAN_FRONTEND="noninteractive" apt-get install -y \
-    sudo
+    sudo libssl-dev iproute2
 
 EXPOSE 8080
 
@@ -28,5 +28,10 @@ ENV PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/scripts"
 WORKDIR /scripts
 
 RUN chmod -R +x /scripts/
+
+RUN useradd -ms /bin/bash cardano-node \
+    && echo "cardano-node ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/cardano-node \
+    && chmod 0440 /etc/sudoers.d/cardano-node \
+    && chown cardano-node /config
 
 CMD ["/bin/bash", "/scripts/entrypoint", "--start"]
