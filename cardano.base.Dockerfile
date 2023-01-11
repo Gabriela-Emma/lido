@@ -52,9 +52,9 @@ RUN wget https://downloads.haskell.org/~ghc/8.10.7/ghc-8.10.7-x86_64-deb10-linux
 
 # Install cabal
 ENV PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/root/.cabal/bin:/root/.ghcup/bin:/root/.local/bin:/scripts:/scripts/functions"
-RUN wget https://downloads.haskell.org/cabal/cabal-install-3.8.1.0/cabal-install-3.8.1.0-x86_64-linux-deb10.tar.xz \
-    && tar -xf cabal-install-3.8.1.0-x86_64-linux-deb10.tar.xz \
-    && rm cabal-install-3.8.1.0-x86_64-linux-deb10.tar.xz \
+RUN wget https://downloads.haskell.org/cabal/cabal-install-3.6.2.0/cabal-install-3.6.2.0-x86_64-linux-deb10.tar.xz \
+    && tar -xf cabal-install-3.6.2.0-x86_64-linux-deb10.tar.xz \
+    && rm cabal-install-3.6.2.0-x86_64-linux-deb10.tar.xz \
     && mkdir -p ~/.local/bin \
     && mv cabal ~/.local/bin/ \
     && chmod +x /root/.local/bin/cabal \
@@ -94,7 +94,7 @@ RUN apt install llvm-9 -y \
 # Install cardano-node
 RUN echo "Compiling tags/$BRANCH..." \
     && cd cardano-node \
-    && cabal update && cabal configure -O0 --with-compiler=ghc-8.10.7 \
+    && cabal configure -O0 --with-compiler=ghc-8.10.7 && cabal update \
     && echo "package cardano-crypto-praos" >>  cabal.project.local \
     && echo "  flags: -external-libsodium-vrf" >>  cabal.project.local \
     && cabal build all \
