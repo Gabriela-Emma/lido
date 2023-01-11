@@ -93,7 +93,7 @@ RUN apt install llvm-9 -y \
 
 # Install cardano-node
 RUN echo "Compiling tags/$BRANCH..." \
-    && cd cardano-node \
+    && cd cardano-node && cabal update \
     && cabal configure -O0 --with-compiler=ghc-8.10.7 && cabal update \
     && echo "package cardano-crypto-praos" >>  cabal.project.local \
     && echo "  flags: -external-libsodium-vrf" >>  cabal.project.local \
