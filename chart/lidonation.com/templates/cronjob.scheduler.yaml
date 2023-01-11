@@ -22,7 +22,7 @@ metadata:
 subjects:
   - kind: ServiceAccount
     name: "sa-{{ $.Chart.Name }}-scheduler"
-    apiGroup: rbac.authorization.k8s.io
+    apiGroup: ""
 roleRef:
   kind: Role
   name: "{{ $.Chart.Name }}-scheduler"
