@@ -233,7 +233,6 @@ image: registry.lidonation.com/infra-ops/gitlab-runner:main
          --set-file configurationFiles.config=./src/pool/config/$CARDANO_NETWORK/config.json \
          --set-file configurationFiles.ogmiosConfig=./src/pool/config/$CARDANO_NETWORK/config.ogmios.json \
          --set-file configurationFiles.dbSyncConfig=./src/pool/config/$CARDANO_NETWORK/db-sync-config.json \
-         --set-file configurationFiles.submitApiConfig=./src/pool/config/$CARDANO_NETWORK/submit-api-config.json \
          --set-file configurationFiles.topology=./src/pool/config/$CARDANO_NETWORK/topology.relay.json \
          --set image.tag="$CI_APPLICATION_TAG" \
          --set image.pullSecret="$secret_name" \
@@ -321,7 +320,7 @@ image: registry.lidonation.com/infra-ops/gitlab-runner:main
       --set services.submitApi.image.repository="$CI_APPLICATION_REPOSITORY/cardano-submit-tx-api" \
       --set services.submitApi.networkArg="$NETWORK_ARGUMENT" \
       --set services.submitApi.ingress.host="$SUBMIT_API_HOSTS" \
-      --set services.elasticsearch.realm.passwordSha256="$(printf ${ES_ADMIN_PASSWORD} | base64 -d)" \
+      --set-file configurationFiles.submitApiConfig=./src/pool/config/$CARDANO_NETWORK/submit-api-config.json \
       --set image.tag="$CI_APPLICATION_TAG" \
       --set image.pullSecret="$secret_name" \
       --set namespace=${KUBE_NAMESPACE} \
