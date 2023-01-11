@@ -871,11 +871,11 @@ cnode:
     - if: '$CI_COMMIT_BRANCH == "main" &&
               ($DEPLOY_CARDANO_SERVICES == "True" || $DEPLOY_CARDANO_SERVICES == "true")
               || ($DEPLOY_CARDANO_RELAYS == "True" || $DEPLOY_CARDANO_RELAYS == "true")
-              || ($DEPLOY_CARDANO_PRODUCER == "True" || $DEPLOY_CARDANO_PRODUCER == "true")
+              || ($DEPLOY_CARDANO_PRODUCER == "True" || $DEPLOY_CARDANO_PRODUCER == "true")'
     - if: '$CI_COMMIT_BRANCH != "main" &&
-              ($DEPLOY_CARDANO_SERVICES == "True" || $DEPLOY_CARDANO_SERVICES == "true")'            
+              ($DEPLOY_CARDANO_SERVICES == "True" || $DEPLOY_CARDANO_SERVICES == "true")         
             || ($DEPLOY_CARDANO_RELAYS == "True" || $DEPLOY_CARDANO_RELAYS == "true")
-            || ($DEPLOY_CARDANO_PRODUCER == "True" || $DEPLOY_CARDANO_PRODUCER == "true")
+            || ($DEPLOY_CARDANO_PRODUCER == "True" || $DEPLOY_CARDANO_PRODUCER == "true")'
 
 cncli:
   stage: build_image
