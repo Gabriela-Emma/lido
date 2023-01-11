@@ -5,9 +5,29 @@ FROM ubuntu:20.04
 SHELL ["/bin/bash", "-c"]
 
 RUN apt-get update -y \
-  && DEBIAN_FRONTEND="noninteractive" apt-get install -y \
-    sudo libssl-dev iproute2 libssl-dev jq bc git libtool\
-    libtinfo5 libncurses5 libc6 libgmp-dev libgmp10 libncurses-dev
+    && DEBIAN_FRONTEND="noninteractive" apt-get install -y \
+        automake \
+        build-essential \
+        pkg-config \
+        libffi-dev \
+        dnsutils \
+        libgmp-dev \
+        libssl-dev \
+        libtinfo-dev \
+        libsystemd-dev \
+        zlib1g-dev \
+        make \
+        g++ \
+        tmux \
+        git \
+        jq \
+        wget \
+        libncursesw5 \
+        bc \
+        libtool \
+        autoconf \
+        curl procps bsdmainutils build-essential iproute2 tcptraceroute libffi-dev libc6 libgmp-dev libgmp10 libncurses-dev libncurses5 libtinfo5 \
+    && apt-get clean
 
 # Install libsodium
 RUN git clone https://github.com/input-output-hk/libsodium \
