@@ -14,10 +14,6 @@ COPY src/pool/cntools/ /cntools/
 
 RUN chmod -R +x /scripts/
 
-#RUN cd /scripts && wget https://hydra.iohk.io/build/16159630/download/1/cardano-node-1.35.4-linux.tar.gz &&\
-#    tar -xf cardano-node-1.35.4-linux.tar.gz &&\
-#    rm cardano-node-1.35.4-linux.tar.gz
-
 WORKDIR /scripts
 
 
