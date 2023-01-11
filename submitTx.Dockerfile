@@ -6,7 +6,17 @@ SHELL ["/bin/bash", "-c"]
 
 RUN apt-get update -y \
   && DEBIAN_FRONTEND="noninteractive" apt-get install -y \
-    sudo libssl-dev iproute2 libssl-dev
+    sudo libssl-dev iproute2 libssl-dev jq bc
+
+# Install libsodium
+RUN git clone https://github.com/input-output-hk/libsodium \
+    && cd libsodium \
+    && git checkout 66f017f1 \
+    && ./autogen.sh \
+    && ./configure \
+    && make \
+    && make install \
+    && cd .. && rm -rf libsodium
 
 EXPOSE 8080
 
