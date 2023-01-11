@@ -352,8 +352,8 @@ image: registry.lidonation.com/infra-ops/gitlab-runner:main
       --set services.cardano.config.PAYMENT_ADDR="$PAYMENT_ADDR" \
       --set services.cardano.config.KUBERNETES_NAMESPACE="$KUBE_NAMESPACE" \
       --set-file configurationFiles.config=./src/pool/config/$CARDANO_NETWORK/config.json \
-      --set-file configurationFiles.configProducer=./src/pool/config/$CARDANO_NETWORK/config.producer.json \      
-      --set-file configurationFiles.configRelay2=./src/pool/config/$CARDANO_NETWORK/config.relay2.json \      
+      --set-file configurationFiles.configProducer=./src/pool/config/$CARDANO_NETWORK/config.producer.json \
+      --set-file configurationFiles.configRelay2=./src/pool/config/$CARDANO_NETWORK/config.relay2.json \
       --set-file configurationFiles.dbSyncConfig=./src/pool/config/$CARDANO_NETWORK/db-sync-config.json \
       --set-file configurationFiles.submitApiConfig=./src/pool/config/$CARDANO_NETWORK/submit-api-config.json \
       --set-file configurationFiles.topology.producer=./src/pool/config/$CARDANO_NETWORK/topology.producer.json \
@@ -402,7 +402,7 @@ image: registry.lidonation.com/infra-ops/gitlab-runner:main
        --set services.cardano.config.PAYMENT_ADDR="$PAYMENT_ADDR" \
        --set services.cardano.config.KUBERNETES_NAMESPACE="$KUBE_NAMESPACE" \
        --set services.elasticsearch.realm.user="$ES_ADMIN_USER" \
-       --set services.elasticsearch.realm.passwordSha256="$(printf ${ES_ADMIN_PASSWORD} | base64 -d)" \              
+       --set services.elasticsearch.realm.passwordSha256="$(printf ${ES_ADMIN_PASSWORD} | base64 -d)" \
        --set image.tag="$CI_APPLICATION_TAG" \
        --set image.pullSecret="$secret_name" \
        --set namespace=${KUBE_NAMESPACE} \
