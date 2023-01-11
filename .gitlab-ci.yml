@@ -350,7 +350,7 @@ image: registry.lidonation.com/infra-ops/gitlab-runner:main
       --set services.cardano.config.POOL_ID="$POOL_ID" \
       --set services.cardano.config.STAKE_ADDR="$STAKE_ADDR" \
       --set services.cardano.config.PAYMENT_ADDR="$PAYMENT_ADDR" \
-      --set services.cardano.config.KUBERNETES_NAMESPACE="$KUBE_NAMESPACE" \      
+      --set services.cardano.config.KUBERNETES_NAMESPACE="$KUBE_NAMESPACE" \
       --set-file configurationFiles.config=./src/pool/config/$CARDANO_NETWORK/config.json \
       --set-file configurationFiles.configProducer=./src/pool/config/$CARDANO_NETWORK/config.producer.json \
       --set-file configurationFiles.dbSyncConfig=./src/pool/config/$CARDANO_NETWORK/db-sync-config.json \
