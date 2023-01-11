@@ -37,9 +37,6 @@ spec:
       volumes:
         - name: node-ipc
           emptyDir: {}
-        - name: pool-vars
-          configMap:
-            name: "{{ $.Chart.Name }}-cardano-pool-vars-configmap"
         - name: node-configurations
           configMap:
             name: "{{ $.Chart.Name }}-cardano-configurations-configmap"
@@ -86,7 +83,6 @@ spec:
               readOnly: false
             - name: "{{ $.Chart.Name }}-cardano-producer-pvc"
               mountPath: {{ .Values.services.cardano.persistence.mountPath }}
-              subPath: "lido/{{.Values.services.cardano.config.CARDANO_NETWORK}}/producer/data"
               readOnly: false
         - name: ipc
           image: alpine/socat:1.7.4.4-r0

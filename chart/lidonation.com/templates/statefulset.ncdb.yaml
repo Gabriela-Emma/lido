@@ -15,10 +15,6 @@ spec:
         service: "{{ $.Chart.Name }}-ncdb"
     spec:
       terminationGracePeriodSeconds: 10
-      volumes:
-        - name: "{{ $.Chart.Name }}-ncdb-pv"
-          persistentVolumeClaim:
-            claimName: "{{ .Values.namespace }}-ncdb-pvc"
       containers:
         - name: ncdb
           image: nocodb/nocodb:0.100.2
@@ -50,17 +46,15 @@ spec:
           volumeMounts:
             - name: "{{ $.Chart.Name }}-ncdb-pv"
               mountPath: /usr/app/data
-              subPath: "lido/{{.Values.services.cardano.config.CARDANO_NETWORK}}/ncdb"
               readOnly: false
-      tolerations:
-        - key: "tier"
-          operator: "Equal"
-          value: "t0"
-        - key: "tier"
-          operator: "Equal"
-          value: "t1"
-        - key: "tier"
-          operator: "Equal"
-          value: "t2"
       imagePullSecrets:
         - name: {{ .Values.image.pullSecret }}
+  volumeClaimTemplates:
+    - metadata:
+        name: "{{ $.Chart.Name }}-ncdb-pv"
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        storageClassName: "longhorn"
+        resources:
+          requests:
+            storage: 20Gi

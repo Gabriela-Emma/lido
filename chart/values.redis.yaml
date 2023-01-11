@@ -57,7 +57,7 @@ extraDeploy: []
 image:
   registry: docker.io
   repository: bitnami/redis
-  tag: 7.0.5-debian-11-r13
+  tag: 7.0.7-debian-11-r9
   ## Specify a imagePullPolicy
   ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
   ## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
@@ -294,10 +294,10 @@ master:
   ## @param master.tolerations Tolerations for Redis(TM) master pods assignment
   ## ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
   ##
-  tolerations:
-    - key: "tier"
-      operator: "Equal"
-      value: "t2"
+  #  tolerations:
+  #    - key: "tier"
+  #      operator: "Equal"
+  #      value: "t2"
   ## @param master.spreadConstraints Spread Constraints for Redis(TM) master pod assignment
   ## ref: https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/
   ## E.g.
@@ -364,7 +364,7 @@ master:
       - ReadWriteOnce
     ## @param master.persistence.size Persistent Volume size
     ##
-    size: 20Gi
+    size: 40Gi
     ## @param master.persistence.annotations Additional custom annotations for the PVC
     ##
     annotations: {}
@@ -595,10 +595,10 @@ replica:
   ## @param replica.tolerations Tolerations for Redis(TM) replicas pods assignment
   ## ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
   ##
-  tolerations:
-    - key: "tier"
-      operator: "Equal"
-      value: "t2"
+  #  tolerations:
+  #    - key: "tier"
+  #      operator: "Equal"
+  #      value: "t2"
   ## @param replica.spreadConstraints Spread Constraints for Redis(TM) replicas pod assignment
   ## ref: https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/
   ## E.g.

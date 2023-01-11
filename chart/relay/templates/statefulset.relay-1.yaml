@@ -1,11 +1,10 @@
-{{- if eq .Values.services.cardano.config.CARDANO_NETWORK "main" -}}
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: "{{ $.Chart.Name }}-cardano-relay-2"
+  name: "{{ $.Chart.Name }}-cardano-relay-1"
   namespace: {{ .Values.namespace }}
   labels:
-    app: "{{ $.Chart.Name }}-cardano-relay-2"
+    app: "{{ $.Chart.Name }}-cardano-relay-1"
     chart: "{{ $.Chart.Name }}-{{ $.Chart.Version }}"
     role: relay
     network: {{ .Values.services.cardano.config.CARDANO_NETWORK }}
@@ -16,16 +15,16 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: "{{ $.Chart.Name }}-cardano-relay-2"
+      app: "{{ $.Chart.Name }}-cardano-relay-1"
       release: {{ .Release.Name }}
   replicas: 1
   updateStrategy:
     type: RollingUpdate
-  serviceName: "{{ $.Chart.Name }}-cardano-relay-2-service"
+  serviceName: "{{ $.Chart.Name }}-cardano-relay-1-service"
   template:
     metadata:
       labels:
-        app: "{{ $.Chart.Name }}-cardano-relay-2"
+        app: "{{ $.Chart.Name }}-cardano-relay-1"
         chart: "{{ $.Chart.Name }}-{{ $.Chart.Version }}"
         role: relay
         network: {{ .Values.services.cardano.config.CARDANO_NETWORK }}
@@ -42,15 +41,15 @@ spec:
                   - key: app
                     operator: In
                     values:
-                      -  "{{ $.Chart.Name }}-cardano-relay-2"
+                      - "{{ $.Chart.Name }}-cardano-relay-1"
               topologyKey: kubernetes.io/hostname
       serviceAccountName: ""
       volumes:
         - name: node-ipc
-          emptyDir: {}
-        - name: "{{ $.Chart.Name }}-cardano-relay-2-pv"
+          emptyDir: { }
+        - name: "{{ $.Chart.Name }}-cardano-relay-1-pv"
           persistentVolumeClaim:
-            claimName: "{{ .Values.namespace }}-data-relay2-pvc"
+            claimName: "{{ .Values.namespace }}-data-relay1-pvc"
         - name: node-configurations
           configMap:
             name: "{{ $.Chart.Name }}-cardano-configurations-configmap"
@@ -58,8 +57,8 @@ spec:
         - name: relay
           image: "{{ .Values.services.cardano.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          command: ["entrypoint"]
-          args: ["--start"]
+          command: [ "entrypoint" ]
+          args: [ "--start" ]
           resources:
             requests:
               cpu: 50m
@@ -68,10 +67,8 @@ spec:
               cpu: 4000m
               memory: 16384Mi
           env:
-            - name: NODE_NAME
-              value: "relay2"
             - name: NODE_PORT
-              value: "{{ .Values.services.cardano.config.RELAY2_PORT }}"
+              value: "{{ .Values.services.cardano.config.NODE_PORT }}"
             - name: HOST_ADDR
               valueFrom:
                 fieldRef:
@@ -82,33 +79,32 @@ spec:
           ports:
             - name: prometheus
               containerPort: 11798
-            - name: crelay2
-              containerPort: {{ .Values.services.cardano.config.RELAY2_PORT }}
+            - name: crelay1
+              containerPort: {{ .Values.services.cardano.config.NODE_PORT }}
           volumeMounts:
             - mountPath: /ipc
               name: node-ipc
             - name: node-configurations
               mountPath: /tmp/config
-            - name: "{{ $.Chart.Name }}-cardano-relay-2-pv"
+            - name: "{{ $.Chart.Name }}-cardano-relay-1-pv"
               mountPath: /data
-              subPath: "lido/{{.Values.services.cardano.config.CARDANO_NETWORK}}/relay2/data"
               readOnly: false
         - name: ipc
           image: alpine/socat:1.7.4.4-r0
           env:
             - name: PORT
-              value: "30112"
+              value: "30111"
           command: [
-              "sh",
-              "-c",
-              "socat TCP-LISTEN:${PORT},fork UNIX-CLIENT:/ipc/node.socket,ignoreeof"
+            "sh",
+            "-c",
+            "socat TCP-LISTEN:${PORT},fork UNIX-CLIENT:/ipc/node.socket,ignoreeof"
           ]
           volumeMounts:
             - name: node-ipc
               mountPath: /ipc
           ports:
             - name: ipc
-              containerPort: 30112
+              containerPort: 30111
       tolerations:
         - key: "tier"
           operator: "Equal"
@@ -118,4 +114,3 @@ spec:
           value: "t2"
       imagePullSecrets:
         - name: {{ .Values.image.pullSecret }}
-{{- end -}}
