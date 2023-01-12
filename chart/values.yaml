@@ -303,7 +303,7 @@ services:
   dbsync_db:
     persistence:
       enabled: true
-      size: 20Gi
+      size: 100Gi
     secret:
       POSTGRESQL_DB: lidoweb
       POSTGRESQL_USERNAME: lnation

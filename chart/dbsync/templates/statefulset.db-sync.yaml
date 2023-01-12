@@ -142,9 +142,5 @@ spec:
           - mountPath: /ipc
             name: node-ipc
             readOnly: false
-      tolerations:
-        - key: "tier"
-          operator: "Equal"
-          value: "t2"
       imagePullSecrets:
         - name: {{ .Values.image.pullSecret }}
