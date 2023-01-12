@@ -6,7 +6,7 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: ""
+  storageClassName: "longhorn"
   volumeName: "{{ .Values.namespace }}-data-relay1-pv"
   resources:
     requests:

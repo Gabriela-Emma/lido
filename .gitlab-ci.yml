@@ -399,6 +399,7 @@ image: registry.lidonation.com/infra-ops/gitlab-runner:main
        --set services.cardano.config.RELAY2_PORT="$RELAY2_PORT" \
        --set services.cardano.config.POOL_ID="$POOL_ID" \
        --set services.cardano.config.STAKE_ADDR="$STAKE_ADDR" \
+       --set services.cardano.persistence.size="$CARDANO_NODE_STORAGE_SIZE" \
        --set services.cardano.config.PAYMENT_ADDR="$PAYMENT_ADDR" \
        --set services.cardano.config.KUBERNETES_NAMESPACE="$KUBE_NAMESPACE" \
        --set services.elasticsearch.realm.user="$ES_ADMIN_USER" \
