@@ -95,6 +95,7 @@ services:
             HTTPS: "on"
         annotations: {
           kubernetes.io/ingress.class: traefik,
+          traefik.ingress.kubernetes.io/router.entrypoints: websecure,
           cert-manager.io/cluster-issuer: letsencrypt-issuer
         }
         host: graphql.preview.lidonation.com
@@ -111,8 +112,9 @@ services:
             HTTPS: "on"
         annotations: {
           kubernetes.io/ingress.class: traefik,
+          traefik.ingress.kubernetes.io/router.entrypoints: websecure,
           cert-manager.io/cluster-issuer: letsencrypt-issuer,
-#          traefik.ingress.kubernetes.io/router.middlewares: traefik-redirect-http-to-https@kubernetescrd
+          traefik.ingress.kubernetes.io/router.middlewares: traefik-redirect-http-to-https@kubernetescrd
         }
         host: graphql.preview.lidonation.com
         tls:
@@ -130,8 +132,9 @@ services:
           HTTPS: "on"
       annotations: {
         kubernetes.io/ingress.class: traefik,
+        traefik.ingress.kubernetes.io/router.entrypoints: websecure,
         cert-manager.io/cluster-issuer: letsencrypt-issuer,
-#        traefik.ingress.kubernetes.io/router.middlewares: traefik-redirect-http-to-https@kubernetescrd
+        traefik.ingress.kubernetes.io/router.middlewares: traefik-redirect-http-to-https@kubernetescrd
       }
       host: ncdb.lidonation.com
       tls:
@@ -151,9 +154,10 @@ services:
           HTTPS: "on"
       annotations: {
         kubernetes.io/ingress.class: traefik,
+        traefik.ingress.kubernetes.io/router.entrypoints: websecure,
         ingress.kubernetes.io/rewrite-target: /,
         cert-manager.io/cluster-issuer: letsencrypt-issuer,
-#        traefik.ingress.kubernetes.io/router.middlewares: traefik-redirect-http-to-https@kubernetescrd,traefik-redirect-to-www@kubernetescrd
+        traefik.ingress.kubernetes.io/router.middlewares: traefik-redirect-http-to-https@kubernetescrd,traefik-redirect-to-www@kubernetescrd
       }
       hosts:
         - www.lidonation.com
@@ -320,6 +324,7 @@ services:
           HTTPS: "on"
       annotations: {
         kubernetes.io/ingress.class: traefik,
+        traefik.ingress.kubernetes.io/router.entrypoints: websecure,
         cert-manager.io/cluster-issuer: letsencrypt-issuer
       }
       host: tx.lidonation.com

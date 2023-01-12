@@ -61,11 +61,11 @@ spec:
           args: [ "--start" ]
           resources:
             requests:
-              cpu: 50m
-              memory: 511Mi
-            limits:
-              cpu: 4000m
+              cpu: "1"
               memory: 16384Mi
+            limits:
+              cpu: "7"
+              memory: 36864Mi
           env:
             - name: NODE_PORT
               value: "{{ .Values.services.cardano.config.NODE_PORT }}"
