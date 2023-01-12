@@ -96,7 +96,7 @@ spec:
               exec:
                 command: [
                     "/bin/bash", "-c",
-                    "cp /tmp/config/* /config"
+                    "cp /tmp/config/* /config && cp /config/* /tmp/netconfig"
                 ]
             preStop:
               exec:
@@ -117,12 +117,11 @@ spec:
               readOnly: true
             - name: "{{ $.Chart.Name }}-cardano-db-sync-pv"
               mountPath: /var/lib/cexplorer
+              subPath: cexplorer
               readOnly: false
-            # - name: "{{ $.Chart.Name }}-cardano-db-sync-pv"
-            #   mountPath: /tmp/opt
-            #   readOnly: false
             - name: "{{ $.Chart.Name }}-cardano-db-sync-pv"
-              mountPath: /tmp
+              mountPath: /tmp/netconfig
+              subPath: config
               readOnly: false
         - name: ipc
           image: alpine/socat:1.7.4.4-r0
@@ -142,9 +141,5 @@ spec:
           - mountPath: /ipc
             name: node-ipc
             readOnly: false
-      tolerations:
-        - key: "tier"
-          operator: "Equal"
-          value: "t2"
       imagePullSecrets:
         - name: {{ .Values.image.pullSecret }}

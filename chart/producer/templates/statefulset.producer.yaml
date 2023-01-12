@@ -76,8 +76,6 @@ spec:
           volumeMounts:
             - name: node-ipc
               mountPath: /ipc
-            - name: pool-vars
-              mountPath: /data/pool/lido/VARS
             - name: node-configurations
               mountPath: /tmp/config
               readOnly: false
@@ -100,12 +98,5 @@ spec:
           ports:
             - name: ipc
               containerPort: 30111
-      tolerations:
-        - key: "tier"
-          operator: "Equal"
-          value: "t0"
-        - key: "tier"
-          operator: "Equal"
-          value: "t2"
       imagePullSecrets:
         - name: {{ .Values.image.pullSecret }}
