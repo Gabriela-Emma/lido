@@ -76,8 +76,6 @@ spec:
           volumeMounts:
             - name: node-ipc
               mountPath: /ipc
-            - name: pool-vars
-              mountPath: /data/pool/lido/VARS
             - name: node-configurations
               mountPath: /tmp/config
               readOnly: false
