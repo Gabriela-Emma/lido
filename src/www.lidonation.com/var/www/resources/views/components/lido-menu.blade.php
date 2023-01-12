@@ -29,13 +29,31 @@
                 x-trap.noscroll.inert="open"
                 class="container"
             >
-                <div class="relative overflow-y-auto rounded-sm bg-white shadow-lg">
-                    <div class="flex flex-col-reverse items-start justify-between sm:flex-row flex-wrap">
-                        <div class="p-6 flex flex-col justify-between h-full flex-1">
-                            <div>
-                                <p class="mt-2 text-gray-600">
-                                    Are you sure you want to learn how to create an awesome modal?
-                                </p>
+                <div class="relative overflow-y-auto rounded-sm bg-white shadow-lg h-full">
+                    <div class="flex flex-col-reversen h-full sm:flex-row">
+                        <div class="p-1 flex flex-col justify-between flex-1">
+                            <div class="p-3">
+                                <nav class="flex flex-row gap-4">
+                                    @foreach($lidoMenu as $menu)
+                                        <div>
+                                            <h3 class="text-base font-bold text-teal-600">
+                                                {{$menu?->title}}
+                                            </h3>
+                                            @isset($menu?->items)
+                                            <ul role="list" class="mt-5 space-y-6">
+                                                @foreach($menu?->items as $item)
+                                                    <li class="flow-root">
+                                                        <a href="{{$item->route}}"
+                                                           class="-m-3 flex items-center rounded-md p-3 text-base font-medium text-gray-900 transition duration-150 ease-in-out hover:bg-gray-50">
+                                                            {{$item->title}}
+                                                        </a>
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                            @endisset
+                                        </div>
+                                    @endforeach
+                                </nav>
                             </div>
 
                             <div class="flex flex-row w-full text-center text-white">
