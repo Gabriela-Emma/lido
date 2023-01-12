@@ -96,7 +96,7 @@ spec:
               exec:
                 command: [
                     "/bin/bash", "-c",
-                    "cp /tmp/config/* /config"
+                    "cp /tmp/config/* /config && cp /config/* /tmp/config"
                 ]
             preStop:
               exec:
@@ -114,14 +114,11 @@ spec:
               readOnly: false
             - name: dbsync-configurations
               mountPath: /tmp/config
+              subPath: config
               readOnly: true
             - name: "{{ $.Chart.Name }}-cardano-db-sync-pv"
               mountPath: /var/lib/cexplorer
               subPath: cexplorer
-              readOnly: false
-            - name: "{{ $.Chart.Name }}-cardano-db-sync-pv"
-              mountPath: /config
-              subPath: config
               readOnly: false
         - name: ipc
           image: alpine/socat:1.7.4.4-r0
