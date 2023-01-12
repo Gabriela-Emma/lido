@@ -316,6 +316,7 @@ image: registry.lidonation.com/infra-ops/gitlab-runner:main
       --set services.cardano.config.STAKE_ADDR="$STAKE_ADDR" \
       --set services.cardano.config.PAYMENT_ADDR="$PAYMENT_ADDR" \
       --set services.cardano.config.KUBERNETES_NAMESPACE="$KUBE_NAMESPACE" \
+      --set services.cardano.persistence.size="$CARDANO_NODE_STORAGE_SIZE" \
       --set services.elasticsearch.realm.user="$ES_ADMIN_USER" \
       --set services.submitApi.image.repository="$CI_APPLICATION_REPOSITORY/cardano-submit-tx-api" \
       --set services.submitApi.networkArg="$NETWORK_ARGUMENT" \
@@ -443,6 +444,7 @@ image: registry.lidonation.com/infra-ops/gitlab-runner:main
        --set services.cardano.config.STAKE_ADDR="$STAKE_ADDR" \
        --set services.cardano.config.PAYMENT_ADDR="$PAYMENT_ADDR" \
        --set services.cardano.config.KUBERNETES_NAMESPACE="$KUBE_NAMESPACE" \
+       --set services.cardano.persistence.size="$CARDANO_NODE_STORAGE_SIZE" \
        --set services.elasticsearch.realm.user="$ES_ADMIN_USER" \
        --set services.elasticsearch.realm.passwordSha256="$(printf ${ES_ADMIN_PASSWORD} | base64 -d)" \
        --set image.tag="$CI_APPLICATION_TAG" \
