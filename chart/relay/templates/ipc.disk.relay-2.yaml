@@ -1,0 +1,14 @@
+{{- if eq .Values.services.cardano.config.CARDANO_NETWORK "main" -}}
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: "{{ .Values.namespace }}-relay2-ipc-pvc"
+  namespace: {{ .Values.namespace }}
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: "longhorn"
+  resources:
+    requests:
+      storage: 2Mi
+{{- end -}}
