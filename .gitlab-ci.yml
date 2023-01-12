@@ -456,6 +456,12 @@ image: registry.lidonation.com/infra-ops/gitlab-runner:main
       deploy_cardano_configs
       deploy_relays
       deploy_producer
+    fi  
+    if [[ "$DEPLOY_CARDANO_RELAYS" == 'True' || "$DEPLOY_CARDANO_RELAYS" == 'true' ]]; then
+      deploy_relays
+    fi
+    if [[ "$DEPLOY_CARDANO_PRODUCER" == 'True' || "$DEPLOY_CARDANO_PRODUCER" == 'true' ]]; then
+      deploy_producer
     fi
     if [[ "$DEPLOY_CARDANO_CONFIGS" == 'True' || "$DEPLOY_CARDANO_CONFIGS" == 'true' ]]; then
       deploy_cardano_configs
