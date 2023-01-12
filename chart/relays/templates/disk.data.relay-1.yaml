@@ -12,6 +12,7 @@ spec:
     storage: {{ .Values.services.cardano.persistence.size }}
   accessModes:
     - ReadWriteOnce
+  volumeMode: Filesystem
   persistentVolumeReclaimPolicy: Retain
 ---
 kind: PersistentVolumeClaim
