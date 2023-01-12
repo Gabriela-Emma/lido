@@ -373,7 +373,7 @@ image: registry.lidonation.com/infra-ops/gitlab-runner:main
     DEPLOYMENT_NAME="$AUTO_DEVOPS_APP_PREFIX-cardano-relays.$CI_ENVIRONMENT_SLUG"  
     echo "Deploying $DEPLOYMENT_NAME"
     
-    helm upgrade "$DEPLOYMENT_NAME" ./chart/cardano \
+    helm upgrade "$DEPLOYMENT_NAME" ./chart/relays \
        --wait \
        --install \
        --atomic \
