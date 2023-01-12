@@ -117,12 +117,11 @@ spec:
               readOnly: true
             - name: "{{ $.Chart.Name }}-cardano-db-sync-pv"
               mountPath: /var/lib/cexplorer
+              subPath: cexplorer
               readOnly: false
-            # - name: "{{ $.Chart.Name }}-cardano-db-sync-pv"
-            #   mountPath: /tmp/opt
-            #   readOnly: false
             - name: "{{ $.Chart.Name }}-cardano-db-sync-pv"
-              mountPath: /tmp
+              mountPath: /config
+              subPath: config
               readOnly: false
         - name: ipc
           image: alpine/socat:1.7.4.4-r0

@@ -68,10 +68,3 @@ spec:
           - name: dbsync-postgresql
             mountPath: /run/secrets
             readOnly: false
-      tolerations:
-        - key: "tier"
-          operator: "Equal"
-          value: "t0"
-        - key: "tier"
-          operator: "Equal"
-          value: "t2"

@@ -26,8 +26,6 @@ spec:
       imagePullSecrets:
         - name: {{ .Values.image.pullSecret }}
       volumes:
-        - name: config
-          emptyDir: {}
         - name: node-ipc
           emptyDir: {}
         - name: dbsync-configurations
@@ -56,9 +54,6 @@ spec:
             - name: "{{ $.Chart.Name }}-cardano-db-sync-pv"
               mountPath: /config
               readOnly: false
-#            - name: config
-#              mountPath: /config
-#              readOnly: false
       containers:
       - name: app
         image: "{{ .Values.services.dbsync.ogmios.image.repository }}:{{ .Values.services.dbsync.ogmios.image.tag }}"
@@ -94,6 +89,7 @@ spec:
         volumeMounts:
           - name: "{{ $.Chart.Name }}-cardano-db-sync-pv"
             mountPath: /config
+            subPath: config
             readOnly: false
           - name: node-ipc
             mountPath: /ipc
@@ -116,13 +112,3 @@ spec:
         - mountPath: /ipc
           name: node-ipc
           readOnly: false
-      tolerations:
-        - key: "tier"
-          operator: "Equal"
-          value: "t0"
-        - key: "tier"
-          operator: "Equal"
-          value: "t1"
-        - key: "tier"
-          operator: "Equal"
-          value: "t2"
