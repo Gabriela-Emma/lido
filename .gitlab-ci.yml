@@ -373,7 +373,7 @@ image: registry.lidonation.com/infra-ops/gitlab-runner:main
     DEPLOYMENT_NAME="$AUTO_DEVOPS_APP_PREFIX-cardano-relays.$CI_ENVIRONMENT_SLUG"  
     echo "Deploying $DEPLOYMENT_NAME"
     
-    helm upgrade "$DEPLOYMENT_NAME" ./chart/cardano \
+    helm upgrade "$DEPLOYMENT_NAME" ./chart/relays \
        --wait \
        --install \
        --atomic \
@@ -399,6 +399,7 @@ image: registry.lidonation.com/infra-ops/gitlab-runner:main
        --set services.cardano.config.RELAY2_PORT="$RELAY2_PORT" \
        --set services.cardano.config.POOL_ID="$POOL_ID" \
        --set services.cardano.config.STAKE_ADDR="$STAKE_ADDR" \
+       --set services.cardano.persistence.size="$CARDANO_NODE_STORAGE_SIZE" \
        --set services.cardano.config.PAYMENT_ADDR="$PAYMENT_ADDR" \
        --set services.cardano.config.KUBERNETES_NAMESPACE="$KUBE_NAMESPACE" \
        --set services.elasticsearch.realm.user="$ES_ADMIN_USER" \
@@ -455,6 +456,12 @@ image: registry.lidonation.com/infra-ops/gitlab-runner:main
     if [[ "$DEPLOY_CARDANO_SERVICES" == 'True' || "$DEPLOY_CARDANO_SERVICES" == 'true' ]]; then
       deploy_cardano_configs
       deploy_relays
+      deploy_producer
+    fi  
+    if [[ "$DEPLOY_CARDANO_RELAYS" == 'True' || "$DEPLOY_CARDANO_RELAYS" == 'true' ]]; then
+      deploy_relays
+    fi
+    if [[ "$DEPLOY_CARDANO_PRODUCER" == 'True' || "$DEPLOY_CARDANO_PRODUCER" == 'true' ]]; then
       deploy_producer
     fi
     if [[ "$DEPLOY_CARDANO_CONFIGS" == 'True' || "$DEPLOY_CARDANO_CONFIGS" == 'true' ]]; then
