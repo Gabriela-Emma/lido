@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "{{ $.Chart.Name }}-cardano-pool-vars-configmap"
+  labels:
+    name: "{{ $.Chart.Name }}-cardano-pool-vars-configmap"
+  namespace: {{ .Values.namespace }}
+data:
+  POOL_ID: |-
+  {{- .Values.poolVars.POOL_ID | nindent 4}}
+  POOL_VARS: |-
+  {{- .Values.poolVars.POOL_VARS | nindent 4}}
