@@ -9,7 +9,7 @@
 # Common variables set in env file   #
 ######################################
 
-#CPU_CORES=2              # Number of CPU cores cardano-node process has access to (please don't set higher than physical core count, 2-4 recommended)
+CPU_CORES=4              # Number of CPU cores cardano-node process has access to (please don't set higher than physical core count, 2-4 recommended)
 #MEMPOOL_BYTES=8388608    # Override mempool in bytes (Default: Do not override)
 #CNODE_LISTEN_IP4=0.0.0.0 # IP to use for listening (only applicable to Node Connection Port) for IPv4
 #CNODE_LISTEN_IP6=::      # IP to use for listening (only applicable to Node Connection Port) for IPv6
