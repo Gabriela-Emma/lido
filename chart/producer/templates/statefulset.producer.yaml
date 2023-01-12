@@ -51,10 +51,10 @@ spec:
           args: ["--start", "--staking"]
           resources:
             requests:
-              cpu: 1
+              cpu: "1"
               memory: 16384Mi
             limits:
-              cpu: 7000m
+              cpu: "7"
               memory: 36864Mi
           env:
             - name: NODE_RELAY

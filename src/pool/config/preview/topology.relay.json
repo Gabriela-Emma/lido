@@ -28,7 +28,7 @@
             "port": 30002
           }
         ],
-        "advertise": false
+        "advertise": true
       }
     }
   ],
