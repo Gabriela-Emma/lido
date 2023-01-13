@@ -146,8 +146,8 @@ return [
             ]),
             new Illuminate\Support\Fluent([
                 'title' => 'Lido Nation Projects',
-                'route_type' => 'url',
-                'route' => 'project-catalyst/group/lidonation'
+                'route_type' => 'route_name',
+                'route' => 'lido-blockchain-labs.nairobi'
             ]),
             new Illuminate\Support\Fluent([
                 'title' => 'Catalyst Explorer',

@@ -53,7 +53,6 @@ Alpine.data('hoskyVideo', function () {
     }
 });
 
-
 Alpine.data('everyEpoch', function () {
     return {
         quiz: null,
@@ -699,5 +698,5 @@ document.addEventListener('livewire:load', function () {
     console.log(this.$wire);
 });
 
-window.Alpine = Alpine;
-window.Alpine.start();
+// window.Alpine = Alpine;
+Alpine.start();

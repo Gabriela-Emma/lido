@@ -17,7 +17,7 @@ import {componentToggle} from "@/lib/utils/componentToggle";
 import WalletService from "@/lib/services/WalletService";
 import {globalVideoPlayer} from "@/lib/utils/globalVideoPlayer";
 import tippy from "tippy.js";
-// import masonry from 'alpinejs-masonry';
+import masonry from 'alpinejs-masonry';
 
 import { createApp, h } from 'vue'
 import { createInertiaApp } from '@inertiajs/inertia-vue3';
@@ -45,15 +45,8 @@ Alpine.plugin(Tooltip);
 Alpine.plugin(persist);
 Alpine.plugin(focus);
 Alpine.plugin(collapse);
-// Alpine.plugin(masonry);
+Alpine.plugin(masonry);
 
-
-// const elem = document.querySelector('.masonry');
-// const msnry = Masonary( '.masonry', {
-//     // options
-//     itemSelector: '.masonry-item',
-//     columnWidth: 200
-// });
 
 window.comment = function comment(comment) {
     return {
