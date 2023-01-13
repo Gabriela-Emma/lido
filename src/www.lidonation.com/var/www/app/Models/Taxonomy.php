@@ -82,7 +82,7 @@ class Taxonomy extends Model implements HasMedia, HasLink
     protected function models(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => $value ?? $this->news->concat($this->reviews)->concat($this->insights),
+            get: fn ($value) => ($value ?? $this->news->concat($this->reviews)->concat($this->insights))->sortByDesc('published_at'),
         );
     }
 

@@ -4,6 +4,7 @@ namespace App\Http\View\Composers;
 
 use App\Models\Insight;
 use App\Models\News;
+use App\Models\ExternalPost;
 use App\Repositories\PostRepository;
 use Illuminate\View\View;
 
@@ -35,7 +36,12 @@ class PostComposer
             request()
                 ->route('slug')
         );
-        $post = $news ?? $insight;
+        $externalPost = $this->posts->setModel(new ExternalPost)->get(
+            request()
+                ->route('slug')
+        );
+
+        $post = $news ?? $insight ?? $externalPost;
         $title = $post?->title;
         $view->with(compact('post', 'title'));
     }
