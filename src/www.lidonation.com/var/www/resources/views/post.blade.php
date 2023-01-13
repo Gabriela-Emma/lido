@@ -1,4 +1,8 @@
 <x-public-layout class="post" :metaTitle="$post->title">
+    @push('json-ld')
+     <x-public.json-ld :post="$post"></x-public.json-ld>
+    @endpush
+
     @push('openGraph')
         <meta property="og:type" content="article"/>
         <meta property="og:title" content="{{$post->title}}"/>

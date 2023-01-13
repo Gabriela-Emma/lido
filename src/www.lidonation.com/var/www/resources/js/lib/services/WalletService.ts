@@ -116,6 +116,12 @@ export default class WalletService {
         return <string>await this.lucid.wallet.address();
     }
 
+    public async confirmWalletOwnership(frostStakeAddress:string, userStakeAddress: string) {
+
+        return (frostStakeAddress == userStakeAddress);
+ 
+    }
+
     public async signMessage(wallet: string, msg: string) {
         await this.init(wallet);
         if (!this.api) {

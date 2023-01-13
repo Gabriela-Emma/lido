@@ -53,6 +53,8 @@
 
     @include('includes.footer')
 
+    <x-public.menu-mobile></x-public.menu-mobile>
+
     <script src="{{ l5_swagger_asset($documentation, 'swagger-ui-bundle.js') }}"></script>
     <script src="{{ l5_swagger_asset($documentation, 'swagger-ui-standalone-preset.js') }}"></script>
     <script>

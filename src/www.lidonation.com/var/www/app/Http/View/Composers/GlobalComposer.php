@@ -2,7 +2,6 @@
 
 namespace App\Http\View\Composers;
 
-use App\Invokables\GetLidoMenu;
 use App\Models\News;
 use App\Models\User;
 use App\Repositories\AdaRepository;
@@ -48,8 +47,6 @@ class GlobalComposer
         $this->user = Auth::user();
         $this->snippets = app(SnippetService::class)->getSnippets();
         $this->settings = app(SettingService::class)->getSettings();
-        $this->lidoMenu = (new GetLidoMenu)();
-//        dd($this->lidoMenu);
     }
 
     /**
@@ -61,7 +58,6 @@ class GlobalComposer
     public function compose(View $view): void
     {
         $view->with([
-            'lidoMenu' => $this->lidoMenu,
             'quickNews' => $this->quickNews,
             'adaQuote' => $this->adaQuote,
             'user' => $this->user,

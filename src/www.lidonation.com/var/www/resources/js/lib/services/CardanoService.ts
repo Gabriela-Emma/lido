@@ -49,6 +49,13 @@ export default class CardanoService {
         return (await this.api.get(`/accounts/${stakeAddress}/rewards`, {params: {order: 'desc'}}))?.data;
     }
 
+    public async getStakeAddress(walletAddress: string) {
+        if (typeof walletAddress === 'undefined' || !walletAddress) {
+            return null;
+        }
+        return (await this.api.get(`/addresses/${walletAddress}`))?.data.stake_address;
+    }   
+
     public async getPoolBlocks() {
         await this.init();
         const upcomingBlocks = [

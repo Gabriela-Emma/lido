@@ -53,6 +53,7 @@ Alpine.data('hoskyVideo', function () {
     }
 });
 
+
 Alpine.data('everyEpoch', function () {
     return {
         quiz: null,
@@ -568,7 +569,18 @@ Alpine.data('delegateToLido', function () {
             try {
                 this.userLoading = true;
                 const res = await window.axios.get(`/api/delegators/current`);
-                this.user = res?.data;
+                const userData = res?.data;
+
+                // confirm wallet_address from blockfrost matches stake_address in db
+                const blockfrostStakeAddress = await this.cardanoService.getStakeAddress(this.stakeAccount.change_address);
+                const addressConfirmed = await this.walletService.confirmWalletOwnership(blockfrostStakeAddress, userData.wallet_stake_address);
+
+                if (addressConfirmed) {
+                    this.user = userData
+                    console.log(`Wallet ownership verified.`)
+                } else {
+                    console.log('Wallet ownership verification error.')
+                }
             } catch (e: AxiosError | any) {
                 console.log({e});
             }
@@ -614,12 +626,12 @@ Alpine.data('delegateToLido', function () {
                 this.navigate('home');
                 location.reload();
             } catch (e: AxiosError | any) {
-                console.log({e});
                 this.$dispatch('new-notice', {
                     name: e.name,
-                    message: e?.response?.data?.message || e.message,
+                    message: e?.response?.data?.message + " Reloading so you can try again." || e.message + " Reloading so you can try again.",
                     type: 'error'
                 })
+                setTimeout(()=>{ location.reload(); }, 2000);
             }
             this.userLoading = false;
         },
@@ -698,5 +710,5 @@ document.addEventListener('livewire:load', function () {
     console.log(this.$wire);
 });
 
-// window.Alpine = Alpine;
-Alpine.start();
+window.Alpine = Alpine;
+window.Alpine.start();
