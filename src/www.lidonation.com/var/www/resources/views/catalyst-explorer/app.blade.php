@@ -30,7 +30,5 @@
     @include('svg.squiggle')
 
     @include('includes.footer')
-
-    <x-public.menu-mobile></x-public.menu-mobile>
 </body>
 </html>

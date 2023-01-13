@@ -37,8 +37,6 @@
 
         @include('includes.footer')
 
-        <x-public.menu-mobile></x-public.menu-mobile>
-
         @livewireScripts
 
         <script src="https://unpkg.com/smoothscroll-polyfill@0.4.4/dist/smoothscroll.js"></script>

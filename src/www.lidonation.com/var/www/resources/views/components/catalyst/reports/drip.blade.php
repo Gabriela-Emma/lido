@@ -15,7 +15,6 @@
             </div>
         </div>
 
-
         <div class="flex flex-row gap-4 justify-between items-center py-4 spec-title">
             <div class="text-teal-800 opacity-50 text-sm">Proposal</div>
             <a class="text-teal-800 font-medium inline-flex text-base hover:text-yellow-500" target="_blank" href="{{$report?->proposal?->link}}">
