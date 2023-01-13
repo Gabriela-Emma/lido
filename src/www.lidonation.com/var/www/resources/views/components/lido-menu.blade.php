@@ -1,5 +1,5 @@
 <div x-data="{
-    open: true,
+    open: false,
     menu: null,
     init() {}
  }"
