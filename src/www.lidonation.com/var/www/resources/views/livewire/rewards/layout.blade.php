@@ -25,7 +25,9 @@
 
         <meta name="csrf-token" content="{{ csrf_token() }}">
     </head>
-    <body class="h-full delegators" x-data="lidoRewards" x-cloak x-transition.duration.500ms>
+    <body class="h-full rewards" x-data="lidoRewards" x-cloak x-transition.duration.500ms>
+        @include('includes.global-search-handler')
+
         @include('includes.header')
 
         <main class="flex flex-col bg-white min-h-[68vh]">
@@ -36,6 +38,8 @@
         @include('svg.squiggle')
 
         @include('includes.footer')
+
+        <x-lido-menu />
 
         @livewireScripts
 

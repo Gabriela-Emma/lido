@@ -15,6 +15,8 @@ class PostFactory extends Factory
 {
     use UnsplashProvider;
 
+    protected $model = Post::class;
+
     /**
      * Define the model's default state.
      *

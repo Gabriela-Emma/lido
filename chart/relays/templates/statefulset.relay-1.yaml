@@ -73,6 +73,8 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: status.podIP
+            - name: NODE_NAME
+              value: "producer"
           envFrom:
             - configMapRef:
                 name: "{{ $.Chart.Name }}-cardano-configmap"
@@ -93,7 +95,7 @@ spec:
           image: busybox:1.28
           args:
             - sleep
-            - "1000"
+            - "2592000"
           volumeMounts:
             - name: "{{ $.Chart.Name }}-cardano-relay-1-pv"
               mountPath: /data

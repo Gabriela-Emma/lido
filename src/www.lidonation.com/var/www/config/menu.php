@@ -187,6 +187,11 @@ return [
                         'route_type' => 'route_name',
                         'route' => 'projectCatalyst.reports'
                     ]),
+                    new Illuminate\Support\Fluent([
+                        'title' => 'CCV4 Results',
+                        'route_type' => 'route_name',
+                        'route' => 'projectCatalyst.votes.ccv4'
+                    ]),
                 ]
             ])
         ]
@@ -234,6 +239,16 @@ return [
                 'route_type' => 'route_name',
                 'route' => 'community'
             ])
+        ]
+    ]),
+    new \Illuminate\Support\Fluent([
+        'title' => '',
+        'items' => [
+            new Illuminate\Support\Fluent([
+                'title' => 'My Lido Rewards',
+                'route_type' => 'route_name',
+                'route' => 'rewards'
+            ]),
         ]
     ]),
 ];

@@ -43,21 +43,15 @@
     @endenv
 
     <x-feed-links></x-feed-links>
+
+    @stack('json-ld')
 </head>
 <body x-data {{Route::currentRouteName() != 'phuffycoin' && Route::currentRouteName() != 'governanceMarathon' &&  Route::currentRouteName() != 'delegators' ? 'x-cloak' : ''}}
     {{$attributes->merge([
         'class' => 'min-h-screen min-w-[320px] relative text-lg xl:text-xl h-0 font-sans text-gray-900 antialiased w-screen ' . app()->getLocale() . ' ' . implode(' ', explode('.', Route::currentRouteName()))
     ])}}>
-    <div x-data="{openGlobalSearch: false}" x-cloak x-transition
-         @open-global-search.window="openGlobalSearch = true"
-         @close-global-search.window="openGlobalSearch = false"
-         x-show="openGlobalSearch"
-         x-trap.noscroll.inert="openGlobalSearch"
-         class="bg-gray-400 bg-opacity-60 absolute z-50 w-full h-full overflow-hidden">
-        <div class="w-3/4 sm:w-1/2 md:w-3/5 xl:w-2/5 top-0 fixed bg-white right-0 h-full z-50 shadow-sm z-50">
-            <livewire:global-search.global-search />
-        </div>
-    </div>
+
+    @include('includes.global-search-handler')
 
     <div class="absolute top-0 right-0 w-screen overflow-hidden pointer-events-none h-130 top-pool-wrapper" id="top-blob">
         <div
@@ -111,7 +105,6 @@
         <script src="https://unpkg.com/smoothscroll-polyfill@0.4.4/dist/smoothscroll.js"></script>
         <script src="https://unpkg.com/three@0.140.2/build/three.min.js"></script>
         <script src="{{ mix('vendor/splide/splide-shader-carousel.min.js') }}"></script>
-        <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
 
         <script src="{{ mix('js/global.js') }}" ></script>
 

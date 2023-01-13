@@ -1,14 +1,8 @@
 <x-public-layout class="onboarding" :metaTitle="$post->title">
-    @push('editLink')
-        <a
-        href="{{ url('voltaire/resources/articles/' .$post->id. '/edit') }}"
-        class="editArticle bg-gray-400  text-white text-sm px-6 py-2 rounded-xl" >
-                Edit Article
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="24" height="24" class="inline-block" role="presentation">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-                </svg>
-        </a>  
+    @push('json-ld')
+     <x-public.json-ld :post="$post"></x-public.json-ld>
     @endpush
+    
     <header class="bg-teal-600 z-20 text-white">
         <div class="max-w-4xl px-6 md:mx-auto z-20 flex flex-col items-center py-16">
             <div class="z-20 pb-8 flex flex-col gap-3 lg:hidden">

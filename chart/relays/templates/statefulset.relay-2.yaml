@@ -96,7 +96,7 @@ spec:
           image: busybox:1.28
           args:
             - sleep
-            - "1000"
+            - "2592000"
           volumeMounts:
             - name: "{{ $.Chart.Name }}-cardano-relay-2-pv"
               mountPath: /data
