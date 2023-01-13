@@ -21,6 +21,8 @@
         @include('includes.analytics')
     </head>
     <body class="h-full" x-data="lidoPartners">
+        @include('includes.global-search-handler')
+
         @include('includes.header')
 
         @unlessrole('partner')
@@ -40,6 +42,8 @@
         @include('svg.squiggle')
 
         @include('includes.footer')
+
+        <x-lido-menu />
 
         {{--<script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v3.10.5/dist/alpine.min.js" defer></script>--}}
         @livewireScripts

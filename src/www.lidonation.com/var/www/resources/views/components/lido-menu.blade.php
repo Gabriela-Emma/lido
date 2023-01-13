@@ -3,7 +3,7 @@
     menu: null,
     init() {}
  }"
-     class="flex justify-center" @toggle-lido-menu.window="open = !open">
+     class="flex justify-center lido-menu-wrapper" @toggle-lido-menu.window="open = !open">
     <!-- Modal -->
     <div
         x-show="open"
@@ -13,16 +13,19 @@
         aria-modal="true"
         x-id="['modal-title']"
         :aria-labelledby="$id('modal-title')"
-        class="fixed top-20 inset-0 z-10 overflow-y-auto"
+        class="fixed top-20 inset-0 z-50 overflow-y-auto lido-menu-wrapper-modal"
     >
         <!-- Overlay -->
+
         <div x-show="open" x-transition.opacity class="fixed inset-0 bg-black bg-opacity-50"></div>
+
+        <div x-show="open" x-transition.opacity class="fixed inset-0 bg-black bg-opacity-10 lido-menu-wrapper-modal-overlay"></div>
 
         <!-- Panel -->
         <div
             x-show="open" x-transition
             x-on:click="open = false"
-            class="relative flex min-h-screen items-start justify-center p-2"
+            class="relative flex min-h-screen items-start justify-center p-2 lido-menu-wrapper-modal-panel"
         >
             <div
                 x-on:click.stop

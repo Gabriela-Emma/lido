@@ -270,7 +270,6 @@ services:
       NETWORK_ARGUMENT: "--testnet-magic 2"
       NODE_PATH: "/data"
       NODE_PORT: 3010
-      NODE_NAME: "relay"
       NODE_TOPOLOGY: "producer.node:3000"
       NODE_RELAY: "true"
       POOL_COST: "10000000000"

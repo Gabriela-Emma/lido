@@ -42,7 +42,10 @@
 </head>
 
 <body class="catalyst-api-spec">
+    @include('includes.global-search-handler')
+
     @include('includes.header')
+
     @livewire('catalyst.catalyst-sub-menu-component')
 
     <main>
@@ -53,7 +56,7 @@
 
     @include('includes.footer')
 
-    <x-public.menu-mobile></x-public.menu-mobile>
+    <x-lido-menu />
 
     <script src="{{ l5_swagger_asset($documentation, 'swagger-ui-bundle.js') }}"></script>
     <script src="{{ l5_swagger_asset($documentation, 'swagger-ui-standalone-preset.js') }}"></script>
