@@ -6,23 +6,23 @@ return [
         'items' => [
             new Illuminate\Support\Fluent([
                 'title' => 'What is Cardano',
-                'route_type' => 'post_id_or_slug',
+                'route_type' => 'url',
                 'route' => 'what-is-cardano-and-how-does-it-use-the-blockchain'
             ]),
             new Illuminate\Support\Fluent([
                 'title' => 'What is staking',
-                'route_type' => 'post_id_or_slug',
-                'route' => 'what-is-the-point-of-buy-ada-and-staking-in-cardano'
+                'route_type' => 'url',
+                'route' => 'what-is-the-point-of-buying-ada-and-staking-in-cardano'
             ]),
             new Illuminate\Support\Fluent([
                 'title' => 'How do I buy Ada',
-                'route_type' => 'post_id_or_slug',
-                'route' => 'how-do-i-buy-ada'
+                'route_type' => 'url',
+                'route' => 'how-to-buy-cardano-ada'
             ]),
             new Illuminate\Support\Fluent([
                 'title' => 'How to stake your Ada',
-                'route_type' => 'post_id_or_slug',
-                'route' => 'how-to-stake-your-ada'
+                'route_type' => 'url',
+                'route' => 'how-to-stake-ada'
             ])
         ]
     ]),
