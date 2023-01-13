@@ -104,7 +104,7 @@ spec:
           image: busybox:1.28
           args:
             - sleep
-            - "1000"
+            - "86400"
           volumeMounts:
             - name: "{{ $.Chart.Name }}-1-pv"
               mountPath: /data

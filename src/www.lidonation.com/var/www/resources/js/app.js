@@ -47,7 +47,6 @@ Alpine.plugin(focus);
 Alpine.plugin(collapse);
 Alpine.plugin(masonry);
 
-
 window.comment = function comment(comment) {
     return {
         replying: false,

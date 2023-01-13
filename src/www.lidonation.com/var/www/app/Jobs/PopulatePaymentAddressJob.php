@@ -31,16 +31,27 @@ class PopulatePaymentAddressJob implements ShouldQueue
      */
     public function handle(CardanoBlockfrostService $cardanoBlockfrostService): void
     {
-        try {
-            // @todo confirm that address picked is actually owned by the associated stake key (using the lucid service)
-            // Ticket: Ticket-01472
+        try {            
 
             $address = $cardanoBlockfrostService->get("accounts/{$this->user->wallet_stake_address}/addresses", null)
                 ->throw()
                 ->collect()
                 ?->first()['address'];
-            $this->user->wallet_address = $address;
-            $this->user->save();
+
+            // @todo confirm that address picked is actually owned by the associated stake key (using the lucid service)
+            // Ticket: Ticket-01472
+            $frost_stake_key = $cardanoBlockfrostService->get("addresses/$address", null)['stake_address'];
+            $address_confirmed = ($frost_stake_key == $this->user->wallet_stake_address) ? true : false;
+
+            if ($address_confirmed) {
+                $this->user->wallet_address = $address;
+                $this->user->save();
+                Log::info("address was confirmed and saved");
+            } else {
+                Log::error("Failed to update user, address issue.");
+            }
+            
+            
         } catch (RequestException $e) {
             Log::error("Failed to update user.", $this->user?->toArray());
         }

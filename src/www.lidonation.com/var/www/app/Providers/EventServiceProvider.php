@@ -15,6 +15,7 @@ use App\Models\LegacyComment;
 use App\Models\News;
 use App\Models\OnboardingContent;
 use App\Models\Post;
+use App\Models\ExternalPost;
 use App\Models\Proposal;
 use App\Models\Prompt;
 use App\Models\Question;
@@ -72,6 +73,7 @@ class EventServiceProvider extends ServiceProvider
         News::observe(PostObserver::class);
         OnboardingContent::observe(PostObserver::class);
         Post::observe(PostObserver::class);
+        ExternalPost::observe(PostObserver::class);
         Proposal::observe(ProposalObserver::class);
         Prompt::observe(LegacyCommentObserver::class);
         Question::observe(QuestionObserver::class);

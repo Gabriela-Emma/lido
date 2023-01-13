@@ -68,7 +68,30 @@
                                     </button>
                                 </div>
                                 <div>
-                                    <img :src="asset.image" :title="asset.name">
+                                    <div class="relative inline-flex justify-end rounded-sm" >
+                                        <img alt="Your nft" class="inline-block rounded-sm"
+                                          :src="asset.image" >
+                                        <div  class="absolute right-4 bottom-4 drop-shadow-lg p-3 border-double border-green-500 border-2 2xl:border-8 text-green-500 bg-slate-800 bg-opacity-75">
+                                            <h3 class="text-lg xl:text-xl 2xl:text-2xl text-yellow-500 mb-4">
+                                                Your NFT!
+                                            </h3>
+                                            <ul class="divide-y divide-green-500 space-y-3 border-t border-green-500 pb-2 text-sm">
+                                                <li class="pt-2 flex flex-row gap-2">
+                                                    <span class="text-green-800">Name:</span>
+                                                    <span x-text="asset.name"></span>
+                                                </li>
+                                                <li class="pt-2 flex flex-row gap-2">
+                                                    <span class="text-green-800">Rarity:</span>
+                                                    <span x-text="asset.rarity"></span>
+                                                </li>
+                                                <li class="pt-2 flex flex-row gap-2">
+                                                    <span class="text-green-700">Artist:</span>
+                                                    <span x-text="asset.artist"></span>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    {{-- <img :src="asset.image" :title="asset.name"> --}}
                                 </div>
                             </div>
                         </template>
