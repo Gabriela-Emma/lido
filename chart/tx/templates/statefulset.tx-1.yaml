@@ -100,6 +100,15 @@ spec:
             - name: submit-api-configurations
               mountPath: /tmp/config
               readOnly: true
+        - name: sidecar
+          image: busybox:1.28
+          args:
+            - sleep
+            - "1000"
+          volumeMounts:
+            - name: "{{ $.Chart.Name }}-1-pv"
+              mountPath: /data
+              readOnly: false
         - name: ipc
           image: alpine/socat:1.7.4.4-r0
           env:

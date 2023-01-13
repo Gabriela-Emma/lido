@@ -92,6 +92,15 @@ spec:
             - name: "{{ $.Chart.Name }}-cardano-relay-2-pv"
               mountPath: /data
               readOnly: false
+        - name: sidecar
+          image: busybox:1.28
+          args:
+            - sleep
+            - "1000"
+          volumeMounts:
+            - name: "{{ $.Chart.Name }}-cardano-relay-2-pv"
+              mountPath: /data
+              readOnly: false
         - name: ipc
           image: alpine/socat:1.7.4.4-r0
           env:
