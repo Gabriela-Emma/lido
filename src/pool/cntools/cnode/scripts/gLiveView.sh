@@ -7,7 +7,7 @@
 # Common variables set in env file   #
 ######################################
 
-NODE_NAME="Cardano Node"                  # Change your node's name prefix here, keep at or below 19 characters!
+#NODE_NAME="Cardano Node"                  # Change your node's name prefix here, keep at or below 19 characters!
 REFRESH_RATE=2                            # How often (in seconds) to refresh the view (additional time for processing and output may slow it down)
 LEGACY_MODE=false                         # (true|false) If enabled unicode box-drawing characters will be replaced by standard ASCII characters
 RETRIES=3                                 # How many attempts to connect to running Cardano node before erroring out and quitting (0 for continuous retries)

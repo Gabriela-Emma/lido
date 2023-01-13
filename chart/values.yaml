@@ -347,7 +347,6 @@ services:
       RELAY2_PORT: 3012,
       SUBMIT_TX_PORT: 3030,
       NODE_PATH: "/data",
-      NODE_NAME: "relay",
       NODE_RELAY: "true",
       NETWORK_ARGUMENT: "",
       POOL_PLEDGE: '41000000000',

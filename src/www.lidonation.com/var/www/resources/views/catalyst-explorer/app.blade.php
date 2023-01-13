@@ -20,6 +20,8 @@
     @inertiaHead
 </head>
 <body>
+    @include('includes.global-search-handler')
+
     @include('includes.header')
 
     <main>
@@ -30,5 +32,7 @@
     @include('svg.squiggle')
 
     @include('includes.footer')
+
+    <x-lido-menu />
 </body>
 </html>
