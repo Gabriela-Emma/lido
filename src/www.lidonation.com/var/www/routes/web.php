@@ -255,7 +255,7 @@ Route::group(
         // Cardano Tools
         Route::get('/pool-tool', PoolTool::class)->name('pool-tool');
 
-        Route::get('/lido-blockchain-labs/nairobi', fn() => view('lido-blockchain-labs'));
+        Route::get('/lido-blockchain-labs/nairobi', fn() => view('lido-blockchain-labs'))->name('lido-blockchain-labs.nairobi');
 
 //        Route::get('/explorer', function () {
 //            return view('explorer');

@@ -1,6 +1,6 @@
 <li class="flow-root menu-item flex items-center h-full">
     <a href="#" @click="$dispatch('toggle-lido-menu')" class="inline-flex flex-1 items-center menu-link">
-        <span class="font-normal text-xl xl:text-2xl uppercase text-teal-600 md:text-white">
+        <span class="font-normal text-xl xl:text-2xl uppercase text-teal-600md:text-white">
             Menu
         </span>
     </a>
