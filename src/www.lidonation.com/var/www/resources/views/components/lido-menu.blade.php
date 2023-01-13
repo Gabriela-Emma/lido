@@ -16,7 +16,11 @@
         class="fixed top-20 inset-0 z-10 overflow-y-auto"
     >
         <!-- Overlay -->
+<<<<<<< Updated upstream
         <div x-show="open" x-transition.opacity class="fixed inset-0 bg-black bg-opacity-50"></div>
+=======
+        <div x-show="open" x-transition.opacity class="fixed inset-0 bg-black bg-opacity-10 lido-menu-wrapper-modal-overlay"></div>
+>>>>>>> Stashed changes
 
         <!-- Panel -->
         <div
