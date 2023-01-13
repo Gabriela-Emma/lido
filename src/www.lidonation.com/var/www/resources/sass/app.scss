@@ -35,7 +35,7 @@
 [x-cloak] { display: none !important; }
 
 #primary-menu .menu-item .menu-link {
-    @apply items-center p-3 -m-3 h-full text-xs lg:text-base font-semibold text-white rounded-sm transition duration-150 ease-in-out md:m-0 md:p-1 md:mx-1 hover:bg-gray-50  md:hover:bg-transparent;
+    @apply h-full text-xs lg:text-base font-semibold text-white transition duration-150 ease-in-out;
 
     &.active, &:hover {
         @apply text-yellow-500;

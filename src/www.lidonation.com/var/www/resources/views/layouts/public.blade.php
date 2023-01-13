@@ -95,8 +95,6 @@
 
     <x-lido-menu />
 
-    <x-public.menu-mobile></x-public.menu-mobile>
-
     <section>
         <!-- Scripts -->
         @livewireScripts
@@ -113,6 +111,7 @@
         <script src="https://unpkg.com/smoothscroll-polyfill@0.4.4/dist/smoothscroll.js"></script>
         <script src="https://unpkg.com/three@0.140.2/build/three.min.js"></script>
         <script src="{{ mix('vendor/splide/splide-shader-carousel.min.js') }}"></script>
+        <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
 
         <script src="{{ mix('js/global.js') }}" ></script>
 

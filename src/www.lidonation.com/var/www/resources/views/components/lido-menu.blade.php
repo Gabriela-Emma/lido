@@ -30,10 +30,14 @@
                 class="container"
             >
                 <div class="relative overflow-y-auto rounded-sm bg-white shadow-lg h-full">
-                    <div class="flex flex-col-reverse h-full sm:flex-row">
-                        <div class="p-1 flex flex-col justify-between flex-1 border-slate-800/40 border-r">
+                    <div class="flex flex-row-reverse h-full sm:flex-row p-2 sm:p-0">
+                        <div class="p-1 flex flex-col justify-between flex-1 lg:border-slate-800/40 lg:border-r">
                             <div class="p-3 mb-4">
-                                <nav class="flex flex-row flex-wrap gap-5 justify-between lido-menu">
+                                <nav class="columns-2 sm:columns-3 lg:columns-4 2xl:columns-5 gap-5  lido-menu" x-data x-masonry.poll.2500>
+                                    <div class="lg:hidden w-36 md:w-44 mb-8">
+                                        @include('includes.lido-menu-feature')
+                                    </div>
+
                                     @foreach($lidoMenu as $menu)
                                         @include('includes.lido-menu-items')
                                     @endforeach
@@ -56,7 +60,7 @@
                             </div>
                         </div>
 
-                        <div class="sm:w-60 2xl:w-72 p-6">
+                        <div class="hidden lg:flex lg:w-60 2xl:w-72">
                             <div class="top-1 right-1 absolute">
                                 <button type="button" x-on:click="open = false"
                                         class="rounded-sm bg-white hover:bg-slate-200 p-1.5 text-slate-600 z-10">
@@ -68,22 +72,9 @@
                                 </button>
                             </div>
 
-                            <a href="{{localizeRoute('delegators')}}#everyEpoch" class="flex flex-col gap-4">
-                                <img class="block" src="{{asset('img/every-epoch-logo.png')}}" alt="Every Epoch logo">
-                                <span class="block text-center">
-                                    Every Epoch
-                                </span>
-                                <span
-                                    class="block text-center text-base text-slate-500 hover:text-slate-500 font-normal">
-                                    Learn, Play, & Win<br/>every 5 days!
-                                </span>
-                                <span
-                                    class="text-center flex flex-col gap-1 text-base text-slate-500 hover:text-slate-500 font-normal">
-                                    <span>$PHUFFY</span>
-                                    <span>$HOSKY</span>
-                                    <span>$NMKR</span>
-                                </span>
-                            </a>
+                            <div class="lg:flex flex-col">
+                                @include('includes.lido-menu-feature')
+                            </div>
                         </div>
                     </div>
                 </div>

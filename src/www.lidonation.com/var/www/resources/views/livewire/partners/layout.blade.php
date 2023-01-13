@@ -41,8 +41,6 @@
 
         @include('includes.footer')
 
-        <x-public.menu-mobile></x-public.menu-mobile>
-
         {{--<script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v3.10.5/dist/alpine.min.js" defer></script>--}}
         @livewireScripts
 

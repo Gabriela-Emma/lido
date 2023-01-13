@@ -1,4 +1,4 @@
-<div class="menu-items-wrapper">
+<div class="menu-items-wrapper  break-inside-avoid mb-8">
     <h3 class="text-base font-bold text-teal-600">
         {{$menu?->title}}
     </h3>
@@ -10,7 +10,7 @@
                 @else
                     <li class="flow-root menu-item">
                         <a href="{{$menu->route}}" title="{{$menu->title}}"
-                           class="flex items-center text-base font-medium text-gray-900 transition duration-150 ease-in-out hover:text-teal-800">
+                           class="flex items-center text-xs md:text-base font-medium text-gray-900 transition duration-150 ease-in-out hover:text-teal-800">
                             {{$menu->title}}
                         </a>
                     </li>
