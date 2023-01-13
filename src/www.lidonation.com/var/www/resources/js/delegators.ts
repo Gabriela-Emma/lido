@@ -31,8 +31,7 @@ const tween = KUTE.fromTo(
     {path: '#hosky-blob1'},
     {path: '#hosky-blob2'},
     {repeat: 999, duration: 3000, yoyo: true}
-);
-tween.start();
+); tween.start();
 
 Alpine.plugin(Clipboard);
 Alpine.plugin(Tooltip);
@@ -705,10 +704,6 @@ Alpine.data('delegateToLido', function () {
 }.bind(Alpine));
 
 window.globalVideoPlayer = globalVideoPlayer;
-
-document.addEventListener('livewire:load', function () {
-    console.log(this.$wire);
-});
 
 window.Alpine = Alpine;
 window.Alpine.start();
