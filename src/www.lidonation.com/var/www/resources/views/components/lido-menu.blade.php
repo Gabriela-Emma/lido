@@ -30,46 +30,33 @@
                 class="container"
             >
                 <div class="relative overflow-y-auto rounded-sm bg-white shadow-lg h-full">
-                    <div class="flex flex-col-reversen h-full sm:flex-row">
-                        <div class="p-1 flex flex-col justify-between flex-1">
-                            <div class="p-3">
-                                <nav class="flex flex-row gap-4">
+                    <div class="flex flex-col-reverse h-full sm:flex-row">
+                        <div class="p-1 flex flex-col justify-between flex-1 border-slate-800/40 border-r">
+                            <div class="p-3 mb-4">
+                                <nav class="flex flex-row flex-wrap gap-5 justify-between lido-menu">
                                     @foreach($lidoMenu as $menu)
-                                        <div>
-                                            <h3 class="text-base font-bold text-teal-600">
-                                                {{$menu?->title}}
-                                            </h3>
-                                            @isset($menu?->items)
-                                            <ul role="list" class="mt-5 space-y-6">
-                                                @foreach($menu?->items as $item)
-                                                    <li class="flow-root">
-                                                        <a href="{{$item->route}}"
-                                                           class="-m-3 flex items-center rounded-md p-3 text-base font-medium text-gray-900 transition duration-150 ease-in-out hover:bg-gray-50">
-                                                            {{$item->title}}
-                                                        </a>
-                                                    </li>
-                                                @endforeach
-                                            </ul>
-                                            @endisset
-                                        </div>
+                                        @include('includes.lido-menu-items')
                                     @endforeach
                                 </nav>
                             </div>
 
                             <div class="flex flex-row w-full text-center text-white">
-                                <a href="{{LaravelLocalization::getLocalizedURL('en')}}" class="flex-1 p-2 bg-teal-600 text-white hover:text-white">
+                                <a href="{{LaravelLocalization::getLocalizedURL('en')}}"
+                                   class="flex-1 p-2 bg-teal-600 text-white hover:text-white">
                                     English
                                 </a>
-                                <a href="{{LaravelLocalization::getLocalizedURL('es')}}" class="flex-1 p-2 bg-yellow-600 text-white hover:text-white">
+                                <a href="{{LaravelLocalization::getLocalizedURL('es')}}"
+                                   class="flex-1 p-2 bg-yellow-600 text-white hover:text-white">
                                     Español
                                 </a>
-                                <a href="{{LaravelLocalization::getLocalizedURL('sw')}}" class="flex-1 p-2 bg-pink-600 text-white hover:text-white">
+                                <a href="{{LaravelLocalization::getLocalizedURL('sw')}}"
+                                   class="flex-1 p-2 bg-pink-600 text-white hover:text-white">
                                     Kiswahil
                                 </a>
                             </div>
                         </div>
 
-                        <div class="w-80 h-full min-h-full border-l border-slate-800/40 p-6">
+                        <div class="sm:w-60 2xl:w-72 p-6">
                             <div class="top-1 right-1 absolute">
                                 <button type="button" x-on:click="open = false"
                                         class="rounded-sm bg-white hover:bg-slate-200 p-1.5 text-slate-600 z-10">
@@ -81,7 +68,7 @@
                                 </button>
                             </div>
 
-                            <a href="{{localizeRoute('delegators')}}#everyEpoch" class="flex flex-col gap-4 px-6">
+                            <a href="{{localizeRoute('delegators')}}#everyEpoch" class="flex flex-col gap-4">
                                 <img class="block" src="{{asset('img/every-epoch-logo.png')}}" alt="Every Epoch logo">
                                 <span class="block text-center">
                                     Every Epoch

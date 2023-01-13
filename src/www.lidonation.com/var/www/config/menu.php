@@ -30,12 +30,12 @@ return [
         'title' => 'Keep Learning',
         'items' => [
             new Illuminate\Support\Fluent([
-                'title' => '',
+                'title' => 'Library',
                 'route_type' => 'route_name',
                 'route' => 'library'
             ]),
             new Illuminate\Support\Fluent([
-                'title' => '',
+                'title' => 'Lido Minute',
                 'route_type' => 'route_name',
                 'route' => 'lido-minute'
             ]),
@@ -91,22 +91,22 @@ return [
             new Illuminate\Support\Fluent([
                 'title' => 'Every Epoch',
                 'route_type' => 'route_name',
-                'route' => 'library'
+                'route' => 'delegators#everyEpoch'
             ]),
             new Illuminate\Support\Fluent([
                 'title' => 'Bazaar',
                 'route_type' => 'route_name',
-                'route' => 'lido-minute'
+                'route' => 'bazaar'
             ]),
-            new Illuminate\Support\Fluent([
-                'title' => 'Community Calendar',
-                'route_type' => 'route_name',
-                'route' => 'lido-minute'
-            ]),
+//            new Illuminate\Support\Fluent([
+//                'title' => 'Community Calendar',
+//                'route_type' => 'route_name',
+//                'route' => 'lido-minute'
+//            ]),
             new Illuminate\Support\Fluent([
                 'title' => 'Contribute',
                 'route_type' => 'route_name',
-                'route' => 'lido-minute'
+                'route' => 'contributeContent'
             ]),
             new Illuminate\Support\Fluent([
                 'title' => 'Advertise',
@@ -119,7 +119,7 @@ return [
                     new Illuminate\Support\Fluent([
                         'title' => 'A Day at the Lake',
                         'route_type' => 'route_name',
-                        'route' => ''
+                        'route' => 'lido-minute-nft'
                     ]),
                 ]
             ])
@@ -195,8 +195,8 @@ return [
         'items' => [
             new Illuminate\Support\Fluent([
                 'title' => 'Delegators',
-                'route_type' => 'post_id_or_slug',
-                'route' => 'what-is-cardano-and-how-does-it-use-the-blockchain'
+                'route_type' => 'route_name',
+                'route' => 'delegators'
             ]),
             new Illuminate\Support\Fluent([
                 'title' => 'The pool',

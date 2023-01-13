@@ -6,6 +6,7 @@ use App\Models\EveryEpoch;
 use App\Models\Post;
 use App\Services\CardanoBlockfrostService;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Route;
 
 class GetLidoMenu
 {
@@ -26,7 +27,8 @@ class GetLidoMenu
             }
             $m->route = match ($m->route_type) {
                 'post_id_or_slug' => (intval($m->route) > 0 ? Post::where('id', $m->route) : Post::where('slug', $m->route))?->first()?->link,
-                default => $m->route
+                'route_name' => Route::has($m->route) ? localizeRoute($m->route) : '',
+                default => url($m->route ?? '')
             };
 
             return $m;

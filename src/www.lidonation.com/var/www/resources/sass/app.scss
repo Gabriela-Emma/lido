@@ -84,6 +84,12 @@
     }
 }
 
+nav.lido-menu {
+    .menu-items-wrapper  .menu-items-wrapper {
+        @apply mt-4;
+    }
+}
+
 #new-to-library .posts {
     -ms-overflow-style: none !important;
     scrollbar-width: none !important;
