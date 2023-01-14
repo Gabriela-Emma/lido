@@ -17,7 +17,7 @@ class CatalystReportsComponent extends Component
 
     public Collection|array $catalystReports;
 
-    public int $perPage = 60;
+    public int $perPage = 45;
 
     public array $snippets = [];
 
