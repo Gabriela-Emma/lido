@@ -165,7 +165,7 @@ return [
                     new Illuminate\Support\Fluent([
                         'title' => 'Proposers',
                         'route_type' => 'route_name',
-                        'route' => 'projectCatalyst.'
+                        'route' => 'projectCatalyst.proposers'
                     ]),
                     new Illuminate\Support\Fluent([
                         'title' => 'Groups',
