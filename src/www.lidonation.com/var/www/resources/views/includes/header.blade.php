@@ -8,7 +8,7 @@
                              src="{{asset('img/llogo-transparent.png')}}"
                              alt="lidonation white transparent logo" />
 
-                        <img class="block md:hidden logo" width="110" height="110"
+                        <img class="block md:hidden logo" width="80" height="80"
                              src="{{asset('img/llogo-transparent.png')}}"
                              alt="lidonation bare black logo"/>
                     </a>
