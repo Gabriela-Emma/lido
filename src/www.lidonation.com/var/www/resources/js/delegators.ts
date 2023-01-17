@@ -625,12 +625,21 @@ Alpine.data('delegateToLido', function () {
                 this.navigate('home');
                 location.reload();
             } catch (e: AxiosError | any) {
-                this.$dispatch('new-notice', {
-                    name: e.name,
-                    message: e?.response?.data?.message + " Reloading so you can try again." || e.message + " Reloading so you can try again.",
-                    type: 'error'
-                })
-                setTimeout(()=>{ location.reload(); }, 2000);
+                if (e.response.status === 419) {
+                    this.$dispatch('new-notice', {
+                        name: e.name,
+                        message: e?.response?.data?.message + " Reloading so you can try again." || e.message + " Reloading so you can try again.",
+                        type: 'error'
+                    })
+                    setTimeout(()=>{ location.reload(); }, 2000);
+                } else {
+                    this.$dispatch('new-notice', {
+                        name: e.name,
+                        message: e?.response?.data?.message || e.message,
+                        type: 'error'
+                    })
+                }
+                
             }
             this.userLoading = false;
         },
