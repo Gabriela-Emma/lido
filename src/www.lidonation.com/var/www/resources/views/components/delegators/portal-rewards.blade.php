@@ -35,7 +35,7 @@
                         Process Rewards
                     </h3>
                     <p class="mt-1 max-w-2xl text-sm">
-                        These rewards will be processed to be sent to your address about 1 hr after the start of the                        
+                        These rewards will be processed to be sent to your address about 1 hr after the start of the
                         next epoch @isset($currEpochNo)(Epoch {{($currEpochNo) + 1 }})@endisset.
                     </p>
                     <div class="mt-2 text-center">
@@ -113,12 +113,12 @@
                     </span>
                 </h3>
                 <div>
-                    @if($availableRewards?->isNotEmpty())
-                        <span @click="withdraw"
-                              class="inline-flex items-center px-1 py-0.5 rounded text-xs bg-accent-200 text-teal-900 hover:bg-accent-400 hover:cursor-pointer">
-                            Withdraw
-                        </span>
-                    @endif
+{{--                    @if($availableRewards?->isNotEmpty())--}}
+{{--                        <span @click="withdraw"--}}
+{{--                              class="inline-flex items-center px-1 py-0.5 rounded text-xs bg-accent-200 text-teal-900 hover:bg-accent-400 hover:cursor-pointer">--}}
+{{--                            Withdraw--}}
+{{--                        </span>--}}
+{{--                    @endif--}}
                 </div>
             </div>
         </div>
@@ -221,20 +221,20 @@
                 <span x-text="controlledStake"></span> ₳
             </div>
             <hr class="w-2/3 border-t border-b-0 border-gray-300 border-opacity-50"/>
-            <h3 class="w-2 font-semibold text-gray-300 flex flex-row gap-2 flex-nowrap items-center">
-                <span>Rewards</span>
-                <span
-                    @click="withdrawReward()"
-                    :class="{
-                     'hover:cursor-not-allowed bg-slate-400 hover:bg-slate-400': availableAdaRewards < 5
-                    }"
-                    class="inline-flex  items-center px-1 py-0.5 rounded text-xs bg-accent-200 text-teal-900 hover:bg-accent-400 hover:cursor-pointer">
-                    Withdraw
-                </span>
-            </h3>
-            <div class="text-xl font-semibold">
-                <span x-text="availableAdaRewards"></span> ₳
-            </div>
+{{--            <h3 class="w-2 font-semibold text-gray-300 flex flex-row gap-2 flex-nowrap items-center">--}}
+{{--                <span>Rewards</span>--}}
+{{--                <span--}}
+{{--                    @click="withdrawReward()"--}}
+{{--                    :class="{--}}
+{{--                     'hover:cursor-not-allowed bg-slate-400 hover:bg-slate-400': availableAdaRewards < 5--}}
+{{--                    }"--}}
+{{--                    class="inline-flex  items-center px-1 py-0.5 rounded text-xs bg-accent-200 text-teal-900 hover:bg-accent-400 hover:cursor-pointer">--}}
+{{--                    Withdraw--}}
+{{--                </span>--}}
+{{--            </h3>--}}
+{{--            <div class="text-xl font-semibold">--}}
+{{--                <span x-text="availableAdaRewards"></span> ₳--}}
+{{--            </div>--}}
         </div>
     </div>
 
