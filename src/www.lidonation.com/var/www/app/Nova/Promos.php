@@ -63,7 +63,7 @@ class Promos extends Resource
 
             BelongsTo::make('Partner', 'user', User::class)->searchable()->hideFromIndex(),
             MorphTo::make('token')->types([
-                Nfts::class
+                Nfts::class,
             ])->searchable()->nullable(),
 
             URL::make(__('URI'), 'uri')->rules(['required'])->hideFromIndex(),
@@ -72,23 +72,23 @@ class Promos extends Resource
                 ->default('draft')
                 ->rules(['required'])
                 ->options([
-                'draft' => 'Draft',
-                'scheduled' => 'Scheduled',
-                'published' => 'Published',
-                'retired' => 'Retired',
-            ]),
+                    'draft' => 'Draft',
+                    'scheduled' => 'Scheduled',
+                    'published' => 'Published',
+                    'retired' => 'Retired',
+                ]),
             Select::make(__('Type'), 'type')
                 ->sortable()
                 ->default('partner')
                 ->rules(['required'])
                 ->options([
-                'partner' => 'Partner'
-            ]),
+                    'partner' => 'Partner',
+                ]),
             Images::make(__('Hero'), 'hero')
                 ->conversionOnDetailView('preview')
                 ->conversionOnIndexView('thumbnail')
                 ->enableExistingMedia(),
-            Markdown::make(__('content'))->translatable()
+            Markdown::make(__('content'))->translatable(),
         ];
     }
 

@@ -25,12 +25,13 @@ class IssuePoolRewards implements ShouldQueue
      * @return void
      */
     public function __construct(public string $stakeAddress, public int $epoch, public Giveaway $giveaway)
-    {}
+    {
+    }
 
     /**
      * Execute the job.
      *
-     * @param CardanoBlockfrostService $blockfrostService
+     * @param  CardanoBlockfrostService  $blockfrostService
      * @return void
      */
     public function handle(CardanoBlockfrostService $blockfrostService): void
@@ -41,8 +42,9 @@ class IssuePoolRewards implements ShouldQueue
 
         // get user delegation for epoch
         $delegation = $delegations->firstWhere('active_epoch', $this->epoch);
-        if (!$delegation) {
+        if (! $delegation) {
             Log::info("Delection for epoch {$this->epoch} not found for {$this->stakeAddress}");
+
             return;
         }
 
@@ -50,9 +52,9 @@ class IssuePoolRewards implements ShouldQueue
         $apy = $delegation['amount'] * 0.05;
 
         // if user doesn't already have an account
-            // create one
+        // create one
         $user = User::where('wallet_stake_address', $this->stakeAddress)->first();
-        if (!$user instanceof User) {
+        if (! $user instanceof User) {
             $user = new User;
             $user->name = $this->stakeAddress;
             $user->wallet_stake_address = $this->stakeAddress;
@@ -68,7 +70,7 @@ class IssuePoolRewards implements ShouldQueue
         $reward->model_id = $this?->giveaway->id;
         $reward->model_type = Giveaway::class;
         $reward->asset_type = 'ada';
-        $reward->amount =  ceil($apy / 72);
+        $reward->amount = ceil($apy / 72);
         $reward->status = 'issued';
         $reward->stake_address = $user->wallet_stake_address;
         $reward->setTranslation('memo', 'en', $this->giveaway->title);

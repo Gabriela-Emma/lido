@@ -4,7 +4,6 @@ namespace App\Nova;
 
 use App\Models\Snippet;
 use App\Nova\Actions\TranslateModel;
-use App\Scopes\LimitScope;
 use App\Scopes\PublishedScope;
 use Ebess\AdvancedNovaMediaLibrary\Fields\Images;
 use Illuminate\Database\Eloquent\Builder;
@@ -70,7 +69,7 @@ class Snippets extends Resource
     /**
      * Get the fields displayed by the resource.
      *
-     * @param NovaRequest $request
+     * @param  NovaRequest  $request
      * @return array
      */
     public function fields(NovaRequest $request): array
@@ -80,8 +79,8 @@ class Snippets extends Resource
             Text::make(__('Name')),
 
             Text::make(__('Context')),
-            Text::make(__('type'))->default(fn() => Snippet::class),
-            URL::make(__('Preview Url'), 'preview_url')->displayUsing(fn($url) => $url ?: '-'),
+            Text::make(__('type'))->default(fn () => Snippet::class),
+            URL::make(__('Preview Url'), 'preview_url')->displayUsing(fn ($url) => $url ?: '-'),
             Number::make(__('Order')),
             Select::make(__('Status'), 'status')
                 ->options([
@@ -106,7 +105,7 @@ class Snippets extends Resource
     /**
      * Get the cards available for the request.
      *
-     * @param NovaRequest $request
+     * @param  NovaRequest  $request
      * @return array
      */
     public function cards(NovaRequest $request): array
@@ -117,7 +116,7 @@ class Snippets extends Resource
     /**
      * Get the filters available for the resource.
      *
-     * @param NovaRequest $request
+     * @param  NovaRequest  $request
      * @return array
      */
     public function filters(NovaRequest $request): array
@@ -128,7 +127,7 @@ class Snippets extends Resource
     /**
      * Get the lenses available for the resource.
      *
-     * @param NovaRequest $request
+     * @param  NovaRequest  $request
      * @return array
      */
     public function lenses(NovaRequest $request): array
@@ -139,7 +138,7 @@ class Snippets extends Resource
     /**
      * Get the actions available for the resource.
      *
-     * @param NovaRequest $request
+     * @param  NovaRequest  $request
      * @return array
      */
     #[Pure]
@@ -164,13 +163,13 @@ class Snippets extends Resource
     public function metaDataFields(): array
     {
         $modelObj = Snippet::find(request()->resourceId);
-        if (!$modelObj) {
+        if (! $modelObj) {
             return [];
         }
 
         return $modelObj->metas->map(function ($meta) {
             return Text::make(Str::title(Str::replace('_', ' ', $meta->key)))
-                ->resolveUsing(fn() => $this->metas?->firstWhere('key', $meta->key)?->content)
+                ->resolveUsing(fn () => $this->metas?->firstWhere('key', $meta->key)?->content)
                 ->hideFromIndex()
                 ->exceptOnForms();
         })->all();

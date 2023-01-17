@@ -2,15 +2,12 @@
 
 namespace App\Nova\Actions;
 
-use App\Models\Link;
-use Carbon\Carbon;
 use Exception;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Collection;
 use Laravel\Nova\Actions\Action;
 use Laravel\Nova\Fields\ActionFields;
-use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
@@ -66,7 +63,7 @@ class CacheNftImage extends Action
     /**
      * Get the fields available on the action.
      *
-     * @param NovaRequest $request
+     * @param  NovaRequest  $request
      * @return array
      */
     public function fields(NovaRequest $request): array

@@ -2,13 +2,11 @@
 
 namespace App\Nova;
 
-use Illuminate\Http\Request;
-use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class ExternalPost extends Articles
 {
-     /**
+    /**
      * The model the resource corresponds to.
      *
      * @var string
@@ -32,7 +30,7 @@ class ExternalPost extends Articles
     public function filters(NovaRequest $request): array
     {
         return [
-            //   
+            //
         ];
     }
 }

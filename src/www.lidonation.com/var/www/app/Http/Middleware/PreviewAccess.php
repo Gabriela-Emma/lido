@@ -22,11 +22,12 @@ class PreviewAccess extends Middleware
     public function handle($request, Closure $next, ...$guards): mixed
     {
         $this->authenticate($request, $guards);
-        if (!has_preview_access()) {
+        if (! has_preview_access()) {
             throw new AuthenticationException(
                 'No Preview Access.', $guards, localizeRoute('home')
             );
         }
+
         return $next($request);
     }
 

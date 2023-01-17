@@ -8,7 +8,6 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 use OpenApi\Annotations as OA;
 
-
 /**
  * @OA\Info(
  *
@@ -16,7 +15,6 @@ use OpenApi\Annotations as OA;
  *      description="Cardano Project Catalyst Explorer openapi served by LIDO Nation",
  *      version="1.0.0",
  * ),
- *
  * @OA\Server(
  *     url="/api/catalyst-explorer",
  * ),
@@ -115,8 +113,6 @@ use OpenApi\Annotations as OA;
  *      @OA\Property(property="label", type="string", example="1"),
  *      @OA\Property(property="active", type="boolean", example=false),
  *),
- *
- *
  */
 class Controller extends BaseController
 {

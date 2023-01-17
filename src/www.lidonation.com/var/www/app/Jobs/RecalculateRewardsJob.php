@@ -23,12 +23,15 @@ class RecalculateRewardsJob implements ShouldQueue
      *
      * @return void
      */
-    public function __construct( protected Reward $reward ){}
+    public function __construct(protected Reward $reward)
+    {
+    }
 
     /**
      * Execute the job.
      *
      * @return void
+     *
      * @throws \Exception
      */
     public function handle(): void
@@ -37,14 +40,14 @@ class RecalculateRewardsJob implements ShouldQueue
         $ruleModel = $this->reward->model;
 
         // get matching rule
-        if (!$ruleModel instanceof HasRules) {
+        if (! $ruleModel instanceof HasRules) {
             $ruleModelClass = $ruleModel::class;
-            throw new \Exception("{$ruleModelClass} must implement " . HasRules::class);
+            throw new \Exception("{$ruleModelClass} must implement ".HasRules::class);
         }
 
         $asset = $this->reward?->asset;
-        $rule = $ruleModel?->rules?->firstWhere('subject', "{$asset}.amount" );
-        if (!$rule instanceof Rule) {
+        $rule = $ruleModel?->rules?->firstWhere('subject', "{$asset}.amount");
+        if (! $rule instanceof Rule) {
             throw (new ModelNotFoundException())->setModel(Rule::class);
         }
 
@@ -52,7 +55,7 @@ class RecalculateRewardsJob implements ShouldQueue
         $amount = intval($rule->predicate);
 
         // update reward amount based on rule and multiplier
-        $this->reward->amount =  $amount * $multiplier;
+        $this->reward->amount = $amount * $multiplier;
 
         $this->reward->save();
     }

@@ -25,19 +25,29 @@ use Psr\Container\NotFoundExceptionInterface;
 class DelegatorsComponent extends Component
 {
     public $epoch;
+
     public $everyEpoch;
+
     public $everyEpochQuiz;
+
     public $everyEpochQuestion;
+
     public $partnerPromo;
+
     public $rewardPot;
+
     public $rewardsTemplate;
+
     public $availableRewards;
+
     public $withdrawalsProcessed;
+
     public $withdrawals;
+
     public $myResponse;
 
     protected $listeners = [
-        'claimEveryEpochReward' => 'claimEveryEpochReward'
+        'claimEveryEpochReward' => 'claimEveryEpochReward',
     ];
 
     /**
@@ -47,7 +57,7 @@ class DelegatorsComponent extends Component
     public function mount(PostRepository $posts)
     {
         // get epoch
-        $this->epoch = app(CardanoBlockfrostService::class)->get("epochs/latest/", null)->collect();
+        $this->epoch = app(CardanoBlockfrostService::class)->get('epochs/latest/', null)->collect();
 
         $this->everyEpoch = EveryEpoch::with('quizzes.questions.answers')
             ->where('epoch', $this->epoch['epoch'])
@@ -60,34 +70,33 @@ class DelegatorsComponent extends Component
         $this->rewardsTemplate = $this->everyEpoch
             ?->giveaway->rules()->where('context', 'reward')
             ->get(['predicate', 'subject'])
-            ?->map(fn($t) => [
+            ?->map(fn ($t) => [
                 $t->subject => intval($t->predicate),
             ])->collapse()->toArray();
 
         $this->rewardPot = collect(
             (new GetLidoRewardsPot)($this->everyEpoch))
             ->filter(
-                fn($asset) => $asset['amount'] >= $this->rewardsTemplate[$asset['asset'] . '.amount']
+                fn ($asset) => $asset['amount'] >= $this->rewardsTemplate[$asset['asset'].'.amount']
             );
 
-        if (Auth::check() && !!auth()->user()?->wallet_stake_address) {
+        if (Auth::check() && (bool) auth()->user()?->wallet_stake_address) {
             $user = auth()->user();
             $this->loadLidoRewards($user);
 
             $this->myResponse = AnswerResponse::with('answer.question')
                 ->where([
                     'user_id' => $user->id,
-                    'quiz_id' => $this->everyEpochQuiz?->id
+                    'quiz_id' => $this->everyEpochQuiz?->id,
                 ])->first();
 
             if ($this->myResponse instanceof AnswerResponse && $this->myResponse?->answer?->question instanceof Question) {
                 $this->everyEpochQuestion = $this->myResponse?->answer?->question;
             }
         }
-        if (!$this->everyEpochQuestion instanceof Question) {
+        if (! $this->everyEpochQuestion instanceof Question) {
             $this->everyEpochQuestion = $this->everyEpochQuiz?->questions?->shuffle()->first();
         }
-
     }
 
     public function claimEveryEpochReward(string $asset)
@@ -109,10 +118,10 @@ class DelegatorsComponent extends Component
         // get response from quiz
         $userResponse = AnswerResponse::where([
             'user_id' => $user?->getAuthIdentifier(),
-            'quiz_id' => $this->everyEpochQuiz?->id
+            'quiz_id' => $this->everyEpochQuiz?->id,
         ])->first();
 
-        if (!$userResponse instanceof AnswerResponse) {
+        if (! $userResponse instanceof AnswerResponse) {
             $this->addError('Quiz Not Found',
                 'Sorry having trouble finding your response to the quiz.'
             );
@@ -124,13 +133,13 @@ class DelegatorsComponent extends Component
             );
         }
 
-        if (!isset($this->rewardsTemplate[$asset . '.amount'])) {
+        if (! isset($this->rewardsTemplate[$asset.'.amount'])) {
             $this->addError('Error Issuing Reward',
                 'We seem to have our wired crossed. Please reach out to support.'
             );
         }
 
-        if (!isset($this->rewardPot[$asset]['amount'])) {
+        if (! isset($this->rewardPot[$asset]['amount'])) {
             $this->addError('Asset Not Found',
                 'We seem to have our wired crossed. Please reach out to support.'
             );
@@ -138,7 +147,7 @@ class DelegatorsComponent extends Component
 
         $reward = Reward::where([
             'user_id' => $user?->getAuthIdentifier(),
-            'model_id' => $this->everyEpochQuiz?->giveaway->id
+            'model_id' => $this->everyEpochQuiz?->giveaway->id,
         ])->first();
         if ($reward instanceof Reward) {
             $this->addError('Reward Already Claimed',
@@ -147,7 +156,7 @@ class DelegatorsComponent extends Component
         }
 
         $available = $this->rewardPot[$asset]['amount'];
-        $requestingAmount = $this->rewardsTemplate[$asset . '.amount'];
+        $requestingAmount = $this->rewardsTemplate[$asset.'.amount'];
         if ($available < $requestingAmount) {
             $this->addError('Available Rewards Issue',
                 'Sorry, looks like available rewards in selected asset have all been issued. Come back next epoch!'
@@ -156,6 +165,7 @@ class DelegatorsComponent extends Component
 
         if ($this->getErrorBag()?->isNotEmpty()) {
             $this->dispatchErrors();
+
             return null;
         }
 
@@ -180,14 +190,14 @@ class DelegatorsComponent extends Component
             ->layout(
                 'livewire.delegators.layout',
                 [
-                    'metaTitle' => 'Lido Delegators Portal'
+                    'metaTitle' => 'Lido Delegators Portal',
                 ]
             )->withShortcodes();
     }
 
     protected function saveReward($reward, $user, $addMultiplier = true)
     {
-        if (!$addMultiplier) {
+        if (! $addMultiplier) {
             $multiplier = 1.0;
         } else {
             $multiplier = (new GetPoolMultiplier)($user);
@@ -197,7 +207,7 @@ class DelegatorsComponent extends Component
         $reward->amount = $reward->amount * $multiplier;
         $reward->setTranslation(
             'memo', 'en',
-            "{$this->everyEpoch->title} reward" . ($multiplier > 1 ? ' with Multiplier' : '')
+            "{$this->everyEpoch->title} reward".($multiplier > 1 ? ' with Multiplier' : '')
         );
         $reward->save();
     }
@@ -205,7 +215,7 @@ class DelegatorsComponent extends Component
     protected function issueReward(string $asset)
     {
         $user = auth()->user();
-        $amount = $this->rewardsTemplate[$asset . '.amount'];
+        $amount = $this->rewardsTemplate[$asset.'.amount'];
         $reward = new Reward;
         $reward->user_id = $user->id;
         $reward->asset = $asset;
@@ -215,6 +225,7 @@ class DelegatorsComponent extends Component
         $reward->amount = $amount;
         $reward->status = 'issued';
         $reward->stake_address = $user->wallet_stake_address;
+
         return $reward;
     }
 
@@ -224,7 +235,7 @@ class DelegatorsComponent extends Component
             $this->dispatchBrowserEvent('new-notice', [
                 'type' => 'error',
                 'name' => $name,
-                'message' => $msg
+                'message' => $msg,
             ]);
         }
     }
@@ -248,12 +259,13 @@ class DelegatorsComponent extends Component
                         [
                             'amount' => collect($group)->sum('amount'),
                             'memo' => "Withdrawals processed {$group[0]?->updated_at->diffForHumans()}",
-                            'processed_at' => $group[0]?->updated_at->diffForHumans()
+                            'processed_at' => $group[0]?->updated_at->diffForHumans(),
                         ]
                     ));
                 if (is_array($asset->asset_details)) {
                     $asset->asset_details = new Fluent($asset->asset_details);
                 }
+
                 return $asset;
             })->values() ?? [];
 

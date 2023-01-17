@@ -12,7 +12,7 @@ class RewardPolicy extends AppPolicy
     /**
      * Determine whether the user can view any models.
      *
-     * @param User $user
+     * @param  User  $user
      * @return Response|bool
      */
     public function viewAny(User $user)
@@ -24,9 +24,10 @@ class RewardPolicy extends AppPolicy
     /**
      * Determine whether the user can view the model.
      *
-     * @param User $user
-     * @param Reward $reward
+     * @param  User  $user
+     * @param  Reward  $reward
      * @return Response|bool
+     *
      * @throws \Exception
      */
     public function view(User $user, Reward $reward)
@@ -38,7 +39,7 @@ class RewardPolicy extends AppPolicy
     /**
      * Determine whether the user can create models.
      *
-     * @param User $user
+     * @param  User  $user
      * @return Response|bool
      */
     public function create(User $user)
@@ -49,8 +50,8 @@ class RewardPolicy extends AppPolicy
     /**
      * Determine whether the user can update the model.
      *
-     * @param User $user
-     * @param Reward $reward
+     * @param  User  $user
+     * @param  Reward  $reward
      * @return Response|bool
      */
     public function update(User $user, Reward $reward)
@@ -62,8 +63,8 @@ class RewardPolicy extends AppPolicy
     /**
      * Determine whether the user can delete the model.
      *
-     * @param User $user
-     * @param Reward $reward
+     * @param  User  $user
+     * @param  Reward  $reward
      * @return Response|bool
      */
     public function delete(User $user, Reward $reward)
@@ -74,8 +75,8 @@ class RewardPolicy extends AppPolicy
     /**
      * Determine whether the user can restore the model.
      *
-     * @param User $user
-     * @param Reward $reward
+     * @param  User  $user
+     * @param  Reward  $reward
      * @return bool
      */
     public function restore(User $user, Reward $reward)
@@ -86,8 +87,8 @@ class RewardPolicy extends AppPolicy
     /**
      * Determine whether the user can permanently delete the model.
      *
-     * @param User $user
-     * @param Reward $reward
+     * @param  User  $user
+     * @param  Reward  $reward
      * @return Response|bool
      */
     public function forceDelete(User $user, Reward $reward)

@@ -7,6 +7,7 @@ use Illuminate\Http\Client\Response;
 
 interface ProvidesCardanoService
 {
-    public function account(string | User $account, string $detail = ''): Response;
+    public function account(string|User $account, string $detail = ''): Response;
+
     public function tx(string $hash = ''): Response;
 }

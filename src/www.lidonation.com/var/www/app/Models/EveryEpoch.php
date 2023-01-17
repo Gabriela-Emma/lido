@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-
 use App\Models\Traits\HasAuthor;
 use App\Models\Traits\HasGiveaways;
 use App\Models\Traits\HasMetaData;
@@ -28,7 +27,7 @@ class EveryEpoch extends Model implements HasMedia
 
     public $translatable = [
         'title',
-        'content'
+        'content',
     ];
 
     public function giveaway(): Attribute

@@ -23,10 +23,15 @@ class LibraryComponent extends Component
     public ?int $cardanoStakedAddresses;
 
     public $reviews;
+
     public $tags;
+
     public $latestLidoMinutes;
+
     public $categories;
+
     public $newToLibrary;
+
     public $latestLidoMinute;
 
     protected function posts(): Builder
@@ -43,17 +48,18 @@ class LibraryComponent extends Component
         $this->categories = Category::whereHas('insights')->orWhereHas('news')->orWhereHas('reviews')->get()
             ->map(function ($cat) {
                 $catIds = ModelCategory::where([
-                    'category_id' => $cat->id
+                    'category_id' => $cat->id,
                 ])->pluck('model_id')->all();
                 Post::withoutGlobalScope(LimitScope::class);
                 $cat->models = Post::whereIn('id', $catIds)
                     ->limit(4)->get();
+
                 return $cat;
-            })->sortByDesc(fn($c) => $c->posts_count)->values();
+            })->sortByDesc(fn ($c) => $c->posts_count)->values();
         $this->postsCount = count($this->posts()->get());
         $this->newToLibrary = $this->posts()->limit($this->latestLidoMinute instanceof Podcast ? 3 : 4)
             ->get()
-            ->map(fn($m) => $m->load(['media', 'tags']))
+            ->map(fn ($m) => $m->load(['media', 'tags']))
             ->all();
     }
 

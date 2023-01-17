@@ -25,7 +25,7 @@ class StoreQuestionResponseRequest extends FormRequest
     {
         return [
             'stake_address' => 'required',
-            'answer' => 'exists:question_answers,id'
+            'answer' => 'exists:question_answers,id',
         ];
     }
 }

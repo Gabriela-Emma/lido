@@ -8,7 +8,6 @@ use Illuminate\View\View;
 
 class BazaarComposer
 {
-
     private array|Collection $latest;
 
     /**
@@ -16,7 +15,8 @@ class BazaarComposer
      *
      * @return void
      */
-    public function __construct() {
+    public function __construct()
+    {
         $this->latest = Nft::inRandomOrder()->limit(7)->get();
     }
 
@@ -30,7 +30,7 @@ class BazaarComposer
     {
         $view->with([
             'dayAtTheLakeItems' => $this->latest,
-            'metaTitle' => 'LIDO Bazaar'
+            'metaTitle' => 'LIDO Bazaar',
         ]);
     }
 }

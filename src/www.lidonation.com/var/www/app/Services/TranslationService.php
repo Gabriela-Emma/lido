@@ -54,7 +54,7 @@ class TranslationService
         return $this;
     }
 
-    public function save(Model | Translation $model, string $field, bool $publish = false): self
+    public function save(Model|Translation $model, string $field, bool $publish = false): self
     {
         $sourceLang = $model->source_lang ?? app()->getLocale();
         $targetLang = Str::lower($this->targetLang);

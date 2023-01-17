@@ -46,6 +46,7 @@ class LidoMinuteNftsController extends Controller
     public function mintPrice(): int
     {
         $quote = app(AdaRepository::class)->quote();
+
         return ceil(100 / $quote?->price);
     }
 
@@ -55,28 +56,30 @@ class LidoMinuteNftsController extends Controller
 
         return response([
             'address' => $response?->address,
-            'qr' => CardanoWalletService::generateQrCode($response?->address)
+            'qr' => CardanoWalletService::generateQrCode($response?->address),
         ], 200);
     }
 
     public function mintStatus(Request $request): TxResource
     {
         $address = $request->input('address');
-        $tx =  Tx::with(['model'])->where('address', $address)->orderByDesc('created_at')->firstOrFail();
+        $tx = Tx::with(['model'])->where('address', $address)->orderByDesc('created_at')->firstOrFail();
+
         return new TxResource($tx);
     }
 
     //@todo move this to a an involkable
     protected function mintAddressFromLucid()
     {
-        $seed = file_get_contents("/data/nfts/lido-minute/wallets/mint/seed.txt");
+        $seed = file_get_contents('/data/nfts/lido-minute/wallets/mint/seed.txt');
         try {
             return Http::post(
-                config('cardano.lucidEndpoint') . '/wallet/address',
+                config('cardano.lucidEndpoint').'/wallet/address',
                 compact('seed')
             )->throw()->object();
         } catch (Exception $e) {
             dd($e);
+
             return null;
         }
     }

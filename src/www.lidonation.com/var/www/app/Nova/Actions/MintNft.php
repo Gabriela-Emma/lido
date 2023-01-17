@@ -51,7 +51,7 @@ class MintNft extends Action implements ShouldQueue
     /**
      * Get the fields available on the action.
      *
-     * @param NovaRequest $request
+     * @param  NovaRequest  $request
      * @return array
      */
     public function fields(NovaRequest $request): array

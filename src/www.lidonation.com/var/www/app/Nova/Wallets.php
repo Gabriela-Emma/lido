@@ -5,13 +5,10 @@ namespace App\Nova;
 use App\Models\Wallet;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
-use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\Code;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\MorphedByMany;
-use Laravel\Nova\Fields\MorphMany;
 use Laravel\Nova\Fields\MorphTo;
-use Laravel\Nova\Fields\MorphToMany;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Text;
 
@@ -60,14 +57,14 @@ class Wallets extends Resource
             ID::make(__('ID'), 'id')->sortable(),
             Text::make(__('Address'), 'address'),
             BelongsTo::make(__('User'))->searchable(),
-//            MorphedByMany::make('models', 'models', [Votes::class]),
-//            MorphTo::make(__('Attached to'), 'models')->types([
-//                Articles::class,
-//                EveryEpochs::class,
-//                Votes::class
-//            ]),
+            //            MorphedByMany::make('models', 'models', [Votes::class]),
+            //            MorphTo::make(__('Attached to'), 'models')->types([
+            //                Articles::class,
+            //                EveryEpochs::class,
+            //                Votes::class
+            //            ]),
             Number::make(__('Lovelaces'), 'ada_balance'),
-//            Number::make(__('Token Balance'), 'token_balance'),
+            //            Number::make(__('Token Balance'), 'token_balance'),
             Code::make(__('Verification Key'))->json()->onlyOnForms(),
             Code::make(__('Signing Key'))->json()->onlyOnForms(),
             Code::make(__('Passphrase'))->onlyOnForms(),

@@ -8,13 +8,18 @@ use Illuminate\View\View;
 
 class LidoMinuteNftComposer
 {
-
     private array|Collection $portraitNfts;
+
     private array|Collection $inTheLabNfts;
+
     private array|Collection $bubblesNfts;
+
     private array|Collection $puddlesNfts;
+
     private array|Collection $steampunkNfts;
+
     private array|Collection $tidePoolNfts;
+
     private array|Collection $behindCurtainNfts;
 
     /**
@@ -22,7 +27,8 @@ class LidoMinuteNftComposer
      *
      * @return void
      */
-    public function __construct() {
+    public function __construct()
+    {
         $this->portraitNfts = Nft::inRandomOrder()->whereJsonContains('metadata->motif', 'portrait')->limit(3)->get();
         $this->inTheLabNfts = Nft::inRandomOrder()->whereJsonContains('metadata->motif', 'in the lab')->limit(3)->get();
         $this->bubblesNfts = Nft::inRandomOrder()->whereJsonContains('metadata->motif', 'bubbles')->limit(3)->get();
@@ -48,7 +54,7 @@ class LidoMinuteNftComposer
             'steampunkNfts' => $this->steampunkNfts,
             'tidePoolNfts' => $this->tidePoolNfts,
             'behindCurtainNfts' => $this->behindCurtainNfts,
-            'metaTitle' => 'A Day at the Lake NFT Series'
+            'metaTitle' => 'A Day at the Lake NFT Series',
         ]);
     }
 }

@@ -17,12 +17,13 @@ class TxResource extends JsonResource
     public function toArray($request): array|\JsonSerializable|Arrayable
     {
         $model = strtolower(class_basename($this->model));
-        return array_merge (
+
+        return array_merge(
             [
                 'hash' => $this->hash,
                 'status' => $this->status,
                 'quantity' => $this->quantity,
-                $model => $this->model?->toArray()
+                $model => $this->model?->toArray(),
             ],
             $this->metadata?->toArray()
         );

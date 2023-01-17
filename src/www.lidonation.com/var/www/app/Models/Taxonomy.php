@@ -145,7 +145,7 @@ class Taxonomy extends Model implements HasMedia, HasLink
         return [
             'id' => $this->id,
             'slug' => $this->slug,
-            'title' => $this->title
+            'title' => $this->title,
         ];
     }
 

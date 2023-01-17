@@ -16,10 +16,10 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Illuminate\Support\Fluent;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class Nft extends Model implements HasLink, HasMedia
 {
@@ -47,10 +47,11 @@ class Nft extends Model implements HasLink, HasMedia
 
     public $translatable = [
         'name',
-        'description'
+        'description',
     ];
 
     protected $with = ['txs'];
+
     protected $withCount = ['txs'];
 
     public function metas(): HasMany
@@ -142,6 +143,4 @@ class Nft extends Model implements HasLink, HasMedia
     {
         $this->addMediaCollection('hero')->singleFile();
     }
-
-
 }

@@ -10,9 +10,11 @@ use Livewire\Component;
 class PartnerDashboardComponent extends Component
 {
     public $assets = [];
+
     public $promos = null;
 
-    public function mount() {
+    public function mount()
+    {
         $this->promos = auth()?->user()?->promos;
     }
 

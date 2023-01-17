@@ -31,13 +31,13 @@ use Illuminate\Support\Str;
 use Laravel\Nova\Actions\Actionable;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 use Parental\HasChildren;
+use Spatie\Comments\Models\Concerns\HasComments;
 use Spatie\Image\Manipulations;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\Sitemap\Contracts\Sitemapable;
 use Spatie\Sitemap\Tags\Url;
-use Spatie\Comments\Models\Concerns\HasComments;
 
 /**
  * @property int $id
@@ -161,7 +161,7 @@ class Post extends Model implements HasMedia, Interfaces\IHasMetaData, Sitemapab
 
     public function getHashTagsAttribute()
     {
-        return $this->tags->concat($this->categories)->map(fn($tax) => Str::remove(' ', $tax->title));
+        return $this->tags->concat($this->categories)->map(fn ($tax) => Str::remove(' ', $tax->title));
     }
 
     public function getSummaryAttribute()
@@ -183,27 +183,27 @@ class Post extends Model implements HasMedia, Interfaces\IHasMetaData, Sitemapab
     //     return $query->get()
     //         ->whereNotIn('id', $this->id)->take(4);
 
-            // get related categories ids in Array
-            $categories_id = $this->categories->pluck('id');
-            $rel_cat_ids = ModelCategory::whereIn('category_id', $categories_id)
-                ->pluck('model_id');
+        // get related categories ids in Array
+        $categories_id = $this->categories->pluck('id');
+        $rel_cat_ids = ModelCategory::whereIn('category_id', $categories_id)
+            ->pluck('model_id');
 
-            // get related tags ids in Array
-            $tags_id = $this->tags->pluck('id');
-            $rel_tags_ids = ModelTag::whereIn('tag_id', $tags_id)
-                ->pluck('model_id');
+        // get related tags ids in Array
+        $tags_id = $this->tags->pluck('id');
+        $rel_tags_ids = ModelTag::whereIn('tag_id', $tags_id)
+            ->pluck('model_id');
 
-            // concatinate rel_cat_ids with rel_tags_ids
-            $related_ids = $rel_cat_ids->concat($rel_tags_ids);
+        // concatinate rel_cat_ids with rel_tags_ids
+        $related_ids = $rel_cat_ids->concat($rel_tags_ids);
 
-            // get related posts from the related_ids array.
-            $related_posts = Post::select("*")
-                ->whereIn('id', $related_ids)
-                ->where('id', '!=', $this->id)
-                ->get();
+        // get related posts from the related_ids array.
+        $related_posts = Post::select('*')
+            ->whereIn('id', $related_ids)
+            ->where('id', '!=', $this->id)
+            ->get();
 
-            // @TODO fix query above sometimes returns a collection with the current post
-            return $related_posts->take(4);
+        // @TODO fix query above sometimes returns a collection with the current post
+        return $related_posts->take(4);
     }
 
     public function getLinkAttribute(): string|UrlGenerator|Application
@@ -265,7 +265,7 @@ class Post extends Model implements HasMedia, Interfaces\IHasMetaData, Sitemapab
     /**
      * Determine if the user owns the given team.
      *
-     * @param mixed $team
+     * @param  mixed  $team
      * @return bool
      */
     public function ownsTeam($team)
@@ -358,8 +358,8 @@ class Post extends Model implements HasMedia, Interfaces\IHasMetaData, Sitemapab
         if (static::whereSlug($slug = Str::slug($title))->exists()) {
             $max = intval(static::whereTitle($title)->latest('id')->count());
 
-            return "{$slug}-" . preg_replace_callback('/(\d+)$/', fn($matches) => $matches[1] + 1,
-                    $max);
+            return "{$slug}-".preg_replace_callback('/(\d+)$/', fn ($matches) => $matches[1] + 1,
+                $max);
         }
 
         return $slug;
@@ -416,7 +416,7 @@ class Post extends Model implements HasMedia, Interfaces\IHasMetaData, Sitemapab
             'thumbnail' => $this->thumbnail_url,
             'content' => $content,
             'link' => LaravelLocalization::localizeURL("/posts/{$this->slug}/", app()->getLocale()),
-            'read_time' => (string)read_time($this->content),
+            'read_time' => (string) read_time($this->content),
             'author_name' => $this->author?->name,
             'author_gravatar' => $this->author?->gravatar,
         ]);
@@ -454,7 +454,7 @@ class Post extends Model implements HasMedia, Interfaces\IHasMetaData, Sitemapab
         static::addGlobalScope(new OrderByOrderScope);
         static::addGlobalScope(new OrderByPublishedDateScope);
         static::addGlobalScope(new OrderByDateScope);
-        if (!app()->runningInConsole()) {
+        if (! app()->runningInConsole()) {
             static::addGlobalScope(new LimitScope);
         }
     }

@@ -11,24 +11,24 @@ use Livewire\Component;
 class LidoRewardsPotComponent extends Component
 {
     public $everyEpoch;
+
     public $rewardsTemplate;
+
     public $rewardPot;
 
-    /**
-     */
     public function loadRewards()
     {
         $this->rewardsTemplate = $this->everyEpoch
             ?->giveaway->rules()->where('context', 'reward')
             ->get(['predicate', 'subject'])
-            ?->map(fn($t) => [
+            ?->map(fn ($t) => [
                 $t->subject => intval($t->predicate),
             ])->collapse()->toArray();
 
         $this->rewardPot = collect(
             (new GetLidoRewardsPot)($this->everyEpoch)
         )->filter(
-            fn($asset) => $asset['amount'] >= $this->rewardsTemplate[$asset['asset'] . '.amount']
+            fn ($asset) => $asset['amount'] >= $this->rewardsTemplate[$asset['asset'].'.amount']
         );
     }
 

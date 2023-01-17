@@ -27,16 +27,17 @@ class DispersePoolRewards extends Action implements ShouldQueue
     /**
      * Perform the action on the given models.
      *
-     * @param ActionFields $fields
-     * @param Collection $models
+     * @param  ActionFields  $fields
+     * @param  Collection  $models
      * @return void
+     *
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
     public function handle(ActionFields $fields, Collection $models): void
     {
         // group rewards by user
-        $models->groupBy('user_id')->each(function($group) {
+        $models->groupBy('user_id')->each(function ($group) {
             // foreach group user rewards create a withdrawal instance
             $user = $group->first()->user;
             $withdrawal = new Withdrawal;
@@ -46,7 +47,7 @@ class DispersePoolRewards extends Action implements ShouldQueue
             $withdrawal->save();
 
             // add rewards to withdrawal
-            $group->each(function($reward) use ($withdrawal) {
+            $group->each(function ($reward) use ($withdrawal) {
                 $reward->status = 'processed';
                 $reward->withdrawal_id = $withdrawal->id;
                 $reward->save();
@@ -57,7 +58,7 @@ class DispersePoolRewards extends Action implements ShouldQueue
     /**
      * Get the fields available on the action.
      *
-     * @param NovaRequest $request
+     * @param  NovaRequest  $request
      * @return array
      */
     public function fields(NovaRequest $request): array

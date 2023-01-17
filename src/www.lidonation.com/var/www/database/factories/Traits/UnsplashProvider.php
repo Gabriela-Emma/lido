@@ -14,7 +14,7 @@ trait UnsplashProvider
 
         //            $imageProvider->addImageSource(new \Salopot\ImageGenerator\ImageSources\Local\SolidColorSource($imageProvider));
         //            $imageProvider->addImageSource(new \Salopot\ImageGenerator\ImageSources\Remote\LoremPixelSource($imageProvider));
-       return $this->generateImage()->getDataUrl();
+        return $this->generateImage()->getDataUrl();
     }
 
     public function getFilePath()
@@ -37,6 +37,7 @@ trait UnsplashProvider
     public function getRandomImageLink(int $width, int $height): string
     {
         $random = random_int(11111, 99999);
+
         return "https://source.unsplash.com/random/{$width}x{$height}?sig={$random}";
     }
 }

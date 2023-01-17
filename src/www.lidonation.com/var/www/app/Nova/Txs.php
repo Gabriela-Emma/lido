@@ -70,24 +70,24 @@ class Txs extends Resource
                 Insights::class,
                 Podcasts::class,
                 Nfts::class,
-                Withdrawals::class
+                Withdrawals::class,
             ])->searchable()->nullable(),
             Select::make(__('Status'), 'status')
                 ->sortable()
                 ->default('pending')
                 ->rules(['required'])
                 ->options([
-                'draft' => 'Draft',
-                'pending' => 'Pending',
-                'minting' => 'Minting',
-                'minted' => 'Minted',
-                'burnt' => 'Burnt',
-                'blacklisted' => 'Blacklisted',
-            ]),
+                    'draft' => 'Draft',
+                    'pending' => 'Pending',
+                    'minting' => 'Minting',
+                    'minted' => 'Minted',
+                    'burnt' => 'Burnt',
+                    'blacklisted' => 'Blacklisted',
+                ]),
             DateTime::make(__('Minted At'), 'minted_at'),
             KeyValue::make('Metadata', 'metadata')->rules('json')->resolveUsing(function ($object) {
                 return collect($object)?->sortKeys();
-            })
+            }),
         ];
     }
 
@@ -135,7 +135,7 @@ class Txs extends Resource
         return array_merge(
             static::getGlobalActions(),
             [
-                (new MintNft)
+                (new MintNft),
             ]
         );
     }

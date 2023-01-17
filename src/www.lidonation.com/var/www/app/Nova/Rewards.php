@@ -9,8 +9,8 @@ use App\Nova\Actions\DispersePoolRewards;
 use App\Nova\Actions\EditMetaData;
 use App\Nova\Actions\IssueAdditionalRewards;
 use App\Nova\Actions\RecalculateRewards;
-use App\Nova\Metrics\UnpaidRewards;
 use App\Nova\Metrics\RewardStatus;
+use App\Nova\Metrics\UnpaidRewards;
 use Illuminate\Http\Request;
 use JetBrains\PhpStorm\Pure;
 use Laravel\Nova\Fields\BelongsTo;
@@ -49,7 +49,7 @@ class Rewards extends Resource
         'asset',
         'stake_address',
         'memo',
-        'user.name'
+        'user.name',
     ];
 
     /**
@@ -113,7 +113,7 @@ class Rewards extends Resource
                     'expired' => 'Expired',
                 ])->default('draft')->sortable(),
 
-            HasMany::make('Transactions', 'txs', Txs::class)
+            HasMany::make('Transactions', 'txs', Txs::class),
         ];
     }
 
@@ -169,7 +169,7 @@ class Rewards extends Resource
                 (new EditMetaData(Question::class)),
                 (new RecalculateRewards),
                 (new IssueAdditionalRewards),
-                (new DispersePoolRewards)
+                (new DispersePoolRewards),
             ]);
     }
 }

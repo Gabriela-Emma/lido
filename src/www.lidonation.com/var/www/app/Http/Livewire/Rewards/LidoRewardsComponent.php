@@ -4,10 +4,8 @@ namespace App\Http\Livewire\Rewards;
 
 use App\Invokables\GetPoolMultiplier;
 use App\Models\Giveaway;
-use App\Models\Promo;
 use App\Models\Reward;
 use App\Models\User;
-use App\Models\Withdrawal;
 use App\Repositories\PostRepository;
 use App\Services\CardanoBlockfrostService;
 use Illuminate\Contracts\Foundation\Application;
@@ -21,19 +19,29 @@ use Psr\Container\NotFoundExceptionInterface;
 class LidoRewardsComponent extends Component
 {
     public $epoch;
+
     public $everyEpoch;
+
     public $everyEpochQuiz;
+
     public $everyEpochQuestion;
+
     public $partnerPromo;
+
     public $rewardPot;
+
     public $rewardsTemplate;
+
     public $availableRewards;
+
     public $withdrawalsProcessed;
+
     public $withdrawals;
+
     public $myResponse;
 
     protected $listeners = [
-        'claimEveryEpochReward' => 'claimEveryEpochReward'
+        'claimEveryEpochReward' => 'claimEveryEpochReward',
     ];
 
     /**
@@ -44,7 +52,7 @@ class LidoRewardsComponent extends Component
     {
         $user = auth()?->user();
         // get epoch
-        $this->epoch = app(CardanoBlockfrostService::class)->get("epochs/latest/", null)->collect();
+        $this->epoch = app(CardanoBlockfrostService::class)->get('epochs/latest/', null)->collect();
         $this->availableRewards = Reward::where('stake_address', $user?->wallet_stake_address)
             ->where('status', 'issued')
             ->orderBy('created_at', 'desc')
@@ -64,12 +72,13 @@ class LidoRewardsComponent extends Component
                         [
                             'amount' => collect($group)->sum('amount'),
                             'memo' => "Withdrawals processed {$group[0]?->updated_at->diffForHumans()}",
-                            'processed_at' =>$group[0]?->updated_at->diffForHumans()
+                            'processed_at' => $group[0]?->updated_at->diffForHumans(),
                         ]
                     ));
                 if (is_array($asset->asset_details)) {
                     $asset->asset_details = new Fluent($asset->asset_details);
                 }
+
                 return $asset;
             })->values() ?? [];
     }
@@ -80,19 +89,20 @@ class LidoRewardsComponent extends Component
             ->layout(
                 'livewire.rewards.layout',
                 [
-                    'metaTitle' => 'Lido Rewards Portal'
+                    'metaTitle' => 'Lido Rewards Portal',
                 ]
             )->withShortcodes();
     }
 
-    protected function saveReward($reward, $user) {
+    protected function saveReward($reward, $user)
+    {
         $multiplier = (new GetPoolMultiplier)($user);
 
         // apply multiplier
         $reward->amount = $reward->amount * $multiplier;
         $reward->setTranslation(
             'memo', 'en',
-            "{$this->everyEpoch->title} reward" . ($multiplier > 1 ? ' with Multiplier' : '')
+            "{$this->everyEpoch->title} reward".($multiplier > 1 ? ' with Multiplier' : '')
         );
         $reward->save();
     }
@@ -100,7 +110,7 @@ class LidoRewardsComponent extends Component
     protected function issueReward(string $asset)
     {
         $user = auth()->user();
-        $amount = $this->rewardsTemplate[$asset . '.amount'];
+        $amount = $this->rewardsTemplate[$asset.'.amount'];
         $reward = new Reward;
         $reward->user_id = $user->id;
         $reward->asset = $asset;
@@ -110,6 +120,7 @@ class LidoRewardsComponent extends Component
         $reward->amount = $amount;
         $reward->status = 'issued';
         $reward->stake_address = $user->wallet_stake_address;
+
         return $reward;
     }
 
@@ -119,7 +130,7 @@ class LidoRewardsComponent extends Component
             $this->dispatchBrowserEvent('new-notice', [
                 'type' => 'error',
                 'name' => $name,
-                'message' => $msg
+                'message' => $msg,
             ]);
         }
     }
@@ -143,12 +154,13 @@ class LidoRewardsComponent extends Component
                         [
                             'amount' => collect($group)->sum('amount'),
                             'memo' => "Withdrawals processed {$group[0]?->updated_at->diffForHumans()}",
-                            'processed_at' =>$group[0]?->updated_at->diffForHumans()
+                            'processed_at' => $group[0]?->updated_at->diffForHumans(),
                         ]
                     ));
                 if (is_array($asset->asset_details)) {
                     $asset->asset_details = new Fluent($asset->asset_details);
                 }
+
                 return $asset;
             })->values() ?? [];
 

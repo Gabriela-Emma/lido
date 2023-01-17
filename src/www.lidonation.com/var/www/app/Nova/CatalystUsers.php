@@ -104,7 +104,6 @@ class CatalystUsers extends Resource
             HasMany::make(__('Own Proposals'), 'own_proposals', Proposals::class)
                 ->hideFromIndex(),
 
-
             HasMany::make(__('Team Proposals'), 'proposals', Proposals::class)
                 ->hideFromIndex(),
         ];

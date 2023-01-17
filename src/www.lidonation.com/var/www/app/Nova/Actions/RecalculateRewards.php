@@ -47,7 +47,7 @@ class RecalculateRewards extends Action
      */
     public function handle(ActionFields $fields, Collection $models): void
     {
-        $models->each(function (HasRules | Reward $model) use ($fields) {
+        $models->each(function (HasRules|Reward $model) {
             try {
                 if ($model instanceof HasRules) {
                     foreach ($model->rewards()->cursor() as $m) {
@@ -65,7 +65,7 @@ class RecalculateRewards extends Action
     /**
      * Get the fields available on the action.
      *
-     * @param NovaRequest $request
+     * @param  NovaRequest  $request
      * @return array
      */
     public function fields(NovaRequest $request): array

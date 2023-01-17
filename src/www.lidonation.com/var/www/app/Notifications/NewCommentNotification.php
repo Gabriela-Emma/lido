@@ -3,7 +3,7 @@
 namespace App\Notifications;
 
 // extends  Spatie\Comments\Notifications\NewCommentNotification
-class NewCommentNotification 
+class NewCommentNotification
 {
     public function __construct($comment)
     {

@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Fund;
 use App\Models\Interfaces\IHasMetaData;
 use App\Models\Traits\HasAuthor;
 use App\Models\Traits\HasGravatar;

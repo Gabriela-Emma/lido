@@ -10,9 +10,10 @@ use Livewire\Component;
 
 class LoginComponent extends Component
 {
-    public Nft | null $randomNft = null;
+    public Nft|null $randomNft = null;
 
-    public function mount() {
+    public function mount()
+    {
         $this->randomNft = Nft::inRandomOrder()->first();
     }
 

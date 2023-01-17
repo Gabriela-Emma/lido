@@ -4,9 +4,8 @@ namespace App\Http\Controllers\Delegators;
 
 use App\Enums\RoleEnum;
 use App\Http\Controllers\Controller;
-use App\Models\MintTx;
-use App\Models\User;
 use App\Http\Controllers\Invokable;
+use App\Models\User;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -36,7 +35,7 @@ class DelegatorController extends Controller
             // @todo can we validate this on the blockchain somehow
             // since it's possible for an account not to have an email address.
             if ((bool) $user) {
-                Auth::login($user,$remember=true);
+                Auth::login($user, $remember = true);
 
                 return auth()->user();
             } else {
@@ -46,7 +45,7 @@ class DelegatorController extends Controller
             }
         }
 
-        if (Auth::attempt($credentials, $remember=true)) {
+        if (Auth::attempt($credentials, $remember = true)) {
             return auth()->user();
         }
 

@@ -24,12 +24,13 @@ class RecordCcv4BallotsJob implements ShouldQueue
         protected string $tx,
         protected int $blockHeight,
         protected int $blockTime,
-    ){}
+    ) {
+    }
 
     /**
      * Execute the job.
      *
-     * @param CardanoBlockfrostService $cardanoBlockfrostService
+     * @param  CardanoBlockfrostService  $cardanoBlockfrostService
      * @return void
      */
     public function handle(CardanoBlockfrostService $cardanoBlockfrostService): void
@@ -38,13 +39,13 @@ class RecordCcv4BallotsJob implements ShouldQueue
             ->collect()?->firstWhere('label', 446);
 
         $ballots = collect($metadata['json_metadata']);
-        $ballots->each(function($ballot) {
+        $ballots->each(function ($ballot) {
             if (empty($ballot['ballot_choices'][0])) {
                 $ccv4Ballot = Ccv4BallotChoice::where([
                     'voter_id' => $ballot['voter_id'],
-                    'ballot_choice' => -1
+                    'ballot_choice' => -1,
                 ])->first();
-                if (!$ccv4Ballot instanceof  Ccv4BallotChoice) {
+                if (! $ccv4Ballot instanceof  Ccv4BallotChoice) {
                     $ccv4Ballot = new Ccv4BallotChoice;
                     $ccv4Ballot->tx_hash = $this->tx;
                     $ccv4Ballot->block_time = $this->blockHeight;
@@ -60,15 +61,15 @@ class RecordCcv4BallotsJob implements ShouldQueue
                 foreach ($ballot['ballot_choices'][0] as $rank => $ballotChoice) {
                     $ccv4Ballot = Ccv4BallotChoice::where([
                         'voter_id' => $ballot['voter_id'],
-                        'ballot_choice' => intval($ballotChoice)
+                        'ballot_choice' => intval($ballotChoice),
                     ])->first();
-                    if (!$ccv4Ballot instanceof Ccv4BallotChoice) {
+                    if (! $ccv4Ballot instanceof Ccv4BallotChoice) {
                         $ccv4Ballot = new Ccv4BallotChoice;
                         $ccv4Ballot->tx_hash = $this->tx;
                         $ccv4Ballot->block_time = $this->blockHeight;
                         $ccv4Ballot->block_height = $this->blockTime;
                         $ccv4Ballot->voter_id = $ballot['voter_id'];
-                        $ccv4Ballot->voter_power = round($ballot['voter_power'] * $this->votePower($rank + 1) );
+                        $ccv4Ballot->voter_power = round($ballot['voter_power'] * $this->votePower($rank + 1));
                         $ccv4Ballot->ballot_id = $ballot['ballot_id'];
                         $ccv4Ballot->ballot_choice = intval($ballotChoice);
                         $ccv4Ballot->ballot_choice_rank = $rank + 1;
@@ -101,6 +102,4 @@ class RecordCcv4BallotsJob implements ShouldQueue
             5 => 0.2,
         };
     }
-
-
 }

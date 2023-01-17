@@ -11,9 +11,9 @@ use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Sanctum\Sanctum;
-use Illuminate\Support\Facades\RateLimiter;
 
 //use Spatie\NovaTranslatable\Translatable;
 
@@ -30,7 +30,7 @@ class AppServiceProvider extends ServiceProvider
             $this->app->register(IdeHelperServiceProvider::class);
         }
 
-        $this->app->singleton('cardanoService', fn() => new (config('cardano.cardanoServiceProvider')));
+        $this->app->singleton('cardanoService', fn () => new (config('cardano.cardanoServiceProvider')));
 
         $this->app->singleton(
             'phuffycoinService',
@@ -43,7 +43,7 @@ class AppServiceProvider extends ServiceProvider
         );
         $this->app->bind(
             PhuffycoinService::class,
-            fn($app) => $app['phuffycoinService']
+            fn ($app) => $app['phuffycoinService']
         );
 
         $this->app->singleton('CardanoBlockfrostService', CardanoBlockfrostService::class);
@@ -62,7 +62,7 @@ class AppServiceProvider extends ServiceProvider
 //            )->keys()->toArray()
 //        );
         Sanctum::usePersonalAccessTokenModel(PersonalAccessToken::class);
-        Blade::directive('percent', fn($expression) => (round(((float)$expression) * 100, 3) . '%'));
+        Blade::directive('percent', fn ($expression) => (round(((float) $expression) * 100, 3).'%'));
         Blade::directive('markdownLang', function ($expression) {
             return "<?php echo ___($expression); ?>";
         });
@@ -71,7 +71,7 @@ class AppServiceProvider extends ServiceProvider
         });
         Lang::macro('hasAny', function ($key, $locales = []) {
             return collect($locales)
-                ->map(fn($locale) => (Lang::has($key, $locale)))
+                ->map(fn ($locale) => (Lang::has($key, $locale)))
                 ->filter()
                 ->whereNotNull()
                 ->isNotEmpty();
@@ -83,7 +83,7 @@ class AppServiceProvider extends ServiceProvider
             ];
         });
 
-        RateLimiter::for('blockfrost', fn() => [
+        RateLimiter::for('blockfrost', fn () => [
             Limit::perMinute(100),
         ]);
 

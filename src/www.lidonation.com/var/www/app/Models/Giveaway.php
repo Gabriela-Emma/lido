@@ -2,15 +2,15 @@
 
 namespace App\Models;
 
+use App\Models\Interfaces\HasRewardsContract;
 use App\Models\Traits\HasAuthor;
 use App\Models\Traits\HasHero;
 use App\Models\Traits\HasMetaData;
 use App\Models\Traits\HasModel;
+use App\Models\Traits\HasRewards;
 use App\Models\Traits\HasRules;
 use App\Models\Traits\HasTranslations;
 use App\Models\Traits\HasWallets;
-use App\Models\Traits\HasRewards;
-use App\Models\Interfaces\HasRewardsContract;
 use Illuminate\Database\Eloquent\Casts\AsArrayObject;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
@@ -34,6 +34,7 @@ class Giveaway extends Model implements HasMedia, Interfaces\HasRules, HasReward
         HasRewards,
         InteractsWithMedia,
         SoftDeletes;
+
     /**
      * The attributes that should be cast.
      *
@@ -63,20 +64,21 @@ class Giveaway extends Model implements HasMedia, Interfaces\HasRules, HasReward
             get: function ($value) {
                 $wallet = $this->wallets?->first();
                 $seed = $wallet?->passphrase;
+
                 return Cache::remember($wallet->address, 900, function () use ($seed) {
                     try {
                         return Http::post(
-                            config('cardano.lucidEndpoint') . '/wallet/balances',
+                            config('cardano.lucidEndpoint').'/wallet/balances',
                             compact('seed')
-                        )->throw()->collect()->map(function($asset) {
-                            $asset['amount'] = $asset['amount'] - $this->rewards->filter(fn($r) => $r->asset === $asset['asset'])->sum('amount');
+                        )->throw()->collect()->map(function ($asset) {
+                            $asset['amount'] = $asset['amount'] - $this->rewards->filter(fn ($r) => $r->asset === $asset['asset'])->sum('amount');
+
                             return $asset;
                         });
                     } catch (\Exception $e) {
                         return null;
                     }
                 });
-
             },
         );
     }

@@ -15,12 +15,13 @@ class Withdrawal extends Model implements IHasMetaData
     use HasTxs, HasMetaData, HasAuthor;
 
     protected $with = ['txs'];
+
     protected $withCount = ['txs'];
 
     /**
      * Scope a query to only include popular users.
      *
-     * @param Builder $query
+     * @param  Builder  $query
      * @return Builder
      */
     public function scopePending(Builder $query): Builder
@@ -30,7 +31,7 @@ class Withdrawal extends Model implements IHasMetaData
 
     public function amounts(): Attribute
     {
-        return Attribute::make(get: function($value) {
+        return Attribute::make(get: function ($value) {
             return $this->rewards->groupBy('asset')->values;
         });
     }
@@ -38,7 +39,7 @@ class Withdrawal extends Model implements IHasMetaData
     /**
      * Scope a query to only include popular users.
      *
-     * @param Builder $query
+     * @param  Builder  $query
      * @return Builder
      */
     public function scopeValidated(Builder $query): Builder

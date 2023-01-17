@@ -66,7 +66,7 @@ class CatalystFundComponent extends Component
         $this->fund = Fund::where('slug', '=', request()->route('fund'))
             ->with(['fundChallenges'])
             ->first();
-        $type = match($this->fund?->type) {
+        $type = match ($this->fund?->type) {
             'challenge_setting' => 'challenge',
             default => 'proposal'
         };

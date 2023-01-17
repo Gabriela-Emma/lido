@@ -27,12 +27,12 @@ class SyncCcv4BallotsCommand extends Command
         $page = 1;
         do {
             $ballots = $cardanoBlockfrostService->get(
-                "/assets/c40fe3d8d97b3af86a3bbfa7dfa41ca2be2a82a5d91e4b8db7cc60c542616c6c6f74/transactions",
+                '/assets/c40fe3d8d97b3af86a3bbfa7dfa41ca2be2a82a5d91e4b8db7cc60c542616c6c6f74/transactions',
                 ['count' => 30,
-                    'page' => $page
+                    'page' => $page,
                 ])->collect();
 
-            $ballots->each(fn($ballot) => RecordCcv4BallotsJob::dispatch(
+            $ballots->each(fn ($ballot) => RecordCcv4BallotsJob::dispatch(
                 $ballot['tx_hash'],
                 $ballot['block_height'],
                 $ballot['block_time']

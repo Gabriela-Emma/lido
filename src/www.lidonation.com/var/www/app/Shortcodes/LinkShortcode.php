@@ -37,7 +37,7 @@ class LinkShortcode
         return sprintf('<a target="_blank" href="%s" title="%s">%s</a>',
             $linkObject->link,
             $linkObject?->title,
-            !empty($content) ? $content : $linkObject?->title
+            ! empty($content) ? $content : $linkObject?->title
         );
     }
 }

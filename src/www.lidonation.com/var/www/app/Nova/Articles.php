@@ -149,7 +149,7 @@ class Articles extends Resource
                 \App\Models\News::class => 'News',
                 Insight::class => 'Insights',
                 \App\Models\OnboardingContent::class => 'OnboardingContent',
-                \App\Models\ExternalPost::class => 'ExternalPost'
+                \App\Models\ExternalPost::class => 'ExternalPost',
             ])->onlyOnForms(),
             DateTime::make('Published At')
                 ->help('Defaults to today. ')

@@ -25,7 +25,7 @@ class QuestionAnswer extends Model
 
     public $translatable = [
         'content',
-        'hint'
+        'hint',
     ];
 
     /**
@@ -40,7 +40,7 @@ class QuestionAnswer extends Model
 
     public function correct(): Attribute
     {
-        return Attribute::make(get: fn() => $this?->correctness === 'correct');
+        return Attribute::make(get: fn () => $this?->correctness === 'correct');
     }
 
     public function question(): BelongsTo

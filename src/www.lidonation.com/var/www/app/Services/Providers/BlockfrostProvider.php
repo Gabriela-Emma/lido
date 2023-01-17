@@ -49,14 +49,14 @@ class BlockfrostProvider implements ProvidesCardanoService
 
     /**
      * @return void
+     *
      * @todo implement method support parallel requests
      */
     public function requests(): void
     {
-
     }
 
-    public function account(string | User $account, string $detail = ''): Response
+    public function account(string|User $account, string $detail = ''): Response
     {
         $stakeAddress = $account?->wallet_stake_address ?? $account;
 
@@ -77,8 +77,8 @@ class BlockfrostProvider implements ProvidesCardanoService
             ->accept('application/json')
             ->retry(1, 500)
             ->withMiddleware(
-                Middleware::mapResponse(function (ResponseInterface $response) use($collect) {
-                    if (!$collect) {
+                Middleware::mapResponse(function (ResponseInterface $response) use ($collect) {
+                    if (! $collect) {
                         return $response;
                     }
 

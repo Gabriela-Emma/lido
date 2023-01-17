@@ -17,7 +17,7 @@ class WalletObserver
     {
         (new FillPostData)($wallet, [], fn () => [
             'ada_balance' => ['ada_balance', 0],
-//            'token_balance' => ['token_balance', 0],
+            //            'token_balance' => ['token_balance', 0],
         ]);
     }
 }

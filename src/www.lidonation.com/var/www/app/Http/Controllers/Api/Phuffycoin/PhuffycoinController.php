@@ -35,7 +35,7 @@ class PhuffycoinController extends Controller
 
         return response([
             'address' => $response?->address,
-            'qr' => CardanoWalletService::generateQrCode($response?->address)
+            'qr' => CardanoWalletService::generateQrCode($response?->address),
         ], 200);
     }
 
@@ -62,7 +62,7 @@ class PhuffycoinController extends Controller
 
             $dbDepositAddress = $mintTxs->first()?->meta_data?->deposit_address;
             if ($depositAddress != $dbDepositAddress) {
-                if (!!$dbDepositAddress) {
+                if ((bool) $dbDepositAddress) {
                     return response(['message' => 'Deposit address mismatch.'], 400);
                 } else {
                     $mintTxs->each(function ($tx) use ($depositAddress) {
@@ -74,7 +74,7 @@ class PhuffycoinController extends Controller
             }
 
             $mintAddress = new Fluent($this->mintAddressFromLucid());
-            if (!collect($txUtxos->outputs ?? null)->contains('address', $mintAddress?->address)) {
+            if (! collect($txUtxos->outputs ?? null)->contains('address', $mintAddress?->address)) {
                 return response(new MintTxCollection($user->mint_txs));
             }
 
@@ -106,11 +106,11 @@ class PhuffycoinController extends Controller
 
     protected function mintAddressFromLucid()
     {
-        $seed = file_get_contents("/data/phuffycoin/wallets/mint/seed.txt");
+        $seed = file_get_contents('/data/phuffycoin/wallets/mint/seed.txt');
 
         try {
             return Http::post(
-                config('cardano.lucidEndpoint') . '/wallet/address',
+                config('cardano.lucidEndpoint').'/wallet/address',
                 compact('seed')
             )->throw()->object();
         } catch (Exception $e) {
@@ -122,7 +122,7 @@ class PhuffycoinController extends Controller
     protected function mint($userAddress)
     {
         $user = auth()->user();
-        $seed = file_get_contents("/data/phuffycoin/wallets/mint/seed.txt");
+        $seed = file_get_contents('/data/phuffycoin/wallets/mint/seed.txt');
         try {
             $mintTxs = MintTx::lockForUpdate()->where('user_id', $user->id)->where('status', '!=', 'minted')->get();
             $mintTx = $mintTxs->first();
@@ -130,12 +130,12 @@ class PhuffycoinController extends Controller
 
             // connect to lucid backend and mint coin
             $response = Http::post(
-                config('cardano.lucidEndpoint') . '/phuffycoin/claim',
+                config('cardano.lucidEndpoint').'/phuffycoin/claim',
                 [
                     'userAddress' => $userAddress,
                     'phuffyAmount' => $mintAmount,
                     'msg' => $mintTx->mint?->memo,
-                    'seed' => $seed
+                    'seed' => $seed,
                 ]
             )->throw()->object();
             $mintTxs->each(function ($tx) use ($response) {
@@ -178,5 +178,4 @@ class PhuffycoinController extends Controller
 
         return response(new MintTxCollection(MintTx::find($request->input('mintTxs'))));
     }
-
 }

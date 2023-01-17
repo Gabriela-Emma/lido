@@ -23,7 +23,7 @@ class PodcastShow extends Model implements HasLink, IHasMetaData, HasMedia
 
     public $translatable = [
         'name',
-        'content'
+        'content',
     ];
 
     public function getLinkAttribute()

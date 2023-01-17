@@ -27,21 +27,21 @@ class IssueAdditionalRewards extends Action implements ShouldQueue
     /**
      * Perform the action on the given models.
      *
-     * @param ActionFields $fields
-     * @param Collection $models
+     * @param  ActionFields  $fields
+     * @param  Collection  $models
      * @return string[]|void
      */
     public function handle(ActionFields $fields, Collection $models)
     {
-        if (!isset($fields->asset)) {
+        if (! isset($fields->asset)) {
             return Action::danger('Epoch Field Required.');
         }
 
-        if (!isset($fields->amount)) {
+        if (! isset($fields->amount)) {
             return Action::danger('Epoch Field Required.');
         }
 
-        $models->each(function( Reward $r) use($fields) {
+        $models->each(function (Reward $r) use ($fields) {
             $reward = new Reward;
             $reward->user_id = $r->user_id;
             $reward->memo = $r->memo;
@@ -55,13 +55,12 @@ class IssueAdditionalRewards extends Action implements ShouldQueue
             $reward->stake_address = $r->user->wallet_stake_address;
             $reward->save();
         });
-
     }
 
     /**
      * Get the fields available on the action.
      *
-     * @param NovaRequest $request
+     * @param  NovaRequest  $request
      * @return array
      */
     public function fields(NovaRequest $request): array

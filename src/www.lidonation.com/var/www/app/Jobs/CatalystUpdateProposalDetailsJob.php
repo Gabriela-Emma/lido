@@ -35,23 +35,24 @@ class CatalystUpdateProposalDetailsJob implements ShouldQueue
      * Execute the job.
      *
      * @return void
+     *
      * @throws FileCannotBeAdded
      */
     public function handle(): void
     {
-        if (!$this->proposal instanceof Proposal) {
+        if (! $this->proposal instanceof Proposal) {
             $this->proposal = Proposal::find($this->proposal);
         }
         $parts = collect(explode('/', $this->proposal->ideascale_link))->last();
         $ideascaleId = collect(explode('-', $parts))->first();
         $authResponse = Http::get('https://cardano.ideascale.com/a/community/api/get-token');
-        if (!$authResponse->successful()) {
+        if (! $authResponse->successful()) {
             return;
         }
         $response = Http::withToken($authResponse->body())
             ->get("https://cardano.ideascale.com/a/community/api/idea/${ideascaleId}/detail");
 
-        if (!$response->successful()) {
+        if (! $response->successful()) {
             return;
         }
 
@@ -59,7 +60,7 @@ class CatalystUpdateProposalDetailsJob implements ShouldQueue
 
         $author = $this->processPrimaryAuthor($data);
 
-        if ($data?->description && !$this->proposal?->problem) {
+        if ($data?->description && ! $this->proposal?->problem) {
             $this->proposal->problem = $data->description;
         }
 
@@ -68,10 +69,10 @@ class CatalystUpdateProposalDetailsJob implements ShouldQueue
         if ($this->proposal->fund?->parent?->id == 58) {
             [$solution, $experience] = $this->getFund7BasicDetails($data->fieldSections);
         }
-        if ($solution && !$this->proposal?->solution) {
+        if ($solution && ! $this->proposal?->solution) {
             $this->proposal->solution = $solution;
         }
-        if ($experience && !$this->proposal?->experience) {
+        if ($experience && ! $this->proposal?->experience) {
             $this->proposal->experience = $experience;
         }
 
@@ -82,20 +83,20 @@ class CatalystUpdateProposalDetailsJob implements ShouldQueue
         // save detailed content
         if ($this->proposal->fund?->parent_id == 21) {
             $fieldSections = $this->getFund7ProposalDetails($data->fieldSections);
-            $this->proposal->content = (string)$fieldSections->implode('');
+            $this->proposal->content = (string) $fieldSections->implode('');
         }
         if ($this->proposal->fund?->parent_id == 58) {
             $fieldSections = $this->getFund7ProposalDetails($data->fieldSections);
-            $this->proposal->content = (string)$fieldSections->implode('');
+            $this->proposal->content = (string) $fieldSections->implode('');
         }
         if ($this->proposal->fund?->parent_id == 97) {
             $fieldSections = $this->getFund9ProposalDetails($data->fieldSections);
 
-            $this->proposal->content = (string)$fieldSections->implode('');
+            $this->proposal->content = (string) $fieldSections->implode('');
         }
         if ($this->proposal->fund?->parent_id == 61) {
             $fieldSections = $this->getFund8ProposalDetails($data->fieldSections);
-            $this->proposal->content = (string)$fieldSections->implode('');
+            $this->proposal->content = (string) $fieldSections->implode('');
         }
 
         $this->proposal->user_id = $author?->id;
@@ -103,7 +104,7 @@ class CatalystUpdateProposalDetailsJob implements ShouldQueue
         // Save and Sync links
         $links = $this->getFund98ProposalLinks($data->fieldSections);
         $links = $links->map(function ($link, $index) {
-            return Link::withoutSyncingToSearch(fn() => Link::updateOrCreate(
+            return Link::withoutSyncingToSearch(fn () => Link::updateOrCreate(
                 [
                     'link' => $link,
                 ],
@@ -111,7 +112,7 @@ class CatalystUpdateProposalDetailsJob implements ShouldQueue
                     'link' => $link,
                     'status' => 'published',
                     'label' => 'link',
-                    'title' => 'Relevant Link ' . $index + 1,
+                    'title' => 'Relevant Link '.$index + 1,
                     'valid' => true,
                 ],
             ));
@@ -121,7 +122,7 @@ class CatalystUpdateProposalDetailsJob implements ShouldQueue
         ], false);
 
         // save proposal without trigger search index
-        Proposal::withoutSyncingToSearch(fn() => $this->proposal->save());
+        Proposal::withoutSyncingToSearch(fn () => $this->proposal->save());
 
         // save videos
         $videos = $this->getFund98ProposalVideos($data->fieldSections);
@@ -138,7 +139,7 @@ class CatalystUpdateProposalDetailsJob implements ShouldQueue
         }
 
         // save attachments
-        if (!$this->proposal->hasMedia('hero')) {
+        if (! $this->proposal->hasMedia('hero')) {
             $attachments = collect($data?->attachments);
             if ($attachments->isNotEmpty()) {
                 $attachments->each(function ($att) {
@@ -149,7 +150,7 @@ class CatalystUpdateProposalDetailsJob implements ShouldQueue
         }
 
         // Save Tags
-        if (!($this->proposal->tags?->count() ?? null)) {
+        if (! ($this->proposal->tags?->count() ?? null)) {
             $tags = $this->getFundProposalTags($data->ideaTagHolder);
             $tags = $tags->map(function ($tag, $index) {
                 return Tag::updateOrCreate(
@@ -157,7 +158,7 @@ class CatalystUpdateProposalDetailsJob implements ShouldQueue
                         'slug' => Str::slug($tag),
                     ],
                     [
-                        'title' => ucfirst($tag)
+                        'title' => ucfirst($tag),
                     ],
                 );
             });
@@ -170,11 +171,11 @@ class CatalystUpdateProposalDetailsJob implements ShouldQueue
     protected function processCoProposers(&$data): Collection
     {
         return collect($data->coSubmitters)->map(function ($user) {
-            if (!$user->username) {
+            if (! $user->username) {
                 return false;
             }
             $cu = CatalystUser::where('username', $user->username)->first();
-            if (!$cu) {
+            if (! $cu) {
                 $cu = CatalystUser::updateOrCreate(
                     [
                         'username' => $user->username,
@@ -187,7 +188,7 @@ class CatalystUpdateProposalDetailsJob implements ShouldQueue
             $cu->name = $user?->name;
             $cu->ideascale_id = $user?->id;
             try {
-                if (!$cu->hero) {
+                if (! $cu->hero) {
                     $cu->addMediaFromUrl($user?->avatar)
                         ->toMediaCollection('hero');
                 }
@@ -195,7 +196,7 @@ class CatalystUpdateProposalDetailsJob implements ShouldQueue
                 report($exception);
             }
 
-            CatalystUser::withoutSyncingToSearch(fn() => $cu->save());
+            CatalystUser::withoutSyncingToSearch(fn () => $cu->save());
 
             return $cu->id;
         });
@@ -212,17 +213,17 @@ class CatalystUpdateProposalDetailsJob implements ShouldQueue
     protected function processPrimaryAuthor(&$data)
     {
         $author = CatalystUser::where('username', $data->submitter?->username)->first();
-        if (!$author instanceof CatalystUser) {
+        if (! $author instanceof CatalystUser) {
             $author = new CatalystUser;
             $author->username = $data->submitter?->username;
         }
         $author->name = $data->submitter?->name;
         $author->ideascale_id = $data->submitter?->id;
-        if (!$author->hero) {
+        if (! $author->hero) {
             $author->addMediaFromUrl($data->submitter?->avatar)
                 ->toMediaCollection('hero');
         }
-        CatalystUser::withoutSyncingToSearch(fn() => $author->save());
+        CatalystUser::withoutSyncingToSearch(fn () => $author->save());
 
         return $author;
     }
@@ -230,9 +231,9 @@ class CatalystUpdateProposalDetailsJob implements ShouldQueue
     protected function getFund98ProposalVideos($sections): Collection
     {
         $ytMedia = collect($sections)
-            ->filter(fn($field) => isset($field->ideaFieldValues[0]) && $field->ideaFieldValues[0]?->fieldDisplayType === 'YOUTUBE');
+            ->filter(fn ($field) => isset($field->ideaFieldValues[0]) && $field->ideaFieldValues[0]?->fieldDisplayType === 'YOUTUBE');
 
-        return $ytMedia->map(fn($section) => collect($section->ideaFieldValues)->pluck('value'))
+        return $ytMedia->map(fn ($section) => collect($section->ideaFieldValues)->pluck('value'))
             ->collapse()
             ->filter();
     }
@@ -240,24 +241,24 @@ class CatalystUpdateProposalDetailsJob implements ShouldQueue
     protected function getFund98ProposalLinks($sections): Collection
     {
         $linkSection = collect($sections)
-            ->filter(fn($field) => isset($field->ideaFieldValues[0]) && $field->ideaFieldValues[0]?->fieldDisplayType === 'HYPERLINK');
+            ->filter(fn ($field) => isset($field->ideaFieldValues[0]) && $field->ideaFieldValues[0]?->fieldDisplayType === 'HYPERLINK');
 
-        return $linkSection->map(fn($section) => collect($section->ideaFieldValues)->pluck('value'))->collapse()->filter();
+        return $linkSection->map(fn ($section) => collect($section->ideaFieldValues)->pluck('value'))->collapse()->filter();
     }
 
     protected function getFund9ProposalDetails($sections): Collection
     {
         $fieldSections = collect($sections)
-            ->filter(fn($field) => isset($field->ideaFieldValues[0]) && $field->ideaFieldValues[0]?->fieldDisplayType === 'TEXTAREA');
+            ->filter(fn ($field) => isset($field->ideaFieldValues[0]) && $field->ideaFieldValues[0]?->fieldDisplayType === 'TEXTAREA');
         if ($this->proposal->type == 'proposal') {
-            $fieldSections = $fieldSections->filter(fn($field) => Str::contains($field?->title, ['[IMPACT]', '[FEASIBILITY]', '[AUDITABILITY]', '(SDG) Rating'], true));
+            $fieldSections = $fieldSections->filter(fn ($field) => Str::contains($field?->title, ['[IMPACT]', '[FEASIBILITY]', '[AUDITABILITY]', '(SDG) Rating'], true));
         }
 
         return $fieldSections->map(function ($field) {
             $ideaFieldValues = collect($field->ideaFieldValues)->pluck('value')->implode('<br /><br />>');
             $converter = new HtmlConverter();
 
-            return $converter->convert('<h3 class="mt-6">' . $field?->title . '</h3>' . $ideaFieldValues . '<br /><br /><p></p>');
+            return $converter->convert('<h3 class="mt-6">'.$field?->title.'</h3>'.$ideaFieldValues.'<br /><br /><p></p>');
         });
 
 //        return $fieldSections->map(function ($field) {
@@ -270,46 +271,46 @@ class CatalystUpdateProposalDetailsJob implements ShouldQueue
     protected function getFund7ProposalDetails($sections): Collection
     {
         $fieldSections = collect($sections)
-            ->filter(fn($field) => isset($field->ideaFieldValues[0]) && $field->ideaFieldValues[0]?->fieldDisplayType === 'TEXTAREA');
+            ->filter(fn ($field) => isset($field->ideaFieldValues[0]) && $field->ideaFieldValues[0]?->fieldDisplayType === 'TEXTAREA');
 
         if ($this->proposal->type == 'proposal') {
-            $fieldSections = $fieldSections->filter(fn($field) => Str::contains($field?->ideaFieldValues[0]?->name, 'Detailed plan'))->values();
+            $fieldSections = $fieldSections->filter(fn ($field) => Str::contains($field?->ideaFieldValues[0]?->name, 'Detailed plan'))->values();
 
             return $fieldSections->map(function ($field) {
                 $ideaFieldValues = collect($field->ideaFieldValues)->pluck('value')->implode('<br /><br />');
                 $converter = new HtmlConverter();
 
-                return $converter->convert('<h3>Detailed Plan</h3>' . $ideaFieldValues . '<br /><br />');
+                return $converter->convert('<h3>Detailed Plan</h3>'.$ideaFieldValues.'<br /><br />');
             });
         }
 
         return $fieldSections->map(function ($field) {
             $converter = new HtmlConverter();
 
-            return $converter->convert('<h3>' . $field->ideaFieldValues[0]?->name . '</h3>' . $field->ideaFieldValues[0]?->value . '<br /><br />');
+            return $converter->convert('<h3>'.$field->ideaFieldValues[0]?->name.'</h3>'.$field->ideaFieldValues[0]?->value.'<br /><br />');
         });
     }
 
     protected function getFund8ProposalDetails($sections): Collection
     {
         $fieldSections = collect($sections)
-            ->filter(fn($field) => isset($field->ideaFieldValues[0]) && $field->ideaFieldValues[0]?->fieldDisplayType === 'TEXTAREA');
+            ->filter(fn ($field) => isset($field->ideaFieldValues[0]) && $field->ideaFieldValues[0]?->fieldDisplayType === 'TEXTAREA');
 
         if ($this->proposal->type == 'proposal') {
-            $fieldSections = $fieldSections->filter(fn($field) => property_exists($field, 'title'));
+            $fieldSections = $fieldSections->filter(fn ($field) => property_exists($field, 'title'));
 
             return $fieldSections->map(function ($field) {
                 $ideaFieldValues = collect($field->ideaFieldValues)->pluck('value')->implode('<br /><br />');
                 $converter = new HtmlConverter();
 
-                return $converter->convert('<h3>' . $field->title . '</h3>' . $ideaFieldValues . '<br /><br />');
+                return $converter->convert('<h3>'.$field->title.'</h3>'.$ideaFieldValues.'<br /><br />');
             });
         }
 
         return $fieldSections->map(function ($field) {
             $converter = new HtmlConverter();
 
-            return $converter->convert('<h3>' . $field->ideaFieldValues[0]?->name . '</h3>' . $field->ideaFieldValues[0]?->value . '<br /><br />');
+            return $converter->convert('<h3>'.$field->ideaFieldValues[0]?->name.'</h3>'.$field->ideaFieldValues[0]?->value.'<br /><br />');
         });
     }
 
@@ -318,6 +319,7 @@ class CatalystUpdateProposalDetailsJob implements ShouldQueue
         if ($leaf->tags) {
             return collect($leaf->tags);
         }
+
         return collect([]);
     }
 }

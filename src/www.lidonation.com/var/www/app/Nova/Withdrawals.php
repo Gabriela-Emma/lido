@@ -2,22 +2,15 @@
 
 namespace App\Nova;
 
-use App\Models\Nft;
 use App\Models\Withdrawal;
 use App\Nova\Actions\CacheNftImage;
-use Ebess\AdvancedNovaMediaLibrary\Fields\Images;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\KeyValue;
-use Laravel\Nova\Fields\Markdown;
-use Laravel\Nova\Fields\MorphTo;
-use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\URL;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Withdrawals extends Resource
@@ -71,16 +64,16 @@ class Withdrawals extends Resource
                 ->default('pending')
                 ->rules(['required'])
                 ->options([
-                'minting' => 'Processing',
-                'validated' => 'Validated',
-                'paid' => 'Paid',
-                'minted' => 'Sending',
-                'burnt' => 'Sent',
-            ]),
+                    'minting' => 'Processing',
+                    'validated' => 'Validated',
+                    'paid' => 'Paid',
+                    'minted' => 'Sending',
+                    'burnt' => 'Sent',
+                ]),
             DateTime::make(__('Created At'), 'created_at'),
             HasMany::make('Metadata', 'metas', Metas::class),
             HasMany::make('Rewards', 'rewards', Rewards::class),
-            HasMany::make('Transactions', 'txs', Txs::class)
+            HasMany::make('Transactions', 'txs', Txs::class),
         ];
     }
 
@@ -128,7 +121,7 @@ class Withdrawals extends Resource
         return array_merge(
             static::getGlobalActions(),
             [
-                new CacheNftImage
+                new CacheNftImage,
             ]);
     }
 }

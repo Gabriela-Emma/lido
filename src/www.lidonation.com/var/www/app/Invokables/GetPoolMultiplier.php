@@ -24,6 +24,7 @@ class GetPoolMultiplier
                 default => 1.0
             };
         }
+
         return $multiplier;
     }
 }

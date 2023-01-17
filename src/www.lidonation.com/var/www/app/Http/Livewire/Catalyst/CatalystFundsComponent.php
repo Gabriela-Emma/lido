@@ -88,7 +88,7 @@ class CatalystFundsComponent extends Component
                 [
                     'parent_proposals as proposals_amount_requested' => function ($query) {
                         $query->whereNotNull('funded_at')->where('proposals.type', 'proposal');
-                    }
+                    },
                 ],
                 'amount_requested'
             )
@@ -96,10 +96,9 @@ class CatalystFundsComponent extends Component
                 [
                     'parent_proposals as funded_proposals_count' => function ($query) {
                         $query->whereNotNull('funded_at')->where('proposals.type', 'proposal');
-                    }
+                    },
                 ])
             ->paginate($this->perPage);
-
 
         $this->catalystFunds = $this->paginator->items();
 

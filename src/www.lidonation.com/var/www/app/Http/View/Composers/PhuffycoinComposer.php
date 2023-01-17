@@ -34,7 +34,7 @@ class PhuffycoinComposer
             [$treasurerTxs, $treasurerAggregate] = $this->graphQLService->getAddressTxs([config('cardano.mint.addresses.treasurer')], null, true);
             [$governorTxs, $governorAggregate] = $this->graphQLService->getAddressTxs([config('cardano.mint.addresses.governor')], null, true);
             [$escrowTxs, $escrowAggregate] = $this->graphQLService->getAddressTxs([config('cardano.mint.addresses.escrow')], null, true);
-        } catch (ErrorException | \Exception $e) {
+        } catch (ErrorException|\Exception $e) {
             report($e);
         }
 

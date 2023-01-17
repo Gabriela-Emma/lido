@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers\Api\CatalystExplorer;
 
-use App\Http\Controllers\Api\CatalystExplorer\Traits;
-use App\Models\Proposal;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ProposalResource;
+use App\Models\Proposal;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use OpenApi\Annotations as OA;
@@ -49,12 +48,10 @@ class ProposalController extends Controller
 
         if (is_null($proposal)) {
             return response([
-                'errors'=> 'Proposal not found'
+                'errors' => 'Proposal not found',
             ], Response::HTTP_NOT_FOUND);
         } else {
             return new ProposalResource($proposal);
         }
-
-
     }
 }
