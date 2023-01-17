@@ -113,12 +113,12 @@
                     </span>
                 </h3>
                 <div>
-{{--                    @if($availableRewards?->isNotEmpty())--}}
-{{--                        <span @click="withdraw"--}}
-{{--                              class="inline-flex items-center px-1 py-0.5 rounded text-xs bg-accent-200 text-teal-900 hover:bg-accent-400 hover:cursor-pointer">--}}
-{{--                            Withdraw--}}
-{{--                        </span>--}}
-{{--                    @endif--}}
+                    @if($availableRewards?->isNotEmpty())
+                        <a  href="{{localizeRoute('rewards')}}"
+                              class="inline-flex items-center px-1 py-0.5 rounded text-xs bg-accent-200 text-teal-900 hover:bg-accent-400 hover:cursor-pointer">
+                            My Lido Rewards
+                        </a>
+                    @endif
                 </div>
             </div>
         </div>
