@@ -3,7 +3,9 @@
 namespace App\Observers;
 
 use App\Models\User;
+use App\Services\NewsletterService;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Log;
 
 class UserObserver
 {
@@ -28,4 +30,14 @@ class UserObserver
         unset($user->twitter_handler);
         unset($user->facebook_user);
     }
+
+    public function created(User $user)
+    {   
+        try {
+            (new NewsletterService)->subscribe(request('name'), request('email'));
+       } catch (\Exception $e) {
+            Log::info($e->getMessage());
+       }
+    }
+    
 }
