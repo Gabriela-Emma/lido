@@ -17,13 +17,13 @@ use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class PodcastSeason extends  Model implements HasMedia, HasLink, IHasMetaData
+class PodcastSeason extends Model implements HasMedia, HasLink, IHasMetaData
 {
     use HasAuthor, HasMetaData, HasLinks, HasTranslations, SoftDeletes, HasHero, InteractsWithMedia;
 
     public $translatable = [
         'name',
-        'content'
+        'content',
     ];
 
     public function getLinkAttribute()

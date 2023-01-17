@@ -44,7 +44,7 @@ class F8ProposalVotingResultsSeeder extends FSeeder
                         'unfunded' => 'not_approved',
                         default => strtolower($p->status)
                     };
-                    $p->status = match($proposal->status) {
+                    $p->status = match ($proposal->status) {
                         'funded' => 'in_progress',
                         default => 'unfunded'
                     };

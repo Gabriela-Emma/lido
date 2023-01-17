@@ -21,9 +21,10 @@ class NftSeeder extends Seeder
             ->state(new Sequence(
                 function ($sequence) {
                     $podcast = Podcast::all()->random();
+
                     return [
                         'model_id' => $podcast->id,
-                        'model_type' => $podcast::class
+                        'model_type' => $podcast::class,
                     ];
                 },
             ))->create();

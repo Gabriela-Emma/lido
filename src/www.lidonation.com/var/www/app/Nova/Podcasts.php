@@ -87,7 +87,7 @@ class Podcasts extends Resource
             Markdown::make(__('Content'))->translatable(),
             Markdown::make(__('Excerpt'), 'social_excerpt')->translatable(),
             Markdown::make(__('Comment Prompt'), 'comment_prompt')->translatable(),
-            HasMany::make('Nfts', 'nfts', Nfts::class)
+            HasMany::make('Nfts', 'nfts', Nfts::class),
         ];
     }
 

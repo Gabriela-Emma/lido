@@ -50,7 +50,7 @@ class User extends Resource
      * @var array
      */
     public static $search = [
-        'id', 'name', 'email', 'wallet_stake_address'
+        'id', 'name', 'email', 'wallet_stake_address',
     ];
 
     /**
@@ -195,7 +195,7 @@ class User extends Resource
         return [
             (new AddMetaData),
             (new EditMetaData(\App\Models\User::class)),
-            (new PopulatePaymentAddress)->confirmText('Check skip, to skip updating wallet_address field on models that already have one!')
+            (new PopulatePaymentAddress)->confirmText('Check skip, to skip updating wallet_address field on models that already have one!'),
         ];
     }
 

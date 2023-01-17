@@ -48,7 +48,7 @@ class QuestionAnswers extends Resource
      * @var array
      */
     public static $with = [
-        'responses'
+        'responses',
     ];
 
     /**
@@ -60,7 +60,6 @@ class QuestionAnswers extends Resource
     {
         return 'Answers';
     }
-
 
     /**
      * Get the fields displayed by the resource.

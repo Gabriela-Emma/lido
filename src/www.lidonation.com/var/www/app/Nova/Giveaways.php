@@ -2,7 +2,6 @@
 
 namespace App\Nova;
 
-use App\Models\EveryEpoch;
 use App\Models\Giveaway;
 use App\Models\Question;
 use App\Nova\Actions\AddMetaData;
@@ -12,7 +11,6 @@ use App\Nova\Actions\IssuePoolRewards;
 use App\Nova\Actions\RecalculateRewards;
 use Ebess\AdvancedNovaMediaLibrary\Fields\Images;
 use Illuminate\Http\Request;
-use JetBrains\PhpStorm\Pure;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\HasMany;
@@ -65,12 +63,12 @@ class Giveaways extends Resource
             Text::make(__('Title'))->translatable()->sortable(),
             Text::make(__('Meta Title'), 'meta_title')->translatable(),
             Text::make(__('Type')),
-//            MorphTo::make(__('Model'), 'model')
-//                ->types([
-//                    Articles::class,
-//                    EveryEpochs::class,
-//                    Quizzes::class
-//                ])->searchable(),
+            //            MorphTo::make(__('Model'), 'model')
+            //                ->types([
+            //                    Articles::class,
+            //                    EveryEpochs::class,
+            //                    Quizzes::class
+            //                ])->searchable(),
             BelongsTo::make(__('Author'), 'author', User::class)
                 ->searchable(),
             Select::make(__('Status'), 'status')
@@ -154,7 +152,7 @@ class Giveaways extends Resource
                 (new EditMetaData(Question::class)),
                 (new RecalculateRewards),
                 (new IssuePoolRewards)->onlyOnDetail(),
-                (new DispersePoolRewards)->onlyOnDetail()
+                (new DispersePoolRewards)->onlyOnDetail(),
             ]);
     }
 }

@@ -17,12 +17,12 @@ class ProposalResource extends JsonResource
     public function toArray($request): array
     {
         return [
-            'id'=>$this->id,
+            'id' => $this->id,
             'user_id' => $this->user_id,
-            'fund_id'=> $this->fund?->parent_id,
-            'challenge_id'=> $this->fund_id,
+            'fund_id' => $this->fund?->parent_id,
+            'challenge_id' => $this->fund_id,
             'title' => $this->title,
-            'website'=> $this->website,
+            'website' => $this->website,
             'link' => $this->link,
             'embedded_uris' => $this->embeddedUris($this->content),
             'ideascale_link' => $this->ideascale_link,
@@ -40,7 +40,7 @@ class ProposalResource extends JsonResource
             'problem' => $this->problem,
             'solution' => $this->solution,
             'experience' => $this->experience,
-            'tags' => $this->tags
+            'tags' => $this->tags,
         ];
     }
 
@@ -48,6 +48,7 @@ class ProposalResource extends JsonResource
     {
         $pattern = '/(?:(?:https?|ftp|file):\/\/|www\.|ftp\.)(?:\([-a-zA-Z0-9+&@#\/%=~_|$?!:,.]*\)|[-a-zA-Z0-9+&@#\/%=~_|$?!:,.])*(?:\([-a-zA-Z0-9+&@#\/%=~_|$?!:,.]*\)|[a-zA-Z0-9+&@#\/%=~_|$])/';
         preg_match_all($pattern, $str, $uris);
+
         return $uris;
     }
 }

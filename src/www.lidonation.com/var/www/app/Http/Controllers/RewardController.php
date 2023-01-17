@@ -20,7 +20,7 @@ class RewardController extends Controller
     public function withdraw(Request $request)
     {
         $request->validate([
-            'hash' => 'required|string|min:10'
+            'hash' => 'required|string|min:10',
         ]);
 
         // get first pending withdrawal from user
@@ -41,19 +41,19 @@ class RewardController extends Controller
     public function process(Request $request)
     {
         // check if is a lido delegators
-        if (!auth()->user()?->hasRole(RoleEnum::delegator()->value)) {
+        if (! auth()->user()?->hasRole(RoleEnum::delegator()->value)) {
             //@todo wait for dust to be confirmed
             // add new Tx object and attach to reward object
             // outcome of this will set the reward model to waiting
         } else {
             $user = auth()?->user();
-            if (!$user->wallet_address) {
+            if (! $user->wallet_address) {
                 $user->wallet_addres = $request->input('address');
                 $user->save();
             }
             ProcessUserRewardsJob::dispatch(
                 auth()?->user(),
-                    $request->input('address') ?? $user->wallet_address
+                $request->input('address') ?? $user->wallet_address
             );
         }
     }
@@ -64,10 +64,9 @@ class RewardController extends Controller
 
         return response([
             'address' => $response?->address,
-            'qr' => CardanoWalletService::generateQrCode($response?->address)
+            'qr' => CardanoWalletService::generateQrCode($response?->address),
         ], 200);
     }
-
 
     /**
      * @throws AuthenticationException
@@ -85,11 +84,12 @@ class RewardController extends Controller
             return auth()->user();
         }
 
-        if ((bool)$request->stake_address) {
+        if ((bool) $request->stake_address) {
             $user = User::where('wallet_stake_address', $request->stake_address)->first();
 
-            if ((bool)$user) {
+            if ((bool) $user) {
                 Auth::login($user);
+
                 return auth()->user();
             } else {
                 return response()->json([
@@ -113,10 +113,10 @@ class RewardController extends Controller
 
     protected function mintAddressFromLucid()
     {
-        $seed = file_get_contents("/data/phuffycoin/wallets/mint/seed.txt");
+        $seed = file_get_contents('/data/phuffycoin/wallets/mint/seed.txt');
         try {
             return Http::post(
-                config('cardano.lucidEndpoint') . '/wallet/address',
+                config('cardano.lucidEndpoint').'/wallet/address',
                 compact('seed')
             )->throw()->object();
         } catch (Exception $e) {

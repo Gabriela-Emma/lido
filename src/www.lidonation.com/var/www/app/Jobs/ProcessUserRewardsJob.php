@@ -4,7 +4,7 @@ namespace App\Jobs;
 
 use App\Models\User;
 use App\Models\Withdrawal;
-use \Exception;
+use Exception;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -24,12 +24,15 @@ class ProcessUserRewardsJob implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(protected User $user, protected $payoutAddress){}
+    public function __construct(protected User $user, protected $payoutAddress)
+    {
+    }
 
     /**
      * Execute the job.
      *
      * @return void
+     *
      * @throws RequestException
      * @throws Exception
      */
@@ -50,7 +53,7 @@ class ProcessUserRewardsJob implements ShouldQueue
         // get all orphan rewards not associated with a withdrawal and lump in.
         $this->user?->rewards()->whereIn('status', ['processed'])->get()
             ?->each(function ($reward) use ($withdrawal) {
-                if (!$reward?->withdrawal_id) {
+                if (! $reward?->withdrawal_id) {
                     $reward->status = 'processed';
                     $reward->withdrawal_id = $withdrawal->id;
                     $reward->save();

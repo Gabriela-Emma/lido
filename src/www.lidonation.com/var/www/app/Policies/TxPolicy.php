@@ -4,9 +4,7 @@ namespace App\Policies;
 
 use App\Enums\PermissionEnum;
 use App\Models\Nft;
-use App\Models\Tx;
 use App\Models\User;
-use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Auth\Access\Response;
 
 class TxPolicy extends AppPolicy

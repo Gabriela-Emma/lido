@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Api\CatalystExplorer\Traits;
 
-use App\Models\Proposal;
 use App\Http\Resources\ProposalResource;
+use App\Models\Proposal;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -19,7 +19,6 @@ trait Proposals
      *     summary="Get all proposals",
      *     description="Returns all proposals with filtering abilities",
      *     operationId="proposals",
-     *
      *     @OA\Parameter(
      *         name="user_id",
      *         in="query",
@@ -78,7 +77,6 @@ trait Proposals
      *              default=1,
      *         ),
      *     ),
-     *
      *     @OA\Response(
      *         response=200,
      *         description="successful",
@@ -114,9 +112,11 @@ trait Proposals
 
         // per_page query doesn't exceed 60
         //@todo revert this 400 back to 60
-        if ($per_page > 400) return response([
-            'status_code' => 400,
-            'message' => 'query parameter \'per_page\' should not exceed 60'], 400);
+        if ($per_page > 400) {
+            return response([
+                'status_code' => 400,
+                'message' => 'query parameter \'per_page\' should not exceed 60'], 400);
+        }
 
         Proposal::withoutGlobalScopes();
         $proposals = Proposal::query()

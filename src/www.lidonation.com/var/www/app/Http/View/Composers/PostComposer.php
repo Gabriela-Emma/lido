@@ -2,9 +2,9 @@
 
 namespace App\Http\View\Composers;
 
+use App\Models\ExternalPost;
 use App\Models\Insight;
 use App\Models\News;
-use App\Models\ExternalPost;
 use App\Repositories\PostRepository;
 use Illuminate\View\View;
 

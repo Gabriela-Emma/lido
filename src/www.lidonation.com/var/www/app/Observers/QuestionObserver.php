@@ -14,7 +14,7 @@ class QuestionObserver
      */
     public function creating(Question $question): void
     {
-        if (!$question->user_id && auth()->check()) {
+        if (! $question->user_id && auth()->check()) {
             $question->user_id = auth()?->user()?->getAuthIdentifier();
         }
     }

@@ -26,17 +26,17 @@ class PromoController extends Controller
      * Show the form for creating a new resource.
      *
      * @return Response
+     *
      * @throws ValidationException
      */
     public function create()
     {
-
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param StorePromoRequest $request
+     * @param  StorePromoRequest  $request
      * @return Promo
      */
     public function store(StorePromoRequest $request): Promo

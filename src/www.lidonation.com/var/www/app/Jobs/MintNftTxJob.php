@@ -5,7 +5,7 @@ namespace App\Jobs;
 use App\Invokables\MintNft;
 use App\Models\Model;
 use App\Models\Tx;
-use \Exception;
+use Exception;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -30,6 +30,7 @@ class MintNftTxJob implements ShouldQueue
      * Execute the job.
      *
      * @return void
+     *
      * @throws RequestException
      * @throws Exception
      */

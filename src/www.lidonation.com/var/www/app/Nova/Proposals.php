@@ -119,7 +119,7 @@ class Proposals extends Resource
                 'in_progress' => 'In Progress',
                 'completed' => 'Completed',
                 'pivoted' => 'Pivoted',
-                'abandoned' => 'Abandoned'
+                'abandoned' => 'Abandoned',
             ])->sortable(),
 
             Select::make(__('Funding Status'), 'funding_status')->options([
@@ -128,7 +128,7 @@ class Proposals extends Resource
                 'leftover' => 'Funded w Leftovers',
                 'not_approved' => 'Not Approved',
                 'over_budget' => 'Over Budget',
-                'withdrawn' => 'Withdrawn'
+                'withdrawn' => 'Withdrawn',
             ])->sortable(),
 
             Select::make(__('Type'), 'type')->filterable()

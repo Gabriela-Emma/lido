@@ -123,7 +123,7 @@ class CatalystProposalsComponent extends Component
 
         $this->paginator = $this->searchBuilder->paginate(
             $this->perPage,
-        // @todo, skip converting to eloquent models and paginate directly out of search engine with only columns needed for the drip
+            // @todo, skip converting to eloquent models and paginate directly out of search engine with only columns needed for the drip
 //            [
 //                'id',
 //                'title',
@@ -254,6 +254,7 @@ class CatalystProposalsComponent extends Component
 
                 $options['hitsPerPage'] = 1;
                 $options['page'] = 1;
+
                 return $index->rawSearch($query, $options);
             });
 
@@ -273,6 +274,7 @@ class CatalystProposalsComponent extends Component
                 }
                 $options['hitsPerPage'] = 1;
                 $options['page'] = 1;
+
                 return $index->rawSearch($query, $options);
             });
 
@@ -292,6 +294,7 @@ class CatalystProposalsComponent extends Component
                 }
                 $options['hitsPerPage'] = 1;
                 $options['page'] = 1;
+
                 return $index->rawSearch($query, $options);
             });
 
@@ -311,6 +314,7 @@ class CatalystProposalsComponent extends Component
                 }
                 $options['hitsPerPage'] = 1;
                 $options['page'] = 1;
+
                 return $index->rawSearch($query, $options);
             });
         $this->challengesCount = $searchBuilder->raw()['totalHits'] ?? 0;
@@ -326,6 +330,7 @@ class CatalystProposalsComponent extends Component
                 }
                 $options['hitsPerPage'] = 1;
                 $options['page'] = 1;
+
                 return $index->rawSearch($query, $options);
             });
         $this->approvedChallengesCount = $searchBuilder->raw()['totalHits'] ?? null;
@@ -344,6 +349,7 @@ class CatalystProposalsComponent extends Component
                 }
                 $options['hitsPerPage'] = 1;
                 $options['page'] = 1;
+
                 return $index->rawSearch($query, $options);
             });
 

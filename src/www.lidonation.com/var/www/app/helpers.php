@@ -114,5 +114,6 @@ function breakLongText($text, $length = 1000, $maxLength = 1100, $needle = '.'):
 function has_preview_access(): bool
 {
     $user = auth()?->user();
-    return !!$user && ($user->hasAnyRole(['delegator', 'admin', 'super admin']) || $user->hasAnyPermission(['preview_access']) );
+
+    return (bool) $user && ($user->hasAnyRole(['delegator', 'admin', 'super admin']) || $user->hasAnyPermission(['preview_access']));
 }

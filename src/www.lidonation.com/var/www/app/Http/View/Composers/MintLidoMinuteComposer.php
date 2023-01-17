@@ -5,9 +5,7 @@ namespace App\Http\View\Composers;
 use App\Models\Podcast;
 use App\Models\Proposal;
 use App\Repositories\AdaRepository;
-use Carbon\CarbonInterval;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\View\View;
 
 class MintLidoMinuteComposer
@@ -21,9 +19,10 @@ class MintLidoMinuteComposer
      *
      * @return void
      */
-    public function __construct(protected AdaRepository $adaRepository) {
+    public function __construct(protected AdaRepository $adaRepository)
+    {
         $this->adaQuote = $this->adaRepository->quote();
-        $this->available = Podcast::whereDoesntHave('metas', fn($q) => $q->where('key', '=', 'nft_soldout') )->paginate(6);
+        $this->available = Podcast::whereDoesntHave('metas', fn ($q) => $q->where('key', '=', 'nft_soldout'))->paginate(6);
     }
 
     //  Proposal::whereRelation('metas', 'key', '=', 'quick_pitch')
@@ -38,7 +37,7 @@ class MintLidoMinuteComposer
         $view->with([
             'adaQuote' => $this->adaQuote,
             'available' => $this->available,
-            'metaTitle' => 'Mint LIDO Minute Podcast NFT'
+            'metaTitle' => 'Mint LIDO Minute Podcast NFT',
         ]);
     }
 }

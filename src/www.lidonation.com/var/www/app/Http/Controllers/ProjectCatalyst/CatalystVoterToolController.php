@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\ProjectCatalyst;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class CatalystVoterToolController extends Controller
@@ -16,9 +15,9 @@ class CatalystVoterToolController extends Controller
     public function index()
     {
         return Inertia::render('Voter-tool', [
-            'crumbs'=> [
-                ['label'=>'Voter Tool']
-            ]
+            'crumbs' => [
+                ['label' => 'Voter Tool'],
+            ],
         ]);
     }
 }

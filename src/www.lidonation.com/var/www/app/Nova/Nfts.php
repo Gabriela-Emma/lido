@@ -79,19 +79,19 @@ class Nfts extends Resource
                 News::class,
                 Reviews::class,
                 Insights::class,
-                Podcasts::class
+                Podcasts::class,
             ])->searchable()->nullable(),
             Select::make(__('Status'), 'status')
                 ->sortable()
                 ->default('draft')
                 ->rules(['required'])
                 ->options([
-                'draft' => 'Draft',
-                'minting' => 'Minting',
-                'minted' => 'Minted',
-                'burnt' => 'Burnt',
-                'blacklisted' => 'Blacklisted',
-            ]),
+                    'draft' => 'Draft',
+                    'minting' => 'Minting',
+                    'minted' => 'Minted',
+                    'burnt' => 'Burnt',
+                    'blacklisted' => 'Blacklisted',
+                ]),
             DateTime::make(__('Minted At'), 'minted_at'),
             KeyValue::make('Metadata', 'metadata')->rules('json')->resolveUsing(function ($object) {
                 return collect($object)?->sortKeys();
@@ -102,7 +102,7 @@ class Nfts extends Resource
                 ->enableExistingMedia(),
             Markdown::make(__('description'))->translatable(),
             HasMany::make('Promos', 'promos', Promos::class),
-            HasMany::make('Transactions', 'txs', Txs::class)
+            HasMany::make('Transactions', 'txs', Txs::class),
         ];
     }
 
@@ -150,7 +150,7 @@ class Nfts extends Resource
         return array_merge(
             static::getGlobalActions(),
             [
-                new CacheNftImage
+                new CacheNftImage,
             ]);
     }
 }

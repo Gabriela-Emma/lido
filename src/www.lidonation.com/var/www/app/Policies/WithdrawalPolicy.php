@@ -3,13 +3,12 @@
 namespace App\Policies;
 
 use App\Enums\PermissionEnum;
-use App\Models\Withdrawal;
 use App\Models\User;
+use App\Models\Withdrawal;
 use Illuminate\Auth\Access\Response;
 
 class WithdrawalPolicy extends AppPolicy
 {
-
     /**
      * Determine whether the user can view any models.
      *

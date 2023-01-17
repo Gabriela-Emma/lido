@@ -5,6 +5,7 @@ namespace App\Nova;
 use Ebess\AdvancedNovaMediaLibrary\Fields\Images;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\Color;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Markdown;
 use Laravel\Nova\Fields\MorphedByMany;
@@ -12,7 +13,6 @@ use Laravel\Nova\Fields\MorphToMany;
 use Laravel\Nova\Fields\Slug;
 use Laravel\Nova\Fields\Stack;
 use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\Color;
 
 class Category extends Resource
 {
@@ -49,7 +49,7 @@ class Category extends Resource
     /**
      * Get the fields displayed by the resource.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return array
      */
     public function fields(Request $request)
@@ -68,8 +68,7 @@ class Category extends Resource
             Images::make(__('Hero'), 'hero')->enableExistingMedia(),
             Markdown::make(__('Content'), 'content')->sortable(),
 
-//            MorphToMany::make('models')
-
+            //            MorphToMany::make('models')
 
             MorphedByMany::make('Proposals', 'proposals', Proposals::class)
                 ->searchable(),
@@ -92,7 +91,7 @@ class Category extends Resource
     /**
      * Get the cards available for the request.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return array
      */
     public function cards(Request $request)
@@ -103,7 +102,7 @@ class Category extends Resource
     /**
      * Get the filters available for the resource.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return array
      */
     public function filters(Request $request)
@@ -114,7 +113,7 @@ class Category extends Resource
     /**
      * Get the lenses available for the resource.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return array
      */
     public function lenses(Request $request)
@@ -125,7 +124,7 @@ class Category extends Resource
     /**
      * Get the actions available for the resource.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return array
      */
     public function actions(Request $request)

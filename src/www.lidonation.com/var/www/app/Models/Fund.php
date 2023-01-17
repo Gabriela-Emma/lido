@@ -64,7 +64,7 @@ class Fund extends Model implements HasMedia, IHasMetaData
 
     public function getFormattedAmountAttribute()
     {
-        return $this->currency_symbol . number_format($this->amount, 0, '.', ',');
+        return $this->currency_symbol.number_format($this->amount, 0, '.', ',');
     }
 
     public function getWiningProposalsAttribute()
@@ -99,7 +99,7 @@ class Fund extends Model implements HasMedia, IHasMetaData
     {
         $query->when(
             $filters['search'] ?? false,
-            fn(Builder $query, $search) => $query->where('title', 'ILIKE', '%' . $search . '%')
+            fn (Builder $query, $search) => $query->where('title', 'ILIKE', '%'.$search.'%')
         );
     }
 
@@ -108,7 +108,7 @@ class Fund extends Model implements HasMedia, IHasMetaData
         return $query
             ->whereHas(
                 'categories',
-                fn(Builder $query) => $query->where('slug', '=', 'challenge-setting')
+                fn (Builder $query) => $query->where('slug', '=', 'challenge-setting')
             );
     }
 
@@ -117,11 +117,11 @@ class Fund extends Model implements HasMedia, IHasMetaData
         return $query
             ->whereHas(
                 'categories',
-                fn(Builder $query) => $query->where('slug', '=', 'challenge-setting')
+                fn (Builder $query) => $query->where('slug', '=', 'challenge-setting')
             )
             ->whereHas(
                 'proposals',
-                fn($subquery) => $subquery->whereNotNull('proposals.funded_at')
+                fn ($subquery) => $subquery->whereNotNull('proposals.funded_at')
             );
     }
 
@@ -130,11 +130,11 @@ class Fund extends Model implements HasMedia, IHasMetaData
         return $query
             ->whereDoesntHave(
                 'categories',
-                fn(Builder $query) => $query->where('slug', '=', 'challenge-setting')
+                fn (Builder $query) => $query->where('slug', '=', 'challenge-setting')
             )
             ->whereHas(
                 'proposals',
-                fn($subquery) => $subquery->whereNotNull('proposals.funded_at')
+                fn ($subquery) => $subquery->whereNotNull('proposals.funded_at')
             );
     }
 
@@ -189,7 +189,7 @@ class Fund extends Model implements HasMedia, IHasMetaData
 
     protected function getUrlGroup(): string
     {
-        if (!$this->parent) {
+        if (! $this->parent) {
             return 'project-catalyst/funds';
         }
 

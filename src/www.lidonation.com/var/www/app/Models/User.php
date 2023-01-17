@@ -6,13 +6,13 @@ use App\Models\Traits\HasGravatar;
 use App\Models\Traits\HasMetaData;
 use App\Models\Traits\HasPromos;
 use GuzzleHttp\Exception\GuzzleException;
+use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
-use Illuminate\Contracts\Auth\CanResetPassword;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Jetstream\HasTeams;
@@ -40,7 +40,6 @@ class User extends Authenticatable implements HasMedia, Interfaces\IHasMetaData,
         HasMetaData,
         HasRoles,
         Notifiable;
-        
 
     protected $with = ['media'];
 

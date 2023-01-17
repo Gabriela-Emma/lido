@@ -24,20 +24,28 @@ class CatalystVotesComponent extends Component
     public $locale = null;
 
     public $topFundedProposals;
+
     public $totalResultsByAda;
+
     public $totalResultsStakeKey;
 
-
     public $totalLovelacesBallotPower;
-    public $totalAdaBallotPower;
-    public $totalLovelaceParticipation;
-    public $totalAdaParticipation;
-    public $totalVoters;
-    public $totalAbstainedVoters;
-    public $totalResultsByVotes;
-    public $totalCandidatesPerVoter;
-    public $adaPowerRanges;
 
+    public $totalAdaBallotPower;
+
+    public $totalLovelaceParticipation;
+
+    public $totalAdaParticipation;
+
+    public $totalVoters;
+
+    public $totalAbstainedVoters;
+
+    public $totalResultsByVotes;
+
+    public $totalCandidatesPerVoter;
+
+    public $adaPowerRanges;
 
     public function query()
     {
@@ -68,72 +76,75 @@ class CatalystVotesComponent extends Component
             ]);
     }
 
-    #[NoReturn] protected function setLargestAmounts()
-    {
-        $this->totalLovelacesBallotPower = Ccv4BallotChoice::sum('voter_power');
-        if ($this->totalLovelacesBallotPower > 0) {
-            $this->totalAdaBallotPower = humanNumber($this->totalLovelacesBallotPower / 1000000, 2);
-        }
+    #[NoReturn]
+ protected function setLargestAmounts()
+ {
+     $this->totalLovelacesBallotPower = Ccv4BallotChoice::sum('voter_power');
+     if ($this->totalLovelacesBallotPower > 0) {
+         $this->totalAdaBallotPower = humanNumber($this->totalLovelacesBallotPower / 1000000, 2);
+     }
 
-        $this->totalLovelaceParticipation = Ccv4BallotChoice::where('ballot_choice_rank', 0)
-            ->orWhere('ballot_choice_rank', 1)
-            ->sum('voter_power');
+     $this->totalLovelaceParticipation = Ccv4BallotChoice::where('ballot_choice_rank', 0)
+         ->orWhere('ballot_choice_rank', 1)
+         ->sum('voter_power');
 
-        if ($this->totalLovelaceParticipation > 0) {
-            $this->totalAdaParticipation = humanNumber($this->totalLovelaceParticipation / 1000000, 2);
-        }
+     if ($this->totalLovelaceParticipation > 0) {
+         $this->totalAdaParticipation = humanNumber($this->totalLovelaceParticipation / 1000000, 2);
+     }
 
-        $this->totalResultsByAda = DB::table('ccv4_ballot_choices')
-            ->selectRaw('ballot_choice as candidate, SUM(voter_power) as lovelaces')
-            ->where('ballot_choice_rank', '!=', 0)
-            ->groupBy('candidate')
-            ->get()
-            ->sortByDesc('lovelaces')
-            ->map(function ($ballot) {
-                $candidate = Ccv4Candidates::tryFrom($ballot->candidate);
-                if ($candidate instanceof Ccv4Candidates) {
-                    $ballot->name = $candidate->name();
-                    $ballot->ada = humanNumber($ballot->lovelaces / 1000000, 2);
-                    $ballot->profile = $candidate->profile();
-                }
-                return $ballot;
-            })->values();
+     $this->totalResultsByAda = DB::table('ccv4_ballot_choices')
+         ->selectRaw('ballot_choice as candidate, SUM(voter_power) as lovelaces')
+         ->where('ballot_choice_rank', '!=', 0)
+         ->groupBy('candidate')
+         ->get()
+         ->sortByDesc('lovelaces')
+         ->map(function ($ballot) {
+             $candidate = Ccv4Candidates::tryFrom($ballot->candidate);
+             if ($candidate instanceof Ccv4Candidates) {
+                 $ballot->name = $candidate->name();
+                 $ballot->ada = humanNumber($ballot->lovelaces / 1000000, 2);
+                 $ballot->profile = $candidate->profile();
+             }
 
-        $this->totalVoters = DB::table('ccv4_ballot_choices')->distinct('voter_id')->count('voter_id');
-        $this->totalAbstainedVoters = DB::table('ccv4_ballot_choices')
-            ->where('ballot_choice_rank', 0)
-            ->distinct('voter_id')
-            ->count('voter_id');
+             return $ballot;
+         })->values();
 
-        $this->totalResultsByVotes = DB::table('ccv4_ballot_choices')
-            ->selectRaw('DISTINCT(COUNT(voter_id)) as votes, ballot_choice as candidate, ballot_choice as candidate')
-            ->where('ballot_choice', '>', 0)
-            ->groupBy('ballot_choice')->get()
-            ->sortByDesc('votes')
-            ->map(function ($ballot) {
-                $candidate = Ccv4Candidates::tryFrom($ballot->candidate);
-                if ($candidate instanceof Ccv4Candidates) {
-                    $ballot->name = $candidate->name();
-                    $ballot->profile = $candidate->profile();
-                }
-                return $ballot;
-            })->values();
+     $this->totalVoters = DB::table('ccv4_ballot_choices')->distinct('voter_id')->count('voter_id');
+     $this->totalAbstainedVoters = DB::table('ccv4_ballot_choices')
+         ->where('ballot_choice_rank', 0)
+         ->distinct('voter_id')
+         ->count('voter_id');
 
-        $this->totalCandidatesPerVoter = DB::table(function ($query) {
-            $query->selectRaw('COUNT(voter_id) as candidates')
-                ->where('voter_id', '>', 0)
-                ->groupBy('voter_id')
-                ->from('ccv4_ballot_choices');
-        }, 'votes')
-            ->selectRaw('COUNT(votes), candidates')
-            ->groupBy('candidates')
-            ->orderBy('candidates')
-            ->get()
-            ->map(fn($metric) => ["candidates{$metric->candidates}" => $metric->count])
-            ->collapse();
+     $this->totalResultsByVotes = DB::table('ccv4_ballot_choices')
+         ->selectRaw('DISTINCT(COUNT(voter_id)) as votes, ballot_choice as candidate, ballot_choice as candidate')
+         ->where('ballot_choice', '>', 0)
+         ->groupBy('ballot_choice')->get()
+         ->sortByDesc('votes')
+         ->map(function ($ballot) {
+             $candidate = Ccv4Candidates::tryFrom($ballot->candidate);
+             if ($candidate instanceof Ccv4Candidates) {
+                 $ballot->name = $candidate->name();
+                 $ballot->profile = $candidate->profile();
+             }
 
-        $agg = DB::table('ccv4_ballot_choices')
-            ->selectRaw("CASE
+             return $ballot;
+         })->values();
+
+     $this->totalCandidatesPerVoter = DB::table(function ($query) {
+         $query->selectRaw('COUNT(voter_id) as candidates')
+             ->where('voter_id', '>', 0)
+             ->groupBy('voter_id')
+             ->from('ccv4_ballot_choices');
+     }, 'votes')
+         ->selectRaw('COUNT(votes), candidates')
+         ->groupBy('candidates')
+         ->orderBy('candidates')
+         ->get()
+         ->map(fn ($metric) => ["candidates{$metric->candidates}" => $metric->count])
+         ->collapse();
+
+     $agg = DB::table('ccv4_ballot_choices')
+         ->selectRaw("CASE
             WHEN voter_power BETWEEN 5000000 AND 10000000 THEN '5-10-1'
             WHEN voter_power BETWEEN 10000000 AND 100000000 THEN '10-100-2'
             WHEN voter_power BETWEEN 100000000 AND 500000000 THEN '100-500-3'
@@ -163,22 +174,22 @@ class CatalystVotesComponent extends Component
             WHEN voter_power > 1200000000000 THEN '> 15M'
             WHEN voter_power > 2000000000000 THEN '> 20M'
             END as range,  COUNT(*) as wallets, SUM(voter_power) as ada"
-        )->where('ballot_choice_rank', 1)->groupByRaw(1);
-        // ada power ranges collection ('range', 'wallets' and ada are the columns)
-        $adaPowerRangesCollection = $agg->get()->map(fn($row) => [$row->range => [$row->wallets, $row->ada]])->collapse();
+         )->where('ballot_choice_rank', 1)->groupByRaw(1);
+     // ada power ranges collection ('range', 'wallets' and ada are the columns)
+     $adaPowerRangesCollection = $agg->get()->map(fn ($row) => [$row->range => [$row->wallets, $row->ada]])->collapse();
 
-        // convert the collection to an associative array whose structure is fully representative of our front-end needs
-        $adaPowerRangesFormattedArray = [];
-        foreach ($adaPowerRangesCollection as $range => $value) {
-            $rangeArray = explode("-", $range);
-            $finalRange = $rangeArray[0] . " - " . $rangeArray[1];
+     // convert the collection to an associative array whose structure is fully representative of our front-end needs
+     $adaPowerRangesFormattedArray = [];
+     foreach ($adaPowerRangesCollection as $range => $value) {
+         $rangeArray = explode('-', $range);
+         $finalRange = $rangeArray[0].' - '.$rangeArray[1];
 
-            $adaPowerRangesFormattedArray[$finalRange] = [ $value['0'], round($value['1'] / 1000000, 2), $rangeArray['2']];
-        };
+         $adaPowerRangesFormattedArray[$finalRange] = [$value['0'], round($value['1'] / 1000000, 2), $rangeArray['2']];
+     }
 
-        // convert then order the array to collection and assing to the objects $adaPowerRanges property
-        $this->adaPowerRanges = collect($adaPowerRangesFormattedArray)->sortBy(function($value, $key) {
-            return $value['2'];
-        });
-    }
+     // convert then order the array to collection and assing to the objects $adaPowerRanges property
+     $this->adaPowerRanges = collect($adaPowerRangesFormattedArray)->sortBy(function ($value, $key) {
+         return $value['2'];
+     });
+ }
 }

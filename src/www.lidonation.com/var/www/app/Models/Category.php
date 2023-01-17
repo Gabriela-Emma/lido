@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 class Category extends Taxonomy
 {
-
     public function getUrlAttribute(): string|UrlGenerator|Application
     {
         return url("categories/{$this->slug}");
@@ -30,7 +29,6 @@ class Category extends Taxonomy
         return $this->morphedByMany(Review::class, 'model', ModelCategory::class, 'category_id', 'model_id')
             ->withPivot(['model_type']);
     }
-
 
     public function insights(): MorphToMany
     {

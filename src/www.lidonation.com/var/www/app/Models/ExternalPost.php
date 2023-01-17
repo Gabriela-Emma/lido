@@ -6,18 +6,15 @@ use App\Traits\SearchableLocale;
 use Illuminate\Support\Str;
 use Parental\HasParent;
 use Spatie\Comments\Models\Concerns\HasComments;
-use Spatie\Feed\Feedable;
 use Spatie\Feed\FeedItem;
-
 
 class ExternalPost extends Post
 {
     use HasParent, SearchableLocale, HasComments;
 
-    
     protected $with = ['media', 'tags.media', 'categories.media', 'author.media'];
 
-     /**
+    /**
      * Get the class name for polymorphic relations.
      *
      * @return string

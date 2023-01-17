@@ -17,11 +17,11 @@ class FundResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id'=>$this->id,
+            'id' => $this->id,
             'title' => $this->title,
             'proposals_count' => $this->proposals_count > 0 ? $this->proposals_count : $this->parent_proposals_count,
             'amount' => $this->amount,
-            'currency' => $this->currency
+            'currency' => $this->currency,
         ];
     }
 }

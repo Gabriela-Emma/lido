@@ -15,6 +15,7 @@ class TaxonomyController extends PostController
     {
         $category->load(['news', 'reviews', 'insights']);
         $postsCount = $category->models->count();
+
         return view('category')
             ->with(compact('category', 'postsCount'));
     }

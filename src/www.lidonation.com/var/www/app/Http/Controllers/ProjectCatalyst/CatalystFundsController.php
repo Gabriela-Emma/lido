@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\ProjectCatalyst;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class CatalystFundsController extends Controller
@@ -16,10 +15,10 @@ class CatalystFundsController extends Controller
     public function index()
     {
         return Inertia::render('Funds', [
-            'crumbs'=> [
-                ['link'=>'/project-catalyst/funds', 'label'=>'Funds'],
-                ['label'=>'Fund 6']
-            ]
+            'crumbs' => [
+                ['link' => '/project-catalyst/funds', 'label' => 'Funds'],
+                ['label' => 'Fund 6'],
+            ],
         ]);
     }
 }

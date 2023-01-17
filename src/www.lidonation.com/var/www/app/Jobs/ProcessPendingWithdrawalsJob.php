@@ -4,7 +4,7 @@ namespace App\Jobs;
 
 use App\Enums\RoleEnum;
 use App\Models\Withdrawal;
-use \Exception;
+use Exception;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -31,6 +31,7 @@ class ProcessPendingWithdrawalsJob implements ShouldQueue
      * Execute the job.
      *
      * @return void
+     *
      * @throws RequestException
      * @throws Exception
      */
@@ -42,20 +43,22 @@ class ProcessPendingWithdrawalsJob implements ShouldQueue
         // get all pending withdrawals or bail
         $withdrawals = Withdrawal::validated()
             ->get()
-            ->filter(fn($w) => !isset($w->meta_data?->withdrawal_tx));
+            ->filter(fn ($w) => ! isset($w->meta_data?->withdrawal_tx));
 
         if ($withdrawals->isEmpty()) {
             Log::info('No Withdrawal to process');
+
             return;
         }
 
         foreach ($withdrawals as $withdrawal) {
             $assets = $withdrawal->rewards->groupBy('asset')
-                ->map(fn($group) => $group->sum('amount'))
+                ->map(fn ($group) => $group->sum('amount'))
                 ->toArray();
 
-            if (!isset($assets['lovelace']) && $withdrawal->txs?->isEmpty() && !$withdrawal->user->hasRole(RoleEnum::delegator()->value)) {
+            if (! isset($assets['lovelace']) && $withdrawal->txs?->isEmpty() && ! $withdrawal->user->hasRole(RoleEnum::delegator()->value)) {
                 Log::error('Missing Min UTXO');
+
                 continue;
             }
 
@@ -73,11 +76,11 @@ class ProcessPendingWithdrawalsJob implements ShouldQueue
         }
 
         // send them to lucid
-        $seed = file_get_contents("/data/phuffycoin/wallets/mint/seed.txt");
+        $seed = file_get_contents('/data/phuffycoin/wallets/mint/seed.txt');
         $data = compact('payments', 'msg', 'seed');
 
         $res = Http::post(
-            config('cardano.lucidEndpoint') . '/rewards/withdraw',
+            config('cardano.lucidEndpoint').'/rewards/withdraw',
             $data
         )->throw();
 

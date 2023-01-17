@@ -20,6 +20,7 @@ class PodcastShowFactory extends Factory
     public function definition(): array
     {
         $this->faker->addProvider(new FakerMarkdownProvider($this->faker));
+
         return [
             'user_id' => User::factory(),
             'host_id' => User::factory(),

@@ -11,17 +11,19 @@ class GetLidoMenu
 {
     public function __invoke(): Collection
     {
-        return collect(config('menu'))->map(function($menu) {
+        return collect(config('menu'))->map(function ($menu) {
             $menu->items = $this->processMenuItems(collect($menu->items));
+
             return $menu;
         });
     }
 
     protected function processMenuItems(Collection $menu): Collection
     {
-        return $menu->map(function($m) {
+        return $menu->map(function ($m) {
             if ($m->items) {
                 $m->items = $this->processMenuItems(collect($m->items));
+
                 return $m;
             }
             $m->route = match ($m->route_type) {

@@ -29,12 +29,12 @@ class AnswerResponse extends Model
     ];
 
     protected $hidden = [
-        'deleted_at', 'updated_at', 'status'
+        'deleted_at', 'updated_at', 'status',
     ];
 
     public function correct(): Attribute
     {
-        return Attribute::make(get: fn() => $this?->answer?->correctness === 'correct');
+        return Attribute::make(get: fn () => $this?->answer?->correctness === 'correct');
     }
 
     public function answer(): BelongsTo

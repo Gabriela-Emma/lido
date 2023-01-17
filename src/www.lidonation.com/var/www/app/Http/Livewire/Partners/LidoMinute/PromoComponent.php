@@ -18,6 +18,7 @@ class PromoComponent extends Component
     public Promo $promo;
 
     public string $title;
+
     public string $content;
 
     public ?string $message = null;
@@ -35,7 +36,8 @@ class PromoComponent extends Component
         ];
     }
 
-    public function mount() {
+    public function mount()
+    {
         $this->title = $this->promo?->title;
         $this->content = $this->promo?->content;
     }
@@ -43,6 +45,7 @@ class PromoComponent extends Component
     public function deleteMedia(Media $media): Redirector|Application|RedirectResponse
     {
         $media->delete();
+
         return redirect(request()->header('Referer'));
     }
 

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\RoleEnum;
 use App\Http\Requests\StoreQuestionResponseRequest;
 use App\Http\Requests\UpdateQuestionResponseRequest;
 use App\Models\AnswerResponse;
@@ -36,13 +35,13 @@ class QuestionResponseController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param StoreQuestionResponseRequest $request
+     * @param  StoreQuestionResponseRequest  $request
      * @return AnswerResponse
      */
     public function store(StoreQuestionResponseRequest $request)
     {
         $user = User::where('wallet_stake_address', $request->input('stake_address'))->first();
-        if (!$user instanceof User) {
+        if (! $user instanceof User) {
             $user = new User;
             $user->name = $request->stake_address;
             $user->wallet_stake_address = $request->stake_address;
@@ -57,7 +56,7 @@ class QuestionResponseController extends Controller
         $answer = AnswerResponse::where([
             'user_id' => $user->id,
             'question_id' => $request->input('question'),
-            'quiz_id' => $request->input('quiz')
+            'quiz_id' => $request->input('quiz'),
         ])->first();
 
         // return preview answer if exists
@@ -72,13 +71,14 @@ class QuestionResponseController extends Controller
         $answer->user_id = $user->id;
         $answer->stake_address = $user->wallet_stake_address;
         $answer->save();
+
         return $answer;
     }
 
     /**
      * Display the specified resource.
      *
-     * @param AnswerResponse $questionResponse
+     * @param  AnswerResponse  $questionResponse
      * @return \Illuminate\Http\Response
      */
     public function show(AnswerResponse $questionResponse)
@@ -89,7 +89,7 @@ class QuestionResponseController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param AnswerResponse $questionResponse
+     * @param  AnswerResponse  $questionResponse
      * @return \Illuminate\Http\Response
      */
     public function edit(AnswerResponse $questionResponse)
@@ -101,7 +101,7 @@ class QuestionResponseController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \App\Http\Requests\UpdateQuestionResponseRequest  $request
-     * @param AnswerResponse $questionResponse
+     * @param  AnswerResponse  $questionResponse
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateQuestionResponseRequest $request, AnswerResponse $questionResponse)
@@ -112,7 +112,7 @@ class QuestionResponseController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param AnswerResponse $questionResponse
+     * @param  AnswerResponse  $questionResponse
      * @return \Illuminate\Http\Response
      */
     public function destroy(AnswerResponse $questionResponse)

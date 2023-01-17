@@ -37,7 +37,7 @@ class Quiz extends Model implements HasMedia
 
     public $translatable = [
         'title',
-        'content'
+        'content',
     ];
 
     public function questions(): BelongsToMany

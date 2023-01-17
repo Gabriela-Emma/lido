@@ -79,10 +79,9 @@ class Comments extends Resource
                 }
 
                 return "<a target=\"show_comment\" href=\"{$url}\">Show</a>";
-
             })->asHtml(),
 
-            Text::make('status', function(Comment $comment) {
+            Text::make('status', function (Comment $comment) {
                 if ($comment->isApproved()) {
                     return "<div class='inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-green-100 text-green-800'>Approved</div>";
                 }
@@ -96,39 +95,39 @@ class Comments extends Resource
             //                return $comment->topLevel()->commentable?->commentableName() ?? 'Deleted...';
             //            })->readonly(),
 
-//            MorphTo::make(__('Posted To'), 'commentable')->types([
-//                News::class,
-//                Insights::class,
-//                OnboardingContent::class,
-//                Reviews::class,
-//            ]),
-//
-//            MorphTo::make('Commentator')->types([
-//                User::class,
-//                //                CatalystUser::class
-//            ]),
-//
-//            Markdown::make('Original text'),
-//
-//            Text::make('', function (Comment $comment) {
-//                if (! $url = $comment?->commentUrl()) {
-//                    return '';
-//                }
-//
-//                return "<a target=\"show_comment\" href=\"{$url}\">Show</a>";
-//            })->asHtml(),
-//
-//            Text::make('status', function (Comment $comment) {
-//                if ($comment->isApproved()) {
-//                    return "<div class='inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-green-100 text-green-800'>Approved</div>";
-//                }
-//
-//                return "<div class='inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-yellow-100 text-yellow-800'>Pending</div>";
-//            })->asHtml(),
-//
-//            DateTime::make('Created at'),
-//
-//            HasMany::make('Metadata', 'metas', Metas::class),
+            //            MorphTo::make(__('Posted To'), 'commentable')->types([
+            //                News::class,
+            //                Insights::class,
+            //                OnboardingContent::class,
+            //                Reviews::class,
+            //            ]),
+            //
+            //            MorphTo::make('Commentator')->types([
+            //                User::class,
+            //                //                CatalystUser::class
+            //            ]),
+            //
+            //            Markdown::make('Original text'),
+            //
+            //            Text::make('', function (Comment $comment) {
+            //                if (! $url = $comment?->commentUrl()) {
+            //                    return '';
+            //                }
+            //
+            //                return "<a target=\"show_comment\" href=\"{$url}\">Show</a>";
+            //            })->asHtml(),
+            //
+            //            Text::make('status', function (Comment $comment) {
+            //                if ($comment->isApproved()) {
+            //                    return "<div class='inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-green-100 text-green-800'>Approved</div>";
+            //                }
+            //
+            //                return "<div class='inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-yellow-100 text-yellow-800'>Pending</div>";
+            //            })->asHtml(),
+            //
+            //            DateTime::make('Created at'),
+            //
+            //            HasMany::make('Metadata', 'metas', Metas::class),
         ];
     }
 

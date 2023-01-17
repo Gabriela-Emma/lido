@@ -7,24 +7,24 @@ return [
             new Illuminate\Support\Fluent([
                 'title' => 'What is Cardano',
                 'route_type' => 'url',
-                'route' => 'what-is-cardano-and-how-does-it-use-the-blockchain'
+                'route' => 'what-is-cardano-and-how-does-it-use-the-blockchain',
             ]),
             new Illuminate\Support\Fluent([
                 'title' => 'What is staking',
                 'route_type' => 'url',
-                'route' => 'what-is-the-point-of-buying-ada-and-staking-in-cardano'
+                'route' => 'what-is-the-point-of-buying-ada-and-staking-in-cardano',
             ]),
             new Illuminate\Support\Fluent([
                 'title' => 'How do I buy Ada',
                 'route_type' => 'url',
-                'route' => 'how-to-buy-cardano-ada'
+                'route' => 'how-to-buy-cardano-ada',
             ]),
             new Illuminate\Support\Fluent([
                 'title' => 'How to stake your Ada',
                 'route_type' => 'url',
-                'route' => 'how-to-stake-ada'
-            ])
-        ]
+                'route' => 'how-to-stake-ada',
+            ]),
+        ],
     ]),
     new \Illuminate\Support\Fluent([
         'title' => 'Participate',
@@ -32,27 +32,27 @@ return [
             new Illuminate\Support\Fluent([
                 'title' => 'Every Epoch',
                 'route_type' => 'url',
-                'route' => 'delegators#everyEpoch'
+                'route' => 'delegators#everyEpoch',
             ]),
             new Illuminate\Support\Fluent([
                 'title' => 'Bazaar',
                 'route_type' => 'route_name',
-                'route' => 'bazaar'
+                'route' => 'bazaar',
             ]),
-//            new Illuminate\Support\Fluent([
-//                'title' => 'Community Calendar',
-//                'route_type' => 'route_name',
-//                'route' => 'lido-minute'
-//            ]),
+            //            new Illuminate\Support\Fluent([
+            //                'title' => 'Community Calendar',
+            //                'route_type' => 'route_name',
+            //                'route' => 'lido-minute'
+            //            ]),
             new Illuminate\Support\Fluent([
                 'title' => 'Contribute',
                 'route_type' => 'route_name',
-                'route' => 'contributeContent'
+                'route' => 'contributeContent',
             ]),
             new Illuminate\Support\Fluent([
                 'title' => 'Advertise',
                 'route_type' => 'route_name',
-                'route' => 'lido-minute'
+                'route' => 'lido-minute',
             ]),
             new Illuminate\Support\Fluent([
                 'title' => 'Nfts',
@@ -60,11 +60,11 @@ return [
                     new Illuminate\Support\Fluent([
                         'title' => 'A Day at the Lake',
                         'route_type' => 'route_name',
-                        'route' => 'lido-minute-nft'
+                        'route' => 'lido-minute-nft',
                     ]),
-                ]
-            ])
-        ]
+                ],
+            ]),
+        ],
     ]),
     new \Illuminate\Support\Fluent([
         'title' => 'Keep Learning',
@@ -72,12 +72,12 @@ return [
             new Illuminate\Support\Fluent([
                 'title' => 'Library',
                 'route_type' => 'route_name',
-                'route' => 'library'
+                'route' => 'library',
             ]),
             new Illuminate\Support\Fluent([
                 'title' => 'Lido Minute',
                 'route_type' => 'route_name',
-                'route' => 'lido-minute'
+                'route' => 'lido-minute',
             ]),
             new Illuminate\Support\Fluent([
                 'title' => 'Topics',
@@ -85,46 +85,46 @@ return [
                     new Illuminate\Support\Fluent([
                         'title' => 'News',
                         'route_type' => 'cat_id_or_slug',
-                        'route' => 'news-and-interviews'
+                        'route' => 'news-and-interviews',
                     ]),
                     new Illuminate\Support\Fluent([
                         'title' => 'Decentralization',
                         'route_type' => 'cat_id_or_slug',
-                        'route' => 'decentralization'
+                        'route' => 'decentralization',
                     ]),
                     new Illuminate\Support\Fluent([
                         'title' => 'Blockchain',
                         'route_type' => 'cat_id_or_slug',
-                        'route' => 'blockchain'
+                        'route' => 'blockchain',
                     ]),
                     new Illuminate\Support\Fluent([
                         'title' => 'Cardano',
                         'route_type' => 'cat_id_or_slug',
-                        'route' => 'cardano-blockchain'
+                        'route' => 'cardano-blockchain',
                     ]),
                     new Illuminate\Support\Fluent([
                         'title' => 'Lido Nation',
                         'route_type' => 'cat_id_or_slug',
-                        'route' => 'lido-nation-news'
+                        'route' => 'lido-nation-news',
                     ]),
                     new Illuminate\Support\Fluent([
                         'title' => 'Project Catalyst',
                         'route_type' => 'cat_id_or_slug',
-                        'route' => 'project-catalyst'
+                        'route' => 'project-catalyst',
                     ]),
                     new Illuminate\Support\Fluent([
                         'title' => 'Projects',
                         'route_type' => 'cat_id_or_slug',
-                        'route' => 'blockchain-projects'
+                        'route' => 'blockchain-projects',
                     ]),
-//                    new Illuminate\Support\Fluent([
-//                        'title' => 'Reviews',
-//                        'route_type' => 'cat_id_or_slug',
-//                        'route' => ''
-//                    ])
-                ]
+                    //                    new Illuminate\Support\Fluent([
+                    //                        'title' => 'Reviews',
+                    //                        'route_type' => 'cat_id_or_slug',
+                    //                        'route' => ''
+                    //                    ])
+                ],
             ]),
-        ]
+        ],
     ]),
     new \Illuminate\Support\Fluent([
         'title' => 'Project Catalyst',
@@ -132,69 +132,69 @@ return [
             new Illuminate\Support\Fluent([
                 'title' => 'Voter Tool',
                 'route_type' => 'route_name',
-                'route' => 'projectCatalyst.voterTool'
+                'route' => 'projectCatalyst.voterTool',
             ]),
             new Illuminate\Support\Fluent([
                 'title' => 'My Bookmarks',
                 'route_type' => 'route_name',
-                'route' => 'projectCatalyst.bookmarks'
+                'route' => 'projectCatalyst.bookmarks',
             ]),
             new Illuminate\Support\Fluent([
                 'title' => 'Catalyst API',
                 'route_type' => 'url',
-                'route' => '/catalyst-explorer/api'
+                'route' => '/catalyst-explorer/api',
             ]),
             new Illuminate\Support\Fluent([
                 'title' => 'Lido Nation Projects',
                 'route_type' => 'route_name',
-                'route' => 'lido-blockchain-labs.nairobi'
+                'route' => 'lido-blockchain-labs.nairobi',
             ]),
             new Illuminate\Support\Fluent([
                 'title' => 'Catalyst Explorer',
                 'items' => [
-//                    new Illuminate\Support\Fluent([
-//                        'title' => 'Explorer Home',
-//                        'route_type' => 'route_name',
-//                        'route' => 'projectCatalyst.'
-//                    ]),
+                    //                    new Illuminate\Support\Fluent([
+                    //                        'title' => 'Explorer Home',
+                    //                        'route_type' => 'route_name',
+                    //                        'route' => 'projectCatalyst.'
+                    //                    ]),
                     new Illuminate\Support\Fluent([
                         'title' => 'Proposals',
                         'route_type' => 'route_name',
-                        'route' => 'projectCatalyst.proposals'
+                        'route' => 'projectCatalyst.proposals',
                     ]),
                     new Illuminate\Support\Fluent([
                         'title' => 'Proposers',
                         'route_type' => 'route_name',
-                        'route' => 'projectCatalyst.users'
+                        'route' => 'projectCatalyst.users',
                     ]),
                     new Illuminate\Support\Fluent([
                         'title' => 'Groups',
                         'route_type' => 'route_name',
-                        'route' => 'projectCatalyst.groups'
+                        'route' => 'projectCatalyst.groups',
                     ]),
                     new Illuminate\Support\Fluent([
                         'title' => 'Funds',
                         'route_type' => 'route_name',
-                        'route' => 'projectCatalyst.funds'
+                        'route' => 'projectCatalyst.funds',
                     ]),
                     new Illuminate\Support\Fluent([
                         'title' => 'Charts',
                         'route_type' => 'route_name',
-                        'route' => 'projectCatalyst.dashboard'
+                        'route' => 'projectCatalyst.dashboard',
                     ]),
                     new Illuminate\Support\Fluent([
                         'title' => 'Monthly Reports',
                         'route_type' => 'route_name',
-                        'route' => 'projectCatalyst.reports'
+                        'route' => 'projectCatalyst.reports',
                     ]),
                     new Illuminate\Support\Fluent([
                         'title' => 'CCV4 Results',
                         'route_type' => 'route_name',
-                        'route' => 'projectCatalyst.votes.ccv4'
+                        'route' => 'projectCatalyst.votes.ccv4',
                     ]),
-                ]
-            ])
-        ]
+                ],
+            ]),
+        ],
     ]),
     new \Illuminate\Support\Fluent([
         'title' => 'Stake Pool: LIDO',
@@ -202,19 +202,19 @@ return [
             new Illuminate\Support\Fluent([
                 'title' => 'Delegators',
                 'route_type' => 'route_name',
-                'route' => 'delegators'
+                'route' => 'delegators',
             ]),
             new Illuminate\Support\Fluent([
                 'title' => 'The pool',
                 'route_type' => 'route_name',
-                'route' => 'lido-pool'
+                'route' => 'lido-pool',
             ]),
             new Illuminate\Support\Fluent([
                 'title' => 'Phuffycoin',
                 'route_type' => 'route_name',
-                'route' => 'phuffycoin'
-            ])
-        ]
+                'route' => 'phuffycoin',
+            ]),
+        ],
     ]),
     new \Illuminate\Support\Fluent([
         'title' => 'About',
@@ -222,24 +222,24 @@ return [
             new Illuminate\Support\Fluent([
                 'title' => 'The Team',
                 'route_type' => 'route_name',
-                'route' => 'team'
+                'route' => 'team',
             ]),
             new Illuminate\Support\Fluent([
                 'title' => 'Privacy Policy',
                 'route_type' => 'route_name',
-                'route' => 'privacyPolicy'
+                'route' => 'privacyPolicy',
             ]),
             new Illuminate\Support\Fluent([
                 'title' => 'Financial Details',
                 'route_type' => 'route_name',
-                'route' => 'financial-details'
+                'route' => 'financial-details',
             ]),
             new Illuminate\Support\Fluent([
                 'title' => 'Contact Us',
                 'route_type' => 'route_name',
-                'route' => 'community'
-            ])
-        ]
+                'route' => 'community',
+            ]),
+        ],
     ]),
     new \Illuminate\Support\Fluent([
         'title' => '',
@@ -247,8 +247,8 @@ return [
             new Illuminate\Support\Fluent([
                 'title' => 'My Lido Rewards',
                 'route_type' => 'route_name',
-                'route' => 'rewards'
+                'route' => 'rewards',
             ]),
-        ]
+        ],
     ]),
 ];

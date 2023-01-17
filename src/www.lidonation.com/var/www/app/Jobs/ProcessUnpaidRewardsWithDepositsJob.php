@@ -5,7 +5,7 @@ namespace App\Jobs;
 use App\Models\Reward;
 use App\Models\Tx;
 use App\Models\Withdrawal;
-use App\Services\CardanoBlockfrostService;;
+use App\Services\CardanoBlockfrostService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -33,7 +33,7 @@ class ProcessUnpaidRewardsWithDepositsJob implements ShouldQueue
             ->collect();
 
         $processedTxs = Tx::whereIn('hash', $txs->pluck('tx_hash'))->get('hash');
-        $txs = $txs->filter(fn($t) => $processedTxs->doesntContain('hash', $t['tx_hash']) );
+        $txs = $txs->filter(fn ($t) => $processedTxs->doesntContain('hash', $t['tx_hash']));
         $deposits = collect([]);
         foreach ($txs as $tx) {
             $hash = $tx['tx_hash'];
@@ -44,32 +44,36 @@ class ProcessUnpaidRewardsWithDepositsJob implements ShouldQueue
                 $outputs = collect($utxos->outputs);
                 $inputs = collect($utxos->inputs);
                 $sender = $inputs->first();
-                $deposit = $outputs?->firstWhere(function($output){
+                $deposit = $outputs?->firstWhere(function ($output) {
                     $amounts = collect($output->amount);
+
                     return $output->address == $this->depositAddress
-                        && $amounts->contains('unit','lovelace')
-                        && $amounts->contains('quantity','2000000');
+                        && $amounts->contains('unit', 'lovelace')
+                        && $amounts->contains('quantity', '2000000');
                 });
 
-                if(!$deposit) { continue; }
+                if (! $deposit) {
+                    continue;
+                }
                 $deposits->push(new Fluent([
                     'sender' => $sender,
-                    'deposit' => $deposit
+                    'deposit' => $deposit,
                 ]));
             } elseif ($res->status() !== 404) {
                 Log::warning('Trouble updating tx', $res->collect()->toArray(0));
             }
-        };
+        }
 
         // get senders stake addresses
-        $deposits = $deposits->map(function($dep) {
+        $deposits = $deposits->map(function ($dep) {
             $res = app('cardanoService')->get("/addresses/{$dep->sender->address}", []);
             if ($res->failed()) {
                 return true;
             }
             $dep->sender->stake_address = $res->object()?->stake_address[0];
+
             return $dep;
-        })->filter(fn($dep) => !!$dep->sender->stake_address);
+        })->filter(fn ($dep) => (bool) $dep->sender->stake_address);
 
         $rewards = Reward::whereIn('stake_address', $deposits->pluck('sender.stake_address'))
             ->doesntHave('withdrawal')->get();
@@ -77,7 +81,9 @@ class ProcessUnpaidRewardsWithDepositsJob implements ShouldQueue
         foreach ($withdrawalGroups as $group) {
             $template = $group[0];
             $deposit = $deposits->firstWhere('sender.stake_address', $template->stake_address);
-            if (!$deposit) { continue; }
+            if (! $deposit) {
+                continue;
+            }
 
             // create new withdrawal
             $withdrawal = new Withdrawal;
@@ -88,7 +94,7 @@ class ProcessUnpaidRewardsWithDepositsJob implements ShouldQueue
             $withdrawal->save();
 
             // attach rewards to withdrawal
-            foreach($group as $reward) {
+            foreach ($group as $reward) {
                 $reward->withdrawal_id = $withdrawal->id;
                 $reward->save();
             }
@@ -110,7 +116,7 @@ class ProcessUnpaidRewardsWithDepositsJob implements ShouldQueue
                 $withdrawal->status = 'validated';
                 $withdrawal->save();
             }
-        };
+        }
     }
 
     /**

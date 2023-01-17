@@ -16,6 +16,6 @@ class Tx extends Model
         'metadata' => AsArrayObject::class,
         'updated_at' => 'datetime:Y-m-d',
         'created_at' => 'datetime:Y-m-d',
-        'minted_at' => 'datetime:Y-m-d'
+        'minted_at' => 'datetime:Y-m-d',
     ];
 }

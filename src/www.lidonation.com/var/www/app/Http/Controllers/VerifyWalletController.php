@@ -22,7 +22,7 @@ class VerifyWalletController extends Controller
             } else {
                 return response(json_encode(false), 403);
             }
-        } catch (RequestException | ErrorException $e) {
+        } catch (RequestException|ErrorException $e) {
             return response($e->getMessage(), $e->getCode() > 100 ? $e->getCode() : 500);
         }
     }
@@ -33,7 +33,7 @@ class VerifyWalletController extends Controller
             return $cardanoWalletService->getDepositCliAddress(
                 $request->get('create_if_missing', true)
             );
-        } catch (RequestException | ErrorException $e) {
+        } catch (RequestException|ErrorException $e) {
             return response($e->getMessage(), $e->getCode() > 100 ? $e->getCode() : 500);
         }
     }
@@ -42,7 +42,7 @@ class VerifyWalletController extends Controller
     {
         try {
             return $cardanoWalletService->getCliDepositBalance();
-        } catch (RequestException | ErrorException $e) {
+        } catch (RequestException|ErrorException $e) {
             return response($e->getMessage(), $e->getCode() > 100 ? $e->getCode() : 500);
         }
     }
@@ -77,7 +77,7 @@ class VerifyWalletController extends Controller
             }
 
             return $res;
-        } catch (RequestException | ErrorException $e) {
+        } catch (RequestException|ErrorException $e) {
             return response($e->getMessage(), $e->getCode() > 100 ? $e->getCode() : 400);
         }
     }

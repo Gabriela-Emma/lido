@@ -70,7 +70,7 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
         'media',
         'users',
         'metas',
-        'ratings'
+        'ratings',
     ];
 
     protected $withCount = ['ratings'];
@@ -118,6 +118,7 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
             'users',
         ];
     }
+
     public static function getSearchableAttributes(): array
     {
         return [
@@ -261,19 +262,19 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
                 if (Str::contains($m->content, 'youtube')) {
                     $m->key = 'youtube';
                 }
+
                 return $m;
             })->sortBy('key');
     }
 
-
     public function RatingsAverageFormatted(): Attribute
     {
-        return Attribute::make( fn() => number_format((float) $this->ratings_average, 2, '.', ''));
+        return Attribute::make(fn () => number_format((float) $this->ratings_average, 2, '.', ''));
     }
 
     public function RatingsAverage(): Attribute
     {
-        return Attribute::make(get: fn() => $this->ratings->avg('rating'));
+        return Attribute::make(get: fn () => $this->ratings->avg('rating'));
     }
 
     public function scopeFundedChallengeSetting($query)
@@ -310,20 +311,16 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
 
     public function scopeFilter($query, array $filters)
     {
-        $query->when($filters['search'] ?? false, fn(Builder $query, $search) =>
-            $query->where('title', 'ILIKE', '%' . $search . '%')
+        $query->when($filters['search'] ?? false, fn (Builder $query, $search) => $query->where('title', 'ILIKE', '%'.$search.'%')
         );
 
-        $query->when($filters['user_id'] ?? false, fn(Builder $query, $user_id) =>
-            $query->where('user_id', $user_id)
+        $query->when($filters['user_id'] ?? false, fn (Builder $query, $user_id) => $query->where('user_id', $user_id)
         );
 
-        $query->when($filters['challenge_id'] ?? false, fn(Builder $query, $fund_id) =>
-            $query->where('fund_id', $fund_id)
+        $query->when($filters['challenge_id'] ?? false, fn (Builder $query, $fund_id) => $query->where('fund_id', $fund_id)
         );
 
-        $query->when($filters['fund_id'] ?? false, fn(Builder $query, $fund_id) =>
-            $query->whereRelation('fund.parent', 'id', '=', $fund_id)
+        $query->when($filters['fund_id'] ?? false, fn (Builder $query, $fund_id) => $query->whereRelation('fund.parent', 'id', '=', $fund_id)
         );
     }
 

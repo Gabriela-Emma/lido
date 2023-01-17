@@ -26,7 +26,7 @@ class UpdateTxJob implements ShouldQueue
      * @return void
      */
     public function __construct(
-        protected string        $hash,
+        protected string $hash,
         protected Wallet|string $paymentWalletOrSeed,
         protected               $effect = null,
         protected               $effectStatus = 'minting')
@@ -41,7 +41,7 @@ class UpdateTxJob implements ShouldQueue
     public function handle(): void
     {
         $tx = Tx::where('hash', $this->hash)->first();
-        if (!$tx instanceof Tx) {
+        if (! $tx instanceof Tx) {
             return;
         }
 
@@ -49,12 +49,13 @@ class UpdateTxJob implements ShouldQueue
         if ((Carbon::make(now()))->subMinutes(10)->gt($tx->created_at)) {
             $tx->status = 'expired';
             $tx->save();
+
             return;
         }
 
-        if (!!$tx->quantity && $tx->status !== 'pending') {
+        if ((bool) $tx->quantity && $tx->status !== 'pending') {
             if ($tx->status == 'paid') {
-                if ( $this->effect && in_array(ShouldQueue::class, class_implements($this->effect))) {
+                if ($this->effect && in_array(ShouldQueue::class, class_implements($this->effect))) {
                     $this->effect::dispatch($tx->hash)->delay(now()->addSeconds(30));
                     $tx->status = $this->effectStatus;
                     $tx->save();
@@ -63,6 +64,7 @@ class UpdateTxJob implements ShouldQueue
                     $tx->model->save();
                 }
             }
+
             return;
         }
 
@@ -81,6 +83,7 @@ class UpdateTxJob implements ShouldQueue
                 }
             } elseif ($res->status() !== 404) {
                 Log::warning('Trouble updating tx', $res->collect()->toArray(0));
+
                 return;
             }
         } catch (Exception $e) {
@@ -104,19 +107,19 @@ class UpdateTxJob implements ShouldQueue
     {
         $effectWallet = $this->getAddressFromLucid();
 
-        $payment = collect($utxos->outputs)->firstWhere(fn($output) => $output->address === $effectWallet?->address);
-        $lovelaces = collect($payment->amount)->firstWhere(fn($coin) => $coin->unit === 'lovelace');
-        $lovelaces = (int)$lovelaces?->quantity;
+        $payment = collect($utxos->outputs)->firstWhere(fn ($output) => $output->address === $effectWallet?->address);
+        $lovelaces = collect($payment->amount)->firstWhere(fn ($coin) => $coin->unit === 'lovelace');
+        $lovelaces = (int) $lovelaces?->quantity;
 
         $sender = collect($utxos->outputs)
-            ->firstWhere(fn($coin) => $coin->address !== $effectWallet?->address);
+            ->firstWhere(fn ($coin) => $coin->address !== $effectWallet?->address);
 
         $tx->address = $sender?->address;
         $tx->status = 'paid';
         $tx->quantity = $lovelaces;
         $tx->metadata = [
             'block' => $hash->block,
-            'slot' => $hash->slot
+            'slot' => $hash->slot,
         ];
         $tx->save();
     }
@@ -127,7 +130,7 @@ class UpdateTxJob implements ShouldQueue
         $seed = $this->paymentWalletOrSeed?->passphrase ?? $this->paymentWalletOrSeed;
 
         return Http::post(
-            config('cardano.lucidEndpoint') . '/wallet/address',
+            config('cardano.lucidEndpoint').'/wallet/address',
             compact('seed')
         )->throw()->object();
     }

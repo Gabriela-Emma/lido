@@ -5,7 +5,6 @@ namespace App\Http\Livewire\Catalyst;
 use App\Models\CatalystGroup;
 use App\Models\CatalystUser;
 use App\Models\Snippet;
-use App\Repositories\CatalystGroupRepository;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\View\Factory;

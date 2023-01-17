@@ -16,10 +16,10 @@ class MintTxResource extends JsonResource
      */
     public function toArray($request): array|\JsonSerializable|Arrayable
     {
-        return array_merge (
+        return array_merge(
             parent::toArray($request),
             [
-                'mint' => $this->mint?->toArray()
+                'mint' => $this->mint?->toArray(),
             ],
             $this->meta_data->toArray()
         );

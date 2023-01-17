@@ -2,11 +2,11 @@
 
 namespace App\Providers;
 
+use App\Shortcodes\DefinitionShortcode;
 use App\Shortcodes\LinkShortcode;
 use App\Shortcodes\ProposalShortcode;
 use App\Shortcodes\ProposalsShortcode;
 use App\Shortcodes\TweetLinkShortcode;
-use App\Shortcodes\DefinitionShortcode;
 use Illuminate\Support\ServiceProvider;
 use Webwizo\Shortcodes\Facades\Shortcode;
 

@@ -1,25 +1,25 @@
 <?php
 
 use App\Http\Controllers\AnonymousBookmarkController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\GlobalSearchController;
 use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\OAuthController;
 use App\Http\Controllers\PostController;
-use App\Http\Controllers\ProjectCatalyst\ProposalSearchController;
-use App\Http\Controllers\ProjectCatalyst\CatalystReportsController;
 use App\Http\Controllers\ProjectCatalyst\CatalystFundsController;
-use App\Http\Controllers\ProjectCatalyst\CatalystProjectsController;
-use App\Http\Controllers\ProjectCatalyst\CatalystPeopleController;
 use App\Http\Controllers\ProjectCatalyst\CatalystGroupsController;
+use App\Http\Controllers\ProjectCatalyst\CatalystPeopleController;
+use App\Http\Controllers\ProjectCatalyst\CatalystProjectsController;
+use App\Http\Controllers\ProjectCatalyst\CatalystReportsController;
 use App\Http\Controllers\ProjectCatalyst\CatalystVoterToolController;
+use App\Http\Controllers\ProjectCatalyst\ProposalSearchController;
 use App\Http\Controllers\ReviewRatingImage;
 use App\Http\Controllers\StripeController;
 use App\Http\Controllers\TaxonomyController;
 use App\Http\Controllers\TwitterAttendanceController;
 use App\Http\Controllers\VerifyWalletController;
-use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Livewire\Catalyst\CatalystFundComponent;
 use App\Http\Livewire\Catalyst\CatalystGroupsComponent;
 use App\Http\Livewire\Catalyst\CatalystProposersComponent;
@@ -44,6 +44,7 @@ use Illuminate\Http\Request;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
+use Inertia\Inertia;
 use Laravel\Fortify\Features;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 use Laravel\Fortify\Http\Controllers\ConfirmablePasswordController;
@@ -55,7 +56,6 @@ use Laravel\Fortify\Http\Controllers\TwoFactorAuthenticatedSessionController;
 use Laravel\Fortify\Http\Controllers\TwoFactorQrCodeController;
 use Laravel\Fortify\Http\Controllers\VerifyEmailController;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
-use Inertia\Inertia;
 
 /*
 |--------------------------------------------------------------------------
@@ -103,7 +103,6 @@ Route::group(
         Route::get('/lido-minute-nft', function () {
             return view('lido-minute-nft');
         })->name('lido-minute-nft');
-
 
         Route::get('/bazaar', function () {
             return view('bazaar');
@@ -255,7 +254,7 @@ Route::group(
         // Cardano Tools
         Route::get('/pool-tool', PoolTool::class)->name('pool-tool');
 
-        Route::get('/lido-blockchain-labs/nairobi', fn() => view('lido-blockchain-labs'))->name('lido-blockchain-labs.nairobi');
+        Route::get('/lido-blockchain-labs/nairobi', fn () => view('lido-blockchain-labs'))->name('lido-blockchain-labs.nairobi');
 
 //        Route::get('/explorer', function () {
 //            return view('explorer');
@@ -329,8 +328,12 @@ Route::group(
         Route::post('/delegators/missed-epoch', function (Request $request) {
             $account = $request->account;
             $refund = $request->refund;
-            Mail::to(config('app.system_user_email'))->send(new class($account, $refund) extends Illuminate\Mail\Mailable {
-                public function __construct(public $account, public $refund) {}
+            Mail::to(config('app.system_user_email'))->send(new class($account, $refund) extends Illuminate\Mail\Mailable
+            {
+                public function __construct(public $account, public $refund)
+                {
+                }
+
                 public function content(): Content
                 {
                     return new Content(
@@ -671,13 +674,12 @@ Route::get('twitter/callback', ['as' => 'twitter.callback', static function () {
 }]);
 
 Route::get('/forgot-password', function (Request $request) {
-    return view('auth.forgot-password', ['request'=> $request]);
+    return view('auth.forgot-password', ['request' => $request]);
 })->name('password.forgot');
 
 Route::get('/reset-password/{token}', function (Request $request, $token) {
-    return view('auth.reset-password', ['request'=> $request, 'token' => $token]);
+    return view('auth.reset-password', ['request' => $request, 'token' => $token]);
 })->name('password.reset');
-
 
 // Route::get('reset-password/{token}', ResetPasswordForm::class)->name('password.reset');
 Route::post('reset-password', [ForgotPasswordController::class, 'submitResetPasswordForm'])->name('password.update');

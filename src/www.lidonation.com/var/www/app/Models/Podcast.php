@@ -31,14 +31,14 @@ class Podcast extends Model implements HasLink, IHasMetaData, HasMedia
         MintsNfts;
 
     protected $with = [
-        'nfts'
+        'nfts',
     ];
 
     protected $casts = [
         'updated_at' => 'datetime:Y-m-d',
         'created_at' => 'datetime:Y-m-d',
         'recorded_at' => 'datetime:Y-m-d',
-        'published_at' => 'datetime:Y-m-d'
+        'published_at' => 'datetime:Y-m-d',
     ];
 
     public $translatable = [
@@ -46,7 +46,7 @@ class Podcast extends Model implements HasLink, IHasMetaData, HasMedia
         'meta_title',
         'content',
         'social_excerpt',
-        'comment_prompt'
+        'comment_prompt',
     ];
 
     /**

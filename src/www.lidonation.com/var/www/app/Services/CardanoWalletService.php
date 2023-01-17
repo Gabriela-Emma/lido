@@ -231,7 +231,7 @@ class CardanoWalletService
         );
     }
 
-    public function makeWalletObject(string | Wallet $addy): ?Fluent
+    public function makeWalletObject(string|Wallet $addy): ?Fluent
     {
         if ($addy instanceof Wallet) {
             return $this->parseAddress($addy->address);

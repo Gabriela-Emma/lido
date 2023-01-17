@@ -2,7 +2,6 @@
 
 namespace App\Nova;
 
-use App\Models\EveryEpoch;
 use App\Models\Quiz;
 use App\Nova\Actions\AddMetaData;
 use App\Nova\Actions\EditMetaData;
@@ -15,8 +14,6 @@ use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Markdown;
 use Laravel\Nova\Fields\MorphedByMany;
-use Laravel\Nova\Fields\MorphMany;
-use Laravel\Nova\Fields\MorphToMany;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 
@@ -76,12 +73,12 @@ class Quizzes extends Resource
             Images::make(__('Hero'), 'hero')
                 ->enableExistingMedia(),
 
-//            BelongsToMany::make(__('Models'), 'models', Mod::class)
-//                ->searchable(),
+            //            BelongsToMany::make(__('Models'), 'models', Mod::class)
+            //                ->searchable(),
 
-//            MorphedByMany::make(__('Models'), 'models')->types([
-//                Rating::class,
-//            ]),
+            //            MorphedByMany::make(__('Models'), 'models')->types([
+            //                Rating::class,
+            //            ]),
 
             BelongsToMany::make(__('Questions'), 'questions', Questions::class)
                 ->searchable(),

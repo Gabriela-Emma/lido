@@ -3,7 +3,6 @@
 namespace App\Nova;
 
 use App\Models\EveryEpoch;
-use App\Models\Question;
 use App\Nova\Actions\AddMetaData;
 use App\Nova\Actions\EditMetaData;
 use Illuminate\Http\Request;

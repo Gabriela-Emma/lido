@@ -46,7 +46,7 @@ class AnswerResponses extends Resource
      * @var array
      */
     public static $with = [
-        'answer'
+        'answer',
     ];
 
     /**
@@ -78,9 +78,9 @@ class AnswerResponses extends Resource
 
             Text::make(__('Stake Address')),
 
-//            Text::make('Answer', function () {
-//                return $this->answer?->content;
-//            })->onlyOnIndex(),
+            //            Text::make('Answer', function () {
+            //                return $this->answer?->content;
+            //            })->onlyOnIndex(),
 
             Select::make(__('Status'), 'status')
                 ->options([

@@ -2,8 +2,6 @@
 
 namespace App\Nova;
 
-use App\Models\EveryEpoch;
-use App\Models\Giveaway;
 use App\Models\Question;
 use App\Models\Rule;
 use App\Nova\Actions\AddMetaData;

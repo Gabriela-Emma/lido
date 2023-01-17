@@ -2,9 +2,7 @@
 
 namespace App\Nova;
 
-use App\Models\Podcast;
 use App\Models\PodcastSeason;
-use App\Models\PodcastShow;
 use Ebess\AdvancedNovaMediaLibrary\Fields\Images;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
@@ -72,7 +70,7 @@ class PodcastSeasons extends Resource
             Images::make(__('Hero'), 'hero')
                 ->enableExistingMedia(),
             Markdown::make('Content', 'content')->translatable()->alwaysShow(),
-            HasMany::make('episodes', 'episodes', Podcasts::class)
+            HasMany::make('episodes', 'episodes', Podcasts::class),
         ];
     }
 

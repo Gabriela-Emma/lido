@@ -76,8 +76,6 @@ class Questions extends Resource
 
             HasMany::make('Responses', 'responses', AnswerResponses::class),
 
-
-
             HasMany::make('Metadata', 'metas', Metas::class),
         ];
     }

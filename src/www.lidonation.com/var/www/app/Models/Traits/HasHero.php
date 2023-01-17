@@ -11,17 +11,18 @@ trait HasHero
         }
 
         $heroUrl = $this->hero?->getfullUrl();
-        
+
         if ($this->isValidImageFormat($heroUrl)) {
             return $heroUrl;
         }
+
         return null;
     }
 
     private function isValidImageFormat($heroUrl)
     {
-        
         $fileExt = pathinfo($heroUrl, PATHINFO_EXTENSION);
+
         return in_array($fileExt, ['jpeg', 'png', 'jpg']);
     }
 
@@ -30,9 +31,10 @@ trait HasHero
         if (isset($this->attributes['thumbnailUrl'])) {
             return $this->attributes['thumbnailUrl'];
         }
-        if (!$this->hero?->hasGeneratedConversion('thumbnail')) {
+        if (! $this->hero?->hasGeneratedConversion('thumbnail')) {
             return null;
         }
+
         return $this->hero?->getfullUrl('thumbnail');
     }
 
@@ -42,9 +44,10 @@ trait HasHero
             return $this->attributes['featureUrl'];
         }
 
-        if (!$this->hero?->hasGeneratedConversion('preview')) {
+        if (! $this->hero?->hasGeneratedConversion('preview')) {
             return null;
         }
+
         return $this->hero?->getfullUrl('preview');
     }
 

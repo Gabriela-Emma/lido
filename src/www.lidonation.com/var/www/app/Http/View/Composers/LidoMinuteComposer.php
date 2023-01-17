@@ -3,13 +3,11 @@
 namespace App\Http\View\Composers;
 
 use App\Models\Podcast;
-use Carbon\CarbonInterval;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\View\View;
 
 class LidoMinuteComposer
 {
-
     private array|Collection $latest;
 
     /**
@@ -17,7 +15,8 @@ class LidoMinuteComposer
      *
      * @return void
      */
-    public function __construct() {
+    public function __construct()
+    {
         $this->latest = Podcast::orderBy('published_at')->limit(5)->get();
     }
 
@@ -31,7 +30,7 @@ class LidoMinuteComposer
     {
         $view->with([
             'newEpisodes' => $this->latest,
-            'metaTitle' => 'LIDO Minute Podcast'
+            'metaTitle' => 'LIDO Minute Podcast',
         ]);
     }
 }

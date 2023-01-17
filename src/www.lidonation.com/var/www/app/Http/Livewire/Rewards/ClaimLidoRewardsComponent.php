@@ -13,9 +13,10 @@ use Psr\Container\NotFoundExceptionInterface;
 class ClaimLidoRewardsComponent extends Component
 {
     public $everyEpoch;
-    public $rewardPot;
-    public $rewardsTemplate;
 
+    public $rewardPot;
+
+    public $rewardsTemplate;
 
     /**
      * @throws ContainerExceptionInterface
@@ -26,7 +27,7 @@ class ClaimLidoRewardsComponent extends Component
         $this->rewardPot = collect(
             (new GetLidoRewardsPot)($this->everyEpoch)
         )->filter(
-            fn($asset) => $asset['amount'] >= $this->rewardsTemplate[$asset['asset'] . '.amount']
+            fn ($asset) => $asset['amount'] >= $this->rewardsTemplate[$asset['asset'].'.amount']
         );
     }
 

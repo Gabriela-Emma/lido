@@ -47,7 +47,7 @@ class WalletComposer
 //
 //                return $tx;
 //            })->concat($rewards)->sortByDesc('date');
-        } catch (ErrorException | \Exception $e) {
+        } catch (ErrorException|\Exception $e) {
             report($e);
             $txs = [];
             $aggregate = null;

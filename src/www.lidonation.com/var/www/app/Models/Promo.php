@@ -16,7 +16,7 @@ class Promo extends Model implements HasMedia
 
     public $translatable = [
         'title',
-        'content'
+        'content',
     ];
 
     public function token(): MorphTo

@@ -4,7 +4,6 @@ namespace App\Observers;
 
 use App\Jobs\MintNftTxJob;
 use App\Jobs\UpdateTxJob;
-use App\Jobs\WithdrawalValidatedJob;
 use App\Models\Nft;
 use App\Models\Reward;
 use App\Models\Tx;
@@ -20,13 +19,12 @@ class TxObserver
                 $this->dispatchMintingJob($tx);
                 break;
             case Reward::class:
-                $this->dispatchLidoRewardPaymentJob($tx);;
+                $this->dispatchLidoRewardPaymentJob($tx);
                 break;
             case Withdrawal::class:
-                $this->dispatchLidoWithdrawalPaymentJob($tx);;
+                $this->dispatchLidoWithdrawalPaymentJob($tx);
                 break;
         }
-
     }
 
     protected function dispatchMintingJob(Tx $tx): void
@@ -34,7 +32,7 @@ class TxObserver
         // start a recursive queue job that use a ProvidesCardanoService api to fetch tx data
         UpdateTxJob::dispatch(
             $tx->hash,
-            file_get_contents("/data/nfts/lido-minute/wallets/mint/seed.txt"),
+            file_get_contents('/data/nfts/lido-minute/wallets/mint/seed.txt'),
             MintNftTxJob::class,
             'minting'
         );
@@ -54,7 +52,7 @@ class TxObserver
     {
         UpdateTxJob::dispatch(
             $tx->hash,
-            file_get_contents("/data/phuffycoin/wallets/mint/seed.txt"),
+            file_get_contents('/data/phuffycoin/wallets/mint/seed.txt'),
             null,
             'validated'
         );

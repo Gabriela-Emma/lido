@@ -2,15 +2,12 @@
 
 namespace App\Http\Controllers\Api\CatalystExplorer;
 
+use App\Http\Controllers\Controller;
 use App\Http\Resources\FundResource;
 use App\Models\Fund;
-use App\Models\Proposal;
-use App\Http\Controllers\Controller;
-use App\Http\Resources\ProposalResource;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
-use Illuminate\Support\Facades\DB;
 use OpenApi\Annotations as OA;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -23,7 +20,6 @@ class FundController extends Controller
      *     summary="Get all funds",
      *     description="Returns all funds",
      *     operationId="funds",
-     *
      *     @OA\Response(
      *         response=200,
      *         description="successful",
@@ -36,26 +32,26 @@ class FundController extends Controller
         $per_page = request('per_page', 24);
 
         // per_page query doesn't exceed 100
-        if ($per_page > 60) return response([
-            'status_code' => 400,
-            'message' => 'query parameter \'per_page\' should not exceed 60'], 400);
+        if ($per_page > 60) {
+            return response([
+                'status_code' => 400,
+                'message' => 'query parameter \'per_page\' should not exceed 60'], 400);
+        }
 
         Fund::withoutGlobalScopes();
         $funds = Fund::orderByDesc('launched_at')
             ->topLevel()
             ->filter(request(['search']));
 
-
         if ($funds->get()->isEmpty()) {
             return response([
                 'status_code' => 404,
-                'message'=> 'no proposal found'
+                'message' => 'no proposal found',
             ], Response::HTTP_NOT_FOUND);
         } else {
             return FundResource::collection($funds->paginate($per_page));
         }
     }
-
 
     /**
      * @OA\Get(
@@ -91,12 +87,10 @@ class FundController extends Controller
 
         if (is_null($fund)) {
             return response([
-                'errors'=> 'Fund not found'
+                'errors' => 'Fund not found',
             ], Response::HTTP_NOT_FOUND);
         } else {
             return new FundResource($fund);
         }
-
-
     }
 }

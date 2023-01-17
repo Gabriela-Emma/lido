@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Question extends Model  implements HasMedia
+class Question extends Model implements HasMedia
 {
     use HasMetaData,
         HasAuthor,
@@ -21,6 +21,7 @@ class Question extends Model  implements HasMedia
         HasTranslations,
         InteractsWithMedia,
         SoftDeletes;
+
     /**
      * The attributes that should be cast.
      *
@@ -33,7 +34,7 @@ class Question extends Model  implements HasMedia
 
     public $translatable = [
         'title',
-        'content'
+        'content',
     ];
 
     public function quizzes(): BelongsToMany
