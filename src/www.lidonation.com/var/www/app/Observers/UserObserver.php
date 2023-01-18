@@ -2,8 +2,9 @@
 
 namespace App\Observers;
 
+use App\Enums\RoleEnum;
 use App\Models\User;
-use App\Services\NewsletterService;
+use App\Jobs\SubscribeDelegatorMailchimpJob;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
 
@@ -33,11 +34,14 @@ class UserObserver
 
     public function created(User $user)
     {   
-        try {
-            (new NewsletterService)->subscribe(request('name'), request('email'));
-       } catch (\Exception $e) {
-            Log::info($e->getMessage());
-       }
+        if ( isset($user->wallet_stake_address) && in_array(RoleEnum::delegator()->value, (array) $user->roles->all()) ) {
+            try {
+                SubscribeDelegatorMailchimpJob::dispatch($user->name, $user->email);
+           } catch (\Exception $e) {
+                Log::info($e->getMessage());
+           }
+        }
+    
     }
     
 }
