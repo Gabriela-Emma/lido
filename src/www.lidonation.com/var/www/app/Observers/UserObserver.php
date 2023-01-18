@@ -34,7 +34,7 @@ class UserObserver
 
     public function created(User $user)
     {   
-        if ( isset($user->wallet_stake_address) && in_array(RoleEnum::delegator()->value, (array) $user->roles->all()) ) {
+        if ( isset($user->wallet_stake_address) && $user->hasRole(RoleEnum::delegator()->value) ) {
             try {
                 SubscribeDelegatorMailchimpJob::dispatch($user->name, $user->email);
            } catch (\Exception $e) {
