@@ -21,8 +21,18 @@
       "valency": 1
     },
     {
+      "addr": "132.145.175.139",
+      "port": 6001,
+      "valency": 1
+    },
+    {
       "addr": "lidolovelace-submit-tx-relay-service.lidolovelace.svc.cluster.local",
       "port": 3032,
+      "valency": 1
+    },
+    {
+      "addr": "170.106.160.40",
+      "port": 3001,
       "valency": 1
     },
     {

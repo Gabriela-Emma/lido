@@ -38,6 +38,16 @@
           {
             "address": "relay1.lidonation.com",
             "port": 3011
+          },
+          {
+            "addr": "34.91.176.78",
+            "port": 3001,
+            "valency": 1
+          },
+          {
+            "addr": "132.145.175.139",
+            "port": 6001,
+            "valency": 1
           }
         ],
         "advertise": true
