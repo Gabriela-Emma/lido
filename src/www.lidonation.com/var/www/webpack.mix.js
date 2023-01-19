@@ -23,11 +23,13 @@ mix.ts('resources/js/phuffycoin.ts', 'public/js')
     .ts('resources/js/delegators.ts', 'public/js')
     .ts('resources/js/rewards.ts', 'public/js')
     .ts('resources/js/governance-marathon.ts', 'public/js')
+    .ts('resources/js/catalyst-explorer.ts', 'public/js')
 
     .js('resources/js/partners.ts', 'public/js')
     .js('resources/js/app.js', 'public/js')
     .js('resources/js/bootstrap.js', 'public/js')
     .js('resources/js/global.js', 'public/js')
+    .js('resources/js/alpine.js', 'public/js')
     .js('resources/js/lib/vendor/splide/js/splide-shader-carousel.min.js', 'public/vendor/splide')
 
     .vue(3)

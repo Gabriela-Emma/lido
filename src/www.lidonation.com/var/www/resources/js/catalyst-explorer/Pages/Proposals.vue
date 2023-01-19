@@ -1,8 +1,6 @@
 <template>
     <section>
-        <h1>
-            Monthly Reports
-        </h1>
+        <h1>Proposals Section</h1>
     </section>
 </template>
 

@@ -78,34 +78,6 @@ Alpine.data('delegationLearningModule', function () {
         }
     }
 }.bind(Alpine));
-Alpine.data('mobileMenu', function () {
-    return {
-        showing: null,
-        show() {
-            this.showing = true;
-        },
-        hide() {
-            return this.showing = false;
-        },
-        toggle() {
-            return this.showing = !this.showing;
-        }
-    }
-}.bind(Alpine));
-Alpine.data('cardanoMenu', function () {
-    return {
-        showing: false,
-        show() {
-            this.showing = true;
-        },
-        hide() {
-            return this.showing = false;
-        },
-        toggle() {
-            return this.showing = !this.showing;
-        }
-    }
-}.bind(Alpine));
 
 window.Alpine = Alpine;
 window.onload = () => {

@@ -4,7 +4,6 @@ import {Cardano, UTxO} from "lucid-cardano";
 import persist from '@alpinejs/persist';
 import {walletLogin} from "./lib/utils/walletLogin";
 import {cardanoWallet} from "./lib/utils/cardanoWallet";
-import {componentToggle} from "./lib/utils/componentToggle";
 import WalletService from "./lib/services/WalletService";
 
 export {};
@@ -19,8 +18,6 @@ declare global {
 
 Alpine.plugin(persist);
 
-Alpine.data('mobileMenu', componentToggle.bind(Alpine));
-Alpine.data('cardanoMenu', componentToggle.bind(Alpine));
 Alpine.data('cardanoWallet', cardanoWallet.bind(Alpine));
 
 Alpine.data('lidoPartners', function () {

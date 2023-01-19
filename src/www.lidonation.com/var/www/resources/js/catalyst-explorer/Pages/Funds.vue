@@ -4,10 +4,8 @@
     </section>
 </template>
 
-<script>
-import Layout from "../Shared/Layout.vue";
-
+<script lang="ts">
 export default {
-    layout: Layout,
+
 }
 </script>
