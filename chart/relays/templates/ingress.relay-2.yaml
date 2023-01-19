@@ -1,3 +1,4 @@
+{{- if eq .Values.services.cardano.config.CARDANO_NETWORK "main" -}}
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRouteTCP
 metadata:
@@ -14,3 +15,4 @@ spec:
         - name: "{{ $.Chart.Name }}-cardano-relay-2-service"
           namespace: {{ .Values.namespace }}
           port: {{ .Values.services.cardano.config.RELAY2_PORT }}
+{{- end -}}
