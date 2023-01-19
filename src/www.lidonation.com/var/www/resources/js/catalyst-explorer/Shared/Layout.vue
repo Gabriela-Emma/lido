@@ -1,9 +1,13 @@
 <template>
     <Nav :crumbs=crumbs />
-    <slot></slot>
+
+    <section class="container">
+        <slot></slot>
+    </section>
 </template>
 
-<script>
+<script lang="ts">
+
 import Nav from "./Nav.vue";
 
 export default {

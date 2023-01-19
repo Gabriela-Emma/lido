@@ -16,23 +16,30 @@
         <!-- / Fathom -->
     @endenv
 
-    <script src="{{ mix('/js/app.js') }}" defer></script>
+    <script src="{{ mix('/js/alpine.js') }}" defer></script>
+    <script src="{{ mix('/js/catalyst-explorer.js') }}" defer></script>
+
     @inertiaHead
 </head>
 <body>
-    @include('includes.global-search-handler')
 
-    @include('includes.header')
+<x-lido-menu />
 
-    <main>
-        @inertia
-    </main>
+@include('includes.global-search-handler')
 
-    {{-- include squiggly svg for text animation--}}
-    @include('svg.squiggle')
+@include('includes.header')
 
-    @include('includes.footer')
+<main>
+    @inertia
+</main>
 
-    <x-lido-menu />
+{{-- include squiggly svg for text animation--}}
+@include('svg.squiggle')
+
+@include('includes.footer')
+
+
+{{--<livewire:global-player-component />--}}
+
 </body>
 </html>

@@ -5,16 +5,10 @@ import Tooltip from "@ryangjchandler/alpine-tooltip";
 import persist from '@alpinejs/persist';
 import focus from '@alpinejs/focus';
 import WalletService from "./lib/services/WalletService";
-import {C, Cardano} from "lucid-cardano";
-import CardanoService from "./lib/services/CardanoService";
-import Notice from "./lib/interfaces/Notice";
-import {Axios, AxiosError} from "axios";
-import BlockfrostKeysService from "./lib/services/BlockfrostKeysService";
+import {Cardano} from "lucid-cardano";
+import {Axios} from "axios";
 import {walletLogin} from "./lib/utils/walletLogin";
 import {globalVideoPlayer} from "./lib/utils/globalVideoPlayer";
-import Plyr from 'plyr';
-import KUTE from 'kute.js'
-import {componentToggle} from "./lib/utils/componentToggle";
 import {cardanoWallet} from "./lib/utils/cardanoWallet";
 
 export {};
@@ -202,9 +196,6 @@ Alpine.data('lidoRewards', function () {
         },
     }
 }.bind(Alpine));
-
-Alpine.data('mobileMenu', componentToggle.bind(Alpine));
-Alpine.data('cardanoMenu', componentToggle.bind(Alpine));
 Alpine.data('cardanoWallet', cardanoWallet.bind(Alpine));
 
 window.globalVideoPlayer = globalVideoPlayer;

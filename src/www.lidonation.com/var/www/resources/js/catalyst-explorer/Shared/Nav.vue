@@ -6,7 +6,7 @@
                     <ol role="list" class="flex space-x-0">
                         <li class="flex">
                             <div class="flex items-center">
-                                <Link href="/en/project-catalyst/dashboard"
+                                <Link href="/en/catalyst-explorer/dashboard"
                                     class="text-white flex flex-row items-center hover:text-yellow-400">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
                                             fill="currentColor">
@@ -51,70 +51,74 @@
                     <ul
                         class="flex flex-row items-center justify-end gap-2 py-2 text-xs md:text-sm flex-nowrap overflow-x-auto h-full">
                         <li class="flow-root menu-item">
-                            <Link
-                                class="px-1 py-3 text-white menu-link hover:text-yellow-500"
-                                :class="{ 'text-yellow-500': $page.component === 'Api' }"
-                                href="/project-catalyst/api">
-                            API
-                            </Link>
+                            <a class="px-1 py-3 text-white menu-link hover:text-yellow-500"
+                               href="/project-catalyst/votes/ccv4">
+                                CCV4 Votes
+                            </a>
+                        </li>
+                        <li class="flow-root menu-item">
+                            <a class="px-1 py-3 text-white menu-link hover:text-yellow-500"
+                               href="/catalyst-explorer/api">
+                                Api
+                            </a>
                         </li>
                         <li class="flow-root menu-item">
                             <Link class="px-1 py-3 text-white menu-link hover:text-yellow-500"
-                                :class="{ 'text-yellow-500': $page.url.startsWith('/en/project-catalyst/reports')}"
-                                href="/project-catalyst/reports">
-                            Reports
+                                :class="{ 'text-yellow-500': $page.component.startsWith('Reports')}"
+                                href="/catalyst-explorer/reports">
+                            Monthly Reports
                             </Link>
                         </li>
                         <li class="flow-root menu-item">
                             <Link
                                 class="px-1 py-3 text-white menu-link hover:text-yellow-500"
-                                :class="{ 'text-yellow-500': $page.url === '/en/project-catalyst/charts' }"
-                                href="/project-catalyst/charts">
+                                :class="{ 'text-yellow-500': $page.component.startsWith('Charts') }"
+                                href="/catalyst-explorer/charts">
                             Charts
                             </Link>
                         </li>
                         <li class="flow-root menu-item">
                             <Link
                                 class="px-1 py-3 text-white menu-link hover:text-yellow-500"
-                                :class="{ 'text-yellow-500': $page.url === '/en/project-catalyst/funds' }"
-                                href="/project-catalyst/funds">
+                                :class="{ 'text-yellow-500': $page.component.startsWith('Funds') }"
+                                href="/catalyst-explorer/funds">
                             Funds
                             </Link>
                         </li>
                         <li class="flow-root menu-item">
                             <Link
                                 class="px-1 py-3 text-white menu-link hover:text-yellow-500"
-                                :class="{ 'text-yellow-500': $page.url === '/en/project-catalyst/projects' }"
-                                href="/project-catalyst/projects">
-                            Projects
+                                :class="{ 'text-yellow-500': $page.component.startsWith('Proposals') }"
+                                href="/catalyst-explorer/proposals">
+                            Proposals
                             </Link>
                         </li>
                         <li class="flow-root menu-item">
                             <Link
                                 class="px-1 py-3 text-white menu-link hover:text-yellow-500"
-                                :class="{ 'text-yellow-500': $page.url === '/en/project-catalyst/people' }"
-                                href="/project-catalyst/people">
+                                :class="{ 'text-yellow-500': $page.component.startsWith('People') }"
+                                href="/catalyst-explorer/people">
                             People
                             </Link>
                         </li>
                         <li class="flow-root menu-item">
                             <Link
                                 class="px-1 py-3 text-white menu-link hover:text-yellow-500"
-                                :class="{ 'text-yellow-500': $page.url === '/en/project-catalyst/groups' }"
-                                href="/project-catalyst/groups">
+                                :class="{ 'text-yellow-500': $page.component.startsWith('Groups') }"
+                                href="/catalyst-explorer/groups">
                             Groups
                             </Link>
                         </li>
                         <li class="flow-root menu-item">
                             <Link
                                 class="px-1 py-3 text-white menu-link hover:text-yellow-500"
-                                :class="{ 'text-yellow-500': $page.url === '/en/project-catalyst/voter-tool' }"
-                                href="/project-catalyst/voter-tool">
+                                :class="{ 'text-yellow-500': $page.component.startsWith('VoterTool') }"
+                                href="/catalyst-explorer/voter-tool">
                             Voter Tool
                             </Link>
                         </li>
                         <li class="flow-root menu-item" x-data="bookmarksMenuLink">
-                            <Link href="/project-catalyst/bookmarks" class="inline-flex items-center menu-link group">
+                            <Link href="/catalyst-explorer/bookmarks" class="inline-flex items-center menu-link group">
                             <span class="relative z-0 inline-flex rounded-md shadow-sm" x-cloak>
                                 <button type="button"
                                     class="relative inline-flex items-center px-2 py-1 text-sm font-medium text-white bg-pink-700 border border-pink-300 rounded-l-sm group-hover:bg-pink-600 focus:z-10 focus:outline-none">
@@ -149,8 +153,8 @@
     </div>
 </template>
 
-<script>
-import { Link } from '@inertiajs/inertia-vue3';
+<script lang="ts">
+import { Link } from '@inertiajs/vue3';
 
 export default {
     components: { Link },

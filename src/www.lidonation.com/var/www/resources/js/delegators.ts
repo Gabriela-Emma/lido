@@ -212,8 +212,6 @@ Alpine.data('lidoRewards', function () {
     }
 }.bind(Alpine));
 
-Alpine.data('mobileMenu', componentToggle.bind(Alpine));
-Alpine.data('cardanoMenu', componentToggle.bind(Alpine));
 Alpine.data('delegateToLido', function () {
     return {
         showRewards: false,
@@ -639,7 +637,7 @@ Alpine.data('delegateToLido', function () {
                         type: 'error'
                     })
                 }
-                
+
             }
             this.userLoading = false;
         },

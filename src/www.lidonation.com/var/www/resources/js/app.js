@@ -13,29 +13,10 @@ import Tooltip from "@ryangjchandler/alpine-tooltip";
 import {Video} from '@splidejs/splide-extension-video';
 import {WordCloudController, WordElement} from 'chartjs-chart-wordcloud';
 import {cardanoWallet} from "@/lib/utils/cardanoWallet";
-import {componentToggle} from "@/lib/utils/componentToggle";
 import WalletService from "@/lib/services/WalletService";
 import {globalVideoPlayer} from "@/lib/utils/globalVideoPlayer";
 import tippy from "tippy.js";
 import masonry from 'alpinejs-masonry';
-
-import { createApp, h } from 'vue'
-import { createInertiaApp } from '@inertiajs/inertia-vue3';
-import { InertiaProgress } from '@inertiajs/progress';
-
-
-// boot inertia app
-createInertiaApp({
-    resolve: name => require(`./catalyst-explorer/Pages/${name}`),
-    setup({ el, App, props, plugin }) {
-      createApp({ render: () => h(App, props) })
-        .use(plugin)
-        .mount(el)
-    },
-  })
-
-// inertia progress
-InertiaProgress.init();
 
 Chart.register(WordCloudController, WordElement);
 window.Alpine = Alpine;
@@ -72,9 +53,6 @@ window.glossary = function glossary() {
         },
     }
 }
-
-window.mobileMenu = componentToggle;
-window.cardanoMenu = componentToggle;
 
 window.articleRecorder = function articleRecorder(articleSlug, locale) {
     return {
@@ -554,7 +532,7 @@ window.voterTool = function voterTool() {
                 this.loadingSharedBookmark = false;
 
                 if (!!bookmarks) {
-                    if ( typeof bookmarks[0] === 'string') {
+                    if (typeof bookmarks[0] === 'string') {
                         this.labelFilter = bookmarks.shift();
                     }
                     bookmarks = bookmarks.map(b => ({
@@ -618,7 +596,7 @@ window.voterTool = function voterTool() {
             Alpine.store('vt').toggle(proposal);
             this.setProposals();
         },
-        toggleSharingModal(){
+        toggleSharingModal() {
             this.sharingBookmark = !this.sharingBookmark;
         },
         async share() {
@@ -626,7 +604,7 @@ window.voterTool = function voterTool() {
             // const bookmarks = Buffer.from(JSON.stringify([...this.proposals])).toString('hex');
 
             // const list = btoa(encodeURI(JSON.stringify([...this.proposals])));
-            const proposals =  [...this.proposals].map(p => ({
+            const proposals = [...this.proposals].map(p => ({
                 ...omit(p, ['ideascale_link', 'labels']),
                 link: (new URL(p.link.includes('http') ? p.link : `http:${p.link}`))?.pathname,
                 fundHero: p.fundHero?.replace('https://storage.googleapis.com/www.lidonation.com', '')
@@ -736,8 +714,7 @@ window.proposalDrip = function proposal(proposal) {
 //@todo this does not work. Breaks contribute content content. need to reevaluate modals handling on the site.
 // window.LivewireUIModal = LivewireUIModal;
 
-window.buyNftDApp = function buyNftDApp()
-{
+window.buyNftDApp = function buyNftDApp() {
     return {
         steps: [0],
         minterAddress: null,
@@ -751,8 +728,7 @@ window.buyNftDApp = function buyNftDApp()
         async init() {
             this.mintPrice = ((await window.axios.post(`/api/lido-minute-nft/mint-price`))?.data + 2) * 1000000;
         },
-        get step()
-        {
+        get step() {
             if (this.steps.length < 1) {
                 return null;
             }
@@ -774,11 +750,11 @@ window.buyNftDApp = function buyNftDApp()
             }
 
             const rawTx = await walletService.payToAddress(this.minterAddress?.address, {lovelace: BigInt(this.mintPrice)});
-            const signedTx = await  rawTx.sign().complete();
+            const signedTx = await rawTx.sign().complete();
             this.paymentTx = await signedTx.submit();
 
             // send tx to backend
-            const res = await window.axios.post(`/api/lido-minute-nft/mint`, {hash: this.paymentTx, episode: id });
+            const res = await window.axios.post(`/api/lido-minute-nft/mint`, {hash: this.paymentTx, episode: id});
 
             // start looping to get tx status every 5 seconds
             const intervalID = setInterval(async () => {
@@ -813,7 +789,7 @@ window.cardanoWallet = cardanoWallet;
 window.globalVideoPlayer = globalVideoPlayer;
 
 Alpine.magic('tt', el => message => {
-    let instance = tippy(el, { content: message, trigger: 'manual' })
+    let instance = tippy(el, {content: message, trigger: 'manual'})
 
     instance.show()
 
@@ -825,8 +801,8 @@ Alpine.magic('tt', el => message => {
 })
 
 // Directive: x-tooltip
-Alpine.directive('tt', (el, { expression }) => {
-    tippy(el, { content: expression })
+Alpine.directive('tt', (el, {expression}) => {
+    tippy(el, {content: expression})
 })
 
 Alpine.start();
@@ -834,10 +810,10 @@ Alpine.start();
 const rellaxElement = document.getElementsByClassName("rellax")
 let rellax = [];
 if (rellaxElement.length > 0) {
-    for (let i = 1;i < rellaxElement.length; i++) {
+    for (let i = 1; i < rellaxElement.length; i++) {
         rellax[i] = new Rellax('.rellax', {
-            horizontal:true,
-            vertical:true
+            horizontal: true,
+            vertical: true
         });
     }
 }

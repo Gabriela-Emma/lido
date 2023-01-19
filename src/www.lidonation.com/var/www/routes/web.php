@@ -178,8 +178,8 @@ Route::group(
             Route::get('/funds', [CatalystFundsController::class, 'index'])
                 ->name('funds');
 
-            Route::get('/projects', [CatalystProjectsController::class, 'index'])
-                ->name('projects');
+            Route::get('/proposals', [CatalystProjectsController::class, 'index'])
+                ->name('proposals');
 
             Route::get('/people', [CatalystPeopleController::class, 'index'])
                 ->name('people');
