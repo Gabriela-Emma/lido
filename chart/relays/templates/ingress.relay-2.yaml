@@ -1,0 +1,16 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRouteTCP
+metadata:
+  name: "relay-2-{{ .Values.services.cardano.config.CARDANO_NETWORK }}"
+  namespace: {{ .Values.namespace }}
+  annotations:
+    kubernetes.io/ingress.class: traefik
+spec:
+  entryPoints:
+    - "relay-2-{{ .Values.services.cardano.config.CARDANO_NETWORK }}"
+  routes:
+    - match: HostSNI(`*`)
+      services:
+        - name: "{{ $.Chart.Name }}-cardano-relay-2-service"
+          namespace: {{ .Values.namespace }}
+          port: {{ .Values.services.cardano.config.RELAY2_PORT }}
