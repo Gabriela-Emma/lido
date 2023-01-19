@@ -74,7 +74,7 @@ spec:
                 fieldRef:
                   fieldPath: status.podIP
             - name: NODE_NAME
-              value: "producer"
+              value: "relay1"
           envFrom:
             - configMapRef:
                 name: "{{ $.Chart.Name }}-cardano-configmap"
