@@ -2,8 +2,11 @@
 
 namespace App\Observers;
 
+use App\Enums\RoleEnum;
 use App\Models\User;
+use App\Jobs\SubscribeDelegatorMailchimpJob;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Log;
 
 class UserObserver
 {
@@ -28,4 +31,17 @@ class UserObserver
         unset($user->twitter_handler);
         unset($user->facebook_user);
     }
+
+    public function created(User $user)
+    {   
+        if ( isset($user->wallet_stake_address) && $user->hasRole(RoleEnum::delegator()->value) ) {
+            try {
+                SubscribeDelegatorMailchimpJob::dispatch($user->name, $user->email);
+           } catch (\Exception $e) {
+                Log::info($e->getMessage());
+           }
+        }
+    
+    }
+    
 }

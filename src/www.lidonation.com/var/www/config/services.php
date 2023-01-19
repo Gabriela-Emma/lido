@@ -81,4 +81,11 @@ return [
         'redirect' => env('TWITTER_OAUTH_CALLBACK_URL'),
     ],
 
+    'mailchimp' => [
+        'key' => env('MAILCHIMP_KEY'),
+        'server' => env('MAILCHIMP_SERVER'),
+        'lists' => [
+            'subscribers' => env('MAILCHIMP_LIST_SUBSCRIBERS')
+        ]
+    ],
 ];

@@ -41,6 +41,7 @@
         "livewire/livewire": "^2.10",
         "maatwebsite/excel": "^3.1",
         "macsidigital/laravel-zoom": "^5.0",
+        "mailchimp/marketing": "^3.0",
         "mcamara/laravel-localization": "^1.7",
         "mediconesystems/livewire-datatables": "^0.9",
         "meilisearch/meilisearch-php": "^0.26.1",
