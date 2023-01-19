@@ -5,15 +5,23 @@
         "localRoots": {
           "accessPoints": [
             {
-              "address": "lidolovelace-cardano-producer-service.lidolovelace-test.svc.cluster.local",
-              "port": 3010
-            },
-            {
               "address": "lidolovelace-submit-tx-relay-service.lidolovelace-test.svc.cluster.local",
               "port": 3030
             }
           ],
           "advertise": false
+        },
+        "valency": 1
+      },
+      {
+        "publicRoots": {
+          "accessPoints": [
+            {
+              "address": "relay.preview.lidonation.com",
+              "port": 3010
+            }
+          ],
+          "advertise": true
         },
         "valency": 1
       }
