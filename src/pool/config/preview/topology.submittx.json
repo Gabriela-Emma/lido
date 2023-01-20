@@ -16,6 +16,16 @@
       "state": "SG",
       "port": 30002,
       "valency": 2
+    },
+    {
+      "addr": "tn-preview.psilobyte.io",
+      "port": 4201,
+      "valency": 1
+    },
+    {
+      "addr": "51.104.251.142",
+      "port": 3001,
+      "valency": 1
     }
   ]
 }
