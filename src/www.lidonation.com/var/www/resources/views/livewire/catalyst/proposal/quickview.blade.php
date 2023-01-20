@@ -285,7 +285,7 @@
                         <svg  x-show="has({{$proposal->id}})" class="w-5 h-5 mr-2 -ml-1 text-pink-600"
                              xmlns="http://www.w3.org/2000/svg"
                              viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                            <path x-show="proposalStore.length > 0" d="M5 4a2 2 0 012-2h6a2 2 0 012 2v14l-5-2.5L5 18V4z"/>
+                            <path x-show="proposalsStore.length > 0" d="M5 4a2 2 0 012-2h6a2 2 0 012 2v14l-5-2.5L5 18V4z"/>
                         </svg>
                         <svg x-show="!has({{$proposal->id}})" xmlns="http://www.w3.org/2000/svg"
                              class="w-5 h-5 mr-2 -ml-1 text-pink-600"

@@ -1,7 +1,7 @@
 <template>
     <Nav :crumbs=crumbs />
 
-    <section class="container">
+    <section class="">
         <slot></slot>
     </section>
 </template>
