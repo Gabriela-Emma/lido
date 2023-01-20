@@ -1,1 +1,1 @@
-interface Proposal {}
+export default interface Proposal {}

@@ -26,6 +26,21 @@
       "addr": "51.104.251.142",
       "port": 3001,
       "valency": 1
+    },
+    {
+      "addr": "preview.relay.beerpool.io",
+      "port": 6000,
+      "valency": 1
+    },
+    {
+      "addr": "c-pv-rn02.liv.io",
+      "port": 30002,
+      "valency": 1
+    },
+    {
+      "addr": "test.everestada.com",
+      "port": 7002,
+      "valency": 1
     }
   ]
 }
