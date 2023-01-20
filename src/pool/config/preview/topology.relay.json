@@ -16,6 +16,21 @@
       "state": "SG",
       "port": 30002,
       "valency": 2
+    },
+    {
+      "addr": "preview.world.bbhmm.net",
+      "port": 6200,
+      "valency": 1
+    },
+    {
+      "addr": "topo-test.topopool.com",
+      "port": 3010,
+      "valency": 1
+    },
+    {
+      "addr": "tn-preview2.psilobyte.io",
+      "port": 4202,
+      "valency": 1
     }
   ]
 }
