@@ -58,5 +58,5 @@ spec:
               command:
                 - /bin/sh
                 - -c
-                - kubectl exec $(kubectl get pods -l role=relay --field-selector=status.phase=Running -o=jsonpath='{.items[0].metadata.name}') -c app -- /cntools/cnode/scripts/topologyUpdater.sh
+                - kubectl exec $(kubectl get pods -l role=relay --field-selector=status.phase=Running -o=jsonpath='{.items[0].metadata.name}') -c relay -- /cntools/cnode/scripts/topologyUpdater.sh
           restartPolicy: Never
