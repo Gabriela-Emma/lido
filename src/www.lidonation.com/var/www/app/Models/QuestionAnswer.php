@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Interfaces\IHasMetaData;
 use App\Models\Traits\HasAuthor;
 use App\Models\Traits\HasHero;
 use App\Models\Traits\HasMetaData;
@@ -13,7 +14,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
-class QuestionAnswer extends Model
+class QuestionAnswer extends Model implements IHasMetaData
 {
     use HasAuthor,
         HasHero,
