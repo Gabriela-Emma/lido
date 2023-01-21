@@ -158,9 +158,6 @@ const themeColors = {
         'yellow-light': '#FBDC08',
     },
 
-
-
-
     'post-type': {
         'insights': '#ff8700',
         'news': '#4bb92f',
@@ -266,7 +263,8 @@ module.exports = {
             './vendor/livewire-ui/modal/resources/views/*.blade.php',
             './vendor/laravel/jetstream/**/*.blade.php',
             './storage/framework/views/*.php',
-            './resources/views/**/*.blade.php'
+            './resources/views/**/*.blade.php',
+            './resources/js/**/*.vue'
         ]
     },
     safelist: [
