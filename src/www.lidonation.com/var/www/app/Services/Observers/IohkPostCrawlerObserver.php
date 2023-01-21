@@ -2,10 +2,12 @@
 
 namespace App\Services\Observers;
 
-use App\Models\User;
 use App\Models\ExternalPost;
 use App\Models\Link;
+use App\Models\Meta;
+use App\Models\Post;
 use DOMDocument;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
 use Psr\Http\Message\UriInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -14,7 +16,7 @@ use GuzzleHttp\Exception\RequestException;
 use Symfony\Component\DomCrawler\Crawler;
 
 class IohkPostCrawlerObserver extends CrawlObserver {
-  
+    
     protected $title;
     protected $subTitle;
     protected $postedDate;
@@ -23,11 +25,10 @@ class IohkPostCrawlerObserver extends CrawlObserver {
 
     protected $author;
     protected $authorEmail;
-    protected $password = 'password';
-    
 
-    public function __construct() {
-        $this->content = NULL;
+    public function __construct()
+    {
+
     }  
     /**
      * Called when the crawler will crawl the url.
@@ -71,7 +72,6 @@ class IohkPostCrawlerObserver extends CrawlObserver {
         $authorContainerClass = (string) $this->getClassNames($crawler, $prefix='Author__Container', $expectedCount=1);
         $this->author = $this->setAuthor($crawler, $authorContainerClass);
         $this->authorEmail = $this->setAuthorEmail($crawler, $authorContainerClass);
-        sleep(3*5);
         
     }
    
@@ -99,12 +99,8 @@ class IohkPostCrawlerObserver extends CrawlObserver {
     {
         Log::info("finishedCrawling");
         
-        //save the user if not exists
-        $user = User::where('email', $this->authorEmail)->first() ?? $this->saveUser();
-
         // save post
         $post = new ExternalPost;
-        $post->user_id = $user->id; 
         $post->title = $this->title;
         $post->subtitle = $this->subTitle;
         $post->content = $this->content;
@@ -112,10 +108,17 @@ class IohkPostCrawlerObserver extends CrawlObserver {
         $post->status = 'published';
         // $post->created_at = $this->postedDate;
         try {
-            $post->save(); 
+            $dbPost = Post::where('slug', '=', Str::slug($this->title, '-'))->first();
+            
+            if ($dbPost == null) {
+                $post->save();
+                $this->saveUserMeta($post, $this->author, $this->authorEmail);
+            }
+
         } catch (exception $e) {
-            Log::error($e);
+            Log::error('Error post not saved');
         }
+
 
         //save links
         foreach($this->links as $key=>$linkVal) {
@@ -213,15 +216,14 @@ class IohkPostCrawlerObserver extends CrawlObserver {
         return $authorEmail;
     }
 
-    protected function saveUser()
-    {
-        $user = new user;
-        $user->name = $this->author;
-        $user->email = $this->authorEmail;
-        $user->password = $this->password;
-        $user->save();
+    protected function saveUserMeta($post, $key, $content)
+    {   $meta = new Meta;
+        $meta->key = $key;
+        $meta->content = $content;
+        $meta->model_type = $post->type; 
 
-        return $user;
+        $post->metas()->save($meta);
+
     }
 
 }

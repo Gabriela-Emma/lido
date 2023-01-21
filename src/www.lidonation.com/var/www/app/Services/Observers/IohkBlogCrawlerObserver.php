@@ -1,7 +1,7 @@
 <?php
 namespace App\Services\Observers;
 
-use App\Services\IohkPostCrawlerService;
+use App\Jobs\CrawlIohkPostsJob;
 use DOMDocument;
 use Illuminate\Support\Facades\Log;
 use Psr\Http\Message\UriInterface;
@@ -11,11 +11,11 @@ use GuzzleHttp\Exception\RequestException;
 use Symfony\Component\DomCrawler\Crawler;
 
 class IohkBlogCrawlerObserver extends CrawlObserver {
-  
-    protected $postsLinks;
 
+    protected $postsLinks;
+    
     public function __construct() {
-        $this->postsLink = NULL;
+
     }  
     /**
      * Called when the crawler will crawl the url.
@@ -81,13 +81,11 @@ class IohkBlogCrawlerObserver extends CrawlObserver {
         Log::info("finishedCrawling iohk blog page, will now crawl ".count($this->postsLinks)." articles links");
 
         // crawl each link, extract post content and save to db.
-        foreach($this->postsLinks as $key=>$postLink) {
-            try { 
-                $this->scrapPostContent($postLink);
-            } catch (exception $e) {
-                Log::error($e);
-                continue;
-            }
+        try { 
+            Log::info($this->postsLinks);
+            CrawlIohkPostsJob::dispatch($this->postsLinks);
+        } catch (exception $e) {
+            Log::error($e);
         }
     }
 
@@ -148,11 +146,5 @@ class IohkBlogCrawlerObserver extends CrawlObserver {
 
             return $postsLinksAssArr;
         }
-    }
-
-    // use postcrawler service to crawl a post link
-    protected function scrapPostContent($link)
-    {
-        return (new IohkPostCrawlerService)->fetchContent($link);
     }
 }
