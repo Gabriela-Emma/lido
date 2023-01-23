@@ -87,7 +87,7 @@ class QuestionsAnswersFromSalesforce extends Seeder
                     ],
                     'question_id' => $question->id,
                     'status' => 'published',
-                    'correctness' => $sfAnswer->correctness,
+                    'correctness' => strtolower($sfAnswer->correctness),
                 ]
             );
 
