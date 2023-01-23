@@ -248,7 +248,7 @@ Route::group(
             return view('insights');
         })->name('insights');
         Route::get('/reviews', function () {
-            return view('reviews');
+            return view('reviews')->withShortcodes();
         })->name('reviews');
 
         // Cardano Tools
@@ -267,7 +267,7 @@ Route::group(
         Route::get('/reviews/{review}/summary-image/{hash}', [ReviewRatingImage::class, 'show'])
             ->name('reviewRatingImage');
         Route::get('/reviews/{review}', function (Review $review) {
-            return view('review', compact('review'));
+            return view('review', compact('review'))->withShortcodes();
         })->name('review');
 
         // proposals
