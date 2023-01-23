@@ -63,9 +63,8 @@
                     </div>
                 </div>
 
-                <div class="p-2">
-                    <x-public.review-rating-summary :review="$review"></x-public.review-rating-summary>
-                </div>
+
+                <x-public.review-rating-summary :review="$review"></x-public.review-rating-summary>
             </section>
         </div>
     </header>
