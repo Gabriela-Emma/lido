@@ -63,6 +63,7 @@
                     </div>
                 </div>
 
+
                 <x-public.review-rating-summary :review="$review"></x-public.review-rating-summary>
             </section>
         </div>

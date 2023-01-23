@@ -1,6 +1,6 @@
 @props(['review'])
 <div class="mt-6 rating-summary">
-    <div class="mt-2 bg-gray-50 bg-opacity-25 rounded-sm">
+    <div class="mt-2 bg-gray-50 bg-opacity-25 rounded-sm p-2">
         <div class="grid grid-cols-7 gap-8 md:gap-16 lg:gap-4 combined-ratings">
             {{-- row 1 --}}
             <div class="col-span-7 md:col-span-4 lg:col-span-3">
