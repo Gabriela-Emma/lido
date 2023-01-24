@@ -41,7 +41,7 @@ class LibraryComponent extends Component
 
     public function mount(PostRepository $posts)
     {
-        $this->reviews = $posts->setModel(new Review)->limit(6)->all();
+        $this->reviews = $posts->setModel(new Review)->limit(3)->all();
         $this->latestLidoMinute = Podcast::where('status', 'published')->orderBy('published_at', 'DESC')->first();
         $this->latestLidoMinutes = Podcast::orderBy('published_at')->limit(5)->get();
         $this->tags = Tag::whereHas('insights')->orWhereHas('news')->orWhereHas('reviews')->get();
