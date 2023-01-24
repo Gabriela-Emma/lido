@@ -49,6 +49,8 @@ class CatalystFundsComponent extends Component
 
     public int $totalAmountAwarded;
 
+    public int $totalAmountDistributed;
+
     public int $completedProposalsCount;
 
     protected Builder $searchBuilder;
@@ -82,6 +84,11 @@ class CatalystFundsComponent extends Component
             ->where('type', 'proposal')
             ->whereNotNull('funded_at')
             ->sum('amount_requested');
+
+        $this->totalAmountDistributed = DB::table('proposals')
+            ->where('type', 'proposal')
+            ->whereNotNull('funded_at')
+            ->sum('amount_received');
 
         $this->paginator = Fund::funds()
             ->withSum(
