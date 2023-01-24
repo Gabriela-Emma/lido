@@ -68,6 +68,14 @@
                         ${{humanNumber($totalAmountAwarded)}}
                     </dd>
                 </div>
+                <div class="flex flex-col max-w-sm p-2">
+                    <dt class="order-2 text-xs md:text-sm font-medium text-teal-50">
+                        {{__('Total $$ Distributed')}}
+                    </dt>
+                    <dd class="order-1 text-xl font-extrabold text-white lg:text-xl 2xl:text-3xl">
+                        ${{humanNumber($totalAmountDistributed)}}
+                    </dd>
+                </div>
             </div>
         </div>
     </section>
