@@ -398,8 +398,8 @@
                             @include('svg.pool-network')
                         </div>
                         <span>
-                                {{$snippets->whatIsStaking}}
-                            </span>
+                            {{$snippets->whatIsStaking}}
+                        </span>
                     </a>
                 </li>
 
@@ -410,8 +410,8 @@
                             @include('svg.crypto-bank')
                         </div>
                         <span>
-                                {{$snippets->howToBuyADA}}
-                            </span>
+                            {{$snippets->howToBuyADA}}
+                        </span>
                     </a>
                 </li>
 
