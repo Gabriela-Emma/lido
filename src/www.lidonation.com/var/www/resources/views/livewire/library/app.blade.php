@@ -70,28 +70,30 @@
                 Browse by Category
             </h2>
 
-            <div>
-                <div class="flex flex-row md:flex-nowrap overflow-x-auto gap-6 no-scrollbar">
-                    @foreach($categories as $cat)
-                        <div class="w-full h-full">
-                            <div class="bg-white rounded-sm w-64 md:w-72 lg:w-80">
-                                <a href="{{$cat->url}}" class="block">
-                                    <img class="aspect-w-1aspect-h-2" alt="{{$cat->title}}'s hero"
-                                         src="{{ $cat->hero_url }}"/>
-                                </a>
-                                <div class="flex flex-row items-center justify-between p-4 border-t border-slate-400">
-                                    <a href="{{$cat->url}}" class="font-semibold text-slate-700">
-                                        {{$cat->title}}
+            <div class="splide slider-splide">
+                <div class="splide__track">
+                    <div class="splide__list">
+                        @foreach($categories as $cat)
+                            <div class="splide__slide">
+                                <div class="bg-white rounded-sm w-64 md:w-72 lg:w-80">
+                                    <a href="{{$cat->url}}" class="block">
+                                        <img class="aspect-w-1aspect-h-2" alt="{{$cat->title}}'s hero"
+                                             src="{{ $cat->hero_url }}"/>
                                     </a>
-                                    <div class="bg-slate-100 rounded-sm">
-                                        <div class="bg-slate-300 py-3 px-4 rounded-sm aspect-square font-semibold">
-                                            {{$cat->posts_count}}
+                                    <div class="flex flex-row items-center justify-between p-4 border-t border-slate-400">
+                                        <a href="{{$cat->url}}" class="font-semibold text-slate-700">
+                                            {{$cat->title}}
+                                        </a>
+                                        <div class="bg-slate-100 rounded-sm">
+                                            <div class="bg-slate-300 py-3 px-4 rounded-sm aspect-square font-semibold">
+                                                {{$cat->posts_count}}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    @endforeach
+                        @endforeach
+                    </div>
                 </div>
             </div>
         </div>

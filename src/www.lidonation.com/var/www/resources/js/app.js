@@ -301,6 +301,68 @@ window.addEventListener('analytics-event-fired', event => {
 });
 
 // slides
+// let lido_minutes = document.querySelector('.splide')
+// if (lido_minutes !== null) {
+//   let sampleSlider = new Splide('splide', {
+//     type: 'loop',
+//     perPage: 3,
+//     // pagePerMove: 1,
+//     // focus: 'center',
+//     // drag: 'free',
+//     // snap: true,
+//     // arrows: true,
+//     // breakpoints: {
+//     //   640: {
+//     //     perPage: 2,
+//     //     gap: '.7rem',
+//     //     height: '6rem',
+//     //   },
+//     //   480: {
+//     //     perPage: 1,
+//     //     gap: '.7rem',
+//     //     height: '6rem',
+//     //   },
+//     // },
+//   }).mount()
+// }
+let catSlider;
+if (document.querySelector('.slider-splide')) {
+    catSlider = new Splide( '.slider-splide', {
+        type   : 'loop',
+        perPage: 3,
+        gap    : '2rem',
+        breakpoints: {
+            640: {
+            perPage: 2,
+            gap    : '.7rem',
+            },
+            480: {
+            perPage: 1,
+            gap    : '.7rem',
+            },
+        },
+      } ).mount();
+}
+
+if (document.querySelector('.podcast-slides')) {
+  let sampleSlider = new Splide('.podcast-slides', {
+        type   : 'loop',
+        perPage: 3,
+        gap    : '2rem',
+        arrows: true,
+        breakpoints: {
+            640: {
+            perPage: 2,
+            gap    : '.7rem',
+            },
+            480: {
+            perPage: 1,
+            gap    : '.7rem',
+            },
+        },
+  }).mount()
+}
+
 let secondarySlider, primarySlider;
 if (document.getElementById('proposal-secondary-slide')) {
     secondarySlider = new Splide('#proposal-secondary-slide', {
