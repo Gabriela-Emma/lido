@@ -11,18 +11,48 @@
     <div class="flex flex-col gap-2 bg-primary-20">
         <section class="py-8">
             <div class="container">
-                <ProposalSearch
-                    :search="search"
-                    @search="(term) => search=term"></ProposalSearch>
+                <div class="flex items-center w-full h-16">
+                    <ProposalSearch
+                        :search="search"
+                        @search="(term) => search=term"></ProposalSearch>
+
+                    <div class="h-full">
+                        <button @click="showFilters = !showFilters"
+                                class="h-full hover:text-yellow-500 focus:outline-none flex flex-nowrap gap-1 items-center px-2 border border-white border-l-0"
+                                :class="{
+                                    'bg-slate-200 text-slate-600': !showFilters,
+                                    'border-teal-500': !showFilters && search,
+                                    'border-white': !showFilters && !search,
+                                    'border-teal-500 bg-teal-500 text-white': showFilters
+                                }"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                 stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                      d="M6 13.5V3.75m0 9.75a1.5 1.5 0 010 3m0-3a1.5 1.5 0 000 3m0 3.75V16.5m12-3V3.75m0 9.75a1.5 1.5 0 010 3m0-3a1.5 1.5 0 000 3m0 3.75V16.5m-6-9V3.75m0 3.75a1.5 1.5 0 010 3m0-3a1.5 1.5 0 000 3m0 9.75V10.5"/>
+                            </svg>
+                            <span>Filters</span>
+                        </button>
+                    </div>
+                </div>
             </div>
         </section>
         <section class="py-8 w-full">
             <div class="flex flex-row gap-5 relative w-full">
-                <ProposalFilter></ProposalFilter>
+                <ProposalFilter :show-filter="showFilters"></ProposalFilter>
 
-                <div class="flex-1">
+                <div class="flex-1 mx-auto"
+                     :class="{
+                        'pr-16': showFilters,
+                        'container': !showFilters
+                }">
                     <Proposals :proposals="props.proposals.data"></Proposals>
                 </div>
+            </div>
+        </section>
+        <section class="pt-4 pb-16 w-full">
+            <div class="container">
+                <ProposalPagination></ProposalPagination>
             </div>
         </section>
     </div>
@@ -36,7 +66,9 @@ import Proposals from "../modules/proposals/Proposals.vue";
 import ProposalSearch from "../modules/proposals/ProposalSearch.vue";
 import {router} from '@inertiajs/vue3';
 import ProposalFilter from "../modules/proposals/ProposalFilter.vue";
+import ProposalPagination from "../modules/proposals/ProposalPagination.vue";
 
+/// props and class properties
 const props = withDefaults(
     defineProps<{
         search?: string,
@@ -45,11 +77,11 @@ const props = withDefaults(
             data: Proposal[]
         };
     }>(), {});
-
-// const console = computed(() => console);
-
-let showClearAll = ref(false);
 let search = ref(props.search);
+let showFilters = ref(false);
+
+// computer properties
+// const console = computed(() => console);
 
 watch(search, (value) => {
     query();

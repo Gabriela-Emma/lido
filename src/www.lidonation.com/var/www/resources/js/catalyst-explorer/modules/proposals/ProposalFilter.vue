@@ -1,6 +1,6 @@
 <template>
-    <div class="p-4 bg-white w-[260px] relative">
-        <h2 class="font-medium flex flex-nowrap justify-between gap-8">
+    <div class="bg-white w-[260px] relative" v-if="showFilter">
+        <h2 class="font-medium flex flex-nowrap justify-between gap-8 border-b p-4">
             <span>
                 Filters
             </span>
@@ -10,23 +10,32 @@
                 class="text-gray-300 hover:text-yellow-500 focus:outline-none flex items-center gap-2">
                 <span class="text-xs" v-if="showClearAll">Clear All</span>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                     stroke="currentColor" class="w-8 h-8">
+                     stroke="currentColor" class="w-6 h-6">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
                 </svg>
             </button>
         </h2>
+        <div>
+            <ul class="divide-y">
+                <li class=" p-4"></li>
+                <li class=" p-4"></li>
+                <li class=" p-4"></li>
+            </ul>
+        </div>
     </div>
 </template>
 
 <script lang="ts" setup>
 import {ref, watch, defineEmits} from "vue";
-import {debounce} from "lodash";
 
+/// props and class properties
 const props = withDefaults(
     defineProps<{
-        search?: string,
+        showFilter?: false,
     }>(), {});
+let showClearAll = ref(false);
 
+/// events
 const emit = defineEmits({
     inFocus: null,
     clearSearch: null,
@@ -39,15 +48,16 @@ const emit = defineEmits({
         }
     }
 });
-let search = ref(props.search);
-watch(search, debounce((term) => {
-    if (term.length > 2) {
-        emit('search', term);
-    }
-}, 500));
+
+/// lifecycle hooks
+// watch(search, debounce((term) => {
+//     if (term.length > 2) {
+//         emit('search', term);
+//     }
+// }, 500));
+
+// functions
 function clearSearch() {
-    search.value = '';
-    emit('search', search.value);
     emit('clearSearch');
 }
 

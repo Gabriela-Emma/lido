@@ -41,6 +41,7 @@ mix.ts('resources/js/phuffycoin.ts', 'public/js')
     .sass('resources/sass/bootstrap.scss', 'public/css')
     .sass('resources/sass/partners.scss', 'public/css', {sassOptions})
     .sass('resources/sass/delegators.scss', 'public/css', {sassOptions})
+    .sass('resources/sass/catalyst-explorer.scss', 'public/css', {sassOptions})
     .sass('resources/sass/governance-day.scss', 'public/css', {sassOptions})
     .sass('resources/sass/app.scss', 'public/css', {sassOptions})
 

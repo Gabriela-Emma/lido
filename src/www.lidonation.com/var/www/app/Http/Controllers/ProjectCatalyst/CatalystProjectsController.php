@@ -18,7 +18,7 @@ use Meilisearch\Endpoints\Indexes;
 
 class CatalystProjectsController extends Controller
 {
-    protected null | string | Stringable $search = null;
+    protected null|string|Stringable $search = null;
 
     protected ?string $sortBy = 'amount_requested';
 
@@ -36,6 +36,8 @@ class CatalystProjectsController extends Controller
     public function index(Request $request)
     {
         $this->search = $request->input('search', null);
+
+//        dd($this->query($request));
 
         // get filter(s) from request
         return Inertia::render('Proposals', [
@@ -55,7 +57,6 @@ class CatalystProjectsController extends Controller
             'filters' => array_merge([
             ], $this->getUserFilters()),
         ];
-
 
 
         // filter by funded bool
@@ -79,8 +80,12 @@ class CatalystProjectsController extends Controller
                 }
                 $options['attributesToRetrieve'] = [
                     'id',
+                    'slug',
                     'title',
-                    'amount_requested'
+                    'problem',
+                    'solution',
+                    'amount_requested',
+                    'amount_received',
                 ];
                 if ($this->sortBy !== 'none' && $this->sortOrder !== 'none') {
                     $options['sort'] = ["$this->sortBy:$this->sortOrder"];
@@ -94,7 +99,15 @@ class CatalystProjectsController extends Controller
             });
 
         $response = new Fluent($this->searchBuilder->raw());
-        $pagination = new LengthAwarePaginator($response->hits, $response->estimatedTotalHits, $response->limit, null, []);
+        $pagination = new LengthAwarePaginator(
+            $response->hits,
+            $response->estimatedTotalHits,
+            $response->limit,
+            null,
+            [
+                'pageName' => 'p'
+            ]
+        );
 
 //        dd($pagination->toArray());
         return $pagination->toArray();
