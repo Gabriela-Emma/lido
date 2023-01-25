@@ -1,1 +1,3 @@
-export default interface Proposal {}
+export default interface Proposal {
+    title: string
+}
