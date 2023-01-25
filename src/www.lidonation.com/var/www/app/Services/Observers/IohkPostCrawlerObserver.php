@@ -21,14 +21,15 @@ class IohkPostCrawlerObserver extends CrawlObserver {
     protected $subTitle;
     protected $postedDate;
     protected $content;
+    protected $slug;
     protected $links;
 
     protected $author;
     protected $authorEmail;
 
-    public function __construct()
+    public function __construct(protected $langLocale)
     {
-
+        $this->lang = $langLocale;
     }  
     /**
      * Called when the crawler will crawl the url.
@@ -59,11 +60,13 @@ class IohkPostCrawlerObserver extends CrawlObserver {
         // 2. use the cleaned response body to set our crawler object
         $crawler = new Crawler($cleanedBody);
 
+        //extract postedDate and slug from the url
+        [$this->postedDate, $this->slug] = $this->decypherUrl($url);
+
         // 3. extract the class names for all posts header
         $headerClass =(string) $this->getClassNames($crawler, $prefix='Post__HeadContent', $expectedCount=1);
         $this->title = $this->setTitle($crawler, $headerClass);
         $this->subTitle = $this->setSubTitle($crawler, $headerClass);
-        $this->postedDate = $this->setPostedDate($crawler, $headerClass);
 
         $contentClass = (string) $this->getClassNames($crawler, $prefix='Post__Content', $expectedCount=1);
         $this->content = $this->setContent($crawler, $contentClass);
@@ -100,17 +103,25 @@ class IohkPostCrawlerObserver extends CrawlObserver {
         Log::info("finishedCrawling");
         
         // save post
+        $locale = $this->lang;
         $post = new ExternalPost;
-        $post->title = $this->title;
-        $post->subtitle = $this->subTitle;
-        $post->content = $this->content;
+        $post->title = [$locale=>$this->title];
+        $post->meta_title = [$locale=>$this->subTitle];
+        $post->content = [$locale =>$this->content];
+        $post->slug = $this->slug;
         $post->published_at = $this->postedDate;
         $post->status = 'published';
-        // $post->created_at = $this->postedDate;
+
         try {
-            $dbPost = Post::where('slug', '=', Str::slug($this->title, '-'))->first();
+            $dbPost = ExternalPost::where('slug', '=', $this->slug)->first() ?? NULL;
             
-            if ($dbPost == null) {
+            if ($dbPost != NULL) {
+                ExternalPost::where('slug', $this->slug)->update([
+                    'title->'.$locale => $this->title,
+                    'meta_title->'.$locale => $this->subTitle,
+                    'content->'.$locale => $this->content
+                ]);
+            } else {
                 $post->save();
                 $this->saveUserMeta($post, $this->author, $this->authorEmail);
             }
@@ -146,6 +157,20 @@ class IohkPostCrawlerObserver extends CrawlObserver {
         return $html;
     }
 
+    protected function decypherUrl($url)
+    {
+        $urlPath = parse_url($url, PHP_URL_PATH);
+        $pathArr = explode('/', $urlPath);
+        $dateArr = [$pathArr[4], $pathArr[5], $pathArr[6]]; //[$year, $month, $day]
+
+        // set postedDate and $slug
+        $postedDate = implode('-', $dateArr).' 00:00:00';
+        $slug = implode('/', $dateArr).'/'.$pathArr[7];
+
+        return [$postedDate, $slug];
+
+    }
+
     /**
      * extract divs-classnames from the provided prefix
      */
@@ -178,15 +203,6 @@ class IohkPostCrawlerObserver extends CrawlObserver {
     {
             $postSubTitle = $crawler->filterXPath("//div[contains(@class, '".$parentClassName."')]")->filter('h3')->text();
             return $postSubTitle;
-    }
-
-    protected function setPostedDate(Crawler $crawler, string $parentClassName)
-    {
-            $postedAt = $crawler->filterXPath("//div[contains(@class, '".$parentClassName."')]")->filter('p > span')->text();
-            $dateArr = explode(" ", $postedAt);
-            $formattedDate = $dateArr[1].'-'.$dateArr[0].'-'.$dateArr[2].' 00:00:00';
-
-            return $formattedDate;
     }
 
     protected function setContent(Crawler $crawler, string $parentClassName)
