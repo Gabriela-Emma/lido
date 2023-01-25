@@ -25,7 +25,7 @@ class CrawlIohkBlogJob implements ShouldQueue
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(protected $baseUrl, protected $relativeUri, protected $lang)
     {
         //
     }
@@ -36,8 +36,7 @@ class CrawlIohkBlogJob implements ShouldQueue
      * @return void
      */
     public function handle()
-
-    {
-        (new IohkBlogCrawlerService)->fetchContent();
+    {  
+        (new IohkBlogCrawlerService($this->baseUrl, $this->relativeUri, $this->lang));
     }
 }

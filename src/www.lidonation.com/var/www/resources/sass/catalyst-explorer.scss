@@ -1,0 +1,8 @@
+@import 'app';
+
+.proposal-drip {
+    .drip-content p {
+        @apply mt-0 inline;
+        display: inline;
+    }
+}

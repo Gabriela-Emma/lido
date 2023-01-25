@@ -12,33 +12,20 @@
         <section class="py-8">
             <div class="container">
                 <div class="flex items-center w-full h-16">
-                    <div class="flex w-full h-full rounded-l-sm">
-                        <div class="relative flex-grow w-full h-full focus-within:z-10">
-                            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                <svg class="w-5 h-5 text-gray-400" viewBox="0 0 20 20" stroke="currentColor"
-                                     fill="none">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                          d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-                                </svg>
-                            </div>
+                    <ProposalSearch
+                        :search="search"
+                        @search="(term) => search=term"></ProposalSearch>
 
-                            <input name="searchProposals" id="searchProposals" placeholder="Search"
-                                   class="block w-full h-full pl-10 transition duration-150 ease-in-out bg-white border border-r-0 rounded-l-sm form-input focus:bg-white sm:text-sm sm:leading-5"/>
-
-                            <div class="absolute inset-y-0 right-0 flex items-center px-3 border-l">
-                                <button @click="proposals.search()"
-                                        class="text-gray-300 hover:text-yellow-500 focus:outline-none">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                         stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
-                                    </svg>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="bg-teal-500 h-full">
-                        <button @click="proposals.search()"
-                                class="h-full text-gray-100 hover:text-yellow-500 focus:outline-none flex flex-nowrap gap-1 items-center px-2 border border-teal-600 border-l-0">
+                    <div class="h-full">
+                        <button @click="showFilters = !showFilters"
+                                class="h-full hover:text-yellow-500 focus:outline-none flex flex-nowrap gap-1 items-center px-2 border border-white border-l-0"
+                                :class="{
+                                    'bg-slate-200 text-slate-600': !showFilters,
+                                    'border-teal-500': !showFilters && search,
+                                    'border-white': !showFilters && !search,
+                                    'border-teal-500 bg-teal-500 text-white': showFilters
+                                }"
+                        >
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                  stroke="currentColor" class="w-6 h-6">
                                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -52,55 +39,70 @@
         </section>
         <section class="py-8 w-full">
             <div class="flex flex-row gap-5 relative w-full">
-                <div class="p-4 bg-white w-[260px] relative">
-                    <h2 class="font-medium flex flex-nowrap justify-between gap-8">
-                        <span>
-                            Filters
-                        </span>
+                <ProposalFilter :show-filter="showFilters"></ProposalFilter>
 
-                        <button
-                            @mouseenter="showClearAll = true"
-                            @mouseleave="showClearAll = false"
-                            class="text-gray-300 hover:text-yellow-500 focus:outline-none flex items-center gap-2">
-                            <span class="text-xs" v-if="showClearAll">Clear All</span>
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                 stroke="currentColor" class="w-8 h-8">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
-                            </svg>
-                        </button>
-                    </h2>
-                </div>
-
-                <div class="flex-1">
+                <div class="flex-1 mx-auto"
+                     :class="{
+                        'pr-16': showFilters,
+                        'container': !showFilters
+                }">
                     <Proposals :proposals="props.proposals.data"></Proposals>
                 </div>
             </div>
         </section>
+        <section class="pt-4 pb-16 w-full">
+            <div class="container">
+                <ProposalPagination></ProposalPagination>
+            </div>
+        </section>
     </div>
-
 </template>
 
 <script lang="ts" setup>
 import {proposalsStore} from "../stores/proposals-store";
-import {computed, onMounted, ref} from "vue";
+import {computed, onMounted, ref, watch} from "vue";
 import Proposal from "../models/proposal";
 import Proposals from "../modules/proposals/Proposals.vue";
+import ProposalSearch from "../modules/proposals/ProposalSearch.vue";
+import {router} from '@inertiajs/vue3';
+import ProposalFilter from "../modules/proposals/ProposalFilter.vue";
+import ProposalPagination from "../modules/proposals/ProposalPagination.vue";
 
+/// props and class properties
 const props = withDefaults(
     defineProps<{
+        search?: string,
         proposals: {
             links: [],
             data: Proposal[]
         };
     }>(), {});
+let search = ref(props.search);
+let showFilters = ref(false);
 
+// computer properties
 // const console = computed(() => console);
 
-let showClearAll = ref(false);
+watch(search, (value) => {
+    query();
+});
+
 const proposals = proposalsStore();
 
 onMounted(() => {
     console.log('mounted');
 });
 
+function query() {
+    const data = {};
+    if (search.value?.length > 0) {
+        data['search'] = search.value;
+    }
+
+    router.get(
+        "/catalyst-explorer/proposals",
+        data,
+        {preserveState: true, preserveScroll: true}
+    );
+}
 </script>

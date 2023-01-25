@@ -311,6 +311,9 @@ module.exports = {
                 'span-12': 'span 12 / span 12',
                 'span-14': 'span 14 / span 14',
             },
+            gridAutoRows: {
+                '2fr': 'minmax(0, 2fr)',
+            },
             backgroundImage: theme => ({
                 'pool-bw-light': "url('/img/pool-black-and-white.jpg')",
                 'pool-bw-dark': "url('/img/pool-black-and-black.jpg')",

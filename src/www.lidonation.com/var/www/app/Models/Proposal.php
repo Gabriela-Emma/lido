@@ -452,6 +452,7 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
             'fund_status' => $this->fund?->status,
             'ca_rating' => $this->ratings_average ?? 0.00,
             'amount_requested' => $this->amount_requested ? floatval($this->amount_requested) : 0.00,
+            'amount_received' => $this->amount_received ? floatval($this->amount_received) : 0.00,
             'impact_proposal' => $this->is_impact_proposal,
             'woman_proposal' => $this->is_woman_proposal,
             'ideafest_proposal' => $this->is_ideafest_proposal,

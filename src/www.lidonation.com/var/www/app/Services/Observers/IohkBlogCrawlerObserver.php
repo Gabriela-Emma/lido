@@ -14,9 +14,11 @@ class IohkBlogCrawlerObserver extends CrawlObserver {
 
     protected $postsLinks;
     
-    public function __construct() {
-
-    }  
+    public function __construct(protected $langLocale)
+    {
+        $this->lang = $langLocale;
+    }
+    
     /**
      * Called when the crawler will crawl the url.
      *
@@ -83,7 +85,7 @@ class IohkBlogCrawlerObserver extends CrawlObserver {
         // crawl each link, extract post content and save to db.
         try { 
             Log::info($this->postsLinks);
-            CrawlIohkPostsJob::dispatch($this->postsLinks);
+            CrawlIohkPostsJob::dispatch($this->postsLinks, $this->lang);
         } catch (exception $e) {
             Log::error($e);
         }
