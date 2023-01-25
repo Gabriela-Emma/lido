@@ -16,7 +16,7 @@ class CrawlIohkBlog extends Command
     protected $signature = 'ln:crawl-iohk-blog
                             {--base-url=} : The base url to crawl
                             {--uri=} : The relative url to crawl
-                            {--lang=} : Set the language transalatable content (default=en))';
+                            {--lang=} : Set the language translatable content (default=en))';
 
     /**
      * The console command description.
@@ -35,7 +35,7 @@ class CrawlIohkBlog extends Command
         $baseUrl = $this->option('base-url') ?? 'https://iohk.io';
         $uri = $this->option('uri') ?? '/blog/posts/page-1/';
         $uriPrefix = ($this->option('lang')=='ja') ? 'jp' : $this->option('lang');
-        $langLocale = $this->option('lang'); 
+        $langLocale = $this->option('lang');
 
         $relativeUri =  $uriPrefix . "/" . $uri;
 
