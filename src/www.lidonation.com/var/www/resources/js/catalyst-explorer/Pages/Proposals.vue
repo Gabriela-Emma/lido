@@ -11,29 +11,14 @@
     <div class="flex flex-col gap-2 bg-primary-20">
         <section class="py-8">
             <div class="container">
-                <ProposalSearch></ProposalSearch>
+                <ProposalSearch
+                    :search="search"
+                    @search="(term) => search=term"></ProposalSearch>
             </div>
         </section>
         <section class="py-8 w-full">
             <div class="flex flex-row gap-5 relative w-full">
-                <div class="p-4 bg-white w-[260px] relative">
-                    <h2 class="font-medium flex flex-nowrap justify-between gap-8">
-                        <span>
-                            Filters
-                        </span>
-
-                        <button
-                            @mouseenter="showClearAll = true"
-                            @mouseleave="showClearAll = false"
-                            class="text-gray-300 hover:text-yellow-500 focus:outline-none flex items-center gap-2">
-                            <span class="text-xs" v-if="showClearAll">Clear All</span>
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                 stroke="currentColor" class="w-8 h-8">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
-                            </svg>
-                        </button>
-                    </h2>
-                </div>
+                <ProposalFilter></ProposalFilter>
 
                 <div class="flex-1">
                     <Proposals :proposals="props.proposals.data"></Proposals>
@@ -41,7 +26,6 @@
             </div>
         </section>
     </div>
-
 </template>
 
 <script lang="ts" setup>
@@ -50,10 +34,12 @@ import {computed, onMounted, ref, watch} from "vue";
 import Proposal from "../models/proposal";
 import Proposals from "../modules/proposals/Proposals.vue";
 import ProposalSearch from "../modules/proposals/ProposalSearch.vue";
-import { router } from '@inertiajs/vue3'
+import {router} from '@inertiajs/vue3';
+import ProposalFilter from "../modules/proposals/ProposalFilter.vue";
 
 const props = withDefaults(
     defineProps<{
+        search?: string,
         proposals: {
             links: [],
             data: Proposal[]
@@ -63,13 +49,10 @@ const props = withDefaults(
 // const console = computed(() => console);
 
 let showClearAll = ref(false);
-let search = ref('');
+let search = ref(props.search);
+
 watch(search, (value) => {
-    router.get(
-        "/users",
-        { search: search.value },
-        { preserveState: true }
-    );
+    query();
 });
 
 const proposals = proposalsStore();
@@ -78,4 +61,16 @@ onMounted(() => {
     console.log('mounted');
 });
 
+function query() {
+    const data = {};
+    if (search.value?.length > 0) {
+        data['search'] = search.value;
+    }
+
+    router.get(
+        "/catalyst-explorer/proposals",
+        data,
+        {preserveState: true, preserveScroll: true}
+    );
+}
 </script>

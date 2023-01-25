@@ -9,6 +9,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Fluent;
+use Illuminate\Support\Stringable;
 use Inertia\Inertia;
 use Inertia\Response;
 use JetBrains\PhpStorm\ArrayShape;
@@ -17,7 +18,7 @@ use Meilisearch\Endpoints\Indexes;
 
 class CatalystProjectsController extends Controller
 {
-    protected ?string $search = null;
+    protected null | string | Stringable $search = null;
 
     protected ?string $sortBy = 'amount_requested';
 
@@ -34,9 +35,12 @@ class CatalystProjectsController extends Controller
      */
     public function index(Request $request)
     {
+        $this->search = $request->input('search', null);
+
         // get filter(s) from request
         return Inertia::render('Proposals', [
-            'proposals' => $this->query(),
+            'search' => $this->search,
+            'proposals' => $this->query($request),
             'crumbs' => [
                 [
                     'label' => 'Proposal'
@@ -45,12 +49,14 @@ class CatalystProjectsController extends Controller
         ]);
     }
 
-    protected function query()
+    protected function query(Request $request)
     {
         $_options = [
             'filters' => array_merge([
             ], $this->getUserFilters()),
         ];
+
+
 
         // filter by funded bool
 //        if ($this->fundedProposalsFilter) {
