@@ -59,9 +59,9 @@
                         </span>
 
                         <button
-                                @mouseenter="showClearAll = true"
-                                @mouseleave="showClearAll = false"
-                                class="text-gray-300 hover:text-yellow-500 focus:outline-none flex items-center gap-2">
+                            @mouseenter="showClearAll = true"
+                            @mouseleave="showClearAll = false"
+                            class="text-gray-300 hover:text-yellow-500 focus:outline-none flex items-center gap-2">
                             <span class="text-xs" v-if="showClearAll">Clear All</span>
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                  stroke="currentColor" class="w-8 h-8">
@@ -72,29 +72,27 @@
                 </div>
 
                 <div class="flex-1">
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-3 max-w-7xl 2xl:max-w-full pr-16">
-                        <div class="w-full h-40 p-4 bg-white"></div>
-                        <div class="w-full h-40 p-4 bg-white"></div>
-                        <div class="w-full h-40 p-4 bg-white"></div>
-                        <div class="w-full h-40 p-4 bg-white"></div>
-                        <div class="w-full h-40 p-4 bg-white"></div>
-                        <div class="w-full h-40 p-4 bg-white"></div>
-                        <div class="w-full h-40 p-4 bg-white"></div>
-                        <div class="w-full h-40 p-4 bg-white"></div>
-                        <div class="w-full h-40 p-4 bg-white"></div>
-                        <div class="w-full h-40 p-4 bg-white"></div>
-                        <div class="w-full h-40 p-4 bg-white"></div>
-                        <div class="w-full h-40 p-4 bg-white"></div>
-                    </div>
+                    <Proposals :proposals="props.proposals.data"></Proposals>
                 </div>
             </div>
         </section>
     </div>
+
 </template>
 
 <script lang="ts" setup>
 import {proposalsStore} from "../stores/proposals-store";
 import {computed, onMounted, ref} from "vue";
+import Proposal from "../models/proposal";
+import Proposals from "../modules/proposals/Proposals.vue";
+
+const props = withDefaults(
+    defineProps<{
+        proposals: {
+            links: [],
+            data: Proposal[]
+        };
+    }>(), {});
 
 // const console = computed(() => console);
 
