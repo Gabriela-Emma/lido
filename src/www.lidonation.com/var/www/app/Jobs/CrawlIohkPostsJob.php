@@ -27,9 +27,9 @@ class CrawlIohkPostsJob implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(protected array $postsLinks)
+    public function __construct(protected array $postsLinks, protected $langLocale)
     {
-        $this->postsLinks = $postsLinks;
+
     }
 
     /**
@@ -41,7 +41,7 @@ class CrawlIohkPostsJob implements ShouldQueue
     {
         foreach($this->postsLinks as $key=>$link) {
             try {
-                (new IohkPostCrawlerService)->fetchContent($link);
+                (new IohkPostCrawlerService($link, $this->langLocale));
             } catch(e) {
                 echo 'error';
             }
