@@ -67,6 +67,14 @@ mix.ts('resources/js/phuffycoin.ts', 'public/js')
                     options: {appendTsSuffixTo: [/\.vue$/]},
                     exclude: /node_modules/,
                 },
+                // {
+                //     test: /\.scss$/,
+                //     use: [
+                //         'vue-style-loader',
+                //         'css-loader',
+                //         'sass-loader'
+                //     ]
+                // }
             ],
         },
         resolve: {

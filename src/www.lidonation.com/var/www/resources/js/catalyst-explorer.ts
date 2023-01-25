@@ -1,5 +1,5 @@
-import {createInertiaApp} from "@inertiajs/vue3";
-import {createApp, h} from "vue";
+import {createInertiaApp, usePage} from "@inertiajs/vue3";
+import {computed, createApp, h} from "vue";
 import Layout from "./catalyst-explorer/Shared/Layout.vue";
 import {createPinia} from "pinia";
 import { marked } from 'marked';
@@ -34,8 +34,17 @@ createInertiaApp({
             },
             markdown(value) {
                 return marked.parse(value);
+            },
+        };
+
+        app.config.globalProperties.$utils = {
+            localizeRoute(value) {
+                const base = usePage().props?.base_url;
+                const locale = usePage().props?.locale;
+                return `${base}/${locale}/${value}`
             }
         }
+
 
         app.mount(el);
     },

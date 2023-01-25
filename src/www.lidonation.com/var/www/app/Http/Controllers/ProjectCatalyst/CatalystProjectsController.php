@@ -24,6 +24,8 @@ class CatalystProjectsController extends Controller
 
     protected ?string $sortOrder = 'desc';
 
+    protected int $limit = 24;
+
     protected ?bool $fundedProposalsFilter = false;
 
     protected Builder $searchBuilder;
@@ -82,8 +84,14 @@ class CatalystProjectsController extends Controller
                     'id',
                     'slug',
                     'title',
+                    'fund_label',
+                    'funding_status',
+                    'challenge_label',
                     'problem',
                     'solution',
+                    'users.name',
+                    'users.media.original_url',
+                    'users.profile_photo_url',
                     'amount_requested',
                     'amount_received',
                 ];
@@ -94,6 +102,8 @@ class CatalystProjectsController extends Controller
                         $options['sort'] = ['created_at:desc'];
                     }
                 }
+
+                $options['limit'] = $this->limit;
 
                 return $index->search($query, $options);
             });
