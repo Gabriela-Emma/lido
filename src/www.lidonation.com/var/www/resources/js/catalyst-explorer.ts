@@ -1,5 +1,5 @@
 import {createInertiaApp, usePage} from "@inertiajs/vue3";
-import {computed, createApp, h} from "vue";
+import {computed, createApp, h, watch} from "vue";
 import Layout from "./catalyst-explorer/Shared/Layout.vue";
 import {createPinia} from "pinia";
 import { marked } from 'marked';
@@ -16,9 +16,19 @@ createInertiaApp({
         return page
     },
     setup({el, App, props, plugin}) {
+        const pinia = createPinia();
+        watch(
+            pinia.state,
+            (state) => {
+                // persist the whole state to the local storage whenever it changes
+                sessionStorage.setItem('piniaState', JSON.stringify(state))
+            },
+            { deep: true }
+        );
+
         const app =  createApp({render: () => h(App, props)})
             .use(plugin)
-            .use(createPinia());
+            .use(pinia);
 
         app.config.globalProperties.$filters = {
             currency(value, locale: string='en-US') {
