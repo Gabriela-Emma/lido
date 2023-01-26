@@ -39,7 +39,7 @@
         </section>
         <section class="py-8 w-full">
             <div class="flex flex-row gap-5 relative w-full">
-                <ProposalFilter @filter="(payload) => this.filtersRef = payload"
+                <ProposalFilter @filter="(payload) => filtersRef = payload"
                                 :filters="filtersRef"
                                 :show-filter="showFilters"></ProposalFilter>
 
