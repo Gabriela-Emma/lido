@@ -40,7 +40,7 @@ class ExternalPost extends Post
 
     public function getLinkAttribute(): string|UrlGenerator|Application
     {
-        return $this->links->pluck('link')->toArray()[0];
+        return $this->links->pluck('link')->first();
     }
 
     public function toFeedItem(): FeedItem
