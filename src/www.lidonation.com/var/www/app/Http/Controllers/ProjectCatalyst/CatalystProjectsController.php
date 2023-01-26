@@ -38,12 +38,17 @@ class CatalystProjectsController extends Controller
     public function index(Request $request)
     {
         $this->search = $request->input('search', null);
+        $this->fundedProposalsFilter = $request->input('fp', false);
+        $filters = [
+            'funded' => $this->fundedProposalsFilter
+        ];
 
 //        dd($this->query($request));
 
         // get filter(s) from request
         return Inertia::render('Proposals', [
             'search' => $this->search,
+            'filters' => $filters,
             'proposals' => $this->query($request),
             'crumbs' => [
                 [
@@ -62,9 +67,9 @@ class CatalystProjectsController extends Controller
 
 
         // filter by funded bool
-//        if ($this->fundedProposalsFilter) {
-//            $_options['filters'][] = 'funded = 1';
-//        }
+        if ($this->fundedProposalsFilter) {
+            $_options['filters'][] = 'funded = 1';
+        }
 //        if ($this->completedProposalsFilter) {
 //            $_options['filters'][] = 'completed = 1';
 //        }

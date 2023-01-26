@@ -20,10 +20,10 @@
                         <button @click="showFilters = !showFilters"
                                 class="h-full hover:text-yellow-500 focus:outline-none flex flex-nowrap gap-1 items-center px-2 border border-white border-l-0"
                                 :class="{
-                                    'bg-slate-200 text-slate-600': !showFilters,
+                                    'bg-slate-200 text-slate-600': !showFilters && !filtering,
                                     'border-teal-500': !showFilters && search,
                                     'border-white': !showFilters && !search,
-                                    'border-teal-500 bg-teal-500 text-white': showFilters
+                                    'border-teal-500 bg-teal-500 text-white': showFilters || filtering
                                 }"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -39,7 +39,9 @@
         </section>
         <section class="py-8 w-full">
             <div class="flex flex-row gap-5 relative w-full">
-                <ProposalFilter :show-filter="showFilters"></ProposalFilter>
+                <ProposalFilter @filter="(payload) => this.filtersRef = payload"
+                                :filters="filtersRef"
+                                :show-filter="showFilters"></ProposalFilter>
 
                 <div class="flex-1 mx-auto"
                      :class="{
@@ -67,25 +69,34 @@ import ProposalSearch from "../modules/proposals/ProposalSearch.vue";
 import {router} from '@inertiajs/vue3';
 import ProposalFilter from "../modules/proposals/ProposalFilter.vue";
 import ProposalPagination from "../modules/proposals/ProposalPagination.vue";
+import Filters from "../models/filters";
 
 /// props and class properties
 const props = withDefaults(
     defineProps<{
         search?: string,
+        filters?: Filters,
         proposals: {
             links: [],
             data: Proposal[]
         };
     }>(), {});
 let search = ref(props.search);
-let showFilters = ref(false);
+let showFilters = ref(Object.values(props.filters).length > 0);
+let filtersRef = ref<Filters>(props.filters);
 
+////
 // computer properties
-// const console = computed(() => console);
+////
+/**
+ * assert that every property on props.filters is truthy.
+ */
+const filtering = computed(() => Object.values(props.filters).every(val => !!val));
 
-watch(search, (value) => {
+
+watch([search, filtersRef], (something) => {
     query();
-});
+}, {deep: true});
 
 const proposals = proposalsStore();
 
@@ -97,6 +108,10 @@ function query() {
     const data = {};
     if (search.value?.length > 0) {
         data['search'] = search.value;
+    }
+
+    if (filtersRef.value?.funded) {
+        data['fp'] = 1;
     }
 
     router.get(
