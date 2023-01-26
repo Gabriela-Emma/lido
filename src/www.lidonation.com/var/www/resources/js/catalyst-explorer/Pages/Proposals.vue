@@ -108,8 +108,8 @@ watch([search, filtersRef], (something) => {
 const proposals = proposalsStore();
 
 // funds
-const fundsStore = useFundsStore();
-fundsStore.loadFunds();
+// const fundsStore = useFundsStore();
+// fundsStore.loadFunds();
 
 onMounted(() => {
 

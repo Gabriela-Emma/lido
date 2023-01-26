@@ -36,7 +36,9 @@
                         }"
                     />
                 </li>
-                <li class=" p-4"></li>
+                <li class=" p-4">
+                    <FundPicker></FundPicker>
+                </li>
                 <li class=" p-4"></li>
             </ul>
         </div>
@@ -48,6 +50,7 @@ import {ref, watch, defineEmits, computed, onMounted} from "vue";
 import Toggle from '@vueform/toggle'
 import {debounce} from "lodash";
 import Filters from "../../models/filters";
+import FundPicker from "../funds/FundPicker.vue";
 
 ////
 // props and class properties
