@@ -44,12 +44,13 @@
                 <div v-if="proposal.solution" v-html="$filters.markdown('**Solution:** ' + proposal.solution)"></div>
                 <div v-else v-html="$filters.markdown('**Problem:** ' + proposal.problem)"></div>
             </div>
-            <div class="flex flex-wrap gap-2 items-center">
-                <div v-if="proposal.challenge_label">
+            <div class="flex flex-row flex-wrap gap-2 items-center">
+                <div v-if="proposal.challenge_label" class="inline gap-1">
                     <strong>Challenge: </strong>
                     {{proposal.challenge_label}}
                 </div>
-                <div v-if="proposal.fund_label" class="rounded-sm bg-slate-200 text-slate-900 px-2 font-semibold py-0.5">
+                <div v-if="proposal.fund_label"
+                     class="rounded-sm bg-slate-200 text-xs xl:text-sm text-slate-900 px-2 font-semibold py-0.5 inline gap-1">
                     {{proposal.fund_label}}
                 </div>
             </div>
@@ -119,11 +120,11 @@ const props = withDefaults(
     },
 );
 
-console.log('props.proposal.users::', props.proposal.users);
+// console.log('props.proposal.users::', props.proposal.users);
 
 // computer properties
 const authors = computed(() => {
-    return props.proposal.users.reverse().map((user) => {
+    return props.proposal.users?.reverse().map((user) => {
         return {
             ...user,
             avatar: user.media?.length > 0 ? user.media[0]?.original_url : user.profile_photo_url
