@@ -16,7 +16,7 @@ class CrawlIohkBlog extends Command
     protected $signature = 'ln:crawl-iohk-blog
                             {--base-url=} : The base url to crawl
                             {--uri=} : The relative url to crawl
-                            {--lang=} : Set the language translatable content (default=en))';
+                            {--lang=} : Set the language to crawl';
 
     /**
      * The console command description.

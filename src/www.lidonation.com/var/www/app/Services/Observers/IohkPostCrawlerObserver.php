@@ -139,8 +139,7 @@ class IohkPostCrawlerObserver extends CrawlObserver {
             $link->save();
         }
     }
-
-     // ----------------------------------- CUSTOM METHODS ----------------------------------------------------
+    
     /**
      * remove unnecessary info from the response body object
      */
