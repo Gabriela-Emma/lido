@@ -4,6 +4,7 @@ namespace App\Services\Observers;
 
 use App\Models\ExternalPost;
 use App\Models\Link;
+use App\Models\ModelLink;
 use App\Models\Meta;
 use App\Models\Post;
 use DOMDocument;
@@ -60,18 +61,22 @@ class IohkPostCrawlerObserver extends CrawlObserver {
         // 2. use the cleaned response body to set our crawler object
         $crawler = new Crawler($cleanedBody);
 
+        //3. assign link property from the page $url
+        $this->link = $url;
+
         //extract postedDate and slug from the url
         [$this->postedDate, $this->slug] = $this->decypherUrl($url);
 
-        // 3. extract the class names for all posts header
+        // 3. get header class name then scrap the post's title and subtitle.
         $headerClass =(string) $this->getClassNames($crawler, $prefix='Post__HeadContent', $expectedCount=1);
         $this->title = $this->setTitle($crawler, $headerClass);
         $this->subTitle = $this->setSubTitle($crawler, $headerClass);
 
+        // 4. get post content class name then scrap content
         $contentClass = (string) $this->getClassNames($crawler, $prefix='Post__Content', $expectedCount=1);
         $this->content = $this->setContent($crawler, $contentClass);
-        $this->links = $this->setLinks($crawler, $contentClass);
         
+        // 5. get authoer container class then scrap author name and email.
         $authorContainerClass = (string) $this->getClassNames($crawler, $prefix='Author__Container', $expectedCount=1);
         $this->author = $this->setAuthor($crawler, $authorContainerClass);
         $this->authorEmail = $this->setAuthorEmail($crawler, $authorContainerClass);
@@ -132,12 +137,8 @@ class IohkPostCrawlerObserver extends CrawlObserver {
 
 
         //save links
-        foreach($this->links as $key=>$linkVal) {
-            $link = new Link;
-            $link->link = $linkVal;
-            
-            $link->save();
-        }
+        $exPostObj = ExternalPost::where('slug', $this->slug)->first();
+        $this->saveLink($exPostObj, $this->link);
     }
     
     /**
@@ -210,15 +211,6 @@ class IohkPostCrawlerObserver extends CrawlObserver {
         return $content;
     }
 
-    protected function setLinks(Crawler $crawler, string $parentClassName)
-    {
-        $links = $crawler->filterXPath("//div[contains(@class, '".$parentClassName."')]")->filter('a')
-                    ->each(function($node, $i) {
-                        return $node->attr('href');
-                    });
-        return $links;
-    }
-
     protected function setAuthor(Crawler $crawler, string $parentClassName)
     {
         $author = $crawler->filterXPath("//div[contains(@class, '".$parentClassName."')]")->filter('div > a > h3')->text();
@@ -239,6 +231,49 @@ class IohkPostCrawlerObserver extends CrawlObserver {
 
         $post->metas()->save($meta);
 
+    }
+
+    protected function saveLink($modelObj, $link)
+    {
+        try {
+            $duplicateLink = Link::where('link', $link)->where('type', $modelObj->type)->first() ?? NULL;
+            //if no duplicate link exists save it with its relation to linkable obj.
+            
+            if ($duplicateLink == NULL) {
+                echo '$duplicateLink';
+                $newLink = new Link;
+                $newLink->link = $link;
+                $newLink->type = $modelObj->type;
+                $newLink->save();
+                
+                $this->saveModelLink($modelObj, $newLink->id);
+            } else {
+                echo 'link is this';
+                $this->saveModelLink($modelObj, $duplicateLink->id);
+            }
+
+        } catch (exception $e) {
+
+        }
+    }
+
+    protected function saveModelLink($modelObj, $linkId)
+    {
+        $duplicateModelLink = ModelLink::where('link_id', $linkId)
+                                ->where('model_id', $modelObj->id)
+                                ->where('model_type', $modelObj->type)
+                                ->first() ?? NULL;
+
+        if ($duplicateModelLink == NULL) {
+            $rel = new ModelLink;
+            $rel->link_id = $linkId;
+            $rel->model_id = $modelObj->id;
+            $rel->model_type = $modelObj->type;
+            $rel->save();
+            echo 'saved';
+        } else {
+            echo 'not saved';
+        }
     }
 
 }

@@ -4,6 +4,8 @@ namespace App\Models;
 
 use App\Traits\SearchableLocale;
 use Illuminate\Support\Str;
+use Illuminate\Contracts\Routing\UrlGenerator;
+use Illuminate\Contracts\Foundation\Application;
 use Parental\HasParent;
 use Spatie\Comments\Models\Concerns\HasComments;
 use Spatie\Feed\FeedItem;
@@ -34,6 +36,11 @@ class ExternalPost extends Post
     public function getPostTypeNameAttribute(): string
     {
         return 'external_posts';
+    }
+
+    public function getLinkAttribute(): string|UrlGenerator|Application
+    {
+        return $this->links->pluck('link')->toArray()[0];
     }
 
     public function toFeedItem(): FeedItem
