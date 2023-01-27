@@ -2,6 +2,12 @@
 @import "@vueform/toggle/themes/default.css";
 @import "@vueform/multiselect/themes/default.css";
 
+:root {
+    --ms-spinner-color: #54bbeb;
+    --ms-tag-bg: #54bbeb;
+    ---ms-option-bg-selected: #54bbeb;
+    --ms-option-bg-selected-pointed: #4ba8d3;
+}
 .proposal-drip {
     .drip-content p {
         @apply mt-0 inline;

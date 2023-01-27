@@ -191,6 +191,9 @@ Route::prefix('catalyst-explorer')->as('catalystExplorerApi.')
         Route::get('/funds', [CatalystExplorer\FundController::class, 'funds'])->name('funds');
         Route::get('/funds/{fund_id}', [CatalystExplorer\FundController::class, 'fund'])->name('fund');
 
+        Route::get('/challenges', [CatalystExplorer\ChallengeController::class, 'challenges'])->name('challenges');
+        Route::get('/challenges/{fund_id}', [CatalystExplorer\ChallengeController::class, 'challenge'])->name('challenge');
+
         Route::get('/proposals', [CatalystExplorer\ProposalController::class, 'proposals']);
         Route::get('/proposals/{proposal_id}', [CatalystExplorer\ProposalController::class, 'proposal']);
     });
