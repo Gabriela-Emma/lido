@@ -70,9 +70,9 @@
                 Browse by Category
             </h2>
 
-            <div class="splide slider-splide">
+            <div class="splide slider-splide" aria-label="Basic Structure Example">
                 <div class="splide__track">
-                    <div class="splide__list">
+                    <div class="splide__list gap-6">
                         @foreach($categories as $cat)
                             <div class="splide__slide">
                                 <div class="bg-white rounded-sm w-64 md:w-72 lg:w-80">
@@ -110,17 +110,21 @@
         </div>
     </header>
 
-    @if($latestLidoMinutes)
-        <div class="relative bg-primary-10 mb-16 relative" id="new-lido-minutes">
-            <div class="flex flex-nowrap gap-6 snap-proximity overflow-x-auto no-scrollbar episodes">
-                @foreach($latestLidoMinutes as $post)
-                    <div class="flex flex-col shrink-0 snap-center w-[380px] lg:w-[420px] xl:w-[480px] 2xl:w-[540px]">
-                        @include('podcast.drip')
-                    </div>
-                @endforeach
+    <div class="container">
+        @if($latestLidoMinutes)
+        <section class="splide minute-splide relative bg-primary-10 mb-16 relative" id="new-lido-minutes">
+            <div class="splide__track">
+                <div class="splide__list gap-2 episodes">
+                    @foreach($latestLidoMinutes as $post)
+                        <div class="splide__slide w-[380px] lg:w-[420px] xl:w-[480px] 2xl:w-[540px]">
+                            @include('podcast.drip')
+                        </div>
+                    @endforeach
+                </div>
             </div>
-        </div>
+        </section>
     @endif
+    </div>
 </section>
 
 @if($categories && !empty($categories))
