@@ -70,6 +70,7 @@ import {router} from '@inertiajs/vue3';
 import ProposalFilter from "../modules/proposals/ProposalFilter.vue";
 import ProposalPagination from "../modules/proposals/ProposalPagination.vue";
 import Filters from "../models/filters";
+import {useFundsStore} from "../stores/funds-store";
 
 /// props and class properties
 const props = withDefaults(
@@ -82,11 +83,11 @@ const props = withDefaults(
         };
     }>(), {});
 let search = ref(props.search);
-let showFilters = ref(Object.values(props.filters).length > 0);
+let showFilters = ref(Object.values(props.filters).some(val => !!val));
 let filtersRef = ref<Filters>(props.filters);
 
 ////
-// computer properties
+// computed properties
 ////
 /**
  * assert that every property on props.filters is truthy.
@@ -98,10 +99,20 @@ watch([search, filtersRef], (something) => {
     query();
 }, {deep: true});
 
+////
+// initializers
+////
+// filters
+
+// proposals
 const proposals = proposalsStore();
 
+// funds
+// const fundsStore = useFundsStore();
+// fundsStore.loadFunds();
+
 onMounted(() => {
-    console.log('mounted');
+
 });
 
 function query() {
