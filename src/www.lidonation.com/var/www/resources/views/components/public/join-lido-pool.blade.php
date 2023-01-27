@@ -47,17 +47,10 @@
                     </div>
                     <div class="mt-5">
                         <dt class="text-xl font-medium leading-6 text-gray-900">
-                            Unmatched Support
+                            {{$snippets->unmatchedsupport}}
                         </dt>
                         <dd class="mt-2">
-                            We provide phone and email support for all of our delegates.
-                            We understand that many of our community members are not tech or crypto nerds. You expect
-                            the same level of service and support you get from Reggie down at the bank or Saiid,
-                            your nephew or friend at the office that won't stop talking about Bitcoin.
-                            <span class="block mt-3">
-                                We host weekly <a href="//meetup.com/lido-nation-cardano-pool-meetup">meetups</a> (currently online due to Covid).
-                                Visit our <a href="{{localizeRoute('connect')}}">connect</a> page for all the ways you can reach us.
-                            </span>
+                            {!! html_entity_decode(Str::markdown($snippets->unmatchedsupportcontent)) !!}
                         </dd>
                     </div>
                 </div>
@@ -72,23 +65,10 @@
                     </div>
                     <div class="mt-5">
                         <dt class="text-xl font-medium leading-6 text-gray-900">
-                            Best in class servers
+                            {{$snippets->bestinservers}}
                         </dt>
                         <dd class="mt-2">
-                            <span class="block">
-                                Our servers are run and managed by professionals whose only job is to manage and run servers 24/7 365/6 days a year.
-                            </span>
-
-                            <span class="block mt-3">
-                                We run our Cardano nodes on the same servers powering other services you've come to rely on everyday,
-                                like Google and Pokemon Go.
-                            </span>
-
-                            <span class="block mt-3">
-                                What this means for you is that our servers are always online and available to process transactions,
-                                earning you and the causes we support the optimal amount of $$$$.
-                                Visit our <a href="{{localizeRoute('lido-pool')}}">pool page</a> for more technical details.
-                            </span>
+                            {!! html_entity_decode(Str::markdown($snippets->bestinserverscontent)) !!}
                         </dd>
                     </div>
                 </div>
@@ -103,15 +83,10 @@
                     </div>
                     <div class="mt-5">
                         <dt class="text-xl font-medium leading-6 text-gray-900">
-                            4% <span class='text-gray-500'>for community development and investment</span>
+                            {{$snippets->communitydevelopment}}
                         </dt>
                         <dd class="mt-2">
-                            <span>Of all the rewards that come in, we keep 4% annually. All 4% goes towards charities you pick,
-                            paying LIDO nation community members like yourself to write code and content for the site,
-                                and grants for local community educational projects.</span>
-                            <span class="block mt-3">
-                                See our <a href="{{localizeRoute('financial-details')}}">financials page</a> for full records of our spending, more details, and breakdowns.
-                            </span>
+                            {!! html_entity_decode(Str::markdown($snippets->communitydevelopmentcontent)) !!}
                         </dd>
                     </div>
                 </div>
@@ -127,14 +102,10 @@
                     </div>
                     <div class="mt-5">
                         <dt class="text-xl font-medium leading-6 text-gray-900">
-                            An Amazing Community
+                            {{$snippets->amazingcommunity}}
                         </dt>
                         <dd class="mt-2">
-                            <span>When you delegate and join LIDO Nation, you get to participate in creating a space for people to interact, meet, learn, and teach each other.
-                                You get to be part of the engine that works to make every voice heard with equal importance.</span>
-                            <span class="block mt-3">
-                                LIDO Nation is an idea. Delegate, take it and lets make something great!
-                            </span>
+                            {!! html_entity_decode(Str::markdown($snippets->amazingcommunitycontent)) !!}
                         </dd>
                     </div>
                 </div>
