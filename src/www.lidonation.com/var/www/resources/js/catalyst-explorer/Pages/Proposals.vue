@@ -116,6 +116,10 @@ function query() {
         data['fs'] = Array.from(filtersRef.value?.funds);
     }
 
+    if (filtersRef.value?.challenges) {
+        data['cs'] = Array.from(filtersRef.value?.challenges);
+    }
+
     router.get(
         "/catalyst-explorer/proposals",
         data,

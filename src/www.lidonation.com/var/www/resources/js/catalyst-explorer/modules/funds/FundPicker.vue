@@ -47,12 +47,10 @@ const {funds} = storeToRefs(fundsStore);
 // events & watchers
 ////
 const emit = defineEmits<{
-    (e: 'selected', fund: Fund): void,
     (e: 'update:modelValue', fund: Fund): void
 }>();
 
 watch(selectedRef, (newFund, oldFund) => {
-    emit('selected', newFund);
     emit('update:modelValue', newFund);
 });
 </script>

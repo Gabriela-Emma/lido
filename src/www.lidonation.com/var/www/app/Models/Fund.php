@@ -101,6 +101,11 @@ class Fund extends Model implements HasMedia, IHasMetaData
             $filters['search'] ?? false,
             fn (Builder $query, $search) => $query->where('title', 'ILIKE', '%'.$search.'%')
         );
+
+        $query->when(
+            $filters['fund'] ?? false,
+            fn (Builder $query, $fund_id) => $query->where('parent_id', $fund_id)
+        );
     }
 
     public function scopeChallengeSettings($query)
@@ -148,12 +153,6 @@ class Fund extends Model implements HasMedia, IHasMetaData
     {
         return $query
             ->whereNotNull('parent_id');
-    }
-
-    public function scopeTopLevel($query)
-    {
-        return $query
-            ->whereNull('parent_id');
     }
 
     public function scopeInGovernance($query)

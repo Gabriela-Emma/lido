@@ -1,10 +1,11 @@
-import Challenge from "./challenge";
+import Fund from "./fund";
 
-export default interface Fund {
+export default interface Challenge {
     id: number;
+    fundId: number;
     title: string;
     proposals_count: string;
     amount: string;
     currency: string;
-    challenges?: Challenge[];
+    fund?: Fund;
 }

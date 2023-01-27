@@ -32,6 +32,8 @@ class CatalystProjectsController extends Controller
 
     public Collection $fundsFilter;
 
+    public Collection $challengesFilter;
+
     /**
      * Display a listing of the resource.
      *
@@ -39,30 +41,20 @@ class CatalystProjectsController extends Controller
      */
     public function index(Request $request)
     {
-        $filters = [];
         $this->search = $request->input('search', null);
         $this->fundedProposalsFilter = $request->input('fp', false);
-        $this->fundsFilter = $request->collect('fs');
+        $this->fundsFilter = $request->collect('fs')->map(fn($n) => intval($n));
+        $this->challengesFilter = $request->collect('cs')->map(fn($n) => intval($n));
 
-        // filter by fund
-//        $_filters = [];
-//
-//        foreach ($this->fundFilter as $fund) {
-//            $_filters[] = "fund = {$fund}";
-//        }
-//        if (count($_filters) > 0) {
-//            $_options[] = implode(' OR ', $_filters);
-//        }
-
-
-//        dd($this->query($request));
+//        dd($this->challengesFilter);
 
         // get filter(s) from request
         return Inertia::render('Proposals', [
             'search' => $this->search,
             'filters' => [
                 'funded' => $this->fundedProposalsFilter,
-                'funds' => $this->fundsFilter->toArray()
+                'funds' => $this->fundsFilter->toArray(),
+                'challenges' => $this->challengesFilter->toArray()
             ],
             'proposals' => $this->query($request),
             'crumbs' => [
@@ -100,6 +92,7 @@ class CatalystProjectsController extends Controller
                 if (count($_options['filters']) > 0) {
                     $options['filter'] = implode(' AND ', $_options['filters']);
                 }
+//                dd($options);
                 $options['attributesToRetrieve'] = [
                     'id',
                     'slug',
@@ -140,7 +133,6 @@ class CatalystProjectsController extends Controller
             ]
         );
 
-//        dd($pagination->toArray());
         return $pagination->toArray();
 
 
@@ -173,18 +165,14 @@ class CatalystProjectsController extends Controller
 
         // filter by fund
         if ($this->fundsFilter->isNotEmpty()) {
-            $_options[] =  $this->fundsFilter->map(fn($f) => "fund = {$f}")->implode(' OR ');
+            $_options[] =  '(' . $this->fundsFilter->map(fn($f) => "fund = {$f}")->implode(' OR ') . ')';
         }
-//
-//        if ((bool) $this->challengeFilter) {
-//            $_filters = [];
-//            foreach ($this->challengeFilter as $challenge) {
-//                $_filters[] = "challenge = {$challenge}";
-//            }
-//            if (count($_filters) > 0) {
-//                $_options[] = implode(' OR ', $_filters);
-//            }
-//        }
+
+        // filter by challenge
+        if ($this->challengesFilter->isNotEmpty()) {
+            $_options[] =  '(' . $this->challengesFilter->map(fn($c) => "challenge = {$c}")->implode(' OR ') . ')';
+        }
+
 
         // filter by over budget bool
 //        if ((bool) $this->overBudgetProposalsFilter) {

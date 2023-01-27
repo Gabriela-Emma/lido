@@ -16,7 +16,7 @@
             </button>
         </h2>
         <div>
-            <ul class="divide-y">
+            <ul class="divide-y border-b">
                 <li class=" p-4">
                     <Toggle
                         onLabel="Funded Proposals"
@@ -37,9 +37,11 @@
                     />
                 </li>
                 <li class="">
-                    <FundPicker v-model="filters.funds"></FundPicker>
+                    <FundPicker v-model="filters.funds" />
                 </li>
-                <li class=" p-4"></li>
+                <li class="">
+                    <ChallengePicker v-model="filters.challenges" />
+                </li>
             </ul>
         </div>
     </div>
@@ -50,6 +52,8 @@ import {ref, watch, defineEmits, computed} from "vue";
 import Toggle from '@vueform/toggle'
 import Filters from "../../models/filters";
 import FundPicker from "../funds/FundPicker.vue";
+import ChallengePicker from "../funds/ChallengePicker.vue";
+import {useChallengesStore} from "../../stores/challenges-store";
 
 ////
 // props and class properties
@@ -70,6 +74,14 @@ let filters = ref<Filters>(props.filters);
  */
 const filtering = computed(() => Object.values(props.filters).every(val => !!val) || props.showFilter);
 
+/**
+ * Init Challenges
+ */
+const challengesStore = useChallengesStore();
+challengesStore.filterChallenges({
+    funds: props?.filters?.funds
+});
+
 ////
 // events & watchers
 ////
@@ -78,6 +90,14 @@ const emit = defineEmits<{
 }>();
 
 watch(filters, (newValue, oldValue) => {
+    // if filtering fund, update challenge store
+    if (newValue.funds?.length > 0) {
+        challengesStore.filterChallenges({
+            funds: newValue.funds
+        });
+    }
+
+    // fire filter event
     emit('filter', newValue);
 }, {deep: true});
 
