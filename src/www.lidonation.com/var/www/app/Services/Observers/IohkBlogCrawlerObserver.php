@@ -91,10 +91,6 @@ class IohkBlogCrawlerObserver extends CrawlObserver {
         }
     }
 
-
-
-    // ----------------------------------- CUSTOM METHODS ----------------------------------------------------
-
     /**
      * remove unnecessary info from the response body object
      */
