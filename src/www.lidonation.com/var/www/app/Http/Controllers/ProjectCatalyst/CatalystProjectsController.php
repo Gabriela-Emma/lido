@@ -30,6 +30,8 @@ class CatalystProjectsController extends Controller
 
     protected Builder $searchBuilder;
 
+    public Collection $fundsFilter;
+
     /**
      * Display a listing of the resource.
      *
@@ -37,18 +39,31 @@ class CatalystProjectsController extends Controller
      */
     public function index(Request $request)
     {
+        $filters = [];
         $this->search = $request->input('search', null);
         $this->fundedProposalsFilter = $request->input('fp', false);
-        $filters = [
-            'funded' => $this->fundedProposalsFilter
-        ];
+        $this->fundsFilter = $request->collect('fs');
+
+        // filter by fund
+//        $_filters = [];
+//
+//        foreach ($this->fundFilter as $fund) {
+//            $_filters[] = "fund = {$fund}";
+//        }
+//        if (count($_filters) > 0) {
+//            $_options[] = implode(' OR ', $_filters);
+//        }
+
 
 //        dd($this->query($request));
 
         // get filter(s) from request
         return Inertia::render('Proposals', [
             'search' => $this->search,
-            'filters' => $filters,
+            'filters' => [
+                'funded' => $this->fundedProposalsFilter,
+                'funds' => $this->fundsFilter->toArray()
+            ],
             'proposals' => $this->query($request),
             'crumbs' => [
                 [
@@ -65,11 +80,11 @@ class CatalystProjectsController extends Controller
             ], $this->getUserFilters()),
         ];
 
-
         // filter by funded bool
-        if ($this->fundedProposalsFilter) {
-            $_options['filters'][] = 'funded = 1';
-        }
+//        if ($this->fundedProposalsFilter) {
+//            $_options['filters'][] = 'funded = 1';
+//        }
+
 //        if ($this->completedProposalsFilter) {
 //            $_options['filters'][] = 'completed = 1';
 //        }
@@ -89,6 +104,7 @@ class CatalystProjectsController extends Controller
                     'id',
                     'slug',
                     'title',
+                    'fund_label',
                     'fund_label',
                     'funding_status',
                     'challenge_label',
@@ -151,16 +167,14 @@ class CatalystProjectsController extends Controller
     {
         $_options = [];
 
+        if (!!$this->fundedProposalsFilter) {
+            $_options[] = 'funded = 1';
+        }
+
         // filter by fund
-//        if ((bool) $this->fundFilter) {
-//            $_filters = [];
-//            foreach ($this->fundFilter as $fund) {
-//                $_filters[] = "fund = {$fund}";
-//            }
-//            if (count($_filters) > 0) {
-//                $_options[] = implode(' OR ', $_filters);
-//            }
-//        }
+        if ($this->fundsFilter->isNotEmpty()) {
+            $_options[] =  $this->fundsFilter->map(fn($f) => "fund = {$f}")->implode(' OR ');
+        }
 //
 //        if ((bool) $this->challengeFilter) {
 //            $_filters = [];

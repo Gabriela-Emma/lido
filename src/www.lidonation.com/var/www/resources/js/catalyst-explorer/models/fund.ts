@@ -1,5 +1,5 @@
 export default interface Fund {
-    slug: string;
+    id: number;
     title: string;
     proposals_count: string;
     amount: string;
