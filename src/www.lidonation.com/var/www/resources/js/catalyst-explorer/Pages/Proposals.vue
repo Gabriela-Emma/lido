@@ -44,10 +44,7 @@
                                 :show-filter="showFilters"></ProposalFilter>
 
                 <div class="flex-1 mx-auto"
-                     :class="{
-                        'pr-16': showFilters,
-                        'container': !showFilters
-                }">
+                     :class="{ 'pr-16': showFilters, 'container': !showFilters }">
                     <Proposals :proposals="props.proposals.data"></Proposals>
                 </div>
             </div>
@@ -70,7 +67,7 @@ import {router} from '@inertiajs/vue3';
 import ProposalFilter from "../modules/proposals/ProposalFilter.vue";
 import ProposalPagination from "../modules/proposals/ProposalPagination.vue";
 import Filters from "../models/filters";
-import {useFundsStore} from "../stores/funds-store";
+import {every, some} from "lodash";
 
 /// props and class properties
 const props = withDefaults(
@@ -83,7 +80,7 @@ const props = withDefaults(
         };
     }>(), {});
 let search = ref(props.search);
-let showFilters = ref(Object.values(props.filters).some(val => !!val));
+let showFilters = ref(every(props.filters));
 let filtersRef = ref<Filters>(props.filters);
 
 ////
@@ -92,9 +89,7 @@ let filtersRef = ref<Filters>(props.filters);
 /**
  * assert that every property on props.filters is truthy.
  */
-const filtering = computed(() => Object.values(props.filters).every(val => !!val));
-
-
+const filtering = computed(() => Object.values(props.filters).length > 0 && Object.values(props.filters).every(val => !!val));
 watch([search, filtersRef], (something) => {
     query();
 }, {deep: true});
@@ -107,14 +102,6 @@ watch([search, filtersRef], (something) => {
 // proposals
 const proposals = proposalsStore();
 
-// funds
-// const fundsStore = useFundsStore();
-// fundsStore.loadFunds();
-
-onMounted(() => {
-
-});
-
 function query() {
     const data = {};
     if (search.value?.length > 0) {
@@ -123,6 +110,10 @@ function query() {
 
     if (filtersRef.value?.funded) {
         data['fp'] = 1;
+    }
+
+    if (filtersRef.value?.funds) {
+        data['fs'] = Array.from(filtersRef.value?.funds);
     }
 
     router.get(

@@ -36,8 +36,8 @@
                         }"
                     />
                 </li>
-                <li class=" p-4">
-                    <FundPicker></FundPicker>
+                <li class="">
+                    <FundPicker v-model="filters.funds"></FundPicker>
                 </li>
                 <li class=" p-4"></li>
             </ul>
@@ -46,9 +46,8 @@
 </template>
 
 <script lang="ts" setup>
-import {ref, watch, defineEmits, computed, onMounted} from "vue";
+import {ref, watch, defineEmits, computed} from "vue";
 import Toggle from '@vueform/toggle'
-import {debounce} from "lodash";
 import Filters from "../../models/filters";
 import FundPicker from "../funds/FundPicker.vue";
 
@@ -58,7 +57,7 @@ import FundPicker from "../funds/FundPicker.vue";
 const props = withDefaults(
     defineProps<{
         filters?: Filters,
-        showFilter?: boolean,
+        showFilter?: boolean
     }>(), {showFilter: false});
 let showClearAll = ref(false);
 let filters = ref<Filters>(props.filters);
@@ -76,24 +75,10 @@ const filtering = computed(() => Object.values(props.filters).every(val => !!val
 ////
 const emit = defineEmits<{
     (e: 'filter', filters: Filters): void
-    // (e: 'update', value: string): void
 }>();
 
 watch(filters, (newValue, oldValue) => {
     emit('filter', newValue);
 }, {deep: true});
-
-////
-// lifecycle hooks
-////
-onMounted(() => {
-    // if (filtering) {
-    //     props.showFilter.value = true;
-    // }
-});
-// functions
-// function clearSearch() {
-//     emit('clearSearch');
-// }
 
 </script>
