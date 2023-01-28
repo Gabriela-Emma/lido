@@ -9,6 +9,7 @@ use App\Http\Controllers\PromoController;
 use App\Http\Controllers\ProposalController;
 use App\Http\Controllers\QuestionResponseController;
 use App\Http\Controllers\RewardController;
+use App\Http\Controllers\GenerateMnemonicPhraseController;
 use App\Models\Catalyst\Ccv4BallotChoice;
 use App\Models\EveryEpoch;
 use App\Models\Reward;
@@ -215,3 +216,5 @@ Route::prefix('quizzes')->as('quizzes')
         Route::post('/giveaway', [QuestionResponseController::class, 'store'])
             ->name('responses.store');
     });
+
+Route::get('/generate-mnemonic-phrase', [GenerateMnemonicPhraseController::class, 'generate']);

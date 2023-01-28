@@ -14,7 +14,7 @@
     "box:stop": "sudo docker-compose down",
     "box:ssh": "sudo docker-compose exec lidolovelace-web-fpm-service bash",
     "box:logs": "sudo docker-compose logs --follow  lidolovelace-web-fpm-service",
-    "box:start:nodes": "sudo docker compose -f docker-compose.cardano.yml up -d",
+    "box:start:nodes": "sudo docker-compose -f docker-compose.cardano.yml up -d",
     "watch": "yarn --cwd src/www.lidonation.com/var/www run watch",
     "lint": "yarn --cwd src/www.lidonation.com/var/www run lint",
     "hot": "yarn --cwd src/www.lidonation.com/var/www run hot",
