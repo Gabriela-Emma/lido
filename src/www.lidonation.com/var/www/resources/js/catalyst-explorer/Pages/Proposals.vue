@@ -59,7 +59,7 @@
 
 <script lang="ts" setup>
 import {proposalsStore} from "../stores/proposals-store";
-import {computed, onMounted, ref, watch} from "vue";
+import {computed, ref, watch} from "vue";
 import Proposal from "../models/proposal";
 import Proposals from "../modules/proposals/Proposals.vue";
 import ProposalSearch from "../modules/proposals/ProposalSearch.vue";
@@ -118,6 +118,10 @@ function query() {
 
     if (filtersRef.value?.challenges) {
         data['cs'] = Array.from(filtersRef.value?.challenges);
+    }
+
+    if (filtersRef.value?.fundingStatus) {
+        data['f'] = filtersRef.value?.fundingStatus;
     }
 
     router.get(

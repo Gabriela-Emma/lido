@@ -42,6 +42,14 @@
                 <li class="">
                     <ChallengePicker v-model="filters.challenges" />
                 </li>
+                <li class="">
+                    <FundingStatusPicker
+                        v-model="filters.fundingStatus"
+                        :filters="{
+                            o: 'Over Budget',
+                            n: 'Not Approved'
+                        }" />
+                </li>
             </ul>
         </div>
     </div>
@@ -54,10 +62,11 @@ import Filters from "../../models/filters";
 import FundPicker from "../funds/FundPicker.vue";
 import ChallengePicker from "../funds/ChallengePicker.vue";
 import {useChallengesStore} from "../../stores/challenges-store";
+import FundingStatusPicker from "../funds/FundingStatusPicker.vue";
 
 ////
 // props and class properties
-////
+/////////////////////////////
 const props = withDefaults(
     defineProps<{
         filters?: Filters,
@@ -68,7 +77,8 @@ let filters = ref<Filters>(props.filters);
 
 ////
 // computer properties
-////
+///////////////////////
+
 /**
  * assert that every property on props.filters is truthy.
  */
@@ -84,7 +94,7 @@ challengesStore.filterChallenges({
 
 ////
 // events & watchers
-////
+//////////////////////
 const emit = defineEmits<{
     (e: 'filter', filters: Filters): void
 }>();
