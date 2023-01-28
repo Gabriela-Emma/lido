@@ -149,6 +149,11 @@ class Fund extends Model implements HasMedia, IHasMetaData
             ->whereNull('parent_id');
     }
 
+    public function scopeTopLevel($query)
+    {
+        return $this->funds();
+    }
+
     public function scopeChallenges($query)
     {
         return $query
