@@ -1,4 +1,5 @@
 <template>
+    <header-component/>
     <section>
         This is the dashboard section
     </section>

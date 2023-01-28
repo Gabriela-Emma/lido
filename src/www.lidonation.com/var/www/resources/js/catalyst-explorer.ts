@@ -3,6 +3,8 @@ import {computed, createApp, h, watch} from "vue";
 import Layout from "./catalyst-explorer/Shared/Layout.vue";
 import {createPinia} from "pinia";
 import { marked } from 'marked';
+import HeaderComponent from './catalyst-explorer/Shared/Components/HeaderComponent.vue';
+// import app from "@inertiajs/vue3/types/app";
 
 // boot inertia app
 createInertiaApp({
@@ -55,7 +57,7 @@ createInertiaApp({
             }
         }
 
-
+        app.component('header-component', HeaderComponent)
         app.mount(el);
     },
 }).then();

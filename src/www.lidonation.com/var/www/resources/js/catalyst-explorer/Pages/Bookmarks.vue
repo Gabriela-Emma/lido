@@ -1,4 +1,5 @@
 <template>
+    <header-component/>
     <section>
         <h1>Bookmarks Section</h1>
     </section>

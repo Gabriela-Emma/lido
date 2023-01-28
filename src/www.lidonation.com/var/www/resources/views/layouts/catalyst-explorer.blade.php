@@ -6,7 +6,7 @@
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <link rel="stylesheet" href="{{ asset(mix('css/catalyst-explorer.css')) }}">
+    <link rel="stylesheet" href="{{ asset(mix('css/app.css')) }}">
 
     @env('production')
         <!-- Cloudflare Web Analytics -->
