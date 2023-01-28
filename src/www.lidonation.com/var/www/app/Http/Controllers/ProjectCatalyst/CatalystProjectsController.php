@@ -44,6 +44,10 @@ class CatalystProjectsController extends Controller
      */
     public function index(Request $request)
     {
+        $sort = collect(explode(':', $request->input('st', '')));
+        $this->sortBy = $sort->first();
+        $this->sortOrder = $sort->last();
+
         $this->search = $request->input('s', null);
         $this->fundingStatus = match($request->input('f', null)) {
             'o' => 'over_budget',
@@ -55,14 +59,10 @@ class CatalystProjectsController extends Controller
         $this->challengesFilter = $request->collect('cs')->map(fn($n) => intval($n));
         $this->tagsFilter = $request->collect('ts')->map(fn($n) => intval($n));
 
-
-//        dd($request->all());
-
-//        dd($this->challengesFilter);
-
         // get filter(s) from request
         return Inertia::render('Proposals', [
             'search' => $this->search,
+            'sort' => "{$this->sortOrder}:{$this->sortBy}",
             'filters' => [
                 'funded' => $this->fundedProposalsFilter,
                 'fundingStatus' => match($this->fundingStatus) {
@@ -106,7 +106,7 @@ class CatalystProjectsController extends Controller
                 if (count($_options['filters']) > 0) {
                     $options['filter'] = implode(' AND ', $_options['filters']);
                 }
-//                dd($options);
+
                 $options['attributesToRetrieve'] = [
                     'id',
                     'slug',
@@ -123,13 +123,12 @@ class CatalystProjectsController extends Controller
                     'amount_requested',
                     'amount_received',
                 ];
-                if ($this->sortBy !== 'none' && $this->sortOrder !== 'none') {
+                if (!!$this->sortBy && !!$this->sortOrder) {
                     $options['sort'] = ["$this->sortBy:$this->sortOrder"];
                 } else {
-                    if (!$this->search) {
-                        $options['sort'] = ['created_at:desc'];
-                    }
+                    $options['sort'] = ['created_at:desc'];
                 }
+//                dd($options);
 
                 $options['limit'] = $this->limit;
 

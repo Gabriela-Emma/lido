@@ -61,10 +61,10 @@ class LegacyComment extends Model implements IHasMetaData
     public function getCreatedAtFormattedAttribute()
     {
         if ($this->parent) {
-            return $this->parent->fund?->assessment_started_at->format('F d, Y') ?? null;
+            return $this->parent->fund?->assessment_started_at?->format('F d, Y') ?? null;
         }
 
-        return $this->fund?->assessment_started_at->format('F d, Y') ?? null;
+        return $this->fund?->assessment_started_at?->format('F d, Y') ?? null;
     }
 
     public function getSummaryAttribute()

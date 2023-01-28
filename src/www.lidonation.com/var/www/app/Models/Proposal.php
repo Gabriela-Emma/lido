@@ -156,6 +156,18 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
         ];
     }
 
+    public static function getRankingRules(): array
+    {
+        return [
+            'words',
+            'typo',
+            'proximity',
+            'attribute',
+            'sort',
+            'exactness'
+        ];
+    }
+
     public static function runCustomIndex()
     {
         Artisan::call('ln:index App\\\\Models\\\\Proposal ln__proposals');
