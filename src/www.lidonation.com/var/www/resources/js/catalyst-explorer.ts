@@ -33,6 +33,22 @@ createInertiaApp({
             .use(pinia);
 
         app.config.globalProperties.$filters = {
+            number(value, locale: string='en-US') {
+                // Nine Zeroes for Billions
+                return Math.abs(Number(value)) >= 1.0e+9
+
+                    ? (Math.abs(Number(value)) / 1.0e+9).toFixed(2) + "B"
+                    // Six Zeroes for Millions
+                    : Math.abs(Number(value)) >= 1.0e+6
+
+                        ? (Math.abs(Number(value)) / 1.0e+6).toFixed(2) + "M"
+                        // Three Zeroes for Thousands
+                        : Math.abs(Number(value)) >= 1.0e+3
+
+                            ? (Math.abs(Number(value)) / 1.0e+3).toFixed(2) + "K"
+
+                            : Math.abs(Number(value));
+            },
             currency(value, locale: string='en-US') {
                 if (typeof value !== "number") {
                     return value;
@@ -54,6 +70,10 @@ createInertiaApp({
                 const base = usePage().props?.base_url;
                 const locale = usePage().props?.locale;
                 return `${base}/${locale}/${value}`
+            },
+            assetUrl(value) {
+                const base = usePage().props?.asset_url;
+                return `${base}${value}`
             }
         }
 

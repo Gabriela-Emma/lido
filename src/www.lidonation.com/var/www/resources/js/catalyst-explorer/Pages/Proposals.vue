@@ -130,7 +130,6 @@ let search = ref(props.search);
 let showFilters = ref(every(props.filters));
 let filtersRef = ref<Filters>(props.filters);
 let selectedSortRef = ref<Sort>(props.sort);
-console.log('props.sort::', props.sort);
 
 ////
 // computed properties
