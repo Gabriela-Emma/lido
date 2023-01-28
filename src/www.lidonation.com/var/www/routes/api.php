@@ -196,6 +196,10 @@ Route::prefix('catalyst-explorer')->as('catalystExplorerApi.')
 
         Route::get('/proposals', [CatalystExplorer\ProposalController::class, 'proposals']);
         Route::get('/proposals/{proposal_id}', [CatalystExplorer\ProposalController::class, 'proposal']);
+
+        Route::get('/tags', [CatalystExplorer\TagController::class, 'tags'])->name('tags');
+        Route::get('/tags/{tag}', [CatalystExplorer\TagController::class, 'tag'])->name('tag');
+
     });
 
 Route::prefix('promos')->as('promos')

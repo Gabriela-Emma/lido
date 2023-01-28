@@ -19,7 +19,7 @@ class ChallengeController extends Controller
         if ($per_page > 200) {
             return response([
                 'status_code' => 400,
-                'message' => 'query parameter \'per_page\' should not exceed 100'], 400);
+                'message' => 'query parameter \'per_page\' should not exceed 200'], 400);
         }
 
         Fund::withoutGlobalScopes();
