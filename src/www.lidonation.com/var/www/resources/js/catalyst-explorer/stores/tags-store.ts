@@ -25,7 +25,6 @@ export const useTagsStore = defineStore('tags', () => {
         }
     }
     async function loadTags(ts: number[]) {
-        console.log({ts});
         try {
             const {data} = await window.axios.get(
                 `/api/catalyst-explorer/tags`,

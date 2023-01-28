@@ -1,5 +1,4 @@
 import Fund from "./fund";
-import Tag from "./tag";
 
 export default interface Filters {
     funded: boolean;
@@ -7,4 +6,5 @@ export default interface Filters {
     funds?: number[];
     challenges?: Fund[];
     tags?: number[];
+    sort?: number[];
 }

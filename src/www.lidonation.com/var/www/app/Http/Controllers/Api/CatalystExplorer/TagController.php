@@ -14,9 +14,9 @@ class TagController extends Controller
 {
     public function tags(): \Illuminate\Http\Response|AnonymousResourceCollection|Application|ResponseFactory
     {
-        $per_page = request('per_page', 100);
+        $per_page = request('per_page', 200);
 
-        if ($per_page > 100) {
+        if ($per_page > 200) {
             return response([
                 'status_code' => 400,
                 'message' => 'query parameter \'per_page\' should not exceed 100'], 400);

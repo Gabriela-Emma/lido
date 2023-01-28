@@ -1,4 +1,5 @@
 <template>
+    <header-component/>
     <section>
         <h1>People Section</h1>
     </section>

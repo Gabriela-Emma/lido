@@ -1,12 +1,5 @@
 <template>
-    <header class="py-10 container">
-        <h1 class="text-2xl lg:text-3xl 2xl:text-5xl font-semibold text-slate-700">
-            Catalyst <span class="text-teal-600">Proposals</span>
-        </h1>
-        <p class="text-slate-600">
-            Search proposals and challenges by title, content, or author and co-authors.
-        </p>
-    </header>
+    <header-component/>
 
     <div class="flex flex-col gap-2 bg-primary-20">
         <section class="py-8">
@@ -35,6 +28,21 @@
                         </button>
                     </div>
                 </div>
+                <div class="flex items-center mt-4">
+                    <div class="w-[204px]">
+                        <Multiselect
+                            placeholder="Sort"
+                            value-prop="value"
+                            label="label"
+                            v-model="selectedSortRef"
+                            :options="sorts"
+                            :classes="{
+                                container: 'multiselect border-0 p-0.5 flex-wrap',
+                                containerActive: 'shadow-none shadow-transparent box-shadow-none',
+                            }"
+                        />
+                    </div>
+                </div>
             </div>
         </section>
         <section class="py-8 w-full">
@@ -58,6 +66,7 @@
 </template>
 
 <script lang="ts" setup>
+import Multiselect from '@vueform/multiselect';
 import {proposalsStore} from "../stores/proposals-store";
 import {computed, ref, watch} from "vue";
 import Proposal from "../models/proposal";
@@ -67,21 +76,61 @@ import {router} from '@inertiajs/vue3';
 import ProposalFilter from "../modules/proposals/ProposalFilter.vue";
 import ProposalPagination from "../modules/proposals/ProposalPagination.vue";
 import Filters from "../models/filters";
-import {every, some} from "lodash";
+import {every} from "lodash";
+import Sort from "../models/sort";
 
 /// props and class properties
 const props = withDefaults(
     defineProps<{
         search?: string,
         filters?: Filters,
+        sorts?: Sort[],
+        sort?: Sort,
         proposals: {
             links: [],
             data: Proposal[]
         };
-    }>(), {});
+    }>(), {
+        sorts: () => [
+            {
+                label: 'Budget: Low to High',
+                value: 'amount_requested:asc',
+            },
+            {
+                label: 'Budget: High to Low',
+                value: 'amount_requested:desc',
+            },
+            {
+                label: 'Rating: Low to High',
+                value: 'ca_rating:asc',
+            },
+            {
+                label: 'Rating: High to Low',
+                value: 'ca_rating:desc',
+            },
+            {
+                label: 'Yes Votes: Low to High',
+                value: 'yes_votes_count:asc',
+            },
+            {
+                label: 'Yes Votes: High to Low',
+                value: 'yes_votes_count:desc',
+            },
+            {
+                label: 'No Votes: Low to High',
+                value: 'no_votes_count:asc',
+            },
+            {
+                label: 'No Votes: High to Low',
+                value: 'no_votes_count:desc',
+            }
+        ]
+    });
 let search = ref(props.search);
 let showFilters = ref(every(props.filters));
 let filtersRef = ref<Filters>(props.filters);
+let selectedSortRef = ref<Sort>(props.sort);
+console.log('props.sort::', props.sort);
 
 ////
 // computed properties
@@ -90,7 +139,7 @@ let filtersRef = ref<Filters>(props.filters);
  * assert that every property on props.filters is truthy.
  */
 const filtering = computed(() => Object.values(props.filters).length > 0 && Object.values(props.filters).every(val => !!val));
-watch([search, filtersRef], (something) => {
+watch([search, filtersRef, selectedSortRef], (something) => {
     query();
 }, {deep: true});
 
@@ -126,6 +175,11 @@ function query() {
 
     if (filtersRef.value?.tags) {
         data['ts'] = Array.from(filtersRef.value?.tags);
+    }
+
+    if (!!selectedSortRef.value) {
+        console.log('selectedSortRef.value::', selectedSortRef.value);
+        data['st'] = selectedSortRef.value;
     }
 
     router.get(

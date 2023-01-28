@@ -1,4 +1,5 @@
 <template>
+    <header-component/>
     <section>
         <h1>Api section</h1>
     </section>
