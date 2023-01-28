@@ -62,7 +62,7 @@ class CatalystProjectsController extends Controller
         // get filter(s) from request
         return Inertia::render('Proposals', [
             'search' => $this->search,
-            'sort' => "{$this->sortOrder}:{$this->sortBy}",
+            'sort' => "{$this->sortBy}:{$this->sortOrder}",
             'filters' => [
                 'funded' => $this->fundedProposalsFilter,
                 'fundingStatus' => match($this->fundingStatus) {
@@ -115,8 +115,12 @@ class CatalystProjectsController extends Controller
                     'fund_label',
                     'funding_status',
                     'challenge_label',
+                    'ideascale_link',
+                    'yes_votes_count',
+                    'no_votes_count',
                     'problem',
                     'solution',
+                    'website',
                     'users.name',
                     'users.media.original_url',
                     'users.profile_photo_url',

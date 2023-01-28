@@ -21,7 +21,7 @@ class HandleInertiaRequests extends Middleware
      *
      * @see https://inertiajs.com/asset-versioning
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param Request $request
      * @return string|null
      */
     public function version(Request $request): ?string
@@ -34,16 +34,17 @@ class HandleInertiaRequests extends Middleware
      *
      * @see https://inertiajs.com/shared-data
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param Request $request
      * @return array
      */
     public function share(Request $request): array
     {
         return array_merge(parent::share($request), [
-            'auth.user' => fn () => $request->user()
+            'user' => fn () => $request->user()
                 ? $request->user()->only('id', 'name', 'email')
                 : null,
             'locale' => app()->getLocale(),
+            'asset_url' => asset('/'),
             'base_url' => config('app.url')
         ]);
     }
