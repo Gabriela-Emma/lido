@@ -2,14 +2,9 @@
     <div
         class="w-full">
         <Multiselect
-            placeholder="Limit to Challenge(s)"
+            placeholder="Funding Status(es)"
             v-model="selectedRef"
-            value-prop="id"
-            label="title"
-            mode="tags"
-            :loading="filteredChallenges?.length <= 0"
-            :options="filteredChallenges"
-            :searchable="true"
+            :options="filters"
             :classes="{
                 container: 'multiselect border-0 px-1 py-2 flex-wrap',
                 containerActive: 'shadow-none shadow-transparent box-shadow-none',
@@ -24,19 +19,17 @@
 <script lang="ts" setup>
 import Multiselect from '@vueform/multiselect';
 import {defineEmits, ref, watch} from "vue";
-import {storeToRefs} from "pinia";
-import {useChallengesStore} from "../../stores/challenges-store";
 import Challenge from "../../models/challenge";
 
 const props = withDefaults(
     defineProps<{
-        modelValue?: Challenge
+        modelValue?: Challenge,
+        filters: {}
     }>(),
     {},
 );
 let selectedRef = ref(props.modelValue);
-const challengesStore = useChallengesStore();
-const {filteredChallenges} = storeToRefs(challengesStore);
+
 
 ////
 // events & watchers

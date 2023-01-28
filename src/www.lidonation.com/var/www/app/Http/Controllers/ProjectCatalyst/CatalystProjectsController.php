@@ -19,6 +19,7 @@ use Meilisearch\Endpoints\Indexes;
 class CatalystProjectsController extends Controller
 {
     protected null|string|Stringable $search = null;
+    protected null|string|Stringable $fundingStatus = null;
 
     protected ?string $sortBy = 'amount_requested';
 
@@ -42,9 +43,17 @@ class CatalystProjectsController extends Controller
     public function index(Request $request)
     {
         $this->search = $request->input('search', null);
+        $this->fundingStatus = match($request->input('f', null)) {
+            'o' => 'over_budget',
+            'n' => 'not_approved',
+            default => null
+        };
         $this->fundedProposalsFilter = $request->input('fp', false);
         $this->fundsFilter = $request->collect('fs')->map(fn($n) => intval($n));
         $this->challengesFilter = $request->collect('cs')->map(fn($n) => intval($n));
+
+
+//        dd($request->all());
 
 //        dd($this->challengesFilter);
 
@@ -53,6 +62,11 @@ class CatalystProjectsController extends Controller
             'search' => $this->search,
             'filters' => [
                 'funded' => $this->fundedProposalsFilter,
+                'fundingStatus' => match($this->fundingStatus) {
+                    'over_budget' => 'o',
+                    'not_approved' => 'n',
+                    default => null
+                },
                 'funds' => $this->fundsFilter->toArray(),
                 'challenges' => $this->challengesFilter->toArray()
             ],
@@ -159,6 +173,10 @@ class CatalystProjectsController extends Controller
     {
         $_options = [];
 
+        if (!!$this->fundingStatus) {
+            $_options[] = "funding_status = {$this->fundingStatus}";
+        }
+
         if (!!$this->fundedProposalsFilter) {
             $_options[] = 'funded = 1';
         }
@@ -172,7 +190,6 @@ class CatalystProjectsController extends Controller
         if ($this->challengesFilter->isNotEmpty()) {
             $_options[] =  '(' . $this->challengesFilter->map(fn($c) => "challenge = {$c}")->implode(' OR ') . ')';
         }
-
 
         // filter by over budget bool
 //        if ((bool) $this->overBudgetProposalsFilter) {

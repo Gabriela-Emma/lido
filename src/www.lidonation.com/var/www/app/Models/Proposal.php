@@ -116,6 +116,8 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
             'fund',
             'type',
             'users',
+            'funding_status',
+            'status',
         ];
     }
 
