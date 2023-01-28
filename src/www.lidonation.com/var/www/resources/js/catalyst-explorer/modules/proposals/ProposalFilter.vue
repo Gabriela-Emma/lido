@@ -50,6 +50,10 @@
                             n: 'Not Approved'
                         }" />
                 </li>
+
+                <li class="">
+                    <TagPicker v-model="filters.tags" />
+                </li>
             </ul>
         </div>
     </div>
@@ -63,6 +67,8 @@ import FundPicker from "../funds/FundPicker.vue";
 import ChallengePicker from "../funds/ChallengePicker.vue";
 import {useChallengesStore} from "../../stores/challenges-store";
 import FundingStatusPicker from "../funds/FundingStatusPicker.vue";
+import TagPicker from "./TagPicker.vue";
+import {useTagsStore} from "../../stores/tags-store";
 
 ////
 // props and class properties
@@ -91,6 +97,12 @@ const challengesStore = useChallengesStore();
 challengesStore.filterChallenges({
     funds: props?.filters?.funds
 });
+
+/**
+ * Init Tags
+ */
+const tagsStore = useTagsStore();
+tagsStore.loadTags(props?.filters?.tags);
 
 ////
 // events & watchers

@@ -105,7 +105,7 @@ const proposals = proposalsStore();
 function query() {
     const data = {};
     if (search.value?.length > 0) {
-        data['search'] = search.value;
+        data['s'] = search.value;
     }
 
     if (filtersRef.value?.funded) {
@@ -122,6 +122,10 @@ function query() {
 
     if (filtersRef.value?.fundingStatus) {
         data['f'] = filtersRef.value?.fundingStatus;
+    }
+
+    if (filtersRef.value?.tags) {
+        data['ts'] = Array.from(filtersRef.value?.tags);
     }
 
     router.get(

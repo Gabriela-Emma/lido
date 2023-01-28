@@ -35,6 +35,8 @@ class CatalystProjectsController extends Controller
 
     public Collection $challengesFilter;
 
+    public Collection $tagsFilter;
+
     /**
      * Display a listing of the resource.
      *
@@ -42,7 +44,7 @@ class CatalystProjectsController extends Controller
      */
     public function index(Request $request)
     {
-        $this->search = $request->input('search', null);
+        $this->search = $request->input('s', null);
         $this->fundingStatus = match($request->input('f', null)) {
             'o' => 'over_budget',
             'n' => 'not_approved',
@@ -51,6 +53,7 @@ class CatalystProjectsController extends Controller
         $this->fundedProposalsFilter = $request->input('fp', false);
         $this->fundsFilter = $request->collect('fs')->map(fn($n) => intval($n));
         $this->challengesFilter = $request->collect('cs')->map(fn($n) => intval($n));
+        $this->tagsFilter = $request->collect('ts')->map(fn($n) => intval($n));
 
 
 //        dd($request->all());
@@ -68,7 +71,8 @@ class CatalystProjectsController extends Controller
                     default => null
                 },
                 'funds' => $this->fundsFilter->toArray(),
-                'challenges' => $this->challengesFilter->toArray()
+                'challenges' => $this->challengesFilter->toArray(),
+                'tags' => $this->tagsFilter->toArray()
             ],
             'proposals' => $this->query($request),
             'crumbs' => [
@@ -86,10 +90,6 @@ class CatalystProjectsController extends Controller
             ], $this->getUserFilters()),
         ];
 
-        // filter by funded bool
-//        if ($this->fundedProposalsFilter) {
-//            $_options['filters'][] = 'funded = 1';
-//        }
 
 //        if ($this->completedProposalsFilter) {
 //            $_options['filters'][] = 'completed = 1';
@@ -148,24 +148,6 @@ class CatalystProjectsController extends Controller
         );
 
         return $pagination->toArray();
-
-
-//        $this->paginator = $this->searchBuilder->paginate(
-//            $this->perPage,
-//        );
-//        $this->proposals = $this->paginator->items();
-
-        /////
-        //////// get stats
-        /////
-//        $this->setTotalProposalsCountMetric();
-//        $this->setAwardedAmount();
-//        $this->setFundedProposalsCountMetric();
-//        $this->setCompletedProposalsCountMetric();
-//        $this->setChallengeMetrics();
-
-//        $this->dispatchBrowserEvent('analytics-event-fired', ['code' => 'RPZTGJL8']);
-        // over budget proposals
     }
 
     #[ArrayShape(['filters' => 'array'])]
@@ -191,11 +173,11 @@ class CatalystProjectsController extends Controller
             $_options[] =  '(' . $this->challengesFilter->map(fn($c) => "challenge = {$c}")->implode(' OR ') . ')';
         }
 
-        // filter by over budget bool
-//        if ((bool) $this->overBudgetProposalsFilter) {
-//            $_options[] = 'over_budget = 1';
-//        }
-//
+        // filter by tags
+        if ($this->tagsFilter->isNotEmpty()) {
+            $_options[] = 'tags.id IN ' . $this->tagsFilter->toJson();
+        }
+
         return $_options;
     }
 }

@@ -20,7 +20,6 @@
                 </span>
             </h2>
             <div class="flex flex-row flex-nowrap mb-2 text-white">
-
                 <div
                     v-if="proposal.amount_received > 0.00"
                     class="inline-block px-1 py-0.5 pb-2.5 text-xs xl:text-sm font-semibold rounded-tl-sm rounded-bl-sm bg-accent-900">

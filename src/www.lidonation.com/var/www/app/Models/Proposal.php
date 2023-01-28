@@ -71,6 +71,7 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
         'users',
         'metas',
         'ratings',
+        'tags',
     ];
 
     protected $withCount = ['ratings'];
@@ -116,6 +117,7 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
             'fund',
             'type',
             'users',
+            'tags',
             'funding_status',
             'status',
         ];
@@ -135,6 +137,7 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
             'comment_prompt',
             'social_excerpt',
             'users',
+            'tags',
             //            'users.name',
             //            'users.email'
         ];
@@ -471,7 +474,7 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
      */
     protected function makeAllSearchableUsing($query): Builder
     {
-        return $query->with(['users']);
+        return $query->with(['users', 'tags']);
     }
 
     /**

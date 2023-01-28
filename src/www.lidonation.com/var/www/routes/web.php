@@ -150,7 +150,8 @@ Route::group(
             Route::get('/proposals', App\Http\Livewire\Catalyst\CatalystProposalsComponent::class)
                 ->name('proposals');
 
-            Route::get('/challenges/{fund}/', fn () => view('challenge'))->name('challenge');
+            Route::get('/challenges/{fund}/', fn () => view('challenge'))
+                ->name('challenge');
 
             Route::get('/groups', CatalystGroupsComponent::class)
                 ->name('groups');
