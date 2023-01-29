@@ -300,7 +300,74 @@ window.addEventListener('analytics-event-fired', event => {
     }
 });
 
-// slides
+let catSlider;
+if (document.querySelector('.slider-splide')) {
+    catSlider = new Splide( '.slider-splide', {
+        type   : 'loop',
+        perPage: 4,
+        perMove: 1,
+        focus: 'center',
+        breakpoints: {
+            640: {
+              perPage: 2,
+              gap: '.7rem',
+              height: '6rem',
+            },
+            480: {
+              perPage: 1,
+              gap: '.7rem',
+              height: '6rem',
+            },
+          },
+      } ).mount();
+}
+
+let catPod;
+if (document.querySelector('.cat-pod')) {
+    catPod = new Splide( '.cat-pod', {
+        type: 'loop',
+        perPage: 3,
+        pagePerMove: 1,
+        focus: 'center',
+        arrows: true,
+        breakpoints: {
+        640: {
+            perPage: 2,
+            gap: '.7rem',
+            height: '6rem',
+        },
+        480: {
+            perPage: 1,
+            gap: '.7rem',
+            height: '6rem',
+        },
+        },
+      } ).mount();
+}
+
+let minuteSplide;
+if (document.querySelector('.minute-splide')) {
+    minuteSplide = new Splide( '.minute-splide', {
+        type: 'loop',
+        perPage: 3,
+        pagePerMove: 1,
+        focus: 'center',
+        arrows: true,
+        breakpoints: {
+        640: {
+            perPage: 2,
+            gap: '.7rem',
+            height: '6rem',
+        },
+        480: {
+            perPage: 1,
+            gap: '.7rem',
+            height: '6rem',
+        },
+        },
+      } ).mount();
+}
+
 let secondarySlider, primarySlider;
 if (document.getElementById('proposal-secondary-slide')) {
     secondarySlider = new Splide('#proposal-secondary-slide', {
