@@ -8,6 +8,14 @@ export const useFundsStore = defineStore('funds', () => {
 
     async function loadFunds() {
         // try loading from sessionStore;
+        const piniaState = sessionStorage.getItem("piniaState");
+        if (piniaState) {
+            const state = JSON.parse(piniaState);
+                if (state.funds && state.funds.length > 0) {
+                funds.value = state.funds;
+                return;
+                }
+        }
 
         if (funds?.value?.length > 0) {
             return;
