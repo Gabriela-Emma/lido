@@ -9,17 +9,21 @@
     </header>
 
 
-    @if($newEpisodes)
-        <section class="relative bg-primary-10 mb-16 relative" id="new-lido-minutes">
-            <div class="flex flex-nowrap gap-6 snap-proximity overflow-x-auto episodes">
-                @foreach($newEpisodes as $post)
-                    <div class="flex flex-col shrink-0 snap-center w-[380px] lg:w-[420px] xl:w-[480px] 2xl:w-[540px]">
-                        @include('podcast.drip')
-                    </div>
-                @endforeach
+    <div class="container">
+        @if($newEpisodes)
+        <section class="splide minute-splide relative bg-primary-10 mb-16 relative" id="new-lido-minutes">
+            <div class="splide__track">
+                <div class="splide__list gap-2 episodes">
+                    @foreach($newEpisodes as $post)
+                        <div class="splide__slide w-[380px] lg:w-[420px] xl:w-[480px] 2xl:w-[540px]">
+                            @include('podcast.drip')
+                        </div>
+                    @endforeach
+                </div>
             </div>
         </section>
     @endif
+    </div>
 
     <section class="relative bg-white py-16">
         <div class="absolute inset-x-0 bottom-0 hidden h-1/2 bg-yellow-500 lg:block" aria-hidden="true"></div>

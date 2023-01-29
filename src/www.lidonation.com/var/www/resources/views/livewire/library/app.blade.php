@@ -70,28 +70,30 @@
                 Browse by Category
             </h2>
 
-            <div>
-                <div class="flex flex-row md:flex-nowrap overflow-x-auto gap-6 no-scrollbar">
-                    @foreach($categories as $cat)
-                        <div class="w-full h-full">
-                            <div class="bg-white rounded-sm w-64 md:w-72 lg:w-80">
-                                <a href="{{$cat->url}}" class="block">
-                                    <img class="aspect-w-1aspect-h-2" alt="{{$cat->title}}'s hero"
-                                         src="{{ $cat->hero_url }}"/>
-                                </a>
-                                <div class="flex flex-row items-center justify-between p-4 border-t border-slate-400">
-                                    <a href="{{$cat->url}}" class="font-semibold text-slate-700">
-                                        {{$cat->title}}
+            <div class="splide slider-splide" aria-label="Basic Structure Example">
+                <div class="splide__track">
+                    <div class="splide__list gap-6">
+                        @foreach($categories as $cat)
+                            <div class="splide__slide">
+                                <div class="bg-white rounded-sm w-64 md:w-72 lg:w-80">
+                                    <a href="{{$cat->url}}" class="block">
+                                        <img class="aspect-w-1aspect-h-2" alt="{{$cat->title}}'s hero"
+                                             src="{{ $cat->hero_url }}"/>
                                     </a>
-                                    <div class="bg-slate-100 rounded-sm">
-                                        <div class="bg-slate-300 py-3 px-4 rounded-sm aspect-square font-semibold">
-                                            {{$cat->posts_count}}
+                                    <div class="flex flex-row items-center justify-between p-4 border-t border-slate-400">
+                                        <a href="{{$cat->url}}" class="font-semibold text-slate-700">
+                                            {{$cat->title}}
+                                        </a>
+                                        <div class="bg-slate-100 rounded-sm">
+                                            <div class="bg-slate-300 py-3 px-4 rounded-sm aspect-square font-semibold">
+                                                {{$cat->posts_count}}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    @endforeach
+                        @endforeach
+                    </div>
                 </div>
             </div>
         </div>
@@ -108,17 +110,21 @@
         </div>
     </header>
 
-    @if($latestLidoMinutes)
-        <div class="relative bg-primary-10 mb-16 relative" id="new-lido-minutes">
-            <div class="flex flex-nowrap gap-6 snap-proximity overflow-x-auto no-scrollbar episodes">
-                @foreach($latestLidoMinutes as $post)
-                    <div class="flex flex-col shrink-0 snap-center w-[380px] lg:w-[420px] xl:w-[480px] 2xl:w-[540px]">
-                        @include('podcast.drip')
-                    </div>
-                @endforeach
+    <div class="container">
+        @if($latestLidoMinutes)
+        <section class="splide minute-splide relative bg-primary-10 mb-16 relative" id="new-lido-minutes">
+            <div class="splide__track">
+                <div class="splide__list gap-2 episodes">
+                    @foreach($latestLidoMinutes as $post)
+                        <div class="splide__slide w-[380px] lg:w-[420px] xl:w-[480px] 2xl:w-[540px]">
+                            @include('podcast.drip')
+                        </div>
+                    @endforeach
+                </div>
             </div>
-        </div>
+        </section>
     @endif
+    </div>
 </section>
 
 @if($categories && !empty($categories))

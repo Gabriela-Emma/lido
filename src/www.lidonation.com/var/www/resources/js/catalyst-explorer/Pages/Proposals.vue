@@ -1,5 +1,5 @@
 <template>
-    <header-component/>
+    <header-component titleName0="Catalyst" titleName1="Proposals"/>
 
     <div class="flex flex-col gap-2 bg-primary-20">
         <section class="py-8">
