@@ -8,11 +8,14 @@ export const useFundsStore = defineStore('funds', () => {
 
     async function loadFunds() {
         // try loading from sessionStore;
-        const sessionFunds = sessionStorage.getItem("funds");
-            if (sessionFunds) {
-                funds.value = JSON.parse(sessionFunds);
+        const piniaState = sessionStorage.getItem("piniaState");
+        if (piniaState) {
+            const state = JSON.parse(piniaState);
+                if (state.funds && state.funds.length > 0) {
+                funds.value = state.funds;
                 return;
-            }
+                }
+        }
 
         if (funds?.value?.length > 0) {
             return;
@@ -22,7 +25,6 @@ export const useFundsStore = defineStore('funds', () => {
         try {
             const {data} = await window.axios.get(`/api/catalyst-explorer/funds`);
             funds.value = data?.data;
-            sessionStorage.setItem("funds", JSON.stringify(funds.value));
         } catch (e: AxiosError | any) {
             console.log({e});
         }
