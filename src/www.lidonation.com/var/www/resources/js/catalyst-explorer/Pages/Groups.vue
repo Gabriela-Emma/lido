@@ -1,5 +1,5 @@
 <template>
-    <header-component/>
+    <header-component titleName0="Catalyst" titleName1="Groups"/>
     <section>
         <h1>Groups Section</h1>
     </section>
