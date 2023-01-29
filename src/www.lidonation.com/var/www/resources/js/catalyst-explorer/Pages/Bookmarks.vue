@@ -1,5 +1,5 @@
 <template>
-    <header-component/>
+    <header-component titleName0="Catalyst" titleName1="Bookmarks"/>
     <section>
         <h1>Bookmarks Section</h1>
     </section>
