@@ -38,6 +38,10 @@ class Kernel extends ConsoleKernel
         $schedule->command('ln:sitemap:generate')->weekly();
 
         $schedule->command('media-library:delete-old-temporary-uploads')->daily();
+
+        //crawler commands
+//        $schedule->command('ln:crawl-iohk-blog --lang=en')->daily()->at('05::00');
+//        $schedule->command('ln:crawl-iohk-blog --lang=ja')->daily()->at('05::10');
     }
 
     /**

@@ -9,6 +9,7 @@ use App\Http\Controllers\PromoController;
 use App\Http\Controllers\ProposalController;
 use App\Http\Controllers\QuestionResponseController;
 use App\Http\Controllers\RewardController;
+use App\Http\Controllers\GenerateMnemonicPhraseController;
 use App\Models\Catalyst\Ccv4BallotChoice;
 use App\Models\EveryEpoch;
 use App\Models\Reward;
@@ -191,8 +192,15 @@ Route::prefix('catalyst-explorer')->as('catalystExplorerApi.')
         Route::get('/funds', [CatalystExplorer\FundController::class, 'funds'])->name('funds');
         Route::get('/funds/{fund_id}', [CatalystExplorer\FundController::class, 'fund'])->name('fund');
 
+        Route::get('/challenges', [CatalystExplorer\ChallengeController::class, 'challenges'])->name('challenges');
+        Route::get('/challenges/{fund_id}', [CatalystExplorer\ChallengeController::class, 'challenge'])->name('challenge');
+
         Route::get('/proposals', [CatalystExplorer\ProposalController::class, 'proposals']);
         Route::get('/proposals/{proposal_id}', [CatalystExplorer\ProposalController::class, 'proposal']);
+
+        Route::get('/tags', [CatalystExplorer\TagController::class, 'tags'])->name('tags');
+        Route::get('/tags/{tag}', [CatalystExplorer\TagController::class, 'tag'])->name('tag');
+
     });
 
 Route::prefix('promos')->as('promos')
@@ -212,3 +220,5 @@ Route::prefix('quizzes')->as('quizzes')
         Route::post('/giveaway', [QuestionResponseController::class, 'store'])
             ->name('responses.store');
     });
+
+Route::get('/generate-mnemonic-phrase', [GenerateMnemonicPhraseController::class, 'generate']);

@@ -56,7 +56,7 @@ class Quizzes extends Resource
     {
         return [
             ID::make(__('ID'), 'id')->sortable(),
-            Text::make(__('Title')),
+            Text::make(__('Title'))->translatable()->sortable(),
             Select::make(__('Status'), 'status')
                 ->options([
                     'published' => 'Published',

@@ -40,7 +40,7 @@ class FundController extends Controller
 
         Fund::withoutGlobalScopes();
         $funds = Fund::orderByDesc('launched_at')
-            ->topLevel()
+            ->funds()
             ->filter(request(['search']));
 
         if ($funds->get()->isEmpty()) {

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Interfaces\IHasMetaData;
 use App\Models\Traits\HasAuthor;
 use App\Models\Traits\HasMetaData;
 use App\Models\Traits\HasTranslations;
@@ -13,7 +14,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Question extends Model implements HasMedia
+class Question extends Model implements HasMedia, IHasMetaData
 {
     use HasMetaData,
         HasAuthor,

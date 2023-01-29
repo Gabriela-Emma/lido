@@ -1,7 +1,10 @@
-import {createInertiaApp} from "@inertiajs/vue3";
-import {createApp, h} from "vue";
+import {createInertiaApp, usePage} from "@inertiajs/vue3";
+import {computed, createApp, h, watch} from "vue";
 import Layout from "./catalyst-explorer/Shared/Layout.vue";
 import {createPinia} from "pinia";
+import { marked } from 'marked';
+import HeaderComponent from './catalyst-explorer/Shared/Components/HeaderComponent.vue';
+// import app from "@inertiajs/vue3/types/app";
 
 // boot inertia app
 createInertiaApp({
@@ -15,9 +18,66 @@ createInertiaApp({
         return page
     },
     setup({el, App, props, plugin}) {
-        createApp({render: () => h(App, props)})
+        const pinia = createPinia();
+        watch(
+            pinia.state,
+            (state) => {
+                // persist the whole state to the local storage whenever it changes
+                sessionStorage.setItem('piniaState', JSON.stringify(state))
+            },
+            { deep: true }
+        );
+
+        const app =  createApp({render: () => h(App, props)})
             .use(plugin)
-            .use(createPinia())
-            .mount(el)
+            .use(pinia);
+
+        app.config.globalProperties.$filters = {
+            number(value, locale: string='en-US') {
+                // Nine Zeroes for Billions
+                return Math.abs(Number(value)) >= 1.0e+9
+
+                    ? (Math.abs(Number(value)) / 1.0e+9).toFixed(2) + "B"
+                    // Six Zeroes for Millions
+                    : Math.abs(Number(value)) >= 1.0e+6
+
+                        ? (Math.abs(Number(value)) / 1.0e+6).toFixed(2) + "M"
+                        // Three Zeroes for Thousands
+                        : Math.abs(Number(value)) >= 1.0e+3
+
+                            ? (Math.abs(Number(value)) / 1.0e+3).toFixed(2) + "K"
+
+                            : Math.abs(Number(value));
+            },
+            currency(value, locale: string='en-US') {
+                if (typeof value !== "number") {
+                    return value;
+                }
+                const formatter = new Intl.NumberFormat(locale, {
+                    style: 'currency',
+                    currency: 'USD',
+                    maximumFractionDigits: 0
+                });
+                return formatter.format(value);
+            },
+            markdown(value) {
+                return marked.parse(value);
+            },
+        };
+
+        app.config.globalProperties.$utils = {
+            localizeRoute(value) {
+                const base = usePage().props?.base_url;
+                const locale = usePage().props?.locale;
+                return `${base}/${locale}/${value}`
+            },
+            assetUrl(value) {
+                const base = usePage().props?.asset_url;
+                return `${base}${value}`
+            }
+        }
+
+        app.component('header-component', HeaderComponent)
+        app.mount(el);
     },
 }).then();

@@ -71,6 +71,7 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
         'users',
         'metas',
         'ratings',
+        'tags',
     ];
 
     protected $withCount = ['ratings'];
@@ -116,6 +117,9 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
             'fund',
             'type',
             'users',
+            'tags',
+            'funding_status',
+            'status',
         ];
     }
 
@@ -133,6 +137,7 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
             'comment_prompt',
             'social_excerpt',
             'users',
+            'tags',
             //            'users.name',
             //            'users.email'
         ];
@@ -148,6 +153,18 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
             'funded_at',
             'no_votes_count',
             'yes_votes_count',
+        ];
+    }
+
+    public static function getRankingRules(): array
+    {
+        return [
+            'words',
+            'typo',
+            'proximity',
+            'attribute',
+            'sort',
+            'exactness'
         ];
     }
 
@@ -448,10 +465,13 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
             'completed' => $this->status === 'complete' ? '1' : '0',
             'over_budget' => $this->status === 'over_budget' ? '1' : '0',
             'challenge' => $this->fund?->id,
+            'challenge_label' => $this->fund?->label,
             'fund' => $this->fund?->parent?->id,
+            'fund_label' => $this->fund?->parent?->label,
             'fund_status' => $this->fund?->status,
             'ca_rating' => $this->ratings_average ?? 0.00,
             'amount_requested' => $this->amount_requested ? floatval($this->amount_requested) : 0.00,
+            'amount_received' => $this->amount_received ? floatval($this->amount_received) : 0.00,
             'impact_proposal' => $this->is_impact_proposal,
             'woman_proposal' => $this->is_woman_proposal,
             'ideafest_proposal' => $this->is_ideafest_proposal,
@@ -466,7 +486,7 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
      */
     protected function makeAllSearchableUsing($query): Builder
     {
-        return $query->with(['users']);
+        return $query->with(['users', 'tags']);
     }
 
     /**

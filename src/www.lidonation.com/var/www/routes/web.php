@@ -150,7 +150,8 @@ Route::group(
             Route::get('/proposals', App\Http\Livewire\Catalyst\CatalystProposalsComponent::class)
                 ->name('proposals');
 
-            Route::get('/challenges/{fund}/', fn () => view('challenge'))->name('challenge');
+            Route::get('/challenges/{fund}/', fn () => view('challenge'))
+                ->name('challenge');
 
             Route::get('/groups', CatalystGroupsComponent::class)
                 ->name('groups');
@@ -248,7 +249,7 @@ Route::group(
             return view('insights');
         })->name('insights');
         Route::get('/reviews', function () {
-            return view('reviews');
+            return view('reviews')->withShortcodes();
         })->name('reviews');
 
         // Cardano Tools
@@ -267,7 +268,7 @@ Route::group(
         Route::get('/reviews/{review}/summary-image/{hash}', [ReviewRatingImage::class, 'show'])
             ->name('reviewRatingImage');
         Route::get('/reviews/{review}', function (Review $review) {
-            return view('review', compact('review'));
+            return view('review', compact('review'))->withShortcodes();
         })->name('review');
 
         // proposals

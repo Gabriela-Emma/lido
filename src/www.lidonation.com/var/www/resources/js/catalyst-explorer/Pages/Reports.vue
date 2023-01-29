@@ -1,4 +1,5 @@
 <template>
+    <header-component titleName0="Catalyst" titleName1="Reports"/>
     <section>
         <h1>
             Monthly Reports

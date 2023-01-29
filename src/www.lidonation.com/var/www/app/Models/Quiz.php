@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Interfaces\IHasMetaData;
 use App\Models\Traits\HasAuthor;
 use App\Models\Traits\HasGiveaways;
 use App\Models\Traits\HasHero;
@@ -14,7 +15,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Quiz extends Model implements HasMedia
+class Quiz extends Model implements HasMedia, IHasMetaData
 {
     use HasAuthor,
         HasHero,
