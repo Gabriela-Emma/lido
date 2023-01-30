@@ -43,7 +43,9 @@ return [
             'soft_break' => "\n",
         ],
         'external_link' => [
-            'internal_hosts' => [config('app.url'), 'lidonation.com', 'www.lidonation.com', 'test.lidonation.com'],
+            'internal_hosts' => [
+//                config('app.url'), 'lidonation.com', 'www.lidonation.com', 'test.lidonation.com'
+            ],
             'open_in_new_window' => true,
             'html_class' => 'external-link',
         ],
