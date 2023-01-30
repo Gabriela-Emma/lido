@@ -7,4 +7,5 @@ export default interface Filters {
     challenges?: Fund[];
     tags?: number[];
     sort?: number[];
+    budgets?: number[];
 }

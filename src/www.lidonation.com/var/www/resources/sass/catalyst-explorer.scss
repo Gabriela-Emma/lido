@@ -1,4 +1,5 @@
 @import 'app';
+@import '@vueform/slider/themes/default.css';
 @import "@vueform/toggle/themes/default.css";
 @import "@vueform/multiselect/themes/default.css";
 
@@ -7,6 +8,10 @@
     --ms-tag-bg: #54bbeb;
     ---ms-option-bg-selected: #54bbeb;
     --ms-option-bg-selected-pointed: #4ba8d3;
+
+    --slider-connect-bg: #4ba8d3;
+    --slider-tooltip-bg: #4ba8d3;
+    --slider-handle-ring-color: #54bbeb;
 }
 .proposal-drip {
     .drip-content p {

@@ -36,6 +36,9 @@
                         }"
                     />
                 </li>
+                <li class="p-4">
+                    <BudgetRangePicker v-model="filters.budgets" />
+                </li>
                 <li class="">
                     <FundPicker v-model="filters.funds" />
                 </li>
@@ -69,6 +72,7 @@ import {useChallengesStore} from "../../stores/challenges-store";
 import FundingStatusPicker from "../funds/FundingStatusPicker.vue";
 import TagPicker from "./TagPicker.vue";
 import {useTagsStore} from "../../stores/tags-store";
+import BudgetRangePicker from "./BudgetRangePicker.vue";
 
 ////
 // props and class properties
