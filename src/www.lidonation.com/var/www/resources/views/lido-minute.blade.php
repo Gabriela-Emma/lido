@@ -15,7 +15,7 @@
             <div class="splide__track">
                 <div class="splide__list gap-2 episodes">
                     @foreach($newEpisodes as $post)
-                        <div class="splide__slide w-[380px] lg:w-[420px] xl:w-[480px] 2xl:w-[540px]">
+                        <div class="splide__slide">
                             @include('podcast.drip')
                         </div>
                     @endforeach

@@ -1,5 +1,5 @@
 <template>
-    <header-component titleName0="Catalyst" titleName1="Proposers"/>
+    <header-component titleName0="Catalyst" titleName1="Proposers" subTitle=""/>
 
     <div class="relative z-10">
         <section class="relative py-8 text-white bg-teal-600 text-md">
@@ -78,13 +78,13 @@
                                     <a href="{{#}}"
                                     class="w-32 h-32 lg:w-32 lg:h-32 xl:w-44 xl:h-44 rounded-full mx-auto shadow-inner shadow-md">
                                         <img class="rounded-full w-full h-full"
-                                            src="{{#}}"
-                                            alt="{{#}} logo"/>
+                                            src="{{fund.thumbnail_url ?? fund.gravatar}}"
+                                            alt="{{fund.title}} logo"/>
                                     </a>
                                     <div class="space-y-2 w-full xl:flex xl:items-center xl:justify-between items-end">
                                         <div class="font-medium text-lg leading-6 space-y-1 w-full">
                                             <h2 class="mb-2">
-                                                <a href="{{#}}"
+                                                <a href={{fund.link}} target="_blank"
                                                 class="text-gray-800 hover:text-teal-700">
                                                     {{fund.title}}
                                                 </a>
@@ -92,7 +92,7 @@
                                             <div class="flex flex-row justify-between items-start gap-2 w-full">
                                                 <div class="flex flex-col gap2 itemscenter justify-center">
                                                     <span class="text-gray-600 font-semibold text-lg">
-                                                        {{fund.currency}} {{fund.amount}}
+                                                        {{fund.currency_symbol}} {{fund.amount}}
                                                     </span>
                                                     <span class="text-gray-500 text-xs">Total <br />Awarded</span>
                                                 </div>
@@ -104,7 +104,7 @@
                                                 </div>
                                                 <div class="flex flex-col gap2 itemscenter justify-center">
                                                     <span class="text-gray-600 font-semibold text-lg">
-                                                        <!-- <x-carbon :date="$fund->launched_at" format="y/m/d" /> -->
+                                                        {{formatDate(fund.launch_date)}}
                                                     </span>
                                                     <span class="text-gray-500 text-xs">Launched</span>
                                                 </div>
@@ -151,14 +151,25 @@
 </template>
 
 <script lang="ts">
-import { title } from "process";
 import {useFundsStore} from "../stores/funds-store"
 export default {
     setup(){
         const funds=useFundsStore()
 
-        return{funds:funds}
-    }
+        return{funds}
+    },
+
+    methods:{formatDate(date:string):string{
+            let _date=new Date(date);
+            let newDate=_date.toLocaleDateString(
+                "en-US", {
+                    year: "numeric",
+                    month: "2-digit",
+                    day: "2-digit",
+                })
+                return newDate;
+        }}
+
 
 }
 </script>
