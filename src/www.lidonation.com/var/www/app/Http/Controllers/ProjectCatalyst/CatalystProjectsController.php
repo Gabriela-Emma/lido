@@ -37,6 +37,8 @@ class CatalystProjectsController extends Controller
 
     public Collection $tagsFilter;
 
+    public Collection $budgets;
+
     /**
      * Display a listing of the resource.
      *
@@ -48,6 +50,7 @@ class CatalystProjectsController extends Controller
         $this->sortBy = $sort->first();
         $this->sortOrder = $sort->last();
 
+        $this->budgets = $request->collect('bs');
         $this->search = $request->input('s', null);
         $this->fundingStatus = match($request->input('f', null)) {
             'o' => 'over_budget',
@@ -70,6 +73,7 @@ class CatalystProjectsController extends Controller
                     'not_approved' => 'n',
                     default => null
                 },
+                'budgets' => $this->budgets->toArray(),
                 'funds' => $this->fundsFilter->toArray(),
                 'challenges' => $this->challengesFilter->toArray(),
                 'tags' => $this->tagsFilter->toArray()
@@ -179,6 +183,11 @@ class CatalystProjectsController extends Controller
         // filter by tags
         if ($this->tagsFilter->isNotEmpty()) {
             $_options[] = 'tags.id IN ' . $this->tagsFilter->toJson();
+        }
+
+        // filter by budget range
+        if ($this->budgets->isNotEmpty()) {
+            $_options[] = "amount_requested >  {$this->budgets->first()} AND amount_requested <  {$this->budgets->last()}";
         }
 
         return $_options;

@@ -139,6 +139,7 @@ let selectedSortRef = ref<Sort>(props.sort);
  */
 const filtering = computed(() => Object.values(props.filters).length > 0 && Object.values(props.filters).every(val => !!val));
 watch([search, filtersRef, selectedSortRef], (something) => {
+    console.log({filtersRef});
     query();
 }, {deep: true});
 
@@ -177,8 +178,11 @@ function query() {
     }
 
     if (!!selectedSortRef.value) {
-        console.log('selectedSortRef.value::', selectedSortRef.value);
         data['st'] = selectedSortRef.value;
+    }
+
+    if (!!filtersRef.value.budgets) {
+        data['bs'] = filtersRef.value.budgets;
     }
 
     router.get(
