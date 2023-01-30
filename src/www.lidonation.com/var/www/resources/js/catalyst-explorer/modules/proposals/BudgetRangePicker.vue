@@ -6,7 +6,9 @@
             :min="1"
             :max="3000000"
             :step="100"
-            :format="$filters.currency"
+            :format="function (value) {
+                return `₳${$filters.number(value)}`
+            }"
             tooltipPosition="bottom"
             v-model="rangeRef" />
         </div>
