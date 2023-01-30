@@ -1,5 +1,6 @@
 <template>
-    <header-component titleName0="Catalyst" titleName1="Proposals" subTitle="search proposals and challenges by title, content, or author and co-authors."/>
+    <header-component titleName0="Catalyst" titleName1="Proposals"
+                      subTitle="search proposals and challenges by title, content, or author and co-authors."/>
 
     <div class="flex flex-col gap-2 bg-primary-20">
         <section class="py-8">
@@ -78,6 +79,7 @@ import ProposalPagination from "../modules/proposals/ProposalPagination.vue";
 import Filters from "../models/filters";
 import {every} from "lodash";
 import Sort from "../models/sort";
+import {VARIABLES} from "../models/variables";
 
 /// props and class properties
 const props = withDefaults(
@@ -154,35 +156,37 @@ const proposals = proposalsStore();
 function query() {
     const data = {};
     if (search.value?.length > 0) {
-        data['s'] = search.value;
+        data[VARIABLES.SEARCH] = search.value;
     }
 
     if (filtersRef.value?.funded) {
-        data['fp'] = 1;
+        data[VARIABLES.FUNDED_PROPOSALS] = 1;
     }
 
     if (filtersRef.value?.funds) {
-        data['fs'] = Array.from(filtersRef.value?.funds);
+        data[VARIABLES.FUNDS] = Array.from(filtersRef.value?.funds);
     }
 
     if (filtersRef.value?.challenges) {
-        data['cs'] = Array.from(filtersRef.value?.challenges);
+        data[VARIABLES.CHALLENGES] = Array.from(filtersRef.value?.challenges);
     }
 
     if (filtersRef.value?.fundingStatus) {
-        data['f'] = filtersRef.value?.fundingStatus;
+        data[VARIABLES.FUNDING_STATUS] = filtersRef.value?.fundingStatus;
     }
 
     if (filtersRef.value?.tags) {
-        data['ts'] = Array.from(filtersRef.value?.tags);
+        data[VARIABLES.TAGS] = Array.from(filtersRef.value?.tags);
     }
 
     if (!!selectedSortRef.value) {
-        data['st'] = selectedSortRef.value;
+        data[VARIABLES.SORTS] = selectedSortRef.value;
     }
 
     if (!!filtersRef.value.budgets) {
-        data['bs'] = filtersRef.value.budgets;
+        if (filtersRef.value.budgets[0] > VARIABLES.MIN_BUDGET || filtersRef.value.budgets[1] < VARIABLES.MAX_BUDGET) {
+            data[VARIABLES.BUDGETS] = filtersRef.value.budgets;
+        }
     }
 
     router.get(
