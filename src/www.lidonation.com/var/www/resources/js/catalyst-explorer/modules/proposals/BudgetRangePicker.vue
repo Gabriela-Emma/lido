@@ -18,13 +18,18 @@
 <script lang="ts" setup>
 import Slider from '@vueform/slider'
 import {defineEmits, ref, watch} from "vue";
+import {VARIABLES} from "../../models/variables";
 
 const props = withDefaults(
     defineProps<{
-        modelValue?: number[]
+        // @todo why does this complain when assigned a type number
+        modelValue?: any[]
     }>(),
     {
-        modelValue: () => ([0, 0])
+        modelValue: () => ([
+            VARIABLES.MIN_BUDGET,
+            VARIABLES.MAX_BUDGET
+        ])
     },
 );
 let rangeRef = ref(props.modelValue);
