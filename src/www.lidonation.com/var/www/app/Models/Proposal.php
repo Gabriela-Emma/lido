@@ -467,6 +467,7 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
             'challenge' => $this->fund?->id,
             'challenge_label' => $this->fund?->label,
             'fund' => $this->fund?->parent?->id,
+            'groups' => $this->groups,
             'fund_label' => $this->fund?->parent?->label,
             'fund_status' => $this->fund?->status,
             'ca_rating' => $this->ratings_average ?? 0.00,
@@ -486,7 +487,7 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
      */
     protected function makeAllSearchableUsing($query): Builder
     {
-        return $query->with(['users', 'tags']);
+        return $query->with(['users', 'tags', 'groups']);
     }
 
     /**

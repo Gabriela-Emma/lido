@@ -1,5 +1,5 @@
 <template>
-    <header-component titleName0="Catalyst" titleName1="Proposals"/>
+    <header-component titleName0="Catalyst" titleName1="Proposals" subTitle="search proposals and challenges by title, content, or author and co-authors."/>
 
     <div class="flex flex-col gap-2 bg-primary-20">
         <section class="py-8">
@@ -139,6 +139,7 @@ let selectedSortRef = ref<Sort>(props.sort);
  */
 const filtering = computed(() => Object.values(props.filters).length > 0 && Object.values(props.filters).every(val => !!val));
 watch([search, filtersRef, selectedSortRef], (something) => {
+    console.log({filtersRef});
     query();
 }, {deep: true});
 
@@ -177,8 +178,11 @@ function query() {
     }
 
     if (!!selectedSortRef.value) {
-        console.log('selectedSortRef.value::', selectedSortRef.value);
         data['st'] = selectedSortRef.value;
+    }
+
+    if (!!filtersRef.value.budgets) {
+        data['bs'] = filtersRef.value.budgets;
     }
 
     router.get(

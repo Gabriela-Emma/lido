@@ -41,8 +41,6 @@ let selectedRef = ref(props.modelValue);
 const tagsStore = useTagsStore();
 const {tags} = storeToRefs(tagsStore);
 
-console.log('props.modelValue::', props.modelValue);
-
 ////
 // events & watchers
 ////

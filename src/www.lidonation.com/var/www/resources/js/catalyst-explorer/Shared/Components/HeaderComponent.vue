@@ -4,8 +4,8 @@
             {{ titleName0 }} <span class="text-teal-600"> {{ titleName1 }}</span>
         </h1>
         <p class="text-slate-600">
-            Search proposals and challenges by title, content, or author and co-authors.
-        </p>
+{            {{subTitle}}
+}        </p>
     </header>
 </template>
 
@@ -13,7 +13,8 @@
 export default {
   props: {
     titleName0: String,
-    titleName1: String
+    titleName1: String,
+    subTitle:String
   }
 }
 
