@@ -92,7 +92,7 @@
                                             <div class="flex flex-row justify-between items-start gap-2 w-full">
                                                 <div class="flex flex-col gap2 itemscenter justify-center">
                                                     <span class="text-gray-600 font-semibold text-lg">
-                                                        {{fund.currency}} {{fund.amount}}
+                                                        {{fund.currency_symbol}} {{fund.amount}}
                                                     </span>
                                                     <span class="text-gray-500 text-xs">Total <br />Awarded</span>
                                                 </div>
@@ -104,7 +104,7 @@
                                                 </div>
                                                 <div class="flex flex-col gap2 itemscenter justify-center">
                                                     <span class="text-gray-600 font-semibold text-lg">
-                                                        <!-- <x-carbon :date="$fund->launched_at" format="y/m/d" /> -->
+                                                        {{fund.launch_date}}
                                                     </span>
                                                     <span class="text-gray-500 text-xs">Launched</span>
                                                 </div>
@@ -151,7 +151,6 @@
 </template>
 
 <script lang="ts">
-import { title } from "process";
 import {useFundsStore} from "../stores/funds-store"
 export default {
     setup(){
