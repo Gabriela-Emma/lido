@@ -73,7 +73,7 @@ class CatalystProjectsController extends Controller
                     'not_approved' => 'n',
                     default => null
                 },
-                'budgets' => $this->budgets->toArray(),
+                'budgets' => $this->budgets->isNotEmpty() ? $this->budgets->toArray() : [0, 0],
                 'funds' => $this->fundsFilter->toArray(),
                 'challenges' => $this->challengesFilter->toArray(),
                 'tags' => $this->tagsFilter->toArray()
