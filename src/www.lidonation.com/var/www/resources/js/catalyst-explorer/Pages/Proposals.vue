@@ -1,5 +1,5 @@
 <template>
-    <header-component titleName0="Catalyst" titleName1="Proposals"/>
+    <header-component titleName0="Catalyst" titleName1="Proposals" subTitle="search proposals and challenges by title, content, or author and co-authors."/>
 
     <div class="flex flex-col gap-2 bg-primary-20">
         <section class="py-8">
