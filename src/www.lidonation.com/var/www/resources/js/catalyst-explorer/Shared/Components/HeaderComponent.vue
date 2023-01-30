@@ -4,8 +4,8 @@
             {{ titleName0 }} <span class="text-teal-600"> {{ titleName1 }}</span>
         </h1>
         <p class="text-slate-600">
-{            {{subTitle}}
-}        </p>
+            {{subTitle}}
+        </p>
     </header>
 </template>
 
