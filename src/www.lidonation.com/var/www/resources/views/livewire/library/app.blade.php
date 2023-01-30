@@ -70,12 +70,12 @@
                 Browse by Category
             </h2>
 
-            <div class="splide slider-splide" aria-label="Basic Structure Example">
+            <div class="splide slider-splide p-2" aria-label="Basic Structure Example">
                 <div class="splide__track">
-                    <div class="splide__list gap-6">
+                    <div class="splide__list gap-2">
                         @foreach($categories as $cat)
                             <div class="splide__slide">
-                                <div class="bg-white rounded-sm w-64 md:w-72 lg:w-80">
+                                <div class="bg-white rounded-sm">
                                     <a href="{{$cat->url}}" class="block">
                                         <img class="aspect-w-1aspect-h-2" alt="{{$cat->title}}'s hero"
                                              src="{{ $cat->hero_url }}"/>
@@ -116,7 +116,7 @@
             <div class="splide__track">
                 <div class="splide__list gap-2 episodes">
                     @foreach($latestLidoMinutes as $post)
-                        <div class="splide__slide w-[380px] lg:w-[420px] xl:w-[480px] 2xl:w-[540px]">
+                        <div class="splide__slide">
                             @include('podcast.drip')
                         </div>
                     @endforeach

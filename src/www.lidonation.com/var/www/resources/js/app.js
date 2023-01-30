@@ -303,43 +303,32 @@ window.addEventListener('analytics-event-fired', event => {
 let catSlider;
 if (document.querySelector('.slider-splide')) {
     catSlider = new Splide( '.slider-splide', {
-        type   : 'loop',
-        perPage: 4,
-        perMove: 1,
-        focus: 'center',
-        breakpoints: {
-            640: {
-              perPage: 2,
-              gap: '.7rem',
-              height: '6rem',
-            },
-            480: {
-              perPage: 1,
-              gap: '.7rem',
-              height: '6rem',
-            },
-          },
-      } ).mount();
-}
-
-let catPod;
-if (document.querySelector('.cat-pod')) {
-    catPod = new Splide( '.cat-pod', {
         type: 'loop',
-        perPage: 3,
+        perPage: 4,
         pagePerMove: 1,
         focus: 'center',
         arrows: true,
+        drag: 'free',
+        pagination: false,
         breakpoints: {
+        1030: {
+            perPage: 3,
+            gap: '.7rem',
+            drag: 'free',
+            padding: '2rem',
+        },
         640: {
             perPage: 2,
             gap: '.7rem',
-            height: '6rem',
+            padding: '2rem',
+            drag: 'free',
         },
         480: {
             perPage: 1,
             gap: '.7rem',
-            height: '6rem',
+            arrows: false,
+            padding: '2rem',
+            drag: 'free',
         },
         },
       } ).mount();
@@ -353,16 +342,21 @@ if (document.querySelector('.minute-splide')) {
         pagePerMove: 1,
         focus: 'center',
         arrows: true,
+        drag: 'free',
+        pagination: false,
         breakpoints: {
-        640: {
+        1030: {
             perPage: 2,
             gap: '.7rem',
-            height: '6rem',
+            padding: '2rem',
+            drag: 'free',
         },
         480: {
             perPage: 1,
             gap: '.7rem',
-            height: '6rem',
+            padding: '2rem',
+            arrows: false,
+            drag: 'free',
         },
         },
       } ).mount();
