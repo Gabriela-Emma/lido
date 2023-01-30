@@ -78,13 +78,13 @@
                                     <a href="{{#}}"
                                     class="w-32 h-32 lg:w-32 lg:h-32 xl:w-44 xl:h-44 rounded-full mx-auto shadow-inner shadow-md">
                                         <img class="rounded-full w-full h-full"
-                                            src="{{#}}"
-                                            alt="{{#}} logo"/>
+                                            src="{{fund.thumbnail_url ?? fund.gravatar}}"
+                                            alt="{{fund.title}} logo"/>
                                     </a>
                                     <div class="space-y-2 w-full xl:flex xl:items-center xl:justify-between items-end">
                                         <div class="font-medium text-lg leading-6 space-y-1 w-full">
                                             <h2 class="mb-2">
-                                                <a href="{{#}}"
+                                                <a href={{fund.link}} target="_blank"
                                                 class="text-gray-800 hover:text-teal-700">
                                                     {{fund.title}}
                                                 </a>
@@ -104,7 +104,7 @@
                                                 </div>
                                                 <div class="flex flex-col gap2 itemscenter justify-center">
                                                     <span class="text-gray-600 font-semibold text-lg">
-                                                        {{fund.launch_date}}
+                                                        {{formatDate(fund.launch_date)}}
                                                     </span>
                                                     <span class="text-gray-500 text-xs">Launched</span>
                                                 </div>
@@ -156,8 +156,20 @@ export default {
     setup(){
         const funds=useFundsStore()
 
-        return{funds:funds}
-    }
+        return{funds}
+    },
+
+    methods:{formatDate(date:string):string{
+            let _date=new Date(date);
+            let newDate=_date.toLocaleDateString(
+                "en-US", {
+                    year: "numeric",
+                    month: "2-digit",
+                    day: "2-digit",
+                })
+                return newDate;
+        }}
+
 
 }
 </script>
