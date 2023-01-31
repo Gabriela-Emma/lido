@@ -3,9 +3,9 @@
         <p class="mb-3 text-slate-400">Budget Range</p>
         <div class="mb-8">
         <Slider
-            :min="1"
-            :max="3000000"
-            :step="100"
+            :min="VARIABLES.MIN_BUDGET"
+            :max="VARIABLES.MAX_BUDGET"
+            :step="500"
             :format="function (value) {
                 return `₳${$filters.number(value)}`
             }"
