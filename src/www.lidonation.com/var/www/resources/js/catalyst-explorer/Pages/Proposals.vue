@@ -34,7 +34,7 @@
             <!-- Sorts and controls -->
             <div :class="{ 'lg:pr-16 opacity-10 lg:opacity-100': showFilters, 'container': !showFilters }"
                  class="flex w-full items-center justify-end mb-3">
-                <div class="w-auto lg:w-[260px]">
+                <div class="text-xs w-[240px] lg:w-[260px] lg:text-base">
                     <Multiselect
                         placeholder="Sort"
                         value-prop="value"
