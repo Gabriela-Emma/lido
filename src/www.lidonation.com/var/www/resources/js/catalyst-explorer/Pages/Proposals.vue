@@ -6,9 +6,9 @@
         <section class="py-8">
             <div class="container">
                 <div class="flex items-center w-full h-10 lg:h-16">
-                    <ProposalSearch
+                    <Search
                         :search="search"
-                        @search="(term) => search=term"></ProposalSearch>
+                        @search="(term) => search=term"></Search>
                     <div class="h-full">
                         <button @click="showFilters = !showFilters"
                                 class="h-full text-xs lg:text-base hover:text-yellow-500 focus:outline-none flex flex-nowrap gap-1 items-center px-0.5 lg:px-2 border border-white border-l-0"
@@ -87,7 +87,6 @@ import {proposalsStore} from "../stores/proposals-store";
 import {computed, ref, watch} from "vue";
 import Proposal from "../models/proposal";
 import Proposals from "../modules/proposals/Proposals.vue";
-import ProposalSearch from "../modules/proposals/ProposalSearch.vue";
 import {router} from '@inertiajs/vue3';
 import ProposalFilter from "../modules/proposals/ProposalFilter.vue";
 import ProposalPagination from "../modules/proposals/ProposalPagination.vue";
@@ -95,6 +94,7 @@ import Filters from "../models/filters";
 import {every} from "lodash";
 import Sort from "../models/sort";
 import {VARIABLES} from "../models/variables";
+import Search from "../Shared/Components/Search.vue";
 
 /// props and class properties
 const props = withDefaults(
