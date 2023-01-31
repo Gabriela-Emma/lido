@@ -1,6 +1,6 @@
 <template>
     <div class="bg-white w-[260px] relative" v-if="filtering && showFilter !== false">
-        <h2 class="font-medium flex flex-nowrap justify-between gap-8 border-b p-4">
+        <h2 class="relative font-medium flex flex-nowrap justify-between gap-8 border-b p-4">
             <span>
                 Filters
             </span>
