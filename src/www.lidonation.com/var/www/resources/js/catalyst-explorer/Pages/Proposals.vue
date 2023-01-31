@@ -5,14 +5,13 @@
     <div class="flex flex-col gap-2 bg-primary-20">
         <section class="py-8">
             <div class="container">
-                <div class="flex items-center w-full h-16">
+                <div class="flex items-center w-full h-10 lg:h-16">
                     <ProposalSearch
                         :search="search"
                         @search="(term) => search=term"></ProposalSearch>
-
                     <div class="h-full">
                         <button @click="showFilters = !showFilters"
-                                class="h-full hover:text-yellow-500 focus:outline-none flex flex-nowrap gap-1 items-center px-2 border border-white border-l-0"
+                                class="h-full text-xs lg:text-base hover:text-yellow-500 focus:outline-none flex flex-nowrap gap-1 items-center px-0.5 lg:px-2 border border-white border-l-0"
                                 :class="{
                                     'bg-slate-200 text-slate-600': !showFilters && !filtering,
                                     'border-teal-500': !showFilters && search,
@@ -21,7 +20,7 @@
                                 }"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                 stroke="currentColor" class="w-6 h-6">
+                                 stroke="currentColor" class="w-4 lg:w-6 w-4 lg:h-6">
                                 <path stroke-linecap="round" stroke-linejoin="round"
                                       d="M6 13.5V3.75m0 9.75a1.5 1.5 0 010 3m0-3a1.5 1.5 0 000 3m0 3.75V16.5m12-3V3.75m0 9.75a1.5 1.5 0 010 3m0-3a1.5 1.5 0 000 3m0 3.75V16.5m-6-9V3.75m0 3.75a1.5 1.5 0 010 3m0-3a1.5 1.5 0 000 3m0 9.75V10.5"/>
                             </svg>
@@ -29,31 +28,47 @@
                         </button>
                     </div>
                 </div>
-                <div class="flex items-center mt-4">
-                    <div class="w-[204px]">
-                        <Multiselect
-                            placeholder="Sort"
-                            value-prop="value"
-                            label="label"
-                            v-model="selectedSortRef"
-                            :options="sorts"
-                            :classes="{
+            </div>
+        </section>
+        <section class="py-8 w-full relative">
+            <!-- Sorts and controls -->
+            <div :class="{ 'lg:pr-16 opacity-10 lg:opacity-100': showFilters, 'container': !showFilters }"
+                 class="flex w-full items-center justify-end mb-3">
+                <div class="w-auto lg:w-[260px]">
+                    <Multiselect
+                        placeholder="Sort"
+                        value-prop="value"
+                        label="label"
+                        v-model="selectedSortRef"
+                        :options="sorts"
+                        :classes="{
                                 container: 'multiselect border-0 p-0.5 flex-wrap',
                                 containerActive: 'shadow-none shadow-transparent box-shadow-none',
                             }"
-                        />
-                    </div>
+                    />
                 </div>
             </div>
-        </section>
-        <section class="py-8 w-full">
-            <div class="flex flex-row gap-5 relative w-full">
-                <ProposalFilter @filter="(payload) => filtersRef = payload"
-                                :filters="filtersRef"
-                                :show-filter="showFilters"></ProposalFilter>
 
+            <div :class="{ 'gap-5': showFilters }"
+                 class="flex flex-row relative w-full">
+                <!-- Proposal Filters -->
+                <div class="absolute left-0 lg:static z-10 bg-white shadow-lg lg:shadow-0">
+                    <button type="button" @click="showFilters = !showFilters"
+                            class="inline-flex absolute right-0 -top-9 lg:hidden items-center rounded-t-sm border border-transparent bg-teal-600 p-2 text-white hover:bg-teal-700 focus:outline-none focus:ring-0 focus:ring-teal-500 focus:ring-offset-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                             stroke="currentColor" class="w-5 h-5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/>
+                        </svg>
+                    </button>
+
+                    <ProposalFilter @filter="(payload) => filtersRef = payload"
+                                    :filters="filtersRef"
+                                    :show-filter="showFilters"></ProposalFilter>
+                </div>
+
+                <!-- Proposal lists -->
                 <div class="flex-1 mx-auto"
-                     :class="{ 'pr-16': showFilters, 'container': !showFilters }">
+                     :class="{ 'lg:pr-16 opacity-10 lg:opacity-100': showFilters, 'container': !showFilters }">
                     <Proposals :proposals="props.proposals.data"></Proposals>
                 </div>
             </div>
