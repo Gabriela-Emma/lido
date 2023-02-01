@@ -3,6 +3,7 @@ import Fund from "./fund";
 export default interface Filters {
     funded: boolean;
     fundingStatus: string;
+    cohort: string;
     type?: string;
     funds?: number[];
     challenges?: Fund[];
