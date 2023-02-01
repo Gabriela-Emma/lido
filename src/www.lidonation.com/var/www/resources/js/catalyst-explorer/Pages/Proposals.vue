@@ -144,7 +144,6 @@ const props = withDefaults(
         ]
     });
 let search = ref(props.search);
-let showFilters = ref(every(props.filters));
 let filtersRef = ref<Filters>(props.filters);
 let selectedSortRef = ref<string>(props.sort);
 
@@ -154,7 +153,12 @@ let selectedSortRef = ref<string>(props.sort);
 /**
  * assert that every property on props.filters is truthy.
  */
-const filtering = computed(() => Object.values(props.filters).length > 0 && Object.values(props.filters).every(val => !!val));
+const filtering = computed(() => {
+    return getFiltering();
+});
+
+let showFilters = ref(getFiltering());
+
 watch([search, filtersRef, selectedSortRef], (something) => {
     query();
 }, {deep: true});
@@ -166,6 +170,25 @@ watch([search, filtersRef, selectedSortRef], (something) => {
 
 // proposals
 const proposals = proposalsStore();
+
+function getFiltering() {
+    if (props.filters.cohort) {
+        return true;
+    } else if(props.filters.funds?.length > 0) {
+        return true;
+    } else if(props.filters.challenges?.length > 0) {
+        return true;
+    } else if(props.filters.tags?.length > 0) {
+        return true;
+    } else if(props.filters.people.length > 0) {
+        return true;
+    } else if(!!props.filters.fundingStatus) {
+        return true;
+    } else if(!!props.filters.projectStatus) {
+        return true;
+    }
+    return false;
+}
 
 function query() {
     const data = {};
@@ -193,6 +216,10 @@ function query() {
         data[VARIABLES.FUNDING_STATUS] = filtersRef.value?.fundingStatus;
     }
 
+    if (filtersRef.value?.projectStatus) {
+        data[VARIABLES.STATUS] = filtersRef.value?.projectStatus;
+    }
+
     if (filtersRef.value?.type) {
         data[VARIABLES.TYPE] = filtersRef.value?.type;
     }
@@ -213,7 +240,7 @@ function query() {
             data[VARIABLES.BUDGETS] = filtersRef.value.budgets;
         }
     }
-    console.log({data});
+
     router.get(
         "/catalyst-explorer/proposals",
         data,

@@ -18,6 +18,7 @@
         <div>
             <ul class="divide-y border-b">
                 <li class=" p-4">
+                    <p class="mb-3 text-slate-400">Funding Status</p>
                     <Toggle
                         onLabel="Funded Proposals"
                         offLabel="All Proposals"
@@ -72,6 +73,17 @@
                     <PersonPicker v-model="filters.people" />
                 </li>
 
+                <li class="">
+                    <ProposalStatusPicker
+                        v-model="filters.projectStatus"
+                        :filters="{
+                            c: 'Complete',
+                            i: 'In Progress',
+                            u: 'Unfunded',
+                            // p: 'Paused'
+                        }" />
+                </li>
+
                 <li class="bg-stone-100 p-4">
                     <span class="text-lg xl:text-xl block mb-2 border-b font-medium">
                         Community Filters
@@ -81,7 +93,8 @@
                         :filters="{
                             im: 'Impact Proposals',
                             wo: 'Women Proposals',
-                            id: 'Ideafest Proposals'
+                            id: 'Ideafest Proposals',
+                            qp: 'Quick Pitches',
                         }" />
                 </li>
             </ul>
@@ -103,6 +116,7 @@ import BudgetRangePicker from "./BudgetRangePicker.vue";
 import PersonPicker from "../people/PersonPicker.vue";
 import {usePeopleStore} from "../../stores/people-store";
 import CohortPicker from "./CohortPicker.vue";
+import ProposalStatusPicker from "./ProposalStatusPicker.vue";
 
 ////
 // props and class properties
