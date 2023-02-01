@@ -462,8 +462,8 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
         return array_merge($array, [
             'funded' => (bool) $this->funded_at ? 1 : 0,
             'has_quick_pitch' => (bool) $this->quick_pitch ? 1 : 0,
-            'completed' => $this->status === 'complete' ? '1' : '0',
-            'over_budget' => $this->status === 'over_budget' ? '1' : '0',
+            'completed' => $this->status === 'complete' ? 1 : 0,
+            'over_budget' => $this->status === 'over_budget' ? 1 : 0,
             'challenge' => $this->fund?->id,
             'challenge_label' => $this->fund?->label,
             'fund' => $this->fund?->parent?->id,
@@ -473,9 +473,9 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
             'ca_rating' => $this->ratings_average ?? 0.00,
             'amount_requested' => $this->amount_requested ? floatval($this->amount_requested) : 0.00,
             'amount_received' => $this->amount_received ? floatval($this->amount_received) : 0.00,
-            'impact_proposal' => $this->is_impact_proposal,
-            'woman_proposal' => $this->is_woman_proposal,
-            'ideafest_proposal' => $this->is_ideafest_proposal,
+            'impact_proposal' => $this->is_impact_proposal ? 1 : 0,
+            'woman_proposal' => $this->is_woman_proposal ? 1 : 0,
+            'ideafest_proposal' => $this->is_ideafest_proposal ? 1 : 0,
         ]);
     }
 

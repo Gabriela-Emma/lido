@@ -20,6 +20,7 @@ class CatalystProjectsController extends Controller
 {
     protected null|string|Stringable $search = null;
     protected null|string|Stringable $fundingStatus = null;
+    protected null|string|Stringable $projectStatus = null;
     protected null|string|Stringable $proposalCohort = null;
     protected null|string|Stringable $proposalType = null;
 
@@ -61,10 +62,18 @@ class CatalystProjectsController extends Controller
             'n' => 'not_approved',
             default => null
         };
+        $this->projectStatus = match ($request->input('ss', null)) {
+            'c' => 'complete',
+            'i' => 'in_progress',
+            'u' => 'unfunded',
+            'p' => 'paused',
+            default => null
+        };
         $this->proposalCohort = match ($request->input('co', null)) {
             'im' => 'impact_proposal',
             'wo' => 'woman_proposal',
             'id' => 'ideafest_proposal',
+            'qp' => 'has_quick_pitch',
             default => null
         };
         $this->proposalType = match ($request->input('t', 'p')) {
@@ -89,10 +98,18 @@ class CatalystProjectsController extends Controller
                     'not_approved' => 'n',
                     default => null
                 },
+                'projectStatus' => match ($this->projectStatus) {
+                    'complete' => 'c',
+                    'in_progress' => 'i',
+                    'unfunded' => 'u',
+                    'paused' => 'p',
+                    default => null
+                },
                 'cohort' => match ($this->proposalCohort) {
                     'impact_proposal' => 'im',
                     'woman_proposal' => 'wo',
                     'ideafest_proposal' => 'id',
+                    'has_quick_pitch' => 'qp',
                     default => null
                 },
                 'type' => match ($this->proposalType) {
@@ -148,6 +165,7 @@ class CatalystProjectsController extends Controller
                     'no_votes_count',
                     'problem',
                     'solution',
+                    'status',
                     'website',
                     'type',
                     'users.id',
@@ -192,6 +210,10 @@ class CatalystProjectsController extends Controller
             $_options[] = "funding_status = {$this->fundingStatus}";
         }
 
+        if (!!$this->projectStatus) {
+            $_options[] = "status = {$this->projectStatus}";
+        }
+
         if (!!$this->proposalType) {
             $_options[] = "type = {$this->proposalType}";
         }
@@ -201,7 +223,7 @@ class CatalystProjectsController extends Controller
         }
 
         if (!!$this->proposalCohort) {
-            $_options[] = "{$this->proposalCohort} = true";
+            $_options[] = "{$this->proposalCohort} = 1";
         }
 
         // filter by fund
