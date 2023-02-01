@@ -20,6 +20,7 @@ class CatalystProjectsController extends Controller
 {
     protected null|string|Stringable $search = null;
     protected null|string|Stringable $fundingStatus = null;
+    protected null|string|Stringable $proposalType = null;
 
     protected ?string $sortBy = 'amount_requested';
 
@@ -54,9 +55,14 @@ class CatalystProjectsController extends Controller
 
         $this->budgets = $request->collect('bs');
         $this->search = $request->input('s', null);
-        $this->fundingStatus = match($request->input('f', null)) {
+        $this->fundingStatus = match ($request->input('f', null)) {
             'o' => 'over_budget',
             'n' => 'not_approved',
+            default => null
+        };
+        $this->proposalType = match ($request->input('t', 'p')) {
+            'p' => 'proposal',
+            'c' => 'challenge',
             default => null
         };
         $this->fundedProposalsFilter = $request->input('fp', false);
@@ -71,9 +77,14 @@ class CatalystProjectsController extends Controller
             'sort' => "{$this->sortBy}:{$this->sortOrder}",
             'filters' => [
                 'funded' => $this->fundedProposalsFilter,
-                'fundingStatus' => match($this->fundingStatus) {
+                'fundingStatus' => match ($this->fundingStatus) {
                     'over_budget' => 'o',
                     'not_approved' => 'n',
+                    default => null
+                },
+                'type' => match ($this->proposalType) {
+                    'proposal' => 'p',
+                    'challenge' => 'c',
                     default => null
                 },
                 'budgets' => $this->budgets->isNotEmpty() ? $this->budgets->toArray() : [1, 3000000],
@@ -131,6 +142,7 @@ class CatalystProjectsController extends Controller
                     'problem',
                     'solution',
                     'website',
+                    'type',
                     'users.id',
                     'users.name',
                     'users.media.original_url',
@@ -143,7 +155,6 @@ class CatalystProjectsController extends Controller
                 } else {
                     $options['sort'] = ['created_at:desc'];
                 }
-//                dd($options);
 
                 $options['limit'] = $this->limit;
 
@@ -173,18 +184,22 @@ class CatalystProjectsController extends Controller
             $_options[] = "funding_status = {$this->fundingStatus}";
         }
 
+        if (!!$this->proposalType) {
+            $_options[] = "type = {$this->proposalType}";
+        }
+
         if (!!$this->fundedProposalsFilter) {
             $_options[] = 'funded = 1';
         }
 
         // filter by fund
         if ($this->fundsFilter->isNotEmpty()) {
-            $_options[] =  '(' . $this->fundsFilter->map(fn($f) => "fund = {$f}")->implode(' OR ') . ')';
+            $_options[] = '(' . $this->fundsFilter->map(fn($f) => "fund = {$f}")->implode(' OR ') . ')';
         }
 
         // filter by challenge
         if ($this->challengesFilter->isNotEmpty()) {
-            $_options[] =  '(' . $this->challengesFilter->map(fn($c) => "challenge = {$c}")->implode(' OR ') . ')';
+            $_options[] = '(' . $this->challengesFilter->map(fn($c) => "challenge = {$c}")->implode(' OR ') . ')';
         }
 
         // filter by tags

@@ -40,11 +40,21 @@
                     <BudgetRangePicker v-model="filters.budgets" />
                 </li>
                 <li class="">
+                    <FundingStatusPicker
+                        v-model="filters.type"
+                        :filters="{
+                            p: 'Only Proposals',
+                            c: 'Only Challenges'
+                        }" />
+                </li>
+
+                <li class="">
                     <FundPicker v-model="filters.funds" />
                 </li>
                 <li class="">
                     <ChallengePicker v-model="filters.challenges" />
                 </li>
+
                 <li class="">
                     <FundingStatusPicker
                         v-model="filters.fundingStatus"
@@ -91,7 +101,6 @@ const props = withDefaults(
 let showClearAll = ref(false);
 let filters = ref<Filters>(props.filters);
 
-console.log('people::', filters.value.people);
 
 ////
 // computer properties
