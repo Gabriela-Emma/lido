@@ -23,15 +23,29 @@
                 <div class="flex flex-row flex-nowrap mb-2 text-white">
                     <div
                         v-if="proposal.amount_received > 0.00"
-                        class="inline-block px-1 py-0.5 pb-2.5 text-xs xl:text-md font-semibold rounded-tl-sm rounded-bl-sm bg-accent-900">
-                        {{ $filters.currency(proposal.amount_received) }}
-                        <sub class="text-gray-200 block mt-0.5 italic">
-                            Distributed
-                        </sub>
+                        class="inline-flex text-xs xl:text-lg font-semibold rounded-l-sm py-0.5">
+                        <div class="px-1 py-1.5 pb-4 bg-accent-800">
+                            {{ $filters.currency(proposal.amount_received) }}
+                            <sub class="text-gray-200 block mt-0.5 italic">
+                                Distributed
+                            </sub>
+                        </div>
+
+                        <div class="px-3 py-1.5 text-sm xl:text-md bg-accent-900 inline-flex items-center"
+                             v-if="(proposal.amount_requested - proposal.amount_received) === 0">
+                            Fully<br/>
+                            Paid
+                        </div>
+                        <div class="px-1 py-1.5 bg-accent-900" v-else>
+                            {{ $filters.currency(proposal.amount_requested - proposal.amount_received) }}
+                            <sub class="text-gray-200 block mt-0.5 italic">
+                                Remaining
+                            </sub>
+                        </div>
                     </div>
 
                     <div
-                        class="inline-block px-1 py-0.5 pb-2.5 text-xs xl:text-sm font-semibold rounded-tr-sm rounded-br-2m bg-teal-800">
+                        class="flex flex-col items-center px-1 py-1.5 text-xs xl:text-lg font-semibold rounded-r-sm bg-teal-800">
                         {{ $filters.currency(proposal.amount_requested) }}
                         <sub class="text-gray-200 block mt-0.5 italic">
                             Requested
@@ -57,13 +71,25 @@
                 </div>
             </div>
             <div class="space-x-1 italic">
-                <span class="inline-block px-1.5 py-0.5 font-semibold text-white text-xs rounded-sm" :class="{
-                    'bg-teal-600': proposal.funding_status === 'funded',
-                    'bg-slate-500': proposal.funding_status === 'over_budget',
-                    'bg-slate-300': proposal.funding_status === 'not_approved',
-                }">
-                    {{ proposal.funding_status?.replace('_', ' ') }}
-                </span>
+
+
+                <!--                <div class="inline-flex text-xs xl:text-md font-semibold rounded-l-sm py-0.5">-->
+                <!--                    <div class="px-1 py-1" :class="{-->
+                <!--                    'bg-teal-600': proposal.funding_status === 'funded',-->
+                <!--                    'bg-slate-500': proposal.funding_status === 'over_budget',-->
+                <!--                    'bg-slate-300': proposal.funding_status === 'not_approved'}">-->
+                <!--                        {{ proposal.funding_status?.replace('_', ' ') }}-->
+                <!--                        <sub class="text-gray-200 block mt-0.5 italic text-xs">-->
+                <!--                            Funding Status-->
+                <!--                        </sub>-->
+                <!--                    </div>-->
+                <!--                    <div class="px-1 py-1 bg-slate-400">-->
+                <!--                        {{ proposal.status?.replace('_', ' ') }}-->
+                <!--                        <sub class="text-gray-200 block mt-0.5 italic text-xs">-->
+                <!--                            Project Status-->
+                <!--                        </sub>-->
+                <!--                    </div>-->
+                <!--                </div>-->
                 <!--            @elseif(!!$proposal->funded_at)-->
                 <!--            <span-->
                 <!--                class="inline-block px-1.5 py-0.5 font-semibold text-white text-xs rounded-sm bg-teal-light-500">funded</span>-->
@@ -135,7 +161,7 @@
                         class="flex items-center justify-center flex-1 py-2 -mr-px text-sm font-medium text-gray-700 border border-transparent rounded-bl-sm hover:text-gray-500">
                         <div class="flex gap-1 items-center">
                             <div class="text-sm font-semibold">
-                                {{$filters.number(proposal.ca_rating)?.toFixed(2)}}
+                                {{ $filters.number(proposal.ca_rating)?.toFixed(2) }}
                             </div>
                             <div>
                                 <Rating :modelValue="proposal.ca_rating" :stars="5" :readonly="true" :cancel="false">
@@ -166,7 +192,7 @@
 
 
             <div class="-mt-px grid grid-cols-2 divide-x text-xs xl:text-sm 2xl:text-md">
-                <div class="flex items-center justify-center flex-1 gap-2 p-2">
+                <div class="flex items-center justify-start flex-1 gap-2 p-2">
                     <div class="text-xs">
                         Voted Yes:
                     </div>
@@ -177,12 +203,39 @@
 
                 <div class="flex flex-1 -ml-px">
                     <div
-                        class="flex items-center gap-2 justify-center flex-1 py-2 -mr-px text-sm font-medium text-gray-700 border border-transparent rounded-bl-sm hover:text-gray-500">
+                        class="flex items-center gap-2 justify-end flex-1 py-2 px-1.5 -mr-px text-sm font-medium text-gray-700 border border-transparent rounded-bl-sm hover:text-gray-500">
                         <div class="text-xs">
                             Voted No:
                         </div>
                         <div class="font-semibold">
                             ₳{{ $filters.number(proposal.no_votes_count) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="-mt-px grid grid-cols-2 divide-x text-xs xl:text-sm 2xl:text-md">
+                <div class="flex items-center justify-start flex-1 gap-2 p-2">
+                    <div class="text-xs">
+                        Funding Status:
+                    </div>
+                    <div class="inline-block px-1.5 py-0.5 font-semibold text-white text-xs rounded-sm"
+                         :class="{
+                            'bg-teal-600': proposal.funding_status === 'funded',
+                            'bg-slate-500': proposal.funding_status === 'over_budget',
+                            'bg-slate-300': proposal.funding_status === 'not_approved'}">
+                        {{ proposal.funding_status?.replace('_', ' ') }}
+                    </div>
+                </div>
+
+                <div class="flex flex-1 -ml-px">
+                    <div
+                        class="flex items-center gap-2 justify-end flex-1 py-2 px-1.5 -mr-px text-sm font-medium text-gray-700 border border-transparent rounded-bl-sm hover:text-gray-500">
+                        <div class="text-xs">
+                            Project Status:
+                        </div>
+                        <div class="font-semibold capitalize">
+                            {{ proposal.status?.replace('_', ' ') }}
                         </div>
                     </div>
                 </div>
