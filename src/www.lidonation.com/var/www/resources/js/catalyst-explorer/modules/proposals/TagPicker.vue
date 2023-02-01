@@ -13,6 +13,8 @@
             :minChars="3"
             :options="tags"
             :searchable="true"
+            :clearOnSelect="false"
+            :closeOnSelect="false"
             :classes="{
                 container: 'multiselect border-0 px-1 py-2 flex-wrap',
                 containerActive: 'shadow-none shadow-transparent box-shadow-none',
