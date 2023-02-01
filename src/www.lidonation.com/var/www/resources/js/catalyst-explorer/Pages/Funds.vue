@@ -1,5 +1,5 @@
 <template>
-    <header-component titleName0="Catalyst" titleName1="Proposers" subTitle=""/>
+    <header-component titleName0="Catalyst" titleName1="Funding Rounds" subTitle=""/>
 
     <div class="relative z-10">
         <section class="relative py-8 text-white bg-teal-600 text-md">
@@ -72,7 +72,7 @@
                 <div class="space-y-12">
                     <ul role="list"
                         class="space-y-4 sm:grid sm:grid-cols-2 sm:gap-6 sm:space-y-0 lg:grid-cols-3 2xl:grid-cols-4 lg:gap-6">
-                       
+
                             <li v-for="fund in funds" :key="fund.id" class="py-8 px-6 bg-primary-10 text-center rounded-sm flex flex-row justify-center xl:px-8 xl:text-left">
                                 <div class="space-y-6 flex flex-col justify-between w-full xl:space-y-10">
                                     <a v-bind:href="fund.link"
@@ -112,7 +112,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </li>                      
+                            </li>
                     </ul>
                 </div>
                 <div class="mt-6 paginator ">
