@@ -102,7 +102,7 @@ const props = withDefaults(
         search?: string,
         filters?: Filters,
         sorts?: Sort[],
-        sort?: Sort,
+        sort?: string,
         proposals: {
             links: [],
             data: Proposal[]
@@ -146,7 +146,7 @@ const props = withDefaults(
 let search = ref(props.search);
 let showFilters = ref(every(props.filters));
 let filtersRef = ref<Filters>(props.filters);
-let selectedSortRef = ref<Sort>(props.sort);
+let selectedSortRef = ref<string>(props.sort);
 
 ////
 // computed properties
@@ -189,6 +189,10 @@ function query() {
         data[VARIABLES.FUNDING_STATUS] = filtersRef.value?.fundingStatus;
     }
 
+    if (filtersRef.value?.type) {
+        data[VARIABLES.TYPE] = filtersRef.value?.type;
+    }
+
     if (filtersRef.value?.tags) {
         data[VARIABLES.TAGS] = Array.from(filtersRef.value?.tags);
     }
@@ -196,7 +200,7 @@ function query() {
         data[VARIABLES.PEOPLE] = Array.from(filtersRef.value?.people);
     }
 
-    if (!!selectedSortRef.value) {
+    if (!!selectedSortRef.value && selectedSortRef.value.length > 3 ) {
         data[VARIABLES.SORTS] = selectedSortRef.value;
     }
 
@@ -205,7 +209,7 @@ function query() {
             data[VARIABLES.BUDGETS] = filtersRef.value.budgets;
         }
     }
-
+    console.log({data});
     router.get(
         "/catalyst-explorer/proposals",
         data,

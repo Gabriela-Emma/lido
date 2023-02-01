@@ -7,6 +7,7 @@ export enum VARIABLES {
     MIN_BUDGET = 1,
     MAX_BUDGET = 2000000,
     PEOPLE = 'pp',
+    TYPE = 't',
     SEARCH = 's',
     SORTS = 'st',
     TAGS = 'ts',
