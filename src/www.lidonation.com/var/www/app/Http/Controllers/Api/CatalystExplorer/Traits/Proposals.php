@@ -110,12 +110,11 @@ trait Proposals
     {
         $per_page = request('per_page', 24);
 
-        // per_page query doesn't exceed 60
-        //@todo revert this 400 back to 60
-        if ($per_page > 400) {
+        // per_page query doesn't exceed 100
+        if ($per_page > 100) {
             return response([
-                'status_code' => 400,
-                'message' => 'query parameter \'per_page\' should not exceed 60'], 400);
+                'status_code' => 100,
+                'message' => 'query parameter \'per_page\' should not exceed 60'], 100);
         }
 
         Proposal::withoutGlobalScopes();

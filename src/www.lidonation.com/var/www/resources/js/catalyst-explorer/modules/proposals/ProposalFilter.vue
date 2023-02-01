@@ -70,6 +70,10 @@
                 </li>
 
                 <li class="">
+                    <GroupsPicker v-model="filters.groups" />
+                </li>
+
+                <li class="">
                     <PersonPicker v-model="filters.people" />
                 </li>
 
@@ -117,6 +121,8 @@ import PersonPicker from "../people/PersonPicker.vue";
 import {usePeopleStore} from "../../stores/people-store";
 import CohortPicker from "./CohortPicker.vue";
 import ProposalStatusPicker from "./ProposalStatusPicker.vue";
+import {useGroupsStore} from "../../stores/groups-store";
+import GroupsPicker from "../groups/GroupsPicker.vue";
 
 ////
 // props and class properties
@@ -158,6 +164,12 @@ tagsStore.loadTags(props?.filters?.tags);
  */
 const peopleStore = usePeopleStore();
 peopleStore.loadPeople(props?.filters?.people);
+
+/**
+ * Init Groups
+ */
+const groupsStore = useGroupsStore();
+groupsStore.loadGroups(props?.filters?.groups);
 
 ////
 // events & watchers

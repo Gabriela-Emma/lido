@@ -11,6 +11,7 @@ use Chelout\RelationshipEvents\Concerns\HasBelongsToManyEvents;
 use Chelout\RelationshipEvents\Traits\HasRelationshipObservables;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\UrlGenerator;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -54,6 +55,20 @@ class CatalystGroup extends Model implements HasMedia, HasLink
     public function getUrlAttribute()
     {
         return $this->link;
+    }
+
+    public function scopeFilter($query, array $filters)
+    {
+        $query->when(
+            $filters['search'] ?? false,
+            fn(Builder $query, $search) =>
+            $query->where('name', 'ILIKE', '%' . $search . '%')
+        );
+
+        $query->when(
+            $filters['ids'] ?? false,
+            fn(Builder $query, $ids) => $query->whereIn('id', is_array($ids) ? $ids : explode(',', $ids))
+        );
     }
 
     public function owner(): BelongsTo

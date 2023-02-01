@@ -2,7 +2,7 @@
     <div
         class="w-full">
         <Multiselect
-            placeholder="Limit to Person(s)"
+            placeholder="Limit to Group(s)"
             noOptionsText="Try typing more chars"
             noResultsText="Try typing more chars"
             v-model="selectedRef"
@@ -11,7 +11,7 @@
             mode="tags"
             @search-change="search"
             :minChars="3"
-            :options="people"
+            :options="groups"
             :searchable="true"
             :closeOnSelect="false"
             :classes="{
@@ -29,34 +29,33 @@
 import Multiselect from '@vueform/multiselect';
 import {defineEmits, ref, watch} from "vue";
 import {storeToRefs} from "pinia";
-import Challenge from "../../models/challenge";
-import {usePeopleStore} from "../../stores/people-store";
+import {useGroupsStore} from "../../stores/groups-store";
 
 const props = withDefaults(
     defineProps<{
-        modelValue?: Challenge
+        modelValue?: number
     }>(),
     {},
 );
 let selectedRef = ref(props.modelValue);
-const peopleStore = usePeopleStore();
-const {people} = storeToRefs(peopleStore);
+const groupsStore = useGroupsStore();
+const {groups} = storeToRefs(groupsStore);
 
 ////
 // events & watchers
 ////
 const emit = defineEmits<{
-    (e: 'update:modelValue', challenge: Challenge): void
+    (e: 'update:modelValue', group: number): void
 }>();
 
-watch(selectedRef, (newChallenge, oldFund) => {
-    emit('update:modelValue', newChallenge);
+watch(selectedRef, (newGroup, oldFund) => {
+    emit('update:modelValue', newGroup);
 });
 
 ////
 // Actions
 ////////////////
 function search(search) {
-    peopleStore.search({search})
+    groupsStore.search({search})
 }
 </script>

@@ -182,6 +182,8 @@ function getFiltering() {
         return true;
     } else if(props.filters.people.length > 0) {
         return true;
+    } else if(props.filters.groups.length > 0) {
+        return true;
     } else if(!!props.filters.fundingStatus) {
         return true;
     } else if(!!props.filters.projectStatus) {
@@ -227,8 +229,13 @@ function query() {
     if (filtersRef.value?.tags) {
         data[VARIABLES.TAGS] = Array.from(filtersRef.value?.tags);
     }
+
     if (filtersRef.value?.people) {
         data[VARIABLES.PEOPLE] = Array.from(filtersRef.value?.people);
+    }
+
+    if (filtersRef.value?.groups) {
+        data[VARIABLES.GROUPS] = Array.from(filtersRef.value?.groups);
     }
 
     if (!!selectedSortRef.value && selectedSortRef.value.length > 3 ) {

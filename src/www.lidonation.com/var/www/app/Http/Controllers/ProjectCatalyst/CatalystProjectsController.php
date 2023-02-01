@@ -42,6 +42,8 @@ class CatalystProjectsController extends Controller
 
     public Collection $peopleFilter;
 
+    public Collection $groupsFilter;
+
     public Collection $budgets;
 
     /**
@@ -86,6 +88,7 @@ class CatalystProjectsController extends Controller
         $this->challengesFilter = $request->collect('cs')->map(fn($n) => intval($n));
         $this->tagsFilter = $request->collect('ts')->map(fn($n) => intval($n));
         $this->peopleFilter = $request->collect('pp')->map(fn($n) => intval($n));
+        $this->groupsFilter = $request->collect('g')->map(fn($n) => intval($n));
 
         // get filter(s) from request
         return Inertia::render('Proposals', [
@@ -121,9 +124,10 @@ class CatalystProjectsController extends Controller
                 'funds' => $this->fundsFilter->toArray(),
                 'challenges' => $this->challengesFilter->toArray(),
                 'tags' => $this->tagsFilter->toArray(),
-                'people' => $this->peopleFilter->toArray()
+                'people' => $this->peopleFilter->toArray(),
+                'groups' => $this->groupsFilter->toArray()
             ],
-            'proposals' => $this->query($request),
+            'proposals' => $this->query(),
             'crumbs' => [
                 [
                     'label' => 'Proposal'
@@ -132,17 +136,12 @@ class CatalystProjectsController extends Controller
         ]);
     }
 
-    protected function query(Request $request)
+    protected function query()
     {
         $_options = [
             'filters' => array_merge([
             ], $this->getUserFilters()),
         ];
-
-
-//        if ($this->completedProposalsFilter) {
-//            $_options['filters'][] = 'completed = 1';
-//        }
 
         $this->searchBuilder = Proposal::search($this->search,
             function (Indexes $index, $query, $options) use ($_options) {
@@ -159,6 +158,7 @@ class CatalystProjectsController extends Controller
                     'fund_label',
                     'fund_label',
                     'funding_status',
+                    'groups.id',
                     'challenge_label',
                     'ideascale_link',
                     'yes_votes_count',
@@ -243,6 +243,10 @@ class CatalystProjectsController extends Controller
 
         if ($this->peopleFilter->isNotEmpty()) {
             $_options[] = 'users.id IN ' . $this->peopleFilter->toJson();
+        }
+
+        if ($this->groupsFilter->isNotEmpty()) {
+            $_options[] = 'groups.id IN ' . $this->groupsFilter->toJson();
         }
 
         // filter by budget range
