@@ -90,7 +90,8 @@
 
             <div class="relative z-0 flex flex-row-reverse mt-auto -space-x-1">
                 <div class="mr-auto" v-for="(author, index) in authors">
-                    <a class="block" :href="author.name">
+                    <a class="block" target="_blank"
+                       :href="$utils.localizeRoute(`project-catalyst/users/${author.username}`)">
                         <img
                             v-if="index === 0"
                             class="h-10 w-10 relative -left-2 z-{{index}} inline-block h-10 w-10 rounded-full ring-2 ring-white"
@@ -206,8 +207,6 @@ const props = withDefaults(
         },
     },
 );
-
-// console.log('props.proposal.users::', props.proposal.users);
 
 // computer properties
 const authors = computed(() => {
