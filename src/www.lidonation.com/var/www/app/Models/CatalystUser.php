@@ -10,6 +10,7 @@ use App\Traits\SearchableLocale;
 use DateTime;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\UrlGenerator;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
@@ -110,8 +111,8 @@ class CatalystUser extends User implements HasMedia, CanComment
     public function getFirstTimerAttribute(): bool
     {
         return count(array_unique(
-            $this->proposals->map(fn ($p) => $p->toSearchableArray())->pluck('fund')->toArray()
-        )) === 1;
+                $this->proposals->map(fn($p) => $p->toSearchableArray())->pluck('fund')->toArray()
+            )) === 1;
     }
 
     public function getBioAttribute()
@@ -136,6 +137,22 @@ class CatalystUser extends User implements HasMedia, CanComment
     public function getLinkAttribute(): string|UrlGenerator|Application
     {
         return LaravelLocalization::localizeURL("/project-catalyst/users/{$this->id}/");
+    }
+
+    public function scopeFilter($query, array $filters)
+    {
+        $query->when(
+            $filters['search'] ?? false,
+            fn(Builder $query, $search) =>
+            $query
+                ->where('username', 'ILIKE', '%' . $search . '%')
+                ->orWhere('name', 'ILIKE', '%' . $search . '%')
+        );
+
+        $query->when(
+            $filters['ids'] ?? false,
+            fn(Builder $query, $ids) => $query->whereIn('id', is_array($ids) ? $ids : explode(',', $ids))
+        );
     }
 
     /**
@@ -203,11 +220,11 @@ class CatalystUser extends User implements HasMedia, CanComment
     public function toSearchableArray(): array
     {
         $array = $this->toArray();
-        $proposals = $this->proposals->map(fn ($p) => $p->toSearchableArray());
+        $proposals = $this->proposals->map(fn($p) => $p->toSearchableArray());
 
         return array_merge($array, [
             'proposals' => $proposals,
-            'proposals_completed' => $proposals->filter(fn ($p) => $p['status'] === 'complete')?->count() ?? 0,
+            'proposals_completed' => $proposals->filter(fn($p) => $p['status'] === 'complete')?->count() ?? 0,
             'first_timer' => (
                 count(
                     array_unique(
@@ -219,14 +236,14 @@ class CatalystUser extends User implements HasMedia, CanComment
     }
 
     #[Pure]
- public function getGravatarEmailField(): string
- {
-     if (! empty($this->email)) {
-         return 'email';
-     }
+    public function getGravatarEmailField(): string
+    {
+        if (!empty($this->email)) {
+            return 'email';
+        }
 
-     return 'name';
- }
+        return 'name';
+    }
 
     public function registerMediaConversions(Media $media = null): void
     {

@@ -57,6 +57,10 @@
                 <li class="">
                     <TagPicker v-model="filters.tags" />
                 </li>
+
+                <li class="">
+                    <PersonPicker v-model="filters.people" />
+                </li>
             </ul>
         </div>
     </div>
@@ -73,6 +77,8 @@ import FundingStatusPicker from "../funds/FundingStatusPicker.vue";
 import TagPicker from "./TagPicker.vue";
 import {useTagsStore} from "../../stores/tags-store";
 import BudgetRangePicker from "./BudgetRangePicker.vue";
+import PersonPicker from "../people/PersonPicker.vue";
+import {usePeopleStore} from "../../stores/people-store";
 
 ////
 // props and class properties
@@ -84,6 +90,8 @@ const props = withDefaults(
     }>(), {showFilter: false});
 let showClearAll = ref(false);
 let filters = ref<Filters>(props.filters);
+
+console.log('people::', filters.value.people);
 
 ////
 // computer properties
@@ -107,6 +115,12 @@ challengesStore.filterChallenges({
  */
 const tagsStore = useTagsStore();
 tagsStore.loadTags(props?.filters?.tags);
+
+/**
+ * Init People
+ */
+const peopleStore = usePeopleStore();
+peopleStore.loadPeople(props?.filters?.people);
 
 ////
 // events & watchers

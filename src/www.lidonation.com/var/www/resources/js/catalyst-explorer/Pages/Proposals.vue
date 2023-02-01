@@ -156,7 +156,6 @@ let selectedSortRef = ref<Sort>(props.sort);
  */
 const filtering = computed(() => Object.values(props.filters).length > 0 && Object.values(props.filters).every(val => !!val));
 watch([search, filtersRef, selectedSortRef], (something) => {
-    console.log({filtersRef});
     query();
 }, {deep: true});
 
@@ -192,6 +191,9 @@ function query() {
 
     if (filtersRef.value?.tags) {
         data[VARIABLES.TAGS] = Array.from(filtersRef.value?.tags);
+    }
+    if (filtersRef.value?.people) {
+        data[VARIABLES.PEOPLE] = Array.from(filtersRef.value?.people);
     }
 
     if (!!selectedSortRef.value) {
