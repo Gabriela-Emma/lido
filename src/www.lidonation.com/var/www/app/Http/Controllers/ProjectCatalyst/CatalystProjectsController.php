@@ -20,6 +20,7 @@ class CatalystProjectsController extends Controller
 {
     protected null|string|Stringable $search = null;
     protected null|string|Stringable $fundingStatus = null;
+    protected null|string|Stringable $proposalCohort = null;
     protected null|string|Stringable $proposalType = null;
 
     protected ?string $sortBy = 'amount_requested';
@@ -60,6 +61,12 @@ class CatalystProjectsController extends Controller
             'n' => 'not_approved',
             default => null
         };
+        $this->proposalCohort = match ($request->input('co', null)) {
+            'im' => 'impact_proposal',
+            'wo' => 'woman_proposal',
+            'id' => 'ideafest_proposal',
+            default => null
+        };
         $this->proposalType = match ($request->input('t', 'p')) {
             'p' => 'proposal',
             'c' => 'challenge',
@@ -80,6 +87,12 @@ class CatalystProjectsController extends Controller
                 'fundingStatus' => match ($this->fundingStatus) {
                     'over_budget' => 'o',
                     'not_approved' => 'n',
+                    default => null
+                },
+                'cohort' => match ($this->proposalCohort) {
+                    'impact_proposal' => 'im',
+                    'woman_proposal' => 'wo',
+                    'ideafest_proposal' => 'id',
                     default => null
                 },
                 'type' => match ($this->proposalType) {
@@ -112,12 +125,6 @@ class CatalystProjectsController extends Controller
 
 //        if ($this->completedProposalsFilter) {
 //            $_options['filters'][] = 'completed = 1';
-//        }
-//        if ($this->impactProposalsFilter) {
-//            $_options['filters'][] = 'impact_proposal = true';
-//        }
-//        if ($this->proposalTypeFilter !== 'all') {
-//            $_options['filters'][] = "type = $this->proposalTypeFilter";
 //        }
 
         $this->searchBuilder = Proposal::search($this->search,
@@ -190,6 +197,10 @@ class CatalystProjectsController extends Controller
 
         if (!!$this->fundedProposalsFilter) {
             $_options[] = 'funded = 1';
+        }
+
+        if (!!$this->proposalCohort) {
+            $_options[] = "{$this->proposalCohort} = true";
         }
 
         // filter by fund

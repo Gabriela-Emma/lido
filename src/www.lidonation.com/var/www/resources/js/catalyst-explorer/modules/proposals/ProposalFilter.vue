@@ -71,6 +71,19 @@
                 <li class="">
                     <PersonPicker v-model="filters.people" />
                 </li>
+
+                <li class="bg-stone-100 p-4">
+                    <span class="text-lg xl:text-xl block mb-2 border-b font-medium">
+                        Community Filters
+                    </span>
+                    <CohortPicker
+                        v-model="filters.cohort"
+                        :filters="{
+                            im: 'Impact Proposals',
+                            wo: 'Women Proposals',
+                            id: 'Ideafest Proposals'
+                        }" />
+                </li>
             </ul>
         </div>
     </div>
@@ -89,6 +102,7 @@ import {useTagsStore} from "../../stores/tags-store";
 import BudgetRangePicker from "./BudgetRangePicker.vue";
 import PersonPicker from "../people/PersonPicker.vue";
 import {usePeopleStore} from "../../stores/people-store";
+import CohortPicker from "./CohortPicker.vue";
 
 ////
 // props and class properties

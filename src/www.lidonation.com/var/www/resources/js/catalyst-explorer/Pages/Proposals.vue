@@ -185,6 +185,10 @@ function query() {
         data[VARIABLES.CHALLENGES] = Array.from(filtersRef.value?.challenges);
     }
 
+    if (filtersRef.value?.cohort) {
+        data[VARIABLES.COHORT] = filtersRef.value?.cohort;
+    }
+
     if (filtersRef.value?.fundingStatus) {
         data[VARIABLES.FUNDING_STATUS] = filtersRef.value?.fundingStatus;
     }
