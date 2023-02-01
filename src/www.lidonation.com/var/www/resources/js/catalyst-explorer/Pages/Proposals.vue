@@ -182,7 +182,7 @@ function getFiltering() {
         return true;
     } else if(props.filters.people.length > 0) {
         return true;
-    } else if(props.filters.people.length > 0) {
+    } else if(props.filters.groups.length > 0) {
         return true;
     } else if(!!props.filters.fundingStatus) {
         return true;
