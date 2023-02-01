@@ -113,6 +113,7 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
             'ca_rating',
             'over_budget',
             'challenge',
+            'groups',
             'amount_requested',
             'fund',
             'type',

@@ -1,40 +1,40 @@
 import {defineStore} from "pinia";
 import {AxiosError} from "axios";
 import {Ref, ref} from "vue";
-import PeopleFilters from "../models/people-filters";
-import Person from "../models/person";
+import Group from "../models/group";
+import GroupFilters from "../models/group-filters";
 
-export const usePeopleStore = defineStore('people', () => {
-    let filters: Ref<PeopleFilters> = ref();
-    let people = ref<Person[]>([]);
+export const useGroupsStore = defineStore('groups', () => {
+    let filters: Ref<GroupFilters> = ref();
+    let groups = ref<Group[]>([]);
 
-    async function search(f: PeopleFilters) {
+    async function search(f: GroupFilters) {
         filters.value = f;
         try {
             const {data} = await window.axios.get(
-                `/api/catalyst-explorer/people`,
+                `/api/catalyst-explorer/groups`,
                 {
                     params: {
                         search: filters.value.search
                     }
                 }
             );
-            people.value = data?.data;
+            groups.value = data?.data;
         } catch (e: AxiosError | any) {
             console.log({e});
         }
     }
-    async function loadPeople(pp: number[]) {
+    async function loadGroups(pp: number[]) {
         try {
             const {data} = await window.axios.get(
-                `/api/catalyst-explorer/people`,
+                `/api/catalyst-explorer/groups`,
                 {
                     params: {
                         ids: pp.join(',')
                     }
                 }
             );
-            people.value = data?.data;
+            groups.value = data?.data;
         } catch (e: AxiosError | any) {
             console.log({e});
         }
@@ -42,8 +42,8 @@ export const usePeopleStore = defineStore('people', () => {
 
     return {
         search,
-        loadPeople,
+        loadGroups,
         filters,
-        people
+        groups
     };
 });
