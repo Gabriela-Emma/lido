@@ -6,6 +6,7 @@ export enum VARIABLES {
     FUNDING_STATUS = 'f',
     MIN_BUDGET = 1,
     MAX_BUDGET = 2000000,
+    PEOPLE = 'pp',
     SEARCH = 's',
     SORTS = 'st',
     TAGS = 'ts',

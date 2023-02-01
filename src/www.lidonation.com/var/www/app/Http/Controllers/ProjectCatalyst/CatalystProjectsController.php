@@ -37,6 +37,8 @@ class CatalystProjectsController extends Controller
 
     public Collection $tagsFilter;
 
+    public Collection $peopleFilter;
+
     public Collection $budgets;
 
     /**
@@ -61,6 +63,7 @@ class CatalystProjectsController extends Controller
         $this->fundsFilter = $request->collect('fs')->map(fn($n) => intval($n));
         $this->challengesFilter = $request->collect('cs')->map(fn($n) => intval($n));
         $this->tagsFilter = $request->collect('ts')->map(fn($n) => intval($n));
+        $this->peopleFilter = $request->collect('pp')->map(fn($n) => intval($n));
 
         // get filter(s) from request
         return Inertia::render('Proposals', [
@@ -76,7 +79,8 @@ class CatalystProjectsController extends Controller
                 'budgets' => $this->budgets->isNotEmpty() ? $this->budgets->toArray() : [1, 3000000],
                 'funds' => $this->fundsFilter->toArray(),
                 'challenges' => $this->challengesFilter->toArray(),
-                'tags' => $this->tagsFilter->toArray()
+                'tags' => $this->tagsFilter->toArray(),
+                'people' => $this->peopleFilter->toArray()
             ],
             'proposals' => $this->query($request),
             'crumbs' => [
@@ -127,6 +131,7 @@ class CatalystProjectsController extends Controller
                     'problem',
                     'solution',
                     'website',
+                    'users.id',
                     'users.name',
                     'users.media.original_url',
                     'users.profile_photo_url',
@@ -185,6 +190,10 @@ class CatalystProjectsController extends Controller
         // filter by tags
         if ($this->tagsFilter->isNotEmpty()) {
             $_options[] = 'tags.id IN ' . $this->tagsFilter->toJson();
+        }
+
+        if ($this->peopleFilter->isNotEmpty()) {
+            $_options[] = 'users.id IN ' . $this->peopleFilter->toJson();
         }
 
         // filter by budget range
