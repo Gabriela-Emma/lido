@@ -152,6 +152,7 @@ class CatalystProjectsController extends Controller
                     'type',
                     'users.id',
                     'users.name',
+                    'users.username',
                     'users.media.original_url',
                     'users.profile_photo_url',
                     'amount_requested',

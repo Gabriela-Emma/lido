@@ -13,6 +13,7 @@ export default interface Proposal {
     website: string;
     users: {
         name: string;
+        username: string;
         profile_photo_url: string;
         media: {original_url: string}[]
     }[];
