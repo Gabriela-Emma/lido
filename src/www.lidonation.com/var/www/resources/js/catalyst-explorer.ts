@@ -1,10 +1,10 @@
 import {createInertiaApp, usePage} from "@inertiajs/vue3";
-import {computed, createApp, h, watch} from "vue";
+import {createApp, h, watch} from "vue";
 import Layout from "./catalyst-explorer/Shared/Layout.vue";
 import {createPinia} from "pinia";
 import { marked } from 'marked';
 import HeaderComponent from './catalyst-explorer/Shared/Components/HeaderComponent.vue';
-// import app from "@inertiajs/vue3/types/app";
+import PrimeVue from 'primevue/config';
 
 // boot inertia app
 createInertiaApp({
@@ -30,6 +30,7 @@ createInertiaApp({
 
         const app =  createApp({render: () => h(App, props)})
             .use(plugin)
+            .use(PrimeVue)
             .use(pinia);
 
         app.config.globalProperties.$filters = {
@@ -77,7 +78,7 @@ createInertiaApp({
             }
         }
 
-        app.component('header-component', HeaderComponent)
+        app.component('header-component', HeaderComponent);
         app.mount(el);
     },
 }).then();

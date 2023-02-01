@@ -113,6 +113,8 @@ class CatalystProjectsController extends Controller
 
                 $options['attributesToRetrieve'] = [
                     'id',
+                    'ca_rating',
+                    'ratings_count',
                     'slug',
                     'title',
                     'fund_label',

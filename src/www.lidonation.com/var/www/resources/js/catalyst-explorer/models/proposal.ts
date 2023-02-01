@@ -8,6 +8,8 @@ export default interface Proposal {
     no_votes_count: number;
     yes_votes_count: number;
     ideascale_link: string;
+    ca_rating: number;
+    ratings_count: number;
     website: string;
     users: {
         name: string;
