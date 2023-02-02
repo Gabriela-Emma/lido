@@ -4,6 +4,7 @@ import Layout from "./catalyst-explorer/Shared/Layout.vue";
 import {createPinia} from "pinia";
 import { marked } from 'marked';
 import HeaderComponent from './catalyst-explorer/Shared/Components/HeaderComponent.vue';
+import Search from './catalyst-explorer/Shared/Components/Search.vue';
 import PrimeVue from 'primevue/config';
 
 // boot inertia app
@@ -79,6 +80,7 @@ createInertiaApp({
         }
 
         app.component('header-component', HeaderComponent);
+        app.component('search-component', Search);
         app.mount(el);
     },
 }).then();
