@@ -91,9 +91,13 @@
                 </li>
 
                 <li class="bg-stone-100 p-4">
-                    <span class="text-lg xl:text-xl block mb-2 border-b font-medium">
+                    <span class="text-lg xl:text-xl block font-medium">
                         Community Filters
                     </span>
+                    <p class="text-xs py-1  border-b mb-2 block">
+                        These filters are not based on primary catalyst data but rather self assembled datasets by community groups.
+                        We do not perform any validation at LIDO Nation.
+                    </p>
                     <CohortPicker
                         v-model="filters.cohort"
                         :filters="{
