@@ -35,7 +35,7 @@
                             </div>
                             <ul role="list"
                                 class="grid grid-cols-2 mx-auto gap-x-4 gap-y-8 sm:grid-cols-4 md:gap-x-6 lg:max-w-5xl lg:gap-x-8 lg:gap-y-12 xl:grid-cols-6">
-                                    <li v-for="catalystUser in props.users">
+                                    <li v-for="catalystUser in props.users.data">
                                         <div class="space-y-4">
                                             <a class="block" :href=catalystUser.link>
                                                 <img class="w-20 h-20 mx-auto rounded-full lg:w-24 lg:h-24"

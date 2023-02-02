@@ -23,14 +23,7 @@ class CatalystPeopleController extends Controller
         $this->search=$request->input('s',null);
 
         return Inertia::render('People', [
-            'users'=>$this->query($request)->map(fn ($user) =>[
-                    'id' => $user->id,
-                    'name' => $user->name, 
-                    'link'=>$user->link,
-                    'profile_photo_url'=>$user->thumbnail_url ?? $user->gravatar,
-                    'proposals_count'=>$user->proposals_count,
-            ]
-            ),
+            'users' => $this->query($request),
             'crumbs' => [
                 ['label' => 'People'],
             ],
@@ -45,7 +38,15 @@ class CatalystPeopleController extends Controller
         }
         $paginator = $query->paginate($this->perPage);
 
-        return $paginator;
+        return [
+            'data' => $paginator->map(fn ($user) => [
+                'id' => $user->id,
+                'name' => $user->name, 
+                'link'=>$user->link,
+                'profile_photo_url'=>$user->thumbnail_url ?? $user->gravatar,
+                'proposals_count'=>$user->proposals_count,
+            ]),
+            'pagination' => $paginator->toArray(),
+        ];
     }
-
 }
