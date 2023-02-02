@@ -45,11 +45,11 @@
                     </div>
 
                     <div
-                        class="flex flex-col items-center px-1 py-1.5 text-xs xl:text-lg font-semibold rounded-r-sm bg-teal-800">
-                        {{ $filters.currency(proposal.amount_requested) }}
-                        <sub class="text-gray-200 block mt-0.5 italic">
+                        class="flex flex-col justify-center items-start p-1.5 text-xs xl:text-lg leading-3 font-semibold rounded-r-sm bg-teal-800">
+                        <div>{{ $filters.currency(proposal.amount_requested) }}</div>
+                        <small class="text-gray-200 block italic text-sm">
                             Requested
-                        </sub>
+                        </small>
                     </div>
                 </div>
             </header>
@@ -215,11 +215,11 @@
             </div>
 
             <div class="-mt-px grid grid-cols-2 divide-x text-xs xl:text-sm 2xl:text-md">
-                <div class="flex items-center justify-start flex-1 gap-2 p-2">
+                <div class="flex flex-row flex-wrap items-center justify-start flex-1 gap-1 px-2 py-2">
                     <div class="text-xs">
                         Funding Status:
                     </div>
-                    <div class="inline-block px-1.5 py-0.5 font-semibold text-white text-xs rounded-sm"
+                    <div class="inline-block py-0 px-1 font-semibold text-white text-xs rounded-sm capitalize"
                          :class="{
                             'bg-teal-600': proposal.funding_status === 'funded',
                             'bg-slate-500': proposal.funding_status === 'over_budget',
@@ -230,7 +230,7 @@
 
                 <div class="flex flex-1 -ml-px">
                     <div
-                        class="flex items-center gap-2 justify-end flex-1 py-2 px-1.5 -mr-px text-sm font-medium text-gray-700 border border-transparent rounded-bl-sm hover:text-gray-500">
+                        class="flex items-center gap-1 justify-end flex-1 py-2 px-1 -mr-px text-xs font-medium text-gray-700 border border-transparent rounded-bl-sm hover:text-gray-500">
                         <div class="text-xs">
                             Project Status:
                         </div>
