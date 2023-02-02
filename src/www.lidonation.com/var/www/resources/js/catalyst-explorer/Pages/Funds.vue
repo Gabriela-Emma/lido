@@ -2,78 +2,12 @@
     <header-component titleName0="Catalyst" titleName1="Funding Rounds" subTitle=""/>
 
     <div class="relative z-10">
-        <section class="relative py-8 text-white bg-teal-600 text-md">
-                <div class="container">
-                    <div class="flex flex-row items-center gap-4">
-                        <div class="flex flex-col max-w-sm p-2">
-                            <dt class="order-2 text-xs md:text-sm font-medium text-teal-50">
-                                {{'Total Funds'}}
-                            </dt>
-                            <dd class="order-1 text-xl font-extrabold text-white lg:text-xl 2xl:text-3xl">
-                                <!-- {{$catalystFundsCount}} -->
-                            </dd>
-                        </div>
-                        <div class="flex flex-col max-w-sm p-2">
-                            <dt class="order-2 text-xs md:text-sm font-medium text-teal-50">
-                                {{'Total Proposals'}}
-                            </dt>
-                            <dd class="order-1 text-xl font-extrabold text-white lg:text-xl 2xl:text-3xl">
-                                <!-- {{$totalProposalsCount}} -->
-                            </dd>
-                        </div>
-                        <div class="flex flex-col max-w-sm p-2">
-                            <dt class="order-2 text-xs md:text-sm font-medium text-teal-50">
-                                {{'Funded Proposals'}}
-                            </dt>
-                            <dd class="order-1 text-xl font-extrabold text-white lg:text-xl 2xl:text-3xl">
-                                <!-- {{$fundedProposalsCount}} -->
-                            </dd>
-                        </div>
-                        <!-- {{-- completed proposals --}} -->
-                        <div class="flex flex-col max-w-sm p-2">
-                            <dt class="order-2 text-xs md:text-sm font-medium text-teal-50">
-                                {{'Completed Proposals'}}
-                            </dt>
-                            <dd class="order-1 text-xl font-extrabold text-white lg:text-xl 2xl:text-3xl">
-                                <!-- {{$completedProposalsCount}} -->
-                            </dd>
-                        </div>
-                        <!-- {{--  --}} -->
-                        <div class="flex flex-col max-w-sm p-2">
-                            <dt class="order-2 text-xs md:text-sm font-medium text-teal-50">
-                                {{'Total $$ Requested'}}
-                            </dt>
-                            <dd class="order-1 text-xl font-extrabold text-white lg:text-xl 2xl:text-3xl">
-                                <!-- ${{humanNumber($totalAmountRequested)}} -->
-                            </dd>
-                        </div>
-                        <div class="flex flex-col max-w-sm p-2">
-                            <dt class="order-2 text-xs md:text-sm font-medium text-teal-50">
-                                {{'Total $$ Awarded'}}
-                            </dt>
-                            <dd class="order-1 text-xl font-extrabold text-white lg:text-xl 2xl:text-3xl">
-                                <!-- ${{humanNumber($totalAmountAwarded)}} -->
-                            </dd>
-                        </div>
-                        <div class="flex flex-col max-w-sm p-2">
-                            <dt class="order-2 text-xs md:text-sm font-medium text-teal-50">
-                                {{'Total $$ Distributed'}}
-                            </dt>
-                            <dd class="order-1 text-xl font-extrabold text-white lg:text-xl 2xl:text-3xl">
-                                <!-- ${{humanNumber($totalAmountDistributed)}} -->
-                            </dd>
-                        </div>
-                    </div>
-                </div>
-        </section>
-
-        <section class="relative bg-white py-16">
+        <section class="relative bg-primary-20 py-16">
             <div class="container">
                 <div class="space-y-12">
                     <ul role="list"
                         class="space-y-4 sm:grid sm:grid-cols-2 sm:gap-6 sm:space-y-0 lg:grid-cols-3 2xl:grid-cols-4 lg:gap-6">
-
-                            <li v-for="fund in funds" :key="fund.id" class="py-8 px-6 bg-primary-10 text-center rounded-sm flex flex-row justify-center xl:px-8 xl:text-left">
+                            <li v-for="fund in funds" :key="fund.id" class="py-8 px-6 bg-white text-center rounded-sm flex flex-row justify-center xl:px-8 xl:text-left">
                                 <div class="space-y-6 flex flex-col justify-between w-full xl:space-y-10">
                                     <a v-bind:href="fund.link"
                                     class="w-32 h-32 lg:w-32 lg:h-32 xl:w-44 xl:h-44 rounded-full mx-auto shadow-inner shadow-md">
@@ -116,7 +50,6 @@
                     </ul>
                 </div>
                 <div class="mt-6 paginator ">
-                    <!-- {{ $this->getPaginator()?->links() }} -->
                 </div>
             </div>
         </section>
