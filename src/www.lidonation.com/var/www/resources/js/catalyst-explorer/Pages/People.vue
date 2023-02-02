@@ -10,6 +10,14 @@
                 </div>
             </div>
         </section>
+        <section class="relative py-8 text-white bg-teal-600 text-md">
+        <div class="container">
+            <div class="flex flex-row items-center gap-4">
+                <!-- <x-catalyst.users.stats
+                    :usersCount="$catalystUsersCount"></x-catalyst.users.stats> -->
+            </div>
+        </div>
+    </section>
 
         <section class="relative py-8 bg-scroll bg-gray-100 bg-center bg-cover bg-pool-bw-light bg-blend-hard-light"
                 aria-labelledby="quick-links-title">
