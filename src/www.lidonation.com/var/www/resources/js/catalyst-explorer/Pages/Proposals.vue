@@ -34,7 +34,7 @@
             <!-- Sorts and controls -->
             <div :class="{ 'lg:pr-16 opacity-10 lg:opacity-100': showFilters, 'container': !showFilters }"
                  class="flex w-full items-center justify-end mb-3">
-                <div class="text-xs w-[240px] lg:w-[260px] lg:text-base">
+                <div class="text-xs w-[240px] lg:w-[320px] lg:text-base">
                     <Multiselect
                         placeholder="Sort"
                         value-prop="value"
@@ -110,28 +110,36 @@ const props = withDefaults(
     }>(), {
         sorts: () => [
             {
-                label: 'Budget: Low to High',
-                value: 'amount_requested:asc',
-            },
-            {
                 label: 'Budget: High to Low',
                 value: 'amount_requested:desc',
             },
             {
-                label: 'Rating: Low to High',
-                value: 'ca_rating:asc',
+                label: 'Budget: Low to High',
+                value: 'amount_requested:asc',
+            },
+            {
+                label: 'Payments Received: High to Low',
+                value: 'amount_received:desc',
+            },
+            {
+                label: 'Payments Received: Low to High',
+                value: 'amount_received:asc',
             },
             {
                 label: 'Rating: High to Low',
                 value: 'ca_rating:desc',
             },
             {
-                label: 'Yes Votes: Low to High',
-                value: 'yes_votes_count:asc',
+                label: 'Rating: Low to High',
+                value: 'ca_rating:asc',
             },
             {
                 label: 'Yes Votes: High to Low',
                 value: 'yes_votes_count:desc',
+            },
+            {
+                label: 'Yes Votes: Low to High',
+                value: 'yes_votes_count:asc',
             },
             {
                 label: 'No Votes: Low to High',

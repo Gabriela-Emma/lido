@@ -61,7 +61,9 @@
                         v-model="filters.fundingStatus"
                         :filters="{
                             o: 'Over Budget',
-                            n: 'Not Approved'
+                            n: 'Not Approved',
+                            f: 'Funded',
+                            // p: 'Fully Paid'
                         }" />
                 </li>
 
