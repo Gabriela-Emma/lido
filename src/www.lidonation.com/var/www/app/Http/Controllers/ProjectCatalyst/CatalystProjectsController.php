@@ -61,6 +61,8 @@ class CatalystProjectsController extends Controller
         $this->fundingStatus = match ($request->input('f', null)) {
             'o' => 'over_budget',
             'n' => 'not_approved',
+            'f' => 'funded',
+            'p' => 'paid',
             default => null
         };
         $this->projectStatus = match ($request->input('ss', null)) {
@@ -94,10 +96,12 @@ class CatalystProjectsController extends Controller
             'search' => $this->search,
             'sort' => "{$this->sortBy}:{$this->sortOrder}",
             'filters' => [
-                'funded' => $this->fundedProposalsFilter,
+                'funded' => $this->fundedProposalsFilter || $this->fundingStatus === 'funded',
                 'fundingStatus' => match ($this->fundingStatus) {
                     'over_budget' => 'o',
                     'not_approved' => 'n',
+                    'funded' => 'f',
+                    'paid' => 'p',
                     default => null
                 },
                 'projectStatus' => match ($this->projectStatus) {
@@ -183,7 +187,7 @@ class CatalystProjectsController extends Controller
 
                 $options['limit'] = $this->limit;
 
-//                $this->dispatchBrowserEvent('analytics-event-fired', ['code' => 'RPZTGJL8']);
+//                dd($options);
 
                 return $index->search($query, $options);
             });
@@ -207,7 +211,7 @@ class CatalystProjectsController extends Controller
     {
         $_options = [];
 
-        if (!!$this->fundingStatus) {
+        if (!!$this->fundingStatus && $this->fundingStatus !== 'paid') {
             $_options[] = "funding_status = {$this->fundingStatus}";
         }
 
@@ -252,7 +256,11 @@ class CatalystProjectsController extends Controller
 
         // filter by budget range
         if ($this->budgets->isNotEmpty()) {
-            $_options[] = "amount_requested >  {$this->budgets->first()} AND amount_requested <  {$this->budgets->last()}";
+            $_options[] = "(amount_requested  {$this->budgets->first()} TO  {$this->budgets->last()})";
+        }
+
+        if ($this->fundingStatus === 'paid') {
+            $_options[] = "(amount_requested = amount_received)";
         }
 
         return $_options;
