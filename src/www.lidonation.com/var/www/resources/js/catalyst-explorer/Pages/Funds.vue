@@ -7,8 +7,7 @@
                 <div class="space-y-12">
                     <ul role="list"
                         class="space-y-4 sm:grid sm:grid-cols-2 sm:gap-6 sm:space-y-0 lg:grid-cols-3 2xl:grid-cols-4 lg:gap-6">
-
-                            <li v-for="fund in funds" :key="fund.id" class="py-8 px-6 bg-primary-10 text-center rounded-sm flex flex-row justify-center xl:px-8 xl:text-left">
+                            <li v-for="fund in funds" :key="fund.id" class="py-8 px-6 bg-white text-center rounded-sm flex flex-row justify-center xl:px-8 xl:text-left">
                                 <div class="space-y-6 flex flex-col justify-between w-full xl:space-y-10">
                                     <a v-bind:href="fund.link"
                                     class="w-32 h-32 lg:w-32 lg:h-32 xl:w-44 xl:h-44 rounded-full mx-auto shadow-inner shadow-md">
@@ -51,7 +50,6 @@
                     </ul>
                 </div>
                 <div class="mt-6 paginator ">
-                    <!-- {{ $this->getPaginator()?->links() }} -->
                 </div>
             </div>
         </section>
