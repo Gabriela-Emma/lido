@@ -197,7 +197,7 @@
                         Voted Yes:
                     </div>
                     <div class="font-semibold">
-                        ₳{{ $filters.number(proposal.yes_votes_count) }}
+                        ₳{{ $filters.number(proposal.yes_votes_count, 2) }}
                     </div>
                 </div>
 
