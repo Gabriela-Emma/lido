@@ -76,5 +76,11 @@ function query() {
         data,
         {preserveState: true, preserveScroll: true}
     );
+
+    //@ts-ignore
+    if (typeof window?.fathom !== 'undefined') {
+        // @ts-ignore
+        window?.fathom?.trackGoal(VARIABLES.MONTHLY_REPORT_TRACKER_ID, 0);
+    }
 }
 </script>

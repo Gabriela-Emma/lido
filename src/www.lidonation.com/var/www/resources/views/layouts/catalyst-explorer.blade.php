@@ -14,7 +14,7 @@
                 data-cf-beacon='{"token": "{{config('services.cloudflare.token')}}"}'></script>
 
         <!-- Fathom - beautiful, simple website analytics  -->
-        <script src="https://essential-jazzy.lidonation.com/script.js" data-site="{{config('services.fathom.site')}}" defer></script>
+        <script src="https://essential-jazzy.lidonation.com/script.js" data-spa="auto" data-site="{{config('services.fathom.site')}}" defer></script>
         <!-- / Fathom -->
     @endenv
 
