@@ -174,19 +174,19 @@ const proposals = proposalsStore();
 function getFiltering() {
     if (props.filters.cohort) {
         return true;
-    } else if(props.filters.funds?.length > 0) {
+    } else if (props.filters.funds?.length > 0) {
         return true;
-    } else if(props.filters.challenges?.length > 0) {
+    } else if (props.filters.challenges?.length > 0) {
         return true;
-    } else if(props.filters.tags?.length > 0) {
+    } else if (props.filters.tags?.length > 0) {
         return true;
-    } else if(props.filters.people.length > 0) {
+    } else if (props.filters.people.length > 0) {
         return true;
-    } else if(props.filters.groups.length > 0) {
+    } else if (props.filters.groups.length > 0) {
         return true;
-    } else if(!!props.filters.fundingStatus) {
+    } else if (!!props.filters.fundingStatus) {
         return true;
-    } else if(!!props.filters.projectStatus) {
+    } else if (!!props.filters.projectStatus) {
         return true;
     }
     return false;
@@ -238,7 +238,7 @@ function query() {
         data[VARIABLES.GROUPS] = Array.from(filtersRef.value?.groups);
     }
 
-    if (!!selectedSortRef.value && selectedSortRef.value.length > 3 ) {
+    if (!!selectedSortRef.value && selectedSortRef.value.length > 3) {
         data[VARIABLES.SORTS] = selectedSortRef.value;
     }
 
@@ -253,5 +253,12 @@ function query() {
         data,
         {preserveState: true, preserveScroll: true}
     );
+
+
+    //@ts-ignore
+    if (typeof window?.fathom !== 'undefined') {
+        // @ts-ignore
+        window?.fathom?.trackGoal(VARIABLES.PROPOSALS_TRACKER_ID, 0);
+    }
 }
 </script>

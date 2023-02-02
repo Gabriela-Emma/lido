@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Proposal;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Fluent;
 use Illuminate\Support\Stringable;
@@ -183,6 +182,8 @@ class CatalystProjectsController extends Controller
                 }
 
                 $options['limit'] = $this->limit;
+
+//                $this->dispatchBrowserEvent('analytics-event-fired', ['code' => 'RPZTGJL8']);
 
                 return $index->search($query, $options);
             });

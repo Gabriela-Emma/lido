@@ -8,6 +8,8 @@ export enum VARIABLES {
     GROUPS = 'g',
     MIN_BUDGET = 1,
     MAX_BUDGET = 2000000,
+    MONTHLY_REPORT_TRACKER_ID = 'HSH9YZDM',
+    PROPOSALS_TRACKER_ID = 'RPZTGJL8',
     PEOPLE = 'pp',
     STATUS = 'ss',
     TYPE = 't',
