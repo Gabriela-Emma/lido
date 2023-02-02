@@ -2,7 +2,7 @@
     <header-component titleName0="Catalyst" titleName1="Funding Rounds" subTitle=""/>
 
     <div class="relative z-10">
-        <section class="relative bg-primary-10 py-16">
+        <section class="relative bg-primary-20 py-16">
             <div class="container">
                 <div class="space-y-12">
                     <ul role="list"
