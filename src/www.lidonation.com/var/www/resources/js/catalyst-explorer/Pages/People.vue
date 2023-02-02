@@ -1,5 +1,6 @@
-<template >
-    <header-component titleName0="Catalyst" titleName1="Proposers" subTitle=""/>
+<template>
+    <header-component titleName0="Catalyst" titleName1="Proposers"
+                      subTitle="Diverse, independent, and together inspiring the highest level of human collaboration."/>
     <main class="flex flex-col gap-2 bg-primary-20">
         <section class="py-8">
             <div class="container">
@@ -10,63 +11,45 @@
                 </div>
             </div>
         </section>
-        <section class="relative py-8 text-white bg-teal-600 text-md">
-        <div class="container">
-            <div class="flex flex-row items-center gap-4">
-                <!-- <x-catalyst.users.stats
-                    :usersCount="$catalystUsersCount"></x-catalyst.users.stats> -->
-            </div>
-        </div>
-    </section>
 
-        <section class="relative py-8 bg-scroll bg-gray-100 bg-center bg-cover bg-pool-bw-light bg-blend-hard-light"
-                aria-labelledby="quick-links-title">
+        <section class="relative py-8 mb-8" aria-labelledby="quick-links-title">
             <div class="container">
-                <div class="bg-white shadow-sm">
-                    <div class="px-4 py-12 mx-auto text-center max-w-7xl sm:px-6 lg:px-8 lg:py-24">
-                        <div class="space-y-8 sm:space-y-12">
-                            <div class="space-y-5 sm:mx-auto sm:max-w-xl sm:space-y-4 lg:max-w-5xl">
-                                <h2 class="text-3xl font-extrabold tracking-tight sm:text-4xl">
-                                    Proposers
-                                </h2>
-                                <p class="text-xl text-gray-500">
-                                    Diverse, independent, and together inspiring the highest level of human collaboration.
-                                </p>
-                            </div>
-                            <ul role="list"
-                                class="grid grid-cols-2 mx-auto gap-x-4 gap-y-8 sm:grid-cols-4 md:gap-x-6 lg:max-w-5xl lg:gap-x-8 lg:gap-y-12 xl:grid-cols-6">
-                                    <li v-for="catalystUser in props.users.data">
-                                        <div class="space-y-4">
-                                            <a class="block" :href=catalystUser.link>
-                                                <img class="w-20 h-20 mx-auto rounded-full lg:w-24 lg:h-24"
-                                                    :src="catalystUser.profile_photo_url"
-                                                    :alt="catalystUser.name" />
-                                            </a>
+                <div class="text-center">
+                    <ul role="list"
+                        class="grid grid-cols-2 mx-auto gap-4 sm:grid-cols-4 xl:grid-cols-5 3xl:grid-cols-6">
+                        <li v-for="catalystUser in props.users.data" class="bg-white round-sm p-8">
+                            <div class="space-y-4">
+                                <a class="block" :href="catalystUser.link" target="_blank">
+                                    <img class="w-20 h-20 mx-auto rounded-full lg:w-24 lg:h-24"
+                                         :src="catalystUser.profile_photo_url"
+                                         :alt="catalystUser.name"/>
+                                </a>
 
-                                            <div class="space-y-2">
-                                                <div class="text-xs font-medium lg:text-sm">
-                                                    <h3>
-                                                        <a class="block" :href="catalystUser.link">
-                                                            {{catalystUser.name}}
-                                                        </a>
-                                                    </h3>
-                                                    <p class="" x-data="{ tooltip: 'Member of {{catalystUser.proposals_count}} proposal team(s).' }">
-                                                        <span x-tooltip.theme.primary="tooltip">
-                                                            {{catalystUser.proposals_count}} {{ catalystUser.proposals_count > 1 ? 'Proposals': 'Proposal'}}
-                                                        </span>
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                            </ul>
-                        </div>
-                    </div>
+                                <div class="space-y-2">
+                                    <div class="text-xs font-medium lg:text-sm">
+                                        <h3>
+                                            <a class="block" :href="catalystUser.link">
+                                                {{ catalystUser.name }}
+                                            </a>
+                                        </h3>
+                                        <p class=""
+                                           x-data="{ tooltip: 'Member of {{catalystUser.proposals_count}} proposal team(s).' }">
+                                                <span>
+                                                    {{
+                                                        catalystUser.proposals_count
+                                                    }} {{ catalystUser.proposals_count > 1 ? 'Proposals' : 'Proposal' }}
+                                                </span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </section>
 
-   
+
     </main>
 </template>
 
@@ -82,7 +65,7 @@ const props = withDefaults(
         search?: string,
         users: {
             links: [],
-            data:User[]
+            data: User[]
         }
     }>(), {});
 
@@ -90,7 +73,7 @@ const props = withDefaults(
 let search = ref(props.search);
 
 // Watch the search value for changes and trigger the query function
-watch([search],() => {
+watch([search], () => {
     return query();
 }, {deep: true});
 
