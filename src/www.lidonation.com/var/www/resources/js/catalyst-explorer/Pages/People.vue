@@ -32,13 +32,12 @@
                                                 {{ catalystUser.name }}
                                             </a>
                                         </h3>
-                                        <p class=""
-                                           x-data="{ tooltip: 'Member of {{catalystUser.proposals_count}} proposal team(s).' }">
-                                                <span>
-                                                    {{
-                                                        catalystUser.proposals_count
-                                                    }} {{ catalystUser.proposals_count > 1 ? 'Proposals' : 'Proposal' }}
-                                                </span>
+                                        <p class="">
+                                            <span>
+                                                {{
+                                                    catalystUser.proposals_count
+                                                }} {{ catalystUser.proposals_count > 1 ? 'Proposals' : 'Proposal' }}
+                                            </span>
                                         </p>
                                     </div>
                                 </div>
