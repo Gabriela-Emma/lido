@@ -14,8 +14,8 @@ return new class extends Migration
     public function up()
     {
         Schema::table('wallets', function (Blueprint $table) {
-            $table->string('wallet_id');
-            $table->string('spending_password');
+            $table->string('wallet_id')->nullable();
+            $table->string('spending_password')->nullable();
         });
     }
 

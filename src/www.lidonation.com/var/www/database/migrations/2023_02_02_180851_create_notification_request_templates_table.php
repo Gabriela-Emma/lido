@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('who_id');
             $table->string('who_type');
-            $table->string('what_typ');
+            $table->string('what_type');
             $table->json('what_filter');
             $table->string('when');
             $table->string('where');
