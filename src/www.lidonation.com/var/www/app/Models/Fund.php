@@ -103,7 +103,7 @@ class Fund extends Model implements HasMedia, IHasMetaData
         );
 
         $query->when(
-            $filters['fund'] ?? false,
+            $filters['fund_id'] ?? false,
             fn (Builder $query, $fund_id) => $query->where('parent_id', $fund_id)
         );
     }
