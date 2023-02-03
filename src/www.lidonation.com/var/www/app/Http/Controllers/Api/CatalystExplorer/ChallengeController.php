@@ -39,7 +39,7 @@ class ChallengeController extends Controller
 
         Fund::withoutGlobalScopes();
         $funds = Fund::challenges()->orderBy('title')
-            ->filter(request(['search', 'fund']));
+            ->filter(request(['search', 'fund_id']));
 
         if ($funds->get()->isEmpty()) {
             return response([
@@ -78,8 +78,21 @@ class ChallengeController extends Controller
      *
      * )
      */
-    public function challenge(Fund $fund): \Illuminate\Http\Response|ChallengeResource|Application|ResponseFactory
+    public function challenge($challenge_id): \Illuminate\Http\Response|ChallengeResource|Application|ResponseFactory
     {
-        return new ChallengeResource($fund);
+        Fund::withoutGlobalScopes();
+
+        $challenge = Fund::where('id', $challenge_id)
+            ->whereNotNull('parent_id')
+            ->first();
+
+        if (is_null($challenge)) {
+            return response([
+                'errors' => 'Challenge not found',
+            ], Response::HTTP_NOT_FOUND);
+        }
+
+        return new ChallengeResource($challenge);
+
     }
 }

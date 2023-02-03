@@ -156,7 +156,7 @@
                     </div>
                 </div>
 
-                <div class="flex flex-1 w-full -ml-px">
+                <div class="flex flex-1 justify-end w-full -ml-px">
                     <div
                         class="flex items-center justify-center flex-1 py-2 -mr-px text-sm font-medium text-gray-700 border border-transparent rounded-bl-sm hover:text-gray-500">
                         <div class="flex gap-1 items-center">

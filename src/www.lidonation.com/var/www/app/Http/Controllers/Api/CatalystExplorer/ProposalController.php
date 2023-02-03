@@ -50,8 +50,8 @@ class ProposalController extends Controller
             return response([
                 'errors' => 'Proposal not found',
             ], Response::HTTP_NOT_FOUND);
-        } else {
-            return new ProposalResource($proposal);
         }
+
+        return new ProposalResource($proposal);
     }
 }
