@@ -4,7 +4,7 @@
     proposal: null,
     group: null,
     user: null,
-    showForm: false,
+    showForm: true,
     processing: false,
 
     init() {
@@ -58,8 +58,8 @@
                 <label for="emailAddress" class="sr-only">Email address</label>
                 <input
                     type="email"
-                    name="emailAddress"
-                    id="emailAddress"
+                    name="where"
+                    id="where"
                     autocomplete="email"
                     required
                     class="custom-input w-full input h-full border-teal-100 active:border-teal-600 focus:border-teal-600 focus:ring-teal-600"

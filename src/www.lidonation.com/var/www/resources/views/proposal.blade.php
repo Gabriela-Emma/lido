@@ -59,7 +59,6 @@
                                                                             {{$catalystUser->name}}
                                                                         </a>
                                                                     </h3>
-                                                                                                                                        <p class="text-indigo-600">{{Str::replace(['_', 'Catalyst'], ' ', Str::title($user->catalyst_roles->pluck('name')->implode(', ')))}}</p>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -330,11 +329,11 @@
                         Monthly Reports
                     </h2>
 
-                    <div class="mt-6 flex justify-center gap-4 follow-reports w-full">
-                        <div class="bg-slate-200p-10shadow-inner rounded-md">
-                            <x-catalyst.follow-monthly-reports :model="$proposal" />
-                        </div>
-                    </div>
+{{--                    <div class="mt-6 flex justify-center gap-4 follow-reports w-full">--}}
+{{--                        <div class="bg-slate-200p-10shadow-inner rounded-md">--}}
+{{--                            <x-catalyst.follow-monthly-reports :model="$proposal" />--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
 
                     <div class="mt-6 columns-1 sm:columns-2 xl:columns-3 gap-4 monthly-reports">
                         @foreach($proposal->monthly_reports->reverse() as $report)
