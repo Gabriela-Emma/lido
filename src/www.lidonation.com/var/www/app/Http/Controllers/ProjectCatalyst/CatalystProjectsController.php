@@ -166,6 +166,7 @@ class CatalystProjectsController extends Controller
                     'ideascale_link',
                     'yes_votes_count',
                     'no_votes_count',
+                    'paid',
                     'problem',
                     'solution',
                     'status',
@@ -260,7 +261,7 @@ class CatalystProjectsController extends Controller
         }
 
         if ($this->fundingStatus === 'paid') {
-            $_options[] = "(amount_requested = amount_received)";
+            $_options[] = "(paid = 1)";
         }
 
         return $_options;
