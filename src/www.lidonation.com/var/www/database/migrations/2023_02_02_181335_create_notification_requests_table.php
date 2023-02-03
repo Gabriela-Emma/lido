@@ -18,8 +18,8 @@ return new class extends Migration
             $table->foreignId('notification_request_template_id');
             $table->foreignId('who_id');
             $table->string('who_type');
-            $table->foreignId('where_id');
-            $table->string('where_type');
+            $table->foreignId('what_id');
+            $table->string('what_type');
             $table->string('when');
             $table->string('where');
             $table->string('status');
