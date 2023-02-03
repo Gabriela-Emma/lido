@@ -332,7 +332,7 @@
 
                     <div class="mt-6 flex justify-center gap-4 follow-reports w-full">
                         <div class="bg-stone-200 p-16">
-                            <x-catalyst.follow-monthly-reports />
+{{--                            <x-catalyst.follow-monthly-reports />--}}
                         </div>
                     </div>
 
