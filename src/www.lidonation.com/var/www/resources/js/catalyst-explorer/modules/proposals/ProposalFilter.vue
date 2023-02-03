@@ -63,7 +63,7 @@
                             o: 'Over Budget',
                             n: 'Not Approved',
                             f: 'Funded',
-                            // p: 'Fully Paid'
+                            p: 'Fully Paid'
                         }" />
                 </li>
 
