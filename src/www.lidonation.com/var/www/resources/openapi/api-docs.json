@@ -11,6 +11,51 @@
         }
     ],
     "paths": {
+        "/challenges": {
+            "get": {
+                "tags": [
+                    "challenge"
+                ],
+                "summary": "Get a list of challenges",
+                "description": "Returns a list of all challenges",
+                "operationId": "challenges",
+                "responses": {
+                    "200": {
+                        "description": "successful"
+                    }
+                }
+            }
+        },
+        "/challenges/{fund_id}": {
+            "get": {
+                "tags": [
+                    "challenge"
+                ],
+                "summary": "Get challenges by fund id",
+                "description": "Returns challenges of a certain fund.",
+                "operationId": "challenge",
+                "parameters": [
+                    {
+                        "name": "fund_id",
+                        "in": "path",
+                        "description": "id of fund to return",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful"
+                    },
+                    "404": {
+                        "description": "Challenge(s) not found"
+                    }
+                }
+            }
+        },
         "/funds": {
             "get": {
                 "tags": [
@@ -82,6 +127,50 @@
                     },
                     "404": {
                         "description": "Proposal not found"
+                    }
+                }
+            }
+        },
+        "/tags": {
+            "get": {
+                "tags": [
+                    "tag"
+                ],
+                "summary": "Get a list of tags",
+                "description": "Returns a list of all tags",
+                "operationId": "tags",
+                "responses": {
+                    "200": {
+                        "description": "successful"
+                    }
+                }
+            }
+        },
+        "/tags/{tag}": {
+            "get": {
+                "tags": [
+                    "tag"
+                ],
+                "summary": "Retrieve a single tag",
+                "description": "Use this endpoint to retrieve a single tag",
+                "operationId": "tag",
+                "parameters": [
+                    {
+                        "name": "tag",
+                        "in": "path",
+                        "description": "title of the tag to retrieve",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful"
+                    },
+                    "404": {
+                        "description": "Tag not found"
                     }
                 }
             }
