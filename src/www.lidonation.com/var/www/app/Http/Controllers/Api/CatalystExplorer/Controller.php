@@ -113,6 +113,160 @@ use OpenApi\Annotations as OA;
  *      @OA\Property(property="label", type="string", example="1"),
  *      @OA\Property(property="active", type="boolean", example=false),
  *),
+ *  @OA\Schema(
+ *       schema="fund",
+ *       type="object",
+ *       @OA\Property(property="id", type="integer", example=95),
+ *       @OA\Property(property="title", type="string", example="Fund 2"),
+ *       @OA\Property(property="proposals_count", type="integer", example=12),
+ *       @OA\Property(property="amount", type="string", example="250K"),
+ *       @OA\Property(property="currency", type="string", example="usd"),
+ *       @OA\Property(property="launch_date", type="string", example="09/21/20"),
+ *       @OA\Property(property="currency_symbol", type="string", example="$"),
+ *       @OA\Property(property="link", type="string", example="http://localhost:8880/en/project-catalyst/funds/fund-2"),
+ *       @OA\Property(property="thumbnail_url", type="null", example=null),
+ *       @OA\Property(property="gravatar", type="null", example=null),
+ *   ),
+ * @OA\Schema(
+ *      schema="funds",
+ *      type="array",
+ *      @OA\Items(
+ *          ref="#/components/schemas/fund"
+ *      ),
+ * ),
+ * @OA\Schema(
+ *      schema="funds_links",
+ *      type="object",
+ *      @OA\Property(property="first", type="string", example="http://localhost:8880/api/catalyst-explorer/funds?page=1"),
+ *      @OA\Property(property="last", type="string", example="http://localhost:8880/api/catalyst-explorer/funds?page=1"),
+ *      @OA\Property(property="prev", type="string", example=null),
+ *      @OA\Property(property="next", type="string", example="http://localhost:8880/api/catalyst-explorer/funds?page=2"),
+ * ),
+ *  @OA\Schema(
+ *      schema="funds_meta",
+ *      type="object",
+ *      @OA\Property(property="current_page", type="integer", example=1),
+ *      @OA\Property(property="from", type="integer", example=1),
+ *      @OA\Property(property="last_page", type="integer", example=1),
+ *      @OA\Property(property="links", ref="#/components/schemas/funds_meta_links_array"),
+ *      @OA\Property(property="path", type="string", example="http://localhost:8880/api/catalyst-explorer/funds"),
+ *      @OA\Property(property="per_page", type="integer", example=24),
+ *      @OA\Property(property="to", type="integer", example=9),
+ *      @OA\Property(property="total", type="integer", example=9),
+ * ),
+ * * @OA\Schema(
+ *      schema="funds_meta_links_array",
+ *      type="array",
+ *      @OA\Items(
+ *          ref="#/components/schemas/funds_meta_links_array_object"
+ *      ),
+ * ),
+ * @OA\Schema(
+ *      schema="funds_meta_links_array_object",
+ *      type="object",
+ *      @OA\Property(property="url", type="string", example="http://localhost:8880/api/catalyst-explorer/funds?page=1"),
+ *      @OA\Property(property="label", type="string", example="1"),
+ *      @OA\Property(property="active", type="boolean", example=false),
+ *),
+ *  @OA\Schema(
+ *       schema="tag",
+ *       type="object",
+ *       @OA\Property(property="id", type="integer", example=95),
+ *       @OA\Property(property="title", type="string", example="voluptatem"),
+ *       @OA\Property(property="content", type="string", example="Alias rem dolorum dolores impedit hic. Et molestiae quae amet aut possimus. Ex aperiam quisquam suscipit sunt.Vitae eligendi temporibus quia delectus deserunt. Eum eveniet accusantium rerum ut consequatur."),
+ *   ),
+ * @OA\Schema(
+ *      schema="tags",
+ *      type="array",
+ *      @OA\Items(
+ *          ref="#/components/schemas/tag"
+ *      ),
+ * ),
+ * @OA\Schema(
+ *      schema="tags_links",
+ *      type="object",
+ *      @OA\Property(property="first", type="string", example="http://localhost:8880/api/catalyst-explorer/tags?page=1"),
+ *      @OA\Property(property="last", type="string", example="http://localhost:8880/api/catalyst-explorer/tags?page=1"),
+ *      @OA\Property(property="prev", type="string", example=null),
+ *      @OA\Property(property="next", type="string", example="http://localhost:8880/api/catalyst-explorer/tags?page=2"),
+ * ),
+ *  @OA\Schema(
+ *      schema="tags_meta",
+ *      type="object",
+ *      @OA\Property(property="current_page", type="integer", example=1),
+ *      @OA\Property(property="from", type="integer", example=1),
+ *      @OA\Property(property="last_page", type="integer", example=1),
+ *      @OA\Property(property="links", ref="#/components/schemas/tags_meta_links_array"),
+ *      @OA\Property(property="path", type="string", example="http://localhost:8880/api/catalyst-explorer/tags"),
+ *      @OA\Property(property="per_page", type="integer", example=24),
+ *      @OA\Property(property="to", type="integer", example=9),
+ *      @OA\Property(property="total", type="integer", example=9),
+ * ),
+ * * @OA\Schema(
+ *      schema="tags_meta_links_array",
+ *      type="array",
+ *      @OA\Items(
+ *          ref="#/components/schemas/tags_meta_links_array_object"
+ *      ),
+ * ),
+ * @OA\Schema(
+ *      schema="tags_meta_links_array_object",
+ *      type="object",
+ *      @OA\Property(property="url", type="string", example="http://localhost:8880/api/catalyst-explorer/tags?page=1"),
+ *      @OA\Property(property="label", type="string", example="1"),
+ *      @OA\Property(property="active", type="boolean", example=false),
+ *),
+ *  @OA\Schema(
+ *       schema="challenge",
+ *       type="object",
+ *       @OA\Property(property="id", type="integer", example=92),
+ *       @OA\Property(property="fundId", type="integer", example=91),
+ *       @OA\Property(property="title", type="string", example="F3: DApp Creation"),
+ *       @OA\Property(property="proposalsCount", type="integer", example=76),
+ *       @OA\Property(property="amount", type="integer", example="250000"),
+ *       @OA\Property(property="currency", type="string", example="usd"),
+ *   ),
+ * @OA\Schema(
+ *      schema="challenges",
+ *      type="array",
+ *      @OA\Items(
+ *          ref="#/components/schemas/challenge"
+ *      ),
+ * ),
+ * @OA\Schema(
+ *      schema="challenges_links",
+ *      type="object",
+ *      @OA\Property(property="first", type="string", example="http://localhost:8880/api/catalyst-explorer/challenges?page=1"),
+ *      @OA\Property(property="last", type="string", example="http://localhost:8880/api/catalyst-explorer/challenges?page=1"),
+ *      @OA\Property(property="prev", type="string", example=null),
+ *      @OA\Property(property="next", type="string", example="http://localhost:8880/api/catalyst-explorer/challenges?page=2"),
+ * ),
+ *  @OA\Schema(
+ *      schema="challenges_meta",
+ *      type="object",
+ *      @OA\Property(property="current_page", type="integer", example=1),
+ *      @OA\Property(property="from", type="integer", example=1),
+ *      @OA\Property(property="last_page", type="integer", example=1),
+ *      @OA\Property(property="links", ref="#/components/schemas/challenges_meta_links_array"),
+ *      @OA\Property(property="path", type="string", example="http://localhost:8880/api/catalyst-explorer/challenges"),
+ *      @OA\Property(property="per_page", type="integer", example=200),
+ *      @OA\Property(property="to", type="integer", example=100),
+ *      @OA\Property(property="total", type="integer", example=100),
+ * ),
+ * * @OA\Schema(
+ *      schema="challenges_meta_links_array",
+ *      type="array",
+ *      @OA\Items(
+ *          ref="#/components/schemas/challenges_meta_links_array_object"
+ *      ),
+ * ),
+ * @OA\Schema(
+ *      schema="challenges_meta_links_array_object",
+ *      type="object",
+ *      @OA\Property(property="url", type="string", example="http://localhost:8880/api/catalyst-explorer/challenges?page=1"),
+ *      @OA\Property(property="label", type="string", example="1"),
+ *      @OA\Property(property="active", type="boolean", example=true),
+ *),
  */
 class Controller extends BaseController
 {

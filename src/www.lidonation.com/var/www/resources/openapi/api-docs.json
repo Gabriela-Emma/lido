@@ -19,26 +19,59 @@
                 "summary": "Get a list of challenges",
                 "description": "Returns a list of all challenges",
                 "operationId": "challenges",
+                "parameters": [
+                    {
+                        "name": "fund_id",
+                        "in": "query",
+                        "description": "Filter content by id of a fund",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "successful"
+                        "description": "successful",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/challenges"
+                                            }
+                                        },
+                                        "links": {
+                                            "$ref": "#/components/schemas/challenges_links"
+                                        },
+                                        "meta": {
+                                            "$ref": "#/components/schemas/challenges_meta"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 }
             }
         },
-        "/challenges/{fund_id}": {
+        "/challenges/{challenge_id}": {
             "get": {
                 "tags": [
                     "challenge"
                 ],
-                "summary": "Get challenges by fund id",
-                "description": "Returns challenges of a certain fund.",
+                "summary": "Get challenge by challenge id",
+                "description": "Returns a single challenge.",
                 "operationId": "challenge",
                 "parameters": [
                     {
-                        "name": "fund_id",
+                        "name": "challenge_id",
                         "in": "path",
-                        "description": "id of fund to return",
+                        "description": "id of challenge to return",
                         "required": true,
                         "schema": {
                             "type": "integer",
@@ -51,7 +84,7 @@
                         "description": "successful"
                     },
                     "404": {
-                        "description": "Challenge(s) not found"
+                        "description": "Challenge not found"
                     }
                 }
             }
@@ -66,7 +99,38 @@
                 "operationId": "funds",
                 "responses": {
                     "200": {
-                        "description": "successful"
+                        "description": "successful",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/funds"
+                                            }
+                                        },
+                                        "links": {
+                                            "properties": {
+                                                "": {
+                                                    "$ref": "#/components/schemas/funds_links"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "meta": {
+                                            "properties": {
+                                                "": {
+                                                    "$ref": "#/components/schemas/funds_meta"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -141,7 +205,38 @@
                 "operationId": "tags",
                 "responses": {
                     "200": {
-                        "description": "successful"
+                        "description": "successful",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/tags"
+                                            }
+                                        },
+                                        "links": {
+                                            "properties": {
+                                                "": {
+                                                    "$ref": "#/components/schemas/tags_links"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "meta": {
+                                            "properties": {
+                                                "": {
+                                                    "$ref": "#/components/schemas/tags_meta"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -514,6 +609,355 @@
                     "active": {
                         "type": "boolean",
                         "example": false
+                    }
+                },
+                "type": "object"
+            },
+            "fund": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 95
+                    },
+                    "title": {
+                        "type": "string",
+                        "example": "Fund 2"
+                    },
+                    "proposals_count": {
+                        "type": "integer",
+                        "example": 12
+                    },
+                    "amount": {
+                        "type": "string",
+                        "example": "250K"
+                    },
+                    "currency": {
+                        "type": "string",
+                        "example": "usd"
+                    },
+                    "launch_date": {
+                        "type": "string",
+                        "example": "09/21/20"
+                    },
+                    "currency_symbol": {
+                        "type": "string",
+                        "example": "$"
+                    },
+                    "link": {
+                        "type": "string",
+                        "example": "http://localhost:8880/en/project-catalyst/funds/fund-2"
+                    },
+                    "thumbnail_url": {
+                        "type": "null",
+                        "example": null
+                    },
+                    "gravatar": {
+                        "type": "null",
+                        "example": null
+                    }
+                },
+                "type": "object"
+            },
+            "funds": {
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/fund"
+                }
+            },
+            "funds_links": {
+                "properties": {
+                    "first": {
+                        "type": "string",
+                        "example": "http://localhost:8880/api/catalyst-explorer/funds?page=1"
+                    },
+                    "last": {
+                        "type": "string",
+                        "example": "http://localhost:8880/api/catalyst-explorer/funds?page=1"
+                    },
+                    "prev": {
+                        "type": "string",
+                        "example": null
+                    },
+                    "next": {
+                        "type": "string",
+                        "example": "http://localhost:8880/api/catalyst-explorer/funds?page=2"
+                    }
+                },
+                "type": "object"
+            },
+            "funds_meta": {
+                "properties": {
+                    "current_page": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "from": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "last_page": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "links": {
+                        "$ref": "#/components/schemas/funds_meta_links_array"
+                    },
+                    "path": {
+                        "type": "string",
+                        "example": "http://localhost:8880/api/catalyst-explorer/funds"
+                    },
+                    "per_page": {
+                        "type": "integer",
+                        "example": 24
+                    },
+                    "to": {
+                        "type": "integer",
+                        "example": 9
+                    },
+                    "total": {
+                        "type": "integer",
+                        "example": 9
+                    }
+                },
+                "type": "object"
+            },
+            "funds_meta_links_array": {
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/funds_meta_links_array_object"
+                }
+            },
+            "funds_meta_links_array_object": {
+                "properties": {
+                    "url": {
+                        "type": "string",
+                        "example": "http://localhost:8880/api/catalyst-explorer/funds?page=1"
+                    },
+                    "label": {
+                        "type": "string",
+                        "example": "1"
+                    },
+                    "active": {
+                        "type": "boolean",
+                        "example": false
+                    }
+                },
+                "type": "object"
+            },
+            "tag": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 95
+                    },
+                    "title": {
+                        "type": "string",
+                        "example": "voluptatem"
+                    },
+                    "content": {
+                        "type": "string",
+                        "example": "Alias rem dolorum dolores impedit hic. Et molestiae quae amet aut possimus. Ex aperiam quisquam suscipit sunt.Vitae eligendi temporibus quia delectus deserunt. Eum eveniet accusantium rerum ut consequatur."
+                    }
+                },
+                "type": "object"
+            },
+            "tags": {
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/tag"
+                }
+            },
+            "tags_links": {
+                "properties": {
+                    "first": {
+                        "type": "string",
+                        "example": "http://localhost:8880/api/catalyst-explorer/tags?page=1"
+                    },
+                    "last": {
+                        "type": "string",
+                        "example": "http://localhost:8880/api/catalyst-explorer/tags?page=1"
+                    },
+                    "prev": {
+                        "type": "string",
+                        "example": null
+                    },
+                    "next": {
+                        "type": "string",
+                        "example": "http://localhost:8880/api/catalyst-explorer/tags?page=2"
+                    }
+                },
+                "type": "object"
+            },
+            "tags_meta": {
+                "properties": {
+                    "current_page": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "from": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "last_page": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "links": {
+                        "$ref": "#/components/schemas/tags_meta_links_array"
+                    },
+                    "path": {
+                        "type": "string",
+                        "example": "http://localhost:8880/api/catalyst-explorer/tags"
+                    },
+                    "per_page": {
+                        "type": "integer",
+                        "example": 24
+                    },
+                    "to": {
+                        "type": "integer",
+                        "example": 9
+                    },
+                    "total": {
+                        "type": "integer",
+                        "example": 9
+                    }
+                },
+                "type": "object"
+            },
+            "tags_meta_links_array": {
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/tags_meta_links_array_object"
+                }
+            },
+            "tags_meta_links_array_object": {
+                "properties": {
+                    "url": {
+                        "type": "string",
+                        "example": "http://localhost:8880/api/catalyst-explorer/tags?page=1"
+                    },
+                    "label": {
+                        "type": "string",
+                        "example": "1"
+                    },
+                    "active": {
+                        "type": "boolean",
+                        "example": false
+                    }
+                },
+                "type": "object"
+            },
+            "challenge": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 92
+                    },
+                    "fundId": {
+                        "type": "integer",
+                        "example": 91
+                    },
+                    "title": {
+                        "type": "string",
+                        "example": "F3: DApp Creation"
+                    },
+                    "proposalsCount": {
+                        "type": "integer",
+                        "example": 76
+                    },
+                    "amount": {
+                        "type": "integer",
+                        "example": "250000"
+                    },
+                    "currency": {
+                        "type": "string",
+                        "example": "usd"
+                    }
+                },
+                "type": "object"
+            },
+            "challenges": {
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/challenge"
+                }
+            },
+            "challenges_links": {
+                "properties": {
+                    "first": {
+                        "type": "string",
+                        "example": "http://localhost:8880/api/catalyst-explorer/challenges?page=1"
+                    },
+                    "last": {
+                        "type": "string",
+                        "example": "http://localhost:8880/api/catalyst-explorer/challenges?page=1"
+                    },
+                    "prev": {
+                        "type": "string",
+                        "example": null
+                    },
+                    "next": {
+                        "type": "string",
+                        "example": "http://localhost:8880/api/catalyst-explorer/challenges?page=2"
+                    }
+                },
+                "type": "object"
+            },
+            "challenges_meta": {
+                "properties": {
+                    "current_page": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "from": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "last_page": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "links": {
+                        "$ref": "#/components/schemas/challenges_meta_links_array"
+                    },
+                    "path": {
+                        "type": "string",
+                        "example": "http://localhost:8880/api/catalyst-explorer/challenges"
+                    },
+                    "per_page": {
+                        "type": "integer",
+                        "example": 200
+                    },
+                    "to": {
+                        "type": "integer",
+                        "example": 100
+                    },
+                    "total": {
+                        "type": "integer",
+                        "example": 100
+                    }
+                },
+                "type": "object"
+            },
+            "challenges_meta_links_array": {
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/challenges_meta_links_array_object"
+                }
+            },
+            "challenges_meta_links_array_object": {
+                "properties": {
+                    "url": {
+                        "type": "string",
+                        "example": "http://localhost:8880/api/catalyst-explorer/challenges?page=1"
+                    },
+                    "label": {
+                        "type": "string",
+                        "example": "1"
+                    },
+                    "active": {
+                        "type": "boolean",
+                        "example": true
                     }
                 },
                 "type": "object"
