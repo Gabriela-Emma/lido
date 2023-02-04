@@ -5,7 +5,7 @@
                 <div class="space-y-12">
                     <ul role="list"
                         class="space-y-4 sm:grid sm:grid-cols-2 sm:gap-6 sm:space-y-0 lg:grid-cols-3 2xl:grid-cols-4 lg:gap-6">
-                        <FundCard v-for="fund in funds" :fund="fund"></FundCard>
+                        <FundCard v-for="fund in funds" :key="fund.id" :fund="fund"></FundCard>
                     </ul>
                 </div>
                 <div class="mt-6 paginator ">

@@ -26,9 +26,10 @@ class CatalystPeopleController extends Controller
      */
     public function index(Request $request)
     {   
-        // $this->search=$request->input('s',null);
+        $this->search=$request->input('s',null);
 
         return Inertia::render('People', [
+            'search' => $this->search,
             'users' => $this->query($request),
             'crumbs' => [
                 ['label' => 'People'],
