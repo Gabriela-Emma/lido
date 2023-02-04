@@ -23,8 +23,31 @@ class FundController extends Controller
      *     @OA\Response(
      *         response=200,
      *         description="successful",
-     *     ),
-     *
+     *          @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                 property="data",
+     *                 type="array",
+     *                 @OA\Items(
+     *                     ref="#/components/schemas/funds"
+     *                 )
+     *             ),
+     *             @OA\Property(
+     *                 property="links",
+     *                 type="object",
+     *                 @OA\Property(
+     *                     ref="#/components/schemas/funds_links"
+     *                 )
+     *             ),
+     *             @OA\Property(
+     *                 property="meta",
+     *                 type="object",
+     *                 @OA\Property(
+     *                     ref="#/components/schemas/funds_meta"
+     *                 )
+     *             )
+     *         )
+     *     )
      * )
      */
     public function funds(): \Illuminate\Http\Response|AnonymousResourceCollection|Application|ResponseFactory
