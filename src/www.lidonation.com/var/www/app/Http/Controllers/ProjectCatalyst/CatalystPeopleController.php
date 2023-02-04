@@ -4,8 +4,11 @@ namespace App\Http\Controllers\ProjectCatalyst;
 
 use Inertia\Inertia;
 use Inertia\Response;
+use Laravel\Scout\Builder;
 use App\Models\CatalystUser;
 use Illuminate\Http\Request;
+use JetBrains\PhpStorm\ArrayShape;
+use Meilisearch\Endpoints\Indexes;
 use App\Http\Controllers\Controller;
 
 class CatalystPeopleController extends Controller
@@ -13,6 +16,9 @@ class CatalystPeopleController extends Controller
     public int $perPage = 24;
 
     public ?string $search = null;
+
+    protected Builder $searchBuilder;
+
     /**
      * Display a listing of the resource.
      *
@@ -23,6 +29,7 @@ class CatalystPeopleController extends Controller
         $this->search=$request->input('s',null);
 
         return Inertia::render('People', [
+            'search' => $this->search,
             'users' => $this->query($request),
             'crumbs' => [
                 ['label' => 'People'],
@@ -31,13 +38,25 @@ class CatalystPeopleController extends Controller
     }
 
     public function query(Request $request){
-        $query = CatalystUser::query();
-        if (isset($this->search)) {
-            $query->orWhere('username', 'iLIKE', "%{$this->search}%")
-                ->orWhere('name', 'iLIKE', "%{$this->search}%");
-        }
-        $paginator = $query->paginate($this->perPage);
+     
+        $_options = [
+            'filters' => array_merge([], $this->getUserFilters()),
+        ];
 
+        $this->searchBuilder = CatalystUser::search($this->search,
+            function (Indexes $index, $query, $options) use ($_options) {
+                if (count($_options['filters']) > 0) {
+                    $options['filter'] = implode(' AND ', $_options['filters']);
+                }
+                $options['attributesToRetrieve'] = ['id'];
+                if (! $this->search) {
+                    $options['sort'] = ['name:asc'];
+                }
+                $options['limit'] = $this->perPage;
+
+                return $index->search($query, $options);
+            });
+        $paginator = $this->searchBuilder->paginate($this->perPage);
         return [
             'data' => $paginator->map(fn ($user) => [
                 'id' => $user->id,
@@ -48,5 +67,13 @@ class CatalystPeopleController extends Controller
             ]),
             'pagination' => $paginator->toArray(),
         ];
+    }
+
+    #[ArrayShape(['filters' => 'array'])]
+    protected function getUserFilters(): array
+    {
+        $_options = [];
+
+        return $_options;
     }
 }
