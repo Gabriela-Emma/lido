@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Enums\RoleEnum;
 use MailchimpMarketing\ApiClient;
-use Illuminate\Support\Facades\Log;
 
 class NewsletterService
 {
@@ -14,11 +13,11 @@ class NewsletterService
 
         return $this->client()->lists->addListMember($list, [
             'email_address' => $email,
-            'tags' => array(RoleEnum::delegator()->value),
+            'tags' => [RoleEnum::delegator()->value],
             'status' => 'subscribed',
-            'merge_fields'  => array(
+            'merge_fields' => [
                 'NAME' => $name,
-              )
+            ],
         ]);
     }
 

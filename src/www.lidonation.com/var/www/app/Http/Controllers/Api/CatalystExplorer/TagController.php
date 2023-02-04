@@ -15,19 +15,41 @@ class TagController extends Controller
 {
     /**
      * @OA\Get(
-     *     path="/tags",
-     *     tags={"tag"},
-     *     summary="Get a list of tags",
-     *     description="Returns a list of all tags",
-     *     operationId="tags",
-     *     @OA\Response(
-     *         response=200,
-     *         description="successful",
-     *     ),
-     *
+     * path="/tags",
+     * tags={"tag"},
+     * summary="Get a list of tags",
+     * description="Returns a list of all tags",
+     * operationId="tags",
+     * @OA\Response(
+     * response=200,
+     * description="successful",
+     * @OA\JsonContent(
+     * type="object",
+     * @OA\Property(
+     * property="data",
+     * type="array",
+     * @OA\Items(
+     * ref="#/components/schemas/tags"
+     * )
+     * ),
+     * @OA\Property(
+     * property="links",
+     * type="object",
+     * @OA\Property(
+     * ref="#/components/schemas/tags_links"
+     * )
+     * ),
+     * @OA\Property(
+     * property="meta",
+     * type="object",
+     * @OA\Property(
+     * ref="#/components/schemas/tags_meta"
+     * )
+     * )
+     * )
+     * )
      * )
      */
-
     public function tags(): \Illuminate\Http\Response|AnonymousResourceCollection|Application|ResponseFactory
     {
         $per_page = request('per_page', 200);

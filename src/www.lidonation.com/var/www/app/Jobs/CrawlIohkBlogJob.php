@@ -4,7 +4,6 @@ namespace App\Jobs;
 
 use App\Services\IohkBlogCrawlerService;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
@@ -18,7 +17,7 @@ class CrawlIohkBlogJob implements ShouldQueue
 
     public $maxExceptions = 3;
 
-    public $timeout = 60*5;
+    public $timeout = 60 * 5;
 
     /**
      * Create a new job instance.
@@ -36,7 +35,7 @@ class CrawlIohkBlogJob implements ShouldQueue
      * @return void
      */
     public function handle()
-    {  
+    {
         (new IohkBlogCrawlerService($this->baseUrl, $this->relativeUri, $this->lang));
     }
 }

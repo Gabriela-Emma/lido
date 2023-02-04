@@ -1,21 +1,20 @@
 <?php
+
 namespace App\Services;
 
 use Illuminate\Support\Facades\Http;
-use GuzzleHttp\Client;
-use GuzzleHttp\Promise;
 
 class CreateCardanoWalletService
 {
-    
     public $walletId;
+
     public $walletAddr;
 
     // protected $walletName, protected $mnemonicWords, protected $passPhrase
-    public function __construct(public $name, public $recoveryPhrase, public $passPhrase) {
+    public function __construct(public $name, public $recoveryPhrase, public $passPhrase)
+    {
         $this->createWallet();
     }
-
 
     /**
      * @throws RequestException
@@ -68,7 +67,7 @@ class CreateCardanoWalletService
                 $command = implode(' ', $command);
             }
 
-            return ['data'=>Process::fromShellCommandline($command)];
+            return ['data' => Process::fromShellCommandline($command)];
         }
 
         return new Process($command);

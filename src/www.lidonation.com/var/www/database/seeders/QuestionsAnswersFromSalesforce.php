@@ -17,38 +17,39 @@ class QuestionsAnswersFromSalesforce extends Seeder
      * Run the database seeds.
      *
      * @return void
+     *
      * @throws InvalidArgumentException
      */
     public function run()
     {
-        $questions = Items::fromFile(database_path() . '/files/questions.json');
+        $questions = Items::fromFile(database_path().'/files/questions.json');
         foreach ($questions as $sfQuestion) {
             // find the post
             $p = Post::where('slug', $sfQuestion->slug)->first();
 
-            if (!$p instanceof Post) {
+            if (! $p instanceof Post) {
                 Log::error('Error logging Question', (array) $sfQuestion);
+
                 continue;
             }
 
             // maybe find related quiz
             $quiz = Quiz::updateOrCreate([
                 'title->en' => $p->title,
-                'user_id' => 3
+                'user_id' => 3,
             ], [
                 'title->en' => $p->title,
                 'status' => 'published',
                 'content' => '',
-                'user_id' => 3
+                'user_id' => 3,
             ]);
 
             $question = Question::where([
                 'title->en' => $sfQuestion->en,
-                'user_id' => 3
+                'user_id' => 3,
             ])->whereRelation('metas', 'content', '=', $sfQuestion->sf_id)->first();
 
-
-            if (!$question instanceof Question) {
+            if (! $question instanceof Question) {
                 $question = new Question;
             }
             $question->user_id = 3;
@@ -66,12 +67,13 @@ class QuestionsAnswersFromSalesforce extends Seeder
             $quiz->questions()->syncWithoutDetaching([$question->id]);
         }
 
-        $answers = Items::fromFile(database_path() . '/files/answers.json');
+        $answers = Items::fromFile(database_path().'/files/answers.json');
         foreach ($answers as $sfAnswer) {
             // find related question
             $question = Question::whereRelation('metas', 'content', '=', $sfAnswer->quiz_sf_id)->first();
-            if (!$question instanceof Question) {
+            if (! $question instanceof Question) {
                 Log::error('Error logging Answer', (array) $sfAnswer);
+
                 continue;
             }
 

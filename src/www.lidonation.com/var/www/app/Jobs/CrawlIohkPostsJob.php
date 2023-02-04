@@ -4,12 +4,10 @@ namespace App\Jobs;
 
 use App\Services\IohkPostCrawlerService;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Log;
 
 class CrawlIohkPostsJob implements ShouldQueue
 {
@@ -19,8 +17,7 @@ class CrawlIohkPostsJob implements ShouldQueue
 
     public $maxExceptions = 3;
 
-    public $timeout = 60*5;
-
+    public $timeout = 60 * 5;
 
     /**
      * Create a new job instance.
@@ -29,7 +26,6 @@ class CrawlIohkPostsJob implements ShouldQueue
      */
     public function __construct(protected array $postsLinks, protected $langLocale)
     {
-
     }
 
     /**
@@ -39,7 +35,7 @@ class CrawlIohkPostsJob implements ShouldQueue
      */
     public function handle()
     {
-        foreach($this->postsLinks as $key=>$link) {
+        foreach ($this->postsLinks as $key => $link) {
             try {
                 (new IohkPostCrawlerService($link, $this->langLocale));
             } catch(e) {

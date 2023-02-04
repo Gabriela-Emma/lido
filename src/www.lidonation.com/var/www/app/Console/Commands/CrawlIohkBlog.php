@@ -4,7 +4,6 @@ namespace App\Console\Commands;
 
 use App\Jobs\CrawlIohkBlogJob;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\App;
 
 class CrawlIohkBlog extends Command
 {
@@ -34,10 +33,10 @@ class CrawlIohkBlog extends Command
     {
         $baseUrl = $this->option('base-url') ?? 'https://iohk.io';
         $uri = $this->option('uri') ?? '/blog/posts/page-1/';
-        $uriPrefix = ($this->option('lang')=='ja') ? 'jp' : $this->option('lang');
+        $uriPrefix = ($this->option('lang') == 'ja') ? 'jp' : $this->option('lang');
         $langLocale = $this->option('lang');
 
-        $relativeUri =  $uriPrefix . "/" . $uri;
+        $relativeUri = $uriPrefix.'/'.$uri;
 
         CrawlIohkBlogJob::dispatch($baseUrl, $relativeUri, $langLocale); //initiate the crawler
     }

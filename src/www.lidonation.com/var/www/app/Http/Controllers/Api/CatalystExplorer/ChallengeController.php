@@ -20,11 +20,40 @@ class ChallengeController extends Controller
      *     summary="Get a list of challenges",
      *     description="Returns a list of all challenges",
      *     operationId="challenges",
+     *      @OA\Parameter(
+     *         name="fund_id",
+     *         in="query",
+     *         description="Filter content by id of a fund",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="integer",
+     *             format="int64"
+     *         ),
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="successful",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                 property="data",
+     *                 type="array",
+     *                 @OA\Items(
+     *                     ref="#/components/schemas/challenges"
+     *                 )
+     *             ),
+     *             @OA\Property(
+     *                 property="links",
+     *                 type="object",
+     *                 ref="#/components/schemas/challenges_links"
+     *             ),
+     *             @OA\Property(
+     *                 property="meta",
+     *                 type="object",
+     *                 ref="#/components/schemas/challenges_meta"
+     *             )
+     *         )
      *     ),
-     *
      * )
      */
     public function challenges(): \Illuminate\Http\Response|AnonymousResourceCollection|Application|ResponseFactory
@@ -50,17 +79,18 @@ class ChallengeController extends Controller
             return ChallengeResource::collection($funds->paginate($per_page));
         }
     }
+
     /**
      * @OA\Get(
-     *     path="/challenges/{fund_id}",
+     *     path="/challenges/{challenge_id}",
      *     tags={"challenge"},
-     *     summary="Get challenges by fund id",
-     *     description="Returns challenges of a certain fund.",
+     *     summary="Get challenge by challenge id",
+     *     description="Returns a single challenge.",
      *     operationId="challenge",
      *     @OA\Parameter(
-     *         name="fund_id",
+     *         name="challenge_id",
      *         in="path",
-     *         description="id of fund to return",
+     *         description="id of challenge to return",
      *         required=true,
      *         @OA\Schema(
      *             type="integer",
@@ -73,7 +103,7 @@ class ChallengeController extends Controller
      *     ),
      *     @OA\Response(
      *         response=404,
-     *         description="Challenge(s) not found"
+     *         description="Challenge not found"
      *      ),
      *
      * )
@@ -93,6 +123,5 @@ class ChallengeController extends Controller
         }
 
         return new ChallengeResource($challenge);
-
     }
 }

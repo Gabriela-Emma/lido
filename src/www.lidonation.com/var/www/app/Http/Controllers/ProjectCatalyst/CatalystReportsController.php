@@ -22,6 +22,7 @@ class CatalystReportsController extends Controller
     public function index(Request $request)
     {
         $this->search = $request->input('s', null);
+
         return Inertia::render('Reports', [
             'search' => $this->search,
             'reports' => $this->query($request),

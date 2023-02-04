@@ -7,7 +7,6 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Artisan;
 
 class CatalystProjectReportNotificationJob implements ShouldQueue
 {
@@ -32,13 +31,13 @@ class CatalystProjectReportNotificationJob implements ShouldQueue
         // getAllActiveNotificationRequestsTemplate
         // where type = CatalystReport
         // foreach item in related filter where not in NotificationRequests::where('what_id' and who_id)
-            // create new NotificationRequest
+        // create new NotificationRequest
 
         // In Observer
 //            onCreate
 //                *onCreate
-                    // create new Mailable
-                    // send
-                    // update status
+        // create new Mailable
+        // send
+        // update status
     }
 }

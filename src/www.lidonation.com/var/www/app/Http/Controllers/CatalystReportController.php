@@ -32,7 +32,7 @@ class CatalystReportController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param StoreCatalystReportRequest $request
+     * @param  StoreCatalystReportRequest  $request
      * @return void
      */
     public function store(StoreCatalystReportRequest $request)
@@ -43,7 +43,7 @@ class CatalystReportController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param CatalystReport $catalystReport
+     * @param  CatalystReport  $catalystReport
      * @return Response
      */
     public function show(CatalystReport $catalystReport)
@@ -54,7 +54,7 @@ class CatalystReportController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param CatalystReport $catalystReport
+     * @param  CatalystReport  $catalystReport
      * @return Response
      */
     public function edit(CatalystReport $catalystReport)
@@ -66,7 +66,7 @@ class CatalystReportController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \App\Http\Requests\UpdateCatalystReportRequest  $request
-     * @param CatalystReport $catalystReport
+     * @param  CatalystReport  $catalystReport
      * @return Response
      */
     public function update(UpdateCatalystReportRequest $request, CatalystReport $catalystReport)
@@ -77,7 +77,7 @@ class CatalystReportController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param CatalystReport $catalystReport
+     * @param  CatalystReport  $catalystReport
      * @return Response
      */
     public function destroy(CatalystReport $catalystReport)
