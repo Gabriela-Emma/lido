@@ -1,6 +1,7 @@
-@props(['model'])
+@props(['model', 'filter' => 'proposal'])
 <div class="flex flex-col justify-center gap-4 p-8 relative" x-data="{
     subject: @js($model->id),
+    filter: @js($filter),
     proposal: null,
     group: null,
     user: null,
@@ -17,7 +18,7 @@
         this.processing = true;
         const subscription = {
             ...Object.fromEntries(new FormData(event.target)),
-            filter: 'proposal',
+            filter: this.filter,
             value: this.subject
         };
         const res = await window.axios.post(`/api/catalyst-explorer/reports/follow`, subscription);
@@ -80,13 +81,13 @@
     </div>
 
     <div x-show="showForm" x-transition>
-        <div class="w-80 text-center mx-auto">
+        <div class="text-center mx-auto">
             <p class="text-base font-medium">
                 We will check for new reports and deliver them directly in your email.
             </p>
         </div>
 
-        <form @submit.prevent="followReport" class="flex flex-col justify-center w-full rounded-md gap-4 w-96 my-4">
+        <form @submit.prevent="followReport" class="flex flex-col justify-center w-full rounded-md gap-4 w-full my-4">
             <div class="w-full rounded-l-md">
                 <label for="name" class="sr-only">Name</label>
                 <input
@@ -121,7 +122,7 @@
             @csrf
         </form>
 
-        <div class="text-center w-80 mx-auto">
+        <div class="text-center mx-auto">
             <p class="text-slate-500 text-sm">
                 Your email will not be shared with any 3rd party or be used for anything else.
             </p>

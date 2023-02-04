@@ -46,10 +46,11 @@ class ReportController extends Controller
             'relation' => match ($validated->filter) {
                 'proposal' => 'proposal',
                 'group' => 'proposal.groups',
+                'author' => 'proposal.author',
                 default => $validated->filter
             },
             'field' => match ($validated->filter) {
-                'proposal', 'group' => 'id',
+                'proposal', 'group', 'author' => 'id',
                 default => $validated->filter
             },
             'value' => $validated->value,

@@ -168,6 +168,22 @@
                             Individuals may not be employed at {{$catalystGroup->name}}.
                             This is is is not representative of {{$catalystGroup->name}}'s full team.
                         </p>
+
+                        @if($catalystGroup->members?->count() && $groupProposals->isNotEmpty())
+                            <div
+                                class="mt-6 flex flex-col justify-center items-center gap-4 follow-reports w-full bg-slate-200 p-4">
+                                <p>
+                                    Follow {{$catalystGroup->name}} monthly project reports to have them delivered to your inbox,
+                                    <strong>for all {{$groupProposals->count()}} projects.</strong>
+                                </p>
+                                <p>
+                                    Individual Projects can also be followed on project page.
+                                </p>
+                                <div class="rounded-md">
+                                    <x-catalyst.follow-monthly-reports :model="$catalystGroup" filter="group"/>
+                                </div>
+                            </div>
+                        @endif
                     </div>
                     <div class="lg:col-span-3">
                         @if($catalystGroup->members?->isNotEmpty())
@@ -229,6 +245,22 @@
                                     @endforeach
                                 </ul>
                             @endif
+                        @else
+                            @if( $groupProposals->isNotEmpty())
+                                <div
+                                    class="mt-6 flex flex-col justify-center items-center gap-4 follow-reports w-full bg-slate-200 p-4">
+                                    <p>
+                                        Follow {{$catalystGroup->name}} monthly project reports to have them delivered to your inbox,
+                                        <strong>for all {{$groupProposals->count()}} projects.</strong>
+                                    </p>
+                                    <p>
+                                        Individual Projects can also be followed on project page.
+                                    </p>
+                                    <div class="rounded-md">
+                                        <x-catalyst.follow-monthly-reports :model="$catalystGroup" filter="group"/>
+                                    </div>
+                                </div>
+                            @endif
                         @endif
                     </div>
                 </div>
@@ -278,7 +310,9 @@
                     {{ $groupProposals->links() }}
                 </div>
             </div>
+
         </section>
     @endif
+
 
 </x-public-layout>

@@ -71,6 +71,13 @@
     @if($catalystUser->monthly_reports->sortBy('proposal_id'))
         <section class="px-4 bg-slate-100 round-sm py-8" id="monthly-reports-wrapper">
             <h2 class="text-center my-2 text-teal-800 2xl:text-5xl">Monthly Reports</h2>
+
+            <div class="mt-6 flex justify-center gap-4 follow-reports w-full">
+                <div class="rounded-md">
+                    <x-catalyst.follow-monthly-reports :model="$catalystUser" filter="author" />
+                </div>
+            </div>
+
             <div class="mt-6 columns-1 sm:columns-2 xl:columns-3 gap-4 monthly-reports">
                 @foreach($catalystUser->monthly_reports as $report)
                     <x-catalyst.reports.drip wire:key="{{$report->id}}" :report="$report" />
