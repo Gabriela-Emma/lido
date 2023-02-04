@@ -100,6 +100,7 @@ class CatalystUser extends User implements HasMedia, CanComment
         return [
             'name',
             'proposals_count',
+            'proposals_completed',
         ];
     }
 

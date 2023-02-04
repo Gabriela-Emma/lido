@@ -192,8 +192,6 @@ class CatalystProjectsController extends Controller
 
                 $options['limit'] = $this->limit;
 
-//                dd($options);
-
                 return $index->search($query, $options);
             });
 

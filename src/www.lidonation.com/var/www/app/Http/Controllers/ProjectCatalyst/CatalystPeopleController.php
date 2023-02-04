@@ -5,6 +5,8 @@ namespace App\Http\Controllers\ProjectCatalyst;
 use App\Http\Controllers\Controller;
 use App\Models\CatalystUser;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Fluent;
 use Inertia\Inertia;
 use Inertia\Response;
 use JetBrains\PhpStorm\ArrayShape;
@@ -48,26 +50,47 @@ class CatalystPeopleController extends Controller
                 if (count($_options['filters']) > 0) {
                     $options['filter'] = implode(' AND ', $_options['filters']);
                 }
-                $options['attributesToRetrieve'] = ['id'];
-                if (! $this->search) {
+                $options['attributesToRetrieve'] = [
+                    'id',
+                    'name',
+                    'username',
+                    'first_timer',
+                    'proposals_count',
+                    'proposals_completed',
+                    'profile_photo_url',
+                    'media.original_url'
+                ];
+                if (!$this->search) {
                     $options['sort'] = ['name:asc'];
                 }
                 $options['limit'] = $this->perPage;
-
                 return $index->search($query, $options);
             });
-        $paginator = $this->searchBuilder->paginate($this->perPage);
 
-        return [
-            'data' => $paginator->map(fn ($user) => [
-                'id' => $user->id,
-                'name' => $user->name,
-                'link' => $user->link,
-                'profile_photo_url' => $user->thumbnail_url ?? $user->gravatar,
-                'proposals_count' => $user->proposals_count,
-            ]),
-            'pagination' => $paginator->toArray(),
-        ];
+        $response = new Fluent($this->searchBuilder->raw());
+        $pagination = new LengthAwarePaginator(
+            $response->hits,
+            $response->estimatedTotalHits,
+            $response->limit,
+            null,
+            [
+                'pageName' => 'p',
+            ]
+        );
+
+        return $pagination->toArray();
+//        $paginator = $this->searchBuilder->paginate($this->perPage);
+//
+//        return [
+//            'data' => $paginator->map(fn ($user) => [
+//                'id' => $user->id,
+//                'name' => $user->name,
+//                'link' => $user->link,
+//                'profile_photo_url' => $user->thumbnail_url ?? $user->gravatar,
+//                'proposals_count' => $user->proposals_count,
+//            ]),
+//            'pagination' => $paginator->toArray(),
+//        ];
     }
 
     #[ArrayShape(['filters' => 'array'])]
