@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\CatalystReport;
 use App\Models\NotificationRequestTemplate;
 use App\Models\User;
-use \Illuminate\Http\Request;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Fluent;
 use Illuminate\Support\Str;
@@ -27,7 +27,7 @@ class ReportController extends Controller
 
         // get authenticated user or create new one
         $who = User::where('email', $validated->where)?->first();
-        if (!$who instanceof User) {
+        if (! $who instanceof User) {
             $who = new User;
             $who->name = $validated->name;
             $who->email = $validated->where;
@@ -62,5 +62,4 @@ class ReportController extends Controller
 
         return $nrt;
     }
-
 }

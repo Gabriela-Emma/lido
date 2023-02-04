@@ -13,7 +13,6 @@ class GroupController extends Controller
 {
     use Traits\Group;
 
-
     public function group($groupId): \Illuminate\Http\Response|GroupResource|Application|ResponseFactory
     {
         $group = CatalystGroup::find($groupId);

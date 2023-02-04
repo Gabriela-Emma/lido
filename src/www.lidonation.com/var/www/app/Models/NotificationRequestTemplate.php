@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-
-
 use App\Models\Traits\HasMetaData;
 use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
 use Illuminate\Database\Eloquent\SoftDeletes;

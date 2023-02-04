@@ -49,7 +49,7 @@ class Taxonomy extends Model implements HasMedia, HasLink
     protected function postsCount(): Attribute
     {
         return Attribute::make(
-            get: fn($value) => $this->insights_count + $this->news_count,
+            get: fn ($value) => $this->insights_count + $this->news_count,
         );
     }
 
@@ -64,7 +64,7 @@ class Taxonomy extends Model implements HasMedia, HasLink
 
     public function getHeroAttribute()
     {
-        $media = $this->media->filter(fn($m) => $m->collection_name === 'hero');
+        $media = $this->media->filter(fn ($m) => $m->collection_name === 'hero');
         if ($media->isNotEmpty()) {
             return $media->first();
         }
@@ -79,11 +79,11 @@ class Taxonomy extends Model implements HasMedia, HasLink
     {
         $query->when(
             $filters['search'] ?? false,
-            fn(Builder $query, $search) => $query->whereFullText(['title'], "'{$search}':*", ['mode' => 'websearch'])
+            fn (Builder $query, $search) => $query->whereFullText(['title'], "'{$search}':*", ['mode' => 'websearch'])
         );
         $query->when(
             $filters['ids'] ?? false,
-            fn(Builder $query, $ids) => $query->whereIn('id', is_array($ids) ? $ids : explode(',', $ids))
+            fn (Builder $query, $ids) => $query->whereIn('id', is_array($ids) ? $ids : explode(',', $ids))
         );
     }
 
@@ -95,7 +95,7 @@ class Taxonomy extends Model implements HasMedia, HasLink
     protected function models(): Attribute
     {
         return Attribute::make(
-            get: fn($value) => ($value ?? $this->news->concat($this->reviews)->concat($this->insights))->sortByDesc('published_at'),
+            get: fn ($value) => ($value ?? $this->news->concat($this->reviews)->concat($this->insights))->sortByDesc('published_at'),
         );
     }
 
@@ -115,8 +115,8 @@ class Taxonomy extends Model implements HasMedia, HasLink
         if (static::whereSlug($slug = Str::slug($title))->exists()) {
             $max = intval(static::whereTitle($title)->latest('id')->count());
 
-            return "{$slug}-" . preg_replace_callback('/(\d+)$/', fn($matches) => $matches[1] + 1,
-                    $max);
+            return "{$slug}-".preg_replace_callback('/(\d+)$/', fn ($matches) => $matches[1] + 1,
+                $max);
         }
 
         return $slug;

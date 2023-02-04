@@ -4,7 +4,6 @@ namespace App\Jobs;
 
 use App\Services\NewsletterService;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
@@ -15,6 +14,7 @@ class SubscribeDelegatorMailchimpJob implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     protected $name;
+
     protected $email;
 
     /**
@@ -35,6 +35,6 @@ class SubscribeDelegatorMailchimpJob implements ShouldQueue
      */
     public function handle()
     {
-        (new NewsletterService)->subscribe($this->name, $this->email);   
+        (new NewsletterService)->subscribe($this->name, $this->email);
     }
 }

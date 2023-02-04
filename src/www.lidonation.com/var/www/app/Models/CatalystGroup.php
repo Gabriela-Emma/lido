@@ -61,13 +61,12 @@ class CatalystGroup extends Model implements HasMedia, HasLink
     {
         $query->when(
             $filters['search'] ?? false,
-            fn(Builder $query, $search) =>
-            $query->where('name', 'ILIKE', '%' . $search . '%')
+            fn (Builder $query, $search) => $query->where('name', 'ILIKE', '%'.$search.'%')
         );
 
         $query->when(
             $filters['ids'] ?? false,
-            fn(Builder $query, $ids) => $query->whereIn('id', is_array($ids) ? $ids : explode(',', $ids))
+            fn (Builder $query, $ids) => $query->whereIn('id', is_array($ids) ? $ids : explode(',', $ids))
         );
     }
 

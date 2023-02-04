@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers\ProjectCatalyst;
 
-use Inertia\Inertia;
-use Inertia\Response;
-use Laravel\Scout\Builder;
+use App\Http\Controllers\Controller;
 use App\Models\CatalystUser;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
+use Inertia\Response;
 use JetBrains\PhpStorm\ArrayShape;
+use Laravel\Scout\Builder;
 use Meilisearch\Endpoints\Indexes;
-use App\Http\Controllers\Controller;
 
 class CatalystPeopleController extends Controller
-{   
+{
     public int $perPage = 24;
 
     public ?string $search = null;
@@ -25,8 +25,8 @@ class CatalystPeopleController extends Controller
      * @return Response
      */
     public function index(Request $request)
-    {   
-        $this->search=$request->input('s',null);
+    {
+        $this->search = $request->input('s', null);
 
         return Inertia::render('People', [
             'search' => $this->search,
@@ -37,8 +37,8 @@ class CatalystPeopleController extends Controller
         ]);
     }
 
-    public function query(Request $request){
-     
+    public function query(Request $request)
+    {
         $_options = [
             'filters' => array_merge([], $this->getUserFilters()),
         ];
@@ -57,13 +57,14 @@ class CatalystPeopleController extends Controller
                 return $index->search($query, $options);
             });
         $paginator = $this->searchBuilder->paginate($this->perPage);
+
         return [
             'data' => $paginator->map(fn ($user) => [
                 'id' => $user->id,
-                'name' => $user->name, 
-                'link'=>$user->link,
-                'profile_photo_url'=>$user->thumbnail_url ?? $user->gravatar,
-                'proposals_count'=>$user->proposals_count,
+                'name' => $user->name,
+                'link' => $user->link,
+                'profile_photo_url' => $user->thumbnail_url ?? $user->gravatar,
+                'proposals_count' => $user->proposals_count,
             ]),
             'pagination' => $paginator->toArray(),
         ];

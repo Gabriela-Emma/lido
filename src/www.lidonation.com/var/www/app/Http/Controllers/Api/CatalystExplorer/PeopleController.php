@@ -13,7 +13,6 @@ class PeopleController extends Controller
 {
     use Traits\People;
 
-
     public function person($person_id): \Illuminate\Http\Response|PeopleResource|Application|ResponseFactory
     {
         $person = Proposal::find($person_id);

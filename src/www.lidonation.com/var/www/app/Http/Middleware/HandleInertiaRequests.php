@@ -21,7 +21,7 @@ class HandleInertiaRequests extends Middleware
      *
      * @see https://inertiajs.com/asset-versioning
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return string|null
      */
     public function version(Request $request): ?string
@@ -34,7 +34,7 @@ class HandleInertiaRequests extends Middleware
      *
      * @see https://inertiajs.com/shared-data
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return array
      */
     public function share(Request $request): array
@@ -45,7 +45,7 @@ class HandleInertiaRequests extends Middleware
                 : null,
             'locale' => app()->getLocale(),
             'asset_url' => asset('/'),
-            'base_url' => config('app.url')
+            'base_url' => config('app.url'),
         ]);
     }
 }

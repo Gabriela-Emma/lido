@@ -9,5 +9,4 @@ class ModelLink extends MorphPivot
     public $timestamps = false;
 
     protected $table = 'model_links';
-
 }

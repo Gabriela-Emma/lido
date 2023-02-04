@@ -3,9 +3,9 @@
 namespace App\Models;
 
 use App\Traits\SearchableLocale;
-use Illuminate\Support\Str;
-use Illuminate\Contracts\Routing\UrlGenerator;
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\Routing\UrlGenerator;
+use Illuminate\Support\Str;
 use Parental\HasParent;
 use Spatie\Comments\Models\Concerns\HasComments;
 use Spatie\Feed\FeedItem;

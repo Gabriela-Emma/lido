@@ -31,10 +31,10 @@ class UnpaidRewards extends Partition
                     null => 'None',
                     default => ucfirst($obj->asset),
                 } => match ($obj->asset) {
-                        '5dac8536653edc12f6f5e1045d8164b9f59998d3bdc300fc928434894e4d4b52' => intval(ceil($obj->sum / 1000000)),
-                        'lovelace' => intval(ceil($obj->sum / 1000000)),
-                        default => intval($obj->sum),
-                    },
+                    '5dac8536653edc12f6f5e1045d8164b9f59998d3bdc300fc928434894e4d4b52' => intval(ceil($obj->sum / 1000000)),
+                    'lovelace' => intval(ceil($obj->sum / 1000000)),
+                    default => intval($obj->sum),
+                },
             ])->collapse();
 
         return $this->result($agg?->toArray());
