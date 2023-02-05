@@ -1,1 +1,17 @@
-export default interface Pagination {}
+import Proposal from "../models/proposal";
+import PaginationLink from "../models/pagination-link";
+export default interface Pagination {
+    current_page: number,
+    data: Proposal[],
+    links: PaginationLink,
+    prev_page_url: String,
+    next_page_url: string,
+    first_page_url: string,
+    last_page_url: string,
+    from: number,
+    to: number,
+    last_page: number,
+    total: number,
+    path: string,
+    per_page: number,
+}

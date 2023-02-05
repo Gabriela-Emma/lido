@@ -31,6 +31,8 @@ class CatalystProjectsController extends Controller
 
     protected ?string $sortOrder = 'desc';
 
+    protected int $currentPage;
+
     protected int $limit = 24;
 
     protected ?bool $fundedProposalsFilter = false;
@@ -94,12 +96,14 @@ class CatalystProjectsController extends Controller
         $this->tagsFilter = $request->collect('ts')->map(fn ($n) => intval($n));
         $this->peopleFilter = $request->collect('pp')->map(fn ($n) => intval($n));
         $this->groupsFilter = $request->collect('g')->map(fn ($n) => intval($n));
+        $this->currentPage = $request->input('p', 1);
 
         // get filter(s) from request
         return Inertia::render('Proposals', [
             'search' => $this->search,
             'sort' => "{$this->sortBy}:{$this->sortOrder}",
             'filters' => [
+                'currentPage' => $this->currentPage,
                 'funded' => $this->fundedProposalsFilter || $this->fundingStatus === 'funded',
                 'fundingStatus' => match ($this->fundingStatus) {
                     'over_budget' => 'o',
@@ -127,7 +131,7 @@ class CatalystProjectsController extends Controller
                     'challenge' => 'c',
                     default => null
                 },
-                'budgets' => $this->budgets->isNotEmpty() ? $this->budgets->toArray() : [1, 3000000],
+                'budgets' => $this->budgets->isNotEmpty() ? $this->budgets->toArray() : [1, 2000000],
                 'funds' => $this->fundsFilter->toArray(),
                 'challenges' => $this->challengesFilter->toArray(),
                 'tags' => $this->tagsFilter->toArray(),
@@ -190,6 +194,7 @@ class CatalystProjectsController extends Controller
                     $options['sort'] = ['created_at:desc'];
                 }
 
+                $options['offset'] = (($this->currentPage ?? 1) - 1) * $this->limit;
                 $options['limit'] = $this->limit;
 
                 return $index->search($query, $options);
@@ -200,7 +205,7 @@ class CatalystProjectsController extends Controller
             $response->hits,
             $response->estimatedTotalHits,
             $response->limit,
-            null,
+            $this->currentPage,
             [
                 'pageName' => 'p',
             ]

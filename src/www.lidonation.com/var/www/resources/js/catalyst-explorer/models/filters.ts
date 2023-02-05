@@ -1,6 +1,8 @@
 import Fund from "./fund";
+import Proposal from "./proposal";
 
 export default interface Filters {
+    currentPage: number;
     funded: boolean;
     fundingStatus: string;
     projectStatus: string;
@@ -8,6 +10,7 @@ export default interface Filters {
     type?: string;
     funds?: number[];
     challenges?: Fund[];
+    proposals?: Proposal[];
     tags?: number[];
     people?: number[];
     groups?: number[];

@@ -1,10 +1,5 @@
-//body.delegators {
-//    .lido-menu-wrapper {
-//        .lido-menu-wrapper-modal {
-//            @apply top-36;
-//        }
-//    }
-//}
+
+
 //
 //body.projectCatalyst{
 //    .lido-menu-wrapper {
@@ -15,7 +10,27 @@
 //}
 
 .lido-menu-wrapper {
+    .lido-menu-wrapper-modal{
+        @apply top-20;
+    }
+
     .my-lido-rewards {
         @apply bg-green-600 text-white px-2 py-0.5 text-base xl:text-xl rounded-sm hover:bg-green-700 hover:text-white;
+    }
+}
+
+body.delegators {
+    .lido-menu-wrapper {
+        .lido-menu-wrapper-modal {
+            @apply top-32;
+        }
+    }
+}
+
+body.projectCatalyst {
+    .lido-menu-wrapper {
+        .lido-menu-wrapper-modal {
+            @apply top-32;
+        }
     }
 }
