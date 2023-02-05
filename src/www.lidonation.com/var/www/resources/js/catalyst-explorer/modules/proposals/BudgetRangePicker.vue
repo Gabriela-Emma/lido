@@ -1,5 +1,19 @@
 <template>
     <div class="w-full">
+        <div class="relative">
+            <button
+                v-if="showClearRange"
+                @click="resetValues"
+                @mouseenter="clearRange = true"
+                @mouseleave="clearRange = false"
+                class="text-slate-300 hover:text-yellow-500 focus:outline-none flex items-center gap-2 absolute right-0">
+                <span class="text-xs" v-if="clearRange">Clear Range</span>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                stroke="currentColor" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+        </div>
         <p class="mb-3 text-slate-400">Budget Range</p>
         <div class="mb-8">
         <Slider
@@ -33,6 +47,8 @@ const props = withDefaults(
     },
 );
 let rangeRef = ref(props.modelValue);
+let showClearRange = ref(false);
+let clearRange = ref(false);
 
 ////
 // events & watchers
@@ -43,7 +59,10 @@ const emit = defineEmits<{
 
 watch(rangeRef, (newBudgets, oldFund) => {
     emit('update:modelValue', newBudgets);
+    showClearRange.value = !showClearRange.value;
 });
 
-
+const resetValues = () => {
+    rangeRef.value = [VARIABLES.MIN_BUDGET, VARIABLES.MAX_BUDGET];
+};
 </script>
