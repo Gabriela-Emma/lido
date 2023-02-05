@@ -131,7 +131,7 @@ class CatalystProjectsController extends Controller
                     'challenge' => 'c',
                     default => null
                 },
-                'budgets' => $this->budgets->isNotEmpty() ? $this->budgets->toArray() : [1, 3000000],
+                'budgets' => $this->budgets->isNotEmpty() ? $this->budgets->toArray() : [1, 2000000],
                 'funds' => $this->fundsFilter->toArray(),
                 'challenges' => $this->challengesFilter->toArray(),
                 'tags' => $this->tagsFilter->toArray(),
@@ -196,8 +196,6 @@ class CatalystProjectsController extends Controller
 
                 $options['offset'] = (($this->currentPage ?? 1) - 1) * $this->limit;
                 $options['limit'] = $this->limit;
-
-//                dd($options);
 
                 return $index->search($query, $options);
             });
