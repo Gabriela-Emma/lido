@@ -59,10 +59,13 @@ const emit = defineEmits<{
 
 watch(rangeRef, (newBudgets, oldFund) => {
     emit('update:modelValue', newBudgets);
-    showClearRange.value = !showClearRange.value;
+    if (newBudgets[0] !== VARIABLES.MIN_BUDGET || newBudgets[1] !== VARIABLES.MAX_BUDGET) {
+    showClearRange.value = true;
+  }
 });
 
 const resetValues = () => {
     rangeRef.value = [VARIABLES.MIN_BUDGET, VARIABLES.MAX_BUDGET];
+    showClearRange.value = false;
 };
 </script>
