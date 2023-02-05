@@ -79,18 +79,6 @@ class CatalystPeopleController extends Controller
         );
 
         return $pagination->toArray();
-//        $paginator = $this->searchBuilder->paginate($this->perPage);
-//
-//        return [
-//            'data' => $paginator->map(fn ($user) => [
-//                'id' => $user->id,
-//                'name' => $user->name,
-//                'link' => $user->link,
-//                'profile_photo_url' => $user->thumbnail_url ?? $user->gravatar,
-//                'proposals_count' => $user->proposals_count,
-//            ]),
-//            'pagination' => $paginator->toArray(),
-//        ];
     }
 
     #[ArrayShape(['filters' => 'array'])]
