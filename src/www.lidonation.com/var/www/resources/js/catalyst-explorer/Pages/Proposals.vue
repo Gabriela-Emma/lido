@@ -69,32 +69,41 @@
                 <!-- Proposal lists -->
                 <div class="flex-1 mx-auto"
                      :class="{ 'lg:pr-16 opacity-10 lg:opacity-100': showFilters, 'container': !showFilters }">
-                    <Proposals :proposals="props.proposals.data"></Proposals>
+                    <Proposals :proposals="proposals.data"></Proposals>
                 </div>
             </div>
         </section>
         <section class="pt-4 pb-16 w-full">
             <div class="container">
-                <ProposalPagination></ProposalPagination>
+                <ProposalPagination v-model="proposals.current_page"
+                                    ></ProposalPagination>
             </div>
         </section>
     </div>
 </template>
 
 <script lang="ts" setup>
+import {computed, onBeforeMount, ref, watch} from "vue";
 import Multiselect from '@vueform/multiselect';
-import {proposalsStore} from "../stores/proposals-store";
-import {computed, ref, watch} from "vue";
-import Proposal from "../models/proposal";
-import Proposals from "../modules/proposals/Proposals.vue";
 import {router} from '@inertiajs/vue3';
+import { storeToRefs } from 'pinia';
+import { PaginationData } from '@splidejs/splide';
+import {every} from "lodash";
+
+import Proposals from "../modules/proposals/Proposals.vue";
+import Proposal from "../models/proposal";
 import ProposalFilter from "../modules/proposals/ProposalFilter.vue";
 import ProposalPagination from "../modules/proposals/ProposalPagination.vue";
+
+import Pagination from "../models/pagination";
+import PaginationLink from "../models/pagination-link"
 import Filters from "../models/filters";
-import {every} from "lodash";
 import Sort from "../models/sort";
 import {VARIABLES} from "../models/variables";
+
 import Search from "../Shared/Components/Search.vue";
+
+import {useProposalsStore} from "../stores/proposals-store";
 
 /// props and class properties
 const props = withDefaults(
@@ -103,10 +112,7 @@ const props = withDefaults(
         filters?: Filters,
         sorts?: Sort[],
         sort?: string,
-        proposals: {
-            links: [],
-            data: Proposal[]
-        };
+        proposals?: Pagination,
     }>(), {
         sorts: () => [
             {
@@ -154,6 +160,8 @@ const props = withDefaults(
 let search = ref(props.search);
 let filtersRef = ref<Filters>(props.filters);
 let selectedSortRef = ref<string>(props.sort);
+let proposals = ref<Pagination>(props.proposals);
+
 
 ////
 // computed properties
@@ -167,17 +175,18 @@ const filtering = computed(() => {
 
 let showFilters = ref(getFiltering());
 
-watch([search, filtersRef, selectedSortRef], (something) => {
+watch([proposals, search, filtersRef, selectedSortRef], (something) => {
     query();
 }, {deep: true});
 
 ////
 // initializers
 ////
-// filters
-
-// proposals
-const proposals = proposalsStore();
+onBeforeMount(() => {
+    const proposalsStore = useProposalsStore();
+    proposalsStore.loadProposals(proposals.value); // proposals
+    proposalsStore.loadFilters(filtersRef.value); //filters
+});
 
 function getFiltering() {
     if (props.filters.cohort) {
@@ -257,7 +266,7 @@ function query() {
     }
 
     router.get(
-        "/catalyst-explorer/proposals",
+        `/catalyst-explorer/proposals/?p=${proposals.value.current_page}`,
         data,
         {preserveState: true, preserveScroll: true}
     );
