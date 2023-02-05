@@ -23,7 +23,7 @@
 
     @inertiaHead
 </head>
-<body>
+<body class="projectCatalyst">
 
 <x-lido-menu />
 

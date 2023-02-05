@@ -13,7 +13,7 @@
         aria-modal="true"
         x-id="['modal-title']"
         :aria-labelledby="$id('modal-title')"
-        class="fixed top-20 inset-0 z-20 overflow-y-auto lido-menu-wrapper-modal"
+        class="fixed inset-0 z-20 overflow-y-auto lido-menu-wrapper-modal"
     >
         <!-- Overlay -->
         <div x-show="open" x-transition.opacity class="fixed inset-0 bg-white/25 lido-menu-wrapper-modal-overlay"></div>
