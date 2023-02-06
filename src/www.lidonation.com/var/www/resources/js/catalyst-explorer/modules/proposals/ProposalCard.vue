@@ -215,26 +215,28 @@
             </div>
 
             <div class="-mt-px grid grid-cols-2 divide-x text-xs xl:text-sm 2xl:text-md">
-                <div class="flex flex-row flex-wrap items-center justify-start flex-1 gap-1 px-2 py-2">
-                    <div class="text-xs">
-                        Funding Status:
-                    </div>
-                    <div class="inline-block py-0 px-1 font-semibold text-white text-xs rounded-sm capitalize"
-                         :class="{
-                            'bg-teal-600': proposal.funding_status === 'funded',
+                <div class="flex flex-row flex-wrap items-center justify-start flex-1 gap-1 px-2 py-2" :class="{
+                            'bg-teal-500': proposal.funding_status === 'funded',
                             'bg-slate-500': proposal.funding_status === 'over_budget',
                             'bg-slate-300': proposal.funding_status === 'not_approved'}">
+                    <div class="text-xs text-slate-200">
+                        Funding Status:
+                    </div>
+                    <div class="inline-block py-0 px-1 font-semibold text-white text-xs rounded-sm capitalize">
                         {{ proposal.funding_status?.replace('_', ' ') }}
                     </div>
                 </div>
 
                 <div class="flex flex-1 -ml-px">
                     <div
-                        class="flex items-center gap-1 justify-end flex-1 py-2 px-1 -mr-px text-xs font-medium text-gray-700 border border-transparent rounded-bl-sm hover:text-gray-500">
-                        <div class="text-xs">
+                        class="flex items-center gap-1 justify-end flex-1 py-2 px-1 -mr-px text-xs font-medium text-gray-700 border border-transparent rounded-bl-sm hover:text-gray-500"
+                        :class="{
+                            'bg-pink-400': proposal.status === 'complete',
+                            'bg-slate-200': proposal.status === 'in_progress'}">
+                        <div class="text-xs" :class="{ 'text-slate-200': proposal.status === 'complete'}">
                             Project Status:
                         </div>
-                        <div class="font-semibold capitalize">
+                        <div class="font-semibold capitalize" :class="{ 'text-white': proposal.status === 'complete'}">
                             {{ proposal.status?.replace('_', ' ') }}
                         </div>
                     </div>
