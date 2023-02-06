@@ -165,7 +165,7 @@
                 }
             }
         },
-        "/group/{group_id}": {
+        "/groups/{group_id}": {
             "get": {
                 "tags": [
                     "group"

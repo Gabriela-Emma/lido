@@ -16,7 +16,7 @@ class GroupController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/group/{group_id}",
+     *     path="/groups/{group_id}",
      *     tags={"group"},
      *     summary="Get group by id",
      *     description="Returns a single group",
