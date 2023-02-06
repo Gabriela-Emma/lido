@@ -27,7 +27,7 @@ body.delegators {
     }
 }
 
-body.projectCatalyst {
+body.projectCatalyst, body.proposal {
     .lido-menu-wrapper {
         .lido-menu-wrapper-modal {
             @apply top-32;
