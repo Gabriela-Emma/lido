@@ -267,6 +267,113 @@ use OpenApi\Annotations as OA;
  *      @OA\Property(property="label", type="string", example="1"),
  *      @OA\Property(property="active", type="boolean", example=true),
  *),
+ *  @OA\Schema(
+ *       schema="group",
+ *       type="object",
+ *       @OA\Property(property="id", type="integer", example=5),
+ *       @OA\Property(property="slug", type="string", example=null),
+ *       @OA\Property(property="name", type="string", example="LIDO Nation Foundation"),
+ *       @OA\Property(property="website", type="string", example="https://www.lidonation.com"),
+ *       @OA\Property(property="proposalsCount", type="integer", example=18),
+ *       @OA\Property(property="membersCount", type="integer", example=3),
+ *       @OA\Property(property="twitter", type="string", example="lidonation"),
+ *       @OA\Property(property="discord", type="string", example=null),
+ *   ),
+ * @OA\Schema(
+ *      schema="groups",
+ *      type="array",
+ *      @OA\Items(
+ *          ref="#/components/schemas/challenge"
+ *      ),
+ * ),
+ * @OA\Schema(
+ *      schema="groups_links",
+ *      type="object",
+ *      @OA\Property(property="first", type="string", example="http://localhost:8880/api/catalyst-explorer/groups?page=1"),
+ *      @OA\Property(property="last", type="string", example="http://localhost:8880/api/catalyst-explorer/groups?page=3"),
+ *      @OA\Property(property="prev", type="string", example=null),
+ *      @OA\Property(property="next", type="string", example="http://localhost:8880/api/catalyst-explorer/groups?page=2"),
+ * ),
+ *  @OA\Schema(
+ *      schema="groups_meta",
+ *      type="object",
+ *      @OA\Property(property="current_page", type="integer", example=1),
+ *      @OA\Property(property="from", type="integer", example=1),
+ *      @OA\Property(property="last_page", type="integer", example=3),
+ *      @OA\Property(property="links", ref="#/components/schemas/groups_meta_links_array"),
+ *      @OA\Property(property="path", type="string", example="http://localhost:8880/api/catalyst-explorer/groups"),
+ *      @OA\Property(property="per_page", type="integer", example=24),
+ *      @OA\Property(property="to", type="integer", example=24),
+ *      @OA\Property(property="total", type="integer", example=69),
+ * ),
+ * * @OA\Schema(
+ *      schema="groups_meta_links_array",
+ *      type="array",
+ *      @OA\Items(
+ *          ref="#/components/schemas/groups_meta_links_array_object"
+ *      ),
+ * ),
+ * @OA\Schema(
+ *      schema="groups_meta_links_array_object",
+ *      type="object",
+ *      @OA\Property(property="url", type="string", example="http://localhost:8880/api/catalyst-explorer/groups?page=1"),
+ *      @OA\Property(property="label", type="string", example="1"),
+ *      @OA\Property(property="active", type="boolean", example=true),
+ *),
+ *  @OA\Schema(
+ *       schema="person",
+ *       type="object",
+ *       @OA\Property(property="id", type="integer", example=23),
+ *       @OA\Property(property="username", type="string", example="swhitenstall"),
+ *       @OA\Property(property="name", type="string", example="Stephen Whitenstall"),
+ *       @OA\Property(property="website", type="string", example=null),
+ *       @OA\Property(property="link", type="string", example="http://localhost:8880/en/project-catalyst/users/23"),
+ *       @OA\Property(property="ideascale_link", type="string", example=null),
+ *       @OA\Property(property="ideascale_user", type="string", example=""),
+ *       @OA\Property(property="ideascale_id", type="integer", example=0),
+ *       @OA\Property(property="average_rating", type="string", example=null),
+ *   ),
+ * @OA\Schema(
+ *      schema="people",
+ *      type="array",
+ *      @OA\Items(
+ *          ref="#/components/schemas/person"
+ *      ),
+ * ),
+ * @OA\Schema(
+ *      schema="people_links",
+ *      type="object",
+ *      @OA\Property(property="first", type="string", example="http://localhost:8880/api/catalyst-explorer/people?page=1"),
+ *      @OA\Property(property="last", type="string", example="http://localhost:8880/api/catalyst-explorer/people?page=23"),
+ *      @OA\Property(property="prev", type="string", example=null),
+ *      @OA\Property(property="next", type="string", example="http://localhost:8880/api/catalyst-explorer/people?page=2"),
+ * ),
+ *  @OA\Schema(
+ *      schema="people_meta",
+ *      type="object",
+ *      @OA\Property(property="current_page", type="integer", example=1),
+ *      @OA\Property(property="from", type="integer", example=1),
+ *      @OA\Property(property="last_page", type="integer", example=23),
+ *      @OA\Property(property="links", ref="#/components/schemas/people_meta_links_array"),
+ *      @OA\Property(property="path", type="string", example="http://localhost:8880/api/catalyst-explorer/people"),
+ *      @OA\Property(property="per_page", type="integer", example=24),
+ *      @OA\Property(property="to", type="integer", example=24),
+ *      @OA\Property(property="total", type="integer", example=2941),
+ * ),
+ * * @OA\Schema(
+ *      schema="people_meta_links_array",
+ *      type="array",
+ *      @OA\Items(
+ *          ref="#/components/schemas/people_meta_links_array_object"
+ *      ),
+ * ),
+ * @OA\Schema(
+ *      schema="people_meta_links_array_object",
+ *      type="object",
+ *      @OA\Property(property="url", type="string", example="http://localhost:8880/api/catalyst-explorer/people?page=1"),
+ *      @OA\Property(property="label", type="string", example="1"),
+ *      @OA\Property(property="active", type="boolean", example=true),
+ *),
  */
 class Controller extends BaseController
 {

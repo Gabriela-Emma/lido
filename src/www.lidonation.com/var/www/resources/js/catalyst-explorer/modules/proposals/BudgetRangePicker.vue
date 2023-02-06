@@ -31,7 +31,7 @@
 
 <script lang="ts" setup>
 import Slider from '@vueform/slider'
-import {defineEmits, ref, watch} from "vue";
+import {defineEmits, ref, watch, onMounted} from "vue";
 import {VARIABLES} from "../../models/variables";
 
 const props = withDefaults(
@@ -61,6 +61,14 @@ watch(rangeRef, (newBudgets, oldFund) => {
     emit('update:modelValue', newBudgets);
     if (newBudgets[0] !== VARIABLES.MIN_BUDGET || newBudgets[1] !== VARIABLES.MAX_BUDGET) {
     showClearRange.value = true;
+  }
+});
+
+onMounted(() => {
+  if (rangeRef.value[0] !== VARIABLES.MIN_BUDGET || rangeRef.value[1] !== VARIABLES.MAX_BUDGET) {
+    showClearRange.value = true;
+  } else {
+    showClearRange.value = false;
   }
 });
 
