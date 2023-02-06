@@ -8,9 +8,47 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
+use OpenApi\Annotations as OA;
 
 trait People
 {
+    /**
+     * @OA\Get(
+     *     path="/people",
+     *     tags={"people"},
+     *     summary="Get all people",
+     *     description="Returns all people",
+     *     operationId="people",
+     *     @OA\Response(
+     *         response=200,
+     *         description="successful",
+     *          @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(
+     *                 property="data",
+     *                 type="array",
+     *                 @OA\Items(
+     *                     ref="#/components/schemas/people"
+     *                 )
+     *             ),
+     *             @OA\Property(
+     *                 property="links",
+     *                 type="object",
+     *                 @OA\Property(
+     *                     ref="#/components/schemas/people_links"
+     *                 )
+     *             ),
+     *             @OA\Property(
+     *                 property="meta",
+     *                 type="object",
+     *                 @OA\Property(
+     *                     ref="#/components/schemas/people_meta"
+     *                 )
+     *             )
+     *         )
+     *     )
+     * )
+     */
     public function people(): Response|AnonymousResourceCollection|Application|ResponseFactory
     {
         $per_page = request('per_page', 24);
