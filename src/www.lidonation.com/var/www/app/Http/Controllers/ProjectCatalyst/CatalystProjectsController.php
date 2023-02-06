@@ -196,6 +196,7 @@ class CatalystProjectsController extends Controller
 
                 $options['offset'] = (($this->currentPage ?? 1) - 1) * $this->limit;
                 $options['limit'] = $this->limit;
+//                dd($options);
 
                 return $index->search($query, $options);
             });
