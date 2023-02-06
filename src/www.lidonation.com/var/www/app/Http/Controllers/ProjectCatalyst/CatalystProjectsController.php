@@ -191,7 +191,7 @@ class CatalystProjectsController extends Controller
                 if ((bool) $this->sortBy && (bool) $this->sortOrder) {
                     $options['sort'] = ["$this->sortBy:$this->sortOrder"];
                 } else {
-                    $options['sort'] = ['created_at:desc'];
+                    $options['sort'] = ['amount_received:desc'];
                 }
 
                 $options['offset'] = (($this->currentPage ?? 1) - 1) * $this->limit;
