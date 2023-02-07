@@ -7,6 +7,7 @@
             <button
                 @mouseenter="showClearAll = true"
                 @mouseleave="showClearAll = false"
+                @click="clearFilters"
                 class="text-slate-300 hover:text-yellow-500 focus:outline-none flex items-center gap-2">
                 <span class="text-xs" v-if="showClearAll">Clear All</span>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -181,7 +182,8 @@ groupsStore.loadGroups(props?.filters?.groups);
 // events & watchers
 //////////////////////
 const emit = defineEmits<{
-    (e: 'filter', filters: Filters): void
+    (e: 'filter', filters: Filters): void,
+    (e: 'reRenderFilter')
 }>();
 
 watch(filters, (newValue, oldValue) => {
@@ -195,5 +197,22 @@ watch(filters, (newValue, oldValue) => {
     // fire filter event
     emit('filter', newValue);
 }, {deep: true});
+
+function clearFilters() {
+    filters.value.currentPage = 1;
+    filters.value.funded = false;
+    filters.value.fundingStatus = null;
+    filters.value.projectStatus = null;
+    filters.value.cohort = null;
+    filters.value.type = "p";
+    filters.value.budgets = [0, 2000000];
+    filters.value.funds = [];
+    filters.value.challenges = [];
+    filters.value.tags = [];
+    filters.value.people = [];
+    filters.value.groups = [];
+
+    emit('reRenderFilter');
+}
 
 </script>

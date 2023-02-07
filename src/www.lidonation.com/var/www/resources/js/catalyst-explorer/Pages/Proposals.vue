@@ -62,7 +62,9 @@
                     </button>
 
                     <ProposalFilter @filter="(payload) => filtersRef = payload"
+                                    @reRenderFilter="filterRenderKey = Math.random()"
                                     :filters="filtersRef"
+                                    :key="filterRenderKey"
                                     :show-filter="showFilters"></ProposalFilter>
                 </div>
 
@@ -154,6 +156,7 @@ const props = withDefaults(
 let search = ref(props.search);
 let filtersRef = ref<Filters>(props.filters);
 let selectedSortRef = ref<string>(props.sort);
+let filterRenderKey = ref(0);
 
 ////
 // computed properties
