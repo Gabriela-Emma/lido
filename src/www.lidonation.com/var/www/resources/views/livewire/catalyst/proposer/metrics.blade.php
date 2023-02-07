@@ -1,4 +1,4 @@
-<div class="relative" :wire:key="$catalystUser->id">
+<div class="relative" wire:key="{{$catalystUser->id}}">
     <div
         wire:loading.class.remove="hidden" wire:loading.delay.shortest.class="absolute" wire:target="toggleOwnMetrics"
         class="sticky left-0 z-10 flex items-center justify-center hidden w-full h-0 p-0 overflow-visible top-1/2">
