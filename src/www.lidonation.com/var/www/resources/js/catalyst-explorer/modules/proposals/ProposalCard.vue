@@ -218,7 +218,7 @@
                 <div class="flex flex-row flex-wrap items-center justify-start flex-1 gap-1 px-2 py-2" :class="{
                             'bg-teal-500': proposal.funding_status === 'funded',
                             'bg-slate-500': proposal.funding_status === 'over_budget',
-                            'bg-slate-300': proposal.funding_status === 'not_approved'}">
+                            'bg-slate-400': proposal.funding_status === 'not_approved'}">
                     <div class="text-xs text-slate-200">
                         Funding Status:
                     </div>
