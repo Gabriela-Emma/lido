@@ -1,5 +1,5 @@
 @props(['model', 'filter' => 'proposal'])
-<div class="flex flex-col justify-center gap-4 p-8 relative" x-data="{
+<div class="flex flex-col justify-center gap-4 relative" x-data="{
     subject: @js($model->id),
     filter: @js($filter),
     proposal: null,
@@ -75,7 +75,7 @@
 
     <div class="w-full text-center" x-show="!showForm && !completed && !error" x-transition>
         <a href="#" @click.prevent="showForm = !showForm"
-           class="text-sm xl:text-base border border-teal-600 py-2 px-4 inline-flex uppercase mx-auto">
+           class="text-sm xl:text-base border border-teal-600 p-2 inline-flex uppercase mx-auto">
             Get reports in your email
         </a>
     </div>
