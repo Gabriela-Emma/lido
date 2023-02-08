@@ -165,6 +165,66 @@
                 }
             }
         },
+        "/groups/{group_id}": {
+            "get": {
+                "tags": [
+                    "group"
+                ],
+                "summary": "Get group by id",
+                "description": "Returns a single group",
+                "operationId": "group",
+                "parameters": [
+                    {
+                        "name": "group_id",
+                        "in": "path",
+                        "description": "id of group to return",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful"
+                    },
+                    "404": {
+                        "description": "group not found"
+                    }
+                }
+            }
+        },
+        "/people/{person_id}": {
+            "get": {
+                "tags": [
+                    "people"
+                ],
+                "summary": "Get a person by id",
+                "description": "Returns a single person",
+                "operationId": "person",
+                "parameters": [
+                    {
+                        "name": "person_id",
+                        "in": "path",
+                        "description": "id of the person to return",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful"
+                    },
+                    "404": {
+                        "description": "the person is not found"
+                    }
+                }
+            }
+        },
         "/proposals/{proposal_id}": {
             "get": {
                 "tags": [
@@ -266,6 +326,98 @@
                     },
                     "404": {
                         "description": "Tag not found"
+                    }
+                }
+            }
+        },
+        "/groups": {
+            "get": {
+                "tags": [
+                    "group"
+                ],
+                "summary": "Get all groups",
+                "description": "Returns all groups",
+                "operationId": "groups",
+                "responses": {
+                    "200": {
+                        "description": "successful",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/groups"
+                                            }
+                                        },
+                                        "links": {
+                                            "properties": {
+                                                "": {
+                                                    "$ref": "#/components/schemas/groups_links"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "meta": {
+                                            "properties": {
+                                                "": {
+                                                    "$ref": "#/components/schemas/groups_meta"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/people": {
+            "get": {
+                "tags": [
+                    "people"
+                ],
+                "summary": "Get all people",
+                "description": "Returns all people",
+                "operationId": "people",
+                "responses": {
+                    "200": {
+                        "description": "successful",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/people"
+                                            }
+                                        },
+                                        "links": {
+                                            "properties": {
+                                                "": {
+                                                    "$ref": "#/components/schemas/people_links"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "meta": {
+                                            "properties": {
+                                                "": {
+                                                    "$ref": "#/components/schemas/people_meta"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -950,6 +1102,256 @@
                     "url": {
                         "type": "string",
                         "example": "http://localhost:8880/api/catalyst-explorer/challenges?page=1"
+                    },
+                    "label": {
+                        "type": "string",
+                        "example": "1"
+                    },
+                    "active": {
+                        "type": "boolean",
+                        "example": true
+                    }
+                },
+                "type": "object"
+            },
+            "group": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 5
+                    },
+                    "slug": {
+                        "type": "string",
+                        "example": null
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "LIDO Nation Foundation"
+                    },
+                    "website": {
+                        "type": "string",
+                        "example": "https://www.lidonation.com"
+                    },
+                    "proposalsCount": {
+                        "type": "integer",
+                        "example": 18
+                    },
+                    "membersCount": {
+                        "type": "integer",
+                        "example": 3
+                    },
+                    "twitter": {
+                        "type": "string",
+                        "example": "lidonation"
+                    },
+                    "discord": {
+                        "type": "string",
+                        "example": null
+                    }
+                },
+                "type": "object"
+            },
+            "groups": {
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/challenge"
+                }
+            },
+            "groups_links": {
+                "properties": {
+                    "first": {
+                        "type": "string",
+                        "example": "http://localhost:8880/api/catalyst-explorer/groups?page=1"
+                    },
+                    "last": {
+                        "type": "string",
+                        "example": "http://localhost:8880/api/catalyst-explorer/groups?page=3"
+                    },
+                    "prev": {
+                        "type": "string",
+                        "example": null
+                    },
+                    "next": {
+                        "type": "string",
+                        "example": "http://localhost:8880/api/catalyst-explorer/groups?page=2"
+                    }
+                },
+                "type": "object"
+            },
+            "groups_meta": {
+                "properties": {
+                    "current_page": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "from": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "last_page": {
+                        "type": "integer",
+                        "example": 3
+                    },
+                    "links": {
+                        "$ref": "#/components/schemas/groups_meta_links_array"
+                    },
+                    "path": {
+                        "type": "string",
+                        "example": "http://localhost:8880/api/catalyst-explorer/groups"
+                    },
+                    "per_page": {
+                        "type": "integer",
+                        "example": 24
+                    },
+                    "to": {
+                        "type": "integer",
+                        "example": 24
+                    },
+                    "total": {
+                        "type": "integer",
+                        "example": 69
+                    }
+                },
+                "type": "object"
+            },
+            "groups_meta_links_array": {
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/groups_meta_links_array_object"
+                }
+            },
+            "groups_meta_links_array_object": {
+                "properties": {
+                    "url": {
+                        "type": "string",
+                        "example": "http://localhost:8880/api/catalyst-explorer/groups?page=1"
+                    },
+                    "label": {
+                        "type": "string",
+                        "example": "1"
+                    },
+                    "active": {
+                        "type": "boolean",
+                        "example": true
+                    }
+                },
+                "type": "object"
+            },
+            "person": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 23
+                    },
+                    "username": {
+                        "type": "string",
+                        "example": "swhitenstall"
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Stephen Whitenstall"
+                    },
+                    "website": {
+                        "type": "string",
+                        "example": null
+                    },
+                    "link": {
+                        "type": "string",
+                        "example": "http://localhost:8880/en/project-catalyst/users/23"
+                    },
+                    "ideascale_link": {
+                        "type": "string",
+                        "example": null
+                    },
+                    "ideascale_user": {
+                        "type": "string",
+                        "example": ""
+                    },
+                    "ideascale_id": {
+                        "type": "integer",
+                        "example": 0
+                    },
+                    "average_rating": {
+                        "type": "string",
+                        "example": null
+                    }
+                },
+                "type": "object"
+            },
+            "people": {
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/person"
+                }
+            },
+            "people_links": {
+                "properties": {
+                    "first": {
+                        "type": "string",
+                        "example": "http://localhost:8880/api/catalyst-explorer/people?page=1"
+                    },
+                    "last": {
+                        "type": "string",
+                        "example": "http://localhost:8880/api/catalyst-explorer/people?page=23"
+                    },
+                    "prev": {
+                        "type": "string",
+                        "example": null
+                    },
+                    "next": {
+                        "type": "string",
+                        "example": "http://localhost:8880/api/catalyst-explorer/people?page=2"
+                    }
+                },
+                "type": "object"
+            },
+            "people_meta": {
+                "properties": {
+                    "current_page": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "from": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "last_page": {
+                        "type": "integer",
+                        "example": 23
+                    },
+                    "links": {
+                        "$ref": "#/components/schemas/people_meta_links_array"
+                    },
+                    "path": {
+                        "type": "string",
+                        "example": "http://localhost:8880/api/catalyst-explorer/people"
+                    },
+                    "per_page": {
+                        "type": "integer",
+                        "example": 24
+                    },
+                    "to": {
+                        "type": "integer",
+                        "example": 24
+                    },
+                    "total": {
+                        "type": "integer",
+                        "example": 2941
+                    }
+                },
+                "type": "object"
+            },
+            "people_meta_links_array": {
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/people_meta_links_array_object"
+                }
+            },
+            "people_meta_links_array_object": {
+                "properties": {
+                    "url": {
+                        "type": "string",
+                        "example": "http://localhost:8880/api/catalyst-explorer/people?page=1"
                     },
                     "label": {
                         "type": "string",

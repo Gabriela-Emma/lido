@@ -92,7 +92,7 @@ spec:
               mountPath: /data
               readOnly: false
         - name: sidecar
-          image: busybox:1.28
+          image: alpine:3.17.1
           args:
             - sleep
             - "2592000"

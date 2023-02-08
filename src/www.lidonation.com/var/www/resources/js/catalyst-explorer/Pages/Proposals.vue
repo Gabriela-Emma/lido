@@ -70,12 +70,18 @@
                 <div class="flex-1 mx-auto"
                      :class="{ 'lg:pr-16 opacity-10 lg:opacity-100': showFilters, 'container': !showFilters }">
                     <Proposals :proposals="props.proposals.data"></Proposals>
+
+                    <div class="flex my-16 gap-16 justify-between items-start w-full">
+                        <div class="invisible w-96">
+                            Per Page
+                        </div>
+
+                        <div class="flex-1">
+                            <Pagination :links="props.proposals.links"
+                                        @paginated="(payload) => currPageRef = payload"/>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </section>
-        <section class="pt-4 pb-16 w-full">
-            <div class="container">
-                <ProposalPagination></ProposalPagination>
             </div>
         </section>
     </div>
@@ -89,12 +95,11 @@ import Proposal from "../models/proposal";
 import Proposals from "../modules/proposals/Proposals.vue";
 import {router} from '@inertiajs/vue3';
 import ProposalFilter from "../modules/proposals/ProposalFilter.vue";
-import ProposalPagination from "../modules/proposals/ProposalPagination.vue";
 import Filters from "../models/filters";
-import {every} from "lodash";
 import Sort from "../models/sort";
 import {VARIABLES} from "../models/variables";
 import Search from "../Shared/Components/Search.vue";
+import Pagination from "../Shared/Components/Pagination.vue";
 
 /// props and class properties
 const props = withDefaults(
@@ -103,6 +108,7 @@ const props = withDefaults(
         filters?: Filters,
         sorts?: Sort[],
         sort?: string,
+        currPage?: number,
         proposals: {
             links: [],
             data: Proposal[]
@@ -154,6 +160,7 @@ const props = withDefaults(
 let search = ref(props.search);
 let filtersRef = ref<Filters>(props.filters);
 let selectedSortRef = ref<string>(props.sort);
+let currPageRef = ref<number>(props.currPage);
 
 ////
 // computed properties
@@ -167,9 +174,14 @@ const filtering = computed(() => {
 
 let showFilters = ref(getFiltering());
 
-watch([search, filtersRef, selectedSortRef], (something) => {
+watch([search, filtersRef, selectedSortRef], () => {
+    currPageRef.value = null;
     query();
 }, {deep: true});
+
+watch([currPageRef], () => {
+    query();
+});
 
 ////
 // initializers
@@ -202,6 +214,9 @@ function getFiltering() {
 
 function query() {
     const data = {};
+    if (currPageRef.value) {
+        data[VARIABLES.CURRENT_PAGE] = currPageRef.value;
+    }
     if (search.value?.length > 0) {
         data[VARIABLES.SEARCH] = search.value;
     }
@@ -259,7 +274,7 @@ function query() {
     router.get(
         "/catalyst-explorer/proposals",
         data,
-        {preserveState: true, preserveScroll: true}
+        {preserveState: true, preserveScroll: !currPageRef.value}
     );
 
 

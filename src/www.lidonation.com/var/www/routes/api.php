@@ -198,11 +198,13 @@ Route::prefix('catalyst-explorer')->as('catalystExplorerApi.')
         Route::get('/proposals', [CatalystExplorer\ProposalController::class, 'proposals']);
         Route::get('/proposals/{proposal_id}', [CatalystExplorer\ProposalController::class, 'proposal']);
 
+        Route::post('/people/claim', [CatalystExplorer\PeopleController::class, 'claim']);
+
         Route::get('/people', [CatalystExplorer\PeopleController::class, 'people']);
         Route::get('/people/{person_id}', [CatalystExplorer\PeopleController::class, 'person']);
 
         Route::get('/groups', [CatalystExplorer\GroupController::class, 'groups']);
-        Route::get('/group/{group_id}', [CatalystExplorer\GroupController::class, 'group']);
+        Route::get('/groups/{group_id}', [CatalystExplorer\GroupController::class, 'group']);
 
         Route::get('/tags', [CatalystExplorer\TagController::class, 'tags'])->name('tags');
         Route::get('/tags/{tag}', [CatalystExplorer\TagController::class, 'tag'])->name('tag');
