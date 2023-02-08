@@ -33,7 +33,7 @@ import {useGroupsStore} from "../../stores/groups-store";
 
 const props = withDefaults(
     defineProps<{
-        modelValue?: number
+        modelValue?: number[]
     }>(),
     {},
 );
@@ -45,7 +45,7 @@ const {groups} = storeToRefs(groupsStore);
 // events & watchers
 ////
 const emit = defineEmits<{
-    (e: 'update:modelValue', group: number): void
+    (e: 'update:modelValue', group: number[]): void
 }>();
 
 watch(selectedRef, (newGroup, oldFund) => {
