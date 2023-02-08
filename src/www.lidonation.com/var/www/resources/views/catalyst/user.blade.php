@@ -12,8 +12,6 @@
                 'bg-teal-600 w-full h-full z-5': claimingUser,
                 'hidden': !claimingUser}"></div>
 
-
-
                 <h1 class='flex flex-row flex-wrap items-end gap-2 mb-6 text-3xl font-bold 2xl:text-5xl decorate light'>
                     <img class="w-10 h-10 rounded-full lg:w-16 lg:h-16"
                          src="{{$catalystUser->thumbnail_url ?? $catalystUser->gravatar}}"

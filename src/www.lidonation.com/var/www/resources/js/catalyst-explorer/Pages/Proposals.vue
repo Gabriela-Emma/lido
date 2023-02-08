@@ -75,7 +75,7 @@
         </section>
         <section class="pt-4 pb-16 w-full">
             <div class="container">
-                <ProposalPagination></ProposalPagination>
+                <ProposalPagination :links="props.proposals.links" @paginated="(payload) => currPageRef = payload"></ProposalPagination>
             </div>
         </section>
     </div>
@@ -103,6 +103,7 @@ const props = withDefaults(
         filters?: Filters,
         sorts?: Sort[],
         sort?: string,
+        currPage?: number,
         proposals: {
             links: [],
             data: Proposal[]
@@ -154,6 +155,7 @@ const props = withDefaults(
 let search = ref(props.search);
 let filtersRef = ref<Filters>(props.filters);
 let selectedSortRef = ref<string>(props.sort);
+let currPageRef = ref<number>(props.currPage);
 
 ////
 // computed properties
@@ -167,9 +169,14 @@ const filtering = computed(() => {
 
 let showFilters = ref(getFiltering());
 
-watch([search, filtersRef, selectedSortRef], (something) => {
+watch([search, filtersRef, selectedSortRef], () => {
+    currPageRef.value = null;
     query();
 }, {deep: true});
+
+watch([currPageRef], () => {
+    query();
+});
 
 ////
 // initializers
@@ -202,6 +209,9 @@ function getFiltering() {
 
 function query() {
     const data = {};
+    if (currPageRef.value) {
+        data[VARIABLES.CURRENT_PAGE] = currPageRef.value;
+    }
     if (search.value?.length > 0) {
         data[VARIABLES.SEARCH] = search.value;
     }
@@ -259,7 +269,7 @@ function query() {
     router.get(
         "/catalyst-explorer/proposals",
         data,
-        {preserveState: true, preserveScroll: true}
+        {preserveState: true, preserveScroll: !currPageRef.value}
     );
 
 
