@@ -24,6 +24,9 @@ class GroupResource extends JsonResource
             'members_count' => $this->members_count,
             'twitter' => $this->twitter,
             'discord' => $this->discord,
+            'profile_photo_url'=>$this->garavatar ?? $this->thumbnail_url,
+            'amount_awarded'=>$this->amount_awarded,
+            'link' => $this->link,
         ];
     }
 }
