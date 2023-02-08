@@ -23,7 +23,7 @@
                 </div>
             </div>
         </section>
-        <section class="py-8 w-full relative">
+        <section class="py-8 w-full relative container">
             <!-- Sorts and controls -->
             <div class="flex w-full items-center justify-end mb-3">
                 <div class="text-xs w-[240px] lg:w-[320px] lg:text-base">
@@ -51,14 +51,10 @@
                             <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/>
                         </svg>
                     </button>
-
-                    <!-- <ProposalFilter @filter="(payload) => filtersRef = payload"
-                                    :filters="filtersRef"
-                                    :show-filter="showFilters"></ProposalFilter> -->
                 </div>
 
-                <!-- Proposal lists -->
-                <div class="flex-1 mx-auto">
+                <!-- Groups lists -->
+                <div class="flex-1 mx-auto ">
                      <Groups :groups="props.groups.data"></Groups>                
                 </div>
             </div>
@@ -97,11 +93,11 @@ const props = withDefaults(
         sorts: () => [
             {
                 label: 'Alphabetically: A to Z',
-                value: 'name:desc',
+                value: 'name:asc',
             },
             {
                 label: 'Alphabetically: Z to A',
-                value: 'name:asc',
+                value: 'name:desc',
             },
             {
                 label: 'Amount Awarded: High to Low',

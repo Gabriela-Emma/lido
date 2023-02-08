@@ -25,32 +25,43 @@ class CatalystGroupsController extends Controller
     public function index(Request $request)
 {
     $this->search = $request->input('s', null);
-    $this->sort = $request->input('sort', null);
+    $this->sort = $request->input('st', null);
 
-    $groups = $query = CatalystGroup::where('status', 'published')
+       
+    return Inertia::render('Groups', [
+        'search' => $this->search,
+        'sort' => $this->sort,
+        'groups' => $this->query($request),
+        'crumbs' => [
+            ['label' => 'Groups'],
+        ],
+    ]);
+}
+
+public function query(Request $request){
+    $query = CatalystGroup::where('status', 'published')
     ->whereHas('proposals', fn ($q) => $q->whereNotNull('funded_at'))
     ->withSum([
         'proposals as amount_awarded' => function ($query) {
             $query->whereNotNull('funded_at');
         }, ],
         'amount_requested')
-            ->when($this->search, function ($query, $search) {
+        ->withSum([
+            'proposals as amount_received' => function ($query) {
+                $query->whereNotNull('funded_at');
+            }, ],
+            'amount_received')
+        ->when($this->search, function ($query, $search) {
             return $query->where('name', 'iLIKE', "%{$search}%");
         })
         ->when($this->sort, function ($query, $sort) {
             $sortParts = explode(':', $sort);
             return $query->orderBy($sortParts[0], $sortParts[1]);
-        })
-        ->paginate($this->perPage, ['*'], 'p', $request->input('p'));;
-       
-    return Inertia::render('Groups', [
-        'search' => $this->search,
-        'sort' => $this->sort,
-        'groups' => $groups,
-        'crumbs' => [
-            ['label' => 'Groups'],
-        ],
-    ]);
+        });
+        $paginator=$query->paginate($this->perPage, ['*'], 'p', $request->input('p'));
+
+        return $paginator->toArray();
+    
 }
 
 }
