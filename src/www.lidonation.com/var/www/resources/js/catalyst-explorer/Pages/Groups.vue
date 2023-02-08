@@ -23,7 +23,7 @@
                 </div>
             </div>
         </section>
-        <section class="py-8 w-full relative">
+        <section class="py-8 w-full relative container">
             <!-- Sorts and controls -->
             <div class="flex w-full items-center justify-end mb-3">
                 <div class="text-xs w-[240px] lg:w-[320px] lg:text-base">
@@ -59,12 +59,11 @@
 
                 <!-- Proposal lists -->
                 <div class="flex-1 mx-auto">
-                     <Groups :groups="props.groups.data"></Groups>                
+                     <Groups :groups="props.groups.data"></Groups>
                 </div>
             </div>
         </section>
-
-    </div>        
+    </div>
 
 
 </template>
@@ -133,7 +132,7 @@ function query() {
     if (!!selectedSortRef.value && selectedSortRef.value.length > 3) {
         data[VARIABLES.SORTS] = selectedSortRef.value;
     }
-    
+
 // Perform a GET request to "/catalyst-explorer/people" with the updated data
 router.get(
         "/catalyst-explorer/groups",
