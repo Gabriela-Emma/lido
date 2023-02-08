@@ -5,8 +5,8 @@ namespace App\Http\Controllers\ProjectCatalyst;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 use App\Models\CatalystGroup;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Inertia\Response;
 
 class CatalystGroupsController extends Controller
 {
@@ -20,14 +20,14 @@ class CatalystGroupsController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index(Request $request)
 {
     $this->search = $request->input('s', null);
     $this->sort = $request->input('sort', null);
 
-    $groups = $query = CatalystGroup::where('status', 'published')
+    $groups = CatalystGroup::where('status', 'published')
     ->whereHas('proposals', fn ($q) => $q->whereNotNull('funded_at'))
     ->withSum([
         'proposals as amount_awarded' => function ($query) {
@@ -41,8 +41,8 @@ class CatalystGroupsController extends Controller
             $sortParts = explode(':', $sort);
             return $query->orderBy($sortParts[0], $sortParts[1]);
         })
-        ->paginate($this->perPage, ['*'], 'p', $request->input('p'));;
-       
+        ->paginate($this->perPage, ['*'], 'p', $request->input('p'));
+
     return Inertia::render('Groups', [
         'search' => $this->search,
         'sort' => $this->sort,
