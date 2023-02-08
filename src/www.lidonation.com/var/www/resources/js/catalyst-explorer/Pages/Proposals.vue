@@ -167,6 +167,7 @@ let filtersRef = ref<Filters>(props.filters);
 let selectedSortRef = ref<string>(props.sort);
 let filterRenderKey = ref(0);
 let searchRender = ref(0);
+let currPageRef = ref<number>(props.currPage);
 
 ////
 // computed properties
