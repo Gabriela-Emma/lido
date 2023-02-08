@@ -198,6 +198,8 @@ Route::prefix('catalyst-explorer')->as('catalystExplorerApi.')
         Route::get('/proposals', [CatalystExplorer\ProposalController::class, 'proposals']);
         Route::get('/proposals/{proposal_id}', [CatalystExplorer\ProposalController::class, 'proposal']);
 
+        Route::post('/people/claim', [CatalystExplorer\PeopleController::class, 'claim']);
+
         Route::get('/people', [CatalystExplorer\PeopleController::class, 'people']);
         Route::get('/people/{person_id}', [CatalystExplorer\PeopleController::class, 'person']);
 

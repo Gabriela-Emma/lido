@@ -6,6 +6,7 @@ use App\Http\Resources\PeopleResource;
 use App\Models\CatalystUser;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\ResponseFactory;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
 use OpenApi\Annotations as OA;
@@ -61,10 +62,14 @@ trait People
                 'message' => 'query parameter \'per_page\' should not exceed 60'], 400);
         }
 
-//        CatalystUser::withoutGlobalScopes();
         $proposals = CatalystUser::query()
             ->filter(request(['search', 'ids']));
 
         return PeopleResource::collection($proposals->paginate($per_page)->onEachSide(0));
+    }
+
+    public function claim(Request $request)
+    {
+        //
     }
 }

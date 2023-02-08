@@ -20,16 +20,7 @@
             <a href="#"
                class="inline-flex items-center border-t-2 border-teal-500 px-4 pt-4 text-sm font-medium text-teal-600"
                aria-current="page">2</a>
-            <a href="#"
-               class="inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-sm font-medium text-slate-500 hover:border-yellow-500 hover:text-yellow-500">3</a>
-            <span
-                class="inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-sm font-medium text-slate-500">...</span>
-            <a href="#"
-               class="inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-sm font-medium text-slate-500 hover:border-yellow-500 hover:text-yellow-500">8</a>
-            <a href="#"
-               class="inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-sm font-medium text-slate-500 hover:border-yellow-500 hover:text-yellow-500">9</a>
-            <a href="#"
-               class="inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-sm font-medium text-slate-500 hover:border-yellow-500 hover:text-yellow-500">10</a>
+       
         </div>
         <div class="-mt-px flex w-0 flex-1 justify-end">
             <a href="#"
