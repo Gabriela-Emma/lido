@@ -23,7 +23,7 @@
                 </div>
             </div>
         </section>
-        <section class="py-8 w-full relative container">
+        <section class="py-8 w-full relative ">
             <!-- Sorts and controls -->
             <div class="flex w-full items-center justify-end mb-3">
                 <div class="text-xs w-[240px] lg:w-[320px] lg:text-base">
@@ -41,23 +41,21 @@
                 </div>
             </div>
 
-            <div class="flex flex-row relative w-full">
-                <!-- Proposal Filters -->
-                <div class="absolute left-0 lg:static z-10 bg-white shadow-lg lg:shadow-0">
-                    <button type="button" @click=""
-                            class="inline-flex absolute right-0 -top-9 lg:hidden items-center rounded-t-sm border border-transparent bg-teal-600 p-2 text-white hover:bg-teal-700 focus:outline-none focus:ring-0 focus:ring-teal-500 focus:ring-offset-0">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                             stroke="currentColor" class="w-5 h-5">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/>
-                        </svg>
-                    </button>
-                </div>
+            <!-- Proposal lists -->
+            <div class="flex-1 mx-auto container">
+                    <Groups :groups="props.groups.data"></Groups>
 
-                <!-- Proposal lists -->
-                <div class="flex-1 mx-auto">
-                     <Groups :groups="props.groups.data"></Groups>
+                    <div class="flex my-16 gap-16 justify-between items-start w-full">
+                        <div class="invisible w-96">
+                            Per Page
+                        </div>
+
+                        <div class="flex-1 w-full">
+                            <Pagination :links="props.groups.links"
+                                        @paginated="(payload) => currPageRef = payload"/>
+                        </div>
+                    </div>
                 </div>
-            </div>
         </section>
     </div>
 
@@ -65,10 +63,8 @@
 </template>
 
 <script lang="ts" setup>
-import { defineComponent, ref } from 'vue';
-import { useGroupsStore } from '../stores/groups-store';
+import { ref } from 'vue';
 import { watch} from "vue";
-import Filters from '../models/filters';
 import Sort from '../models/sort';
 import Group from '../models/group';
 import {router} from "@inertiajs/vue3";
@@ -76,7 +72,7 @@ import {VARIABLES} from "../models/variables";
 import Groups from "../modules/groups/Groups.vue"
 import Search from "../Shared/Components/Search.vue";
 import Multiselect from '@vueform/multiselect';
-
+import Pagination from "../Shared/Components/Pagination.vue";
 
 
 const props = withDefaults(
@@ -84,6 +80,7 @@ const props = withDefaults(
         search?: string,
         sorts?: Sort[],
         sort?: string,
+        currPage?: number,
         groups: {
             links: [],
             data: Group[]
@@ -112,16 +109,24 @@ const props = withDefaults(
 // Define a reactive variable for the search value
 let search = ref(props.search);
 let selectedSortRef = ref<string>(props.sort);
-
+let currPageRef = ref<number>(props.currPage);
 
 // Watch the search value for changes and trigger the query function
-watch([search,selectedSortRef], (something) => {
+watch([search, selectedSortRef], () => {
+    currPageRef.value = null;
     query();
 }, {deep: true});
+
+watch([currPageRef], () => {
+    query();
+});
 
 // Function to update the data with the new search and selectedsort value
 function query() {
     const data = {};
+    if (currPageRef.value) {
+        data[VARIABLES.CURRENT_PAGE] = currPageRef.value;
+    }
     if (search.value?.length > 0) {
         data[VARIABLES.SEARCH] = search.value;
     }
@@ -133,15 +138,9 @@ function query() {
 router.get(
         "/catalyst-explorer/groups",
         data,
-        {preserveState: true, preserveScroll: true}
+        {preserveState: true, preserveScroll:!currPageRef.value}
     );
 
-
-    //@ts-ignore
-    if (typeof window?.fathom !== 'undefined') {
-        // @ts-ignore
-        window?.fathom?.trackGoal(VARIABLES.PROPOSALS_TRACKER_ID, 0);
-    }
 
 }
 

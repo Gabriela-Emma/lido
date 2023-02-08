@@ -5,7 +5,7 @@
             <a :href="$utils.localizeRoute(`project-catalyst/group/${catalystGroup.slug}`)"
                 class="w-32 h-32 lg:w-32 lg:h-32 xl:w-44 xl:h-44 rounded-full mx-auto shadow-inner shadow-md">
                 <img class="rounded-full w-full h-full"
-                        :src="catalystGroup.hero"
+                        :src="catalystGroup.logo"
                         alt={{catalystGroup.name}}/>
             </a>
             <div class="space-y-2 w-full xl:flex xl:items-center xl:justify-between items-end">

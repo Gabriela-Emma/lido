@@ -10,6 +10,6 @@ export default interface Group {
     discord:string;
     website: string;
     github: string;
-    profile_photo_url;
+    logo:string;
 
 }
