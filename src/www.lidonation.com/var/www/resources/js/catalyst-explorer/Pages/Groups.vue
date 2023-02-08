@@ -51,10 +51,6 @@
                             <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/>
                         </svg>
                     </button>
-
-                    <!-- <ProposalFilter @filter="(payload) => filtersRef = payload"
-                                    :filters="filtersRef"
-                                    :show-filter="showFilters"></ProposalFilter> -->
                 </div>
 
                 <!-- Proposal lists -->
@@ -96,11 +92,11 @@ const props = withDefaults(
         sorts: () => [
             {
                 label: 'Alphabetically: A to Z',
-                value: 'name:desc',
+                value: 'name:asc',
             },
             {
                 label: 'Alphabetically: Z to A',
-                value: 'name:asc',
+                value: 'name:desc',
             },
             {
                 label: 'Amount Awarded: High to Low',

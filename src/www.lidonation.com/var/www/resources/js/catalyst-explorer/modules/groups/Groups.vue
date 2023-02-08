@@ -1,6 +1,6 @@
 <template>
     <ul role="list"
-        class="space-y-4 sm:grid sm:grid-cols-2 sm:gap-6 sm:space-y-0 lg:grid-cols-3 2xl:grid-cols-4 lg:gap-8">
+        class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 3xl:grid-cols-4 gap-3 max-w-7xl 2xl:max-w-full mx-auto">
       <GroupCard v-for="group in groups" :catalystGroup="group"></GroupCard>             
     </ul>
 </template>
