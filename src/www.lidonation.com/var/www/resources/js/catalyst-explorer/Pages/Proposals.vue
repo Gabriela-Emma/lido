@@ -70,12 +70,18 @@
                 <div class="flex-1 mx-auto"
                      :class="{ 'lg:pr-16 opacity-10 lg:opacity-100': showFilters, 'container': !showFilters }">
                     <Proposals :proposals="props.proposals.data"></Proposals>
+
+                    <div class="flex my-16 gap-16 justify-between items-start w-full">
+                        <div class="invisible w-96">
+                            Per Page
+                        </div>
+
+                        <div class="flex-1">
+                            <Pagination :links="props.proposals.links"
+                                        @paginated="(payload) => currPageRef = payload"/>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </section>
-        <section class="pt-4 pb-16 w-full">
-            <div class="container">
-                <ProposalPagination :links="props.proposals.links" @paginated="(payload) => currPageRef = payload"></ProposalPagination>
             </div>
         </section>
     </div>
@@ -89,12 +95,11 @@ import Proposal from "../models/proposal";
 import Proposals from "../modules/proposals/Proposals.vue";
 import {router} from '@inertiajs/vue3';
 import ProposalFilter from "../modules/proposals/ProposalFilter.vue";
-import ProposalPagination from "../modules/proposals/ProposalPagination.vue";
 import Filters from "../models/filters";
-import {every} from "lodash";
 import Sort from "../models/sort";
 import {VARIABLES} from "../models/variables";
 import Search from "../Shared/Components/Search.vue";
+import Pagination from "../Shared/Components/Pagination.vue";
 
 /// props and class properties
 const props = withDefaults(
