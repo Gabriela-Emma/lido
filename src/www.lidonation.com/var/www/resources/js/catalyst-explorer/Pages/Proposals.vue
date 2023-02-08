@@ -8,6 +8,7 @@
                 <div class="flex items-center w-full h-10 lg:h-16">
                     <Search
                         :search="search"
+                        :key="searchRender"
                         @search="(term) => search=term"></Search>
                     <div class="h-full">
                         <button @click="showFilters = !showFilters"
@@ -62,7 +63,11 @@
                     </button>
 
                     <ProposalFilter @filter="(payload) => filtersRef = payload"
+                                    @reRenderFilter="filterRenderKey = Math.random()"
                                     :filters="filtersRef"
+                                    :key="filterRenderKey"
+                                    :search="search"
+                                    @clearSearch="search = null"
                                     :show-filter="showFilters"></ProposalFilter>
                 </div>
 
@@ -71,12 +76,12 @@
                      :class="{ 'lg:pr-16 opacity-10 lg:opacity-100': showFilters, 'container': !showFilters }">
                     <Proposals :proposals="props.proposals.data"></Proposals>
 
-                    <div class="flex my-16 gap-16 justify-between items-start w-full">
-                        <div class="invisible w-96">
+                    <div class="flex my-16 gap-16 xl:gap-24 justify-between items-start w-full">
+                        <div class="invisible">
                             Per Page
                         </div>
 
-                        <div class="flex-1">
+                        <div class="flex1">
                             <Pagination :links="props.proposals.links"
                                         @paginated="(payload) => currPageRef = payload"/>
                         </div>
@@ -160,6 +165,8 @@ const props = withDefaults(
 let search = ref(props.search);
 let filtersRef = ref<Filters>(props.filters);
 let selectedSortRef = ref<string>(props.sort);
+let filterRenderKey = ref(0);
+let searchRender = ref(0);
 let currPageRef = ref<number>(props.currPage);
 
 ////
@@ -177,6 +184,7 @@ let showFilters = ref(getFiltering());
 watch([search, filtersRef, selectedSortRef], () => {
     currPageRef.value = null;
     query();
+    searchRender.value = Math.random()
 }, {deep: true});
 
 watch([currPageRef], () => {
