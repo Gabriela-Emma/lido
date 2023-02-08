@@ -8,6 +8,7 @@
                 <div class="flex items-center w-full h-10 lg:h-16">
                     <Search
                         :search="search"
+                        :key="searchRender"
                         @search="(term) => search=term"></Search>
                     <div class="h-full">
                         <button @click="showFilters = !showFilters"
@@ -65,6 +66,8 @@
                                     @reRenderFilter="filterRenderKey = Math.random()"
                                     :filters="filtersRef"
                                     :key="filterRenderKey"
+                                    :search="search"
+                                    @clearSearch="search = null"
                                     :show-filter="showFilters"></ProposalFilter>
                 </div>
 
@@ -157,6 +160,7 @@ let search = ref(props.search);
 let filtersRef = ref<Filters>(props.filters);
 let selectedSortRef = ref<string>(props.sort);
 let filterRenderKey = ref(0);
+let searchRender = ref(0);
 
 ////
 // computed properties
@@ -172,6 +176,7 @@ let showFilters = ref(getFiltering());
 
 watch([search, filtersRef, selectedSortRef], (something) => {
     query();
+    searchRender.value = Math.random()
 }, {deep: true});
 
 ////

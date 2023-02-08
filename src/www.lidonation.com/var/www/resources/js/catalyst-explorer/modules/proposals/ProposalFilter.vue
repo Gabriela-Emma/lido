@@ -137,10 +137,12 @@ import GroupsPicker from "../groups/GroupsPicker.vue";
 const props = withDefaults(
     defineProps<{
         filters?: Filters,
-        showFilter?: boolean
+        showFilter?: boolean,
+        search?:string
     }>(), {showFilter: false});
 let showClearAll = ref(false);
 let filters = ref<Filters>(props.filters);
+let search = ref<string>(props.search);
 
 
 ////
@@ -183,7 +185,8 @@ groupsStore.loadGroups(props?.filters?.groups);
 //////////////////////
 const emit = defineEmits<{
     (e: 'filter', filters: Filters): void,
-    (e: 'reRenderFilter')
+    (e: 'reRenderFilter'),
+    (e: 'clearSearch')
 }>();
 
 watch(filters, (newValue, oldValue) => {
@@ -213,6 +216,9 @@ function clearFilters() {
     filters.value.groups = [];
 
     emit('reRenderFilter');
+    if (search) {
+        emit('clearSearch');
+    }
 }
 
 </script>
