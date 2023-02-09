@@ -23,7 +23,7 @@
                 </div>
             </div>
         </section>
-        <section class="py-8 w-full relative ">
+        <section class="py-8 w-full relative container">
             <!-- Sorts and controls -->
             <div class="flex w-full items-center justify-end mb-3">
                 <div class="text-xs w-[240px] lg:w-[320px] lg:text-base">
@@ -42,7 +42,7 @@
             </div>
 
             <!-- Proposal lists -->
-            <div class="flex-1 mx-auto container">
+            <div class="flex-1 mx-auto ">
                     <Groups :groups="props.groups.data"></Groups>
 
                     <div class="flex my-16 gap-16 justify-between items-start w-full">

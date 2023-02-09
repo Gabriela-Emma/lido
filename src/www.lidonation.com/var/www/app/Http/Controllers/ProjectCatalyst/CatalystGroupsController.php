@@ -71,8 +71,7 @@ class CatalystGroupsController extends Controller
                 return $query->orderBy($sortParts[0], $sortParts[1]);
             });            
 
-            $paginator = $query->paginate($this->perPage, ['*'], 'p');
-
+            $paginator = $query->paginate($this->perPage,['*'], 'p');
             
         
 
@@ -90,7 +89,13 @@ class CatalystGroupsController extends Controller
                 ]
             );
 
-            return $paginator->toArray();
+            $pagination = $paginator->toArray();
+            foreach ($pagination['links'] as &$link) {
+                $link['url'] = str_replace('http://localhost:8880/en/catalyst-explorer/groups?p=', '/?p=', $link['url']);
+            }
+            $pagination['url'] = "?p=" . $paginator->currentPage();
+            return $pagination;
+            
     }
 
 }
