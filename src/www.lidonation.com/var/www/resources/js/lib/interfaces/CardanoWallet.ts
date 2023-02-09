@@ -1,6 +1,7 @@
 import {futimes} from "fs";
 
 export default interface CardanoWallet {
+    gerowallet:any
     eternl: any;
     flint: any;
     nami: any;
