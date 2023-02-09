@@ -15,6 +15,8 @@ use Meilisearch\Endpoints\Indexes;
 
 class CatalystPeopleController extends Controller
 {
+    protected int $currentPage;
+
     public int $perPage = 24;
 
     public ?string $search = null;
@@ -29,17 +31,24 @@ class CatalystPeopleController extends Controller
     public function index(Request $request)
     {
         $this->search = $request->input('s', null);
+        $this->currentPage = $request->input('p', 1);
 
-        return Inertia::render('People', [
+        // props
+        $props = [
             'search' => $this->search,
-            'users' => $this->query($request),
+            'users' => $this->query(),
             'crumbs' => [
                 ['label' => 'People'],
             ],
-        ]);
+        ];
+        if ($this->currentPage > 1) {
+            $props['currPage'] = $this->currentPage;
+        }
+
+        return Inertia::render('People', $props);
     }
 
-    public function query(Request $request)
+    public function query()
     {
         $_options = [
             'filters' => array_merge([], $this->getUserFilters()),
@@ -63,6 +72,7 @@ class CatalystPeopleController extends Controller
                 if (!$this->search) {
                     $options['sort'] = ['name:asc'];
                 }
+                $options['offset'] = (($this->currentPage ?? 1) - 1) * $this->perPage;
                 $options['limit'] = $this->perPage;
                 return $index->search($query, $options);
             });
@@ -72,7 +82,7 @@ class CatalystPeopleController extends Controller
             $response->hits,
             $response->estimatedTotalHits,
             $response->limit,
-            null,
+            $this->currentPage,
             [
                 'pageName' => 'p',
             ]
