@@ -209,7 +209,7 @@ image: registry.lidonation.com/infra-ops/gitlab-runner:main
       if [ "${CI_ENVIRONMENT_NAME}" != "main" ]; then
         export RESTORE_SNAPSHOT="$RESTORE_SNAPSHOT_TESTNET"
       fi
-      if [ "${CI_ENVIRONMENT_NAME}" == "main" ]; then
+      if [ "${CI_ENVIRONMENT_NAME}" == "mainnet" ]; then
         export RESTORE_SNAPSHOT="$RESTORE_SNAPSHOT_MAINNET"
       fi
 
