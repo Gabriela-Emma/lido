@@ -501,7 +501,7 @@ cache:
 #   - yarn install --cache-folder ./src/www.lidonation.com/var/www/node_modules --prefer-offline
 
 variables:
-  HELM_VERSION: 3.7.1
+  HELM_VERSION: 3.11.1
   #  DOCKER_HOST: unix:///var/run/docker.sock
   DEPLOY_INFRA:
     value: 'False'
