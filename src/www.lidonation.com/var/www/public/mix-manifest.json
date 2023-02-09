@@ -9,19 +9,11 @@
     "/js/delegators.js": "/js/delegators.js?id=04ab1efd28dccc1e9c5ab9f3dbd344aa",
     "/js/rewards.js": "/js/rewards.js?id=d7d2aa41ccc8fced8511ed2d2ecaaf17",
     "/js/governance-marathon.js": "/js/governance-marathon.js?id=6c77e27e31313c74c303bb3939f28053",
-<<<<<<< Updated upstream
-    "/js/catalyst-explorer.js": "/js/catalyst-explorer.js?id=990e7d3386fe60782bd7efbca00ddc50",
-    "/css/catalyst-explorer.css": "/css/catalyst-explorer.css?id=1519e01b96e9c243d1b17fd494b458b7",
-    "/css/delegators.css": "/css/delegators.css?id=dd113904d5460b30e56dcb1d58bc0bff",
-    "/css/partners.css": "/css/partners.css?id=d247202cf7967ed5a93ce0c45f48df74",
-    "/css/app.css": "/css/app.css?id=9747e56b41efe74a31ada6d7e79f5597",
-=======
-    "/js/catalyst-explorer.js": "/js/catalyst-explorer.js?id=780fd443e65042fdd6332450b1720abc",
+    "/js/catalyst-explorer.js": "/js/catalyst-explorer.js?id=95f945ab6be505bf408c133252e3dfdf",
     "/css/catalyst-explorer.css": "/css/catalyst-explorer.css?id=31ea13d0ec82c65b3e2385c811794036",
     "/css/delegators.css": "/css/delegators.css?id=2ffcc992503efb8631a6710c500ca4e6",
     "/css/partners.css": "/css/partners.css?id=2dabbbc39bd25104353a8312b811f8ca",
     "/css/app.css": "/css/app.css?id=abb2a8edf0d2c2790e83ff2c2a22da16",
->>>>>>> Stashed changes
     "/css/bootstrap.css": "/css/bootstrap.css?id=68b329da9893e34099c7d8ad5cb9c940",
     "/css/splide-extension-video.min.css": "/css/splide-extension-video.min.css?id=a896080e96ef66d90da5b4b71032dcea",
     "/css/splide-default.min.css": "/css/splide-default.min.css?id=93c3c7118aa47c4e6125d39eb3779aa0",
