@@ -13,7 +13,7 @@
             </div>
         </section>
         <People :users="props.users.data">  </People>
-        <div class="flex-1">
+        <div class="flex-1 pb-16 container">
             <Pagination :links="props.users.links"
                         @paginated="(payload) => currPageRef = payload"/>
         </div>
