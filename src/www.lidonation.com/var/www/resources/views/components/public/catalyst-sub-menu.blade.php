@@ -11,26 +11,26 @@
                 </li>
                 <li class="flow-root menu-item">
                     <a class="px-1 py-3 text-white menu-link {{ request()->routeIs('projectCatalyst.funds') ? 'text-yellow-500' : '' }} hover:text-yellow-500"
-                       href="{{localizeRoute('projectCatalyst.funds')}}">
+                       href="{{localizeRoute('catalystExplorer.funds')}}">
                         {{ $snippets->funds }}
                     </a>
                 </li>
                 <li class="flow-root menu-item">
                     <a class="px-1 py-3 text-white menu-link {{ request()->routeIs('projectCatalyst.projects') ? 'text-yellow-500' : '' }} hover:text-yellow-500"
-                    href="{{localizeRoute('projectCatalyst.projects')}}">
+                    href="{{localizeRoute('catalystExplorer.proposals')}}">
                         {{ $snippets->projects }}
                     </a>
                 </li>
 
                 <li class="flow-root menu-item">
                     <a class="px-1 py-3 text-white menu-link {{ request()->routeIs('projectCatalyst.users') ? 'text-yellow-500' : '' }} hover:text-yellow-500"
-                        href="{{localizeRoute('projectCatalyst.users')}}">
+                        href="{{localizeRoute('catalystExplorer.people')}}">
                         {{ $snippets->people }}
                     </a>
                 </li>
                 <li class="flow-root menu-item">
                     <a class="px-1 py-3 text-white menu-link {{ request()->routeIs('projectCatalyst.groups') ? 'text-yellow-500' : '' }} hover:text-yellow-500"
-                        href="{{localizeRoute('projectCatalyst.groups')}}">
+                        href="{{localizeRoute('catalystExplorer.groups')}}">
                         {{ $snippets->groups }}
                     </a>
                 </li>

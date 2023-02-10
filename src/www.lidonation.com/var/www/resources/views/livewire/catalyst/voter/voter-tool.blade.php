@@ -16,34 +16,6 @@
         @endif
     </x-public.page-header>
 
-
-{{--    <section class="relative">--}}
-{{--        <div class="container">--}}
-{{--            <nav class="flex space-x-1" aria-label="Tabs">--}}
-{{--                <a href="{{localizeRoute('catalystDashboard')}}"--}}
-{{--                   class="px-4 py-2 mb-1 font-medium text-white rounded-sm lg:text-xl bg-teal-600 hover:text-yellow-500">--}}
-{{--                    {{ $snippets->dashboard}}--}}
-{{--                </a>--}}
-
-{{--                <a href="{{localizeRoute('proposals')}}"--}}
-{{--                   class="px-4 py-2 mb-1 font-medium text-white rounded-sm lg:text-xl bg-teal-600 hover:text-yellow-500">--}}
-{{--                    {{ $snippets->projects }}--}}
-{{--                </a>--}}
-
-{{--                <a href="{{localizeRoute('catalystUsers')}}"--}}
-{{--                   class="px-4 py-2 mb-1 font-medium text-white rounded-sm lg:text-xl bg-teal-600 hover:text-yellow-500">--}}
-{{--                    {{ $snippets->people }}--}}
-{{--                </a>--}}
-
-{{--                <div--}}
-{{--                    class="px-4 py-2 font-medium rounded-t-sm lg:text-xl bg-teal-600 text-accent-500"--}}
-{{--                    aria-current="page">--}}
-{{--                    Voter Tool--}}
-{{--                </div>--}}
-{{--            </nav>--}}
-{{--        </div>--}}
-{{--    </section>--}}
-
     <section class="relative py-8 text-white bg-teal-600 text-md">
         <div class="container">
             <div class="flex flex-row items-center justify-end gap-4 py-4">

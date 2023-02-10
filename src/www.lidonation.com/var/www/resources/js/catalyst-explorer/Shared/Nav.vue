@@ -70,12 +70,12 @@
                             </Link>
                         </li>
                         <li class="flow-root menu-item">
-                            <Link
+                            <a
                                 class="px-1 py-3 text-white menu-link hover:text-yellow-500"
                                 :class="{ 'text-yellow-500': $page.component.startsWith('Charts') }"
-                                href="/catalyst-explorer/charts">
+                                :href="$utils.localizeRoute('project-catalyst/dashboard')">
                             Charts
-                            </Link>
+                            </a>
                         </li>
                         <li class="flow-root menu-item">
                             <Link
@@ -110,12 +110,12 @@
                             </Link>
                         </li>
                         <li class="flow-root menu-item">
-                            <Link
+                            <a
                                 class="px-1 py-3 text-white menu-link hover:text-yellow-500"
                                 :class="{ 'text-yellow-500': $page.component.startsWith('VoterTool') }"
-                                href="/catalyst-explorer/voter-tool">
+                                :href="$utils.localizeRoute('project-catalyst/voter-tool')">
                             Voter Tool
-                            </Link>
+                            </a>
                         </li>
                         <li class="flow-root menu-item" x-data="bookmarksMenuLink">
                             <Link href="/catalyst-explorer/bookmarks" class="inline-flex items-center menu-link group">

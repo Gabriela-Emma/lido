@@ -1,25 +1,26 @@
 <?php
 
-use App\Http\Controllers\Api\CatalystExplorer;
-use App\Http\Controllers\Api\Nfts\LidoMinuteNftsController;
-use App\Http\Controllers\Api\Partners\PartnersController;
-use App\Http\Controllers\Api\Phuffycoin\PhuffycoinController;
-use App\Http\Controllers\Delegators\DelegatorController;
-use App\Http\Controllers\GenerateMnemonicPhraseController;
-use App\Http\Controllers\PromoController;
-use App\Http\Controllers\ProposalController;
-use App\Http\Controllers\QuestionResponseController;
-use App\Http\Controllers\RewardController;
-use App\Models\Catalyst\Ccv4BallotChoice;
-use App\Models\EveryEpoch;
-use App\Models\Reward;
 use App\Models\User;
-use App\Services\CardanoBlockfrostService;
+use App\Models\Reward;
+use App\Models\EveryEpoch;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Str;
+use App\Http\Controllers\PromoController;
+use App\Models\Catalyst\Ccv4BallotChoice;
+use App\Http\Controllers\RewardController;
+use App\Services\CardanoBlockfrostService;
+use App\Http\Controllers\ProposalController;
+use App\Http\Controllers\Api\CatalystExplorer;
+use App\Http\Controllers\QuestionResponseController;
+use App\Http\Controllers\Delegators\DelegatorController;
+use App\Http\Controllers\Api\Partners\PartnersController;
+use App\Http\Controllers\GenerateMnemonicPhraseController;
+use App\Http\Controllers\Api\Nfts\LidoMinuteNftsController;
+use App\Http\Controllers\Api\Phuffycoin\PhuffycoinController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -210,6 +211,8 @@ Route::prefix('catalyst-explorer')->as('catalystExplorerApi.')
         Route::get('/tags/{tag}', [CatalystExplorer\TagController::class, 'tag'])->name('tag');
 
         Route::post('/reports/follow', [CatalystExplorer\ReportController::class, 'follow']);
+        Route::post('/login', [CatalystExplorer\UserController::class, 'login']);
+
     });
 
 Route::prefix('promos')->as('promos')
