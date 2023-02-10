@@ -12,9 +12,16 @@
                 </div>
             </div>
         </section>
+
         <People :users="props.users.data">  </People>
+
         <div class="flex-1 pb-16 container">
             <Pagination :links="props.users.links"
+                        :per-page="props.perPage"
+                        :total="props.users?.total"
+                        :from="props.users?.from"
+                        :to="props.users?.to"
+                        @perPageUpdated="(payload) => perPageRef = payload"
                         @paginated="(payload) => currPageRef = payload"/>
         </div>
     </main>
@@ -31,9 +38,14 @@ import People from "../modules/people/People.vue"
 const props = withDefaults(
     defineProps<{
         search?: string,
-        currPage?: number;
+        currPage?: number,
+        perPage?: number,
+        locale: string,
         users: {
             links: [],
+            total: number,
+            to: number,
+            from: number,
             data: User[]
         }
     }>(), {});
@@ -41,6 +53,7 @@ const props = withDefaults(
 // Define a reactive variable for the search value
 let search = ref(props.search);
 let currPageRef = ref<number>(props.currPage);
+let perPageRef = ref<number>(props.perPage);
 
 // Watch the search value for changes and trigger the query function
 watch([search], () => {
@@ -48,7 +61,7 @@ watch([search], () => {
     return query();
 }, {deep: true});
 
-watch([currPageRef], () => {
+watch([currPageRef, perPageRef], () => {
     query();
 });
 
@@ -58,7 +71,11 @@ function query() {
     const data = {};
 
     if (currPageRef.value) {
-        data[VARIABLES.CURRENT_PAGE] = currPageRef.value;
+        data[VARIABLES.PAGE] = currPageRef.value;
+    }
+
+    if (perPageRef.value) {
+        data[VARIABLES.PER_PAGE] = perPageRef.value;
     }
 
     // If the search value is set and its length is greater than 0
@@ -69,7 +86,7 @@ function query() {
 
     // Perform a GET request to "/catalyst-explorer/people" with the updated data
     router.get(
-        "/catalyst-explorer/people",
+        `/${props.locale}/catalyst-explorer/people`,
         data,
         {preserveState: true, preserveScroll: true}
     );

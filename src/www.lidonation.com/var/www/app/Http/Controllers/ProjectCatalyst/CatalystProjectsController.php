@@ -64,6 +64,7 @@ class CatalystProjectsController extends Controller
 
         $this->budgets = $request->collect('bs');
         $this->search = $request->input('s', null);
+        $this->limit = $request->input('l', 24);
         $this->fundingStatus = match ($request->input('f', null)) {
             'o' => 'over_budget',
             'n' => 'not_approved',
@@ -101,6 +102,7 @@ class CatalystProjectsController extends Controller
         // props
         $props = [
             'search' => $this->search,
+            'perPage' => $this->limit,
             'sort' => "{$this->sortBy}:{$this->sortOrder}",
             'filters' => [
                 'currentPage' => $this->currentPage,
@@ -216,7 +218,7 @@ class CatalystProjectsController extends Controller
             ]
         );
 
-        return $pagination->toArray();
+        return $pagination->onEachSide(1)->toArray();
     }
 
     #[ArrayShape(['filters' => 'array'])]

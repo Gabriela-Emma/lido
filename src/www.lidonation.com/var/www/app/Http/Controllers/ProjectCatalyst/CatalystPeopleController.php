@@ -31,11 +31,13 @@ class CatalystPeopleController extends Controller
     public function index(Request $request)
     {
         $this->search = $request->input('s', null);
+        $this->perPage = $request->input('l', 24);
         $this->currentPage = $request->input('p', 1);
 
         // props
         $props = [
             'search' => $this->search,
+            'perPage' => $this->perPage,
             'users' => $this->query(),
             'crumbs' => [
                 ['label' => 'People'],
@@ -88,7 +90,7 @@ class CatalystPeopleController extends Controller
             ]
         );
 
-        return $pagination->toArray();
+        return $pagination->onEachSide(1)->toArray();
     }
 
     #[ArrayShape(['filters' => 'array'])]

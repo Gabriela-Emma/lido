@@ -1,7 +1,6 @@
 export enum VARIABLES {
     BUDGETS = 'bs',
     CHALLENGES = 'cs',
-    CURRENT_PAGE = 'p',
     COHORT = 'co',
     FUNDS = 'fs',
     FUNDED_PROPOSALS = 'fp',
@@ -10,6 +9,8 @@ export enum VARIABLES {
     MIN_BUDGET = 1,
     MAX_BUDGET = 2000000,
     MONTHLY_REPORT_TRACKER_ID = 'HSH9YZDM',
+    PAGE = 'p',
+    PER_PAGE = 'l',
     PROPOSALS_TRACKER_ID = 'RPZTGJL8',
     PEOPLE = 'pp',
     STATUS = 'ss',
