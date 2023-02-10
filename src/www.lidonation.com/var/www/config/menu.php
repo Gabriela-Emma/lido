@@ -160,22 +160,22 @@ return [
                     new Illuminate\Support\Fluent([
                         'title' => 'Proposals',
                         'route_type' => 'route_name',
-                        'route' => 'projectCatalyst.proposals',
+                        'route' => 'catalystExplorer.proposals',
                     ]),
                     new Illuminate\Support\Fluent([
                         'title' => 'Proposers',
                         'route_type' => 'route_name',
-                        'route' => 'projectCatalyst.users',
+                        'route' => 'catalystExplorer.people',
                     ]),
                     new Illuminate\Support\Fluent([
                         'title' => 'Groups',
                         'route_type' => 'route_name',
-                        'route' => 'projectCatalyst.groups',
+                        'route' => 'catalystExplorer.groups',
                     ]),
                     new Illuminate\Support\Fluent([
                         'title' => 'Funds',
                         'route_type' => 'route_name',
-                        'route' => 'projectCatalyst.funds',
+                        'route' => 'catalystExplorer.funds',
                     ]),
                     new Illuminate\Support\Fluent([
                         'title' => 'Charts',
@@ -185,7 +185,7 @@ return [
                     new Illuminate\Support\Fluent([
                         'title' => 'Monthly Reports',
                         'route_type' => 'route_name',
-                        'route' => 'projectCatalyst.reports',
+                        'route' => 'catalystExplorer.reports',
                     ]),
                     new Illuminate\Support\Fluent([
                         'title' => 'CCV4 Results',
