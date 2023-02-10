@@ -73,7 +73,7 @@
                             <Link
                                 class="px-1 py-3 text-white menu-link hover:text-yellow-500"
                                 :class="{ 'text-yellow-500': $page.component.startsWith('Charts') }"
-                                href="/catalyst-explorer/charts">
+                                href="/project-catalyst/dashboard">
                             Charts
                             </Link>
                         </li>
@@ -113,7 +113,7 @@
                             <Link
                                 class="px-1 py-3 text-white menu-link hover:text-yellow-500"
                                 :class="{ 'text-yellow-500': $page.component.startsWith('VoterTool') }"
-                                href="/catalyst-explorer/voter-tool">
+                                href="/project-catalyst/voter-tool">
                             Voter Tool
                             </Link>
                         </li>
