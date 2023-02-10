@@ -77,11 +77,7 @@
                     <Proposals :proposals="props.proposals.data"></Proposals>
 
                     <div class="flex my-16 gap-16 xl:gap-24 justify-between items-start w-full">
-                        <div class="invisible">
-                            Per Page
-                        </div>
-
-                        <div class="flex1">
+                        <div class="flex-1">
                             <Pagination :links="props.proposals.links"
                                         @paginated="(payload) => currPageRef = payload"/>
                         </div>
