@@ -103,7 +103,10 @@
         "sort-packages": true,
         "gitlab-domains": [
             "git.raddcreative.io"
-        ]
+        ],
+        "allow-plugins": {
+            "php-http/discovery": true
+        }
     },
     "extra": {
         "laravel": {
