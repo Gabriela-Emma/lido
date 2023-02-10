@@ -79,6 +79,11 @@
                     <div class="flex my-16 gap-16 xl:gap-24 justify-between items-start w-full">
                         <div class="flex-1">
                             <Pagination :links="props.proposals.links"
+                                        :per-page="props.perPage"
+                                        :total="props.proposals?.total"
+                                        :from="props.proposals?.from"
+                                        :to="props.proposals?.to"
+                                        @perPageUpdated="(payload) => perPageRef = payload"
                                         @paginated="(payload) => currPageRef = payload"/>
                         </div>
                     </div>
@@ -110,8 +115,13 @@ const props = withDefaults(
         sorts?: Sort[],
         sort?: string,
         currPage?: number,
+        perPage?: number,
+        locale: string,
         proposals: {
             links: [],
+            total: number,
+            to: number,
+            from: number,
             data: Proposal[]
         };
     }>(), {
@@ -164,6 +174,7 @@ let selectedSortRef = ref<string>(props.sort);
 let filterRenderKey = ref(0);
 let searchRender = ref(0);
 let currPageRef = ref<number>(props.currPage);
+let perPageRef = ref<number>(props.perPage);
 
 ////
 // computed properties
@@ -183,7 +194,7 @@ watch([search, filtersRef, selectedSortRef], () => {
     searchRender.value = Math.random()
 }, {deep: true});
 
-watch([currPageRef], () => {
+watch([currPageRef, perPageRef], () => {
     query();
 });
 
@@ -219,7 +230,10 @@ function getFiltering() {
 function query() {
     const data = {};
     if (currPageRef.value) {
-        data[VARIABLES.CURRENT_PAGE] = currPageRef.value;
+        data[VARIABLES.PAGE] = currPageRef.value;
+    }
+    if (perPageRef.value) {
+        data[VARIABLES.PER_PAGE] = perPageRef.value;
     }
     if (search.value?.length > 0) {
         data[VARIABLES.SEARCH] = search.value;
@@ -276,7 +290,7 @@ function query() {
     }
 
     router.get(
-        "/catalyst-explorer/proposals",
+        `/${props.locale}/catalyst-explorer/proposals`,
         data,
         {preserveState: true, preserveScroll: !currPageRef.value}
     );

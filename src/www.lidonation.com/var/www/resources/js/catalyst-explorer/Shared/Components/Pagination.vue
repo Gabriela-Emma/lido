@@ -1,21 +1,20 @@
 <template>
-    <nav class="flex items-center justify-between border-t px-4 sm:px-0">
-        <div class="w-40">
+    <nav class="flex items-center justify-between border-t px-4 sm:px-0 gap-4 flex-shrink-1">
+        <div class="w-28 mt-3 relative top-3 flex flex-col gap-2">
             <Multiselect
                 placeholder="Per Page"
                 v-model="perPageRef"
+                :can-clear="false"
                 :options="[12, 24, 36, 64, 128]"
                 :classes="{
-                container: 'multiselect border-0 px-1 py-2 flex-wrap',
+                container: 'multiselect border-0 px-1 py-2 flex-wrap rounded-sm bg-slate-50',
                 containerActive: 'shadow-none shadow-transparent box-shadow-none',
-                tagsSearch: 'w-full absolute top-0 left-0 inset-0 outline-none focus:ring-0 appearance-none custom-input border-0 text-base font-sans bg-white pl-1 rtl:pl-0 rtl:pr-1',
-                tag: 'multiselect-tag bg-teal-500 whitespace-normal',
-                tags: 'multiselect-tags px-2'
             }"
             />
+            <p class="text-slate-400 text-sm">Per Page</p>
         </div>
 
-        <div class="-mt-px flex">
+        <div class="-mt-px flex gap-8">
             <div class="flex" v-if="prev">
                 <a href="#" v-if="prev?.url" @click.prevent="paginate(prev.page)"
                    class="inline-flex items-center border-t-2 border-transparent pt-4 pr-1 text-sm font-medium text-slate-500 hover:border-yellow-500 hover:text-yellow-500">
@@ -81,19 +80,23 @@
             </div>
         </div>
 
-        <div class="mt-3 mr-16 text-slate-500 text-xs lg:text-sm">
-            Showing 1 to 10 of 97 results
+        <div class="mt-3 text-slate-400 text-xs lg:text-sm">
+            Showing {{$filters.number(from, 2)}} of {{$filters.number(to, 2)}} of {{$filters.number(total, 2)}}
         </div>
     </nav>
 </template>
 
 <script lang="ts" setup>
-import {defineEmits, computed, ref} from "vue";
+import {defineEmits, computed, ref, watch} from "vue";
+import Multiselect from '@vueform/multiselect';
 import PaginationLink from "../../models/pagination-link";
 
 const props = withDefaults(
     defineProps<{
         perPage?: number,
+        from?: number,
+        to?: number,
+        total?: number,
         links?: PaginationLink[],
     }>(), {perPage: 24});
 
@@ -101,10 +104,15 @@ let perPageRef = ref(props.perPage);
 
 const emit = defineEmits<{
     (e: 'paginated', page: number): void
+    (e: 'per-page-updated', perPage: number): void
 }>();
 
+watch(perPageRef, () => {
+    emit('per-page-updated', perPageRef.value);
+});
+
 function paginate(page: number) {
-    emit('paginated', page)
+    emit('paginated', page);
 }
 
 function parsePageNumber(val): number {

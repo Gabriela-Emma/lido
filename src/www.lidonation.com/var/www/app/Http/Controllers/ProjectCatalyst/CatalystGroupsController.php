@@ -19,8 +19,6 @@ class CatalystGroupsController extends Controller
 
     protected int $currentPage;
 
-
-
     /**
      * Display a listing of the resource.
      *
@@ -29,11 +27,13 @@ class CatalystGroupsController extends Controller
     public function index(Request $request)
     {
         $this->search = $request->input('s', null);
+        $this->perPage = $request->input('l', 24);
         $this->sort = $request->input('st', null);
-        $this->currentPage=$request->input('p', 1);
+        $this->currentPage = $request->input('p', 1);
 
-        $props=[
+        $props = [
             'search' => $this->search,
+            'perPage' => $this->perPage,
             'sort' => $this->sort,
             'groups' => $this->query(),
             'crumbs' => [
@@ -45,23 +45,24 @@ class CatalystGroupsController extends Controller
         }
 
         return Inertia::render('Groups', $props);
-        
+
 
     }
 
-    public function query(){
+    public function query()
+    {
         $query = CatalystGroup::select('id', 'name', 'discord', 'twitter', 'website', 'github', 'slug')
             ->where('status', 'published')
-            ->whereHas('proposals', fn ($q) => $q->whereNotNull('funded_at'))
+            ->whereHas('proposals', fn($q) => $q->whereNotNull('funded_at'))
             ->withSum([
-            'proposals as amount_awarded' => function ($query) {
-            $query->whereNotNull('funded_at');
-            }
+                'proposals as amount_awarded' => function ($query) {
+                    $query->whereNotNull('funded_at');
+                }
             ], 'amount_requested')
             ->withSum([
-            'proposals as amount_received' => function ($query) {
-            $query->whereNotNull('funded_at');
-            }
+                'proposals as amount_received' => function ($query) {
+                    $query->whereNotNull('funded_at');
+                }
             ], 'amount_received')
             ->when($this->search, function ($query, $search) {
                 return $query->where('name', 'iLIKE', "%{$search}%");
@@ -69,33 +70,25 @@ class CatalystGroupsController extends Controller
             ->when($this->sort, function ($query, $sort) {
                 $sortParts = explode(':', $sort);
                 return $query->orderBy($sortParts[0], $sortParts[1]);
-            });            
+            });
 
-            $paginator = $query->paginate($this->perPage,['*'], 'p');
-            
-        
+        $paginator = $query->paginate($this->perPage, ['*'], 'p')->setPath('/');
 
-            $paginator->through(fn($group) =>  [
-                    'id' => $group->id,
-                    'logo' => $group->thumbnail_url ?? $group->gravatar,
-                    'name'=>$group->name,
-                    'twitter'=>$group->twitter,
-                    'website'=>$group->website,
-                    'github'=>$group->github,
-                    'slug'=>$group->slug,
-                    'discord'=>$group->discord,
-                    'amount_awarded'=>$group->amount_awarded,
-                    'amount_received'=>$group->amount_received
-                ]
-            );
+        $paginator->through(fn($group) => [
+            'id' => $group->id,
+            'logo' => $group->thumbnail_url ?? $group->gravatar,
+            'name' => $group->name,
+            'twitter' => $group->twitter,
+            'website' => $group->website,
+            'github' => $group->github,
+            'slug' => $group->slug,
+            'discord' => $group->discord,
+            'amount_awarded' => $group->amount_awarded,
+            'amount_received' => $group->amount_received
+        ]
+        );
 
-            $pagination = $paginator->toArray();
-            foreach ($pagination['links'] as &$link) {
-                $link['url'] = str_replace('http://localhost:8880/en/catalyst-explorer/groups?p=', '/?p=', $link['url']);
-            }
-            $pagination['url'] = "?p=" . $paginator->currentPage();
-            return $pagination;
-            
+        return $paginator->onEachSide(1)->toArray();
     }
 
 }
