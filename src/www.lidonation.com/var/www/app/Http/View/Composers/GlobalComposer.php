@@ -13,6 +13,7 @@ use App\Services\SettingService;
 use App\Services\SnippetService;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Fluent;
 use Illuminate\View\View;
@@ -28,6 +29,8 @@ class GlobalComposer
     private Fluent $snippets;
 
     private Fluent $settings;
+
+    private Collection $lidoMenu;
 
     /**
      * Create a new profile composer.
@@ -49,7 +52,6 @@ class GlobalComposer
         $this->snippets = app(SnippetService::class)->getSnippets();
         $this->settings = app(SettingService::class)->getSettings();
         $this->lidoMenu = (new GetLidoMenu)();
-//        dd($this->lidoMenu);
     }
 
     /**
