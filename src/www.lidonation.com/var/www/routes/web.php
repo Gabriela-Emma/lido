@@ -170,7 +170,7 @@ Route::group(
         Route::prefix('/catalyst-explorer')->as('catalystExplorer.')->group(function () {
 //            Route::get('/api', fn () => Inertia::render('Api'))
 //                ->name('reports');
-            Route::get('/login', [CatalystLoginController::class, 'index'])
+            Route::get('/login', fn () => Inertia::render('auth/Login'))
             ->name('login');
             
             Route::get('/reports', [CatalystReportsController::class, 'index'])
