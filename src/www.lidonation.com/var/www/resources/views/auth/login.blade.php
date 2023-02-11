@@ -34,17 +34,26 @@
             </div>
 
             <div class="flex items-center justify-end mt-4">
-                @if (Route::has('password.request'))
-                    <a class="text-sm text-gray-600 underline hover:text-gray-900" href="{{ route('password.request') }}">
-                        {{ $snippets->forgotYourPassword }}
-                    </a>
-                @endif
+                <a class="text-sm text-gray-600 underline hover:text-gray-900" href="{{ route('password.forgot') }}">
+                    {{ $snippets->forgotYourPassword }}
+                </a>
 
                 <x-jet-button class="ml-4">
                     {{ $snippets->login }}
                 </x-jet-button>
             </div>
         </form>
+
+        <div>
+            <hr />
+        </div>
+
+        <div>
+            <p>
+                Are you trying to access the Catalyst Explorer?
+                <a href="{{route('catalystExplorer.login')}}">Register</a>
+            </p>
+        </div>
 
         <div>
             <hr />

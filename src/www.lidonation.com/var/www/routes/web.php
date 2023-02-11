@@ -201,6 +201,7 @@ Route::group(
                 ->name('dashboard');
 
             Route::get('/profile', fn () => Inertia::render('Profile'))
+                ->middleware(['auth:sanctum', 'verified'])
                 ->name('profile');
         });
 
