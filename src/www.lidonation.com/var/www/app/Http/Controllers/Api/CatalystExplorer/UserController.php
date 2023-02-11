@@ -23,7 +23,7 @@ class UserController extends Controller
 
         if (Auth::attempt($credentials, $remember)) {
             // $request-session()->regenerate();
-            return redirect()->intended('/catalyst-explorer/dashboard');
+            return to_route('catalystExplorer.dashboard');
             
         }
 
@@ -49,7 +49,7 @@ class UserController extends Controller
             $user->password = Hash::make($request->password);
             $user->save();
             ;
-            return redirect('/catalyst-explorer/login');
+            return to_route('catalystExplorer.login');
         }
     }
 }

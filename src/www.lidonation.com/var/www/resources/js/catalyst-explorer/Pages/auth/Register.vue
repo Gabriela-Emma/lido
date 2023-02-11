@@ -67,7 +67,7 @@
                         <div>
                             <div class="flex gap-3 text-sm w-full justify-center ">
                                 <span>Already have an account?</span>
-                                <Link href="/catalyst-explorer/login" class="font-bold text-teal-600 hover:text-teal-500"> Sign in</Link>
+                                <Link href="/catalyst-explorer/login" class="font-bold text-teal-600 hover:text-teal-500" preserve-scroll> Sign in</Link>
                             </div>
                         </div>
                     </div>

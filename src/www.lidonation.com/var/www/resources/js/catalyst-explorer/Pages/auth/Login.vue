@@ -63,7 +63,7 @@
                             <span>Sign in</span>
                         </button>
                         <span class="text-sm">
-                            <Link href="/catalyst-explorer/register" class="font-bold text-teal-600 hover:text-teal-500" >Register</Link>
+                            <Link href="/catalyst-explorer/register" class="font-bold text-teal-600 hover:text-teal-500" preserve-scroll >Register</Link>
                         </span>
                     </div>
                 </div>
