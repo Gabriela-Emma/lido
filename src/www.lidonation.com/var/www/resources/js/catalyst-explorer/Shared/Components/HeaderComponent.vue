@@ -14,7 +14,7 @@
             </div>
         </div>
 
-        <div class="ml-auto flex flex-col gap-1" v-if="!!user">
+        <div class="xl:ml-auto flex flex-col gap-1" v-if="!!user">
             <p>Welcome back, <strong>{{ user?.name }}</strong></p>
             <ul class="flex gap-4 justify-end items-center">
                 <li>
@@ -47,7 +47,7 @@
                 </li>
             </ul>
         </div>
-        <div class="ml-auto flexgap-2" v-else>
+        <div class="xl:ml-auto" v-else>
             <Link :href="$utils.localizeRoute('catalyst-explorer/login')"
                   class="inline-flex gap-1 items-center justify-center rounded-sm border border-slate-800 px-3 py-2 xl:text-xl 3xl:text-2xl font-medium text-slate-800 hover:bg-slate-200 focus:outline-none focus:ring-0 focus:ring-offset-0">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
