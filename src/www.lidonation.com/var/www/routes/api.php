@@ -211,7 +211,11 @@ Route::prefix('catalyst-explorer')->as('catalystExplorerApi.')
         Route::get('/tags/{tag}', [CatalystExplorer\TagController::class, 'tag'])->name('tag');
 
         Route::post('/reports/follow', [CatalystExplorer\ReportController::class, 'follow']);
+
         Route::post('/login', [CatalystExplorer\UserController::class, 'login']);
+        
+        Route::post('/register', [CatalystExplorer\UserController::class, 'create']);
+
 
     });
 
