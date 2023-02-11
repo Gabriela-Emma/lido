@@ -214,6 +214,8 @@ Route::prefix('catalyst-explorer')->as('catalystExplorerApi.')
 
         Route::post('/login', [CatalystExplorer\UserController::class, 'login']);
         
+        Route::post('/logout', [CatalystExplorer\UserController::class, 'logout']);
+        
         Route::post('/register', [CatalystExplorer\UserController::class, 'create']);
 
 
