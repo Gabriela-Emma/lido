@@ -43,7 +43,6 @@ use Laravel\Fortify\Http\Controllers\RegisteredUserController;
 use App\Http\Livewire\ContributeContent\ContributeTranslations;
 use Laravel\Fortify\Http\Controllers\TwoFactorQrCodeController;
 use App\Http\Controllers\ProjectCatalyst\CatalystFundsController;
-use App\Http\Controllers\ProjectCatalyst\CatalystLoginController;
 use App\Http\Controllers\ProjectCatalyst\CatalystGroupsController;
 use App\Http\Controllers\ProjectCatalyst\CatalystPeopleController;
 use App\Http\Controllers\ProjectCatalyst\ProposalSearchController;
@@ -172,6 +171,9 @@ Route::group(
 //                ->name('reports');
             Route::get('/login', fn () => Inertia::render('auth/Login'))
             ->name('login');
+
+            Route::get('/register', fn () => Inertia::render('auth/Register'))
+            ->name('register');
             
             Route::get('/reports', [CatalystReportsController::class, 'index'])
                 ->name('reports');
