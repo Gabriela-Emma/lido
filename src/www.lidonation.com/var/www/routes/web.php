@@ -174,7 +174,7 @@ Route::group(
 
             Route::get('/register', fn () => Inertia::render('auth/Register'))
             ->name('register');
-            
+
             Route::get('/reports', [CatalystReportsController::class, 'index'])
                 ->name('reports');
 
@@ -201,6 +201,10 @@ Route::group(
 
             Route::get('/dashboard', fn () => Inertia::render('Dashboard'))
                 ->name('dashboard');
+
+            Route::get('/profile', fn () => Inertia::render('Profile'))
+                ->middleware(['auth:sanctum', 'verified'])
+                ->name('profile');
         });
 
         Route::get('/lido-catalyst-proposals', LidoCatalystProposals::class)

@@ -1,9 +1,9 @@
 <template>
-    <header-component titleName0="My Catalyst" titleName1="Dashboard" subTitle=""/>
+    <header-component titleName0="My Catalyst" titleName1="Profile" subTitle=""/>
 
     <section class="py-16 bg-primary-20">
         <div class="container">
-            This is the dashboard section. coming soon.
+            coming soon
         </div>
     </section>
 </template>

@@ -1,7 +1,8 @@
 <x-guest-layout>
     <x-jet-authentication-card>
         <x-slot name="logo">
-            <x-jet-authentication-card-logo />
+            <img class="block logo" width="200" height="200" src="{{asset('img/llogo-transparent.png')}}"
+                 alt="lido nation logo" />
         </x-slot>
 
         <x-jet-validation-errors class="mb-4" />
