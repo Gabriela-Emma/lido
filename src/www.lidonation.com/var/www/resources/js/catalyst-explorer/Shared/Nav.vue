@@ -65,7 +65,7 @@
                         <li class="flow-root menu-item">
                             <Link class="px-1 py-3 text-white menu-link hover:text-yellow-500"
                                 :class="{ 'text-yellow-500': $page.component.startsWith('Reports')}"
-                                href="/catalyst-explorer/reports">
+                                :href="$utils.localizeRoute('catalyst-explorer/reports')">
                             Monthly Reports
                             </Link>
                         </li>
@@ -81,7 +81,7 @@
                             <Link
                                 class="px-1 py-3 text-white menu-link hover:text-yellow-500"
                                 :class="{ 'text-yellow-500': $page.component.startsWith('Funds') }"
-                                href="/catalyst-explorer/funds">
+                                :href="$utils.localizeRoute('catalyst-explorer/funds')">
                             Funds
                             </Link>
                         </li>
@@ -89,7 +89,7 @@
                             <Link
                                 class="px-1 py-3 text-white menu-link hover:text-yellow-500"
                                 :class="{ 'text-yellow-500': $page.component.startsWith('Proposals') }"
-                                href="/catalyst-explorer/proposals">
+                                :href="$utils.localizeRoute('catalyst-explorer/proposals')">
                             Proposals
                             </Link>
                         </li>
@@ -97,7 +97,7 @@
                             <Link
                                 class="px-1 py-3 text-white menu-link hover:text-yellow-500"
                                 :class="{ 'text-yellow-500': $page.component.startsWith('People') }"
-                                href="/catalyst-explorer/people">
+                                :href="$utils.localizeRoute('catalyst-explorer/people')">
                             People
                             </Link>
                         </li>
@@ -105,7 +105,7 @@
                             <Link
                                 class="px-1 py-3 text-white menu-link hover:text-yellow-500"
                                 :class="{ 'text-yellow-500': $page.component.startsWith('Groups') }"
-                                href="/catalyst-explorer/groups">
+                                :href="$utils.localizeRoute('catalyst-explorer/groups')">
                             Groups
                             </Link>
                         </li>

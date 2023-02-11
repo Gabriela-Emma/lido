@@ -172,7 +172,7 @@ Route::group(
 //                ->name('reports');
             Route::get('/login', fn () => Inertia::render('auth/Login'))
             ->name('login');
-            
+
             Route::get('/reports', [CatalystReportsController::class, 'index'])
                 ->name('reports');
 
@@ -199,6 +199,9 @@ Route::group(
 
             Route::get('/dashboard', fn () => Inertia::render('Dashboard'))
                 ->name('dashboard');
+
+            Route::get('/profile', fn () => Inertia::render('Profile'))
+                ->name('profile');
         });
 
         Route::get('/lido-catalyst-proposals', LidoCatalystProposals::class)
