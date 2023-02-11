@@ -107,6 +107,7 @@
         "three": "^0.146.0",
         "tippy.js": "^6.3.7",
         "typescript-memoize": "^1.1.0",
-        "vue": "^3.2.36"
+        "vue": "^3.2.36",
+        "vue3-easy-data-table": "^1.5.32"
     }
 }
