@@ -40,7 +40,7 @@ class UserController extends Controller
     
         $request->session()->regenerateToken();
     
-        return to_route('catalystExplorer.login');
+        return to_route('catalystExplorer.proposals');
     }
 
     public function create(Request $request)
