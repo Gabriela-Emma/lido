@@ -32,6 +32,17 @@ class UserController extends Controller
         ]);
     }
 
+    public function logout(Request $request)
+    {
+        Auth::logout();
+    
+        $request->session()->invalidate();
+    
+        $request->session()->regenerateToken();
+    
+        return to_route('catalystExplorer.login');
+    }
+
     public function create(Request $request)
     {
         $request->validate([
