@@ -60,17 +60,14 @@
                             <span>Sign in</span>
                         </button>
                         <span class="text-sm">
-                        <Link href="/catalyst-explorer/register" class="font-bold text-teal-600 hover:text-teal-500">Register</Link>
-                    </span>
+                            <Link href="/catalyst-explorer/register" class="font-bold text-teal-600 hover:text-teal-500" >Register</Link>
+                        </span>
                     </div>
                 </div>
             </div>
         </form>
     </div>
 </template>
-<script>
-
-</script>
 
 <script lang="ts" setup>
 import {useForm} from '@inertiajs/vue3';
@@ -86,6 +83,7 @@ let form = useForm({
 
 let submit = () => {
     form.post('/api/catalyst-explorer/login');
+
 }
 
 </script>

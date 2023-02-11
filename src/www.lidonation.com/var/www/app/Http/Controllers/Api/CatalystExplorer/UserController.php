@@ -2,12 +2,11 @@
 namespace App\Http\Controllers\Api\CatalystExplorer;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Invokable;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Contracts\Auth\Authenticatable;
-use App\Http\Controllers\Invokable\CreateUserController;
 
 
 class UserController extends Controller
@@ -35,13 +34,22 @@ class UserController extends Controller
 
     public function create(Request $request)
     {
-        $createUserController = new CreateUserController();
-        $user = $createUserController($request);
+        $request->validate([
+            'name' => 'required|min:3',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|min:5|confirmed',
+        ]);
 
-        if ($user instanceof User) {
-            return redirect()->route('login')->with(['success' => 'Your account has been created successfully. Please login.']);
-        } else {
-            return redirect()->back()->withInput()->with(['error' => 'An error occurred while creating your account. Please try again.']);
-        };
+        $user = User::where('email', $request->email);
+
+        if (!$user instanceof User) {
+            $user = new User;
+            $user->name = $request->name;
+            $user->email = $request->email;
+            $user->password = Hash::make($request->password);
+            $user->save();
+            ;
+            return redirect('/catalyst-explorer/login');
+        }
     }
 }
