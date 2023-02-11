@@ -1,1 +1,22 @@
-
+{
+    "/js/partners.js": "/js/partners.js?id=b8cd1c7d387d9883c4dda9927df6cd5b",
+    "/js/app.js": "/js/app.js?id=a4f8388a2deb2f8ce5ec3f00c0a248de",
+    "/js/bootstrap.js": "/js/bootstrap.js?id=8e75d2c7a0393e7f6e776319e388cd9f",
+    "/js/global.js": "/js/global.js?id=7dce312a8326d9aeb26b05b138351ced",
+    "/js/alpine.js": "/js/alpine.js?id=084e88bc9d5cc620312d1207e28cc81a",
+    "/vendor/splide/splide-shader-carousel.min.js": "/vendor/splide/splide-shader-carousel.min.js?id=0eb22ce7be1b70a2d2600f9b16243302",
+    "/js/phuffycoin.js": "/js/phuffycoin.js?id=a690308f43ee223085a2fb0ce86087fd",
+    "/js/delegators.js": "/js/delegators.js?id=ea932d5a9a910d12dea67a29cc53eb00",
+    "/js/rewards.js": "/js/rewards.js?id=e97cc02b5ead13c488e790c52a477adc",
+    "/js/governance-marathon.js": "/js/governance-marathon.js?id=6c77e27e31313c74c303bb3939f28053",
+    "/js/catalyst-explorer.js": "/js/catalyst-explorer.js?id=59a6760887ef72297b7872c26525e75e",
+    "/css/catalyst-explorer.css": "/css/catalyst-explorer.css?id=3ea37531bf9ae41f719a256c4ab6e5a6",
+    "/css/delegators.css": "/css/delegators.css?id=b6b02151f2cbe2f0d1407017ed3d00b1",
+    "/css/partners.css": "/css/partners.css?id=89ab2a6fc42e7d8450640e8527261eae",
+    "/css/app.css": "/css/app.css?id=14279c7cecb5c366b153e99dfc2204d8",
+    "/css/bootstrap.css": "/css/bootstrap.css?id=68b329da9893e34099c7d8ad5cb9c940",
+    "/css/splide-extension-video.min.css": "/css/splide-extension-video.min.css?id=a896080e96ef66d90da5b4b71032dcea",
+    "/css/splide-default.min.css": "/css/splide-default.min.css?id=93c3c7118aa47c4e6125d39eb3779aa0",
+    "/css/splide-core.min.css": "/css/splide-core.min.css?id=b2a3c2be5d64a233cf309926d7675a48",
+    "/css/governance-day.css": "/css/governance-day.css?id=8220f88e14fec3f32a90c48a4670c70c"
+}
