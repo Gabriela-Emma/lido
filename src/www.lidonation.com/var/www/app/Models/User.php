@@ -181,6 +181,11 @@ class User extends Authenticatable implements HasMedia, Interfaces\IHasMetaData,
         return "https://www.gravatar.com/avatar/$hash?d=identicon&r=r";
     }
 
+    public function catalyst_users(): HasMany
+    {
+        return $this->hasMany(CatalystUser::class, 'claimed_by');
+    }
+
     public function mint_txs(): HasMany
     {
         return $this->hasMany(MintTx::class, 'user_id');

@@ -11,6 +11,7 @@ use DateTime;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\UrlGenerator;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
@@ -153,6 +154,14 @@ class CatalystUser extends User implements HasMedia, CanComment
             $filters['ids'] ?? false,
             fn (Builder $query, $ids) => $query->whereIn('id', is_array($ids) ? $ids : explode(',', $ids))
         );
+    }
+
+    /**
+     * The roles that belong to the user.
+     */
+    public function claimed_by(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'claimed_by', 'id', 'claimed_by');
     }
 
     /**
