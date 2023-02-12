@@ -10,7 +10,7 @@ use Illuminate\Contracts\Auth\Authenticatable;
 
 
 class UserController extends Controller
-{   
+{
 
     public function login(Request $request)
     {
@@ -22,9 +22,8 @@ class UserController extends Controller
         $remember = $request->input('remember', false);
 
         if (Auth::attempt($credentials, $remember)) {
-            // $request-session()->regenerate();
-            return to_route('catalystExplorer.dashboard');
-            
+            return to_route('catalystExplorer.myDashboard');
+
         }
 
         return redirect()->back()->withInput($request->only('email'))->withErrors([
@@ -35,9 +34,9 @@ class UserController extends Controller
     public function logout(Request $request)
     {
         Auth::logout();
-    
+
         $request->session()->invalidate();
-    
+
         $request->session()->regenerateToken();
     
         return to_route('catalystExplorer.proposals');

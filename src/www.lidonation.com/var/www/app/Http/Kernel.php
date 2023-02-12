@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\AuthenticateCatalystUser;
 use App\Http\Middleware\HandleInertiaRequests;
 use App\Http\Middleware\RobotsMiddleware;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
@@ -61,6 +62,7 @@ class Kernel extends HttpKernel
         'auth' => \App\Http\Middleware\Authenticate::class,
         'previewAccess' => \App\Http\Middleware\PreviewAccess::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
+        'auth.catalyst' => AuthenticateCatalystUser::class,
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
