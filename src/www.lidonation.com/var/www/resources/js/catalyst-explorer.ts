@@ -5,6 +5,8 @@ import {createPinia} from "pinia";
 import { marked } from 'marked';
 import HeaderComponent from './catalyst-explorer/Shared/Components/HeaderComponent.vue';
 import PrimeVue from 'primevue/config';
+import route from "ziggy-js";
+import { modal } from "momentum-modal"
 
 // boot inertia app
 createInertiaApp({
@@ -30,6 +32,9 @@ createInertiaApp({
 
         const app =  createApp({render: () => h(App, props)})
             .use(plugin)
+            .use(modal, {
+                resolve: (name) => import(`./catalyst-explorer/Pages/${name}`),
+            })
             .use(PrimeVue)
             .use(pinia);
 
@@ -77,6 +82,8 @@ createInertiaApp({
                 return `${base}${value}`
             }
         }
+
+        app.config.globalProperties.$route = route;
 
         app.component('header-component', HeaderComponent);
         app.mount(el);

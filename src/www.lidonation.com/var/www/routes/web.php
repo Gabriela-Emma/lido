@@ -201,7 +201,7 @@ Route::group(
         Route::get('/bookmarks', fn() => Inertia::render('Bookmarks'))
             ->name('bookmarks');
 
-        Route::prefix('/my')->group(function () {
+        Route::middleware(['auth.catalyst'])->prefix('/my')->group(function () {
             Route::get('/dashboard', [CatalystMyDashboardController::class, 'index'])
                 ->name('myDashboard');
 
@@ -211,9 +211,12 @@ Route::group(
             Route::get('/proposals', [CatalystMyProposalsController::class, 'index'])
                 ->name('myProposals');
 
+            Route::get('/proposals/{proposal:id}', [CatalystMyProposalsController::class, 'manage'])
+                ->name('myProposal');
+
             Route::get('/groups', [CatalystMyGroupsController::class, 'index'])
                 ->name('myGroups');
-        })->middleware(['auth:sanctum', 'verified']);
+        });
     });
 
     Route::get('/lido-catalyst-proposals', LidoCatalystProposals::class)
@@ -360,10 +363,6 @@ Route::group(
             }
         });
     })->name('missed-epoch');
-
-//        Route::get('/delegators', function () {
-//            return view('delegators');
-//        })->name('delegators');
 
     Route::get('/delegators', DelegatorsComponent::class)
         ->name('delegators');
