@@ -1016,6 +1016,16 @@
     postcss "7.0.32"
     purgecss "^2.3.0"
 
+"@headlessui/vue@^1.7.9":
+  version "1.7.9"
+  resolved "https://registry.yarnpkg.com/@headlessui/vue/-/vue-1.7.9.tgz#459e4ad6a14add4c70c616b10e1aab5a720ff87d"
+  integrity sha512-vgLBKszj+m2ozaPOnjWMGnspoLJcU/06vygdEAyAS4nDjp72yA7AYbOIEgdaspUhaMs585ApyiSm3jPTuIxAzg==
+
+"@heroicons/vue@^2.0.15":
+  version "2.0.15"
+  resolved "https://registry.yarnpkg.com/@heroicons/vue/-/vue-2.0.15.tgz#2c8b26549cca2cc91a319b09546ef6d7b57eac75"
+  integrity sha512-Ab98jXcuYPCDtwOmdr5REtUfJCrZf7cnOnh9bD99bM5h1yfTnCPBKjMmJ9gcmyGu51Dzf11Mx/A7rKxAXjccvg==
+
 "@inertiajs/core@1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@inertiajs/core/-/core-1.0.0.tgz#40e5b71d20ff0e6b5e7e2b5c9091b720e4600030"
@@ -5155,6 +5165,11 @@ moment@*, "moment@>= 2.9.0", moment@^2.29.3:
   version "2.29.4"
   resolved "https://registry.npmjs.org/moment/-/moment-2.29.4.tgz"
   integrity sha512-5LC9SOxjSc2HF6vO2CyuTDNivEdoz2IvyJJGj6X8DJ0eFyfszE0QiEd+iXmBvUP3WHxSjFH/vIsA0EN00cgr8w==
+
+momentum-modal@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/momentum-modal/-/momentum-modal-0.2.0.tgz#89c1af9638977531ca2fde3099a1159a095b5b4b"
+  integrity sha512-kvneniK5HNt8ng6adVZewRziMJsWEyiSGuICHp5EDA3CeEqHqNITZl6Bl/nCuFd5CHoijB2h5mCe6gUCxdFxgA==
 
 ms@2.0.0:
   version "2.0.0"

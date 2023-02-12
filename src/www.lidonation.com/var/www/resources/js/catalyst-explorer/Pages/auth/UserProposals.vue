@@ -44,11 +44,13 @@
                                     <td class="w-full max-w-0 py-4 pl-4 pr-3 text-sm font-medium text-slate-900 sm:w-auto sm:max-w-none sm:pl-6">
                                         {{proposal.title}}
                                         <dl class="font-normal lg:hidden">
-                                            <dt class="sr-only">Title</dt>
-                                            <dd class="mt-1 truncate text-slate-700">Front-end Developer</dd>
-                                            <dt class="sr-only sm:hidden">Email</dt>
+                                            <dt class="sr-only">Distributed</dt>
+                                            <dd class="mt-1 truncate text-slate-700">
+                                                {{ $filters.currency(proposal.amount_received) }}
+                                            </dd>
+                                            <dt class="sr-only sm:hidden">Remaining</dt>
                                             <dd class="mt-1 truncate text-slate-500 sm:hidden">
-                                                lindsay.walton@example.com
+                                                {{ $filters.currency(proposal.amount_requested - proposal.amount_received) }}
                                             </dd>
                                         </dl>
                                     </td>
@@ -62,8 +64,9 @@
                                         {{ $filters.currency(proposal.amount_requested) }}
                                     </td>
                                     <td class="py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                                        <a href="#" class="text-teal-600 hover:text-teal-900">Edit<span
-                                            class="sr-only">, Lindsay Walton</span></a>
+                                        <Link :href="$utils.localizeRoute(`catalyst-explorer/my/proposals/${proposal.id}`)"
+                                              class="text-teal-600 hover:text-teal-900">Manage<span
+                                            class="sr-only">{{proposal.title}}</span></Link>
                                     </td>
                                 </tr>
                                 </tbody>
@@ -80,6 +83,8 @@
 <script lang="ts" setup>
 import UserNav from "./UserNav.vue";
 import Proposal from "../../models/proposal";
+import { Link } from '@inertiajs/vue3';
+
 const props = withDefaults(
     defineProps<{
         locale: string,

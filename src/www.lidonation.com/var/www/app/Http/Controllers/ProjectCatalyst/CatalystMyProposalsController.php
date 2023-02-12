@@ -12,6 +12,15 @@ class CatalystMyProposalsController extends Controller
 {
     protected int $perPage = 24;
 
+    public function manage(Proposal $proposal)
+    {
+        return Inertia::modal('auth/UserProposal')
+            ->with([
+                'proposal' => $proposal
+            ])
+            ->baseRoute('catalystExplorer.myProposals');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -19,19 +28,24 @@ class CatalystMyProposalsController extends Controller
      */
     public function index(Request $request)
     {
+        return Inertia::render('auth/UserProposals', $this->data());
+    }
+
+    protected function data()
+    {
         $user = auth()->user();
-        $user->load('catalyst_users');
+        $user?->load('catalyst_users');
 
         $catalystProfiles = $user->catalyst_users?->pluck('id');
 
         $query = Proposal::whereIn('user_id', $catalystProfiles);
         $paginator = $query->paginate($this->perPage, ['*'], 'p')->setPath('/');
 
-        return Inertia::render('auth/UserProposals', [
+        return [
             'proposals' => $paginator->onEachSide(1)->toArray(),
             'crumbs' => [
                 ['label' => 'Profile'],
             ],
-        ]);
+        ];
     }
 }
