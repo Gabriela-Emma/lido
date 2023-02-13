@@ -9,15 +9,17 @@
     discord: @js($user?->discord),
     linkedin: @js($user?->linkedin),
     ideascale: @js($user?->ideascale),
+    code: null,
     step: 1,
     submitted: false,
     goneToIdeascale: false,
-    async claimUser($event) {
-        const formData = new FormData($event.target);
+    async claimUser(event) {
+        const formData = Object.fromEntries(new FormData(event.target));
         console.log(formData);
 
         const res = await window.axios.post(`/api/catalyst-explorer/people/claim`, formData);
         if (res.status === 200 || res.status === 201) {
+            this.code = res.data;
             this.submitted = true;
             this.step = 2;
         }
@@ -28,7 +30,9 @@
     </h1>
     <div x-show="step === 1" x-transition>
         <form @submit.prevent="claimUser">
+            @csrf
             <div class="flex flex-col gap-4">
+                <input type="hidden" name="catalyst_id" value="{{ $user->id }}">
                 <div class="mt-1 sm:mt-0">
                     <label for="name" class="block text-slate-100 sm:mt-px sm:pt-2">
                         Name
@@ -134,7 +138,7 @@
             <div class="font-normal text-sm">
                 Verification Code
             </div>
-            <bold class="xl:text-4xl">CODE$</bold>
+            <bold class="xl:text-4xl">CODE$: <span class="text-green-600" x-text="code"></span></bold>
         </div>
 
         <div class="text-center">
