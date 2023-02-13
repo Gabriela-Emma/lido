@@ -10,6 +10,10 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
 use OpenApi\Annotations as OA;
+use App\Models\Meta;
+use App\Models\User;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Hash;
 
 trait People
 {
@@ -70,6 +74,49 @@ trait People
 
     public function claim(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|min:3',
+            'email' => 'required|email',
+            'bio' => 'nullable'
+        ]);
+        $catUser = CatalystUser::where('id', $request->catalyst_id)?->first();
+        $newUser = User::where('email', $request->email)?->first();
+        if (! $newUser instanceof User) {
+            $newUser = new User;
+            $newUser->name = $request->name;
+            $newUser->email = $request->email;
+            $newUser->bio = $request->bio;
+            $newUser->password = Hash::make(Str::random(30)) ?? null;
+            $newUser->save();
+        }
+
+        
+
+        $code = Str::random(5);
+
+        $meta = new Meta;
+        $meta->key = 'ideascale_verification_code';
+        $meta->content = $code;
+        $meta->model_type = User::class;
+        $newUser->metas()->save($meta);
+
+        $catMeta = new Meta;
+        $catMeta->key = 'ideascale_verification_code';
+        $catMeta->content = $code;
+        $catMeta->model_type = CatalystUser::class;
+        $catUser->metas()->save($catMeta);
+
+        $input = $request->all();
+        $jsonData = json_encode($input);
+
+        $claimMeta = new Meta;
+        $claimMeta->key = 'claim_data';
+        $claimMeta->content = $jsonData;
+        $claimMeta->model_type = CatalystUser::class;
+        $catUser->metas()->save($claimMeta);
+
+
+        return $code;
+
     }
 }
