@@ -1,9 +1,12 @@
 <template>
     <Modal>
-        <div class="pt-28">
-            <header class="bg-teal-700 text-white py-8 px-4 w-full">
+        <div class="pt-28 relative">
+            <header class="bg-teal-700 text-white py-8 px-4 w-full sticky top-28">
                 <div class="flex items-center justify-between relative">
-                    <DialogTitle class="text-lg xl:text-xl 2xl:text-2xl font-medium text-white">{{ proposal.title }}</DialogTitle>
+                    <DialogTitle class="text-lg xl:text-xl 2xl:text-2xl font-medium text-white">{{
+                            proposal.title
+                        }}
+                    </DialogTitle>
                     <div class="flex h-7 items-center absolute -right-1 -top-1">
                         <button type="button"
                                 class="rounded-sm bg-teal-900 text-teal-200 hover:text-white focus:outline-none focus:ring-2 focus:ring-white"
@@ -13,7 +16,6 @@
                         </button>
                     </div>
                 </div>
-
 
                 <dl class="flex flex-row gap-6 w-full text-sm w-full">
                     <div class="flex gap-2">
@@ -43,130 +45,204 @@
                 </dl>
             </header>
 
-            <form class="flex h-full flex-col divide-y divide-gray-200 bg-white shadow-xl">
-                <div class="h-0 flex-1 overflow-y-auto">
-                    <div class="flex flex-1 flex-col justify-between">
-                        <div class="divide-y divide-gray-200 px-4 sm:px-6">
-                            <div class="space-y-6 pt-6 pb-5">
-                                <div>
-                                    <label for="project-name" class="block text-sm font-medium text-gray-900">Project
-                                        name</label>
-                                    <div class="mt-1">
-                                        <input type="text" name="project-name" id="project-name"
-                                               class="block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"/>
-                                    </div>
-                                </div>
-                                <div>
-                                    <label for="description"
-                                           class="block text-sm font-medium text-gray-900">Description</label>
-                                    <div class="mt-1">
-                                        <textarea id="description" name="description" rows="4"
-                                                  class="block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"/>
-                                    </div>
-                                </div>
-                                <div>
-                                    <h3 class="text-sm font-medium text-gray-900">Team Members</h3>
-                                    <div class="mt-2">
-                                        <div class="flex space-x-2">
-                                            <a v-for="person in team" :key="person.email" :href="person.href"
-                                               class="rounded-full hover:opacity-75">
-                                                <img class="inline-block h-8 w-8 rounded-full" :src="person.imageUrl"
-                                                     :alt="person.name"/>
-                                            </a>
-                                            <button type="button"
-                                                    class="inline-flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border-2 border-dashed border-gray-200 bg-white text-gray-400 hover:border-gray-300 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
-                                                <span class="sr-only">Add team member</span>
-                                                <PlusIcon class="h-5 w-5" aria-hidden="true"/>
-                                            </button>
+            <div class="shadow-xl">
+                <div v-if="!currAction"
+                     class="divide-y divide-gray-200 overflow-hidden bg-gray-200  sm:grid sm:grid-cols-2 sm:gap-px sm:divide-y-0">
+                    <div v-for="(action, actionIdx) in actions" :key="action.title"
+                         :class="[actionIdx === 0 ? 'rounded-tl-md rounded-tr-md sm:rounded-tr-none' : '', actionIdx === 1 ? 'sm:rounded-tr-md' : '', actionIdx === actions.length - 2 ? 'sm:rounded-bl-md' : '', actionIdx === actions.length - 1 ? 'rounded-bl-md rounded-br-md sm:rounded-bl-none' : '', 'relative group bg-white p-6 focus-within:ring-2 focus-within:ring-inset focus-within:ring-teal-500']">
+                        <div>
+                        <span
+                            :class="[action.iconBackground, action.iconForeground, 'rounded-md inline-flex p-3 ring-4 ring-white']">
+                          <component :is="action.icon" class="h-6 w-6" aria-hidden="true"/>
+                        </span>
+                        </div>
+                        <div class="mt-8">
+                            <h3 class="text-lg font-medium">
+                                <a :href="action.href" class="focus:outline-none" target="_blank" v-if="action.href">
+                                    <!-- Extend touch target to entire panel -->
+                                    <span class="absolute inset-0" aria-hidden="true"/>
+                                    {{ action.title }}
+                                </a>
+                                <a href="#" @click.prevent="currAction = action.handler" class="focus:outline-none"
+                                   v-else-if="action.handler">
+                                    <!-- Extend touch target to entire panel -->
+                                    <span class="absolute inset-0" aria-hidden="true"/>
+                                    {{ action.title }}
+                                </a>
+                            </h3>
+                            <p class="mt-2 text-sm text-gray-500">
+                                {{ action.excerpt }}
+                            </p>
+                        </div>
+                        <span class="pointer-events-none absolute top-6 right-6 text-gray-300 group-hover:text-gray-400"
+                              aria-hidden="true">
+                         <component :is="action.hint || ArrowUpRightIcon" class="h-6 w-6" aria-hidden="true"/>
+                    </span>
+                    </div>
+                </div>
+
+                <form class="flex h-full flex-col divide-y divide-gray-200 bg-white p-4" v-if="currAction === 'git'">
+                    <h3>
+                        Add a git repo
+                    </h3>
+                    <div class="h-0 flex-1 overflow-y-auto">
+                        <div class="flex flex-1 flex-col justify-between">
+                            <div class="divide-y divide-gray-200 px-4 sm:px-6">
+                                <div class="space-y-6 pt-6 pb-5">
+                                    <div>
+                                        <label for="project-name" class="block text-sm font-medium text-gray-900">
+                                            Git (http url)
+                                        </label>
+                                        <div class="mt-1">
+                                            <input type="text" name="git" id="git"
+                                                   class="block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"/>
                                         </div>
                                     </div>
-                                </div>
-                                <fieldset>
-                                    <legend class="text-sm font-medium text-gray-900">Privacy</legend>
-                                    <div class="mt-2 space-y-5">
-                                        <div class="relative flex items-start">
-                                            <div class="absolute flex h-5 items-center">
-                                                <input id="privacy-public" name="privacy"
-                                                       aria-describedby="privacy-public-description" type="radio"
-                                                       class="h-4 w-4 border-gray-300 text-teal-600 focus:ring-teal-500"
-                                                       checked=""/>
-                                            </div>
-                                            <div class="pl-7 text-sm">
-                                                <label for="privacy-public" class="font-medium text-gray-900">Public
-                                                    access</label>
-                                                <p id="privacy-public-description" class="text-gray-500">Everyone with
-                                                    the link will see this project.</p>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <div class="relative flex items-start">
-                                                <div class="absolute flex h-5 items-center">
-                                                    <input id="privacy-private-to-project" name="privacy"
-                                                           aria-describedby="privacy-private-to-project-description"
-                                                           type="radio"
-                                                           class="h-4 w-4 border-gray-300 text-teal-600 focus:ring-teal-500"/>
-                                                </div>
-                                                <div class="pl-7 text-sm">
-                                                    <label for="privacy-private-to-project"
-                                                           class="font-medium text-gray-900">Private to project
-                                                        members</label>
-                                                    <p id="privacy-private-to-project-description"
-                                                       class="text-gray-500">Only members of this project would be able
-                                                        to access.</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <div class="relative flex items-start">
-                                                <div class="absolute flex h-5 items-center">
-                                                    <input id="privacy-private" name="privacy"
-                                                           aria-describedby="privacy-private-to-project-description"
-                                                           type="radio"
-                                                           class="h-4 w-4 border-gray-300 text-teal-600 focus:ring-teal-500"/>
-                                                </div>
-                                                <div class="pl-7 text-sm">
-                                                    <label for="privacy-private" class="font-medium text-gray-900">Private
-                                                        to you</label>
-                                                    <p id="privacy-private-description" class="text-gray-500">You are
-                                                        the only one able to access this project.</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </fieldset>
-                            </div>
-                            <div class="pt-4 pb-6">
-                                <div class="flex text-sm">
-                                    <a href="#"
-                                       class="group inline-flex items-center font-medium text-teal-600 hover:text-teal-900">
-                                        <LinkIcon class="h-5 w-5 text-teal-500 group-hover:text-teal-900"
-                                                  aria-hidden="true"/>
-                                        <span class="ml-2">Copy link</span>
-                                    </a>
-                                </div>
-                                <div class="mt-4 flex text-sm">
-                                    <a href="#"
-                                       class="group inline-flex items-center text-gray-500 hover:text-gray-900">
-                                        <QuestionMarkCircleIcon class="h-5 w-5 text-gray-400 group-hover:text-gray-500"
-                                                                aria-hidden="true"/>
-                                        <span class="ml-2">Learn more about sharing</span>
-                                    </a>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="flex flex-shrink-0 justify-end px-4 py-4">
-                    <button type="button"
-                            class="rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2"
-                            @click="open = false">Close
-                    </button>
-                    <button type="submit"
-                            class="ml-4 inline-flex justify-center rounded-md border border-transparent bg-teal-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
-                        Save
-                    </button>
-                </div>
-            </form>
+                    <div class="flex gap-4 justify-end px-4 py-4">
+                        <button type="button" @click="currAction = null"
+                                class="rounded-sm border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">Cancel
+                        </button>
+                        <button type="submit"
+                                class="inline-flex custom-input justify-center rounded-sm border border-transparent bg-teal-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
+                            Save
+                        </button>
+                    </div>
+                </form>
+
+                <form class="flex h-full flex-col divide-y divide-gray-200 bg-white" v-if="currAction === 'links'">
+                    <div class="h-0 flex-1 overflow-y-auto">
+                        <div class="flex flex-1 flex-col justify-between">
+                            <div class="divide-y divide-gray-200 px-4 sm:px-6">
+                                <div class="space-y-6 pt-6 pb-5">
+                                    <div>
+                                        <label for="project-name" class="block text-sm font-medium text-gray-900">Project
+                                            name</label>
+                                        <div class="mt-1">
+                                            <input type="text" name="project-name" id="project-name"
+                                                   class="block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"/>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label for="description"
+                                               class="block text-sm font-medium text-gray-900">Description</label>
+                                        <div class="mt-1">
+                                        <textarea id="description" name="description" rows="4"
+                                                  class="block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"/>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-sm font-medium text-gray-900">Team Members</h3>
+                                        <div class="mt-2">
+                                            <div class="flex space-x-2">
+                                                <a v-for="person in team" :key="person.email" :href="person.href"
+                                                   class="rounded-full hover:opacity-75">
+                                                    <img class="inline-block h-8 w-8 rounded-full"
+                                                         :src="person.imageUrl"
+                                                         :alt="person.name"/>
+                                                </a>
+                                                <button type="button"
+                                                        class="inline-flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border-2 border-dashed border-gray-200 bg-white text-gray-400 hover:border-gray-300 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
+                                                    <span class="sr-only">Add team member</span>
+                                                    <PlusIcon class="h-5 w-5" aria-hidden="true"/>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <fieldset>
+                                        <legend class="text-sm font-medium text-gray-900">Privacy</legend>
+                                        <div class="mt-2 space-y-5">
+                                            <div class="relative flex items-start">
+                                                <div class="absolute flex h-5 items-center">
+                                                    <input id="privacy-public" name="privacy"
+                                                           aria-describedby="privacy-public-description" type="radio"
+                                                           class="h-4 w-4 border-gray-300 text-teal-600 focus:ring-teal-500"
+                                                           checked=""/>
+                                                </div>
+                                                <div class="pl-7 text-sm">
+                                                    <label for="privacy-public" class="font-medium text-gray-900">Public
+                                                        access</label>
+                                                    <p id="privacy-public-description" class="text-gray-500">Everyone
+                                                        with
+                                                        the link will see this project.</p>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div class="relative flex items-start">
+                                                    <div class="absolute flex h-5 items-center">
+                                                        <input id="privacy-private-to-project" name="privacy"
+                                                               aria-describedby="privacy-private-to-project-description"
+                                                               type="radio"
+                                                               class="h-4 w-4 border-gray-300 text-teal-600 focus:ring-teal-500"/>
+                                                    </div>
+                                                    <div class="pl-7 text-sm">
+                                                        <label for="privacy-private-to-project"
+                                                               class="font-medium text-gray-900">Private to project
+                                                            members</label>
+                                                        <p id="privacy-private-to-project-description"
+                                                           class="text-gray-500">Only members of this project would be
+                                                            able
+                                                            to access.</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div class="relative flex items-start">
+                                                    <div class="absolute flex h-5 items-center">
+                                                        <input id="privacy-private" name="privacy"
+                                                               aria-describedby="privacy-private-to-project-description"
+                                                               type="radio"
+                                                               class="h-4 w-4 border-gray-300 text-teal-600 focus:ring-teal-500"/>
+                                                    </div>
+                                                    <div class="pl-7 text-sm">
+                                                        <label for="privacy-private" class="font-medium text-gray-900">Private
+                                                            to you</label>
+                                                        <p id="privacy-private-description" class="text-gray-500">You
+                                                            are
+                                                            the only one able to access this project.</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                                <div class="pt-4 pb-6">
+                                    <div class="flex text-sm">
+                                        <a href="#"
+                                           class="group inline-flex items-center font-medium text-teal-600 hover:text-teal-900">
+                                            <LinkIcon class="h-5 w-5 text-teal-500 group-hover:text-teal-900"
+                                                      aria-hidden="true"/>
+                                            <span class="ml-2">Copy link</span>
+                                        </a>
+                                    </div>
+                                    <div class="mt-4 flex text-sm">
+                                        <a href="#"
+                                           class="group inline-flex items-center text-gray-500 hover:text-gray-900">
+                                            <QuestionMarkCircleIcon
+                                                class="h-5 w-5 text-gray-400 group-hover:text-gray-500"
+                                                aria-hidden="true"/>
+                                            <span class="ml-2">Learn more about sharing</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex gap-4 justify-end items-center p-4">
+                        <button type="submit" @click="currAction = null"
+                                class="inline-flex justify-center rounded-sm border border-transparent bg-slate-300 py-2 px-4 text-sm font-medium text-white shadow-xs hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
+                            Close
+                        </button>
+                        <button type="submit"
+                                class="inline-flex custom-input justify-center rounded-sm border border-transparent bg-teal-600 py-2 px-4 text-sm font-medium text-white shadow-xs hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
+                            Save
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
         <!--        <div class="">-->
 
@@ -180,17 +256,58 @@
 </template>
 
 <script lang="ts" setup>
-import {DialogTitle} from "@headlessui/vue";
 import Proposal from "../../models/proposal";
-import {Link} from '@inertiajs/vue3';
 import Modal from "../../Shared/Components/Modal.vue";
 import {XMarkIcon} from '@heroicons/vue/24/outline'
-import {LinkIcon, PlusIcon, QuestionMarkCircleIcon} from '@heroicons/vue/20/solid'
+import {LinkIcon, PlusIcon, QuestionMarkCircleIcon, ArrowUpRightIcon} from '@heroicons/vue/20/solid'
+import {
+    DocumentCheckIcon,
+    CommandLineIcon,
+    NewspaperIcon,
+    ShareIcon,
+} from '@heroicons/vue/24/outline';
+import {ref} from "vue";
+import {DialogTitle} from "@headlessui/vue";
 
+let currAction = ref(null);
 
+const actions = [
+    {
+        title: 'Git Repo',
+        excerpt: 'Stream git commit messages to the community by adding a public or private repository.',
+        handler: 'git',
+        icon: CommandLineIcon,
+        hint: PlusIcon,
+        iconForeground: 'text-teal-700',
+        iconBackground: 'bg-teal-50',
+    },
+    {
+        title: 'Community Links',
+        excerpt: 'Add community links for your project. Facebook, twitter, discord, website, etc.',
+        handler: 'links',
+        icon: ShareIcon,
+        hint: PlusIcon,
+        iconForeground: 'text-purple-700',
+        iconBackground: 'bg-purple-50',
+    },
+    {
+        title: 'Submit Monthly Report',
+        excerpt: 'Official google form. Submit by 20th to receive funding.',
+        href: 'https://docs.google.com/forms/d/e/1FAIpQLSdS6wAzKdSR1mAwCHP0EkVqOVlszvU5E45B0G2-0HmjO6qgbA/viewform',
+        icon: NewspaperIcon,
+        iconForeground: 'text-yellow-700',
+        iconBackground: 'bg-yellow-50',
+    },
+    {
+        title: 'Close Project',
+        excerpt: 'Project completed? Need to submit closeout report for final payment.',
+        href: 'https://drive.google.com/drive/u/1/folders/1SSW2afDX5w30aTZYF3p7o7rLUep7v0TJ',
+        icon: DocumentCheckIcon,
+        iconForeground: 'text-sky-700',
+        iconBackground: 'bg-sky-50',
+    },
+]
 const team = [
-
-
     {
         name: 'Tom Cook',
         email: 'tom.cook@example.com',
@@ -230,7 +347,7 @@ const team = [
 
 const props = withDefaults(
     defineProps<{
-        locale: string,
+        locale?: string,
         proposal: Proposal;
     }>(), {});
 
