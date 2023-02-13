@@ -5,6 +5,8 @@ namespace App\Nova;
 use App\Models\CatalystUser;
 use App\Nova\Actions\AddMetaData;
 use App\Nova\Actions\EditMetaData;
+use App\Nova\Actions\ValidateClaims;
+use App\Nova\Lenses\PendingClaims;
 use Ebess\AdvancedNovaMediaLibrary\Fields\Images;
 use Illuminate\Http\Request;
 use JetBrains\PhpStorm\Pure;
@@ -13,6 +15,7 @@ use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Markdown;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
 
 class CatalystUsers extends Resource
@@ -121,6 +124,14 @@ class CatalystUsers extends Resource
      return [
          (new AddMetaData),
          (new EditMetaData(CatalystUser::class)),
+         (new ValidateClaims)
      ];
+ }
+
+ public function lenses(NovaRequest $request)
+ {
+    return [
+        (new PendingClaims)
+    ];
  }
 }
