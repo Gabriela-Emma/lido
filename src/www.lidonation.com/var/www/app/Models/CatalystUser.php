@@ -11,6 +11,7 @@ use DateTime;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\UrlGenerator;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -40,6 +41,8 @@ class CatalystUser extends User implements HasMedia, CanComment
         InteractsWithComments,
         SearchableLocale,
         QueryCacheable;
+
+    protected $fillable = ['bio', 'twitter', 'discord', 'linkedin', 'ideascale','email'];
 
     protected $table = 'catalyst_users';
 
@@ -136,6 +139,11 @@ class CatalystUser extends User implements HasMedia, CanComment
         return $this->username;
     }
 
+    public function notificationEmail(): Attribute
+    {
+        return Attribute::make(get: fn() => $this->email ?? $this->claimedBy?->email);
+    }
+
     public function getLinkAttribute(): string|UrlGenerator|Application
     {
         return LaravelLocalization::localizeURL("/project-catalyst/users/{$this->id}/");
@@ -159,7 +167,7 @@ class CatalystUser extends User implements HasMedia, CanComment
     /**
      * The roles that belong to the user.
      */
-    public function claimed_by(): BelongsTo
+    public function claimedBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'claimed_by', 'id', 'claimed_by');
     }

@@ -151,7 +151,7 @@
             </p>
 
             <p x-show="!goneToIdeascale">
-                To verify your ownership of this account, <br />
+                To verify your ownership of this profile, <br />
                 please send a personal message to
                 <a target="_blank" class="inline-flex gap-1 items-center" href="https://cardano.ideascale.com/c/profile/3125446/">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="text-teal-light-600 w-5 h-5">
