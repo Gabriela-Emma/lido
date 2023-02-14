@@ -40,6 +40,8 @@ class CatalystUser extends User implements HasMedia, CanComment
         InteractsWithComments,
         SearchableLocale,
         QueryCacheable;
+    
+    protected $fillable = ['bio', 'twitter', 'discord', 'linkedin', 'ideascale','email'];
 
     protected $table = 'catalyst_users';
 

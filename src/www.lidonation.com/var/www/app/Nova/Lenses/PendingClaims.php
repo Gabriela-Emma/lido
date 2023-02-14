@@ -67,7 +67,7 @@ class PendingClaims extends Lens
                         ],
                     ]
                 )
-                ->required(),
+                ,
         ];
     }
 
