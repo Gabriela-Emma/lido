@@ -91,3 +91,4 @@ Homestead.json
 /public/js/*
 /public/css/*
 storage/*.key
+.php-cs-fixer.cache

@@ -1,10 +1,6 @@
 @component('mail::message')
-## Your Contribution as been Approved!
+## Your comment posted to {{$comment->model->title}} has been published!
 
-Your contribution, "**{{$post->title}}**", has been approved!
-
-Thank you so much!
-
-We'll let you know when it is published.
+Thank you for contribution!
 
 @endcomponent

@@ -2,6 +2,7 @@
 
 namespace App\Nova\Actions;
 
+use App\Events\CatalystProfileVerified;
 use App\Models\Meta;
 use App\Models\User;
 use App\Enums\RoleEnum;
@@ -10,7 +11,6 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Actions\Action;
 use Illuminate\Support\Collection;
 use Laravel\Nova\Fields\ActionFields;
-use Illuminate\Auth\Events\Registered;
 use Illuminate\Queue\InteractsWithQueue;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
@@ -60,8 +60,8 @@ class ValidateClaims extends Action
                 $regularUser->catalyst_users()->save($model);
                 $regularUser->name = $claim_data['name'];
                 $regularUser->save();
-                
-                event(new Registered($model->user));
+
+                event(new CatalystProfileVerified($model));
 
                 return Action::message('Validation performed successfully!');
             }
