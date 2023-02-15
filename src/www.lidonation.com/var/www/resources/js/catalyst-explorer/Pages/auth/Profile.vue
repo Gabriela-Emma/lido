@@ -5,11 +5,11 @@
         <div class="container">
             <div class="lg:grid lg:grid-cols-12 lg:gap-x-5">
                 <aside class="py-6 px-2 sm:px-6 lg:col-span-3 xl:col-span-2 lg:py-0 lg:px-0">
-                    <UserNav />
+                    <UserNav/>
                 </aside>
 
                 <div class="space-y-6 sm:px-6 lg:col-span-9 xl:col-span-10 lg:px-0">
-                    <form action="#" method="POST">
+                    <form>
                         <div class="sm:overflow-hidden sm:rounded-sm">
                             <div class="space-y-6 bg-white py-6 px-4 sm:p-6">
                                 <div>
@@ -22,69 +22,91 @@
                                     <div class="col-span-6 sm:col-span-3">
                                         <label for="first-name"
                                                class="block text-sm font-medium text-slate-700">Name</label>
-                                        <input type="text" name="first-name" id="first-name" autocomplete="given-name"
+                                        <input type="text" name="name" id="name" autocomplete="name"
+                                               v-model="form.name"
                                                class="mt-1 block w-full rounded-sm border border-slate-300 py-2 px-3 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-teal-500 sm:text-sm">
+                                        <div v-if="form.errors.name">{{ form.errors.name }}</div>
                                     </div>
 
                                     <div class="col-span-6 sm:col-span-3">
-                                        <label for="email-address" class="block text-sm font-medium text-slate-700">Email
+                                        <label for="email" class="block text-sm font-medium text-slate-700">Email
                                             address <span class="text-slate-400">(Not displayed publicly, not exposed in apis)</span></label>
-                                        <input type="text" name="email-address" id="email-address" autocomplete="email"
+                                        <input type="text" name="email" id="email" autocomplete="email"
+                                               v-model="form.email"
                                                class="mt-1 block w-full rounded-sm border border-slate-300 py-2 px-3 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-teal-500 sm:text-sm">
+                                        <div v-if="form.errors.email">{{ form.errors.email }}</div>
                                     </div>
 
                                     <div class="col-span-6 sm:col-span-3">
                                         <label for="twitter"
                                                class="block text-sm font-medium text-slate-700">Twitter</label>
-                                        <input type="text" name="email-address" id="email-address" autocomplete="email"
+                                        <input type="text" name="twitter" id="twitter" autocomplete="twitter"
+                                               v-model="form.twitter"
                                                class="mt-1 block w-full rounded-sm border border-slate-300 py-2 px-3 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-teal-500 sm:text-sm">
+                                        <div v-if="form.errors.twitter">{{ form.errors.twitter }}</div>
                                     </div>
 
                                     <div class="col-span-6 sm:col-span-3">
                                         <label for="linkedin"
                                                class="block text-sm font-medium text-slate-700">LinkedIn</label>
                                         <input type="text" name="linkedin" id="linkedin" autocomplete="linkedin"
+                                               v-model="form.linkedin"
                                                class="mt-1 block w-full rounded-sm border border-slate-300 py-2 px-3 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-teal-500 sm:text-sm">
+                                        <div v-if="form.errors.linkedin">{{ form.errors.linkedin }}</div>
                                     </div>
 
                                     <div class="col-span-6 sm:col-span-3">
                                         <label for="discord"
                                                class="block text-sm font-medium text-slate-700">Discord</label>
                                         <input type="text" name="discord" id="discord" autocomplete="discord"
+                                               v-model="form.discord"
                                                class="mt-1 block w-full rounded-sm border border-slate-300 py-2 px-3 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-teal-500 sm:text-sm">
+                                        <div v-if="form.errors.discord">{{ form.errors.discord }}</div>
+                                    </div>
+
+                                    <div class="col-span-6 sm:col-span-3">
+                                        <label for="telegram"
+                                               class="block text-sm font-medium text-slate-700">Telegram</label>
+                                        <input type="text" name="telegram" id="telegram" autocomplete="telegram"
+                                               v-model="form.telegram"
+                                               class="mt-1 block w-full rounded-sm border border-slate-300 py-2 px-3 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-teal-500 sm:text-sm">
+                                        <div v-if="form.errors.telegram">{{ form.errors.telegram }}</div>
                                     </div>
 
                                     <div class="col-span-3">
-                                        <label for="about" class="block text-sm font-medium text-slate-700">Bio</label>
+                                        <label for="bio" class="block text-sm font-medium text-slate-700">Bio</label>
                                         <div class="mt-1">
-                                            <textarea id="about" name="about" rows="3"
+                                            <textarea id="bio" name="bio" rows="6" v-model="form.bio"
                                                       class="mt-1 block w-full rounded-sm border-slate-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"></textarea>
+                                            <div v-if="form.errors.bio">{{ form.errors.bio }}</div>
                                         </div>
-                                        <p class="mt-2 text-sm text-slate-500">Brief description for your profile.
-                                            Markdown supported</p>
+                                        <p class="mt-2 text-sm text-slate-500">
+                                            Brief description for your profile. Markdown supported
+                                        </p>
                                     </div>
 
-                                    <div class="col-span-3">
-                                        <label class="block text-sm font-medium text-slate-700">Photo</label>
-                                        <div class="mt-1 flex items-center">
-                                            <span
-                                                class="inline-block h-12 w-12 overflow-hidden rounded-full bg-slate-100">
-                                              <svg class="h-full w-full text-slate-300" fill="currentColor"
-                                                   viewBox="0 0 24 24">
-                                                <path
-                                                    d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z"/>
-                                              </svg>
-                                            </span>
-                                            <button type="button"
-                                                    class="ml-5 rounded-sm border border-slate-300 bg-white py-2 px-3 text-sm font-medium leading-4 text-slate-700 shadow-sm hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
-                                                Change
-                                            </button>
-                                        </div>
-                                    </div>
+                                    <!--                                    <div class="col-span-3">-->
+                                    <!--                                        <label class="block text-sm font-medium text-slate-700">Photo</label>-->
+                                    <!--                                        <div class="mt-1 flex items-center">-->
+                                    <!--                                            <span-->
+                                    <!--                                                class="inline-block h-12 w-12 overflow-hidden rounded-full bg-slate-100">-->
+                                    <!--                                              <svg class="h-full w-full text-slate-300" fill="currentColor"-->
+                                    <!--                                                   viewBox="0 0 24 24">-->
+                                    <!--                                                <path-->
+                                    <!--                                                    d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z"/>-->
+                                    <!--                                              </svg>-->
+                                    <!--                                            </span>-->
+                                    <!--                                            <button type="button"-->
+                                    <!--                                                    class="ml-5 rounded-sm border border-slate-300 bg-white py-2 px-3 text-sm font-medium leading-4 text-slate-700 shadow-sm hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">-->
+                                    <!--                                                Change-->
+                                    <!--                                            </button>-->
+                                    <!--                                        </div>-->
+                                    <!--                                    </div>-->
                                 </div>
                             </div>
+
                             <div class="bg-slate-50 px-4 py-3 text-right sm:px-6">
-                                <button type="submit"
+                                <button type="submit" @click.prevent="submit"
                                         class="inline-flex justify-center rounded-sm border border-transparent bg-teal-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
                                     Save
                                 </button>
@@ -177,7 +199,7 @@
                                 </fieldset>
                             </div>
                             <div class="bg-slate-50 px-4 py-3 text-right sm:px-6">
-                                <button type="submit"
+                                <button type="submit" @click.prevent="submit"
                                         class="inline-flex justify-center rounded-sm border border-transparent bg-teal-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-600 focus:ring-offset-2">
                                     Save
                                 </button>
@@ -192,7 +214,20 @@
 </template>
 
 <script lang="ts" setup>
-import {Link} from '@inertiajs/vue3';
 import UserNav from "./UserNav.vue";
+import {computed} from "vue";
+import {useForm, usePage} from "@inertiajs/vue3";
+import User from "../../models/user";
+
+const user = computed(() => usePage().props?.user as User);
+const form = useForm({...user.value});
+
+const baseUrl = usePage().props.base_url;
+let submit = async () => {
+    form.post(`${baseUrl}/api/catalyst-explorer/profile`, {
+        preserveScroll: false,
+        onSuccess: (res) => console.log({res}),
+    });
+}
 
 </script>

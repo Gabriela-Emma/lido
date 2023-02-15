@@ -37,7 +37,7 @@ class CatalystProfileVerifiedMail extends Mailable implements ShouldQueue
         $setPasswordLink = route('password.reset', compact('token', 'email')); // . $token . '?email=' . urlencode($this->catalystUser->claimedBy->email);
 
         return $this
-            ->from($this->catalystUser?->notification_email, $this->catalystUser?->name)
+            ->from(config('mail.from'))
             ->markdown('emails.catalyst-profile-verified')
             ->subject(__('Catalyst Explorer: Profile Claim Verified!'))
             ->with(compact('setPasswordLink'));

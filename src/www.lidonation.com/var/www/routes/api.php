@@ -213,10 +213,12 @@ Route::prefix('catalyst-explorer')->as('catalystExplorerApi.')
         Route::post('/reports/follow', [CatalystExplorer\ReportController::class, 'follow']);
 
         Route::post('/login', [CatalystExplorer\UserController::class, 'login']);
-        
+
         Route::post('/logout', [CatalystExplorer\UserController::class, 'logout']);
-        
+
         Route::post('/register', [CatalystExplorer\UserController::class, 'create']);
+
+        Route::post('/profile', [CatalystExplorer\UserController::class, 'update'])->name('profileUpdate');
 
 
     });
