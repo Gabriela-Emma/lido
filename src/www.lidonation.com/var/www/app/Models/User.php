@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Traits\HasCatalystProfiles;
 use App\Models\Traits\HasGravatar;
 use App\Models\Traits\HasMetaData;
 use App\Models\Traits\HasPromos;
@@ -28,6 +29,7 @@ use Spatie\Permission\Traits\HasRoles;
 class User extends Authenticatable implements HasMedia, Interfaces\IHasMetaData, CanComment, CanResetPassword
 {
     use HasApiTokens,
+        HasCatalystProfiles,
         InteractsWithMedia,
         InteractsWithComments,
         HasFactory,

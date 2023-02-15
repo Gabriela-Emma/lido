@@ -5,7 +5,7 @@
         <div class="container" x-data="{claimingUser: false}" @claim-user.window="claimingUser = !claimingUser">
             <section class="relative z-0 py-10">
                 <div class="z-6 absolute top-0 left-0 w-full h-full bg-teal-600/75 py-10" x-show="claimingUser" x-transition>
-                    <x-catalyst.claim-user :user="$catalystUser" />
+                    <x-catalyst.claim-user :catalystProfile="$catalystUser" />
                 </div>
 
                 <div class="absolute left-0 top-0" :class="{
