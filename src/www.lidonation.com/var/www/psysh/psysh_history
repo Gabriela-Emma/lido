@@ -55,3 +55,5 @@ config('filesystems.disks.gcs');
 config('filesystems.disks');
 config('filesystems');
 exit
+route('password.reset');
+exit

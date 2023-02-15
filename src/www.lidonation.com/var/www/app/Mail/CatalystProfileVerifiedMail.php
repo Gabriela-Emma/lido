@@ -7,6 +7,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Password;
 
 class CatalystProfileVerifiedMail extends Mailable implements ShouldQueue
 {
@@ -20,6 +21,8 @@ class CatalystProfileVerifiedMail extends Mailable implements ShouldQueue
     public function __construct(public CatalystUser $catalystUser)
     {
         //
+//        Password::createToken()
+
     }
 
     /**
@@ -29,9 +32,14 @@ class CatalystProfileVerifiedMail extends Mailable implements ShouldQueue
      */
     public function build(): static
     {
+        $token =  Password::createToken($this->catalystUser?->claimedBy);
+        $email =  $this->catalystUser->claimedBy->email;
+        $setPasswordLink = route('password.reset', compact('token', 'email')); // . $token . '?email=' . urlencode($this->catalystUser->claimedBy->email);
+
         return $this
             ->from($this->catalystUser?->notification_email, $this->catalystUser?->name)
             ->markdown('emails.catalyst-profile-verified')
-            ->subject(__('Catalyst Explorer: Profile Claim Verified!'));
+            ->subject(__('Catalyst Explorer: Profile Claim Verified!'))
+            ->with(compact('setPasswordLink'));
     }
 }
