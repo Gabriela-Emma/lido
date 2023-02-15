@@ -9,7 +9,7 @@
                 </svg>
             </div>
 
-            <input name="searchProposals" id="searchProposals"
+            <input name="searchProposals" id="searchProposals" v-focus.ignoreEmpty
                    placeholder="Search title, proposal detail, or (co)authors" v-model="search"
                    :class="{
                         'bg-teal-500 text-white border-teal-500': (search?.length > 0),

@@ -1,22 +1,20 @@
 @props([
-    'user'
+    'catalystProfile'
 ])
 <div class="z-6" x-data="{
-    name: @js($user?->name),
-    email: @js($user?->email),
-    bio: @js($user?->bio),
-    twitter: @js($user?->twitter),
-    discord: @js($user?->discord),
-    linkedin: @js($user?->linkedin),
-    ideascale: @js($user?->ideascale),
+    name: @js($catalystProfile?->name),
+    email: @js($catalystProfile?->email),
+    bio: @js($catalystProfile?->bio),
+    twitter: @js($catalystProfile?->twitter),
+    discord: @js($catalystProfile?->discord),
+    linkedin: @js($catalystProfile?->linkedin),
+    ideascale: @js($catalystProfile?->ideascale),
     code: null,
     step: 1,
     submitted: false,
     goneToIdeascale: false,
     async claimUser(event) {
         const formData = Object.fromEntries(new FormData(event.target));
-        console.log(formData);
-
         const res = await window.axios.post(`/api/catalyst-explorer/people/claim`, formData);
         if (res.status === 200 || res.status === 201) {
             this.code = res.data;
@@ -32,7 +30,7 @@
         <form @submit.prevent="claimUser">
             @csrf
             <div class="flex flex-col gap-4">
-                <input type="hidden" name="catalyst_id" value="{{ $user->id }}">
+                <input type="hidden" name="catalyst_profile_id" value="{{ $catalystProfile->id }}">
                 <div class="mt-1 sm:mt-0">
                     <label for="name" class="block text-slate-100 sm:mt-px sm:pt-2">
                         Name

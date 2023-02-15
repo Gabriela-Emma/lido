@@ -1,5 +1,5 @@
 import {createInertiaApp, usePage} from "@inertiajs/vue3";
-import {createApp, h, watch} from "vue";
+import {createApp, h, nextTick, watch} from "vue";
 import Layout from "./catalyst-explorer/Shared/Layout.vue";
 import {createPinia} from "pinia";
 import { marked } from 'marked';
@@ -37,6 +37,25 @@ createInertiaApp({
             })
             .use(PrimeVue)
             .use(pinia);
+
+        app.directive('focus', {
+            mounted(el, binding, vnode) {
+                if (binding.modifiers?.ignoreEmpty) {
+                    nextTick(() => {
+                        console.log('nextTick::', vnode?.el.value);
+                        if (binding.modifiers?.ignoreEmpty) {
+                            if (!el.value || typeof el.value === 'undefined') {
+                                return;
+                            }
+                            el.focus();
+                        }
+                    }).then();
+                } else {
+                    el.focus();
+                }
+            }
+        });
+
 
         app.config.globalProperties.$filters = {
             number(value, digits = 0, locale: string='en-US') {

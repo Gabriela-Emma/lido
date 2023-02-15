@@ -23,7 +23,6 @@ class UserController extends Controller
 
         if (Auth::attempt($credentials, $remember)) {
             return to_route('catalystExplorer.myDashboard');
-
         }
 
         return redirect()->back()->withInput($request->only('email'))->withErrors([
@@ -38,7 +37,7 @@ class UserController extends Controller
         $request->session()->invalidate();
 
         $request->session()->regenerateToken();
-    
+
         return to_route('catalystExplorer.proposals');
     }
 

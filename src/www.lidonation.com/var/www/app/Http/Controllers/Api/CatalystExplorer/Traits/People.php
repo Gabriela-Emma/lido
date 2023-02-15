@@ -9,6 +9,7 @@ use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use OpenApi\Annotations as OA;
 use App\Models\Meta;
 use App\Models\User;
@@ -79,18 +80,20 @@ trait People
             'email' => 'required|email',
             'bio' => 'nullable'
         ]);
-        $catUser = CatalystUser::where('id', $request->catalyst_id)?->first();
-        $newUser = User::where('email', $request->email)?->first();
-        if (! $newUser instanceof User) {
-            $newUser = new User;
-            $newUser->name = $request->name;
-            $newUser->email = $request->email;
-            $newUser->bio = $request->bio;
-            $newUser->password = Hash::make(Str::random(30)) ?? null;
-            $newUser->save();
-        }
 
-        
+        if (Auth::check()) {
+            $lidoUser = Auth::user();
+        } else {
+            $lidoUser = User::where('email', $request->email)?->first();
+        }
+        if (!$lidoUser instanceof User) {
+            $lidoUser = new User;
+            $lidoUser->name = $request->name;
+            $lidoUser->email = $request->email;
+            $lidoUser->bio = $request->bio;
+            $lidoUser->password = Hash::make(Str::random(30)) ?? null;
+            $lidoUser->save();
+        }
 
         $code = Str::random(5);
 
@@ -98,13 +101,16 @@ trait People
         $meta->key = 'ideascale_verification_code';
         $meta->content = $code;
         $meta->model_type = User::class;
-        $newUser->metas()->save($meta);
+        $meta->model_id = $lidoUser->id;
+        $meta->save();
 
+        $catUser = CatalystUser::where('id', $request->catalyst_profile_id)?->first();
         $catMeta = new Meta;
         $catMeta->key = 'ideascale_verification_code';
         $catMeta->content = $code;
         $catMeta->model_type = CatalystUser::class;
-        $catUser->metas()->save($catMeta);
+        $catMeta->model_id = $catUser->id;
+        $catMeta->save();
 
         $input = $request->all();
         $jsonData = json_encode($input);
@@ -113,10 +119,9 @@ trait People
         $claimMeta->key = 'claim_data';
         $claimMeta->content = $jsonData;
         $claimMeta->model_type = CatalystUser::class;
-        $catUser->metas()->save($claimMeta);
-
+        $claimMeta->model_id = $catUser->id;
+        $claimMeta->save();
 
         return $code;
-
     }
 }
