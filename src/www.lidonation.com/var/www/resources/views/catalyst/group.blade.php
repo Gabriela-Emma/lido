@@ -42,7 +42,7 @@
 
                     <div class="text-center pt-10">
                         <p>
-                            Despite our best efforts to maintain the accuracy of the the information presented here,
+                            Despite our best efforts to maintain the accuracy of the information presented here,
                             inconsistencies may exist.
                         </p>
                         <p>Questions or feedback about this data?</p>

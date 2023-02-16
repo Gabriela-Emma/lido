@@ -12,6 +12,8 @@ class CatalystMyProposalsController extends Controller
 {
     protected int $perPage = 24;
 
+    protected ?bool $fundedProposalsFilter = true;
+
     public function manage(Proposal $proposal)
     {
         return Inertia::modal('auth/UserProposal')
