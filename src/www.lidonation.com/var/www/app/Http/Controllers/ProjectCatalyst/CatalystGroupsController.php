@@ -8,6 +8,7 @@ use App\Models\CatalystGroup;
 use App\Http\Controllers\Controller;
 use Inertia\Response;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class CatalystGroupsController extends Controller
 {
@@ -49,6 +50,9 @@ class CatalystGroupsController extends Controller
 
     public function update(Request $request, CatalystGroup $catalystGroup)
     {
+        if (!$catalystGroup->id) {
+            throw (new ModelNotFoundException())->setModel(CatalystGroup::class);
+        }
         $request->validate([
             'email' => 'sometimes|email',
             'twitter' => 'nullable|bail|min:2',
