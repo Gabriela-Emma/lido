@@ -36,7 +36,6 @@ class CatalystUserProfilesController extends Controller
     public function update(Request $request)
     {
         $request->validate([
-//            'name' => 'required|min:3',
             'id' => 'required|exists:catalyst_users,id',
             'email' => 'sometimes|email',
             'twitter' => 'nullable|bail|min:2',
@@ -46,14 +45,13 @@ class CatalystUserProfilesController extends Controller
             'bio' => 'min:10'
         ]);
 
-        $catalystProfile = CatalystUser::findOrFail($request->profile);
+        $catalystProfile = CatalystUser::findOrFail($request->id);
         $catalystProfile->bio =  $request->bio;
         $catalystProfile->twitter = $request->twitter;
         $catalystProfile->linkedin = $request->linkedin;
         $catalystProfile->discord = $request->discord;
         $catalystProfile->save();
 
-        return to_route('catalystExplorer.myDashboard');
-//        return to_route('catalystExplorer.myProfiles');
+        return to_route('catalystExplorer.myProfiles');
     }
 }

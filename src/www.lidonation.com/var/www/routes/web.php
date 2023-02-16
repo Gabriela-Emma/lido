@@ -208,7 +208,7 @@ Route::group(
             Route::get('/profiles', [CatalystUserProfilesController::class, 'index'])
                 ->name('myProfiles');
 
-//            Route::post('/profiles', [CatalystUserProfilesController::class, 'update']);
+            Route::post('/profiles', [CatalystUserProfilesController::class, 'update']);
 
             Route::get('/proposals', [CatalystMyProposalsController::class, 'index'])
                 ->name('myProposals');

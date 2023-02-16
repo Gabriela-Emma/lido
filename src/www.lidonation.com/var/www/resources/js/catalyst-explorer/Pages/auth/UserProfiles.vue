@@ -9,10 +9,10 @@
                 </aside>
 
                 <div class="space-y-6 sm:px-6 lg:col-span-9 xl:col-span-10 lg:px-0">
-                    <form method="POST" v-for="form in forms" class="mb-16" @submit.prevent="submit($event, form)">
+                    <form v-for="form in forms" class="mb-16" @submit.prevent="submit($event, form)">
                         <div class="sm:overflow-hidden sm:rounded-sm">
                             <div class="space-y-6 bg-white py-6 px-4 sm:p-6">
-                                <input type="hidden" name="id" v-model="form.id"/>
+                                <input type="hidden" name="id" v-model="form.id" />
 
                                 <div>
                                     <h2 class="text-lg font-medium leading-6 text-slate-900">
@@ -139,7 +139,7 @@
                         </div>
                     </form>
 
-                    <form action="#" method="POST" class="hidden">
+                    <form class="hidden">
                         <div class="shadow sm:overflow-hidden sm:rounded-sm">
                             <div class="space-y-6 bg-white py-6 px-4 sm:p-6">
                                 <div>
@@ -264,7 +264,7 @@ let forms = ref(
 );
 
 let submit = (event, form) => {
-    form.post(`${usePage().props.base_url}/api/catalyst-explorer/profiles`,
+    form.post(`${usePage().props.base_url}/catalyst-explorer/my/profiles`,
         {
             preserveScroll: false
         });
