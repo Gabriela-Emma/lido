@@ -12,6 +12,8 @@ class CatalystMyProposalsController extends Controller
 {
     protected int $perPage = 24;
 
+    protected ?bool $fundedProposalsFilter = true;
+
     public function manage(Proposal $proposal)
     {
         return Inertia::modal('auth/UserProposal')
@@ -41,8 +43,15 @@ class CatalystMyProposalsController extends Controller
         $query = Proposal::whereIn('user_id', $catalystProfiles);
         $paginator = $query->paginate($this->perPage, ['*'], 'p')->setPath('/');
 
+        $totalDistributed = doubleval($query->sum('proposals.amount_received'));
+        $budgetSummary = doubleval($query->sum('proposals.amount_requested'));
+        $totalRemaining = ($budgetSummary - $totalDistributed) ;
+
         return [
             'proposals' => $paginator->onEachSide(1)->toArray(),
+            'totalDistributed'=> $totalDistributed,
+            'budgetSummary' => $budgetSummary,
+            'totalRemaining' => $totalRemaining,
             'crumbs' => [
                 ['label' => 'Profile'],
             ],
