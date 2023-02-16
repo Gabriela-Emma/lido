@@ -12,6 +12,7 @@ use Chelout\RelationshipEvents\Traits\HasRelationshipObservables;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\UrlGenerator;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -68,6 +69,11 @@ class CatalystGroup extends Model implements HasMedia, HasLink
             $filters['ids'] ?? false,
             fn (Builder $query, $ids) => $query->whereIn('id', is_array($ids) ? $ids : explode(',', $ids))
         );
+    }
+
+    public function claimedBy(): Attribute
+    {
+        return Attribute::make(get: fn() => $this->owner?->claimed_by_user);
     }
 
     public function owner(): BelongsTo

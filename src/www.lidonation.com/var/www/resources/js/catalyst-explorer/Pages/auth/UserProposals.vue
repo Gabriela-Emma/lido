@@ -35,7 +35,7 @@
                                     {{ $filters.currency(budgetSummary) }}
                                 </dd>
                                 <dt class="order-2 text-center text-xs md:text-sm  font-semibold text-slate-500">
-                                    Total Budget
+                                    Awarded
                                 </dt>
                             </div>
                         </div>
