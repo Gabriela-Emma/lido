@@ -1,11 +1,11 @@
 export default interface Proposal {
-[x: string]: any;
     slug: string;
     title: string;
     solution: string;
     problem: string;
     funding_status: string;
     amount_received: number;
+    amount_requested:number;
     no_votes_count: number;
     yes_votes_count: number;
     ideascale_link: string;

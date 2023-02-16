@@ -15,26 +15,26 @@
                         </div>
                         <div class="flex justify-between flex-1 px-6"> 
                             <div class="flex flex-1 flex-col p-2">
-                                <dt class="order-2 text-xs  text-center md:text-sm font-medium text-slate-900">
+                                <dt class="order-2 text-xs  text-center md:text-sm font-semibold text-slate-500">
                                     Total Amount Distributed
                                 </dt>
-                                <dd class="order-1 text-center font-medium text-slate-500">
+                                <dd class="order-1 text-center font-semibold text-slate-900">
                                     {{$filters.currency(totalDistributed)}}
                                 </dd>
                             </div>
                             <div class="flex flex-1 flex-col p-2">
-                                <dt class="order-2 text-xs text-center md:text-sm font-medium text-slate-900">
+                                <dt class="order-2 text-xs text-center md:text-sm  font-semibold text-slate-500">
                                     Total Amount Remaining
                                 </dt>
-                                <dd class="order-1 text-center font-medium text-slate-500 ">
+                                <dd class="order-1 text-center font-semibold text-slate-900 ">
                                     {{$filters.currency(totalRemaining)}}
                                 </dd>
                             </div>
                             <div class="flex flex-1 flex-col p-2">
-                                <dt class="order-2 text-center text-xs md:text-sm font-medium text-slate-900">
+                                <dt class="order-2 text-center text-xs md:text-sm  font-semibold text-slate-500">
                                     Budget Summary
                                 </dt>
-                                <dd class="order-1 text-center font-medium text-slate-500 ">
+                                <dd class="order-1 text-center font-semibold text-slate-900 ">
                                     {{$filters.currency(budgetSummary)}}                                
                                 </dd>
                             </div>
