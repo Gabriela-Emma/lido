@@ -16,7 +16,7 @@
                         <div class="flex flex-col gap-8">
                             <UserGroupCard v-for="group in groups?.data" :group="group" />
 
-                            <div class="text-center rounded-sm border border-slate-400 p-8">
+                            <div class="text-center rounded-sm border border-slate-400 border-dashed p-8">
                                 <svg class="mx-auto h-12 w-12 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                                     <path vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
                                 </svg>
