@@ -43,8 +43,8 @@ class CatalystMyProposalsController extends Controller
         $query = Proposal::whereIn('user_id', $catalystProfiles);
         $paginator = $query->paginate($this->perPage, ['*'], 'p')->setPath('/');
 
-        $totalDistributed = doubleval($query->sum('proposals.amount_received'));
-        $budgetSummary = doubleval($query->sum('proposals.amount_requested'));
+        $totalDistributed = doubleval($query->whereNotNull('funded_at')->sum('amount_received'));
+        $budgetSummary = doubleval($query->whereNotNull('funded_at')->sum('amount_requested'));
         $totalRemaining = ($budgetSummary - $totalDistributed) ;
 
         return [
