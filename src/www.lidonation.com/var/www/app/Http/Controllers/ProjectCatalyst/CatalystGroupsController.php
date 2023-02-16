@@ -45,8 +45,26 @@ class CatalystGroupsController extends Controller
         }
 
         return Inertia::render('Groups', $props);
+    }
 
+    public function update(Request $request, CatalystGroup $catalystGroup)
+    {
+        $request->validate([
+            'email' => 'sometimes|email',
+            'twitter' => 'nullable|bail|min:2',
+            'github' => 'nullable|bail|min:5',
+            'discord' => 'nullable|bail|min:4',
+            'telegram' => 'nullable|bail|min:2',
+            'bio' => 'min:20'
+        ]);
 
+        $catalystGroup->bio =  $request->bio;
+        $catalystGroup->twitter = $request->twitter;
+        $catalystGroup->github = $request->github;
+        $catalystGroup->discord = $request->discord;
+        $catalystGroup->save();
+
+        return to_route('catalystExplorer.myGroups');
     }
 
     public function query()

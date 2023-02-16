@@ -141,7 +141,7 @@ class CatalystUser extends User implements HasMedia, CanComment
 
     public function displayName(): Attribute
     {
-        return Attribute::make(get: fn() => $this->claimed_by_user?->name ?? $this->name);
+        return Attribute::make(get: fn() => $this->name ?? $this->claimed_by_user?->name );
     }
 
     public function notificationEmail(): Attribute

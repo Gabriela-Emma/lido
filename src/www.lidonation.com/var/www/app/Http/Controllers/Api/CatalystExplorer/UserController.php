@@ -1,14 +1,11 @@
 <?php
 namespace App\Http\Controllers\Api\CatalystExplorer;
 
-use App\Models\CatalystUser;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Contracts\Auth\Authenticatable;
-
 
 class UserController extends Controller
 {
