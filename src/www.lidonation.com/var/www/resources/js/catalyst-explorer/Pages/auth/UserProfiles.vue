@@ -22,8 +22,8 @@
                                         All information, with the exception of your
                                         email, will be displayed publicly.</p>
 
-                                    <div class="text-pink-600" v-if="form.errors.profile">{{
-                                            form.errors.profile
+                                    <div class="text-pink-600" v-if="form.errors.id">{{
+                                            form.errors.id
                                         }}
                                     </div>
                                 </div>
@@ -245,7 +245,6 @@ import {useForm, usePage} from "@inertiajs/vue3";
 import User from "../../models/user";
 import Profile from "../../models/profile";
 
-// const baseUrl = computed(() => usePage().props.base_url);
 const user = computed(() => usePage().props?.user as User);
 
 const props = withDefaults(
@@ -265,8 +264,10 @@ let forms = ref(
 );
 
 let submit = (event, form) => {
-    console.log(`${ usePage().props.base_url}/api/catalyst-explorer/profiles`);
-    form.post(`${ usePage().props.base_url}/api/catalyst-explorer/profiles`);
+    form.post(`${usePage().props.base_url}/api/catalyst-explorer/profiles`,
+        {
+            preserveScroll: false
+        });
 }
 
 </script>

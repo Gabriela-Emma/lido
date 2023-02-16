@@ -24,7 +24,7 @@
     }
 }">
     <h1 class='flex flex-row flex-wrap items-end gap-2 mb-6 text-2xl xl:text-3xl font-bold 2xl:text-4xl decorate light items-center'>
-        Claim Your Account - <span class="text-sm text-slate-800">coming soon</span>
+        Claim Your Account
     </h1>
     <div x-show="step === 1" x-transition>
         <form @submit.prevent="claimUser">
