@@ -2,7 +2,28 @@
     @livewire('catalyst.catalyst-sub-menu-component')
     <header class="text-white bg-teal-600">
         <div class="container">
-            <section class="relative z-0 py-10 overflow-visible" x-data="{showPane: false}">
+            <section class="relative z-0 py-10 overflow-visible" 
+            x-data="{showPane: false,
+                claimingUser: false,
+                claimProfile: function() {
+                    axios.get('/api/user')
+                    .then(function(response) {
+                        this.$dispatch('claim-user');
+                    }.bind(this))
+                    .catch(function(error) {
+                        window.location.href = '/login';
+                    });
+                }
+            }"
+                     @claim-user.window="claimingUser = !claimingUser">
+                <div class="z-6 absolute top-0 left-0 w-full h-full bg-teal-600/75 py-10" x-show="claimingUser" x-transition>
+                    <x-catalyst.claim-user :catalystProfile="$catalystGroup->members->first()" :owner="$catalystGroup->user_id" />
+                </div>
+
+                <div class="absolute left-0 top-0" :class="{
+                    'bg-teal-600 w-full h-full z-5': claimingUser,
+                    'hidden': !claimingUser}"></div>
+
                 <div class="bg-teal-600/[0.95] w-full h-full absolute z-30 space-y-4" x-show="showPane" x-transition>
                     <div class="flex flex-row justify-between gap-3 items-center">
                         <h2 class="xl:text-5xl">
@@ -60,6 +81,20 @@
                     <span class="font-semibold">
                         {{$catalystGroup->name}}
                     </span>
+
+                    <a href="#" x-data @click.prevent="claimProfile"
+                       class="inline-flex flex-row gap-1 text-sm cursor-pointer items-center group font-semibold hover:text-teal-800 hover:text-slate-800 whitespace-nowrap px-1 py-0.5 bg-yellow-500 border border-yellow-800 rounded-sm">
+                        <span class="group-hover:text-slate-800 inline-block">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                 stroke="currentColor" class="w-4 h-4">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                      d="M15.75 5.25a3 3 0 013 3m3 0a6 6 0 01-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1121.75 8.25z"/>
+                            </svg>
+                        </span>
+                        <span class="group-hover:text-slate-800">
+                            Claim Account
+                        </span>
+                    </a>
 
                     <span @click="showPane = !showPane"
                           class="ml-auto relative top-10 text-base hover:cursor-pointer text-blue-dark-500 hover:text-yellow-500 font-semibold">

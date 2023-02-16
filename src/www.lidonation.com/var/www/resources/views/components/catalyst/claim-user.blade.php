@@ -1,5 +1,6 @@
 @props([
-    'catalystProfile'
+    'catalystProfile',
+    'owner'
 ])
 <div class="z-6" x-data="{
     name: @js($catalystProfile?->name),
@@ -30,7 +31,7 @@
         <form @submit.prevent="claimUser">
             @csrf
             <div class="flex flex-col gap-4">
-                <input type="hidden" name="catalyst_profile_id" value="{{ $catalystProfile->id }}">
+                <input type="hidden" name="catalyst_profile_id" value="{{ $owner ?? $catalystProfile->id }}">
                 <div class="mt-1 sm:mt-0">
                     <label for="name" class="block text-slate-100 sm:mt-px sm:pt-2">
                         Name
