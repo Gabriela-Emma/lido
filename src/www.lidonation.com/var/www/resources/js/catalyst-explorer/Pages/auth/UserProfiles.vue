@@ -245,7 +245,7 @@ import {useForm, usePage} from "@inertiajs/vue3";
 import User from "../../models/user";
 import Profile from "../../models/profile";
 
-const baseUrl = computed(() => usePage().props.base_url);
+// const baseUrl = computed(() => usePage().props.base_url);
 const user = computed(() => usePage().props?.user as User);
 
 const props = withDefaults(
@@ -265,8 +265,8 @@ let forms = ref(
 );
 
 let submit = (event, form) => {
-    console.log(form);
-    form.post(`${baseUrl}/api/catalyst-explorer/profiles`);
+    console.log(`${ usePage().props.base_url}/api/catalyst-explorer/profiles`);
+    form.post(`${ usePage().props.base_url}/api/catalyst-explorer/profiles`);
 }
 
 </script>
