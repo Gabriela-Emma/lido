@@ -2,8 +2,8 @@
     @livewire('catalyst.catalyst-sub-menu-component')
     <header class="text-white bg-teal-600">
         <div class="container">
-            <section class="relative z-0 py-10 overflow-visible" 
-            x-data="{showPane: false,
+            <section class="relative z-0 py-10 overflow-visible"
+                     x-data="{showPane: false,
                 claimingUser: false,
                 claimProfile: function() {
                     axios.get('/api/user')
@@ -16,8 +16,10 @@
                 }
             }"
                      @claim-user.window="claimingUser = !claimingUser">
-                <div class="z-6 absolute top-0 left-0 w-full h-full bg-teal-600/75 py-10" x-show="claimingUser" x-transition>
-                    <x-catalyst.claim-user :catalystProfile="$catalystGroup->members->first()" :owner="$catalystGroup->user_id" />
+                <div class="z-6 absolute top-0 left-0 w-full h-full bg-teal-600/75 py-10" x-show="claimingUser"
+                     x-transition>
+                    <x-catalyst.claim-user :catalystProfile="$catalystGroup->members->first()"
+                                           :owner="$catalystGroup->user_id"/>
                 </div>
 
                 <div class="absolute left-0 top-0" :class="{
@@ -82,8 +84,9 @@
                         {{$catalystGroup->name}}
                     </span>
 
-                    <a href="#" x-data @click.prevent="claimProfile"
-                       class="inline-flex flex-row gap-1 text-sm cursor-pointer items-center group font-semibold hover:text-teal-800 hover:text-slate-800 whitespace-nowrap px-1 py-0.5 bg-yellow-500 border border-yellow-800 rounded-sm">
+                    @if(!$catalystGroup->claimed_by)
+                        <a href="#" x-data @click.prevent="claimProfile"
+                           class="inline-flex flex-row gap-1 text-sm cursor-pointer items-center group font-semibold hover:text-teal-800 hover:text-slate-800 whitespace-nowrap px-1 py-0.5 bg-yellow-500 border border-yellow-800 rounded-sm">
                         <span class="group-hover:text-slate-800 inline-block">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                  stroke="currentColor" class="w-4 h-4">
@@ -91,10 +94,21 @@
                                       d="M15.75 5.25a3 3 0 013 3m3 0a6 6 0 01-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1121.75 8.25z"/>
                             </svg>
                         </span>
-                        <span class="group-hover:text-slate-800">
+                            <span class="group-hover:text-slate-800">
                             Claim Account
                         </span>
-                    </a>
+                        </a>
+                    @else
+                        <span type="button"
+                              class="inline-flex items-center gap-1 py-[0.280rem] rounded-sm bg-indigo-100 px-1.5 text-xs font-semibold text-indigo-800">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                 stroke="currentColor" class="w-4 h-4 mr-0.5">
+                              <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z"/>
+                            </svg>
+                            Claimed
+                      </span>
+                    @endif
 
                     <span @click="showPane = !showPane"
                           class="ml-auto relative top-10 text-base hover:cursor-pointer text-blue-dark-500 hover:text-yellow-500 font-semibold">
@@ -208,7 +222,8 @@
                             <div
                                 class="mt-6 flex flex-col justify-center items-center gap-4 follow-reports w-full bg-slate-200 p-4">
                                 <p>
-                                    Follow {{$catalystGroup->name}} monthly project reports to have them delivered to your inbox,
+                                    Follow {{$catalystGroup->name}} monthly project reports to have them delivered to
+                                    your inbox,
                                     <strong>for all {{$groupProposals->count()}} projects.</strong>
                                 </p>
                                 <p>
@@ -285,7 +300,8 @@
                                 <div
                                     class="mt-6 flex flex-col justify-center items-center gap-4 follow-reports w-full bg-slate-200 p-4">
                                     <p>
-                                        Follow {{$catalystGroup->name}} monthly project reports to have them delivered to your inbox,
+                                        Follow {{$catalystGroup->name}} monthly project reports to have them delivered
+                                        to your inbox,
                                         <strong>for all {{$groupProposals->count()}} projects.</strong>
                                     </p>
                                     <p>
