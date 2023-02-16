@@ -7,6 +7,7 @@ use App\Models\CatalystUser;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class CatalystUserProfilesController extends Controller
 {
@@ -35,6 +36,9 @@ class CatalystUserProfilesController extends Controller
 
     public function update(Request $request, CatalystUser $catalystUser)
     {
+        if (!$catalystUser->id) {
+            throw (new ModelNotFoundException())->setModel(CatalystUser::class);
+        }
         $request->validate([
             'email' => 'sometimes|email',
             'twitter' => 'nullable|bail|min:2',
@@ -44,7 +48,7 @@ class CatalystUserProfilesController extends Controller
             'bio' => 'min:10'
         ]);
 
-        $catalystUser->bio =  $request->bio;
+        $catalystUser->bio = $request->bio;
         $catalystUser->twitter = $request->twitter;
         $catalystUser->linkedin = $request->linkedin;
         $catalystUser->discord = $request->discord;
