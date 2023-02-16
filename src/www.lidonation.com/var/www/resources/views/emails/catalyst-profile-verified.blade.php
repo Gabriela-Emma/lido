@@ -3,7 +3,7 @@
 
 ## Your Catalyst Explorer profile claim has been verified!
 
-set a password to start managing your profile!
+Set a password to start managing your profile!
 
 After you've set a password, you may manage all proposals you are the primary author of via your [Proposals Dashboard]({{localizeRoute('catalystExplorer.myProposals')}}).
 

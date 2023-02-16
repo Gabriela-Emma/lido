@@ -141,12 +141,12 @@ class CatalystUser extends User implements HasMedia, CanComment
 
     public function displayName(): Attribute
     {
-        return Attribute::make(get: fn() => $this->claimed_by?->name ?? $this->name);
+        return Attribute::make(get: fn() => $this->claimed_by_user?->name ?? $this->name);
     }
 
     public function notificationEmail(): Attribute
     {
-        return Attribute::make(get: fn() => $this->email ?? $this->claimed_by?->email);
+        return Attribute::make(get: fn() => $this->email ?? $this->claimed_by_user?->email);
     }
 
     public function getLinkAttribute(): string|UrlGenerator|Application
@@ -172,9 +172,9 @@ class CatalystUser extends User implements HasMedia, CanComment
     /**
      * The roles that belong to the user.
      */
-    public function claimed_by(): BelongsTo
+    public function claimed_by_user(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'claimed_by', 'id', 'claimed_by');
+        return $this->belongsTo(User::class, 'claimed_by', 'id', 'claimed_by_user');
     }
 
     /**
