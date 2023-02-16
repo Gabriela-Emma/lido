@@ -140,18 +140,4 @@ const props = withDefaults(
         };
     }>(), {});
 
-
-const totalDistributed = computed(() => {
-    return props.proposals.data.reduce((amt, obj) => amt + obj.amount_received, 0);
-});
-
-const totalRemaining = computed(() => {
-    return props.proposals.data.reduce((amt, obj) => amt + (obj.amount_requested - obj.amount_received), 0);
-});
-
-const budgetSummary = computed(() => {
-    return props.proposals.data.reduce((amt, obj) => amt + obj.amount_requested, 0);
-});
-
-
 </script>
