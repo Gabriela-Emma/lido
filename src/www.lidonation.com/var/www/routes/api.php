@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ProjectCatalyst\CatalystUserProfilesController;
 use App\Models\User;
 use App\Models\Reward;
 use App\Models\EveryEpoch;
@@ -199,10 +200,10 @@ Route::prefix('catalyst-explorer')->as('catalystExplorerApi.')
         Route::get('/proposals', [CatalystExplorer\ProposalController::class, 'proposals']);
         Route::get('/proposals/{proposal_id}', [CatalystExplorer\ProposalController::class, 'proposal']);
 
-        Route::post('/people/claim', [CatalystExplorer\PeopleController::class, 'claim']);
+        Route::post('/people/claim', [CatalystExplorer\ProfileController::class, 'claim']);
 
-        Route::get('/people', [CatalystExplorer\PeopleController::class, 'people']);
-        Route::get('/people/{person_id}', [CatalystExplorer\PeopleController::class, 'person']);
+        Route::get('/people', [CatalystExplorer\ProfileController::class, 'people']);
+        Route::get('/people/{person_id}', [CatalystExplorer\ProfileController::class, 'person']);
 
         Route::get('/groups', [CatalystExplorer\GroupController::class, 'groups']);
         Route::get('/groups/{group_id}', [CatalystExplorer\GroupController::class, 'group']);
@@ -218,9 +219,7 @@ Route::prefix('catalyst-explorer')->as('catalystExplorerApi.')
 
         Route::post('/register', [CatalystExplorer\UserController::class, 'create']);
 
-        Route::post('/profile', [CatalystExplorer\UserController::class, 'update'])->name('profileUpdate');
-
-
+        Route::post('/profiles', [CatalystUserProfilesController::class, 'update'])->name('myProfileUpdate');
     });
 
 Route::prefix('promos')->as('promos')

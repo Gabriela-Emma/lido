@@ -15,10 +15,10 @@
                 <h1 class='flex flex-row flex-wrap items-end gap-2 mb-6 text-3xl font-bold 2xl:text-5xl decorate light'>
                     <img class="w-10 h-10 rounded-full lg:w-16 lg:h-16"
                          src="{{$catalystUser->thumbnail_url ?? $catalystUser->gravatar}}"
-                         alt="{{$catalystUser->name}} gravatar"/>
+                         alt="{{$catalystUser->displayName}} gravatar"/>
 
                     <span class="font-semibold">
-                        {{$catalystUser->name}}
+                        {{$catalystUser->displayName}}
                     </span>
 
                     @foreach($catalystUser->groups as $group)

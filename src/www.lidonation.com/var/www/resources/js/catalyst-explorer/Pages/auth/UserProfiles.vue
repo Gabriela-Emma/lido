@@ -9,24 +9,33 @@
                 </aside>
 
                 <div class="space-y-6 sm:px-6 lg:col-span-9 xl:col-span-10 lg:px-0">
-                    <form>
+                    <form method="POST" v-for="form in forms" class="mb-16" @submit.prevent="form.post(`${baseUrl}/api/catalyst-explorer/profiles`, {
+                        preserveScroll: false
+                    })">
                         <div class="sm:overflow-hidden sm:rounded-sm">
                             <div class="space-y-6 bg-white py-6 px-4 sm:p-6">
+                                <input type="hidden" name="id" v-model="form.id" />
+
                                 <div>
-                                    <h3 class="text-lg font-medium leading-6 text-slate-900">Personal Information</h3>
-                                    <p class="mt-1 text-sm text-slate-500">All information, with the exception of your
+                                    <h2 class="text-lg font-medium leading-6 text-slate-900">
+                                        Edit Profile: <span class="font-bold">{{form.name}}</span>
+                                    </h2>
+                                    <p class="mt-1 text-sm text-slate-500">
+                                        All information, with the exception of your
                                         email, will be displayed publicly.</p>
+
+                                    <div class="text-pink-600" v-if="form.errors.profile">{{ form.errors.profile }}</div>
                                 </div>
 
                                 <div class="grid grid-cols-3 gap-6">
-                                    <div class="col-span-6 sm:col-span-3">
-                                        <label for="first-name"
-                                               class="block text-sm font-medium text-slate-700">Name</label>
-                                        <input type="text" name="name" id="name" autocomplete="name"
-                                               v-model="form.name"
-                                               class="mt-1 block w-full rounded-sm border border-slate-300 py-2 px-3 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-teal-500 sm:text-sm">
-                                        <div v-if="form.errors.name">{{ form.errors.name }}</div>
-                                    </div>
+<!--                                    <div class="col-span-6 sm:col-span-3">-->
+<!--                                        <label for="first-name"-->
+<!--                                               class="block text-sm font-medium text-slate-700">Name</label>-->
+<!--                                        <input type="text" name="name" id="name" autocomplete="name"-->
+<!--                                               v-model="form.name"-->
+<!--                                               class="mt-1 block w-full rounded-sm border border-slate-300 py-2 px-3 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-teal-500 sm:text-sm">-->
+<!--                                        <div v-if="form.errors.name">{{ form.errors.name }}</div>-->
+<!--                                    </div>-->
 
                                     <div class="col-span-6 sm:col-span-3">
                                         <label for="email" class="block text-sm font-medium text-slate-700">Email
@@ -34,7 +43,7 @@
                                         <input type="text" name="email" id="email" autocomplete="email"
                                                v-model="form.email"
                                                class="mt-1 block w-full rounded-sm border border-slate-300 py-2 px-3 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-teal-500 sm:text-sm">
-                                        <div v-if="form.errors.email">{{ form.errors.email }}</div>
+                                        <div class="text-pink-600" v-if="form.errors.email">{{ form.errors.email }}</div>
                                     </div>
 
                                     <div class="col-span-6 sm:col-span-3">
@@ -43,7 +52,7 @@
                                         <input type="text" name="twitter" id="twitter" autocomplete="twitter"
                                                v-model="form.twitter"
                                                class="mt-1 block w-full rounded-sm border border-slate-300 py-2 px-3 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-teal-500 sm:text-sm">
-                                        <div v-if="form.errors.twitter">{{ form.errors.twitter }}</div>
+                                        <div class="text-pink-600" v-if="form.errors.twitter">{{ form.errors.twitter }}</div>
                                     </div>
 
                                     <div class="col-span-6 sm:col-span-3">
@@ -52,7 +61,7 @@
                                         <input type="text" name="linkedin" id="linkedin" autocomplete="linkedin"
                                                v-model="form.linkedin"
                                                class="mt-1 block w-full rounded-sm border border-slate-300 py-2 px-3 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-teal-500 sm:text-sm">
-                                        <div v-if="form.errors.linkedin">{{ form.errors.linkedin }}</div>
+                                        <div class="text-pink-600" v-if="form.errors.linkedin">{{ form.errors.linkedin }}</div>
                                     </div>
 
                                     <div class="col-span-6 sm:col-span-3">
@@ -61,7 +70,7 @@
                                         <input type="text" name="discord" id="discord" autocomplete="discord"
                                                v-model="form.discord"
                                                class="mt-1 block w-full rounded-sm border border-slate-300 py-2 px-3 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-teal-500 sm:text-sm">
-                                        <div v-if="form.errors.discord">{{ form.errors.discord }}</div>
+                                        <div class="text-pink-600" v-if="form.errors.discord">{{ form.errors.discord }}</div>
                                     </div>
 
                                     <div class="col-span-6 sm:col-span-3">
@@ -70,7 +79,7 @@
                                         <input type="text" name="telegram" id="telegram" autocomplete="telegram"
                                                v-model="form.telegram"
                                                class="mt-1 block w-full rounded-sm border border-slate-300 py-2 px-3 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-teal-500 sm:text-sm">
-                                        <div v-if="form.errors.telegram">{{ form.errors.telegram }}</div>
+                                        <div class="text-pink-600" v-if="form.errors.telegram">{{ form.errors.telegram }}</div>
                                     </div>
 
                                     <div class="col-span-3">
@@ -106,7 +115,7 @@
                             </div>
 
                             <div class="bg-slate-50 px-4 py-3 text-right sm:px-6">
-                                <button type="submit" @click.prevent="submit"
+                                <button type="submit"
                                         class="inline-flex justify-center rounded-sm border border-transparent bg-teal-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
                                     Save
                                 </button>
@@ -215,19 +224,28 @@
 
 <script lang="ts" setup>
 import UserNav from "./UserNav.vue";
-import {computed} from "vue";
+import {computed, ref} from "vue";
 import {useForm, usePage} from "@inertiajs/vue3";
 import User from "../../models/user";
+import Profile from "../../models/profile";
 
+const baseUrl = computed(() => usePage().props.base_url);
 const user = computed(() => usePage().props?.user as User);
-const form = useForm({...user.value});
 
-const baseUrl = usePage().props.base_url;
-let submit = async () => {
-    form.post(`${baseUrl}/api/catalyst-explorer/profile`, {
-        preserveScroll: false,
-        onSuccess: (res) => console.log({res}),
-    });
-}
+const props = withDefaults(
+    defineProps<{
+        locale: string,
+        profiles: {
+            links: [],
+            total: number,
+            to: number,
+            from: number,
+            data: Profile[]
+        };
+    }>(), {});
+
+let forms = ref(
+    props.profiles.data?.map((profile) => (useForm({...profile})))
+);
 
 </script>

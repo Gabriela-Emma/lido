@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers\Api\CatalystExplorer;
 
+use App\Models\CatalystUser;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\User;
@@ -76,7 +77,7 @@ class UserController extends Controller
 
         $user = User::where('email', $request->email)->firstOrFail();
         $user->name = $request->name;
-        $user->bio = $request->bio;
+        $user->bio =  $request->bio;
         $user->email = $request->email;
         $user->twitter = $request->twitter;
         $user->linkedin = $request->linkedin;
@@ -85,6 +86,7 @@ class UserController extends Controller
 
         $user->save();
 
-        return to_route('catalystExplorer.myProfile');
+
+        return to_route('catalystExplorer.myProfiles');
     }
 }

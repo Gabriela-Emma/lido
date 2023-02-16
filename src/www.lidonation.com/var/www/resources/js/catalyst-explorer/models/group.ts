@@ -1,4 +1,4 @@
-import Person from "./person";
+import Profile from "./profile";
 
 export default interface Group {
     id: number;
@@ -13,5 +13,5 @@ export default interface Group {
     website: string;
     github: string;
     logo:string;
-    owner: Person
+    owner: Profile
 }
