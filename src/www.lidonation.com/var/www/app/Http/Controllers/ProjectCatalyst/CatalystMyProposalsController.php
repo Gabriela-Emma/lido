@@ -41,8 +41,15 @@ class CatalystMyProposalsController extends Controller
         $query = Proposal::whereIn('user_id', $catalystProfiles);
         $paginator = $query->paginate($this->perPage, ['*'], 'p')->setPath('/');
 
+        $totalDistributed = doubleval($query->sum('proposals.amount_received'));
+        $budgetSummary = doubleval($query->sum('proposals.amount_requested'));
+        $totalRemaining = ($budgetSummary - $totalDistributed) ;
+
         return [
             'proposals' => $paginator->onEachSide(1)->toArray(),
+            'totalDistributed'=> $totalDistributed,
+            'budgetSummary' => $budgetSummary,
+            'totalRemaining' => $totalRemaining,
             'crumbs' => [
                 ['label' => 'Profile'],
             ],
