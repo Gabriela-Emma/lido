@@ -219,6 +219,8 @@ Route::prefix('catalyst-explorer')->as('catalystExplorerApi.')
 
         Route::post('/register', [CatalystExplorer\UserController::class, 'create']);
 
+        Route::post('/user', [CatalystExplorer\UserController::class, 'update']);
+
 //        Route::post('/profiles', [CatalystUserProfilesController::class, 'update'])->name('myProfileUpdate');
     });
 

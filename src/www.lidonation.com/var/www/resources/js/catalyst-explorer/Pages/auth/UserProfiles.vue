@@ -9,14 +9,76 @@
                 </aside>
 
                 <div class="space-y-6 sm:px-6 lg:col-span-9 xl:col-span-10 lg:px-0">
+                    <form @submit.prevent=" userForm.post(
+                        `${usePage().props.base_url}/api/catalyst-explorer/user`,
+                        { preserveScroll: false }
+                        )">
+                        <div class="sm:overflow-hidden sm:rounded-sm">
+                            <div class="space-y-6 bg-white py-6 px-4 sm:p-6">
+                                <div>
+                                    <h2 class="text-lg xl:text-xl font-medium leading-6 text-slate-900">
+                                        Lido Nation Account
+                                    </h2>
+                                    <p class="mt-1 text-sm text-slate-500">
+                                        All information, with the exception of your
+                                        email, will be displayed publicly.</p>
+                                </div>
+
+                                <div class="grid grid-cols-3 gap-6">
+                                    <div class="col-span-6 sm:col-span-3">
+                                        <label for="email" class="block text-sm font-medium text-slate-700">
+                                            Name
+                                        </label>
+                                        <input type="text" name="email" id="email" autocomplete="email"
+                                               v-model="userForm.name"
+                                               class="mt-1 block w-full rounded-sm border border-slate-300 py-2 px-3 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-teal-500 sm:text-sm">
+                                        <div class="text-pink-600" v-if="userForm.errors.name">
+                                            {{ userForm.errors.name }}
+                                        </div>
+                                    </div>
+                                    <div class="col-span-6 sm:col-span-3">
+                                        <label for="email" class="block text-sm font-medium text-slate-700">
+                                            Email Address <span class="text-slate-400">Use for login and communication. Not displayed publicly, not exposed in apis</span>
+                                        </label>
+                                        <input type="text" name="email" id="email" autocomplete="email"
+                                               v-model="userForm.email"
+                                               class="mt-1 block w-full rounded-sm border border-slate-300 py-2 px-3 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-teal-500 sm:text-sm">
+                                        <div class="text-pink-600" v-if="userForm.errors.email">
+                                            {{ userForm.errors.email }}
+                                        </div>
+                                    </div>
+                                    <div class="col-span-6 sm:col-span-3">
+                                        <label for="twitter"
+                                               class="block text-sm font-medium text-slate-700">Twitter</label>
+                                        <input type="text" name="twitter" id="twitter" autocomplete="twitter"
+                                               v-model="userForm.twitter"
+                                               class="mt-1 block w-full rounded-sm border border-slate-300 py-2 px-3 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-teal-500 sm:text-sm">
+                                        <div class="text-pink-600" v-if="userForm.errors.twitter">{{
+                                                userForm.errors.twitter
+                                            }}
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="bg-slate-50 px-4 py-3 text-right sm:px-6">
+                                <button type="submit"
+                                        class="inline-flex justify-center rounded-sm border border-transparent bg-teal-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
+                                    Save
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
                     <form v-for="form in forms" class="mb-16" @submit.prevent="submit($event, form)">
                         <div class="sm:overflow-hidden sm:rounded-sm">
                             <div class="space-y-6 bg-white py-6 px-4 sm:p-6">
-                                <input type="hidden" name="id" v-model="form.id" />
+                                <input type="hidden" name="id" v-model="form.id"/>
 
                                 <div>
-                                    <h2 class="text-lg font-medium leading-6 text-slate-900">
-                                        Edit Profile: <span class="font-bold">{{ form.name }}</span>
+                                    <h2 class="text-lg xl:text-xl font-medium leading-6 text-slate-900">
+                                        Edit Catalyst Profile: <span class="font-bold">{{ form.name }}</span>
                                     </h2>
                                     <p class="mt-1 text-sm text-slate-500">
                                         All information, with the exception of your
@@ -247,6 +309,8 @@ import Profile from "../../models/profile";
 
 const user = computed(() => usePage().props?.user as User);
 
+let userForm = useForm({...user.value});
+
 const props = withDefaults(
     defineProps<{
         locale: string,
@@ -264,7 +328,7 @@ let forms = ref(
 );
 
 let submit = (event, form) => {
-    form.post(`${usePage().props.base_url}/catalyst-explorer/my/profiles`,
+    form.post(`${usePage().props.base_url}/catalyst-explorer/my/profiles/${form.id}`,
         {
             preserveScroll: false
         });
