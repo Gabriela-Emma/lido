@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers\Api\CatalystExplorer;
 
+use App\Models\CatalystUser;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\User;
@@ -57,8 +58,35 @@ class UserController extends Controller
             $user->email = $request->email;
             $user->password = Hash::make($request->password);
             $user->save();
-            ;
+
             return to_route('catalystExplorer.login');
         }
+    }
+
+    public function update(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|min:3',
+            'email' => 'required|email',
+            'twitter' => 'nullable|bail|min:2',
+            'linkedin' => 'nullable|bail|min:2',
+            'discord' => 'nullable|bail|min:2',
+            'telegram' => 'nullable|bail|min:2',
+            'bio' => 'min:10'
+        ]);
+
+        $user = User::where('email', $request->email)->firstOrFail();
+        $user->name = $request->name;
+        $user->bio =  $request->bio;
+        $user->email = $request->email;
+        $user->twitter = $request->twitter;
+        $user->linkedin = $request->linkedin;
+        $user->discord = $request->discord;
+        $user->telegram = $request->telegram;
+
+        $user->save();
+
+
+        return to_route('catalystExplorer.myProfiles');
     }
 }

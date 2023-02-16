@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\ProjectCatalyst\CatalystMyDashboardController;
 use App\Http\Controllers\ProjectCatalyst\CatalystMyGroupsController;
-use App\Http\Controllers\ProjectCatalyst\CatalystMyProfileController;
+use App\Http\Controllers\ProjectCatalyst\CatalystUserProfilesController;
 use App\Http\Controllers\ProjectCatalyst\CatalystMyProposalsController;
 use App\Models\Mint;
 use Inertia\Inertia;
@@ -205,8 +205,10 @@ Route::group(
             Route::get('/dashboard', [CatalystMyDashboardController::class, 'index'])
                 ->name('myDashboard');
 
-            Route::get('/profile', [CatalystMyProfileController::class, 'index'])
-                ->name('myProfile');
+            Route::get('/profiles', [CatalystUserProfilesController::class, 'index'])
+                ->name('myProfiles');
+
+//            Route::post('/profiles', [CatalystUserProfilesController::class, 'update']);
 
             Route::get('/proposals', [CatalystMyProposalsController::class, 'index'])
                 ->name('myProposals');

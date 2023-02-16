@@ -1,3 +1,5 @@
+import Profile from "./profile";
+
 export default interface Group {
     id: number;
     slug: string;
@@ -11,5 +13,5 @@ export default interface Group {
     website: string;
     github: string;
     logo:string;
-
+    owner: Profile
 }

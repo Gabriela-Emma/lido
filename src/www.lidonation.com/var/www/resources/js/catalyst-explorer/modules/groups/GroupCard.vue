@@ -85,13 +85,9 @@
 import Group from '../../models/group';
 const props=withDefaults(
     defineProps<{
-        catalystGroup:Group;
+        catalystGroup: Group
     }>(),
-    {
-        group:() =>{
-            return {} as Group;
-        }
-    }
+    {}
 )
 
 </script>

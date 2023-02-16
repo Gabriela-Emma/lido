@@ -38,7 +38,8 @@ class CatalystMyGroupsController extends Controller
 
         $catalystProfiles = $user->catalyst_profiles?->pluck('id');
 
-        $query = CatalystGroup::whereRelation('owner', fn($query) => $query->whereIn('id', $catalystProfiles));
+        $query = CatalystGroup::with('owner')
+            ->whereRelation('owner', fn($query) => $query->whereIn('id', $catalystProfiles));
         $paginator = $query->paginate($this->perPage, ['*'], 'p')->setPath('/');
 
         return [
