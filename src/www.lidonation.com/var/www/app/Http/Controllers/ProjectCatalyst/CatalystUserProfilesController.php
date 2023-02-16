@@ -20,8 +20,8 @@ class CatalystUserProfilesController extends Controller
     public function index(Request $request)
     {
         $user = auth()->user();
-        $query = CatalystUser::with('claimed_by')
-            ->whereRelation('claimed_by', 'id', $user->id);
+        $query = CatalystUser::with('claimed_by_user')
+            ->whereRelation('claimed_by_user', 'id', $user->id);
 
         $paginator = $query->paginate($this->perPage, ['*'], 'p')->setPath('/');
 

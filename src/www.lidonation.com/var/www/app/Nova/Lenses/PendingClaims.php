@@ -24,7 +24,7 @@ class PendingClaims extends Lens
             $query->where('key', 'ideascale_verification_code')
                   ->whereNull('claimed_by');
         });
-        
+
     }
 
     /**
