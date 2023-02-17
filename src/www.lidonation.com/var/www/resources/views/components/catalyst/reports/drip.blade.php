@@ -53,4 +53,53 @@
             </div>
         @endif
     </div>
+
+    <div x-data="catalystReportComments" class="w-full mx-auto bg-slate-100 px-4">
+        <div class="flex justify-between items-center py-4">
+            <div class="text-teal-800 opacity-75 text-sm inline-flex gap-2 items-center h-full">
+                <span class="bold text-xl">Comments</span>
+                <span>4</span>
+            </div>
+
+            <button id="message-type" name="message-type"
+                    x-on:click="toggleShowComments(4138)" x-html="showComments ? '-' :'+' "
+                    class="text-2xl font-medium text-teal-800 hover:text-yellow-600">
+            </button>
+        </div>
+
+        <div x-cloak x-show="showComments" class="border-t border-slate-400 border-dashed pb-4">
+            <ul x-if="comments">
+                <template x-for="(comment, index) in comments" x-cloak class="boarder-b-2 ">
+                    <li x-text="index"></li>
+                </template>
+            </ul>
+            <p class="py-4" x-if="!comments">
+                Be the first to leave a comment!
+            </p>
+            <div class="border-t border-slate-400 border-dashed pt-2">
+                <div class="mb-2">
+                    <label for="name" class="block text-sm font-medium text-slate-600">Name </label>
+                    <div class="mt-1">
+                        <input  id="name" name="name" type="text" autocomplete="name" required
+                                class="block w-full appearance-none rounded-sm border border-slate-400 px-3 py-2 placeholder-slate-400 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-teal-500 sm:text-sm">
+                    </div>
+                </div>
+
+                <div class="mb-2">
+                    <label for="email" class="block text-sm font-medium text-slate-600">Email </label>
+                    <div class="mt-1">
+                        <input  id="email" name="email" type="email" autocomplete="email" required
+                                class="block w-full appearance-none rounded-sm border border-slate-400 px-3 py-2 placeholder-slate-400 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-teal-500 sm:text-sm">
+                    </div>
+                </div>
+
+                <textarea class="border-slate-200" type="text" row="3" placeholder="Give feedback or ask team a question." required
+                          x-model="newComment"></textarea>
+
+                <button class="text-white text-xs px-2 bg-teal-300 hover:bg-teal-800 ml-auto"
+                        x-on:click="addComment">Post
+                </button>
+            </div>
+        </div>
+    </div>
 </div>

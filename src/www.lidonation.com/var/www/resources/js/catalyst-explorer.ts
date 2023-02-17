@@ -8,7 +8,6 @@ import PrimeVue from 'primevue/config';
 import route from "ziggy-js";
 import { modal } from "momentum-modal"
 
-// boot inertia app
 createInertiaApp({
     progress: {
         color: '#fcdc0b',
