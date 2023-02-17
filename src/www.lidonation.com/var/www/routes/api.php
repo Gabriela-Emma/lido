@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProjectCatalyst\CatalystUserProfilesController;
+use App\Models\CatalystReport;
 use App\Models\User;
 use App\Models\Reward;
 use App\Models\EveryEpoch;
@@ -212,6 +213,14 @@ Route::prefix('catalyst-explorer')->as('catalystExplorerApi.')
         Route::get('/tags/{tag}', [CatalystExplorer\TagController::class, 'tag'])->name('tag');
 
         Route::post('/reports/follow', [CatalystExplorer\ReportController::class, 'follow']);
+
+        Route::group([
+            'prefix' => '/reports/comments',
+        ], function () {
+            Route::get('/{catalystReport:id}', [CatalystExplorer\ReportController::class, 'listComments']);
+            Route::post('/{catalystReport:id}', [CatalystExplorer\ReportController::class, 'createComment']);
+            // Route::post('/create',);
+        });
 
         Route::post('/login', [CatalystExplorer\UserController::class, 'login']);
 

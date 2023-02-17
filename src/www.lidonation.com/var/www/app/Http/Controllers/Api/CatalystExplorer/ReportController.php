@@ -13,6 +13,20 @@ use Illuminate\Support\Str;
 
 class ReportController extends Controller
 {
+    public function listComments(Request $request, CatalystReport $catalystReport) {
+        return $catalystReport?->comments?->toArray();
+    }
+
+    public function createComment(Request $request, CatalystReport $catalystReport) {
+        $validated = new Fluent($request->validate([
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email',
+            'comment' => 'required'
+        ]));
+        echo('coming soon');
+        // create user if not logged in
+    }
+
     public function follow(Request $request)
     {
         $validated = new Fluent($request->validate([

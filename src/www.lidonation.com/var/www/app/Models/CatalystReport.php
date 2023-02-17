@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Traits\HasComments;
 use App\Models\Traits\HasMetaData;
 use App\Scopes\OrderByDateScope;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -11,9 +12,9 @@ use Illuminate\Support\Str;
 
 class CatalystReport extends Model
 {
-    use SoftDeletes, HasMetaData;
+    use SoftDeletes, HasMetaData, HasComments;
 
-    public function getExcerptAttribute($value)
+    public function getExcerptAttribute($value): string
     {
         if (isset($value)) {
             return $value;

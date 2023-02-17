@@ -1,6 +1,7 @@
 import Proposal from "./proposal";
 
 export default interface Report {
+    id: number;
     slug: string;
     title: string;
     content: string;
