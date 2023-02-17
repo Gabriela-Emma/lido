@@ -259,7 +259,7 @@ class Post extends Model implements HasMedia, Interfaces\IHasMetaData, Sitemapab
      */
     public function commentUrl(): string
     {
-        return $this->url;
+        return $this->link;
     }
 
     /**

@@ -61,8 +61,7 @@
             <div class="flex justify-between items-center py-4">
                 <div class="text-teal-800 opacity-75 text-sm inline-flex gap-2 items-center h-full">
                     <span class="bold text-xl">Comments </span>
-                    <span>4</span>
-                    <span class="font-thin">- coming soon</span>
+                    <span>{{report.comments_count}}</span>
                 </div>
 
                 <button id="message-type" name="message-type"
@@ -71,41 +70,74 @@
                 </button>
             </div>
 
-            <div v-show="showComments" class="pb-4" :class="{'border-t border-slate-400 border-dashed': !!user}">
+            <div v-show="showComments" class="pb-4">
                 <ul x-if="comments">
-                    <template v-for="(comment, index) in comments" class="boarder-b-2 ">
-                        <li v-text="index"></li>
-                    </template>
+                    <li v-for="comment in comments" :key="comment.id" class="relative bg-white py-5 px-4 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 hover:bg-gray-50">
+                        <div class="flex justify-between space-x-3">
+                            <div class="min-w-0 flex-1">
+                                <span class="absolute inset-0" aria-hidden="true" />
+                                <p class="truncate text-sm xl:text-md font-medium text-gray-900">{{ comment.commentator?.name }}</p>
+                            </div>
+                            <timeago :datetime="comment.created_at"/>
+                        </div>
+                        <div class="mt-1">
+                            <p class="text-sm text-gray-600" v-html="comment.text"></p>
+                        </div>
+                    </li>
                 </ul>
                 <div>
-                    <form class="border-t border-slate-400 border-dashed pt-2" @submit.prevent="addComment" v-if="user">
-                        <p class="py-4" v-if="!comments?.length">
-                            Be the first to leave a comment!
-                        </p>
+                    <form class="" @submit.prevent="addComment" v-if="user">
+                        <div v-if="!commentPosted">
+                            <p class="py-4">
+                                <span v-if="!comments?.length">
+                                    Be the first to leave a comment!
+                                </span>
+                                <span v-else>Leave a Comment</span>
+                            </p>
 
-                        <div class="mb-2">
-                            <label for="name" class="block text-sm font-medium text-slate-600">Name </label>
-                            <div class="mt-1">
-                                <input v-model="commentForm.name" name="name" type="text" autocomplete="name" required
-                                       class="block w-full appearance-none rounded-sm border border-slate-400 px-3 py-2 placeholder-slate-400 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-teal-500 sm:text-sm">
+                            <!--                        <div class="mb-2">-->
+                            <!--                            <label for="name" class="block text-sm font-medium text-slate-600">Name </label>-->
+                            <!--                            <div class="mt-1">-->
+                            <!--                                <input v-model="commentForm.name" name="name" type="text" autocomplete="name" required-->
+                            <!--                                       class="block w-full appearance-none rounded-sm border border-slate-400 px-3 py-2 placeholder-slate-400 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-teal-500 sm:text-sm">-->
+                            <!--                            </div>-->
+                            <!--                        </div>-->
+
+                            <!--                        <div class="mb-2">-->
+                            <!--                            <label for="email" class="block text-sm font-medium text-slate-600">Email </label>-->
+                            <!--                            <div class="mt-1">-->
+                            <!--                                <input v-model="commentForm.email" name="email" type="email" autocomplete="email"-->
+                            <!--                                       required-->
+                            <!--                                       class="block w-full appearance-none rounded-sm border border-slate-400 px-3 py-2 placeholder-slate-400 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-teal-500 sm:text-sm">-->
+                            <!--                            </div>-->
+                            <!--                        </div>-->
+
+                            <textarea v-model="commentForm.comment" name="comment" class=""
+                                      rows="4" placeholder="Give feedback or ask team a question." required></textarea>
+
+                            <button type="submit" class="text-white text-xs px-2 bg-teal-300 hover:bg-teal-800 ml-auto">
+                                Post
+                            </button>
+                        </div>
+                        <div v-if="commentPosted">
+                            <div class="rounded-sm bg-teal-100 p-4">
+                                <div class="flex">
+                                    <div class="flex-shrink-0">
+                                        <CheckCircleIcon class="h-5 w-5 text-green-400" aria-hidden="true" />
+                                    </div>
+                                    <div class="ml-3">
+                                        <p class="text-sm font-medium text-green-800">Successfully Submitted</p>
+                                    </div>
+                                    <div class="ml-auto pl-3">
+                                        <div class="-mx-1.5 -my-1.5">
+                                            <button type="button" class="inline-flex rounded-md bg-green-50 p-1.5 text-green-500 hover:bg-green-100 focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-offset-2 focus:ring-offset-green-50">
+                                                <CheckCircleIcon class="h-5 w-5"></CheckCircleIcon>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-
-                        <div class="mb-2">
-                            <label for="email" class="block text-sm font-medium text-slate-600">Email </label>
-                            <div class="mt-1">
-                                <input v-model="commentForm.email" name="email" type="email" autocomplete="email"
-                                       required
-                                       class="block w-full appearance-none rounded-sm border border-slate-400 px-3 py-2 placeholder-slate-400 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-teal-500 sm:text-sm">
-                            </div>
-                        </div>
-
-                        <textarea v-model="commentForm.comment" name="comment" class="border-slate-200" type="text"
-                                  row="3" placeholder="Give feedback or ask team a question." required></textarea>
-
-                        <button type="submit" class="text-white text-xs px-2 bg-teal-300 hover:bg-teal-800 ml-auto">
-                            Post
-                        </button>
                     </form>
                     <div v-else class="space-y-2 bg-white/50 p-2 mt-2 text-center">
                         <p>
@@ -115,7 +147,8 @@
                             <Link href="/catalyst-explorer/login" class="font-bold text-teal-600 hover:text-teal-500">
                                 Sign in
                             </Link>
-                            <Link href="/catalyst-explorer/register" class="font-bold text-teal-600 hover:text-teal-500">
+                            <Link href="/catalyst-explorer/register"
+                                  class="font-bold text-teal-600 hover:text-teal-500">
                                 Register
                             </Link>
                         </div>
@@ -132,6 +165,8 @@ import {computed, Ref, ref} from "vue";
 import Report from "../../models/report";
 import {useForm, usePage} from "@inertiajs/vue3";
 import User from "../../models/user";
+import { CheckCircleIcon, XMarkIcon } from '@heroicons/vue/20/solid'
+
 
 const props = withDefaults(
     defineProps<{
@@ -149,6 +184,7 @@ const user = computed(() => usePage().props?.user as User);
 const baseUrl = usePage().props.base_url;
 let comments: Ref<Comment[]> = ref([]);
 let showComments = ref(false);
+let commentPosted = ref(false);
 let commentForm = useForm({
     name: '',
     email: '',
@@ -163,7 +199,11 @@ function toggleShowComments() {
 }
 
 function addComment() {
-    commentForm.post(`${baseUrl}/api/catalyst-explorer/reports/comments/${props.report.id}`);
+    commentForm.post(`${baseUrl}/api/catalyst-explorer/reports/comments/${props.report.id}`, {
+        preserveState: false,
+        preserveScroll: true,
+        onSuccess: () => commentPosted.value = true
+    });
 }
 
 async function loadComments() {

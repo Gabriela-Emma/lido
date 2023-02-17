@@ -6,7 +6,8 @@ import { marked } from 'marked';
 import HeaderComponent from './catalyst-explorer/Shared/Components/HeaderComponent.vue';
 import PrimeVue from 'primevue/config';
 import route from "ziggy-js";
-import { modal } from "momentum-modal"
+import { modal } from "momentum-modal";
+import timeago from 'vue-timeago3';
 
 createInertiaApp({
     progress: {
@@ -35,6 +36,7 @@ createInertiaApp({
                 resolve: (name) => import(`./catalyst-explorer/Pages/${name}`),
             })
             .use(PrimeVue)
+            .use(timeago)
             .use(pinia);
 
         app.directive('focus', {
