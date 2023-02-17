@@ -71,7 +71,7 @@
             </div>
 
             <div v-show="showComments" class="pb-4">
-                <ul x-if="comments">
+                <ul x-if="comments" class="divide-y divide-slate-100">
                     <li v-for="comment in comments" :key="comment.id" class="relative bg-white py-5 px-4 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 hover:bg-gray-50">
                         <div class="flex justify-between space-x-3">
                             <div class="min-w-0 flex-1">
@@ -200,7 +200,7 @@ function toggleShowComments() {
 
 function addComment() {
     commentForm.post(`${baseUrl}/api/catalyst-explorer/reports/comments/${props.report.id}`, {
-        preserveState: false,
+        preserveState: true,
         preserveScroll: true,
         onSuccess: () => commentPosted.value = true
     });
