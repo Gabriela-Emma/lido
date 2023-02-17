@@ -163,6 +163,7 @@
 import {Link} from '@inertiajs/vue3';
 import {computed, Ref, ref} from "vue";
 import Report from "../../models/report";
+import Comment from "../../models/comment";
 import {useForm, usePage} from "@inertiajs/vue3";
 import User from "../../models/user";
 import { CheckCircleIcon, XMarkIcon } from '@heroicons/vue/20/solid'
