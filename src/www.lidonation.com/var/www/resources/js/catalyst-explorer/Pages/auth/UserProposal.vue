@@ -94,8 +94,10 @@
                                             Git (http url)
                                         </label>
                                         <div class="mt-1">
-                                            <input type="text" name="git" id="git"
+                                            <input v-model="repoForm.gitUrl" type="text" name="gitUrl" id="git"
                                                    class="block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"/>
+                                                   <!-- <div v-if="repoForm.errors.gitUrl" v-text="repoForm.errors.gitUrl"
+                                                        class="text-red-500 text-xs mt-1"></div> -->
                                         </div>
                                     </div>
                                 </div>
@@ -106,7 +108,8 @@
                         <button type="button" @click="currAction = null"
                                 class="rounded-sm border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">Cancel
                         </button>
-                        <button type="submit"
+                        <button @click.prevent="submitRepo"
+                                as="button"
                                 class="inline-flex custom-input justify-center rounded-sm border border-transparent bg-teal-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
                             Save
                         </button>
@@ -268,6 +271,7 @@ import {
 } from '@heroicons/vue/24/outline';
 import {ref} from "vue";
 import {DialogTitle} from "@headlessui/vue";
+import { useForm } from "@inertiajs/vue3";
 
 let currAction = ref(null);
 
@@ -348,7 +352,17 @@ const team = [
 const props = withDefaults(
     defineProps<{
         locale?: string,
-        proposal: Proposal;
+        proposal: Proposal,
+        errors:Object
     }>(), {});
+
+
+let repoForm=useForm({
+    gitUrl:''
+})
+
+let submitRepo = () => {
+repoForm.post('/api/catalyst-explorer/repo');
+}
 
 </script>
