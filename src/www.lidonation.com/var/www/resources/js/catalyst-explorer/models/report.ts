@@ -8,6 +8,7 @@ export default interface Report {
     proposal: Proposal;
     project_status: string;
     completion_target: string;
+    comments_count
     users: {
         name: string;
         profile_photo_url: string;
