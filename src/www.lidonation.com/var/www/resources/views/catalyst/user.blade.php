@@ -2,15 +2,20 @@
     @livewire('catalyst.catalyst-sub-menu-component')
 
     <header class="text-white bg-teal-600">
-        <div class="container" x-data="{claimingUser: false}" @claim-user.window="claimingUser = !claimingUser">
+        <div class="container" x-data="{claimingUser: false, showLoginForm: false, followingProfile: false, followedProfile: false, loggedIn: @js(\Illuminate\Support\Facades\Auth::check()) }" @claim-user.window="claimingUser = !claimingUser">
             <section class="relative z-0 py-10">
                 <div class="z-6 absolute top-0 left-0 w-full h-full bg-teal-600/75 py-10" x-show="claimingUser" x-transition>
-                    <x-catalyst.claim-user :catalystProfile="$catalystUser" />
+                    <x-catalyst.claim-profile :catalystProfile="$catalystUser" />
+                </div>
+                <div @follow-profile.window="showLoginForm = !loggedIn && !showLoginForm"
+                     @following-profile.window="followingProfile = true" @profile-followed.window="followingProfile = false; followedProfile=true"
+                    class="z-6 absolute top-0 left-0 w-full h-full bg-teal-600/75 py-10" x-show="showLoginForm" x-transition>
+                    <x-catalyst.follow-profile :catalystProfile="$catalystUser" />
                 </div>
 
                 <div class="absolute left-0 top-0" :class="{
-                'bg-teal-600 w-full h-full z-5': claimingUser,
-                'hidden': !claimingUser}"></div>
+                'bg-teal-600 w-full h-full z-5': claimingUser || showLoginForm,
+                'hidden': !claimingUser && !showLoginForm}"></div>
 
                 <h1 class='flex flex-row flex-wrap items-end gap-2 mb-6 text-3xl font-bold 2xl:text-5xl decorate light'>
                     <img class="w-10 h-10 rounded-full lg:w-16 lg:h-16"
@@ -57,6 +62,30 @@
                       </span>
                     @endif
 
+                    <a href="#" x-data @click.prevent="$dispatch('follow-profile')"
+                       class="inline-flex flex-row gap-1 text-sm max-h-[26px] items-center group font-semibold hover:text-teal-800 hover:text-slate-800 whitespace-nowrap px-1 py-0.5 bg-white border border-slate-200 rounded-sm">
+                        <div x-show="followingProfile" x-transition>
+                            <x-theme.spinner :square="3" :squareXl="4" />
+                        </div>
+                        <svg x-show="!followingProfile" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12.75 19.5v-.75a7.5 7.5 0 00-7.5-7.5H4.5m0-6.75h.75c7.87 0 14.25 6.38 14.25 14.25v.75M6 18.75a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
+                        </svg>
+                        @auth()
+                            @if(\Illuminate\Support\Facades\Auth::user()?->follows($catalystUser))
+                                <span class="group-hover:text-slate-800">
+                                    Following
+                                </span>
+                            @else
+                                <span class="group-hover:text-slate-800" x-html="followedProfile ? 'Following':'Follow'">
+                                Follow
+                            </span>
+                            @endif
+                        @elseauth()
+                            <span class="group-hover:text-slate-800" x-html="followedProfile ? 'Following':'Follow'">
+                                Follow
+                            </span>
+                        @endauth
+                    </a>
                 </h1>
 
                 <div class="summary">
@@ -67,7 +96,7 @@
                         @if($catalystUser->bio)
                             <x-markdown>{{$catalystUser->bio}}</x-markdown>
                         @else
-                            <p>Missing Bio</p>
+                            <p>Missing Bio. Claim profile to add a bio.</p>
                         @endif
                     </div>
                 </div>

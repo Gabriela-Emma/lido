@@ -72,27 +72,30 @@
 
             <div v-show="showComments" class="pb-4">
                 <ul x-if="comments" class="divide-y divide-slate-100">
-                    <li v-for="comment in comments" :key="comment.id" class="relative bg-white py-5 px-4 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 hover:bg-gray-50">
-                        <div class="flex justify-between space-x-3">
+                    <li v-for="comment in comments" :key="comment.id"
+                        class="relative bg-white py-5 px-4 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 hover:bg-gray-50">
+                        <div class="flex justify-between space-x-3 text-gray-600 font-medium text-sm">
                             <div class="min-w-0 flex-1">
                                 <span class="absolute inset-0" aria-hidden="true" />
-                                <p class="truncate text-sm xl:text-md font-medium text-gray-900">{{ comment.commentator?.name }}</p>
+                                <p class="truncate">
+                                    {{ comment.commentator?.name }}
+                                </p>
                             </div>
-                            <timeago :datetime="comment.created_at"/>
+                            <timeago class="" :datetime="comment.created_at"/>
                         </div>
                         <div class="mt-1">
-                            <p class="text-sm text-gray-600" v-html="comment.text"></p>
+                            <p class="text-md text-gray-700" v-html="comment.text"></p>
                         </div>
                     </li>
                 </ul>
                 <div>
                     <form class="" @submit.prevent="addComment" v-if="user">
                         <div v-if="!commentPosted">
-                            <p class="py-4">
+                            <p class="pt-4">
                                 <span v-if="!comments?.length">
                                     Be the first to leave a comment!
                                 </span>
-                                <span v-else>Leave a Comment</span>
+                                <span class="text-xs font-bold relative top-1" v-else>Leave a Comment</span>
                             </p>
 
                             <!--                        <div class="mb-2">-->
@@ -112,8 +115,8 @@
                             <!--                            </div>-->
                             <!--                        </div>-->
 
-                            <textarea v-model="commentForm.comment" name="comment" class=""
-                                      rows="4" placeholder="Give feedback or ask team a question." required></textarea>
+                            <textarea v-model="commentForm.comment" name="comment" class="mt-0"
+                                      rows="4" placeholder="Give feedback or ask the team a question." required></textarea>
 
                             <button type="submit" class="text-white text-xs px-2 bg-teal-300 hover:bg-teal-800 ml-auto">
                                 Post
@@ -185,6 +188,7 @@ const user = computed(() => usePage().props?.user as User);
 const baseUrl = usePage().props.base_url;
 let comments: Ref<Comment[]> = ref([]);
 let showComments = ref(false);
+let showCommentsInitialized = false;
 let commentPosted = ref(false);
 let commentForm = useForm({
     name: '',
@@ -194,7 +198,7 @@ let commentForm = useForm({
 
 function toggleShowComments() {
     showComments.value = !showComments.value;
-    if (!comments.value?.length) {
+    if (!showCommentsInitialized) {
         loadComments().then();
     }
 }
@@ -208,13 +212,13 @@ function addComment() {
 }
 
 async function loadComments() {
-    if (!!comments.value?.length) {
+    if (showCommentsInitialized) {
         return;
     }
 
     await window.axios.get(`${baseUrl}/api/catalyst-explorer/reports/comments/${props.report.id}`, {})
         .then((res) => {
-            console.log({res});
+            showCommentsInitialized = true;
             comments.value = [...res.data];
         });
 }

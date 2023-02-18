@@ -172,6 +172,14 @@ class CatalystUser extends User implements HasMedia, CanComment
     /**
      * The roles that belong to the user.
      */
+    public function followers()
+    {
+        return $this->belongsToMany(User::class, 'notification_request_templates', 'what_filter->subject', 'who_id');
+    }
+
+    /**
+     * The roles that belong to the user.
+     */
     public function claimed_by_user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'claimed_by', 'id', 'claimed_by_user');

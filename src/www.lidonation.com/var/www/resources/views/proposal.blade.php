@@ -192,7 +192,7 @@
                             </div>
 
                             <div>
-                                <a href="{{localizeRoute('projectCatalyst.projects')}}" type="button"
+                                <a href="{{localizeRoute('catalystExplorer.proposals')}}" type="button"
                                    class="flex items-center w-full px-6 py-3 text-2xl font-medium text-gray-700 bg-white border border-slate-300 rounded-sm hover:bg-primary-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
                                     <span class="mr-3">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none"
@@ -309,6 +309,12 @@
                             @endif
                         </article>
                     @endif
+
+                    <section class="py-12 bg-gray-50 border border-slate-200 mt-8 shadow-sm">
+                        <div class="px-6 max-w-6xl xl:mx-auto">
+                            <livewire:comments :showNotificationOptions="Auth::check()" :hideNotificationOptions="!Auth::check()" :hideAvatars="false" :noReplies="false" :model="$proposal" />
+                        </div>
+                    </section>
 
                     <!-- Discussions -->
                     <section class="relative mt-10" id="discussions">

@@ -183,6 +183,19 @@ class User extends Authenticatable implements HasMedia, Interfaces\IHasMetaData,
         return "https://www.gravatar.com/avatar/$hash?d=identicon&r=r";
     }
 
+    public function follows(CatalystUser | int $catalystUser) {
+        dd($this->following);
+        return $this->whereHas('following', fn($q) => $q->whereIn('what_filter->subject', [$catalystUser?->id ?? $catalystUser]))->count() > 0;
+    }
+
+    /**
+     * The roles that belong to the user.
+     */
+    public function following()
+    {
+        return $this->belongsToMany(CatalystUser::class, 'notification_request_templates', 'who_id', 'what_filter->subject',);
+    }
+
     public function catalyst_users(): HasMany
     {
         return $this->hasMany(CatalystUser::class, 'claimed_by');
