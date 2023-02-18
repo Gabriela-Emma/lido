@@ -33,7 +33,8 @@
                     <div class="flex flex-row-reverse h-full sm:flex-row p-2 sm:p-0">
                         <div class="p-1 flex flex-col justify-between flex-1 lg:border-slate-800/40 lg:border-r">
                             <div class="p-3 mb-4">
-                                <nav class="columns-2 sm:columns-3 lg:columns-4 2xl:columns-5 gap-5  lido-menu" x-data x-masonry.poll.2500>
+                                <nav class="columns-2 sm:columns-3 lg:columns-4 2xl:columns-5 gap-5  lido-menu" x-data
+                                     x-masonry.poll.2500>
                                     <div class="lg:hidden w-36 md:w-44 mb-8">
                                         @include('includes.lido-menu-feature')
                                     </div>
@@ -41,6 +42,37 @@
                                     @foreach($lidoMenu as $menu)
                                         @include('includes.lido-menu-items')
                                     @endforeach
+
+                                    @auth()
+                                        @php
+                                            $user = \Illuminate\Support\Facades\Auth::user();
+                                            $title = "Welcome  {$user?->name}";
+                                            $items = [];
+                                            if ($user->hasAnyRole([
+                                                \App\Enums\RoleEnum::proposer()?->value,
+                                                 \App\Enums\RoleEnum::catalyst_profile()->value
+                                                 ])) {
+                                                $items[] = new Illuminate\Support\Fluent([
+                                                       'title' => 'My Catalyst Dashboard',
+                                                       'route_type' => 'url',
+                                                       'route' => 'catalystExplorer.myDashboard',
+                                                   ]);
+                                            }
+                                            $menu = new \Illuminate\Support\Fluent(compact('title', 'items'));
+                                        @endphp
+                                        <div class="border border-slate-600 p-2 user-menu-wrapper">
+                                            @include('includes.lido-menu-items')
+
+                                            <div class="inline-flex items-center text-xs md:text-base font-medium text-gray-900 ease-in-out hover:text-teal-800" x-data="{
+                                                async logout() {
+                                                    await window.axios.post('/logout');
+                                                    document.location.reload();
+                                                }
+                                            }">
+                                                <a href="#" @click.prevent="logout" class="inline-block text-black font-bold">Logout</a>
+                                            </div>
+                                        </div>
+                                    @endauth
                                 </nav>
                             </div>
 

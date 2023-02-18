@@ -205,6 +205,7 @@ Route::prefix('catalyst-explorer')->as('catalystExplorerApi.')
 
         Route::get('/people', [CatalystExplorer\ProfileController::class, 'people']);
         Route::get('/people/{person_id}', [CatalystExplorer\ProfileController::class, 'person']);
+        Route::post('/profiles/{catalystProfile:id}/follow', [CatalystExplorer\ProfileController::class, 'follow']);
 
         Route::get('/groups', [CatalystExplorer\GroupController::class, 'groups']);
         Route::get('/groups/{group_id}', [CatalystExplorer\GroupController::class, 'group']);

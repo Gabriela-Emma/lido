@@ -18,7 +18,7 @@
                      @claim-user.window="claimingUser = !claimingUser">
                 <div class="z-6 absolute top-0 left-0 w-full h-full bg-teal-600/75 py-10" x-show="claimingUser"
                      x-transition>
-                    <x-catalyst.claim-user :catalystProfile="$catalystGroup->members->first()"
+                    <x-catalyst.claim-profile :catalystProfile="$catalystGroup->members->first()"
                                            :owner="$catalystGroup->user_id"/>
                 </div>
 

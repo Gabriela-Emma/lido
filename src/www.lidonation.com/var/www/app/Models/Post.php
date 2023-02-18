@@ -13,7 +13,6 @@ use App\Models\Traits\HasPrompts;
 use App\Models\Traits\HasSnippets;
 use App\Models\Traits\HasTaxonomies;
 use App\Models\Traits\HasTranslations;
-use App\Repositories\PostRepository;
 use App\Scopes\LimitScope;
 use App\Scopes\OrderByDateScope;
 use App\Scopes\OrderByOrderScope;

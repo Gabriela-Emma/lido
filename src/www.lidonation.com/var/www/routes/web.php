@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\ProjectCatalyst\CatalystMyDashboardController;
 use App\Http\Controllers\ProjectCatalyst\CatalystMyGroupsController;
 use App\Http\Controllers\ProjectCatalyst\CatalystUserProfilesController;
@@ -704,3 +705,4 @@ Route::get('/reset-password/{token}', function (Request $request, $token) {
 
 // Route::get('reset-password/{token}', ResetPasswordForm::class)->name('password.reset');
 Route::post('reset-password', [ForgotPasswordController::class, 'submitResetPasswordForm'])->name('password.update');
+Route::post('logout', [AuthController::class, 'logout'])->name('logout');
