@@ -26,6 +26,7 @@ use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Staudenmeir\EloquentHasManyDeep\HasRelationships;
+use Staudenmeir\EloquentJsonRelations\HasJsonRelationships;
 
 /**
  * to index run php artisan ln:index 'App\Models\CatalystUser' ln__catalyst_users
@@ -40,6 +41,7 @@ class CatalystUser extends User implements HasMedia, CanComment
         InteractsWithMedia,
         InteractsWithComments,
         SearchableLocale,
+        HasJsonRelationships,
         QueryCacheable;
 
     protected $fillable = ['bio', 'twitter', 'discord', 'linkedin', 'ideascale','email'];

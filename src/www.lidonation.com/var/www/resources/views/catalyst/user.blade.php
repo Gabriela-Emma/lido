@@ -80,7 +80,7 @@
                                 Follow
                             </span>
                             @endif
-                        @elseauth()
+                        @else
                             <span class="group-hover:text-slate-800" x-html="followedProfile ? 'Following':'Follow'">
                                 Follow
                             </span>

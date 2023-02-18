@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Casts\NRTFilter;
 use App\Models\Traits\HasCatalystProfiles;
 use App\Models\Traits\HasGravatar;
 use App\Models\Traits\HasMetaData;
@@ -10,6 +11,7 @@ use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Collection;
@@ -25,11 +27,16 @@ use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\Permission\Traits\HasRoles;
+use Staudenmeir\EloquentHasManyDeep\HasRelationships;
+use Staudenmeir\EloquentJsonRelations\HasJsonRelationships;
+use Staudenmeir\EloquentJsonRelations\JsonKey;
 
 class User extends Authenticatable implements HasMedia, Interfaces\IHasMetaData, CanComment, CanResetPassword
 {
     use HasApiTokens,
         HasCatalystProfiles,
+        HasJsonRelationships,
+        HasRelationships,
         InteractsWithMedia,
         InteractsWithComments,
         HasFactory,
@@ -73,6 +80,8 @@ class User extends Authenticatable implements HasMedia, Interfaces\IHasMetaData,
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'what_filter' => 'json'
+//        'what_filter' => NRTFilter::class
     ];
 
     /**
@@ -183,17 +192,17 @@ class User extends Authenticatable implements HasMedia, Interfaces\IHasMetaData,
         return "https://www.gravatar.com/avatar/$hash?d=identicon&r=r";
     }
 
-    public function follows(CatalystUser | int $catalystUser) {
-        dd($this->following);
-        return $this->whereHas('following', fn($q) => $q->whereIn('what_filter->subject', [$catalystUser?->id ?? $catalystUser]))->count() > 0;
+    public function follows(CatalystUser | int $catalystUser): bool
+    {
+        return $this->whereHas('following', fn($q) => $q->whereIn('what_id', [$catalystUser?->id ?? $catalystUser]))->count() > 0;
     }
 
     /**
      * The roles that belong to the user.
      */
-    public function following()
+    public function following(): HasManyThrough
     {
-        return $this->belongsToMany(CatalystUser::class, 'notification_request_templates', 'who_id', 'what_filter->subject',);
+        return $this->hasManyThrough(CatalystUser::class, NotificationRequestTemplate::class, 'who_id', 'id', 'id', 'what_id');
     }
 
     public function catalyst_users(): HasMany

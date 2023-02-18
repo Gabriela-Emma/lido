@@ -57,3 +57,11 @@ config('filesystems');
 exit
 route('password.reset');
 exit
+exit
+$u\040=\040User::find(2);
+$u->following;
+$u->following()->toSql();
+exit
+$u\040=\040User::find(2);
+$u->following()->toSql();
+exit

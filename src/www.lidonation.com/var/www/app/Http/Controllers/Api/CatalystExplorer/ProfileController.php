@@ -71,7 +71,8 @@ class ProfileController extends Controller
 
         $nrt->what_type = CatalystUser::class;
         $nrt->when = 'all';
-        $nrt->what_filter = ['subject' => $catalystProfile->id];
+        $nrt->what_filter = [];
+        $nrt->what_id = $catalystProfile->id;
         $nrt->status = 'published';
 
         $nrt->save();
