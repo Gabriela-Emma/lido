@@ -54,7 +54,7 @@
                                                  ])) {
                                                 $items[] = new Illuminate\Support\Fluent([
                                                        'title' => 'My Catalyst Dashboard',
-                                                       'route_type' => 'url',
+                                                       'route_type' => 'route_name',
                                                        'route' => 'catalystExplorer.myDashboard',
                                                    ]);
                                             }
