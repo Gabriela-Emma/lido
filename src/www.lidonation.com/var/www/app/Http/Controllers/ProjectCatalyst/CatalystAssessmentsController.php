@@ -56,6 +56,7 @@ class CatalystAssessmentsController extends Controller
         $_options = [
             'filters' => array_merge([], $this->getUserFilters()),
         ];
+        storage_path();
 
         $searchBuilder = Assessment::search($this->search,
             function (Indexes $index, $query, $options) use ($_options) {

@@ -84,11 +84,16 @@ function query() {
         data[VARIABLES.SEARCH] = search.value;
     }
 
-    // Perform a GET request to "/catalyst-explorer/people" with the updated data
     router.get(
         `/${props.locale}/catalyst-explorer/people`,
         data,
         {preserveState: true, preserveScroll: true}
     );
+
+    // @ts-ignore
+    if (typeof window?.fathom !== 'undefined') {
+        // @ts-ignore
+        window?.fathom?.trackGoal(VARIABLES.TRACKER_ID_PEOPLE, 0);
+    }
 }
 </script>
