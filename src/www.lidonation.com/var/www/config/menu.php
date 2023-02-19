@@ -163,9 +163,14 @@ return [
                         'route' => 'catalystExplorer.proposals',
                     ]),
                     new Illuminate\Support\Fluent([
-                        'title' => 'Proposers',
+                        'title' => 'People',
                         'route_type' => 'route_name',
                         'route' => 'catalystExplorer.people',
+                    ]),
+                    new Illuminate\Support\Fluent([
+                        'title' => 'Proposal Assessments',
+                        'route_type' => 'route_name',
+                        'route' => 'catalystExplorer.assessments',
                     ]),
                     new Illuminate\Support\Fluent([
                         'title' => 'Groups',
