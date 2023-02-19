@@ -8,4 +8,8 @@ export default interface Assessment {
     proposal: Proposal;
     rating: number;
     assessor: string;
+    qa_excellent_count: number;
+    qa_good_count: number;
+    qa_filtered_out_count: number;
+    flagged: boolean;
 }

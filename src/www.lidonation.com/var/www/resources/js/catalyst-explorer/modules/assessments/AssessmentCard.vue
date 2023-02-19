@@ -2,11 +2,13 @@
     <div
         class="w-full bg-white rounded-sm relative flex flex-col justify-start bg-white shadow-sm mb-4 relative break-inside-avoid drip">
         <div class="p-5 break-long-words break-words">
+            <b class="block text-sm font-bold">{{ assessment.label }}</b>
             <div v-html="$filters.markdown(assessment.rationale)"></div>
         </div>
 
         <div class="mt-16 divide-y divide-teal-300 specs p-5">
-            <div class="flex flex-row gap-4 justify-between border-t border-teal-300 items-center py-4 spec-amount-received">
+            <div
+                class="flex flex-row gap-4 justify-between border-t border-teal-300 items-center py-4 spec-amount-received">
                 <div class="text-teal-800 opacity-50 text-sm">Assessor</div>
                 <div class="text-teal-800 font-bold text-base">
                     {{ assessment.assessor }}
@@ -58,6 +60,22 @@
             <!--                </div>-->
             <!--            </div>-->
         </div>
+        <div class="p-2 bg-stone-100">
+            <b class="block text-sm font-bold">
+                v Quality Assurance
+            </b>
+<!--            <div>-->
+<!--                Assessment Quality Assurance is an offered role to veteran in the Cardano Project Catalyst Community.-->
+<!--                The purpose is to review PA assessments of proposals, providing a second layer of Quality Assurance.-->
+<!--            </div>-->
+        </div>
+        <div class="p-2 bg-stone-100">
+            <Bar
+                :id="`assessment-${assessment.id}`"
+                :options="chartOptions"
+                :data="chartData"
+            />
+        </div>
     </div>
 </template>
 
@@ -67,6 +85,10 @@ import {usePage} from "@inertiajs/vue3";
 import User from "../../models/user";
 import Assessment from "../../models/assessment";
 import Rating from 'primevue/rating';
+import {Bar} from 'vue-chartjs';
+import {Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale} from 'chart.js';
+
+ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
 
 
 const props = withDefaults(
@@ -80,6 +102,85 @@ const props = withDefaults(
         },
     },
 );
+
+let chartData = ref({
+    labels: ['vPA Result'],
+    datasets: [
+        {
+            label: 'Excellent',
+            barThickness: 20,
+            backgroundColor: '#00b2b2',
+            borderColor: '#00b2b2',
+            data: [props.assessment.qa_excellent_count]
+        },
+        {
+            label: 'Good',
+            barThickness: 16,
+            backgroundColor: '#456eb6',
+            borderColor: '#456eb6',
+            data: [props.assessment.qa_good_count]
+        },
+        {
+            label: 'Filtered Out',
+            barThickness: 16,
+            backgroundColor: '#807d9c',
+            borderColor: '#807d9c',
+            data: [props.assessment.qa_filtered_out_count]
+        }
+    ]
+});
+let chartOptions = ref({
+    responsive: true,
+    indexAxis: 'y',
+    maintainAspectRatio: false,
+    scales: {
+        x: {
+            display: true,
+            stacked: true,
+            grid: {
+                borderColor: '#cdc9e8',
+                color: '#cdc9e8'
+            },
+            ticks: {
+                min: 1,
+                stepSize: 2,
+                beginAtZero: false,
+            }
+        },
+        y: {
+            stacked: true,
+            display: false,
+            grid: {
+                borderColor: '#cdc9e8',
+                color: '#cdc9e8'
+            },
+        }
+    },
+    plugins: {
+        legend: {
+            display: true,
+            position: 'top',
+            align: 'center',
+            labels: {
+                boxWidth: 20,
+                boxHeight: 8,
+                padding: 16
+            },
+
+        },
+        tooltip: {
+            displayColors: false,
+            callbacks: {
+                title() {
+                    return '';
+                },
+                label(point) {
+                    return `${point.dataset.label}: ${point.dataset.data[0]}`
+                }
+            }
+        }
+    }
+});
 
 const user = computed(() => usePage().props?.user as User);
 </script>
