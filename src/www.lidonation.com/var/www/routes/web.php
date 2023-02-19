@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\ProjectCatalyst\CatalystAssessmentsController;
 use App\Http\Controllers\ProjectCatalyst\CatalystMyDashboardController;
 use App\Http\Controllers\ProjectCatalyst\CatalystMyGroupsController;
 use App\Http\Controllers\ProjectCatalyst\CatalystUserProfilesController;
@@ -183,6 +184,9 @@ Route::group(
 
         Route::get('/charts', fn() => Inertia::render('Charts'))
             ->name('charts');
+
+        Route::get('/assessments', [CatalystAssessmentsController::class, 'index'])
+            ->name('assessments');
 
         Route::get('/funds', [CatalystFundsController::class, 'index'])
             ->name('funds');

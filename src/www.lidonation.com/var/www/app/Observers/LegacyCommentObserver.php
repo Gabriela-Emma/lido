@@ -3,7 +3,7 @@
 namespace App\Observers;
 
 use App\Invokables\FillPostData;
-use App\Models\LegacyComment;
+use App\Models\Assessment;
 use Illuminate\Support\Carbon;
 
 class LegacyCommentObserver
@@ -11,10 +11,10 @@ class LegacyCommentObserver
     /**
      * Handle the User "created" event.
      *
-     * @param  LegacyComment  $comment
+     * @param  Assessment  $comment
      * @return void
      */
-    public function creating(LegacyComment $comment): void
+    public function creating(Assessment $comment): void
     {
         (new FillPostData)($comment, [], fn () => [
             'status' => ['status', 'draft'],
@@ -24,7 +24,7 @@ class LegacyCommentObserver
         );
     }
 
-    public function deleting(LegacyComment $comment): void
+    public function deleting(Assessment $comment): void
     {
         if ($comment->forceDeleting) {
             $comment->metas()->delete();

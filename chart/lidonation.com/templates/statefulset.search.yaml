@@ -40,7 +40,7 @@ spec:
               name: meilisearch
           volumeMounts:
             - name: "{{ $.Chart.Name }}-search-pv"
-              mountPath: /data.ms
+              mountPath: /meili_data/data.ms
               readOnly: false
       imagePullSecrets:
         - name: {{ .Values.image.pullSecret }}

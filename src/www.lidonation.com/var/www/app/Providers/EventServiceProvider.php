@@ -12,7 +12,7 @@ use App\Models\Discussion;
 use App\Models\ExternalPost;
 use App\Models\Fund;
 use App\Models\Insight;
-use App\Models\LegacyComment;
+use App\Models\Assessment;
 use App\Models\News;
 use App\Models\OnboardingContent;
 use App\Models\Post;
@@ -65,7 +65,7 @@ class EventServiceProvider extends ServiceProvider
         Category::observe(CategoryObserver::class);
         CatalystGroup::observe(CatalystGroupObserver::class);
         Comment::observe(CommentObserver::class);
-        LegacyComment::observe(LegacyCommentObserver::class);
+        Assessment::observe(LegacyCommentObserver::class);
         Definition::observe(DefinitionObserver::class);
         Discussion::observe(DiscussionObserver::class);
         Fund::observe(FundObserver::class);

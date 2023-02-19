@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Models\LegacyComment;
+use App\Models\Assessment;
 use Illuminate\Support\Facades\Auth;
 use JetBrains\PhpStorm\Pure;
 
@@ -10,12 +10,12 @@ class CommentRepository extends Repository
 {
     // Constructor to bind model to repo
     #[Pure]
-    public function __construct(LegacyComment $model)
+    public function __construct(Assessment $model)
     {
         parent::__construct($model);
     }
 
-       public function create(array $data): LegacyComment
+       public function create(array $data): Assessment
        {
            $meta = null;
            if (isset($data['meta'])) {
@@ -23,7 +23,7 @@ class CommentRepository extends Repository
                unset($data['meta']);
            }
 
-           $comment = new LegacyComment;
+           $comment = new Assessment;
 
            $comment->title = $data['title'] ?? null;
            $comment->content = $data['content'];
@@ -42,7 +42,7 @@ class CommentRepository extends Repository
            $comment->save();
 
            if (isset($comment->parent_id)) {
-               $comment->saveMeta('child_id', $comment->id, LegacyComment::find($comment->parent_id), false);
+               $comment->saveMeta('child_id', $comment->id, Assessment::find($comment->parent_id), false);
            }
 
            if (isset($data['rating'])) {

@@ -41,8 +41,7 @@ class CatalystUser extends User implements HasMedia, CanComment
         InteractsWithMedia,
         InteractsWithComments,
         SearchableLocale,
-        HasJsonRelationships,
-        QueryCacheable;
+        HasJsonRelationships;
 
     protected $fillable = ['bio', 'twitter', 'discord', 'linkedin', 'ideascale','email'];
 

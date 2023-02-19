@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api\CatalystExplorer;
 use App\Http\Controllers\Controller;
 use App\Models\CatalystReport;
 use App\Models\Comment;
-use App\Models\LegacyComment;
+use App\Models\Assessment;
 use App\Models\NotificationRequestTemplate;
 use App\Models\User;
 use Illuminate\Http\Request;

@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Models\Interfaces\IHasMetaData;
-use App\Models\Traits\HasComments;
+use App\Models\Traits\HasAssessments;
 use App\Models\Traits\HasHero;
 use App\Models\Traits\HasLinks;
 use App\Models\Traits\HasLocaleUrl;
@@ -27,7 +27,7 @@ class Fund extends Model implements HasMedia, IHasMetaData
         HasTimestamps,
         InteractsWithMedia,
         HasTaxonomies,
-        HasComments,
+        HasAssessments,
         HasParent,
         HasHero,
         HasLinks,

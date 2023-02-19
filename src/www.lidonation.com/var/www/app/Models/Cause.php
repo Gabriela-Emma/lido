@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Models\Traits\HasAuthor;
-use App\Models\Traits\HasComments;
+use App\Models\Traits\HasAssessments;
 use App\Models\Traits\HasHero;
 use App\Models\Traits\HasLinks;
 use App\Models\Traits\HasMetaData;
@@ -25,7 +25,7 @@ class Cause extends Model implements HasMedia, Interfaces\IHasMetaData
 {
     use Actionable,
         HasAuthor,
-        HasComments,
+        HasAssessments,
         HasHero,
         HasLinks,
         HasMetaData,
