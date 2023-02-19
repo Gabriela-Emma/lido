@@ -29,8 +29,8 @@
                     'bg-teal-600 w-full h-full z-5': claimingUser,
                     'hidden': !claimingUser}"></div>
 
-                <div class="flex flex-col justify-center items-center p-3 mb-3 bg-teal-300" x-show="account">
-                    <p>Do you have an acount?</p>
+                <div class="flex flex-col gap-3 justify-center items-center p-3 mb-3 bg-teal-300" x-show="account">
+                    <p>Do you already have a catalyst catalyst explorer or lido nation account?</p>
                     <div  class="flex justify-between items-baseline space-x-12">
                         <button x-on:click="login = true, account = false" class=" hover:text-slate-700 bg-slate-500 px-4 py-2 rounded">Yes</button>
                         <button x-data @click.prevent="$dispatch('claim-user')" class=" hover:text-slate-700 bg-slate-500 px-4 py-2 rounded">No</button>

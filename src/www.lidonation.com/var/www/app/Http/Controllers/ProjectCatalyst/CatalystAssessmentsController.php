@@ -68,6 +68,11 @@ class CatalystAssessmentsController extends Controller
                     'assessor',
                     'rationale',
                     'rating',
+                    'rating',
+                    'qa_excellent_count',
+                    'qa_good_count',
+                    'qa_filtered_out_count',
+                    'flagged',
                     'proposal'
                 ];
                 if (!$this->search) {
@@ -88,37 +93,13 @@ class CatalystAssessmentsController extends Controller
                 'pageName' => 'p',
             ]
         );
-
-
-        return $pagination->onEachSide(1)->toArray();
-//        $query = Assessment::with(['model.model.author'])
-//            ->whereRelation('model', 'model_type','=', Proposal::class);
-//        if (isset($this->search)) {
-//            $query->orWhereFullText('content', $this->search)
-//                ->orWhereHas('model', fn ($q) => $q->where('title', 'iLIKE', "%{$this->search}%"))
-//                ->whereRelation('model.model.author', 'username', 'iLIKE', "%{$this->search}%"
-////                    fn ($q) => $q->where('username', 'iLIKE', "%{$this->search}%")
-//                );
-//        }
 //        dd(
 //            $query->first()?->model?->model_type
 //        );
-//        dd(
-//            collect(
-//                $query->first()?->model?->model?->toSearchableArray()
-//            )->only(['id', 'slug', 'title', 'users', 'fund', 'challenge', 'groups', 'funded', 'completed', 'challenge_label'])
-//        );
-//        $paginator = $query->paginate($this->perPage)->through(fn($assessment) => [
-//            'rationale' => $assessment->content,
-//            'title' => $assessment->model?->title,
-//            'proposal' => [
-//                'id' => $assessment->model?->model?->id,
-//                'slug' => $assessment->model?->model?->slug,
-//                'title' => $assessment->model?->model?->title,
-//            ]
-//        ]);
-//
-//        return $paginator->toArray();
+
+        return $pagination->onEachSide(1)->toArray();
+
+
     }
 
     #[ArrayShape(['filters' => 'array'])]
