@@ -43,7 +43,6 @@ createInertiaApp({
             mounted(el, binding, vnode) {
                 if (binding.modifiers?.ignoreEmpty) {
                     nextTick(() => {
-                        console.log('nextTick::', vnode?.el.value);
                         if (binding.modifiers?.ignoreEmpty) {
                             if (!el.value || typeof el.value === 'undefined') {
                                 return;

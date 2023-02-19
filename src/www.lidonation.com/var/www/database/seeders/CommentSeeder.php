@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\LegacyComment;
+use App\Models\Assessment;
 use Illuminate\Database\Seeder;
 
 class CommentSeeder extends Seeder
@@ -14,7 +14,7 @@ class CommentSeeder extends Seeder
      */
     public function run()
     {
-        LegacyComment::factory(215)
+        Assessment::factory(215)
             ->create();
     }
 }

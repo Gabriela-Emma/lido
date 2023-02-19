@@ -3,7 +3,7 @@
 namespace App\Policies;
 
 use App\Enums\PermissionEnum;
-use App\Models\LegacyComment;
+use App\Models\Assessment;
 use App\Models\User;
 
 class LegacyCommentPolicy extends AppPolicy
@@ -25,12 +25,12 @@ class LegacyCommentPolicy extends AppPolicy
      * Determine whether the user can view the model.
      *
      * @param  User  $user
-     * @param  LegacyComment  $legacyComment
+     * @param  Assessment  $legacyComment
      * @return bool
      *
      * @throws \Exception
      */
-    public function view(User $user, LegacyComment $legacyComment): bool
+    public function view(User $user, Assessment $legacyComment): bool
     {
         return $user->hasAnyPermission([PermissionEnum::read_legacy_comments()->value]) || $this->canView($user, $legacyComment);
     }
@@ -50,10 +50,10 @@ class LegacyCommentPolicy extends AppPolicy
      * Determine whether the user can update the model.
      *
      * @param  User  $user
-     * @param  LegacyComment  $legacyComment
+     * @param  Assessment  $legacyComment
      * @return bool
      */
-    public function update(User $user, LegacyComment $legacyComment): bool
+    public function update(User $user, Assessment $legacyComment): bool
     {
         return $user->hasAnyPermission([PermissionEnum::update_legacy_comments()->value]) || $this->canUpdateAny($user);
     }
@@ -62,10 +62,10 @@ class LegacyCommentPolicy extends AppPolicy
      * Determine whether the user can delete the model.
      *
      * @param  User  $user
-     * @param  LegacyComment  $legacyComment
+     * @param  Assessment  $legacyComment
      * @return bool
      */
-    public function delete(User $user, LegacyComment $legacyComment): bool
+    public function delete(User $user, Assessment $legacyComment): bool
     {
         return $user->hasAnyPermission([PermissionEnum::delete_legacy_comments()->value]) || $this->canDeleteAny($user);
     }

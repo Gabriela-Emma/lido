@@ -10,7 +10,7 @@ class ProposalDiscussion extends Discussion
 
     public function comments(): HasMany
     {
-        return $this->hasMany(LegacyComment::class, 'model_id')
+        return $this->hasMany(Assessment::class, 'model_id')
             ->where('model_type', Discussion::class)
             ->whereNull('parent_id')
             ->limit(16);

@@ -65,3 +65,10 @@ exit
 $u\040=\040User::find(2);
 $u->following()->toSql();
 exit
+Assessment::runCustomIndex(0;
+Assessment::runCustomIndex();
+Assessment::runCustomIndex();
+App\134Models\134Assessment::runCustomIndex();
+App\134Models\134Assessment::runCustomIndex();
+exit
+App\134Models\134Assessment::runCustomIndex();
