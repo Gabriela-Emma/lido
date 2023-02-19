@@ -5,8 +5,8 @@
             <div v-html="$filters.markdown(report.content)"></div>
         </div>
 
-        <div class="mt-16 divide-y divide-teal-300 border-t border-teal-300 specs p-5">
-            <div class="flex flex-row gap-4 justify-between items-center py-4 spec-amount-received">
+        <div class="mt-16 divide-y divide-teal-300 specs p-5">
+            <div class="flex flex-row gap-4 justify-between border-t border-teal-300 items-center py-4 spec-amount-received">
                 <div class="text-teal-800 opacity-50 text-sm">Disbursed to Date</div>
                 <div class="text-teal-800 font-bold text-base">
                     {{ $filters.currency(report.proposal.amount_received) }}
