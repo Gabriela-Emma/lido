@@ -16,7 +16,7 @@
             <div class="container">
                 <div class="mt-6 columns-1 sm:columns-2 xl:columns-3 gap-4 monthly-reports">
                     <div v-for="assessment in props.assessments?.data">
-                        <AssessmentCard :assessment="assessment" />
+                        <AssessmentCard :assessment="assessment"/>
                     </div>
                 </div>
             </div>
@@ -45,7 +45,7 @@ const props = withDefaults(
 
 let search = ref(props.search);
 
-watch([search],() => {
+watch([search], () => {
     return query();
 }, {deep: true});
 
@@ -61,10 +61,10 @@ function query() {
         {preserveState: true, preserveScroll: true}
     );
 
-    //@ts-ignore
+    // @ts-ignore
     if (typeof window?.fathom !== 'undefined') {
         // @ts-ignore
-        window?.fathom?.trackGoal(VARIABLES.MONTHLY_REPORT_TRACKER_ID, 0);
+        window?.fathom?.trackGoal(VARIABLES.TRACKER_ID_PA, 0);
     }
 }
 </script>
