@@ -91,7 +91,7 @@ class Assessment extends Model implements IHasMetaData
             'proposer.challenge',
             'proposer.funded',
             'proposer.groups.id',
-            'assessor_id',
+            'assessor',
             'qa_good_count',
             'qa_rating_outcome',
             'qa_excellent_count',

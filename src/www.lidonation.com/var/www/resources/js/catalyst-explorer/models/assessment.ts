@@ -2,8 +2,10 @@ import Proposal from "./proposal";
 
 export default interface Assessment {
     id: number;
-    title: string;
+    title?: string;
+    label: string;
     rationale: string;
     proposal: Proposal;
-    rating: string;
+    rating: number;
+    assessor: string;
 }

@@ -65,7 +65,9 @@ class CatalystAssessmentsController extends Controller
                 $options['attributesToRetrieve'] = [
                     'id',
                     'label',
+                    'assessor',
                     'rationale',
+                    'rating',
                     'proposal'
                 ];
                 if (!$this->search) {
