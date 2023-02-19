@@ -62,7 +62,7 @@
         </div>
         <div class="p-2 bg-stone-100">
             <b class="block text-sm font-bold">
-                v Quality Assurance
+                vPA Quality Assurance
             </b>
 <!--            <div>-->
 <!--                Assessment Quality Assurance is an offered role to veteran in the Cardano Project Catalyst Community.-->
