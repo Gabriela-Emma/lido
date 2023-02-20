@@ -2,39 +2,37 @@
 
 namespace App\Http\Controllers\Api\CatalystExplorer;
 
-use Illuminate\Http\Request;
-use CzProject\GitPhp\Git;
+use Inertia\Inertia;
+use App\Jobs\SaveRepo;
 use App\Actions\CmdRunner;
+use Illuminate\Http\Request;
 
 class RepoController extends Controller
 {
-    public function index(Request $request)
-    {
-        
-        // validate url
-        // $request->validate([
-        //     'gitUrl'=> 'required|url'
-        // ]);
+    public function getBranches(Request $request)
+    {   
+        $gitUrl = $request->input('gitUrl');
 
-        // // get branches
-        // $runner = new CmdRunner;
-        // $cmd = ['ls-remote', '--heads',$request->gitUrl];
-        // $result = $runner->run('',$cmd);
-        // $output = $result->getOutputAsString();
-        // // dd($output);
+        $runner = new CmdRunner();
+        $cmd = ['ls-remote', '--heads',$gitUrl];
+        $result = $runner->run('',$cmd);
+        $output = $result->getOutputAsString();
+        // dd($output);
 
-        // $branches = [];
-        // foreach (explode("\n",$output) as $line) {
-        //     $parts = preg_split('/\t+/',$line);
-        //     // dd($parts);
-        //     $branch=str_replace('refs/heads/','',end($parts));
-        //     $branches[]=$branch;
-        // }
-        // dd($branches);
+        $branches = [];
+        foreach (explode("\n",$output) as $line) {
+            $parts = preg_split('/\t+/',$line);
+            // dd($parts);
+            $branch=str_replace('refs/heads/','',end($parts));
+            $branches[]=$branch;
+        }
+        return (array_filter($branches));
 
-
-        // cloning th
-        
-    
     }
+    public function saveRepo(Request $request)
+    {
+        SaveRepo::dispatch($request->gitUrl, $request->branch, $request->user_id);
+      
+    }
+    
 }

@@ -3,6 +3,7 @@ export default interface Proposal {
     title: string;
     solution: string;
     problem: string;
+    user_id: number;
     funding_status: string;
     amount_received: number;
     amount_requested:number;

@@ -81,11 +81,11 @@
                     </div>
                 </div>
 
-                <form class="flex h-full flex-col divide-y divide-gray-200 bg-white p-4" v-if="currAction === 'git'">
+                <form class="flex flex-col divide-y divide-gray-200 bg-white p-4" v-if="currAction === 'git'">
                     <h3>
                         Add a git repo
                     </h3>
-                    <div class="h-0 flex-1 overflow-y-auto">
+                    <div class=" flex-1 overflow-y-auto">
                         <div class="flex flex-1 flex-col justify-between">
                             <div class="divide-y divide-gray-200 px-4 sm:px-6">
                                 <div class="space-y-6 pt-6 pb-5">
@@ -93,11 +93,29 @@
                                         <label for="project-name" class="block text-sm font-medium text-gray-900">
                                             Git (http url)
                                         </label>
-                                        <div class="mt-1">
+                                        <div class="mt-1 flex-grow">
                                             <input v-model="repoForm.gitUrl" type="text" name="gitUrl" id="git"
                                                    class="block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"/>
-                                                   <!-- <div v-if="repoForm.errors.gitUrl" v-text="repoForm.errors.gitUrl"
-                                                        class="text-red-500 text-xs mt-1"></div> -->
+                                            <div v-if="errorMessage" class="text-red-500 mt-2 text-sm">{{ errorMessage }}</div>
+
+                                            <input v-model="repoForm.user_id" type="text" class="hidden" name="catalystUser_id" >
+                                            <div class="flex text-xs w-1/2 lg:text-base justify-start ">
+                                                <multiselect 
+                                                    class="block mt-3 rounded-md z-10  p-0.5"
+                                                    v-model="repoForm.branch" 
+                                                    :options="branches" 
+                                                    :close-on-select="true" 
+                                                    :clear-on-select="false" 
+                                                    placeholder="Select branch " 
+                                                    label="name" 
+                                                    track-by="name" 
+                                                    :multiple="false" 
+                                                    :taggable="false" 
+                                                    :hide-selected="true"
+                                                    @input="repoForm.branch = $event">
+                                                </multiselect>
+                                            </div>
+
                                         </div>
                                     </div>
                                 </div>
@@ -195,7 +213,7 @@
                                             <div>
                                                 <div class="relative flex items-start">
                                                     <div class="absolute flex h-5 items-center">
-                                                        <input id="privacy-private" name="privacy"
+                                                        tyty@tyty.co                             <input id="privacy-private" name="privacy"
                                                                aria-describedby="privacy-private-to-project-description"
                                                                type="radio"
                                                                class="h-4 w-4 border-gray-300 text-teal-600 focus:ring-teal-500"/>
@@ -269,9 +287,13 @@ import {
     NewspaperIcon,
     ShareIcon,
 } from '@heroicons/vue/24/outline';
-import {ref} from "vue";
 import {DialogTitle} from "@headlessui/vue";
 import { useForm } from "@inertiajs/vue3";
+import {ref, watch} from "vue";
+import {debounce} from "lodash";
+import Multiselect from '@vueform/multiselect';
+
+
 
 let currAction = ref(null);
 
@@ -353,13 +375,57 @@ const props = withDefaults(
     defineProps<{
         locale?: string,
         proposal: Proposal,
-        errors:Object
     }>(), {});
 
 
 let repoForm=useForm({
-    gitUrl:''
+    gitUrl:'',
+    user_id:props.proposal.user_id,
+    branch:''
 })
+
+
+let branches=ref<string[]>([]);
+let errorMessage = ref('');
+
+watch(
+  () => repoForm.gitUrl,
+  debounce((newUrl: string) => {
+    if (!newUrl.startsWith('http://') ) {
+      errorMessage.value = 'Invalid Git URL !!';
+      branches.value = [];
+      repoForm.branch = '';
+      return;
+    }
+
+    fetch(`/api/catalyst-explorer/branches?gitUrl=${newUrl}`)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Invalid Git URL!!');
+        }
+        return response.json();
+      })
+      .then((data) => {
+        if (!data || data.length === 0) {
+          errorMessage.value = 'No branches found, ensure repo is public!!';
+        } else {
+          branches.value = data;
+          if (!branches.value.includes(repoForm.branch)) {
+            repoForm.branch = '';
+          }
+          errorMessage.value = '';
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        branches.value = [];
+        repoForm.branch = '';
+        errorMessage.value = error.message;
+      });
+  }, 500)
+);
+
+
 
 let submitRepo = () => {
 repoForm.post('/api/catalyst-explorer/repo');
