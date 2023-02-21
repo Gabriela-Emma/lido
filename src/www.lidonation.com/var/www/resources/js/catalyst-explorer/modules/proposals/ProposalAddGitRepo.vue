@@ -103,9 +103,6 @@ let repoForm = useForm({
     branch: repo.value?.tracked_branch
 });
 
-
-console.log('proposal::', props.proposal);
-
 const emit = defineEmits<{
     (e: 'cancelled'): void
 }>();
