@@ -87,14 +87,14 @@
 
                 <div class="flex h-full flex-col divide-y divide-gray-200 bg-white" v-if="currAction === 'reports'">
                     <ul role="list" class="divide-y divide-gray-200">
-                        <li v-for="action in iogReportActions" class="px-4">
-                            <a :href="action.href" class="flex w-full items-start py-4 h-full" target="_blank">
+                        <li v-for="iogAction in iogReportActions" class="px-4" v-if="iogAction.href">
+                            <a :href="iogAction?.href" class="flex w-full items-start py-4 h-full" target="_blank">
                                 <div class="h-10 w-10 rounded-full">
-                                    <component :is="action.icon" class="h-10 w-10" aria-hidden="true"/>
+                                    <component :is="iogAction.icon" class="h-10 w-10" aria-hidden="true"/>
                                 </div>
                                 <div class="ml-3">
-                                    <div class="text-lg text-gray-600">{{ action.title }}</div>
-                                    <p class="text-sm font-medium text-gray-500">{{ action.excerpt }}</p>
+                                    <div class="text-lg text-gray-600">{{ iogAction.title }}</div>
+                                    <p class="text-sm font-medium text-gray-500">{{ iogAction.excerpt }}</p>
                                 </div>
                                 <div class="w-8 ml-auto flex h-full flex items-center justify-end">
                                     <ArrowUpRightIcon class="w-4 h-4" />
