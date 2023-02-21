@@ -9,7 +9,7 @@ class Assessor extends Model
 {
     public function assessments(): BelongsToMany
     {
-        return $this->belongsToMany(LegacyComment::class, 'assessment_reviews_comments_assessors', 'assessment_id', 'assessor_id');
+        return $this->belongsToMany(Assessment::class, 'assessment_reviews_comments_assessors', 'assessment_id', 'assessor_id');
     }
 
     public function assessment_reviews(): HasMany

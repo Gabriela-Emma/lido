@@ -5,26 +5,71 @@
             <section class="relative z-0 py-10 overflow-visible"
                      x-data="{showPane: false,
                 claimingUser: false,
+                login: false,
+                account: false,
+                loginFail: false,
                 claimProfile: function() {
                     axios.get('/api/user')
                     .then(function(response) {
                         this.$dispatch('claim-user');
                     }.bind(this))
                     .catch(function(error) {
-                        window.location.href = '/login';
-                    });
+                        this.account = true;
+                    }.bind(this));
                 }
             }"
                      @claim-user.window="claimingUser = !claimingUser">
                 <div class="z-6 absolute top-0 left-0 w-full h-full bg-teal-600/75 py-10" x-show="claimingUser"
                      x-transition>
-                    <x-catalyst.claim-user :catalystProfile="$catalystGroup->members->first()"
+                    <x-catalyst.claim-profile :catalystProfile="$catalystGroup->members->first()"
                                            :owner="$catalystGroup->user_id"/>
                 </div>
 
                 <div class="absolute left-0 top-0" :class="{
                     'bg-teal-600 w-full h-full z-5': claimingUser,
                     'hidden': !claimingUser}"></div>
+
+                <div class="flex flex-col gap-3 justify-center items-center p-3 mb-3 bg-teal-300" x-show="account">
+                    <p>Do you already have a catalyst catalyst explorer or lido nation account?</p>
+                    <div  class="flex justify-between items-baseline space-x-12">
+                        <button x-on:click="login = true, account = false" class=" hover:text-slate-700 bg-slate-500 px-4 py-2 rounded">Yes</button>
+                        <button x-data @click.prevent="$dispatch('claim-user')" class=" hover:text-slate-700 bg-slate-500 px-4 py-2 rounded">No</button>
+                    </div>
+                </div>
+
+                <div x-show="loginFail"class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+                    <strong class="font-bold">Login failed!</strong>
+                    <span class="block sm:inline">Please try again.</span>
+                    <span x-on:click="loginFail = false" class="absolute top-0 bottom-0 right-0 px-4 py-3">
+                      <svg class="fill-current h-6 w-6 text-red-500" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><title>Close</title><path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z"/></svg>
+                    </span>
+                </div>
+                <div x-show="login" class="text-slate-800 max-w-md bg-white/75 p-4 mx-auto mb-4" x-data="{
+                    async emailLogin(event) {
+                        const login = Object.fromEntries(new FormData(event.target));
+                        const user = {
+                            email: login.email,
+                            password: login.password
+                        };
+
+                        try {
+                            const res = await window.axios.post(`/api/catalyst-explorer/login`, user);
+                            axios.get('/api/user')
+                              .then(function(response) {
+                                document.location.reload();
+                              })
+                              .catch(function(error) {
+                                if (error?.response?.status === 401) {
+                                    this.loginFail = true;
+                                }
+                              }.bind(this));
+                          } catch (error) {
+                            console.log(error);
+                          }
+                        }
+                      }">
+                    <x-cardano.email-login />
+                </div>
 
                 <div class="bg-teal-600/[0.95] w-full h-full absolute z-30 space-y-4" x-show="showPane" x-transition>
                     <div class="flex flex-row justify-between gap-3 items-center">

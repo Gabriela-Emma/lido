@@ -40,6 +40,6 @@ class Rating extends Model
 
     public function comment(): BelongsTo
     {
-        return $this->belongsTo(LegacyComment::class, 'comment_id', 'id', 'comment');
+        return $this->belongsTo(Assessment::class, 'comment_id', 'id', 'comment');
     }
 }

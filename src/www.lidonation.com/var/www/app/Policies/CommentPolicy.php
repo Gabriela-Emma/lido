@@ -4,7 +4,7 @@ namespace App\Policies;
 
 use App\Enums\PermissionEnum;
 use App\Models\Comment;
-use App\Models\LegacyComment;
+use App\Models\Assessment;
 use App\Models\User;
 
 class CommentPolicy extends AppPolicy
@@ -26,12 +26,12 @@ class CommentPolicy extends AppPolicy
      * Determine whether the user can view the model.
      *
      * @param  User  $user
-     * @param  LegacyComment|Comment  $comment
+     * @param  Assessment|Comment  $comment
      * @return bool
      *
      * @throws \Exception
      */
-    public function view(User $user, LegacyComment|Comment $comment): bool
+    public function view(User $user, Assessment|Comment $comment): bool
     {
         return $user->hasAnyPermission([PermissionEnum::read_comments()->value]) || $this->canView($user, $comment);
     }
@@ -51,10 +51,10 @@ class CommentPolicy extends AppPolicy
      * Determine whether the user can update the model.
      *
      * @param  User  $user
-     * @param  LegacyComment|Comment  $comment
+     * @param  Assessment|Comment  $comment
      * @return mixed
      */
-    public function update(User $user, LegacyComment|Comment $comment): mixed
+    public function update(User $user, Assessment|Comment $comment): mixed
     {
         return $user->hasAnyPermission([PermissionEnum::update_comments()->value]) || $this->canUpdateAny($user);
     }
@@ -63,10 +63,10 @@ class CommentPolicy extends AppPolicy
      * Determine whether the user can delete the model.
      *
      * @param  User  $user
-     * @param  LegacyComment|Comment  $comment
+     * @param  Assessment|Comment  $comment
      * @return mixed
      */
-    public function delete(User $user, LegacyComment|Comment $comment): mixed
+    public function delete(User $user, Assessment|Comment $comment): mixed
     {
         return $user->hasAnyPermission([PermissionEnum::delete_comments()->value]) || $this->canDeleteAny($user);
     }

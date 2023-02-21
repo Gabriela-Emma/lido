@@ -2,7 +2,7 @@
 
 namespace App\Mail;
 
-use App\Models\LegacyComment;
+use App\Models\Assessment;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -17,7 +17,7 @@ class CommentRepliedToMail extends Mailable implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(public LegacyComment $comment)
+    public function __construct(public Assessment $comment)
     {
         //
     }

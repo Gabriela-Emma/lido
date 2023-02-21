@@ -128,13 +128,17 @@ function query() {
         data[VARIABLES.SORTS] = selectedSortRef.value;
     }
 
-// Perform a GET request to "/catalyst-explorer/people" with the updated data
     router.get(
         "/catalyst-explorer/groups",
         data,
         {preserveState: true, preserveScroll: !currPageRef.value}
     );
 
+    //@ts-ignore
+    if (typeof window?.fathom !== 'undefined') {
+        // @ts-ignore
+        window?.fathom?.trackGoal(VARIABLES.TRACKER_ID_GROUPS, 0);
+    }
 
 }
 

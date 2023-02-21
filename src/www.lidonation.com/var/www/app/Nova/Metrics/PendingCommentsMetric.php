@@ -2,7 +2,7 @@
 
 namespace App\Nova\Metrics;
 
-use App\Models\LegacyComment;
+use App\Models\Assessment;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Metrics\Value;
 use Laravel\Nova\Metrics\ValueResult;
@@ -21,7 +21,7 @@ class PendingCommentsMetric extends Value
     {
         return $this->count(
             $request,
-            LegacyComment::where([
+            Assessment::where([
                 'status' => 'pending',
             ]
             )->withoutGlobalScopes()

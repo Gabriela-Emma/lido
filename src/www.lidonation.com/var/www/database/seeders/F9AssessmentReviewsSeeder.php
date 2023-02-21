@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use App\Models\AssessmentReview;
 use App\Models\AssessmentReviewsCommentsAssessors;
 use App\Models\Assessor;
-use App\Models\LegacyComment;
+use App\Models\Assessment;
 use App\Services\SettingService;
 use Illuminate\Support\Str;
 use Revolution\Google\Sheets\Facades\Sheets;
@@ -41,24 +41,24 @@ class F9AssessmentReviewsSeeder extends FSeeder
                     }
 
                     // impact
-                    $assessment = LegacyComment::where('content', 'like', Str::words($row[8], 30, '%'))->first();
-                    if (! $assessment instanceof LegacyComment) {
+                    $assessment = Assessment::where('content', 'like', Str::words($row[8], 30, '%'))->first();
+                    if (! $assessment instanceof Assessment) {
                         return true;
                     }
                     $assessmentReviewSeeder = new static;
                     $assessmentReviewSeeder->createAssessmentReview($row, $assessment, $assessor);
 
                     // Feasibility
-                    $assessment = LegacyComment::where('content', 'like', Str::words($row[10], 30, '%'))->first();
-                    if (! $assessment instanceof LegacyComment) {
+                    $assessment = Assessment::where('content', 'like', Str::words($row[10], 30, '%'))->first();
+                    if (! $assessment instanceof Assessment) {
                         return true;
                     }
                     $assessmentReviewSeeder = new static;
                     $assessmentReviewSeeder->createAssessmentReview($row, $assessment, $assessor);
 
                     // Auditability
-                    $assessment = LegacyComment::where('content', 'like', Str::words($row[12], 30, '%'))->first();
-                    if (! $assessment instanceof LegacyComment) {
+                    $assessment = Assessment::where('content', 'like', Str::words($row[12], 30, '%'))->first();
+                    if (! $assessment instanceof Assessment) {
                         return true;
                     }
 
@@ -69,7 +69,7 @@ class F9AssessmentReviewsSeeder extends FSeeder
         }
     }
 
-    public function createAssessmentReview($row, LegacyComment $assessment, Assessor $assessor)
+    public function createAssessmentReview($row, Assessment $assessment, Assessor $assessor)
     {
         $assessmentReview = AssessmentReview::whereHas('assessments', fn ($q) => $q->where('assessment_id', $assessment->id))->first();
         if (! $assessmentReview instanceof  AssessmentReview) {

@@ -6,9 +6,9 @@ import { marked } from 'marked';
 import HeaderComponent from './catalyst-explorer/Shared/Components/HeaderComponent.vue';
 import PrimeVue from 'primevue/config';
 import route from "ziggy-js";
-import { modal } from "momentum-modal"
+import { modal } from "momentum-modal";
+import timeago from 'vue-timeago3';
 
-// boot inertia app
 createInertiaApp({
     progress: {
         color: '#fcdc0b',
@@ -36,13 +36,13 @@ createInertiaApp({
                 resolve: (name) => import(`./catalyst-explorer/Pages/${name}`),
             })
             .use(PrimeVue)
+            .use(timeago)
             .use(pinia);
 
         app.directive('focus', {
             mounted(el, binding, vnode) {
                 if (binding.modifiers?.ignoreEmpty) {
                     nextTick(() => {
-                        console.log('nextTick::', vnode?.el.value);
                         if (binding.modifiers?.ignoreEmpty) {
                             if (!el.value || typeof el.value === 'undefined') {
                                 return;

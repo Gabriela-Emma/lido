@@ -2,7 +2,7 @@
 
 namespace App\Events;
 
-use App\Models\LegacyComment;
+use App\Models\Assessment;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -18,7 +18,7 @@ class CommentRepliedTo
      *
      * @return void
      */
-    public function __construct(public LegacyComment $comment)
+    public function __construct(public Assessment $comment)
     {
         //
     }

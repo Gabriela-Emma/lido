@@ -10,6 +10,10 @@ use Spatie\Comments\Notifications\PendingCommentNotification;
 
 class Comment extends \Spatie\Comments\Models\Comment
 {
+    protected $with = [
+        'commentator'
+    ];
+
 //    public array $translatable = [
 //        'text'
 //    ];

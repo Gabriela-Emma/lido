@@ -3,7 +3,7 @@
 namespace App\Http\Livewire\Discussions;
 
 use App\Models\Discussion;
-use App\Models\LegacyComment;
+use App\Models\Assessment;
 use App\Repositories\CommentRepository;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -26,7 +26,7 @@ class ReviewComponent extends Component
 
     public ?Discussion $discussion = null;
 
-    public ?LegacyComment $review = null;
+    public ?Assessment $review = null;
 
     public bool $replySubmitted = false;
 
@@ -45,7 +45,7 @@ class ReviewComponent extends Component
 
     protected array $rules = [];
 
-    public function replyToReview(LegacyComment $comment)
+    public function replyToReview(Assessment $comment)
     {
         $this->parentId = $comment->id;
         $this->modelType = $comment->model_type;

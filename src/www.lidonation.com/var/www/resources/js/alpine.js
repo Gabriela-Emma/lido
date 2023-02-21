@@ -1,4 +1,4 @@
-import Alpine, {Alpine as AlpineType} from "alpinejs";
+import Alpine from "alpinejs";
 import Clipboard from "@ryangjchandler/alpine-clipboard"
 import Tooltip from "@ryangjchandler/alpine-tooltip";
 import persist from '@alpinejs/persist';
@@ -6,8 +6,6 @@ import focus from '@alpinejs/focus';
 import {cardanoWallet} from "./lib/utils/cardanoWallet";
 import {globalVideoPlayer} from "./lib/utils/globalVideoPlayer";
 import LZString from 'lz-string';
-import {Cardano} from "lucid-cardano";
-import {Axios} from "axios";
 import {difference, filter, flatten, groupBy, includes, map, omit, reject, some, trim, uniq, uniqBy} from "lodash";
 
 window.moment = require('moment');
@@ -236,6 +234,48 @@ Alpine.store('vt', {
         return this.proposals;
     }
 });
+
+Alpine.data('catalystReportComments', function globalComments() {
+    return {
+        showComments: false,
+        newComment: '',
+        comments: null,
+
+        toggleShowComments(reportId) {
+            this.showComments = !this.showComments;
+            if (!this.comments) {
+                this.loadComments(reportId).then();
+            }
+        },
+
+        addComment() {
+            // Alpine.store('cm').addComment(this.newComment);
+        },
+
+        get commentsArray() {
+            setTimeout(() => {
+                return this.comments;
+            }, 1200);
+        },
+        get commentsAvailable() {
+            return (this.comments.length > 0);
+        },
+
+        async loadComments(itemId) {
+            console.log({itemId});
+            if (!!this.comments) {
+                return;
+            }
+
+            await window.axios.get(`/api/catalyst-explorer/reports/comments/${itemId}`, {})
+                .then((res) => {
+                    console.log({res});
+                    this.comments = [...res.data];
+                });
+        }
+
+    }
+}.bind(Alpine));
 
 Alpine.data('bookmarksMenuLink', function () {
     return {

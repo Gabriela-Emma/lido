@@ -3,7 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Discussion;
-use App\Models\LegacyComment;
+use App\Models\Assessment;
 use App\Models\Rating;
 use App\Models\Review;
 use Illuminate\Database\Eloquent\Factories\Sequence;
@@ -28,7 +28,7 @@ class ReviewFactory extends PostFactory
                         return [
                             'model_id' => $discussion->id,
                             'model_type' => Discussion::class,
-                            'comment_id' => fn () => (LegacyComment::factory([
+                            'comment_id' => fn () => (Assessment::factory([
                                 'model_id' => $discussion->id,
                                 'model_type' => Discussion::class,
                             ])->create())->id,

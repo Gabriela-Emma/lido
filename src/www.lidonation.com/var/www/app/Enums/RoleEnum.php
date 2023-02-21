@@ -9,6 +9,7 @@ use Spatie\Enum\Laravel\Enum;
  * @method static self user()
  * @method static self translator()
  * @method static self proposer()
+ * @method static self catalyst_profile()
  * @method static self delegator()
  * @method static self partner()
  * @method static self moderator()

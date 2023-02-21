@@ -15,7 +15,7 @@ class AssessmentReviewsCommentsAssessors extends Model
 
     public function assessment(): BelongsTo
     {
-        return $this->belongsTo(LegacyComment::class, 'assessment_id');
+        return $this->belongsTo(Assessment::class, 'assessment_id');
     }
 
     public function assessment_review(): BelongsTo

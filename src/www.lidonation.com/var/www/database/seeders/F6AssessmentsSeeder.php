@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Discussion;
-use App\Models\LegacyComment;
+use App\Models\Assessment;
 use App\Models\Proposal;
 use App\Repositories\CommentRepository;
 use App\Services\SettingService;
@@ -75,10 +75,10 @@ class F6AssessmentsSeeder extends FSeeder
         }
     }
 
-    public function createAssessment($discussionTitle, $discussionContent, $assessmentRationale, $assessmentRating, Proposal $proposal, $row): ?LegacyComment
+    public function createAssessment($discussionTitle, $discussionContent, $assessmentRationale, $assessmentRating, Proposal $proposal, $row): ?Assessment
     {
-        $existingComment = LegacyComment::where('content', $assessmentRationale)->first();
-        if ($existingComment instanceof LegacyComment) {
+        $existingComment = Assessment::where('content', $assessmentRationale)->first();
+        if ($existingComment instanceof Assessment) {
             $existingComment->saveMeta('vpa_rating', $row[11] == 'x' ? 'Excellent' : 'Good', $existingComment);
             $existingComment->saveMeta('assessor_id', $row[4], $existingComment);
 
@@ -106,6 +106,6 @@ class F6AssessmentsSeeder extends FSeeder
             ],
         ];
 
-        return LegacyComment::withoutSyncingToSearch(fn () => (app(CommentRepository::class)->create($data)));
+        return Assessment::withoutSyncingToSearch(fn () => (app(CommentRepository::class)->create($data)));
     }
 }

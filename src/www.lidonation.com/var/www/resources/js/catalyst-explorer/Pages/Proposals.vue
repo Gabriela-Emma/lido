@@ -295,11 +295,10 @@ function query() {
         {preserveState: true, preserveScroll: !currPageRef.value}
     );
 
-
-    //@ts-ignore
+    // @ts-ignore
     if (typeof window?.fathom !== 'undefined') {
         // @ts-ignore
-        window?.fathom?.trackGoal(VARIABLES.PROPOSALS_TRACKER_ID, 0);
+        window?.fathom?.trackGoal(VARIABLES.TRACKER_ID_PROPOSALS, 0);
     }
 }
 </script>
