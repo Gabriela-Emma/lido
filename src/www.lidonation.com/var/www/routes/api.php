@@ -189,6 +189,7 @@ Route::group(
         })->where('relativePath', ('.*'));
     });
 
+// Catalyst Explorer Public API
 Route::prefix('catalyst-explorer')->as('catalystExplorerApi.')
     ->middleware([])
     ->group(function () {
@@ -205,7 +206,6 @@ Route::prefix('catalyst-explorer')->as('catalystExplorerApi.')
 
         Route::get('/people', [CatalystExplorer\ProfileController::class, 'people']);
         Route::get('/people/{person_id}', [CatalystExplorer\ProfileController::class, 'person']);
-        Route::post('/profiles/{catalystProfile:id}/follow', [CatalystExplorer\ProfileController::class, 'follow']);
 
         Route::get('/groups', [CatalystExplorer\GroupController::class, 'groups']);
         Route::get('/groups/{group_id}', [CatalystExplorer\GroupController::class, 'group']);
@@ -219,23 +219,34 @@ Route::prefix('catalyst-explorer')->as('catalystExplorerApi.')
             'prefix' => '/reports/comments',
         ], function () {
             Route::get('/{catalystReport:id}', [CatalystExplorer\ReportController::class, 'listComments']);
-            Route::post('/{catalystReport:id}', [CatalystExplorer\ReportController::class, 'createComment']);
-            // Route::post('/create',);
         });
 
         Route::post('/login', [CatalystExplorer\UserController::class, 'login']);
 
-        Route::post('/logout', [CatalystExplorer\UserController::class, 'logout']);
-
         Route::post('/register', [CatalystExplorer\UserController::class, 'create']);
+//        Route::post('/profiles', [CatalystUserProfilesController::class, 'update'])->name('myProfileUpdate');
+    });
+
+// Catalyst Explorer Private API
+Route::prefix('catalyst-explorer')->as('catalystExplorerApi.')
+    ->middleware([
+        'auth:sanctum',
+    ])
+    ->group(function () {
+        Route::post('/profiles/{catalystProfile:id}/follow', [CatalystExplorer\ProfileController::class, 'follow']);
 
         Route::post('/user', [CatalystExplorer\UserController::class, 'update']);
 
         Route::get('/branches',[CatalystExplorer\RepoController::class, 'getBranches']);
         Route::post('/repo',[CatalystExplorer\RepoController::class, 'saveRepo']);
 
+        Route::post('/logout', [CatalystExplorer\UserController::class, 'logout']);
 
-//        Route::post('/profiles', [CatalystUserProfilesController::class, 'update'])->name('myProfileUpdate');
+        Route::group([
+            'prefix' => '/reports/comments',
+        ], function () {
+            Route::post('/{catalystReport:id}', [CatalystExplorer\ReportController::class, 'createComment']);
+        });
     });
 
 Route::prefix('promos')->as('promos')

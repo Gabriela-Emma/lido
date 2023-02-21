@@ -3,22 +3,27 @@
 namespace App\Services;
 
 use CzProject\GitPhp\Git;
+use CzProject\GitPhp\GitException;
 use Whoops\Exception\ErrorException;
 
 
 class CloneRepoService
-{   
-    public static $repositoryPath;
+{
+    public static string $repositoryPath;
 
-    public static $repositoryName;
+    public static string $repositoryName;
 
-    protected static $git;
+    protected static string $git;
 
-    public static function clone($url)
+    /**
+     * @throws ErrorException
+     * @throws GitException
+     */
+    public static function clone($url): string
     {
         // define repository path and name
         self::$repositoryName = basename($url, ".git");
-        self::$repositoryPath = storage_path("app/repo/".self::$repositoryName);
+        self::$repositoryPath = storage_path("app/git-repos/" . self::$repositoryName);
 
 
         // check if repository already exists
@@ -33,9 +38,12 @@ class CloneRepoService
         return self::$repositoryPath;
     }
 
-    public static function repoName()
+    /**
+     * return repository name
+     * @return string
+     */
+    public static function repoName(): string
     {
-        // return repository name
         return self::$repositoryName;
     }
 }
