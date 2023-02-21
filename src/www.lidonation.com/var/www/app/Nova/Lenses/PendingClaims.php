@@ -18,13 +18,12 @@ class PendingClaims extends Lens
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return mixed
      */
-    public static function query(LensRequest $request,  $query)
+    public static function query(LensRequest $request, $query)
     {
-        return $query->whereHas('metas', function($query) {
+        return $query->whereHas('metas', function ($query) {
             $query->where('key', 'ideascale_verification_code')
                   ->whereNull('claimed_by');
         });
-
     }
 
     /**
@@ -66,8 +65,7 @@ class PendingClaims extends Lens
                             'autocomplete' => 'off',
                         ],
                     ]
-                )
-                ,
+                ),
         ];
     }
 

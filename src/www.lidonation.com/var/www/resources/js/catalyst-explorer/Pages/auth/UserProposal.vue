@@ -81,75 +81,9 @@
                     </div>
                 </div>
 
-                <form class="flex h-full flex-col divide-y divide-gray-200 bg-white p-4" v-if="currAction === 'git'">
-                    <h3>
-                        Add a git repo
-                    </h3>
-                    <div class=" flex-1 overflow-y-auto ">
-                        <div class="flex flex-1 flex-col justify-between">
-                            <div class="divide-y divide-gray-200 px-4 sm:px-6 h-64">
-                                <div class="space-y-6 pt-6 pb-5">
-                                    <div>
-                                        <label for="project-name" class="block text-sm font-medium text-gray-900">
-                                            Git (https url)
-                                        </label>
-                                        <div class="mt-1 flex-grow">
-                                            <input v-model="repoForm.gitUrl" type="text" name="gitUrl" id="git"
-                                                   class="block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"/>
-                                            <div v-if="errorMessage && repoForm.gitUrl != '' "
-                                                 class="text-red-500 mt-2 text-sm">{{ errorMessage }}
-                                            </div>
-                                            <input v-model="repoForm.proposal_id" type="text" class="hidden"
-                                                   name="proposal_id">
-                                            <input v-model="repoForm.user_id" type="text" class="hidden"
-                                                   name="catalystUser_id">
-                                            <div class="flex text-xs w-1/2 lg:text-base justify-start ">
-                                                <multiselect
-                                                    class="block mt-3 rounded-md z-10  p-0.5"
-                                                    v-model="repoForm.branch"
-                                                    :options="branches"
-                                                    :close-on-select="true"
-                                                    :clear-on-select="false"
-                                                    placeholder="Select branch "
-                                                    label="name"
-                                                    track-by="name"
-                                                    :multiple="false"
-                                                    :taggable="false"
-                                                    :hide-selected="true"
-                                                    @input="repoForm.branch = $event">
-                                                </multiselect>
-                                            </div>
-                                            <div class="w-full items center" v-show="success">
-                                                <div
-                                                    class="flex justify-between  rounded-md bg-green-700  w-48 mt-4 p-1">
-                                                    <span class="text-white ">{{ success }}</span>
-                                                    <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"
-                                                         id="IconChangeColor" height="20" width="20">
-                                                        <path fill="#ffffff" d="M512 64a448 448 0 1 1 0 896 448 448 0 0 1 0-896zm-55.808 536.384-99.52-99.584a38.4 38.4 0 1
-                                                    0-54.336 54.336l126.72 126.72a38.272 38.272 0 0 0 54.336 0l262.4-262.464a38.4 38.4 0 1 0-54.272-54.336L456.192 600.384z"
-                                                              id="mainIconPathAttribute" stroke-width="0"
-                                                              stroke="#ff0000"></path>
-                                                    </svg>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="flex gap-4 justify-end px-4 py-4">
-                        <button type="button" @click="currAction = null"
-                                class="rounded-sm border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
-                            Cancel
-                        </button>
-                        <button @click.prevent="submitRepo"
-                                as="button"
-                                class="inline-flex custom-input justify-center rounded-sm border border-transparent bg-teal-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
-                            Save
-                        </button>
-                    </div>
-                </form>
+                <div  v-if="currAction === 'git'">
+                    <ProposalAddGitRepo :proposal="proposal" @cancelled="currAction = null" />
+                </div>
 
                 <form class="flex h-full flex-col divide-y divide-gray-200 bg-white" v-if="currAction === 'links'">
                     <div class="h-0 flex-1 overflow-y-auto">
@@ -305,11 +239,8 @@ import {
     ShareIcon,
 } from '@heroicons/vue/24/outline';
 import {DialogTitle} from "@headlessui/vue";
-import {useForm, usePage} from "@inertiajs/vue3";
-import {ref, watch, onBeforeUnmount} from "vue";
-import {debounce} from "lodash";
-import Multiselect from '@vueform/multiselect';
-import axios from "axios";
+import {ref} from "vue";
+import ProposalAddGitRepo from "../../modules/proposals/ProposalAddGitRepo.vue";
 
 
 let currAction = ref(null);
@@ -393,75 +324,6 @@ const props = withDefaults(
         locale?: string,
         proposal: Proposal,
     }>(), {});
-
-
-let repoForm = useForm({
-    gitUrl: '',
-    user_id: props.proposal.user_id,
-    proposal_id: props.proposal.id,
-    branch: ''
-})
-
-
-let branches = ref<string[]>([]);
-let errorMessage = ref('');
-let success = ref();
-
-watch(
-    () => repoForm.gitUrl,
-    debounce((newUrl: string) => {
-        if (!newUrl.startsWith('https://')) {
-            errorMessage.value = 'Invalid Git URL!!';
-            branches.value = [];
-            repoForm.branch = '';
-            return;
-        }
-
-        fetch(`${usePage().props.base_url}/api/catalyst-explorer/branches?gitUrl=${newUrl}`)
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error('Invalid Git URL!!');
-                }
-                return response.json();
-            })
-            .then((data) => {
-                if (!data || data.length === 0) {
-                    errorMessage.value = 'No branches found, ensure repo is public!!';
-                } else {
-                    branches.value = data;
-                    if (!branches.value.includes(repoForm.branch)) {
-                        repoForm.branch = '';
-                    }
-                    errorMessage.value = '';
-                }
-            })
-            .catch((error) => {
-                console.error(error);
-                branches.value = [];
-                repoForm.branch = '';
-                errorMessage.value = error.message;
-            });
-    }, 500)
-);
-
-
-let submitRepo = () => {
-    axios.post(`${usePage().props.base_url}/api/catalyst-explorer/repo`, repoForm)
-        .then((response) => {
-            success.value = response.data;
-            setTimeout(() => {
-                success.value = null;
-                errorMessage.value = '';
-            }, 5000);
-            // repoForm.gitUrl = '';
-            // repoForm.branch = '';
-            // branches.value = [];
-            errorMessage.value = '';
-        })
-        .catch((error) => {
-            console.error(error);
-        });
-}
 
 
 </script>

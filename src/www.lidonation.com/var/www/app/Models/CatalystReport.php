@@ -2,13 +2,13 @@
 
 namespace App\Models;
 
-use Spatie\Comments\Models\Concerns\HasComments;
 use App\Models\Traits\HasMetaData;
 use App\Scopes\OrderByDateScope;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
+use Spatie\Comments\Models\Concerns\HasComments;
 
 class CatalystReport extends Model
 {
@@ -52,11 +52,11 @@ class CatalystReport extends Model
 
     public function commentableName(): string
     {
-        return 'Catalyst Report for: ' . $this->proposal?->title;
+        return 'Catalyst Report for: '.$this->proposal?->title;
     }
 
     public function commentUrl(): string
     {
-        return url('/catalyst-explorer/reports#' . $this->id);
+        return url('/catalyst-explorer/reports#'.$this->id);
     }
 }

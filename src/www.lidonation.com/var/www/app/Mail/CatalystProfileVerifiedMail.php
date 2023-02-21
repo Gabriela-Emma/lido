@@ -22,7 +22,6 @@ class CatalystProfileVerifiedMail extends Mailable implements ShouldQueue
     {
         //
 //        Password::createToken()
-
     }
 
     /**
@@ -32,8 +31,8 @@ class CatalystProfileVerifiedMail extends Mailable implements ShouldQueue
      */
     public function build(): static
     {
-        $token =  Password::createToken($this->catalystUser?->claimed_by_user);
-        $email =  $this->catalystUser->claimed_by_user->email;
+        $token = Password::createToken($this->catalystUser?->claimed_by_user);
+        $email = $this->catalystUser->claimed_by_user->email;
         $setPasswordLink = route('password.reset', compact('token', 'email')); // . $token . '?email=' . urlencode($this->catalystUser->claimed_by_user->email);
 
         return $this

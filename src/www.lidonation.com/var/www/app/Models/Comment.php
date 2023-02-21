@@ -11,7 +11,7 @@ use Spatie\Comments\Notifications\PendingCommentNotification;
 class Comment extends \Spatie\Comments\Models\Comment
 {
     protected $with = [
-        'commentator'
+        'commentator',
     ];
 
 //    public array $translatable = [

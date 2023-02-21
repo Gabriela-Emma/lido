@@ -20,18 +20,23 @@ class FundController extends Controller
      *     summary="Get all funds",
      *     description="Returns all funds",
      *     operationId="funds",
+     *
      *     @OA\Response(
      *         response=200,
      *         description="successful",
+     *
      *          @OA\JsonContent(
      *             type="object",
+     *
      *             @OA\Property(
      *                 property="data",
      *                 type="array",
+     *
      *                 @OA\Items(
      *                     ref="#/components/schemas/funds"
      *                 )
      *             ),
+     *
      *             @OA\Property(
      *                 property="links",
      *                 type="object",
@@ -83,16 +88,19 @@ class FundController extends Controller
      *     summary="Get fund by id",
      *     description="Returns a single fund",
      *     operationId="fund",
+     *
      *     @OA\Parameter(
      *         name="fund_id",
      *         in="path",
      *         description="id of fund to return",
      *         required=true,
+     *
      *         @OA\Schema(
      *             type="integer",
      *             format="int64"
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=200,
      *         description="successful",

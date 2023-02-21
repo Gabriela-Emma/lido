@@ -1,28 +1,26 @@
 <?php
 
+use App\Http\Controllers\Api\CatalystExplorer;
+use App\Http\Controllers\Api\Nfts\LidoMinuteNftsController;
+use App\Http\Controllers\Api\Partners\PartnersController;
+use App\Http\Controllers\Api\Phuffycoin\PhuffycoinController;
+use App\Http\Controllers\Delegators\DelegatorController;
+use App\Http\Controllers\GenerateMnemonicPhraseController;
 use App\Http\Controllers\ProjectCatalyst\CatalystUserProfilesController;
-use App\Models\CatalystReport;
-use App\Models\User;
-use App\Models\Reward;
+use App\Http\Controllers\PromoController;
+use App\Http\Controllers\ProposalController;
+use App\Http\Controllers\QuestionResponseController;
+use App\Http\Controllers\RewardController;
+use App\Models\Catalyst\Ccv4BallotChoice;
 use App\Models\EveryEpoch;
-use Illuminate\Support\Str;
+use App\Models\Reward;
+use App\Models\User;
+use App\Services\CardanoBlockfrostService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\PromoController;
-use App\Models\Catalyst\Ccv4BallotChoice;
-use App\Http\Controllers\RewardController;
-use App\Services\CardanoBlockfrostService;
-use App\Http\Controllers\ProposalController;
-use App\Http\Controllers\Api\CatalystExplorer;
-use App\Http\Controllers\QuestionResponseController;
-use App\Http\Controllers\Delegators\DelegatorController;
-use App\Http\Controllers\Api\Partners\PartnersController;
-use App\Http\Controllers\GenerateMnemonicPhraseController;
-use App\Http\Controllers\Api\Nfts\LidoMinuteNftsController;
-use App\Http\Controllers\Api\Phuffycoin\PhuffycoinController;
-
+use Illuminate\Support\Str;
 
 /*
 |--------------------------------------------------------------------------
@@ -237,8 +235,8 @@ Route::prefix('catalyst-explorer')->as('catalystExplorerApi.')
 
         Route::post('/user', [CatalystExplorer\UserController::class, 'update']);
 
-        Route::get('/branches',[CatalystExplorer\RepoController::class, 'getBranches']);
-        Route::post('/repo',[CatalystExplorer\RepoController::class, 'saveRepo']);
+        Route::get('/branches', [CatalystExplorer\RepoController::class, 'getBranches']);
+        Route::post('/repo', [CatalystExplorer\RepoController::class, 'saveRepo']);
 
         Route::post('/logout', [CatalystExplorer\UserController::class, 'logout']);
 

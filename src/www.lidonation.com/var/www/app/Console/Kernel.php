@@ -2,12 +2,12 @@
 
 namespace App\Console;
 
-use App\Jobs\NewCommits;
-use App\Jobs\LidoStatsJob;
-use App\Jobs\CardanoStatsJob;
-use App\Jobs\RefreshLidoTwitterToken;
 use App\Jobs\CalculateDelegationEpochs;
+use App\Jobs\CardanoStatsJob;
+use App\Jobs\LidoStatsJob;
+use App\Jobs\NewCommits;
 use App\Jobs\ProcessPendingWithdrawalsJob;
+use App\Jobs\RefreshLidoTwitterToken;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
