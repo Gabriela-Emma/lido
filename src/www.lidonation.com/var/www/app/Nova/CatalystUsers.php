@@ -124,14 +124,14 @@ class CatalystUsers extends Resource
      return [
          (new AddMetaData),
          (new EditMetaData(CatalystUser::class)),
-         (new ValidateClaims)
+         (new ValidateClaims),
      ];
  }
 
  public function lenses(NovaRequest $request)
  {
-    return [
-        (new PendingClaims)
-    ];
+     return [
+         (new PendingClaims),
+     ];
  }
 }

@@ -122,12 +122,17 @@
 <script lang="ts" setup>
 import UserNav from "./UserNav.vue";
 import Proposal from "../../models/proposal";
+<<<<<<< HEAD
 import {Link, router} from '@inertiajs/vue3';
 import {computed, ref, watch} from "vue";
 import Filters from "../../models/filters";
 import {VARIABLES} from "../../models/variables";
 
 
+=======
+import {Link, useForm} from '@inertiajs/vue3';
+import {computed, ref} from "@vue/reactivity";
+>>>>>>> 2eaadc6fe2024657d247679e2ffd903d032ce12f
 
 const props = withDefaults(
     defineProps<{
@@ -146,6 +151,7 @@ const props = withDefaults(
     }>(), {});
 
 
+<<<<<<< HEAD
 const filtering = computed(() => {
 return getFiltering();
 });
@@ -179,5 +185,7 @@ function query()
     
 }
 
+=======
+>>>>>>> 2eaadc6fe2024657d247679e2ffd903d032ce12f
 
 </script>

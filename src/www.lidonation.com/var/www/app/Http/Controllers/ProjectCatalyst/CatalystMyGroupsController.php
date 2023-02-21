@@ -16,7 +16,7 @@ class CatalystMyGroupsController extends Controller
     {
         return Inertia::modal('auth/UserGroupCard')
             ->with([
-                'group' => $group
+                'group' => $group,
             ])
             ->baseRoute('catalystExplorer.myGroups');
     }
@@ -39,7 +39,7 @@ class CatalystMyGroupsController extends Controller
         $catalystProfiles = $user->catalyst_profiles?->pluck('id');
 
         $query = CatalystGroup::with('owner')
-            ->whereRelation('owner', fn($query) => $query->whereIn('id', $catalystProfiles));
+            ->whereRelation('owner', fn ($query) => $query->whereIn('id', $catalystProfiles));
         $paginator = $query->paginate($this->perPage, ['*'], 'p')->setPath('/');
 
         return [

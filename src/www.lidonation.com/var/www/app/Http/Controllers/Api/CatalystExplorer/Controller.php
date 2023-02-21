@@ -15,12 +15,15 @@ use OpenApi\Annotations as OA;
  *      description="Cardano Project Catalyst Explorer openapi served by LIDO Nation",
  *      version="1.0.0",
  * ),
+ *
  * @OA\Server(
  *     url="/api/catalyst-explorer",
  * ),
+ *
  * @OA\Schema(
  *      schema="proposal",
  *      type="object",
+ *
  *      @OA\Property(property="id", type="integer", example="687"),
  *      @OA\Property(property="user_id", type="integer", example="543"),
  *      @OA\Property(property="challenge_id", type="integer", example="90"),
@@ -31,9 +34,11 @@ use OpenApi\Annotations as OA;
  *      @OA\Property(
  *          property="embedded_uris",
  *          type="array",
+ *
  *          @OA\Items(type="string"),
  *          example="['https://mlabs.city', 'https://github.com/zygomeb']"
  *      ),
+ *
  *      @OA\Property(property="ideascale_link", type="string", example="https://cardano.ideascale.com/a/dtd/369449-48080"),
  *      @OA\Property(property="ideascale_user", type="string", example="lidonation"),
  *      @OA\Property(property="ideascale_id", type="integer", example="383975"),
@@ -52,7 +57,9 @@ use OpenApi\Annotations as OA;
  *      @OA\Property(
  *          property="tags",
  *          type="array",
+ *
  *          @OA\Items(
+ *
  *              @OA\Property(
  *                  property="id",
  *                  type="integer",
@@ -71,24 +78,30 @@ use OpenApi\Annotations as OA;
  *          )
  *      ),
  * ),
+ *
  * @OA\Schema(
  *      schema="proposals",
  *      type="array",
+ *
  *      @OA\Items(
  *          ref="#/components/schemas/proposal"
  *      ),
  * ),
+ *
  * @OA\Schema(
  *      schema="proposals_links",
  *      type="object",
+ *
  *      @OA\Property(property="first", type="string", example="http://lidonatio.com/api/catalyst-explorer/proposals?page=1"),
  *      @OA\Property(property="last", type="string", example="http://lidonatio.com/api/catalyst-explorer/proposals?page=21"),
  *      @OA\Property(property="prev", type="string", example="null"),
  *      @OA\Property(property="next", type="string", example="http://lidonatio.com/api/catalyst-explorer/proposals?page=2"),
  * ),
+ *
  * @OA\Schema(
  *      schema="proposals_meta",
  *      type="object",
+ *
  *      @OA\Property(property="current_page", type="integer", example=3),
  *      @OA\Property(property="from", type="integer", example=1),
  *      @OA\Property(property="last_page", type="integer", example=1),
@@ -99,23 +112,29 @@ use OpenApi\Annotations as OA;
  *      @OA\Property(property="total", type="integer", example=1),
  *
  * ),
+ *
  * @OA\Schema(
  *      schema="proposals_meta_links_array",
  *      type="array",
+ *
  *      @OA\Items(
  *          ref="#/components/schemas/proposals_meta_links_array_object"
  *      ),
  * ),
+ *
  * @OA\Schema(
  *      schema="proposals_meta_links_array_object",
  *      type="object",
+ *
  *      @OA\Property(property="url", type="string", example="http://localhost:8880/api/catalyst-explorer/proposals?page=1"),
  *      @OA\Property(property="label", type="string", example="1"),
  *      @OA\Property(property="active", type="boolean", example=false),
  *),
+ *
  *  @OA\Schema(
  *       schema="fund",
  *       type="object",
+ *
  *       @OA\Property(property="id", type="integer", example=95),
  *       @OA\Property(property="title", type="string", example="Fund 2"),
  *       @OA\Property(property="proposals_count", type="integer", example=12),
@@ -127,24 +146,30 @@ use OpenApi\Annotations as OA;
  *       @OA\Property(property="thumbnail_url", type="null", example=null),
  *       @OA\Property(property="gravatar", type="null", example=null),
  *   ),
+ *
  * @OA\Schema(
  *      schema="funds",
  *      type="array",
+ *
  *      @OA\Items(
  *          ref="#/components/schemas/fund"
  *      ),
  * ),
+ *
  * @OA\Schema(
  *      schema="funds_links",
  *      type="object",
+ *
  *      @OA\Property(property="first", type="string", example="http://localhost:8880/api/catalyst-explorer/funds?page=1"),
  *      @OA\Property(property="last", type="string", example="http://localhost:8880/api/catalyst-explorer/funds?page=1"),
  *      @OA\Property(property="prev", type="string", example=null),
  *      @OA\Property(property="next", type="string", example="http://localhost:8880/api/catalyst-explorer/funds?page=2"),
  * ),
+ *
  *  @OA\Schema(
  *      schema="funds_meta",
  *      type="object",
+ *
  *      @OA\Property(property="current_page", type="integer", example=1),
  *      @OA\Property(property="from", type="integer", example=1),
  *      @OA\Property(property="last_page", type="integer", example=1),
@@ -154,45 +179,57 @@ use OpenApi\Annotations as OA;
  *      @OA\Property(property="to", type="integer", example=9),
  *      @OA\Property(property="total", type="integer", example=9),
  * ),
+ *
  * * @OA\Schema(
  *      schema="funds_meta_links_array",
  *      type="array",
+ *
  *      @OA\Items(
  *          ref="#/components/schemas/funds_meta_links_array_object"
  *      ),
  * ),
+ *
  * @OA\Schema(
  *      schema="funds_meta_links_array_object",
  *      type="object",
+ *
  *      @OA\Property(property="url", type="string", example="http://localhost:8880/api/catalyst-explorer/funds?page=1"),
  *      @OA\Property(property="label", type="string", example="1"),
  *      @OA\Property(property="active", type="boolean", example=false),
  *),
+ *
  *  @OA\Schema(
  *       schema="tag",
  *       type="object",
+ *
  *       @OA\Property(property="id", type="integer", example=95),
  *       @OA\Property(property="title", type="string", example="voluptatem"),
  *       @OA\Property(property="content", type="string", example="Alias rem dolorum dolores impedit hic. Et molestiae quae amet aut possimus. Ex aperiam quisquam suscipit sunt.Vitae eligendi temporibus quia delectus deserunt. Eum eveniet accusantium rerum ut consequatur."),
  *   ),
+ *
  * @OA\Schema(
  *      schema="tags",
  *      type="array",
+ *
  *      @OA\Items(
  *          ref="#/components/schemas/tag"
  *      ),
  * ),
+ *
  * @OA\Schema(
  *      schema="tags_links",
  *      type="object",
+ *
  *      @OA\Property(property="first", type="string", example="http://localhost:8880/api/catalyst-explorer/tags?page=1"),
  *      @OA\Property(property="last", type="string", example="http://localhost:8880/api/catalyst-explorer/tags?page=1"),
  *      @OA\Property(property="prev", type="string", example=null),
  *      @OA\Property(property="next", type="string", example="http://localhost:8880/api/catalyst-explorer/tags?page=2"),
  * ),
+ *
  *  @OA\Schema(
  *      schema="tags_meta",
  *      type="object",
+ *
  *      @OA\Property(property="current_page", type="integer", example=1),
  *      @OA\Property(property="from", type="integer", example=1),
  *      @OA\Property(property="last_page", type="integer", example=1),
@@ -202,23 +239,29 @@ use OpenApi\Annotations as OA;
  *      @OA\Property(property="to", type="integer", example=9),
  *      @OA\Property(property="total", type="integer", example=9),
  * ),
+ *
  * * @OA\Schema(
  *      schema="tags_meta_links_array",
  *      type="array",
+ *
  *      @OA\Items(
  *          ref="#/components/schemas/tags_meta_links_array_object"
  *      ),
  * ),
+ *
  * @OA\Schema(
  *      schema="tags_meta_links_array_object",
  *      type="object",
+ *
  *      @OA\Property(property="url", type="string", example="http://localhost:8880/api/catalyst-explorer/tags?page=1"),
  *      @OA\Property(property="label", type="string", example="1"),
  *      @OA\Property(property="active", type="boolean", example=false),
  *),
+ *
  *  @OA\Schema(
  *       schema="challenge",
  *       type="object",
+ *
  *       @OA\Property(property="id", type="integer", example=92),
  *       @OA\Property(property="fundId", type="integer", example=91),
  *       @OA\Property(property="title", type="string", example="F3: DApp Creation"),
@@ -226,24 +269,30 @@ use OpenApi\Annotations as OA;
  *       @OA\Property(property="amount", type="integer", example="250000"),
  *       @OA\Property(property="currency", type="string", example="usd"),
  *   ),
+ *
  * @OA\Schema(
  *      schema="challenges",
  *      type="array",
+ *
  *      @OA\Items(
  *          ref="#/components/schemas/challenge"
  *      ),
  * ),
+ *
  * @OA\Schema(
  *      schema="challenges_links",
  *      type="object",
+ *
  *      @OA\Property(property="first", type="string", example="http://localhost:8880/api/catalyst-explorer/challenges?page=1"),
  *      @OA\Property(property="last", type="string", example="http://localhost:8880/api/catalyst-explorer/challenges?page=1"),
  *      @OA\Property(property="prev", type="string", example=null),
  *      @OA\Property(property="next", type="string", example="http://localhost:8880/api/catalyst-explorer/challenges?page=2"),
  * ),
+ *
  *  @OA\Schema(
  *      schema="challenges_meta",
  *      type="object",
+ *
  *      @OA\Property(property="current_page", type="integer", example=1),
  *      @OA\Property(property="from", type="integer", example=1),
  *      @OA\Property(property="last_page", type="integer", example=1),
@@ -253,23 +302,29 @@ use OpenApi\Annotations as OA;
  *      @OA\Property(property="to", type="integer", example=100),
  *      @OA\Property(property="total", type="integer", example=100),
  * ),
+ *
  * * @OA\Schema(
  *      schema="challenges_meta_links_array",
  *      type="array",
+ *
  *      @OA\Items(
  *          ref="#/components/schemas/challenges_meta_links_array_object"
  *      ),
  * ),
+ *
  * @OA\Schema(
  *      schema="challenges_meta_links_array_object",
  *      type="object",
+ *
  *      @OA\Property(property="url", type="string", example="http://localhost:8880/api/catalyst-explorer/challenges?page=1"),
  *      @OA\Property(property="label", type="string", example="1"),
  *      @OA\Property(property="active", type="boolean", example=true),
  *),
+ *
  *  @OA\Schema(
  *       schema="group",
  *       type="object",
+ *
  *       @OA\Property(property="id", type="integer", example=5),
  *       @OA\Property(property="slug", type="string", example=null),
  *       @OA\Property(property="name", type="string", example="LIDO Nation Foundation"),
@@ -279,24 +334,30 @@ use OpenApi\Annotations as OA;
  *       @OA\Property(property="twitter", type="string", example="lidonation"),
  *       @OA\Property(property="discord", type="string", example=null),
  *   ),
+ *
  * @OA\Schema(
  *      schema="groups",
  *      type="array",
+ *
  *      @OA\Items(
  *          ref="#/components/schemas/challenge"
  *      ),
  * ),
+ *
  * @OA\Schema(
  *      schema="groups_links",
  *      type="object",
+ *
  *      @OA\Property(property="first", type="string", example="http://localhost:8880/api/catalyst-explorer/groups?page=1"),
  *      @OA\Property(property="last", type="string", example="http://localhost:8880/api/catalyst-explorer/groups?page=3"),
  *      @OA\Property(property="prev", type="string", example=null),
  *      @OA\Property(property="next", type="string", example="http://localhost:8880/api/catalyst-explorer/groups?page=2"),
  * ),
+ *
  *  @OA\Schema(
  *      schema="groups_meta",
  *      type="object",
+ *
  *      @OA\Property(property="current_page", type="integer", example=1),
  *      @OA\Property(property="from", type="integer", example=1),
  *      @OA\Property(property="last_page", type="integer", example=3),
@@ -306,23 +367,29 @@ use OpenApi\Annotations as OA;
  *      @OA\Property(property="to", type="integer", example=24),
  *      @OA\Property(property="total", type="integer", example=69),
  * ),
+ *
  * * @OA\Schema(
  *      schema="groups_meta_links_array",
  *      type="array",
+ *
  *      @OA\Items(
  *          ref="#/components/schemas/groups_meta_links_array_object"
  *      ),
  * ),
+ *
  * @OA\Schema(
  *      schema="groups_meta_links_array_object",
  *      type="object",
+ *
  *      @OA\Property(property="url", type="string", example="http://localhost:8880/api/catalyst-explorer/groups?page=1"),
  *      @OA\Property(property="label", type="string", example="1"),
  *      @OA\Property(property="active", type="boolean", example=true),
  *),
+ *
  *  @OA\Schema(
  *       schema="person",
  *       type="object",
+ *
  *       @OA\Property(property="id", type="integer", example=23),
  *       @OA\Property(property="username", type="string", example="swhitenstall"),
  *       @OA\Property(property="name", type="string", example="Stephen Whitenstall"),
@@ -333,24 +400,30 @@ use OpenApi\Annotations as OA;
  *       @OA\Property(property="ideascale_id", type="integer", example=0),
  *       @OA\Property(property="average_rating", type="string", example=null),
  *   ),
+ *
  * @OA\Schema(
  *      schema="people",
  *      type="array",
+ *
  *      @OA\Items(
  *          ref="#/components/schemas/person"
  *      ),
  * ),
+ *
  * @OA\Schema(
  *      schema="people_links",
  *      type="object",
+ *
  *      @OA\Property(property="first", type="string", example="http://localhost:8880/api/catalyst-explorer/people?page=1"),
  *      @OA\Property(property="last", type="string", example="http://localhost:8880/api/catalyst-explorer/people?page=23"),
  *      @OA\Property(property="prev", type="string", example=null),
  *      @OA\Property(property="next", type="string", example="http://localhost:8880/api/catalyst-explorer/people?page=2"),
  * ),
+ *
  *  @OA\Schema(
  *      schema="people_meta",
  *      type="object",
+ *
  *      @OA\Property(property="current_page", type="integer", example=1),
  *      @OA\Property(property="from", type="integer", example=1),
  *      @OA\Property(property="last_page", type="integer", example=23),
@@ -360,16 +433,20 @@ use OpenApi\Annotations as OA;
  *      @OA\Property(property="to", type="integer", example=24),
  *      @OA\Property(property="total", type="integer", example=2941),
  * ),
+ *
  * * @OA\Schema(
  *      schema="people_meta_links_array",
  *      type="array",
+ *
  *      @OA\Items(
  *          ref="#/components/schemas/people_meta_links_array_object"
  *      ),
  * ),
+ *
  * @OA\Schema(
  *      schema="people_meta_links_array_object",
  *      type="object",
+ *
  *      @OA\Property(property="url", type="string", example="http://localhost:8880/api/catalyst-explorer/people?page=1"),
  *      @OA\Property(property="label", type="string", example="1"),
  *      @OA\Property(property="active", type="boolean", example=true),

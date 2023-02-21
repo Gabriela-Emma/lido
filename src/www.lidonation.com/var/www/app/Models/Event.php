@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use App\Models\Traits\HasAuthor;
 use App\Models\Traits\HasAssessments;
+use App\Models\Traits\HasAuthor;
 use App\Models\Traits\HasHero;
 use App\Models\Traits\HasLinks;
 use App\Models\Traits\HasMetaData;

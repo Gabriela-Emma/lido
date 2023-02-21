@@ -81,37 +81,9 @@
                     </div>
                 </div>
 
-                <form class="flex h-full flex-col divide-y divide-gray-200 bg-white p-4" v-if="currAction === 'git'">
-                    <h3>
-                        Add a git repo
-                    </h3>
-                    <div class="h-0 flex-1 overflow-y-auto">
-                        <div class="flex flex-1 flex-col justify-between">
-                            <div class="divide-y divide-gray-200 px-4 sm:px-6">
-                                <div class="space-y-6 pt-6 pb-5">
-                                    <div>
-                                        <label for="project-name" class="block text-sm font-medium text-gray-900">
-                                            Git (http url)
-                                        </label>
-                                        <div class="mt-1">
-                                            <input type="text" name="git" id="git"
-                                                   class="block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"/>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="flex gap-4 justify-end px-4 py-4">
-                        <button type="button" @click="currAction = null"
-                                class="rounded-sm border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">Cancel
-                        </button>
-                        <button type="submit"
-                                class="inline-flex custom-input justify-center rounded-sm border border-transparent bg-teal-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
-                            Save
-                        </button>
-                    </div>
-                </form>
+                <div  v-if="currAction === 'git'">
+                    <ProposalAddGitRepo :proposal="proposal" @cancelled="currAction = null" />
+                </div>
 
                 <form class="flex h-full flex-col divide-y divide-gray-200 bg-white" v-if="currAction === 'links'">
                     <div class="h-0 flex-1 overflow-y-auto">
@@ -192,10 +164,10 @@
                                             <div>
                                                 <div class="relative flex items-start">
                                                     <div class="absolute flex h-5 items-center">
-                                                        <input id="privacy-private" name="privacy"
-                                                               aria-describedby="privacy-private-to-project-description"
-                                                               type="radio"
-                                                               class="h-4 w-4 border-gray-300 text-teal-600 focus:ring-teal-500"/>
+                                                        tyty@tyty.co <input id="privacy-private" name="privacy"
+                                                                            aria-describedby="privacy-private-to-project-description"
+                                                                            type="radio"
+                                                                            class="h-4 w-4 border-gray-300 text-teal-600 focus:ring-teal-500"/>
                                                     </div>
                                                     <div class="pl-7 text-sm">
                                                         <label for="privacy-private" class="font-medium text-gray-900">Private
@@ -266,8 +238,10 @@ import {
     NewspaperIcon,
     ShareIcon,
 } from '@heroicons/vue/24/outline';
-import {ref} from "vue";
 import {DialogTitle} from "@headlessui/vue";
+import {ref} from "vue";
+import ProposalAddGitRepo from "../../modules/proposals/ProposalAddGitRepo.vue";
+
 
 let currAction = ref(null);
 
@@ -348,7 +322,8 @@ const team = [
 const props = withDefaults(
     defineProps<{
         locale?: string,
-        proposal: Proposal;
+        proposal: Proposal,
     }>(), {});
+
 
 </script>

@@ -2,8 +2,8 @@
 
 namespace App\Http\Livewire\Discussions;
 
-use App\Models\Discussion;
 use App\Models\Assessment;
+use App\Models\Discussion;
 use App\Repositories\CommentRepository;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;

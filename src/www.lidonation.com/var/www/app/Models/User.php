@@ -29,7 +29,6 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\Permission\Traits\HasRoles;
 use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 use Staudenmeir\EloquentJsonRelations\HasJsonRelationships;
-use Staudenmeir\EloquentJsonRelations\JsonKey;
 
 class User extends Authenticatable implements HasMedia, Interfaces\IHasMetaData, CanComment, CanResetPassword
 {
@@ -68,6 +67,7 @@ class User extends Authenticatable implements HasMedia, Interfaces\IHasMetaData,
      */
     protected $hidden = [
         'password',
+        'email',
         'remember_token',
         'two_factor_recovery_codes',
         'two_factor_secret',
@@ -80,8 +80,8 @@ class User extends Authenticatable implements HasMedia, Interfaces\IHasMetaData,
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'what_filter' => 'json'
-//        'what_filter' => NRTFilter::class
+        'what_filter' => 'json',
+        //        'what_filter' => NRTFilter::class
     ];
 
     /**
@@ -192,9 +192,9 @@ class User extends Authenticatable implements HasMedia, Interfaces\IHasMetaData,
         return "https://www.gravatar.com/avatar/$hash?d=identicon&r=r";
     }
 
-    public function follows(CatalystUser | int $catalystUser): bool
+    public function follows(CatalystUser|int $catalystUser): bool
     {
-        return $this->whereHas('following', fn($q) => $q->whereIn('what_id', [$catalystUser?->id ?? $catalystUser]))->count() > 0;
+        return $this->whereHas('following', fn ($q) => $q->whereIn('what_id', [$catalystUser?->id ?? $catalystUser]))->count() > 0;
     }
 
     /**

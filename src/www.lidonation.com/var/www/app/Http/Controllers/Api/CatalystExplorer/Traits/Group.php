@@ -19,18 +19,23 @@ trait Group
      *     summary="Get all groups",
      *     description="Returns all groups",
      *     operationId="groups",
+     *
      *     @OA\Response(
      *         response=200,
      *         description="successful",
+     *
      *          @OA\JsonContent(
      *             type="object",
+     *
      *             @OA\Property(
      *                 property="data",
      *                 type="array",
+     *
      *                 @OA\Items(
      *                     ref="#/components/schemas/groups"
      *                 )
      *             ),
+     *
      *             @OA\Property(
      *                 property="links",
      *                 type="object",

@@ -5,6 +5,7 @@ namespace App\Console;
 use App\Jobs\CalculateDelegationEpochs;
 use App\Jobs\CardanoStatsJob;
 use App\Jobs\LidoStatsJob;
+use App\Jobs\NewCommits;
 use App\Jobs\ProcessPendingWithdrawalsJob;
 use App\Jobs\RefreshLidoTwitterToken;
 use Illuminate\Console\Scheduling\Schedule;
@@ -34,6 +35,7 @@ class Kernel extends ConsoleKernel
         $schedule->job(new LidoStatsJob)->everyFifteenMinutes();
         $schedule->job(new CardanoStatsJob)->everyTwoHours();
         $schedule->job(new RefreshLidoTwitterToken)->everyThirtyMinutes();
+        $schedule->job(new NewCommits)->daily();
 
         $schedule->command('ln:sitemap:generate')->weekly();
 

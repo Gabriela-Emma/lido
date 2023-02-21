@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\Assessment;
 use App\Models\Discussion;
 use App\Models\Fund;
-use App\Models\Assessment;
 use App\Models\Proposal;
 use App\Repositories\CommentRepository;
 use App\Services\SettingService;

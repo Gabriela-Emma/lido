@@ -5,8 +5,8 @@ namespace App\Casts;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use InvalidArgumentException;
 
-class NRTFilter implements CastsAttributes {
-
+class NRTFilter implements CastsAttributes
+{
     public function get($model, string $key, $value, array $attributes): \App\ValueObjects\NRTFilter
     {
         return new \App\ValueObjects\NRTFilter(
@@ -21,7 +21,7 @@ class NRTFilter implements CastsAttributes {
         }
 
         return [
-            'subject' => $value->subject
+            'subject' => $value->subject,
         ];
     }
 }

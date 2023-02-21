@@ -69,13 +69,14 @@ class CatalystPeopleController extends Controller
                     'proposals_count',
                     'proposals_completed',
                     'profile_photo_url',
-                    'media.original_url'
+                    'media.original_url',
                 ];
-                if (!$this->search) {
+                if (! $this->search) {
                     $options['sort'] = ['name:asc'];
                 }
                 $options['offset'] = (($this->currentPage ?? 1) - 1) * $this->perPage;
                 $options['limit'] = $this->perPage;
+
                 return $index->search($query, $options);
             });
 

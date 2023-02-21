@@ -73,7 +73,7 @@ class CatalystGroup extends Model implements HasMedia, HasLink
 
     public function claimedBy(): Attribute
     {
-        return Attribute::make(get: fn() => $this->owner?->claimed_by_user);
+        return Attribute::make(get: fn () => $this->owner?->claimed_by_user);
     }
 
     public function owner(): BelongsTo
