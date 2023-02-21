@@ -49,7 +49,7 @@
                 <div v-if="!currAction"
                      class="divide-y divide-gray-200 overflow-hidden bg-gray-200  sm:grid sm:grid-cols-2 sm:gap-px sm:divide-y-0">
                     <div v-for="(action, actionIdx) in actions" :key="action.title"
-                         :class="[actionIdx === 0 ? 'rounded-tl-md rounded-tr-md sm:rounded-tr-none' : '', actionIdx === 1 ? 'sm:rounded-tr-md' : '', actionIdx === actions.length - 2 ? 'sm:rounded-bl-md' : '', actionIdx === actions.length - 1 ? 'rounded-bl-md rounded-br-md sm:rounded-bl-none' : '', 'relative group bg-white p-6 focus-within:ring-2 focus-within:ring-inset focus-within:ring-teal-500']">
+                         :class="[actionIdx === 0 ? 'rounded-tl-sm rounded-tr-sm sm:rounded-tr-none' : '', actionIdx === 1 ? 'sm:rounded-tr-sm' : '', actionIdx === actions.length - 2 ? 'sm:rounded-bl-sm' : '', actionIdx === actions.length - 1 ? 'rounded-bl-md rounded-br-sm sm:rounded-bl-none' : '', 'relative group bg-white p-6 focus-within:ring-2 focus-within:ring-inset focus-within:ring-teal-500']">
                         <div>
                         <span
                             :class="[action.iconBackground, action.iconForeground, 'rounded-md inline-flex p-3 ring-4 ring-white']">
@@ -57,7 +57,7 @@
                         </span>
                         </div>
                         <div class="mt-8">
-                            <h3 class="text-lg font-medium">
+                            <h3 class="text-md font-medium">
                                 <a :href="action.href" class="focus:outline-none" target="_blank" v-if="action.href">
                                     <!-- Extend touch target to entire panel -->
                                     <span class="absolute inset-0" aria-hidden="true"/>
@@ -70,7 +70,7 @@
                                     {{ action.title }}
                                 </a>
                             </h3>
-                            <p class="mt-2 text-sm text-gray-500">
+                            <p class="mt-2 text-sm text-gray-500 break-words">
                                 {{ action.excerpt }}
                             </p>
                         </div>
@@ -81,75 +81,46 @@
                     </div>
                 </div>
 
-                <form class="flex h-full flex-col divide-y divide-gray-200 bg-white p-4" v-if="currAction === 'git'">
-                    <h3>
-                        Add a git repo
-                    </h3>
-                    <div class=" flex-1 overflow-y-auto ">
-                        <div class="flex flex-1 flex-col justify-between">
-                            <div class="divide-y divide-gray-200 px-4 sm:px-6 h-64">
-                                <div class="space-y-6 pt-6 pb-5">
-                                    <div>
-                                        <label for="project-name" class="block text-sm font-medium text-gray-900">
-                                            Git (https url)
-                                        </label>
-                                        <div class="mt-1 flex-grow">
-                                            <input v-model="repoForm.gitUrl" type="text" name="gitUrl" id="git"
-                                                   class="block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"/>
-                                            <div v-if="errorMessage && repoForm.gitUrl != '' "
-                                                 class="text-red-500 mt-2 text-sm">{{ errorMessage }}
-                                            </div>
-                                            <input v-model="repoForm.proposal_id" type="text" class="hidden"
-                                                   name="proposal_id">
-                                            <input v-model="repoForm.user_id" type="text" class="hidden"
-                                                   name="catalystUser_id">
-                                            <div class="flex text-xs w-1/2 lg:text-base justify-start ">
-                                                <multiselect
-                                                    class="block mt-3 rounded-md z-10  p-0.5"
-                                                    v-model="repoForm.branch"
-                                                    :options="branches"
-                                                    :close-on-select="true"
-                                                    :clear-on-select="false"
-                                                    placeholder="Select branch "
-                                                    label="name"
-                                                    track-by="name"
-                                                    :multiple="false"
-                                                    :taggable="false"
-                                                    :hide-selected="true"
-                                                    @input="repoForm.branch = $event">
-                                                </multiselect>
-                                            </div>
-                                            <div class="w-full items center" v-show="success">
-                                                <div
-                                                    class="flex justify-between  rounded-md bg-green-700  w-48 mt-4 p-1">
-                                                    <span class="text-white ">{{ success }}</span>
-                                                    <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"
-                                                         id="IconChangeColor" height="20" width="20">
-                                                        <path fill="#ffffff" d="M512 64a448 448 0 1 1 0 896 448 448 0 0 1 0-896zm-55.808 536.384-99.52-99.584a38.4 38.4 0 1
-                                                    0-54.336 54.336l126.72 126.72a38.272 38.272 0 0 0 54.336 0l262.4-262.464a38.4 38.4 0 1 0-54.272-54.336L456.192 600.384z"
-                                                              id="mainIconPathAttribute" stroke-width="0"
-                                                              stroke="#ff0000"></path>
-                                                    </svg>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                <div v-if="currAction === 'git'">
+                    <ProposalAddGitRepo :proposal="proposal" @cancelled="currAction = null"/>
+                </div>
+
+                <div class="flex h-full flex-col divide-y divide-gray-200 bg-white" v-if="currAction === 'reports'">
+                    <ul role="list" class="divide-y divide-gray-200">
+                        <li v-for="action in iogReportActions" class="px-4">
+                            <a :href="action.href" class="flex w-full items-start py-4 h-full" target="_blank">
+                                <div class="h-10 w-10 rounded-full">
+                                    <component :is="action.icon" class="h-10 w-10" aria-hidden="true"/>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="flex gap-4 justify-end px-4 py-4">
-                        <button type="button" @click="currAction = null"
-                                class="rounded-sm border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
-                            Cancel
+                                <div class="ml-3">
+                                    <div class="text-lg text-gray-600">{{ action.title }}</div>
+                                    <p class="text-sm font-medium text-gray-500">{{ action.excerpt }}</p>
+                                </div>
+                                <div class="w-8 ml-auto flex h-full flex items-center justify-end">
+                                    <ArrowUpRightIcon class="w-4 h-4" />
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="flex gap-4 justify-center items-center p-4 w-full">
+                        <button type="submit" @click="currAction = null"
+                                class="inline-flex gap-2 justify-center rounded-sm border border-transparent bg-slate-300 py-2 px-4 text-sm font-medium text-white shadow-xs hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
+                            <ArrowUturnLeftIcon class="w-4 h-4"/>
+                            <span>Back</span>
                         </button>
-                        <button @click.prevent="submitRepo"
-                                as="button"
-                                class="inline-flex custom-input justify-center rounded-sm border border-transparent bg-teal-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
-                            Save
+                    </div>
+                </div>
+
+                <div class="flex h-full flex-col divide-y divide-gray-200 bg-white" v-if="currAction === 'youtube'">
+                    <h2 class="text-center py-4">Feature coming soon</h2>
+                    <div class="flex gap-4 justify-center items-center p-4 w-full">
+                        <button type="submit" @click="currAction = null"
+                                class="inline-flex gap-2 justify-center rounded-sm border border-transparent bg-slate-300 py-2 px-4 text-sm font-medium text-white shadow-xs hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
+                            <ArrowUturnLeftIcon class="w-4 h-4"/>
+                            <span>Back</span>
                         </button>
                     </div>
-                </form>
+                </div>
 
                 <form class="flex h-full flex-col divide-y divide-gray-200 bg-white" v-if="currAction === 'links'">
                     <div class="h-0 flex-1 overflow-y-auto">
@@ -282,22 +253,21 @@
                 </form>
             </div>
         </div>
-        <!--        <div class="">-->
-
-        <!--            <div class="p-4">-->
-        <!--                <div>-->
-        <!--                    <h2 class="leading-6 text-slate-900">My Proposal</h2>-->
-        <!--                </div>-->
-        <!--            </div>-->
-        <!--        </div>-->
     </Modal>
 </template>
 
 <script lang="ts" setup>
 import Proposal from "../../models/proposal";
 import Modal from "../../Shared/Components/Modal.vue";
-import {XMarkIcon} from '@heroicons/vue/24/outline'
-import {LinkIcon, PlusIcon, QuestionMarkCircleIcon, ArrowUpRightIcon} from '@heroicons/vue/20/solid'
+import {XMarkIcon, ArrowUturnLeftIcon} from '@heroicons/vue/24/outline'
+import {
+    LinkIcon,
+    PlusIcon,
+    QuestionMarkCircleIcon,
+    ArrowUpRightIcon,
+    AcademicCapIcon,
+    BuildingOfficeIcon, VideoCameraIcon
+} from '@heroicons/vue/20/solid'
 import {
     DocumentCheckIcon,
     CommandLineIcon,
@@ -305,51 +275,82 @@ import {
     ShareIcon,
 } from '@heroicons/vue/24/outline';
 import {DialogTitle} from "@headlessui/vue";
-import {useForm, usePage} from "@inertiajs/vue3";
-import {ref, watch, onBeforeUnmount} from "vue";
-import {debounce} from "lodash";
-import Multiselect from '@vueform/multiselect';
-import axios from "axios";
+import {computed, ref} from "vue";
+import ProposalAddGitRepo from "../../modules/proposals/ProposalAddGitRepo.vue";
 
-
+const props = withDefaults(
+    defineProps<{
+        locale?: string,
+        proposal: Proposal,
+    }>(), {});
+const gitRepo = computed(() => (props.proposal?.repos[0] || null));
 let currAction = ref(null);
 
 const actions = [
     {
-        title: 'Git Repo',
-        excerpt: 'Stream git commit messages to the community by adding a public or private repository.',
+        title: 'Git Repo' + (gitRepo ? ' - successfully added!' : ''),
+        excerpt: gitRepo ? `Tracking ${gitRepo?.value?.url}:${gitRepo?.value?.tracked_branch}` : 'Stream git commit messages to the community by adding a public or private repository.',
         handler: 'git',
         icon: CommandLineIcon,
         hint: PlusIcon,
         iconForeground: 'text-teal-700',
         iconBackground: 'bg-teal-50',
     },
+    // {
+    //     title: 'Community Links',
+    //     excerpt: 'Add community links for your project. Facebook, twitter, discord, website, etc.',
+    //     handler: 'links',
+    //     icon: ShareIcon,
+    //     hint: PlusIcon,
+    //     iconForeground: 'text-purple-700',
+    //     iconBackground: 'bg-purple-50',
+    // },
     {
-        title: 'Community Links',
-        excerpt: 'Add community links for your project. Facebook, twitter, discord, website, etc.',
-        handler: 'links',
-        icon: ShareIcon,
-        hint: PlusIcon,
-        iconForeground: 'text-purple-700',
-        iconBackground: 'bg-purple-50',
+        title: 'Official (IOG) Funding Reports',
+        excerpt: 'Official google forms and reports you need to submit to receive funding and fulfill community reporting obligations.',
+        handler: 'reports',
+        icon: DocumentCheckIcon,
+        iconForeground: 'text-yellow-700',
+        iconBackground: 'bg-yellow-50',
     },
     {
+        title: 'Youtube Channel - coming soon',
+        excerpt: 'Do you have a dedicated YouTube Channel for this project?',
+        handler: 'youtube',
+        icon: VideoCameraIcon,
+        hint: PlusIcon,
+        iconForeground: 'text-pink-700',
+        iconBackground: 'bg-pink-50',
+    },
+];
+
+const iogReportActions = [
+    {
         title: 'Submit Monthly Report',
-        excerpt: 'Official google form. Submit by 20th to receive funding.',
+        excerpt: 'Must be submitted by 20th to receive funding.',
         href: 'https://docs.google.com/forms/d/e/1FAIpQLSdS6wAzKdSR1mAwCHP0EkVqOVlszvU5E45B0G2-0HmjO6qgbA/viewform',
         icon: NewspaperIcon,
         iconForeground: 'text-yellow-700',
         iconBackground: 'bg-yellow-50',
     },
     {
-        title: 'Close Project',
-        excerpt: 'Project completed? Need to submit closeout report for final payment.',
+        title: 'Proof of Accomplishment/Milestone',
+        excerpt: 'Did you have to submit milestone for your project? Must submit a proof of accomplishment in addition to your monthly report to receive final payment for your milestone budget',
         href: 'https://drive.google.com/drive/u/1/folders/1SSW2afDX5w30aTZYF3p7o7rLUep7v0TJ',
-        icon: DocumentCheckIcon,
+        icon: AcademicCapIcon,
         iconForeground: 'text-sky-700',
         iconBackground: 'bg-sky-50',
     },
-]
+    {
+        title: 'Close Project',
+        excerpt: 'Project completed? Need to submit closeout report for final payment.',
+        href: 'https://drive.google.com/drive/u/1/folders/1SSW2afDX5w30aTZYF3p7o7rLUep7v0TJ',
+        icon: BuildingOfficeIcon,
+        iconForeground: 'text-sky-700',
+        iconBackground: 'bg-sky-50',
+    }
+];
+
 const team = [
     {
         name: 'Tom Cook',
@@ -387,81 +388,4 @@ const team = [
             'https://images.unsplash.com/photo-1502685104226-ee32379fefbe?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
     },
 ];
-
-const props = withDefaults(
-    defineProps<{
-        locale?: string,
-        proposal: Proposal,
-    }>(), {});
-
-
-let repoForm = useForm({
-    gitUrl: '',
-    user_id: props.proposal.user_id,
-    proposal_id: props.proposal.id,
-    branch: ''
-})
-
-
-let branches = ref<string[]>([]);
-let errorMessage = ref('');
-let success = ref();
-
-watch(
-    () => repoForm.gitUrl,
-    debounce((newUrl: string) => {
-        if (!newUrl.startsWith('https://')) {
-            errorMessage.value = 'Invalid Git URL!!';
-            branches.value = [];
-            repoForm.branch = '';
-            return;
-        }
-
-        fetch(`${usePage().props.base_url}/api/catalyst-explorer/branches?gitUrl=${newUrl}`)
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error('Invalid Git URL!!');
-                }
-                return response.json();
-            })
-            .then((data) => {
-                if (!data || data.length === 0) {
-                    errorMessage.value = 'No branches found, ensure repo is public!!';
-                } else {
-                    branches.value = data;
-                    if (!branches.value.includes(repoForm.branch)) {
-                        repoForm.branch = '';
-                    }
-                    errorMessage.value = '';
-                }
-            })
-            .catch((error) => {
-                console.error(error);
-                branches.value = [];
-                repoForm.branch = '';
-                errorMessage.value = error.message;
-            });
-    }, 500)
-);
-
-
-let submitRepo = () => {
-    axios.post(`${usePage().props.base_url}/api/catalyst-explorer/repo`, repoForm)
-        .then((response) => {
-            success.value = response.data;
-            setTimeout(() => {
-                success.value = null;
-                errorMessage.value = '';
-            }, 5000);
-            // repoForm.gitUrl = '';
-            // repoForm.branch = '';
-            // branches.value = [];
-            errorMessage.value = '';
-        })
-        .catch((error) => {
-            console.error(error);
-        });
-}
-
-
 </script>

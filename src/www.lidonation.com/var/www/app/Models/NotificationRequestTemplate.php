@@ -21,6 +21,4 @@ class NotificationRequestTemplate extends Model
         'updated_at' => 'datetime:Y-m-d',
         'created_at' => 'datetime:Y-m-d',
     ];
-
-
 }

@@ -2,16 +2,15 @@
 
 namespace App\Jobs;
 
-use App\Models\Repo;
-use App\Models\Commits;
 use App\Actions\CmdRunner;
+use App\Models\Commit;
+use App\Models\Repo;
 use Illuminate\Bus\Queueable;
-use Illuminate\Support\Facades\File;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\File;
 
 class NewCommits implements ShouldQueue
 {
@@ -19,14 +18,13 @@ class NewCommits implements ShouldQueue
 
     public function handle()
     {
-        
-            // Get all the directories in the repo path
-        $repoPath = storage_path('app/repo');
+        // Get all the directories in the repo path
+        $repoPath = storage_path('app/git-repos');
         $directories = File::directories($repoPath);
 
         foreach ($directories as $directory) {
             // Check if the directory is a valid Git repository
-            if (!File::exists($directory . '/.git')) {
+            if (! File::exists($directory.'/.git')) {
                 continue;
             }
 
@@ -38,13 +36,13 @@ class NewCommits implements ShouldQueue
             $runner->run($repoPath, ['pull']);
 
             $repo = Repo::where('name', $directory)->first();
-            if (!$repo) {
+            if (! $repo) {
                 continue;
             }
 
             // Fetch the latest commits for the branch
             $logOutput = $runner->run($repoPath, [
-                'log', 
+                'log',
                 '--pretty=format:%h/ %an/ %ad/ %s',
                 '--date=format:%Y-%m-%d %H:%M:%S',
                 $repo->tracked_branch,
@@ -58,14 +56,14 @@ class NewCommits implements ShouldQueue
                 if (empty(trim($line))) {
                     continue;
                 }
-                list($commitHash, $commitAuthor, $createdAt, $commitMessage) = explode("/", $line, 4);
+                [$commitHash, $commitAuthor, $createdAt, $commitMessage] = explode('/', $line, 4);
 
                 // Check if the commit already exists
-                $existingCommit = Commits::where('repo_id', $repo->id)
+                $existingCommit = Commit::where('repo_id', $repo->id)
                     ->where('hash', $commitHash)
                     ->first();
 
-                if (!$existingCommit) {
+                if (! $existingCommit) {
                     // Save the new commit
                     $commit = [
                         'repo_id' => $repo->id,
@@ -75,7 +73,7 @@ class NewCommits implements ShouldQueue
                         'created_at' => $createdAt,
                     ];
 
-                    Commits::create($commit);
+                    Commit::create($commit);
                 }
             }
         }

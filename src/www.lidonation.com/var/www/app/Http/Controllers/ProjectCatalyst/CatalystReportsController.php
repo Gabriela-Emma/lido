@@ -14,7 +14,6 @@ class CatalystReportsController extends Controller
 
     public ?string $search = null;
 
-    
     /**
      * Display a listing of the resource.
      *

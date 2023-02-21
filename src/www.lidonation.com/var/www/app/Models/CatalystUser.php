@@ -19,7 +19,6 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Support\Facades\Artisan;
 use JetBrains\PhpStorm\Pure;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
-use Rennokki\QueryCache\Traits\QueryCacheable;
 use Spatie\Comments\Models\Concerns\InteractsWithComments;
 use Spatie\Comments\Models\Concerns\Interfaces\CanComment;
 use Spatie\MediaLibrary\HasMedia;
@@ -43,9 +42,11 @@ class CatalystUser extends User implements HasMedia, CanComment
         SearchableLocale,
         HasJsonRelationships;
 
-    protected $fillable = ['bio', 'twitter', 'discord', 'linkedin', 'ideascale','email'];
+    protected $fillable = ['bio', 'twitter', 'discord', 'linkedin', 'ideascale', 'email'];
 
     protected $table = 'catalyst_users';
+
+    protected $hidden = ['email'];
 
     protected $withCount = ['own_proposals', 'proposals'];
 
@@ -142,12 +143,12 @@ class CatalystUser extends User implements HasMedia, CanComment
 
     public function displayName(): Attribute
     {
-        return Attribute::make(get: fn() => $this->name ?? $this->claimed_by_user?->name );
+        return Attribute::make(get: fn () => $this->name ?? $this->claimed_by_user?->name);
     }
 
     public function notificationEmail(): Attribute
     {
-        return Attribute::make(get: fn() => $this->email ?? $this->claimed_by_user?->email);
+        return Attribute::make(get: fn () => $this->email ?? $this->claimed_by_user?->email);
     }
 
     public function getLinkAttribute(): string|UrlGenerator|Application

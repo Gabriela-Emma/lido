@@ -2,16 +2,16 @@
 
 namespace App\Nova\Actions;
 
+use App\Enums\RoleEnum;
 use App\Events\CatalystProfileVerified;
 use App\Models\Meta;
 use App\Models\User;
-use App\Enums\RoleEnum;
 use Illuminate\Bus\Queueable;
-use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Actions\Action;
-use Illuminate\Support\Collection;
-use Laravel\Nova\Fields\ActionFields;
 use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Support\Collection;
+use Laravel\Nova\Actions\Action;
+use Laravel\Nova\Fields\ActionFields;
+use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class ValidateClaims extends Action
@@ -21,8 +21,8 @@ class ValidateClaims extends Action
     /**
      * Perform the action on the given models.
      *
-     * @param ActionFields $fields
-     * @param Collection $models
+     * @param  ActionFields  $fields
+     * @param  Collection  $models
      * @return string[]
      */
     public function handle(ActionFields $fields, Collection $models): array
@@ -37,9 +37,9 @@ class ValidateClaims extends Action
             })->first();
 
             // getting related data
-            $data=Meta::where('key','claim_data')->where('model_id', $id)->first();
-            $claim_data=collect(json_decode($data->content));
-            $dataUpdate= [
+            $data = Meta::where('key', 'claim_data')->where('model_id', $id)->first();
+            $claim_data = collect(json_decode($data->content));
+            $dataUpdate = [
                 'claimed_by' => $regularUser->id,
                 'email' => $claim_data['email'],
                 'bio' => $claim_data['bio'],
@@ -81,7 +81,7 @@ class ValidateClaims extends Action
         return [
             Text::make('code')
                 ->required()
-                ->rules('max:5')
+                ->rules('max:5'),
         ];
     }
 }

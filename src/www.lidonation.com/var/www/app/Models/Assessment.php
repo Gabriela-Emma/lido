@@ -144,8 +144,8 @@ class Assessment extends Model implements IHasMetaData
 
     public function name(): Attribute
     {
-        return Attribute::make(get: fn() =>  $this->author?->name ??
-            $this->metas?->firstWhere('key', 'name')?->content ?? null );
+        return Attribute::make(get: fn () => $this->author?->name ??
+            $this->metas?->firstWhere('key', 'name')?->content ?? null);
     }
 
     /**
@@ -156,7 +156,8 @@ class Assessment extends Model implements IHasMetaData
     public function children(): Attribute
     {
         $children = $this->metas?->where('key', 'child_id')->pluck('content');
-        return Attribute::make(get: fn() => $children->isEmpty() ? null : self::fund($children)  );
+
+        return Attribute::make(get: fn () => $children->isEmpty() ? null : self::fund($children));
     }
 
     public function parent(): BelongsTo

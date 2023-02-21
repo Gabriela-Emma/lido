@@ -7,8 +7,8 @@ use App\Http\Resources\GroupResource;
 use App\Models\CatalystGroup;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\ResponseFactory;
-use Symfony\Component\HttpFoundation\Response;
 use OpenApi\Annotations as OA;
+use Symfony\Component\HttpFoundation\Response;
 
 class GroupController extends Controller
 {
@@ -21,16 +21,19 @@ class GroupController extends Controller
      *     summary="Get group by id",
      *     description="Returns a single group",
      *     operationId="group",
+     *
      *     @OA\Parameter(
      *         name="group_id",
      *         in="path",
      *         description="id of group to return",
      *         required=true,
+     *
      *         @OA\Schema(
      *             type="integer",
      *             format="int64"
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=200,
      *         description="successful",

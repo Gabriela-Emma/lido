@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers\ProjectCatalyst;
 
-use Inertia\Inertia;
-use Illuminate\Http\Request;
-use App\Models\CatalystGroup;
 use App\Http\Controllers\Controller;
-use Inertia\Response;
-use Illuminate\Pagination\LengthAwarePaginator;
+use App\Models\CatalystGroup;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Request;
+use Inertia\Inertia;
+use Inertia\Response;
 
 class CatalystGroupsController extends Controller
 {
@@ -50,7 +49,7 @@ class CatalystGroupsController extends Controller
 
     public function update(Request $request, CatalystGroup $catalystGroup)
     {
-        if (!$catalystGroup->id) {
+        if (! $catalystGroup->id) {
             throw (new ModelNotFoundException())->setModel(CatalystGroup::class);
         }
         $request->validate([
@@ -59,10 +58,10 @@ class CatalystGroupsController extends Controller
             'github' => 'nullable|bail|min:5',
             'discord' => 'nullable|bail|min:4',
             'telegram' => 'nullable|bail|min:2',
-            'bio' => 'min:20'
+            'bio' => 'min:20',
         ]);
 
-        $catalystGroup->bio =  $request->bio;
+        $catalystGroup->bio = $request->bio;
         $catalystGroup->twitter = $request->twitter;
         $catalystGroup->github = $request->github;
         $catalystGroup->discord = $request->discord;
@@ -75,28 +74,29 @@ class CatalystGroupsController extends Controller
     {
         $query = CatalystGroup::select('id', 'name', 'discord', 'twitter', 'website', 'github', 'slug')
             ->where('status', 'published')
-            ->whereHas('proposals', fn($q) => $q->whereNotNull('funded_at'))
+            ->whereHas('proposals', fn ($q) => $q->whereNotNull('funded_at'))
             ->withSum([
                 'proposals as amount_awarded' => function ($query) {
                     $query->whereNotNull('funded_at');
-                }
+                },
             ], 'amount_requested')
             ->withSum([
                 'proposals as amount_received' => function ($query) {
                     $query->whereNotNull('funded_at');
-                }
+                },
             ], 'amount_received')
             ->when($this->search, function ($query, $search) {
                 return $query->where('name', 'iLIKE', "%{$search}%");
             })
             ->when($this->sort, function ($query, $sort) {
                 $sortParts = explode(':', $sort);
+
                 return $query->orderBy($sortParts[0], $sortParts[1]);
             });
 
         $paginator = $query->paginate($this->perPage, ['*'], 'p')->setPath('/');
 
-        $paginator->through(fn($group) => [
+        $paginator->through(fn ($group) => [
             'id' => $group->id,
             'logo' => $group->thumbnail_url ?? $group->gravatar,
             'name' => $group->name,
@@ -106,11 +106,10 @@ class CatalystGroupsController extends Controller
             'slug' => $group->slug,
             'discord' => $group->discord,
             'amount_awarded' => $group->amount_awarded,
-            'amount_received' => $group->amount_received
+            'amount_received' => $group->amount_received,
         ]
         );
 
         return $paginator->onEachSide(1)->toArray();
     }
-
 }

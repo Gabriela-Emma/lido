@@ -4,17 +4,17 @@ namespace App\Http\Controllers\Api\CatalystExplorer\Traits;
 
 use App\Http\Resources\PeopleResource;
 use App\Models\CatalystUser;
+use App\Models\Meta;
+use App\Models\User;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
-use OpenApi\Annotations as OA;
-use App\Models\Meta;
-use App\Models\User;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
+use OpenApi\Annotations as OA;
 
 trait People
 {
@@ -25,18 +25,23 @@ trait People
      *     summary="Get all people",
      *     description="Returns all people",
      *     operationId="people",
+     *
      *     @OA\Response(
      *         response=200,
      *         description="successful",
+     *
      *          @OA\JsonContent(
      *             type="object",
+     *
      *             @OA\Property(
      *                 property="data",
      *                 type="array",
+     *
      *                 @OA\Items(
      *                     ref="#/components/schemas/people"
      *                 )
      *             ),
+     *
      *             @OA\Property(
      *                 property="links",
      *                 type="object",
@@ -78,7 +83,7 @@ trait People
         $request->validate([
             'name' => 'required|min:3',
             'email' => 'required|email',
-            'bio' => 'nullable'
+            'bio' => 'nullable',
         ]);
 
         if (Auth::check()) {
@@ -86,7 +91,7 @@ trait People
         } else {
             $lidoUser = User::where('email', $request->email)?->first();
         }
-        if (!$lidoUser instanceof User) {
+        if (! $lidoUser instanceof User) {
             $lidoUser = new User;
             $lidoUser->name = $request->name;
             $lidoUser->email = $request->email;

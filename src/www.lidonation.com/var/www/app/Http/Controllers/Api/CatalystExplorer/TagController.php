@@ -20,18 +20,23 @@ class TagController extends Controller
      * summary="Get a list of tags",
      * description="Returns a list of all tags",
      * operationId="tags",
+     *
      * @OA\Response(
      * response=200,
      * description="successful",
+     *
      * @OA\JsonContent(
      * type="object",
+     *
      * @OA\Property(
      * property="data",
      * type="array",
+     *
      * @OA\Items(
      * ref="#/components/schemas/tags"
      * )
      * ),
+     *
      * @OA\Property(
      * property="links",
      * type="object",
@@ -79,15 +84,18 @@ class TagController extends Controller
      *     summary="Retrieve a single tag",
      *     description="Use this endpoint to retrieve a single tag",
      *     operationId="tag",
+     *
      *     @OA\Parameter(
      *         name="tag",
      *         in="path",
      *         description="title of the tag to retrieve",
      *         required=true,
+     *
      *         @OA\Schema(
      *             type="string",
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=200,
      *         description="successful",

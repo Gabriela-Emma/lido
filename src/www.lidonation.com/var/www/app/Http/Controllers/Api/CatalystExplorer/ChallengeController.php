@@ -20,28 +20,35 @@ class ChallengeController extends Controller
      *     summary="Get a list of challenges",
      *     description="Returns a list of all challenges",
      *     operationId="challenges",
+     *
      *      @OA\Parameter(
      *         name="fund_id",
      *         in="query",
      *         description="Filter content by id of a fund",
      *         required=false,
+     *
      *         @OA\Schema(
      *             type="integer",
      *             format="int64"
      *         ),
      *     ),
+     *
      *     @OA\Response(
      *         response=200,
      *         description="successful",
+     *
      *         @OA\JsonContent(
      *             type="object",
+     *
      *             @OA\Property(
      *                 property="data",
      *                 type="array",
+     *
      *                 @OA\Items(
      *                     ref="#/components/schemas/challenges"
      *                 )
      *             ),
+     *
      *             @OA\Property(
      *                 property="links",
      *                 type="object",
@@ -87,16 +94,19 @@ class ChallengeController extends Controller
      *     summary="Get challenge by challenge id",
      *     description="Returns a single challenge.",
      *     operationId="challenge",
+     *
      *     @OA\Parameter(
      *         name="challenge_id",
      *         in="path",
      *         description="id of challenge to return",
      *         required=true,
+     *
      *         @OA\Schema(
      *             type="integer",
      *             format="int64"
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=200,
      *         description="successful",

@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\AnswerResponse;
+use App\Models\Assessment;
 use App\Models\CatalystGroup;
 use App\Models\Category;
 use App\Models\Cause;
@@ -12,7 +13,6 @@ use App\Models\Discussion;
 use App\Models\ExternalPost;
 use App\Models\Fund;
 use App\Models\Insight;
-use App\Models\Assessment;
 use App\Models\News;
 use App\Models\OnboardingContent;
 use App\Models\Post;

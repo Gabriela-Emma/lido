@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Models\Discussion;
 use App\Models\Assessment;
+use App\Models\Discussion;
 use App\Models\Rating;
 use App\Models\Review;
 use Illuminate\Database\Eloquent\Factories\Sequence;

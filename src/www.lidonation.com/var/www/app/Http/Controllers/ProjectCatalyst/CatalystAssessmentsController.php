@@ -3,12 +3,7 @@
 namespace App\Http\Controllers\ProjectCatalyst;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\ProposalResource;
 use App\Models\Assessment;
-use App\Models\CatalystReport;
-use App\Models\CatalystUser;
-use App\Models\Discussion;
-use App\Models\Proposal;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Fluent;
@@ -20,9 +15,10 @@ use Meilisearch\Endpoints\Indexes;
 class CatalystAssessmentsController extends Controller
 {
     public int $perPage = 40;
-    public ?string $search = null;
-    public ?int $currentPage;
 
+    public ?string $search = null;
+
+    public ?int $currentPage;
 
     /**
      * Display a listing of the resource.
@@ -74,13 +70,14 @@ class CatalystAssessmentsController extends Controller
                     'qa_good_count',
                     'qa_filtered_out_count',
                     'flagged',
-                    'proposal'
+                    'proposal',
                 ];
-                if (!$this->search) {
+                if (! $this->search) {
                     $options['sort'] = ['rating:desc'];
                 }
                 $options['offset'] = (($this->currentPage ?? 1) - 1) * $this->perPage;
                 $options['limit'] = $this->perPage;
+
                 return $index->search($query, $options);
             });
 
@@ -99,8 +96,6 @@ class CatalystAssessmentsController extends Controller
 //        );
 
         return $pagination->onEachSide(1)->toArray();
-
-
     }
 
     #[ArrayShape(['filters' => 'array'])]

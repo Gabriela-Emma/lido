@@ -2,13 +2,13 @@
 
 namespace App\Providers;
 
+use App\Models\Assessment;
 use App\Models\CatalystGroup;
 use App\Models\CatalystUser;
 use App\Models\Comment;
 use App\Models\Definition;
 use App\Models\Discussion;
 use App\Models\Event;
-use App\Models\Assessment;
 use App\Models\Post;
 use App\Models\Proposal;
 use App\Models\Team;

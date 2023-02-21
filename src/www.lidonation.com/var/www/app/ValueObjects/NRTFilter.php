@@ -4,7 +4,8 @@ namespace App\ValueObjects;
 
 use Illuminate\Contracts\Support\Arrayable;
 
-final class NRTFilter implements Arrayable, \JsonSerializable {
+final class NRTFilter implements Arrayable, \JsonSerializable
+{
     public string $subject;
 
     public function toArray(): array

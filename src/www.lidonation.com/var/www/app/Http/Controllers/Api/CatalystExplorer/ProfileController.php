@@ -4,21 +4,19 @@ namespace App\Http\Controllers\Api\CatalystExplorer;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\PeopleResource;
-use App\Models\CatalystReport;
 use App\Models\CatalystUser;
 use App\Models\NotificationRequestTemplate;
 use App\Models\Proposal;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\ResponseFactory;
-use Illuminate\Foundation\Auth\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Symfony\Component\HttpFoundation\Response;
 use OpenApi\Annotations as OA;
+use Symfony\Component\HttpFoundation\Response;
 
 class ProfileController extends Controller
 {
     use Traits\People;
+
     /**
      * @OA\Get(
      *     path="/people/{person_id}",
@@ -26,16 +24,19 @@ class ProfileController extends Controller
      *     summary="Get a person by id",
      *     description="Returns a single person",
      *     operationId="person",
+     *
      *     @OA\Parameter(
      *         name="person_id",
      *         in="path",
      *         description="id of the person to return",
      *         required=true,
+     *
      *         @OA\Schema(
      *             type="integer",
      *             format="int64"
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=200,
      *         description="successful",
@@ -60,7 +61,7 @@ class ProfileController extends Controller
         }
     }
 
-    public function  follow(CatalystUser $catalystProfile)
+    public function follow(CatalystUser $catalystProfile)
     {
         $who = Auth::user();
 

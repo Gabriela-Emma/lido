@@ -3,11 +3,13 @@
 namespace App\Models;
 
 use App\Models\Interfaces\HasLink;
+use App\Models\Traits\HasCommits;
 use App\Models\Traits\HasDiscussions;
 use App\Models\Traits\HasHero;
 use App\Models\Traits\HasLinks;
 use App\Models\Traits\HasLocaleUrl;
 use App\Models\Traits\HasMetaData;
+use App\Models\Traits\HasRepos;
 use App\Models\Traits\HasTaxonomies;
 use App\Models\Traits\HasTranslations;
 use App\Scopes\OrderByDateScope;
@@ -42,8 +44,10 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
     use Actionable,
         SoftDeletes,
         HasComments,
+        HasCommits,
         HasTimestamps,
         HasMetaData,
+        HasRepos,
         HasTaxonomies,
         HasLinks,
         InteractsWithMedia,
@@ -66,12 +70,14 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
      * @var array
      */
     protected $with = [
+        //        'commits',
         'fund',
         'media',
-        'users',
         'metas',
         'ratings',
+        'repos',
         'tags',
+        'users',
     ];
 
     protected $withCount = ['ratings'];

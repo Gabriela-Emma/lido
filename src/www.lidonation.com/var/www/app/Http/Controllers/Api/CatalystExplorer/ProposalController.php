@@ -21,16 +21,19 @@ class ProposalController extends Controller
      *     summary="Get proposal by id",
      *     description="Returns a single proposal",
      *     operationId="proposal",
+     *
      *     @OA\Parameter(
      *         name="proposal_id",
      *         in="path",
      *         description="id of proposal to return",
      *         required=true,
+     *
      *         @OA\Schema(
      *             type="integer",
      *             format="int64"
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=200,
      *         description="successful",
