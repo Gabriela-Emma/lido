@@ -86,6 +86,10 @@
                 </div>
 
                 <div class="flex h-full flex-col divide-y divide-gray-200 bg-white" v-if="currAction === 'reports'">
+                    <div class="p-4 w-full" v-if="proposal.meta_data?.iog_hash">
+                        Links to official required reporting and evidence submission to the community.
+                        Your Project ID is:   <b> {{proposal.meta_data?.iog_hash}}</b>
+                    </div>
                     <ul role="list" class="divide-y divide-gray-200">
                         <li v-for="iogAction in iogReportActions" class="px-4">
                             <a :href="iogAction?.href" class="flex w-full items-start py-4 h-full" target="_blank" v-if="iogAction.href">
@@ -337,7 +341,7 @@ const iogReportActions = [
     {
         title: 'Proof of Accomplishment/Milestone',
         excerpt: 'Did you have to submit milestone for your project? Must submit a proof of accomplishment in addition to your monthly report to receive final payment for your milestone budget',
-        href: 'https://drive.google.com/drive/u/1/folders/1SSW2afDX5w30aTZYF3p7o7rLUep7v0TJ',
+        href: 'https://docs.google.com/forms/d/e/1FAIpQLSfbvfiIKsK6sXxRnUjBn5nCIdwtIGhOGMgf8pmmnTkH7u9lGA/viewform',
         icon: AcademicCapIcon,
         iconForeground: 'text-sky-700',
         iconBackground: 'bg-sky-50',

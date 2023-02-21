@@ -17,6 +17,9 @@ export default interface Proposal {
     ratings_count: number;
     website: string;
     repos: Repo[];
+    meta_data: {
+        iog_hash: string;
+    };
     users: {
         name: string;
         username: string;
