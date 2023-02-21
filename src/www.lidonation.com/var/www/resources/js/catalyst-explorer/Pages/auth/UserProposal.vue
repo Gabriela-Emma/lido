@@ -96,7 +96,7 @@
                                         <div class="mt-1 flex-grow">
                                             <input v-model="repoForm.gitUrl" type="text" name="gitUrl" id="git"
                                                    class="block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"/>
-                                            <div v-if="errorMessage" class="text-red-500 mt-2 text-sm">{{ errorMessage }}</div>
+                                            <div v-if="errorMessage && repoForm.gitUrl != '' " class="text-red-500 mt-2 text-sm">{{ errorMessage }}</div>
                                             <input v-model="repoForm.proposal_id" type="text" class="hidden" name="proposal_id" >
                                             <input v-model="repoForm.user_id" type="text" class="hidden" name="catalystUser_id" >
                                             <div class="flex text-xs w-1/2 lg:text-base justify-start ">
@@ -297,7 +297,7 @@ import {
 } from '@heroicons/vue/24/outline';
 import {DialogTitle} from "@headlessui/vue";
 import { useForm } from "@inertiajs/vue3";
-import {ref, watch} from "vue";
+import {ref, watch, onBeforeUnmount} from "vue";
 import {debounce} from "lodash";
 import Multiselect from '@vueform/multiselect';
 import axios from "axios";
@@ -399,7 +399,7 @@ let branches=ref<string[]>([]);
 let errorMessage = ref('');
 let success = ref();
 
-watch(
+let urlWatch = watch(
   () => repoForm.gitUrl,
   debounce((newUrl: string) => {
     if (!newUrl.startsWith('http://') ) {
@@ -444,11 +444,17 @@ let submitRepo = () => {
       success.value = response.data;
       setTimeout(() => {
         success.value = null;
+        errorMessage.value = '';
       }, 5000);
+        repoForm.gitUrl = '';
+        repoForm.branch = '';
+        branches.value = [];
+        errorMessage.value = '';
     })
     .catch((error) => {
       console.error(error);
     });
 }
+
 
 </script>
