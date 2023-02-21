@@ -58,7 +58,7 @@
                         </div>
                         <div class="mt-8">
                             <h3 class="text-md font-medium">
-                                <a :href="action.href" class="focus:outline-none" target="_blank" v-if="action.href">
+                                <a :href="action['href']" class="focus:outline-none" target="_blank" v-if="action['href']">
                                     <!-- Extend touch target to entire panel -->
                                     <span class="absolute inset-0" aria-hidden="true"/>
                                     {{ action.title }}
@@ -87,8 +87,8 @@
 
                 <div class="flex h-full flex-col divide-y divide-gray-200 bg-white" v-if="currAction === 'reports'">
                     <ul role="list" class="divide-y divide-gray-200">
-                        <li v-for="iogAction in iogReportActions" class="px-4" v-if="iogAction.href">
-                            <a :href="iogAction?.href" class="flex w-full items-start py-4 h-full" target="_blank">
+                        <li v-for="iogAction in iogReportActions" class="px-4">
+                            <a :href="iogAction?.href" class="flex w-full items-start py-4 h-full" target="_blank" v-if="iogAction.href">
                                 <div class="h-10 w-10 rounded-full">
                                     <component :is="iogAction.icon" class="h-10 w-10" aria-hidden="true"/>
                                 </div>
@@ -309,6 +309,7 @@ const actions = [
         title: 'Official (IOG) Funding Reports',
         excerpt: 'Official google forms and reports you need to submit to receive funding and fulfill community reporting obligations.',
         handler: 'reports',
+        hint: PlusIcon,
         icon: DocumentCheckIcon,
         iconForeground: 'text-yellow-700',
         iconBackground: 'bg-yellow-50',
