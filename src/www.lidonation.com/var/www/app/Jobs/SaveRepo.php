@@ -6,6 +6,7 @@ use App\Models\Repo;
 use App\Actions\CmdRunner;
 use App\Models\CatalystUser;
 use App\Models\Commits;
+use App\Models\Proposal;
 use Illuminate\Bus\Queueable;
 use App\Services\CloneRepoService;
 use Illuminate\Queue\SerializesModels;
@@ -23,7 +24,7 @@ class SaveRepo implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(protected $url,protected $branchName, protected $id)
+    public function __construct(protected $url,protected $branchName, protected $proposal_id ,protected $user_id)
     {
 
     }
@@ -40,11 +41,12 @@ class SaveRepo implements ShouldQueue
 
         //get repo details 
         $repo = new Repo; 
-        $repo->user_id = $this->id;
-        $repo->model_id = $this->id;
-        $repo->model_type = CatalystUser::class;
+        $repo->user_id = $this->user_id;
+        $repo->model_id = $this->proposal_id;
+        $repo->model_type = Proposal::class;
         $repo->url = $this->url;
         $repo->name = $repoName;
+        $repo->tracked_branch = $this->branchName;
         $repo->save();
 
         // get the commits of that repo 
@@ -85,7 +87,6 @@ class SaveRepo implements ShouldQueue
                 $commit['repo_id'] = $repo->id;
                 Commits::create($commit);
             }
-
 
     }
 }

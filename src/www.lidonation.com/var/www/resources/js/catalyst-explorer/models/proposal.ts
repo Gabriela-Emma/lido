@@ -1,4 +1,5 @@
 export default interface Proposal {
+    id:number;
     slug: string;
     title: string;
     solution: string;

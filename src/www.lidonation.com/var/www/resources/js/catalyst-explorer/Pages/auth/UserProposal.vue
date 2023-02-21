@@ -81,13 +81,13 @@
                     </div>
                 </div>
 
-                <form class="flex flex-col divide-y divide-gray-200 bg-white p-4" v-if="currAction === 'git'">
+                <form class="flex h-full flex-col divide-y divide-gray-200 bg-white p-4" v-if="currAction === 'git'">
                     <h3>
                         Add a git repo
                     </h3>
-                    <div class=" flex-1 overflow-y-auto">
+                    <div class=" flex-1 overflow-y-auto ">
                         <div class="flex flex-1 flex-col justify-between">
-                            <div class="divide-y divide-gray-200 px-4 sm:px-6">
+                            <div class="divide-y divide-gray-200 px-4 sm:px-6 h-64">
                                 <div class="space-y-6 pt-6 pb-5">
                                     <div>
                                         <label for="project-name" class="block text-sm font-medium text-gray-900">
@@ -97,7 +97,7 @@
                                             <input v-model="repoForm.gitUrl" type="text" name="gitUrl" id="git"
                                                    class="block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"/>
                                             <div v-if="errorMessage" class="text-red-500 mt-2 text-sm">{{ errorMessage }}</div>
-
+                                            <input v-model="repoForm.proposal_id" type="text" class="hidden" name="proposal_id" >
                                             <input v-model="repoForm.user_id" type="text" class="hidden" name="catalystUser_id" >
                                             <div class="flex text-xs w-1/2 lg:text-base justify-start ">
                                                 <multiselect 
@@ -115,7 +115,15 @@
                                                     @input="repoForm.branch = $event">
                                                 </multiselect>
                                             </div>
-
+                                            <div class="w-full items center" v-show="success">
+                                                <div class="flex justify-between  rounded-md bg-green-700  w-48 mt-4 p-1">
+                                                    <span class="text-white ">{{ success }}</span>
+                                                    <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" id="IconChangeColor" height="20" width="20">
+                                                    <path fill="#ffffff" d="M512 64a448 448 0 1 1 0 896 448 448 0 0 1 0-896zm-55.808 536.384-99.52-99.584a38.4 38.4 0 1
+                                                    0-54.336 54.336l126.72 126.72a38.272 38.272 0 0 0 54.336 0l262.4-262.464a38.4 38.4 0 1 0-54.272-54.336L456.192 600.384z" 
+                                                    id="mainIconPathAttribute" stroke-width="0" stroke="#ff0000"></path></svg>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -292,6 +300,7 @@ import { useForm } from "@inertiajs/vue3";
 import {ref, watch} from "vue";
 import {debounce} from "lodash";
 import Multiselect from '@vueform/multiselect';
+import axios from "axios";
 
 
 
@@ -381,12 +390,14 @@ const props = withDefaults(
 let repoForm=useForm({
     gitUrl:'',
     user_id:props.proposal.user_id,
+    proposal_id:props.proposal.id,
     branch:''
 })
 
 
 let branches=ref<string[]>([]);
 let errorMessage = ref('');
+let success = ref();
 
 watch(
   () => repoForm.gitUrl,
@@ -428,7 +439,16 @@ watch(
 
 
 let submitRepo = () => {
-repoForm.post('/api/catalyst-explorer/repo');
+  axios.post('/api/catalyst-explorer/repo',repoForm)
+    .then((response) => {
+      success.value = response.data;
+      setTimeout(() => {
+        success.value = null;
+      }, 5000);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
 }
 
 </script>

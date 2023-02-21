@@ -37,49 +37,47 @@ class NewCommits implements ShouldQueue
             // Perform a git pull to update the local repository to the latest changes
             $runner->run($repoPath, ['pull']);
 
-            // Iterate through each tracked branch of the repo
-            $repo = Repo::where('path', $repoPath)->first();
+            $repo = Repo::where('name', $directory)->first();
             if (!$repo) {
                 continue;
             }
 
-        
-                // Fetch the latest commits for the branch
-                $logOutput = $runner->run($repoPath, [
-                    'log', 
-                    '--pretty=format:%h/ %an/ %ad/ %s',
-                    '--date=format:%Y-%m-%d %H:%M:%S',
-                    $repo->branch,
-                ])->getOutputAsString();
+            // Fetch the latest commits for the branch
+            $logOutput = $runner->run($repoPath, [
+                'log', 
+                '--pretty=format:%h/ %an/ %ad/ %s',
+                '--date=format:%Y-%m-%d %H:%M:%S',
+                $repo->tracked_branch,
+            ])->getOutputAsString();
 
-                // Explode by newline character to get each commit log line separately
-                $logLines = explode("\n", $logOutput);
+            // Explode by newline character to get each commit log line separately
+            $logLines = explode("\n", $logOutput);
 
-                // Iterate through each log line and save new commits
-                foreach ($logLines as $line) {
-                    if (empty(trim($line))) {
-                        continue;
-                    }
-                    list($commitHash, $commitAuthor, $createdAt, $commitMessage) = explode("/", $line, 4);
-
-                    // Check if the commit already exists
-                    $existingCommit = Commits::where('repo_id', $repo->id)
-                        ->where('hash', $commitHash)
-                        ->first();
-
-                    if (!$existingCommit) {
-                        // Save the new commit
-                        $commit = [
-                            'repo_id' => $repo->id,
-                            'hash' => $commitHash,
-                            'author' => $commitAuthor,
-                            'content' => $commitMessage,
-                            'created_at' => $createdAt,
-                        ];
-
-                        Commits::create($commit);
-                    }
+            // Iterate through each log line and save new commits
+            foreach ($logLines as $line) {
+                if (empty(trim($line))) {
+                    continue;
                 }
+                list($commitHash, $commitAuthor, $createdAt, $commitMessage) = explode("/", $line, 4);
+
+                // Check if the commit already exists
+                $existingCommit = Commits::where('repo_id', $repo->id)
+                    ->where('hash', $commitHash)
+                    ->first();
+
+                if (!$existingCommit) {
+                    // Save the new commit
+                    $commit = [
+                        'repo_id' => $repo->id,
+                        'hash' => $commitHash,
+                        'author' => $commitAuthor,
+                        'content' => $commitMessage,
+                        'created_at' => $createdAt,
+                    ];
+
+                    Commits::create($commit);
+                }
+            }
         }
     }
 }

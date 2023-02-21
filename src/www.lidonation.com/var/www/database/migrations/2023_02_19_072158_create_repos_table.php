@@ -21,6 +21,7 @@ return new class extends Migration
                 $table->string('name');
                 $table->string('url');
                 $table->string('type')->default('git');
+                $table->string('tracked_branch');
                 $table->boolean('auto_track')->default(true);
                 $table->string('deploy_key')->nullable();
                 $table->timestamps();

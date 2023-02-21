@@ -31,7 +31,10 @@ class RepoController extends Controller
     }
     public function saveRepo(Request $request)
     {
-        SaveRepo::dispatch($request->gitUrl, $request->branch, $request->user_id);
+        // dd($request);
+        SaveRepo::dispatch($request->gitUrl, $request->branch, $request->proposal_id, $request->user_id);
+
+        return ('Repository was saved');
       
     }
     
