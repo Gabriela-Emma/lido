@@ -122,7 +122,7 @@
 <script lang="ts" setup>
 import UserNav from "./UserNav.vue";
 import Proposal from "../../models/proposal";
-import {Link} from '@inertiajs/vue3';
+import {Link, useForm} from '@inertiajs/vue3';
 import {computed, ref} from "@vue/reactivity";
 
 const props = withDefaults(
@@ -139,5 +139,7 @@ const props = withDefaults(
             data: Proposal[]
         };
     }>(), {});
+
+
 
 </script>

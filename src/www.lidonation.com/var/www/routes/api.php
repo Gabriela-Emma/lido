@@ -231,6 +231,10 @@ Route::prefix('catalyst-explorer')->as('catalystExplorerApi.')
 
         Route::post('/user', [CatalystExplorer\UserController::class, 'update']);
 
+        Route::get('/branches',[CatalystExplorer\RepoController::class, 'getBranches']);
+        Route::post('/repo',[CatalystExplorer\RepoController::class, 'saveRepo']);
+
+
 //        Route::post('/profiles', [CatalystUserProfilesController::class, 'update'])->name('myProfileUpdate');
     });
 
