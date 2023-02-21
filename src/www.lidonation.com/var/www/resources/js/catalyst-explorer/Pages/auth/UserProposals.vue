@@ -122,12 +122,17 @@
 <script lang="ts" setup>
 import UserNav from "./UserNav.vue";
 import Proposal from "../../models/proposal";
-import {Link} from '@inertiajs/vue3';
-import {computed, ref} from "@vue/reactivity";
+import {Link, router} from '@inertiajs/vue3';
+import {computed, ref, watch} from "vue";
+import Filters from "../../models/filters";
+import {VARIABLES} from "../../models/variables";
+
+
 
 const props = withDefaults(
     defineProps<{
         locale: string,
+        filters:Filters,
         totalDistributed: number,
         totalRemaining: number,
         budgetSummary: number,
@@ -139,5 +144,40 @@ const props = withDefaults(
             data: Proposal[]
         };
     }>(), {});
+
+
+const filtering = computed(() => {
+return getFiltering();
+});
+
+let filtersRef = ref<Filters>(props.filters);
+
+watch([filtersRef],() =>{
+    query();
+}, {deep: true});
+
+function getFiltering()
+{
+    if (!!props.filters.fundingStatus) {
+        return true; 
+    }
+    return false ;
+}
+
+function query()
+{
+    const data = {};
+    if (filtersRef.value?.fundingStatus) {
+        data[VARIABLES.FUNDING_STATUS] = filtersRef.value?.fundingStatus;
+    }
+
+    router.get(
+        `/${props.locale}/catalyst-explorer/myProposals`,
+        data,
+        {preserveState: true, preserveScroll:true}
+    );
+    
+}
+
 
 </script>
