@@ -399,7 +399,7 @@ let branches=ref<string[]>([]);
 let errorMessage = ref('');
 let success = ref();
 
-let urlWatch = watch(
+watch(
   () => repoForm.gitUrl,
   debounce((newUrl: string) => {
     if (!newUrl.startsWith('http://') ) {
