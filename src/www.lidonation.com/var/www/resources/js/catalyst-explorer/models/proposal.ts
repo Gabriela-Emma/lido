@@ -1,3 +1,5 @@
+import Repo from "./repo";
+
 export default interface Proposal {
     id:number;
     slug: string;
@@ -14,6 +16,7 @@ export default interface Proposal {
     ca_rating: number;
     ratings_count: number;
     website: string;
+    repos: Repo[];
     users: {
         name: string;
         username: string;

@@ -47,7 +47,7 @@ import {Link} from '@inertiajs/vue3';
 import UserNav from "./UserNav.vue";
 import UserGroupCard from "./UserGroupCard.vue";
 import Group from "../../models/group";
-import { PlusIcon } from '@heroicons/vue/20/solid'
+import { PlusIcon } from '@heroicons/vue/20/solid';
 
 
 const props = withDefaults(
