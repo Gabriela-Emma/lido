@@ -1,5 +1,5 @@
 @props(['model', 'filter' => 'proposal'])
-<div class="flex flex-col justify-center gap-4 relative" x-data="{
+<div class="flex flex-col justify-center gap-4 relative p-3" x-data="{
     subject: @js($model->id),
     filter: @js($filter),
     proposal: null,

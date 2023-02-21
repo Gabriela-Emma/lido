@@ -4,15 +4,33 @@ namespace App\Http\Controllers\Api\CatalystExplorer;
 
 use App\Http\Controllers\Controller;
 use App\Models\CatalystReport;
+use App\Models\Comment;
+use App\Models\Assessment;
 use App\Models\NotificationRequestTemplate;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Fluent;
 use Illuminate\Support\Str;
 
 class ReportController extends Controller
 {
+    public function listComments(Request $request, CatalystReport $catalystReport) {
+//        dd($catalystReport?->comments->toArray());
+        return $catalystReport?->comments?->toArray();
+    }
+
+    public function createComment(Request $request, CatalystReport $catalystReport) {
+        $validated = new Fluent($request->validate([
+//            'name' => 'required',
+//            'email' => 'required|email|unique:users,email',
+            'comment' => 'required'
+        ]));
+        $catalystReport->comment($validated->comment, Auth::user());
+        return to_route('catalystExplorer.reports');
+    }
+
     public function follow(Request $request)
     {
         $validated = new Fluent($request->validate([

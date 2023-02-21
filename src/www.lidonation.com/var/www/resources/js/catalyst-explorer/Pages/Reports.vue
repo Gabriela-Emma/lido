@@ -80,7 +80,7 @@ function query() {
     //@ts-ignore
     if (typeof window?.fathom !== 'undefined') {
         // @ts-ignore
-        window?.fathom?.trackGoal(VARIABLES.MONTHLY_REPORT_TRACKER_ID, 0);
+        window?.fathom?.trackGoal(VARIABLES.TRACKER_ID_MONTHLY_REPORT, 0);
     }
 }
 </script>

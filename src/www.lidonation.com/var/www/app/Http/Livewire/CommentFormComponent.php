@@ -2,7 +2,7 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\LegacyComment;
+use App\Models\Assessment;
 use App\Models\Model;
 use App\Repositories\CommentRepository;
 use Illuminate\Support\Facades\Auth;
@@ -26,7 +26,7 @@ class CommentFormComponent extends Component
 
     public ?int $rating = null;
 
-    public ?LegacyComment $comment = null;
+    public ?Assessment $comment = null;
 
     // form
     public ?string $name = null;
@@ -61,7 +61,7 @@ class CommentFormComponent extends Component
         $this->commenting = false;
     }
 
-    public function replyToComment(LegacyComment $comment)
+    public function replyToComment(Assessment $comment)
     {
         $this->reset();
         $this->parentId = $comment->id;

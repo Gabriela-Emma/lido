@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\Traits\HasComments;
+use App\Models\Traits\HasAssessments;
 use App\Models\Traits\HasDiscussions;
 use App\Models\Traits\HasRatings;
 use App\Traits\SearchableLocale;
@@ -18,7 +18,7 @@ use Spatie\Feed\FeedItem;
 
 class Review extends Post implements Feedable
 {
-    use HasParent, HasDiscussions, HasRatings, SearchableLocale, HasComments;
+    use HasParent, HasDiscussions, HasRatings, SearchableLocale, HasAssessments;
 
     protected $with = ['media', 'tags.media', 'categories.media', 'author.media'];
 

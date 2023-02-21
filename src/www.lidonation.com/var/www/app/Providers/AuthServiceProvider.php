@@ -8,7 +8,7 @@ use App\Models\Comment;
 use App\Models\Definition;
 use App\Models\Discussion;
 use App\Models\Event;
-use App\Models\LegacyComment;
+use App\Models\Assessment;
 use App\Models\Post;
 use App\Models\Proposal;
 use App\Models\Team;
@@ -47,7 +47,7 @@ class AuthServiceProvider extends ServiceProvider
         Discussion::class => DiscussionPolicy::class,
         Definition::class => DefinitionPolicy::class,
         Event::class => EventPolicy::class,
-        LegacyComment::class => LegacyCommentPolicy::class,
+        Assessment::class => LegacyCommentPolicy::class,
         Media::class => MediaPolicy::class,
         Permission::class => PermissionPolicy::class,
         Post::class => PostPolicy::class,

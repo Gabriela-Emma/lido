@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProjectCatalyst\CatalystUserProfilesController;
+use App\Models\CatalystReport;
 use App\Models\User;
 use App\Models\Reward;
 use App\Models\EveryEpoch;
@@ -204,6 +205,7 @@ Route::prefix('catalyst-explorer')->as('catalystExplorerApi.')
 
         Route::get('/people', [CatalystExplorer\ProfileController::class, 'people']);
         Route::get('/people/{person_id}', [CatalystExplorer\ProfileController::class, 'person']);
+        Route::post('/profiles/{catalystProfile:id}/follow', [CatalystExplorer\ProfileController::class, 'follow']);
 
         Route::get('/groups', [CatalystExplorer\GroupController::class, 'groups']);
         Route::get('/groups/{group_id}', [CatalystExplorer\GroupController::class, 'group']);
@@ -212,6 +214,14 @@ Route::prefix('catalyst-explorer')->as('catalystExplorerApi.')
         Route::get('/tags/{tag}', [CatalystExplorer\TagController::class, 'tag'])->name('tag');
 
         Route::post('/reports/follow', [CatalystExplorer\ReportController::class, 'follow']);
+
+        Route::group([
+            'prefix' => '/reports/comments',
+        ], function () {
+            Route::get('/{catalystReport:id}', [CatalystExplorer\ReportController::class, 'listComments']);
+            Route::post('/{catalystReport:id}', [CatalystExplorer\ReportController::class, 'createComment']);
+            // Route::post('/create',);
+        });
 
         Route::post('/login', [CatalystExplorer\UserController::class, 'login']);
 

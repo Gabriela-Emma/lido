@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Parental\HasParent;
 
-class Prompt extends LegacyComment
+class Prompt extends Assessment
 {
     use HasParent;
 

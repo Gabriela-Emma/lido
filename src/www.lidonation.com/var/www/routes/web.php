@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\ProjectCatalyst\CatalystAssessmentsController;
 use App\Http\Controllers\ProjectCatalyst\CatalystMyDashboardController;
 use App\Http\Controllers\ProjectCatalyst\CatalystMyGroupsController;
 use App\Http\Controllers\ProjectCatalyst\CatalystUserProfilesController;
@@ -182,6 +184,9 @@ Route::group(
 
         Route::get('/charts', fn() => Inertia::render('Charts'))
             ->name('charts');
+
+        Route::get('/assessments', [CatalystAssessmentsController::class, 'index'])
+            ->name('assessments');
 
         Route::get('/funds', [CatalystFundsController::class, 'index'])
             ->name('funds');
@@ -704,3 +709,4 @@ Route::get('/reset-password/{token}', function (Request $request, $token) {
 
 // Route::get('reset-password/{token}', ResetPasswordForm::class)->name('password.reset');
 Route::post('reset-password', [ForgotPasswordController::class, 'submitResetPasswordForm'])->name('password.update');
+Route::post('logout', [AuthController::class, 'logout'])->name('logout');

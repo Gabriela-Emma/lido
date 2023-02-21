@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Models\Traits\HasAuthor;
-use App\Models\Traits\HasComments;
+use App\Models\Traits\HasAssessments;
 use App\Models\Traits\HasMetaData;
 use App\Models\Traits\HasSnippets;
 use App\Scopes\OrderByOrderScope;
@@ -20,7 +20,7 @@ class Discussion extends Model implements Interfaces\IHasMetaData
     use HasTimestamps,
         HasAuthor,
         HasMetaData,
-        HasComments,
+        HasAssessments,
         HasSnippets,
         HasChildren,
         SoftDeletes;
@@ -69,14 +69,6 @@ class Discussion extends Model implements Interfaces\IHasMetaData
     {
         return $this->belongsTo(Review::class, 'model_id');
     }
-
-//    public function community_reviews(): HasMany
-//    {
-//        return $this->hasMany(Comment::class, 'model_id')
-//            ->where('model_type', static::class)
-//            ->where('user_id', '!=', $this->user_id)
-//            ->whereNull('parent_id');
-//    }
 
     /**
      * The "booted" method of the model.

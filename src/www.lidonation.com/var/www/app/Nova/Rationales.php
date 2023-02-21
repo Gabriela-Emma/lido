@@ -2,7 +2,7 @@
 
 namespace App\Nova;
 
-use App\Models\LegacyComment;
+use App\Models\Assessment;
 use App\Nova\Actions\PublishModel;
 use App\Scopes\PublishedScope;
 use Illuminate\Database\Eloquent\Builder;
@@ -25,7 +25,7 @@ class Rationales extends Resource
      *
      * @var string
      */
-    public static $model = LegacyComment::class;
+    public static $model = Assessment::class;
 
     public static $perPageViaRelationship = 25;
 

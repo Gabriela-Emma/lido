@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Spatie\Comments\Models\Concerns\HasComments;
 use App\Models\Traits\HasMetaData;
 use App\Scopes\OrderByDateScope;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -11,9 +12,11 @@ use Illuminate\Support\Str;
 
 class CatalystReport extends Model
 {
-    use SoftDeletes, HasMetaData;
+    use SoftDeletes, HasMetaData, HasComments;
 
-    public function getExcerptAttribute($value)
+    protected $withCount = ['comments'];
+
+    public function getExcerptAttribute($value): string
     {
         if (isset($value)) {
             return $value;
@@ -45,5 +48,15 @@ class CatalystReport extends Model
     {
         parent::booted();
         static::addGlobalScope(new OrderByDateScope);
+    }
+
+    public function commentableName(): string
+    {
+        return 'Catalyst Report for: ' . $this->proposal?->title;
+    }
+
+    public function commentUrl(): string
+    {
+        return url('/catalyst-explorer/reports#' . $this->id);
     }
 }

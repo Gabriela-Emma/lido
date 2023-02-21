@@ -4,12 +4,15 @@ namespace App\Http\Controllers\Api\CatalystExplorer;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\PeopleResource;
+use App\Models\CatalystReport;
 use App\Models\CatalystUser;
+use App\Models\NotificationRequestTemplate;
 use App\Models\Proposal;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 use OpenApi\Annotations as OA;
 
@@ -55,5 +58,25 @@ class ProfileController extends Controller
         } else {
             return new PeopleResource($person);
         }
+    }
+
+    public function  follow(CatalystUser $catalystProfile)
+    {
+        $who = Auth::user();
+
+        $nrt = new NotificationRequestTemplate;
+        $nrt->where = $who->email;
+        $nrt->who_id = $who->id;
+        $nrt->who_type = $who::class;
+
+        $nrt->what_type = CatalystUser::class;
+        $nrt->when = 'all';
+        $nrt->what_filter = [];
+        $nrt->what_id = $catalystProfile->id;
+        $nrt->status = 'published';
+
+        $nrt->save();
+
+        return $nrt;
     }
 }

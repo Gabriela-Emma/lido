@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Models\Interfaces\HasLink;
-use App\Models\Traits\HasComments;
 use App\Models\Traits\HasDiscussions;
 use App\Models\Traits\HasHero;
 use App\Models\Traits\HasLinks;
@@ -26,6 +25,7 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Str;
 use Laravel\Nova\Actions\Actionable;
+use Spatie\Comments\Models\Concerns\HasComments;
 use Spatie\Image\Manipulations;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -41,10 +41,10 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
 {
     use Actionable,
         SoftDeletes,
+        HasComments,
         HasTimestamps,
         HasMetaData,
         HasTaxonomies,
-        HasComments,
         HasLinks,
         InteractsWithMedia,
         HasDiscussions,
@@ -522,5 +522,15 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
     {
         parent::booted();
         static::addGlobalScope(new OrderByDateScope);
+    }
+
+    public function commentableName(): string
+    {
+        // TODO: Implement commentableName() method.
+    }
+
+    public function commentUrl(): string
+    {
+        // TODO: Implement commentUrl() method.
     }
 }
