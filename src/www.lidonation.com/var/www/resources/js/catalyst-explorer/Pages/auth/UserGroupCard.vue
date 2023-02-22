@@ -25,7 +25,7 @@
                 </div>
             </div>
             <div>
-                <button type="button"  @click.prevent="editing = !editing"
+                <button type="button" @click.prevent="editing = !editing"
                         class="inline-flex items-center rounded-sm border border-slate-300 bg-white px-2.5 py-1.5 text-md font-medium text-slate-700 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
                     <span v-if="!editing">Edit</span>
                     <span v-if="!!editing">Cancel</span>
@@ -59,16 +59,8 @@
                     <div class="absolute block left-3 -top-1.5 bg-white rounded-sm text-xs px-2">
                         Group Details
                     </div>
-                    <div class="border divide-x space-x-8 flex gap-8 p-2 sm:col-span-2 w-full">
-                        <div class="flex flex-col flex-1 justify-center p-2 pl-3">
-                            <dt class="text-sm font-medium text-slate-500">
-                                Admin
-                            </dt>
-                            <dd class="mt-1 text-md text-slate-900">
-                                {{ group?.owner?.name }}
-                            </dd>
-                        </div>
-                        <div class="flex flex-col flex-1 justify-center p-2 pl-3">
+                    <div class="border divide-x space-x-8 flex gap-4 p-2 sm:col-span-2 w-full">
+                        <div class="flex flex-col flex-1 justify-center p-2 pl-4">
                             <dt class="text-sm font-medium text-slate-500">
                                 <label for="name" class="block text-sm font-medium text-slate-700">
                                     Group Name
@@ -86,7 +78,15 @@
                                 </div>
                             </dd>
                         </div>
-                        <div class="flex flex-col flex-1 justify-center p-2 pl-3">
+                        <div class="flex flex-col flex-1 justify-center p-2 pl-4">
+                            <dt class="text-sm font-medium text-slate-500">
+                                Admin
+                            </dt>
+                            <dd class="mt-1 text-md text-slate-900">
+                                {{ group?.owner?.name }}
+                            </dd>
+                        </div>
+                        <div class="flex flex-col flex-1 justify-center p-2 pl-4">
                             <dt class="text-sm font-medium text-slate-500">
                                 <label for="website" class="block text-sm font-medium text-slate-700">
                                     Website
@@ -112,7 +112,7 @@
                         Community & Support Links
                     </div>
                     <div class="border divide-x space-x-8 flex gap-8 p-2 sm:col-span-2 w-full">
-                        <div class="flex flex-col flex-1 justify-center p-2 pl-3">
+                        <div class="flex flex-col flex-1 justify-center p-2 pl-4">
                             <dt class="text-sm font-medium text-slate-500">
                                 <label for="twitter" class="block text-sm font-medium text-slate-700">
                                     twitter
@@ -199,10 +199,21 @@
             <div class="bg-slate-50 px-4 py-3 text-right sm:px-6 mt-8 -mx-6 -mb-6">
                 <button type="submit"
                         class="inline-flex justify-center rounded-sm border border-transparent bg-teal-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
-                    Save
+                    {{ group.id ? 'Save' : 'Create' }}
                 </button>
             </div>
         </form>
+
+        <!--        <div class="group-proposals-wrapper">-->
+        <!--            <div>-->
+        <!--                <h2>Group Proposals</h2>-->
+        <!--                <div>-->
+        <!--                    <div class="flex gap-4">-->
+
+        <!--                    </div>-->
+        <!--                </div>-->
+        <!--            </div>-->
+        <!--        </div>-->
     </div>
 </template>
 
@@ -221,13 +232,19 @@ const props = withDefaults(
             return {} as Group;
         }
     }
-)
+);
 
 let groupForm = useForm({...props.group});
-let editing = ref(false);
+let editing = ref(!props?.group?.name || false);
 
 let submit = () => {
-    groupForm.post(`${usePage().props.base_url}/catalyst-explorer/my/groups/${props.group.id}`,
+    let url;
+    if (props.group?.id) {
+        url = `${usePage().props.base_url}/catalyst-explorer/my/groups/${props.group.id}`;
+    } else {
+        url = `${usePage().props.base_url}/catalyst-explorer/my/groups`;
+    }
+    groupForm.post(url,
         {
             preserveScroll: false,
             preserveState: false,

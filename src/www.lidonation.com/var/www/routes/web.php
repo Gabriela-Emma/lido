@@ -213,7 +213,6 @@ Route::group(
                 Route::get('/profiles', [CatalystUserProfilesController::class, 'index'])
                     ->name('myProfiles');
 
-//            Route::post('/profiles', [CatalystUserProfilesController::class, 'update']);
                 Route::post('/profiles/{catalystUser:id}', [CatalystUserProfilesController::class, 'update']);
 
                 Route::get('/proposals', [CatalystMyProposalsController::class, 'index'])
@@ -223,6 +222,7 @@ Route::group(
                     ->name('myProposal');
 
                 Route::post('/groups/{catalystGroup:id}', [CatalystGroupsController::class, 'update']);
+                Route::post('/groups', [CatalystGroupsController::class, 'create']);
                 Route::get('/groups', [CatalystMyGroupsController::class, 'index'])
                     ->name('myGroups');
             });

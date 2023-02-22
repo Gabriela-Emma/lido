@@ -4,6 +4,7 @@ namespace App\Http\Controllers\ProjectCatalyst;
 
 use App\Http\Controllers\Controller;
 use App\Models\CatalystGroup;
+use App\Models\CatalystUser;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -42,8 +43,12 @@ class CatalystMyGroupsController extends Controller
             ->whereRelation('owner', fn ($query) => $query->whereIn('id', $catalystProfiles));
         $paginator = $query->paginate($this->perPage, ['*'], 'p')->setPath('/');
 
+        $profilesQuery = CatalystUser::with('claimed_by_user')
+            ->whereRelation('claimed_by_user', 'id', $user->id);
+
         return [
             'groups' => $paginator->onEachSide(1)->toArray(),
+            'profiles' => $profilesQuery->get(),
             'crumbs' => [
                 ['label' => 'My Groups'],
             ],
