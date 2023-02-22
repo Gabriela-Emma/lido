@@ -3,7 +3,8 @@
         <div class="pt-28 relative">
             <header class="bg-teal-700 text-white py-8 px-4 w-full sticky top-28">
                 <div class="flex items-center justify-between relative">
-                    <DialogTitle class="text-lg xl:text-xl 2xl:text-2xl font-medium text-white">{{
+                    <DialogTitle class="text-lg xl:text-xl 2xl:text-2xl font-medium text-white">
+                        {{
                             proposal.title
                         }}
                     </DialogTitle>
@@ -276,7 +277,6 @@ import {
     DocumentCheckIcon,
     CommandLineIcon,
     NewspaperIcon,
-    ShareIcon,
 } from '@heroicons/vue/24/outline';
 import {DialogTitle} from "@headlessui/vue";
 import {computed, ref} from "vue";
@@ -287,7 +287,15 @@ const props = withDefaults(
         locale?: string,
         proposal: Proposal,
     }>(), {});
-const gitRepo = computed(() => (props.proposal?.repos[0] || null));
+const gitRepo = computed(() => {
+    if (props.proposal?.repos?.length === 0) {
+        return null
+    }
+    if (typeof props.proposal?.repos[0] === 'undefined') {
+        return null;
+    }
+    props.proposal?.repos[0] || null
+});
 let currAction = ref(null);
 
 const actions = [
