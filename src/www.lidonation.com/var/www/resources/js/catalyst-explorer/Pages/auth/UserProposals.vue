@@ -43,7 +43,28 @@
                     <div class="space-y-6 sm:px-6  bg-white p-6">
                         <div class="">
                             <div>
-                                <h2 class="leading-6 text-slate-900">My Proposals</h2>
+                                <div class="">
+                                    <h2 class="leading-6 text-slate-900">My Proposals</h2>
+                                </div>
+                                <div class="mt-2">
+                                    <Toggle
+                                            onLabel="Funded proposals "
+                                            offLabel="All proposals"
+                                            v-model="filtersRef.funded"
+                                            :classes="{
+                                            container: 'inline-block rounded-xl outline-none focus:ring focus:ring-teal-500 focus:ring-opacity-30 w-40',
+                                            toggle: 'flex w-full h-8 rounded-xl relative cursor-pointer transition items-center box-content border-2 text-xs leading-none',
+                                            toggleOn: 'bg-teal-500 border-teal-500 justify-start font-semibold text-white',
+                                            toggleOff: 'bg-slate-200 border-slate-200 justify-end font-semibold text-slate-700',
+                                            handle: 'inline-block bg-white w-8 h-8 top-0 rounded-xl absolute transition-all',
+                                            handleOn: 'left-full transform -translate-x-full',
+                                            handleOff: 'left-0',
+                                            handleOnDisabled: 'bg-slate-100 left-full transform -translate-x-full',
+                                            handleOffDisabled: 'bg-slate-100 left-0',
+                                            label: 'text-center w-auto px-2 border-box whitespace-nowrap select-none',
+                                            }"
+                                        />
+                                </div>
                             </div>
 
                             <div
@@ -122,12 +143,19 @@
 <script lang="ts" setup>
 import UserNav from "./UserNav.vue";
 import Proposal from "../../models/proposal";
-import {Link, useForm} from '@inertiajs/vue3';
-import {computed, ref} from "@vue/reactivity";
+import {Link, router, usePage} from '@inertiajs/vue3';
+import Toggle from '@vueform/toggle'
+import Filters from "../../models/filters";
+import { VARIABLES } from "../../models/variables";
+import {watch, ref} from "vue";
+
+
+
 
 const props = withDefaults(
     defineProps<{
         locale: string,
+        filters:Filters,
         totalDistributed: number,
         totalRemaining: number,
         budgetSummary: number,
@@ -140,6 +168,26 @@ const props = withDefaults(
         };
     }>(), {});
 
+let filtersRef = ref(props.filters);
+
+watch([filtersRef], () => {
+   query();
+}, {deep: true});
+
+function query()
+{
+    const data = {};
+    
+    if (filtersRef.value?.funded) {
+        data[VARIABLES.FUNDED_PROPOSALS] = 1;
+    }
+
+    router.get(
+        `${usePage().props.base_url}/catalyst-explorer/my/proposals`,
+        data,
+        {preserveState: true, preserveScroll: true}
+    );
+}
 
 
 </script>
