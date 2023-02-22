@@ -294,14 +294,14 @@ const gitRepo = computed(() => {
     if (typeof props.proposal?.repos[0] === 'undefined') {
         return null;
     }
-    props.proposal?.repos[0] || null
+    return props.proposal?.repos[0] || null
 });
 let currAction = ref(null);
 
 const actions = [
     {
-        title: 'Git Repo' + (gitRepo ? ' - successfully added!' : ''),
-        excerpt: gitRepo ? `Tracking ${gitRepo?.value?.url}:${gitRepo?.value?.tracked_branch}` : 'Stream git commit messages to the community by adding a public or private repository.',
+        title: 'Git Repo' + (!!gitRepo?.value ? ' - successfully added!' : ''),
+        excerpt: !!gitRepo?.value ? `Tracking ${gitRepo?.value?.url}:${gitRepo?.value?.tracked_branch}` : 'Stream git commit messages to the community by adding a public or private repository.',
         handler: 'git',
         icon: CommandLineIcon,
         hint: PlusIcon,
@@ -401,4 +401,6 @@ const team = [
             'https://images.unsplash.com/photo-1502685104226-ee32379fefbe?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
     },
 ];
+
+console.log('gitRepo::', gitRepo.value);
 </script>
