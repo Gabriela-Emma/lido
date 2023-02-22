@@ -96,7 +96,7 @@
            </template>
            <form class="pt-2"
            @submit.prevent="addComment"
-           x-show="loggedIn"
+           x-show="loggedIn && ! loading"
            >
                {{-- <div class="mb-2">
                    <label for="name" class="block text-sm font-medium text-slate-600">Name </label>
@@ -123,6 +123,10 @@
                 Post
                </button>
            </form>
+
+           <template x-if="loading" class="mt-4">
+            <x-theme.spinner square="8" squareXl="8" theme="green"/>
+           </template>
 
            <template x-if="commentPosted">
                 <div class="rounded-sm bg-teal-100 p-4 mt-3">
@@ -164,6 +168,7 @@
     function singleProposalReportComments (){
         return {
             showComments: false,
+            loading: false,
             newComment: '',
             comments: null,
             loggedIn: false,
@@ -187,11 +192,13 @@
 
             async addComment(event) {
                 //  Alpine.store('cm').addComment(this.newComment);
+                this.loading = true;
                 const formData = Object.fromEntries(new FormData(event.target));
                 const res = await window.axios.post(`/api/catalyst-explorer/reports/comments/${formData.report}`, formData);
                 if (res.status === 200 || res.status === 201) {
                     this.commentPosted = true;
                     this.newComment = '';
+                    this.loading = false;
                     this.loadComments(formData.report);
                     setTimeout(() => {
                     this.commentPosted = false;
