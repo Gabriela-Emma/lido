@@ -54,52 +54,189 @@
         @endif
     </div>
 
-{{--    <div x-data="catalystReportComments" class="w-full mx-auto bg-slate-100 px-4">--}}
-{{--        <div class="flex justify-between items-center py-4">--}}
-{{--            <div class="text-teal-800 opacity-75 text-sm inline-flex gap-2 items-center h-full">--}}
-{{--                <span class="bold text-xl">Comments</span>--}}
-{{--                <span>4</span>--}}
-{{--            </div>--}}
+   <div x-data="singleProposalReportComments" class="w-full mx-auto bg-slate-100 px-4">
+       <div class="flex justify-between items-center py-4">
+           <div class="text-teal-800 opacity-75 text-sm inline-flex gap-2 items-center h-full">
+               <span class="bold text-xl">Comments</span>
+               <span>{{$report->comments_count}}</span>
+           </div>
 
-{{--            <button id="message-type" name="message-type"--}}
-{{--                    x-on:click="toggleShowComments(4138)" x-html="showComments ? '-' :'+' "--}}
-{{--                    class="text-2xl font-medium text-teal-800 hover:text-yellow-600">--}}
-{{--            </button>--}}
-{{--        </div>--}}
+           <button id="message-type" name="message-type"
+                   x-on:click="toggleShowComments({{$report->id}})" x-html="showComments ? '-' :'+' "
+                   class="text-2xl font-medium text-teal-800 hover:text-yellow-600">
+           </button>
+       </div>
 
-{{--        <div x-cloak x-show="showComments" class="border-t border-slate-400 border-dashed pb-4">--}}
-{{--            <ul x-if="comments">--}}
-{{--                <template x-for="(comment, index) in comments" x-cloak class="boarder-b-2 ">--}}
-{{--                    <li x-text="index"></li>--}}
-{{--                </template>--}}
-{{--            </ul>--}}
-{{--            <p class="py-4" x-if="!comments">--}}
-{{--                Be the first to leave a comment!--}}
-{{--            </p>--}}
-{{--            <div class="border-t border-slate-400 border-dashed pt-2">--}}
-{{--                <div class="mb-2">--}}
-{{--                    <label for="name" class="block text-sm font-medium text-slate-600">Name </label>--}}
-{{--                    <div class="mt-1">--}}
-{{--                        <input  id="name" name="name" type="text" autocomplete="name" required--}}
-{{--                                class="block w-full appearance-none rounded-sm border border-slate-400 px-3 py-2 placeholder-slate-400 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-teal-500 sm:text-sm">--}}
-{{--                    </div>--}}
-{{--                </div>--}}
+       <div x-cloak x-show="showComments" class="pb-4">
+           <template x-if="comments">
+            <ul x-if="comments" class="divide-y divide-slate-100">
+                <template x-for="(comment, index) in comments" x-cloak class="boarder-b-2 ">
+                    <li  
+                    class="relative bg-white py-5 px-4 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 hover:bg-gray-50">
+                         <div class="flex flex-row justify-between items-center space-x-3 text-gray-600 font-medium text-sm">
+                             <div>
+                                 <p class="truncate" x-text="comment.commentator?.name">
+                                 </p>
+                             </div>
+                             <span x-text="timeAgo(comment.created_at)"></span>
+                         </div>
+                         <div class="mt-1">
+                             <p class="text-md text-gray-700" x-html="comment.text"></p>
+                         </div>
+                    </li>
+                </template>
+            </ul> 
+           </template>
+           <template x-cloak class="pt-4" x-if="!comments?.length && loggedIn">
+                <p>Be the first to leave a comment!</p>
+           </template>
 
-{{--                <div class="mb-2">--}}
-{{--                    <label for="email" class="block text-sm font-medium text-slate-600">Email </label>--}}
-{{--                    <div class="mt-1">--}}
-{{--                        <input  id="email" name="email" type="email" autocomplete="email" required--}}
-{{--                                class="block w-full appearance-none rounded-sm border border-slate-400 px-3 py-2 placeholder-slate-400 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-teal-500 sm:text-sm">--}}
-{{--                    </div>--}}
-{{--                </div>--}}
+           <template x-cloak class="pt-4" x-if="comments?.length && loggedIn">
+                <span class="text-xs font-bold relative top-1">Leave a Comment.</span>
+           </template>
+           <form class="pt-2"
+           @submit.prevent="addComment"
+           x-show="loggedIn"
+           >
+               {{-- <div class="mb-2">
+                   <label for="name" class="block text-sm font-medium text-slate-600">Name </label>
+                   <div class="mt-1">
+                       <input  id="name" name="name" type="text" autocomplete="name" required
+                               class="block w-full appearance-none rounded-sm border border-slate-400 px-3 py-2 placeholder-slate-400 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-teal-500 sm:text-sm">
+                   </div>
+               </div>
 
-{{--                <textarea class="border-slate-200" type="text" row="3" placeholder="Give feedback or ask team a question." required--}}
-{{--                          x-model="newComment"></textarea>--}}
+               <div class="mb-2">
+                   <label for="email" class="block text-sm font-medium text-slate-600">Email </label>
+                   <div class="mt-1">
+                       <input  id="email" name="email" type="email" autocomplete="email" required
+                               class="block w-full appearance-none rounded-sm border border-slate-400 px-3 py-2 placeholder-slate-400 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-teal-500 sm:text-sm">
+                   </div>
+               </div> --}}
 
-{{--                <button class="text-white text-xs px-2 bg-teal-300 hover:bg-teal-800 ml-auto"--}}
-{{--                        x-on:click="addComment">Post--}}
-{{--                </button>--}}
-{{--            </div>--}}
-{{--        </div>--}}
-{{--    </div>--}}
+               <textarea class="border-slate-200 mt-0" name="comment" type="text" row="3" placeholder="Give feedback or ask team a question." required
+                         x-model="newComment"></textarea>
+
+               <input type="hidden" name="report" value="{{$report->id}}">
+
+               <button type="submit" class="text-white text-xs px-2 bg-teal-300 hover:bg-teal-800 ml-auto">
+                Post
+               </button>
+           </form>
+
+           <template x-if="commentPosted">
+                <div class="rounded-sm bg-teal-100 p-4 mt-3">
+                    <div class="flex">
+                        <div class="ml-3">
+                            <p class="text-sm font-medium text-green-800">Successfully Submitted</p>
+                        </div>
+                        <div class="ml-auto pl-3">
+                            <div class="-mx-1.5 -my-1.5">
+                                <input type="checkbox" class="inline-flex rounded-md bg-green-50 p-1.5 text-green-500 hover:bg-green-100 focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-offset-2 focus:ring-offset-green-50" checked>
+                                </input>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+           </template>
+
+            <div x-cloak x-show="!loggedIn" class="space-y-2 bg-white/50 p-2 mt-2 text-center">
+                <p>
+                    Login or Register to leave a comment!
+                </p>
+                <div class="flex gap-3 justify-center items-center">
+                    <a href="/catalyst-explorer/login" class="font-bold text-teal-600 hover:text-teal-500">
+                        Sign in
+                    </a>
+                    <a href="/catalyst-explorer/register"
+                        class="font-bold text-teal-600 hover:text-teal-500">
+                        Register
+                    </a>
+                </div>
+           </div>
+
+       </div>
+   </div>
 </div>
+
+
+<script>
+    function singleProposalReportComments (){
+        return {
+            showComments: false,
+            newComment: '',
+            comments: null,
+            loggedIn: false,
+            commentPosted: false,
+
+            toggleShowComments(reportId) {
+                this.showComments = !this.showComments;
+                this.checkLogin();
+                if (!this.comments) {
+                    this.loadComments(reportId).then();
+                }
+            },
+
+            checkLogin() {
+                axios.get('/api/user').then(response => {
+                this.loggedIn = true;
+                }).catch(error => {
+                });
+            },
+
+
+            async addComment(event) {
+                //  Alpine.store('cm').addComment(this.newComment);
+                const formData = Object.fromEntries(new FormData(event.target));
+                const res = await window.axios.post(`/api/catalyst-explorer/reports/comments/${formData.report}`, formData);
+                if (res.status === 200 || res.status === 201) {
+                    this.commentPosted = true;
+                    this.newComment = '';
+                    this.loadComments(formData.report);
+                    setTimeout(() => {
+                    this.commentPosted = false;
+                    }, 2000);
+                }
+            },
+
+
+            get commentsArray() {
+                setTimeout(() => {
+                    return this.comments;
+                }, 1200);
+            },
+            get commentsAvailable() {
+                return (this.comments.length > 0);
+            },
+
+            async loadComments(itemId) {
+
+                await window.axios.get(`/api/catalyst-explorer/reports/comments/${itemId}`, {})
+                    .then((res) => {
+                        this.comments = [...res.data];
+                    });
+            },
+
+            timeAgo (timestamp) {
+                const now = Date.now();
+                const createdAt = new Date(timestamp);
+                const secondsAgo = Math.floor((now - createdAt) / 1000);
+                const minutesAgo = Math.floor(secondsAgo / 60);
+                const hoursAgo = Math.floor(minutesAgo / 60);
+                const daysAgo = Math.floor(hoursAgo / 24);
+        
+                if (daysAgo > 0) {
+                    return `${daysAgo} day${daysAgo > 1 ? 's' : ''} ago`;
+                } else if (hoursAgo > 0) {
+                    return `${hoursAgo} hour${hoursAgo > 1 ? 's' : ''} ago`;
+                } else if (minutesAgo > 0) {
+                    return `${minutesAgo} minute${minutesAgo > 1 ? 's' : ''} ago`;
+                } else {
+                    return `${secondsAgo} second${secondsAgo > 1 ? 's' : ''} ago`;
+                }
+            }
+
+
+        }
+    }
+</script>
