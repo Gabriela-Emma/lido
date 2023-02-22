@@ -196,6 +196,49 @@
                 </div>
             </dl>
 
+            <div class="group-proposals-wrapper p-4 bg-slate-100 mt-8">
+                <div>
+                    <h3>{{ group.name }} Proposals <span> - more coming soon</span></h3>
+
+                    <div>
+                        <div class="overflow-hidden bg-white shadow sm:rounded-md">
+                            <ul role="list" class="divide-y divide-gray-200">
+                                <li v-for="proposal in proposals" :key="proposal.id">
+                                    <a href="#" class="block hover:bg-gray-50">
+                                        <div class="flex items-center px-4 py-4 sm:px-6">
+                                            <div class="min-w-0 flex-1 sm:flex sm:items-center sm:justify-between">
+                                                <div class="truncate">
+                                                    <div class="flex text-sm">
+                                                        <p class="truncate font-medium text-teal-600">{{ proposal.title }}</p>
+<!--                                                        <p class="ml-1 flex-shrink-0 font-normal text-gray-500">in {{ position.department }}</p>-->
+                                                    </div>
+                                                    <div class="mt-2 flex">
+                                                        <div class="flex items-center text-sm text-gray-500">
+                                                            <CalendarIcon class="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400" aria-hidden="true" />
+                                                            <p>
+                                                                {{proposal.fund?.label}}
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="mt-4 flex-shrink-0 sm:mt-0 sm:ml-5">
+                                                    <div class="flex -space-x-1 overflow-hidden">
+                                                        <img v-for="user in proposal.users" :key="user.id" class="inline-block h-6 w-6 rounded-full ring-2 ring-white" :src="user.profile_photo_url" :alt="user.name" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="ml-5 flex-shrink-0">
+                                                <ChevronRightIcon class="h-5 w-5 text-gray-400" aria-hidden="true" />
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="bg-slate-50 px-4 py-3 text-right sm:px-6 mt-8 -mx-6 -mb-6">
                 <button type="submit"
                         class="inline-flex justify-center rounded-sm border border-transparent bg-teal-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
@@ -203,17 +246,6 @@
                 </button>
             </div>
         </form>
-
-        <!--        <div class="group-proposals-wrapper">-->
-        <!--            <div>-->
-        <!--                <h2>Group Proposals</h2>-->
-        <!--                <div>-->
-        <!--                    <div class="flex gap-4">-->
-
-        <!--                    </div>-->
-        <!--                </div>-->
-        <!--            </div>-->
-        <!--        </div>-->
     </div>
 </template>
 
@@ -221,8 +253,12 @@
 import Group from '../../models/group';
 import {PaperClipIcon} from '@heroicons/vue/20/solid';
 import {useForm, usePage} from "@inertiajs/vue3";
-import {ref} from "vue";
+import {Ref, ref} from "vue";
+import axios from "axios";
+import { CalendarIcon, ChevronRightIcon } from '@heroicons/vue/20/solid'
+import Proposal from "../../models/proposal";
 
+let proposals: Ref<Proposal[]> = ref([]);
 const props = withDefaults(
     defineProps<{
         group: Group;
@@ -233,6 +269,14 @@ const props = withDefaults(
         }
     }
 );
+
+axios.get(`${usePage().props.base_url}/catalyst-explorer/my/groups/${props.group?.id}/proposals`)
+    .then((response) => {
+        proposals.value = [...response?.data?.data];
+    })
+    .catch((error) => {
+        console.error(error);
+    });
 
 let groupForm = useForm({...props.group});
 let editing = ref(!props?.group?.name || false);

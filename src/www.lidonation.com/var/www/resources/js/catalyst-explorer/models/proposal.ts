@@ -1,4 +1,5 @@
 import Repo from "./repo";
+import Fund from "./fund";
 
 export default interface Proposal {
     id:number;
@@ -17,7 +18,8 @@ export default interface Proposal {
     ratings_count: number;
     website: string;
     repos: Repo[];
-    meta_data: {
+    fund?: Fund;
+    meta_data?: {
         iog_hash: string;
     };
     users: {

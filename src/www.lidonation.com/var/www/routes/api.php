@@ -6,7 +6,6 @@ use App\Http\Controllers\Api\Partners\PartnersController;
 use App\Http\Controllers\Api\Phuffycoin\PhuffycoinController;
 use App\Http\Controllers\Delegators\DelegatorController;
 use App\Http\Controllers\GenerateMnemonicPhraseController;
-use App\Http\Controllers\ProjectCatalyst\CatalystUserProfilesController;
 use App\Http\Controllers\PromoController;
 use App\Http\Controllers\ProposalController;
 use App\Http\Controllers\QuestionResponseController;
