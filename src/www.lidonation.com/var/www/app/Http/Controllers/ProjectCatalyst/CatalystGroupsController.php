@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\CatalystGroup;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Fluent;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -45,6 +46,33 @@ class CatalystGroupsController extends Controller
         }
 
         return Inertia::render('Groups', $props);
+    }
+
+    public function create(Request $request)
+    {
+        $validated = new Fluent( $request->validate([
+            'email' => 'sometimes|email',
+            'website' => 'sometimes',
+            'twitter' => 'nullable|bail|min:2',
+            'github' => 'nullable|bail|min:5',
+            'discord' => 'nullable|bail|min:4',
+            'telegram' => 'nullable|bail|min:2',
+            'bio' => 'min:20',
+            'name' => 'required|min:10',
+            'owner.id' => 'required:exists:catalyst_groups'
+        ]));
+
+        $catalystGroup = new CatalystGroup;
+        $catalystGroup->bio = $validated->bio;
+        $catalystGroup->name = $validated->name;
+        $catalystGroup->user_id = $validated->owner['id'];
+        $catalystGroup->github = $validated->github;
+        $catalystGroup->discord = $validated->discord;
+        $catalystGroup->twitter = $validated->twitter;
+        $catalystGroup->website = $validated->website;
+        $catalystGroup->save();
+
+        return to_route('catalystExplorer.myGroups');
     }
 
     public function update(Request $request, CatalystGroup $catalystGroup)
