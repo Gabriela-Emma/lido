@@ -5,7 +5,7 @@ namespace App\Actions;
 use CzProject\GitPhp\IRunner;
 use CzProject\GitPhp\RunnerResult;
 
-class CmdRunner implements IRunner
+class GitCmdRunner implements IRunner
 {
     public function run($cwd, array $args, array $env = null)
     {

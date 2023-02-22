@@ -77,7 +77,7 @@ import {useForm, usePage} from "@inertiajs/vue3";
 import {debounce} from "lodash";
 import Multiselect from '@vueform/multiselect';
 import axios from "axios";
-import {ref, watch, onBeforeUnmount, defineEmits} from "vue";
+import {ref, watch, defineEmits} from "vue";
 
 
 let branches = ref<string[]>([]);

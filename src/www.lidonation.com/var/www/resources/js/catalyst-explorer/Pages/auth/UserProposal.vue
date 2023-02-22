@@ -164,7 +164,7 @@
                                             <div>
                                                 <div class="relative flex items-start">
                                                     <div class="absolute flex h-5 items-center">
-                                                        tyty@tyty.co <input id="privacy-private" name="privacy"
+                                                    <input id="privacy-private" name="privacy"
                                                                             aria-describedby="privacy-private-to-project-description"
                                                                             type="radio"
                                                                             class="h-4 w-4 border-gray-300 text-teal-600 focus:ring-teal-500"/>

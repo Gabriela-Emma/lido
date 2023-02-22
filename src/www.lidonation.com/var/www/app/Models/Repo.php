@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Repo extends Model
 {
-    protected $table = 'repos';
 
     protected $guarded = [];
 

@@ -2,11 +2,11 @@
 
 namespace App\Jobs;
 
-use App\Actions\CmdRunner;
+use App\Actions\GitCmdRunner;
 use App\Models\Commit;
 use App\Models\Proposal;
 use App\Models\Repo;
-use App\Services\CloneRepoService;
+use App\Services\GitRepoService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -33,8 +33,8 @@ class SaveRepo implements ShouldQueue
      */
     public function handle()
     {
-        $repoPath = CloneRepoService::clone($this->url);
-        $repoName = CloneRepoService::repoName();
+        $repoPath = GitRepoService::clone($this->url);
+        $repoName = GitRepoService::repoName();
 
         //get repo details
         $repo = new Repo;
@@ -48,7 +48,7 @@ class SaveRepo implements ShouldQueue
 
         // get the commits of that repo
 
-        $runner = new CmdRunner();
+        $runner = new GitCmdRunner();
         $logOutput = $runner->run($repoPath, [
             'log',
             '--pretty=format:%h/ %an/ %ad/ %s',

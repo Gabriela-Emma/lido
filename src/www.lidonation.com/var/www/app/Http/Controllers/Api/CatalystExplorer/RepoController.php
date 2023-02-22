@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api\CatalystExplorer;
 
-use App\Actions\CmdRunner;
+use App\Actions\GitCmdRunner;
 use App\Jobs\SaveRepo;
 use Illuminate\Http\Request;
 
@@ -12,7 +12,7 @@ class RepoController extends Controller
     {
         $gitUrl = $request->input('gitUrl');
 
-        $runner = new CmdRunner();
+        $runner = new GitCmdRunner();
         $cmd = ['ls-remote', '--heads', $gitUrl];
         $result = $runner->run('', $cmd);
         $output = $result->getOutputAsString();
