@@ -222,6 +222,7 @@ Route::group(
                     ->name('myProposal');
 
                 Route::post('/groups/{catalystGroup:id}', [CatalystGroupsController::class, 'update']);
+                Route::get('/groups/{catalystGroup:id}/proposals', [CatalystMyGroupsController::class, 'proposals']);
                 Route::post('/groups', [CatalystGroupsController::class, 'create']);
                 Route::get('/groups', [CatalystMyGroupsController::class, 'index'])
                     ->name('myGroups');

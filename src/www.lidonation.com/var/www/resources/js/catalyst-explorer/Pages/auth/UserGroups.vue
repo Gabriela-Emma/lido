@@ -14,7 +14,7 @@
                             <h2 class="leading-6 text-slate-900">My Groups</h2>
                         </div>
                         <div class="flex flex-col gap-8">
-                            <TransitionGroup tag="ul" name="fade" class="container">
+                            <TransitionGroup tag="ul" name="fade" class="container flex flex-col gap-8">
                                 <UserGroupCard v-for="(group, index) in groups" :group="group" :key="index"/>
                             </TransitionGroup>
 
