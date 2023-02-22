@@ -59,8 +59,9 @@
         </div>
         <div class="flex gap-4 justify-end px-4 py-4">
             <button type="button" @click="emit('cancelled')"
-                    class="rounded-sm border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
-                Cancel
+                    class="rounded-sm border border-gray-300 bg-white py-2 inline-flex  gap-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
+                <ArrowUturnLeftIcon class="w-4 h-4"/>
+                <span>Back</span>
             </button>
             <button @click.prevent="submitRepo"
                     as="button"
@@ -77,13 +78,11 @@ import {useForm, usePage} from "@inertiajs/vue3";
 import {debounce} from "lodash";
 import Multiselect from '@vueform/multiselect';
 import axios from "axios";
-import {ref, watch, defineEmits} from "vue";
+import {ref, watch, defineEmits, computed} from "vue";
+import { ArrowUturnLeftIcon } from '@heroicons/vue/20/solid';
 
-
-let branches = ref<string[]>([]);
 let errorMessage = ref('');
 let success = ref();
-
 
 const props = withDefaults(
     defineProps<{
@@ -95,15 +94,14 @@ const props = withDefaults(
         },
     },
 );
-
+const repo = computed(() => (props.proposal?.repos[0] || null) );
+let branches = ref<string[]>([repo.value?.tracked_branch]);
 let repoForm = useForm({
-    gitUrl: '',
+    gitUrl: repo.value?.url,
     user_id: props.proposal.user_id,
     proposal_id: props.proposal.id,
-    branch: ''
+    branch: repo.value?.tracked_branch
 });
-
-console.log('proposal::', props.proposal);
 
 const emit = defineEmits<{
     (e: 'cancelled'): void
@@ -160,5 +158,7 @@ let submitRepo = () => {
             console.error(error);
         });
 }
+
+
 
 </script>

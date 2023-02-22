@@ -210,6 +210,63 @@
                     </div>
                 </div>
                 <div class="col-span-9 lg:col-span-6">
+                    @if($proposal->funded)
+                        <div class="p-4 font-semibold text-white border border-slate-300 rounded-sm bg-teal-700 mb-4">
+                            <div class="md:flex md:items-center md:justify-between">
+                                <div class="min-w-0 flex-1">
+                                    <h4 class="text-white p-4">
+                                        This proposal was approved and funded by the Cardano Community via Project
+                                        <strong>{{$proposal->fund?->title}}</strong> Catalyst funding round.
+                                    </h4>
+
+{{--                                    <div>--}}
+{{--                                        <nav class="hidden sm:flex" aria-label="Breadcrumb">--}}
+{{--                                            <ol role="list" class="flex items-center space-x-4">--}}
+{{--                                                <li>--}}
+{{--                                                    <div class="flex">--}}
+{{--                                                        <a href="#"--}}
+{{--                                                           class="text-sm font-medium text-gray-400 hover:text-gray-200">Jobs</a>--}}
+{{--                                                    </div>--}}
+{{--                                                </li>--}}
+{{--                                                <li>--}}
+{{--                                                    <div class="flex items-center">--}}
+{{--                                                        <svg class="h-5 w-5 flex-shrink-0 text-gray-500" viewBox="0 0 20 20"--}}
+{{--                                                             fill="currentColor" aria-hidden="true">--}}
+{{--                                                            <path fill-rule="evenodd"--}}
+{{--                                                                  d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z"--}}
+{{--                                                                  clip-rule="evenodd"/>--}}
+{{--                                                        </svg>--}}
+{{--                                                        <a href="#"--}}
+{{--                                                           class="ml-4 text-sm font-medium text-gray-400 hover:text-gray-200">Engineering</a>--}}
+{{--                                                    </div>--}}
+{{--                                                </li>--}}
+{{--                                                <li>--}}
+{{--                                                    <div class="flex items-center">--}}
+{{--                                                        <svg class="h-5 w-5 flex-shrink-0 text-gray-500" viewBox="0 0 20 20"--}}
+{{--                                                             fill="currentColor" aria-hidden="true">--}}
+{{--                                                            <path fill-rule="evenodd"--}}
+{{--                                                                  d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z"--}}
+{{--                                                                  clip-rule="evenodd"/>--}}
+{{--                                                        </svg>--}}
+{{--                                                        <a href="#" aria-current="page"--}}
+{{--                                                           class="ml-4 text-sm font-medium text-gray-400 hover:text-gray-200">Back--}}
+{{--                                                            End Developer</a>--}}
+{{--                                                    </div>--}}
+{{--                                                </li>--}}
+{{--                                            </ol>--}}
+{{--                                        </nav>--}}
+{{--                                    </div>--}}
+                                </div>
+{{--                                <div class="mt-4 flex flex-shrink-0 md:mt-0 md:ml-4">--}}
+{{--                                    <button type="button"--}}
+{{--                                            class="inline-flex items-center rounded-md border border-transparent bg-gray-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-800">--}}
+{{--                                        Edit--}}
+{{--                                    </button>--}}
+{{--                                </div>--}}
+                            </div>
+                        </div>
+                    @endif
+
                     @if($proposal->videos->isNotEmpty() || $proposal->media->isNotEmpty())
                         <div class="mb-2 bg-teal-800 primary-slide">
                             <div class="splide round-sm" id="proposal-primary-slide" role="group">
@@ -297,22 +354,33 @@
                     @endif
 
                     @if($proposal->content || $proposal->defination_of_success)
-                        <article
-                            class="p-4 border border-slate-300 rounded-sm break-normal {{$proposal->funded ? 'max-h-[45rem] overflow-auto' : ''}}">
-                            @if($proposal->content)
-                                <x-markdown>{{$proposal->content}}</x-markdown>
-                            @endif
+                        <div x-data="{heightClass: 'max-h-[50rem] overflow-clip', funded: @js($proposal->funded)}"
+                             class="relative p-4 border border-slate-300 rounded-sm break-normal">
+                            <article :class="heightClass" x-transition>
+                                @if($proposal->content)
+                                    <x-markdown>{{$proposal->content}}</x-markdown>
+                                @endif
 
-                            @if($proposal->definition_of_success)
-                                <h2>Definition of Success</h2>
-                                <x-markdown>{{$proposal->definition_of_success}}</x-markdown>
-                            @endif
-                        </article>
+                                @if($proposal->definition_of_success)
+                                    <h2>Definition of Success</h2>
+                                    <x-markdown>{{$proposal->definition_of_success}}</x-markdown>
+                                @endif
+                            </article>
+
+                            <div @click="heightClass = ''" x-show="!heightClass"
+                                 class="absolute w-full p-4 text-center bg-white/95 hover:cursor-pointer group bottom-4">
+                                <span class="font-bold text-teal-600 group-hover:text-slate-600">
+                                    Expand
+                                </span>
+                            </div>
+                        </div>
                     @endif
 
                     <section class="py-12 bg-gray-50 border border-slate-200 mt-8 shadow-sm">
                         <div class="px-6 max-w-6xl xl:mx-auto">
-                            <livewire:comments :showNotificationOptions="Auth::check()" :hideNotificationOptions="!Auth::check()" :hideAvatars="false" :noReplies="false" :model="$proposal" />
+                            <livewire:comments :showNotificationOptions="Auth::check()"
+                                               :hideNotificationOptions="!Auth::check()" :hideAvatars="false"
+                                               :noReplies="false" :model="$proposal"/>
                         </div>
                     </section>
 
@@ -329,6 +397,20 @@
                     </section>
                 </div>
             </section>
+
+            @if($proposal->commits?->isNotEmpty())
+                <section class="px-4 py-8 xl:py-16 mt-8 bg-slate-100 round-sm">
+                    <h2 class="text-center my-2 text-teal-800 2xl:text-5xl">
+                        Development Updates
+                    </h2>
+
+                    <div class="mt-6 columns-1 sm:columns-2 xl:columns-3 gap-4 monthly-reports">
+                        @foreach($proposal->commits as $commit)
+                            <x-catalyst.commits.drip wire:key="{{$commit->id}}" :commit="$commit"/>
+                        @endforeach
+                    </div>
+                </section>
+            @endif
             @if($proposal->funded && $proposal->monthly_reports)
                 <section class="px-4 py-8 xl:py-16 mt-8 bg-slate-100 round-sm">
                     <h2 class="text-center my-2 text-teal-800 2xl:text-5xl">
@@ -337,13 +419,13 @@
 
                     <div class="mt-6 flex justify-center gap-4 follow-reports w-full">
                         <div class="rounded-md">
-                            <x-catalyst.follow-monthly-reports :model="$proposal" />
+                            <x-catalyst.follow-monthly-reports :model="$proposal"/>
                         </div>
                     </div>
 
                     <div class="mt-6 columns-1 sm:columns-2 xl:columns-3 gap-4 monthly-reports">
                         @foreach($proposal->monthly_reports->reverse() as $report)
-                            <x-catalyst.reports.drip wire:key="{{$report->id}}" :report="$report" />
+                            <x-catalyst.reports.drip wire:key="{{$report->id}}" :report="$report"/>
                         @endforeach
                     </div>
                 </section>

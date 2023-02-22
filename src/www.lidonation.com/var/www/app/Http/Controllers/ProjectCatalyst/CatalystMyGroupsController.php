@@ -3,8 +3,14 @@
 namespace App\Http\Controllers\ProjectCatalyst;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ProposalResource;
 use App\Models\CatalystGroup;
+use App\Models\CatalystUser;
+use App\Models\Proposal;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -31,6 +37,24 @@ class CatalystMyGroupsController extends Controller
         return Inertia::render('auth/UserGroups', $this->data());
     }
 
+    /**
+     * Display a listing of the resource.
+     *
+     * @return AnonymousResourceCollection
+     */
+    public function proposals(Request $request, CatalystGroup $catalystGroup)
+    {
+        $per_page = request('per_page', 12);
+
+        Proposal::withoutGlobalScopes();
+        $proposals = Proposal::whereRelation('groups', 'id', $catalystGroup?->id)
+            ->with(['fund', 'users'])
+            ->orderBy('title');
+
+        return $proposals->paginate($per_page)->onEachSide(0);
+//        return ProposalResource::collection($proposals->paginate($per_page)->onEachSide(0));
+    }
+
     protected function data()
     {
         $user = auth()->user();
@@ -42,8 +66,12 @@ class CatalystMyGroupsController extends Controller
             ->whereRelation('owner', fn ($query) => $query->whereIn('id', $catalystProfiles));
         $paginator = $query->paginate($this->perPage, ['*'], 'p')->setPath('/');
 
+        $profilesQuery = CatalystUser::with('claimed_by_user')
+            ->whereRelation('claimed_by_user', 'id', $user->id);
+
         return [
             'groups' => $paginator->onEachSide(1)->toArray(),
+            'profiles' => $profilesQuery->get(),
             'crumbs' => [
                 ['label' => 'My Groups'],
             ],
