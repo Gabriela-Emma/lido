@@ -12,7 +12,7 @@ class CatalystMyProposalsController extends Controller
 {
     protected int $perPage = 24;
 
-    protected ?bool $fundedProposalsFilter = true;
+    protected ?bool $fundedProposalsFilter = false;
 
     public function manage(Proposal $proposal)
     {
@@ -30,7 +30,7 @@ class CatalystMyProposalsController extends Controller
      */
     public function index(Request $request)
     {
-        $this->fundedProposalsFilter = $request->input('fp', true);
+        $this->fundedProposalsFilter = $request->input('fp', false);
 
         return Inertia::render('auth/UserProposals', $this->data());
     }

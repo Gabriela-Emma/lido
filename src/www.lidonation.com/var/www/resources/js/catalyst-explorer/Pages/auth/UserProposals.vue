@@ -48,14 +48,14 @@
                                 </div>
                                 <div class="mt-2">
                                     <Toggle
-                                            onLabel="Funded Proposals"
-                                            offLabel="All Proposals"
-                                            v-model="filtersRef"
+                                            onLabel="Funded proposals "
+                                            offLabel="All proposals"
+                                            v-model="filtersRef.funded"
                                             :classes="{
-                                            container: 'inline-block rounded-xl outline-none focus:ring focus:ring-teal-500 focus:ring-opacity-30 w-32',
+                                            container: 'inline-block rounded-xl outline-none focus:ring focus:ring-teal-500 focus:ring-opacity-30 w-40',
                                             toggle: 'flex w-full h-8 rounded-xl relative cursor-pointer transition items-center box-content border-2 text-xs leading-none',
-                                            toggleOn: 'bg-teal-500 border-teal-500 justify-start text-white',
-                                            toggleOff: 'bg-slate-200 border-slate-200 justify-end text-slate-700',
+                                            toggleOn: 'bg-teal-500 border-teal-500 justify-start font-semibold text-white',
+                                            toggleOff: 'bg-slate-200 border-slate-200 justify-end font-semibold text-slate-700',
                                             handle: 'inline-block bg-white w-8 h-8 top-0 rounded-xl absolute transition-all',
                                             handleOn: 'left-full transform -translate-x-full',
                                             handleOff: 'left-0',
@@ -143,12 +143,12 @@
 <script lang="ts" setup>
 import UserNav from "./UserNav.vue";
 import Proposal from "../../models/proposal";
-import {Link, router, useForm} from '@inertiajs/vue3';
-import {computed, ref} from "@vue/reactivity";
+import {Link, router, usePage} from '@inertiajs/vue3';
 import Toggle from '@vueform/toggle'
 import Filters from "../../models/filters";
 import { VARIABLES } from "../../models/variables";
-import {watch} from "vue";
+import {watch, ref} from "vue";
+
 
 
 
@@ -168,7 +168,7 @@ const props = withDefaults(
         };
     }>(), {});
 
-let filtersRef = ref<Filters>(props.filters);
+let filtersRef = ref(props.filters);
 
 watch([filtersRef], () => {
    query();
@@ -182,13 +182,11 @@ function query()
         data[VARIABLES.FUNDED_PROPOSALS] = 1;
     }
 
-    // router.get(
-    //     `/${props.locale}/catalyst-explorer/myProposals`,
-    //     data,
-    //     {preserveState: true, preserveScroll: true}
-    // );
-
-
+    router.get(
+        `${usePage().props.base_url}/catalyst-explorer/my/proposals`,
+        data,
+        {preserveState: true, preserveScroll: true}
+    );
 }
 
 
