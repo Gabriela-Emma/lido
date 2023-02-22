@@ -23,6 +23,7 @@ export default interface Proposal {
         iog_hash: string;
     };
     users: {
+        id: number;
         name: string;
         username: string;
         profile_photo_url: string;
