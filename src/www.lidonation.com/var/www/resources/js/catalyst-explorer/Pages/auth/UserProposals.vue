@@ -42,21 +42,22 @@
                     </div>
                     <div class="space-y-6 sm:px-6  bg-white p-6">
                         <div class="">
-                            <div>
+                            <div class="flex items-center justify-between">
                                 <div class="">
                                     <h2 class="leading-6 text-slate-900">My Proposals</h2>
                                 </div>
-                                <div class="mt-2">
+
+                                <div class="">
                                     <Toggle
                                             onLabel="Funded proposals "
                                             offLabel="All proposals"
                                             v-model="filtersRef.funded"
                                             :classes="{
-                                            container: 'inline-block rounded-xl outline-none focus:ring focus:ring-teal-500 focus:ring-opacity-30 w-40',
-                                            toggle: 'flex w-full h-8 rounded-xl relative cursor-pointer transition items-center box-content border-2 text-xs leading-none',
+                                            container: 'inline-block rounded-xl outline-none focus:ring focus:ring-teal-500 focus:ring-opacity-30 w-32',
+                                            toggle: 'flex w-full h-4 rounded-xl relative cursor-pointer transition items-center box-content border-2 text-xs leading-none',
                                             toggleOn: 'bg-teal-500 border-teal-500 justify-start font-semibold text-white',
                                             toggleOff: 'bg-slate-200 border-slate-200 justify-end font-semibold text-slate-700',
-                                            handle: 'inline-block bg-white w-8 h-8 top-0 rounded-xl absolute transition-all',
+                                            handle: 'inline-block bg-white w-4 h-4 top-0 rounded-xl absolute transition-all',
                                             handleOn: 'left-full transform -translate-x-full',
                                             handleOff: 'left-0',
                                             handleOnDisabled: 'bg-slate-100 left-full transform -translate-x-full',
@@ -177,7 +178,7 @@ watch([filtersRef], () => {
 function query()
 {
     const data = {};
-    
+
     if (filtersRef.value?.funded) {
         data[VARIABLES.FUNDED_PROPOSALS] = 1;
     }
