@@ -168,35 +168,54 @@
                         </div>
                     </div>
                 </div>
-
-                <div class="sm:col-span-2 hidden">
-                    <dt class="text-sm font-medium text-slate-500">Attachments</dt>
-                    <dd class="mt-1 text-sm text-slate-900">
-                        <ul role="list" class="divide-y divide-slate-200 rounded-md border border-slate-200">
-                            <li class="flex items-center justify-between py-3 pl-3 pr-4 text-sm">
-                                <div class="flex w-0 flex-1 items-center">
-                                    <PaperClipIcon class="h-5 w-5 flex-shrink-0 text-slate-400" aria-hidden="true"/>
-                                    <span class="ml-2 w-0 flex-1 truncate">resume_back_end_developer.pdf</span>
-                                </div>
-                                <div class="ml-4 flex-shrink-0">
-                                    <a href="#" class="font-medium text-teal-600 hover:text-teal-500">Download</a>
-                                </div>
-                            </li>
-                            <li class="flex items-center justify-between py-3 pl-3 pr-4 text-sm">
-                                <div class="flex w-0 flex-1 items-center">
-                                    <PaperClipIcon class="h-5 w-5 flex-shrink-0 text-slate-400" aria-hidden="true"/>
-                                    <span class="ml-2 w-0 flex-1 truncate">coverletter_back_end_developer.pdf</span>
-                                </div>
-                                <div class="ml-4 flex-shrink-0">
-                                    <a href="#" class="font-medium text-teal-600 hover:text-teal-500">Download</a>
-                                </div>
-                            </li>
-                        </ul>
-                    </dd>
-                </div>
             </dl>
 
-            <div class="group-proposals-wrapper p-4 bg-slate-100 mt-8">
+
+<!--            <div class="flex gap-8 sm:col-span-2 w-full relative mt-8 border border-slate-200 p-4">-->
+<!--                <div class="absolute block left-3 -top-1.5 bg-white rounded-sm text-xs px-2">-->
+<!--                    The Team-->
+<!--                </div>-->
+<!--                <ul role="list" class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">-->
+<!--                    <li v-for="person in people" :key="person.email"-->
+<!--                        class="col-span-1 divide-y divide-gray-200 rounded-lg bg-white shadow">-->
+<!--                        <div class="flex w-full items-center justify-between space-x-6 p-6">-->
+<!--                            <div class="flex-1 truncate">-->
+<!--                                <div class="flex items-center space-x-3">-->
+<!--                                    <h3 class="truncate text-sm font-medium text-gray-900">{{ person.name }}</h3>-->
+<!--                                    <span-->
+<!--                                        class="inline-block flex-shrink-0 rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-800">{{-->
+<!--                                            person.role-->
+<!--                                        }}</span>-->
+<!--                                </div>-->
+<!--                                <p class="mt-1 truncate text-sm text-gray-500">{{ person.title }}</p>-->
+<!--                            </div>-->
+<!--                            <img class="h-10 w-10 flex-shrink-0 rounded-full bg-gray-300" :src="person.imageUrl"-->
+<!--                                 alt=""/>-->
+<!--                        </div>-->
+<!--                        <div>-->
+<!--                            <div class="-mt-px flex divide-x divide-gray-200">-->
+<!--                                <div class="flex w-0 flex-1">-->
+<!--                                    <a :href="`mailto:${person.email}`"-->
+<!--                                       class="relative -mr-px inline-flex w-0 flex-1 items-center justify-center rounded-bl-lg border border-transparent py-4 text-sm font-medium text-gray-700 hover:text-gray-500">-->
+<!--                                        <EnvelopeIcon class="h-5 w-5 text-gray-400" aria-hidden="true"/>-->
+<!--                                        <span class="ml-3">Email</span>-->
+<!--                                    </a>-->
+<!--                                </div>-->
+<!--                                <div class="-ml-px flex w-0 flex-1">-->
+<!--                                    <a :href="`tel:${person.telephone}`"-->
+<!--                                       class="relative inline-flex w-0 flex-1 items-center justify-center rounded-br-lg border border-transparent py-4 text-sm font-medium text-gray-700 hover:text-gray-500">-->
+<!--                                        <PhoneIcon class="h-5 w-5 text-gray-400" aria-hidden="true"/>-->
+<!--                                        <span class="ml-3">Call</span>-->
+<!--                                    </a>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </li>-->
+<!--                </ul>-->
+<!--            </div>-->
+
+
+            <div class="group-proposals-wrapper p-4 bg-slate-50 mt-8">
                 <div>
                     <h3>{{ group.name }} Proposals <span> - more coming soon</span></h3>
 
@@ -209,26 +228,32 @@
                                             <div class="min-w-0 flex-1 sm:flex sm:items-center sm:justify-between">
                                                 <div class="truncate">
                                                     <div class="flex text-sm">
-                                                        <p class="truncate font-medium text-teal-600">{{ proposal.title }}</p>
-<!--                                                        <p class="ml-1 flex-shrink-0 font-normal text-gray-500">in {{ position.department }}</p>-->
+                                                        <p class="truncate font-medium text-teal-600">{{
+                                                                proposal.title
+                                                            }}</p>
+                                                        <!--                                                        <p class="ml-1 flex-shrink-0 font-normal text-gray-500">in {{ position.department }}</p>-->
                                                     </div>
                                                     <div class="mt-2 flex">
                                                         <div class="flex items-center text-sm text-gray-500">
-                                                            <CalendarIcon class="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400" aria-hidden="true" />
+                                                            <CalendarIcon
+                                                                class="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400"
+                                                                aria-hidden="true"/>
                                                             <p>
-                                                                {{proposal.fund?.label}}
+                                                                {{ proposal.fund?.label }}
                                                             </p>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="mt-4 flex-shrink-0 sm:mt-0 sm:ml-5">
                                                     <div class="flex -space-x-1 overflow-hidden">
-                                                        <img v-for="user in proposal.users" :key="user.id" class="inline-block h-6 w-6 rounded-full ring-2 ring-white" :src="user.profile_photo_url" :alt="user.name" />
+                                                        <img v-for="user in proposal.users" :key="user.id"
+                                                             class="inline-block h-6 w-6 rounded-full ring-2 ring-white"
+                                                             :src="user.profile_photo_url" :alt="user.name"/>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="ml-5 flex-shrink-0">
-                                                <ChevronRightIcon class="h-5 w-5 text-gray-400" aria-hidden="true" />
+                                                <ChevronRightIcon class="h-5 w-5 text-gray-400" aria-hidden="true"/>
                                             </div>
                                         </div>
                                     </a>
@@ -251,11 +276,11 @@
 
 <script lang="ts" setup>
 import Group from '../../models/group';
-import {PaperClipIcon} from '@heroicons/vue/20/solid';
+import {EnvelopeIcon, PhoneIcon} from '@heroicons/vue/20/solid';
 import {useForm, usePage} from "@inertiajs/vue3";
 import {Ref, ref} from "vue";
 import axios from "axios";
-import { CalendarIcon, ChevronRightIcon } from '@heroicons/vue/20/solid'
+import {CalendarIcon, ChevronRightIcon} from '@heroicons/vue/20/solid'
 import Proposal from "../../models/proposal";
 
 let proposals: Ref<Proposal[]> = ref([]);
@@ -269,6 +294,19 @@ const props = withDefaults(
         }
     }
 );
+
+
+const people = [
+    {
+        name: 'Jane Cooper',
+        title: 'Regional Paradigm Technician',
+        role: 'Admin',
+        email: 'janecooper@example.com',
+        telephone: '+1-202-555-0170',
+        imageUrl:
+            'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=256&h=256&q=60',
+    }
+]
 
 axios.get(`${usePage().props.base_url}/catalyst-explorer/my/groups/${props.group?.id}/proposals`)
     .then((response) => {
