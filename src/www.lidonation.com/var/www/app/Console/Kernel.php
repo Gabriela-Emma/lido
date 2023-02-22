@@ -29,13 +29,14 @@ class Kernel extends ConsoleKernel
         $schedule->command('backup:clean')->daily()->at('01:00');
         $schedule->command('backup:run')->daily()->at('01:30');
         $schedule->command('model:prune')->weekly();
+        $schedule->command('sync:repo')->daily();
+
 
         $schedule->job(new ProcessPendingWithdrawalsJob)->everyFiveMinutes();
         $schedule->job(new CalculateDelegationEpochs)->daily();
         $schedule->job(new LidoStatsJob)->everyFifteenMinutes();
         $schedule->job(new CardanoStatsJob)->everyTwoHours();
         $schedule->job(new RefreshLidoTwitterToken)->everyThirtyMinutes();
-        $schedule->job(new NewCommits)->daily();
 
         $schedule->command('ln:sitemap:generate')->weekly();
 

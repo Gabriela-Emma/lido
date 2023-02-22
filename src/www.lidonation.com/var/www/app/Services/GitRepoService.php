@@ -6,7 +6,7 @@ use CzProject\GitPhp\Git;
 use CzProject\GitPhp\GitException;
 use Whoops\Exception\ErrorException;
 
-class CloneRepoService
+class GitRepoService
 {
     public static string $repositoryPath;
 
