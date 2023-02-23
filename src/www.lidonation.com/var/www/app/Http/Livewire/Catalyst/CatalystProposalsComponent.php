@@ -218,10 +218,6 @@ class CatalystProposalsComponent extends Component
             }
         }
 
-        // filter by challenge
-//        if ((bool) $this->challengeFilter) {
-//            $_options[] = "challenge = $this->challengeFilter";
-//        }
         if ((bool) $this->challengeFilter) {
             $_filters = [];
             foreach ($this->challengeFilter as $challenge) {

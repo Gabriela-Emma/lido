@@ -136,7 +136,7 @@
             <div class="-mt-px grid grid-cols-2 divide-x text-xs xl:text-sm">
                 <div class="flex items-center justify-start flex-1 gap-2 p-2">
                     <div class="text-xs">
-                        <a v-if="proposal.ideascale_link" :href="proposal.ideascale_link" target="_blank"
+                        <a v-if="proposal?.ideascale_link" :href="proposal?.ideascale_link" target="_blank"
                            class="hover:cursor-pointer">
                             <img class="rounded-sm w-7 h-7"
                                  :src="$utils.assetUrl('img/ideascale-logo.png')"
@@ -161,7 +161,7 @@
                         class="flex items-center justify-center flex-1 py-2 -mr-px text-sm font-medium text-gray-700 border border-transparent rounded-bl-sm hover:text-gray-500">
                         <div class="flex gap-1 items-center">
                             <div class="text-sm font-semibold">
-                                {{ $filters.number(proposal.ca_rating)?.toFixed(2) }}
+                                {{ $filters.shortNumber(proposal.ca_rating)?.toFixed(2) }}
                             </div>
                             <div>
                                 <Rating :modelValue="proposal.ca_rating" :stars="5" :readonly="true" :cancel="false">
@@ -197,7 +197,7 @@
                         Voted Yes:
                     </div>
                     <div class="font-semibold">
-                        ₳{{ $filters.number(proposal.yes_votes_count, 2) }}
+                        ₳{{ $filters.shortNumber(proposal.yes_votes_count, 2) }}
                     </div>
                 </div>
 
@@ -208,7 +208,7 @@
                             Voted No:
                         </div>
                         <div class="font-semibold">
-                            ₳{{ $filters.number(proposal.no_votes_count) }}
+                            ₳{{ $filters.shortNumber(proposal.no_votes_count) }}
                         </div>
                     </div>
                 </div>

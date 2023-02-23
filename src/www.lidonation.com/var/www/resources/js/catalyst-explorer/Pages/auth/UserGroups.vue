@@ -31,10 +31,10 @@
                     </div>
                     <div>
                         <div class="flex flex-col gap-8">
-                            <TransitionGroup v-for="(group, index) in groups" :key="index" tag="ul" name="fade"
+                            <TransitionGroup v-for="(group, index) in groups" tag="div" name="fade"
                                              class="container flex flex-col gap-8"
                                              :class="{'hidden':selectedGroup ===''}" preserve-scroll>
-                                <UserGroupCard v-if="selectedGroup === group.name" :group="group"/>
+                                <UserGroupCard :key="index" v-if="selectedGroup === group.name" :group="group"/>
                             </TransitionGroup>
 
                             <div class="text-center rounded-sm border border-slate-400 border-dashed p-8">
