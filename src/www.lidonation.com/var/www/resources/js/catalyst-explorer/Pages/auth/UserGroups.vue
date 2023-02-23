@@ -90,6 +90,7 @@ const props = withDefaults(
             from: number,
             data: Group[]
         };
+        groupOptions?:[]
     }>(), {});
 const owner: Profile = props.profiles.length > 0 ? props.profiles[0] : null;
 const groups: Ref<Group[]> = ref([...props.groups?.data] || []);
@@ -106,13 +107,6 @@ function newGroup() {
 }
 
 let selectedGroup = ref('');
-
-const groupOptions = computed(() => {
-    return props.groups.data
-        .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
-        .map(group => group.name);
-});
-
 
 </script>
 <style>
