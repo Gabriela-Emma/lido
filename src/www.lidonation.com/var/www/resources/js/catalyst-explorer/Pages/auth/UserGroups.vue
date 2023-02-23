@@ -108,7 +108,9 @@ function newGroup() {
 let selectedGroup = ref('');
 
 const groupOptions = computed(() => {
-    return props.groups.data.map(group => group.name);
+    return props.groups.data
+        .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+        .map(group => group.name);
 });
 
 

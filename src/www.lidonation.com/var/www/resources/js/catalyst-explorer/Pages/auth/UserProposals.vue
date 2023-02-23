@@ -55,13 +55,13 @@
                                             :classes="{
                                             container: 'inline-block rounded-xl outline-none focus:ring focus:ring-teal-500 focus:ring-opacity-30 w-32',
                                             toggle: 'flex w-full h-4 rounded-xl relative cursor-pointer transition items-center box-content border-2 text-xs leading-none',
-                                            toggleOn: 'bg-teal-500 border-teal-500 justify-start font-semibold text-white',
-                                            toggleOff: 'bg-slate-200 border-slate-200 justify-end font-semibold text-slate-700',
+                                            toggleOff: 'bg-teal-500 border-teal-500 justify-start font-semibold text-white',
+                                            toggleOn: 'bg-slate-200 border-slate-200 justify-end font-semibold text-slate-700',
                                             handle: 'inline-block bg-white w-4 h-4 top-0 rounded-xl absolute transition-all',
-                                            handleOn: 'left-full transform -translate-x-full',
-                                            handleOff: 'left-0',
-                                            handleOnDisabled: 'bg-slate-100 left-full transform -translate-x-full',
-                                            handleOffDisabled: 'bg-slate-100 left-0',
+                                            handleOff: 'left-full transform -translate-x-full',
+                                            handleOn: 'left-0',
+                                            handleOffDisabled: 'bg-slate-100 left-full transform -translate-x-full',
+                                            handleOnDisabled: 'bg-slate-100 left-0',
                                             label: 'text-center w-auto px-2 border-box whitespace-nowrap select-none',
                                             }"
                                         />
@@ -179,8 +179,8 @@ function query()
 {
     const data = {};
 
-    if (filtersRef.value?.funded) {
-        data[VARIABLES.FUNDED_PROPOSALS] = 1;
+    if (!filtersRef.value?.funded) {
+        data[VARIABLES.FUNDED_PROPOSALS] = 0;
     }
 
     router.get(
