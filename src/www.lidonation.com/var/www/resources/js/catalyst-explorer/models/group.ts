@@ -5,6 +5,7 @@ export default interface Group {
     slug: string;
     name: string;
     bio: string;
+    created_at:Date ;
     amount_awarded: number;
     proposals_count: number;
     link: string;

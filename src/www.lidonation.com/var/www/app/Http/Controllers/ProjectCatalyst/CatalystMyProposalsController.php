@@ -12,7 +12,7 @@ class CatalystMyProposalsController extends Controller
 {
     protected int $perPage = 24;
 
-    protected ?bool $fundedProposalsFilter = false;
+    protected ?bool $fundedProposalsFilter = true;
 
     public function manage(Proposal $proposal)
     {
@@ -30,7 +30,7 @@ class CatalystMyProposalsController extends Controller
      */
     public function index(Request $request)
     {
-        $this->fundedProposalsFilter = $request->input('fp', false);
+        $this->fundedProposalsFilter = $request->input('fp', true);
 
         return Inertia::render('auth/UserProposals', $this->data());
     }
@@ -48,8 +48,14 @@ class CatalystMyProposalsController extends Controller
             
         $paginator = $query->paginate($this->perPage, ['*'], 'p')->setPath('/');
 
-        $totalDistributed = floatval($query->whereNotNull('funded_at')->sum('amount_received'));
-        $budgetSummary = floatval($query->whereNotNull('funded_at')->sum('amount_requested'));
+        $totalDistributed = floatval($query->when($this->fundedProposalsFilter, function ($query) {
+            return $query->whereNotNull('funded_at');
+        })->sum('amount_received'));
+
+        $budgetSummary = floatval($query->when($this->fundedProposalsFilter, function ($query) {
+            return $query->whereNotNull('funded_at');
+        })->sum('amount_requested'));
+
         $totalRemaining = ($budgetSummary - $totalDistributed);
 
         return [
