@@ -87,10 +87,37 @@
                                         @paginated="(payload) => currPageRef = payload"/>
                         </div>
                     </div>
+
+                    <footer class="sticky bottom-8">
+                        <div class="container flex justify-center">
+                            <div
+                                class="inline-flex mx-auto justify-center rounded-full py-2 px-4 bg-slate-800 text-white shadow-md text-sm lg:text-md gap-2 divide-x-reverse divide-slate-100 space-x-4">
+                                <div class="flex flex-col text-center">
+                                     <span class="font-semibold">
+                                        {{ props.proposals.total }}
+                                    </span>
+                                    <span class="text-xs">
+                                        Total
+                                    </span>
+                                </div>
+                                <div class="flex flex-col text-center" v-if="metricFunded">
+                                     <span class="font-semibold">
+                                        {{ metricFunded }}
+                                    </span>
+                                    <span class="text-xs">
+                                        Funded
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </footer>
                 </div>
+
             </div>
         </section>
     </div>
+
+
 </template>
 
 <script lang="ts" setup>
@@ -99,7 +126,7 @@ import {proposalsStore} from "../stores/proposals-store";
 import {computed, ref, watch} from "vue";
 import Proposal from "../models/proposal";
 import Proposals from "../modules/proposals/Proposals.vue";
-import {router} from '@inertiajs/vue3';
+import {router, usePage} from '@inertiajs/vue3';
 import ProposalFilter from "../modules/proposals/ProposalFilter.vue";
 import Filters from "../models/filters";
 import Sort from "../models/sort";
@@ -176,6 +203,9 @@ let searchRender = ref(0);
 let currPageRef = ref<number>(props.currPage);
 let perPageRef = ref<number>(props.perPage);
 
+// metrics
+let metricFunded = ref<number>(null);
+
 ////
 // computed properties
 ////
@@ -191,12 +221,14 @@ let showFilters = ref(getFiltering());
 watch([search, filtersRef, selectedSortRef], () => {
     currPageRef.value = null;
     query();
-    searchRender.value = Math.random()
+    searchRender.value = Math.random();
 }, {deep: true});
 
 watch([currPageRef, perPageRef], () => {
     query();
 });
+
+getMetrics();
 
 ////
 // initializers
@@ -228,6 +260,34 @@ function getFiltering() {
 }
 
 function query() {
+    const data = getQueryData();
+    router.get(
+        `/${props.locale}/catalyst-explorer/proposals`,
+        data,
+        {preserveState: true, preserveScroll: !currPageRef.value}
+    );
+
+    // @ts-ignore
+    if (typeof window?.fathom !== 'undefined') {
+        // @ts-ignore
+        window?.fathom?.trackGoal(VARIABLES.TRACKER_ID_PROPOSALS, 0);
+    }
+
+    getMetrics();
+}
+
+function getMetrics() {
+    const params = getQueryData();
+
+    // get funded
+    window.axios.get(`${usePage().props.base_url}/catalyst-explorer/proposals/metrics/funded`, {params})
+        .then((res) => metricFunded.value = res?.data)
+        .catch((error) => {
+            console.error(error);
+        });
+}
+
+function getQueryData() {
     const data = {};
     if (currPageRef.value) {
         data[VARIABLES.PAGE] = currPageRef.value;
@@ -289,16 +349,6 @@ function query() {
         }
     }
 
-    router.get(
-        `/${props.locale}/catalyst-explorer/proposals`,
-        data,
-        {preserveState: true, preserveScroll: !currPageRef.value}
-    );
-
-    // @ts-ignore
-    if (typeof window?.fathom !== 'undefined') {
-        // @ts-ignore
-        window?.fathom?.trackGoal(VARIABLES.TRACKER_ID_PROPOSALS, 0);
-    }
+    return data;
 }
 </script>

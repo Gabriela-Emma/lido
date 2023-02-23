@@ -193,6 +193,7 @@ Route::group(
 
             Route::get('/proposals', [CatalystProjectsController::class, 'index'])
                 ->name('proposals');
+            Route::get('/proposals/metrics/funded', [CatalystProjectsController::class, 'metricFunded']);
 
             Route::get('/people', [CatalystPeopleController::class, 'index'])
                 ->name('people');
