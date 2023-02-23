@@ -9,29 +9,32 @@
                 </aside>
 
                 <div class="space-y-6 sm:px-6 lg:col-span-9 xl:col-span-10">
-                    <div class="">
-                        <div class="bg-white p-6 rounded-sm mb-6">
+                    <div class="bg-white flex justify-between items-center p-4 rounded-sm">
+                        <div class="">
                             <h2 class="leading-6 text-slate-900">My Groups</h2>
                         </div>
-                        <div class="mb-4 ">
+                        <div class="w-80">
                             <Multiselect
-                            class="block mt-3 rounded-sm z-10 border-0 p-0.5 font-medium text-slate-900"
-                            v-model="selectedGroup"
-                            :options="groupOptions"
-                            :disabled="groupOptions?.length === 0"
-                            :close-on-select="true"
-                            :clear-on-select="false"
-                            :multiple="false"
-                            :taggable="false"
-                            :hide-selected="true"
-                            :placeholder="groupOptions?.length === 0 ? 'Add a group below' : 'Select group to view'"
-                            label="name"
+                                class="block mt-3 rounded-sm z-10 border border-slate-300 p-0.5 font-medium text-slate-900"
+                                v-model="selectedGroup"
+                                :options="groupOptions"
+                                :disabled="groupOptions?.length === 0"
+                                :close-on-select="true"
+                                :clear-on-select="false"
+                                :multiple="false"
+                                :taggable="false"
+                                :hide-selected="true"
+                                :placeholder="groupOptions?.length === 0 ? 'Create a group or company below' : 'Select group to manage'"
+                                label="name"
                             />
                         </div>
+                    </div>
+                    <div>
                         <div class="flex flex-col gap-8">
-                            <TransitionGroup  v-for="(group, index) in groups" :key="index" tag="ul" name="fade" class="container flex flex-col gap-8" 
-                            :class="{'hidden':selectedGroup ===''}" preserve-scroll >
-                                <UserGroupCard v-if="selectedGroup === group.name" :group="group" />
+                            <TransitionGroup v-for="(group, index) in groups" :key="index" tag="ul" name="fade"
+                                             class="container flex flex-col gap-8"
+                                             :class="{'hidden':selectedGroup ===''}" preserve-scroll>
+                                <UserGroupCard v-if="selectedGroup === group.name" :group="group"/>
                             </TransitionGroup>
 
                             <div class="text-center rounded-sm border border-slate-400 border-dashed p-8">
@@ -52,7 +55,7 @@
                                     <button type="button" @click="newGroup"
                                             class="inline-flex items-center rounded-sm border border-transparent bg-teal-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
                                         <PlusIcon class="-ml-1 mr-2 h-5 w-5" aria-hidden="true"/>
-                                       Add new Group or Company
+                                        Add new Group or Company
                                     </button>
                                 </div>
                             </div>
@@ -72,7 +75,7 @@ import {PlusIcon} from '@heroicons/vue/20/solid';
 import {ref, Ref, computed} from "vue";
 import Profile from "../../models/profile";
 import Multiselect from '@vueform/multiselect';
-import { reactive } from "@vue/reactivity";
+import {reactive} from "@vue/reactivity";
 
 
 let newGroups = [];
@@ -102,10 +105,10 @@ function newGroup() {
     groups.value.push(group);
 }
 
-let selectedGroup= ref('');
+let selectedGroup = ref('');
 
 const groupOptions = computed(() => {
-  return props.groups.data.map(group => group.name);
+    return props.groups.data.map(group => group.name);
 });
 
 
