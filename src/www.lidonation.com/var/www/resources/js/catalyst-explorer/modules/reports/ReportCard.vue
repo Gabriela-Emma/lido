@@ -6,7 +6,8 @@
         </div>
 
         <div class="mt-16 divide-y divide-teal-300 specs p-5">
-            <div class="flex flex-row gap-4 justify-between border-t border-teal-300 items-center py-4 spec-amount-received">
+            <div
+                class="flex flex-row gap-4 justify-between border-t border-teal-300 items-center py-4 spec-amount-received">
                 <div class="text-teal-800 opacity-50 text-sm">Disbursed to Date</div>
                 <div class="text-teal-800 font-bold text-base">
                     {{ $filters.currency(report.proposal.amount_received) }}
@@ -61,7 +62,7 @@
             <div class="flex justify-between items-center py-4">
                 <div class="text-teal-800 opacity-75 text-sm inline-flex gap-2 items-center h-full">
                     <span class="bold text-xl">Comments </span>
-                    <span>{{report.comments_count}}</span>
+                    <span>{{ report.comments_count }}</span>
                 </div>
 
                 <button id="message-type" name="message-type"
@@ -72,21 +73,23 @@
 
             <div v-show="showComments" class="pb-4">
                 <ul x-if="comments" class="divide-y divide-slate-100">
-                    <li v-for="comment in comments" :key="comment.id"
-                        class="relative bg-white py-5 px-4 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 hover:bg-gray-50">
-                        <div class="flex justify-between space-x-3 text-gray-600 font-medium text-sm">
-                            <div class="min-w-0 flex-1">
-                                <span class="absolute inset-0" aria-hidden="true" />
-                                <p class="truncate">
-                                    {{ comment.commentator?.name }}
-                                </p>
+                    <template v-for="comment in comments">
+                        <li v-if="comment" :key="comment?.id"
+                            class="relative bg-white py-5 px-4 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 hover:bg-gray-50">
+                            <div class="flex justify-between space-x-3 text-gray-600 font-medium text-sm">
+                                <div class="min-w-0 flex-1">
+                                    <span class="absolute inset-0" aria-hidden="true"/>
+                                    <p class="truncate">
+                                        {{ comment.commentator?.name }}
+                                    </p>
+                                </div>
+                                <timeago class="" :datetime="comment.created_at"/>
                             </div>
-                            <timeago class="" :datetime="comment.created_at"/>
-                        </div>
-                        <div class="mt-1">
-                            <p class="text-md text-gray-700" v-html="comment.text"></p>
-                        </div>
-                    </li>
+                            <div class="mt-1">
+                                <p class="text-md text-gray-700" v-html="comment.text"></p>
+                            </div>
+                        </li>
+                    </template>
                 </ul>
                 <div>
                     <form class="" @submit.prevent="addComment" v-if="user">
@@ -116,7 +119,8 @@
                             <!--                        </div>-->
 
                             <textarea v-model="commentForm.comment" name="comment" class="mt-0"
-                                      rows="4" placeholder="Give feedback or ask the team a question." required></textarea>
+                                      rows="4" placeholder="Give feedback or ask the team a question."
+                                      required></textarea>
 
                             <button type="submit" class="text-white text-xs px-2 bg-teal-300 hover:bg-teal-800 ml-auto">
                                 Post
@@ -126,14 +130,15 @@
                             <div class="rounded-sm bg-teal-100 p-4">
                                 <div class="flex">
                                     <div class="flex-shrink-0">
-                                        <CheckCircleIcon class="h-5 w-5 text-green-400" aria-hidden="true" />
+                                        <CheckCircleIcon class="h-5 w-5 text-green-400" aria-hidden="true"/>
                                     </div>
                                     <div class="ml-3">
                                         <p class="text-sm font-medium text-green-800">Successfully Submitted</p>
                                     </div>
                                     <div class="ml-auto pl-3">
                                         <div class="-mx-1.5 -my-1.5">
-                                            <button type="button" class="inline-flex rounded-md bg-green-50 p-1.5 text-green-500 hover:bg-green-100 focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-offset-2 focus:ring-offset-green-50">
+                                            <button type="button"
+                                                    class="inline-flex rounded-md bg-green-50 p-1.5 text-green-500 hover:bg-green-100 focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-offset-2 focus:ring-offset-green-50">
                                                 <CheckCircleIcon class="h-5 w-5"></CheckCircleIcon>
                                             </button>
                                         </div>
@@ -169,7 +174,7 @@ import Report from "../../models/report";
 import Comment from "../../models/comment";
 import {useForm, usePage} from "@inertiajs/vue3";
 import User from "../../models/user";
-import { CheckCircleIcon, XMarkIcon } from '@heroicons/vue/20/solid'
+import {CheckCircleIcon, XMarkIcon} from '@heroicons/vue/20/solid'
 
 
 const props = withDefaults(

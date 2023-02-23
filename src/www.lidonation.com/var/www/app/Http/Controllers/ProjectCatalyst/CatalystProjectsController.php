@@ -51,7 +51,7 @@ class CatalystProjectsController extends Controller
 
     public Collection $budgets;
 
-    public function metricFunded(Request $request)
+    public function metricCountFunded(Request $request)
     {
         $this->setFilters($request);
         $this->fundedProposalsFilter = true;
@@ -59,6 +59,81 @@ class CatalystProjectsController extends Controller
         $res = $this->query();
         if (isset($res['total'])) {
             return $res['total'];
+        }
+        return null;
+    }
+
+    public function metricCountCompleted(Request $request)
+    {
+        $this->setFilters($request);
+        $this->projectStatus = 'complete';
+        $this->limit = 1;
+        $res = $this->query();
+        if (isset($res['total'])) {
+            return $res['total'];
+        }
+        return null;
+    }
+
+    public function metricCountTotalPaid(Request $request)
+    {
+        $this->setFilters($request);
+        $this->fundingStatus = 'paid';
+        $this->limit = 1;
+        $res = $this->query();
+        if (isset($res['total'])) {
+            return $res['total'];
+        }
+        return null;
+    }
+
+    public function metricSumBudget(Request $request)
+    {
+        $this->setFilters($request);
+        $this->limit = 10000;
+        $res = $this->query(true, ['amount_requested'])->raw();
+
+        if (isset($res['hits'])) {
+            return collect($res['hits'])->sum('amount_requested');
+        }
+        return null;
+    }
+
+    public function metricSumApproved(Request $request)
+    {
+        $this->setFilters($request);
+        $this->fundedProposalsFilter = true;
+        $this->limit = 10000;
+        $res = $this->query(true, ['amount_requested'])->raw();
+
+        if (isset($res['hits'])) {
+            return collect($res['hits'])->sum('amount_requested');
+        }
+        return null;
+    }
+
+    public function metricSumDistributed(Request $request)
+    {
+        $this->setFilters($request);
+        $this->fundedProposalsFilter = true;
+        $this->limit = 10000;
+        $res = $this->query(true, ['amount_received'])->raw();
+
+        if (isset($res['hits'])) {
+            return collect($res['hits'])->sum('amount_received');
+        }
+        return null;
+    }
+
+    public function metricSumCompleted(Request $request)
+    {
+        $this->setFilters($request);
+        $this->projectStatus = 'complete';
+        $this->limit = 10000;
+        $res = $this->query(true, ['amount_requested'])->raw();
+
+        if (isset($res['hits'])) {
+            return collect($res['hits'])->sum('amount_requested');
         }
         return null;
     }
@@ -171,7 +246,7 @@ class CatalystProjectsController extends Controller
         $this->currentPage = $request->input('p', 1);
     }
 
-    protected function query()
+    protected function query($returnBuilder = false, $attrs = null)
     {
         $_options = [
             'filters' => array_merge([
@@ -179,12 +254,12 @@ class CatalystProjectsController extends Controller
         ];
 
         $this->searchBuilder = Proposal::search($this->search,
-            function (Indexes $index, $query, $options) use ($_options) {
+            function (Indexes $index, $query, $options) use ($_options, $attrs) {
                 if (count($_options['filters']) > 0) {
                     $options['filter'] = implode(' AND ', $_options['filters']);
                 }
 
-                $options['attributesToRetrieve'] = [
+                $options['attributesToRetrieve'] = $attrs ?? [
                     'id',
                     'ca_rating',
                     'ratings_count',
@@ -224,6 +299,9 @@ class CatalystProjectsController extends Controller
                 return $index->search($query, $options);
             });
 
+        if ($returnBuilder) {
+            return $this->searchBuilder;
+        }
         $response = new Fluent($this->searchBuilder->raw());
         $pagination = new LengthAwarePaginator(
             $response->hits,
