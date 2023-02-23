@@ -15,11 +15,17 @@
                         </div>
                         <div class="mb-4 ">
                             <Multiselect
-                            placeholder="Choose Group to view"
-                            label="name"
+                            class="block mt-3 rounded-sm z-10 border-0 p-0.5 font-medium text-slate-900"
                             v-model="selectedGroup"
                             :options="groupOptions"
-                            classes="border-0 p-2 flex-wrap w-full "
+                            :disabled="groupOptions?.length === 0"
+                            :close-on-select="true"
+                            :clear-on-select="false"
+                            :multiple="false"
+                            :taggable="false"
+                            :hide-selected="true"
+                            :placeholder="groupOptions?.length === 0 ? 'Add a group below' : 'Select group to view'"
+                            label="name"
                             />
                         </div>
                         <div class="flex flex-col gap-8">
