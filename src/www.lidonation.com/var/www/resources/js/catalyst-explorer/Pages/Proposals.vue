@@ -126,7 +126,7 @@
                                             Fully Paid
                                         </span>
                                     </div>
-                                    <div class="flex flex-col text-center" v-if="metricCountCompleted" key="completed">
+                                    <div class="flex flex-col text-center text-pink-500" v-if="metricCountCompleted" key="completed">
                                          <span class="font-semibold">
                                             {{ $filters.number(metricCountCompleted) }}
                                         </span>
