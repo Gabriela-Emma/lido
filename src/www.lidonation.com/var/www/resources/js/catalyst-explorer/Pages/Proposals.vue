@@ -138,7 +138,7 @@
 
                                     <div class="h-full w-full h-[1px] md:h-full md:w-[1px] bg-slate-100 relative"
                                          v-if="(metricCountApproved || metricCountCompleted) && metricSumApproved">
-                                        <b class="text-yellow-500 inline-block absolute -top-6 -left-10 w-28 text-xs px-2 py-1  text-center bg-slate-800 rounded-full">
+                                        <b class="text-yellow-500 hidden md:inline-block absolute -top-6 -left-10 w-28 text-xs px-2 py-1 text-center bg-slate-800 rounded-full">
                                             Search metrics
                                         </b>
                                     </div>
