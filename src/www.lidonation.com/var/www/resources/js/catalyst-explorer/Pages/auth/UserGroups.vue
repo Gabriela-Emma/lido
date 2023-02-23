@@ -13,9 +13,25 @@
                         <div class="bg-white p-6 rounded-sm mb-6">
                             <h2 class="leading-6 text-slate-900">My Groups</h2>
                         </div>
+                        <div class="mb-4 ">
+                            <Multiselect
+                            class="block mt-3 rounded-sm z-10 border-0 p-0.5 font-medium text-slate-900"
+                            v-model="selectedGroup"
+                            :options="groupOptions"
+                            :disabled="groupOptions?.length === 0"
+                            :close-on-select="true"
+                            :clear-on-select="false"
+                            :multiple="false"
+                            :taggable="false"
+                            :hide-selected="true"
+                            :placeholder="groupOptions?.length === 0 ? 'Add a group below' : 'Select group to view'"
+                            label="name"
+                            />
+                        </div>
                         <div class="flex flex-col gap-8">
-                            <TransitionGroup tag="ul" name="fade" class="container flex flex-col gap-8">
-                                <UserGroupCard v-for="(group, index) in groups" :group="group" :key="index"/>
+                            <TransitionGroup  v-for="(group, index) in groups" :key="index" tag="ul" name="fade" class="container flex flex-col gap-8" 
+                            :class="{'hidden':selectedGroup ===''}" preserve-scroll >
+                                <UserGroupCard v-if="selectedGroup === group.name" :group="group" />
                             </TransitionGroup>
 
                             <div class="text-center rounded-sm border border-slate-400 border-dashed p-8">
@@ -53,8 +69,11 @@ import UserNav from "./UserNav.vue";
 import UserGroupCard from "./UserGroupCard.vue";
 import Group from "../../models/group";
 import {PlusIcon} from '@heroicons/vue/20/solid';
-import {ref, Ref} from "vue";
+import {ref, Ref, computed} from "vue";
 import Profile from "../../models/profile";
+import Multiselect from '@vueform/multiselect';
+import { reactive } from "@vue/reactivity";
+
 
 let newGroups = [];
 const props = withDefaults(
@@ -82,6 +101,13 @@ function newGroup() {
     } as Group;
     groups.value.push(group);
 }
+
+let selectedGroup= ref('');
+
+const groupOptions = computed(() => {
+  return props.groups.data.map(group => group.name);
+});
+
 
 </script>
 <style>
