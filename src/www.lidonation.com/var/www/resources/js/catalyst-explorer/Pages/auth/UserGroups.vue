@@ -88,10 +88,10 @@ const props = withDefaults(
             from: number,
             data: Group[]
         };
-        groupOptions?:[]
+        groupOptions?:string[]
     }>(), {});
 
-let selectedGroup = ref('');
+const selectedGroup = ref(props.groupOptions?.[0] || '');
 
 const owner: Profile = props.profiles.length > 0 ? props.profiles[0] : null;
 const groups: Ref<Group[]> = ref([...props.groups?.data] || []);
