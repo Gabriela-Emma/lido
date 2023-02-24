@@ -17,7 +17,7 @@
                             <div class="space-y-6 bg-white py-6 px-4 sm:p-6">
                                 <div>
                                     <h2 class="text-lg xl:text-xl font-medium leading-6 text-slate-900">
-                                        Lido Nation Account
+                                        Your Lido Nation Account
                                     </h2>
                                     <p class="mt-1 text-sm text-slate-500">
                                         All information, with the exception of your
@@ -58,7 +58,6 @@
                                             }}
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
 
