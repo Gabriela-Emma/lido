@@ -32,7 +32,7 @@
                     <div>
                         <div class="flex flex-col gap-8">
                             <TransitionGroup v-for="(group, index) in groups" :key="index"  tag="ul" name="fade" class="container flex flex-col gap-8" preserve-scroll>
-                                <UserGroupCard v-if="selectedGroup === group.name || group.new" :group="group"/>
+                                <UserGroupCard v-if="selectedGroup === group.name||('id' in group )=== false" :group="group"/>
                             </TransitionGroup>
 
                             <div class="text-center rounded-sm border border-slate-400 border-dashed p-8">
@@ -99,7 +99,6 @@ const groups: Ref<Group[]> = ref([...props.groups?.data] || []);
 
 function newGroup() {
     const group = {
-        new:true,
         bio: null,
         name: null,
         website: null,
