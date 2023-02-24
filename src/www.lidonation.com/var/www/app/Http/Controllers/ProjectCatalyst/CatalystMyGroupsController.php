@@ -69,7 +69,7 @@ class CatalystMyGroupsController extends Controller
         $profilesQuery = CatalystUser::with('claimed_by_user')
             ->whereRelation('claimed_by_user', 'id', $user->id);
 
-        $groupNames = $query->orderBy('created_at')->pluck('name')->toArray();
+        $groupNames = $query->orderBy('created_at', 'desc')->pluck('name')->toArray();
 
 
         return [

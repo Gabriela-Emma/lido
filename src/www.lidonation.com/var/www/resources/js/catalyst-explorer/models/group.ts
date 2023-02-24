@@ -15,4 +15,5 @@ export default interface Group {
     github: string;
     logo:string;
     owner: Profile
+    new:boolean
 }
