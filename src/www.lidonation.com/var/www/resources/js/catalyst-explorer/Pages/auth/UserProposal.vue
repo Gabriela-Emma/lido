@@ -1,5 +1,5 @@
 <template>
-    <Modal>
+    <Modal position="sidebar">
         <div class="pt-28 relative">
             <header class="bg-teal-700 text-white py-8 px-4 w-full sticky top-28">
                 <div class="flex items-center justify-between relative">
@@ -402,5 +402,4 @@ const team = [
     },
 ];
 
-console.log('gitRepo::', gitRepo.value);
 </script>

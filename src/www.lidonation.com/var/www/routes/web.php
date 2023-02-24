@@ -193,10 +193,12 @@ Route::group(
 
             Route::get('/proposals', [CatalystProjectsController::class, 'index'])
                 ->name('proposals');
+
             // counts
             Route::get('/proposals/metrics/count/approved', [CatalystProjectsController::class, 'metricCountFunded']);
             Route::get('/proposals/metrics/count/paid', [CatalystProjectsController::class, 'metricCountTotalPaid']);
             Route::get('/proposals/metrics/count/completed', [CatalystProjectsController::class, 'metricCountCompleted']);
+
             // sums
             Route::get('/proposals/metrics/sum/budget', [CatalystProjectsController::class, 'metricSumBudget']);
             Route::get('/proposals/metrics/sum/approved', [CatalystProjectsController::class, 'metricSumApproved']);
@@ -212,6 +214,7 @@ Route::group(
             Route::get('/voter-tool', [CatalystVoterToolController::class, 'index'])
                 ->name('voter-tool');
 
+            Route::get('/proposals/{proposal:id}/bookmark', [CatalystProjectsController::class, 'bookmark']);
             Route::get('/bookmarks', fn () => Inertia::render('Bookmarks'))
                 ->name('bookmarks');
 
@@ -226,6 +229,8 @@ Route::group(
 
                 Route::get('/proposals', [CatalystMyProposalsController::class, 'index'])
                     ->name('myProposals');
+
+//                Route::post('/proposals/{proposal:id}/bookmark', [CatalystMyProposalsController::class, 'bookmark']);
 
                 Route::get('/proposals/{proposal:id}', [CatalystMyProposalsController::class, 'manage'])
                     ->name('myProposal');
