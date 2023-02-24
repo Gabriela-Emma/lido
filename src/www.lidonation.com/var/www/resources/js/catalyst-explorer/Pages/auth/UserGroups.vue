@@ -31,10 +31,8 @@
                     </div>
                     <div>
                         <div class="flex flex-col gap-8">
-                            <TransitionGroup v-for="(group, index) in groups" tag="div" name="fade"
-                                             class="container flex flex-col gap-8"
-                                             :class="{'hidden':selectedGroup ===''}" preserve-scroll>
-                                <UserGroupCard :key="index" v-if="selectedGroup === group.name" :group="group"/>
+                            <TransitionGroup v-for="(group, index) in groups" :key="index"  tag="ul" name="fade" class="container flex flex-col gap-8" preserve-scroll>
+                                <UserGroupCard v-if="selectedGroup === group.name||('id' in group )=== false" :group="group"/>
                             </TransitionGroup>
 
                             <div class="text-center rounded-sm border border-slate-400 border-dashed p-8">
@@ -90,9 +88,14 @@ const props = withDefaults(
             from: number,
             data: Group[]
         };
+        groupOptions?:[]
     }>(), {});
+
+let selectedGroup = ref('');
+
 const owner: Profile = props.profiles.length > 0 ? props.profiles[0] : null;
 const groups: Ref<Group[]> = ref([...props.groups?.data] || []);
+
 
 function newGroup() {
     const group = {
@@ -104,15 +107,6 @@ function newGroup() {
     } as Group;
     groups.value.push(group);
 }
-
-let selectedGroup = ref('');
-
-const groupOptions = computed(() => {
-    return props.groups.data
-        .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
-        .map(group => group.name);
-});
-
 
 </script>
 <style>
