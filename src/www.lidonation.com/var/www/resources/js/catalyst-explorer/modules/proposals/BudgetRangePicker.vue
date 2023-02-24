@@ -21,7 +21,7 @@
             :max="VARIABLES.MAX_BUDGET"
             :step="500"
             :format="function (value) {
-                return `₳${$filters.number(value)}`
+                return `₳${$filters.shortNumber(value)}`
             }"
             tooltipPosition="bottom"
             v-model="rangeRef" />

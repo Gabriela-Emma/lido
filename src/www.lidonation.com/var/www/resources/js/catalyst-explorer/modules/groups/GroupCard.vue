@@ -18,7 +18,7 @@
                     </h3>
                     <div class="flex flex-col gap2 itemscenter justify-center">
                         <span class="text-teal-600 font-semibold text-xl">
-                            ${{$filters.number(catalystGroup.amount_awarded, 1)}}
+                            ${{$filters.shortNumber(catalystGroup.amount_awarded, 1)}}
                         </span>
                         <span class="text-gray-500 text-xs">Awarded</span>
                     </div>

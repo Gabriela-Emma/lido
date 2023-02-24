@@ -91,23 +91,95 @@
                     <footer class="sticky bottom-8">
                         <div class="container flex justify-center">
                             <div
-                                class="inline-flex mx-auto justify-center rounded-full py-2 px-4 bg-slate-800 text-white shadow-md text-sm lg:text-md gap-2 divide-x-reverse divide-slate-100 space-x-4">
-                                <div class="flex flex-col text-center">
+                                class="rounded-full py-3 px-4 bg-slate-800 text-white shadow-xl text-sm lg:text-md xl:text-lg relative">
+
+<!--                                <TransitionGroup tag="div" name="fade"-->
+<!--                                                 v-if="(metricCountApproved || metricCountCompleted) && metricSumApproved"-->
+<!--                                                 class="absolute -top-2 w-full flex justify-center">-->
+<!--                                    <b class="text-yellow-500 inline-block text-xs px-2 py-1 text-center bg-slate-800 rounded-full">Search-->
+<!--                                        metrics</b>-->
+<!--                                </TransitionGroup>-->
+
+                                <TransitionGroup tag="div" name="fade"
+                                                 class="inline-flex mx-auto justify-center h-full flex-wrap md:flex-nowrap gap-2 divide-x-reverse divide-slate-100 space-x-4">
+                                    <div class="flex flex-col text-center" key="countTotal">
+                                         <span class="font-semibold">
+                                            {{ $filters.number(props.proposals.total) }}
+                                        </span>
+                                            <span class="text-xs">
+                                            Submitted
+                                        </span>
+                                    </div>
+                                    <div class="flex flex-col text-center" v-if="metricCountApproved" key="countFunded">
                                      <span class="font-semibold">
-                                        {{ props.proposals.total }}
+                                        {{ $filters.number(metricCountApproved) }}
                                     </span>
-                                    <span class="text-xs">
-                                        Total
+                                        <span class="text-xs">
+                                        Approved
                                     </span>
-                                </div>
-                                <div class="flex flex-col text-center" v-if="metricFunded">
-                                     <span class="font-semibold">
-                                        {{ metricFunded }}
-                                    </span>
-                                    <span class="text-xs">
-                                        Funded
-                                    </span>
-                                </div>
+                                    </div>
+                                    <div class="flex flex-col text-center" v-if="metricCountTotalPaid" key="countPaid">
+                                         <span class="font-semibold">
+                                            {{ $filters.number(metricCountTotalPaid) }}
+                                        </span>
+                                            <span class="text-xs">
+                                            Fully Paid
+                                        </span>
+                                    </div>
+                                    <div class="flex flex-col text-center text-pink-500" v-if="metricCountCompleted" key="completed">
+                                         <span class="font-semibold">
+                                            {{ $filters.number(metricCountCompleted) }}
+                                        </span>
+                                            <span class="text-xs">
+                                            Completed
+                                        </span>
+                                    </div>
+
+
+                                    <div class="h-full w-full h-[1px] md:h-full md:w-[1px] bg-slate-100 relative"
+                                         v-if="(metricCountApproved || metricCountCompleted) && metricSumApproved">
+                                        <b class="text-yellow-500 hidden md:inline-block absolute -top-6 -left-10 w-28 text-xs px-2 py-1 text-center bg-slate-800 rounded-full">
+                                            Search metrics
+                                        </b>
+                                    </div>
+
+
+                                    <div class="flex flex-col text-center" v-if="metricSumBudget" key="sumBudget">
+                                         <span class="font-semibold">
+                                            ${{ $filters.shortNumber(metricSumBudget, 2) }}
+                                        </span>
+                                            <span class="text-xs">
+                                            $ Requested
+                                        </span>
+                                    </div>
+                                    <div class="flex flex-col text-center text-teal-light-500" v-if="metricSumApproved"
+                                         key="sumApproved">
+                                         <span class="font-semibold">
+                                            ${{ $filters.shortNumber(metricSumApproved, 2) }}
+                                        </span>
+                                            <span class="text-xs">
+                                            $ Awarded
+                                        </span>
+                                    </div>
+                                    <div class="flex flex-col text-center text-teal-400" v-if="metricSumDistributed"
+                                         key="sumDistributed">
+                                         <span class="font-semibold">
+                                            ${{ $filters.shortNumber(metricSumDistributed, 2) }}
+                                        </span>
+                                            <span class="text-xs">
+                                            $ Distributed
+                                        </span>
+                                    </div>
+                                    <div class="flex flex-col text-center text-pink-500" v-if="metricSumCompleted"
+                                         key="sumCompleted">
+                                         <span class="font-semibold">
+                                            ${{ $filters.shortNumber(metricSumCompleted, 2) }}
+                                        </span>
+                                            <span class="text-xs">
+                                            $ Completed
+                                        </span>
+                                    </div>
+                                </TransitionGroup>
                             </div>
                         </div>
                     </footer>
@@ -203,8 +275,16 @@ let searchRender = ref(0);
 let currPageRef = ref<number>(props.currPage);
 let perPageRef = ref<number>(props.perPage);
 
-// metrics
-let metricFunded = ref<number>(null);
+// metrics count
+let metricCountApproved = ref<number>(null);
+let metricCountTotalPaid = ref<number>(null);
+let metricCountCompleted = ref<number>(null);
+
+// metrics count
+let metricSumApproved = ref<number>(null);
+let metricSumDistributed = ref<number>(null);
+let metricSumCompleted = ref<number>(null);
+let metricSumBudget = ref<number>(null);
 
 ////
 // computed properties
@@ -279,9 +359,48 @@ function query() {
 function getMetrics() {
     const params = getQueryData();
 
-    // get funded
-    window.axios.get(`${usePage().props.base_url}/catalyst-explorer/proposals/metrics/funded`, {params})
-        .then((res) => metricFunded.value = res?.data)
+    // get funded count
+    window.axios.get(`${usePage().props.base_url}/catalyst-explorer/proposals/metrics/count/paid`, {params})
+        .then((res) => metricCountTotalPaid.value = res?.data)
+        .catch((error) => {
+            console.error(error);
+        });
+    // get funded count
+    window.axios.get(`${usePage().props.base_url}/catalyst-explorer/proposals/metrics/count/approved`, {params})
+        .then((res) => metricCountApproved.value = res?.data)
+        .catch((error) => {
+            console.error(error);
+        });
+    // get completed count
+    window.axios.get(`${usePage().props.base_url}/catalyst-explorer/proposals/metrics/count/completed`, {params})
+        .then((res) => metricCountCompleted.value = res?.data)
+        .catch((error) => {
+            console.error(error);
+        });
+
+
+    // get funded sum
+    window.axios.get(`${usePage().props.base_url}/catalyst-explorer/proposals/metrics/sum/approved`, {params})
+        .then((res) => metricSumApproved.value = res?.data)
+        .catch((error) => {
+            console.error(error);
+        });
+    // get funded sum
+    window.axios.get(`${usePage().props.base_url}/catalyst-explorer/proposals/metrics/sum/distributed`, {params})
+        .then((res) => metricSumDistributed.value = res?.data)
+        .catch((error) => {
+            console.error(error);
+        });
+    // get funded sum
+    window.axios.get(`${usePage().props.base_url}/catalyst-explorer/proposals/metrics/sum/completed`, {params})
+        .then((res) => metricSumCompleted.value = res?.data)
+        .catch((error) => {
+            console.error(error);
+        });
+
+    // get requested sum
+    window.axios.get(`${usePage().props.base_url}/catalyst-explorer/proposals/metrics/sum/budget`, {params})
+        .then((res) => metricSumBudget.value = res?.data)
         .catch((error) => {
             console.error(error);
         });
@@ -352,3 +471,32 @@ function getQueryData() {
     return data;
 }
 </script>
+<style>
+.item {
+    width: 100%;
+    height: 30px;
+    background-color: #f3f3f3;
+    border: 1px solid #666;
+    box-sizing: border-box;
+}
+
+/* 1. declare transition */
+.fade-move,
+.fade-enter-active,
+.fade-leave-active {
+    transition: all 0.5s cubic-bezier(0.55, 0, 0.1, 1);
+}
+
+/* 2. declare enter from and leave to state */
+.fade-enter-from,
+.fade-leave-to {
+    opacity: 0;
+    transform: scaleY(0.01) translate(30px, 0);
+}
+
+/* 3. ensure leaving items are taken out of layout flow so that moving
+      animations can be calculated correctly. */
+.fade-leave-active {
+    position: absolute;
+}
+</style>

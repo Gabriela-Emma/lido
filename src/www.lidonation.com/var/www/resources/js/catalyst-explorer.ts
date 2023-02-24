@@ -2,11 +2,11 @@ import {createInertiaApp, usePage} from "@inertiajs/vue3";
 import {createApp, h, nextTick, watch} from "vue";
 import Layout from "./catalyst-explorer/Shared/Layout.vue";
 import {createPinia} from "pinia";
-import { marked } from 'marked';
+import {marked} from 'marked';
 import HeaderComponent from './catalyst-explorer/Shared/Components/HeaderComponent.vue';
 import PrimeVue from 'primevue/config';
 import route from "ziggy-js";
-import { modal } from "momentum-modal";
+import {modal} from "momentum-modal";
 import timeago from 'vue-timeago3';
 
 createInertiaApp({
@@ -27,10 +27,10 @@ createInertiaApp({
                 // persist the whole state to the local storage whenever it changes
                 sessionStorage.setItem('piniaState', JSON.stringify(state))
             },
-            { deep: true }
+            {deep: true}
         );
 
-        const app =  createApp({render: () => h(App, props)})
+        const app = createApp({render: () => h(App, props)})
             .use(plugin)
             .use(modal, {
                 resolve: (name) => import(`./catalyst-explorer/Pages/${name}`),
@@ -58,7 +58,10 @@ createInertiaApp({
 
 
         app.config.globalProperties.$filters = {
-            number(value, digits = 0, locale: string='en-US') {
+            number(number, maximumSignificantDigits = 2, locale: string = 'en-US') {
+                return new Intl.NumberFormat(locale, {maximumSignificantDigits}).format(number);
+            },
+            shortNumber(value, digits = 0, locale: string = 'en-US') {
                 // Nine Zeroes for Billions
                 return Math.abs(Number(value)) >= 1.0e+9
 
@@ -74,7 +77,7 @@ createInertiaApp({
 
                             : Math.abs(Number(value));
             },
-            currency(value, locale: string='en-US') {
+            currency(value, locale: string = 'en-US') {
                 if (typeof value !== "number") {
                     return value;
                 }
