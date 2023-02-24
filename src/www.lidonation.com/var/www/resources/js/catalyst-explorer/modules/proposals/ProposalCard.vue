@@ -11,15 +11,24 @@
         class="bg-white border border-slate-100 flex flex-col divide-y bg-white rounded-sm w-full h-full relative proposal-drip overflow-clip">
         <div class="p-4 flex flex-col justify-start gap-4 h-full">
             <header class="flex flex-col justify-center gap-y-1">
-                <h2 class="flex items-start justify-between h-16">
-                    <span>
-                        <a class="font-medium text-gray-800 text-md"
-                           target="_blank"
-                           :href="$utils.localizeRoute(`proposals/${proposal.slug}`)">
-                            {{ proposal.title }}
-                        </a>
-                    </span>
-                </h2>
+                <div class="flex justify-between gap-4 relative">
+                    <h2 class="flex items-start justify-between h-16 pr-8">
+                        <span>
+                            <a class="font-medium text-gray-800 text-md"
+                               target="_blank"
+                               :href="$utils.localizeRoute(`proposals/${proposal.slug}`)">
+                                {{ proposal.title }}
+                            </a>
+                        </span>
+                    </h2>
+                    <div class="absolute top-1 right-1">
+                        <Link preserve-state preserve-scroll
+                            :href="$utils.localizeRoute(`catalyst-explorer/proposals/${proposal.id}/bookmark`)" as="button"
+                            class="inline-flex items-center rounded-md border border-transparent group bg-slate-600 p-0.5 text-sm font-medium leading-4 text-white shadow-sm hover:bg-teal-400 focus:outline-none focus:ring-2 focus:ring-teal-300 focus:ring-offset-2">
+                            <BookmarkIcon class="h-4 w-4 group-hover:text-teal-900" aria-hidden="true" />
+                        </Link>
+                    </div>
+                </div>
                 <div class="flex flex-row flex-nowrap mb-2 text-white">
                     <div
                         v-if="proposal.amount_received > 0.00"
@@ -250,6 +259,8 @@
 import Proposal from "../../models/proposal";
 import Rating from 'primevue/rating';
 import {computed} from "vue";
+import {BookmarkIcon} from "@heroicons/vue/20/solid";
+import { Link } from '@inertiajs/vue3';
 
 
 const props = withDefaults(
@@ -262,6 +273,8 @@ const props = withDefaults(
         },
     },
 );
+
+// alert('day');
 
 // computer properties
 const authors = computed(() => {

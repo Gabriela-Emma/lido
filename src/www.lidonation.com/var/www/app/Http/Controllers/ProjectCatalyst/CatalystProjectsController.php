@@ -14,6 +14,7 @@ use Inertia\Response;
 use JetBrains\PhpStorm\ArrayShape;
 use Laravel\Scout\Builder;
 use Meilisearch\Endpoints\Indexes;
+use Momentum\Modal\Modal;
 
 class CatalystProjectsController extends Controller
 {
@@ -141,6 +142,20 @@ class CatalystProjectsController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @return Modal
+     */
+    public function bookmark(Request $request, Proposal $proposal)
+    {
+        return Inertia::modal('BookmarkProposal')
+            ->with([
+                'proposal' => $proposal,
+            ])
+            ->baseRoute('catalystExplorer.proposals');
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
      * @return Response
      */
     public function index(Request $request)
@@ -201,6 +216,8 @@ class CatalystProjectsController extends Controller
         // get filter(s) from request
         return Inertia::render('Proposals', $props);
     }
+
+
 
     protected function setFilters(Request $request)
     {
