@@ -7,6 +7,7 @@ use Illuminate\Foundation\Auth\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Fluent;
 
 class UserController extends Controller
 {
@@ -41,19 +42,19 @@ class UserController extends Controller
 
     public function create(Request $request)
     {
-        $request->validate([
+        $validated = new Fluent($request->validate([
             'name' => 'required|min:3',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:5|confirmed',
-        ]);
+        ]));
 
-        $user = User::where('email', $request->email);
+        $user = User::where('email', $validated->email);
 
         if (! $user instanceof User) {
             $user = new User;
-            $user->name = $request->name;
-            $user->email = $request->email;
-            $user->password = Hash::make($request->password);
+            $user->name = $validated->name;
+            $user->email = $validated->email;
+            $user->password = Hash::make($validated->password);
             $user->save();
 
             return to_route('catalystExplorer.login');
@@ -62,7 +63,8 @@ class UserController extends Controller
 
     public function update(Request $request)
     {
-        $request->validate([
+        $validated = new Fluent($request->validate([
+            'id' => 'required|exists:users,id',
             'name' => 'required|min:3',
             'email' => 'required|email',
             'twitter' => 'nullable|bail|min:2',
@@ -70,16 +72,17 @@ class UserController extends Controller
             'discord' => 'nullable|bail|min:2',
             'telegram' => 'nullable|bail|min:2',
             'bio' => 'min:10',
-        ]);
+        ]));
 
-        $user = User::where('email', $request->email)->firstOrFail();
-        $user->name = $request->name;
-        $user->bio = $request->bio;
-        $user->email = $request->email;
-        $user->twitter = $request->twitter;
-        $user->linkedin = $request->linkedin;
-        $user->discord = $request->discord;
-        $user->telegram = $request->telegram;
+        // prevent changing email to a different user's email
+        $user = User::findOrFail($validated->id);
+        $user->name = $validated->name;
+        $user->bio = $validated->bio;
+        $user->email = $validated->email;
+        $user->twitter = $validated->twitter;
+        $user->linkedin = $validated->linkedin;
+        $user->discord = $validated->discord;
+        $user->telegram = $validated->telegram;
 
         $user->save();
 
