@@ -171,48 +171,48 @@
             </dl>
 
 
-<!--            <div class="flex gap-8 sm:col-span-2 w-full relative mt-8 border border-slate-200 p-4">-->
-<!--                <div class="absolute block left-3 -top-1.5 bg-white rounded-sm text-xs px-2">-->
-<!--                    The Team-->
-<!--                </div>-->
-<!--                <ul role="list" class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">-->
-<!--                    <li v-for="person in people" :key="person.email"-->
-<!--                        class="col-span-1 divide-y divide-gray-200 rounded-lg bg-white shadow">-->
-<!--                        <div class="flex w-full items-center justify-between space-x-6 p-6">-->
-<!--                            <div class="flex-1 truncate">-->
-<!--                                <div class="flex items-center space-x-3">-->
-<!--                                    <h3 class="truncate text-sm font-medium text-gray-900">{{ person.name }}</h3>-->
-<!--                                    <span-->
-<!--                                        class="inline-block flex-shrink-0 rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-800">{{-->
-<!--                                            person.role-->
-<!--                                        }}</span>-->
-<!--                                </div>-->
-<!--                                <p class="mt-1 truncate text-sm text-gray-500">{{ person.title }}</p>-->
-<!--                            </div>-->
-<!--                            <img class="h-10 w-10 flex-shrink-0 rounded-full bg-gray-300" :src="person.imageUrl"-->
-<!--                                 alt=""/>-->
-<!--                        </div>-->
-<!--                        <div>-->
-<!--                            <div class="-mt-px flex divide-x divide-gray-200">-->
-<!--                                <div class="flex w-0 flex-1">-->
-<!--                                    <a :href="`mailto:${person.email}`"-->
-<!--                                       class="relative -mr-px inline-flex w-0 flex-1 items-center justify-center rounded-bl-lg border border-transparent py-4 text-sm font-medium text-gray-700 hover:text-gray-500">-->
-<!--                                        <EnvelopeIcon class="h-5 w-5 text-gray-400" aria-hidden="true"/>-->
-<!--                                        <span class="ml-3">Email</span>-->
-<!--                                    </a>-->
-<!--                                </div>-->
-<!--                                <div class="-ml-px flex w-0 flex-1">-->
-<!--                                    <a :href="`tel:${person.telephone}`"-->
-<!--                                       class="relative inline-flex w-0 flex-1 items-center justify-center rounded-br-lg border border-transparent py-4 text-sm font-medium text-gray-700 hover:text-gray-500">-->
-<!--                                        <PhoneIcon class="h-5 w-5 text-gray-400" aria-hidden="true"/>-->
-<!--                                        <span class="ml-3">Call</span>-->
-<!--                                    </a>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </li>-->
-<!--                </ul>-->
-<!--            </div>-->
+            <!--            <div class="flex gap-8 sm:col-span-2 w-full relative mt-8 border border-slate-200 p-4">-->
+            <!--                <div class="absolute block left-3 -top-1.5 bg-white rounded-sm text-xs px-2">-->
+            <!--                    The Team-->
+            <!--                </div>-->
+            <!--                <ul role="list" class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">-->
+            <!--                    <li v-for="person in people" :key="person.email"-->
+            <!--                        class="col-span-1 divide-y divide-gray-200 rounded-lg bg-white shadow">-->
+            <!--                        <div class="flex w-full items-center justify-between space-x-6 p-6">-->
+            <!--                            <div class="flex-1 truncate">-->
+            <!--                                <div class="flex items-center space-x-3">-->
+            <!--                                    <h3 class="truncate text-sm font-medium text-gray-900">{{ person.name }}</h3>-->
+            <!--                                    <span-->
+            <!--                                        class="inline-block flex-shrink-0 rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-800">{{-->
+            <!--                                            person.role-->
+            <!--                                        }}</span>-->
+            <!--                                </div>-->
+            <!--                                <p class="mt-1 truncate text-sm text-gray-500">{{ person.title }}</p>-->
+            <!--                            </div>-->
+            <!--                            <img class="h-10 w-10 flex-shrink-0 rounded-full bg-gray-300" :src="person.imageUrl"-->
+            <!--                                 alt=""/>-->
+            <!--                        </div>-->
+            <!--                        <div>-->
+            <!--                            <div class="-mt-px flex divide-x divide-gray-200">-->
+            <!--                                <div class="flex w-0 flex-1">-->
+            <!--                                    <a :href="`mailto:${person.email}`"-->
+            <!--                                       class="relative -mr-px inline-flex w-0 flex-1 items-center justify-center rounded-bl-lg border border-transparent py-4 text-sm font-medium text-gray-700 hover:text-gray-500">-->
+            <!--                                        <EnvelopeIcon class="h-5 w-5 text-gray-400" aria-hidden="true"/>-->
+            <!--                                        <span class="ml-3">Email</span>-->
+            <!--                                    </a>-->
+            <!--                                </div>-->
+            <!--                                <div class="-ml-px flex w-0 flex-1">-->
+            <!--                                    <a :href="`tel:${person.telephone}`"-->
+            <!--                                       class="relative inline-flex w-0 flex-1 items-center justify-center rounded-br-lg border border-transparent py-4 text-sm font-medium text-gray-700 hover:text-gray-500">-->
+            <!--                                        <PhoneIcon class="h-5 w-5 text-gray-400" aria-hidden="true"/>-->
+            <!--                                        <span class="ml-3">Call</span>-->
+            <!--                                    </a>-->
+            <!--                                </div>-->
+            <!--                            </div>-->
+            <!--                        </div>-->
+            <!--                    </li>-->
+            <!--                </ul>-->
+            <!--            </div>-->
 
 
             <div class="group-proposals-wrapper p-4 bg-slate-50 mt-8">
@@ -222,42 +222,44 @@
                     <div>
                         <div class="overflow-hidden bg-white shadow sm:rounded-md">
                             <ul role="list" class="divide-y divide-gray-200">
-                                <li v-for="proposal in proposals" :key="proposal.id">
-                                    <a href="#" class="block hover:bg-gray-50">
-                                        <div class="flex items-center px-4 py-4 sm:px-6">
-                                            <div class="min-w-0 flex-1 sm:flex sm:items-center sm:justify-between">
-                                                <div class="truncate">
-                                                    <div class="flex text-sm">
-                                                        <p class="truncate font-medium text-teal-600">{{
-                                                                proposal.title
-                                                            }}</p>
-                                                        <!--                                                        <p class="ml-1 flex-shrink-0 font-normal text-gray-500">in {{ position.department }}</p>-->
+                                <template v-for="proposal in proposals">
+                                    <li :key="proposal.id" v-if="proposal">
+                                        <a href="#" class="block hover:bg-gray-50">
+                                            <div class="flex items-center px-4 py-4 sm:px-6">
+                                                <div class="min-w-0 flex-1 sm:flex sm:items-center sm:justify-between">
+                                                    <div class="truncate">
+                                                        <div class="flex text-sm">
+                                                            <p class="truncate font-medium text-teal-600">{{
+                                                                    proposal.title
+                                                                }}</p>
+                                                            <!--                                                        <p class="ml-1 flex-shrink-0 font-normal text-gray-500">in {{ position.department }}</p>-->
+                                                        </div>
+                                                        <div class="mt-2 flex">
+                                                            <div class="flex items-center text-sm text-gray-500">
+                                                                <CalendarIcon
+                                                                    class="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400"
+                                                                    aria-hidden="true"/>
+                                                                <p>
+                                                                    {{ proposal.fund?.label }}
+                                                                </p>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                    <div class="mt-2 flex">
-                                                        <div class="flex items-center text-sm text-gray-500">
-                                                            <CalendarIcon
-                                                                class="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400"
-                                                                aria-hidden="true"/>
-                                                            <p>
-                                                                {{ proposal.fund?.label }}
-                                                            </p>
+                                                    <div class="mt-4 flex-shrink-0 sm:mt-0 sm:ml-5">
+                                                        <div class="flex -space-x-1 overflow-hidden">
+                                                            <img v-for="user in proposal.users" :key="user.id"
+                                                                 class="inline-block h-6 w-6 rounded-full ring-2 ring-white"
+                                                                 :src="user.profile_photo_url" :alt="user.name"/>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="mt-4 flex-shrink-0 sm:mt-0 sm:ml-5">
-                                                    <div class="flex -space-x-1 overflow-hidden">
-                                                        <img v-for="user in proposal.users" :key="user.id"
-                                                             class="inline-block h-6 w-6 rounded-full ring-2 ring-white"
-                                                             :src="user.profile_photo_url" :alt="user.name"/>
-                                                    </div>
+                                                <div class="ml-5 flex-shrink-0">
+                                                    <ChevronRightIcon class="h-5 w-5 text-gray-400" aria-hidden="true"/>
                                                 </div>
                                             </div>
-                                            <div class="ml-5 flex-shrink-0">
-                                                <ChevronRightIcon class="h-5 w-5 text-gray-400" aria-hidden="true"/>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
+                                        </a>
+                                    </li>
+                                </template>
                             </ul>
                         </div>
                     </div>

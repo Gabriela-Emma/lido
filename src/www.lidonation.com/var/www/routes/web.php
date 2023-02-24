@@ -193,7 +193,15 @@ Route::group(
 
             Route::get('/proposals', [CatalystProjectsController::class, 'index'])
                 ->name('proposals');
-            Route::get('/proposals/metrics/funded', [CatalystProjectsController::class, 'metricFunded']);
+            // counts
+            Route::get('/proposals/metrics/count/approved', [CatalystProjectsController::class, 'metricCountFunded']);
+            Route::get('/proposals/metrics/count/paid', [CatalystProjectsController::class, 'metricCountTotalPaid']);
+            Route::get('/proposals/metrics/count/completed', [CatalystProjectsController::class, 'metricCountCompleted']);
+            // sums
+            Route::get('/proposals/metrics/sum/budget', [CatalystProjectsController::class, 'metricSumBudget']);
+            Route::get('/proposals/metrics/sum/approved', [CatalystProjectsController::class, 'metricSumApproved']);
+            Route::get('/proposals/metrics/sum/distributed', [CatalystProjectsController::class, 'metricSumDistributed']);
+            Route::get('/proposals/metrics/sum/completed', [CatalystProjectsController::class, 'metricSumCompleted']);
 
             Route::get('/people', [CatalystPeopleController::class, 'index'])
                 ->name('people');
