@@ -81,11 +81,11 @@
                                     </h2>
                                     <p class="mt-1 text-sm text-slate-500">
                                         All information, with the exception of your
-                                        email, will be displayed publicly.</p>
+                                        email, will be displayed publicly.
+                                    </p>
 
-                                    <div class="text-pink-600" v-if="form.errors.id">{{
-                                            form.errors.id
-                                        }}
+                                    <div class="text-pink-600" v-if="form.errors.id">
+                                        {{form.errors.id }}
                                     </div>
                                 </div>
 
