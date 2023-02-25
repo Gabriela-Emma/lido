@@ -48,14 +48,10 @@ class CatalystMyProposalsController extends Controller
             
         $paginator = $query->paginate($this->perPage, ['*'], 'p')->setPath('/');
 
-        $totalDistributed = floatval($query->when($this->fundedProposalsFilter, function ($query) {
-            return $query->whereNotNull('funded_at');
-        })->sum('amount_received'));
+        // dd($paginator->getCollection());
 
-        $budgetSummary = floatval($query->when($this->fundedProposalsFilter, function ($query) {
-            return $query->whereNotNull('funded_at');
-        })->sum('amount_requested'));
-
+        $totalDistributed = $paginator->sum('amount_received');
+        $budgetSummary = $paginator->sum('amount_requested');
         $totalRemaining = ($budgetSummary - $totalDistributed);
 
         return [
