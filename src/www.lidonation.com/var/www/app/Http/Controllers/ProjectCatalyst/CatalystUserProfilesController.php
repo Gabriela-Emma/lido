@@ -27,7 +27,7 @@ class CatalystUserProfilesController extends Controller
 
         $paginator = $query->paginate($this->perPage, ['*'], 'p')->setPath('/');
 
-        return Inertia::render('auth/UserProfiles', [
+        return Inertia::render('Auth/UserProfiles', [
             'profiles' => $paginator->onEachSide(1)->toArray(),
             'crumbs' => [
                 ['label' => 'Profiles'],

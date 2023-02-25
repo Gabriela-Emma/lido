@@ -20,11 +20,10 @@ class CatalystMyGroupsController extends Controller
 
     public function manage(CatalystGroup $group)
     {
-        return Inertia::modal('auth/UserGroupCard')
+        return Inertia::render('Auth/UserGroupCard')
             ->with([
                 'group' => $group,
-            ])
-            ->baseRoute('catalystExplorer.myGroups');
+            ]);
     }
 
     /**
@@ -34,7 +33,7 @@ class CatalystMyGroupsController extends Controller
      */
     public function index(Request $request)
     {
-        return Inertia::render('auth/UserGroups', $this->data());
+        return Inertia::render('Auth/UserGroups', $this->data());
     }
 
     /**

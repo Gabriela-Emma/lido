@@ -1,8 +1,10 @@
 <template>
-    <div class="flex items-center justify-center h-screen bg-slate-100">
+    <div :class="{
+        'flex items-center justify-center h-screen': !embedded
+    }" class="bg-slate-100 login-form-wrapper">
         <form>
             <div class=" bg-white shadow-sm  rounded  p-6 w-96">
-                <div class=" flex-col  mb-4 border-b">
+                <div class=" flex-col  mb-4 border-b" v-if="showLogo">
                     <div class="flex items-center justify-center mb-4">
                         <img alt="catalyst explorer logo" :src="$utils.assetUrl('img/catalyst-explorer-logo.jpg')"
                              class="h-40"/>
@@ -75,9 +77,23 @@
 <script lang="ts" setup>
 import {useForm} from '@inertiajs/vue3';
 import {Link} from '@inertiajs/vue3';
-const props = defineProps({
-    errors: Object
-})
+import Proposal from "../../models/proposal";
+
+const props = withDefaults(
+    defineProps<{
+        errors?: Object,
+        showLogo?: boolean,
+        embedded?: boolean,
+    }>(),
+    {
+        showLogo: true,
+        embedded: false,
+    },
+);
+// const props = defineProps({
+//     errors: Object,
+//     showLogo: boolean,
+// });
 let form = useForm({
     password: '',
     email: '',
