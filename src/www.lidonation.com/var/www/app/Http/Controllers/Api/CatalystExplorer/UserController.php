@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Fluent;
+use App\Models\User as modelUser;
 
 class UserController extends Controller
 {
@@ -71,7 +72,8 @@ class UserController extends Controller
             'linkedin' => 'nullable|bail|min:2',
             'discord' => 'nullable|bail|min:2',
             'telegram' => 'nullable|bail|min:2',
-            'bio' => 'min:10',
+            'bio' => 'nullable|min:10',
+            'profile' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]));
 
         // prevent changing email to a different user's email
@@ -83,6 +85,11 @@ class UserController extends Controller
         $user->linkedin = $validated->linkedin;
         $user->discord = $validated->discord;
         $user->telegram = $validated->telegram;
+        if ($request->hasFile('profile')) {
+            $appUser = modelUser::findOrFail($validated->id);
+            $appUser->addMediaFromRequest('profile')->toMediaCollection('hero');
+            $appUser->save();
+        }
 
         $user->save();
 
