@@ -56,9 +56,9 @@ const props = withDefaults(
                                          leave-from="opacity-100 translate-y-0 md:scale-100"
                                          leave-to="opacity-0 translate-y-4 md:translate-y-0 md:scale-95">
                             <DialogPanel
-                                class="flex w-full transform text-left text-base transition md:my-8 md:max-w-2xl md:px-4 lg:max-w-4xl">
+                                class="flex w-full transform text-left text-base transition md:max-w-2xl lg:max-w-4xl">
                                 <div
-                                    class="relative flex w-full items-center overflow-hidden bg-white px-4 pt-14 pb-8 shadow-2xl sm:px-6 sm:pt-8 md:p-6 lg:p-8">
+                                    class="relative flex w-full items-center overflow-hidden bg-white shadow-2xl">
                                     <button type="button"
                                             class="absolute top-4 right-4 text-gray-400 hover:text-gray-500 sm:top-8 sm:right-6 md:top-6 md:right-6 lg:top-8 lg:right-8"
                                             @click="open = false">

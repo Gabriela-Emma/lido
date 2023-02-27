@@ -173,10 +173,10 @@ Route::group(
         });
 
         Route::prefix('/catalyst-explorer')->as('catalystExplorer.')->group(function () {
-            Route::get('/login', fn () => Inertia::render('auth/Login'))
+            Route::get('/login', fn () => Inertia::render('Auth/Login'))
                 ->name('login');
 
-            Route::get('/register', fn () => Inertia::render('auth/Register'))
+            Route::get('/register', fn () => Inertia::render('Auth/Register'))
                 ->name('register');
 
             Route::get('/reports', [CatalystReportsController::class, 'index'])

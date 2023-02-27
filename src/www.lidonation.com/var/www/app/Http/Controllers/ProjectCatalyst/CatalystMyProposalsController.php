@@ -16,7 +16,7 @@ class CatalystMyProposalsController extends Controller
 
     public function manage(Proposal $proposal)
     {
-        return Inertia::modal('auth/UserProposal')
+        return Inertia::modal('Auth/UserProposal')
             ->with([
                 'proposal' => $proposal,
             ])
@@ -32,7 +32,7 @@ class CatalystMyProposalsController extends Controller
     {
         $this->fundedProposalsFilter = $request->input('fp', true);
 
-        return Inertia::render('auth/UserProposals', $this->data());
+        return Inertia::render('Auth/UserProposals', $this->data());
     }
 
     protected function data()
@@ -45,17 +45,13 @@ class CatalystMyProposalsController extends Controller
         $query = Proposal::whereIn('user_id', $catalystProfiles)
         ->when($this->fundedProposalsFilter, function ($query) {
             return $query->whereNotNull('funded_at');});
-            
+
         $paginator = $query->paginate($this->perPage, ['*'], 'p')->setPath('/');
 
-        $totalDistributed = floatval($query->when($this->fundedProposalsFilter, function ($query) {
-            return $query->whereNotNull('funded_at');
-        })->sum('amount_received'));
+        // dd($paginator->getCollection());
 
-        $budgetSummary = floatval($query->when($this->fundedProposalsFilter, function ($query) {
-            return $query->whereNotNull('funded_at');
-        })->sum('amount_requested'));
-
+        $totalDistributed = $paginator->sum('amount_received');
+        $budgetSummary = $paginator->sum('amount_requested');
         $totalRemaining = ($budgetSummary - $totalDistributed);
 
         return [

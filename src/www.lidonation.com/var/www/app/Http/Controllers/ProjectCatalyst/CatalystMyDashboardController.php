@@ -16,7 +16,7 @@ class CatalystMyDashboardController extends Controller
      */
     public function index(Request $request)
     {
-        return Inertia::render('auth/Dashboard', [
+        return Inertia::render('Auth/Dashboard', [
             'crumbs' => [
                 ['label' => 'Dashboard'],
             ],
