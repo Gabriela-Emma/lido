@@ -129,8 +129,20 @@
                                                 class="sr-only">{{ proposal.title }}</span></Link>
                                         </td>
                                     </tr>
+
                                     </tbody>
                                 </table>
+                                <div class="flex my-16 gap-16 xl:gap-24 justify-between  w-full">
+                                    <div class="flex-1 w-full px-6">
+                                        <Pagination :links="props.proposals.links"
+                                                    :per-page="props.perPage"
+                                                    :total="props.proposals?.total"
+                                                    :from="props.proposals?.from"
+                                                    :to="props.proposals?.to"
+                                                    @perPageUpdated="(payload) => perPageRef = payload"
+                                                    @paginated="(payload) => currPageRef = payload"/>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -149,6 +161,7 @@ import Toggle from '@vueform/toggle'
 import Filters from "../../models/filters";
 import { VARIABLES } from "../../models/variables";
 import {watch, ref} from "vue";
+import Pagination from "../../Shared/Components/Pagination.vue";
 
 
 
@@ -160,6 +173,8 @@ const props = withDefaults(
         totalDistributed: number,
         totalRemaining: number,
         budgetSummary: number,
+        currPage?: number,
+        perPage?: number,
         proposals: {
             links: [],
             total: number,
@@ -170,15 +185,27 @@ const props = withDefaults(
     }>(), {});
 
 let filtersRef = ref(props.filters);
+let currPageRef = ref<number>(props.currPage);
+let perPageRef = ref<number>(props.perPage);
 
 watch([filtersRef], () => {
    query();
 }, {deep: true});
 
+watch([currPageRef, perPageRef], () => {
+    query();
+});
+
 function query()
 {
     const data = {};
 
+    if (currPageRef.value) {
+        data[VARIABLES.PAGE] = currPageRef.value;
+    }
+    if (perPageRef.value) {
+        data[VARIABLES.PER_PAGE] = perPageRef.value;
+    }
     if (!filtersRef.value?.funded) {
         data[VARIABLES.FUNDED_PROPOSALS] = 0;
     }
