@@ -11,6 +11,7 @@ use Inertia\Response;
 class CatalystMyProposalsController extends Controller
 {
     protected int $perPage = 24;
+    protected int $currentPage;
 
     protected ?bool $fundedProposalsFilter = true;
 
@@ -31,6 +32,8 @@ class CatalystMyProposalsController extends Controller
     public function index(Request $request)
     {
         $this->fundedProposalsFilter = $request->input('fp', true);
+        $this->currentPage = $request->input('p', 1);
+        $this->perPage = $request->input('l', 24);
 
         return Inertia::render('Auth/UserProposals', $this->data());
     }
