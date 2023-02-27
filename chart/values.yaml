@@ -160,8 +160,8 @@ services:
         traefik.ingress.kubernetes.io/router.middlewares: "traefik-redirect-http-to-https@kubernetescrd,traefik-redirect-to-www@kubernetescrd,traefik-default-headers@kubernetescrd"
       }
       hosts:
-        - lidonation.com
         - www.lidonation.com
+        - lidonation.com
       tls:
         - secretName: lidonation-com-tls
           hosts:
