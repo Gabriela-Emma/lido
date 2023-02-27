@@ -117,8 +117,10 @@ image: registry.lidonation.com/infra-ops/gitlab-runner:main
       --set services.web.certificate.host="$AUTO_DEVOPS_WEB_HOST" \
       --set services.web.ingress.host="$AUTO_DEVOPS_WEB_HOST" \
       --set services.web.ingress.hosts[0]="$AUTO_DEVOPS_WEB_DOMAIN" \
+      --set services.web.ingress.hosts[1]="$AUTO_DEVOPS_DOMAIN" \
       --set services.web.ingress.tls[0].secretName="lidonation-com-tls" \
       --set services.web.ingress.tls[0].hosts[0]="$AUTO_DEVOPS_WEB_DOMAIN" \
+      --set services.web.ingress.tls[1].hosts[1]="$AUTO_DEVOPS_DOMAIN" \
       --set services.web.replicaCount="$replicas" \
       --set services.web.service.url="$AUTO_DEVOPS_WEB_HOST" \
       --set services.web.secret.app_key="$APP_KEY" \
