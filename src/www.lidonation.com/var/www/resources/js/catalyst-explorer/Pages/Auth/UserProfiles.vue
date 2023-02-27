@@ -12,7 +12,9 @@
                     <form @submit.prevent=" userForm.post(
                         `${usePage().props.base_url}/api/catalyst-explorer/user`,
                         { preserveScroll: false }
-                        )">
+                        )"
+                        enctype="multipart/form-data"
+                        >
                         <div class="sm:overflow-hidden sm:rounded-sm">
                             <div class="space-y-6 bg-white py-6 px-4 sm:p-6">
                                 <div>
@@ -58,6 +60,30 @@
                                             }}
                                         </div>
                                     </div>
+                                    <!-- <div>
+                                        <label for="profile"
+                                               class="block text-sm font-medium text-slate-700">Upload a profile photo</label>
+                                        <input type="file"
+                                               @change="uploadProfile"
+                                               id="profile" 
+                                               name="profile"
+                                               class="mt-1 block w-full rounded-sm bg-teal-600 border border-slate-300 py-2 px-3 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-teal-500 sm:text-sm">
+                                    </div> -->
+                                    <div class="extraOutline bg-white w-max bg-whtie rounded-lg">
+                                        <div class="file_upload p-5 relative border-4 border-dotted border-slate-300  rounded-lg" >
+                                            <svg class="text-teal-600 w-12 mx-auto mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" /></svg>
+                                            <div class="input_field flex flex-col w-max mx-auto text-center">
+                                                <label>
+                                                    <input @change="uploadProfile" name="profile" id="profile" class="text-sm cursor-pointer w-36 hidden" type="file"/>
+                                                    <div class="text bg-teal-600 text-white border border-gray-300 rounded font-semibold cursor-pointer p-1 px-3 hover:bg-teal-800">Upload a profile photo</div>
+                                                </label>
+                                                <div v-if="profile_name.length > 0">
+                                                    <p v-text="profile_name"></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
 
@@ -308,7 +334,7 @@ import Profile from "../../models/profile";
 
 const user = computed(() => usePage().props?.user as User);
 
-let userForm = useForm({...user.value});
+let userForm = useForm({...user.value, profile: null});
 
 const props = withDefaults(
     defineProps<{
@@ -331,6 +357,15 @@ let submit = (event, form) => {
         {
             preserveScroll: false
         });
+}
+
+let profile_name = ref('');
+
+function uploadProfile (event){
+    userForm.profile = event.target.files[0];
+    profile_name.value = userForm.profile.name
+    console.log(profile_name);
+    console.log(userForm);
 }
 
 </script>
