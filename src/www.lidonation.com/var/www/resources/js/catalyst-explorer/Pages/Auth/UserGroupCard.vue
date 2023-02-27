@@ -297,7 +297,6 @@ const props = withDefaults(
     }
 );
 
-
 const people = [
     {
         name: 'Jane Cooper',
