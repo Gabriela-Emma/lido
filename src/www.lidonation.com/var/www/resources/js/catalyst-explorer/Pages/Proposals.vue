@@ -89,7 +89,7 @@
                     </div>
 
                     <footer class="sticky bottom-8">
-                        <div class="container flex justify-center">
+                        <div class="flex justify-center">
                             <div
                                 class="rounded-full py-3 px-4 bg-slate-800 text-white shadow-xl text-sm lg:text-md xl:text-lg relative">
 
@@ -101,7 +101,7 @@
 <!--                                </TransitionGroup>-->
 
                                 <TransitionGroup tag="div" name="fade"
-                                                 class="inline-flex mx-auto justify-center h-full flex-wrap md:flex-nowrap gap-2 divide-x-reverse divide-slate-100 space-x-4">
+                                                 class="inline-flex mx-auto justify-center h-full flex-wrap md:flex-nowrap gap-1 md:gap-2 divide-x-reverse divide-slate-100 space-x-2 md:space-x-4">
                                     <div class="flex flex-col text-center" key="countTotal">
                                          <span class="font-semibold">
                                             {{ $filters.number(props.proposals.total) }}
