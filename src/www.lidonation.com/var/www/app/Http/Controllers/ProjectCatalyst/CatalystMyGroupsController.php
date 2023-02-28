@@ -41,7 +41,7 @@ class CatalystMyGroupsController extends Controller
      *
      * @return AnonymousResourceCollection
      */
-    public function proposals(Request $request, CatalystGroup $catalystGroup)
+    public function proposals(Request $request=null, CatalystGroup $catalystGroup)
     {
         $per_page = request('per_page', 12);
 
@@ -53,6 +53,24 @@ class CatalystMyGroupsController extends Controller
         return $proposals->paginate($per_page)->onEachSide(0);
 //        return ProposalResource::collection($proposals->paginate($per_page)->onEachSide(0));
     }
+
+    public function removeProposal(CatalystGroup $catalystGroup, $proposalID)
+    {  
+        $catalystGroup->proposals()->detach($proposalID);
+
+        return $this->proposals(null,$catalystGroup);
+    }
+
+    public function addProposal(CatalystGroup $catalystGroup, Request $request)
+    { 
+        $proposals_id=$request->input('proposals_id');
+        foreach($proposals_id as $id)
+        {
+            $catalystGroup->proposals()->attach($id);
+        }
+        return $this->proposals(null,$catalystGroup);
+    }
+
 
     protected function data()
     {
