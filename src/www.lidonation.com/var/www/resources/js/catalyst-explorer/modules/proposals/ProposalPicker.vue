@@ -2,7 +2,7 @@
     <div
         class="w-full">
         <Multiselect
-            placeholder="Select proposal to add"
+            placeholder="Select proposal(s) to add"
             noOptionsText="Try typing more chars"
             noResultsText="Try typing more chars"
             v-model="selectedRef"

@@ -224,7 +224,7 @@
                         <div class="flex flex-row justify-between w-1/2">
                             <div class="flex flex-row items-center w-1/3">
                                 <button v-if="selectedRef.length>0"
-                                        @click.prevent="addProposal(group.id)"
+                                        @click.prevent="addProposal()"
                                         class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-teal-600 border border-transparent rounded-sm shadow-sm hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
                                     <span class="flex items-center justify-between ">
                                         <PlusIcon class="w-5 h-5 mr-2 -ml-1" aria-hidden="true"/>
@@ -364,9 +364,9 @@ let submit = () => {
 let showRemove = ref(false);
 
 let removeProposal = (id:number) =>
- {   const proposalsId = [id]; 
+ {   const proposalId= id; 
 
-    axios.post(`${usePage().props.base_url}/catalyst-explorer/my/groups/${props.group.id}/${proposalsId}`) // return the actual list
+    axios.delete(`${usePage().props.base_url}/catalyst-explorer/my/groups/${props.group.id}/proposals/${proposalId}`,{method:'DELETE'}) // return the actual list
     .then((res) => {
         initProposals.value = [...res?.data?.data];
     })
@@ -379,11 +379,11 @@ let removeProposal = (id:number) =>
 // adding new proposals to the group
 let selectedRef :Ref<number[]> = ref([]);
 let reset = ref(0)
-let addProposal = (id) => {
+let addProposal = () => {
 
    const proposalsId = [...selectedRef.value]; 
 
-  axios.post(`${usePage().props.base_url}/catalyst-explorer/my/groups/${id}`, { proposals_id: proposalsId })
+  axios.post(`${usePage().props.base_url}/catalyst-explorer/my/groups/${props.group.id}/add`, { proposals_id: proposalsId })
   .then((res) => {
         initProposals.value = [...res?.data?.data];
         selectedRef.value = [];

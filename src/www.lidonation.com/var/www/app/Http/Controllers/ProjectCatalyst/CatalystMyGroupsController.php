@@ -54,11 +54,9 @@ class CatalystMyGroupsController extends Controller
 //        return ProposalResource::collection($proposals->paginate($per_page)->onEachSide(0));
     }
 
-    public function removeProposal(CatalystGroup $catalystGroup, $proposal_id)
+    public function removeProposal(CatalystGroup $catalystGroup, $proposalID)
     {  
-        $proposal=Proposal::find($proposal_id);
-        
-        $catalystGroup->proposals()->detach($proposal?->id);
+        $catalystGroup->proposals()->detach($proposalID);
 
         return $this->proposals(null,$catalystGroup);
     }
