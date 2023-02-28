@@ -12,7 +12,11 @@ class CatalystMyProposalsController extends Controller
 {
     protected int $perPage = 24;
 
-    protected ?bool $fundedProposalsFilter = true;
+     protected int $currentPage;
+
+    protected ?bool $fundedProposalsFilter;
+
+
 
     public function manage(Proposal $proposal)
     {
@@ -31,7 +35,9 @@ class CatalystMyProposalsController extends Controller
     public function index(Request $request)
     {
         $this->fundedProposalsFilter = $request->input('fp', true);
-
+        $this->currentPage = $request->input('p', 1);
+        $this->perPage = $request->input('l', 24);
+        
         return Inertia::render('Auth/UserProposals', $this->data());
     }
 
@@ -46,13 +52,16 @@ class CatalystMyProposalsController extends Controller
         ->when($this->fundedProposalsFilter, function ($query) {
             return $query->whereNotNull('funded_at');});
 
+        $totalDistributed = intval($query->sum('amount_received'));
+        $budgetSummary = intval($query->sum('amount_requested'));
+        
+        $totalRemaining = ($budgetSummary - $totalDistributed);
+        
         $paginator = $query->paginate($this->perPage, ['*'], 'p')->setPath('/');
 
         // dd($paginator->getCollection());
 
-        $totalDistributed = $paginator->sum('amount_received');
-        $budgetSummary = $paginator->sum('amount_requested');
-        $totalRemaining = ($budgetSummary - $totalDistributed);
+
 
         return [
             'filters' =>['funded' => $this->fundedProposalsFilter],
