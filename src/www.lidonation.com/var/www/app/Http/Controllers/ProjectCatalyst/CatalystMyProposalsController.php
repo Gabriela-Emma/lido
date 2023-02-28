@@ -11,6 +11,7 @@ use Inertia\Response;
 class CatalystMyProposalsController extends Controller
 {
     protected int $perPage = 24;
+    protected int $currentPage;
 
      protected int $currentPage;
 
