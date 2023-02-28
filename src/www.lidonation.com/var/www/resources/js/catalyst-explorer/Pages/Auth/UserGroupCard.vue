@@ -217,12 +217,34 @@
 
             <div class="group-proposals-wrapper p-4 bg-slate-50 mt-8">
                 <div>
-                    <h3>{{ group.name }} Proposals <span> - more coming soon</span></h3>
+                    <div class="flex flex-row justify-between">
+                        <div class="">
+                            <h3>{{ group.name }} Proposals <span> - more coming soon</span></h3>
+                        </div>
+                        <div class="flex flex-row justify-between w-1/2">
+                            <div class="flex flex-row items-center w-1/3">
+                                <button v-if="selectedRef.length>0"
+                                        @click.prevent="addProposal()"
+                                        class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-teal-600 border border-transparent rounded-sm shadow-sm hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
+                                    <span class="flex items-center justify-between ">
+                                        <PlusIcon class="w-5 h-5 mr-2 -ml-1" aria-hidden="true"/>
+                                        Add Proposal(s)
+                                    </span>
+                                </button>
+                            </div>
+                            <div class="inline-flex w-2/3 shadow-slate-300">
+                                    <ProposalPicker v-model="selectedRef" :key="reset" />
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="typo__label">Tagging</label>
+                    </div>
 
                     <div>
                         <div class="overflow-hidden bg-white shadow sm:rounded-md">
                             <ul role="list" class="divide-y divide-gray-200">
-                                <template v-for="proposal in proposals">
+                                <template v-for="proposal in initProposals">
                                     <li :key="proposal.id" v-if="proposal">
                                         <a href="#" class="block hover:bg-gray-50">
                                             <div class="flex items-center px-4 py-4 sm:px-6">
@@ -234,6 +256,8 @@
                                                             </p>
                                                             <!--                                                        <p class="ml-1 flex-shrink-0 font-normal text-gray-500">in {{ position.department }}</p>-->
                                                         </div>
+                                                        <TrashIcon @click.prevent="removeProposal(proposal.id)" 
+                                                             class="w-5 h-5 text-gray-500  hover:text-gray-700" aria-hidden="true"/>
                                                         <div class="mt-2 flex">
                                                             <div class="flex items-center text-sm text-gray-500">
                                                                 <CalendarIcon
@@ -282,10 +306,11 @@ import {EnvelopeIcon, PhoneIcon} from '@heroicons/vue/20/solid';
 import {useForm, usePage} from "@inertiajs/vue3";
 import {Ref, ref} from "vue";
 import axios from "axios";
-import {CalendarIcon, ChevronRightIcon} from '@heroicons/vue/20/solid'
+import {CalendarIcon, ChevronRightIcon, TrashIcon} from '@heroicons/vue/20/solid'
 import Proposal from "../../models/proposal";
+import ProposalPicker from "../../modules/proposals/ProposalPicker.vue"
 
-let proposals: Ref<Proposal[]> = ref([]);
+let initProposals: Ref<Proposal[]> = ref([]);
 const props = withDefaults(
     defineProps<{
         group: Group;
@@ -311,7 +336,7 @@ const people = [
 
 axios.get(`${usePage().props.base_url}/catalyst-explorer/my/groups/${props.group?.id}/proposals`)
     .then((response) => {
-        proposals.value = [...response?.data?.data];
+        initProposals.value = [...response?.data?.data];
     })
     .catch((error) => {
         console.error(error);
@@ -333,6 +358,40 @@ let submit = () => {
             preserveState: false,
             onSuccess: () => editing.value = false
         });
+}
+
+// removing proposal from the group
+let showRemove = ref(false);
+
+let removeProposal = (id:number) =>
+ {   const proposalId= id; 
+
+    axios.delete(`${usePage().props.base_url}/catalyst-explorer/my/groups/${props.group.id}/proposals/${proposalId}`,{method:'DELETE'}) // return the actual list
+    .then((res) => {
+        initProposals.value = [...res?.data?.data];
+    })
+    .catch(error => {
+      console.error(error);
+    });
+
+}
+
+// adding new proposals to the group
+let selectedRef :Ref<number[]> = ref([]);
+let reset = ref(0)
+let addProposal = () => {
+
+   const proposalsId = [...selectedRef.value]; 
+
+  axios.post(`${usePage().props.base_url}/catalyst-explorer/my/groups/${props.group.id}/add`, { proposals_id: proposalsId })
+  .then((res) => {
+        initProposals.value = [...res?.data?.data];
+        selectedRef.value = [];
+        reset.value += 1;
+    })
+    .catch(error => {
+      console.error(error);
+    });
 }
 
 </script>
