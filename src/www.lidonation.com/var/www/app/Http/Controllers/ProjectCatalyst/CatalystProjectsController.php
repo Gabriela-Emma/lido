@@ -61,6 +61,7 @@ class CatalystProjectsController extends Controller
         if (isset($res['total'])) {
             return $res['total'];
         }
+
         return null;
     }
 
@@ -73,6 +74,7 @@ class CatalystProjectsController extends Controller
         if (isset($res['total'])) {
             return $res['total'];
         }
+
         return null;
     }
 
@@ -85,6 +87,7 @@ class CatalystProjectsController extends Controller
         if (isset($res['total'])) {
             return $res['total'];
         }
+
         return null;
     }
 
@@ -97,6 +100,7 @@ class CatalystProjectsController extends Controller
         if (isset($res['hits'])) {
             return collect($res['hits'])->sum('amount_requested');
         }
+
         return null;
     }
 
@@ -110,6 +114,7 @@ class CatalystProjectsController extends Controller
         if (isset($res['hits'])) {
             return collect($res['hits'])->sum('amount_requested');
         }
+
         return null;
     }
 
@@ -123,6 +128,7 @@ class CatalystProjectsController extends Controller
         if (isset($res['hits'])) {
             return collect($res['hits'])->sum('amount_received');
         }
+
         return null;
     }
 
@@ -136,6 +142,7 @@ class CatalystProjectsController extends Controller
         if (isset($res['hits'])) {
             return collect($res['hits'])->sum('amount_requested');
         }
+
         return null;
     }
 
@@ -217,8 +224,6 @@ class CatalystProjectsController extends Controller
         return Inertia::render('Proposals', $props);
     }
 
-
-
     protected function setFilters(Request $request)
     {
         $sort = collect(explode(':', $request->input('st', '')));
@@ -255,11 +260,11 @@ class CatalystProjectsController extends Controller
             default => null
         };
         $this->fundedProposalsFilter = $request->input('fp', false);
-        $this->fundsFilter = $request->collect('fs')->map(fn($n) => intval($n));
-        $this->challengesFilter = $request->collect('cs')->map(fn($n) => intval($n));
-        $this->tagsFilter = $request->collect('ts')->map(fn($n) => intval($n));
-        $this->peopleFilter = $request->collect('pp')->map(fn($n) => intval($n));
-        $this->groupsFilter = $request->collect('g')->map(fn($n) => intval($n));
+        $this->fundsFilter = $request->collect('fs')->map(fn ($n) => intval($n));
+        $this->challengesFilter = $request->collect('cs')->map(fn ($n) => intval($n));
+        $this->tagsFilter = $request->collect('ts')->map(fn ($n) => intval($n));
+        $this->peopleFilter = $request->collect('pp')->map(fn ($n) => intval($n));
+        $this->groupsFilter = $request->collect('g')->map(fn ($n) => intval($n));
         $this->currentPage = $request->input('p', 1);
     }
 
@@ -304,7 +309,7 @@ class CatalystProjectsController extends Controller
                     'amount_requested',
                     'amount_received',
                 ];
-                if ((bool)$this->sortBy && (bool)$this->sortOrder) {
+                if ((bool) $this->sortBy && (bool) $this->sortOrder) {
                     $options['sort'] = ["$this->sortBy:$this->sortOrder"];
                 } else {
                     $options['sort'] = ['amount_received:desc'];
@@ -338,47 +343,47 @@ class CatalystProjectsController extends Controller
     {
         $_options = [];
 
-        if ((bool)$this->fundingStatus && $this->fundingStatus !== 'paid') {
+        if ((bool) $this->fundingStatus && $this->fundingStatus !== 'paid') {
             $_options[] = "funding_status = {$this->fundingStatus}";
         }
 
-        if ((bool)$this->projectStatus) {
+        if ((bool) $this->projectStatus) {
             $_options[] = "status = {$this->projectStatus}";
         }
 
-        if ((bool)$this->proposalType) {
+        if ((bool) $this->proposalType) {
             $_options[] = "type = {$this->proposalType}";
         }
 
-        if ((bool)$this->fundedProposalsFilter) {
+        if ((bool) $this->fundedProposalsFilter) {
             $_options[] = 'funded = 1';
         }
 
-        if ((bool)$this->proposalCohort) {
+        if ((bool) $this->proposalCohort) {
             $_options[] = "{$this->proposalCohort} = 1";
         }
 
         // filter by fund
         if ($this->fundsFilter->isNotEmpty()) {
-            $_options[] = '(' . $this->fundsFilter->map(fn($f) => "fund = {$f}")->implode(' OR ') . ')';
+            $_options[] = '('.$this->fundsFilter->map(fn ($f) => "fund = {$f}")->implode(' OR ').')';
         }
 
         // filter by challenge
         if ($this->challengesFilter->isNotEmpty()) {
-            $_options[] = '(' . $this->challengesFilter->map(fn($c) => "challenge = {$c}")->implode(' OR ') . ')';
+            $_options[] = '('.$this->challengesFilter->map(fn ($c) => "challenge = {$c}")->implode(' OR ').')';
         }
 
         // filter by tags
         if ($this->tagsFilter->isNotEmpty()) {
-            $_options[] = 'tags.id IN ' . $this->tagsFilter->toJson();
+            $_options[] = 'tags.id IN '.$this->tagsFilter->toJson();
         }
 
         if ($this->peopleFilter->isNotEmpty()) {
-            $_options[] = 'users.id IN ' . $this->peopleFilter->toJson();
+            $_options[] = 'users.id IN '.$this->peopleFilter->toJson();
         }
 
         if ($this->groupsFilter->isNotEmpty()) {
-            $_options[] = 'groups.id IN ' . $this->groupsFilter->toJson();
+            $_options[] = 'groups.id IN '.$this->groupsFilter->toJson();
         }
 
         // filter by budget range

@@ -50,7 +50,7 @@ class CatalystGroupsController extends Controller
 
     public function create(Request $request)
     {
-        $validated = new Fluent( $request->validate([
+        $validated = new Fluent($request->validate([
             'email' => 'sometimes|email',
             'website' => 'sometimes',
             'twitter' => 'nullable|bail|min:2',
@@ -59,7 +59,7 @@ class CatalystGroupsController extends Controller
             'telegram' => 'nullable|bail|min:2',
             'bio' => 'min:20',
             'name' => 'required|min:10',
-            'owner.id' => 'required:exists:catalyst_groups'
+            'owner.id' => 'required:exists:catalyst_groups',
         ]));
 
         $catalystGroup = new CatalystGroup;

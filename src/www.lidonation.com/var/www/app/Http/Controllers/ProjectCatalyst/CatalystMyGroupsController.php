@@ -7,8 +7,6 @@ use App\Http\Resources\ProposalResource;
 use App\Models\CatalystGroup;
 use App\Models\CatalystUser;
 use App\Models\Proposal;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Inertia\Inertia;
@@ -41,7 +39,7 @@ class CatalystMyGroupsController extends Controller
      *
      * @return AnonymousResourceCollection
      */
-    public function proposals(Request $request=null, CatalystGroup $catalystGroup)
+    public function proposals(Request $request = null, CatalystGroup $catalystGroup)
     {
         $per_page = request('per_page', 12);
 
@@ -55,22 +53,21 @@ class CatalystMyGroupsController extends Controller
     }
 
     public function removeProposal(CatalystGroup $catalystGroup, $proposalID)
-    {  
+    {
         $catalystGroup->proposals()->detach($proposalID);
 
-        return $this->proposals(null,$catalystGroup);
+        return $this->proposals(null, $catalystGroup);
     }
 
     public function addProposal(CatalystGroup $catalystGroup, Request $request)
-    { 
-        $proposals_id=$request->input('proposals_id');
-        foreach($proposals_id as $id)
-        {
+    {
+        $proposals_id = $request->input('proposals_id');
+        foreach ($proposals_id as $id) {
             $catalystGroup->proposals()->attach($id);
         }
-        return $this->proposals(null,$catalystGroup);
-    }
 
+        return $this->proposals(null, $catalystGroup);
+    }
 
     protected function data()
     {
@@ -87,7 +84,6 @@ class CatalystMyGroupsController extends Controller
             ->whereRelation('claimed_by_user', 'id', $user->id);
 
         $groupNames = $query->orderBy('created_at', 'desc')->pluck('name')->toArray();
-
 
         return [
             'groups' => $paginator->onEachSide(1)->toArray(),

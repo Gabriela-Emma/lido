@@ -75,6 +75,18 @@ class Taxonomy extends Model implements HasMedia, HasLink
         }
     }
 
+    public function getThumbnailUrlAttribute()
+    {
+        if (isset($this->attributes['thumbnailUrl'])) {
+            return $this->attributes['thumbnailUrl'];
+        }
+        if (! $this->hero?->hasGeneratedConversion('thumbnail')) {
+            return null;
+        }
+
+        return $this->hero?->getfullUrl('thumbnail');
+    }
+
     public function scopeFilter($query, array $filters)
     {
         $query->when(

@@ -78,7 +78,7 @@
                                 <div class="bg-white rounded-sm">
                                     <a href="{{$cat->url}}" class="block">
                                         <img class="aspect-w-1aspect-h-2" alt="{{$cat->title}}'s hero"
-                                             src="{{ $cat->hero_url }}"/>
+                                             src="{{ $cat->thumbnail_url }}"/>
                                     </a>
                                     <div class="flex flex-row items-center justify-between p-4 border-t border-slate-400">
                                         <a href="{{$cat->url}}" class="font-semibold text-slate-700">
@@ -143,7 +143,7 @@
                                     <div class="bg-white rounded-sm w-64 md:w-72 lg:w-80">
                                         <a href="{{$post->url}}" class="block">
                                             <img class="aspect-w-1aspect-h-2 rounded-sm" alt="{{$post->title}}'s hero"
-                                                 src="{{ $post->hero_url }}"/>
+                                                 src="{{ $post->thumbnail_url }}"/>
                                         </a>
 
                                         <div class="py-4 border-t border-slate-400">
