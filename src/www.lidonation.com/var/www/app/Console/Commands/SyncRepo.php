@@ -41,10 +41,7 @@ class SyncRepo extends Command
         }
 
         foreach ($repos as $repo) {
-
             NewCommitsJob::dispatch($repo);
-
         }
-
     }
 }

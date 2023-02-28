@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Api\CatalystExplorer;
 
 use App\Http\Controllers\Controller;
+use App\Models\User as modelUser;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Fluent;
-use App\Models\User as modelUser;
 
 class UserController extends Controller
 {

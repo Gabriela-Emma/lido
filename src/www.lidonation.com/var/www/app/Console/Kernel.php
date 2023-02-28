@@ -5,7 +5,6 @@ namespace App\Console;
 use App\Jobs\CalculateDelegationEpochs;
 use App\Jobs\CardanoStatsJob;
 use App\Jobs\LidoStatsJob;
-use App\Jobs\NewCommits;
 use App\Jobs\ProcessPendingWithdrawalsJob;
 use App\Jobs\RefreshLidoTwitterToken;
 use Illuminate\Console\Scheduling\Schedule;
@@ -30,7 +29,6 @@ class Kernel extends ConsoleKernel
         $schedule->command('backup:run')->daily()->at('01:30');
         $schedule->command('model:prune')->weekly();
         $schedule->command('sync:repo')->daily();
-
 
         $schedule->job(new ProcessPendingWithdrawalsJob)->everyFiveMinutes();
         $schedule->job(new CalculateDelegationEpochs)->daily();

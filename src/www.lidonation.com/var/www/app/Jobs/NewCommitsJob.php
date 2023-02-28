@@ -2,29 +2,28 @@
 
 namespace App\Jobs;
 
-use App\Models\Repo;
-use App\Models\Commit;
 use App\Actions\GitCmdRunner;
-use Illuminate\Bus\Queueable;
+use App\Models\Commit;
+use App\Models\Repo;
 use App\Services\GitRepoService;
-use Illuminate\Support\Facades\File;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\File;
 
 class NewCommitsJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-        /**
+    /**
      * Create a new job instance.
      *
      * @return void
      */
     public function __construct(protected $repo)
     {
-        
     }
 
     /**
@@ -37,11 +36,9 @@ class NewCommitsJob implements ShouldQueue
         $repoPath = storage_path('app/git-repos/'.$this->repo->name);
         $directories = File::directories(storage_path('app/git-repos/'));
 
-
-        if (!in_array($repoPath, $directories))
-        {
+        if (! in_array($repoPath, $directories)) {
             $repoPath = GitRepoService::clone($this->repo->url);
-        } 
+        }
 
         // Get the repo path and instantiate a new CmdRunner instance
         $runner = new GitCmdRunner();
@@ -87,4 +84,3 @@ class NewCommitsJob implements ShouldQueue
         }
     }
 }
-
