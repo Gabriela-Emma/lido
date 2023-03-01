@@ -240,6 +240,9 @@ Route::group(
                 Route::get('/groups/{catalystGroup:id}/manage', [CatalystMyGroupsController::class, 'manage']);
                 Route::delete('/groups/{catalystGroup:id}/proposals/{proposal:id}', [CatalystMyGroupsController::class, 'removeProposal']);
                 Route::post('/groups/{catalystGroup:id}/add', [CatalystMyGroupsController::class, 'addProposal']);
+                Route::get('/groups/{catalystGroup:id}/members', [CatalystMyGroupsController::class, 'getMembers']);
+                Route::delete('/groups/{catalystGroup:id}/remove/profiles/{member:id}', [CatalystMyGroupsController::class, 'removeMembers']);
+                Route::post('/groups/{catalystGroup:id}/add/members',[CatalystMyGroupsController::class, 'addMembers']);
                 Route::post('/groups', [CatalystGroupsController::class, 'create']);
                 Route::get('/groups', [CatalystMyGroupsController::class, 'index'])
                     ->name('myGroups');

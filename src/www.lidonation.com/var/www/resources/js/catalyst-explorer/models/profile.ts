@@ -8,4 +8,8 @@ export default interface Profile {
     linkedin?:string;
     discord?:string;
     telegram?:string;
+    profile_photo:string
+    role?:string; 
+    admin?:boolean;
+    title?:string;
 }

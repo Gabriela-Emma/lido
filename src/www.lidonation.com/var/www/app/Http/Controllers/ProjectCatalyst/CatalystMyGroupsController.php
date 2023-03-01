@@ -69,6 +69,42 @@ class CatalystMyGroupsController extends Controller
         return $this->proposals(null, $catalystGroup);
     }
 
+    public function getMembers(Request $request=null, CatalystGroup $catalystGroup)
+    {
+        $members = CatalystUser::whereRelation('groups','id',$catalystGroup?->id)
+        ->paginate(8, ['*'], 'p')->setPath('/');
+
+        return $members->through(fn($user) =>[
+            'id' => $user->id,
+            'name' => $user->name,
+            'email' => $user->email,
+            'telephone' => $user->telephone,
+            'profile_photo' => $user->profile_photo_url,
+            'admin' => $catalystGroup->owner->id ===  $user->id ? true : false,
+            'discord' => $user->discord,
+            
+
+        ]);
+    }
+
+    public function removeMembers(CatalystGroup $catalystGroup,$catalystUserID)
+    { 
+        $catalystGroup->members()->detach($catalystUserID);
+
+        return $this->getMembers(null,$catalystGroup);
+    }
+
+    public function addMembers(CatalystGroup $catalystGroup,Request $request)
+    {   
+        $newMembersIDs = $request->input('profileIDs');
+        foreach ($newMembersIDs as $id)
+        {
+            $catalystGroup->members()->attach($id);
+        }
+
+        return $this->getMembers(null,$catalystGroup);
+    }
+
     protected function data()
     {
         $user = auth()->user();
