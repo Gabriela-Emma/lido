@@ -211,10 +211,9 @@
                                             <div class="flex-1 truncate">
                                                 <div class="flex items-center space-x-3">
                                                     <h3 class="truncate text-sm font-medium text-gray-900">{{ member.name }}</h3>
-                                                    <span v-if="member.admin"
-                                                        class="inline-block flex-shrink-0 rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-800">{{
-                                                            "admin"
-                                                        }}</span>
+                                                    <span class="inline-block flex-shrink-0 rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-800">
+                                                        {{member.role}}
+                                                    </span>
                                                 </div>
                                                 <p class="mt-1 truncate text-sm text-gray-500">{{member.title}}</p>
                                                 <TrashIcon @click.prevent="removeMember(member.id)" 

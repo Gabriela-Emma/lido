@@ -78,9 +78,8 @@ class CatalystMyGroupsController extends Controller
             'id' => $user->id,
             'name' => $user->name,
             'email' => $user->email,
-            'telephone' => $user->telephone,
             'profile_photo' => $user->profile_photo_url,
-            'admin' => $catalystGroup->owner->id ===  $user->id ? true : false,
+            'role' => $catalystGroup->owner->id ===  $user->id ? 'admin' : $user->role,
             'discord' => $user->discord,
             
 
