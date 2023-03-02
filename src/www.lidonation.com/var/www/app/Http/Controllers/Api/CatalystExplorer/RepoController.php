@@ -36,4 +36,9 @@ class RepoController extends Controller
 
         return 'Repository was saved';
     }
+
+    public function updateRepo(Request $request)
+    {
+        dd($request);
+    }
 }

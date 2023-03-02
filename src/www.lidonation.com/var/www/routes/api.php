@@ -236,6 +236,8 @@ Route::prefix('catalyst-explorer')->as('catalystExplorerApi.')
 
         Route::get('/branches', [CatalystExplorer\RepoController::class, 'getBranches']);
         Route::post('/repo', [CatalystExplorer\RepoController::class, 'saveRepo']);
+        Route::post('/repoUpdates', [CatalystExplorer\RepoController::class, 'updateRepo']);
+
 
         Route::post('/logout', [CatalystExplorer\UserController::class, 'logout']);
 
