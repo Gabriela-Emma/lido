@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\Partners\PartnersController;
 use App\Http\Controllers\Api\Phuffycoin\PhuffycoinController;
 use App\Http\Controllers\Delegators\DelegatorController;
 use App\Http\Controllers\GenerateMnemonicPhraseController;
+use App\Http\Controllers\ProjectCatalyst\CatalystProjectsController;
 use App\Http\Controllers\PromoController;
 use App\Http\Controllers\ProposalController;
 use App\Http\Controllers\QuestionResponseController;
@@ -221,6 +222,18 @@ Route::prefix('catalyst-explorer')->as('catalystExplorerApi.')
         Route::post('/login', [CatalystExplorer\UserController::class, 'login']);
 
         Route::post('/register', [CatalystExplorer\UserController::class, 'create']);
+
+
+        // counts
+        Route::get('/metrics/proposals/count/approved', [CatalystProjectsController::class, 'metricCountFunded']);
+        Route::get('/metrics/metrics/count/paid', [CatalystProjectsController::class, 'metricCountTotalPaid']);
+        Route::get('/metrics/metrics/count/completed', [CatalystProjectsController::class, 'metricCountCompleted']);
+
+        // sums
+        Route::get('/metrics/metrics/sum/budget', [CatalystProjectsController::class, 'metricSumBudget']);
+        Route::get('/metrics/metrics/sum/approved', [CatalystProjectsController::class, 'metricSumApproved']);
+        Route::get('/metrics/metrics/sum/distributed', [CatalystProjectsController::class, 'metricSumDistributed']);
+        Route::get('/metrics/metrics/sum/completed', [CatalystProjectsController::class, 'metricSumCompleted']);
 //        Route::post('/profiles', [CatalystUserProfilesController::class, 'update'])->name('myProfileUpdate');
     });
 
