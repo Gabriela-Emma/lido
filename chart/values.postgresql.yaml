@@ -270,7 +270,7 @@ primary:
   ## @param primary.configuration PostgreSQL Primary main configuration to be injected as ConfigMap
   ## ref: https://www.postgresql.org/docs/current/static/runtime-config.html
   ##
-  configuration:
+  configuration: |-
     maintenance_work_mem: '1024MB'
   ## @param primary.pgHbaConfiguration PostgreSQL Primary client authentication configuration
   ## ref: https://www.postgresql.org/docs/current/static/auth-pg-hba-conf.html
