@@ -289,14 +289,14 @@ primary:
   ##
   extendedConfiguration:
     min_wal_size: "256M"
-    max_wal_size: "2048M"
-    maintenance_work_mem: "1024M"
-    max_parallel_maintenance_workers: 8
-    checkpoint_completion_target: "0.9"
-    effective_io_concurrency: 100
-    work_mem: "1M"
-    effective_cache_size: "12288M"
-    shared_buffers: "2560M"
+#    max_wal_size: "2048M"
+#    maintenance_work_mem: "1024M"
+#    max_parallel_maintenance_workers: 8
+#    checkpoint_completion_target: "0.9"
+#    effective_io_concurrency: 100
+#    work_mem: "1M"
+#    effective_cache_size: "12288M"
+#    shared_buffers: "2560M"
 
   ## @param primary.existingExtendedConfigmap Name of an existing ConfigMap with PostgreSQL Primary extended configuration
   ## NOTE: `primary.extendedConfiguration` will be ignored
