@@ -288,7 +288,7 @@ primary:
   ## ref: https://github.com/bitnami/bitnami-docker-postgresql#allow-settings-to-be-loaded-from-files-other-than-the-default-postgresqlconf
   ##
   extendedConfiguration:
-    min_wal_size: '256MB'
+    "min_wal_size": "'256MB'"
 #    max_wal_size: "2048M"
 #    maintenance_work_mem: "1024M"
 #    max_parallel_maintenance_workers: 8
