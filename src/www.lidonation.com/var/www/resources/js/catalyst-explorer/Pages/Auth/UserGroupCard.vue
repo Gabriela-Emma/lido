@@ -376,7 +376,8 @@ const props = withDefaults(
 //     }
 // ]
 
-axios.get(`${usePage().props.base_url}/catalyst-explorer/my/groups/${props.group?.id}/proposals`)
+if(props.group.id !=null)
+{axios.get(`${usePage().props.base_url}/catalyst-explorer/my/groups/${props.group?.id}/proposals`)
     .then((response) => {
         initProposals.value = [...response?.data?.data];
     })
@@ -390,7 +391,7 @@ axios.get(`${usePage().props.base_url}/catalyst-explorer/my/groups/${props.group
 })
 .catch((error) => {
     console.error(error);
-});
+});}
 
 
 let groupForm = useForm({...props.group});
@@ -416,7 +417,7 @@ let showRemove = ref(false);
 let removeProposal = (id:number) =>
  {   const proposalId= id; 
 
-    axios.delete(`${usePage().props.base_url}/catalyst-explorer/my/groups/${props.group.id}/proposals/${proposalId}`,{method:'DELETE'}) // return the actual list
+    axios.delete(`${usePage().props.base_url}/catalyst-explorer/my/groups/${props.group.id}/${proposalId}`,{method:'DELETE'}) // return the actual list
     .then((res) => {
         initProposals.value = [...res?.data?.data];
     })
@@ -433,7 +434,7 @@ let addProposal = () => {
 
    const proposalsId = [...selectedRef.value]; 
 
-  axios.post(`${usePage().props.base_url}/catalyst-explorer/my/groups/${props.group.id}/add`, { proposals_id: proposalsId })
+  axios.put(`${usePage().props.base_url}/catalyst-explorer/my/groups/${props.group.id}/proposals`, { proposals_id: proposalsId })
   .then((res) => {
         initProposals.value = [...res?.data?.data];
         selectedRef.value = [];
@@ -449,7 +450,7 @@ let removeMember = (id:number) =>
  {  
     const profile_id =[id];
 
-    axios.delete(`${usePage().props.base_url}/catalyst-explorer/my/groups/${props.group.id}/remove/profiles/${profile_id}`,{method:'DELETE'})
+    axios.delete(`${usePage().props.base_url}/catalyst-explorer/my/groups/${props.group.id}/${profile_id}`,{method:'DELETE'})
     .then((res) =>{
         members.value = [...res?.data?.data];
     })
@@ -464,7 +465,7 @@ let saveButton = ref(false)
 let resetPersonPicker = ref(0)
 let addMember = () =>
 {   
-    axios.post(`${usePage().props.base_url}/catalyst-explorer/my/groups/${props.group.id}/add/members`,{profileIDs:[...selectedProfile.value]})
+    axios.put(`${usePage().props.base_url}/catalyst-explorer/my/groups/${props.group.id}/members`,{profileIDs:[...selectedProfile.value]})
     .then((res) =>{
         members.value = [...res?.data?.data];
         reset.value += 1;
