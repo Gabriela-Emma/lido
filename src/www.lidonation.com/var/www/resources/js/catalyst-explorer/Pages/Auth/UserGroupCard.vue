@@ -177,8 +177,8 @@
                             The Team
                         </div>
                         <div class="flex flex-col  justify-between">
-                            <div v-if="group.id != null" class="mb-4 w-full justify-end">
-                                <div class="flex flex-row items-center justify-end">
+                            <div class="mb-4 w-full justify-end">
+                                <div v-if="group.id != null" class="flex flex-row items-center justify-end">
                                     <div class="w-80" v-if="saveButton">
                                         <PersonPicker  :class="{'border rounded-lg bg-white shadow':true}"  v-model="selectedProfile" :key="resetPersonPicker"/>
                                     </div>
@@ -260,7 +260,7 @@
                         <div class="">
                             <h3>{{ group.name }} Proposals <span> - more coming soon</span></h3>
                         </div>
-                        <div v-if="group.id!=null" class="flex flex-row justify-between w-1/2">
+                        <div v-if="group.id != null" class="flex flex-row justify-between w-1/2">
                             <div class="flex flex-row items-center w-1/3">
                                 <button v-if="selectedRef.length>0"
                                         @click.prevent="addProposal()"

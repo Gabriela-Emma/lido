@@ -1,5 +1,5 @@
 import {Controller, HttpException, HttpStatus, Post, Req} from '@nestjs/common';
-import {Blockfrost, fromUnit, Lucid, hexToUtf8} from "lucid-cardano";
+import {Blockfrost, fromUnit, Lucid, toText} from "lucid-cardano";
 import {Request} from "express";
 
 @Controller('wallet')
@@ -37,7 +37,7 @@ export class WalletController {
                 };
             } else {
                 props = fromUnit(key);
-                props['name'] = hexToUtf8(props['name']);
+                props['name'] = toText(props['name']);
             }
             balances[key] = {
                 asset: key,

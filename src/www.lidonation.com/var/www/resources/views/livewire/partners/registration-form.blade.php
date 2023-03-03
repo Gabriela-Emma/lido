@@ -1,8 +1,8 @@
 <form action="#" method="POST" class="space-y-6 min-w-[28rem] mx-auto ml-3" @submit.prevent="submitPartnerRegistration">
     <div class="ml-6">
-        <label for="name" class="block text-sm font-medium text-slate-600">Name (optional)</label>
+        <label for="name" class="block text-sm font-medium text-slate-600">Name (Required)</label>
         <div class="mt-1">
-            <input id="name" name="name" type="text" autocomplete="name"
+            <input id="name" name="name" type="text" required autocomplete="name"
                    class="block w-full appearance-none rounded-sm border border-slate-400 px-3 py-2 placeholder-slate-400 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-teal-500 sm:text-sm">
         </div>
     </div>
