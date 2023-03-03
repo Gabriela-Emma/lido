@@ -1,5 +1,5 @@
-import {Controller, Get, HttpException, HttpStatus, Post, Req} from '@nestjs/common';
-import {Blockfrost, Lucid, MintingPolicy, PolicyId, toUnit, Unit, utf8ToHex} from "lucid-cardano";
+import {Controller, HttpException, HttpStatus, Post, Req} from '@nestjs/common';
+import {Blockfrost, Lucid, MintingPolicy, PolicyId, Unit, toText} from "lucid-cardano";
 import {Request} from "express";
 
 @Controller('lido-minute')
@@ -22,7 +22,7 @@ export class LidoMinuteController {
         lucid.selectWalletFromSeed(request?.body?.seed);
         const mintingPolicy = await this.getPolicy(lucid);
         const policyId: PolicyId = lucid.utils.mintingPolicyToId(mintingPolicy);
-        const unit: Unit = policyId + utf8ToHex(nft.key);
+        const unit: Unit = policyId + toText(nft.key);
 
         // console.log({policyId, unit, metadata: nft.metadata, files: nft.metadata.files});
 
