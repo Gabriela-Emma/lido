@@ -92,7 +92,7 @@ spec:
               mountPath: {{ .Values.services.cardano.persistence.mountPath }}
               readOnly: false
         - name: ipc
-          image: alpine/socat:1.7.4.4-r0
+          image: alpine/socat:1.7.4.4
           env:
             - name: PORT
               value: "30111"
