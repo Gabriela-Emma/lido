@@ -5,6 +5,7 @@ import persist from '@alpinejs/persist';
 import {walletLogin} from "./lib/utils/walletLogin";
 import {cardanoWallet} from "./lib/utils/cardanoWallet";
 import WalletService from "./lib/services/WalletService";
+import focus from '@alpinejs/focus';
 
 export {};
 declare global {
@@ -17,6 +18,7 @@ declare global {
 }
 
 Alpine.plugin(persist);
+Alpine.plugin(focus);
 
 Alpine.data('cardanoWallet', cardanoWallet.bind(Alpine));
 
@@ -48,7 +50,7 @@ Alpine.data('lidoPartners', function () {
                     location.reload();
                 }
             } catch (e) {
-                if (e?.response?.status === 401) {
+                if (e?.response?.status === 401 || e?.response?.status === 404) {
                     // console.log(e);
                     this.$dispatch('new-notice', { name: 'Error', message: 'Failed to log you in. Have registered for the partner dashboard?', type: 'error'});
                 } else {

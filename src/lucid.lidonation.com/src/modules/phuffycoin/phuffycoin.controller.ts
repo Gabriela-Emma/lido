@@ -1,6 +1,6 @@
 import {Controller, Post, Req} from '@nestjs/common';
 import {Request} from "express";
-import {Blockfrost, Lucid, MintingPolicy, PolicyId, Unit, utf8ToHex} from "lucid-cardano";
+import {Blockfrost, Lucid, MintingPolicy, PolicyId, Unit, toText} from "lucid-cardano";
 
 @Controller('phuffycoin')
 export class PhuffycoinController {
@@ -34,7 +34,7 @@ export class PhuffycoinController {
         // get utxos from browser
         const userAddress = request.body?.userAddress;
         const phuffyAmount = request.body?.phuffyAmount;
-        const unit: Unit = policyId + utf8ToHex('PHUFFY');
+        const unit: Unit = policyId + toText('PHUFFY');
         const tx = await lucid
             .newTx()
             .payToAddress(userAddress, {lovelace: BigInt(2000000), [unit]: BigInt(phuffyAmount)})
