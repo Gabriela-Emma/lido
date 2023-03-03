@@ -287,11 +287,10 @@ primary:
   ## @param primary.extendedConfiguration Extended PostgreSQL Primary configuration (appended to main or default configuration)
   ## ref: https://github.com/bitnami/bitnami-docker-postgresql#allow-settings-to-be-loaded-from-files-other-than-the-default-postgresqlconf
   ##
-  extendedConfiguration: {
-      min_wal_size: "'256MB'",
-      max_wal_size: "'2048MB'",
-      maintenance_work_mem: "'1024MB'"
-  }
+  extendedConfiguration: |
+      min_wal_size: '256MB',
+      max_wal_size: '2048MB',
+      maintenance_work_mem: '1024MB'
 #    max_parallel_maintenance_workers: 8
 #    checkpoint_completion_target: "0.9"
 #    effective_io_concurrency: 100
