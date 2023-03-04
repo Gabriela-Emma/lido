@@ -105,7 +105,7 @@ spec:
           image: alpine/socat:1.7.4.4
           env:
             - name: PORT
-              value: "30112"
+              value: "30111"
           command: [
               "sh",
               "-c",
@@ -116,7 +116,7 @@ spec:
               mountPath: /ipc
           ports:
             - name: ipc
-              containerPort: 30112
+              containerPort: 30111
       imagePullSecrets:
         - name: {{ .Values.image.pullSecret }}
 {{- end -}}

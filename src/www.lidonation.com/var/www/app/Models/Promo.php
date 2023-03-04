@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Traits\HasAuthor;
 use App\Models\Traits\HasHero;
 use App\Models\Traits\HasTranslations;
+use App\Scopes\PublishedScope;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -45,5 +46,17 @@ class Promo extends Model implements HasMedia
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection('hero');
+    }
+
+
+    /**
+     * The "booted" method of the model.
+     *
+     * @return void
+     */
+    protected static function booted()
+    {
+        parent::booted();
+        static::addGlobalScope(new PublishedScope);
     }
 }
