@@ -18,6 +18,7 @@
                                 class="block mt-3 rounded-sm z-10 border border-slate-300 p-0.5 font-medium text-slate-900"
                                 v-model="selectedGroup"
                                 :options="groupOptions"
+
                                 :disabled="groupOptions?.length === 0"
                                 :close-on-select="true"
                                 :clear-on-select="false"
@@ -32,7 +33,7 @@
                     <div>
                         <div class="flex flex-col gap-8">
                             <TransitionGroup v-for="(group, index) in groups" :key="index"  tag="ul" name="fade" class="container flex flex-col gap-8" preserve-scroll>
-                                <UserGroupCard v-if="selectedGroup === group.name||('id' in group )=== false" :group="group"/>
+                                <UserGroupCard v-if="selectedGroup === group.name||('id' in group )=== false" :group="group" @groupCreated="selectedGroup = group.name" />
                             </TransitionGroup>
 
                             <div class="text-center rounded-sm border border-slate-400 border-dashed p-8">
