@@ -72,3 +72,5 @@ App\134Models\134Assessment::runCustomIndex();
 App\134Models\134Assessment::runCustomIndex();
 exit
 App\134Models\134Assessment::runCustomIndex();
+config('filesystems');
+exit

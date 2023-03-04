@@ -38,9 +38,9 @@ class ExternalPost extends Post
         return 'external_posts';
     }
 
-    public function getLinkAttribute(): string|UrlGenerator|Application
+    public function getLinkAttribute(): string|UrlGenerator|Application|null
     {
-        return $this->links->pluck('link')->first();
+        return $this->links->pluck('link')?->first()?->link;
     }
 
     public function toFeedItem(): FeedItem
