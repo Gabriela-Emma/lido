@@ -342,7 +342,7 @@
 import Group from '../../models/group';
 import {EnvelopeIcon} from '@heroicons/vue/20/solid';
 import {useForm, usePage} from "@inertiajs/vue3";
-import {Ref, ref} from "vue";
+import {Ref, ref, defineEmits} from "vue";
 import axios from "axios";
 import {CalendarIcon, ChevronRightIcon, PlusIcon,TrashIcon} from '@heroicons/vue/20/solid'
 import Proposal from "../../models/proposal";
@@ -363,18 +363,9 @@ const props = withDefaults(
     }
 );
 
-
-// const people = [
-//     {
-//         name: 'Jane Cooper',
-//         title: 'Regional Paradigm Technician',
-//         role: 'Admin',
-//         email: 'janecooper@example.com',
-//         telephone: '+1-202-555-0170',
-//         imageUrl:
-//             'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=256&h=256&q=60',
-//     }
-// ]
+const emit = defineEmits<{
+    (e: 'groupCreated', group: Group): void
+}>();
 
 if(props.group.id !=null)
 {axios.get(`${usePage().props.base_url}/catalyst-explorer/my/groups/${props.group?.id}/proposals`)
@@ -408,7 +399,7 @@ let submit = () => {
         {
             preserveScroll: false,
             preserveState: false,
-            onSuccess: () => editing.value = false
+            onSuccess: () => emit('groupCreated', props.group)
         });
 }
 // removing proposal from the group
