@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers\Api\CatalystExplorer;
 
-use App\Actions\GitCmdRunner;
+use App\Models\Repo;
 use App\Jobs\SaveRepo;
+use App\Models\Commit;
+use App\Models\Proposal;
 use Illuminate\Http\Request;
+use App\Actions\GitCmdRunner;
 
 class RepoController extends Controller
 {
@@ -37,8 +40,40 @@ class RepoController extends Controller
         return 'Repository was saved';
     }
 
-    public function updateRepo(Request $request)
-    {
-        dd($request);
+    public function updateRepo(Proposal $proposal, Request $request)
+{  
+    $existingRepo = Repo::where('model_id', $proposal->id)->first();
+    $existingCommits = Commit::where('repo_id', $existingRepo->id);
+
+
+    $existingCommits->delete();
+    
+    dd($existingCommits->count());
+
+    // Check for changes
+    $branchChange = ($request->branch != $existingRepo->tracked_branch) && ($request->gitUrl === $existingRepo->url);
+    $repoChange = ($request->branch != $existingRepo->tracked_branch || $request->branch != $existingRepo->tracked_branch) && ($request->gitUrl != $existingRepo->url);
+
+    // Handle changes
+    if($branchChange){
+        $existingRepo->tracked_branch = $request->branch;
+        $existingRepo->save();
     }
+
+    if($repoChange){
+        $existingCommits->chunk(50, function ($commits) use (&$existingCommits) {
+            foreach ($commits as $commit) {
+                $commit->delete();
+            }
+            $existingCommits = $existingCommits->skip($commits->count());
+        });
+        
+        Repo::where('model_id', $proposal->id)->delete();
+
+        $this->saveRepo($request);
+        
+    }
+
+    return "Update successful";
+}
 }

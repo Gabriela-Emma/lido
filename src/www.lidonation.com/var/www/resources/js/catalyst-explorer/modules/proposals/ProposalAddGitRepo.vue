@@ -199,7 +199,7 @@ let initUpdating = () =>{
 
 let saveChanges = () =>
  {
-    axios.patch(`${usePage().props.base_url}/api/catalyst-explorer/repoUpdates`, repoForm)
+    axios.patch(`${usePage().props.base_url}/api/catalyst-explorer/repo/${props.proposal.id}`, repoForm)
         .then((response) => {
             success.value = response.data;
             setTimeout(() => {
