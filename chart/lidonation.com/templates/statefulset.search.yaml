@@ -21,11 +21,11 @@ spec:
             claimName: "{{ .Values.namespace }}-search-pvc"
       containers:
         - name: meilisearch
-          image: getmeili/meilisearch:v1.0.1
+          image: getmeili/meilisearch:v1.0.2
           resources:
             limits:
               memory: 12288Mi
-              cpu: 4
+              cpu: 5
             requests:
               cpu: 600m
               memory: 2048Mi
@@ -35,6 +35,12 @@ spec:
           env:
             - name: MEILI_ENV
               value: "production"
+            - name: MEILI_LOG_LEVEL
+              value: 'WARN'
+            - name: MEILI_MAX_INDEXING_MEMORY
+              value: '8192Mb'
+            - name: MEILI_MAX_INDEXING_THREADS
+              value: '3'
           ports:
             - containerPort: 7700
               name: meilisearch
