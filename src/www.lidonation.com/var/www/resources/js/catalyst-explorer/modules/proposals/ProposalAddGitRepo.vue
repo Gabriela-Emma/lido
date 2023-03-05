@@ -168,7 +168,7 @@ watch(
 
 
 let submitRepo = () => {
-    axios.post(`${usePage().props.base_url}/api/catalyst-explorer/repo`, repoForm)
+    axios.post(`${usePage().props.base_url}/api/catalyst-explorer/proposal/repo`, repoForm)
         .then((response) => {
             success.value = response.data;
             setTimeout(() => {
@@ -199,7 +199,7 @@ let initUpdating = () =>{
 
 let saveChanges = () =>
  {
-    axios.patch(`${usePage().props.base_url}/api/catalyst-explorer/repo/${props.proposal.id}`, repoForm)
+    axios.patch(`${usePage().props.base_url}/api/catalyst-explorer/proposal/repo`, repoForm)
         .then((response) => {
             success.value = response.data;
             setTimeout(() => {

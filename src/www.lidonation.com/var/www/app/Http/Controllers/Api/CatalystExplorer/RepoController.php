@@ -44,14 +44,13 @@ class RepoController extends Controller
 {  
     $existingRepo = Repo::where('model_id', $request->proposal_id)->first();
 
-    commit::withoutGlobalScope(LimitScope::class);
-    $existingCommitsIDs = Commit::where('repo_id', $existingRepo->id)->RemoveLimitScope()->pluck('id');
-
-    // dd($existingCommitsIDs->count());
+    Commit::withoutGlobalScope(LimitScope::class);
+    $existingCommitsIDs = Commit::where('repo_id', $existingRepo->id)->pluck('id');
+    // dd($existingCommitsIDs);
 
     // Check for changes
     $branchChange = ($request->branch != $existingRepo->tracked_branch) && ($request->gitUrl === $existingRepo->url);
-    $repoChange = ($request->branch != $existingRepo->tracked_branch || $request->branch != $existingRepo->tracked_branch) && ($request->gitUrl != $existingRepo->url);
+    $repoChange = ($request->gitUrl != $existingRepo->url);
 
     // Handle changes
     if($branchChange){
@@ -62,7 +61,7 @@ class RepoController extends Controller
     if($repoChange){
         Commit::destroy($existingCommitsIDs);
         
-        Repo::where('model_id', $proposal->id)->delete();
+        $existingRepo->delete();
 
         $this->saveRepo($request);
         

@@ -37,9 +37,9 @@ class Commit extends Model
     {
         parent::booted();
         static::addGlobalScope(new OrderByDateScope);
-        if (! app()->runningInConsole()) {
-            static::addGlobalScope(new LimitScope);
-        }
+        // if (! app()->runningInConsole()) {
+        //     static::addGlobalScope(new LimitScope);
+        // }
     }
 
     public function scopeRemoveLimitScope($query)
