@@ -44,10 +44,9 @@ class RepoController extends Controller
 {  
     $existingRepo = Repo::where('model_id', $proposal->id)->first();
 
-    commit::withoutGlobalScope('LimitScope');
+    commit::withoutGlobalScope(LimitScope::class);
     $existingCommitsIDs = Commit::where('repo_id', $existingRepo->id)->RemoveLimitScope()->pluck('id');
 
-    
     // dd($existingCommitsIDs->count());
 
     // Check for changes
