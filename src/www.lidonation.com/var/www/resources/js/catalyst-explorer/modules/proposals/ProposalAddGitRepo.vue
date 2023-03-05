@@ -1,8 +1,20 @@
 <template>
     <form class="flex h-full flex-col divide-y divide-gray-200 bg-white p-4">
-        <h3>
-            Add a git repo
-        </h3>
+        <div class="flex flex-row h-full justify-between">
+
+                <h3>
+                    Add a git repo
+                </h3>
+
+            <div class="items-center ">
+                <button @click.prevent="initUpdating"
+                        v-if="hasRepo"
+                        as="button"
+                        class="inline-flex custom-input justify-center mb-3 rounded-sm border border-transparent bg-teal-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
+                    Update Repo
+                </button>
+            </div>
+        </div>
         <div class=" flex-1 overflow-y-auto ">
             <div class="flex flex-1 flex-col justify-between">
                 <div class="divide-y divide-gray-200 px-4 sm:px-6 h-64">
@@ -13,7 +25,9 @@
                             </label>
                             <div class="mt-1 flex-grow">
                                 <input v-model="repoForm.gitUrl" type="text" name="gitUrl" id="git"
-                                       class="block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"/>
+                                       class="block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
+                                       :class="{'bg-gray-100':hasRepo}"
+                                       :disabled="hasRepo"/>
                                 <div v-if="errorMessage && repoForm.gitUrl !== '' "
                                      class="text-red-500 mt-2 text-sm">{{ errorMessage }}
                                 </div>
@@ -24,9 +38,10 @@
                                 <div class="flex text-xs w-full lg:text-base justify-start mt-2">
                                     <multiselect
                                         class="block mt-3 rounded-sm z-10  p-0.5"
+                                        :class="{'bg-gray-100':hasRepo}"
                                         v-model="repoForm.branch"
                                         :options="branches"
-                                        :disabled="branches?.length === 0"
+                                        :disabled="branches?.length === 0 || hasRepo "
                                         :close-on-select="true"
                                         :clear-on-select="false"
                                         :placeholder="branches?.length === 0 ? 'Add a git repo above' : 'Select primary development  or base branch'"
@@ -58,12 +73,19 @@
             </div>
         </div>
         <div class="flex gap-4 justify-end px-4 py-4">
+            <button @click.prevent="saveChanges"
+                    v-if="startUpdate === true "
+                    as="button"
+                    class="inline-flex custom-input justify-center rounded-sm border border-transparent bg-teal-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
+                Save Changes
+            </button>
             <button type="button" @click="emit('cancelled')"
                     class="rounded-sm border border-gray-300 bg-white py-2 inline-flex  gap-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
                 <ArrowUturnLeftIcon class="w-4 h-4"/>
                 <span>Back</span>
             </button>
             <button @click.prevent="submitRepo"
+                    v-if="!hasRepo && !startUpdate"
                     as="button"
                     class="inline-flex custom-input justify-center rounded-sm border border-transparent bg-teal-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
                 Save
@@ -107,45 +129,46 @@ const emit = defineEmits<{
     (e: 'cancelled'): void
 }>();
 
+// get branches
+async function getBranches(newUrl: string) {
+    if (!newUrl.startsWith('https://')) {
+        errorMessage.value = 'Invalid Git URL!!';
+        branches.value = [];
+        repoForm.branch = '';
+        return;
+    }
+
+    try {
+        const response = await fetch(`${usePage().props.base_url}/api/catalyst-explorer/branches?gitUrl=${newUrl}`);
+        if (!response.ok) {
+            throw new Error('Invalid Git URL!!');
+        }
+        const data = await response.json();
+        if (!data || data.length === 0) {
+            errorMessage.value = 'No branches found, ensure repo is public!!';
+        } else {
+            branches.value = data;
+            if (!branches.value.includes(repoForm.branch)) {
+                repoForm.branch = '';
+            }
+            errorMessage.value = '';
+        }
+    } catch (error) {
+        console.error(error);
+        branches.value = [];
+        repoForm.branch = '';
+        errorMessage.value = error.message;
+    }
+}
+
 watch(
     () => repoForm.gitUrl,
-    debounce((newUrl: string) => {
-        if (!newUrl.startsWith('https://')) {
-            errorMessage.value = 'Invalid Git URL!!';
-            branches.value = [];
-            repoForm.branch = '';
-            return;
-        }
-
-        fetch(`${usePage().props.base_url}/api/catalyst-explorer/branches?gitUrl=${newUrl}`)
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error('Invalid Git URL!!');
-                }
-                return response.json();
-            })
-            .then((data) => {
-                if (!data || data.length === 0) {
-                    errorMessage.value = 'No branches found, ensure repo is public!!';
-                } else {
-                    branches.value = data;
-                    if (!branches.value.includes(repoForm.branch)) {
-                        repoForm.branch = '';
-                    }
-                    errorMessage.value = '';
-                }
-            })
-            .catch((error) => {
-                console.error(error);
-                branches.value = [];
-                repoForm.branch = '';
-                errorMessage.value = error.message;
-            });
-    }, 500)
+    debounce(getBranches, 500)
 );
 
+
 let submitRepo = () => {
-    axios.post(`${usePage().props.base_url}/api/catalyst-explorer/repo`, repoForm)
+    axios.post(`${usePage().props.base_url}/api/catalyst-explorer/proposal/repo`, repoForm)
         .then((response) => {
             success.value = response.data;
             setTimeout(() => {
@@ -159,6 +182,36 @@ let submitRepo = () => {
         });
 }
 
+
+// updating repo  details
+let startUpdate = ref(false);
+let hasRepo = ref(repo.value != null);
+
+
+// start updating 
+let initUpdating = () =>{
+    hasRepo.value =!hasRepo;
+    startUpdate.value = true;
+
+    watch(() => repoForm.gitUrl, debounce(getBranches, 500),
+    { immediate: true });
+}
+
+let saveChanges = () =>
+ {
+    axios.patch(`${usePage().props.base_url}/api/catalyst-explorer/proposal/repo`, repoForm)
+        .then((response) => {
+            success.value = response.data;
+            setTimeout(() => {
+                success.value = null;
+                errorMessage.value = '';
+            }, 5000);
+            errorMessage.value = '';
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+ }
 
 
 </script>
