@@ -20,9 +20,6 @@ class HomeComposer
 {
     /**
      * Create a new profile composer.
-     *
-     * @param  PostRepository  $posts
-     * @param  EventRepository  $events
      */
     public function __construct(protected PostRepository $posts, protected EventRepository $events)
     {
@@ -30,9 +27,6 @@ class HomeComposer
 
     /**
      * Bind data to the view.
-     *
-     * @param  View  $view
-     * @return void
      */
     public function compose(View $view): void
     {

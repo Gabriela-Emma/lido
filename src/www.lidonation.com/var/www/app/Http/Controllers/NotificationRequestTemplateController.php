@@ -31,7 +31,6 @@ class NotificationRequestTemplateController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreNotificationRequestTemplateRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function store(StoreNotificationRequestTemplateRequest $request)
@@ -42,7 +41,6 @@ class NotificationRequestTemplateController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\NotificationRequestTemplate  $notificationRequestTemplate
      * @return \Illuminate\Http\Response
      */
     public function show(NotificationRequestTemplate $notificationRequestTemplate)
@@ -53,7 +51,6 @@ class NotificationRequestTemplateController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\NotificationRequestTemplate  $notificationRequestTemplate
      * @return \Illuminate\Http\Response
      */
     public function edit(NotificationRequestTemplate $notificationRequestTemplate)
@@ -64,8 +61,6 @@ class NotificationRequestTemplateController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateNotificationRequestTemplateRequest  $request
-     * @param  \App\Models\NotificationRequestTemplate  $notificationRequestTemplate
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateNotificationRequestTemplateRequest $request, NotificationRequestTemplate $notificationRequestTemplate)
@@ -76,7 +71,6 @@ class NotificationRequestTemplateController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\NotificationRequestTemplate  $notificationRequestTemplate
      * @return \Illuminate\Http\Response
      */
     public function destroy(NotificationRequestTemplate $notificationRequestTemplate)

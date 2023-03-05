@@ -58,7 +58,6 @@ class CatalystUserRepository extends Repository
 
     /**
      * @param  null  $scope
-     * @return array|Collection
      */
     public function users($scope = null): array|Collection
     {

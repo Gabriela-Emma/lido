@@ -13,7 +13,6 @@ class CatalystUsersComposer
     /**
      * Create a new profile composer.
      *
-     * @param  CatalystUserRepository  $catalystUserRepository
      * @return void
      */
     public function __construct(protected CatalystUserRepository $catalystUserRepository)
@@ -24,7 +23,6 @@ class CatalystUsersComposer
     /**
      * Bind data to the view.
      *
-     * @param  View  $view
      * @return void
      */
     public function compose(View $view)

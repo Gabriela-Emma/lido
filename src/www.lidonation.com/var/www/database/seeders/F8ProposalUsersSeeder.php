@@ -10,7 +10,6 @@ class F8ProposalUsersSeeder extends FSeeder
     /**
      * Run the database seeds.
      *
-     * @return void
      *
      * @throws InvalidArgumentException
      */

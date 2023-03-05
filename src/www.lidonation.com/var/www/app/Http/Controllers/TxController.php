@@ -31,7 +31,6 @@ class TxController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreTxRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function store(StoreTxRequest $request)
@@ -42,7 +41,6 @@ class TxController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Tx  $tx
      * @return \Illuminate\Http\Response
      */
     public function show(Tx $tx)
@@ -53,7 +51,6 @@ class TxController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Tx  $tx
      * @return \Illuminate\Http\Response
      */
     public function edit(Tx $tx)
@@ -64,8 +61,6 @@ class TxController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateTxRequest  $request
-     * @param  \App\Models\Tx  $tx
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateTxRequest $request, Tx $tx)
@@ -76,7 +71,6 @@ class TxController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Tx  $tx
      * @return \Illuminate\Http\Response
      */
     public function destroy(Tx $tx)

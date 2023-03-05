@@ -11,8 +11,6 @@ trait HasSnippets
 {
     /**
      * Get the fields available on the action.
-     *
-     * @return array
      */
     public function snippetsFields(): array
     {

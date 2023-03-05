@@ -10,8 +10,6 @@ trait HasTranslations
 {
     /**
      * Get the fields available on the action.
-     *
-     * @return array
      */
     public function translationsFields(): array
     {

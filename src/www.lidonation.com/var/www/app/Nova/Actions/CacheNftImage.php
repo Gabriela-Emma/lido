@@ -38,10 +38,6 @@ class CacheNftImage extends Action
 
     /**
      * Perform the action on the given models.
-     *
-     * @param  ActionFields  $fields
-     * @param  Collection  $models
-     * @return void
      */
     public function handle(ActionFields $fields, Collection $models): void
     {
@@ -62,9 +58,6 @@ class CacheNftImage extends Action
 
     /**
      * Get the fields available on the action.
-     *
-     * @param  NovaRequest  $request
-     * @return array
      */
     public function fields(NovaRequest $request): array
     {

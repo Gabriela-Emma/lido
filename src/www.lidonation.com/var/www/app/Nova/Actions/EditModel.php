@@ -25,9 +25,6 @@ class EditModel extends Action implements ShouldQueue
 
     /**
      * Perform the action on the given models.
-     *
-     * @param  ActionFields  $fields
-     * @param  Collection  $models
      */
     public function handle(ActionFields $fields, Collection $models)
     {
@@ -44,8 +41,6 @@ class EditModel extends Action implements ShouldQueue
 
     /**
      * Get the fields available on the action.
-     *
-     * @return array
      */
     public function fields(NovaRequest $request): array
     {

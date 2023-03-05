@@ -41,9 +41,6 @@ class CatalystGroupComposer
 
     /**
      * Create a new profile composer.
-     *
-     * @param  CatalystGroupRepository  $catalystGroupRepository
-     * @param  FundRepository  $fundRepository
      */
     public function __construct(
         protected CatalystGroupRepository $catalystGroupRepository,
@@ -156,9 +153,6 @@ class CatalystGroupComposer
 
     /**
      * Bind data to the view.
-     *
-     * @param  View  $view
-     * @return void
      */
     public function compose(View $view): void
     {

@@ -26,9 +26,6 @@ class CatalystSyncCompletedReportFromGSheetJob implements ShouldQueue
 
     /**
      * Execute the job.
-     *
-     * @param  SettingService  $settingService
-     * @return void
      */
     public function handle(SettingService $settingService): void
     {

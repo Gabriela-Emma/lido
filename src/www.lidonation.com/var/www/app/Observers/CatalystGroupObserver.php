@@ -11,9 +11,6 @@ class CatalystGroupObserver
 {
     /**
      * Handle the User "created" event.
-     *
-     * @param  CatalystGroup  $catalystGroup
-     * @return void
      */
     public function creating(CatalystGroup $catalystGroup): void
     {
@@ -22,9 +19,6 @@ class CatalystGroupObserver
 
     /**
      * Handle the User "created" event.
-     *
-     * @param  CatalystGroup  $catalystGroup
-     * @return void
      */
     public function updating(CatalystGroup $catalystGroup): void
     {

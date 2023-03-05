@@ -14,10 +14,6 @@ class GlobalSearchController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @param  Request  $request
-     * @param  string  $term
-     * @return Response
      */
     public function index(Request $request, string $term): Response
     {

@@ -31,7 +31,6 @@ class SnippetController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  Request  $request
      * @return Response
      */
     public function store(Request $request)
@@ -42,7 +41,6 @@ class SnippetController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  Snippet  $snippet
      * @return Response
      */
     public function show(Snippet $snippet)
@@ -52,9 +50,6 @@ class SnippetController extends Controller
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @param  Snippet  $snippet
-     * @return Response
      */
     public function edit(Snippet $snippet): Response
     {
@@ -63,10 +58,6 @@ class SnippetController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  Request  $request
-     * @param  Snippet  $snippet
-     * @return Response
      */
     public function update(Request $request, Snippet $snippet): Response
     {
@@ -76,7 +67,6 @@ class SnippetController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  Snippet  $snippet
      * @return void
      */
     public function destroy(Snippet $snippet)

@@ -34,8 +34,6 @@ class SyncTranslationJob implements ShouldQueue
     /**
      * Execute the job.
      *
-     * @param  TranslationService  $translationService
-     * @return void
      *
      * @throws ValidationException
      */

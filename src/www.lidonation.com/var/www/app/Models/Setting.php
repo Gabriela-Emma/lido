@@ -14,16 +14,12 @@ class Setting extends Model
     /**
      * Specify the amount of time to cache queries.
      * Do not specify or set it to null to disable caching.
-     *
-     * @var int|DateTime|null
      */
     public int|DateTime|null $cacheFor = 10800;
 
     /**
      * Invalidate the cache automatically
      * upon update in the database.
-     *
-     * @var bool
      */
     protected static bool $flushCacheOnUpdate = true;
 

@@ -31,7 +31,6 @@ class AssessorReviewCommentController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreAssessorReviewCommentRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function store(StoreAssessorReviewCommentRequest $request)
@@ -42,7 +41,6 @@ class AssessorReviewCommentController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\AssessorReviewComment  $assessorReviewComment
      * @return \Illuminate\Http\Response
      */
     public function show(AssessorReviewComment $assessorReviewComment)
@@ -53,7 +51,6 @@ class AssessorReviewCommentController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\AssessorReviewComment  $assessorReviewComment
      * @return \Illuminate\Http\Response
      */
     public function edit(AssessorReviewComment $assessorReviewComment)
@@ -64,8 +61,6 @@ class AssessorReviewCommentController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateAssessorReviewCommentRequest  $request
-     * @param  \App\Models\AssessorReviewComment  $assessorReviewComment
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateAssessorReviewCommentRequest $request, AssessorReviewComment $assessorReviewComment)
@@ -76,7 +71,6 @@ class AssessorReviewCommentController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\AssessorReviewComment  $assessorReviewComment
      * @return \Illuminate\Http\Response
      */
     public function destroy(AssessorReviewComment $assessorReviewComment)

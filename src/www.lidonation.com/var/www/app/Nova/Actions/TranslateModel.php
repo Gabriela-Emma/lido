@@ -42,8 +42,6 @@ class TranslateModel extends Action
     /**
      * Perform the action on the given models.
      *
-     * @param  ActionFields  $fields
-     * @param  Collection  $models
      * @return string[]|void
      */
     public function handle(ActionFields $fields, Collection $models)
@@ -68,9 +66,6 @@ class TranslateModel extends Action
 
     /**
      * Get the fields available on the action.
-     *
-     * @param  NovaRequest  $request
-     * @return array
      */
     public function fields(NovaRequest $request): array
     {

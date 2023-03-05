@@ -40,8 +40,6 @@ class CalculateDelegationEpochs implements ShouldQueue
 
     /**
      * Query db sync for user delegation epochs and update user delegation_length meta
-     *
-     * @param  User  $user
      */
     protected function processUser(User $user)
     {

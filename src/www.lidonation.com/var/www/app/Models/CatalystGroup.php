@@ -127,8 +127,6 @@ class CatalystGroup extends Model implements HasMedia, HasLink
     /**
      * Set the base cache tags that will be present
      * on all queries.
-     *
-     * @return array
      */
     protected function getCacheBaseTags(): array
     {
@@ -139,8 +137,6 @@ class CatalystGroup extends Model implements HasMedia, HasLink
 
     /**
      * Get the route key for the model.
-     *
-     * @return string
      */
     public function getRouteKeyName(): string
     {

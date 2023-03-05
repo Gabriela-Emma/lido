@@ -11,7 +11,6 @@ class DiscussionObserver
     /**
      * Handle the Discussion "created" event.
      *
-     * @param  Discussion  $discussion
      * @return void
      */
     public function creating(Discussion $discussion)

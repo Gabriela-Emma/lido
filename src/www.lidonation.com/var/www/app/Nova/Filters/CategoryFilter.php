@@ -24,10 +24,8 @@ class CategoryFilter extends Filter
     /**
      * Apply the filter to the given query.
      *
-     * @param  Request  $request
      * @param  Builder  $query
      * @param  mixed  $value
-     * @return Builder
      */
     public function apply(Request $request, $query, $value): Builder
     {
@@ -38,9 +36,6 @@ class CategoryFilter extends Filter
 
     /**
      * Get the filter's available options.
-     *
-     * @param  Request  $request
-     * @return array
      */
     #[ArrayShape(['News' => 'string', 'Onboarding' => 'string'])]
     public function options(Request $request): array
@@ -53,9 +48,6 @@ class CategoryFilter extends Filter
 
     /**
      * The default value of the filter.
-     *
-     *
-     * @return string|null
      */
     public function default(): ?string
     {

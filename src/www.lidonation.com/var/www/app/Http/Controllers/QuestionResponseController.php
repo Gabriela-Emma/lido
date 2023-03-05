@@ -35,7 +35,6 @@ class QuestionResponseController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  StoreQuestionResponseRequest  $request
      * @return AnswerResponse
      */
     public function store(StoreQuestionResponseRequest $request)
@@ -78,7 +77,6 @@ class QuestionResponseController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  AnswerResponse  $questionResponse
      * @return \Illuminate\Http\Response
      */
     public function show(AnswerResponse $questionResponse)
@@ -89,7 +87,6 @@ class QuestionResponseController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  AnswerResponse  $questionResponse
      * @return \Illuminate\Http\Response
      */
     public function edit(AnswerResponse $questionResponse)
@@ -100,8 +97,6 @@ class QuestionResponseController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateQuestionResponseRequest  $request
-     * @param  AnswerResponse  $questionResponse
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateQuestionResponseRequest $request, AnswerResponse $questionResponse)
@@ -112,7 +107,6 @@ class QuestionResponseController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  AnswerResponse  $questionResponse
      * @return \Illuminate\Http\Response
      */
     public function destroy(AnswerResponse $questionResponse)

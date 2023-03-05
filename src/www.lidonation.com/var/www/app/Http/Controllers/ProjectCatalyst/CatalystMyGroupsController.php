@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\ProjectCatalyst;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\ProposalResource;
 use App\Models\CatalystGroup;
 use App\Models\CatalystUser;
 use App\Models\Proposal;
@@ -49,7 +48,6 @@ class CatalystMyGroupsController extends Controller
             ->orderBy('title');
 
         return $proposals->paginate($per_page)->onEachSide(0);
-//        return ProposalResource::collection($proposals->paginate($per_page)->onEachSide(0));
     }
 
     public function removeProposal(CatalystGroup $catalystGroup, $proposalID)
@@ -69,39 +67,36 @@ class CatalystMyGroupsController extends Controller
         return $this->proposals(null, $catalystGroup);
     }
 
-    public function getMembers(Request $request=null, CatalystGroup $catalystGroup)
+    public function getMembers(Request $request, CatalystGroup $catalystGroup)
     {
-        $members = CatalystUser::whereRelation('groups','id',$catalystGroup?->id)
+        $members = CatalystUser::whereRelation('groups', 'id', $catalystGroup?->id)
         ->paginate(8, ['*'], 'p')->setPath('/');
 
-        return $members->through(fn($user) =>[
+        return $members->through(fn ($user) => [
             'id' => $user->id,
             'name' => $user->name,
             'email' => $user->email,
             'profile_photo' => $user->profile_photo_url,
-            'role' => $catalystGroup->owner->id ===  $user->id ? 'admin' : $user->role,
+            'role' => $catalystGroup->owner->id === $user->id ? 'admin' : $user->role,
             'discord' => $user->discord,
-            
-
         ]);
     }
 
-    public function removeMembers(CatalystGroup $catalystGroup,$catalystUserID)
-    { 
+    public function removeMembers(Request $request, CatalystGroup $catalystGroup, $catalystUserID)
+    {
         $catalystGroup->members()->detach($catalystUserID);
 
-        return $this->getMembers(null,$catalystGroup);
+        return $this->getMembers($request, $catalystGroup);
     }
 
-    public function addMembers(CatalystGroup $catalystGroup,Request $request)
-    {   
+    public function addMembers(Request $request, CatalystGroup $catalystGroup)
+    {
         $newMembersIDs = $request->input('profileIDs');
-        foreach ($newMembersIDs as $id)
-        {
+        foreach ($newMembersIDs as $id) {
             $catalystGroup->members()->attach($id);
         }
 
-        return $this->getMembers(null,$catalystGroup);
+        return $this->getMembers($request, $catalystGroup);
     }
 
     protected function data()

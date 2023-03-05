@@ -12,7 +12,6 @@ class F9ProposalDetailsSeeder extends FSeeder
     /**
      * Run the database seeds.
      *
-     * @return void
      *
      * @throws InvalidArgumentException
      */

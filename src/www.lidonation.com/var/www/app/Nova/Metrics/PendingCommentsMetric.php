@@ -14,7 +14,6 @@ class PendingCommentsMetric extends Value
     /**
      * Calculate the value of the metric.
      *
-     * @param  NovaRequest  $request
      * @return ValueResult
      */
     public function calculate(NovaRequest $request)
@@ -54,8 +53,6 @@ class PendingCommentsMetric extends Value
 
     /**
      * Get the URI key for the metric.
-     *
-     * @return string
      */
     public function uriKey(): string
     {

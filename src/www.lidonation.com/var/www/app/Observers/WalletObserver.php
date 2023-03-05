@@ -10,7 +10,6 @@ class WalletObserver
     /**
      * Handle the Wallet "created" event.
      *
-     * @param  Wallet  $wallet
      * @return void
      */
     public function creating(Wallet $wallet)

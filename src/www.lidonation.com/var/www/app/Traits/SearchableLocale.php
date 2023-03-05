@@ -42,8 +42,6 @@ trait SearchableLocale
 
     /**
      * Get the index name for the model.
-     *
-     * @return array
      */
     public function getSearchableLocales(): array
     {

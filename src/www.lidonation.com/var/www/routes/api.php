@@ -223,7 +223,6 @@ Route::prefix('catalyst-explorer')->as('catalystExplorerApi.')
 
         Route::post('/register', [CatalystExplorer\UserController::class, 'create']);
 
-
         // counts
         Route::get('/metrics/proposals/count/approved', [CatalystProjectsController::class, 'metricCountFunded']);
         Route::get('/metrics/metrics/count/paid', [CatalystProjectsController::class, 'metricCountTotalPaid']);
@@ -248,7 +247,9 @@ Route::prefix('catalyst-explorer')->as('catalystExplorerApi.')
         Route::post('/user', [CatalystExplorer\UserController::class, 'update']);
 
         Route::get('/branches', [CatalystExplorer\RepoController::class, 'getBranches']);
-        Route::post('/repo', [CatalystExplorer\RepoController::class, 'saveRepo']);
+        Route::post('proposal/repo', [CatalystExplorer\RepoController::class, 'saveRepo']);
+        Route::patch('proposal/repo', [CatalystExplorer\RepoController::class, 'updateRepo']);
+
 
         Route::post('/logout', [CatalystExplorer\UserController::class, 'logout']);
 

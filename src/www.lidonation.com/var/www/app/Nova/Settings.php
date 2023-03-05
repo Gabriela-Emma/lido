@@ -46,9 +46,6 @@ class Settings extends Resource
 
     /**
      * Get the fields displayed by the resource.
-     *
-     * @param  Request  $request
-     * @return array
      */
     public function fields(Request $request): array
     {
@@ -61,9 +58,6 @@ class Settings extends Resource
 
     /**
      * Get the actions available for the resource.
-     *
-     * @param  Request  $request
-     * @return array
      */
     #[Pure]
     public function actions(Request $request): array

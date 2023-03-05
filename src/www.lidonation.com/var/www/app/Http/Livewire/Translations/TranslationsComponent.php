@@ -114,8 +114,6 @@ class TranslationsComponent extends LivewireDatatable
 
     /**
      * the order of the columns matter.
-     *
-     * @return array
      */
     public function columns(): array
     {

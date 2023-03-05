@@ -56,7 +56,6 @@ class AnonymousBookmarkController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreAnonymousBookmarkRequest  $request
      * @return Response
      */
     public function store(StoreAnonymousBookmarkRequest $request)
@@ -66,9 +65,6 @@ class AnonymousBookmarkController extends Controller
 
     /**
      * Display the specified resource.
-     *
-     * @param  AnonymousBookmark  $anonymousBookmark
-     * @return AnonymousBookmark
      */
     public function show(AnonymousBookmark $anonymousBookmark): AnonymousBookmark
     {
@@ -78,7 +74,6 @@ class AnonymousBookmarkController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  AnonymousBookmark  $anonymousBookmark
      * @return Response
      */
     public function edit(AnonymousBookmark $anonymousBookmark)
@@ -89,8 +84,6 @@ class AnonymousBookmarkController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateAnonymousBookmarkRequest  $request
-     * @param  AnonymousBookmark  $anonymousBookmark
      * @return Response
      */
     public function update(UpdateAnonymousBookmarkRequest $request, AnonymousBookmark $anonymousBookmark)
@@ -101,7 +94,6 @@ class AnonymousBookmarkController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  AnonymousBookmark  $anonymousBookmark
      * @return Response
      */
     public function destroy(AnonymousBookmark $anonymousBookmark)

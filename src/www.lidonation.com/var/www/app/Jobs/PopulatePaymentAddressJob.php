@@ -28,9 +28,6 @@ class PopulatePaymentAddressJob implements ShouldQueue
 
     /**
      * Execute the job.
-     *
-     * @param  CardanoBlockfrostService  $cardanoBlockfrostService
-     * @return void
      */
     public function handle(CardanoBlockfrostService $cardanoBlockfrostService): void
     {
@@ -59,8 +56,6 @@ class PopulatePaymentAddressJob implements ShouldQueue
 
     /**
      * Get the middleware the job should pass through.
-     *
-     * @return array
      */
     public function middleware(): array
     {

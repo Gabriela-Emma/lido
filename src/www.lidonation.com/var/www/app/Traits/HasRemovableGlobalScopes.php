@@ -8,9 +8,6 @@ use Illuminate\Support\Arr;
 
 trait HasRemovableGlobalScopes
 {
-    /**
-     * @param  Scope|string  $scope
-     */
     public static function withoutGlobalScope(Scope|string $scope)
     {
         if (is_string($scope) && isset(static::$globalScopes[static::class]) && is_array(static::$globalScopes[static::class])) {

@@ -31,7 +31,6 @@ class PodcastSeasonController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StorePodcastSeasonRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function store(StorePodcastSeasonRequest $request)
@@ -42,7 +41,6 @@ class PodcastSeasonController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\PodcastSeason  $podcastSeason
      * @return \Illuminate\Http\Response
      */
     public function show(PodcastSeason $podcastSeason)
@@ -53,7 +51,6 @@ class PodcastSeasonController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\PodcastSeason  $podcastSeason
      * @return \Illuminate\Http\Response
      */
     public function edit(PodcastSeason $podcastSeason)
@@ -64,8 +61,6 @@ class PodcastSeasonController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdatePodcastSeasonRequest  $request
-     * @param  \App\Models\PodcastSeason  $podcastSeason
      * @return \Illuminate\Http\Response
      */
     public function update(UpdatePodcastSeasonRequest $request, PodcastSeason $podcastSeason)
@@ -76,7 +71,6 @@ class PodcastSeasonController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\PodcastSeason  $podcastSeason
      * @return \Illuminate\Http\Response
      */
     public function destroy(PodcastSeason $podcastSeason)

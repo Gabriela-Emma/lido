@@ -23,8 +23,6 @@ class CatalystGroups extends Resource
 {
     /**
      * The model the resource corresponds to.
-     *
-     * @var string
      */
     public static string $model = CatalystGroup::class;
 
@@ -48,9 +46,6 @@ class CatalystGroups extends Resource
 
     /**
      * Get the fields displayed by the resource.
-     *
-     * @param  NovaRequest  $request
-     * @return array
      */
     public function fields(NovaRequest $request): array
     {
@@ -124,9 +119,6 @@ class CatalystGroups extends Resource
 
     /**
      * Get the actions available for the resource.
-     *
-     * @param  NovaRequest  $request
-     * @return array
      */
     #[Pure]
  public function actions(NovaRequest $request): array

@@ -14,9 +14,6 @@ class F7AssessmentReviewsSeeder extends FSeeder
 {
     /**
      * Run the database seeds.
-     *
-     * @param  SettingService  $settingService
-     * @return void
      */
     public function run(SettingService $settingService): void
     {

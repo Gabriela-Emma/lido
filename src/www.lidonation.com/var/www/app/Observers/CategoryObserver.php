@@ -10,7 +10,6 @@ class CategoryObserver
     /**
      * Handle the User "created" event.
      *
-     * @param  Category  $category
      * @return void
      */
     public function creating(Category $category)

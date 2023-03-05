@@ -22,7 +22,6 @@ class SendCatalystProfileVerifiedNotification implements ShouldQueue
     /**
      * Handle the event.
      *
-     * @param  CatalystProfileVerified  $event
      * @return void
      */
     public function handle(CatalystProfileVerified $event)
