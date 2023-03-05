@@ -205,7 +205,7 @@ class Post extends Model implements HasMedia, Interfaces\IHasMetaData, Sitemapab
         return $related_posts->take(4);
     }
 
-    public function getLinkAttribute(): string|UrlGenerator|Application
+    public function getLinkAttribute(): string|UrlGenerator|Application|null
     {
         return LaravelLocalization::localizeURL("/posts/{$this->slug}/");
     }

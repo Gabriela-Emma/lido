@@ -87,7 +87,7 @@ diagnosticMode:
 image:
   registry: docker.io
   repository: bitnami/postgresql
-  tag: 15.1.0-debian-11-r33
+  tag: 15.2.0-debian-11-r7
   ## Specify a imagePullPolicy
   ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
   ## ref: https://kubernetes.io/docs/user-guide/images/#pre-pulling-images
@@ -270,7 +270,8 @@ primary:
   ## @param primary.configuration PostgreSQL Primary main configuration to be injected as ConfigMap
   ## ref: https://www.postgresql.org/docs/current/static/runtime-config.html
   ##
-  configuration: ""
+#  configuration: |-
+#    maintenance_work_mem: '1024MB'
   ## @param primary.pgHbaConfiguration PostgreSQL Primary client authentication configuration
   ## ref: https://www.postgresql.org/docs/current/static/auth-pg-hba-conf.html
   ## e.g:#
@@ -287,11 +288,16 @@ primary:
   ## @param primary.extendedConfiguration Extended PostgreSQL Primary configuration (appended to main or default configuration)
   ## ref: https://github.com/bitnami/bitnami-docker-postgresql#allow-settings-to-be-loaded-from-files-other-than-the-default-postgresqlconf
   ##
-#  extendedConfiguration:
-#    min_wal_size: 4GB
-#    max_wal_size: 8GB
-#    checkpoint_completion_target: "0.9"
-#    effective_io_concurrency: "2"
+  extendedConfiguration: |-
+    maintenance_work_mem = '1024MB'
+    min_wal_size = '256MB'
+    max_wal_size= '2048MB'
+    max_parallel_maintenance_workers = 8
+    checkpoint_completion_target = '0.9'
+    effective_io_concurrency = 100
+    work_mem = '1MB'
+    effective_cache_size = '12288MB'
+    shared_buffers = '2560MB'
 
   ## @param primary.existingExtendedConfigmap Name of an existing ConfigMap with PostgreSQL Primary extended configuration
   ## NOTE: `primary.extendedConfiguration` will be ignored
@@ -423,10 +429,12 @@ primary:
   ## @param primary.resources.requests.cpu The requested cpu for the PostgreSQL Primary containers
   ##
   resources:
-    limits: {}
+    limits:
+      memory: 16384Mi
+      cpu: 12
     requests:
-      memory: 1024Mi
-      cpu: 300m
+      memory: 2048Mi
+      cpu: 400m
   ## Pod Security Context
   ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
   ## @param primary.podSecurityContext.enabled Enable security context
@@ -638,7 +646,7 @@ primary:
       - ReadWriteOnce
     ## @param primary.persistence.size PVC Storage Request for PostgreSQL volume
     ##
-    size: 200Gi
+    size: 400Gi
     ## @param primary.persistence.annotations Annotations for the PVC
     ##
     annotations: {}
@@ -1069,7 +1077,7 @@ volumePermissions:
   image:
     registry: docker.io
     repository: bitnami/bitnami-shell
-    tag: 10-debian-10-r350
+    tag: 11-debian-11-r93
     pullPolicy: IfNotPresent
     ## Optionally specify an array of imagePullSecrets.
     ## Secrets must be manually created in the namespace.
@@ -1154,7 +1162,7 @@ metrics:
   image:
     registry: docker.io
     repository: bitnami/postgres-exporter
-    tag: 0.10.1-debian-10-r37
+    tag: 0.11.1-debian-11-r65
     pullPolicy: IfNotPresent
     ## Optionally specify an array of imagePullSecrets.
     ## Secrets must be manually created in the namespace.

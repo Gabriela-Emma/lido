@@ -21,7 +21,7 @@
                 {{$snippets->causesFund}}
             </dt>
             <dd class="order-1 text-xl font-extrabold text-white lg:text-2xl 2xl:text-3xl">
-                600 ₳
+                3,600 ₳
             </dd>
         </div>
         <div class="flex flex-col pr-8">
@@ -37,7 +37,7 @@
                 {{$snippets->foundersPledge}}
             </dt>
             <dd class="order-1 text-xl font-extrabold text-white lg:text-2xl 2xl:text-3xl">
-                42,000 ₳
+                92,000 ₳
             </dd>
         </div>
         <div class="flex flex-col pr-8">

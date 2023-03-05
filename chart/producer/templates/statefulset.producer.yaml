@@ -83,7 +83,7 @@ spec:
               mountPath: {{ .Values.services.cardano.persistence.mountPath }}
               readOnly: false
         - name: sidecar
-          image: busybox:1.28
+          image: alpine:3.17.2
           args:
             - sleep
             - "2592000"
@@ -92,7 +92,7 @@ spec:
               mountPath: {{ .Values.services.cardano.persistence.mountPath }}
               readOnly: false
         - name: ipc
-          image: alpine/socat:1.7.4.4-r0
+          image: alpine/socat:1.7.4.4
           env:
             - name: PORT
               value: "30111"

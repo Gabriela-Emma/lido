@@ -72,3 +72,10 @@ App\134Models\134Assessment::runCustomIndex();
 App\134Models\134Assessment::runCustomIndex();
 exit
 App\134Models\134Assessment::runCustomIndex();
+config('filesystems');
+exit
+Commit::withoutGlobalScopes([LimitScope::class]);
+$existingCommit->get();
+$existingCommits->get();
+$existingCommits->get()->count();
+exit

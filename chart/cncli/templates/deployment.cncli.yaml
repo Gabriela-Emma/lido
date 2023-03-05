@@ -61,7 +61,7 @@ spec:
             mountPath: /ipc
             readOnly: false
       - name: ipc
-        image: alpine/socat:1.7.4.4-r0
+        image: alpine/socat:1.7.4.4
         env:
         - name: CARDANO_NODE_SOCKET_TCP_HOST
           value: "lidolovelace-cardano-producer-service"
