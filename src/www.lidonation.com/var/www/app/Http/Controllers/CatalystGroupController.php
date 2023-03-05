@@ -31,7 +31,6 @@ class CatalystGroupController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreCatalystGroupRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function store(StoreCatalystGroupRequest $request)
@@ -42,7 +41,6 @@ class CatalystGroupController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\CatalystGroup  $catalystGroup
      * @return \Illuminate\Http\Response
      */
     public function show(CatalystGroup $catalystGroup)
@@ -53,7 +51,6 @@ class CatalystGroupController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\CatalystGroup  $catalystGroup
      * @return \Illuminate\Http\Response
      */
     public function edit(CatalystGroup $catalystGroup)
@@ -64,8 +61,6 @@ class CatalystGroupController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateCatalystGroupRequest  $request
-     * @param  \App\Models\CatalystGroup  $catalystGroup
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateCatalystGroupRequest $request, CatalystGroup $catalystGroup)
@@ -76,7 +71,6 @@ class CatalystGroupController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\CatalystGroup  $catalystGroup
      * @return \Illuminate\Http\Response
      */
     public function destroy(CatalystGroup $catalystGroup)

@@ -11,7 +11,6 @@ class InsightsComposer
     /**
      * Create a new profile composer.
      *
-     * @param  PostRepository  $posts
      * @return void
      */
     public function __construct(
@@ -22,7 +21,6 @@ class InsightsComposer
     /**
      * Bind data to the view.
      *
-     * @param  View  $view
      * @return void
      */
     public function compose(View $view)

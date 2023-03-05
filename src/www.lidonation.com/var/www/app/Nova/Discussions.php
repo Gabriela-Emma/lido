@@ -53,8 +53,6 @@ class Discussions extends Resource
 
     /**
      * The model the resource corresponds to.
-     *
-     * @var string
      */
     public static string $model = Discussion::class;
 
@@ -67,9 +65,6 @@ class Discussions extends Resource
 
     /**
      * Get the filters available for the resource.
-     *
-     * @param  Request  $request
-     * @return array
      */
     #[Pure]
     public function filters(Request $request): array

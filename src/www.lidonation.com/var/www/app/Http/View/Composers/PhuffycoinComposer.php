@@ -13,7 +13,6 @@ class PhuffycoinComposer
     /**
      * Create a new profile composer.
      *
-     * @param  CardanoGraphQLService  $graphQLService
      * @return void
      */
     public function __construct(protected CardanoGraphQLService $graphQLService)
@@ -23,7 +22,6 @@ class PhuffycoinComposer
     /**
      * Bind data to the view.
      *
-     * @param  View  $view
      * @return void
      *
      * @throws GuzzleException

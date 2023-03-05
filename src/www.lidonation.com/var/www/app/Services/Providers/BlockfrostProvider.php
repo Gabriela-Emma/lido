@@ -48,8 +48,6 @@ class BlockfrostProvider implements ProvidesCardanoService
     }
 
     /**
-     * @return void
-     *
      * @todo implement method support parallel requests
      */
     public function requests(): void

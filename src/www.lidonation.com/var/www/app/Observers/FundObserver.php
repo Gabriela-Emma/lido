@@ -16,7 +16,6 @@ class FundObserver
     /**
      * Handle the User "created" event.
      *
-     * @param  Fund  $fund
      * @return void
      */
     public function creating(Fund $fund)

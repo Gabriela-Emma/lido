@@ -32,7 +32,6 @@ class EveryEpochController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  StoreEveryEpochRequest  $request
      * @return Response
      */
     public function store(StoreEveryEpochRequest $request)
@@ -43,7 +42,6 @@ class EveryEpochController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  EveryEpoch  $everyEpoch
      * @return Response
      */
     public function show(EveryEpoch $everyEpoch)
@@ -54,7 +52,6 @@ class EveryEpochController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  EveryEpoch  $everyEpoch
      * @return Response
      */
     public function edit(EveryEpoch $everyEpoch)
@@ -65,8 +62,6 @@ class EveryEpochController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateEveryEpochRequest  $request
-     * @param  EveryEpoch  $everyEpoch
      * @return Response
      */
     public function update(UpdateEveryEpochRequest $request, EveryEpoch $everyEpoch)
@@ -77,7 +72,6 @@ class EveryEpochController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  EveryEpoch  $everyEpoch
      * @return Response
      */
     public function destroy(EveryEpoch $everyEpoch)

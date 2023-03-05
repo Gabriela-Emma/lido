@@ -8,9 +8,6 @@ class QuestionObserver
 {
     /**
      * Handle the User "created" event.
-     *
-     * @param  Question  $question
-     * @return void
      */
     public function creating(Question $question): void
     {

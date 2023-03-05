@@ -43,8 +43,6 @@ class Taxonomy extends Model implements HasMedia, HasLink
 
     /**
      * Get the user's first name.
-     *
-     * @return Attribute
      */
     protected function postsCount(): Attribute
     {
@@ -101,8 +99,6 @@ class Taxonomy extends Model implements HasMedia, HasLink
 
     /**
      * Get the user's first name.
-     *
-     * @return Attribute
      */
     protected function models(): Attribute
     {
@@ -119,7 +115,6 @@ class Taxonomy extends Model implements HasMedia, HasLink
     /**
      * Generate unique slug
      *
-     * @param $title
      * @return array|string ()
      */
     public function createSlug($title): array|string
@@ -157,8 +152,6 @@ class Taxonomy extends Model implements HasMedia, HasLink
 
     /**
      * Get the route key for the model.
-     *
-     * @return string
      */
     public function getRouteKeyName(): string
     {

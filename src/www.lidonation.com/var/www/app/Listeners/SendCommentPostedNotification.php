@@ -22,7 +22,6 @@ class SendCommentPostedNotification implements ShouldQueue
     /**
      * Handle the event.
      *
-     * @param  CommentPosted  $event
      * @return void
      */
     public function handle(CommentPosted $event)

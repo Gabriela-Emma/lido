@@ -14,8 +14,6 @@ class ShortcodesServiceProvider extends ServiceProvider
 {
     /**
      * Register services.
-     *
-     * @return void
      */
     public function register(): void
     {

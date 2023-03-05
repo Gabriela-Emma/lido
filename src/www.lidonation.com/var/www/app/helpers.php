@@ -11,12 +11,6 @@ function localizeRoute($routeName, $locale = null, $parameters = []): bool|strin
 
 /**
  * Translate the given message.
- *
- * @param  string|null  $key
- * @param  bool  $oneLiner
- * @param  array  $replace
- * @param  string|null  $locale
- * @return string|array|null
  */
 function ___(string $key = null, bool $oneLiner = true, array $replace = [], string $locale = null): array|string|null
 {

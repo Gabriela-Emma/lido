@@ -11,8 +11,6 @@ class TagPolicy extends AppPolicy
     /**
      * Determine whether the user can view any models.
      *
-     * @param  User  $user
-     * @return mixed
      *
      * @throws \Exception
      */
@@ -24,9 +22,6 @@ class TagPolicy extends AppPolicy
     /**
      * Determine whether the user can view the model.
      *
-     * @param  User  $user
-     * @param  Tag  $tag
-     * @return bool
      *
      * @throws \Exception
      */
@@ -38,8 +33,6 @@ class TagPolicy extends AppPolicy
     /**
      * Determine whether the user can create models.
      *
-     * @param  User  $user
-     * @return bool
      *
      * @throws \Exception
      */
@@ -51,9 +44,6 @@ class TagPolicy extends AppPolicy
     /**
      * Determine whether the user can update the model.
      *
-     * @param  User  $user
-     * @param  Tag  $tag
-     * @return mixed
      *
      * @throws \Exception
      */
@@ -65,9 +55,6 @@ class TagPolicy extends AppPolicy
     /**
      * Determine whether the user can delete the model.
      *
-     * @param  User  $user
-     * @param  Tag  $tag
-     * @return mixed
      *
      * @throws \Exception
      */

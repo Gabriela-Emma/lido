@@ -19,8 +19,6 @@ class Rules extends Resource
 
     /**
      * The model the resource corresponds to.
-     *
-     * @var string
      */
     public static string $model = Rule::class;
 
@@ -45,8 +43,6 @@ class Rules extends Resource
 
     /**
      * Get the value that should be displayed to represent the resource.
-     *
-     * @return string
      */
     public function title(): string
     {
@@ -56,9 +52,6 @@ class Rules extends Resource
 
     /**
      * Get the fields displayed by the resource.
-     *
-     * @param  Request  $request
-     * @return array
      */
     public function fields(Request $request): array
     {
@@ -106,9 +99,6 @@ class Rules extends Resource
 
     /**
      * Get the cards available for the request.
-     *
-     * @param  Request  $request
-     * @return array
      */
     public function cards(Request $request): array
     {
@@ -117,9 +107,6 @@ class Rules extends Resource
 
     /**
      * Get the filters available for the resource.
-     *
-     * @param  Request  $request
-     * @return array
      */
     public function filters(Request $request): array
     {
@@ -128,9 +115,6 @@ class Rules extends Resource
 
     /**
      * Get the lenses available for the resource.
-     *
-     * @param  Request  $request
-     * @return array
      */
     public function lenses(Request $request): array
     {
@@ -139,9 +123,6 @@ class Rules extends Resource
 
     /**
      * Get the actions available for the resource.
-     *
-     * @param  Request  $request
-     * @return array
      */
     #[Pure]
     public function actions(Request $request): array

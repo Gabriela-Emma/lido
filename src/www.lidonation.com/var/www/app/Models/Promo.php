@@ -48,7 +48,6 @@ class Promo extends Model implements HasMedia
         $this->addMediaCollection('hero');
     }
 
-
     /**
      * The "booted" method of the model.
      *

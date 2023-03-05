@@ -8,9 +8,6 @@ use Spatie\RobotsMiddleware\RobotsMiddleware as SpatieRobotsMiddleware;
 
 class RobotsMiddleware extends SpatieRobotsMiddleware
 {
-    /**
-     * @return string|bool
-     */
     protected function shouldIndex(Request $request): bool|string
     {
         if (! Str::contains(config('app.url'), 'www.lidonation.com')) {

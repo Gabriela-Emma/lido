@@ -13,10 +13,7 @@ class GenerateModelRatingImage
     /**
      * fill default values
      *
-     * @param  Model  $review
      * @param  null  $_locale
-     * @param  bool  $save
-     * @return Browsershot|null
      *
      * @throws CouldNotTakeBrowsershot
      */

@@ -13,9 +13,6 @@ class GenerateProposalImage
     /**
      * fill default values
      *
-     * @param  Proposal  $proposal
-     * @param  bool  $save
-     * @return Browsershot|null
      *
      * @throws CouldNotTakeBrowsershot
      */

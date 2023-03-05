@@ -21,7 +21,6 @@ class SavePaidToDelegatesMetric implements ShouldQueue
     /**
      * Handle the event.
      *
-     * @param  CalculateCardanoMetricsEvent  $event
      * @return void
      */
     public function handle(CalculateCardanoMetricsEvent $event, CardanoGraphQLService $cardanoGraphQLService)

@@ -41,8 +41,6 @@ class CardanoBlockfrostService
     }
 
     /**
-     * @return void
-     *
      * @todo implement method support parallel requests
      */
     public function requests(): void

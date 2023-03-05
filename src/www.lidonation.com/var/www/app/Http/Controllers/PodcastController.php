@@ -31,7 +31,6 @@ class PodcastController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StorePodcastRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function store(StorePodcastRequest $request)
@@ -42,7 +41,6 @@ class PodcastController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Podcast  $podcast
      * @return \Illuminate\Http\Response
      */
     public function show(Podcast $podcast)
@@ -53,7 +51,6 @@ class PodcastController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Podcast  $podcast
      * @return \Illuminate\Http\Response
      */
     public function edit(Podcast $podcast)
@@ -64,8 +61,6 @@ class PodcastController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdatePodcastRequest  $request
-     * @param  \App\Models\Podcast  $podcast
      * @return \Illuminate\Http\Response
      */
     public function update(UpdatePodcastRequest $request, Podcast $podcast)
@@ -76,7 +71,6 @@ class PodcastController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Podcast  $podcast
      * @return \Illuminate\Http\Response
      */
     public function destroy(Podcast $podcast)

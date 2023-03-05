@@ -11,9 +11,6 @@ class NftPolicy extends AppPolicy
 {
     /**
      * Determine whether the user can view any models.
-     *
-     * @param  User  $user
-     * @return Response|bool
      */
     public function viewAny(User $user): Response|bool
     {
@@ -23,9 +20,6 @@ class NftPolicy extends AppPolicy
     /**
      * Determine whether the user can view the model.
      *
-     * @param  User  $user
-     * @param  Nft  $nft
-     * @return bool
      *
      * @throws \Exception
      */
@@ -36,9 +30,6 @@ class NftPolicy extends AppPolicy
 
     /**
      * Determine whether the user can create models.
-     *
-     * @param  User  $user
-     * @return Response|bool
      */
     public function create(User $user): Response|bool
     {
@@ -47,10 +38,6 @@ class NftPolicy extends AppPolicy
 
     /**
      * Determine whether the user can update the model.
-     *
-     * @param  User  $user
-     * @param  Nft  $nft
-     * @return Response|bool
      */
     public function update(User $user, Nft $nft): Response|bool
     {
@@ -59,10 +46,6 @@ class NftPolicy extends AppPolicy
 
     /**
      * Determine whether the user can delete the model.
-     *
-     * @param  User  $user
-     * @param  Nft  $nft
-     * @return bool
      */
     public function delete(User $user, Nft $nft): bool
     {
@@ -71,10 +54,6 @@ class NftPolicy extends AppPolicy
 
     /**
      * Determine whether the user can restore the model.
-     *
-     * @param  User  $user
-     * @param  Nft  $nft
-     * @return Response|bool
      */
     public function restore(User $user, Nft $nft): Response|bool
     {
@@ -83,10 +62,6 @@ class NftPolicy extends AppPolicy
 
     /**
      * Determine whether the user can permanently delete the model.
-     *
-     * @param  User  $user
-     * @param  Nft  $nft
-     * @return Response|bool
      */
     public function forceDelete(User $user, Nft $nft): Response|bool
     {

@@ -27,9 +27,6 @@ class SyncCatalystGroupProposalsJob implements ShouldQueue
 
     /**
      * Execute the job.
-     *
-     * @param  CatalystGroupRepository  $catalystGroupRepository
-     * @return void
      */
     public function handle(CatalystGroupRepository $catalystGroupRepository): void
     {

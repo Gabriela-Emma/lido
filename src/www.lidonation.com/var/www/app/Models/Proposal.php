@@ -354,7 +354,6 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
     /**
      * Generate unique slug
      *
-     * @param $title
      * @return array|string ()
      */
     public function createSlug($title): array|string
@@ -392,8 +391,6 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
 
     /**
      * Get the route key for the model.
-     *
-     * @return string
      */
     public function getRouteKeyName(): string
     {
@@ -452,8 +449,6 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
 
     /**
      * Get the value used to index the model.
-     *
-     * @return mixed
      */
     public function getScoutKey(): mixed
     {
@@ -462,8 +457,6 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
 
     /**
      * Get the indexable data array for the model.
-     *
-     * @return array
      */
     public function toSearchableArray(): array
     {
@@ -494,7 +487,6 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
      * Modify the query used to retrieve models when making all of the models searchable.
      *
      * @param  Builder  $query
-     * @return Builder
      */
     protected function makeAllSearchableUsing($query): Builder
     {
@@ -521,8 +513,6 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
 
     /**
      * The "booted" method of the model.
-     *
-     * @return void
      */
     protected static function booted(): void
     {

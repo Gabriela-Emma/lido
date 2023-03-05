@@ -15,9 +15,6 @@ class PostObserver
 
     /**
      * Handle the User "created" event.
-     *
-     * @param  Post  $post
-     * @return void
      */
     public function creating(Post $post): void
     {

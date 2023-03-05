@@ -187,8 +187,6 @@ class Assessment extends Model implements IHasMetaData
 
     /**
      * Get the indexable data array for the model.
-     *
-     * @return array
      */
     public function toSearchableArray(): array
     {
@@ -218,8 +216,6 @@ class Assessment extends Model implements IHasMetaData
 
     /**
      * Determine if the model should be searchable.
-     *
-     * @return bool
      */
     public function shouldBeSearchable(): bool
     {

@@ -35,9 +35,6 @@ class PromoController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  StorePromoRequest  $request
-     * @return Promo
      */
     public function store(StorePromoRequest $request): Promo
     {
@@ -54,7 +51,6 @@ class PromoController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Promo  $promo
      * @return Response
      */
     public function show(Promo $promo)
@@ -65,7 +61,6 @@ class PromoController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Promo  $promo
      * @return Response
      */
     public function edit(Promo $promo)
@@ -76,8 +71,6 @@ class PromoController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdatePromoRequest  $request
-     * @param  \App\Models\Promo  $promo
      * @return Response
      */
     public function update(UpdatePromoRequest $request, Promo $promo)
@@ -88,7 +81,6 @@ class PromoController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Promo  $promo
      * @return Response
      */
     public function destroy(Promo $promo)

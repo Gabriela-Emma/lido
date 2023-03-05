@@ -223,7 +223,6 @@ Route::prefix('catalyst-explorer')->as('catalystExplorerApi.')
 
         Route::post('/register', [CatalystExplorer\UserController::class, 'create']);
 
-
         // counts
         Route::get('/metrics/proposals/count/approved', [CatalystProjectsController::class, 'metricCountFunded']);
         Route::get('/metrics/metrics/count/paid', [CatalystProjectsController::class, 'metricCountTotalPaid']);

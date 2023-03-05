@@ -57,8 +57,6 @@ class CatalystUser extends User implements HasMedia, CanComment
     /**
      * Invalidate the cache automatically
      * upon update in the database.
-     *
-     * @var bool
      */
     protected static bool $flushCacheOnUpdate = true;
 
@@ -246,8 +244,6 @@ class CatalystUser extends User implements HasMedia, CanComment
 
     /**
      * Get the indexable data array for the model.
-     *
-     * @return array
      */
     public function toSearchableArray(): array
     {

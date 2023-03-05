@@ -29,7 +29,6 @@ class MintNftTxJob implements ShouldQueue
     /**
      * Execute the job.
      *
-     * @return void
      *
      * @throws RequestException
      * @throws Exception
@@ -51,8 +50,6 @@ class MintNftTxJob implements ShouldQueue
 
     /**
      * Get the middleware the job should pass through.
-     *
-     * @return array
      */
     public function middleware(): array
     {

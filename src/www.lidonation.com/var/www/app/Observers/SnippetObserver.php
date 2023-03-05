@@ -10,7 +10,6 @@ class SnippetObserver
     /**
      * Handle the User "created" event.
      *
-     * @param  Snippet  $snippet
      * @return void
      */
     public function creating(Snippet $snippet)
@@ -28,7 +27,6 @@ class SnippetObserver
     /**
      * Handle the User "created" event.
      *
-     * @param  Snippet  $snippet
      * @return void
      */
     public function updating(Snippet $snippet)

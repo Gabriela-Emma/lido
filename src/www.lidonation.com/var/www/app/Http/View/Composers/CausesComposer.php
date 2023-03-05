@@ -16,9 +16,6 @@ class CausesComposer
 
     /**
      * Create a new profile composer.
-     *
-     * @param  CauseRepository  $causeRepository
-     * @param  VoteRepository  $voteRepository
      */
     public function __construct(protected CauseRepository $causeRepository, protected VoteRepository $voteRepository)
     {
@@ -29,7 +26,6 @@ class CausesComposer
     /**
      * Bind data to the view.
      *
-     * @param  View  $view
      * @return void
      */
     public function compose(View $view)

@@ -13,7 +13,6 @@ class TranslationObserver
     /**
      * Handle the User "created" event.
      *
-     * @param  Translation  $translation
      * @return void
      */
     public function creating(Translation $translation)
@@ -43,7 +42,6 @@ class TranslationObserver
     /**
      * Handle the User "created" event.
      *
-     * @param  Translation  $translation
      * @return void
      */
     public function updating(Translation $translation)

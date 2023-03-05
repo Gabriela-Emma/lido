@@ -10,7 +10,6 @@ class ModelCategoryObserver
     /**
      * Handle the User "created" event.
      *
-     * @param  ModelCategory  $modelCategory
      * @return void
      */
     public function creating(ModelCategory $modelCategory)

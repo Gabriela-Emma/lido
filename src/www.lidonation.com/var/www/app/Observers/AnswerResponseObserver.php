@@ -8,9 +8,6 @@ class AnswerResponseObserver
 {
     /**
      * Handle the User "created" event.
-     *
-     * @param  AnswerResponse  $answerResponse
-     * @return void
      */
     public function creating(AnswerResponse $answerResponse): void
     {

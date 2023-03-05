@@ -31,7 +31,6 @@ class NftController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreNftRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function store(StoreNftRequest $request)
@@ -42,7 +41,6 @@ class NftController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Nft  $nft
      * @return \Illuminate\Http\Response
      */
     public function show(Nft $nft)
@@ -53,7 +51,6 @@ class NftController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Nft  $nft
      * @return \Illuminate\Http\Response
      */
     public function edit(Nft $nft)
@@ -64,8 +61,6 @@ class NftController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateNftRequest  $request
-     * @param  \App\Models\Nft  $nft
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateNftRequest $request, Nft $nft)
@@ -76,7 +71,6 @@ class NftController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Nft  $nft
      * @return \Illuminate\Http\Response
      */
     public function destroy(Nft $nft)

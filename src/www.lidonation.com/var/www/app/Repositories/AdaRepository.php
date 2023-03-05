@@ -15,8 +15,6 @@ class AdaRepository extends Repository
 
     /**
      * Get Ada fiat quote with 15 minutes of freshness
-     *
-     * @return object|null
      */
     public function quote(): ?object
     {

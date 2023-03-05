@@ -22,8 +22,6 @@ class CatalystUsers extends Resource
 {
     /**
      * The model the resource corresponds to.
-     *
-     * @var string
      */
     public static string $model = CatalystUser::class;
 
@@ -47,9 +45,6 @@ class CatalystUsers extends Resource
 
     /**
      * Get the fields displayed by the resource.
-     *
-     * @param  Request  $request
-     * @return array
      */
     public function fields(Request $request): array
     {
@@ -114,9 +109,6 @@ class CatalystUsers extends Resource
 
     /**
      * Get the actions available for the resource.
-     *
-     * @param  Request  $request
-     * @return array
      */
     #[Pure]
  public function actions(Request $request): array

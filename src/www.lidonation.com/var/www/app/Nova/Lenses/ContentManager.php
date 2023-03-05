@@ -18,7 +18,6 @@ class ContentManager extends Lens
     /**
      * Get the query builder / paginator for the lens.
      *
-     * @param  LensRequest  $request
      * @param  Builder  $query
      * @return Builder
      */
@@ -45,9 +44,6 @@ class ContentManager extends Lens
 
     /**
      * Get the columns that should be selected.
-     *
-     * @param  LensRequest  $request
-     * @return array
      */
     protected static function columns(LensRequest $request): array
     {
@@ -66,9 +62,6 @@ class ContentManager extends Lens
 
     /**
      * Get the fields available to the lens.
-     *
-     * @param  Request  $request
-     * @return array
      */
     public function fields(Request $request): array
     {
@@ -95,9 +88,6 @@ class ContentManager extends Lens
 
     /**
      * Get the cards available on the lens.
-     *
-     * @param  Request  $request
-     * @return array
      */
     #[Pure]
  public function cards(Request $request): array
@@ -107,9 +97,6 @@ class ContentManager extends Lens
 
     /**
      * Get the filters available for the lens.
-     *
-     * @param  Request  $request
-     * @return array
      */
     public function filters(Request $request): array
     {
@@ -118,9 +105,6 @@ class ContentManager extends Lens
 
     /**
      * Get the actions available on the lens.
-     *
-     * @param  Request  $request
-     * @return array
      */
     public function actions(Request $request): array
     {
@@ -129,8 +113,6 @@ class ContentManager extends Lens
 
     /**
      * Get the URI key for the lens.
-     *
-     * @return string
      */
     public function uriKey(): string
     {

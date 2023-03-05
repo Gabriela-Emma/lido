@@ -20,9 +20,6 @@ class Withdrawal extends Model implements IHasMetaData
 
     /**
      * Scope a query to only include popular users.
-     *
-     * @param  Builder  $query
-     * @return Builder
      */
     public function scopePending(Builder $query): Builder
     {
@@ -38,9 +35,6 @@ class Withdrawal extends Model implements IHasMetaData
 
     /**
      * Scope a query to only include popular users.
-     *
-     * @param  Builder  $query
-     * @return Builder
      */
     public function scopeValidated(Builder $query): Builder
     {

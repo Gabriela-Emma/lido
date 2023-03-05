@@ -12,8 +12,6 @@ class CommentPolicy extends AppPolicy
     /**
      * Determine whether the user can view any models.
      *
-     * @param  User  $user
-     * @return mixed
      *
      * @throws \Exception
      */
@@ -25,9 +23,6 @@ class CommentPolicy extends AppPolicy
     /**
      * Determine whether the user can view the model.
      *
-     * @param  User  $user
-     * @param  Assessment|Comment  $comment
-     * @return bool
      *
      * @throws \Exception
      */
@@ -38,9 +33,6 @@ class CommentPolicy extends AppPolicy
 
     /**
      * Determine whether the user can create models.
-     *
-     * @param  User  $user
-     * @return bool
      */
     public function create(User $user): bool
     {
@@ -49,10 +41,6 @@ class CommentPolicy extends AppPolicy
 
     /**
      * Determine whether the user can update the model.
-     *
-     * @param  User  $user
-     * @param  Assessment|Comment  $comment
-     * @return mixed
      */
     public function update(User $user, Assessment|Comment $comment): mixed
     {
@@ -61,10 +49,6 @@ class CommentPolicy extends AppPolicy
 
     /**
      * Determine whether the user can delete the model.
-     *
-     * @param  User  $user
-     * @param  Assessment|Comment  $comment
-     * @return mixed
      */
     public function delete(User $user, Assessment|Comment $comment): mixed
     {

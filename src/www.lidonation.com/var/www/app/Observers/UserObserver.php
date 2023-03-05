@@ -13,7 +13,6 @@ class UserObserver
     /**
      * Handle the User "created" event.
      *
-     * @param  User  $user
      * @return void
      */
     public function updating(User $user)

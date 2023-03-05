@@ -28,11 +28,8 @@ trait HasMetaData
     }
 
     /**
-     * @param  string  $key
-     * @param  string  $content
      * @param  mixed  $model
      * @param  bool  $updateIfExist
-     * @return bool
      */
     public function saveMeta(string $key, string $content, ?IHasMetaData $model = null, $updateIfExist = true): bool
     {

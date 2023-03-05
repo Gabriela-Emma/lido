@@ -10,7 +10,6 @@ class PurposeDrivenPoolComposer
     /**
      * Create a new profile composer.
      *
-     * @param  PoolRepository  $pools
      * @return void
      */
     public function __construct(protected PoolRepository $pools)
@@ -20,7 +19,6 @@ class PurposeDrivenPoolComposer
     /**
      * Bind data to the view.
      *
-     * @param  View  $view
      * @return void
      */
     public function compose(View $view)

@@ -32,7 +32,6 @@ class GiveawayController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreGiveawayRequest  $request
      * @return Response
      */
     public function store(StoreGiveawayRequest $request)
@@ -43,7 +42,6 @@ class GiveawayController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Giveaway  $giveaway
      * @return Response
      */
     public function show(Giveaway $giveaway)
@@ -54,7 +52,6 @@ class GiveawayController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Giveaway  $giveaway
      * @return Response
      */
     public function edit(Giveaway $giveaway)
@@ -65,8 +62,6 @@ class GiveawayController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateGiveawayRequest  $request
-     * @param  \App\Models\Giveaway  $giveaway
      * @return Response
      */
     public function update(UpdateGiveawayRequest $request, Giveaway $giveaway)
@@ -77,7 +72,6 @@ class GiveawayController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Giveaway  $giveaway
      * @return Response
      */
     public function destroy(Giveaway $giveaway)

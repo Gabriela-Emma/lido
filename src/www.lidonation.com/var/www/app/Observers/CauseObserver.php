@@ -17,7 +17,6 @@ class CauseObserver
     /**
      * Handle the User "created" event.
      *
-     * @param  Cause  $Cause
      * @return void
      */
     public function creating(Cause $Cause)

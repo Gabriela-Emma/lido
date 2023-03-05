@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api\Partners;
 
 use App\Enums\RoleEnum;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Invokable;
 use App\Http\Controllers\Invokable\CreateUserController;
 use App\Models\User;
 use Exception;

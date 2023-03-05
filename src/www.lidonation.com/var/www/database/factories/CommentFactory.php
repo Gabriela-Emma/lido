@@ -12,7 +12,6 @@ class CommentFactory extends Factory
     /**
      * Define the model's default state.
      *
-     * @return array
      *
      * @throws \Exception
      */
