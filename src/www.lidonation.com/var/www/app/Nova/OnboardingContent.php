@@ -8,15 +8,11 @@ class OnboardingContent extends Articles
 
     /**
      * Custom priority level of the resource.
-     *
-     * @var int
      */
     public static int $priority = 5;
 
     /**
      * The model the resource corresponds to.
-     *
-     * @var string
      */
     public static string $model = \App\Models\OnboardingContent::class;
 

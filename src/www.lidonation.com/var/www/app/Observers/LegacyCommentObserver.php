@@ -10,9 +10,6 @@ class LegacyCommentObserver
 {
     /**
      * Handle the User "created" event.
-     *
-     * @param  Assessment  $comment
-     * @return void
      */
     public function creating(Assessment $comment): void
     {

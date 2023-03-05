@@ -14,8 +14,6 @@ class ActivePoolScope implements Scope
     /**
      * Apply the scope to a given Eloquent query builder.
      *
-     * @param  Builder  $builder
-     * @param  PoolUpdate|Model  $model
      * @return void
      */
     public function apply(Builder $builder, PoolUpdate|Model $model)

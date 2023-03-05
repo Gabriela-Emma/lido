@@ -28,7 +28,6 @@ class RefreshLidoTwitterToken implements ShouldQueue
     /**
      * Execute the job.
      *
-     * @return void
      *
      * @throws GuzzleException
      */

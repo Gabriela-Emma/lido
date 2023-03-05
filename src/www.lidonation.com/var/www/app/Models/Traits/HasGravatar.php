@@ -8,8 +8,6 @@ trait HasGravatar
 {
     /**
      * The attribute name containing the email address.
-     *
-     * @var string
      */
     public string $gravatarEmailField = 'email';
 

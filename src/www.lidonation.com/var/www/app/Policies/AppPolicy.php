@@ -12,7 +12,6 @@ class AppPolicy
     /**
      * Perform pre-authorization checks.
      *
-     * @param  \App\Models\User  $user
      * @param  string  $ability
      * @return void|bool
      */
@@ -26,7 +25,6 @@ class AppPolicy
     /**
      * Determine whether the user can view any models.
      *
-     * @param  User  $user
      * @return mixed
      */
     public function canViewAny(User $user)
@@ -37,8 +35,6 @@ class AppPolicy
     /**
      * Determine whether the user can view the model.
      *
-     * @param  User  $user
-     * @return mixed
      *
      * @throws \Exception
      */
@@ -49,9 +45,6 @@ class AppPolicy
 
     /**
      * Determine whether the user can create models.
-     *
-     * @param  User  $user
-     * @return bool
      */
     public function canCreate(User $user): bool
     {
@@ -61,7 +54,6 @@ class AppPolicy
     /**
      * Determine whether the user can update the model.
      *
-     * @param  User  $user
      * @return mixed
      */
     public function canUpdate(User $user)
@@ -72,7 +64,6 @@ class AppPolicy
     /**
      * Determine whether the user can update the model.
      *
-     * @param  User  $user
      * @return mixed
      */
     public function canUpdateAny(User $user)
@@ -83,7 +74,6 @@ class AppPolicy
     /**
      * Determine whether the user can delete the model.
      *
-     * @param  User  $user
      * @return mixed
      */
     public function canDelete(User $user)
@@ -94,7 +84,6 @@ class AppPolicy
     /**
      * Determine whether the user can delete the model.
      *
-     * @param  User  $user
      * @return mixed
      */
     public function canDeleteAny(User $user)

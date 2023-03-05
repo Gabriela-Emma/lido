@@ -11,7 +11,6 @@ class RatingObserver
     /**
      * Handle the Rating "created" event.
      *
-     * @param  Rating  $rating
      * @return void
      */
     public function creating(Rating $rating)
@@ -24,7 +23,6 @@ class RatingObserver
     /**
      * Handle the Rating "created" event.
      *
-     * @param  Rating  $rating
      * @return void
      */
     public function created(Rating $rating)

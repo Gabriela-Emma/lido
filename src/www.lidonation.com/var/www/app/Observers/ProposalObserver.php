@@ -15,7 +15,6 @@ class ProposalObserver
     /**
      * Handle the User "created" event.
      *
-     * @param  Proposal  $proposal
      * @return void
      */
     public function creating(Proposal $proposal)

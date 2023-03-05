@@ -16,7 +16,6 @@ class DefinitionObserver
     /**
      * Handle the User "created" event.
      *
-     * @param  Definition  $definition
      * @return void
      */
     public function creating(Definition $definition)

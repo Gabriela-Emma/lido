@@ -10,7 +10,6 @@ class CommentObserver
     /**
      * Handle the User "created" event.
      *
-     * @param  Comment  $comment
      * @return void
      */
     public function creating(Comment $comment)

@@ -30,9 +30,6 @@ class IssuePoolRewards implements ShouldQueue
 
     /**
      * Execute the job.
-     *
-     * @param  CardanoBlockfrostService  $blockfrostService
-     * @return void
      */
     public function handle(CardanoBlockfrostService $blockfrostService): void
     {
@@ -79,8 +76,6 @@ class IssuePoolRewards implements ShouldQueue
 
     /**
      * Get the middleware the job should pass through.
-     *
-     * @return array
      */
     public function middleware(): array
     {

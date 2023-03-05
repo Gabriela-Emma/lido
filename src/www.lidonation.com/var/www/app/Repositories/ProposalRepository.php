@@ -36,9 +36,6 @@ class ProposalRepository extends Repository
            return $query->count();
        }
 
-       /**
-        * @param $scope
-        */
        public function count($scope = null)
        {
            if ((bool) $scope) {
@@ -51,7 +48,6 @@ class ProposalRepository extends Repository
        }
 
        /**
-        * @param ...$taxonomies
         * @return mixed
         * Return posts in passed taxonomy class.
         * If no taxonomy is passed, you may pass mixed taxonomy types if passing in objects

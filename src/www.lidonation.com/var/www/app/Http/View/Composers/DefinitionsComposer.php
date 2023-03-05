@@ -12,8 +12,6 @@ class DefinitionsComposer
 
     /**
      * Create a new profile composer.
-     *
-     * @param  DefinitionRepository  $definitionRepository
      */
     public function __construct(protected DefinitionRepository $definitionRepository)
     {
@@ -23,7 +21,6 @@ class DefinitionsComposer
     /**
      * Bind data to the view.
      *
-     * @param  View  $view
      * @return void
      */
     public function compose(View $view)

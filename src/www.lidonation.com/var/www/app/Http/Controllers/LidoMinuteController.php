@@ -31,7 +31,6 @@ class LidoMinuteController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreLidoMinuteRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function store(StoreLidoMinuteRequest $request)
@@ -42,7 +41,6 @@ class LidoMinuteController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\LidoMinute  $lidoMinute
      * @return \Illuminate\Http\Response
      */
     public function show(LidoMinute $lidoMinute)
@@ -53,7 +51,6 @@ class LidoMinuteController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\LidoMinute  $lidoMinute
      * @return \Illuminate\Http\Response
      */
     public function edit(LidoMinute $lidoMinute)
@@ -64,8 +61,6 @@ class LidoMinuteController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateLidoMinuteRequest  $request
-     * @param  \App\Models\LidoMinute  $lidoMinute
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateLidoMinuteRequest $request, LidoMinute $lidoMinute)
@@ -76,7 +71,6 @@ class LidoMinuteController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\LidoMinute  $lidoMinute
      * @return \Illuminate\Http\Response
      */
     public function destroy(LidoMinute $lidoMinute)

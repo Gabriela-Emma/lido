@@ -20,7 +20,6 @@ class FundRepository extends Repository
 
     /**
      * @param  null  $scope
-     * @return array|Collection
      */
     public function funds($scope = null): array|Collection
     {
@@ -46,7 +45,6 @@ class FundRepository extends Repository
     }
 
     /**
-     * @param  Fund  $fund
      * @return Collection|Builder[]
      */
     public function fundChallenges(Fund $fund): Collection|array
@@ -69,7 +67,6 @@ class FundRepository extends Repository
     }
 
     /**
-     * @param ...$taxonomies
      * @return mixed
      * Return posts in passed taxonomy class.
      * If no taxonomy is passed, you may pass mixed taxonomy types if passing in objects

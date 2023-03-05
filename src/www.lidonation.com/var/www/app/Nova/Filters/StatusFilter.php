@@ -23,10 +23,8 @@ class StatusFilter extends Filter
     /**
      * Apply the filter to the given query.
      *
-     * @param  Request  $request
      * @param  Builder  $query
      * @param  mixed  $value
-     * @return Builder
      */
     public function apply(Request $request, $query, $value): Builder
     {
@@ -35,9 +33,6 @@ class StatusFilter extends Filter
 
     /**
      * Get the filter's available options.
-     *
-     * @param  Request  $request
-     * @return array
      */
     #[ArrayShape(['Funded' => 'string', 'Unfunded' => 'string', 'Over Budget' => 'string'])]
     public function options(Request $request): array
@@ -51,9 +46,6 @@ class StatusFilter extends Filter
 
     /**
      * The default value of the filter.
-     *
-     *
-     * @return string|null
      */
     public function default(): ?string
     {

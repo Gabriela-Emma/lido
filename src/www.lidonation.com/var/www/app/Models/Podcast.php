@@ -51,8 +51,6 @@ class Podcast extends Model implements HasLink, IHasMetaData, HasMedia
 
     /**
      * Get the user's first name.
-     *
-     * @return Attribute
      */
     protected function streamId(): Attribute
     {
@@ -63,8 +61,6 @@ class Podcast extends Model implements HasLink, IHasMetaData, HasMedia
 
     /**
      * Get the user's first name.
-     *
-     * @return Attribute
      */
     protected function isScheduled(): Attribute
     {
@@ -75,8 +71,6 @@ class Podcast extends Model implements HasLink, IHasMetaData, HasMedia
 
     /**
      * Get the user's first name.
-     *
-     * @return Attribute
      */
     protected function streamLink(): Attribute
     {

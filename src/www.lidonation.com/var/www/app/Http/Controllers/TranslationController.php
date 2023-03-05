@@ -30,7 +30,6 @@ class TranslationController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -41,7 +40,6 @@ class TranslationController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Translation  $translation
      * @return \Illuminate\Http\Response
      */
     public function show(Translation $translation)
@@ -52,7 +50,6 @@ class TranslationController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Translation  $translation
      * @return \Illuminate\Http\Response
      */
     public function edit(Translation $translation)
@@ -63,8 +60,6 @@ class TranslationController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Translation  $translation
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Translation $translation)
@@ -75,7 +70,6 @@ class TranslationController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Translation  $translation
      * @return \Illuminate\Http\Response
      */
     public function destroy(Translation $translation)

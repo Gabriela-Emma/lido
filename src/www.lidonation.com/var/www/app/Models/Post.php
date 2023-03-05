@@ -68,8 +68,6 @@ class Post extends Model implements HasMedia, Interfaces\IHasMetaData, Sitemapab
     /**
      * Invalidate the cache automatically
      * upon update in the database.
-     *
-     * @var bool
      */
     protected static bool $flushCacheOnUpdate = true;
 
@@ -349,7 +347,6 @@ class Post extends Model implements HasMedia, Interfaces\IHasMetaData, Sitemapab
     /**
      * Generate unique slug
      *
-     * @param $title
      * @return array|string ()
      */
     public function createSlug($title): array|string
@@ -387,8 +384,6 @@ class Post extends Model implements HasMedia, Interfaces\IHasMetaData, Sitemapab
 
     /**
      * Get the route key for the model.
-     *
-     * @return string
      */
     public function getRouteKeyName(): string
     {

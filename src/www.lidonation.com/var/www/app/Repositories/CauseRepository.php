@@ -15,9 +15,6 @@ class CauseRepository extends Repository
         parent::__construct($model);
     }
 
-       /**
-        * @param $scope
-        */
        public function causes($scope = null): array|Collection
        {
            if ((bool) $scope) {
@@ -28,7 +25,6 @@ class CauseRepository extends Repository
        }
 
        /**
-        * @param ...$taxonomies
         * @return mixed
         * Return posts in passed taxonomy class.
         * If no taxonomy is passed, you may pass mixed taxonomy types if passing in objects

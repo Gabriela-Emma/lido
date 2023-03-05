@@ -17,7 +17,6 @@ class PostRepository extends Repository
     }
 
     /**
-     * @param ...$taxonomies
      * @return mixed
      * Return posts in passed taxonomy class.
      * If no taxonomy is passed, you may pass mixed taxonomy types if passing in objects

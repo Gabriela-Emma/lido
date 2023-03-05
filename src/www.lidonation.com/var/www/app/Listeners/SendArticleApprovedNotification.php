@@ -22,7 +22,6 @@ class SendArticleApprovedNotification implements ShouldQueue
     /**
      * Handle the event.
      *
-     * @param  ArticleApproved  $event
      * @return void
      */
     public function handle(ArticleApproved $event)

@@ -12,7 +12,6 @@ class AnonymousBookmarkPolicy extends AppPolicy
     /**
      * Determine whether the user can view any models.
      *
-     * @param  User  $user
      * @return bool
      *
      * @throws \Exception
@@ -26,9 +25,6 @@ class AnonymousBookmarkPolicy extends AppPolicy
     /**
      * Determine whether the user can view the model.
      *
-     * @param  User  $user
-     * @param  AnonymousBookmark  $anonymousBookmark
-     * @return Response|bool
      *
      * @throws \Exception
      */
@@ -41,7 +37,6 @@ class AnonymousBookmarkPolicy extends AppPolicy
     /**
      * Determine whether the user can create models.
      *
-     * @param  User  $user
      * @return bool
      */
     public function create(User $user)
@@ -52,9 +47,6 @@ class AnonymousBookmarkPolicy extends AppPolicy
     /**
      * Determine whether the user can update the model.
      *
-     * @param  User  $user
-     * @param  AnonymousBookmark  $anonymousBookmark
-     * @return Response|bool
      *
      * @throws \Exception
      */
@@ -67,8 +59,6 @@ class AnonymousBookmarkPolicy extends AppPolicy
     /**
      * Determine whether the user can delete the model.
      *
-     * @param  User  $user
-     * @param  AnonymousBookmark  $anonymousBookmark
      * @return bool
      */
     public function delete(User $user, AnonymousBookmark $anonymousBookmark)
@@ -79,9 +69,6 @@ class AnonymousBookmarkPolicy extends AppPolicy
     /**
      * Determine whether the user can restore the model.
      *
-     * @param  User  $user
-     * @param  AnonymousBookmark  $anonymousBookmark
-     * @return bool
      *
      * @throws \Exception
      */
@@ -92,10 +79,6 @@ class AnonymousBookmarkPolicy extends AppPolicy
 
     /**
      * Determine whether the user can permanently delete the model.
-     *
-     * @param  User  $user
-     * @param  AnonymousBookmark  $anonymousBookmark
-     * @return bool
      */
     public function forceDelete(User $user, AnonymousBookmark $anonymousBookmark): bool
     {

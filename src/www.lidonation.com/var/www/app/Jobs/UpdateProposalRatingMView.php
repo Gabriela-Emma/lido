@@ -15,8 +15,6 @@ class UpdateProposalRatingMView implements ShouldQueue
 
     /**
      * Refresh the view.
-     *
-     * @return void
      */
     public function handle(): void
     {

@@ -10,7 +10,6 @@ class TagObserver
     /**
      * Handle the User "created" event.
      *
-     * @param  Tag  $tag
      * @return void
      */
     public function creating(Tag $tag)

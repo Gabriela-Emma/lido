@@ -27,9 +27,6 @@ class DispersePoolRewards extends Action implements ShouldQueue
     /**
      * Perform the action on the given models.
      *
-     * @param  ActionFields  $fields
-     * @param  Collection  $models
-     * @return void
      *
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
@@ -57,9 +54,6 @@ class DispersePoolRewards extends Action implements ShouldQueue
 
     /**
      * Get the fields available on the action.
-     *
-     * @param  NovaRequest  $request
-     * @return array
      */
     public function fields(NovaRequest $request): array
     {

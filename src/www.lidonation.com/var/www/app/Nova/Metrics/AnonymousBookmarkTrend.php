@@ -11,9 +11,6 @@ class AnonymousBookmarkTrend extends Trend
 {
     /**
      * Calculate the value of the metric.
-     *
-     * @param  NovaRequest  $request
-     * @return TrendResult
      */
     public function calculate(NovaRequest $request): TrendResult
     {
@@ -22,8 +19,6 @@ class AnonymousBookmarkTrend extends Trend
 
     /**
      * Get the ranges available for the metric.
-     *
-     * @return array
      */
     public function ranges(): array
     {

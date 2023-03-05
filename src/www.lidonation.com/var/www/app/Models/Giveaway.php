@@ -55,8 +55,6 @@ class Giveaway extends Model implements HasMedia, Interfaces\HasRules, HasReward
 
     /**
      * Get the user's first name.
-     *
-     * @return Attribute
      */
     public function balances(): Attribute
     {

@@ -53,7 +53,7 @@ const emit = defineEmits({
 });
 let search = ref(props.search);
 watch(search, debounce((term) => {
-    if (term.length > 2) {
+    if (term.length > 1) {
         emit('search', term);
     }
 }, 500));

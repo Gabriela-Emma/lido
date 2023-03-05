@@ -6,8 +6,6 @@ class F3DeveloperEcosystemSeeder extends FSeeder
 {
     /**
      * Run the database seeds.
-     *
-     * @return void
      */
     public function run(): void
     {

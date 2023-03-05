@@ -12,9 +12,6 @@ class MakeSearchableLocaleJob extends MakeSearchable implements ShouldBeUniqueUn
 {
     /**
      * Create a new job instance.
-     *
-     * @param  Collection  $models
-     * @param  array  $locales
      */
     #[Pure]
     public function __construct(Collection $models, public array $locales = ['en', 'es', 'fr', 'sw'])

@@ -11,8 +11,6 @@ class TranslationPolicy extends AppPolicy
     /**
      * Determine whether the user can view any models.
      *
-     * @param  User  $user
-     * @return bool
      *
      * @throws \Exception
      */
@@ -24,9 +22,6 @@ class TranslationPolicy extends AppPolicy
     /**
      * Determine whether the user can view the model.
      *
-     * @param  User  $user
-     * @param  Translation  $translation
-     * @return bool
      *
      * @throws \Exception
      */
@@ -37,9 +32,6 @@ class TranslationPolicy extends AppPolicy
 
     /**
      * Determine whether the user can create models.
-     *
-     * @param  User  $user
-     * @return bool
      */
     public function create(User $user): bool
     {
@@ -48,10 +40,6 @@ class TranslationPolicy extends AppPolicy
 
     /**
      * Determine whether the user can update the model.
-     *
-     * @param  User  $user
-     * @param  Translation  $translation
-     * @return mixed
      */
     public function update(User $user, Translation $translation): mixed
     {
@@ -60,10 +48,6 @@ class TranslationPolicy extends AppPolicy
 
     /**
      * Determine whether the user can delete the model.
-     *
-     * @param  User  $user
-     * @param  Translation  $translation
-     * @return mixed
      */
     public function delete(User $user, Translation $translation): mixed
     {

@@ -30,7 +30,6 @@ class ModelWalletsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -41,7 +40,6 @@ class ModelWalletsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\ModelWallets  $modelWallets
      * @return \Illuminate\Http\Response
      */
     public function show(ModelWallets $modelWallets)
@@ -52,7 +50,6 @@ class ModelWalletsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\ModelWallets  $modelWallets
      * @return \Illuminate\Http\Response
      */
     public function edit(ModelWallets $modelWallets)
@@ -63,8 +60,6 @@ class ModelWalletsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\ModelWallets  $modelWallets
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, ModelWallets $modelWallets)
@@ -75,7 +70,6 @@ class ModelWalletsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\ModelWallets  $modelWallets
      * @return \Illuminate\Http\Response
      */
     public function destroy(ModelWallets $modelWallets)

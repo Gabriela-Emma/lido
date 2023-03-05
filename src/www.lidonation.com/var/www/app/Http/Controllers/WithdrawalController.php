@@ -31,7 +31,6 @@ class WithdrawalController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreWithdrawalRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function store(StoreWithdrawalRequest $request)
@@ -42,7 +41,6 @@ class WithdrawalController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Withdrawal  $withdrawal
      * @return \Illuminate\Http\Response
      */
     public function show(Withdrawal $withdrawal)
@@ -53,7 +51,6 @@ class WithdrawalController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Withdrawal  $withdrawal
      * @return \Illuminate\Http\Response
      */
     public function edit(Withdrawal $withdrawal)
@@ -64,8 +61,6 @@ class WithdrawalController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateWithdrawalRequest  $request
-     * @param  \App\Models\Withdrawal  $withdrawal
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateWithdrawalRequest $request, Withdrawal $withdrawal)
@@ -76,7 +71,6 @@ class WithdrawalController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Withdrawal  $withdrawal
      * @return \Illuminate\Http\Response
      */
     public function destroy(Withdrawal $withdrawal)

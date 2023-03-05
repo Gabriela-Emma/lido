@@ -34,8 +34,6 @@ class Snippet extends Model implements HasMedia, Interfaces\IHasMetaData
     /**
      * Invalidate the cache automatically
      * upon update in the database.
-     *
-     * @var bool
      */
     protected static bool $flushCacheOnUpdate = true;
 

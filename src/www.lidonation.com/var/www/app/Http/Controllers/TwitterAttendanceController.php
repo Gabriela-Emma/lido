@@ -72,7 +72,6 @@ class TwitterAttendanceController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreTwitterAttendanceRequest  $request
      * @return Response
      */
     public function store(StoreTwitterAttendanceRequest $request)
@@ -83,7 +82,6 @@ class TwitterAttendanceController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\TwitterAttendance  $twitterAttendance
      * @return Response
      */
     public function show(TwitterAttendance $twitterAttendance)
@@ -94,7 +92,6 @@ class TwitterAttendanceController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\TwitterAttendance  $twitterAttendance
      * @return Response
      */
     public function edit(TwitterAttendance $twitterAttendance)
@@ -105,8 +102,6 @@ class TwitterAttendanceController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateTwitterAttendanceRequest  $request
-     * @param  \App\Models\TwitterAttendance  $twitterAttendance
      * @return Response
      */
     public function update(UpdateTwitterAttendanceRequest $request, TwitterAttendance $twitterAttendance)
@@ -117,7 +112,6 @@ class TwitterAttendanceController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\TwitterAttendance  $twitterAttendance
      * @return Response
      */
     public function destroy(TwitterAttendance $twitterAttendance)

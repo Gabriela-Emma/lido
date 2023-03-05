@@ -17,24 +17,18 @@ class Model extends EloquentModel
     /**
      * Specify the amount of time to cache queries.
      * Do not specify or set it to null to disable caching.
-     *
-     * @var int|DateTime|null
      */
     public int|DateTime|null $cacheFor = null;
 
     /**
      * Invalidate the cache automatically
      * upon update in the database.
-     *
-     * @var bool
      */
     protected static bool $flushCacheOnUpdate = true;
 
     /**
      * Specify the amount of time to cache queries.
      * Set it to null to disable caching.
-     *
-     * @return DateTime|int|null
      */
     protected function cacheForValue(): DateTime|int|null
     {

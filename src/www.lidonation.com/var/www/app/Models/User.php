@@ -174,8 +174,6 @@ class User extends Authenticatable implements HasMedia, Interfaces\IHasMetaData,
 
     /**
      * Get the URL to the user's profile photo.
-     *
-     * @return string
      */
     public function getBioPicUrlAttribute(): string
     {

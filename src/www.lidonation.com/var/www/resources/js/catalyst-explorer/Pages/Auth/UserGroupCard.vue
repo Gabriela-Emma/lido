@@ -171,98 +171,102 @@
             </dl>
 
 
-                <div class="flex gap-8 sm:col-span-2 w-full relative mt-8 border border-slate-200 p-4">
-                    <div class="w-full" >
-                        <div class="absolute block left-3 -top-1.5 bg-white rounded-sm text-xs px-2">
-                            The Team
-                        </div>
-                        <div class="flex flex-col  justify-between">
-                            <div class="mb-4 w-full justify-end">
-                                <div v-if="group.id != null" class="flex flex-row items-center justify-end">
-                                    <div class="w-80" v-if="saveButton">
-                                        <PersonPicker  :class="{'border rounded-lg bg-white shadow':true}"  v-model="selectedProfile" :key="resetPersonPicker"/>
-                                    </div>
-                                    <div class="flex flex-row items-center w-48 justify-end flex-shrink-0">
-                                        <button v-if="saveButton"
-                                                @click.prevent="addMember"
-                                                class="inline-flex justify-center shrink-0 ml-6 rounded-sm border border-transparent bg-teal-600 py-2 px-4 text-sm font-medium
+            <div class="flex gap-8 sm:col-span-2 w-full relative mt-8 border border-slate-200 p-4" v-if="!!group?.id">
+                <div class="w-full">
+                    <div class="absolute block left-3 -top-1.5 bg-white rounded-sm text-xs px-2">
+                        The Team
+                    </div>
+                    <div class="flex flex-col  justify-between">
+                        <div class="mb-4 w-full justify-end">
+                            <div v-if="group.id != null" class="flex flex-row items-center justify-end">
+                                <div class="w-80" v-if="saveButton">
+                                    <PersonPicker :class="{'border rounded-lg bg-white shadow':true}"
+                                                  v-model="selectedProfile" :key="resetPersonPicker"/>
+                                </div>
+                                <div class="flex flex-row items-center flex-shrink-0">
+                                    <button v-if="saveButton"
+                                            @click.prevent="addMember"
+                                            class="inline-flex justify-center shrink-0 ml-6 rounded-sm border border-transparent bg-teal-600 py-2 px-4 text-sm font-medium
                                                     text-white shadow-sm hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
                                             <span class="flex items-center justify-between ">
                                               Save
                                             </span>
-                                        </button>
-                                        <button v-if="!saveButton"
-                                                @click.prevent="saveButton = !saveButton"
-                                                class="inline-flex justify-center shrink-0 rounded-sm border border-teal-600  py-2 px-4 text-sm font-medium
+                                    </button>
+                                    <button v-if="!saveButton"
+                                            @click.prevent="saveButton = !saveButton"
+                                            class="inline-flex justify-center shrink-0 rounded-sm border border-teal-600  py-2 px-4 text-sm font-medium
                                                 text-teal-600 shadow-sm  focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
                                             <span class="flex items-center justify-between ">
                                                 <PlusIcon class="w-5 h-5 mr-2 -ml-1 text-teal-600" aria-hidden="true"/>
                                                 Add Profile(s)
                                             </span>
-                                        </button>
-                                    </div>
+                                    </button>
                                 </div>
                             </div>
-                            <div class="">
-                                <ul role="list" class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                                    <li v-for="member in members" :key="member.id"
-                                        class="col-span-1 divide-y divide-gray-200 rounded-lg bg-white shadow">
-                                        <div class="flex w-full items-center justify-between space-x-6 p-6">
-                                            <div class="flex-1 truncate">
-                                                <div class="flex items-center space-x-3">
-                                                    <h3 class="truncate text-sm font-medium text-gray-900">{{ member.name }}</h3>
-                                                    <span class="inline-block flex-shrink-0 rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-800">
-                                                        {{member.role}}
-                                                    </span>
-                                                </div>
-                                                <p class="mt-1 truncate text-sm text-gray-500">{{member.title}}</p>
-                                                <TrashIcon @click.prevent="removeMember(member.id)" 
-                                                        class="h-5 w-5 hover:text-gray-600 text-gray-400"/>
-                                            </div>
-                                                <img class="h-10 w-10 flex-shrink-0 rounded-full bg-gray-300" :src="member.profile_photo"
-                                                        alt=""/>
-                                        </div>
-                                        <div>
-                                            <div class="-mt-px flex divide-x divide-gray-200">
-                                                <div class="flex w-0 flex-1">
-                                                    <a :href="`mailto:${member.email}`"
-                                                        class="relative -mr-px inline-flex w-0 flex-1 items-center justify-center rounded-bl-lg border border-transparent py-4 text-sm font-medium text-gray-700 hover:text-gray-500">
-                                                        <EnvelopeIcon class="h-5 w-5 text-gray-400" aria-hidden="true"/>
-                                                        <span class="ml-3">Email</span>
-                                                    </a>
-                                                </div>
-                                                <div class="-ml-px flex w-0 flex-1">
-                                                    <a :href="member.discord"
-                                                        target="_blank"
-                                                        class="relative inline-flex w-0 flex-1 items-center justify-center rounded-br-lg border border-transparent py-4 text-sm font-medium text-gray-700 hover:text-gray-500">
-                                                        <svg role="img" viewBox="0 0 24 24" stroke="currentColor"
-                                                                class="h-5 w-5 fill-current text-gray-400 " fill="gray">
-                                                            <path
-                                                                d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/>
-                                                        </svg>
-                                                        <span class="ml-3 text-gray-700">Discord</span>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
                         </div>
-                    </div>  
+                        <div class="" v-if="!!group.id">
+                            <ul role="list" class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                                <li v-for="member in members" :key="member.id"
+                                    class="col-span-1 divide-y divide-gray-200 rounded-lg bg-white shadow">
+                                    <div class="flex w-full items-center justify-between space-x-6 p-6">
+                                        <div class="flex-1 truncate">
+                                            <div class="flex items-center space-x-3">
+                                                <h3 class="truncate text-sm font-medium text-gray-900">{{
+                                                        member.name
+                                                    }}</h3>
+                                                <span
+                                                    class="inline-block flex-shrink-0 rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-800">
+                                                        {{ member.role }}
+                                                    </span>
+                                            </div>
+                                            <p class="mt-1 truncate text-sm text-gray-500">{{ member.title }}</p>
+                                            <TrashIcon @click.prevent="removeMember(member.id)"
+                                                       class="h-5 w-5 hover:text-gray-600 text-gray-400"/>
+                                        </div>
+                                        <img class="h-10 w-10 flex-shrink-0 rounded-full bg-gray-300"
+                                             :src="member.profile_photo"
+                                             alt=""/>
+                                    </div>
+                                    <div>
+                                        <div class="-mt-px flex divide-x divide-gray-200">
+                                            <div class="flex w-0 flex-1">
+                                                <a :href="`mailto:${member.email}`"
+                                                   class="relative -mr-px inline-flex w-0 flex-1 items-center justify-center rounded-bl-lg border border-transparent py-4 text-sm font-medium text-gray-700 hover:text-gray-500">
+                                                    <EnvelopeIcon class="h-5 w-5 text-gray-400" aria-hidden="true"/>
+                                                    <span class="ml-3">Email</span>
+                                                </a>
+                                            </div>
+                                            <div class="-ml-px flex w-0 flex-1">
+                                                <a :href="member.discord"
+                                                   target="_blank"
+                                                   class="relative inline-flex w-0 flex-1 items-center justify-center rounded-br-lg border border-transparent py-4 text-sm font-medium text-gray-700 hover:text-gray-500">
+                                                    <svg role="img" viewBox="0 0 24 24" stroke="currentColor"
+                                                         class="h-5 w-5 fill-current text-gray-400 " fill="gray">
+                                                        <path
+                                                            d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/>
+                                                    </svg>
+                                                    <span class="ml-3 text-gray-700">Discord</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
-          
+            </div>
 
-
-                <div class="group-proposals-wrapper p-4 bg-slate-50 mt-8">
+            <div class="group-proposals-wrapper p-4 bg-slate-50 mt-8" v-if="!!group?.id">
                 <div>
                     <div class="flex flex-row justify-between">
                         <div class="">
-                            <h3>{{ group.name }} Proposals <span> - more coming soon</span></h3>
+                            <h3>{{ group.name }} Proposals</h3>
                         </div>
-                        <div v-if="group.id != null" class="flex flex-row justify-between w-1/2">
+
+                        <div class="flex flex-row justify-between w-1/2">
                             <div class="flex flex-row items-center w-1/3">
-                                <button v-if="selectedRef.length>0"
+                                <button v-if="selectedRef.length > 0"
                                         @click.prevent="addProposal()"
                                         class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-teal-600 border border-transparent rounded-sm shadow-sm hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
                                     <span class="flex items-center justify-between ">
@@ -272,12 +276,10 @@
                                 </button>
                             </div>
                             <div class="inline-flex w-2/3 shadow-slate-300">
-                                    <ProposalPicker v-model="selectedRef" :class="{'border rounded-lg bg-white shadow':true}" :key="reset" />
+                                <ProposalPicker v-model="selectedRef"
+                                                :class="{'border rounded-lg bg-white shadow':true}" :key="reset"/>
                             </div>
                         </div>
-                    </div>
-                    <div>
-                        <label class="typo__label">Tagging</label>
                     </div>
 
                     <div>
@@ -291,12 +293,12 @@
                                                     <div class="truncate">
                                                         <div class="flex text-sm">
                                                             <p class="truncate font-medium text-teal-600">
-                                                                {{proposal.title }}
+                                                                {{ proposal.title }}
                                                             </p>
-                                                            <!--                                                        <p class="ml-1 flex-shrink-0 font-normal text-gray-500">in {{ position.department }}</p>-->
                                                         </div>
-                                                        <TrashIcon @click.prevent="removeProposal(proposal.id)" 
-                                                             class="w-5 h-5 text-gray-500  hover:text-gray-700" aria-hidden="true"/>
+                                                        <TrashIcon @click.prevent="removeProposal(proposal.id)"
+                                                                   class="w-5 h-5 text-gray-500  hover:text-gray-700"
+                                                                   aria-hidden="true"/>
                                                         <div class="mt-2 flex">
                                                             <div class="flex items-center text-sm text-gray-500">
                                                                 <CalendarIcon
@@ -340,11 +342,10 @@
 
 <script lang="ts" setup>
 import Group from '../../models/group';
-import {EnvelopeIcon} from '@heroicons/vue/20/solid';
+import {CalendarIcon, ChevronRightIcon, EnvelopeIcon, PlusIcon, TrashIcon} from '@heroicons/vue/20/solid';
 import {useForm, usePage} from "@inertiajs/vue3";
-import {Ref, ref, defineEmits} from "vue";
+import {defineEmits, ref, Ref} from "vue";
 import axios from "axios";
-import {CalendarIcon, ChevronRightIcon, PlusIcon,TrashIcon} from '@heroicons/vue/20/solid'
 import Proposal from "../../models/proposal";
 import Profile from '../../models/profile';
 import PersonPicker from "../../modules/people/PersonPicker.vue"
@@ -367,23 +368,23 @@ const emit = defineEmits<{
     (e: 'groupCreated', group: Group): void
 }>();
 
-if(props.group.id !=null)
-{axios.get(`${usePage().props.base_url}/catalyst-explorer/my/groups/${props.group?.id}/proposals`)
-    .then((response) => {
-        initProposals.value = [...response?.data?.data];
-    })
-    .catch((error) => {
-        console.error(error);
-    });
+if (props.group.id != null) {
+    axios.get(`${usePage().props.base_url}/catalyst-explorer/my/groups/${props.group?.id}/proposals`)
+        .then((response) => {
+            initProposals.value = [...response?.data?.data];
+        })
+        .catch((error) => {
+            console.error(error);
+        });
 
-axios.get(`${usePage().props.base_url}/catalyst-explorer/my/groups/${props.group?.id}/members`)
-.then((response) => {
-    members.value =[...response?.data?.data];
-})
-.catch((error) => {
-    console.error(error);
-});}
-
+    axios.get(`${usePage().props.base_url}/catalyst-explorer/my/groups/${props.group?.id}/members`)
+        .then((response) => {
+            members.value = [...response?.data?.data];
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+}
 
 let groupForm = useForm({...props.group});
 let editing = ref(!props?.group?.name || false);
@@ -405,66 +406,61 @@ let submit = () => {
 // removing proposal from the group
 let showRemove = ref(false);
 
-let removeProposal = (id:number) =>
- {   const proposalId= id; 
-
-    axios.delete(`${usePage().props.base_url}/catalyst-explorer/my/groups/${props.group.id}/${proposalId}`,{method:'DELETE'}) // return the actual list
-    .then((res) => {
-        initProposals.value = [...res?.data?.data];
-    })
-    .catch(error => {
-      console.error(error);
-    });
+let removeProposal = (id: number) => {
+    axios.delete(`${usePage().props.base_url}/catalyst-explorer/my/groups/${props.group.id}/proposals/${id}`, {method: 'DELETE'}) // return the actual list
+        .then((res) => {
+            initProposals.value = [...res?.data?.data];
+        })
+        .catch(error => {
+            console.error(error);
+        });
 
 }
 
 // adding new proposals to the group
-let selectedRef :Ref<number[]> = ref([]);
+let selectedRef: Ref<number[]> = ref([]);
 let reset = ref(0)
 let addProposal = () => {
+    const proposalsId = [...selectedRef.value];
 
-   const proposalsId = [...selectedRef.value]; 
-
-  axios.put(`${usePage().props.base_url}/catalyst-explorer/my/groups/${props.group.id}/proposals`, { proposals_id: proposalsId })
-  .then((res) => {
-        initProposals.value = [...res?.data?.data];
-        selectedRef.value = [];
-        reset.value += 1;
-    })
-    .catch(error => {
-      console.error(error);
-    });
+    axios.put(`${usePage().props.base_url}/catalyst-explorer/my/groups/${props.group.id}/proposals`, {proposals_id: proposalsId})
+        .then((res) => {
+            initProposals.value = [...res?.data?.data];
+            selectedRef.value = [];
+            reset.value += 1;
+        })
+        .catch(error => {
+            console.error(error);
+        });
 }
 
 // remove members
-let removeMember = (id:number) =>
- {  
-    const profile_id =[id];
+let removeMember = (id: number) => {
+    const profile_id = [id];
 
-    axios.delete(`${usePage().props.base_url}/catalyst-explorer/my/groups/${props.group.id}/${profile_id}`,{method:'DELETE'})
-    .then((res) =>{
-        members.value = [...res?.data?.data];
-    })
-    .catch((error) => {
-        console.error(error);
-    }); 
+    axios.delete(`${usePage().props.base_url}/catalyst-explorer/my/groups/${props.group.id}/members/${profile_id}`, {method: 'DELETE'})
+        .then((res) => {
+            members.value = [...res?.data?.data];
+        })
+        .catch((error) => {
+            console.error(error);
+        });
 }
 
 // add member
 let selectedProfile: Ref<number[]> = ref([])
 let saveButton = ref(false)
 let resetPersonPicker = ref(0)
-let addMember = () =>
-{   
-    axios.put(`${usePage().props.base_url}/catalyst-explorer/my/groups/${props.group.id}/members`,{profileIDs:[...selectedProfile.value]})
-    .then((res) =>{
-        members.value = [...res?.data?.data];
-        reset.value += 1;
-        selectedProfile.value = []
-        saveButton.value = !saveButton
-    })
-    .catch((error) => {
-        console.error(error);
-    });
+let addMember = () => {
+    axios.put(`${usePage().props.base_url}/catalyst-explorer/my/groups/${props.group.id}/members`, {profileIDs: [...selectedProfile.value]})
+        .then((res) => {
+            members.value = [...res?.data?.data];
+            reset.value += 1;
+            selectedProfile.value = []
+            saveButton.value = !saveButton
+        })
+        .catch((error) => {
+            console.error(error);
+        });
 }
 </script>

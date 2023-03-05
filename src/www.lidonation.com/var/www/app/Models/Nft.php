@@ -61,8 +61,6 @@ class Nft extends Model implements HasLink, HasMedia
 
     /**
      * Get the nft's preview link.
-     *
-     * @return Attribute
      */
     protected function previewLink(): Attribute
     {
@@ -85,11 +83,8 @@ class Nft extends Model implements HasLink, HasMedia
     }
 
     /**
-     * @param  string  $key
-     * @param  string  $content
      * @param  mixed  $model
      * @param  bool  $updateIfExist
-     * @return bool
      */
     public function saveMeta(string $key, string $content, ?IHasMetaData $model = null, $updateIfExist = true): bool
     {

@@ -16,8 +16,6 @@ class FillPostData
      *  index 1 to specify a primitive value to otherwise assign
      *  or a callable that returns a primitive.
      *
-     * @param  Model  $model
-     * @param  array  $_fields
      * @param  callable|null  $fieldsCallback a callable that returns an array.
      */
     public function __invoke(Model $model, array $_fields = [], callable $fieldsCallback = null)

@@ -42,8 +42,6 @@ class LidoMinute extends Post implements Feedable
 
     /**
      * Get the index name for the model.
-     *
-     * @return string
      */
     public function searchableAs(): string
     {

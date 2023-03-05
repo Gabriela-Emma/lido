@@ -22,7 +22,6 @@ class SendContentIdeaContributedNotification implements ShouldQueue
     /**
      * Handle the event.
      *
-     * @param  ContentIdeaContributed  $event
      * @return void
      */
     public function handle(ContentIdeaContributed $event)

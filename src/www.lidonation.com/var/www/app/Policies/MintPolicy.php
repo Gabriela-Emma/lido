@@ -10,9 +10,6 @@ class MintPolicy extends AppPolicy
 {
     /**
      * Determine whether the user can view any models.
-     *
-     * @param  User  $user
-     * @return mixed
      */
     public function viewAny(User $user): mixed
     {
@@ -22,9 +19,6 @@ class MintPolicy extends AppPolicy
     /**
      * Determine whether the user can view the model.
      *
-     * @param  User  $user
-     * @param  Mint  $mint
-     * @return bool
      *
      * @throws \Exception
      */
@@ -35,9 +29,6 @@ class MintPolicy extends AppPolicy
 
     /**
      * Determine whether the user can create models.
-     *
-     * @param  User  $user
-     * @return bool
      */
     public function create(User $user): bool
     {
@@ -46,10 +37,6 @@ class MintPolicy extends AppPolicy
 
     /**
      * Determine whether the user can update the model.
-     *
-     * @param  User  $user
-     * @param  Mint  $mint
-     * @return mixed
      */
     public function update(User $user, Mint $mint): mixed
     {
@@ -59,10 +46,6 @@ class MintPolicy extends AppPolicy
 
     /**
      * Determine whether the user can delete the model.
-     *
-     * @param  User  $user
-     * @param  Mint  $mint
-     * @return mixed
      */
     public function delete(User $user, Mint $mint): mixed
     {

@@ -32,7 +32,6 @@ class QuizController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreQuizRequest  $request
      * @return Response
      */
     public function store(StoreQuizRequest $request)
@@ -43,7 +42,6 @@ class QuizController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Quiz  $quiz
      * @return Response
      */
     public function show(Quiz $quiz)
@@ -54,7 +52,6 @@ class QuizController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Quiz  $quiz
      * @return Response
      */
     public function edit(Quiz $quiz)
@@ -65,8 +62,6 @@ class QuizController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateQuizRequest  $request
-     * @param  \App\Models\Quiz  $quiz
      * @return Response
      */
     public function update(UpdateQuizRequest $request, Quiz $quiz)
@@ -77,7 +72,6 @@ class QuizController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Quiz  $quiz
      * @return Response
      */
     public function destroy(Quiz $quiz)

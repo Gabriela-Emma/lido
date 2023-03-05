@@ -28,7 +28,6 @@ class IndexCommand extends Command
     /**
      * Execute the console command.
      *
-     * @param  EngineManager  $manager
      * @return void
      */
     public function handle(EngineManager $manager)

@@ -26,23 +26,16 @@ class Reviews extends Articles
 {
     /**
      * The model the resource corresponds to.
-     *
-     * @var string
      */
     public static string $model = Review::class;
 
     /**
      * Custom priority level of the resource.
-     *
-     * @var int
      */
     public static int $priority = 4;
 
     /**
      * Get the filters available for the resource.
-     *
-     * @param  Request  $request
-     * @return array
      */
     #[Pure]
     public function filters(Request $request): array
@@ -54,9 +47,6 @@ class Reviews extends Articles
 
        /**
         * Get the actions available for the resource.
-        *
-        * @param  Request  $request
-        * @return array
         */
        #[Pure]
     public function actions(Request $request): array
@@ -71,9 +61,6 @@ class Reviews extends Articles
 
     /**
      * Get the fields displayed by the resource.
-     *
-     * @param  Request  $request
-     * @return array
      */
     public function fields(Request $request): array
     {

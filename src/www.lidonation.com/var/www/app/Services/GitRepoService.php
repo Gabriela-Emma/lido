@@ -38,8 +38,6 @@ class GitRepoService
 
     /**
      * return repository name
-     *
-     * @return string
      */
     public static function repoName(): string
     {
