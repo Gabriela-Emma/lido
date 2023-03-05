@@ -40,9 +40,9 @@ class RepoController extends Controller
         return 'Repository was saved';
     }
 
-    public function updateRepo(Proposal $proposal, Request $request)
+    public function updateRepo(Request $request)
 {  
-    $existingRepo = Repo::where('model_id', $proposal->id)->first();
+    $existingRepo = Repo::where('model_id', $request->proposal_id)->first();
 
     commit::withoutGlobalScope(LimitScope::class);
     $existingCommitsIDs = Commit::where('repo_id', $existingRepo->id)->RemoveLimitScope()->pluck('id');
