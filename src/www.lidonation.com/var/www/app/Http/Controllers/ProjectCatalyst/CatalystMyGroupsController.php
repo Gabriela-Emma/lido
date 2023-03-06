@@ -40,14 +40,15 @@ class CatalystMyGroupsController extends Controller
      */
     public function proposals(Request $request = null, CatalystGroup $catalystGroup)
     {
-        $per_page = request('per_page', 12);
+        $per_page = request('l', 24);
+        $curr_page = request('p', 1);
 
         Proposal::withoutGlobalScopes();
         $proposals = Proposal::whereRelation('groups', 'id', $catalystGroup?->id)
             ->with(['fund', 'users'])
             ->orderBy('title');
 
-        return $proposals->paginate($per_page)->onEachSide(0);
+            return $proposals->paginate($per_page, ['*'], 'p', $curr_page)->setPath('/')->onEachSide(0);
     }
 
     public function removeProposal(CatalystGroup $catalystGroup, $proposalID)

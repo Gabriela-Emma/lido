@@ -326,6 +326,19 @@
                                     </li>
                                 </template>
                             </ul>
+                             <div v-if="links.length > 0">
+                                <div class="flex my-16 gap-16 xl:gap-24 justify-between  w-full">
+                                    <div class="flex-1 w-full px-6">
+                                        <Pagination :links="links"
+                                                    :total="total"
+                                                    :from="from"
+                                                    :to="to"
+                                                    :per-page="perPageRef"
+                                                    @perPageUpdated="(payload) => perPageRef = payload"
+                                                    @paginated="(payload) => currPageRef = payload"/>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -344,12 +357,15 @@
 import Group from '../../models/group';
 import {CalendarIcon, ChevronRightIcon, EnvelopeIcon, PlusIcon, TrashIcon} from '@heroicons/vue/20/solid';
 import {useForm, usePage} from "@inertiajs/vue3";
-import {defineEmits, ref, Ref} from "vue";
+import {defineEmits, ref, Ref, watch} from "vue";
 import axios from "axios";
 import Proposal from "../../models/proposal";
 import Profile from '../../models/profile';
 import PersonPicker from "../../modules/people/PersonPicker.vue"
 import ProposalPicker from '../../modules/proposals/ProposalPicker.vue';
+import PaginationLink from '../../models/pagination-link';
+import Pagination from '../../Shared/Components/Pagination.vue';
+import { VARIABLES } from '../../models/variables';
 
 let initProposals: Ref<Proposal[]> = ref([]);
 let members: Ref<Profile[]> = ref([])
@@ -368,14 +384,24 @@ const emit = defineEmits<{
     (e: 'groupCreated', group: Group): void
 }>();
 
+let getProposals = (queryParam:any=null) => {
+    axios.get(`${usePage().props.base_url}/catalyst-explorer/my/groups/${props.group?.id}/proposals`, { params: queryParam})
+    .then((response) => {
+        initProposals.value = [...response?.data?.data];
+        links.value = [...response?.data.links]
+        total.value = response?.data.total
+        to.value = response?.data.to
+        from.value = response?.data.from
+        initProposals.value = [...response?.data.data]
+        
+    })
+    .catch((error) => {
+        console.error(error);
+    }); 
+}
+
 if (props.group.id != null) {
-    axios.get(`${usePage().props.base_url}/catalyst-explorer/my/groups/${props.group?.id}/proposals`)
-        .then((response) => {
-            initProposals.value = [...response?.data?.data];
-        })
-        .catch((error) => {
-            console.error(error);
-        });
+    getProposals();
 
     axios.get(`${usePage().props.base_url}/catalyst-explorer/my/groups/${props.group?.id}/members`)
         .then((response) => {
@@ -388,6 +414,35 @@ if (props.group.id != null) {
 
 let groupForm = useForm({...props.group});
 let editing = ref(!props?.group?.name || false);
+let currPageRef = ref<number>();
+let perPageRef = ref<number>();
+let links: Ref<PaginationLink[]> = ref([]);
+let total = ref<number>();
+let to = ref<number>();
+let from = ref<number>();
+
+watch(perPageRef, () => {
+    query();
+});
+
+watch(currPageRef, () => {
+    query();
+});
+
+function query()
+{
+    const data = {};
+
+    if (currPageRef.value) {
+        data[VARIABLES.PAGE] = currPageRef.value;
+    }
+    if (perPageRef.value) {
+        data[VARIABLES.PER_PAGE] = perPageRef.value;
+    }
+
+    
+   getProposals(data);
+}
 
 let submit = () => {
     let url;
