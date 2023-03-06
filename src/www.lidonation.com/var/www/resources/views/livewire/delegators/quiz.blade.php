@@ -72,7 +72,7 @@
                                     100 staked
                                 </td>
                                 <td class="hidden whitespace-nowrap px-3 py-4 text-sm text-slate-50 sm:table-cell">
-                                    10%
+                                    15%
                                 </td>
                             </tr>
                             <tr>
@@ -80,7 +80,7 @@
                                     1,000 staked
                                 </td>
                                 <td class="hidden whitespace-nowrap px-3 py-4 text-sm text-slate-50 sm:table-cell">
-                                    25%
+                                    30%
                                 </td>
                             </tr>
 
@@ -89,7 +89,7 @@
                                     8,000 staked
                                 </td>
                                 <td class="hidden whitespace-nowrap px-3 py-4 text-sm text-slate-50 sm:table-cell">
-                                    50%
+                                    55%
                                 </td>
                             </tr>
 
@@ -98,7 +98,43 @@
                                     20,000 staked
                                 </td>
                                 <td class="hidden whitespace-nowrap px-3 py-4 text-sm text-slate-50 sm:table-cell">
-                                    80%
+                                    85%
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-slate-100 sm:pl-6">
+                                    30,000 staked
+                                </td>
+                                <td class="hidden whitespace-nowrap px-3 py-4 text-sm text-slate-50 sm:table-cell">
+                                    100%
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-slate-100 sm:pl-6">
+                                    50,000 staked
+                                </td>
+                                <td class="hidden whitespace-nowrap px-3 py-4 text-sm text-slate-50 sm:table-cell">
+                                    125%
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-slate-100 sm:pl-6">
+                                    75,000 staked
+                                </td>
+                                <td class="hidden whitespace-nowrap px-3 py-4 text-sm text-slate-50 sm:table-cell">
+                                    150%
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-slate-100 sm:pl-6">
+                                    100,000 staked
+                                </td>
+                                <td class="hidden whitespace-nowrap px-3 py-4 text-sm text-slate-50 sm:table-cell">
+                                    200%
                                 </td>
                             </tr>
                             </tbody>

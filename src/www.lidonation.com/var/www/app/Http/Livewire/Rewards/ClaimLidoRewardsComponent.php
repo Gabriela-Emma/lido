@@ -19,8 +19,6 @@ class ClaimLidoRewardsComponent extends Component
     public $rewardsTemplate;
 
     /**
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
      */
     public function loadRewards()
     {
