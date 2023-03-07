@@ -1,4 +1,4 @@
-<div class="menu-items-wrapper  break-inside-avoid mb-8">
+<div class="menu-items-wrapper break-inside-avoid mb-8">
     <h3 class="text-base font-bold text-teal-600">
         {{$menu?->title}}
     </h3>

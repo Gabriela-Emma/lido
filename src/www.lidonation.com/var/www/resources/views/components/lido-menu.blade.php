@@ -58,18 +58,23 @@
                                                        'route' => 'catalystExplorer.myDashboard',
                                                    ]);
                                             }
-                                            $menu = new \Illuminate\Support\Fluent(compact('title', 'items'));
+                                            $userMenu = (new \App\Invokables\GetLidoMenu)([new Illuminate\Support\Fluent(compact('title', 'items'))]);
                                         @endphp
                                         <div class="border border-slate-600 p-2 user-menu-wrapper">
-                                            @include('includes.lido-menu-items')
+                                            @foreach($userMenu as $menu)
+                                                @include('includes.lido-menu-items')
+                                            @endforeach
 
-                                            <div class="inline-flex items-center text-xs md:text-base font-medium text-gray-900 ease-in-out hover:text-teal-800" x-data="{
+                                            <div
+                                                class="inline-flex items-center text-xs md:text-base font-medium text-gray-900 ease-in-out hover:text-teal-800"
+                                                x-data="{
                                                 async logout() {
                                                     await window.axios.post('/logout');
                                                     document.location.reload();
                                                 }
                                             }">
-                                                <a href="#" @click.prevent="logout" class="inline-block text-black font-bold">Logout</a>
+                                                <a href="#" @click.prevent="logout"
+                                                   class="inline-block text-black font-bold">Logout</a>
                                             </div>
                                         </div>
                                     @endauth

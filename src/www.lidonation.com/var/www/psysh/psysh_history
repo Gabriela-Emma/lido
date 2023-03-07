@@ -79,3 +79,5 @@ $existingCommit->get();
 $existingCommits->get();
 $existingCommits->get()->count();
 exit
+route('catalystExplorer.myDashboard');
+exit
