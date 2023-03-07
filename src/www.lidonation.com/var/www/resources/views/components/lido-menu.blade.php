@@ -60,7 +60,7 @@
                                             }
                                             $userMenu = (new \App\Invokables\GetLidoMenu)([new Illuminate\Support\Fluent(compact('title', 'items'))]);
                                         @endphp
-                                        <div class="border border-slate-600 p-2 user-menu-wrapper">
+                                        <div class="border border-slate-600 p-2 break-inside-avoid user-menu-wrapper">
                                             @foreach($userMenu as $menu)
                                                 @include('includes.lido-menu-items')
                                             @endforeach
