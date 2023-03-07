@@ -38,15 +38,22 @@ class CatalystMyGroupsController extends Controller
      *
      * @return AnonymousResourceCollection
      */
+
+    public function proposalsQuery(CatalystGroup $catalystGroup)
+    {   
+        Proposal::withoutGlobalScopes();
+
+        return  Proposal::whereRelation('groups', 'id', $catalystGroup?->id)
+            ->with(['fund', 'users'])
+            ->orderBy('title');
+    }
+
     public function proposals(Request $request = null, CatalystGroup $catalystGroup)
     {
         $per_page = request('l', 24);
         $curr_page = request('p', 1);
 
-        Proposal::withoutGlobalScopes();
-        $proposals = Proposal::whereRelation('groups', 'id', $catalystGroup?->id)
-            ->with(['fund', 'users'])
-            ->orderBy('title');
+        $proposals = $this->proposalsQuery($catalystGroup);
 
             return $proposals->paginate($per_page, ['*'], 'p', $curr_page)->setPath('/')->onEachSide(0);
     }
@@ -125,4 +132,37 @@ class CatalystMyGroupsController extends Controller
             ],
         ];
     }
+
+    // metrics
+    public function metricProposalsCount(CatalystGroup $catalystGroup)
+    {
+        return $this->proposalsQuery($catalystGroup)->count();
+    }
+
+    public function metricTotalAwardedFunds(CatalystGroup $catalystGroup)
+    {
+        $totalAwarded = intval($this->proposalsQuery($catalystGroup)
+            ->whereNotNull('funded_at')->sum('amount_requested'));
+
+        return $totalAwarded;
+    }
+
+    public function metricTotalReceivedFunds(CatalystGroup $catalystGroup)
+    {
+        $totalRecieved = intval($this->proposalsQuery($catalystGroup)
+            ->whereNotNull('funded_at')->sum('amount_received'));
+
+        return $totalRecieved;
+    }
+
+    public function metricTotalFundsRemaining(CatalystGroup $catalystGroup)
+    {
+        return ($this->metricTotalAwardedFunds($catalystGroup) - $this->metricTotalReceivedFunds($catalystGroup));
+
+    }
+
+
+
+
+
 }
