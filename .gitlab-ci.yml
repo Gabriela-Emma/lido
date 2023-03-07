@@ -165,6 +165,7 @@ image: registry.lidonation.com/infra-ops/gitlab-runner:main
       --set services.web.secret.MAIL_USERNAME="$MAILTRAP_USERNAME" \
       --set services.web.secret.MAIL_PASSWORD="$MAILTRAP_PASSWORD" \
       --set services.web.secret.DEEPL_AUTH_KEY="$DEEPL_AUTH_KEY" \
+      --set services.web.secret.INSPECTOR_INGESTION_KEY="$INSPECTOR_INGESTION_KEY" \
       --set services.web.secret.MEILISEARCH_KEY="$MEILISEARCH_KEY" \
       --set services.web.secret.STRIPE_SK="$STRIPE_SK" \
       --set services.web.secret.STRIPE_PK="$STRIPE_PK" \
