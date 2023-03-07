@@ -2,25 +2,25 @@
     <div class="overflow-hidden bg-white sm:rounded-sm">
         <div class="px-4 py-5 sm:px-6 flex justify-between items-center">
             <div>
-                <h3 class="text-lg xl:text-xl font-medium leading-6 text-slate-900">
+                <h3 class="text-lg xl:text-xl f font-semibold leading-6 text-slate-900">
                     {{ group.name }}
                 </h3>
                 <div class="flex gap-4 text-slate-400">
                     <div class="flex gap-1 ">
                         <div>Total Proposals</div>
-                        <div class="font-semibold">-</div>
+                        <div class="font-semibold text-slate-900">- {{ totalProposals }}</div>
                     </div>
                     <div class="flex gap-1">
                         <div>Total Awarded</div>
-                        <div class="font-semibold">-</div>
+                        <div class="font-semibold text-slate-900">- {{ $filters.currency(totalAwarded)  }}</div>
                     </div>
                     <div class="flex gap-1">
                         <div>Total Received</div>
-                        <div class="font-semibold">-</div>
+                        <div class="font-semibold text-slate-900">- {{ $filters.currency(totalReceived)  }}</div>
                     </div>
                     <div class="flex gap-1">
                         <div>Funding Remaining</div>
-                        <div class="font-semibold">-</div>
+                        <div class="font-semibold text-slate-900">- {{ $filters.currency(totalRemaining)  }}</div>
                     </div>
                 </div>
             </div>
@@ -393,11 +393,14 @@ let getProposals = (queryParam:any=null) => {
         to.value = response?.data.to
         from.value = response?.data.from
         initProposals.value = [...response?.data.data]
-        
     })
     .catch((error) => {
         console.error(error);
     }); 
+
+    getMetrics();
+
+
 }
 
 if (props.group.id != null) {
@@ -420,6 +423,13 @@ let links: Ref<PaginationLink[]> = ref([]);
 let total = ref<number>();
 let to = ref<number>();
 let from = ref<number>();
+
+let totalProposals = ref<number>();
+let totalAwarded = ref<number>();
+let totalReceived = ref<number>();
+let totalRemaining = ref<number>();
+
+
 
 watch(perPageRef, () => {
     query();
@@ -465,6 +475,7 @@ let removeProposal = (id: number) => {
     axios.delete(`${usePage().props.base_url}/catalyst-explorer/my/groups/${props.group.id}/proposals/${id}`, {method: 'DELETE'}) // return the actual list
         .then((res) => {
             initProposals.value = [...res?.data?.data];
+            getMetrics();
         })
         .catch(error => {
             console.error(error);
@@ -483,10 +494,13 @@ let addProposal = () => {
             initProposals.value = [...res?.data?.data];
             selectedRef.value = [];
             reset.value += 1;
+            getMetrics();
         })
         .catch(error => {
             console.error(error);
         });
+
+        
 }
 
 // remove members
@@ -517,5 +531,45 @@ let addMember = () => {
         .catch((error) => {
             console.error(error);
         });
+}
+
+// group's proposals metrics
+function getMetrics()
+{
+    // proposal count 
+    axios.get(`${usePage().props.base_url}/catalyst-explorer/my/groups/${props.group.id}/sum/proposals`)
+    .then((res) => {
+        totalProposals.value = res?.data;
+    })
+    .catch((error) => {
+            console.error(error);
+    });
+
+
+    axios.get(`${usePage().props.base_url}/catalyst-explorer/my/groups/${props.group.id}/sum/awarded`)
+    .then((res) => {
+        totalAwarded.value = res?.data;
+    })
+    .catch((error) => {
+            console.error(error);
+    });
+
+
+    axios.get(`${usePage().props.base_url}/catalyst-explorer/my/groups/${props.group.id}/sum/received`)
+    .then((res) => {
+        totalReceived.value = res?.data;
+    })
+    .catch((error) => {
+            console.error(error);
+    });
+
+
+    axios.get(`${usePage().props.base_url}/catalyst-explorer/my/groups/${props.group.id}/sum/remaining`)
+    .then((res) => {
+        totalRemaining.value = res?.data;
+    })
+    .catch((error) => {
+            console.error(error);
+    });
 }
 </script>
