@@ -29,6 +29,7 @@
         "halaxa/json-machine": "^1.1",
         "http-interop/http-factory-guzzle": "^1.2",
         "inertiajs/inertia-laravel": "^0.6.3",
+        "inspector-apm/inspector-laravel": "^4.7",
         "laraeast/laravel-bootstrap-forms": "^5.2",
         "laraeast/laravel-locales": "^3.2",
         "laravel/framework": "^9.40",
