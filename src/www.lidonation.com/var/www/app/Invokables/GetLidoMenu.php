@@ -9,9 +9,9 @@ use Illuminate\Support\Facades\Route;
 
 class GetLidoMenu
 {
-    public function __invoke(): Collection
+    public function __invoke($menu = null): Collection
     {
-        return collect(config('menu'))->map(function ($menu) {
+        return collect($menu ?? config('menu'))->map(function ($menu) {
             $menu->items = $this->processMenuItems(collect($menu->items));
 
             return $menu;

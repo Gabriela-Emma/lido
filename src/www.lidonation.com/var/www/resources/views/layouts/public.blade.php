@@ -48,7 +48,7 @@
 </head>
 <body x-data {{Route::currentRouteName() != 'phuffycoin' && Route::currentRouteName() != 'governanceMarathon' &&  Route::currentRouteName() != 'delegators' ? 'x-cloak' : ''}}
     {{$attributes->merge([
-        'class' => 'min-h-screen min-w-[320px] relative text-lg xl:text-xl h-0 font-sans text-gray-900 antialiased w-screen ' . app()->getLocale() . ' ' . implode(' ', explode('.', Route::currentRouteName()))
+        'class' => 'min-h-screen min-w-[320px] relative text-lg xl:text-xl h-0 font-sans text-gray-900 antialiased w-screen ' . app()->getLocale() . ' ' . implode(' ', explode('.', Route::currentRouteName())) . (\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::user()?->hasAnyRole(['editor','admin', 'super admin']) ? ' logged-in admin ' : '')
     ])}}>
 
     @include('includes.global-search-handler')

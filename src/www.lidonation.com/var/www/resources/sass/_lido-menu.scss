@@ -33,6 +33,14 @@ body.delegators {
     }
 }
 
+body.logged-in.admin {
+    .lido-menu-wrapper {
+        .lido-menu-wrapper-modal {
+            @apply top-32;
+        }
+    }
+}
+
 body.projectCatalyst, body.proposal {
     .lido-menu-wrapper {
         .lido-menu-wrapper-modal {
