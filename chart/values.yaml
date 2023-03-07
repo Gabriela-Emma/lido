@@ -282,7 +282,8 @@ services:
     }
     secret:
       app_key:
-      DEEPL_AUTH_KEY:      
+      DEEPL_AUTH_KEY:
+      INSPECTOR_INGESTION_KEY: ''
       MAIL_PASSWORD: 'password'
       MAIL_USERNAME: 'username'
       RECAPTCHA_V3_SECRET_KEY:
