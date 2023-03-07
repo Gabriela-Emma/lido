@@ -248,6 +248,13 @@ Route::group(
                 Route::post('/groups', [CatalystGroupsController::class, 'create']);
                 Route::get('/groups', [CatalystMyGroupsController::class, 'index'])
                     ->name('myGroups');
+
+                // group proposal metrics
+                Route::get('/groups/{catalystGroup:id}/sum/proposals', [CatalystMyGroupsController::class, 'metricProposalsCount']);
+                Route::get('/groups/{catalystGroup:id}/sum/awarded', [CatalystMyGroupsController::class, 'metricTotalAwardedFunds']);
+                Route::get('/groups/{catalystGroup:id}/sum/received', [CatalystMyGroupsController::class, 'metricTotalReceivedFunds']);
+                Route::get('/groups/{catalystGroup:id}/sum/remaining', [CatalystMyGroupsController::class, 'metricTotalFundsRemaining']);
+
             });
         });
 
