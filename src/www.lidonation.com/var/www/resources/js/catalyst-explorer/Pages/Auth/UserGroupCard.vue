@@ -371,6 +371,7 @@ let initProposals: Ref<Proposal[]> = ref([]);
 let members: Ref<Profile[]> = ref([])
 const props = withDefaults(
     defineProps<{
+        perPage: number;
         group: Group;
     }>(),
     {
@@ -396,7 +397,7 @@ let getProposals = (queryParam:any=null) => {
     })
     .catch((error) => {
         console.error(error);
-    }); 
+    });
 
     getMetrics();
 
@@ -418,7 +419,7 @@ if (props.group.id != null) {
 let groupForm = useForm({...props.group});
 let editing = ref(!props?.group?.name || false);
 let currPageRef = ref<number>();
-let perPageRef = ref<number>();
+let perPageRef = ref<number>(8);
 let links: Ref<PaginationLink[]> = ref([]);
 let total = ref<number>();
 let to = ref<number>();
@@ -428,8 +429,6 @@ let totalProposals = ref<number>();
 let totalAwarded = ref<number>();
 let totalReceived = ref<number>();
 let totalRemaining = ref<number>();
-
-
 
 watch(perPageRef, () => {
     query();
@@ -450,7 +449,7 @@ function query()
         data[VARIABLES.PER_PAGE] = perPageRef.value;
     }
 
-    
+
    getProposals(data);
 }
 
@@ -500,7 +499,7 @@ let addProposal = () => {
             console.error(error);
         });
 
-        
+
 }
 
 // remove members
@@ -536,7 +535,7 @@ let addMember = () => {
 // group's proposals metrics
 function getMetrics()
 {
-    // proposal count 
+    // proposal count
     axios.get(`${usePage().props.base_url}/catalyst-explorer/my/groups/${props.group.id}/sum/proposals`)
     .then((res) => {
         totalProposals.value = res?.data;

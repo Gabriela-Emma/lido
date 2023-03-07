@@ -6,7 +6,7 @@
                     placeholder="Per Page"
                     v-model="perPageRef"
                     :can-clear="false"
-                    :options="[12, 24, 36, 64, 128]"
+                    :options="[8, 12, 24, 36, 64, 128]"
                     :classes="{
                 container: 'multiselect border-0 px-1 py-2 flex-wrap rounded-sm bg-slate-50',
                 containerActive: 'shadow-none shadow-transparent box-shadow-none',
@@ -101,7 +101,7 @@ const props = withDefaults(
         total?: number,
         links?: PaginationLink[],
     }>(), {perPage: 24});
-
+console.log(props);
 let perPageRef = ref(props.perPage);
 
 const emit = defineEmits<{

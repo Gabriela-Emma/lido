@@ -71,10 +71,9 @@ import UserNav from "./UserNav.vue";
 import UserGroupCard from "./UserGroupCard.vue";
 import Group from "../../models/group";
 import {PlusIcon} from '@heroicons/vue/20/solid';
-import {ref, Ref, computed} from "vue";
+import {ref, Ref} from "vue";
 import Profile from "../../models/profile";
 import Multiselect from '@vueform/multiselect';
-import {reactive} from "@vue/reactivity";
 
 
 let newGroups = [];

@@ -13,7 +13,7 @@ use Inertia\Response;
 
 class CatalystMyGroupsController extends Controller
 {
-    protected int $perPage = 24;
+    protected int $perPage = 8;
 
     public function manage(CatalystGroup $group)
     {
@@ -40,7 +40,7 @@ class CatalystMyGroupsController extends Controller
      */
 
     public function proposalsQuery(CatalystGroup $catalystGroup)
-    {   
+    {
         Proposal::withoutGlobalScopes();
 
         return  Proposal::whereRelation('groups', 'id', $catalystGroup?->id)
@@ -50,7 +50,7 @@ class CatalystMyGroupsController extends Controller
 
     public function proposals(Request $request = null, CatalystGroup $catalystGroup)
     {
-        $per_page = request('l', 24);
+        $per_page = request('l', 8);
         $curr_page = request('p', 1);
 
         $proposals = $this->proposalsQuery($catalystGroup);
