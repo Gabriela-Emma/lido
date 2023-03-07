@@ -2,10 +2,12 @@
 
 namespace App\Providers;
 
+use App\Contracts\ProvidesModelExportService;
 use App\Models\PersonalAccessToken;
 use App\Services\CardanoBlockfrostService;
 use App\Services\CardanoMintService;
 use App\Services\PhuffycoinService;
+use App\Services\Providers\ExportModelProvider;
 use Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
@@ -14,6 +16,7 @@ use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Sanctum\Sanctum;
+use App\Services\ExportModelService;
 
 //use Spatie\NovaTranslatable\Translatable;
 
@@ -45,6 +48,16 @@ class AppServiceProvider extends ServiceProvider
         );
 
         $this->app->singleton('CardanoBlockfrostService', CardanoBlockfrostService::class);
+
+        $this->app->bind(ProvidesModelExportService::class, ExportModelProvider::class);
+        $this->app->singleton(
+            'ExportModelService',
+            function () {
+                return new ExportModelService(
+                    $this->app->make(ProvidesModelExportService::class)
+                );
+            }
+        );
     }
 
     /**
