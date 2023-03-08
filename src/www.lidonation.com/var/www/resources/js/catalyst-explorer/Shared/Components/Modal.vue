@@ -43,7 +43,7 @@ const props = withDefaults(
             <Dialog as="div" class="relative z-10" @close="show = false">
                 <TransitionChild as="template" enter="ease-out duration-300" enter-from="opacity-0"
                                  enter-to="opacity-100" leave="ease-in duration-200" leave-from="opacity-100"
-                                 leave-to="opacity-0">
+                                 leave-to="opacity-0" @after-leave="redirect">
                     <div class="fixed inset-0 hidden bg-gray-500 bg-opacity-75 rounded-sm transition-opacity md:block"/>
                 </TransitionChild>
 

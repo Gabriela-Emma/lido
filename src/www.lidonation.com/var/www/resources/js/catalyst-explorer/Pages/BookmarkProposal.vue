@@ -90,6 +90,7 @@
                                                 @search-change="search"
                                                 @option="createCollection"
                                                 :options="collections"
+                                                v-model="collectiondRef"
                                                 mode="single"
                                                 :searchable="true"
                                                 :close-on-select="true"
@@ -102,7 +103,7 @@
                                                 :classes="{
                                                     container: 'multiselect border-0 flex-wrap bg-teal-500',
                                                     containerActive: 'shadow-none shadow-transparent box-shadow-none',
-                                                    search: 'w-full absolute inset-0 outline-none focus:ring-0 box-border border-0 text-base bg-white rounded-sm pl-3.5 rtl:pl-0 rtl:pr-3.5 custom-input',
+                                                    search: 'w-full absolute inset-0 outline-none focus:ring-0 box-border border-0 text-base text-teal-800 bg-white rounded-sm pl-3.5 rtl:pl-0 rtl:pr-3.5 custom-input',
                                                     options: 'multiselect-options border-0'
                                                 }"
                                             />

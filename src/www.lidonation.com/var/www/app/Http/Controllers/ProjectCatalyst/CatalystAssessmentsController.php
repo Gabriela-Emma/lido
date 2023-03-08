@@ -14,7 +14,7 @@ use Meilisearch\Endpoints\Indexes;
 
 class CatalystAssessmentsController extends Controller
 {
-    public int $perPage = 12;
+    public int $perPage = 24;
 
     public ?string $search = null;
 
@@ -28,7 +28,7 @@ class CatalystAssessmentsController extends Controller
     public function index(Request $request)
     {
         $this->search = $request->input('s', null);
-        $this->perPage = $request->input('l', 12);
+        $this->perPage = $request->input('l', 24);
         $this->currentPage = $request->input('p', 1);
 
         // props
