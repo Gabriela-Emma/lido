@@ -163,9 +163,6 @@ import { VARIABLES } from "../../models/variables";
 import {watch, ref} from "vue";
 import Pagination from "../../Shared/Components/Pagination.vue";
 
-
-
-
 const props = withDefaults(
     defineProps<{
         locale: string,
