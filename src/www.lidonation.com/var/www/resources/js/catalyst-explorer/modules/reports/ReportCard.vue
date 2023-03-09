@@ -278,7 +278,7 @@ let commentForm = useForm({
     comment: "",
 });
 let reactionCount = ref(null);
-let reactions = ["❤️", "👍", "😄", "🎉", "😕", "🚀", "👎", "👀"];
+let reactions = ["❤️", "👍", "🎉", "🚀", "👎", "👀"];
 
 function toggleShowComments() {
     showComments.value = !showComments.value;
