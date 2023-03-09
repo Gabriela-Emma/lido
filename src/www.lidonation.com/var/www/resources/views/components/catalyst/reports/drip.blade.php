@@ -71,7 +71,7 @@
            <template x-if="comments">
             <ul x-if="comments" class="divide-y divide-slate-100">
                 <template x-for="(comment, index) in comments" x-cloak class="boarder-b-2 ">
-                    <li  
+                    <li x-show="comment.text != ''" 
                     class="relative bg-white py-5 px-4 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 hover:bg-gray-50">
                          <div class="flex flex-row justify-between items-center space-x-3 text-gray-600 font-medium text-sm">
                              <div>
@@ -123,6 +123,14 @@
                 Post
                </button>
            </form>
+           <ul x-show="loggedIn && ! loading" class="flex flex-row justify-around bg-slate-900 mt-2 rounded-lg p-2">
+            <template x-for="reaction in reactions">
+                    <div class="border border-slate-600 hover:border-green-500 p-1 rounded-lg text-xs">
+                        <button  @click.prevent="addReaction(reaction, {{$report->id}})" x-text="reaction"></button>
+                        <span class="text-white" x-text="(reactionCount && reactionCount.find(item => item.reaction === reaction)?.count) || 0"></span>
+                    </div>
+            </template>
+           </ul>
 
            <template x-if="loading" class="mt-4">
             <x-theme.spinner square="8" squareXl="8" theme="green"/>
@@ -173,12 +181,15 @@
             comments: null,
             loggedIn: false,
             commentPosted: false,
+            reactions: ["👍", "👎","😄", "🎉", "😕", "❤️", "🚀", "👀"],
+            reactionCount: null,
 
             toggleShowComments(reportId) {
                 this.showComments = !this.showComments;
                 this.checkLogin();
                 if (!this.comments) {
                     this.loadComments(reportId).then();
+                    this.showReactions(reportId).then();
                 }
             },
 
@@ -187,6 +198,14 @@
                 this.loggedIn = true;
                 }).catch(error => {
                 });
+            },
+
+            async addReaction(reaction, id){
+                let data = {
+                    comment: reaction
+                }
+                const res = await window.axios.post(`/api/catalyst-explorer/reports/comments/${id}/reactions`, data);
+                this.showReactions(id).then();
             },
 
 
@@ -222,6 +241,14 @@
                     .then((res) => {
                         this.comments = [...res.data];
                     });
+            },
+
+            async showReactions(itemId) {
+
+            await window.axios.get(`/api/catalyst-explorer/reports/comments/${itemId}/reactions`, {})
+                .then((res) => {
+                    this.reactionCount = res.data;
+                });
             },
 
             timeAgo (timestamp) {

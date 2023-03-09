@@ -217,6 +217,7 @@ Route::prefix('catalyst-explorer')->as('catalystExplorerApi.')
             'prefix' => '/reports/comments',
         ], function () {
             Route::get('/{catalystReport:id}', [CatalystExplorer\ReportController::class, 'listComments']);
+            Route::get('/{catalystReport:id}/reactions', [CatalystExplorer\ReportController::class, 'showReactions']);
         });
 
         Route::post('/login', [CatalystExplorer\UserController::class, 'login']);
@@ -257,6 +258,7 @@ Route::prefix('catalyst-explorer')->as('catalystExplorerApi.')
             'prefix' => '/reports/comments',
         ], function () {
             Route::post('/{catalystReport:id}', [CatalystExplorer\ReportController::class, 'createComment']);
+            Route::post('/{catalystReport:id}/reactions', [CatalystExplorer\ReportController::class, 'createReaction']);
         });
     });
 

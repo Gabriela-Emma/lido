@@ -2,23 +2,47 @@
 
 namespace App\Http\Controllers\Api\CatalystExplorer;
 
-use App\Http\Controllers\Controller;
-use App\Models\CatalystReport;
-use App\Models\NotificationRequestTemplate;
 use App\Models\User;
+use App\Models\Comment;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Models\CatalystReport;
+use Illuminate\Support\Fluent;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Fluent;
-use Illuminate\Support\Str;
+use App\Models\NotificationRequestTemplate;
 
 class ReportController extends Controller
 {
     public function listComments(Request $request, CatalystReport $catalystReport)
     {
-//        dd($catalystReport?->comments->toArray());
+
         return $catalystReport?->comments?->toArray();
     }
+
+    public function showReactions(Request $request, CatalystReport $catalystReport)
+    {
+
+        $reactions = [];
+        $comments = $catalystReport->comments->where('text', '');
+        foreach ($comments as $comment) {
+            $reaction = $comment->reactions;
+            $reactions = array_merge($reactions, $reaction->toArray());
+        };
+
+        $reactionCounts = array_count_values(array_column($reactions, 'reaction'));
+
+        $reactionsObject = [];
+        foreach ($reactionCounts as $reaction => $count) {
+            $reactionsObject[] = [
+                'reaction' => $reaction,
+                'count' => $count,
+            ];
+        };
+        return $reactionsObject;
+    }
+
 
     public function createComment(Request $request, CatalystReport $catalystReport)
     {
@@ -28,6 +52,23 @@ class ReportController extends Controller
             'comment' => 'required',
         ]));
         $catalystReport->comment($validated->comment, Auth::user());
+
+        return to_route('catalystExplorer.reports');
+    }
+
+    public function createReaction(Request $request, CatalystReport $catalystReport)
+    {
+        $user = Auth::user();
+        $existingEmptyComment = $catalystReport->comments->where('commentator_id', $user->id)->where('text', '')->first();
+
+        if ($existingEmptyComment) {
+            return response()->json(['message' => 'You have already created an empty comment for this report.'], 422);
+        }
+
+        $validated = new Fluent($request->validate([
+            'comment' => 'required',
+        ]));
+        $catalystReport->comment("", Auth::user())->react($validated->comment, Auth::user());
 
         return to_route('catalystExplorer.reports');
     }
@@ -46,7 +87,7 @@ class ReportController extends Controller
 
         // get authenticated user or create new one
         $who = User::where('email', $validated->where)?->first();
-        if (! $who instanceof User) {
+        if (!$who instanceof User) {
             $who = new User;
             $who->name = $validated->name;
             $who->email = $validated->where;
