@@ -33,7 +33,7 @@
                     <div>
                         <div class="flex flex-col gap-8">
                             <TransitionGroup v-for="(group, index) in groups" :key="index"  tag="ul" name="fade" class="container flex flex-col gap-8" preserve-scroll>
-                                <UserGroupCard v-if="selectedGroup === group.name||('id' in group )=== false" :group="group" @groupCreated="selectedGroup = group.name" />
+                                <UserGroupCard v-if="selectedGroup === group.name||('id' in group )=== false" :group="group" @groupUpdated="selectedGroup = group.name" />
                             </TransitionGroup>
 
                             <div class="text-center rounded-sm border border-slate-400 border-dashed p-8">
@@ -51,7 +51,7 @@
                                     create a profile to feature on the groups page.
                                 </p>
                                 <div class="mt-6">
-                                    <button type="button" @click="newGroup"
+                                    <button type="button" @click.prevent="newGroup"
                                             class="inline-flex items-center rounded-sm border border-transparent bg-teal-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
                                         <PlusIcon class="-ml-1 mr-2 h-5 w-5" aria-hidden="true"/>
                                         Add new Group or Company
@@ -74,6 +74,7 @@ import {PlusIcon} from '@heroicons/vue/20/solid';
 import {ref, Ref} from "vue";
 import Profile from "../../models/profile";
 import Multiselect from '@vueform/multiselect';
+import { router, usePage } from "@inertiajs/vue3";
 
 
 let newGroups = [];
@@ -91,22 +92,39 @@ const props = withDefaults(
         groupOptions?:string[]
     }>(), {});
 
+
 const selectedGroup = ref(props.groupOptions?.[0] || '');
 
 const owner: Profile = props.profiles.length > 0 ? props.profiles[0] : null;
 const groups: Ref<Group[]> = ref([...props.groups?.data] || []);
 
 
+
 function newGroup() {
-    const group = {
+    if(props.groups.data.length>0)
+    {
+
+        let groupData = [...props.groups.data]
+        let group_id = ref(groupData.find(obj => obj.name === selectedGroup.value).id)
+
+        const data={}
+        router.get(`${usePage().props.base_url}/catalyst-explorer/my/groups/create/${group_id.value}`,data,
+            
+            {preserveState:true, preserveScroll:true})
+
+    }else{
+
+        const group = {
         bio: null,
         name: null,
         website: null,
         github: null,
         owner
-    } as Group;
-    groups.value.push(group);
+        } as Group;
+        groups.value.push(group);
+    }
 }
+
 
 </script>
 <style>

@@ -356,7 +356,7 @@
 <script lang="ts" setup>
 import Group from '../../models/group';
 import {CalendarIcon, ChevronRightIcon, EnvelopeIcon, PlusIcon, TrashIcon} from '@heroicons/vue/20/solid';
-import {useForm, usePage} from "@inertiajs/vue3";
+import {router, useForm, usePage} from "@inertiajs/vue3";
 import {defineEmits, ref, Ref, watch} from "vue";
 import axios from "axios";
 import Proposal from "../../models/proposal";
@@ -382,8 +382,17 @@ const props = withDefaults(
 );
 
 const emit = defineEmits<{
-    (e: 'groupCreated', group: Group): void
+    (e: 'groupUpdated', group: Group): void
 }>();
+
+function getPage()
+{
+    const data={};
+    router.get(`${usePage().props.base_url}/catalyst-explorer/my/groups/${props.group?.id}`,data,
+    
+    {preserveState:true, preserveScroll:true});
+    return;
+}
 
 let getProposals = (queryParam:any=null) => {
     axios.get(`${usePage().props.base_url}/catalyst-explorer/my/groups/${props.group?.id}/proposals`, { params: queryParam})
@@ -405,6 +414,8 @@ let getProposals = (queryParam:any=null) => {
 }
 
 if (props.group.id != null) {
+
+    getPage();
     getProposals();
 
     axios.get(`${usePage().props.base_url}/catalyst-explorer/my/groups/${props.group?.id}/members`)
@@ -454,19 +465,15 @@ function query()
 }
 
 let submit = () => {
-    let url;
+
     if (props.group?.id) {
-        url = `${usePage().props.base_url}/catalyst-explorer/my/groups/${props.group.id}`;
-    } else {
-        url = `${usePage().props.base_url}/catalyst-explorer/my/groups`;
-    }
-    groupForm.post(url,
+    groupForm.post(`${usePage().props.base_url}/catalyst-explorer/my/groups/${props.group.id}`,
         {
             preserveScroll: false,
             preserveState: false,
-            onSuccess: () => emit('groupCreated', props.group)
+            onSuccess: () => emit('groupUpdated', props.group)
         });
-}
+}}
 // removing proposal from the group
 let showRemove = ref(false);
 

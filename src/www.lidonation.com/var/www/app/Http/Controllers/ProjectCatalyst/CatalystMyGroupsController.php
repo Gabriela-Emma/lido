@@ -15,13 +15,23 @@ class CatalystMyGroupsController extends Controller
 {
     protected int $perPage = 8;
 
-    public function manage(CatalystGroup $group)
-    {
-        return Inertia::render('Auth/UserGroupCard')
+    public function manage(CatalystGroup $group=null)
+    {   
+        return Inertia::modal('Auth/UserGroupCard')
             ->with([
                 'group' => $group,
-            ]);
+            ])->baseRoute('catalystExplorer.myGroups');
     }
+
+    public function create(CatalystGroup $catalystGroup )
+    {  
+        //  dd($catalystGroup);
+        
+        return Inertia::modal('Auth/CreateGroup')
+            ->with([
+                'owner' => $catalystGroup->owner
+            ])->baseRoute('catalystExplorer.myGroups');
+    } 
 
     /**
      * Display a listing of the resource.
@@ -76,7 +86,7 @@ class CatalystMyGroupsController extends Controller
     }
 
     public function getMembers(Request $request, CatalystGroup $catalystGroup)
-    {
+    { 
         $members = CatalystUser::whereRelation('groups', 'id', $catalystGroup?->id)
         ->paginate(8, ['*'], 'p')->setPath('/');
 
