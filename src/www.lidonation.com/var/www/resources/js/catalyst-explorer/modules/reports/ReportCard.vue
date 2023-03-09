@@ -2,13 +2,31 @@
     <div
         class="w-full bg-white rounded-sm relative flex flex-col justify-start bg-white shadow-sm mb-4 relative break-inside-avoid drip"
     >
-        <div class="p-5 break-long-words break-words">
+        <div class="p-5 break-long-words break-words ">
             <div v-html="$filters.markdown(report.content)"></div>
         </div>
 
         <div class="mt-16 divide-y divide-teal-300 specs p-5">
+            <div class="py-4 border-t border-teal-300">
+                <ul v-if="user"
+                    class="flex flex-row gap-3 justify-end">
+                    <template v-for="reaction in reactions">
+                        <li
+                            class="border flex flex-row gap-1 border-slate-600 hover:border-green-500 p-1 rounded-lg text-xs"
+                        >
+                            <button
+                                @click.prevent="addReaction(reaction)"
+                                v-html="reaction"
+                            ></button>
+                            <span class=""
+                                  v-html="(reactionCount && reactionCount.find((item) => item.reaction === reaction)?.count) || 0"></span>
+                        </li>
+                    </template>
+                </ul>
+            </div>
+
             <div
-                class="flex flex-row gap-4 justify-between border-t border-teal-300 items-center py-4 spec-amount-received"
+                class="flex flex-row gap-4 justify-between items-center py-4 spec-amount-received"
             >
                 <div class="text-teal-800 opacity-50 text-sm">
                     Disbursed to Date
@@ -132,7 +150,7 @@
                                 <span
                                     class="text-xs font-bold relative top-1"
                                     v-else
-                                    >Leave a Comment</span
+                                >Leave a Comment</span
                                 >
                             </p>
 
@@ -169,26 +187,6 @@
                                 Post
                             </button>
                         </div>
-                        <ul
-                            v-if="user"
-                            class="flex flex-row justify-around bg-slate-900 mt-2 rounded-lg p-2"
-                        >
-                            <template v-for="reaction in reactions">
-                                <li
-                                    class="border border-slate-600 hover:border-green-500 p-1 rounded-lg text-xs"
-                                >
-                                    <button
-                                        @click.prevent="addReaction(reaction)"
-                                        v-html="reaction"
-                                    ></button>
-                                    <span
-                                        class="text-white"
-                                        v-html="
-                                            (reactionCount && reactionCount.find((item) =>item.reaction ===reaction)?.count) ||0"
-                                    ></span>
-                                </li>
-                            </template>
-                        </ul>
                         <div v-if="commentPosted">
                             <div class="rounded-sm bg-teal-100 p-4">
                                 <div class="flex">
@@ -248,13 +246,13 @@
 </template>
 
 <script lang="ts" setup>
-import { Link } from "@inertiajs/vue3";
-import { computed, Ref, ref } from "vue";
+import {Link} from "@inertiajs/vue3";
+import {computed, Ref, ref} from "vue";
 import Report from "../../models/report";
 import Comment from "../../models/comment";
-import { useForm, usePage } from "@inertiajs/vue3";
+import {useForm, usePage} from "@inertiajs/vue3";
 import User from "../../models/user";
-import { CheckCircleIcon, XMarkIcon } from "@heroicons/vue/20/solid";
+import {CheckCircleIcon, XMarkIcon} from "@heroicons/vue/20/solid";
 
 const props = withDefaults(
     defineProps<{
@@ -280,7 +278,7 @@ let commentForm = useForm({
     comment: "",
 });
 let reactionCount = ref(null);
-let reactions = ["👍", "👎", "😄", "🎉", "😕", "❤️", "🚀", "👀"];
+let reactions = ["❤️", "👍", "😄", "🎉", "😕", "🚀", "👎", "👀"];
 
 function toggleShowComments() {
     showComments.value = !showComments.value;

@@ -33,6 +33,12 @@ services:
     environment:
       MEILI_MASTER_KEY: v8hlDV0yMAHHlIurYupj
       MEILI_ENV: development
+    volumes:
+      - type: volume
+        source: search_db
+        target: /meili_data
+        volume:
+          nocopy: true
     networks:
       - lido
 
@@ -48,7 +54,7 @@ services:
       - lido
 
   redis:
-    image: redis:7.0.8-alpine3.17
+    image: redis:7.0.9-alpine3.17
     command: [ sh, -c, "rm -f /data/dump.rdb && redis-server --save ''" ]
     networks:
       - lido
@@ -57,7 +63,7 @@ services:
     depends_on:
       webdb:
         condition: service_healthy
-    image: nocodb/nocodb:0.105.2
+    image: nocodb/nocodb:0.105.3
     ports:
       - "8088:8080"
     volumes:
@@ -252,6 +258,7 @@ secrets:
 volumes:
   node-ipc:
   web_db:
+  search_db:
   nc_data: {}
 
 networks:
