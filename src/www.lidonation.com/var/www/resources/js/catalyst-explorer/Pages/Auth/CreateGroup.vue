@@ -6,7 +6,7 @@
                 <div class="sm:col-span-2">
                     <dt class="text-md font-medium text-slate-500">
                         <label for="bio" class="block text-sm font-medium text-slate-700">
-                            About
+                            About (20 words or more)
                         </label>
                     </dt>
                     <dd class="mt-1 text-md text-slate-900">
@@ -19,8 +19,8 @@
                                 class="mt-1 block w-full rounded-sm border-slate-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
                             ></textarea>
 
-                            <div class="text-pink-600">
-                                {{ groupForm.errors.bio }}
+                            <div class="text-pink-600" v-if="valid">
+                                {{ "20 words minimum" }}
                             </div>
                         </div>
                     </dd>
@@ -33,8 +33,8 @@
                     <div class="border divide-x space-x-8 flex gap-4 p-2 sm:col-span-2 w-full">
                         <div class="flex flex-col flex-1 justify-center p-2 pl-4">
                             <dt class="text-sm font-medium text-slate-500">
-                                <label for="name" class="block text-sm font-medium text-slate-700">
-                                    Group Name
+                                <label for="name" class=" block text-sm font-medium text-slate-700">
+                                    Group Name (10 characters min)
                                 </label>
                             </dt>
                             <dd class="mt-1 text-md text-slate-900">
@@ -48,8 +48,8 @@
                                         v-model="groupForm.name"
                                         class="mt-1 block w-full rounded-sm border border-slate-300 py-2 px-3 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-teal-500 sm:text-sm"
                                     />
-                                    <div class="text-pink-600" v-if="groupForm.errors.name">
-                                        {{ groupForm.errors.name }}
+                                    <div class="text-pink-600" v-if="valid">
+                                        {{ "10 characters minimum" }}
                                     </div>
                                 </div>
                             </dd>
@@ -175,7 +175,6 @@
 
 <script lang="ts" setup>
 import { router, useForm, usePage } from "@inertiajs/vue3";
-import axios from "axios";
 import Group from "../../models/group";
 import Modal from "../../Shared/Components/Modal.vue";
 import {ref} from "vue";
@@ -190,7 +189,17 @@ const props = withDefaults(
     }>(),
     {}
 );
-
+function getPage():any
+{
+    const data={};
+    router.get(`${usePage().props.base_url}/catalyst-explorer/my/groups/`,data,
+    {
+        preserveScroll: true,
+        preserveState: true,
+    }
+    );
+    
+}
 let owner = ref(props.owner)
 let groupForm = useForm({
     bio: '',
@@ -202,12 +211,24 @@ let groupForm = useForm({
     owner
 });
 
+let valid = ref(false)
+
 let submit = () => {
+    if(!(groupForm.bio.split(' ').length >= 20 ) || !(groupForm.name.length >= 10))
+    {
+        valid.value = true;
+        return;
+    }
+
     groupForm.post(`${usePage().props.base_url}/catalyst-explorer/my/groups`,
         {
             preserveScroll: true,
             preserveState: true,
-        }
-        );
+            // onSuccess:getPage()
+        })
+        setTimeout(() => {
+            getPage();
+        }, 500);
+
 }
 </script>

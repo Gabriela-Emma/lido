@@ -236,8 +236,8 @@ Route::group(
                 Route::post('/groups/{catalystGroup:id}', [CatalystGroupsController::class, 'update']);
                 Route::get('/groups/{catalystGroup:id}/proposals', [CatalystMyGroupsController::class, 'proposals']);
 
-                Route::get('/groups/create/{catalystGroup:id}', [CatalystMyGroupsController::class, 'create']);                
-                Route::get('/groups/{catalystGroup:id}', [CatalystMyGroupsController::class, 'manage']);
+                Route::get('/groups/create/{catalystUser:id}', [CatalystMyGroupsController::class, 'create']);                
+                // Route::get('/groups/{catalystGroup:id}', [CatalystMyGroupsController::class, 'manage']);
                 Route::delete('/groups/{catalystGroup:id}/proposals/{proposal:id}', [CatalystMyGroupsController::class, 'removeProposal']);
                 Route::put('/groups/{catalystGroup:id}/proposals', [CatalystMyGroupsController::class, 'addProposal']);
 
@@ -248,6 +248,9 @@ Route::group(
                 Route::post('/groups', [CatalystGroupsController::class, 'create']);
                 Route::get('/groups', [CatalystMyGroupsController::class, 'index'])
                     ->name('myGroups');
+
+                Route::get('/groups/{catalystGroup:id}', [CatalystMyGroupsController::class, 'manage'])
+                ->name('myGroup');
 
                 // group proposal metrics
                 Route::get('/groups/{catalystGroup:id}/sum/proposals', [CatalystMyGroupsController::class, 'metricProposalsCount']);

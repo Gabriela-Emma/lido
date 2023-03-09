@@ -15,21 +15,28 @@ class CatalystMyGroupsController extends Controller
 {
     protected int $perPage = 8;
 
-    public function manage(CatalystGroup $group=null)
+    public function manage(CatalystGroup $catalystGroup = null)
     {   
-        return Inertia::modal('Auth/UserGroupCard')
+        $profilesQuery = CatalystUser::with('claimed_by_user')
+            ->whereRelation('claimed_by_user', 'id', auth()?->user()?->getAuthIdentifier());
+
+        return Inertia::render('Auth/UserGroup')
             ->with([
-                'group' => $group,
-            ])->baseRoute('catalystExplorer.myGroups');
+                'profiles' => $profilesQuery->get(),
+                'perPage' => $this->perPage,
+                'group' => $catalystGroup,
+                'crumbs' => [
+                    ['label' => 'My Group'],
+                ],
+            ]);
     }
 
-    public function create(CatalystGroup $catalystGroup )
+    public function create(CatalystUser $catalystUser )
     {  
-        //  dd($catalystGroup);
-        
+        // dd($catalystUser);
         return Inertia::modal('Auth/CreateGroup')
             ->with([
-                'owner' => $catalystGroup->owner
+                'owner' => $catalystUser
             ])->baseRoute('catalystExplorer.myGroups');
     } 
 
@@ -40,7 +47,18 @@ class CatalystMyGroupsController extends Controller
      */
     public function index(Request $request)
     {
-        return Inertia::render('Auth/UserGroups', $this->data());
+        $catalystProfiles = auth()?->user()?->catalyst_profiles?->pluck('id');
+        $query = CatalystGroup::with('owner')
+            ->whereRelation('owner', fn ($query) => $query->whereIn('id', $catalystProfiles));
+        $paginator = $query->paginate($this->perPage, ['*'], 'p')?->setPath('/');
+        return Inertia::render('Auth/UserGroups', [  
+            'profiles' => CatalystUser::with('claimed_by_user')
+            ->whereRelation('claimed_by_user', 'id', auth()?->user()?->getAuthIdentifier())->get(),
+            'groups' => $paginator->onEachSide(1)->toArray(),
+            'crumbs' => [
+                ['label' => 'My Groups'],
+            ],
+        ]);
     }
 
     /**
@@ -117,32 +135,6 @@ class CatalystMyGroupsController extends Controller
         return $this->getMembers($request, $catalystGroup);
     }
 
-    protected function data()
-    {
-        $user = auth()->user();
-        $user?->load('catalyst_users');
-
-        $catalystProfiles = $user->catalyst_profiles?->pluck('id');
-
-        $query = CatalystGroup::with('owner')
-            ->whereRelation('owner', fn ($query) => $query->whereIn('id', $catalystProfiles));
-        $paginator = $query->paginate($this->perPage, ['*'], 'p')->setPath('/');
-
-        $profilesQuery = CatalystUser::with('claimed_by_user')
-            ->whereRelation('claimed_by_user', 'id', $user->id);
-
-        $groupNames = $query->orderBy('created_at', 'desc')->pluck('name')->toArray();
-
-        return [
-            'groups' => $paginator->onEachSide(1)->toArray(),
-            'profiles' => $profilesQuery->get(),
-            'groupOptions' => $groupNames,
-            'crumbs' => [
-                ['label' => 'My Groups'],
-            ],
-        ];
-    }
-
     // metrics
     public function metricProposalsCount(CatalystGroup $catalystGroup)
     {
@@ -170,9 +162,5 @@ class CatalystMyGroupsController extends Controller
         return ($this->metricTotalAwardedFunds($catalystGroup) - $this->metricTotalReceivedFunds($catalystGroup));
 
     }
-
-
-
-
 
 }
