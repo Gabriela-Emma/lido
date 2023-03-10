@@ -22,7 +22,7 @@
                     <div>
                         <div class="flex flex-col gap-8">
                             <TransitionGroup v-for="(group, index) in groups" :key="index"  tag="ul" name="fade" class="container flex flex-col gap-8" preserve-scroll>
-                                <UserGroupCard :group="group" @groupUpdated="selectedGroup = group.name"/>
+                                <UserGroupCard :group="group" />
                             </TransitionGroup>
 
                             <div class="p-8 text-center border border-dashed rounded-sm border-slate-400">
@@ -63,9 +63,7 @@ import {PlusIcon} from '@heroicons/vue/20/solid';
 import {ref, Ref} from "vue";
 import Profile from "../../models/profile";
 import { router, usePage } from "@inertiajs/vue3";
-import CreateGroup from "../Auth/CreateGroup.vue"
 
-let newGroups = [];
 const props = withDefaults(
     defineProps<{
         locale: string,
@@ -81,12 +79,10 @@ const props = withDefaults(
     }>(), {});
 
     // newGroup() 
-const selectedGroup = ref(props.groupOptions?.[0] || '');
+// const selectedGroup = ref(props.groupOptions?.[0] || '');
 
 const owner: Profile = props.profiles.length > 0 ? props.profiles[0] : null;
 const groups: Ref<Group[]> = ref([...props.groups?.data] || []);
-
-let rerender = ref(0) 
 
 function newGroup() 
 {

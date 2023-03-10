@@ -19,7 +19,7 @@
                                 class="mt-1 block w-full rounded-sm border-slate-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
                             ></textarea>
 
-                            <div class="text-pink-600" v-if="valid">
+                            <div class="text-pink-600" v-if="validBio">
                                 {{ "20 words minimum" }}
                             </div>
                         </div>
@@ -48,7 +48,7 @@
                                         v-model="groupForm.name"
                                         class="mt-1 block w-full rounded-sm border border-slate-300 py-2 px-3 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-teal-500 sm:text-sm"
                                     />
-                                    <div class="text-pink-600" v-if="valid">
+                                    <div class="text-pink-600" v-if="validName">
                                         {{ "10 characters minimum" }}
                                     </div>
                                 </div>
@@ -175,13 +175,9 @@
 
 <script lang="ts" setup>
 import { router, useForm, usePage } from "@inertiajs/vue3";
-import Group from "../../models/group";
 import Modal from "../../Shared/Components/Modal.vue";
 import {ref} from "vue";
 import Profile from "../../models/profile";
-
-
-
 
 const props = withDefaults(
     defineProps<{
@@ -191,16 +187,15 @@ const props = withDefaults(
 );
 function getPage():any
 {
-    const data={};
-    router.get(`${usePage().props.base_url}/catalyst-explorer/my/groups/`,data,
+    router.visit(`${usePage().props.base_url}/catalyst-explorer/my/groups`,
     {
-        preserveScroll: true,
-        preserveState: true,
+        // preserveScroll:true,
+        // preserveState:true,
     }
     );
     
 }
-let owner = ref(props.owner)
+let owner = ref(props?.owner)
 let groupForm = useForm({
     bio: '',
     name: '',
@@ -211,12 +206,16 @@ let groupForm = useForm({
     owner
 });
 
-let valid = ref(false)
+let validBio = ref();
+let validName = ref();
 
 let submit = () => {
-    if(!(groupForm.bio.split(' ').length >= 20 ) || !(groupForm.name.length >= 10))
+
+ validBio.value = groupForm.bio.split(' ').length >= 20 ? false : true;
+ validName.value = groupForm.name.length >= 10 ? false : true;
+
+    if((validBio.value || validName.value))
     {
-        valid.value = true;
         return;
     }
 
@@ -224,11 +223,11 @@ let submit = () => {
         {
             preserveScroll: true,
             preserveState: true,
-            // onSuccess:getPage()
+            
         })
-        setTimeout(() => {
-            getPage();
-        }, 500);
+    setTimeout(() => {
+        getPage();
+    }, 300);
 
 }
 </script>

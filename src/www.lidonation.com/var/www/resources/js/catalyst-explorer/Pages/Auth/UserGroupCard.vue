@@ -26,14 +26,13 @@
             </div>
             <div>
                 <!-- make this a Link to the single group page. Use query parameters toggle edit mode-->
-                <Link type="button" @click.prevent="editing = !editing"
-                        class="inline-flex items-center rounded-sm border border-slate-300 bg-white px-2.5 py-1.5 text-md font-medium text-slate-700 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
-                    <span v-if="!editing">Edit</span>
-                    <span v-if="!!editing">Cancel</span>
+                <Link type="button" :href="$utils.localizeRoute(`catalyst-explorer/my/groups/${group.id}`)"
+                    class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-teal-600 border border-transparent hover:text-white hover:bg-teal-800 rounded-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
+                    <span >Manage</span>
                 </Link>
             </div>
         </div>
-        <form class="px-4 py-5 border-t border-slate-200 sm:px-6" @submit.prevent="submit">
+        <form class="px-4 py-5 border-t border-slate-200 sm:px-6" >
             <dl class="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
                 <div class="sm:col-span-2">
                     <dt class="font-medium text-md text-slate-500">
@@ -42,7 +41,7 @@
                         </label>
                     </dt>
                     <dd class="mt-1 text-md text-slate-900">
-                        <div v-if="!editing">
+                        <div >
                             {{ group.bio }}
                         </div>
                         <div class="col-span-6 sm:col-span-3" v-if="!!editing">
@@ -68,7 +67,7 @@
                                 </label>
                             </dt>
                             <dd class="mt-1 text-md text-slate-900">
-                                <span v-if="!editing">{{ group.name }}</span>
+                                <span >{{ group.name }}</span>
                                 <div class="col-span-6 sm:col-span-3" v-if="!!editing">
                                     <input type="text" name="name" id="name" autocomplete="name"
                                         v-model="groupForm.name"
@@ -94,7 +93,7 @@
                                 </label>
                             </dt>
                             <dd class="mt-1 text-md text-slate-900">
-                                <span v-if="!editing">{{ group.website }}</span>
+                                <span >{{ group.website }}</span>
                                 <div class="col-span-6 sm:col-span-3" v-if="!!editing">
                                     <input type="text" name="website" id="website" autocomplete="website"
                                         v-model="groupForm.website"
@@ -120,7 +119,7 @@
                                 </label>
                             </dt>
                             <dd class="mt-1 text-md text-slate-900">
-                                <span v-if="!editing">{{ group.twitter || '-' }}</span>
+                                <span >{{ group.twitter || '-' }}</span>
                                 <div class="col-span-6 sm:col-span-3" v-if="!!editing">
                                     <input type="text" name="twitter" id="twitter" autocomplete="twitter"
                                         v-model="groupForm.twitter"
@@ -138,7 +137,7 @@
                                 </label>
                             </dt>
                             <dd class="mt-1 text-md text-slate-900">
-                                <span v-if="!editing">{{ group.discord || '-' }}</span>
+                                <span>{{ group.discord || '-' }}</span>
                                 <div class="col-span-6 sm:col-span-3" v-if="!!editing">
                                     <input type="text" name="discord" id="discord" autocomplete="discord"
                                         v-model="groupForm.discord"
@@ -156,7 +155,7 @@
                                 </label>
                             </dt>
                             <dd class="mt-1 text-md text-slate-900">
-                                <span v-if="!editing">{{ group.github || '-' }}</span>
+                                <span >{{ group.github || '-' }}</span>
                                 <div class="col-span-6 sm:col-span-3" v-if="!!editing">
                                     <input type="text" name="github" id="github" autocomplete="github"
                                         v-model="groupForm.github"
@@ -176,8 +175,8 @@
 
 <script lang="ts" setup>
 import Group from '../../models/group';
-import {router, useForm, usePage} from "@inertiajs/vue3";
-import {defineEmits, onMounted, ref, Ref, watch} from "vue";
+import {Link, useForm, usePage} from "@inertiajs/vue3";
+import {defineEmits,ref} from "vue";
 import axios from "axios";
 
 const props = withDefaults(
@@ -192,29 +191,8 @@ const props = withDefaults(
     }
 );
 
-const emit = defineEmits<{
-    (e: 'groupUpdated', group: Group): void
-}>();
-
-// getPage();
-
-function getPage()
-{
-    const data={};
-    router.get(`${usePage().props.base_url}/catalyst-explorer/my/groups`,data,
-    {
-        preserveScroll: true,
-        preserveState: true,
-    }
-    );
-    return;
-}
-
-if (props.group.id != null) {
-    onMounted(() => {
-        getPage()
-    })
-}
+// metrics
+getMetrics()
 
 let groupForm = useForm({...props.group});
 let editing = ref(!props?.group?.name || false);
@@ -224,21 +202,7 @@ let totalAwarded = ref<number>();
 let totalReceived = ref<number>();
 let totalRemaining = ref<number>();
 
-let submit = () => {
-    let url;
 
-    if (props.group?.id) {
-        url = `${usePage().props.base_url}/catalyst-explorer/my/groups/${props.group.id}`;
-    } else {
-        url = `${usePage().props.base_url}/catalyst-explorer/my/groups`;
-    }
-    groupForm.post(url,
-    { 
-        preserveScroll: false,
-        preserveState: false,
-        onSuccess: () => emit('groupUpdated', props.group)
-    })
-}
 
 // group's proposals metrics
 function getMetrics()
