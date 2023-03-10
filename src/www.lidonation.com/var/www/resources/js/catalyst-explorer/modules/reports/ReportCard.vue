@@ -1,23 +1,54 @@
 <template>
     <div
-        class="w-full bg-white rounded-sm relative flex flex-col justify-start bg-white shadow-sm mb-4 relative break-inside-avoid drip">
-        <div class="p-5 break-long-words break-words">
+        class="w-full bg-white rounded-sm relative flex flex-col justify-start bg-white shadow-sm mb-4 relative break-inside-avoid drip"
+    >
+        <div class="p-5 break-long-words break-words ">
             <div v-html="$filters.markdown(report.content)"></div>
         </div>
 
         <div class="mt-16 divide-y divide-teal-300 specs p-5">
+            <div class="py-4 border-t border-teal-300">
+                <ul v-if="user"
+                    class="flex flex-row gap-3 justify-end">
+                    <template v-for="reaction in reactions">
+                        <li
+                            class="border flex flex-row gap-1 border-slate-600 hover:border-green-500 p-1 rounded-lg text-xs"
+                        >
+                            <button
+                                @click.prevent="addReaction(reaction)"
+                                v-html="reaction"
+                            ></button>
+                            <span class=""
+                                  v-html="(reactionCount && reactionCount.find((item) => item.reaction === reaction)?.count) || 0"></span>
+                        </li>
+                    </template>
+                </ul>
+            </div>
+
             <div
-                class="flex flex-row gap-4 justify-between border-t border-teal-300 items-center py-4 spec-amount-received">
-                <div class="text-teal-800 opacity-50 text-sm">Disbursed to Date</div>
+                class="flex flex-row gap-4 justify-between items-center py-4 spec-amount-received"
+            >
+                <div class="text-teal-800 opacity-50 text-sm">
+                    Disbursed to Date
+                </div>
                 <div class="text-teal-800 font-bold text-base">
                     {{ $filters.currency(report.proposal.amount_received) }}
                 </div>
             </div>
 
-            <div class="flex flex-row gap-4 justify-between items-center py-4 spec-title">
+            <div
+                class="flex flex-row gap-4 justify-between items-center py-4 spec-title"
+            >
                 <div class="text-teal-800 opacity-50 text-sm">Proposal</div>
-                <a class="text-teal-800 font-medium inline-flex text-base hover:text-yellow-500"
-                   target="_blank" :href="$utils.localizeRoute(`proposals/${report?.proposal?.slug}`)">
+                <a
+                    class="text-teal-800 font-medium inline-flex text-base hover:text-yellow-500"
+                    target="_blank"
+                    :href="
+                        $utils.localizeRoute(
+                            `proposals/${report?.proposal?.slug}`
+                        )
+                    "
+                >
                     {{ report.proposal.title }}
                 </a>
             </div>
@@ -25,7 +56,7 @@
             <div class="flex flex-row gap-4 justify-between items-center py-4">
                 <div class="text-teal-800 opacity-50 text-sm">Status</div>
                 <div class="text-teal-800 font-medium text-base">
-                    {{ report.project_status || '-' }}
+                    {{ report.project_status || "-" }}
                 </div>
             </div>
 
@@ -34,10 +65,9 @@
                     Completion Target
                 </div>
                 <div class="text-teal-800 font-medium text-base">
-                    {{ report.completion_target || '-' }}
+                    {{ report.completion_target || "-" }}
                 </div>
             </div>
-
 
             <!--                        @if(report.attachments->isNotEmpty())-->
             <!--                        <div class="flex flex-row gap-4 justify-between items-center py-4">-->
@@ -60,33 +90,52 @@
 
         <div class="w-full mx-auto bg-slate-100 px-4">
             <div class="flex justify-between items-center py-4">
-                <div class="text-teal-800 opacity-75 text-sm inline-flex gap-2 items-center h-full">
+                <div
+                    class="text-teal-800 opacity-75 text-sm inline-flex gap-2 items-center h-full"
+                >
                     <span class="bold text-xl">Comments </span>
                     <span>{{ report.comments_count }}</span>
                 </div>
 
-                <button id="message-type" name="message-type"
-                        @click="toggleShowComments()" v-html="showComments ? '-' :'+' "
-                        class="text-2xl font-medium text-teal-800 hover:text-yellow-600">
-                </button>
+                <button
+                    id="message-type"
+                    name="message-type"
+                    @click="toggleShowComments()"
+                    v-html="showComments ? '-' : '+'"
+                    class="text-2xl font-medium text-teal-800 hover:text-yellow-600"
+                ></button>
             </div>
 
             <div v-show="showComments" class="pb-4">
                 <ul x-if="comments" class="divide-y divide-slate-100">
                     <template v-for="comment in comments">
-                        <li v-if="comment" :key="comment?.id"
-                            class="relative bg-white py-5 px-4 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 hover:bg-gray-50">
-                            <div class="flex justify-between space-x-3 text-gray-600 font-medium text-sm">
+                        <li
+                            v-if="comment.text != ''"
+                            :key="comment?.id"
+                            class="relative bg-white py-5 px-4 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 hover:bg-gray-50"
+                        >
+                            <div
+                                class="flex justify-between space-x-3 text-gray-600 font-medium text-sm"
+                            >
                                 <div class="min-w-0 flex-1">
-                                    <span class="absolute inset-0" aria-hidden="true"/>
+                                    <span
+                                        class="absolute inset-0"
+                                        aria-hidden="true"
+                                    />
                                     <p class="truncate">
                                         {{ comment.commentator?.name }}
                                     </p>
                                 </div>
-                                <timeago class="" :datetime="comment.created_at"/>
+                                <timeago
+                                    class=""
+                                    :datetime="comment.created_at"
+                                />
                             </div>
                             <div class="mt-1">
-                                <p class="text-md text-gray-700" v-html="comment.text"></p>
+                                <p
+                                    class="text-md text-gray-700"
+                                    v-html="comment.text"
+                                ></p>
                             </div>
                         </li>
                     </template>
@@ -98,7 +147,11 @@
                                 <span v-if="!comments?.length">
                                     Be the first to leave a comment!
                                 </span>
-                                <span class="text-xs font-bold relative top-1" v-else>Leave a Comment</span>
+                                <span
+                                    class="text-xs font-bold relative top-1"
+                                    v-else
+                                >Leave a Comment</span
+                                >
                             </p>
 
                             <!--                        <div class="mb-2">-->
@@ -118,11 +171,19 @@
                             <!--                            </div>-->
                             <!--                        </div>-->
 
-                            <textarea v-model="commentForm.comment" name="comment" class="mt-0"
-                                      rows="4" placeholder="Give feedback or ask the team a question."
-                                      required></textarea>
+                            <textarea
+                                v-model="commentForm.comment"
+                                name="comment"
+                                class="mt-0"
+                                rows="4"
+                                placeholder="Give feedback or ask the team a question."
+                                required
+                            ></textarea>
 
-                            <button type="submit" class="text-white text-xs px-2 bg-teal-300 hover:bg-teal-800 ml-auto">
+                            <button
+                                type="submit"
+                                class="text-white text-xs px-2 bg-teal-300 hover:bg-teal-800 ml-auto"
+                            >
                                 Post
                             </button>
                         </div>
@@ -130,16 +191,27 @@
                             <div class="rounded-sm bg-teal-100 p-4">
                                 <div class="flex">
                                     <div class="flex-shrink-0">
-                                        <CheckCircleIcon class="h-5 w-5 text-green-400" aria-hidden="true"/>
+                                        <CheckCircleIcon
+                                            class="h-5 w-5 text-green-400"
+                                            aria-hidden="true"
+                                        />
                                     </div>
                                     <div class="ml-3">
-                                        <p class="text-sm font-medium text-green-800">Successfully Submitted</p>
+                                        <p
+                                            class="text-sm font-medium text-green-800"
+                                        >
+                                            Successfully Submitted
+                                        </p>
                                     </div>
                                     <div class="ml-auto pl-3">
                                         <div class="-mx-1.5 -my-1.5">
-                                            <button type="button"
-                                                    class="inline-flex rounded-md bg-green-50 p-1.5 text-green-500 hover:bg-green-100 focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-offset-2 focus:ring-offset-green-50">
-                                                <CheckCircleIcon class="h-5 w-5"></CheckCircleIcon>
+                                            <button
+                                                type="button"
+                                                class="inline-flex rounded-md bg-green-50 p-1.5 text-green-500 hover:bg-green-100 focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-offset-2 focus:ring-offset-green-50"
+                                            >
+                                                <CheckCircleIcon
+                                                    class="h-5 w-5"
+                                                ></CheckCircleIcon>
                                             </button>
                                         </div>
                                     </div>
@@ -147,16 +219,22 @@
                             </div>
                         </div>
                     </form>
-                    <div v-else class="space-y-2 bg-white/50 p-2 mt-2 text-center">
-                        <p>
-                            Login or Register to leave a comment!
-                        </p>
+                    <div
+                        v-else
+                        class="space-y-2 bg-white/50 p-2 mt-2 text-center"
+                    >
+                        <p>Login or Register to leave a comment!</p>
                         <div class="flex gap-3 justify-center items-center">
-                            <Link href="/catalyst-explorer/login" class="font-bold text-teal-600 hover:text-teal-500">
+                            <Link
+                                href="/catalyst-explorer/login"
+                                class="font-bold text-teal-600 hover:text-teal-500"
+                            >
                                 Sign in
                             </Link>
-                            <Link href="/catalyst-explorer/register"
-                                  class="font-bold text-teal-600 hover:text-teal-500">
+                            <Link
+                                href="/catalyst-explorer/register"
+                                class="font-bold text-teal-600 hover:text-teal-500"
+                            >
                                 Register
                             </Link>
                         </div>
@@ -168,25 +246,24 @@
 </template>
 
 <script lang="ts" setup>
-import {Link} from '@inertiajs/vue3';
+import {Link} from "@inertiajs/vue3";
 import {computed, Ref, ref} from "vue";
 import Report from "../../models/report";
 import Comment from "../../models/comment";
 import {useForm, usePage} from "@inertiajs/vue3";
 import User from "../../models/user";
-import {CheckCircleIcon, XMarkIcon} from '@heroicons/vue/20/solid'
-
+import {CheckCircleIcon, XMarkIcon} from "@heroicons/vue/20/solid";
 
 const props = withDefaults(
     defineProps<{
-        locale?: string,
-        report: Report
+        locale?: string;
+        report: Report;
     }>(),
     {
         report: () => {
             return {} as Report;
         },
-    },
+    }
 );
 
 const user = computed(() => usePage().props?.user as User);
@@ -196,24 +273,30 @@ let showComments = ref(false);
 let showCommentsInitialized = false;
 let commentPosted = ref(false);
 let commentForm = useForm({
-    name: '',
-    email: '',
-    comment: '',
+    name: "",
+    email: "",
+    comment: "",
 });
+let reactionCount = ref(null);
+let reactions = ["❤️", "👍", "🎉", "🚀", "👎", "👀"];
 
 function toggleShowComments() {
     showComments.value = !showComments.value;
     if (!showCommentsInitialized) {
         loadComments().then();
+        showReactions().then();
     }
 }
 
 function addComment() {
-    commentForm.post(`${baseUrl}/api/catalyst-explorer/reports/comments/${props.report.id}`, {
-        preserveState: true,
-        preserveScroll: true,
-        onSuccess: () => commentPosted.value = true
-    });
+    commentForm.post(
+        `${baseUrl}/api/catalyst-explorer/reports/comments/${props.report.id}`,
+        {
+            preserveState: true,
+            preserveScroll: true,
+            onSuccess: () => (commentPosted.value = true),
+        }
+    );
 }
 
 async function loadComments() {
@@ -221,11 +304,36 @@ async function loadComments() {
         return;
     }
 
-    await window.axios.get(`${baseUrl}/api/catalyst-explorer/reports/comments/${props.report.id}`, {})
+    await window.axios
+        .get(
+            `${baseUrl}/api/catalyst-explorer/reports/comments/${props.report.id}`,
+            {}
+        )
         .then((res) => {
             showCommentsInitialized = true;
             comments.value = [...res.data];
         });
 }
 
+async function addReaction(reaction) {
+    let data = {
+        comment: reaction,
+    };
+    const res = await window.axios.post(
+        `/api/catalyst-explorer/reports/comments/${props.report.id}/reactions`,
+        data
+    );
+    showReactions();
+}
+
+async function showReactions() {
+    await window.axios
+        .get(
+            `/api/catalyst-explorer/reports/comments/${props.report.id}/reactions`,
+            {}
+        )
+        .then((res) => {
+            reactionCount.value = res.data;
+        });
+}
 </script>

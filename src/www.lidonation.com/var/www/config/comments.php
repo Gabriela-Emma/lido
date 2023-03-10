@@ -17,7 +17,7 @@ return [
      * These are the reactions that can be made on a comment. We highly recommend
      * only enabling positive ones for getting good vibes in your community.
      */
-    'allowed_reactions' => ['👍', '🥳', '👀', '😍', '💯', '🚀', '🌿', '✨'],
+    'allowed_reactions' => ["👍", "👎","😄", "🎉", "😕", "❤️", "🚀", "👀"],
 
     'allow_anonymous_comments' => true,
 
