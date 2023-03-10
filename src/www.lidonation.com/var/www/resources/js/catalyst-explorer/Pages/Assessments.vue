@@ -25,8 +25,6 @@
 </template>
 
 <script lang="ts" setup>
-import Report from "../models/report";
-import ReportCard from "../modules/reports/ReportCard.vue";
 import Search from "../Shared/Components/Search.vue";
 import {ref, watch} from "vue";
 import {router} from "@inertiajs/vue3";
