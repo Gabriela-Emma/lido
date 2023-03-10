@@ -49,7 +49,7 @@
         "mailchimp/marketing": "^3.0",
         "mcamara/laravel-localization": "^1.7",
         "mediconesystems/livewire-datatables": "^0.9",
-        "meilisearch/meilisearch-php": "^0.26.1",
+        "meilisearch/meilisearch-php": "^1.0",
         "michael-rubel/laravel-value-objects": "^4.0",
         "mtownsend/read-time": "^2.0",
         "nullpunkt/lz-string-php": "^1.3",
