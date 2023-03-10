@@ -32,13 +32,14 @@ class UserController extends Controller
 
     public function logout(Request $request)
     {
+        $redirectUrl = url()->previous();      
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();
 
         $request->session()->regenerateToken();
 
-        return to_route('catalystExplorer.proposals');
+        return redirect($redirectUrl);
     }
 
     public function create(Request $request)
