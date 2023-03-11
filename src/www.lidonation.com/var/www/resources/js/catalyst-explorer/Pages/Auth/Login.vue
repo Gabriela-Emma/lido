@@ -77,17 +77,23 @@
 <script lang="ts" setup>
 import {useForm} from '@inertiajs/vue3';
 import {Link} from '@inertiajs/vue3';
+import axios from 'axios';
+import { ref } from 'vue';
 import Proposal from "../../models/proposal";
+import {router, usePage} from '@inertiajs/vue3';
+
 
 const props = withDefaults(
     defineProps<{
         errors?: Object,
         showLogo?: boolean,
         embedded?: boolean,
+        isUtility?:boolean,
     }>(),
     {
         showLogo: true,
         embedded: false,
+        isUtility:false,
     },
 );
 // const props = defineProps({
@@ -100,9 +106,22 @@ let form = useForm({
     remember: false
 })
 
+let isUtility = ref(props.isUtility)
 let submit = () => {
+
+    if(isUtility.value){
+        axios.post('/api/catalyst-explorer/login',form)
+        .then(() => {
+            // @ts-ignore
+        router.visit(`${usePage().props.modal.baseURL}`);
+
+        return;
+        })
+    }
+
     form.post('/api/catalyst-explorer/login');
 
 }
+
 
 </script>
