@@ -4,6 +4,8 @@ namespace App\Http\Controllers\ProjectCatalyst;
 
 use App\Http\Controllers\Controller;
 use App\Models\Proposal;
+use App\Services\ExportModelService;
+use App\Exports\ProposalExport;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
@@ -27,6 +29,12 @@ class CatalystProjectsController extends Controller
     protected null|string|Stringable $proposalCohort = null;
 
     protected null|string|Stringable $proposalType = null;
+
+    protected bool $download = false;
+
+    protected ?string $downloadType = null;
+
+    protected ?string $downloadIds = null;
 
     protected ?string $sortBy = 'amount_requested';
 
@@ -169,6 +177,10 @@ class CatalystProjectsController extends Controller
     {
         $this->setFilters($request);
 
+        if ($request->input('d') == true) {
+            $this->downloadProposal($request);
+        }
+
         // props
         $props = [
             'search' => $this->search,
@@ -266,6 +278,9 @@ class CatalystProjectsController extends Controller
         $this->peopleFilter = $request->collect('pp')->map(fn ($n) => intval($n));
         $this->groupsFilter = $request->collect('g')->map(fn ($n) => intval($n));
         $this->currentPage = $request->input('p', 1);
+        $this->download = $request->input('d', false);
+        $this->downloadType = $request->input('d_t', null);
+        $this->downloadIds = $request->input('d_id', null);
     }
 
     protected function query($returnBuilder = false, $attrs = null)
@@ -396,5 +411,24 @@ class CatalystProjectsController extends Controller
         }
 
         return $_options;
+    }
+
+    protected function downloadProposal(Request $request)
+    {
+
+        $this->setFilters($request);
+        $proposals = $this->query(true, null)->paginate($this->limit, 'p', $this->currentPage)->toArray()['data'];
+        $idsArr = array_map(function ($proposal) {
+            return $proposal['id'];
+        }, $proposals);
+
+        $fileType = (string) $request->input('d_t', null);
+        
+        if ($fileType == 'csv'){
+            return (new ExportModelService)->exportCsv(new ProposalExport($idsArr), 'proposal');
+        } elseif ( $fileType == 'excel') {
+            return (new ExportModelService)->exportExcel(new ProposalExport($idsArr), 'proposal');
+        }
+        
     }
 }

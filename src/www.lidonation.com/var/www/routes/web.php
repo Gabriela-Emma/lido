@@ -217,6 +217,9 @@ Route::group(
             Route::get('/proposals/{proposal:id}/bookmark', [CatalystProjectsController::class, 'bookmark']);
             Route::get('/bookmarks', fn () => Inertia::render('Bookmarks'))
                 ->name('bookmarks');
+            
+            // exports
+            Route::get('/export/proposals', [CatalystProjectsController::class, 'downloadProposal']);
 
             Route::middleware(['auth.catalyst'])->prefix('/my')->group(function () {
                 Route::get('/dashboard', [CatalystMyDashboardController::class, 'index'])
