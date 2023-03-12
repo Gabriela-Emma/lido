@@ -336,8 +336,10 @@ watch([currPageRef, perPageRef], () => {
     query();
 });
 
-watch(selectedDownloadFormat, () => {    
-    download(selectedDownloadFormat.value);
+watch(selectedDownloadFormat, () => {
+    if (selectedDownloadFormat.value != null) {
+        download(selectedDownloadFormat.value);
+    }    
 });
 
 

@@ -175,10 +175,6 @@ class CatalystProjectsController extends Controller
     {
         $this->setFilters($request);
 
-        if ($request->input('d') == true) {
-            $this->exportProposals($request);
-        }
-
         // props
         $props = [
             'search' => $this->search,
@@ -276,8 +272,7 @@ class CatalystProjectsController extends Controller
         $this->peopleFilter = $request->collect('pp')->map(fn ($n) => intval($n));
         $this->groupsFilter = $request->collect('g')->map(fn ($n) => intval($n));
         $this->currentPage = $request->input('p', 1);
-        $this->download = $request->input('d', false);
-        $this->downloadType = $request->input('d_t', null);
+        
     }
 
     protected function query($returnBuilder = false, $attrs = null)
@@ -412,14 +407,16 @@ class CatalystProjectsController extends Controller
 
     protected function exportProposals(Request $request)
     {
-
         $this->setFilters($request);
-        $proposals = $this->query(true, null)->paginate($this->limit, 'p', $this->currentPage)->toArray()['data'];
+
+        $this->download = $request->input('d', false);
+        $this->downloadType = $request->input('d_t', null);
+
+        $proposals = $this->query(true, ['id'])->paginate($this->limit, 'p', $this->currentPage)->toArray()['data'];
         $idsArr = array_map(function ($proposal) {
             return $proposal['id'];
         }, $proposals);
 
-        
         if ($this->downloadType == 'csv'){
             return (new ExportModelService)->exportCsv(new ProposalExport($idsArr), 'proposal');
         } elseif ( $this->downloadType== 'excel') {
