@@ -226,7 +226,7 @@
                         <p>Login or Register to leave a comment!</p>
                         <div class="flex gap-3 justify-center items-center">
                             <Link
-                                href="/catalyst-explorer/login"
+                                :href="$utils.localizeRoute(`catalyst-explorer/auth/login`)" 
                                 class="font-bold text-teal-600 hover:text-teal-500"
                             >
                                 Sign in
