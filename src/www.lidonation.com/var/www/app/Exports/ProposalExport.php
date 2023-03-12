@@ -3,65 +3,52 @@
 namespace App\Exports;
 
 use App\Models\Proposal;
-use Maatwebsite\Excel\Concerns\FromCollection;
+use Illuminate\Contracts\Translation\HasLocalePreference;
+use Illuminate\Database\Eloquent\Builder;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\Exportable;
-use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\WithMapping;
 
-class ProposalExport implements FromQuery, WithHeadings
+class ProposalExport implements FromQuery, WithHeadings, WithMapping, HasLocalePreference
 {
     use Exportable;
 
-    protected $id;
+    protected int $id;
 
-    public function __construct(protected $proposals)
+    public function __construct(protected $proposals, protected string $locale)
     {
-        
+
     }
 
 
     /**
-    * @return \Illuminate\Support\Collection
-    */
-    public function query()
+    * @return Builder
+     */
+    public function query(): Builder
     {
         return Proposal::query()->whereKey($this->proposals);
     }
 
-    public function map($proposal): array
+    public function map($row): array
     {
         return [
-            $proposal->id,
-            $proposal->user_id,
-            $proposal->fund_id,
-            $proposal->title,
-            $proposal->slug,
-            $proposal->website,
-            $proposal->excerpt,
-            $proposal->amount_requested,
-            $proposal->definition_of_success,
-            $proposal->status,
-            $proposal->meta_data,
-            $proposal->funded_at,
-            $proposal->deleted_at,
-            $proposal->created_at,
-            $proposal->updated_at,
-            $proposal->yes_votes_count,
-            $proposal->no_votes_count,
-            $proposal->comment_prompt,
-            $proposal->social_excerpt,
-            $proposal->team_id,
-            $proposal->ideascale_link,
-            $proposal->type,
-            $proposal->meta_title,
-            $proposal->problem,
-            $proposal->solution,
-            $proposal->experience,
-            $proposal->content,
-            $proposal->amount_received,
-            $proposal->funding_status,
-            $proposal->funding_updated_at,
+            $row->id,
+            $row->title,
+            $row->amount_requested,
+            $row->amount_received,
+            $row->funding_status,
+            $row->status,
+            $row->yes_votes_count,
+            $row->no_votes_count,
+            $row->fund?->title,
+            $row->team?->title,
+            $row->ideascale_link,
+            $row->problem,
+            $row->solution,
+            $row->experience,
+            $row->definition_of_success,
+
         ];
     }
 
@@ -69,35 +56,26 @@ class ProposalExport implements FromQuery, WithHeadings
     {
         return [
             'id',
-            'user_id',
-            'fund_id',
             'title',
-            'slug',
-            'website',
-            'excerpt',
             'amount_requested',
-            'definition_of_success',
-            'status',
-            'meta_data',
-            'funded_at',
-            'deleted_at',
-            'created_at',
-            'updated_at',
-            'yes_votes_count',
-            'no_votes_count',
-            'comment_prompt',
-            'social_excerpt',
-            'team_id',
+            'amount_received',
+            'funding_status',
+            'project_status',
+            'yes_votes',
+            'no_votes',
+            'fund',
+            'team',
             'ideascale_link',
-            'type',
-            'meta_title',
             'problem',
             'solution',
             'experience',
-            'content',
-            'amount_received',
-            'funding_status',
-            'funding_updated_at',
+            'definition_of_success',
+            'ideascale_link',
         ];
+    }
+
+    public function preferredLocale(): ?string
+    {
+        return $this->locale;
     }
 }

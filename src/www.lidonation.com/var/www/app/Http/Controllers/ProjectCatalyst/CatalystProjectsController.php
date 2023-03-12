@@ -17,6 +17,7 @@ use JetBrains\PhpStorm\ArrayShape;
 use Laravel\Scout\Builder;
 use Meilisearch\Endpoints\Indexes;
 use Momentum\Modal\Modal;
+use PhpOffice\PhpSpreadsheet\Exception;
 
 class CatalystProjectsController extends Controller
 {
@@ -272,7 +273,7 @@ class CatalystProjectsController extends Controller
         $this->peopleFilter = $request->collect('pp')->map(fn ($n) => intval($n));
         $this->groupsFilter = $request->collect('g')->map(fn ($n) => intval($n));
         $this->currentPage = $request->input('p', 1);
-        
+
     }
 
     protected function query($returnBuilder = false, $attrs = null)
@@ -405,6 +406,10 @@ class CatalystProjectsController extends Controller
         return $_options;
     }
 
+    /**
+     * @throws Exception
+     * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
+     */
     protected function exportProposals(Request $request)
     {
         $this->setFilters($request);
@@ -418,10 +423,10 @@ class CatalystProjectsController extends Controller
         }, $proposals);
 
         if ($this->downloadType == 'csv'){
-            return (new ExportModelService)->exportCsv(new ProposalExport($idsArr), 'proposal');
+            return (new ExportModelService)->exportCsv(new ProposalExport($idsArr, app()->getLocale()), 'proposal');
         } elseif ( $this->downloadType== 'excel') {
-            return (new ExportModelService)->exportExcel(new ProposalExport($idsArr), 'proposal');
+            return (new ExportModelService)->exportExcel(new ProposalExport($idsArr, app()->getLocale()), 'proposal');
         }
-        
+
     }
 }

@@ -98,6 +98,7 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
     protected $guarded = ['user_id', 'created_at', 'funded_at'];
 
     protected $casts = [
+        'title' => 'string',
         'meta_data' => 'array',
         'updated_at' => 'datetime:Y-m-d',
         'created_at' => 'datetime:Y-m-d',
