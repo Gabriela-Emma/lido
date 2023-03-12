@@ -79,9 +79,9 @@ import {useForm} from '@inertiajs/vue3';
 import {Link} from '@inertiajs/vue3';
 import axios from 'axios';
 import { ref } from 'vue';
-import Proposal from "../../models/proposal";
 import {router, usePage} from '@inertiajs/vue3';
-
+import ModalProps from '../../models/props'
+import { ErrorBag, Errors } from '@inertiajs/core';
 
 const props = withDefaults(
     defineProps<{
@@ -112,8 +112,9 @@ let submit = () => {
     if(isUtility.value){
         axios.post('/api/catalyst-explorer/login',form)
         .then(() => {
-            // @ts-ignore
-        router.visit(`${usePage().props.modal.baseURL}`);
+        const pageProps: { [x: string]: unknown; errors: Errors & ErrorBag; } = usePage().props;
+        const modalProps = pageProps as unknown as { modal: ModalProps };
+        router.visit(modalProps.modal.baseURL);
 
         return;
         })
