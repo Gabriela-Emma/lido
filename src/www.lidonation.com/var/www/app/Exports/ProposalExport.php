@@ -12,12 +12,21 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 class ProposalExport implements FromQuery, WithHeadings
 {
     use Exportable;
+
+    protected $id;
+
+    public function __construct(protected $proposals)
+    {
+        
+    }
+
+
     /**
     * @return \Illuminate\Support\Collection
     */
     public function query()
     {
-        return Proposal::query();
+        return Proposal::query()->whereKey($this->proposals);
     }
 
     public function map($proposal): array
