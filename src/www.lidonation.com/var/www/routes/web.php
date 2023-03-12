@@ -219,7 +219,7 @@ Route::group(
                 ->name('bookmarks');
             
             // exports
-            Route::get('/export/proposals', [CatalystProjectsController::class, 'downloadProposal']);
+            Route::get('/export/proposals', [CatalystProjectsController::class, 'exportProposals']);
 
             Route::middleware(['auth.catalyst'])->prefix('/my')->group(function () {
                 Route::get('/dashboard', [CatalystMyDashboardController::class, 'index'])

@@ -34,8 +34,6 @@ class CatalystProjectsController extends Controller
 
     protected ?string $downloadType = null;
 
-    protected ?string $downloadIds = null;
-
     protected ?string $sortBy = 'amount_requested';
 
     protected ?string $sortOrder = 'desc';
@@ -178,7 +176,7 @@ class CatalystProjectsController extends Controller
         $this->setFilters($request);
 
         if ($request->input('d') == true) {
-            $this->downloadProposal($request);
+            $this->exportProposals($request);
         }
 
         // props
@@ -280,7 +278,6 @@ class CatalystProjectsController extends Controller
         $this->currentPage = $request->input('p', 1);
         $this->download = $request->input('d', false);
         $this->downloadType = $request->input('d_t', null);
-        $this->downloadIds = $request->input('d_id', null);
     }
 
     protected function query($returnBuilder = false, $attrs = null)
@@ -413,7 +410,7 @@ class CatalystProjectsController extends Controller
         return $_options;
     }
 
-    protected function downloadProposal(Request $request)
+    protected function exportProposals(Request $request)
     {
 
         $this->setFilters($request);
@@ -422,11 +419,10 @@ class CatalystProjectsController extends Controller
             return $proposal['id'];
         }, $proposals);
 
-        $fileType = (string) $request->input('d_t', null);
         
-        if ($fileType == 'csv'){
+        if ($this->downloadType == 'csv'){
             return (new ExportModelService)->exportCsv(new ProposalExport($idsArr), 'proposal');
-        } elseif ( $fileType == 'excel') {
+        } elseif ( $this->downloadType== 'excel') {
             return (new ExportModelService)->exportExcel(new ProposalExport($idsArr), 'proposal');
         }
         
