@@ -12,6 +12,6 @@ interface ProvidesModelExportService
      * @param $exportClass - relative class name to the exports directory i.e App\Exports
      * @param $exportFileName - naming of the generated file in any format
      */
-    public function export(string $exportClass, string $exportFileName);
+    public function export(string $exportFileName);
 
 }

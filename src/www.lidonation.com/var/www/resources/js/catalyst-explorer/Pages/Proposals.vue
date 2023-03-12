@@ -34,7 +34,33 @@
         <section class="py-8 w-full relative">
             <!-- Sorts and controls -->
             <div :class="{ 'lg:pr-16 opacity-10 lg:opacity-100': showFilters, 'container': !showFilters }"
-                 class="flex w-full items-center justify-end mb-3">
+                 class="flex w-full items-center justify-end space-x-0.5 mb-3">
+                 <div class="flex flex-col text-center text-pink-500" v-if="search != null">       
+                    <span>
+                        <div class="text-xs w-[160px] lg:w-[240px] lg:text-base">
+                            <Multiselect
+                                placeholder="Download"
+                                value-prop="value"
+                                label="label"
+                                v-model="selectedDownloadFormat"
+                                :options="[
+                                    {
+                                        label: 'excel (.xlsx)',
+                                        value: 'excel',
+                                    },
+                                    {
+                                        label: 'csv (.csv)',
+                                        value: 'csv',
+                                    },
+                                ]"
+                                :classes="{
+                                        container: 'multiselect border-0 p-0.5 flex-wrap',
+                                        containerActive: 'shadow-none shadow-transparent box-shadow-none',
+                                    }"
+                            />
+                        </div>
+                    </span>
+                </div>
                 <div class="text-xs w-[240px] lg:w-[320px] lg:text-base">
                     <Multiselect
                         placeholder="Sort"
@@ -205,6 +231,7 @@ import Sort from "../models/sort";
 import {VARIABLES} from "../models/variables";
 import Search from "../Shared/Components/Search.vue";
 import Pagination from "../Shared/Components/Pagination.vue";
+import axios from 'axios';
 
 /// props and class properties
 const props = withDefaults(
@@ -274,6 +301,7 @@ let filterRenderKey = ref(0);
 let searchRender = ref(0);
 let currPageRef = ref<number>(props.currPage);
 let perPageRef = ref<number>(props.perPage);
+let selectedDownloadFormat = ref<string>(null);
 
 // metrics count
 let metricCountApproved = ref<number>(null);
@@ -307,6 +335,13 @@ watch([search, filtersRef, selectedSortRef], () => {
 watch([currPageRef, perPageRef], () => {
     query();
 });
+
+watch(selectedDownloadFormat, () => {
+    if (selectedDownloadFormat.value != null) {
+        download(selectedDownloadFormat.value);
+    }    
+});
+
 
 getMetrics();
 
@@ -469,6 +504,34 @@ function getQueryData() {
     }
 
     return data;
+}
+
+function download(format) {
+    let data = getQueryData();
+    if (format) {
+        data['d'] = true;
+        data['d_t'] = format;
+    }
+
+    let fileName;
+    if (format == 'excel') {
+        fileName = 'proposals.xlsx';
+    } else if (format == 'csv') {
+        fileName = 'proposals.csv';
+    }
+
+    const res = axios.get(`/${props.locale}/catalyst-explorer/export/proposals`, {
+        responseType: 'blob',
+        params: data,
+    });
+    res.then(function(res) {
+        const url = window.URL.createObjectURL(new Blob([res.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', fileName);
+        document.body.appendChild(link);
+        link.click();
+    });
 }
 </script>
 <style>
