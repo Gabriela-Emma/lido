@@ -23,6 +23,11 @@ class UserController extends Controller
         $remember = $request->input('remember', false);
 
         if (Auth::attempt($credentials, $remember)) {
+            if(isset($request->baseURL))
+            {
+                return redirect($request->baseURL);
+
+            }
             return to_route('catalystExplorer.myDashboard');
         }
 
