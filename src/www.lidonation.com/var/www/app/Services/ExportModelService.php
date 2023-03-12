@@ -2,34 +2,37 @@
 
 namespace App\Services;
 
-// use App\Contracts\ExportModel;
-use App\Contracts\ProvidesModelExportService;
 use App\Services\Providers\ExportModelProvider;
-use Illuminate\Support\Facades\App;
+use PhpOffice\PhpSpreadsheet\Exception;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class ExportModelService
 {
-    public function __construct()
+    /**
+     * Export model
+     *
+     * @param $exportObj
+     * @param string $exportFileName - naming of the generated file in any format eg 'proposal.csv' or 'proposal.xlsx'
+     * @throws Exception
+     * @return BinaryFileResponse
+     */
+    public function exportExcel($exportObj, string $exportFileName): BinaryFileResponse
     {
+        $exportName = $exportFileName . '.xlsx';
+        return (new ExportModelProvider($exportObj))->export($exportName);
     }
 
     /**
-     * Export model 
-     *
-     * @param $exportClass - export class object
-     * @param $exportFileName - naming of the generated file in any format eg 'proposal.csv' or 'proposal.xlsx'
+     * @param $exportObj
+     * @param string $exportFileName
+     * @return BinaryFileResponse
+     * @throws Exception
+     * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
      */
-    public function exportExcel($exportObj, string $exportFileName) 
-    { 
-        
-        $exportName = $exportFileName . '.xlsx';
-        return (new ExportModelProvider($exportObj))->export($exportName); 
-    }
-
-    public function exportCsv($exportObj, string $exportFileName) 
-    { 
+    public function exportCsv($exportObj, string $exportFileName): BinaryFileResponse
+    {
         $exportName = $exportFileName . '.csv';
-        return (new ExportModelProvider($exportObj))->export($exportName);  
+        return (new ExportModelProvider($exportObj))->export($exportName);
     }
 }
 

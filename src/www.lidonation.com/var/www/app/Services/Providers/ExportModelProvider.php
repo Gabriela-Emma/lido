@@ -4,24 +4,24 @@ namespace App\Services\Providers;
 
 use App\Contracts\ProvidesModelExportService;
 use Maatwebsite\Excel\Facades\Excel;
-use Illuminate\Support\Facades\App;
-// use App\Contracts\ProvidesModelExportService
+use PhpOffice\PhpSpreadsheet\Exception;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class ExportModelProvider implements ProvidesModelExportService
 {
     public function __construct(protected $exportObj)
-    {
-
-    }
+    {}
 
     /**
-     * Export model 
+     * Export model
      *
-     * @param $exportClass - relative class name to the exports directory i.e App\Exports
-     * @param $exportFileName - naming of the generated file in any format
+     * @param string $exportFileName - naming of the generated file in any format
+     * @return BinaryFileResponse
+     * @throws Exception
+     * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
      */
-    public function export(string $exportFileName) 
+    public function export(string $exportFileName): BinaryFileResponse
     {
         return Excel::download($this->exportObj, $exportFileName);
     }
-} 
+}

@@ -34,8 +34,8 @@
         <section class="py-8 w-full relative">
             <!-- Sorts and controls -->
             <div :class="{ 'lg:pr-16 opacity-10 lg:opacity-100': showFilters, 'container': !showFilters }"
-                 class="flex w-full items-center justify-end space-x-0.5 mb-3">
-                 <div class="flex flex-col text-center text-pink-500" v-if="search != null">       
+                 class="flex w-full items-center justify-end space-x-0.5 mb-3 gap-2">
+                 <div class="flex flex-col text-center text-pink-500" v-if="search != null">
                     <span>
                         <div class="text-xs w-[160px] lg:w-[240px] lg:text-base">
                             <Multiselect
@@ -54,9 +54,9 @@
                                     },
                                 ]"
                                 :classes="{
-                                        container: 'multiselect border-0 p-0.5 flex-wrap',
-                                        containerActive: 'shadow-none shadow-transparent box-shadow-none',
-                                    }"
+                                    container: 'multiselect border-0 p-0.5 flex-wrap',
+                                    containerActive: 'shadow-none shadow-transparent box-shadow-none',
+                                }"
                             />
                         </div>
                     </span>
@@ -69,9 +69,9 @@
                         v-model="selectedSortRef"
                         :options="sorts"
                         :classes="{
-                                container: 'multiselect border-0 p-0.5 flex-wrap',
-                                containerActive: 'shadow-none shadow-transparent box-shadow-none',
-                            }"
+                            container: 'multiselect border-0 p-0.5 flex-wrap',
+                            containerActive: 'shadow-none shadow-transparent box-shadow-none',
+                        }"
                     />
                 </div>
             </div>
@@ -339,7 +339,7 @@ watch([currPageRef, perPageRef], () => {
 watch(selectedDownloadFormat, () => {
     if (selectedDownloadFormat.value != null) {
         download(selectedDownloadFormat.value);
-    }    
+    }
 });
 
 
