@@ -84,12 +84,10 @@ const props = withDefaults(
         errors?: Object,
         showLogo?: boolean,
         embedded?: boolean,
-        isUtility?:boolean,
     }>(),
     {
         showLogo: true,
         embedded: false,
-        isUtility:false,
     },
 );
 // const props = defineProps({
