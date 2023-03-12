@@ -77,7 +77,7 @@
 <script lang="ts" setup>
 import {useForm} from '@inertiajs/vue3';
 import {Link} from '@inertiajs/vue3';
-import Proposal from "../../models/proposal";
+
 
 const props = withDefaults(
     defineProps<{
@@ -101,8 +101,8 @@ let form = useForm({
 })
 
 let submit = () => {
+
     form.post('/api/catalyst-explorer/login');
 
 }
-
 </script>
