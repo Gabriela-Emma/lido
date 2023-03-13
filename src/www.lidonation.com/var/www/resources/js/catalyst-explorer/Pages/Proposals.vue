@@ -46,6 +46,7 @@
                                 :clear-on-select="true"
                                 :close-on-select="true"
                                 :loading="preparingDownload"
+                                :disabled="preparingDownload"
                                 label="label"
                                 @select="(opt) => selectedDownloadFormat = opt"
                                 :options="[
