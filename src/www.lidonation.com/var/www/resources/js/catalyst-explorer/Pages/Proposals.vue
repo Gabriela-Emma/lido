@@ -37,10 +37,14 @@
                  class="flex w-full items-center justify-end space-x-0.5 mb-3 gap-2">
                  <div class="flex flex-col text-center text-pink-500" v-if="search != null">
                     <span>
-                        <div class="text-xs w-[160px] lg:w-[240px] lg:text-base">
+                        <div class="text-xs w-[140px] lg:text-base">
                             <Multiselect
                                 placeholder="Download"
                                 value-prop="value"
+                                mode="single"
+                                :searchable="false"
+                                :clearOnSelect="true"
+                                :clear-on-select="true"
                                 label="label"
                                 v-model="selectedDownloadFormat"
                                 :options="[
@@ -52,6 +56,18 @@
                                         label: 'csv (.csv)',
                                         value: 'csv',
                                     },
+                                    {
+                                        label: 'tsv (.tsv)',
+                                        value: 'tsv',
+                                    },
+                                    {
+                                        label: 'ods (.ods)',
+                                        value: 'ods',
+                                    },
+                                    {
+                                        label: 'xls (.xls)',
+                                        value: 'xls',
+                                    },
                                 ]"
                                 :classes="{
                                     container: 'multiselect border-0 p-0.5 flex-wrap',
@@ -61,7 +77,7 @@
                         </div>
                     </span>
                 </div>
-                <div class="text-xs w-[240px] lg:w-[320px] lg:text-base">
+                <div class="text-xs w-[240px] lg:w-[330px] lg:text-base">
                     <Multiselect
                         placeholder="Sort"
                         value-prop="value"
@@ -413,7 +429,6 @@ function getMetrics() {
             console.error(error);
         });
 
-
     // get funded sum
     window.axios.get(`${usePage().props.base_url}/catalyst-explorer/proposals/metrics/sum/approved`, {params})
         .then((res) => metricSumApproved.value = res?.data)
@@ -513,13 +528,7 @@ function download(format) {
         data['d_t'] = format;
     }
 
-    let fileName;
-    if (format == 'excel') {
-        fileName = 'proposals.xlsx';
-    } else if (format == 'csv') {
-        fileName = 'proposals.csv';
-    }
-
+    const fileName = format == 'excel' ? 'proposals.xlsx' : `proposals.${format}`;
     const res = axios.get(`/${props.locale}/catalyst-explorer/export/proposals`, {
         responseType: 'blob',
         params: data,

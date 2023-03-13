@@ -29,10 +29,9 @@ class ExportModelService
      * @throws Exception
      * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
      */
-    public function exportCsv($exportObj, string $exportFileName): BinaryFileResponse
+    public function export($exportObj, string $exportFileName): BinaryFileResponse
     {
-        $exportName = $exportFileName . '.csv';
-        return (new ExportModelProvider($exportObj))->export($exportName);
+        return (new ExportModelProvider($exportObj))->export($exportFileName);
     }
 }
 
