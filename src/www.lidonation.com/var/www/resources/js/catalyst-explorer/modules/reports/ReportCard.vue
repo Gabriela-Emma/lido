@@ -10,18 +10,18 @@
             <div class="py-4 border-t border-teal-300">
                 <ul v-if="user"
                     class="flex flex-row gap-3 justify-end">
-                    <template v-for="reaction in reactions">
+                    <div v-for="(reaction, index) in reactions" :key="index">
                         <li
-                            class="border flex flex-row gap-1 border-slate-600 hover:border-green-500 p-1 rounded-lg text-xs"
+                            class="border flex flex-row gap-1 border-slate-600 hover:border-green-500 p-1 rounded-sm text-xs cursor-pointer"
+                            @click.prevent="addReaction(reaction)"
                         >
                             <button
-                                @click.prevent="addReaction(reaction)"
                                 v-html="reaction"
                             ></button>
                             <span class=""
-                                  v-html="(reactionCount && reactionCount.find((item) => item.reaction === reaction)?.count) || 0"></span>
+                                  v-html="getReactionCount(reaction)"></span>
                         </li>
-                    </template>
+                    </div>
                 </ul>
             </div>
 
@@ -247,9 +247,10 @@
 
 <script lang="ts" setup>
 import {Link} from "@inertiajs/vue3";
-import {computed, Ref, ref} from "vue";
+import {computed, onMounted, Ref, ref} from "vue";
 import Report from "../../models/report";
 import Comment from "../../models/comment";
+import Reaction from "../../models/reaction";
 import {useForm, usePage} from "@inertiajs/vue3";
 import User from "../../models/user";
 import {CheckCircleIcon, XMarkIcon} from "@heroicons/vue/20/solid";
@@ -269,6 +270,7 @@ const props = withDefaults(
 const user = computed(() => usePage().props?.user as User);
 const baseUrl = usePage().props.base_url;
 let comments: Ref<Comment[]> = ref([]);
+let reactionsCount: Ref<Reaction[]> = ref([]);
 let showComments = ref(false);
 let showCommentsInitialized = false;
 let commentPosted = ref(false);
@@ -277,7 +279,7 @@ let commentForm = useForm({
     email: "",
     comment: "",
 });
-let reactionCount = ref(null);
+
 let reactions = ["❤️", "👍", "🎉", "🚀", "👎", "👀"];
 
 function toggleShowComments() {
@@ -326,6 +328,11 @@ async function addReaction(reaction) {
     showReactions();
 }
 
+const getReactionCount = (reaction) => {
+      const count = reactionsCount.value.find((item) => item.reaction === reaction)?.count;
+      return count !== undefined ? count : 0;
+};
+
 async function showReactions() {
     await window.axios
         .get(
@@ -333,7 +340,7 @@ async function showReactions() {
             {}
         )
         .then((res) => {
-            reactionCount.value = res.data;
+            reactionsCount.value = res.data;
         });
 }
 </script>

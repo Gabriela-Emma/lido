@@ -36,6 +36,7 @@ class ReportController extends Controller
         $reactionsObject = [];
         foreach ($reactionCounts as $reaction => $count) {
             $reactionsObject[] = [
+                'catalystReport' => $catalystReport->id,
                 'reaction' => $reaction,
                 'count' => $count,
             ];
