@@ -34,11 +34,14 @@ class CatalystReportsController extends Controller
 
     protected function query(Request $request)
     {
-        $query = CatalystReport::withOnly(['proposal.author']);
+        $query = CatalystReport::withOnly(['proposal.author'])
+            ->withCount([
+//            'hearts',
+            ]);
         if (isset($this->search)) {
             $query->orWhereFullText('content', $this->search)
-                ->orWhereHas('proposal', fn ($q) => $q->where('title', 'iLIKE', "%{$this->search}%"))
-                ->orWhereHas('proposal.author', fn ($q) => $q->where('username', 'iLIKE', "%{$this->search}%")
+                ->orWhereHas('proposal', fn($q) => $q->where('title', 'iLIKE', "%{$this->search}%"))
+                ->orWhereHas('proposal.author', fn($q) => $q->where('username', 'iLIKE', "%{$this->search}%")
                     ->orWhere('name', 'iLIKE', "%{$this->search}%"));
 //            $this->dispatchBrowserEvent('analytics-event-fired', ['code' => 'HSH9YZDM']);
         }
