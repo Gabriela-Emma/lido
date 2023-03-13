@@ -35,7 +35,7 @@
             <!-- Sorts and controls -->
             <div :class="{ 'lg:pr-16 opacity-10 lg:opacity-100': showFilters, 'container': !showFilters }"
                  class="flex w-full items-center justify-end space-x-0.5 mb-3 gap-2">
-                 <div class="flex flex-col text-center text-pink-500" v-if="filtering">
+                 <div class="flex flex-col text-center text-pink-500" v-if="filtering || search">
                     <span>
                         <div class="text-xs w-[140px] lg:text-base">
                             <Multiselect
