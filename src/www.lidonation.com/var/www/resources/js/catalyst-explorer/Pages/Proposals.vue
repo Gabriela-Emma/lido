@@ -42,11 +42,11 @@
                                 placeholder="Download"
                                 value-prop="value"
                                 mode="single"
-                                :searchable="false"
-                                :clearOnSelect="true"
+                                :filterResults="false"
                                 :clear-on-select="true"
+                                :close-on-select="true"
                                 label="label"
-                                v-model="selectedDownloadFormat"
+                                @select="(opt) => selectedDownloadFormat = opt"
                                 :options="[
                                     {
                                         label: 'excel (.xlsx)',

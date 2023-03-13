@@ -9,11 +9,14 @@ use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithColumnFormatting;
+use Maatwebsite\Excel\Concerns\WithDrawings;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
+use Maatwebsite\Excel\Concerns\WithProperties;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
+use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
 
-class ProposalExport implements FromQuery, WithHeadings, WithMapping, HasLocalePreference, WithColumnFormatting, ShouldAutoSize
+class ProposalExport implements FromQuery, WithHeadings, WithMapping, HasLocalePreference, WithColumnFormatting, ShouldAutoSize, WithProperties
 {
     use Exportable;
 
@@ -81,11 +84,20 @@ class ProposalExport implements FromQuery, WithHeadings, WithMapping, HasLocaleP
     public function columnFormats(): array
     {
         return [
-//            'B' => NumberFormat::FORMAT_DATE_DDMMYYYY,
             'B' => NumberFormat::FORMAT_CURRENCY_USD_INTEGER,
             'C' => NumberFormat::FORMAT_CURRENCY_USD_INTEGER,
             'F' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
             'G' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+        ];
+    }
+
+    public function properties(): array
+    {
+        return [
+            'title'        => 'Catalyst Explorer Proposals',
+            'subject'        => 'Proposals',
+            'category'        => 'Catalyst Explorer',
+            'description'        => 'LIDO Nation Catalyst Explorer Proposals Export',
         ];
     }
 }
