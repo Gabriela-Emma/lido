@@ -35,7 +35,7 @@
             <!-- Sorts and controls -->
             <div :class="{ 'lg:pr-16 opacity-10 lg:opacity-100': showFilters, 'container': !showFilters }"
                  class="flex w-full items-center justify-end space-x-0.5 mb-3 gap-2">
-                 <div class="flex flex-col text-center text-pink-500" v-if="search != null">
+                 <div class="flex flex-col text-center text-pink-500" v-if="filtering">
                     <span>
                         <div class="text-xs w-[140px] lg:text-base">
                             <Multiselect
@@ -45,6 +45,7 @@
                                 :filterResults="false"
                                 :clear-on-select="true"
                                 :close-on-select="true"
+                                :loading="preparingDownload"
                                 label="label"
                                 @select="(opt) => selectedDownloadFormat = opt"
                                 :options="[
@@ -317,6 +318,8 @@ let filterRenderKey = ref(0);
 let searchRender = ref(0);
 let currPageRef = ref<number>(props.currPage);
 let perPageRef = ref<number>(props.perPage);
+
+let preparingDownload = ref<boolean>(false);
 let selectedDownloadFormat = ref<string>(null);
 
 // metrics count
@@ -522,6 +525,7 @@ function getQueryData() {
 }
 
 function download(format) {
+    preparingDownload.value = true;
     let data = getQueryData();
     if (format) {
         data['d'] = true;
@@ -540,6 +544,7 @@ function download(format) {
         link.setAttribute('download', fileName);
         document.body.appendChild(link);
         link.click();
+        preparingDownload.value = false;
     });
 }
 </script>
