@@ -422,10 +422,10 @@ class CatalystProjectsController extends Controller
             return $proposal['id'];
         }, $proposals);
 
-        if ($this->downloadType == 'csv'){
-            return (new ExportModelService)->exportCsv(new ProposalExport($idsArr, app()->getLocale()), 'proposal');
-        } elseif ( $this->downloadType== 'excel') {
-            return (new ExportModelService)->exportExcel(new ProposalExport($idsArr, app()->getLocale()), 'proposal');
+        if ($this->downloadType == 'excel'){
+            return (new ExportModelService)->exportExcel(new ProposalExport($idsArr, app()->getLocale()), 'proposals');
+        } else {
+            return (new ExportModelService)->export(new ProposalExport($idsArr, app()->getLocale()), "proposals.{$this->downloadType}");
         }
 
     }
