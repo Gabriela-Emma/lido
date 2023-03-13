@@ -2,12 +2,23 @@
     'report',
     'view' => 'detail'
 ])
-<div class="p-5 w-full bg-white rounded-sm relative flex flex-col justify-start bg-white shadow-sm mb-4 relative break-inside-avoid drip">
+<div x-data="singleProposalReportComments" class="p-5 w-full bg-white rounded-sm relative flex flex-col justify-start bg-white shadow-sm mb-4 relative break-inside-avoid drip">
     <div class="break-long-words break-words">
         <x-markdown>{{$report->content}}</p></x-markdown>
     </div>
 
     <div class="mt-16 divide-y divide-teal-300 border-t border-teal-300 specs">
+        <div class="py-4 border-t border-teal-300">
+            <ul x-show="loggedIn" class="flex flex-row gap-3 justify-end">
+                <template x-for="(reaction, index) in reactions">
+                        <li class="border flex flex-row gap-1 border-slate-600 hover:border-green-500 p-1 rounded-sm text-xs cursor-pointer">
+                            <button  @click.prevent="addReaction(reaction, {{$report->id}})" x-text="reaction"></button>
+                            <span x-text="getReactionCount(reaction)"></span>
+                        </li>
+                </template>
+            </ul>
+        </div>
+        
         <div class="flex flex-row gap-4 justify-between items-center py-4 spec-amount-received">
             <div class="text-teal-800 opacity-50 text-sm">Disbursed to Date</div>
             <div class="text-teal-800 font-bold text-base">
@@ -54,7 +65,7 @@
         @endif
     </div>
 
-   <div x-data="singleProposalReportComments" class="w-full mx-auto bg-slate-100 px-4">
+   <div class="w-full mx-auto bg-slate-100 px-4">
        <div class="flex justify-between items-center py-4">
            <div class="text-teal-800 opacity-75 text-sm inline-flex gap-2 items-center h-full">
                <span class="bold text-xl">Comments</span>
@@ -123,14 +134,6 @@
                 Post
                </button>
            </form>
-           <ul x-show="loggedIn && ! loading" class="flex flex-row justify-around bg-slate-900 mt-2 rounded-lg p-2">
-            <template x-for="reaction in reactions">
-                    <div class="border border-slate-600 hover:border-green-500 p-1 rounded-lg text-xs">
-                        <button  @click.prevent="addReaction(reaction, {{$report->id}})" x-text="reaction"></button>
-                        <span class="text-white" x-text="(reactionCount && reactionCount.find(item => item.reaction === reaction)?.count) || 0"></span>
-                    </div>
-            </template>
-           </ul>
 
            <template x-if="loading" class="mt-4">
             <x-theme.spinner square="8" squareXl="8" theme="green"/>
@@ -181,8 +184,8 @@
             comments: null,
             loggedIn: false,
             commentPosted: false,
-            reactions: ["👍", "👎","😄", "🎉", "😕", "❤️", "🚀", "👀"],
-            reactionCount: null,
+            reactions: ["❤️", "👍", "🎉", "🚀", "👎", "👀"],
+            reactionCount: [],
 
             toggleShowComments(reportId) {
                 this.showComments = !this.showComments;
@@ -191,6 +194,10 @@
                     this.loadComments(reportId).then();
                     this.showReactions(reportId).then();
                 }
+            },
+
+            init() {
+            this.checkLogin();
             },
 
             checkLogin() {
@@ -249,6 +256,10 @@
                 .then((res) => {
                     this.reactionCount = res.data;
                 });
+            },
+
+            getReactionCount(reaction) {
+                return (this.reactionCount.find(item => item.reaction === reaction)?.count) || 0;
             },
 
             timeAgo (timestamp) {
