@@ -8,6 +8,7 @@ export default interface Report {
     proposal: Proposal;
     project_status: string;
     completion_target: string;
+    hearts_count?:number;
     comments_count
     users: {
         name: string;

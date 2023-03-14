@@ -233,6 +233,8 @@ image: registry.lidonation.com/infra-ops/gitlab-runner:main
          --set services.redis.secret.REDIS_PASSWORD="$REDIS_PASSWORD" \
          --set services.dbsync.graphql.image.tag="$DBSYNC_GRAPHQL_IMAGE_TAG" \
          --set services.dbsync.ogmios.image.tag="$DBSYNC_OGMIOS_IMAGE_TAG" \
+         --set services.graphql.ingress.host="$DBSYNC_GRAPHQL_HOST" \
+         --set services.hasura.ingress.host="$DBSYNC_HASURA_HOST" \
          --set-file configurationFiles.config=./src/pool/config/$CARDANO_NETWORK/config.json \
          --set-file configurationFiles.ogmiosConfig=./src/pool/config/$CARDANO_NETWORK/config.ogmios.json \
          --set-file configurationFiles.dbSyncConfig=./src/pool/config/$CARDANO_NETWORK/db-sync-config.json \
