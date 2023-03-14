@@ -34,9 +34,9 @@ spec:
         - name: node-configurations
           configMap:
             name: "lidolovelace-cardano-configurations-configmap"
-        - name: "{{ $.Chart.Name }}-cardano-db-sync-pv"
+        - name: "{{ $.Chart.Name }}-cardano-dbsync-pv"
           persistentVolumeClaim:
-            claimName: "{{ .Values.namespace }}-data-db-sync-pvc"
+            claimName: "{{ .Values.namespace }}-data-dbsync-pvc"
       initContainers:
         - name: setup
           image: busybox
@@ -51,7 +51,7 @@ spec:
             - name: dbsync-configurations
               mountPath: /tmp/config
               readOnly: false
-            - name: "{{ $.Chart.Name }}-cardano-db-sync-pv"
+            - name: "{{ $.Chart.Name }}-cardano-dbsync-pv"
               mountPath: /config
               readOnly: false
       containers:
@@ -75,7 +75,7 @@ spec:
               name: "lidolovelace-cardano-configmap"
         env:
           - name: POSTGRES_HOST
-            value: "lidolovelace-db-sync-db-postgresql"
+            value: "lidolovelace-dbsync-db-postgresql"
           - name: HASURA_URI
             value: "lidolovelace-dbsync-hasura-service:8080"
           - name: LOGGER_MIN_SEVERITY
@@ -87,7 +87,7 @@ spec:
             containerPort: 1337
             protocol: TCP
         volumeMounts:
-          - name: "{{ $.Chart.Name }}-cardano-db-sync-pv"
+          - name: "{{ $.Chart.Name }}-cardano-dbsync-pv"
             mountPath: /config
             subPath: config
             readOnly: false

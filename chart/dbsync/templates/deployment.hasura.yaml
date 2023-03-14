@@ -55,7 +55,7 @@ spec:
           - name: OGMIOS_HOST
             value: "lidolovelace-dbsync-ogmios-service"
           - name: POSTGRES_HOST
-            value: "lidolovelace-db-sync-db-postgresql"
+            value: "lidolovelace-dbsync-db-postgresql"
           - name: HASURA_GRAPHQL_ENABLE_CONSOLE
             value: "true"
           - name: HASURA_GRAPHQL_CORS_DOMAIN
