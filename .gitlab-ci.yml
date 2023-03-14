@@ -56,7 +56,7 @@ image: registry.lidonation.com/infra-ops/gitlab-runner:main
         --set services.dbsync.db.secret.POSTGRESQL_USERNAME="$POSTGRESQL_DB_SYNC_USER" \
         --set services.dbsync.db.secret.POSTGRESQL_PASSWORD="$POSTGRESQL_DB_SYNC_PASSWORD" \
         --set services.dbsync.db.secret.POSTGRESQL_POSTGRES_PASSWORD="$POSTGRESQL_DB_SYNC_POSTGRES_PASSWORD" \
-        --set services.dbsync.db.persistence.size="$DBSYNC_POSTGRES_STORAGE_SIZE" \
+        --set primary.persistence.size="$DBSYNC_POSTGRES_STORAGE_SIZE" \
         lidolovelace-dbsync-db \
         bitnami/postgresql
   }

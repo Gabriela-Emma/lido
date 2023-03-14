@@ -68,6 +68,8 @@ services:
   dbsync:
     tier: "t2"
     restore_snapshot: ''
+    persistence:
+      size: 120Gi
     db:
       persistence:
         enabled: true
