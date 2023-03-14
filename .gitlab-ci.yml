@@ -41,7 +41,7 @@ image: registry.lidonation.com/infra-ops/gitlab-runner:main
     helm repo add bitnami https://charts.bitnami.com/bitnami
     helm repo update
 
-    echo "install postgres for db-sync"
+    echo "install postgres for dbsync"
     helm upgrade --install \
         --timeout 600s \
         --wait \
@@ -56,8 +56,8 @@ image: registry.lidonation.com/infra-ops/gitlab-runner:main
         --set services.dbsync.db.secret.POSTGRESQL_USERNAME="$POSTGRESQL_DB_SYNC_USER" \
         --set services.dbsync.db.secret.POSTGRESQL_PASSWORD="$POSTGRESQL_DB_SYNC_PASSWORD" \
         --set services.dbsync.db.secret.POSTGRESQL_POSTGRES_PASSWORD="$POSTGRESQL_DB_SYNC_POSTGRES_PASSWORD" \
-        --set primary.persistence.size="320Gi" \
-        lidolovelace-db-sync-db \
+        --set primary.persistence.size="$DBSYNC_POSTGRES_STORAGE_SIZE" \
+        lidolovelace-dbsync-db \
         bitnami/postgresql
   }
 
@@ -229,12 +229,13 @@ image: registry.lidonation.com/infra-ops/gitlab-runner:main
          --set services.dbsync.db.secret.POSTGRESQL_DB="$POSTGRESQL_DB_SYNC_DB" \
          --set services.dbsync.db.secret.POSTGRESQL_USERNAME="$POSTGRESQL_DB_SYNC_USER" \
          --set services.dbsync.db.secret.POSTGRESQL_PASSWORD="$POSTGRESQL_DB_SYNC_PASSWORD" \
-         --set services.dbsync.db.secret.POSTGRESQL_POSTGRES_PASSWORD="$POSTGRESQL_DB_SYNC_POSTGRES_PASSWORD" \
-         --set services.redis.secret.REDIS_PASSWORD="$REDIS_PASSWORD" \
+         --set services.dbsync.db.secret.POSTGRESQL_POSTGRES_PASSWORD="$POSTGRESQL_DB_SYNC_POSTGRES_PASSWORD" \         
          --set services.dbsync.graphql.image.tag="$DBSYNC_GRAPHQL_IMAGE_TAG" \
          --set services.dbsync.ogmios.image.tag="$DBSYNC_OGMIOS_IMAGE_TAG" \
          --set services.dbsync.graphql.ingress.host="$DBSYNC_GRAPHQL_HOST" \
          --set services.dbsync.hasura.ingress.host="$DBSYNC_HASURA_HOST" \
+         --set services.dbsync.db.persistence.size="$DBSYNC_STORAGE_SIZE" \
+         --set services.redis.secret.REDIS_PASSWORD="$REDIS_PASSWORD" \  
          --set-file configurationFiles.config=./src/pool/config/$CARDANO_NETWORK/config.json \
          --set-file configurationFiles.ogmiosConfig=./src/pool/config/$CARDANO_NETWORK/config.ogmios.json \
          --set-file configurationFiles.dbSyncConfig=./src/pool/config/$CARDANO_NETWORK/db-sync-config.json \

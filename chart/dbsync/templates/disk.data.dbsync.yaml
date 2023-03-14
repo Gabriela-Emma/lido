@@ -1,7 +1,7 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: "{{ .Values.namespace }}-data-db-sync-pvc"
+  name: "{{ .Values.namespace }}-data-dbsync-pvc"
   namespace: {{ .Values.namespace }}
 spec:
   accessModes:
@@ -9,4 +9,4 @@ spec:
   storageClassName: "longhorn"
   resources:
     requests:
-      storage: {{ .Values.services.cardano.persistence.size }}
+      storage: {{ .Values.services.dbsync.persistence.size }}

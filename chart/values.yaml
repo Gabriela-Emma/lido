@@ -68,10 +68,12 @@ services:
   dbsync:
     tier: "t2"
     restore_snapshot: ''
+    persistence:
+      size: 120Gi
     db:
       persistence:
         enabled: true
-        size: 20Gi
+        size: 120Gi
       secret:
         POSTGRESQL_DB:
         POSTGRESQL_USERNAME:
@@ -105,7 +107,7 @@ services:
       replicaCount: 1
       image:
         repository: inputoutput/cardano-graphql
-        tag: master
+        tag: 8.0.0
       ingress:
         controller:
           headers:

@@ -1,10 +1,10 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: "{{ $.Chart.Name }}-cardano-db-sync"
+  name: "{{ $.Chart.Name }}-cardano-dbsync"
   namespace: {{ .Values.namespace }}
   labels:
-    app: "{{ $.Chart.Name }}-cardano-db-sync"
+    app: "{{ $.Chart.Name }}-cardano-dbsync"
     chart: "{{ $.Chart.Name }}-{{ $.Chart.Version }}"
     release: {{ .Release.Name }}
     client: {{.Values.labels.client}}
@@ -13,17 +13,17 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: "{{ $.Chart.Name }}-cardano-db-sync"
+      app: "{{ $.Chart.Name }}-cardano-dbsync"
       chart: "{{ $.Chart.Name }}-{{ $.Chart.Version }}"
       release: {{ .Release.Name }}
   replicas: 1
   updateStrategy:
     type: RollingUpdate
-  serviceName: "{{ $.Chart.Name }}-cardano-db-sync-service"
+  serviceName: "{{ $.Chart.Name }}-cardano-dbsync-service"
   template:
     metadata:
       labels:
-        app: "{{ $.Chart.Name }}-cardano-db-sync"
+        app: "{{ $.Chart.Name }}-cardano-dbsync"
         chart: "{{ $.Chart.Name }}-{{ $.Chart.Version }}"
         release: {{ .Release.Name }}
         client: {{.Values.labels.client}}
@@ -33,7 +33,7 @@ spec:
       volumes:
         - name: node-ipc
           emptyDir: {}
-        - name: db-sync-postgresql
+        - name: dbsync-postgresql
           secret:
             defaultMode: 400
             secretName: "{{ $.Chart.Name }}-secrets"
@@ -50,15 +50,15 @@ spec:
         - name: node-configurations
           configMap:
             name: "lidolovelace-cardano-configurations-configmap"
-        - name: "{{ $.Chart.Name }}-cardano-db-sync-pv"
+        - name: "{{ $.Chart.Name }}-cardano-dbsync-pv"
           persistentVolumeClaim:
-            claimName: "{{ .Values.namespace }}-data-db-sync-pvc"
+            claimName: "{{ .Values.namespace }}-data-dbsync-pvc"
       containers:
-        - name: "db-sync"
+        - name: "dbsync"
           image: "{{ .Values.services.dbsync.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           args: [
-              "--config", "/tmp/config/db-sync-config.json",
+              "--config", "/tmp/config/dbsync-config.json",
               "--socket-path", "/ipc/node.socket"
           ]
           resources:
@@ -70,7 +70,7 @@ spec:
               memory: 65536Mi
           env:
             - name: POSTGRES_HOST
-              value: "lidolovelace-db-sync-db-postgresql"
+              value: "lidolovelace-dbsync-db-postgresql"
             - name: POSTGRES_PORT
               value: "5432"
             - name: EXTENDED
@@ -109,17 +109,17 @@ spec:
             - name: node-ipc
               mountPath: /ipc
               readOnly: false
-            - name: db-sync-postgresql
+            - name: dbsync-postgresql
               mountPath: /run/secrets
               readOnly: false
             - name: dbsync-configurations
               mountPath: /tmp/config
               readOnly: true
-            - name: "{{ $.Chart.Name }}-cardano-db-sync-pv"
+            - name: "{{ $.Chart.Name }}-cardano-dbsync-pv"
               mountPath: /var/lib/cexplorer
               subPath: cexplorer
               readOnly: false
-            - name: "{{ $.Chart.Name }}-cardano-db-sync-pv"
+            - name: "{{ $.Chart.Name }}-cardano-dbsync-pv"
               mountPath: /tmp/netconfig
               subPath: config
               readOnly: false
@@ -143,3 +143,6 @@ spec:
             readOnly: false
       imagePullSecrets:
         - name: {{ .Values.image.pullSecret }}
+  persistentVolumeClaimRetentionPolicy:
+    whenDeleted: Retain
+    whenScaled: Retain
