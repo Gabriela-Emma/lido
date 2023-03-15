@@ -238,9 +238,9 @@ image: registry.lidonation.com/infra-ops/gitlab-runner:main
          --set services.redis.secret.REDIS_PASSWORD="$REDIS_PASSWORD" \
          --set-file configurationFiles.config=./src/pool/config/$CARDANO_NETWORK/config.json \
          --set-file configurationFiles.ogmiosConfig=./src/pool/config/$CARDANO_NETWORK/config.ogmios.json \
-         --set-file configurationFiles.dbSyncConfig=./src/pool/config/$CARDANO_NETWORK/db-sync-config.json \
+         --set-file configurationFiles.dbSyncConfig=./src/pool/config/$CARDANO_NETWORK/dbsync-config.json \
          --set-file configurationFiles.topology=./src/pool/config/$CARDANO_NETWORK/topology.relay.json \
-         --set image.tag="$CI_APPLICATION_TAG" \
+         --set image.tag="$CI_APPLICATION_TAG-$CARDANO_NETWORK" \
          --set image.pullSecret="$secret_name" \
          --set namespace=${KUBE_NAMESPACE} \
          --namespace="$KUBE_NAMESPACE" \
@@ -360,7 +360,7 @@ image: registry.lidonation.com/infra-ops/gitlab-runner:main
       --set-file configurationFiles.config=./src/pool/config/$CARDANO_NETWORK/config.json \
       --set-file configurationFiles.configProducer=./src/pool/config/$CARDANO_NETWORK/config.producer.json \
       --set-file configurationFiles.configRelay2=./src/pool/config/$CARDANO_NETWORK/config.relay2.json \
-      --set-file configurationFiles.dbSyncConfig=./src/pool/config/$CARDANO_NETWORK/db-sync-config.json \
+      --set-file configurationFiles.dbSyncConfig=./src/pool/config/$CARDANO_NETWORK/dbsync-config.json \
       --set-file configurationFiles.submitApiConfig=./src/pool/config/$CARDANO_NETWORK/submit-api-config.json \
       --set-file configurationFiles.topology.producer=./src/pool/config/$CARDANO_NETWORK/topology.producer.json \
       --set-file configurationFiles.topology.relay=./src/pool/config/$CARDANO_NETWORK/topology.relay.json \
@@ -880,12 +880,22 @@ cdbsync:
     - |
       docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
       docker build --network host -f cardano.dbSync.Dockerfile \
-      --build-arg NETWORK_CONFIG="./src/pool/config/$CARDANO_NETWORK/config.json" \
-      -t "$CI_APPLICATION_REPOSITORY/cardano-db-sync:$CI_APPLICATION_TAG" \
-      -t "$CI_APPLICATION_REPOSITORY/cardano-db-sync:latest" \
+      --build-arg NETWORK_CONFIG="./src/pool/config/preview/dbsync-config.json" \
+      --build-arg CARDANO_NETWORK="preview" \
+      -t "$CI_APPLICATION_REPOSITORY/cardano-db-sync:$CI_APPLICATION_TAG-preview" \
+      -t "$CI_APPLICATION_REPOSITORY/cardano-db-sync:latest-preview" \
       .
-      docker push "$CI_APPLICATION_REPOSITORY/cardano-db-sync:$CI_APPLICATION_TAG"
-      docker push "$CI_APPLICATION_REPOSITORY/cardano-db-sync:latest"
+      docker push "$CI_APPLICATION_REPOSITORY/cardano-db-sync:$CI_APPLICATION_TAG-preview"
+      docker push "$CI_APPLICATION_REPOSITORY/cardano-db-sync:latest-preview"
+      
+      docker build --network host -f cardano.dbSync.Dockerfile \
+      --build-arg NETWORK_CONFIG="./src/pool/config/main/dbsync-config.json" \
+      --build-arg CARDANO_NETWORK="main" \
+      -t "$CI_APPLICATION_REPOSITORY/cardano-db-sync:$CI_APPLICATION_TAG-main" \
+      -t "$CI_APPLICATION_REPOSITORY/cardano-db-sync:latest-main" \
+      .
+      docker push "$CI_APPLICATION_REPOSITORY/cardano-db-sync:$CI_APPLICATION_TAG-main"
+      docker push "$CI_APPLICATION_REPOSITORY/cardano-db-sync:latest-main"
   rules:
     - if: '$CI_COMMIT_BRANCH == "main" &&
               ($DEPLOY_CARDANO_DBSYNC == "True" || $DEPLOY_CARDANO_DBSYNC == "true")'
