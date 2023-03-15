@@ -58,7 +58,7 @@ spec:
           image: "{{ .Values.services.dbsync.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           args: [
-              "--config", "/tmp/config/dbsync-config.json",
+              "--config", "/config/dbsync-config.json",
               "--socket-path", "/ipc/node.socket"
           ]
           resources:
