@@ -31,6 +31,7 @@ use App\Http\Controllers\TwitterAttendanceController;
 use App\Http\Livewire\Catalyst\CatalystFundComponent;
 use App\Http\Livewire\Delegators\DelegatorsComponent;
 use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\ProposalTranslationController;
 use App\Http\Livewire\Catalyst\CatalystGroupsComponent;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Livewire\Partners\PartnerDashboardComponent;
@@ -344,6 +345,9 @@ Route::group(
         Route::get('/proposals/{proposal}/', function (Proposal $proposal) {
             return view('proposal', compact('proposal'));
         })->name('proposal');
+        Route::get('/languageOptions', [ProposalTranslationController::class, 'getLanguageOptions'])
+        ->middleware(['auth:'.config('fortify.guard')]);
+
 
         // Archive News
         Route::get('/categories/{category}/', TaxonomyController::class.'@category');

@@ -44,7 +44,7 @@ use App\Observers\RatingObserver;
 use App\Observers\RuleObserver;
 use App\Observers\SnippetObserver;
 use App\Observers\TagObserver;
-use App\Observers\TranslationObserver;
+use App\Observers\Observer;
 use App\Observers\TxObserver;
 use App\Observers\UserObserver;
 use App\Observers\WalletObserver;
