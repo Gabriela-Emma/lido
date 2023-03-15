@@ -355,7 +355,6 @@
 
                     @if($proposal->content || $proposal->defination_of_success)
                     <x-catalyst.proposals.proposal-content :proposal="$proposal" />
-                       
                     @endif
 
                     <section class="py-12 bg-gray-50 border border-slate-200 mt-8 shadow-sm">
