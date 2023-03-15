@@ -1,5 +1,6 @@
 import {createInertiaApp, usePage} from "@inertiajs/vue3";
 import {createApp, h, nextTick, watch} from "vue";
+import {createI18n} from 'vue-i18n'
 import Layout from "./catalyst-explorer/Shared/Layout.vue";
 import {createPinia} from "pinia";
 import {marked} from 'marked';
@@ -8,6 +9,12 @@ import PrimeVue from 'primevue/config';
 import route from "ziggy-js";
 import {modal} from "momentum-modal";
 import timeago from 'vue-timeago3';
+const axios = require('axios');
+
+
+//cache snippets to disk
+axios.get(`${window.location.origin}/api/cache/snippets`);
+
 
 createInertiaApp({
     progress: {
@@ -30,14 +37,21 @@ createInertiaApp({
             {deep: true}
         );
 
-        const app = createApp({render: () => h(App, props)})
+        const i18n = createI18n({
+            locale: <string>props.initialPage.props.locale,
+            fallbackLocale: "en",
+            messages: require('../../storage/app/snippets.json'),
+        });
+
+        const app = createApp({ render: () => h(App, props) })
             .use(plugin)
             .use(modal, {
                 resolve: (name) => import(`./catalyst-explorer/Pages/${name}`),
             })
             .use(PrimeVue)
             .use(timeago)
-            .use(pinia);
+            .use(pinia)
+            .use(i18n);
 
         app.directive('focus', {
             mounted(el, binding, vnode) {

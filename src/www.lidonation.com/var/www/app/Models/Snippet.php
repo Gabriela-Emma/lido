@@ -41,6 +41,10 @@ class Snippet extends Model implements HasMedia, Interfaces\IHasMetaData
         'content',
     ];
 
+    protected $casts = [
+        "content" => "array"
+   ];
+
     public array $translatableExcludedFromGeneration = [];
 
     protected static function booted()

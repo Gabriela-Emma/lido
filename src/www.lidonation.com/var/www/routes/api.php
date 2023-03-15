@@ -11,6 +11,7 @@ use App\Http\Controllers\PromoController;
 use App\Http\Controllers\ProposalController;
 use App\Http\Controllers\QuestionResponseController;
 use App\Http\Controllers\RewardController;
+use App\Http\Controllers\SnippetController;
 use App\Models\Catalyst\Ccv4BallotChoice;
 use App\Models\EveryEpoch;
 use App\Models\Reward;
@@ -281,3 +282,6 @@ Route::prefix('quizzes')->as('quizzes')
     });
 
 Route::get('/generate-mnemonic-phrase', [GenerateMnemonicPhraseController::class, 'generate']);
+
+// snippets
+Route::get('/cache/snippets', [SnippetController::class, 'index']);
