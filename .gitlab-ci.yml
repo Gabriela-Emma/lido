@@ -880,7 +880,7 @@ cdbsync:
     - |
       docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
       docker build --network host -f cardano.dbSync.Dockerfile \
-      --build-arg NETWORK_CONFIG="./src/pool/config/$CARDANO_NETWORK/config.json" \
+      --build-arg NETWORK_CONFIG="./src/pool/config/$CARDANO_NETWORK/dbsync-config.json" \
       -t "$CI_APPLICATION_REPOSITORY/cardano-db-sync:$CI_APPLICATION_TAG" \
       -t "$CI_APPLICATION_REPOSITORY/cardano-db-sync:latest" \
       .
