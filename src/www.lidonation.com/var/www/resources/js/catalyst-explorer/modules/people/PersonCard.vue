@@ -18,7 +18,7 @@
                     </h3>
                     <p class="">
                         <span>
-                            {{user.proposals_count}} {{ user.proposals_count > 1 ? 'Proposals' : 'Proposal' }}
+                            {{user.proposals_count}} {{ user.proposals_count > 1 ? $t('Proposals') : $t('Proposal') }}
                         </span>
                     </p>
                 </div>
