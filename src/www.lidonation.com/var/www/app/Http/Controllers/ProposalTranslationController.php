@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Proposal;
 use Illuminate\Http\Request;
-use Google\Service\Translate;
+use App\Jobs\SyncTranslationJob;
+use App\Models\Translation;
 use App\Services\TranslationService;
 
 class ProposalTranslationController extends Controller
@@ -25,8 +26,36 @@ class ProposalTranslationController extends Controller
     }
 
     public function makeTranslation(Request $request, Proposal $proposal)
-    {
-        dd($request->segment(1));
+    {   
+        $existingTranslation = Translation::where('source_id', $proposal->id)->where('lang', $request->targetLanguage)->first();
+
+        // return existing translation
+        if(isset($query))
+        {
+            $existingTranslation->content;
+        }
+
+        // get new translation 
+        SyncTranslationJob::dispatch($proposal, 'content', $request->sourceLanguage, $request->targetLanguage, true, true);
+
+        $translation = null;
+
+        while ($translation === null ) {
+            $translation = Translation::where('source_id', $proposal->id)->where('lang', $request->targetLanguage)->first();
+            sleep(1);
+        }
         
+        return $translation->content;
+    }
+
+    function updateTranslation(Request $request, Proposal $proposal)
+    {
+        $translation = Translation::where('source_id', $proposal->id)->where('lang', $request->translationLang)->first();
+
+        $translation->content = $request->updates;
+
+        $translation->save;
+
+        return $translation->content;
     }
 }

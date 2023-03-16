@@ -2,93 +2,68 @@
 
 <div x-data="translateProposal">
 
-    <div class=" text-white items-center border-t border-x border-slate-300 w-full bg-white" x-init="getContent({{json_encode($proposal->content)}})">
-        <div class="items-center p-3 ">
-            <div class="flex flex-row justify-between items-center h-10">
-                <button x-show="!translate" @click="translate = !translate"
-                    class="p-2 font-medium rounded-md mr-3 text-white  bg-teal-600 hover:bg-teal-800 focus:ring-4 focus:outline-none focus:ring-teal-600text-center
-                                inline-flex items-center dark:bg-teal-600 dark:hover:bg-teal-700 dark:focus:ring-teal-800"
-                    type="button">
-                    Translate
-                </button>
-
-                <div>
-                    <template x-if="translate" class="inline">
-                        <div class=" items-center">
-                            <div class=" w-full flex flex-col items-center ">
-                                <div class="w-full px-4">
-                                    <div class="">
-                                        <div class="w-full shadow-sm ">
-                                            <div @click.away="close()" x-init="getLangOptions()"
-                                                class="my-2 p-1 bg-white flex border border-gray-200 rounded">
-                                                <input placeholder="Select target language" x-model="filter"
-                                                    x-transition:leave="transition ease-in duration-100"
-                                                    x-transition:leave-start="opacity-100"
-                                                    x-transition:leave-end="opacity-0" @mousedown="open()"
-                                                    @click="toggleDropdown()"
-                                                    @keydown.enter.stop.prevent="selectOption()"
-                                                    @keydown.arrow-up.prevent="focusPrevOption()"
-                                                    @keydown.arrow-down.prevent="focusNextOption()"
-                                                    class="p-1 px-2 appearance-none outline-none w-full text-gray-800">
-                                                <div
-                                                    class="text-gray-300 w-8 py-1 pl-2 pr-1 border-l flex items-center border-gray-200">
-                                                    <button @click="toggleDropdown()"
-                                                        class="cursor-pointer w-6 h-6 text-gray-600 outline-none focus:outline-none">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="100%"
-                                                            height="100%" fill="none" viewBox="0 0 24 24"
-                                                            stroke="currentColor" stroke-width="2"
-                                                            stroke-linecap="round" stroke-linejoin="round">
-                                                            <polyline x-show="!isOpen()" points="18 15 12 20 6 15">
-                                                            </polyline>
-                                                            <polyline x-show="isOpen()" points="18 15 12 9 6 15">
-                                                            </polyline>
-                                                        </svg>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div x-show="isOpen()"
-                                            class="absolute z-50 w-1/4 mt-1 bg-white rounded-md shadow-lg">
-                                            <div class="py-1" x-show="filteredOptions().length">
-                                                <template x-for="(option, index) in filteredOptions()"
-                                                    :key="option.value">
-                                                    <div class="cursor-pointer text-black w-full border-gray-100 p-2 border-b hover:bg-teal-100"
-                                                        :class="classOption(option.value, index)"
-                                                        x-on:click="onOptionClick(index)" x-text="option.name">
-                                                    </div>
-                                                </template>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </template>
-                </div>
-
-                <div x-show="targetLang" x-init="getModelData({{$proposal->id}})">
-                    <button @click="getTranslation()" 
-                        class="p-2 font-medium  rounded-md mr-3 text-white  bg-teal-600 hover:bg-teal-800 focus:ring-4 focus:outline-none focus:ring-teal-600text-center
-                                    inline-flex items-center dark:bg-teal-600 dark:hover:bg-teal-700 dark:focus:ring-teal-800"
+    <div class=" text-white items-center border-t  border-x border-slate-300 w-full bg-white" x-init="getContent({{ json_encode($proposal->content) }})">
+        <div class="items-center p-3 " x-init="getModelID({{ $proposal->id }})" >
+            <div class="flex flex-row justify-between  ">
+                <div class="flex flex-col  h-12 ">
+                    <button x-show="!editing " @click="translate = !translate"
+                        class="p-2 font-medium w-32 rounded-md mr-3 text-white  bg-teal-600 hover:bg-teal-800 focus:ring-4 focus:outline-none focus:ring-teal-600text-center
+                                inline-flex mb-3 justify-center dark:bg-teal-600 dark:hover:bg-teal-700 dark:focus:ring-teal-800"
                         type="button">
-                        Start Translation
+                        Translate
                     </button>
+
+                    <div>
+                        <template x-if="translate && !editing" x-init="getLangOptions()">
+                            <div
+                                class="flex flex-col bg-white shadow-md border z-10 absolute w-96 rounded-md justify-between p-3">
+                                <div class="  flex flex-col items-center ">
+                                    <select x-model="sourceLang"
+                                        class="bg-gray-50 border border-gray-300 text-gray-900 mb-6 text-sm rounded-md focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500">
+                                        <option value="" selected>select current language</option>
+                                        <template x-for="option in options" :key="option.value">
+                                            <option :value="option.value" x-text="option.name"></option>
+                                        </template>
+                                    </select>
+                                </div>
+                                <div class=" w-full flex flex-col items-center ">
+                                    <select x-model="targetLang"
+                                        class="bg-gray-50 border border-gray-300 text-gray-900 mb-6 text-sm rounded-md focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500">
+                                        <option value="" selected>select target language</option>
+                                        <template x-for="option in options" :key="option.value">
+                                            <option :value="option.value" x-text="option.name"></option>
+                                        </template>
+                                    </select>
+                                </div>
+
+                                <div x-show="targetLang!=null && sourceLang!=null">
+                                    <button @click="getTranslation()"
+                                        class="p-2 font-medium rounded-md mr-3 text-white bg-teal-600 hover:bg-teal-800 focus:ring-4 focus:outline-none focus:ring-teal-600text-center inline-flex items-center dark:bg-teal-600 dark:hover:bg-teal-700 dark:focus:ring-teal-800"
+                                        type="button">
+                                        Start Translation
+                                    </button>
+                                </div>
+
+                            </div>
+                        </template>
+                    </div>
                 </div>
+
+
 
                 <div class="" x-show="editing">
-                  <button
-                      class="p-2 font-medium  rounded-md mr-3 text-white  bg-teal-600 hover:bg-teal-800 focus:ring-4 focus:outline-none focus:ring-teal-600text-center
+                    <button @click="submitEdits()"
+                        class="p-2 font-medium  rounded-md mr-3 text-white  bg-teal-600 hover:bg-teal-800 focus:ring-4 focus:outline-none focus:ring-teal-600text-center
                                   inline-flex items-center dark:bg-teal-600 dark:hover:bg-teal-700 dark:focus:ring-teal-800"
-                      type="button">
-                      Save Translation
-                  </button>
-              </div>
+                        type="button">
+                        Save Translation
+                    </button>
+                </div>
             </div>
         </div>
     </div>
-    <div x-data="{ heightClass: 'max-h-[50rem] overflow-clip', funded: @js($proposal->funded) }" :class=" {editing:'h-full'}" class="relative p-4 border border-slate-300 rounded-sm break-normal" x-show="1" >
-        <div>
-            <article :class="heightClass" x-transition x-show="1">
+    <div x-data="{ heightClass: 'max-h-[50rem] overflow-clip', funded: @js($proposal->funded) }" :class=" {editing:'h-full'}" class="relative p-4 border border-slate-300 rounded-sm break-normal" x-show="1" >        <div>
+            <article :class="heightClass" x-transition x-show="!editing ">
                 @if ($proposal->content)
                     <x-markdown x-html="marked.parse(proposalContent)"></x-markdown>
                 @endif
@@ -99,10 +74,17 @@
                 @endif
             </article>
         </div>
-        <div x-show="0" >
-          <label for="message" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Edit if needed and save transalation.</label>
-          <textarea :class="heightClass" x-transition 
-          class="block p-4 w-full h-[50rem]   text-gray-900 bg-white rounded-md border border-slate-300 focus:ring-teal-500 focus:border-teal-500" x-model="(proposalContent)">          
+
+        <template x-if="processing ===true" class="mt-4">
+            <x-theme.spinner square="8" squareXl="8" theme="teal" />
+        </template>
+
+        <div x-show="editing">
+            <label for="message" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Edit if needed
+                and save translation.</label>
+            <textarea :class="heightClass" x-transition
+                class="block p-4 w-full h-[50rem]   text-gray-900 bg-white rounded-md border border-slate-300 focus:ring-teal-500 focus:border-teal-500"
+                x-model="(proposalContent)">          
           </textarea>
         </div>
         <div @click="heightClass = ''" x-show="heightClass"
@@ -110,133 +92,75 @@
             <span class="font-bold text-teal-600 group-hover:text-slate-600">
                 Expand
             </span>
-          </div>
+        </div> 
     </div>
 
 
 </div>
 
 <script>
-function translateProposal() {
-    return {
-        model_id:null,
-        translate: false,
-        editing: false,
-        openDropdown: false,
-        startTranslation: false,
-        translatedContent: null,
-        filter: "",
-        show: false,
-        selected:null ,
-        focusedOptionIndex: null,
-        options:[],
-        proposalContent:[],
-        data:{},
-        targetLang:"",
-        locale:null,
-        close() {
-            this.show = false;
-            this.filter = this.selectedName();
-            this.focusedOptionIndex = this.selected ? this.focusedOptionIndex : null;
-        },
-        open() {
-            this.show = true;
-            this.filter = "";
-        },
-        toggleDropdown() {
-            if (this.show) {
-                this.close();
-            } else {
-                this.open();
+    function translateProposal() {
+        return {
+            model_id: null,
+            translate: false,
+            editing: false,
+            startTranslation: false,
+            translatedContent: null,
+            focusedOptionIndex: null,
+            options: [],
+            targetLang: null,
+            sourceLang: null,
+            proposalContent: [],
+            data: {
+                content: '',
+                sourceLanguage: '',
+                targetLanguage: ''
+            },
+            processing: false,
+            translationUpdates:{
+                updates:'',
+                translationLang:''
+            },
+            getLangOptions() {
+                window.axios.get('/languageOptions')
+                    .then((res) => {
+                        this.options = res.data
+                    })
+            },
+            getContent(content) {
+                this.proposalContent = content;
+            },
+            getModelID(id) {
+                this.model_id = id;
+            },
+            getModelData() {
+                this.data.content = this.proposalContent;
+                this.data.sourceLanguage = this.sourceLang;
+                this.data.targetLanguage = this.targetLang;
+                this.translationUpdates.translationLang = this.targetLang;
+                console.log(this.targetLang)
+            },
+            getTranslation() {
+                this.getModelData();
+                this.processing = true;
+                this.editing = true;
+                this.proposalContent = [];
+                window.axios.post('/translate/' + `${this.model_id}`, this.data)
+                    .then((res) => {
+                        this.proposalContent = res.data;
+                        this.processing = false;
+                    })
+            },
+            submitEdits(){
+                this.editing = false;
+                this.translate = false
+                this.translationUpdates.updates = this.proposalContent;
+                window.axios.patch('/translation/'+ `${this.model_id}`, this.translationUpdates);
+                // .then((res) => {
+                //     this.proposalContent = res.data;
+                // });
+
             }
-        },
-        isOpen() {
-            return this.show === true;
-        },
-        selectedName() {
-            this.locale
-            this.targetLang = this.selected.value 
-            this.data['targetLanguage'] = this.targetLang.toUpperCase();
-            return this.selected ? this.selected.name + " (" + this.selected.value + ")" : this.filter;
-        },
-        getLangOptions(){
-            window.axios.get('/languageOptions')
-            .then((res) => {
-            this.options = res.data
-            }
-            )
-        },
-        classOption(id, index) {
-            const isSelected = this.selected ? id == this.selected.value : false;
-            const isFocused = index == this.focusedOptionIndex;
-            return {
-                "cursor-pointer w-full border-gray-100 border-b hover:bg-teal-100": true,
-                "bg-teal-300": isSelected,
-                "bg-teal-100": isFocused
-            };
-        },
-        filteredOptions() {
-            return this.options.filter(option => {
-                return (
-                    option.name.toLowerCase().indexOf(this.filter.toLowerCase()) > -1 ||
-                    option.value.toUpperCase().indexOf(this.filter.toLowerCase()) > -1
-                );
-            });
-        },
-        onOptionClick(index) {
-            this.focusedOptionIndex = index;
-            this.selectOption();
-        },
-        selectOption() {
-            if (!this.isOpen()) {
-                return;
-            }
-            this.focusedOptionIndex = this.focusedOptionIndex ?? 0;
-            const selected = this.filteredOptions()[this.focusedOptionIndex];
-            if (this.selected && this.selected.value == selected.value) {
-                this.filter = "";
-                this.selected = null;
-            } else {
-                this.selected = selected;
-                this.filter = this.selectedName();
-            }
-            this.close();
-        },
-        focusPrevOption() {
-            if (!this.isOpen()) {
-                return;
-            }
-            const optionsNum = Object.keys(this.filteredOptions()).length - 1;
-            if (this.focusedOptionIndex > 0 && this.focusedOptionIndex <= optionsNum) {
-                this.focusedOptionIndex--;
-            } else if (this.focusedOptionIndex == 0) {
-                this.focusedOptionIndex = optionsNum;
-            }
-        },
-        focusNextOption() {
-            const optionsNum = Object.keys(this.filteredOptions()).length - 1;
-            if (!this.isOpen()) {
-                this.open();
-            }
-            if (this.focusedOptionIndex == null || this.focusedOptionIndex == optionsNum) {
-                this.focusedOptionIndex = 0;
-            } else if (this.focusedOptionIndex >= 0 && this.focusedOptionIndex < optionsNum) {
-                this.focusedOptionIndex++;
-            }
-        },
-        getContent(content){
-            this.proposalContent = content;
-        },
-        getModelData(id){
-            this.model_id = id;
-            this.data['content'] = this.proposalContent;
-        },
-        getTranslation(){
-            window.axios.post('/translate/' + `${this.model_id}`,this.data)
-            // .then((res) => {
-            //     this.proposalContent = res.data;
-            // })
-        }        
-    };
-}
+        };
+    }
 </script>
