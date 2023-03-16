@@ -41,6 +41,8 @@ spec:
       - name: app
         image: "{{ .Values.services.dbsync.hasura.image.repository }}:{{ .Values.services.dbsync.hasura.image.tag }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
+        securityContext:
+          readOnlyRootFilesystem: false
         resources:
           limits:
             memory: 2048Mi
