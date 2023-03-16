@@ -54,7 +54,7 @@ class ProposalTranslationController extends Controller
 
         $translation->content = $request->updates;
 
-        $translation->save;
+        $translation->save();
 
         return $translation->content;
     }
