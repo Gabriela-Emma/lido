@@ -3,10 +3,10 @@
 <div x-data="translateProposal">
 
     <div class=" text-white items-center border-t  border-x border-slate-300 w-full bg-white" x-init="getContent({{ json_encode($proposal->content) }})">
-        <div class="items-center p-3 " x-init="getModelID({{ $proposal->id }})" >
+        <div class="items-center p-3 " x-show="loggedIn" x-init="getModelID({{ $proposal->id }})" >
             <div class="flex flex-row justify-between  ">
                 <div class="flex flex-col  h-12 ">
-                    <button x-show="!editing " @click="translate = !translate"
+                    <button x-show="!editing  " @click="translate = !translate"
                         class="p-2 font-medium w-32 rounded-md mr-3 text-white  bg-teal-600 hover:bg-teal-800 focus:ring-4 focus:outline-none focus:ring-teal-600text-center
                                 inline-flex mb-3 justify-center dark:bg-teal-600 dark:hover:bg-teal-700 dark:focus:ring-teal-800"
                         type="button">
@@ -98,69 +98,3 @@
 
 </div>
 
-<script>
-    function translateProposal() {
-        return {
-            model_id: null,
-            translate: false,
-            editing: false,
-            startTranslation: false,
-            translatedContent: null,
-            focusedOptionIndex: null,
-            options: [],
-            targetLang: null,
-            sourceLang: null,
-            proposalContent: [],
-            data: {
-                content: '',
-                sourceLanguage: '',
-                targetLanguage: ''
-            },
-            processing: false,
-            translationUpdates:{
-                updates:'',
-                translationLang:''
-            },
-            getLangOptions() {
-                window.axios.get('/languageOptions')
-                    .then((res) => {
-                        this.options = res.data
-                    })
-            },
-            getContent(content) {
-                this.proposalContent = content;
-            },
-            getModelID(id) {
-                this.model_id = id;
-            },
-            getModelData() {
-                this.data.content = this.proposalContent;
-                this.data.sourceLanguage = this.sourceLang;
-                this.data.targetLanguage = this.targetLang;
-                this.translationUpdates.translationLang = this.targetLang;
-                console.log(this.targetLang)
-            },
-            getTranslation() {
-                this.getModelData();
-                this.processing = true;
-                this.editing = true;
-                this.proposalContent = [];
-                window.axios.post('/translate/' + `${this.model_id}`, this.data)
-                    .then((res) => {
-                        this.proposalContent = res.data;
-                        this.processing = false;
-                    })
-            },
-            submitEdits(){
-                this.editing = false;
-                this.translate = false
-                this.translationUpdates.updates = this.proposalContent;
-                window.axios.patch('/translation/'+ `${this.model_id}`, this.translationUpdates);
-                // .then((res) => {
-                //     this.proposalContent = res.data;
-                // });
-
-            }
-        };
-    }
-</script>

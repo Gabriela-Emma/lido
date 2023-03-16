@@ -30,7 +30,7 @@ class ProposalTranslationController extends Controller
         $existingTranslation = Translation::where('source_id', $proposal->id)->where('lang', $request->targetLanguage)->first();
 
         // return existing translation
-        if(isset($query))
+        if(isset($existingTranslation))
         {
             $existingTranslation->content;
         }
