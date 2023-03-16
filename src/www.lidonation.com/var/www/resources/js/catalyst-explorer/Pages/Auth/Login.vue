@@ -13,11 +13,11 @@
 
                 <div>
                     <div class=" flex justify-start mb-2">
-                        <h1 class="text-2xl lg:text-3xl 2xl:text-5xl 3xl:text-6xl font-semibold text-slate-700"> Login </h1>
+                        <h1 class="text-2xl lg:text-3xl 2xl:text-5xl 3xl:text-6xl font-semibold text-slate-700"> {{ $t("Login") }} </h1>
                     </div>
 
                     <div class="mb-2">
-                        <label for="email" class="block text-sm font-medium text-slate-700">Email address</label>
+                        <label for="email" class="block text-sm font-medium text-slate-700">{{ $t("Email address") }}</label>
                         <div class="mt-1 ">
                             <input v-model="form.email" id="email" name="email" type="email" autocomplete="email"
                                    required
@@ -28,7 +28,7 @@
                     </div>
 
                     <div class="mb-2">
-                        <label for="email" class="block text-sm font-medium text-slate-700">Password</label>
+                        <label for="email" class="block text-sm font-medium text-slate-700">{{ $t("Password") }}</label>
                         <div class="mt-1">
                             <input v-model="form.password" id="password" name="password" type="password"
                                    autocomplete="password" required
@@ -42,13 +42,13 @@
                         <div class="flex items-center">
                             <input v-model="form.remember" id="remember-me" name="remember-me" type="checkbox"
                                    class="h-4 w-4 rounded border-slate-300 text-teal-600 focus:ring-teal-500">
-                            <label for="remember" class="ml-2 block text-sm text-slate-900">Remember me</label>
+                            <label for="remember" class="ml-2 block text-sm text-slate-900">{{ $t("Remember me") }}</label>
                         </div>
 
                         <div class="text-sm">
                             <a href="/forgot-password"
                                class="font-medium text-teal-300 hover:text-teal-100">
-                                Forgot your password?
+                                {{ $t("Forgot your password") }}?
                             </a>
                         </div>
                     </div>
@@ -62,10 +62,10 @@
                                 <path stroke-linecap="round" stroke-linejoin="round"
                                       d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9"/>
                             </svg>
-                            <span>Sign in</span>
+                            <span>{{ $t("Sign in") }}</span>
                         </button>
                         <span class="text-sm">
-                            <Link href="/catalyst-explorer/register" class="font-bold text-teal-600 hover:text-teal-500" preserve-scroll >Register</Link>
+                            <Link href="/catalyst-explorer/register" class="font-bold text-teal-600 hover:text-teal-500" preserve-scroll >{{ $t("Register") }}</Link>
                         </span>
                     </div>
                 </div>

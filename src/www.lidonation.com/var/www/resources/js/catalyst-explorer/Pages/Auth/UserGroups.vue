@@ -16,7 +16,7 @@
                         <button type="button" @click.prevent="newGroup"
                                 class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-teal-600 border border-transparent rounded-sm shadow-sm hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
                             <PlusIcon class="w-5 h-5 mr-2 -ml-1" aria-hidden="true"/>
-                            Add new Group or Company
+                            {{ $t("Add new Group or Company") }}
                         </button>                   
                     </div>
                     <div>
@@ -33,17 +33,17 @@
                                         d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
                                 </svg>
                                 <h3 class="mt-2 text-lg font-medium text-slate-900">
-                                    Add a Group
+                                    {{ $t("Add a Group") }}
                                 </h3>
                                 <p class="mt-1 text-md text-slate-500">
-                                    Is this project part of a team or company,
-                                    create a profile to feature on the groups page.
+                                    {{ $t("Is this project part of a team or company") }},
+                                    {{ $t("create a profile to feature on the groups page") }}.
                                 </p>
                                 <div class="mt-6">
                                     <button type="button" @click.prevent="newGroup"
                                             class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-teal-600 border border-transparent rounded-sm shadow-sm hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
                                         <PlusIcon class="w-5 h-5 mr-2 -ml-1" aria-hidden="true"/>
-                                        Add new Group or Company
+                                        {{ $t("Add new Group or Company") }}
                                     </button>
                                 </div>
                             </div>
