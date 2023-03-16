@@ -121,7 +121,8 @@ function parsePageNumber(val): number {
     if (!val) {
         return val;
     }
-    return parseInt(val.replace(/[^0-9]/g, ''));
+    let valArr = val.split('?').pop();
+    return parseInt(valArr.replace(/[^0-9]/g, ''));
 }
 
 // computer properties
