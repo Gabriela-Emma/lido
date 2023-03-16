@@ -1,7 +1,7 @@
 <template>
-    <header-component titleName0="Catalyst" titleName1="Bookmarks" subTitle=""/>
+    <header-component titleName0="catalyst" titleName1="Bookmarks" subTitle=""/>
     <section>
-        <h1>Bookmarks Section</h1>
+        <h1>{{ $t("Bookmarks Section") }}</h1>
     </section>
 </template>
 

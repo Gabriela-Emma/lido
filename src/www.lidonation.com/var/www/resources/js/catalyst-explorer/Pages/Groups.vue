@@ -1,6 +1,6 @@
 <template>
-    <header-component titleName0="Catalyst" titleName1="Groups"
-                      subTitle="Diverse, independent, and together inspiring the highest level of human collaboration."/>
+    <header-component titleName0="catalyst" titleName1="groups"
+                      subTitle="Diverse, independent, and together inspiring the highest level of human collaboration"/>
 
     <div class="flex flex-col gap-2 bg-primary-20">
         <section class="py-8">
