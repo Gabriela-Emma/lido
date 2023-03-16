@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: "{{ $.Chart.Name }}-graphql"
+  name: "{{ $.Chart.Name }}-graphql-background"
   namespace: {{ .Values.namespace }}
   labels:
     app: "{{ $.Chart.Name }}"
-    service: "{{ $.Chart.Name }}-graphql"
+    service: "{{ $.Chart.Name }}-graphql-background"
 spec:
   selector:
     matchLabels:
       app: "{{ $.Chart.Name }}"
-      service: "{{ $.Chart.Name }}-graphql"
+      service: "{{ $.Chart.Name }}-graphql-background"
   replicas: {{ .Values.services.dbsync.graphql.replicaCount }}
   strategy:
     type: RollingUpdate
@@ -21,7 +21,7 @@ spec:
     metadata:
       labels:
         app: "{{ $.Chart.Name }}"
-        service: "{{ $.Chart.Name }}-graphql"
+        service: "{{ $.Chart.Name }}-graphql-background"
     spec:
       automountServiceAccountToken: false
       imagePullSecrets:
@@ -63,7 +63,7 @@ spec:
             name: "{{ $.Chart.Name }}-configurations-configmap"
       containers:
       - name: app
-        image: "{{ .Values.services.dbsync.graphql.image.repository }}:{{ .Values.services.dbsync.graphql.image.tag }}"
+        image: "inputoutput/cardano-graphql-background:{{ .Values.services.dbsync.graphql.image.tag }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         resources:
           limits:
@@ -80,6 +80,8 @@ spec:
         env:
           - name: POSTGRES_HOST
             value: "lidolovelace-dbsync-db-postgresql"
+          - name: METADATA_SERVER_URI
+            value: "https://tokens.cardano.org"
           - name: HASURA_URI
             value: "http://lidolovelace-dbsync-hasura-service.{{ .Values.namespace }}.svc.cluster.local:8080"
           - name: OGMIOS_HOST

@@ -90,7 +90,7 @@ services:
       replicaCount: 1
       image:
         repository: inputoutput/cardano-graphql-hasura
-        tag: 7.0.2
+        tag: 8.0.0
       ingress:
         controller:
           headers:
@@ -105,8 +105,9 @@ services:
           secretName: graphql-lidonation-com-tls
     graphql:
       replicaCount: 1
+      metadata_server: 'https://tokens.cardano.org'
       image:
-        repository: inputoutput/cardano-graphql
+        repository: inputoutput/cardano-graphql-server
         tag: 8.0.0
       ingress:
         controller:
