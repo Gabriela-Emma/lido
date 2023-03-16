@@ -41,8 +41,6 @@ spec:
       - name: app
         image: "{{ .Values.services.dbsync.hasura.image.repository }}:{{ .Values.services.dbsync.hasura.image.tag }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
-        securityContext:
-          readOnlyRootFilesystem: false
         resources:
           limits:
             memory: 2048Mi
@@ -58,6 +56,12 @@ spec:
             value: "lidolovelace-dbsync-ogmios-service"
           - name: POSTGRES_HOST
             value: "lidolovelace-dbsync-db-postgresql"
+          - name: POSTGRES_USER_FILE
+            value: "/tmp/secrets/postgres_user"
+          - name: POSTGRES_PASSWORD_FILE
+            value: "/tmp/secrets/postgres_password"
+          - name: POSTGRES_DB_FILE
+            value: "/tmp/secrets/postgres_db"
           - name: HASURA_GRAPHQL_ENABLE_CONSOLE
             value: "true"
           - name: HASURA_GRAPHQL_CORS_DOMAIN
@@ -68,5 +72,5 @@ spec:
             protocol: TCP
         volumeMounts:
           - name: dbsync-postgresql-secrets
-            mountPath: /run/secrets
+            mountPath: /tmp/secrets
             readOnly: false
