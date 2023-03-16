@@ -62,6 +62,8 @@ spec:
             value: "/tmp/secrets/postgres_password"
           - name: POSTGRES_DB_FILE
             value: "/tmp/secrets/postgres_db"
+          - name: SECRET_DIR
+            value: "/tmp/secrets"
           - name: HASURA_GRAPHQL_ENABLE_CONSOLE
             value: "true"
           - name: HASURA_GRAPHQL_CORS_DOMAIN
