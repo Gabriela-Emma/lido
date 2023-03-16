@@ -345,8 +345,7 @@ Route::group(
         Route::get('/proposals/{proposal}/', function (Proposal $proposal) {
             return view('proposal', compact('proposal'));
         })->name('proposal');
-        Route::get('/languageOptions', [ProposalTranslationController::class, 'getLanguageOptions'])
-        ->middleware(['auth:'.config('fortify.guard')]);
+
 
 
         // Archive News
@@ -754,3 +753,14 @@ Route::get('/reset-password/{token}', function (Request $request, $token) {
 // Route::get('reset-password/{token}', ResetPasswordForm::class)->name('password.reset');
 Route::post('reset-password', [ForgotPasswordController::class, 'submitResetPasswordForm'])->name('password.update');
 Route::post('logout', [AuthController::class, 'logout'])->name('logout');
+
+
+// proposal translation
+Route::group(
+    [  
+        'middleware' => ['auth:'.config('fortify.guard')],
+    ], function () {
+        Route::get('/languageOptions', [ProposalTranslationController::class, 'getLanguageOptions']); 
+        Route::post('/translate/{proposal:id}', [ProposalTranslationController::class, 'makeTranslation']); 
+
+       });

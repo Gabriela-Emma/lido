@@ -66,8 +66,8 @@
                     </template>
                 </div>
 
-                <div class="" x-show="translate ">
-                    <button
+                <div x-show="targetLang" x-init="getModelData({{$proposal->id}})">
+                    <button @click="getTranslation()" 
                         class="p-2 font-medium  rounded-md mr-3 text-white  bg-teal-600 hover:bg-teal-800 focus:ring-4 focus:outline-none focus:ring-teal-600text-center
                                     inline-flex items-center dark:bg-teal-600 dark:hover:bg-teal-700 dark:focus:ring-teal-800"
                         type="button">
@@ -117,117 +117,126 @@
 </div>
 
 <script>
-    function translateProposal() {
-        return {
-            model:null,
-            translate: false,
-            editing: false,
-            openDropdown: false,
-            startTranslation: false,
-            translatedContent: null,
-            filter: "",
-            show: false,
-            selected: null,
-            focusedOptionIndex: null,
-            options:[],
-            proposalContent:[],
-            translatedContent:[],
-            data:[],
-            locale:null,
-            close() {
-                this.show = false;
-                this.filter = this.selectedName();
-                this.focusedOptionIndex = this.selected ? this.focusedOptionIndex : null;
-            },
-            open() {
-                this.show = true;
-                this.filter = "";
-            },
-            toggleDropdown() {
-                if (this.show) {
-                    this.close();
-                } else {
-                    this.open();
-                }
-            },
-            isOpen() {
-                return this.show === true;
-            },
-            selectedName() {
-                return this.selected ? this.selected.name + " (" + this.selected.value + ")" : this.filter;
-            },
-            getLangOptions(){
-               window.axios.get('/languageOptions')
-               .then((res) => {
-                this.options = res.data
-              }
-               )
-            },
-            classOption(id, index) {
-                const isSelected = this.selected ? id == this.selected.value : false;
-                const isFocused = index == this.focusedOptionIndex;
-                return {
-                    "cursor-pointer w-full border-gray-100 border-b hover:bg-teal-100": true,
-                    "bg-teal-300": isSelected,
-                    "bg-teal-100": isFocused
-                };
-            },
-            filteredOptions() {
-                return this.options.filter(option => {
-                    return (
-                        option.name.toLowerCase().indexOf(this.filter.toLowerCase()) > -1 ||
-                        option.value.toLowerCase().indexOf(this.filter.toLowerCase()) > -1
-                    );
-                });
-            },
-            onOptionClick(index) {
-                this.focusedOptionIndex = index;
-                this.selectOption();
-            },
-            selectOption() {
-                if (!this.isOpen()) {
-                    return;
-                }
-                this.focusedOptionIndex = this.focusedOptionIndex ?? 0;
-                const selected = this.filteredOptions()[this.focusedOptionIndex];
-                if (this.selected && this.selected.value == selected.value) {
-                    this.filter = "";
-                    this.selected = null;
-                } else {
-                    this.selected = selected;
-                    this.filter = this.selectedName();
-                }
+function translateProposal() {
+    return {
+        model_id:null,
+        translate: false,
+        editing: false,
+        openDropdown: false,
+        startTranslation: false,
+        translatedContent: null,
+        filter: "",
+        show: false,
+        selected:null ,
+        focusedOptionIndex: null,
+        options:[],
+        proposalContent:[],
+        data:{},
+        targetLang:"",
+        locale:null,
+        close() {
+            this.show = false;
+            this.filter = this.selectedName();
+            this.focusedOptionIndex = this.selected ? this.focusedOptionIndex : null;
+        },
+        open() {
+            this.show = true;
+            this.filter = "";
+        },
+        toggleDropdown() {
+            if (this.show) {
                 this.close();
-            },
-            focusPrevOption() {
-                if (!this.isOpen()) {
-                    return;
-                }
-                const optionsNum = Object.keys(this.filteredOptions()).length - 1;
-                if (this.focusedOptionIndex > 0 && this.focusedOptionIndex <= optionsNum) {
-                    this.focusedOptionIndex--;
-                } else if (this.focusedOptionIndex == 0) {
-                    this.focusedOptionIndex = optionsNum;
-                }
-            },
-            focusNextOption() {
-                const optionsNum = Object.keys(this.filteredOptions()).length - 1;
-                if (!this.isOpen()) {
-                    this.open();
-                }
-                if (this.focusedOptionIndex == null || this.focusedOptionIndex == optionsNum) {
-                    this.focusedOptionIndex = 0;
-                } else if (this.focusedOptionIndex >= 0 && this.focusedOptionIndex < optionsNum) {
-                    this.focusedOptionIndex++;
-                }
-            },
-            getContent(content){
-              this.proposalContent = content;
-              console.log(translationContent)
-            },
-            fillData(){
-              
-            }         
-        };
-    }
+            } else {
+                this.open();
+            }
+        },
+        isOpen() {
+            return this.show === true;
+        },
+        selectedName() {
+            this.locale
+            this.targetLang = this.selected.value 
+            this.data['targetLanguage'] = this.targetLang.toUpperCase();
+            return this.selected ? this.selected.name + " (" + this.selected.value + ")" : this.filter;
+        },
+        getLangOptions(){
+            window.axios.get('/languageOptions')
+            .then((res) => {
+            this.options = res.data
+            }
+            )
+        },
+        classOption(id, index) {
+            const isSelected = this.selected ? id == this.selected.value : false;
+            const isFocused = index == this.focusedOptionIndex;
+            return {
+                "cursor-pointer w-full border-gray-100 border-b hover:bg-teal-100": true,
+                "bg-teal-300": isSelected,
+                "bg-teal-100": isFocused
+            };
+        },
+        filteredOptions() {
+            return this.options.filter(option => {
+                return (
+                    option.name.toLowerCase().indexOf(this.filter.toLowerCase()) > -1 ||
+                    option.value.toUpperCase().indexOf(this.filter.toLowerCase()) > -1
+                );
+            });
+        },
+        onOptionClick(index) {
+            this.focusedOptionIndex = index;
+            this.selectOption();
+        },
+        selectOption() {
+            if (!this.isOpen()) {
+                return;
+            }
+            this.focusedOptionIndex = this.focusedOptionIndex ?? 0;
+            const selected = this.filteredOptions()[this.focusedOptionIndex];
+            if (this.selected && this.selected.value == selected.value) {
+                this.filter = "";
+                this.selected = null;
+            } else {
+                this.selected = selected;
+                this.filter = this.selectedName();
+            }
+            this.close();
+        },
+        focusPrevOption() {
+            if (!this.isOpen()) {
+                return;
+            }
+            const optionsNum = Object.keys(this.filteredOptions()).length - 1;
+            if (this.focusedOptionIndex > 0 && this.focusedOptionIndex <= optionsNum) {
+                this.focusedOptionIndex--;
+            } else if (this.focusedOptionIndex == 0) {
+                this.focusedOptionIndex = optionsNum;
+            }
+        },
+        focusNextOption() {
+            const optionsNum = Object.keys(this.filteredOptions()).length - 1;
+            if (!this.isOpen()) {
+                this.open();
+            }
+            if (this.focusedOptionIndex == null || this.focusedOptionIndex == optionsNum) {
+                this.focusedOptionIndex = 0;
+            } else if (this.focusedOptionIndex >= 0 && this.focusedOptionIndex < optionsNum) {
+                this.focusedOptionIndex++;
+            }
+        },
+        getContent(content){
+            this.proposalContent = content;
+        },
+        getModelData(id){
+            this.model_id = id;
+            this.data['content'] = this.proposalContent;
+        },
+        getTranslation(){
+            window.axios.post('/translate/' + `${this.model_id}`,this.data)
+            // .then((res) => {
+            //     this.proposalContent = res.data;
+            // })
+        }        
+    };
+}
 </script>

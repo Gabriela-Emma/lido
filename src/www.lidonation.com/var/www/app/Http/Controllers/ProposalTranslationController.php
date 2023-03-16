@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Proposal;
 use Illuminate\Http\Request;
 use Google\Service\Translate;
 use App\Services\TranslationService;
@@ -15,7 +16,7 @@ class ProposalTranslationController extends Controller
         $result = array_map(function ($locale) {
             return [
                 'name' => $locale['native'],
-                'value' => strtolower(substr($locale['key'], 0, 2)),
+                'value' => $locale['key'],
             ];
         }, $locales);
         
@@ -23,9 +24,9 @@ class ProposalTranslationController extends Controller
         return $json;
     }
 
-    public function makeTranslation(Request $request, TranslationService $translationService)
+    public function makeTranslation(Request $request, Proposal $proposal)
     {
-
+        dd($request->segment(1));
         
     }
 }
