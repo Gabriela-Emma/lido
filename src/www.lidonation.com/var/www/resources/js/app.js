@@ -849,6 +849,82 @@ window.cardanoWallet = cardanoWallet;
 
 window.globalVideoPlayer = globalVideoPlayer;
 
+// translate proposal
+window.translateProposal = function translateProposal() {
+    return {
+        loggedIn:false,
+        model_id: null,
+        translate: false,
+        editing: false,
+        startTranslation: false,
+        translatedContent: null,
+        focusedOptionIndex: null,
+        options: [],
+        targetLang: null,
+        sourceLang: null,
+        proposalContent: [],
+        data: {
+            content: '',
+            sourceLanguage: '',
+            targetLanguage: ''
+        },
+        processing: false,
+        translationUpdates:{
+            updates:'',
+            translationLang:''
+        },
+        init() {
+        this.checkLogin();
+        },
+        checkLogin() {
+            axios.get('/api/user').then(response => {
+            this.loggedIn = true;
+            }).catch(error => {
+            });
+        },
+        getLangOptions() {
+            window.axios.get('/languageOptions')
+                .then((res) => {
+                    this.options = res.data
+                })
+        },
+        getContent(content) {
+            this.proposalContent = content;
+        },
+        getModelID(id) {
+            this.model_id = id;
+        },
+        getModelData() {
+            this.data.content = this.proposalContent;
+            this.data.sourceLanguage = 'en';
+            this.data.targetLanguage = this.targetLang;
+            this.translationUpdates.translationLang = this.targetLang;
+            console.log(this.targetLang)
+        },
+        getTranslation() {
+            this.getModelData();
+            this.processing = true;
+            this.editing = true;
+            this.proposalContent = [];
+            window.axios.post('/translate/' + `${this.model_id}`, this.data)
+                .then((res) => {
+                    this.proposalContent = res.data;
+                    this.processing = false;
+                })
+        },
+        submitEdits(){
+            this.editing = false;
+            this.translate = false
+            this.translationUpdates.updates = this.proposalContent;
+            window.axios.patch('/translation/'+ `${this.model_id}`, this.translationUpdates)
+            .then((res) => {
+                this.proposalContent = res.data;
+            });
+
+        }
+    };
+}
+
 Alpine.magic('tt', el => message => {
     let instance = tippy(el, {content: message, trigger: 'manual'})
 

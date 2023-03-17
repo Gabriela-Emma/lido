@@ -81,17 +81,3 @@ $existingCommits->get()->count();
 exit
 route('catalystExplorer.myDashboard');
 exit
-Propopsal::query()->withCount['discussions',\040'commits',\040'translations'])->toArray();
-Propopsal::query()->withCount(['discussions',\040'commits',\040'translations'])->toArray();
-App\134Models\134Propopsal::query()->withCount(['discussions',\040'commits',\040'translations'])->toArray();
-exit
-App\134Models\134Proposal::query()->withCount(['discussions',\040'commits',\040'translations'])->toArray();
-App\134Models\134Proposal::query()->withCount(['discussions',\040'commits',\040'translations'])->get()->toArray();
-App\134Models\134Proposal::query()->withCount(['discussions',\040'commits',\040'translations'])->limit(2)->get()->toArray();
-App\134Models\134Proposal::query()->withCount(['discussions',\040'commits',\040'translations'])->limit(2)->get(['ratings_count',\040'title'])->toArray();
-App\134Models\134Proposal::query()->withCount(['discussions',\040'commits',\040'translations'])->limit(2)->toSql();
-Category::withCount(['news',\040'reviews',\040'insights',\040'post'])->get()->toArray();
-Category::withCount(['news',\040'reviews',\040'insights',\040'post'])->get()->toArray();
-Category::withCount(['news',\040'reviews',\040'insights',\040'posts'])->get()->toArray();
-Category::query()->withCount(['news',\040'reviews',\040'insights',\040'posts'])->get()->toArray();
-Category::query()->withCount(['news',\040'reviews',\040'insights'])->get()->toArray();
