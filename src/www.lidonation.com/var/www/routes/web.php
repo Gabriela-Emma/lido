@@ -31,6 +31,7 @@ use App\Http\Controllers\TwitterAttendanceController;
 use App\Http\Livewire\Catalyst\CatalystFundComponent;
 use App\Http\Livewire\Delegators\DelegatorsComponent;
 use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\ProposalTranslationController;
 use App\Http\Livewire\Catalyst\CatalystGroupsComponent;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Livewire\Partners\PartnerDashboardComponent;
@@ -344,6 +345,8 @@ Route::group(
         Route::get('/proposals/{proposal}/', function (Proposal $proposal) {
             return view('proposal', compact('proposal'));
         })->name('proposal');
+
+
 
         // Archive News
         Route::get('/categories/{category}/', TaxonomyController::class.'@category');
@@ -750,3 +753,14 @@ Route::get('/reset-password/{token}', function (Request $request, $token) {
 // Route::get('reset-password/{token}', ResetPasswordForm::class)->name('password.reset');
 Route::post('reset-password', [ForgotPasswordController::class, 'submitResetPasswordForm'])->name('password.update');
 Route::post('logout', [AuthController::class, 'logout'])->name('logout');
+
+
+// proposal translation
+Route::group(
+    [  
+        'middleware' => ['auth:'.config('fortify.guard')],
+    ], function () {
+        Route::get('/languageOptions', [ProposalTranslationController::class, 'getLanguageOptions']); 
+        Route::post('/translate/{proposal:id}', [ProposalTranslationController::class, 'makeTranslation']); 
+        Route::patch('/translation/{proposal:id}', [ProposalTranslationController::class, 'updateTranslation']);
+       });
