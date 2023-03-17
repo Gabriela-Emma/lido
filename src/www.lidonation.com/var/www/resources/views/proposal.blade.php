@@ -353,7 +353,7 @@
                         @endif
                     @endif
 
-                    @if($proposal->content || $proposal->defination_of_success)
+                    @if($proposal->content)
                     <x-catalyst.proposals.proposal-content :proposal="$proposal" />
                     @endif
 

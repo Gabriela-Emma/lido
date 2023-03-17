@@ -39,7 +39,7 @@
                     </span>
                 </div>
 
-                <div class="hidden md:flex">
+                <div class="hidden md:flex" v-if="pages">
                     <template v-for="link in pages">
                         <span
                             class="inline-flex items-center border-t-2 border-transparent px-4 pt-10 text-sm font-medium border-teal-500 text-teal-600"
@@ -89,7 +89,7 @@
 </template>
 
 <script lang="ts" setup>
-import {defineEmits, computed, ref, watch} from "vue";
+import {defineEmits, computed, ref, watch, ComputedRef} from "vue";
 import Multiselect from '@vueform/multiselect';
 import PaginationLink from "../../models/pagination-link";
 
@@ -126,27 +126,27 @@ function parsePageNumber(val): number {
 }
 
 // computer properties
-const prev = computed(() => {
+const prev: ComputedRef<PaginationLink>  = computed(() => {
     const link = props.links[0];
     return {
         ...link,
-        page: parsePageNumber(link.url)
+        page: parsePageNumber(link?.url)
     };
 });
-const next = computed(() => {
+const next: ComputedRef<PaginationLink> = computed(() => {
     const link = props.links[props.links?.length - 1];
     return {
         ...link,
-        page: parsePageNumber(link.url)
+        page: parsePageNumber(link?.url)
     };
 });
-const pages = computed(() => {
+const pages: ComputedRef<PaginationLink[]> = computed(() => {
     const links = [...props.links];
     links.pop();
     links.shift();
     return links.map((link) => ({
         ...link,
-        page: parsePageNumber(link.url)
+        page: parsePageNumber(link?.url)
     }));
 });
 </script>
