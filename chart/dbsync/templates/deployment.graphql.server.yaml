@@ -82,6 +82,8 @@ spec:
             value: "http://lidolovelace-dbsync-hasura-service.{{ .Values.namespace }}.svc.cluster.local:8080"
           - name: OGMIOS_HOST
             value: "lidolovelace-dbsync-ogmios-service.{{ .Values.namespace }}.svc.cluster.local"
+          - name: ALLOW_INTROSPECTION
+            value: "true"
           - name: CARDANO_NODE_CONFIG_PATH
             value: "/config/config.json"
         ports:

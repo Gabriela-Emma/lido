@@ -104,6 +104,7 @@
         <script src="//cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
         <script src="https://unpkg.com/smoothscroll-polyfill@0.4.4/dist/smoothscroll.js"></script>
         <script src="https://unpkg.com/three@0.140.2/build/three.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
         <script src="{{ mix('vendor/splide/splide-shader-carousel.min.js') }}"></script>
 
         <script src="{{ mix('js/global.js') }}" ></script>

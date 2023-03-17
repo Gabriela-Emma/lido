@@ -51,7 +51,7 @@
                 >
                     {{ report.proposal.title }}
                 </a>
-            </div>
+            </div> 
 
             <div class="flex flex-row gap-4 justify-between items-center py-4">
                 <div class="text-teal-800 opacity-50 text-sm">Status</div>
