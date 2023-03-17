@@ -1,7 +1,7 @@
 @props(['proposal'])
 
 <div x-data="translateProposal">
-
+    <span class="mb-3" x-show="!loggedIn">Login <a href="/catalyst-explorer/login"> here</a> to translate</span>
     <div class=" text-white items-center border-t  border-x border-slate-300 w-full bg-white" x-init="getContent({{ json_encode($proposal->content) }})">
         <div class="items-center p-3 " x-show="loggedIn" x-init="getModelID({{ $proposal->id }})" >
             <div class="flex flex-row justify-between  ">
