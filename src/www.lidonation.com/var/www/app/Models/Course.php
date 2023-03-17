@@ -15,7 +15,7 @@ class Course extends Model
 
     public function lessons()
     {
-        //establish relationship of course to lessons
+        return $this->hasMany(lessons::class);
     }
 
 

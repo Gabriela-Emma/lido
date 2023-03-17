@@ -436,6 +436,11 @@ class Post extends Model implements HasMedia, Interfaces\IHasMetaData, Sitemapab
         return $this->morphMany(Comment::class, 'commentable');
     }
 
+    public function lessons()
+    {
+        return $this->hasMany(lessons::class, 'lesson_post');
+    }
+
     /**
      * The "booted" method of the model.
      *
