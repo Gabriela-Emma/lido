@@ -17,15 +17,6 @@
                         <template x-if="translate && !editing" x-init="getLangOptions()">
                             <div
                                 class="flex flex-col bg-white shadow-md border z-10 absolute w-96 rounded-md justify-between p-3">
-                                <div class="  flex flex-col items-center ">
-                                    <select x-model="sourceLang"
-                                        class="bg-gray-50 border border-gray-300 text-gray-900 mb-6 text-sm rounded-md focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500">
-                                        <option value="" selected>select current language</option>
-                                        <template x-for="option in options" :key="option.value">
-                                            <option :value="option.value" x-text="option.name"></option>
-                                        </template>
-                                    </select>
-                                </div>
                                 <div class=" w-full flex flex-col items-center ">
                                     <select x-model="targetLang"
                                         class="bg-gray-50 border border-gray-300 text-gray-900 mb-6 text-sm rounded-md focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500">
@@ -36,7 +27,7 @@
                                     </select>
                                 </div>
 
-                                <div x-show="targetLang!=null && sourceLang!=null">
+                                <div x-show="targetLang!=null">
                                     <button @click="getTranslation()"
                                         class="p-2 font-medium rounded-md mr-3 text-white bg-teal-600 hover:bg-teal-800 focus:ring-4 focus:outline-none focus:ring-teal-600text-center inline-flex items-center dark:bg-teal-600 dark:hover:bg-teal-700 dark:focus:ring-teal-800"
                                         type="button">
@@ -94,7 +85,5 @@
             </span>
         </div> 
     </div>
-
-
 </div>
 

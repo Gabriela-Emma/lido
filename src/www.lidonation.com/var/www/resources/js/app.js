@@ -896,7 +896,7 @@ window.translateProposal = function translateProposal() {
         },
         getModelData() {
             this.data.content = this.proposalContent;
-            this.data.sourceLanguage = this.sourceLang;
+            this.data.sourceLanguage = 'en';
             this.data.targetLanguage = this.targetLang;
             this.translationUpdates.translationLang = this.targetLang;
             console.log(this.targetLang)
