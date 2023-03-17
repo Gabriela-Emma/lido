@@ -14,7 +14,7 @@ class Lesson extends Model
 
     public function article()
     {
-        return $this->hasMany(Post::class, 'lesson_post');
+        return $this->belongsToMany(Post::class, 'lesson_post');
     }
 
     public function user()
