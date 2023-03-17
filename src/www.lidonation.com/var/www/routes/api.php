@@ -281,3 +281,5 @@ Route::prefix('quizzes')->as('quizzes')
     });
 
 Route::get('/generate-mnemonic-phrase', [GenerateMnemonicPhraseController::class, 'generate']);
+
+
