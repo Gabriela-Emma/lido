@@ -2,41 +2,42 @@
 
 namespace App\Models;
 
-use App\Models\Interfaces\HasLink;
+use App\Models\Lesson;
+use Parental\HasChildren;
+use App\Scopes\LimitScope;
+use Illuminate\Support\Str;
+use Spatie\Sitemap\Tags\Url;
+use App\Models\Traits\HasHero;
+use App\Scopes\PublishedScope;
+use App\Models\Traits\HasLinks;
+use Spatie\Image\Manipulations;
 use App\Models\Traits\HasAuthor;
 use App\Models\Traits\HasEditor;
-use App\Models\Traits\HasHero;
-use App\Models\Traits\HasLinks;
-use App\Models\Traits\HasMetaData;
 use App\Models\Traits\HasParent;
-use App\Models\Traits\HasPrompts;
-use App\Models\Traits\HasSnippets;
-use App\Models\Traits\HasTaxonomies;
-use App\Models\Traits\HasTranslations;
-use App\Scopes\LimitScope;
 use App\Scopes\OrderByDateScope;
-use App\Scopes\OrderByOrderScope;
-use App\Scopes\OrderByPublishedDateScope;
-use App\Scopes\PublishedScope;
-use App\Traits\HasRemovableGlobalScopes;
 use App\Traits\SearchableLocale;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\Routing\UrlGenerator;
-use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Str;
-use Laravel\Nova\Actions\Actionable;
-use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
-use Parental\HasChildren;
-use Spatie\Comments\Models\Concerns\HasComments;
-use Spatie\Image\Manipulations;
+use App\Models\Traits\HasPrompts;
+use App\Scopes\OrderByOrderScope;
 use Spatie\MediaLibrary\HasMedia;
-use Spatie\MediaLibrary\InteractsWithMedia;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use App\Models\Interfaces\HasLink;
+use App\Models\Traits\HasMetaData;
+use App\Models\Traits\HasSnippets;
+use Illuminate\Support\Collection;
+use App\Models\Traits\HasTaxonomies;
+use Laravel\Nova\Actions\Actionable;
+use App\Models\Traits\HasTranslations;
+use Illuminate\Support\Facades\Artisan;
+use App\Traits\HasRemovableGlobalScopes;
+use App\Scopes\OrderByPublishedDateScope;
 use Spatie\Sitemap\Contracts\Sitemapable;
-use Spatie\Sitemap\Tags\Url;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Contracts\Routing\UrlGenerator;
+use Illuminate\Contracts\Foundation\Application;
+use Spatie\Comments\Models\Concerns\HasComments;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 /**
  * @property int $id
@@ -438,7 +439,7 @@ class Post extends Model implements HasMedia, Interfaces\IHasMetaData, Sitemapab
 
     public function lessons()
     {
-        return $this->hasMany(lessons::class, 'lesson_post');
+        return $this->hasMany(Lesson::class, 'lesson_post');
     }
 
     /**
