@@ -67,7 +67,7 @@ spec:
           - name: HASURA_GRAPHQL_ENABLE_CONSOLE
             value: "true"
           - name: HASURA_GRAPHQL_CORS_DOMAIN
-            value: "https://*.lidonation.com:9695, https://*.lidonation.com:3100, https://*.lidonation.com:3000, http://localhost:9695"
+            value: "https://*.lidonation.com, https://*.theadao.io, https://*.lidonation.com:3100, https://*.lidonation.com:3000, http://localhost:9695"
         ports:
           - name: hasura
             containerPort: 8080
