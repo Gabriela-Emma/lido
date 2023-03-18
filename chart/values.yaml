@@ -69,7 +69,7 @@ services:
     tier: "t2"
     restore_snapshot: ''
     persistence:
-      size: 120Gi
+      size: 220Gi
     db:
       persistence:
         enabled: true
