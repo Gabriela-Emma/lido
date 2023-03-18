@@ -89,7 +89,7 @@ spec:
           - name: ALLOW_INTROSPECTION
             value: "true"
           - name: CACHE_ENABLED
-            value: "true"
+            value: "false"
           - name: LOGGER_MIN_SEVERITY
             value: info
           - name: CARDANO_NODE_CONFIG_PATH
