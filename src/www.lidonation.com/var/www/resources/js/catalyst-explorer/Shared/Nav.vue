@@ -14,7 +14,7 @@
                                         <path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"/>
                                     </svg>
                                     <span class="ml-1 text-xs font-medium sr-only">
-                                        dashboard
+                                        {{ $t('dashboard') }}
                                     </span>
                                 </Link>
                             </div>
@@ -30,7 +30,7 @@
                                     </svg>
                                         <Link :href=crumb.link
                                            class="ml-2 text-xs inline-block font-medium text-white hover:text-yellow-400 whitespace-nowrap">
-                                            {{crumb.label}}
+                                            {{$t(crumb.label)}}
                                         </Link>
                                 </div>
                                 <div v-if="(crumbsLength-1 == key)" class="flex items-center">
@@ -40,7 +40,7 @@
                                         <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z"/>
                                     </svg>
                                         <span class="ml-2 text-xs font-medium inline-block text-teal-light-100 whitespace-nowrap">
-                                            {{crumb.label}}
+                                            {{$t(crumb.label)}}
                                         </span>
                                 </div>
                         </li>
@@ -55,7 +55,7 @@
                                 class="px-1 py-3 text-white menu-link hover:text-yellow-500"
                                 :class="{ 'text-yellow-500': $page.component.startsWith('Proposals') }"
                                 :href="$utils.localizeRoute('catalyst-explorer/proposals')">
-                                Proposals
+                                {{ $t('Proposals') }}
                             </Link>
                         </li>
                         <li class="flow-root menu-item">
@@ -63,7 +63,7 @@
                                 class="px-1 py-3 text-white menu-link hover:text-yellow-500"
                                 :class="{ 'text-yellow-500': $page.component.startsWith('People') }"
                                 :href="$utils.localizeRoute('catalyst-explorer/people')">
-                                People
+                                {{ $t('People') }}
                             </Link>
                         </li>
                         <li class="flow-root menu-item">
@@ -71,21 +71,21 @@
                                 class="px-1 py-3 text-white menu-link hover:text-yellow-500"
                                 :class="{ 'text-yellow-500': $page.component.startsWith('Groups') }"
                                 :href="$utils.localizeRoute('catalyst-explorer/groups')">
-                                Groups
+                                {{ $t('Groups') }}
                             </Link>
                         </li>
                         <li class="flow-root menu-item">
                             <Link class="px-1 py-3 text-white menu-link hover:text-yellow-500"
                                   :class="{ 'text-yellow-500': $page.component.startsWith('Reports')}"
                                   :href="$utils.localizeRoute('catalyst-explorer/reports')">
-                                Monthly Reports
+                                {{ $t('Monthly Reports') }}
                             </Link>
                         </li>
                         <li class="flow-root menu-item">
                             <Link class="px-1 py-3 text-white menu-link hover:text-yellow-500"
                                   :class="{ 'text-yellow-500': $page.component.endsWith('Assessments')}"
                                   :href="$utils.localizeRoute('catalyst-explorer/assessments')">
-                                PAs
+                                {{ $t('PAs') }}
                             </Link>
                         </li>
                         <li class="flow-root menu-item">
@@ -93,19 +93,19 @@
                                 class="px-1 py-3 text-white menu-link hover:text-yellow-500"
                                 :class="{ 'text-yellow-500': $page.component.startsWith('Charts') }"
                                 :href="$utils.localizeRoute('project-catalyst/dashboard')">
-                                Charts
+                                {{ $t('Charts') }}
                             </a>
                         </li>
                         <li class="flow-root menu-item">
                             <a class="px-1 py-3 text-white menu-link hover:text-yellow-500"
                                href="/project-catalyst/votes/ccv4">
-                                CCV4 Votes
+                                {{ $t('CCV4 Votes') }}
                             </a>
                         </li>
                         <li class="flow-root menu-item">
                             <a class="px-1 py-3 text-white menu-link hover:text-yellow-500"
                                href="/catalyst-explorer/api">
-                                Api
+                                {{ $t('Api') }}
                             </a>
                         </li>
                         <li class="flow-root menu-item">
@@ -113,7 +113,7 @@
                                 class="px-1 py-3 text-white menu-link hover:text-yellow-500"
                                 :class="{ 'text-yellow-500': $page.component.startsWith('Funds') }"
                                 :href="$utils.localizeRoute('catalyst-explorer/funds')">
-                            Funds
+                            {{ $t('Funds') }}
                             </Link>
                         </li>
 
@@ -122,7 +122,7 @@
                                 class="px-1 py-3 text-white menu-link hover:text-yellow-500"
                                 :class="{ 'text-yellow-500': $page.component.startsWith('VoterTool') }"
                                 :href="$utils.localizeRoute('project-catalyst/voter-tool')">
-                            Voter Tool
+                            {{ $t('Voter Tool') }}
                             </a>
                         </li>
 <!--                        <li class="flow-root menu-item" x-data="bookmarksMenuLink">-->

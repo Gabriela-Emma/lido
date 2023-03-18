@@ -7,19 +7,19 @@
                 </h3>
                 <div class="flex gap-4 text-slate-400">
                     <div class="flex gap-1 ">
-                        <div>Total Proposals</div>
+                        <div>{{ $t("Total Proposals") }}</div>
                         <div class="font-semibold text-slate-900">- {{ totalProposals }}</div>
                     </div>
                     <div class="flex gap-1">
-                        <div>Total Awarded</div>
+                        <div>{{ $t("Total Awarded") }}</div>
                         <div class="font-semibold text-slate-900">- {{ $filters.currency(totalAwarded)  }}</div>
                     </div>
                     <div class="flex gap-1">
-                        <div>Total Received</div>
+                        <div>{{ $t("Total Received") }}</div>
                         <div class="font-semibold text-slate-900">- {{ $filters.currency(totalReceived)  }}</div>
                     </div>
                     <div class="flex gap-1">
-                        <div>Funding Remaining</div>
+                        <div>{{ $t("Funding Remaining") }}</div>
                         <div class="font-semibold text-slate-900">- {{ $filters.currency(totalRemaining)  }}</div>
                     </div>
                 </div>
@@ -28,7 +28,7 @@
                 <!-- make this a Link to the single group page. Use query parameters toggle edit mode-->
                 <Link type="button" :href="$utils.localizeRoute(`catalyst-explorer/my/groups/${group.id}`)"
                     class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-teal-600 border border-transparent hover:text-white hover:bg-teal-800 rounded-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
-                    <span >Manage</span>
+                    <span >{{ $t("Manage") }}</span>
                 </Link>
             </div>
         </div>
@@ -37,7 +37,7 @@
                 <div class="sm:col-span-2">
                     <dt class="font-medium text-md text-slate-500">
                         <label for="bio" class="block text-sm font-medium text-slate-700">
-                            About
+                            {{ $t("About") }}
                         </label>
                     </dt>
                     <dd class="mt-1 text-md text-slate-900">
@@ -57,13 +57,13 @@
 
                 <div class="relative flex w-full gap-8 sm:col-span-2">
                     <div class="absolute block left-3 -top-1.5 bg-white rounded-sm text-xs px-2">
-                        Group Details
+                        {{ $t("Group Details") }}
                     </div>
                     <div class="flex w-full gap-4 p-2 space-x-8 border divide-x sm:col-span-2">
                         <div class="flex flex-col justify-center flex-1 p-2 pl-4">
                             <dt class="text-sm font-medium text-slate-500">
                                 <label for="name" class="block text-sm font-medium text-slate-700">
-                                    Group Name
+                                    {{ $t("Group Name") }}
                                 </label>
                             </dt>
                             <dd class="mt-1 text-md text-slate-900">
@@ -80,7 +80,7 @@
                         </div>
                         <div class="flex flex-col justify-center flex-1 p-2 pl-4">
                             <dt class="text-sm font-medium text-slate-500">
-                                Admin
+                                {{ $t("Admin") }}
                             </dt>
                             <dd class="mt-1 text-md text-slate-900">
                                 {{ group?.owner?.name }}
@@ -89,7 +89,7 @@
                         <div class="flex flex-col justify-center flex-1 p-2 pl-4">
                             <dt class="text-sm font-medium text-slate-500">
                                 <label for="website" class="block text-sm font-medium text-slate-700">
-                                    Website
+                                    {{ $t("Website") }}
                                 </label>
                             </dt>
                             <dd class="mt-1 text-md text-slate-900">
@@ -109,13 +109,13 @@
 
                 <div class="relative flex w-full gap-8 sm:col-span-2">
                     <div class="absolute block left-3 -top-1.5 bg-white rounded-sm text-xs px-2">
-                        Community & Support Links
+                        {{ $t("Community & Support Links") }}
                     </div>
                     <div class="flex w-full gap-8 p-2 space-x-8 border divide-x sm:col-span-2">
                         <div class="flex flex-col justify-center flex-1 p-2 pl-4">
                             <dt class="text-sm font-medium text-slate-500">
                                 <label for="twitter" class="block text-sm font-medium text-slate-700">
-                                    twitter
+                                    {{ $t("twitter") }}
                                 </label>
                             </dt>
                             <dd class="mt-1 text-md text-slate-900">
@@ -133,7 +133,7 @@
                         <div class="flex flex-col justify-center flex-1 p-2 pl-8">
                             <dt class="text-sm font-medium text-slate-500">
                                 <label for="discord" class="block text-sm font-medium text-slate-700">
-                                    discord
+                                    {{ $t("discord") }}
                                 </label>
                             </dt>
                             <dd class="mt-1 text-md text-slate-900">
@@ -151,7 +151,7 @@
                         <div class="flex flex-col justify-center flex-1 p-2 pl-8">
                             <dt class="text-sm font-medium text-slate-500">
                                 <label for="github" class="block text-sm font-medium text-slate-700">
-                                    github org
+                                    {{ $t("github org") }}
                                 </label>
                             </dt>
                             <dd class="mt-1 text-md text-slate-900">

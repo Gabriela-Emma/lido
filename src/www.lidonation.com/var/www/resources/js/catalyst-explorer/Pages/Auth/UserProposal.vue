@@ -21,7 +21,7 @@
                 <dl class="flex flex-row gap-6 w-full text-sm w-full">
                     <div class="flex gap-2">
                         <dt class="text-slate-100">
-                            Budget
+                            {{ $t('Budget') }}
                         </dt>
                         <dd class="font-semibold">
                             {{ $filters.currency(proposal.amount_requested) }}
@@ -29,7 +29,7 @@
                     </div>
                     <div class="flex gap-2">
                         <dt class="text-slate-100">
-                            Distributed
+                            {{ $t('Distributed') }}
                         </dt>
                         <dd class="font-semibold">
                             {{ $filters.currency(proposal.amount_received) }}
@@ -37,7 +37,7 @@
                     </div>
                     <div class="flex gap-2">
                         <dt class="text-slate-100">
-                            Remaining
+                            {{ $t('Remaining') }}
                         </dt>
                         <dd class="font-semibold">
                             {{ $filters.currency(proposal.amount_requested - proposal.amount_received) }}
@@ -88,8 +88,8 @@
 
                 <div class="flex h-full flex-col divide-y divide-gray-200 bg-white" v-if="currAction === 'reports'">
                     <div class="p-4 w-full" v-if="proposal.meta_data?.iog_hash">
-                        Links to official required reporting and evidence submission to the community.
-                        Your Project ID is:   <b> {{proposal.meta_data?.iog_hash}}</b>
+                        {{ $t('Links to official required reporting and evidence submission to the community') }}.
+                        {{ $t('Your Project ID is') }}:   <b> {{proposal.meta_data?.iog_hash}}</b>
                     </div>
                     <ul role="list" class="divide-y divide-gray-200">
                         <li v-for="iogAction in iogReportActions" class="px-4">
@@ -111,18 +111,18 @@
                         <button type="submit" @click="currAction = null"
                                 class="inline-flex gap-2 justify-center rounded-sm border border-transparent bg-slate-300 py-2 px-4 text-sm font-medium text-white shadow-xs hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
                             <ArrowUturnLeftIcon class="w-4 h-4"/>
-                            <span>Back</span>
+                            <span>{{ $t('Back') }}}}</span>
                         </button>
                     </div>
                 </div>
 
                 <div class="flex h-full flex-col divide-y divide-gray-200 bg-white" v-if="currAction === 'youtube'">
-                    <h2 class="text-center py-4">Feature coming soon</h2>
+                    <h2 class="text-center py-4">{{ $t('Feature coming soon') }}</h2>
                     <div class="flex gap-4 justify-center items-center p-4 w-full">
                         <button type="submit" @click="currAction = null"
                                 class="inline-flex gap-2 justify-center rounded-sm border border-transparent bg-slate-300 py-2 px-4 text-sm font-medium text-white shadow-xs hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
                             <ArrowUturnLeftIcon class="w-4 h-4"/>
-                            <span>Back</span>
+                            <span>{{ $t('Back') }}</span>
                         </button>
                     </div>
                 </div>

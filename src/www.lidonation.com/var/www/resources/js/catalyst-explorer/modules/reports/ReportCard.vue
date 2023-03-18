@@ -29,7 +29,7 @@
                 class="flex flex-row gap-4 justify-between items-center py-4 spec-amount-received"
             >
                 <div class="text-teal-800 opacity-50 text-sm">
-                    Disbursed to Date
+                    {{ $t('Disbursed to Date') }}
                 </div>
                 <div class="text-teal-800 font-bold text-base">
                     {{ $filters.currency(report.proposal.amount_received) }}
@@ -39,7 +39,7 @@
             <div
                 class="flex flex-row gap-4 justify-between items-center py-4 spec-title"
             >
-                <div class="text-teal-800 opacity-50 text-sm">Proposal</div>
+                <div class="text-teal-800 opacity-50 text-sm">{{ $t('Proposal') }}</div>
                 <a
                     class="text-teal-800 font-medium inline-flex text-base hover:text-yellow-500"
                     target="_blank"
@@ -54,7 +54,7 @@
             </div> 
 
             <div class="flex flex-row gap-4 justify-between items-center py-4">
-                <div class="text-teal-800 opacity-50 text-sm">Status</div>
+                <div class="text-teal-800 opacity-50 text-sm">Status{{ $t('') }}</div>
                 <div class="text-teal-800 font-medium text-base">
                     {{ report.project_status || "-" }}
                 </div>
@@ -62,7 +62,7 @@
 
             <div class="flex flex-row gap-4 justify-between items-center py-4">
                 <div class="text-teal-800 opacity-50 text-sm">
-                    Completion Target
+                    {{ $t('Completion Target') }}
                 </div>
                 <div class="text-teal-800 font-medium text-base">
                     {{ report.completion_target || "-" }}
@@ -93,7 +93,7 @@
                 <div
                     class="text-teal-800 opacity-75 text-sm inline-flex gap-2 items-center h-full"
                 >
-                    <span class="bold text-xl">Comments </span>
+                    <span class="bold text-xl">{{ $t('Comments') }} </span>
                     <span>{{ report.comments_count }}</span>
                 </div>
 
@@ -145,12 +145,12 @@
                         <div v-if="!commentPosted">
                             <p class="pt-4">
                                 <span v-if="!comments?.length">
-                                    Be the first to leave a comment!
+                                    {{ $t('Be the first to leave a comment') }}!
                                 </span>
                                 <span
                                     class="text-xs font-bold relative top-1"
                                     v-else
-                                >Leave a Comment</span
+                                >{{ $t('Leave a Comment') }}</span
                                 >
                             </p>
 
@@ -184,7 +184,7 @@
                                 type="submit"
                                 class="text-white text-xs px-2 bg-teal-300 hover:bg-teal-800 ml-auto"
                             >
-                                Post
+                                {{ $t('Post') }}
                             </button>
                         </div>
                         <div v-if="commentPosted">
@@ -200,7 +200,7 @@
                                         <p
                                             class="text-sm font-medium text-green-800"
                                         >
-                                            Successfully Submitted
+                                            {{ $t('Successfully Submitted') }}
                                         </p>
                                     </div>
                                     <div class="ml-auto pl-3">
@@ -223,19 +223,19 @@
                         v-else
                         class="space-y-2 bg-white/50 p-2 mt-2 text-center"
                     >
-                        <p>Login or Register to leave a comment!</p>
+                        <p>{{ $t('Login or Register to leave a comment') }}!</p>
                         <div class="flex gap-3 justify-center items-center">
                             <Link
                                 :href="$utils.localizeRoute(`catalyst-explorer/auth/login`)" 
                                 class="font-bold text-teal-600 hover:text-teal-500"
                             >
-                                Sign in
+                                {{ $t('Sign in') }}
                             </Link>
                             <Link
                                 href="/catalyst-explorer/register"
                                 class="font-bold text-teal-600 hover:text-teal-500"
                             >
-                                Register
+                                {{ $t('Register') }}
                             </Link>
                         </div>
                     </div>

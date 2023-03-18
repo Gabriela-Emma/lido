@@ -25,10 +25,10 @@
                                         <Link :href="$utils.localizeRoute(action.href)" class="focus:outline-none">
                                             <!-- Extend touch target to entire panel -->
                                             <span class="absolute inset-0" aria-hidden="true"/>
-                                            {{ action.title }}
+                                            {{ $t(action.title) }}
                                         </Link>
                                     </h3>
-                                    <p class="mt-2 text-sm text-gray-500">{{action?.excerpt}}</p>
+                                    <p class="mt-2 text-sm text-gray-500">{{$t(action?.excerpt)}}</p>
                                 </div>
                                 <div
                                     class="pointer-events-none absolute top-6 right-6 text-gray-300 group-hover:text-gray-400"
