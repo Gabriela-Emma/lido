@@ -26,7 +26,7 @@
                         <div class="max-w-lg mx-auto rounded-sm shadow-lg lg:max-w-none lg:flex">
 
                             <div class="flex-1 bg-teal-500">
-                                <div class="flex justify-between w-full" v-if="!user?.id">
+                                <div class="flex justify-between w-full">
                                     <div class="p-4 w-1/2 text-white">
                                         <div v-if="!bookmarked$">
                                             <div v-if="!creatingAnonymousBookmarks">
@@ -226,8 +226,13 @@
                                         </div>
                                     </div>
 
-                                    <div class="bg-teal-600 ml-auto flex flex-col justify-center">
-                                        <Login :show-logo="false" :embedded="true"/>
+                                    <div class="bg-teal-600 ml-auto flex flex-col h-full w-1/2 justify-center">
+                                        <Login :show-logo="false" v-if="!user?.id" :embedded="true" />
+                                        <div v-else>
+                                            <img src="https://storage.googleapis.com/www.lidonation.com/8651/conversions/VvemcGIMNQfjogVsxCVKDe4_po5VTjV_wFLGrKU-BaI-preview.jpg"
+                                                 alt="" class="aspect-[6/5] w-full rounded-sm object-cover">
+
+                                        </div>
                                     </div>
                                 </div>
                             </div>
