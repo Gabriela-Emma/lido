@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ProjectCatalyst\CatalystMyBookmarksController;
 use App\Models\Mint;
 use Inertia\Inertia;
 use App\Models\Review;
@@ -221,9 +222,11 @@ Route::group(
             Route::get('/proposals/{proposal:id}/bookmark', [CatalystProjectsController::class, 'bookmark']);
             Route::get('/bookmarks', fn () => Inertia::render('Bookmarks'))
                 ->name('bookmarks');
-            
+
             // exports
             Route::get('/export/proposals', [CatalystProjectsController::class, 'exportProposals']);
+
+            Route::post('/bookmarks/items', [CatalystMyBookmarksController::class, 'exportProposals']);
 
             Route::middleware(['auth.catalyst'])->prefix('/my')->group(function () {
                 Route::get('/dashboard', [CatalystMyDashboardController::class, 'index'])
@@ -243,7 +246,7 @@ Route::group(
                 Route::post('/groups/{catalystGroup:id}', [CatalystGroupsController::class, 'update']);
                 Route::get('/groups/{catalystGroup:id}/proposals', [CatalystMyGroupsController::class, 'proposals']);
 
-                Route::get('/groups/create/{catalystUser:id}', [CatalystMyGroupsController::class, 'create']);                
+                Route::get('/groups/create/{catalystUser:id}', [CatalystMyGroupsController::class, 'create']);
                 // Route::get('/groups/{catalystGroup:id}', [CatalystMyGroupsController::class, 'manage']);
                 Route::delete('/groups/{catalystGroup:id}/proposals/{proposal:id}', [CatalystMyGroupsController::class, 'removeProposal']);
                 Route::put('/groups/{catalystGroup:id}/proposals', [CatalystMyGroupsController::class, 'addProposal']);
@@ -757,10 +760,10 @@ Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
 // proposal translation
 Route::group(
-    [  
+    [
         'middleware' => ['auth:'.config('fortify.guard')],
     ], function () {
-        Route::get('/languageOptions', [ProposalTranslationController::class, 'getLanguageOptions']); 
-        Route::post('/translate/{proposal:id}', [ProposalTranslationController::class, 'makeTranslation']); 
+        Route::get('/languageOptions', [ProposalTranslationController::class, 'getLanguageOptions']);
+        Route::post('/translate/{proposal:id}', [ProposalTranslationController::class, 'makeTranslation']);
         Route::patch('/translation/{proposal:id}', [ProposalTranslationController::class, 'updateTranslation']);
        });
