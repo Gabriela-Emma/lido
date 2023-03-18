@@ -45,10 +45,10 @@ class CatalystReportsController extends Controller
             ->withCount([
             'hearts',
             'eyes',
-            'partyPopper',
+            'party_popper',
             'rocket',
-            'thumbsDown',
-            'thumbsUp'
+            'thumbs_down',
+            'thumbs_up'
             ]);
         if (isset($this->search)) {
             $query->orWhereFullText('content', $this->search)

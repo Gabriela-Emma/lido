@@ -19,10 +19,10 @@ class CatalystReport extends Model
         'comments',
         'hearts',
         'eyes',
-        'partyPopper',
+        'party_popper',
         'rocket',
-        'thumbsDown',
-        'thumbsUp'
+        'thumbs_down',
+        'thumbs_up'
     ];
 
     public function getExcerptAttribute($value): string

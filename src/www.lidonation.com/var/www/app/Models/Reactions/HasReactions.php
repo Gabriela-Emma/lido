@@ -7,14 +7,14 @@ use App\Enums\ReactionEnum;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 trait HasReactions {
-    public function lidoReactions(): MorphMany
+    public function lido_reactions(): MorphMany
     {
         return $this->morphMany(Reaction::class, 'model');
     }
 
     public function addLidoReaction(string $reaction, User $commenter = null): void
     {
-        $existingReaction = $this->lidoReactions()
+        $existingReaction = $this->lido_reactions()
             ->where('reaction', $reaction)
             ->where('commenter_id', optional($commenter)->id ?: auth()->id())
             ->where('model_type', get_class($this))
@@ -25,7 +25,7 @@ trait HasReactions {
             throw new \Exception('This reaction exists for this user in this model.');
         }
 
-        $oneReactionPerModel = $this->lidoReactions()
+        $oneReactionPerModel = $this->lido_reactions()
             ->where('commenter_id', optional($commenter)->id ?: auth()->id())
             ->where('model_type', get_class($this))
             ->where('model_id', $this->id)
@@ -38,7 +38,7 @@ trait HasReactions {
         $type = ReactionEnum::getClass($reaction);
 
         if (!$existingReaction && !$oneReactionPerModel) {
-            $this->lidoReactions()->create([
+            $this->lido_reactions()->create([
                 'reaction' => $reaction,
                 'type' => "$type",
                 'commenter_id' => optional($commenter)->id ?: auth()->id(),
@@ -57,7 +57,7 @@ trait HasReactions {
             ->where('type', ReactionEyes::class);
     }
     
-    public function partyPopper() {
+    public function party_popper() {
         return $this->hasMany(ReactionPartyPopper::class, 'model_id')
             ->where('type', ReactionPartyPopper::class);
     }
@@ -67,12 +67,12 @@ trait HasReactions {
             ->where('type', ReactionRocket::class);
     }
 
-    public function thumbsDown() {
+    public function thumbs_down() {
         return $this->hasMany(ReactionThumbsDown::class, 'model_id')
             ->where('type', ReactionThumbsDown::class);
     }
 
-    public function thumbsUp() {
+    public function thumbs_up() {
         return $this->hasMany(ReactionThumbsUp::class, 'model_id')
             ->where('type', ReactionThumbsUp::class);
     }
