@@ -37,6 +37,17 @@
                         <ReportCard :report="report" />
                     </div>
                 </div>
+                <div class="flex my-16 gap-16 xl:gap-24 justify-between items-start w-full">
+                    <div class="flex-1">
+                        <Pagination :links="props.reports.links"
+                                    :per-page="props.perPage"
+                                    :total="props.reports?.total"
+                                    :from="props.reports?.from"
+                                    :to="props.reports?.to"
+                                    @perPageUpdated="(payload) => perPageRef = payload"
+                                    @paginated="(payload) => currPageRef = payload" />
+                    </div>
+                </div>
             </div>
         </section>
     </main>
@@ -49,26 +60,44 @@ import Search from "../Shared/Components/Search.vue";
 import {ref, watch} from "vue";
 import {router} from "@inertiajs/vue3";
 import {VARIABLES} from "../models/variables";
+import Pagination from "../Shared/Components/Pagination.vue";
 
 const props = withDefaults(
     defineProps<{
         search?: string,
+        currPage?: number,
+        perPage?: number,
         reports: {
             links: [],
+            total: number,
+            to: number,
+            from: number,
             data: Report[]
         }
     }>(), {});
 
 let search = ref(props.search);
+let currPageRef = ref<number>(props.currPage);
+let perPageRef = ref<number>(props.perPage);
 
 watch([search],() => {
     return query();
 }, {deep: true});
 
+watch([currPageRef, perPageRef], () => {
+    query();
+});
+
 function query() {
     const data = {};
     if (search.value?.length > 0) {
         data[VARIABLES.SEARCH] = search.value;
+    }
+    if (currPageRef.value) {
+        data[VARIABLES.PAGE] = currPageRef.value;
+    }
+    if (perPageRef.value) {
+        data[VARIABLES.PER_PAGE] = perPageRef.value;
     }
 
     router.get(

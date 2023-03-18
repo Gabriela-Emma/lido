@@ -229,6 +229,11 @@ class User extends Authenticatable implements HasMedia, Interfaces\IHasMetaData,
         return $this->hasMany(Reward::class, 'user_id');
     }
 
+    public function answers(): HasMany
+    {
+        return $this->hasMany(AnswerResponse::class, 'user_id');
+    }
+
     public function pendingWithdrawals(): HasMany
     {
         return $this->hasMany(Withdrawal::class, 'user_id')->whereNotIn('status', ['sent', 'canceled']);

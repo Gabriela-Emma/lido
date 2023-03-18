@@ -353,27 +353,8 @@
                         @endif
                     @endif
 
-                    @if($proposal->content || $proposal->defination_of_success)
-                        <div x-data="{heightClass: 'max-h-[50rem] overflow-clip', funded: @js($proposal->funded)}"
-                             class="relative p-4 border border-slate-300 rounded-sm break-normal">
-                            <article :class="heightClass" x-transition>
-                                @if($proposal->content)
-                                    <x-markdown>{{$proposal->content}}</x-markdown>
-                                @endif
-
-                                @if($proposal->definition_of_success)
-                                    <h2>Definition of Success</h2>
-                                    <x-markdown>{{$proposal->definition_of_success}}</x-markdown>
-                                @endif
-                            </article>
-
-                            <div @click="heightClass = ''" x-show="!heightClass"
-                                 class="absolute w-full p-4 text-center bg-white/95 hover:cursor-pointer group bottom-4">
-                                <span class="font-bold text-teal-600 group-hover:text-slate-600">
-                                    Expand
-                                </span>
-                            </div>
-                        </div>
+                    @if($proposal->content)
+                    <x-catalyst.proposals.proposal-content :proposal="$proposal" />
                     @endif
 
                     <section class="py-12 bg-gray-50 border border-slate-200 mt-8 shadow-sm">

@@ -68,10 +68,12 @@ services:
   dbsync:
     tier: "t2"
     restore_snapshot: ''
+    persistence:
+      size: 120Gi
     db:
       persistence:
         enabled: true
-        size: 20Gi
+        size: 120Gi
       secret:
         POSTGRESQL_DB:
         POSTGRESQL_USERNAME:
@@ -88,7 +90,7 @@ services:
       replicaCount: 1
       image:
         repository: inputoutput/cardano-graphql-hasura
-        tag: 7.0.2
+        tag: 8.0.0
       ingress:
         controller:
           headers:
@@ -103,9 +105,10 @@ services:
           secretName: graphql-lidonation-com-tls
     graphql:
       replicaCount: 1
+      metadata_server: 'https://tokens.cardano.org'
       image:
-        repository: inputoutput/cardano-graphql
-        tag: master
+        repository: inputoutput/cardano-graphql-server
+        tag: 8.0.0
       ingress:
         controller:
           headers:
