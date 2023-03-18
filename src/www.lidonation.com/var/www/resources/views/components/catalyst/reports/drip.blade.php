@@ -2,18 +2,18 @@
     'report',
     'view' => 'detail'
 ])
-<div x-data="singleProposalReportComments" class="p-5 w-full bg-white rounded-sm relative flex flex-col justify-start bg-white shadow-sm mb-4 relative break-inside-avoid drip">
+<div x-data="singleProposalReportComments({{ json_encode($report) }})" class="p-5 w-full bg-white rounded-sm relative flex flex-col justify-start bg-white shadow-sm mb-4 relative break-inside-avoid drip">
     <div class="break-long-words break-words">
         <x-markdown>{{$report->content}}</p></x-markdown>
     </div>
 
     <div class="mt-16 divide-y divide-teal-300 border-t border-teal-300 specs">
-        <div class="py-4 border-t border-teal-300">
-            <ul x-show="loggedIn" class="flex flex-row gap-3 justify-end">
-                <template x-for="(reaction, index) in reactions">
+        <div x-show="loggedIn" class="py-4 border-t border-teal-300">
+            <ul class="flex flex-row gap-3 justify-end">
+                <template x-for="[reaction, count] of Object.entries(reactionsCount)">
                         <li class="border flex flex-row gap-1 border-slate-600 hover:border-green-500 p-1 rounded-sm text-xs cursor-pointer">
                             <button  @click.prevent="addReaction(reaction, {{$report->id}})" x-text="reaction"></button>
-                            <span x-text="getReactionCount(reaction)"></span>
+                            <span x-text="count"></span>
                         </li>
                 </template>
             </ul>
@@ -176,7 +176,7 @@
 
 
 <script>
-    function singleProposalReportComments (){
+    function singleProposalReportComments (report){
         return {
             showComments: false,
             loading: false,
@@ -184,15 +184,20 @@
             comments: null,
             loggedIn: false,
             commentPosted: false,
-            reactions: ["❤️", "👍", "🎉", "🚀", "👎", "👀"],
-            reactionCount: [],
+            reactionsCount: {
+                "❤️": report.hearts_count,
+                "👍": report.thumbs_up_count,
+                "🎉": report.party_popper_count,
+                "🚀": report.rocket_count,
+                "👎": report.thumbs_down_count,
+                "👀": report.eyes_count
+            },
 
             toggleShowComments(reportId) {
                 this.showComments = !this.showComments;
                 this.checkLogin();
                 if (!this.comments) {
                     this.loadComments(reportId).then();
-                    this.showReactions(reportId).then();
                 }
             },
 
@@ -211,8 +216,8 @@
                 let data = {
                     comment: reaction
                 }
-                const res = await window.axios.post(`/api/catalyst-explorer/reports/comments/${id}/reactions`, data);
-                this.showReactions(id).then();
+                this.reactionsCount[reaction]++;
+                const res = await window.axios.post(`/api/catalyst-explorer/reactions/${id}`, data);
             },
 
 
@@ -248,18 +253,6 @@
                     .then((res) => {
                         this.comments = [...res.data];
                     });
-            },
-
-            async showReactions(itemId) {
-
-            await window.axios.get(`/api/catalyst-explorer/reports/comments/${itemId}/reactions`, {})
-                .then((res) => {
-                    this.reactionCount = res.data;
-                });
-            },
-
-            getReactionCount(reaction) {
-                return (this.reactionCount.find(item => item.reaction === reaction)?.count) || 0;
             },
 
             timeAgo (timestamp) {
