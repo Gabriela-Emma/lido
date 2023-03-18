@@ -324,11 +324,13 @@ async function addReaction(reaction) {
     let data = {
         comment: reaction,
     };
-    reactionsCount[reaction]++;
     const res = await window.axios.post(
         `/api/catalyst-explorer/reactions/${props.report.id}`,
         data
     );
+    if (res.status === 200) {
+        reactionsCount[reaction]++;
+    }
 }
 
 </script>
