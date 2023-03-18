@@ -36,19 +36,19 @@
                         <div class="px-1 py-1.5 pb-4 bg-accent-800">
                             {{ $filters.currency(proposal.amount_received) }}
                             <sub class="text-gray-200 block mt-0.5 italic">
-                                Distributed
+                                {{  $t("Distributed") }}
                             </sub>
                         </div>
 
                         <div class="px-3 py-1.5 text-sm xl:text-md bg-accent-900 inline-flex items-center"
                              v-if="(proposal.amount_requested - proposal.amount_received) === 0">
-                            Fully<br/>
-                            Paid
+                            {{  $t("Fully") }}<br/>
+                            {{  $t("Paid") }}
                         </div>
                         <div class="px-1 py-1.5 bg-accent-900" v-else>
                             {{ $filters.currency(proposal.amount_requested - proposal.amount_received) }}
                             <sub class="text-gray-200 block mt-0.5 italic">
-                                Remaining
+                                {{  $t("Remaining") }}
                             </sub>
                         </div>
                     </div>
@@ -57,7 +57,7 @@
                         class="flex flex-col justify-center items-start p-1.5 text-xs xl:text-lg leading-3 font-semibold rounded-r-sm bg-teal-800">
                         <div>{{ $filters.currency(proposal.amount_requested) }}</div>
                         <small class="text-gray-200 block italic text-sm">
-                            Requested
+                            {{  $t("Requested") }}
                         </small>
                     </div>
                 </div>
@@ -70,7 +70,7 @@
                 </div>
                 <div class="flex flex-row flex-wrap gap-2 items-center">
                     <div v-if="proposal.challenge_label" class="inline gap-1">
-                        <strong>Challenge: </strong>
+                        <strong>{{  $t("Challenge") }}: </strong>
                         {{ proposal.challenge_label }}
                     </div>
                     <div v-if="proposal.fund_label"
@@ -203,7 +203,7 @@
             <div class="-mt-px grid grid-cols-2 divide-x text-xs xl:text-sm 2xl:text-md">
                 <div class="flex items-center justify-start flex-1 gap-2 p-2">
                     <div class="text-xs">
-                        Voted Yes:
+                        {{  $t("Voted Yes") }}:
                     </div>
                     <div class="font-semibold">
                         ₳{{ $filters.shortNumber(proposal.yes_votes_count, 2) }}
@@ -214,7 +214,7 @@
                     <div
                         class="flex items-center gap-2 justify-end flex-1 py-2 px-1.5 -mr-px text-sm font-medium text-gray-700 border border-transparent rounded-bl-sm hover:text-gray-500">
                         <div class="text-xs">
-                            Voted No:
+                            {{  $t("Voted No") }}:
                         </div>
                         <div class="font-semibold">
                             ₳{{ $filters.shortNumber(proposal.no_votes_count) }}
@@ -229,7 +229,7 @@
                             'bg-slate-500': proposal.funding_status === 'over_budget',
                             'bg-slate-400': proposal.funding_status === 'not_approved'}">
                     <div class="text-xs text-slate-200">
-                        Funding Status:
+                        {{  $t("Funding Status") }}:
                     </div>
                     <div class="inline-block py-0 px-1 font-semibold text-white text-xs rounded-sm capitalize">
                         {{ proposal.funding_status?.replace('_', ' ') }}
@@ -243,7 +243,7 @@
                             'bg-pink-400': proposal.status === 'complete',
                             'bg-slate-200': proposal.status === 'in_progress'}">
                         <div class="text-xs" :class="{ 'text-slate-200': proposal.status === 'complete'}">
-                            Project Status:
+                            {{  $t("Project Status") }}:
                         </div>
                         <div class="font-semibold capitalize" :class="{ 'text-white': proposal.status === 'complete'}">
                             {{ proposal.status?.replace('_', ' ') }}

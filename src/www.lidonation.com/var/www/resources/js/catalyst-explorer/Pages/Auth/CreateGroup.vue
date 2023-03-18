@@ -6,7 +6,7 @@
                 <div class="sm:col-span-2">
                     <dt class="text-md font-medium text-slate-500">
                         <label for="bio" class="block text-sm font-medium text-slate-700">
-                            About (20 words or more)
+                            {{ $t("About (20 words or more)") }}
                         </label>
                     </dt>
                     <dd class="mt-1 text-md text-slate-900">
@@ -20,7 +20,7 @@
                             ></textarea>
 
                             <div class="text-pink-600" v-if="validBio">
-                                {{ "20 words minimum" }}
+                                {{ $t("20 words minimum") }}
                             </div>
                         </div>
                     </dd>
@@ -28,13 +28,13 @@
 
                 <div class="flex gap-8 sm:col-span-2 w-full relative">
                     <div class="absolute block left-3 -top-1.5 bg-white rounded-sm text-xs px-2" >
-                        Group Details
+                        {{ $t("Group Details") }}
                     </div>
                     <div class="border divide-x space-x-8 flex gap-4 p-2 sm:col-span-2 w-full">
                         <div class="flex flex-col flex-1 justify-center p-2 pl-4">
                             <dt class="text-sm font-medium text-slate-500">
                                 <label for="name" class=" block text-sm font-medium text-slate-700">
-                                    Group Name (10 characters min)
+                                    {{ $t("Group Name (10 characters min)")}}
                                 </label>
                             </dt>
                             <dd class="mt-1 text-md text-slate-900">
@@ -49,23 +49,23 @@
                                         class="mt-1 block w-full rounded-sm border border-slate-300 py-2 px-3 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-teal-500 sm:text-sm"
                                     />
                                     <div class="text-pink-600" v-if="validName">
-                                        {{ "10 characters minimum" }}
+                                        {{ $t("10 characters minimum") }}
                                     </div>
                                 </div>
                             </dd>
                         </div>
                         <div class="flex flex-col flex-1 justify-center p-2 pl-4">
                             <dt class="text-sm font-medium text-slate-500">
-                                Admin
+                                {{ $t("Admin") }}
                             </dt>
                             <dd class="mt-1 text-md text-slate-900">
-                                {{ owner.name }}
+                                {{ $t(owner.name) }}
                             </dd>
                         </div>
                         <div class="flex flex-col flex-1 justify-center p-2 pl-4">
                             <dt class="text-sm font-medium text-slate-500">
                                 <label for="website" class="block text-sm font-medium text-slate-700">
-                                    Website
+                                    {{ $t("Website") }}
                                 </label>
                             </dt>
                             <dd class="mt-1 text-md text-slate-900">
@@ -79,7 +79,7 @@
                                         class="mt-1 block w-full rounded-sm border border-slate-300 py-2 px-3 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-teal-500 sm:text-sm"
                                     />
                                     <div class="text-pink-600" v-if="groupForm.errors.website">                              
-                                        {{ groupForm.errors.website }}
+                                        {{ $t(groupForm.errors.website) }}
                                     </div>
                                 </div>
                             </dd>
@@ -89,13 +89,13 @@
 
                 <div class="flex gap-8 sm:col-span-2 w-full relative">
                     <div class="absolute block left-3 -top-1.5 bg-white rounded-sm text-xs px-2">
-                        Community & Support Links
+                        {{ $t("Community & Support Links") }}
                     </div>
                     <div class="border divide-x space-x-8 flex gap-8 p-2 sm:col-span-2 w-full">
                         <div class="flex flex-col flex-1 justify-center p-2 pl-4">
                             <dt class="text-sm font-medium text-slate-500">
                                 <label for="twitter" class="block text-sm font-medium text-slate-700">
-                                    twitter
+                                    {{ $t("twitter") }}
                                 </label>
                             </dt>
                             <dd class="mt-1 text-md text-slate-900">
@@ -109,7 +109,7 @@
                                         class="mt-1 block w-full rounded-sm border border-slate-300 py-2 px-3 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-teal-500 sm:text-sm"
                                     />
                                     <div class="text-pink-600" v-if="groupForm.errors.twitter">
-                                        {{ groupForm.errors.twitter }}
+                                        {{ $t(groupForm.errors.twitter) }}
                                     </div>
                                 </div>
                             </dd>
@@ -117,7 +117,7 @@
                         <div class="flex flex-col flex-1 justify-center p-2 pl-8">
                             <dt class="text-sm font-medium text-slate-500">
                                 <label for="discord" class="block text-sm font-medium text-slate-700">
-                                    discord
+                                    {{ $t("discord") }}
                                 </label>
                             </dt>
                             <dd class="mt-1 text-md text-slate-900">
@@ -131,7 +131,7 @@
                                         class="mt-1 block w-full rounded-sm border border-slate-300 py-2 px-3 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-teal-500 sm:text-sm"
                                     />
                                     <div class="text-pink-600" v-if="groupForm.errors.discord">
-                                        {{ groupForm.errors.discord }}
+                                        {{ $t(groupForm.errors.discord) }}
                                     </div>
                                 </div>
                             </dd>
@@ -139,7 +139,7 @@
                         <div class="flex flex-col flex-1 justify-center p-2 pl-8">
                             <dt class="text-sm font-medium text-slate-500">
                                 <label for="github" class="block text-sm font-medium text-slate-700">
-                                    github org
+                                    {{ $t("github org") }}
                                 </label>
                             </dt>
                             <dd class="mt-1 text-md text-slate-900">
@@ -153,7 +153,7 @@
                                         class="mt-1 block w-full rounded-sm border border-slate-300 py-2 px-3 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-teal-500 sm:text-sm"
                                     />
                                     <div class="text-pink-600" v-if="groupForm.errors.github">
-                                        {{ groupForm.errors.github }}
+                                        {{ $t(groupForm.errors.github) }}
                                     </div>
                                 </div>
                             </dd>
@@ -164,7 +164,7 @@
             <div class="bg-slate-50 px-4 py-3 text-right sm:px-6 mt-8 -mx-6 -mb-6">
                 <button type="submit" class="inline-flex justify-center rounded-sm border border-transparent bg-teal-600 py-2 px-4 text-sm 
                     font-medium text-white shadow-sm hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
-                    Create
+                    {{ $t("Create") }}
                 </button>
             </div>
         </form>

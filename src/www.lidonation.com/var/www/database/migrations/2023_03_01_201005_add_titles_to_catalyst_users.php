@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('catalyst_users', function (Blueprint $table) {
-            $table->string('title');
+            $table->string('title')->nullable();
             $table->enum('role', ['admin', 'member'])->default('member');
         });
     }

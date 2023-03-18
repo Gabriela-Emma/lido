@@ -10,11 +10,11 @@
                     </div>
                 <div>
                     <div class=" flex justify-start mb-2">
-                        <h1 class="text-2xl lg:text-3xl 2xl:text-5xl 3xl:text-6xl font-semibold text-slate-700"> Register </h1>
+                        <h1 class="text-2xl lg:text-3xl 2xl:text-5xl 3xl:text-6xl font-semibold text-slate-700"> {{ $t("Register") }} </h1>
                     </div>
 
                     <div class="mb-2">
-                        <label for="name" class="block text-sm font-medium text-slate-600">Name </label>
+                        <label for="name" class="block text-sm font-medium text-slate-600">{{ $t("Name") }} </label>
                         <div class="mt-1">
                             <input  v-model="form.name" v-text="form.errors.name" id="name" name="name" type="text" autocomplete="name" required
                                 class="block w-full appearance-none rounded-sm border border-slate-400 px-3 py-2 placeholder-slate-400 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-teal-500 sm:text-sm">
@@ -23,7 +23,7 @@
                         </div>
                     </div>
                     <div class="mb-2">
-                        <label for="email" class="block text-sm font-medium text-slate-600">Email address </label>
+                        <label for="email" class="block text-sm font-medium text-slate-600">{{ $t("Email address") }} </label>
                         <div class="mt-1">
                             <input  v-model="form.email" id="email" name="email" type="email" autocomplete="email" required
                                 class="block w-full appearance-none rounded-sm border border-slate-400 px-3 py-2 placeholder-slate-400 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-teal-500 sm:text-sm">
@@ -33,7 +33,7 @@
                     </div>
 
                     <div class="mb-2">
-                        <label for="password" class="block text-sm font-medium text-slate-600">Password </label>
+                        <label for="password" class="block text-sm font-medium text-slate-600">{{ $t("Password") }} </label>
                         <div class="mt-1">
                             <input  v-model="form.password" name="password" type="password"
                                 class="block w-full appearance-none rounded-sm border border-slate-400 px-3 py-2 placeholder-slate-400 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-teal-500 sm:text-sm">
@@ -43,7 +43,7 @@
                     </div>
 
                     <div class="mb-2">
-                        <label for="password_confirmation" class="block text-sm font-medium text-slate-600">Confirm Password </label>
+                        <label for="password_confirmation" class="block text-sm font-medium text-slate-600">{{ $t("Confirm Password") }} </label>
                         <div class="mt-1">
                             <input  v-model="form.password_confirmation"  name="password_confirmation" type="password"
                                 class="block w-full appearance-none rounded-sm border border-slate-400 px-3 py-2 placeholder-slate-400 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-teal-500 sm:text-sm">
@@ -59,14 +59,14 @@
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-7 h-7">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M21 7.5l-9-5.25L3 7.5m18 0l-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9" />
                                 </svg>
-                            <span>Register</span>
+                            <span>{{ $t("Register") }}</span>
                             </button>
                         </div>
 
                         <div>
                             <div class="flex gap-3 text-sm w-full justify-center ">
-                                <span>Already have an account?</span>
-                                <Link href="/catalyst-explorer/login" class="font-bold text-teal-600 hover:text-teal-500" preserve-scroll> Sign in</Link>
+                                <span>Already have an account{{ $t("") }}?</span>
+                                <Link href="/catalyst-explorer/login" class="font-bold text-teal-600 hover:text-teal-500" preserve-scroll> {{ $t("Sign in") }}</Link>
                             </div>
                         </div>
                     </div>

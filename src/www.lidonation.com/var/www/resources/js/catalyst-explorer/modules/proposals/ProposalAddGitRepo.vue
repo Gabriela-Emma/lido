@@ -3,7 +3,7 @@
         <div class="flex flex-row h-full justify-between">
 
                 <h3>
-                    Add a git repo
+                    {{ $t("Add a git repo") }}
                 </h3>
 
             <div class="items-center ">
@@ -11,7 +11,7 @@
                         v-if="hasRepo"
                         as="button"
                         class="inline-flex custom-input justify-center mb-3 rounded-sm border border-transparent bg-teal-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
-                    Update Repo
+                    {{ $t("Update Repo") }}
                 </button>
             </div>
         </div>
@@ -21,7 +21,7 @@
                     <div class="space-y-6 pt-6 pb-5">
                         <div>
                             <label for="project-name" class="block text-sm font-medium text-gray-900">
-                                Git (https url)
+                                ){{ $t("Git (https url") }}
                             </label>
                             <div class="mt-1 flex-grow">
                                 <input v-model="repoForm.gitUrl" type="text" name="gitUrl" id="git"
@@ -77,18 +77,18 @@
                     v-if="startUpdate === true "
                     as="button"
                     class="inline-flex custom-input justify-center rounded-sm border border-transparent bg-teal-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
-                Save Changes
+                {{ $t("Save Changes") }}
             </button>
             <button type="button" @click="emit('cancelled')"
                     class="rounded-sm border border-gray-300 bg-white py-2 inline-flex  gap-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
                 <ArrowUturnLeftIcon class="w-4 h-4"/>
-                <span>Back</span>
+                <span>{{ $t("Back") }}</span>
             </button>
             <button @click.prevent="submitRepo"
                     v-if="!hasRepo && !startUpdate"
                     as="button"
                     class="inline-flex custom-input justify-center rounded-sm border border-transparent bg-teal-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
-                Save
+                {{ $t("Save") }}
             </button>
         </div>
     </form>

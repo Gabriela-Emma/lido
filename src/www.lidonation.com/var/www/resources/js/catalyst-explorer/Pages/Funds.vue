@@ -1,5 +1,5 @@
 <template>
-    <header-component titleName0="Catalyst" titleName1="Funding Rounds" subTitle=""/>
+    <header-component titleName0="catalyst" titleName1="Funding Rounds" subTitle=""/>
     <Funds :funds="funds"></Funds>
 </template>
 

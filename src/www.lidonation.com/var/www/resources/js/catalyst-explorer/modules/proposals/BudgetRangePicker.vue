@@ -14,7 +14,7 @@
                 </svg>
             </button>
         </div>
-        <p class="mb-3 text-slate-400">Budget Range</p>
+        <p class="mb-3 text-slate-400"> {{$t("Budget")}}</p>
         <div class="mb-8">
         <Slider
             :min="VARIABLES.MIN_BUDGET"

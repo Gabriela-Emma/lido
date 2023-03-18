@@ -6,13 +6,13 @@
                     <div class="text-center">
                         <h2 class="text-lg tracking-tight text-slate-300 sm:text-xl sm:tracking-tight lg:text-2xl lg:tracking-tight flex gap-2 justify-center">
                             <span>
-                                Bookmark
+                                {{ $t('Bookmark') }}
                             </span>
                             <b class="text-white">{{ proposal.title }}</b>
                         </h2>
                         <p class="mt-4 text-slate-200 max-w-md mx-auto">
-                            Bookmarks can be public or private.
-                            If you're logged in, you may feature your bookmark on the lidonation bookmarks page.
+                            {{ $t('Bookmarks can be public or private') }}.
+                            {{ $t("If you're logged in, you may feature your bookmark on the lidonation bookmarks page") }}.
                         </p>
                     </div>
                 </div>
@@ -28,10 +28,10 @@
                                     <div class="p-4 w-1/2 text-white" >
                                         <div v-if="!creatingAnonymousBookmarks">
                                             <h3 class="text-xl font-bold text-slate-100 xl:text-2xl sm:tracking-tight text-center">
-                                                You're not logged in.
+                                                {{ $t("You're not logged in") }}.
                                             </h3>
 
-                                            <h4 class="text-center font-semibold mb-2">Log in to:</h4>
+                                            <h4 class="text-center font-semibold mb-2">{{ $t('Log in to') }}:</h4>
 
                                             <ul role="list" class="space-y-5 lg:space-y-0 lg:grid lg:grid-cols-2 my-4 lg:gap-x-8 lg:gap-y-5">
                                                 <li class="flex items-start lg:col-span-1">
@@ -41,7 +41,7 @@
                                                         </svg>
                                                     </div>
                                                     <p class="ml-3 text-sm text-slate-200">
-                                                        Create and Manage multiple bookmarks from your portal
+                                                        {{ $t('Create and Manage multiple bookmarks from your portal') }}
                                                     </p>
                                                 </li>
                                                 <li class="flex items-start lg:col-span-1">
@@ -51,7 +51,7 @@
                                                         </svg>
                                                     </div>
                                                     <p class="ml-3 text-sm text-slate-200">
-                                                        Name and share bookmark on lidonation bookmark page.
+                                                        {{ $t('Name and share bookmark on lidonation bookmark page') }}.
                                                     </p>
                                                 </li>
                                                 <li class="flex items-start lg:col-span-1">
@@ -61,7 +61,7 @@
                                                         </svg>
                                                     </div>
                                                     <p class="ml-3 text-sm text-slate-200">
-                                                        Leave or respond to comments on bookmarks
+                                                        {{ $t('Leave or respond to comments on bookmarks') }}
                                                     </p>
                                                 </li>
                                                 <li class="flex items-start lg:col-span-1">
@@ -71,7 +71,7 @@
                                                         </svg>
                                                     </div>
                                                     <p class="ml-3 text-sm text-slate-200">
-                                                        Create private bookmarks
+                                                        {{ $t('Create private bookmarks') }}
                                                     </p>
                                                 </li>
                                             </ul>
@@ -79,7 +79,7 @@
                                             <div class="mt-5 flex justify-center">
                                                 <button type="button" @click="creatingAnonymousBookmarks = true"
                                                         class="inline-flex items-center rounded-sm border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-                                                    Continue Anonymously
+                                                    {{ $t('Continue Anonymously') }}
                                                 </button>
                                             </div>
                                         </div>
@@ -90,7 +90,6 @@
                                                 @search-change="search"
                                                 @option="createCollection"
                                                 :options="collections"
-                                                v-model="collectiondRef"
                                                 mode="single"
                                                 :searchable="true"
                                                 :close-on-select="true"

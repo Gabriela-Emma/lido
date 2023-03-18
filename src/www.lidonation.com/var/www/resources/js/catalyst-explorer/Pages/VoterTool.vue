@@ -1,7 +1,7 @@
 <template>
-    <header-component titleName0="Catalyst" titleName1="Voter Tool" subTitle=""/>
+    <header-component titleName0="catalyst" titleName1="Voter Tool" subTitle=""/>
     <section>
-        <h1>Voting Section</h1>
+        <h1>{{ $t("Voting Section") }}</h1>
     </section>
 </template>
 
