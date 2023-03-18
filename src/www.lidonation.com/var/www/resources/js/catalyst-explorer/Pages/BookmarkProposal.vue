@@ -90,7 +90,6 @@
                                                 @search-change="search"
                                                 @option="createCollection"
                                                 :options="collections"
-                                                v-model="collectiondRef"
                                                 mode="single"
                                                 :searchable="true"
                                                 :close-on-select="true"
