@@ -16,8 +16,12 @@ return new class extends Migration
         Schema::create('bookmark_items', function (Blueprint $table) {
             $table->id();
             $table->foreignId('bookmark_collection_id');
+            $table->foreignId('parent_id')->nullable();
             $table->foreignId('model_id');
             $table->text('model_type');
+            $table->text('title')->nullable();
+            $table->text('content')->nullable();
+            $table->text('link')->nullable();
             $table->timestamps();
         });
     }

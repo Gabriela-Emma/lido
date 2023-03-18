@@ -465,16 +465,15 @@ function query()
         data[VARIABLES.PER_PAGE] = perPageRef.value;
     }
 
-
     getProposals(data);
 }
 
 let submit = () => {
     groupForm.post(`${usePage().props.base_url}/catalyst-explorer/my/groups/${props.group.id}`,
-    { 
+    {
         preserveScroll: false,
         preserveState: false,
-        
+
     })
     setTimeout(() => {
         getPage()
@@ -493,7 +492,6 @@ let removeProposal = (id: number) => {
         .catch(error => {
             console.error(error);
         });
-
 }
 
 // adding new proposals to the group
@@ -512,8 +510,6 @@ let addProposal = () => {
         .catch(error => {
             console.error(error);
         });
-
-
 }
 
 // remove members

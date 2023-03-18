@@ -2,10 +2,20 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+
+use App\Models\Traits\HasAuthor;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class BookmarkCollection extends Model
 {
-    use HasFactory;
+    use HasAuthor;
+
+    protected $with = ['items'];
+
+    protected $withCount = ['items'];
+
+    public function items(): HasMany
+    {
+        return $this->hasMany(BookmarkItem::class);
+    }
 }
