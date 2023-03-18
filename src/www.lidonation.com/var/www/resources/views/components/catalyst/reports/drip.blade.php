@@ -216,8 +216,10 @@
                 let data = {
                     comment: reaction
                 }
-                this.reactionsCount[reaction]++;
                 const res = await window.axios.post(`/api/catalyst-explorer/reactions/${id}`, data);
+                if (res.status === 200) {
+                    this.reactionsCount[reaction]++;
+                }
             },
 
 
