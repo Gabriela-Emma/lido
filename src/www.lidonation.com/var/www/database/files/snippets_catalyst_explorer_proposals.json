@@ -1,0 +1,84 @@
+{
+    "snippets": [
+            {
+                "heading": "catalyst",
+                "text": "catalyst"
+            },
+            {
+                "heading": "search proposals and challenges by title, content, or author and co-authors",
+                "text": "search proposals and challenges by title, content, or author and co-authors"
+            },
+            {
+                "heading": "Filters",
+                "text": "Filters"
+            },
+            {
+                "heading": "Submitted",
+                "text": "Submitted"
+            },
+            {
+                "heading": "Approved",
+                "text": "Approved"
+            },
+            {
+                "heading": "Fully Paid",
+                "text": "Fully Paid"
+            },
+            {
+                "heading": "Completed",
+                "text": "Completed"
+            },
+            {
+                "heading": "Search metrics",
+                "text": "Search metrics"
+            },
+            {
+                "heading": "Requested",
+                "text": "Requested"
+            },
+            {
+                "heading": "Awarded",
+                "text": "Awarded"
+            },
+            {
+                "heading": "Distributed",
+                "text": "Distributed"
+            },
+            {
+                "heading": "Completed",
+                "text": "Completed"
+            },
+            {
+                "heading": "Remaining",
+                "text": "Remaining"
+            },
+            {
+                "heading": "Fully",
+                "text": "Fully"
+            },
+            {
+                "heading": "Paid",
+                "text": "Paid"
+            },
+            {
+                "heading": "Challenge",
+                "text": "Challenge"
+            },
+            {
+                "heading": "Funding Status",
+                "text": "Funding Status"
+            },
+            {
+                "heading": "Community Filters",
+                "text": "Community Filters"
+            },
+            {
+                "heading": "These filters are not based on primary catalyst data but rather self assembled datasets by community groups",
+                "text": "These filters are not based on primary catalyst data but rather self assembled datasets by community groups"
+            },
+            {
+                "heading": "We do not perform any validation at LIDO Nation",
+                "text": "We do not perform any validation at LIDO Nation"
+            }
+        ]
+    }
