@@ -100,9 +100,9 @@
                                                 label="title"
                                                 noOptionsText="Type collection name and hit enter"
                                                 :classes="{
-                                                    container: 'multiselect border-0 flex-wrap bg-teal-500',
+                                                    container: 'multiselect border-0 flex-wrap bg-teal-500 text-teal-800',
                                                     containerActive: 'shadow-none shadow-transparent box-shadow-none',
-                                                    search: 'w-full absolute inset-0 outline-none focus:ring-0 box-border border-0 text-base text-teal-800 bg-white rounded-sm pl-3.5 rtl:pl-0 rtl:pr-3.5 custom-input',
+                                                    search: 'w-full absolute inset-0 outline-none focus:ring-0 box-border border-0 text-base bg-white rounded-sm pl-3.5 rtl:pl-0 rtl:pr-3.5 custom-input',
                                                     options: 'multiselect-options border-0'
                                                 }"
                                             />
