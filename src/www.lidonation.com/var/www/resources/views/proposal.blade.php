@@ -354,7 +354,7 @@
                     @endif
 
                     @if($proposal->content)
-                    <x-catalyst.proposals.proposal-content :proposal="$proposal" />
+                    <x-catalyst.proposals.proposal-content :proposal="$proposal" :pageLocale="(app()->getLocale())"  />
                     @endif
 
                     <section class="py-12 bg-gray-50 border border-slate-200 mt-8 shadow-sm">
