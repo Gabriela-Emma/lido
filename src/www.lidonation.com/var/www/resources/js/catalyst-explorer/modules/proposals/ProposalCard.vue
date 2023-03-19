@@ -258,9 +258,12 @@
 <script lang="ts" setup>
 import Proposal from "../../models/proposal";
 import Rating from 'primevue/rating';
-import {computed} from "vue";
+import {computed, ref} from "vue";
 import {BookmarkIcon} from "@heroicons/vue/20/solid";
-import { Link } from '@inertiajs/vue3';
+import { Link, usePage } from '@inertiajs/vue3';
+import { useBookmarksStore } from "../../stores/bookmarks-store";
+import { storeToRefs } from "pinia";
+import User from "../../models/user";
 
 
 const props = withDefaults(
@@ -285,5 +288,11 @@ const authors = computed(() => {
         }
     })
 });
+
+// isBookmarked
+const user = computed(() => usePage().props?.user as User);
+const bookmarksStore = useBookmarksStore();
+// const {collections$} = storeToRefs(bookmarksStore);
+let isBookmarked = ref(bookmarksStore.loadProposalItem(props.proposal.id))
 
 </script>

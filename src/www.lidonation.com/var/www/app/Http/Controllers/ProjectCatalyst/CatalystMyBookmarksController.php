@@ -27,7 +27,8 @@ class CatalystMyBookmarksController extends Controller
             'content' => 'nullable|bail|string',
             'link' => 'nullable|bail|active_url',
             'collection.id' => 'nullable|bail|exists:bookmark_collections,id',
-            'collection.title' => 'required_without|min:5'
+            'collection.title' => 'required_without|min:5',
+            'collection.user_id' => 'nullable'
         ]));
 
         // if collection doesn't exist, create one
@@ -36,6 +37,7 @@ class CatalystMyBookmarksController extends Controller
         if (!$collection instanceof BookmarkCollection) {
             $collection = new BookmarkCollection;
             $collection->title = $data->collection['title'] ?? null;
+            $collection->user_id = $data->collection['user_id'] ?? null;
             $collection->content = $data->collection['content'] ?? null;
             $collection->visibility = 'unlisted';
             $collection->status = 'published';
