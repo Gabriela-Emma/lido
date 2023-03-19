@@ -284,6 +284,7 @@ const props = withDefaults(
     {},
 );
 const user = computed(() => usePage().props?.user as User);
+const user_id = user.value.id;
 const bookmarksStore = useBookmarksStore();
 const {collections$} = storeToRefs(bookmarksStore);
 
@@ -333,7 +334,10 @@ async function addToNewCollection(title) {
     errors.value = null;
 
     // create new collection
-    const collection = {title} as BookmarkCollection;
+    const collection = {
+        title,
+        user_id:user_id
+    } as BookmarkCollection;
 
     // create bookmarkItem
     const item = {

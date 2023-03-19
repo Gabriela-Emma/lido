@@ -24,8 +24,17 @@
                     <div class="absolute top-1 right-1">
                         <Link preserve-state preserve-scroll
                             :href="$utils.localizeRoute(`catalyst-explorer/proposals/${proposal.id}/bookmark`)" as="button"
-                            class="inline-flex items-center rounded-md border border-transparent group bg-slate-600 p-0.5 text-sm font-medium leading-4 text-white shadow-sm hover:bg-teal-400 focus:outline-none focus:ring-2 focus:ring-teal-300 focus:ring-offset-2">
-                            <BookmarkIcon class="h-4 w-4 group-hover:text-teal-900" aria-hidden="true" />
+                            :class="{
+                                      'bg-teal-600 hover:bg-slate-600 focus:ring-slate-300':isBookmarked,
+                                      'bg-slate-600 hover:bg-teal-600 focus:ring-teal-300':!isBookmarked
+                                    }"
+                            class="inline-flex items-center rounded-md border border-transparent group p-0.5 text-sm font-medium leading-4 text-white shadow-sm focus:outline-none focus:ring-2  focus:ring-offset-2">
+                            <BookmarkIcon class="h-4 w-4 " 
+                            :class="{
+                                      'hover:text-slate-400':isBookmarked,
+                                      'group-hover:text-teal-900':!isBookmarked
+                                    }"
+                            aria-hidden="true" />
                         </Link>
                     </div>
                 </div>
@@ -264,6 +273,8 @@ import { Link, usePage } from '@inertiajs/vue3';
 import { useBookmarksStore } from "../../stores/bookmarks-store";
 import { storeToRefs } from "pinia";
 import User from "../../models/user";
+import BookmarkCollection from "../../models/bookmark-collection";
+import { Ref } from "@vue/reactivity";
 
 
 const props = withDefaults(
@@ -289,10 +300,25 @@ const authors = computed(() => {
     })
 });
 
-// isBookmarked
+let isBookmarked = ref()
+
+// let collections$:{object:BookmarkCollection[]}
+
 const user = computed(() => usePage().props?.user as User);
 const bookmarksStore = useBookmarksStore();
-// const {collections$} = storeToRefs(bookmarksStore);
-let isBookmarked = ref(bookmarksStore.loadProposalItem(props.proposal.id))
+const {collections$} = {...(storeToRefs(bookmarksStore))}
+
+const collectionsArray = computed(() => {
+  const collections = collections$.value as unknown[];
+  return collections.map((collection) => collection as BookmarkCollection);
+});
+
+for (const collection of collectionsArray.value) {
+  for (const item of collection.items) {
+    if (item.model_id === props.proposal.id) {
+        isBookmarked.value = true;    
+    }
+  }
+}
 
 </script>
