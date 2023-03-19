@@ -764,7 +764,7 @@ Route::group(
     [
         'middleware' => ['auth:'.config('fortify.guard')],
     ], function () {
-        Route::get('/languageOptions', [ProposalTranslationController::class, 'getLanguageOptions']);
-        Route::post('/translate/{proposal:id}', [ProposalTranslationController::class, 'makeTranslation']);
+        Route::get('/languageOptions/{proposal:id}', [ProposalTranslationController::class, 'getLanguageOptions']); 
+        Route::post('/translate/{proposal:id}', [ProposalTranslationController::class, 'makeTranslation']); 
         Route::patch('/translation/{proposal:id}', [ProposalTranslationController::class, 'updateTranslation']);
        });

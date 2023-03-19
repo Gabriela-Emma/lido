@@ -10,16 +10,26 @@ use App\Services\TranslationService;
 
 class ProposalTranslationController extends Controller
 {
-    public function getLanguageOptions() 
-    {
+    public function getLanguageOptions(Proposal $proposal)
+    {   $exclude = ['en', 'sw'];
+
+        $excludedLangs = array_merge($exclude, $this->transalatedLangs($proposal));
+
         $locales = config('laravellocalization.supportedLocales');
 
-        $result = array_map(function ($locale) {
+        $result = array_map(function ($locale) use ($excludedLangs) {
+            if (in_array($locale['key'], $excludedLangs)) {
+                return null;
+            }
+        
             return [
                 'name' => $locale['native'],
                 'value' => $locale['key'],
             ];
         }, $locales);
+        
+        // Remove null values from the resulting array
+        $result = array_filter($result);
         
         $json = json_encode(array_values($result));
         return $json;
@@ -48,7 +58,7 @@ class ProposalTranslationController extends Controller
         return $translation->content;
     }
 
-    function updateTranslation(Request $request, Proposal $proposal)
+    public function updateTranslation(Request $request, Proposal $proposal)
     {
         $translation = Translation::where('source_id', $proposal->id)->where('lang', $request->translationLang)->first();
 
@@ -57,5 +67,13 @@ class ProposalTranslationController extends Controller
         $translation->save();
 
         return $translation->content;
+    }
+
+    public function transalatedLangs(Proposal $proposal)
+    {
+
+        $existingLangs = Translation::where('source_id', $proposal->id)->pluck('lang');
+
+        return $existingLangs->toArray();
     }
 }
