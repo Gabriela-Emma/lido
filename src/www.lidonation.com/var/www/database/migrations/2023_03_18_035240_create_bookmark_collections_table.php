@@ -15,12 +15,12 @@ return new class extends Migration
     {
         Schema::create('bookmark_collections', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id');
+            $table->foreignId('user_id')->nullable();
             $table->text('title');
-            $table->text('content');
+            $table->text('content')->nullable();
             $table->text('color');
-            $table->text('visibility');
-            $table->text('status');
+            $table->text('visibility')->default('unlisted');
+            $table->text('status')->default('draft');
             $table->timestamps();
             $table->softDeletes();
         });

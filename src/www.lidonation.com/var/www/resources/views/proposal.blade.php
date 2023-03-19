@@ -105,7 +105,7 @@
                                             fundHero: '{{$proposal->fund?->thumbnail_url}}'
                                         } )"
                                         class="inline-flex items-center gap-1 xl:gap-2 p-1 xl:p-2 w-1/2  text-xs xl:text-sm 2xl:text-lg font-medium text-gray-700 bg-white border border-slate-300 rounded-sm shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500">
-                                    <span x-show="!has({{$proposal->id}})">Bookmark&nbsp;&nbsp;&nbsp;</span>
+                                    <span x-show="!has({{$proposal->id}})">BookmarkItem&nbsp;&nbsp;&nbsp;</span>
                                     <span class="" x-show="has({{$proposal->id}})">Bookmarked</span>
                                     <svg x-show="has({{$proposal->id}})"
                                          class="w-4 h-4 2xl:w-5 2xl:h-5 mr-2 -ml-1 text-pink-600"
