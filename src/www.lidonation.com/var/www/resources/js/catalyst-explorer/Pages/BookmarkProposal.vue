@@ -26,8 +26,8 @@
                         <div class="max-w-lg mx-auto rounded-sm shadow-lg lg:max-w-none lg:flex">
 
                             <div class="flex-1 bg-teal-500">
-                                <div class="flex justify-between w-full">
-                                    <div class="p-4 w-1/2 text-white">
+                                <div class="flex flex-col lg:flex-row lg:justify-between w-full">
+                                    <div class="p-4 w-full lg:w-1/2 text-white">
                                         <div v-if="!bookmarked$">
                                             <div v-if="!creatingAnonymousBookmarks">
                                                 <h3 class="text-xl font-bold text-slate-100 xl:text-2xl sm:tracking-tight text-center">
@@ -102,7 +102,7 @@
 
                                                 <div class="mt-5 flex justify-center">
                                                     <button type="button" @click="creatingAnonymousBookmarks = true"
-                                                            class="inline-flex items-center rounded-sm border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                                                            class="inline-flex items-center rounded-sm border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
                                                         {{ $t('Continue Anonymously') }}
                                                     </button>
                                                 </div>
@@ -176,33 +176,47 @@
                                                 </template>
                                             </div>
                                         </div>
-                                        <div class="" v-else>
+                                        <div class="" v-else-if="collection$?.id">
                                             <div class="relative isolate flex flex-col items-center">
-                                                <div class="h-56 w-64 lg:max-w-xs p-3 object-cover shadow-xl rounded-l-xl rounded-r-xs flex flex-col justify-center" :style="{backgroundColor: collection$.color}">
-                                                    <h2 class="text-xl font-bold tracking-tight text-slate-100 sm:text-2xl inline box-border box-decoration-cloe bg-white py-4 px-3 rounded-l-lg text-slate-800">
-                                                        {{collection$?.title}}
-                                                    </h2>
+                                                <div
+                                                    class="h-56 w-72 lg:max-w-xs p-3 object-cover shadow-xl rounded-l-xl rounded-r-xs flex flex-col justify-center"
+                                                    :style="{backgroundColor: collection$?.color}">
+                                                    <div class="relative isolate h-16 mb-2">
+                                                        <h2 class="text-xl w-4/5 font-bold tracking-tight text-slate-100 sm:text-2xl inline box-border box-decoration-cloe bg-white py-4 px-3 mb-3 rounded-l-lg text-slate-800 absolute right-0">
+                                                            {{ collection$?.title }}
+                                                        </h2>
+                                                    </div>
+                                                    <div class="w-full flex gap-2 justify-end">
+                                                        <div
+                                                            class="inline-flex items-center rounded-sm py-0.5 pl-2.5 pr-1 text-sm font-medium text-black border border-black">
+                                                            Items
+                                                            <span class="ml-0.5 inline-flex flex-shrink-0 items-center justify-center rounded-full text-black font-bold focus:outline-none">
+                                                                {{ collection$?.items_count }}
+                                                            </span>
+                                                        </div>
+                                                    </div>
                                                 </div>
-<!--                                                <img-->
-<!--                                                    class="h-96 w-full flex-none rounded-2xl object-cover shadow-xl lg:aspect-square lg:h-auto lg:max-w-sm"-->
-<!--                                                    src="https://images.unsplash.com/photo-1519338381761-c7523edc1f46?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80"-->
-<!--                                                    alt=""/>-->
+                                                <!--                                                <img-->
+                                                <!--                                                    class="h-96 w-full flex-none rounded-2xl object-cover shadow-xl lg:aspect-square lg:h-auto lg:max-w-sm"-->
+                                                <!--                                                    src="https://images.unsplash.com/photo-1519338381761-c7523edc1f46?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80"-->
+                                                <!--                                                    alt=""/>-->
 
                                                 <div class="flex-auto mt-4">
-                                                    <h2 class="text-md w-80 mx-auto pl-8 font-bold tracking-tight text-slate-200 sm:text-lg">
-                                                        <span class="text-white">{{proposal?.title}}</span> bookmarked!
+                                                    <h2 class="text-sm w-80 mx-auto pl-8 font-bold tracking-tight text-slate-200 sm:text-lg">
+                                                        <span class="text-white">{{ proposal?.title }}</span>
+                                                        bookmarked!
                                                     </h2>
-<!--                                                    <p class="mt-6 text-lg leading-8 text-gray-300">-->
-<!--                                                        Lorem ipsum dolor sit amet consect adipisicing elit.-->
-<!--                                                    </p>-->
-<!--                                                    <ul role="list"-->
-<!--                                                        class="mt-10 grid grid-cols-1 gap-y-3 gap-x-8 text-base leading-7 text-white sm:grid-cols-2">-->
-<!--                                                        <li class="flex gap-x-3">-->
-<!--                                                            <CheckCircleIcon class="h-7 w-5 flex-none"-->
-<!--                                                                             aria-hidden="true"/>-->
-<!--                                                            Bookmark Saved-->
-<!--                                                        </li>-->
-<!--                                                    </ul>-->
+                                                    <!--                                                    <p class="mt-6 text-lg leading-8 text-gray-300">-->
+                                                    <!--                                                        Lorem ipsum dolor sit amet consect adipisicing elit.-->
+                                                    <!--                                                    </p>-->
+                                                    <!--                                                    <ul role="list"-->
+                                                    <!--                                                        class="mt-10 grid grid-cols-1 gap-y-3 gap-x-8 text-base leading-7 text-white sm:grid-cols-2">-->
+                                                    <!--                                                        <li class="flex gap-x-3">-->
+                                                    <!--                                                            <CheckCircleIcon class="h-7 w-5 flex-none"-->
+                                                    <!--                                                                             aria-hidden="true"/>-->
+                                                    <!--                                                            Bookmark Saved-->
+                                                    <!--                                                        </li>-->
+                                                    <!--                                                    </ul>-->
                                                 </div>
 
                                                 <div
@@ -226,11 +240,13 @@
                                         </div>
                                     </div>
 
-                                    <div class="bg-teal-600 ml-auto flex flex-col h-full w-1/2 justify-center">
-                                        <Login :show-logo="false" v-if="!user?.id" :embedded="true" />
+                                    <div
+                                        class="bg-teal-600 lg:ml-auto items-center p-4 flex flex-col h-full lg:w-1/2 justify-center">
+                                        <Login :show-logo="false" v-if="!user?.id" :embedded="true"/>
                                         <div v-else>
-                                            <img src="https://storage.googleapis.com/www.lidonation.com/8651/conversions/VvemcGIMNQfjogVsxCVKDe4_po5VTjV_wFLGrKU-BaI-preview.jpg"
-                                                 alt="" class="aspect-[6/5] w-full rounded-sm object-cover">
+                                            <img
+                                                src="https://storage.googleapis.com/www.lidonation.com/8651/conversions/VvemcGIMNQfjogVsxCVKDe4_po5VTjV_wFLGrKU-BaI-preview.jpg"
+                                                alt="" class="aspect-[6/5] w-full rounded-sm object-cover">
 
                                         </div>
                                     </div>
@@ -245,11 +261,11 @@
 </template>
 
 <script lang="ts" setup>
-import {computed, defineEmits, ref, watch} from "vue";
+import {computed, defineEmits, ref} from "vue";
 import Modal from "../Shared/Components/Modal.vue";
 import Challenge from "../models/challenge";
 import Proposal from "../models/proposal";
-import {useForm, usePage} from "@inertiajs/vue3";
+import {usePage} from "@inertiajs/vue3";
 import User from "../models/user";
 import Login from "./Auth/Login.vue";
 import {useBookmarksStore} from "../stores/bookmarks-store";
@@ -257,8 +273,8 @@ import Multiselect from '@vueform/multiselect';
 import {storeToRefs} from "pinia";
 import BookmarkCollection from "../models/bookmark-collection";
 import BookmarkItem from "../models/bookmark-item";
-import axios, {AxiosError, AxiosResponse} from "axios";
-import {XCircleIcon, CheckCircleIcon} from '@heroicons/vue/20/solid';
+import axios from "axios";
+import {XCircleIcon} from '@heroicons/vue/20/solid';
 
 
 const props = withDefaults(
@@ -267,19 +283,18 @@ const props = withDefaults(
     }>(),
     {},
 );
-// const selectedCollection = ref(props.groupOptions?.[0] || '');
 const user = computed(() => usePage().props?.user as User);
+const bookmarksStore = useBookmarksStore();
+const {collections$} = storeToRefs(bookmarksStore);
+
 let creatingAnonymousBookmarks = ref(true);
 let errors = ref()
 let bookmarkProposalContent$ = ref(null)
 let creating = false;
-let bookmarked$ = ref(false);
+let bookmarked$ = ref(true);
 let collection$ = ref<BookmarkCollection>(null);
 
-const bookmarksStore = useBookmarksStore();
-const {collections$} = storeToRefs(bookmarksStore);
-
-// collection$.value = collections$.value[14];
+collection$.value = collections$.value[0] as BookmarkCollection;
 
 ////
 // events & watchers
@@ -341,7 +356,7 @@ async function bookmarkProposal(item: BookmarkItem) {
 
         // update ui
         bookmarked$.value = true;
-        collection$ = res.data;
+        collection$.value = {...res.data};
     } catch (e) {
         errors.value = {...e?.response?.data?.errors || {message: e?.response?.data?.message}};
         console.log(e);

@@ -101,7 +101,6 @@ const props = withDefaults(
         total?: number,
         links?: PaginationLink[],
     }>(), {perPage: 24});
-console.log(props);
 let perPageRef = ref(props.perPage);
 
 const emit = defineEmits<{
