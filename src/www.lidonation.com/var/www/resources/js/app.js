@@ -875,6 +875,7 @@ window.translateProposal = function translateProposal() {
         },
         locale:null,
         targetLocale:null,
+        save:false,
         init() {
         this.checkLogin();
         this.locale = 'en';
@@ -913,17 +914,18 @@ window.translateProposal = function translateProposal() {
             this.editing = true;
             window.axios.post('/translate/' + `${this.model_id}`, this.data)
             .then((res) => {
+                this.processing = false;
                 if (this.responseValidity(res.data)) {
                     this.proposalContent = res.data;
-                    this.processing = false;
+                    this.save = true;
                     } else {
                     this.proposalContent = this.proposalContent;
-                    this.processing = false;
+                    this.save = true;
                     }}
             )
         },
         responseValidity(res){
-            if ((res.length/this.proposalContent.length ) >= 80)
+            if ((res.length/this.proposalContent.length ) >= 0.3)
             {
                 return true;
             }
@@ -931,7 +933,8 @@ window.translateProposal = function translateProposal() {
         },
         submitEdits() {
             this.editing = false;
-            this.translate = false
+            this.translate = false;
+            this.save = false;
             this.translationUpdates.updates = this.proposalContent;
             window.axios.patch('/translation/'+ `${this.model_id}`, this.translationUpdates)
             .then((res) => {

@@ -44,7 +44,7 @@
                 </div>
             </template>
 
-            <div class="flex flex-col" x-show="editing">
+            <div class="flex flex-col" x-show=" save ">
                 <p class="flex flex-row mb-2" >
                 Open English text in another tab. 
                     <a class="flex flex-row" href="/proposals/{{$proposal->slug}}" target="_blank">
