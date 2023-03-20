@@ -216,10 +216,15 @@
                 let data = {
                     comment: reaction
                 }
-                const res = await window.axios.post(`/api/catalyst-explorer/reactions/${id}`, data);
-                if (res.status === 200) {
-                    this.reactionsCount[reaction]++;
-                }
+                const res = await window.axios.post(`/api/catalyst-explorer/react/report/${id}`, data);
+                this.reactionsCount = {
+                    "❤️": res.data.hearts_count,
+                    "👍": res.data.thumbs_up_count,
+                    "🎉": res.data.party_popper_count,
+                    "🚀": res.data.rocket_count,
+                    "👎": res.data.thumbs_down_count,
+                    "👀": res.data.eyes_count
+                };
             },
 
 
