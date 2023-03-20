@@ -324,13 +324,14 @@ async function addReaction(reaction) {
     let data = {
         comment: reaction,
     };
-    const res = await window.axios.post(
-        `/api/catalyst-explorer/reactions/${props.report.id}`,
-        data
-    );
-    if (res.status === 200) {
-        reactionsCount[reaction]++;
-    }
+    const res = await window.axios.post(`${baseUrl}/api/catalyst-explorer/react/report/${props.report.id}`,data);
+    
+    reactionsCount["❤️"] = res.data.hearts_count;
+    reactionsCount["👍"] = res.data.thumbs_up_count;
+    reactionsCount["🎉"] = res.data.party_popper_count;
+    reactionsCount["🚀"] = res.data.rocket_count;
+    reactionsCount["👎"] = res.data.thumbs_down_count;
+    reactionsCount["👀"] = res.data.eyes_count;
 }
 
 </script>
