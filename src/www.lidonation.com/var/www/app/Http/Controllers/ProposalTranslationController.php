@@ -23,16 +23,18 @@ class ProposalTranslationController extends Controller
         
         // user translation meta
         $translators_lang = $this->getTranslatorMetas($user);
+        
 
         // if existing translator
-        if(isset($translators_lang)){
+        if(isset($translators_lang) && $user->hasRole(['translator'])){
+            // dd($translators_lang);
             return $translators_lang;
         }
 
         // if new translator
         $user->assignRole((string) RoleEnum::translator());
 
-        return $user;
+        return $user->id;
     }
 
     public function getLanguageOptions(Proposal $proposal)
@@ -62,8 +64,8 @@ class ProposalTranslationController extends Controller
 
     public function makeTranslation(Request $request, Proposal $proposal)
     {   
-        if(null === $this->getTranslatorMetas($request->user)){
-            $this->setTranslatorMetas($request->user, $request->targetLanguage);
+        if( $this->getTranslatorMetas($request->user()) === null){
+            $this->setTranslatorMetas($request->user(), $request->targetLanguage);
         }
 
         // get new translation 
@@ -110,7 +112,7 @@ class ProposalTranslationController extends Controller
 
     public function getTranslatorMetas(User $user)
     {
-        $USER_TRANSLATES_LANGUAGE = $user->metas()->where('key', 'lang')->pluck('content');
+        $USER_TRANSLATES_LANGUAGE = $user->metas()->where('key', 'lang')->pluck('content')->first();
 
         return $USER_TRANSLATES_LANGUAGE;
     }

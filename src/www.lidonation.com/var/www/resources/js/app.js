@@ -876,6 +876,8 @@ window.translateProposal = function translateProposal() {
         locale:null,
         targetLocale:null,
         save:false,
+        transalatorsLang:null,
+        langExists:false,
         init() {
         this.checkLogin();
         this.locale = 'en';
@@ -884,17 +886,58 @@ window.translateProposal = function translateProposal() {
             this.targetLocale=val
         },
         checkLogin() {
-            axios.get('/validate/user').then(response => {
+            axios.get('/validate/user').then(res => {
+                if(res.data === null){
+                    this.loggedIn = false;
+                }
+                if(typeof res.data === 'string')
+                {
+                    this.transalatorsLang = res.data;
+                    this.checkTranslatorLang(this.transalatorsLang);
+                    console.log(this.langExists)
+                }
+
+            // this.checkTranslatorLang(this.transalatorsLang);
             this.loggedIn = true;
             this.getLangOptions()
             }).catch(error => {
             });
         },
+        checkTranslatorLang(lang){
+            this.getLangOptions();
+                for (let i = 0; i < this.options.length; i++) {
+                if (this.options[i].value === lang) {
+                    this.langExists = true;
+                }}
+        },
         getLangOptions() {
             window.axios.get('/languageOptions/'+ `${this.model_id}`)
                 .then((res) => {
-                    this.options = res.data
+                    this.options = res.data;
                 })
+        },
+        translateContent(){
+            if(this.transalatorsLang != null){
+                this.targetLang = this.transalatorsLang;
+                this.getModelData();
+                this.processing = true;
+                this.editing = true;
+                window.axios.post('/translate/' + `${this.model_id}`, this.data)
+                .then((res) => {
+                    this.processing = false;
+                    if (this.responseValidity(res.data)) {
+                        this.proposalContent = res.data;
+                        this.save = true;
+                        } else {
+                        this.proposalContent = this.proposalContent;
+                        this.save = true;
+                    }
+                }
+                )
+
+            }
+
+            this.translate = !this.translate;
         },
         getContent(content) {
             this.proposalContent = content;
@@ -905,8 +948,8 @@ window.translateProposal = function translateProposal() {
         getModelData() {
             this.data.content = this.proposalContent;
             this.data.sourceLanguage = this.locale;
-            this.data.targetLanguage = this.targetLang;
             this.translationUpdates.translationLang = this.targetLang;
+            this.data.targetLanguage = this.targetLang;
         },
         getTranslation() {
             this.getModelData();
@@ -921,7 +964,7 @@ window.translateProposal = function translateProposal() {
                     } else {
                     this.proposalContent = this.proposalContent;
                     this.save = true;
-                    }}
+                }}
             )
         },
         responseValidity(res){
