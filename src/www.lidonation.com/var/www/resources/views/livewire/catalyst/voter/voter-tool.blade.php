@@ -545,7 +545,7 @@
 
                                             <div class="text-center" id="bookmark-helper" x-show="!bookmarked">
                                                 <h1 class="text-2xl tracking-tight font-bold text-gray-900 sm:tracking-tight md:text-4xl md:tracking-tight">
-                                                    <span class="block text-teal-800 xl:inline">Bookmark</span>
+                                                    <span class="block text-teal-800 xl:inline">BookmarkItem</span>
                                                     <span class="block xl:inline"> all <span x-text="searchArgs?.count || 0"></span> matching proposals</span>
                                                 </h1>
                                                 <div class="mt-1 max-w-md mx-auto flex flex-col md:flex-row md:justify-center md:mt-4 gap-4 items-center">
@@ -563,7 +563,7 @@
                                                             }"
                                                             @click.prevent="bookmarkResults()"
                                                             href="#bookmarkResults" class="h-full flex items-center justify-center px-4 py-2 border border-transparent text-base font-medium rounded-sm text-white hover:text-yellow-500 bg-teal-800 hover:bg-teal-600 md:py-3 md:text-lg md:px-4">
-                                                            Bookmark
+                                                            BookmarkItem
                                                         </a>
                                                     </div>
 

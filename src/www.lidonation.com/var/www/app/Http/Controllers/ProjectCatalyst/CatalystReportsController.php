@@ -43,7 +43,12 @@ class CatalystReportsController extends Controller
     {
         $query = CatalystReport::withOnly(['proposal.author'])
             ->withCount([
-//            'hearts',
+            'hearts',
+            'eyes',
+            'party_popper',
+            'rocket',
+            'thumbs_down',
+            'thumbs_up'
             ]);
         if (isset($this->search)) {
             $query->orWhereFullText('content', $this->search)

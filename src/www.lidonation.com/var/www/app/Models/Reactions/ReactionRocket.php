@@ -4,7 +4,7 @@ namespace App\Models\Reactions;
 
 use Parental\HasParent;
 
-class ReactionThumbsUp extends Reaction
+class ReactionRocket extends Reaction
 {
     use HasParent;
 }

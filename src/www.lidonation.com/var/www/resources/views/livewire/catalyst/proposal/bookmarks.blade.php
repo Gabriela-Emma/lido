@@ -181,7 +181,7 @@
                                     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                                         <div class="text-center">
                                             <h2 class="text-2xl tracking-tight font-bold text-slate-300 sm:text-4xl sm:tracking-tight lg:text-5xl lg:tracking-tight">
-                                                <span>Share Bookmark</span>
+                                                <span>Share BookmarkItem</span>
                                                 <span x-text="`: ${labelFilter}`" class="font-semibold uppercase text-slate-100"></span>
                                             </h2>
                                             <p class="mt-4 text-md md:text-xl text-slate-200">

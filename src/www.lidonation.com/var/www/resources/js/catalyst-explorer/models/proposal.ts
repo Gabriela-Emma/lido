@@ -2,7 +2,7 @@ import Repo from "./repo";
 import Fund from "./fund";
 
 export default interface Proposal {
-    id:number;
+    id: number;
     slug: string;
     title: string;
     solution: string;

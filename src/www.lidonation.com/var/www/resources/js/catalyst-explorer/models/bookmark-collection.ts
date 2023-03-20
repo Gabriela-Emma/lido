@@ -1,7 +1,13 @@
-import Bookmark from "./bookmark";
+import BookmarkItem from "./bookmark-item";
+
 
 export default interface BookmarkCollection {
-    uuid: number;
+    id?: number;
     title: string;
-    bookmarks: Bookmark[];
+    content?: string;
+    color?: string;
+    visibility?: string;
+    status?: string;
+    bookmarks?: BookmarkItem[];
+    created_at: string;
 }

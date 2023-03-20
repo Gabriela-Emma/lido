@@ -75,7 +75,7 @@
                         <button type="button"
                                 onclick='Livewire.emit("openModal", "catalyst.proposal-quick-view-component", {{ json_encode(["proposalId" => $proposal->id]) }})'
                                 class="inline-flex items-center gap-2 px-2 py-1 text-sm font-medium leading-3 text-white bg-pink-600 border border-transparent rounded-sm shadow-sm hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500">
-                            Bookmark
+                            BookmarkItem
                             <svg x-show="!updateBookMarked(@js($proposal->id))" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
                                  stroke="currentColor" stroke-width="2">
                                 <path stroke-linecap="round" stroke-linejoin="round"
