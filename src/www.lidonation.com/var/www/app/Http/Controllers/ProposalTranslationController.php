@@ -2,14 +2,39 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\RoleEnum;
 use App\Models\Proposal;
 use Illuminate\Http\Request;
 use App\Jobs\SyncTranslationJob;
+use App\Models\Meta;
 use App\Models\Translation;
+use App\Models\User;
 use App\Services\TranslationService;
 
 class ProposalTranslationController extends Controller
 {
+    public function validateUser(Request $request)
+    {
+        $user = $request->user();
+
+        if(!isset($user)){
+            return;
+        }
+        
+        // user translation meta
+        $translators_lang = $this->getTranslatorMetas($user);
+
+        // if existing translator
+        if(isset($translators_lang)){
+            return $translators_lang;
+        }
+
+        // if new translator
+        $user->assignRole((string) RoleEnum::translator());
+
+        return $user;
+    }
+
     public function getLanguageOptions(Proposal $proposal)
     {   $exclude = ['en', 'sw'];
 
@@ -37,12 +62,8 @@ class ProposalTranslationController extends Controller
 
     public function makeTranslation(Request $request, Proposal $proposal)
     {   
-        $existingTranslation = Translation::where('source_id', $proposal->id)->where('lang', $request->targetLanguage)->first();
-
-        // return existing translation
-        if(isset($existingTranslation))
-        {
-            $existingTranslation->content;
+        if(null === $this->getTranslatorMetas($request->user)){
+            $this->setTranslatorMetas($request->user, $request->targetLanguage);
         }
 
         // get new translation 
@@ -71,9 +92,28 @@ class ProposalTranslationController extends Controller
 
     public function transalatedLangs(Proposal $proposal)
     {
-
         $existingLangs = Translation::where('source_id', $proposal->id)->pluck('lang');
 
         return $existingLangs->toArray();
     }
+
+    public function setTranslatorMetas(User $user, $lang)
+    {
+        $meta = new Meta;
+        $meta->model_type = $user::class;
+        $meta->model_id = $user->id;
+        $meta->key = 'lang';
+        $meta->content = $lang;
+        $meta->save();
+        
+    }
+
+    public function getTranslatorMetas(User $user)
+    {
+        $USER_TRANSLATES_LANGUAGE = $user->metas()->where('key', 'lang')->pluck('content');
+
+        return $USER_TRANSLATES_LANGUAGE;
+    }
+
+
 }

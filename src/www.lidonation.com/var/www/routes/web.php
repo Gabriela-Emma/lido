@@ -760,6 +760,8 @@ Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
 
 // proposal translation
+Route::get('/validate/user', [ProposalTranslationController::class, 'validateUser']);
+
 Route::group(
     [
         'middleware' => ['auth:'.config('fortify.guard')],

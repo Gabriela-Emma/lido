@@ -884,7 +884,7 @@ window.translateProposal = function translateProposal() {
             this.targetLocale=val
         },
         checkLogin() {
-            axios.get('/api/user').then(response => {
+            axios.get('/validate/user').then(response => {
             this.loggedIn = true;
             this.getLangOptions()
             }).catch(error => {
