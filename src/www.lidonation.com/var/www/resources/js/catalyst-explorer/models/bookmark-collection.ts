@@ -9,5 +9,6 @@ export default interface BookmarkCollection {
     visibility?: string;
     status?: string;
     bookmarks?: BookmarkItem[];
+    items_count?: number;
     created_at: string;
 }

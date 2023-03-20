@@ -252,7 +252,7 @@ Route::prefix('catalyst-explorer')->as('catalystExplorerApi.')
         Route::patch('proposal/repo', [CatalystExplorer\RepoController::class, 'updateRepo']);
 
 
-        Route::post('/reactions/{catalystReport:id}', [CatalystExplorer\ReportController::class, 'createReaction']);
+        Route::post('/react/report/{catalystReport:id}', [CatalystExplorer\ReportController::class, 'createReaction']);
 
 
         Route::post('/logout', [CatalystExplorer\UserController::class, 'logout']);

@@ -41,7 +41,9 @@ class ReportController extends Controller
         ]));
         $catalystReport->addLidoReaction($validated->comment, Auth::user());
 
-        return to_route('catalystExplorer.reports');
+        $catalystReport->save();
+
+        return $catalystReport->fresh();
     }
 
     public function follow(Request $request)

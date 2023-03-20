@@ -9,6 +9,7 @@ import PrimeVue from 'primevue/config';
 import route from "ziggy-js";
 import {modal} from "momentum-modal";
 import timeago from 'vue-timeago3';
+let messages = require('../../storage/app/snippets.json');
 const axios = require('axios');
 
 
@@ -40,7 +41,7 @@ createInertiaApp({
         const i18n = createI18n({
             locale: <string>props.initialPage.props.locale,
             fallbackLocale: "en",
-            messages: require('../../storage/app/snippets.json'),
+            messages: messages,
         });
 
         const app = createApp({ render: () => h(App, props) })
