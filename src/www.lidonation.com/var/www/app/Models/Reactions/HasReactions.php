@@ -25,19 +25,10 @@ trait HasReactions {
             throw new \Exception('This reaction exists for this user in this model.');
         }
 
-        $oneReactionPerModel = $this->lido_reactions()
-            ->where('commenter_id', optional($commenter)->id ?: auth()->id())
-            ->where('model_type', get_class($this))
-            ->where('model_id', $this->id)
-            ->count();
-
-        if ($oneReactionPerModel > 0) {
-            throw new \Exception('User can only create one reaction per model.');
-        }
 
         $type = ReactionEnum::getClass($reaction);
 
-        if (!$existingReaction && !$oneReactionPerModel) {
+        if (!$existingReaction) {
             $this->lido_reactions()->create([
                 'reaction' => $reaction,
                 'type' => "$type",
