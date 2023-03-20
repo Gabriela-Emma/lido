@@ -48,16 +48,6 @@ spec:
         - name: "{{ $.Chart.Name }}-cardano-dbsync-pv"
           persistentVolumeClaim:
             claimName: "{{ .Values.namespace }}-data-dbsync-pvc"
-        - name: dbsync-postgresql
-          secret:
-            secretName: "{{ $.Chart.Name }}-secrets"
-            items:
-              - key: postgres_db
-                path: postgres_db
-              - key: postgres_password
-                path: postgres_password
-              - key: postgres_user
-                path: postgres_user
         - name: dbsync-configurations
           configMap:
             name: "{{ $.Chart.Name }}-configurations-configmap"
@@ -72,11 +62,6 @@ spec:
           requests:
             cpu: 300m
             memory: 1024Mi
-        envFrom:
-          - secretRef:
-                name:  "{{ $.Chart.Name }}-secrets"
-          - configMapRef:
-              name: "lidolovelace-cardano-configmap"
         env:
           - name: HASURA_URI
             value: "http://lidolovelace-dbsync-hasura-service.{{ .Values.namespace }}.svc.cluster.local:8080"
@@ -91,12 +76,6 @@ spec:
             containerPort: 3100
             protocol: TCP
         volumeMounts:
-          - name: node-ipc
-            mountPath: /ipc
-            readOnly: false
-          - name: dbsync-postgresql
-            mountPath: /run/secrets
-            readOnly: false
           - name: "{{ $.Chart.Name }}-cardano-dbsync-pv"
             mountPath: /config
             subPath: config
@@ -116,6 +95,10 @@ spec:
             "socat UNIX-LISTEN:/ipc/node.socket,fork TCP:${CARDANO_NODE_SOCKET_TCP_HOST}:${CARDANO_NODE_SOCKET_TCP_PORT},ignoreeof"
         ]
         volumeMounts:
+        - name: "{{ $.Chart.Name }}-cardano-dbsync-pv"
+          mountPath: /config
+          subPath: config
+          readOnly: false
         - mountPath: /ipc
           name: node-ipc
           readOnly: false

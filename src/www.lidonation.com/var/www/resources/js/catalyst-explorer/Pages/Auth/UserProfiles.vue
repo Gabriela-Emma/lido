@@ -19,17 +19,17 @@
                             <div class="space-y-6 bg-white py-6 px-4 sm:p-6">
                                 <div>
                                     <h2 class="text-lg xl:text-xl font-medium leading-6 text-slate-900">
-                                        Your Lido Nation Account
+                                        {{ $t("Your Lido Nation Account") }}
                                     </h2>
                                     <p class="mt-1 text-sm text-slate-500">
-                                        All information, with the exception of your
-                                        email, will be displayed publicly.</p>
+                                        {{ $t("All information") }}, {{ $t("with the exception of your") }}
+                                        {{ $t("email") }}, {{ $t("will be displayed publicly") }}.</p>
                                 </div>
 
                                 <div class="grid grid-cols-3 gap-6">
                                     <div class="col-span-6 sm:col-span-3">
                                         <label for="email" class="block text-sm font-medium text-slate-700">
-                                            Name
+                                            {{ $t("Name") }}
                                         </label>
                                         <input type="text" name="email" id="email" autocomplete="email"
                                                v-model="userForm.name"
@@ -40,7 +40,7 @@
                                     </div>
                                     <div class="col-span-6 sm:col-span-3">
                                         <label for="email" class="block text-sm font-medium text-slate-700">
-                                            Email Address <span class="text-slate-400">Use for login and communication. Not displayed publicly, not exposed in apis</span>
+                                            {{ $t("Email Address") }} <span class="text-slate-400">{{ $t("Use for login and communication") }}. {{ $t("Not displayed publicly") }}, {{ $t("not exposed in apis") }}</span>
                                         </label>
                                         <input type="text" name="email" id="email" autocomplete="email"
                                                v-model="userForm.email"
@@ -51,7 +51,7 @@
                                     </div>
                                     <div class="col-span-6 sm:col-span-3">
                                         <label for="twitter"
-                                               class="block text-sm font-medium text-slate-700">Twitter</label>
+                                               class="block text-sm font-medium text-slate-700">{{ $t("Twitter") }}</label>
                                         <input type="text" name="twitter" id="twitter" autocomplete="twitter"
                                                v-model="userForm.twitter"
                                                class="mt-1 block w-full rounded-sm border border-slate-300 py-2 px-3 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-teal-500 sm:text-sm">
@@ -75,7 +75,7 @@
                                             <div class="input_field flex flex-col w-max mx-auto text-center">
                                                 <label>
                                                     <input @change="uploadProfile" name="profile" id="profile" class="text-sm cursor-pointer w-36 hidden" type="file"/>
-                                                    <div class="text bg-teal-600 text-white border border-gray-300 rounded font-semibold cursor-pointer p-1 px-3 hover:bg-teal-800">Upload a profile photo</div>
+                                                    <div class="text bg-teal-600 text-white border border-gray-300 rounded font-semibold cursor-pointer p-1 px-3 hover:bg-teal-800">{{ $t("Upload a profile photo") }}</div>
                                                 </label>
                                                 <div v-if="profile_name.length > 0">
                                                     <p v-text="profile_name"></p>
@@ -90,7 +90,7 @@
                             <div class="bg-slate-50 px-4 py-3 text-right sm:px-6">
                                 <button type="submit"
                                         class="inline-flex justify-center rounded-sm border border-transparent bg-teal-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
-                                    Save
+                                    {{ $t("Save") }}
                                 </button>
                             </div>
                         </div>
@@ -103,11 +103,11 @@
 
                                 <div>
                                     <h2 class="text-lg xl:text-xl font-medium leading-6 text-slate-900">
-                                        Edit Catalyst Profile: <span class="font-bold">{{ form.name }}</span>
+                                        {{ $t("Edit Catalyst Profile") }}: <span class="font-bold">{{ form.name }}</span>
                                     </h2>
                                     <p class="mt-1 text-sm text-slate-500">
-                                        All information, with the exception of your
-                                        email, will be displayed publicly.
+                                        {{ $t('All information') }}, {{ $t("with the exception of your") }}
+                                        {{ $t("email") }}, {{ $t("will be displayed publicly") }}.
                                     </p>
 
                                     <div class="text-pink-600" v-if="form.errors.id">
@@ -126,8 +126,7 @@
                                     <!--                                    </div>-->
 
                                     <div class="col-span-6 sm:col-span-3">
-                                        <label for="email" class="block text-sm font-medium text-slate-700">Email
-                                            address <span class="text-slate-400">(Not displayed publicly, not exposed in apis)</span></label>
+                                        <label for="email" class="block text-sm font-medium text-slate-700">{{ $t("Email address") }} <span class="text-slate-400">({{ $t("Not displayed publicly") }}, {{ $t('not exposed in apis') }})</span></label>
                                         <input type="text" name="email" id="email" autocomplete="email"
                                                v-model="form.email"
                                                class="mt-1 block w-full rounded-sm border border-slate-300 py-2 px-3 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-teal-500 sm:text-sm">
@@ -139,7 +138,7 @@
 
                                     <div class="col-span-6 sm:col-span-3">
                                         <label for="twitter"
-                                               class="block text-sm font-medium text-slate-700">Twitter</label>
+                                               class="block text-sm font-medium text-slate-700">{{ $t("Twitter") }}</label>
                                         <input type="text" name="twitter" id="twitter" autocomplete="twitter"
                                                v-model="form.twitter"
                                                class="mt-1 block w-full rounded-sm border border-slate-300 py-2 px-3 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-teal-500 sm:text-sm">
@@ -151,7 +150,7 @@
 
                                     <div class="col-span-6 sm:col-span-3">
                                         <label for="linkedin"
-                                               class="block text-sm font-medium text-slate-700">LinkedIn</label>
+                                               class="block text-sm font-medium text-slate-700">{{ $t("LinkedIn") }}</label>
                                         <input type="text" name="linkedin" id="linkedin" autocomplete="linkedin"
                                                v-model="form.linkedin"
                                                class="mt-1 block w-full rounded-sm border border-slate-300 py-2 px-3 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-teal-500 sm:text-sm">
@@ -163,7 +162,7 @@
 
                                     <div class="col-span-6 sm:col-span-3">
                                         <label for="discord"
-                                               class="block text-sm font-medium text-slate-700">Discord</label>
+                                               class="block text-sm font-medium text-slate-700">{{ $t("Discord") }}</label>
                                         <input type="text" name="discord" id="discord" autocomplete="discord"
                                                v-model="form.discord"
                                                class="mt-1 block w-full rounded-sm border border-slate-300 py-2 px-3 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-teal-500 sm:text-sm">
@@ -175,7 +174,7 @@
 
                                     <div class="col-span-6 sm:col-span-3">
                                         <label for="telegram"
-                                               class="block text-sm font-medium text-slate-700">Telegram</label>
+                                               class="block text-sm font-medium text-slate-700">{{ $t("Telegram") }}</label>
                                         <input type="text" name="telegram" id="telegram" autocomplete="telegram"
                                                v-model="form.telegram"
                                                class="mt-1 block w-full rounded-sm border border-slate-300 py-2 px-3 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-teal-500 sm:text-sm">
@@ -186,14 +185,14 @@
                                     </div>
 
                                     <div class="col-span-3">
-                                        <label for="bio" class="block text-sm font-medium text-slate-700">Bio</label>
+                                        <label for="bio" class="block text-sm font-medium text-slate-700">{{  $t("Bio") }}</label>
                                         <div class="mt-1">
                                             <textarea id="bio" name="bio" rows="6" v-model="form.bio"
                                                       class="mt-1 block w-full rounded-sm border-slate-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"></textarea>
                                             <div v-if="form.errors.bio">{{ form.errors.bio }}</div>
                                         </div>
                                         <p class="mt-2 text-sm text-slate-500">
-                                            Brief description for your profile. Markdown supported
+                                            {{ $t("Brief description for your profile") }}. {{ $t("Markdown supported") }}
                                         </p>
                                     </div>
 
@@ -230,14 +229,13 @@
                         <div class="shadow sm:overflow-hidden sm:rounded-sm">
                             <div class="space-y-6 bg-white py-6 px-4 sm:p-6">
                                 <div>
-                                    <h3 class="text-lg font-medium leading-6 text-slate-900">Notification
-                                        Preferences</h3>
-                                    <p class="mt-1 text-sm text-slate-500">Provide basic information about the job. Be
-                                        specific with the job title.</p>
+                                    <h3 class="text-lg font-medium leading-6 text-slate-900">{{ $t("Notification") }} {{ $t("Preferences") }}</h3>
+                                    <p class="mt-1 text-sm text-slate-500">{{ $t("Provide basic information about the job") }}. {{ $t("Be") }}
+                                        {{ $t("specific with the job title") }}.</p>
                                 </div>
 
                                 <fieldset>
-                                    <legend class="text-base font-medium text-slate-900">By Email</legend>
+                                    <legend class="text-base font-medium text-slate-900">{{ $t("By") }} {{ $t("Email") }}</legend>
                                     <div class="mt-4 space-y-4">
                                         <div class="flex items-start">
                                             <div class="flex h-5 items-center">
@@ -246,9 +244,8 @@
                                             </div>
                                             <div class="ml-3 text-sm">
                                                 <label for="comments"
-                                                       class="font-medium text-slate-700">Comments</label>
-                                                <p class="text-slate-500">Get notified when someones posts a comment on
-                                                    a posting.</p>
+                                                       class="font-medium text-slate-700">{{ $t("Comments") }}</label>
+                                                <p class="text-slate-500">{{ $t("Get notified when someones posts a comment on a posting") }}.</p>
                                             </div>
                                         </div>
                                         <div>
@@ -258,9 +255,8 @@
                                                            class="h-4 w-4 rounded border-slate-300 text-teal-600 focus:ring-teal-500">
                                                 </div>
                                                 <div class="ml-3 text-sm">
-                                                    <label for="candidates" class="font-medium text-slate-700">Candidates</label>
-                                                    <p class="text-slate-500">Get notified when a candidate applies for
-                                                        a job.</p>
+                                                    <label for="candidates" class="font-medium text-slate-700">{{ $t("Candidates") }}</label>
+                                                    <p class="text-slate-500">{{ $t("Get notified when a candidate applies for a job") }}.</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -272,24 +268,22 @@
                                                 </div>
                                                 <div class="ml-3 text-sm">
                                                     <label for="offers"
-                                                           class="font-medium text-slate-700">Offers</label>
-                                                    <p class="text-slate-500">Get notified when a candidate accepts or
-                                                        rejects an offer.</p>
+                                                           class="font-medium text-slate-700">{{ $t("Offers") }}</label>
+                                                    <p class="text-slate-500">{{ $t("Get notified when a candidate accepts or rejects an offer") }}.</p>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </fieldset>
                                 <fieldset class="mt-6">
-                                    <legend class="text-base font-medium text-slate-900">Push Notifications</legend>
-                                    <p class="text-sm text-slate-500">These are delivered via SMS to your mobile
-                                        phone.</p>
+                                    <legend class="text-base font-medium text-slate-900">{{ $t("Push Notifications") }}</legend>
+                                    <p class="text-sm text-slate-500">{{ $t("These are delivered via SMS to your mobile phone") }}.</p>
                                     <div class="mt-4 space-y-4">
                                         <div class="flex items-center">
                                             <input id="push-everything" name="push-notifications" type="radio"
                                                    class="h-4 w-4 border-slate-300 text-teal-600 focus:ring-teal-500">
                                             <label for="push-everything" class="ml-3">
-                                                <span class="block text-sm font-medium text-slate-700">Everything</span>
+                                                <span class="block text-sm font-medium text-slate-700">{{ $t("Everything") }}</span>
                                             </label>
                                         </div>
                                         <div class="flex items-center">
@@ -297,14 +291,14 @@
                                                    class="h-4 w-4 border-slate-300 text-teal-600 focus:ring-teal-500">
                                             <label for="push-email" class="ml-3">
                                                 <span
-                                                    class="block text-sm font-medium text-slate-700">Same as email</span>
+                                                    class="block text-sm font-medium text-slate-700">{{ $t("Same as email") }}</span>
                                             </label>
                                         </div>
                                         <div class="flex items-center">
                                             <input id="push-nothing" name="push-notifications" type="radio"
                                                    class="h-4 w-4 border-slate-300 text-teal-600 focus:ring-teal-500">
                                             <label for="push-nothing" class="ml-3">
-                                                <span class="block text-sm font-medium text-slate-700">No push notifications</span>
+                                                <span class="block text-sm font-medium text-slate-700">{{ $t("No push notifications") }}</span>
                                             </label>
                                         </div>
                                     </div>
@@ -313,7 +307,7 @@
                             <div class="bg-slate-50 px-4 py-3 text-right sm:px-6">
                                 <button type="submit" @click.prevent="submit"
                                         class="inline-flex justify-center rounded-sm border border-transparent bg-teal-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-600 focus:ring-offset-2">
-                                    Save
+                                    {{ $t("Save") }}
                                 </button>
                             </div>
                         </div>

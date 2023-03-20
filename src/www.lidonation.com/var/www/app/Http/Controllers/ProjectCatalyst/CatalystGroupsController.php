@@ -57,7 +57,7 @@ class CatalystGroupsController extends Controller
             'github' => 'nullable|bail|min:5',
             'discord' => 'nullable|bail|min:4',
             'telegram' => 'nullable|bail|min:2',
-            'bio' => 'min:20',
+            'bio' => 'min:10',
             'name' => 'required|min:10',
             'owner.id' => 'required:exists:catalyst_groups',
         ]));
@@ -85,8 +85,7 @@ class CatalystGroupsController extends Controller
             'twitter' => 'nullable|bail|min:2',
             'github' => 'nullable|bail|min:5',
             'discord' => 'nullable|bail|min:4',
-            'telegram' => 'nullable|bail|min:2',
-            'bio' => 'min:20',
+            'telegram' => 'nullable|bail|min:2'
         ]);
 
         $catalystGroup->bio = $request->bio;

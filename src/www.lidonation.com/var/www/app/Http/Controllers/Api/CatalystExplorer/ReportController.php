@@ -21,29 +21,6 @@ class ReportController extends Controller
         return $catalystReport?->comments?->toArray();
     }
 
-    public function showReactions(Request $request, CatalystReport $catalystReport)
-    {
-
-        $reactions = [];
-        $comments = $catalystReport->comments->where('text', '');
-        foreach ($comments as $comment) {
-            $reaction = $comment->reactions;
-            $reactions = array_merge($reactions, $reaction->toArray());
-        };
-
-        $reactionCounts = array_count_values(array_column($reactions, 'reaction'));
-
-        $reactionsObject = [];
-        foreach ($reactionCounts as $reaction => $count) {
-            $reactionsObject[] = [
-                'catalystReport' => $catalystReport->id,
-                'reaction' => $reaction,
-                'count' => $count,
-            ];
-        };
-        return $reactionsObject;
-    }
-
 
     public function createComment(Request $request, CatalystReport $catalystReport)
     {
@@ -59,19 +36,14 @@ class ReportController extends Controller
 
     public function createReaction(Request $request, CatalystReport $catalystReport)
     {
-        $user = Auth::user();
-        $existingEmptyComment = $catalystReport->comments->where('commentator_id', $user->id)->where('text', '')->first();
-
-        if ($existingEmptyComment) {
-            return response()->json(['message' => 'You have already created an empty comment for this report.'], 422);
-        }
-
         $validated = new Fluent($request->validate([
             'comment' => 'required',
         ]));
-        $catalystReport->comment("", Auth::user())->react($validated->comment, Auth::user());
+        $catalystReport->addLidoReaction($validated->comment, Auth::user());
 
-        return to_route('catalystExplorer.reports');
+        $catalystReport->save();
+
+        return $catalystReport->fresh();
     }
 
     public function follow(Request $request)

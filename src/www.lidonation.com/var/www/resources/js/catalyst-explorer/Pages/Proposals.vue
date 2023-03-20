@@ -1,6 +1,6 @@
 <template>
-    <header-component titleName0="Catalyst" titleName1="Proposals"
-                      subTitle="search proposals and challenges by title, content, or author and co-authors."/>
+    <header-component titleName0="catalyst" titleName1="Proposals"
+                      subTitle='search proposals and challenges by title, content, or author and co-authors'/>
 
     <div class="flex flex-col gap-2 bg-primary-20">
         <section class="py-8">
@@ -25,7 +25,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round"
                                       d="M6 13.5V3.75m0 9.75a1.5 1.5 0 010 3m0-3a1.5 1.5 0 000 3m0 3.75V16.5m12-3V3.75m0 9.75a1.5 1.5 0 010 3m0-3a1.5 1.5 0 000 3m0 3.75V16.5m-6-9V3.75m0 3.75a1.5 1.5 0 010 3m0-3a1.5 1.5 0 000 3m0 9.75V10.5"/>
                             </svg>
-                            <span>Filters</span>
+                            <span>{{ $t('Filters') }}</span>
                         </button>
                     </div>
                 </div>
@@ -151,7 +151,7 @@
                                             {{ $filters.number(props.proposals.total) }}
                                         </span>
                                             <span class="text-xs">
-                                            Submitted
+                                            {{ $t('Submitted') }}
                                         </span>
                                     </div>
                                     <div class="flex flex-col text-center" v-if="metricCountApproved" key="countFunded">
@@ -159,7 +159,7 @@
                                         {{ $filters.number(metricCountApproved) }}
                                     </span>
                                         <span class="text-xs">
-                                        Approved
+                                        {{ $t('Approved') }}
                                     </span>
                                     </div>
                                     <div class="flex flex-col text-center" v-if="metricCountTotalPaid" key="countPaid">
@@ -167,7 +167,7 @@
                                             {{ $filters.number(metricCountTotalPaid) }}
                                         </span>
                                             <span class="text-xs">
-                                            Fully Paid
+                                            {{ $t('Fully Paid') }}
                                         </span>
                                     </div>
                                     <div class="flex flex-col text-center text-pink-500" v-if="metricCountCompleted" key="completed">
@@ -175,7 +175,7 @@
                                             {{ $filters.number(metricCountCompleted) }}
                                         </span>
                                             <span class="text-xs">
-                                            Completed
+                                            {{ $t('Completed') }}
                                         </span>
                                     </div>
 
@@ -183,7 +183,7 @@
                                     <div class="h-full w-full h-[1px] md:h-full md:w-[1px] bg-slate-100 relative"
                                          v-if="(metricCountApproved || metricCountCompleted) && metricSumApproved">
                                         <b class="text-yellow-500 hidden md:inline-block absolute -top-6 -left-10 w-28 text-xs px-2 py-1 text-center bg-slate-800 rounded-full">
-                                            Search metrics
+                                            {{ $t('Search metrics') }}
                                         </b>
                                     </div>
 
@@ -193,7 +193,7 @@
                                             ${{ $filters.shortNumber(metricSumBudget, 2) }}
                                         </span>
                                             <span class="text-xs">
-                                            $ Requested
+                                            $ {{ $t('Requested') }}
                                         </span>
                                     </div>
                                     <div class="flex flex-col text-center text-teal-light-500" v-if="metricSumApproved"
@@ -202,7 +202,7 @@
                                             ${{ $filters.shortNumber(metricSumApproved, 2) }}
                                         </span>
                                             <span class="text-xs">
-                                            $ Awarded
+                                            $ {{ $t('Awarded') }}
                                         </span>
                                     </div>
                                     <div class="flex flex-col text-center text-teal-400" v-if="metricSumDistributed"
@@ -211,7 +211,7 @@
                                             ${{ $filters.shortNumber(metricSumDistributed, 2) }}
                                         </span>
                                             <span class="text-xs">
-                                            $ Distributed
+                                            $ {{ $t('Distributed') }}
                                         </span>
                                     </div>
                                     <div class="flex flex-col text-center text-pink-500" v-if="metricSumCompleted"
@@ -220,7 +220,7 @@
                                             ${{ $filters.shortNumber(metricSumCompleted, 2) }}
                                         </span>
                                             <span class="text-xs">
-                                            $ Completed
+                                            $ {{ $t('Completed') }}
                                         </span>
                                     </div>
                                 </TransitionGroup>

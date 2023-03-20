@@ -862,7 +862,7 @@ window.translateProposal = function translateProposal() {
         options: [],
         targetLang: null,
         sourceLang: null,
-        proposalContent: [],
+        proposalContent: null,
         data: {
             content: '',
             sourceLanguage: '',
@@ -873,17 +873,25 @@ window.translateProposal = function translateProposal() {
             updates:'',
             translationLang:''
         },
+        locale:null,
+        targetLocale:null,
+        save:false,
         init() {
         this.checkLogin();
+        this.locale = 'en';
+        },
+        getTargetLocal(val) {
+            this.targetLocale=val
         },
         checkLogin() {
             axios.get('/api/user').then(response => {
             this.loggedIn = true;
+            this.getLangOptions()
             }).catch(error => {
             });
         },
         getLangOptions() {
-            window.axios.get('/languageOptions')
+            window.axios.get('/languageOptions/'+ `${this.model_id}`)
                 .then((res) => {
                     this.options = res.data
                 })
@@ -896,25 +904,37 @@ window.translateProposal = function translateProposal() {
         },
         getModelData() {
             this.data.content = this.proposalContent;
-            this.data.sourceLanguage = 'en';
+            this.data.sourceLanguage = this.locale;
             this.data.targetLanguage = this.targetLang;
             this.translationUpdates.translationLang = this.targetLang;
-            console.log(this.targetLang)
         },
         getTranslation() {
             this.getModelData();
             this.processing = true;
             this.editing = true;
-            this.proposalContent = [];
             window.axios.post('/translate/' + `${this.model_id}`, this.data)
-                .then((res) => {
+            .then((res) => {
+                this.processing = false;
+                if (this.responseValidity(res.data)) {
                     this.proposalContent = res.data;
-                    this.processing = false;
-                })
+                    this.save = true;
+                    } else {
+                    this.proposalContent = this.proposalContent;
+                    this.save = true;
+                    }}
+            )
         },
-        submitEdits(){
+        responseValidity(res){
+            if ((res.length/this.proposalContent.length ) >= 0.3)
+            {
+                return true;
+            }
+            return false;
+        },
+        submitEdits() {
             this.editing = false;
-            this.translate = false
+            this.translate = false;
+            this.save = false;
             this.translationUpdates.updates = this.proposalContent;
             window.axios.patch('/translation/'+ `${this.model_id}`, this.translationUpdates)
             .then((res) => {

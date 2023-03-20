@@ -4,6 +4,7 @@ namespace App\Nova;
 
 use App\Invokables\GetModels;
 use App\Models\Translation;
+use App\Nova\Actions\AttachTranslation;
 use App\Nova\Filters\Language;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
@@ -128,7 +129,11 @@ class Translations extends Resource
      */
     public function actions(Request $request)
     {
-        return [];
+        return array_merge(
+            static::getGlobalActions(),
+            [
+                (new AttachTranslation),
+            ]);
     }
 
     public function contentFields(): array
@@ -156,6 +161,7 @@ class Translations extends Resource
                 ->options(
                     collect(config('laravellocalization.supportedLocales'))
                         ->map(fn ($loc) => $loc['name'])),
+            Markdown::make(__('Source Translation'), 'source_content'),
 
         ];
     }

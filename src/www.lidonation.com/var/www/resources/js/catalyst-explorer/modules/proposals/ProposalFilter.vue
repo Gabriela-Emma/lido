@@ -2,7 +2,7 @@
     <div class="bg-white w-[260px] relative" v-if="filtering && showFilter !== false">
         <h2 class="relative font-medium flex flex-nowrap justify-between gap-8 border-b p-4">
             <span>
-                Filters
+                {{  $t("Filters") }}
             </span>
             <button
                 @mouseenter="showClearAll = true"
@@ -19,7 +19,7 @@
         <div>
             <ul class="divide-y border-b">
                 <li class=" p-4">
-                    <p class="mb-3 text-slate-400">Funding Status</p>
+                    <p class="mb-3 text-slate-400">{{ $t("Funding Status") }}</p>
                     <Toggle
                         onLabel="Funded Proposals"
                         offLabel="All Proposals"
@@ -93,11 +93,11 @@
 
                 <li class="bg-stone-100 p-4">
                     <span class="text-lg xl:text-xl block font-medium">
-                        Community Filters
+                        {{ $t("Community Filters") }}
                     </span>
                     <p class="text-xs py-1  border-b mb-2 block">
-                        These filters are not based on primary catalyst data but rather self assembled datasets by community groups.
-                        We do not perform any validation at LIDO Nation.
+                        {{ $t("These filters are not based on primary catalyst data but rather self assembled datasets by community groups") }}.
+                        {{ $t("We do not perform any validation at LIDO Nation") }}.
                     </p>
                     <CohortPicker
                         v-model="filters.cohort"

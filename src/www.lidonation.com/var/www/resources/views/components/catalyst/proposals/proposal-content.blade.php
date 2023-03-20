@@ -1,26 +1,28 @@
-@props(['proposal'])
+@props(['proposal','pageLocale'])
 
-<div class="border border-slate-300 rounded-sm" x-data="translateProposal">
-
+<div class="border border-slate-300 rounded-sm" x-data="translateProposal" x-init="getTargetLocal({{json_encode($pageLocale)}})" >
+    
     @if ($proposal->content)
-        <div class="relative w-full bg-white z-10"
-             x-init="getContent({{ json_encode($proposal->content) }})">
-            <div
-                class="mb-3 absolute rounded-sm px-1 py-0.5 right-1 top-1 text-sm bg-yellow-500 border border-yellow-800 text-pink-600 font-semibold hover:text-teal-800"
-                x-show="!loggedIn">
-                Help Translate! <a href="/catalyst-explorer/login">login</a>
-            </div>
+        <div x-show="locale === targetLocale && options.length > 0" x-init="getModelID({{ $proposal->id }})">
+            <div class="relative w-full bg-white z-10" 
+                    x-init="getContent({{ json_encode($proposal->content) }})">
+                <div 
+                    class="mb-3 absolute rounded-sm px-1 py-0.5 right-1 top-1 text-sm bg-yellow-500 border border-yellow-800 text-pink-600 font-semibold hover:text-teal-800"
+                    x-show="!loggedIn">
+                    Help Translate! <a href="/catalyst-explorer/login">login</a>
+                </div>
 
-            <button x-show="!editing && loggedIn" @click="translate = !translate"
-                    class="px-2 py-1 font-medium w-28 rounded-sm text-white focus:ring-4 focus:outline-none absolute right-1 top-1 text-base z-10
-                                inline-flex justify-center bg-yellow-500 border border-yellow-800 text-pink-600 font-semibold hover:text-teal-80"
-                    type="button">
-                Translate
-            </button>
+                <button x-show="!editing && loggedIn" @click="translate = !translate"
+                        class="px-2 py-1 font-medium w-28 rounded-sm text-white focus:ring-4 focus:outline-none absolute right-1 top-1 text-base z-10
+                                    inline-flex justify-center bg-yellow-500 border border-yellow-800 text-pink-600 font-semibold hover:text-teal-80"
+                        type="button">
+                    Translate 
+                </button>
+            </div>
         </div>
 
-        <div class="pt-4 flex flex-row justify-center w-full" x-show="loggedIn && translate" x-init="getModelID({{ $proposal->id }})">
-            <template x-if="translate && !editing" x-init="getLangOptions()">
+        <div class="pt-4 flex flex-row justify-center w-full" x-show="loggedIn && translate" >
+            <template x-if="translate && !editing">
                 <div
                     class="flex flex-col items-end bg-white shadow-sm border z-10 w-96 rounded-sm p-3">
                     <div class="w-full">
@@ -32,7 +34,6 @@
                             </template>
                         </select>
                     </div>
-
                     <div x-show="targetLang!=null">
                         <button @click="getTranslation()"
                                 class="px-2 py-1 font-medium rounded-sm text-white bg-teal-600 hover:bg-teal-800 focus:ring-4 focus:outline-none focus:ring-teal-600text-center inline-flex items-center dark:bg-teal-600 dark:hover:bg-teal-700 dark:focus:ring-teal-800"
@@ -43,7 +44,16 @@
                 </div>
             </template>
 
-            <div class="" x-show="editing">
+            <div class="flex flex-col" x-show=" save ">
+                <p class="flex flex-row mb-2" >
+                Open English text in another tab. 
+                    <a class="flex flex-row" href="/proposals/{{$proposal->slug}}" target="_blank">
+                    Open
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+                    </svg>
+                    </a> 
+                </p>
                 <button @click="submitEdits()"
                         class="p-2 font-medium  rounded-sm text-white bg-teal-600 hover:bg-teal-800 focus:ring-4 focus:outline-none focus:ring-teal-600text-center
                               inline-flex items-center dark:bg-teal-600 dark:hover:bg-teal-700 dark:focus:ring-teal-800"
@@ -78,7 +88,7 @@
                 and save translation.</label>
             <textarea :class="heightClass" x-transition
                       class="block p-4 w-full h-[50rem]   text-gray-900 bg-white rounded-md border border-slate-300 focus:ring-teal-500 focus:border-teal-500"
-                      x-model="(proposalContent)">
+                      x-html="(proposalContent)">
           </textarea>
         </div>
         <div @click="heightClass = ''" x-show="heightClass"

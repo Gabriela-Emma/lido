@@ -20,19 +20,19 @@
                             <span class="text-gray-600 font-semibold text-lg">
                                 {{fund.currency_symbol}} {{fund.amount}}
                             </span>
-                            <span class="text-gray-500 text-xs">Total <br />Awarded</span>
+                            <span class="text-gray-500 text-xs"> {{ $t("Total") }} <br />{{ $t("Awarded") }}</span>
                         </div>
                         <div class="flex flex-col gap2 itemscenter justify-center">
                             <span class="text-gray-600 font-semibold text-lg">
                                 {{fund.proposals_count}}
                             </span>
-                            <span class="text-gray-500 text-xs">Projects <br />Funded</span>
+                            <span class="text-gray-500 text-xs">{{ $t("Projects") }} <br />{{ $t("Funded") }}</span>
                         </div>
                         <div class="flex flex-col gap2 itemscenter justify-center">
                             <span class="text-gray-600 font-semibold text-lg">
                                 {{fund.launch_date}}
                             </span>
-                            <span class="text-gray-500 text-xs">Launched</span>
+                            <span class="text-gray-500 text-xs">{{ $t("Launched") }}</span>
                         </div>
                     </div>
                 </div>

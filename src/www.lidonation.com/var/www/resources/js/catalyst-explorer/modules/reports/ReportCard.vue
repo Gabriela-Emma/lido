@@ -7,10 +7,9 @@
         </div>
 
         <div class="mt-16 divide-y divide-teal-300 specs p-5">
-            <div class="py-4 border-t border-teal-300">
-                <ul v-if="user"
-                    class="flex flex-row gap-3 justify-end">
-                    <div v-for="(reaction, index) in reactions" :key="index">
+            <div v-if="user" class="py-4 border-t border-teal-300">
+                <ul class="flex flex-row gap-3 justify-end items-center">
+                    <div v-for="(reaction, index) in Object.keys(reactionsCount)" :key="index">
                         <li
                             class="border flex flex-row gap-1 border-slate-600 hover:border-green-500 p-1 rounded-sm text-xs cursor-pointer"
                             @click.prevent="addReaction(reaction)"
@@ -19,7 +18,7 @@
                                 v-html="reaction"
                             ></button>
                             <span class=""
-                                  v-html="getReactionCount(reaction)"></span>
+                                  v-html="reactionsCount[reaction]"></span>
                         </li>
                     </div>
                 </ul>
@@ -29,7 +28,7 @@
                 class="flex flex-row gap-4 justify-between items-center py-4 spec-amount-received"
             >
                 <div class="text-teal-800 opacity-50 text-sm">
-                    Disbursed to Date
+                    {{ $t('Disbursed to Date') }}
                 </div>
                 <div class="text-teal-800 font-bold text-base">
                     {{ $filters.currency(report.proposal.amount_received) }}
@@ -39,7 +38,7 @@
             <div
                 class="flex flex-row gap-4 justify-between items-center py-4 spec-title"
             >
-                <div class="text-teal-800 opacity-50 text-sm">Proposal</div>
+                <div class="text-teal-800 opacity-50 text-sm">{{ $t('Proposal') }}</div>
                 <a
                     class="text-teal-800 font-medium inline-flex text-base hover:text-yellow-500"
                     target="_blank"
@@ -54,7 +53,7 @@
             </div> 
 
             <div class="flex flex-row gap-4 justify-between items-center py-4">
-                <div class="text-teal-800 opacity-50 text-sm">Status</div>
+                <div class="text-teal-800 opacity-50 text-sm">Status{{ $t('') }}</div>
                 <div class="text-teal-800 font-medium text-base">
                     {{ report.project_status || "-" }}
                 </div>
@@ -62,7 +61,7 @@
 
             <div class="flex flex-row gap-4 justify-between items-center py-4">
                 <div class="text-teal-800 opacity-50 text-sm">
-                    Completion Target
+                    {{ $t('Completion Target') }}
                 </div>
                 <div class="text-teal-800 font-medium text-base">
                     {{ report.completion_target || "-" }}
@@ -93,7 +92,7 @@
                 <div
                     class="text-teal-800 opacity-75 text-sm inline-flex gap-2 items-center h-full"
                 >
-                    <span class="bold text-xl">Comments </span>
+                    <span class="bold text-xl">{{ $t('Comments') }} </span>
                     <span>{{ report.comments_count }}</span>
                 </div>
 
@@ -145,12 +144,12 @@
                         <div v-if="!commentPosted">
                             <p class="pt-4">
                                 <span v-if="!comments?.length">
-                                    Be the first to leave a comment!
+                                    {{ $t('Be the first to leave a comment') }}!
                                 </span>
                                 <span
                                     class="text-xs font-bold relative top-1"
                                     v-else
-                                >Leave a Comment</span
+                                >{{ $t('Leave a Comment') }}</span
                                 >
                             </p>
 
@@ -184,7 +183,7 @@
                                 type="submit"
                                 class="text-white text-xs px-2 bg-teal-300 hover:bg-teal-800 ml-auto"
                             >
-                                Post
+                                {{ $t('Post') }}
                             </button>
                         </div>
                         <div v-if="commentPosted">
@@ -200,7 +199,7 @@
                                         <p
                                             class="text-sm font-medium text-green-800"
                                         >
-                                            Successfully Submitted
+                                            {{ $t('Successfully Submitted') }}
                                         </p>
                                     </div>
                                     <div class="ml-auto pl-3">
@@ -223,19 +222,19 @@
                         v-else
                         class="space-y-2 bg-white/50 p-2 mt-2 text-center"
                     >
-                        <p>Login or Register to leave a comment!</p>
+                        <p>{{ $t('Login or Register to leave a comment') }}!</p>
                         <div class="flex gap-3 justify-center items-center">
                             <Link
                                 :href="$utils.localizeRoute(`catalyst-explorer/auth/login`)" 
                                 class="font-bold text-teal-600 hover:text-teal-500"
                             >
-                                Sign in
+                                {{ $t('Sign in') }}
                             </Link>
                             <Link
                                 href="/catalyst-explorer/register"
                                 class="font-bold text-teal-600 hover:text-teal-500"
                             >
-                                Register
+                                {{ $t('Register') }}
                             </Link>
                         </div>
                     </div>
@@ -247,10 +246,9 @@
 
 <script lang="ts" setup>
 import {Link} from "@inertiajs/vue3";
-import {computed, onMounted, Ref, ref} from "vue";
+import {computed, onMounted, Ref, ref, reactive} from "vue";
 import Report from "../../models/report";
 import Comment from "../../models/comment";
-import Reaction from "../../models/reaction";
 import {useForm, usePage} from "@inertiajs/vue3";
 import User from "../../models/user";
 import {CheckCircleIcon, XMarkIcon} from "@heroicons/vue/20/solid";
@@ -270,7 +268,6 @@ const props = withDefaults(
 const user = computed(() => usePage().props?.user as User);
 const baseUrl = usePage().props.base_url;
 let comments: Ref<Comment[]> = ref([]);
-let reactionsCount: Ref<Reaction[]> = ref([]);
 let showComments = ref(false);
 let showCommentsInitialized = false;
 let commentPosted = ref(false);
@@ -280,15 +277,21 @@ let commentForm = useForm({
     comment: "",
 });
 
-let reactions = ["❤️", "👍", "🎉", "🚀", "👎", "👀"];
-
 function toggleShowComments() {
     showComments.value = !showComments.value;
     if (!showCommentsInitialized) {
         loadComments().then();
-        showReactions().then();
     }
 }
+
+let reactionsCount = reactive({
+    "❤️": props.report.hearts_count,
+    "👍": props.report.thumbs_up_count,
+    "🎉": props.report.party_popper_count,
+    "🚀": props.report.rocket_count,
+    "👎": props.report.thumbs_down_count,
+    "👀": props.report.eyes_count
+})
 
 function addComment() {
     commentForm.post(
@@ -321,26 +324,14 @@ async function addReaction(reaction) {
     let data = {
         comment: reaction,
     };
-    const res = await window.axios.post(
-        `/api/catalyst-explorer/reports/comments/${props.report.id}/reactions`,
-        data
-    );
-    showReactions();
+    const res = await window.axios.post(`${baseUrl}/api/catalyst-explorer/react/report/${props.report.id}`,data);
+    
+    reactionsCount["❤️"] = res.data.hearts_count;
+    reactionsCount["👍"] = res.data.thumbs_up_count;
+    reactionsCount["🎉"] = res.data.party_popper_count;
+    reactionsCount["🚀"] = res.data.rocket_count;
+    reactionsCount["👎"] = res.data.thumbs_down_count;
+    reactionsCount["👀"] = res.data.eyes_count;
 }
 
-const getReactionCount = (reaction) => {
-      const count = reactionsCount.value.find((item) => item.reaction === reaction)?.count;
-      return count !== undefined ? count : 0;
-};
-
-async function showReactions() {
-    await window.axios
-        .get(
-            `/api/catalyst-explorer/reports/comments/${props.report.id}/reactions`,
-            {}
-        )
-        .then((res) => {
-            reactionsCount.value = res.data;
-        });
-}
 </script>

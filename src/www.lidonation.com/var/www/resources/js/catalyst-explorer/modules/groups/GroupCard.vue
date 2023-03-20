@@ -6,7 +6,7 @@
                 class="w-32 h-32 lg:w-32 lg:h-32 xl:w-44 xl:h-44 rounded-full mx-auto shadow-inner shadow-md">
                 <img class="rounded-full w-full h-full"
                         :src="catalystGroup.logo"
-                        alt={{catalystGroup.name}}/>
+                        alt={{catalystGroup.name}}/> 
             </a>
             <div class="space-y-2 w-full xl:flex xl:items-center xl:justify-between items-end">
                 <div class="font-medium text-lg leading-6 space-y-1">
@@ -20,7 +20,7 @@
                         <span class="text-teal-600 font-semibold text-xl">
                             ${{$filters.shortNumber(catalystGroup.amount_awarded, 1)}}
                         </span>
-                        <span class="text-gray-500 text-xs">Awarded</span>
+                        <span class="text-gray-500 text-xs">{{ $t('Awarded') }}</span>
                     </div>
                 </div>
 
@@ -30,7 +30,7 @@
                             <a href="https://twitter.com/{{Str::replace('@', '',catalystGroup.twitter)}}"
                                 target="_blank"
                                 class="text-gray-400 hover:text-gray-300">
-                                <span class="sr-only">Twitter</span>
+                                <span class="sr-only">{{ $t('Twitter') }}</span>
                                 <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
                                         aria-hidden="true">
                                     <path
@@ -43,7 +43,7 @@
                             <a :href="catalystGroup.discord"
                                 target="_blank"
                                 class="text-gray-400 hover:text-gray-300">
-                                <span class="sr-only">Discord Server Url</span>
+                                <span class="sr-only">{{ $t('Discord Server Url') }}</span>
                                 <svg role="img" viewBox="0 0 24 24" stroke="currentColor"
                                         class="h-5 w-5" fill="none">
                                     <path
@@ -55,7 +55,7 @@
                         <li v-if="catalystGroup.website">
                             <a :href="catalystGroup.website" target="_blank"
                                 class="text-gray-400 hover:text-gray-300">
-                                <span class="sr-only">Website</span>
+                                <span class="sr-only">{{ $t('Website') }}</span>
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
                                         viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -67,7 +67,7 @@
                         <li v-if="catalystGroup.github">
                             <a :href="catalystGroup.github" target="_blank"
                                 class="text-gray-400 hover:text-gray-300">
-                                <span class="sr-only">Github</span>
+                                <span class="sr-only">{{ $t('Github') }}</span>
                                 <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24"
                                 stroke="currentColor" xmlns="http://www.w3.org/2000/svg">
                                     <path

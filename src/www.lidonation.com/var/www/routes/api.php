@@ -11,6 +11,7 @@ use App\Http\Controllers\PromoController;
 use App\Http\Controllers\ProposalController;
 use App\Http\Controllers\QuestionResponseController;
 use App\Http\Controllers\RewardController;
+use App\Http\Controllers\SnippetController;
 use App\Models\Catalyst\Ccv4BallotChoice;
 use App\Models\EveryEpoch;
 use App\Models\Reward;
@@ -217,7 +218,6 @@ Route::prefix('catalyst-explorer')->as('catalystExplorerApi.')
             'prefix' => '/reports/comments',
         ], function () {
             Route::get('/{catalystReport:id}', [CatalystExplorer\ReportController::class, 'listComments']);
-            Route::get('/{catalystReport:id}/reactions', [CatalystExplorer\ReportController::class, 'showReactions']);
         });
 
         Route::post('/login', [CatalystExplorer\UserController::class, 'login']);
@@ -252,13 +252,15 @@ Route::prefix('catalyst-explorer')->as('catalystExplorerApi.')
         Route::patch('proposal/repo', [CatalystExplorer\RepoController::class, 'updateRepo']);
 
 
+        Route::post('/react/report/{catalystReport:id}', [CatalystExplorer\ReportController::class, 'createReaction']);
+
+
         Route::post('/logout', [CatalystExplorer\UserController::class, 'logout']);
 
         Route::group([
             'prefix' => '/reports/comments',
         ], function () {
             Route::post('/{catalystReport:id}', [CatalystExplorer\ReportController::class, 'createComment']);
-            Route::post('/{catalystReport:id}/reactions', [CatalystExplorer\ReportController::class, 'createReaction']);
         });
     });
 
@@ -282,4 +284,5 @@ Route::prefix('quizzes')->as('quizzes')
 
 Route::get('/generate-mnemonic-phrase', [GenerateMnemonicPhraseController::class, 'generate']);
 
-
+// snippets
+Route::get('/cache/snippets', [SnippetController::class, 'index']);

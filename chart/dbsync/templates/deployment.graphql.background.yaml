@@ -86,8 +86,6 @@ spec:
             value: "http://lidolovelace-dbsync-hasura-service.{{ .Values.namespace }}.svc.cluster.local:8080"
           - name: OGMIOS_HOST
             value: "lidolovelace-dbsync-ogmios-service.{{ .Values.namespace }}.svc.cluster.local"
-          - name: ALLOW_INTROSPECTION
-            value: "true"
           - name: CACHE_ENABLED
             value: "true"
           - name: LOGGER_MIN_SEVERITY

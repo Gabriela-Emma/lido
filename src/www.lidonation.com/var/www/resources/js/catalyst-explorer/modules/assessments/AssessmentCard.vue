@@ -9,13 +9,13 @@
         <div class="mt-16 divide-y divide-teal-300 specs p-5">
             <div
                 class="flex flex-row gap-4 justify-between border-t border-teal-300 items-center py-4 spec-amount-received">
-                <div class="text-teal-800 opacity-50 text-sm">Assessor</div>
+                <div class="text-teal-800 opacity-50 text-sm">{{ $t('Assessor') }}</div>
                 <div class="text-teal-800 font-bold text-base">
                     {{ assessment.assessor }}
                 </div>
             </div>
             <div class="flex flex-row gap-4 justify-between items-center py-4 spec-amount-received">
-                <div class="text-teal-800 opacity-50 text-sm">Rating</div>
+                <div class="text-teal-800 opacity-50 text-sm">{{ $t('Rating') }}</div>
                 <div>
                     <Rating :modelValue="assessment.rating" :stars="5" :readonly="true" :cancel="false">
                         <template #onicon>
@@ -37,7 +37,7 @@
             </div>
 
             <div class="flex flex-row gap-4 justify-between items-center py-4 spec-title">
-                <div class="text-teal-800 opacity-50 text-sm">Proposal</div>
+                <div class="text-teal-800 opacity-50 text-sm">{{ $t('Proposal') }}</div>
                 <a class="text-teal-800 font-medium inline-flex text-base hover:text-yellow-500"
                    target="_blank" :href="$utils.localizeRoute(`proposals/${assessment?.proposal?.slug}`)">
                     {{ assessment.proposal.title }}
@@ -62,7 +62,7 @@
         </div>
         <div class="p-2 bg-stone-100">
             <b class="block text-sm font-bold">
-                vPA Quality Assurance
+                {{ $t('vPA Quality Assurance') }}
             </b>
 <!--            <div>-->
 <!--                Assessment Quality Assurance is an offered role to veteran in the Cardano Project Catalyst Community.-->

@@ -8,19 +8,19 @@
                         </h3>
                         <div class="flex gap-4 text-slate-400">
                             <div class="flex gap-1 ">
-                                <div>Total Proposals</div>
+                                <div>{{ $t("Total Proposals") }}</div>
                                 <div class="font-semibold text-slate-900">- {{ totalProposals }}</div>
                             </div>
                             <div class="flex gap-1">
-                                <div>Total Awarded</div>
+                                <div>{{ $t("Total Awarded") }}</div>
                                 <div class="font-semibold text-slate-900">- {{ $filters.currency(totalAwarded)  }}</div>
                             </div>
                             <div class="flex gap-1">
-                                <div>Total Received</div>
+                                <div>{{ $t("Total Received") }}</div>
                                 <div class="font-semibold text-slate-900">- {{ $filters.currency(totalReceived)  }}</div>
                             </div>
                             <div class="flex gap-1">
-                                <div>Funding Remaining</div>
+                                <div>{{ $t("Funding Remaining") }}</div>
                                 <div class="font-semibold text-slate-900">- {{ $filters.currency(totalRemaining)  }}</div>
                             </div>
                         </div>
@@ -29,8 +29,8 @@
                         <div>
                             <button type="button" @click.prevent="editing = !editing"
                                     class="inline-flex items-center rounded-sm border border-slate-300 bg-white px-2.5 py-1.5 text-md font-medium text-slate-700 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
-                                <span v-if="!editing">Edit</span>
-                                <span v-if="!!editing">Cancel</span>
+                                <span v-if="!editing">{{ $t("Edit") }}</span>
+                                <span v-if="!!editing">{{ $t("Cancel") }}</span>
                             </button>
                         </div>
                     </div>
@@ -40,7 +40,7 @@
                         <div class="sm:col-span-2">
                             <dt class="font-medium text-md text-slate-500">
                                 <label for="bio" class="block text-sm font-medium text-slate-700">
-                                    About
+                                    {{ $t("About") }}
                                 </label>
                             </dt>
                             <dd class="mt-1 text-md text-slate-900">
@@ -60,13 +60,13 @@
 
                         <div class="relative flex w-full gap-8 sm:col-span-2">
                             <div class="absolute block left-3 -top-1.5 bg-white rounded-sm text-xs px-2">
-                                Group Details
+                                {{ $t("Group Details") }}
                             </div>
                             <div class="flex w-full gap-4 p-2 space-x-8 border divide-x sm:col-span-2">
                                 <div class="flex flex-col justify-center flex-1 p-2 pl-4">
                                     <dt class="text-sm font-medium text-slate-500">
                                         <label for="name" class="block text-sm font-medium text-slate-700">
-                                            Group Name
+                                            {{ $t("Group Name") }}
                                         </label>
                                     </dt>
                                     <dd class="mt-1 text-md text-slate-900">
@@ -83,7 +83,7 @@
                                 </div>
                                 <div class="flex flex-col justify-center flex-1 p-2 pl-4">
                                     <dt class="text-sm font-medium text-slate-500">
-                                        Admin
+                                        {{ $t("Admin") }}
                                     </dt>
                                     <dd class="mt-1 text-md text-slate-900">
                                         {{ owner?.name }}
@@ -92,7 +92,7 @@
                                 <div class="flex flex-col justify-center flex-1 p-2 pl-4">
                                     <dt class="text-sm font-medium text-slate-500">
                                         <label for="website" class="block text-sm font-medium text-slate-700">
-                                            Website
+                                            {{ $t("Website") }}
                                         </label>
                                     </dt>
                                     <dd class="mt-1 text-md text-slate-900">
@@ -112,13 +112,13 @@
 
                         <div class="relative flex w-full gap-8 sm:col-span-2">
                             <div class="absolute block left-3 -top-1.5 bg-white rounded-sm text-xs px-2">
-                                Community & Support Links
+                                {{ $t("Community & Support Links") }}
                             </div>
                             <div class="flex w-full gap-8 p-2 space-x-8 border divide-x sm:col-span-2">
                                 <div class="flex flex-col justify-center flex-1 p-2 pl-4">
                                     <dt class="text-sm font-medium text-slate-500">
                                         <label for="twitter" class="block text-sm font-medium text-slate-700">
-                                            twitter
+                                            {{ $t("twitter") }}
                                         </label>
                                     </dt>
                                     <dd class="mt-1 text-md text-slate-900">
@@ -136,7 +136,7 @@
                                 <div class="flex flex-col justify-center flex-1 p-2 pl-8">
                                     <dt class="text-sm font-medium text-slate-500">
                                         <label for="discord" class="block text-sm font-medium text-slate-700">
-                                            discord
+                                            {{ $t("discord") }}
                                         </label>
                                     </dt>
                                     <dd class="mt-1 text-md text-slate-900">
@@ -154,7 +154,7 @@
                                 <div class="flex flex-col justify-center flex-1 p-2 pl-8">
                                     <dt class="text-sm font-medium text-slate-500">
                                         <label for="github" class="block text-sm font-medium text-slate-700">
-                                            github org
+                                            {{ $t("github org") }}
                                         </label>
                                     </dt>
                                     <dd class="mt-1 text-md text-slate-900">
@@ -175,7 +175,7 @@
                     <div class=" px-4 py-3 text-right sm:px-6 mt-8 -mx-6 -mb-6">
                     <button type="submit"
                         class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-teal-600 border border-transparent rounded-sm shadow-sm hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
-                        {{ group.id ? 'Save' : 'Create' }}
+                        {{ group.id ? $t('Save') : $t('Create') }}
                     </button>
                 </div>
                 </form>
@@ -184,7 +184,7 @@
             <div class="relative flex w-full gap-8 p-4 mt-8 border sm:col-span-2 border-slate-200" v-if="!!group?.id">
                 <div class="w-full">
                     <div class="absolute block left-3 -top-1.5 bg-white rounded-sm text-xs px-2">
-                        The Team
+                        {{ $t("The Team") }}
                     </div>
                     <div class="flex flex-col justify-between">
                         <div class="justify-end w-full mb-4">
@@ -198,7 +198,7 @@
                                             @click.prevent="addMember"
                                             class="inline-flex justify-center px-4 py-2 ml-6 text-sm font-medium text-white bg-teal-600 border border-transparent rounded-sm shadow-sm shrink-0 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
                                             <span class="flex items-center justify-between ">
-                                              Save
+                                              {{ $t("Save") }}
                                             </span>
                                     </button>
                                     <button v-if="!saveButton"
@@ -206,7 +206,7 @@
                                             class="inline-flex justify-center px-4 py-2 text-sm font-medium text-teal-600 border border-teal-600 rounded-sm shadow-sm shrink-0 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
                                             <span class="flex items-center justify-between ">
                                                 <PlusIcon class="w-5 h-5 mr-2 -ml-1 text-teal-600" aria-hidden="true"/>
-                                                Add Profile(s)
+                                                {{ $t("Add Profile(s)") }}
                                             </span>
                                     </button>
                                 </div>
@@ -241,7 +241,7 @@
                                                 <a :href="`mailto:${member.email}`"
                                                    class="relative inline-flex items-center justify-center flex-1 w-0 py-4 -mr-px text-sm font-medium text-gray-700 border border-transparent rounded-bl-lg hover:text-gray-500">
                                                     <EnvelopeIcon class="w-5 h-5 text-gray-400" aria-hidden="true"/>
-                                                    <span class="ml-3">Email</span>
+                                                    <span class="ml-3">{{ $t("Email") }}</span>
                                                 </a>
                                             </div>
                                             <div class="flex flex-1 w-0 -ml-px">
@@ -253,7 +253,7 @@
                                                         <path
                                                             d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/>
                                                     </svg>
-                                                    <span class="ml-3 text-gray-700">Discord</span>
+                                                    <span class="ml-3 text-gray-700">{{ $t("Discord") }}</span>
                                                 </a>
                                             </div>
                                         </div>
@@ -269,7 +269,7 @@
                 <div>
                     <div class="flex flex-row justify-between">
                         <div class="">
-                            <h3>{{ group.name }} Proposals</h3>
+                            <h3>{{ group.name }} {{ $t("Proposals") }}</h3>
                         </div>
 
                         <div class="flex flex-row justify-between w-1/2">
@@ -279,7 +279,7 @@
                                         class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-teal-600 border border-transparent rounded-sm shadow-sm hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
                                     <span class="flex items-center justify-between ">
                                         <PlusIcon class="w-5 h-5 mr-2 -ml-1" aria-hidden="true"/>
-                                        Add Proposal(s)
+                                        {{ $t("Add Proposal(s)") }}
                                     </span>
                                 </button>
                             </div>
@@ -465,16 +465,15 @@ function query()
         data[VARIABLES.PER_PAGE] = perPageRef.value;
     }
 
-
     getProposals(data);
 }
 
 let submit = () => {
     groupForm.post(`${usePage().props.base_url}/catalyst-explorer/my/groups/${props.group.id}`,
-    { 
+    {
         preserveScroll: false,
         preserveState: false,
-        
+
     })
     setTimeout(() => {
         getPage()
@@ -493,7 +492,6 @@ let removeProposal = (id: number) => {
         .catch(error => {
             console.error(error);
         });
-
 }
 
 // adding new proposals to the group
@@ -512,8 +510,6 @@ let addProposal = () => {
         .catch(error => {
             console.error(error);
         });
-
-
 }
 
 // remove members
