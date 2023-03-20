@@ -87,7 +87,7 @@ diagnosticMode:
 image:
   registry: docker.io
   repository: bitnami/postgresql
-  tag: 15.2.0-debian-11-r7
+  tag: 15.2.0-debian-11-r13
   ## Specify a imagePullPolicy
   ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
   ## ref: https://kubernetes.io/docs/user-guide/images/#pre-pulling-images
@@ -295,9 +295,10 @@ primary:
     max_parallel_maintenance_workers = 8
     checkpoint_completion_target = '0.9'
     effective_io_concurrency = 100
-    work_mem = '1MB'
+    work_mem = '4MB'
     effective_cache_size = '12288MB'
     shared_buffers = '2560MB'
+    max_connections=400
 
   ## @param primary.existingExtendedConfigmap Name of an existing ConfigMap with PostgreSQL Primary extended configuration
   ## NOTE: `primary.extendedConfiguration` will be ignored
@@ -748,10 +749,12 @@ readReplicas:
   ## @param readReplicas.resources.requests.cpu The requested cpu for the PostgreSQL read only containers
   ##
   resources:
-    limits: {}
+    limits:
+      memory: 12288Mi
+      cpu: 8m
     requests:
-      memory: 256Mi
-      cpu: 250m
+      memory: 6144Mi
+      cpu: 1m
   ## Pod Security Context
   ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
   ## @param readReplicas.podSecurityContext.enabled Enable security context
@@ -930,7 +933,7 @@ readReplicas:
   persistence:
     ## @param readReplicas.persistence.enabled Enable PostgreSQL read only data persistence using PVC
     ##
-    enabled: false
+    enabled: true
     ## @param readReplicas.persistence.mountPath The path the volume will be mounted at
     ## Note: useful when using custom PostgreSQL images
     ##
@@ -953,7 +956,7 @@ readReplicas:
       - ReadWriteOnce
     ## @param readReplicas.persistence.size PVC Storage Request for PostgreSQL volume
     ##
-    size: 20Gi
+    size: 400Gi
     ## @param readReplicas.persistence.annotations Annotations for the PVC
     ##
     annotations: {}

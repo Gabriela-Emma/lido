@@ -66,6 +66,10 @@ spec:
             value: "/tmp/secrets"
           - name: HASURA_GRAPHQL_ENABLE_CONSOLE
             value: "true"
+          - name: HASURA_GRAPHQL_PG_CONNECTIONS
+            value: "75"
+{{/*          - name: HASURA_GRAPHQL_CONNECTIONS_PER_READ_REPLICA*/}}
+{{/*            value: "75"*/}}
           - name: HASURA_GRAPHQL_CORS_DOMAIN
             value: "https://*.lidonation.com, https://*.theadao.io, https://*.lidonation.com:3100, https://*.lidonation.com:3000, http://localhost:9695"
         ports:
