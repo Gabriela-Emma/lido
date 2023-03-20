@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use App\Models\QuestionAnswer;
+use App\Models\Question;
 
 class QuestionAnswerSeeder extends Seeder
 {
@@ -13,6 +15,7 @@ class QuestionAnswerSeeder extends Seeder
      */
     public function run()
     {
-        //
+        QuestionAnswer::factory(4)
+        ->create();
     }
 }
