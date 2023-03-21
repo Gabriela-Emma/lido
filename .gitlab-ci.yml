@@ -41,13 +41,13 @@ image: registry.lidonation.com/infra-ops/gitlab-runner:main
     helm repo add bitnami https://charts.bitnami.com/bitnami
     helm repo update  
     if [ "${CI_ENVIRONMENT_NAME}" != "mainnet" ]; then
-      export $PRIMARY_MAX_MEM="32768Mi"
+      export PRIMARY_MAX_MEM="32768Mi"
       export REPLICATION="replication"
       export HASURA_REPLICAS="3"
       export PGPOOL_REPLICAS="2"
       export POSTGRES_READ_REPLICAS="2"
     else
-      export $PRIMARY_MAX_MEM="16384Mi"
+      export PRIMARY_MAX_MEM="16384Mi"
       export REPLICATION="standalone"
       export HASURA_REPLICAS="1"
       export POSTGRES_READ_REPLICAS="0"
