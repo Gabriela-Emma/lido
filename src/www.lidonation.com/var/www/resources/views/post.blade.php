@@ -240,9 +240,30 @@
                                         </span>
                                     @endif
                                 </p>
-                                <a class="block text-xl" href="#commentForm{{$post->id}}">
-                                    {{ $snippets->leaveAComment}}
-                                </a>
+                                <p class="text-sm">Was the article useful?</p>
+                                <div x-data="globalReactions({{ json_encode($post) }})">
+                                    <div class="py-4 border-t border-slate-400">
+                                        <ul class="flex flex-row gap-3 justify-end">
+                                            <template x-for="[reaction, count] of Object.entries(reactionsCount)">
+                                                    <li class="border flex flex-row gap-1 border-slate-600 hover:border-green-500 p-1 rounded-sm text-xs cursor-pointer">
+                                                        <button @click.prevent="addReaction(reaction, {{$post->id}})" x-text="reaction"></button>
+                                                        <span x-text="count"></span>
+                                                    </li>
+                                            </template>
+                                        </ul>
+                                    </div>
+                                    <div class="relative">
+                                        <div class="absolute inset-0 flex items-center" aria-hidden="true">
+                                            <div class="w-full border-t border-slate-400"></div>
+                                        </div>
+                                        <div class="relative flex justify-center text-sm">
+                                            <span class="bg-white px-2 text-slate-500">Or leave comment</span>
+                                        </div>
+                                    </div>
+                                    <a class="block text-xl text-end" href="#commentForm{{$post->id}}">
+                                        {{ $snippets->leaveAComment}}
+                                    </a>
+                                </div>
                             </div>
                         </div>
 
@@ -271,7 +292,7 @@
         </div>
     </section>
 
-    <section class="py-12 bg-gray-50 border border-gray-100">
+    <section class="py-12 bg-gray-50 border border-gray-100" id="commentForm{{$post->id}}">
         <div class="px-6 max-w-6xl xl:mx-auto">
             <livewire:comments :showNotificationOptions="Auth::check()" :hideNotificationOptions="!Auth::check()" :hideAvatars="false" :noReplies="false" :model="$post" />
         </div>
@@ -314,3 +335,45 @@
     <x-public.join-lido-pool></x-public.join-lido-pool>
 
 </x-public-layout>
+<script>
+    function globalReactions(post) {
+        return {
+            loggedIn: false,
+            reactionsCount: {
+                "❤️": post.hearts_count,
+                "👍": post.thumbs_up_count,
+                "🎉": post.party_popper_count,
+                "🚀": post.rocket_count,
+                "👎": post.thumbs_down_count,
+                "👀": post.eyes_count
+            },
+
+            checkLogin() {
+                axios.get('/api/user').then(res => {
+                 this.loggedIn = true;
+                }).catch(error => {
+                    window.location.href = "/catalyst-explorer/login";
+                });
+            },
+
+
+            async addReaction(reaction, id){
+                 this.checkLogin();
+                let data = {
+                    comment: reaction
+                }
+                if (this.loggedIn) {
+                    const res = await window.axios.post(`/react/post/${id}`, data);
+                    this.reactionsCount = {
+                        "❤️": res.data.hearts_count,
+                        "👍": res.data.thumbs_up_count,
+                        "🎉": res.data.party_popper_count,
+                        "🚀": res.data.rocket_count,
+                        "👎": res.data.thumbs_down_count,
+                        "👀": res.data.eyes_count
+                    };
+                }
+            },
+        }
+    }
+</script>
