@@ -31,15 +31,15 @@ global:
     username: ""
     password: ""
     database: ""
-    repmgrUsername: ""
+    repmgrUsername: "repmgr"
     repmgrPassword: ""
-    repmgrDatabase: ""
+    repmgrDatabase: "repmgr"
     existingSecret: ""
   ldap:
     bindpw: ""
     existingSecret: ""
   pgpool:
-    adminUsername: ""
+    adminUsername: "pgool"
     adminPassword: ""
     existingSecret: ""
 

@@ -44,12 +44,14 @@ image: registry.lidonation.com/infra-ops/gitlab-runner:main
       export $PRIMARY_MAX_MEM="32768Mi"
       export REPLICATION="replication"
       export HASURA_REPLICAS="3"
+      export PGPOOL_REPLICAS="2"
       export POSTGRES_READ_REPLICAS="2"
     else
       export $PRIMARY_MAX_MEM="16384Mi"
       export REPLICATION="standalone"
       export HASURA_REPLICAS="1"
       export POSTGRES_READ_REPLICAS="0"
+      export PGPOOL_REPLICAS="1"
     fi
 
     echo "install postgres for dbsync"
@@ -62,15 +64,17 @@ image: registry.lidonation.com/infra-ops/gitlab-runner:main
         --set global.postgresql.database="$POSTGRESQL_DB_SYNC_DB" \
         --set global.postgresql.username="$POSTGRESQL_DB_SYNC_USER" \
         --set global.postgresql.password="$POSTGRESQL_DB_SYNC_PASSWORD" \
-        --set global.postgresql.repmgrDatabase="$POSTGRESQL_DB_SYNC_DB" \
-        --set global.postgresql.repmgrPassword="$POSTGRESQL_DB_SYNC_POSTGRES_PASSWORD" \
+        --set global.pgpool.adminUsername="$POSTGRESQL_DBSYNC_PGPOOL_ADMIN_USERNAME" \
+        --set global.pgpool.adminPassword="$POSTGRESQL_DBSYNC_PGPOOL_ADMIN_PASSWORD" \        
+        --set global.postgresql.repmgrPassword="$POSTGRESQL_DBSYNC_PGPOOL_ADMIN_PASSWORD" \
         --set global.postgresql.postgresPassword="$POSTGRESQL_DB_SYNC_POSTGRES_PASSWORD" \
+        --set pgpool.replicaCount="$PGPOOL_REPLICAS" \
         --set services.dbsync.hasura.replicaCount="$HASURA_REPLICAS" \
         --set services.dbsync.db.secret.POSTGRESQL_DB="$POSTGRESQL_DB_SYNC_DB" \
         --set services.dbsync.db.secret.POSTGRESQL_USERNAME="$POSTGRESQL_DB_SYNC_USER" \
         --set services.dbsync.db.secret.POSTGRESQL_PASSWORD="$POSTGRESQL_DB_SYNC_PASSWORD" \
         --set services.dbsync.db.secret.POSTGRESQL_POSTGRES_PASSWORD="$POSTGRESQL_DB_SYNC_POSTGRES_PASSWORD" \
-        --set primary.persistence.size="$DBSYNC_POSTGRES_STORAGE_SIZE" \        
+        --set persistence.size="$DBSYNC_POSTGRES_STORAGE_SIZE" \        
         --set primary.resources.limits.memory="$PRIMARY_MAX_MEM" \
         --set readReplicas.persistence.size="$DBSYNC_POSTGRES_STORAGE_SIZE" \
         --set readReplicas.replicaCount="$POSTGRES_READ_REPLICAS" \
