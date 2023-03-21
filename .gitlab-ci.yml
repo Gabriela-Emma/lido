@@ -39,7 +39,18 @@ image: registry.lidonation.com/infra-ops/gitlab-runner:main
 
   function deploy_postgres_cdbsync() {
     helm repo add bitnami https://charts.bitnami.com/bitnami
-    helm repo update
+    helm repo update  
+    if [ "${CI_ENVIRONMENT_NAME}" != "mainnet" ]; then
+      export $PRIMARY_MAX_MEM="32768Mi"
+      export REPLICATION="replication"
+      export HASURA_REPLICAS="3"
+      export POSTGRES_READ_REPLICAS="2"
+    else
+      export $PRIMARY_MAX_MEM="16384Mi"
+      export REPLICATION="standalone"
+      export HASURA_REPLICAS="1"
+      export POSTGRES_READ_REPLICAS="0"
+    fi
 
     echo "install postgres for dbsync"
     helm upgrade --install \
@@ -52,11 +63,16 @@ image: registry.lidonation.com/infra-ops/gitlab-runner:main
         --set global.postgresql.auth.username="$POSTGRESQL_DB_SYNC_USER" \
         --set global.postgresql.auth.password="$POSTGRESQL_DB_SYNC_PASSWORD" \
         --set global.postgresql.auth.postgresPassword="$POSTGRESQL_DB_SYNC_POSTGRES_PASSWORD" \
+        --set services.dbsync.hasura.replicaCount="$HASURA_REPLICAS" \
         --set services.dbsync.db.secret.POSTGRESQL_DB="$POSTGRESQL_DB_SYNC_DB" \
         --set services.dbsync.db.secret.POSTGRESQL_USERNAME="$POSTGRESQL_DB_SYNC_USER" \
         --set services.dbsync.db.secret.POSTGRESQL_PASSWORD="$POSTGRESQL_DB_SYNC_PASSWORD" \
         --set services.dbsync.db.secret.POSTGRESQL_POSTGRES_PASSWORD="$POSTGRESQL_DB_SYNC_POSTGRES_PASSWORD" \
-        --set primary.persistence.size="$DBSYNC_POSTGRES_STORAGE_SIZE" \
+        --set primary.persistence.size="$DBSYNC_POSTGRES_STORAGE_SIZE" \        
+        --set primary.resources.limits.memory="$PRIMARY_MAX_MEM" \
+        --set readReplicas.persistence.size="$DBSYNC_POSTGRES_STORAGE_SIZE" \
+        --set readReplicas.replicaCount="$POSTGRES_READ_REPLICAS" \
+        --set architecture="$REPLICATION" \
         lidolovelace-dbsync-db \
         bitnami/postgresql
   }
