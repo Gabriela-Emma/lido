@@ -221,7 +221,7 @@ services:
       GOOGLE_CLOUD_STORAGE_BUCKET: 'test.lidonation.com',
       GOOGLE_CLOUD_STORAGE_BUCKET_BACKUPS: 'backups.www.lidonation.com',
 
-      POSTGRESQL_DB_SYNC_DB_HOST: lidolovelace-db-sync-db-postgresql,
+      POSTGRESQL_DB_SYNC_DB_HOST: lidolovelace-dbsync-db-postgresql,
       POSTGRESQL_DB_SYNC_DB: cexplorer,
       POSTGRESQL_DB_SYNC_USER: postgres,
       POSTGRESQL_WEB_DB_HOST: lidolovelace-web-db-postgresql,
