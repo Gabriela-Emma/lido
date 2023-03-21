@@ -23,11 +23,9 @@ class ProposalTranslationController extends Controller
         
         // user translation meta
         $translators_lang = $this->getTranslatorMetas($user);
-        
 
         // if existing translator
         if(isset($translators_lang) && $user->hasRole(['translator'])){
-            // dd($translators_lang);
             return $translators_lang;
         }
 

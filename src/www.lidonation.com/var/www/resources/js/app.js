@@ -850,7 +850,7 @@ window.cardanoWallet = cardanoWallet;
 window.globalVideoPlayer = globalVideoPlayer;
 
 // translate proposal
-window.translateProposal = function translateProposal() {
+window.translateProposal = function translateProposal(proposalID) {
     return {
         loggedIn:false,
         model_id: null,
@@ -881,6 +881,7 @@ window.translateProposal = function translateProposal() {
         init() {
         this.checkLogin();
         this.locale = 'en';
+        this.getLangOptions()
         },
         getTargetLocal(val) {
             this.targetLocale=val
@@ -891,29 +892,26 @@ window.translateProposal = function translateProposal() {
                     this.loggedIn = false;
                 }
                 if(typeof res.data === 'string')
-                {
-                    this.transalatorsLang = res.data;
-                    this.checkTranslatorLang(this.transalatorsLang);
-                    console.log(this.langExists)
+                {   
+                    this.transalatorsLang = res.data
+                    this.loggedIn = true;
                 }
-
-            // this.checkTranslatorLang(this.transalatorsLang);
+                
             this.loggedIn = true;
-            this.getLangOptions()
+            this.langExists = true;
             }).catch(error => {
             });
         },
-        checkTranslatorLang(lang){
-            this.getLangOptions();
-                for (let i = 0; i < this.options.length; i++) {
-                if (this.options[i].value === lang) {
-                    this.langExists = true;
-                }}
-        },
         getLangOptions() {
-            window.axios.get('/languageOptions/'+ `${this.model_id}`)
+            window.axios.get('/languageOptions/'+ `${proposalID}`)
                 .then((res) => {
                     this.options = res.data;
+                    console.log(this.options)
+                    console.log(this.transalatorsLang)
+                    if (this.transalatorsLang!=null){
+                        this.langExists = this.options.some(option => option.value === this.transalatorsLang);
+                          console.log(this.langExists)
+                    }
                 })
         },
         translateContent(){
@@ -922,7 +920,7 @@ window.translateProposal = function translateProposal() {
                 this.getModelData();
                 this.processing = true;
                 this.editing = true;
-                window.axios.post('/translate/' + `${this.model_id}`, this.data)
+                window.axios.post('/translate/' + `${proposalID}`, this.data)
                 .then((res) => {
                     this.processing = false;
                     if (this.responseValidity(res.data)) {
@@ -955,7 +953,7 @@ window.translateProposal = function translateProposal() {
             this.getModelData();
             this.processing = true;
             this.editing = true;
-            window.axios.post('/translate/' + `${this.model_id}`, this.data)
+            window.axios.post('/translate/' + `${proposalID}`, this.data)
             .then((res) => {
                 this.processing = false;
                 if (this.responseValidity(res.data)) {
@@ -979,7 +977,7 @@ window.translateProposal = function translateProposal() {
             this.translate = false;
             this.save = false;
             this.translationUpdates.updates = this.proposalContent;
-            window.axios.patch('/translation/'+ `${this.model_id}`, this.translationUpdates)
+            window.axios.patch('/translation/'+ `${proposalID}`, this.translationUpdates)
             .then((res) => {
                 this.proposalContent = res.data;
             });
