@@ -65,7 +65,7 @@ image: registry.lidonation.com/infra-ops/gitlab-runner:main
         --set global.postgresql.username="$POSTGRESQL_DB_SYNC_USER" \
         --set global.postgresql.password="$POSTGRESQL_DB_SYNC_PASSWORD" \
         --set global.pgpool.adminUsername="$POSTGRESQL_DBSYNC_PGPOOL_ADMIN_USERNAME" \
-        --set global.pgpool.adminPassword="$POSTGRESQL_DBSYNC_PGPOOL_ADMIN_PASSWORD" \        
+        --set global.pgpool.adminPassword="$POSTGRESQL_DBSYNC_PGPOOL_ADMIN_PASSWORD" \
         --set global.postgresql.repmgrPassword="$POSTGRESQL_DBSYNC_PGPOOL_ADMIN_PASSWORD" \
         --set global.postgresql.postgresPassword="$POSTGRESQL_DB_SYNC_POSTGRES_PASSWORD" \
         --set pgpool.replicaCount="$PGPOOL_REPLICAS" \
@@ -74,7 +74,7 @@ image: registry.lidonation.com/infra-ops/gitlab-runner:main
         --set services.dbsync.db.secret.POSTGRESQL_USERNAME="$POSTGRESQL_DB_SYNC_USER" \
         --set services.dbsync.db.secret.POSTGRESQL_PASSWORD="$POSTGRESQL_DB_SYNC_PASSWORD" \
         --set services.dbsync.db.secret.POSTGRESQL_POSTGRES_PASSWORD="$POSTGRESQL_DB_SYNC_POSTGRES_PASSWORD" \
-        --set persistence.size="$DBSYNC_POSTGRES_STORAGE_SIZE" \        
+        --set persistence.size="$DBSYNC_POSTGRES_STORAGE_SIZE" \
         --set primary.resources.limits.memory="$PRIMARY_MAX_MEM" \
         --set readReplicas.persistence.size="$DBSYNC_POSTGRES_STORAGE_SIZE" \
         --set readReplicas.replicaCount="$POSTGRES_READ_REPLICAS" \
