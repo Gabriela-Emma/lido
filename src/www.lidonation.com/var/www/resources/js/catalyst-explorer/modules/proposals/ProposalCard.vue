@@ -300,25 +300,18 @@ const authors = computed(() => {
     })
 });
 
-let isBookmarked = ref()
-
-// let collections$:{object:BookmarkCollection[]}
+let isBookmarked:Ref<boolean> = ref()
 
 const user = computed(() => usePage().props?.user as User);
 const bookmarksStore = useBookmarksStore();
-const {collections$} = {...(storeToRefs(bookmarksStore))}
+const {models} = {...(storeToRefs(bookmarksStore))}
 
-const collectionsArray = computed(() => {
-  const collections = collections$.value as unknown[];
-  return collections.map((collection) => collection as BookmarkCollection);
-});
 
-for (const collection of collectionsArray.value) {
-  for (const item of collection.items) {
-    if (item.model_id === props.proposal.id) {
+
+for (const model of models.value as Array<any>) {
+    if (model.id === props.proposal.id) {
         isBookmarked.value = true;    
     }
-  }
 }
 
 </script>
