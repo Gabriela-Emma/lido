@@ -28,7 +28,7 @@
                             <div class="flex-1 bg-teal-500">
                                 <div class="flex flex-col lg:flex-row lg:justify-between w-full">
                                     <div class="p-4 w-full lg:w-1/2 text-white">
-                                        <div v-if="!bookmarked$">
+                                        <div v-if="bookmarked$">
                                             <div v-if="!creatingAnonymousBookmarks">
                                                 <h3 class="text-xl font-bold text-slate-100 xl:text-2xl sm:tracking-tight text-center">
                                                     {{ $t("You're not logged in") }}.
