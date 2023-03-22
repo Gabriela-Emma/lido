@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use stdClass;
 use App\Models\Lesson;
 use Parental\HasChildren;
 use App\Scopes\LimitScope;
@@ -20,12 +21,12 @@ use App\Models\Traits\HasPrompts;
 use App\Scopes\OrderByOrderScope;
 use Spatie\MediaLibrary\HasMedia;
 use App\Models\Interfaces\HasLink;
-use App\Models\Reactions\HasReactions;
 use App\Models\Traits\HasMetaData;
 use App\Models\Traits\HasSnippets;
 use Illuminate\Support\Collection;
 use App\Models\Traits\HasTaxonomies;
 use Laravel\Nova\Actions\Actionable;
+use App\Models\Reactions\HasReactions;
 use App\Models\Traits\HasTranslations;
 use Illuminate\Support\Facades\Artisan;
 use App\Traits\HasRemovableGlobalScopes;
@@ -93,6 +94,8 @@ class Post extends Model implements HasMedia, Interfaces\IHasMetaData, Sitemapab
 
     protected $guarded = ['user_id', 'created_at', 'published_at'];
 
+    protected $appends = ['reactionsCounts'];
+
     protected $withCount = [
         'comments',
         'hearts',
@@ -112,6 +115,17 @@ class Post extends Model implements HasMedia, Interfaces\IHasMetaData, Sitemapab
         'updated_at' => 'datetime:M d y',
         'published_at' => 'datetime:M d y',
     ];
+
+    public function getReactionsCountsAttribute(): stdClass
+    {
+            $counts = new \stdClass;
+
+            foreach ($this->withCount as $relation) {
+                $counts->{$relation} = $this->{$relation.'_count'};
+            }
+
+            return $counts;
+    }
 
     public static function getFilterableAttributes(): array
     {

@@ -241,12 +241,12 @@
                                     @endif
                                 </p>
                                 <p class="text-sm">Was the article useful?</p>
-                                <div x-data='globalReactions({{ json_encode($post) }})'>
+                                <div x-data='globalReactions({{ json_encode($post->reactionsCounts) }})'>
                                     <div class="py-4 border-t border-slate-400">
                                         <ul class="flex flex-row gap-3 justify-end">
                                             <template x-for="[reaction, count] of Object.entries(reactionsCount)">
-                                                <li class="border flex flex-row gap-1 border-slate-600 hover:border-green-500 p-1 rounded-sm text-xs cursor-pointer">
-                                                    <button @click.prevent="addReaction(reaction, {{$post->id}})" x-text="reaction"></button>
+                                                <li @click.prevent="addReaction(reaction, {{$post->id}})" class="border flex flex-row gap-1 border-slate-600 hover:border-green-500 p-1 rounded-sm text-xs cursor-pointer">
+                                                    <button x-text="reaction"></button>
                                                     <span x-text="count"></span>
                                                 </li>
                                             </template>
