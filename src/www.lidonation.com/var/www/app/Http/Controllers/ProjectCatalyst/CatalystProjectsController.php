@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\ProjectCatalyst;
 
+use App\Enums\CatalystExplorerQueryParams;
 use App\Http\Controllers\Controller;
 use App\Models\Proposal;
 use App\Services\ExportModelService;
@@ -210,7 +211,7 @@ class CatalystProjectsController extends Controller
                     'challenge' => 'c',
                     default => null
                 },
-                'budgets' => $this->budgets->isNotEmpty() ? $this->budgets->toArray() : [1, 2000000],
+                'budgets' => $this->budgets->isNotEmpty() ? $this->budgets->toArray() : [CatalystExplorerQueryParams::MIN_BUDGET, CatalystExplorerQueryParams::MAX_BUDGET],
                 'funds' => $this->fundsFilter->toArray(),
                 'challenges' => $this->challengesFilter->toArray(),
                 'tags' => $this->tagsFilter->toArray(),
@@ -233,13 +234,13 @@ class CatalystProjectsController extends Controller
 
     protected function setFilters(Request $request)
     {
-        $sort = collect(explode(':', $request->input('st', '')));
+        $sort = collect(explode(':', $request->input( CatalystExplorerQueryParams::SORTS, '')));
         $this->sortBy = $sort->first();
         $this->sortOrder = $sort->last();
 
-        $this->budgets = $request->collect('bs');
-        $this->search = $request->input('s', null);
-        $this->limit = $request->input('l', 24);
+        $this->budgets = $request->collect(CatalystExplorerQueryParams::BUDGETS);
+        $this->search = $request->input( CatalystExplorerQueryParams::SEARCH, null);
+        $this->limit = $request->input(CatalystExplorerQueryParams::PER_PAGE, 24);
         $this->fundingStatus = match ($request->input('f', null)) {
             'o' => 'over_budget',
             'n' => 'not_approved',
@@ -247,32 +248,32 @@ class CatalystProjectsController extends Controller
             'p' => 'paid',
             default => null
         };
-        $this->projectStatus = match ($request->input('ss', null)) {
+        $this->projectStatus = match ($request->input(CatalystExplorerQueryParams::STATUS, null)) {
             'c' => 'complete',
             'i' => 'in_progress',
             'u' => 'unfunded',
             'p' => 'paused',
             default => null
         };
-        $this->proposalCohort = match ($request->input('co', null)) {
+        $this->proposalCohort = match ($request->input(CatalystExplorerQueryParams::COHORT, null)) {
             'im' => 'impact_proposal',
             'wo' => 'woman_proposal',
             'id' => 'ideafest_proposal',
             'qp' => 'has_quick_pitch',
             default => null
         };
-        $this->proposalType = match ($request->input('t', 'p')) {
+        $this->proposalType = match ($request->input(CatalystExplorerQueryParams::TYPE, CatalystExplorerQueryParams::PAGE)) {
             'p' => 'proposal',
             'c' => 'challenge',
             default => null
         };
-        $this->fundedProposalsFilter = $request->input('fp', false);
-        $this->fundsFilter = $request->collect('fs')->map(fn ($n) => intval($n));
-        $this->challengesFilter = $request->collect('cs')->map(fn ($n) => intval($n));
-        $this->tagsFilter = $request->collect('ts')->map(fn ($n) => intval($n));
-        $this->peopleFilter = $request->collect('pp')->map(fn ($n) => intval($n));
-        $this->groupsFilter = $request->collect('g')->map(fn ($n) => intval($n));
-        $this->currentPage = $request->input('p', 1);
+        $this->fundedProposalsFilter = $request->input(CatalystExplorerQueryParams::FUNDED_PROPOSALS, false);
+        $this->fundsFilter = $request->collect(CatalystExplorerQueryParams::FUNDS)->map(fn ($n) => intval($n));
+        $this->challengesFilter = $request->collect(CatalystExplorerQueryParams::CHALLENGES)->map(fn ($n) => intval($n));
+        $this->tagsFilter = $request->collect(CatalystExplorerQueryParams::TAGS)->map(fn ($n) => intval($n));
+        $this->peopleFilter = $request->collect(CatalystExplorerQueryParams::PEOPLE)->map(fn ($n) => intval($n));
+        $this->groupsFilter = $request->collect(CatalystExplorerQueryParams::GROUPS)->map(fn ($n) => intval($n));
+        $this->currentPage = $request->input(CatalystExplorerQueryParams::PAGE, 1);
 
     }
 
