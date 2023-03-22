@@ -1,0 +1,51 @@
+{{/*apiVersion: apps/v1*/}}
+{{/*kind: Deployment*/}}
+{{/*metadata:*/}}
+{{/*  name: "{{ $.Chart.Name }}-metadata-server"*/}}
+{{/*  namespace: {{ .Values.namespace }}*/}}
+{{/*  labels:*/}}
+{{/*    app: "{{ $.Chart.Name }}"*/}}
+{{/*    service: "{{ $.Chart.Name }}-metadata-server"*/}}
+{{/*spec:*/}}
+{{/*  selector:*/}}
+{{/*    matchLabels:*/}}
+{{/*      app: "{{ $.Chart.Name }}"*/}}
+{{/*      service: "{{ $.Chart.Name }}-metadata-server"*/}}
+{{/*  replicas: {{ .Values.services.dbsync.graphql.replicaCount }}*/}}
+{{/*  strategy:*/}}
+{{/*    type: RollingUpdate*/}}
+{{/*    rollingUpdate:*/}}
+{{/*      maxSurge: 1*/}}
+{{/*      maxUnavailable: 0*/}}
+{{/*  template:*/}}
+{{/*    metadata:*/}}
+{{/*      labels:*/}}
+{{/*        app: "{{ $.Chart.Name }}"*/}}
+{{/*        service: "{{ $.Chart.Name }}-metadata-server"*/}}
+{{/*    spec:*/}}
+{{/*      automountServiceAccountToken: false*/}}
+{{/*      imagePullSecrets:*/}}
+{{/*        - name: {{ .Values.image.pullSecret }}*/}}
+{{/*      containers:*/}}
+{{/*      - name: app*/}}
+{{/*        image: "{{ .Values.services.cardano.image.repository }}:{{ .Values.image.tag }}"*/}}
+{{/*        imagePullPolicy: {{ .Values.image.pullPolicy }}*/}}
+{{/*        resources:*/}}
+{{/*          limits:*/}}
+{{/*            memory: 8192Mi*/}}
+{{/*            cpu: 1*/}}
+{{/*          requests:*/}}
+{{/*            cpu: 300m*/}}
+{{/*            memory: 256Mi*/}}
+{{/*        env:*/}}
+{{/*          - name: CARDANO_NODE_CONFIG_PATH*/}}
+{{/*            value: "/config/config.json"*/}}
+{{/*        ports:*/}}
+{{/*          - name: graphql*/}}
+{{/*            containerPort: 3100*/}}
+{{/*            protocol: TCP*/}}
+{{/*        volumeMounts:*/}}
+{{/*          - name: "{{ $.Chart.Name }}-cardano-dbsync-pv"*/}}
+{{/*            mountPath: /config*/}}
+{{/*            subPath: config*/}}
+{{/*            readOnly: false*/}}

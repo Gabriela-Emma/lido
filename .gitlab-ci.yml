@@ -39,7 +39,20 @@ image: registry.lidonation.com/infra-ops/gitlab-runner:main
 
   function deploy_postgres_cdbsync() {
     helm repo add bitnami https://charts.bitnami.com/bitnami
-    helm repo update
+    helm repo update  
+    if [ "${CI_ENVIRONMENT_NAME}" != "mainnet" ]; then
+      export PRIMARY_MAX_MEM="32768Mi"
+      export REPLICATION="replication"
+      export HASURA_REPLICAS="3"
+      export PGPOOL_REPLICAS="2"
+      export POSTGRES_READ_REPLICAS="2"
+    else
+      export PRIMARY_MAX_MEM="16384Mi"
+      export REPLICATION="standalone"
+      export HASURA_REPLICAS="1"
+      export POSTGRES_READ_REPLICAS="0"
+      export PGPOOL_REPLICAS="1"
+    fi
 
     echo "install postgres for dbsync"
     helm upgrade --install \
@@ -47,18 +60,27 @@ image: registry.lidonation.com/infra-ops/gitlab-runner:main
         --wait \
         --atomic \
         --namespace="$KUBE_NAMESPACE" \
-        -f ./chart/values.postgresql.yaml \
-        --set global.postgresql.auth.database="$POSTGRESQL_DB_SYNC_DB" \
-        --set global.postgresql.auth.username="$POSTGRESQL_DB_SYNC_USER" \
-        --set global.postgresql.auth.password="$POSTGRESQL_DB_SYNC_PASSWORD" \
-        --set global.postgresql.auth.postgresPassword="$POSTGRESQL_DB_SYNC_POSTGRES_PASSWORD" \
+        -f ./chart/values.postgresql-ha.yaml \
+        --set global.postgresql.database="$POSTGRESQL_DB_SYNC_DB" \
+        --set global.postgresql.username="$POSTGRESQL_DB_SYNC_USER" \
+        --set global.postgresql.password="$POSTGRESQL_DB_SYNC_PASSWORD" \
+        --set global.pgpool.adminUsername="$POSTGRESQL_DBSYNC_PGPOOL_ADMIN_USERNAME" \
+        --set global.pgpool.adminPassword="$POSTGRESQL_DBSYNC_PGPOOL_ADMIN_PASSWORD" \
+        --set global.postgresql.repmgrPassword="$POSTGRESQL_DBSYNC_PGPOOL_ADMIN_PASSWORD" \
+        --set global.postgresql.postgresPassword="$POSTGRESQL_DB_SYNC_POSTGRES_PASSWORD" \
+        --set pgpool.replicaCount="$PGPOOL_REPLICAS" \
+        --set services.dbsync.hasura.replicaCount="$HASURA_REPLICAS" \
         --set services.dbsync.db.secret.POSTGRESQL_DB="$POSTGRESQL_DB_SYNC_DB" \
         --set services.dbsync.db.secret.POSTGRESQL_USERNAME="$POSTGRESQL_DB_SYNC_USER" \
         --set services.dbsync.db.secret.POSTGRESQL_PASSWORD="$POSTGRESQL_DB_SYNC_PASSWORD" \
         --set services.dbsync.db.secret.POSTGRESQL_POSTGRES_PASSWORD="$POSTGRESQL_DB_SYNC_POSTGRES_PASSWORD" \
-        --set primary.persistence.size="$DBSYNC_POSTGRES_STORAGE_SIZE" \
+        --set persistence.size="$DBSYNC_POSTGRES_STORAGE_SIZE" \
+        --set primary.resources.limits.memory="$PRIMARY_MAX_MEM" \
+        --set readReplicas.persistence.size="$DBSYNC_POSTGRES_STORAGE_SIZE" \
+        --set readReplicas.replicaCount="$POSTGRES_READ_REPLICAS" \
+        --set architecture="$REPLICATION" \
         lidolovelace-dbsync-db \
-        bitnami/postgresql
+        bitnami/postgresql-ha
   }
 
   function deploy_postgres_web() {
@@ -697,6 +719,28 @@ cdbsync_base:
       docker push "$CI_APPLICATION_REPOSITORY/cardano-db-sync-base:latest"
   rules:
     - if: '$CARDANO_DB_SYNC_BASE_IMAGE_VER'
+
+metadata_base:
+  stage: build_app
+  image: docker:20.10.8-git
+  retry: 1
+  cache: { }
+  script:
+    - *auto_devops_custom
+    - |
+      docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
+      
+      git clone https://github.com/cardano-foundation/cardano-token-registry
+      
+      docker build --network host  \
+      -f src/token-registry/Dockerfile \
+      -t ${CI_APPLICATION_REPOSITORY}/cardano-metadata-server:latest \
+      -t ${CI_APPLICATION_REPOSITORY}/cardano-metadata-server:${CARDANO_METADATA_SERVER_IMAGE_VER} \
+      .
+      docker push "$CI_APPLICATION_REPOSITORY/cardano-metadata-server:${CARDANO_METADATA_SERVER_IMAGE_VER}"
+      docker push "$CI_APPLICATION_REPOSITORY/cardano-metadata-server:latest"
+  rules:
+    - if: '$CARDANO_METADATA_SERVER_IMAGE_VER'
 
 web_base:
   stage: build_app

@@ -850,7 +850,7 @@ window.cardanoWallet = cardanoWallet;
 window.globalVideoPlayer = globalVideoPlayer;
 
 // translate proposal
-window.translateProposal = function translateProposal() {
+window.translateProposal = function translateProposal(proposalID) {
     return {
         loggedIn:false,
         model_id: null,
@@ -876,25 +876,66 @@ window.translateProposal = function translateProposal() {
         locale:null,
         targetLocale:null,
         save:false,
+        transalatorsLang:null,
+        langExists:false,
         init() {
         this.checkLogin();
         this.locale = 'en';
+        this.getLangOptions()
         },
         getTargetLocal(val) {
             this.targetLocale=val
         },
         checkLogin() {
-            axios.get('/api/user').then(response => {
+            axios.get('/validate/user').then(res => {
+                if(res.data === null){
+                    this.loggedIn = false;
+                }
+                if(typeof res.data === 'string')
+                {   
+                    this.transalatorsLang = res.data
+                    this.loggedIn = true;
+                }
+                
             this.loggedIn = true;
-            this.getLangOptions()
+            this.langExists = true;
             }).catch(error => {
             });
         },
         getLangOptions() {
-            window.axios.get('/languageOptions/'+ `${this.model_id}`)
+            window.axios.get('/languageOptions/'+ `${proposalID}`)
                 .then((res) => {
-                    this.options = res.data
+                    this.options = res.data;
+                    console.log(this.options)
+                    console.log(this.transalatorsLang)
+                    if (this.transalatorsLang!=null){
+                        this.langExists = this.options.some(option => option.value === this.transalatorsLang);
+                          console.log(this.langExists)
+                    }
                 })
+        },
+        translateContent(){
+            if(this.transalatorsLang != null){
+                this.targetLang = this.transalatorsLang;
+                this.getModelData();
+                this.processing = true;
+                this.editing = true;
+                window.axios.post('/translate/' + `${proposalID}`, this.data)
+                .then((res) => {
+                    this.processing = false;
+                    if (this.responseValidity(res.data)) {
+                        this.proposalContent = res.data;
+                        this.save = true;
+                        } else {
+                        this.proposalContent = this.proposalContent;
+                        this.save = true;
+                    }
+                }
+                )
+
+            }
+
+            this.translate = !this.translate;
         },
         getContent(content) {
             this.proposalContent = content;
@@ -905,14 +946,14 @@ window.translateProposal = function translateProposal() {
         getModelData() {
             this.data.content = this.proposalContent;
             this.data.sourceLanguage = this.locale;
-            this.data.targetLanguage = this.targetLang;
             this.translationUpdates.translationLang = this.targetLang;
+            this.data.targetLanguage = this.targetLang;
         },
         getTranslation() {
             this.getModelData();
             this.processing = true;
             this.editing = true;
-            window.axios.post('/translate/' + `${this.model_id}`, this.data)
+            window.axios.post('/translate/' + `${proposalID}`, this.data)
             .then((res) => {
                 this.processing = false;
                 if (this.responseValidity(res.data)) {
@@ -921,7 +962,7 @@ window.translateProposal = function translateProposal() {
                     } else {
                     this.proposalContent = this.proposalContent;
                     this.save = true;
-                    }}
+                }}
             )
         },
         responseValidity(res){
@@ -936,13 +977,43 @@ window.translateProposal = function translateProposal() {
             this.translate = false;
             this.save = false;
             this.translationUpdates.updates = this.proposalContent;
-            window.axios.patch('/translation/'+ `${this.model_id}`, this.translationUpdates)
+            window.axios.patch('/translation/'+ `${proposalID}`, this.translationUpdates)
             .then((res) => {
                 this.proposalContent = res.data;
             });
 
         }
     };
+}
+
+window.globalReactions = function globalReactions(post) {
+    return {
+        loggedIn: false,
+        reactionsCount: {
+            "❤️": post.hearts_count,
+            "👍": post.thumbs_up_count,
+            "🎉": post.party_popper_count,
+            "🚀": post.rocket_count,
+            "👎": post.thumbs_down_count,
+            "👀": post.eyes_count
+        },
+
+
+        async addReaction(reaction, id){
+            let data = {
+                comment: reaction
+            }
+            const res = await window.axios.post(`/react/post/${id}`, data);
+            this.reactionsCount = {
+                "❤️": res.data.hearts_count,
+                "👍": res.data.thumbs_up_count,
+                "🎉": res.data.party_popper_count,
+                "🚀": res.data.rocket_count,
+                "👎": res.data.thumbs_down_count,
+                "👀": res.data.eyes_count
+            };
+        },
+    }
 }
 
 Alpine.magic('tt', el => message => {

@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
 use App\Models\Post;
-use App\Repositories\PostRepository;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Contracts\View\View;
+use App\Models\Category;
 use Illuminate\Http\Request;
-use Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist;
+use Illuminate\Support\Fluent;
+use Illuminate\Contracts\View\View;
+use App\Repositories\PostRepository;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\Foundation\Application;
 use Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig;
+use Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist;
 
 class PostController extends Controller
 {
@@ -46,5 +48,17 @@ class PostController extends Controller
         $section = 'posts';
 
         return view('post')->with(compact('post', 'section'));
+    }
+
+    public function createReaction(Request $request, Post $post)
+    {
+        $validated = new Fluent($request->validate([
+            'comment' => 'required',
+        ]));
+        $post->addLidoReaction($validated->comment, Auth::user());
+
+        $post->save();
+
+        return $post->fresh();
     }
 }

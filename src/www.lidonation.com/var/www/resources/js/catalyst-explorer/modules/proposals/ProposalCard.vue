@@ -24,8 +24,17 @@
                     <div class="absolute top-1 right-1">
                         <Link preserve-state preserve-scroll
                             :href="$utils.localizeRoute(`catalyst-explorer/proposals/${proposal.id}/bookmark`)" as="button"
-                            class="inline-flex items-center rounded-md border border-transparent group bg-slate-600 p-0.5 text-sm font-medium leading-4 text-white shadow-sm hover:bg-teal-400 focus:outline-none focus:ring-2 focus:ring-teal-300 focus:ring-offset-2">
-                            <BookmarkIcon class="h-4 w-4 group-hover:text-teal-900" aria-hidden="true" />
+                            :class="{
+                                      'bg-teal-600 hover:bg-slate-600 focus:ring-slate-300':isBookmarked,
+                                      'bg-slate-600 hover:bg-teal-600 focus:ring-teal-300':!isBookmarked
+                                    }"
+                            class="inline-flex items-center rounded-md border border-transparent group p-0.5 text-sm font-medium leading-4 text-white shadow-sm focus:outline-none focus:ring-2  focus:ring-offset-2">
+                            <BookmarkIcon class="h-4 w-4 " 
+                            :class="{
+                                      'hover:text-slate-400':isBookmarked,
+                                      'group-hover:text-teal-900':!isBookmarked
+                                    }"
+                            aria-hidden="true" />
                         </Link>
                     </div>
                 </div>
@@ -258,9 +267,14 @@
 <script lang="ts" setup>
 import Proposal from "../../models/proposal";
 import Rating from 'primevue/rating';
-import {computed} from "vue";
+import {computed, ref} from "vue";
 import {BookmarkIcon} from "@heroicons/vue/20/solid";
-import { Link } from '@inertiajs/vue3';
+import { Link, usePage } from '@inertiajs/vue3';
+import { useBookmarksStore } from "../../stores/bookmarks-store";
+import { storeToRefs } from "pinia";
+import User from "../../models/user";
+import BookmarkCollection from "../../models/bookmark-collection";
+import { Ref } from "@vue/reactivity";
 
 
 const props = withDefaults(
@@ -285,5 +299,17 @@ const authors = computed(() => {
         }
     })
 });
+
+let isBookmarked:Ref<boolean> = ref()
+
+const user = computed(() => usePage().props?.user as User);
+const bookmarksStore = useBookmarksStore();
+const {models} = storeToRefs(bookmarksStore)
+
+for (const model of models.value as Array<any>) {
+    if (model.id === props.proposal.id) {
+        isBookmarked.value = true;    
+    }
+}
 
 </script>
