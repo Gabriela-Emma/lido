@@ -760,6 +760,8 @@ Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
 
 // proposal translation
+Route::get('/validate/user', [ProposalTranslationController::class, 'validateUser']);
+
 Route::group(
     [
         'middleware' => ['auth:'.config('fortify.guard')],
@@ -768,3 +770,5 @@ Route::group(
         Route::post('/translate/{proposal:id}', [ProposalTranslationController::class, 'makeTranslation']); 
         Route::patch('/translation/{proposal:id}', [ProposalTranslationController::class, 'updateTranslation']);
        });
+    
+Route::post('/react/post/{post:id}', [PostController::class, 'createReaction']);

@@ -32,7 +32,7 @@ trait HasReactions {
             $this->lido_reactions()->create([
                 'reaction' => $reaction,
                 'type' => "$type",
-                'commenter_id' => optional($commenter)->id ?: auth()->id(),
+                'commenter_id' => optional($commenter)->id ?: null,
                 'commenter_type' => $commenter ? get_class($commenter) : User::class,
             ]);
         }

@@ -20,6 +20,7 @@ use App\Models\Traits\HasPrompts;
 use App\Scopes\OrderByOrderScope;
 use Spatie\MediaLibrary\HasMedia;
 use App\Models\Interfaces\HasLink;
+use App\Models\Reactions\HasReactions;
 use App\Models\Traits\HasMetaData;
 use App\Models\Traits\HasSnippets;
 use Illuminate\Support\Collection;
@@ -49,6 +50,7 @@ class Post extends Model implements HasMedia, Interfaces\IHasMetaData, Sitemapab
         HasAuthor,
         HasChildren,
         HasComments,
+        HasReactions,
         HasEditor,
         HasHero,
         HasMetaData,
@@ -90,6 +92,16 @@ class Post extends Model implements HasMedia, Interfaces\IHasMetaData, Sitemapab
     ];
 
     protected $guarded = ['user_id', 'created_at', 'published_at'];
+
+    protected $withCount = [
+        'comments',
+        'hearts',
+        'eyes',
+        'party_popper',
+        'rocket',
+        'thumbs_down',
+        'thumbs_up'
+    ];
 
     /**
      * The attributes that should be cast.
