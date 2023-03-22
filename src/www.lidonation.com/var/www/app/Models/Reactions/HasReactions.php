@@ -14,15 +14,19 @@ trait HasReactions {
 
     public function addLidoReaction(string $reaction, User $commenter = null): void
     {
-        $existingReaction = $this->lido_reactions()
+        $existingReaction = null;
+
+        if($commenter !== null){
+            $existingReaction = $this->lido_reactions()
             ->where('reaction', $reaction)
             ->where('commenter_id', optional($commenter)->id ?: auth()->id())
             ->where('model_type', get_class($this))
             ->where('model_id', $this->id)
             ->first();
 
-        if ($existingReaction) {
-            throw new \Exception('This reaction exists for this user in this model.');
+            if ($existingReaction) {
+                throw new \Exception('This reaction exists for this user in this model.');
+            }
         }
 
 

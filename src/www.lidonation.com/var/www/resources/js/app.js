@@ -986,16 +986,15 @@ window.translateProposal = function translateProposal(proposalID) {
     };
 }
 
-window.globalReactions = function globalReactions(post) {
+window.globalReactions = function globalReactions(counts) {
     return {
-        loggedIn: false,
         reactionsCount: {
-            "❤️": post.hearts_count,
-            "👍": post.thumbs_up_count,
-            "🎉": post.party_popper_count,
-            "🚀": post.rocket_count,
-            "👎": post.thumbs_down_count,
-            "👀": post.eyes_count
+            "❤️": counts.hearts,
+            "👍": counts.thumbs_up,
+            "🎉": counts.party_popper,
+            "🚀": counts.rocket,
+            "👎": counts.thumbs_down,
+            "👀": counts.eyes
         },
 
 
@@ -1005,12 +1004,12 @@ window.globalReactions = function globalReactions(post) {
             }
             const res = await window.axios.post(`/react/post/${id}`, data);
             this.reactionsCount = {
-                "❤️": res.data.hearts_count,
-                "👍": res.data.thumbs_up_count,
-                "🎉": res.data.party_popper_count,
-                "🚀": res.data.rocket_count,
-                "👎": res.data.thumbs_down_count,
-                "👀": res.data.eyes_count
+                "❤️": res.data.reactionsCounts.hearts,
+                "👍": res.data.reactionsCounts.thumbs_up,
+                "🎉": res.data.reactionsCounts.party_popper,
+                "🚀": res.data.reactionsCounts.rocket,
+                "👎": res.data.reactionsCounts.thumbs_down,
+                "👀": res.data.reactionsCounts.eyes
             };
         },
     }
