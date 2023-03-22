@@ -2,14 +2,15 @@ import BookmarkItem from "./bookmark-item";
 
 
 export default interface BookmarkCollection {
-    id?: number;
+    hash?: string;
     title: string;
     user_id:number;
     content?: string;
     color?: string;
     visibility?: string;
     status?: string;
-    bookmarks?: BookmarkItem[];
+    link?: string;
+    items?: BookmarkItem[];
     items_count?: number;
     created_at: string;
 }

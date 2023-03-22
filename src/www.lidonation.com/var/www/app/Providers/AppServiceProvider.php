@@ -14,9 +14,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Str;
 use Laravel\Sanctum\Sanctum;
 use App\Services\ExportModelService;
+use Vinkla\Hashids\Facades\Hashids;
 
 //use Spatie\NovaTranslatable\Translatable;
 
@@ -95,6 +98,19 @@ class AppServiceProvider extends ServiceProvider
         RateLimiter::for('blockfrost', fn () => [
             Limit::perMinute(100),
         ]);
+
+        Validator::extend('hashed_exists', function ($attribute, $value, $parameters, $validator) {
+            if (is_array($value)) {
+                $value = array_map(fn($item) => (
+                    Hashids::connection('App\\Models\\' . Str::studly(Str::singular($parameters[0])))->decode($item)
+                ), $value);
+            } else {
+                $value = Hashids::connection('App\\Models\\' . Str::studly(Str::singular($parameters[0])))->decode($value);
+            }
+
+            // Delegate to `exists:` validator
+            return $validator->validateExists($attribute, $value, $parameters);
+        });
 
 //        Builder::macro('createFilters', function () {
 //            return $this->engine()->getTotalCount(
