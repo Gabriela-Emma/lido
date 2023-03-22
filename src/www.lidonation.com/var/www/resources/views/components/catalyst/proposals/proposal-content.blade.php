@@ -1,6 +1,6 @@
 @props(['proposal','pageLocale'])
 
-<div class="border border-slate-300 rounded-sm" x-data="translateProposal" x-init="getTargetLocal({{json_encode($pageLocale)}})" >
+<div class="border border-slate-300 rounded-sm" x-data="translateProposal({{$proposal->id}})" x-init="getTargetLocal({{json_encode($pageLocale)}})" >
     
     @if ($proposal->content)
         <div x-show="locale === targetLocale && options.length > 0" x-init="getModelID({{ $proposal->id }})">
@@ -12,7 +12,7 @@
                     Help Translate! <a href="/catalyst-explorer/login">login</a>
                 </div>
 
-                <button x-show="!editing && loggedIn" @click="translate = !translate"
+                <button x-show="!editing && loggedIn && langExists " @click="translateContent()"
                         class="px-2 py-1 font-medium w-28 rounded-sm text-white focus:ring-4 focus:outline-none absolute right-1 top-1 text-base z-10
                                     inline-flex justify-center bg-yellow-500 border border-yellow-800 text-pink-600 font-semibold hover:text-teal-80"
                         type="button">
