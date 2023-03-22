@@ -220,8 +220,10 @@ Route::group(
                 ->name('voter-tool');
 
             Route::get('/proposals/{proposal:id}/bookmark', [CatalystProjectsController::class, 'bookmark']);
-            Route::get('/bookmarks', fn () => Inertia::render('Bookmarks'))
+            Route::get('/bookmarks', [CatalystMyBookmarksController::class, 'index'])
                 ->name('bookmarks');
+            Route::get('/bookmarks/{bookmarkCollection:id}', [CatalystMyBookmarksController::class, 'view'])
+                ->name('bookmark`');
 
             // exports
             Route::get('/export/proposals', [CatalystProjectsController::class, 'exportProposals']);
@@ -766,9 +768,9 @@ Route::group(
     [
         'middleware' => ['auth:'.config('fortify.guard')],
     ], function () {
-        Route::get('/languageOptions/{proposal:id}', [ProposalTranslationController::class, 'getLanguageOptions']); 
-        Route::post('/translate/{proposal:id}', [ProposalTranslationController::class, 'makeTranslation']); 
+        Route::get('/languageOptions/{proposal:id}', [ProposalTranslationController::class, 'getLanguageOptions']);
+        Route::post('/translate/{proposal:id}', [ProposalTranslationController::class, 'makeTranslation']);
         Route::patch('/translation/{proposal:id}', [ProposalTranslationController::class, 'updateTranslation']);
        });
-    
+
 Route::post('/react/post/{post:id}', [PostController::class, 'createReaction']);

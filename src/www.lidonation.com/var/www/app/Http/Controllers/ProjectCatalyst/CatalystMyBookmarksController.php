@@ -26,12 +26,12 @@ class CatalystMyBookmarksController extends Controller
             'parent_id' => "nullable|bail|exists:{$modelTable},id",
             'content' => 'nullable|bail|string',
             'link' => 'nullable|bail|active_url',
-            'collection.id' => 'nullable|bail|exists:bookmark_collections,id',
-            'collection.title' => 'required_without|min:5'
+            'collection.id' => 'nullable|bail|hashed_exists:bookmark_collections,id',
+            'collection.title' => 'required_without:collection.id|min:5'
         ]));
 
         // if collection doesn't exist, create one
-        $collection = BookmarkCollection::find($data->collection['id'] ?? null);
+        $collection = BookmarkCollection::byHash($data->collection['id'] ?? null);
 
         if (!$collection instanceof BookmarkCollection) {
             $collection = new BookmarkCollection;
@@ -49,7 +49,7 @@ class CatalystMyBookmarksController extends Controller
 
         // create item
         $item = new BookmarkItem;
-        $item->bookmark_collection_id = $collection->id;
+        $item->bookmark_collection_id = $collection->raw_id;
         $item->model_id = $data->model_id;
         $item->model_type = $data->model_type ?? $modelType;
         $item->parent_id = $data->parent_id;
@@ -57,6 +57,7 @@ class CatalystMyBookmarksController extends Controller
         $item->link = $data->link;
         $item->save();
 
+        $collection->refresh();
         $collection->load(['items']);
         return $collection;
     }
@@ -67,8 +68,16 @@ class CatalystMyBookmarksController extends Controller
     }
 
 
+    public function view(Request $request, BookmarkCollection $bookmarkCollection)
+    {
+        return Inertia::render('BookmarkCollection')->with([
+            'bookmarkCollection' => $bookmarkCollection
+        ]);
+    }
+
+
     public function index(Request $request)
     {
-
+        return Inertia::render('BookmarkCollections');
     }
 }
