@@ -27,7 +27,7 @@ class CatalystMyBookmarksController extends Controller
             'content' => 'nullable|bail|string',
             'link' => 'nullable|bail|active_url',
             'collection.id' => 'nullable|bail|exists:bookmark_collections,id',
-            'collection.title' => 'required_without|min:5',
+            'collection.title' => 'required_without|min:5'
         ]));
 
         // if collection doesn't exist, create one
