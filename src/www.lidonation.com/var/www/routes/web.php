@@ -768,3 +768,5 @@ Route::group(
         Route::post('/translate/{proposal:id}', [ProposalTranslationController::class, 'makeTranslation']); 
         Route::patch('/translation/{proposal:id}', [ProposalTranslationController::class, 'updateTranslation']);
        });
+    
+Route::post('/react/post/{post:id}', [PostController::class, 'createReaction']);

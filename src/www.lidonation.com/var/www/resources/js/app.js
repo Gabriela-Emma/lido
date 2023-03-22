@@ -945,6 +945,36 @@ window.translateProposal = function translateProposal() {
     };
 }
 
+window.globalReactions = function globalReactions(post) {
+    return {
+        loggedIn: false,
+        reactionsCount: {
+            "❤️": post.hearts_count,
+            "👍": post.thumbs_up_count,
+            "🎉": post.party_popper_count,
+            "🚀": post.rocket_count,
+            "👎": post.thumbs_down_count,
+            "👀": post.eyes_count
+        },
+
+
+        async addReaction(reaction, id){
+            let data = {
+                comment: reaction
+            }
+            const res = await window.axios.post(`/react/post/${id}`, data);
+            this.reactionsCount = {
+                "❤️": res.data.hearts_count,
+                "👍": res.data.thumbs_up_count,
+                "🎉": res.data.party_popper_count,
+                "🚀": res.data.rocket_count,
+                "👎": res.data.thumbs_down_count,
+                "👀": res.data.eyes_count
+            };
+        },
+    }
+}
+
 Alpine.magic('tt', el => message => {
     let instance = tippy(el, {content: message, trigger: 'manual'})
 
