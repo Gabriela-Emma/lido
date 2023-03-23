@@ -130,7 +130,7 @@
                                                     mode="single"
                                                     @option="addToNewCollection"
                                                     @select="addToCollection"
-                                                    value-prop="id"
+                                                    value-prop="hash"
                                                     label="title"
                                                     :options="collections$"
                                                     :searchable="true"
@@ -144,12 +144,7 @@
                                                     containerActive: 'shadow-none shadow-transparent box-shadow-none',
                                                     search: 'w-full absolute inset-0 outline-none focus:ring-0 box-border border-0 text-base bg-white rounded-sm pl-3.5 rtl:pl-0 rtl:pr-3.5 custom-input',
                                                     options: 'multiselect-options border-0 bg-slate-100',
-                                                    groupLabelSelectedPointed: 'bg-slate-100',
-                                                    optionPointed: 'text-gray-800 bg-slate-100',
-                                                    optionSelected: 'text-white bg-slate-100',
-                                                    optionDisabled: 'text-gray-300 bg-slate-100 cursor-not-allowed',
-                                                    optionSelectedPointed: 'text-white bg-slate-100 opacity-90',
-                                                    optionSelectedDisabled: 'text-green-100 bg-slate-100 bg-opacity-50 cursor-not-allowed',
+                                                    optionPointed: 'is-pointed text-white bg-teal-600'
                                                 }"
                                                 />
 
