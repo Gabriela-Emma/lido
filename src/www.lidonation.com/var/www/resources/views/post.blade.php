@@ -240,7 +240,7 @@
                                         </span>
                                     @endif
                                 </p>
-                                <p class="text-sm">Was the article useful?</p>
+                                <p class="text-sm xl:text-xl">Was the article useful?</p>
                                 <div x-data='globalReactions({{ json_encode($post->reactionsCounts) }})'>
                                     <div class="py-4 border-t border-slate-400">
                                         <ul class="flex flex-row gap-3 justify-end">
@@ -256,13 +256,18 @@
                                         <div class="absolute inset-0 flex items-center" aria-hidden="true">
                                             <div class="w-full border-t border-slate-400"></div>
                                         </div>
+
                                         <div class="relative flex justify-center text-sm">
                                             <span class="bg-white px-2 text-slate-500">Or leave comment</span>
                                         </div>
+
+                                        <div class="mb-8">
+                                            <a type="button"
+                                               class="block text-xl mx-auto rounded-sm text-center w-full bg-white py-2.5 px-4 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50" href="#commentForm{{$post->id}}">
+                                                {{ $snippets->leaveAComment}}
+                                            </a>
+                                        </div>
                                     </div>
-                                    <a class="block text-xl text-end" href="#commentForm{{$post->id}}">
-                                        {{ $snippets->leaveAComment}}
-                                    </a>
                                 </div>
                             </div>
                         </div>
