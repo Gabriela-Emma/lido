@@ -217,7 +217,7 @@
             @endif
 
             <!-- Comments Prompt -->
-                <section class="px-8 py-12 mx-auto max-w-6xl bg-white lg:bg-gray-50">
+                <section class="px-8 py-8 mx-auto max-w-6xl bg-white lg:bg-gray-50">
                     <div class="grid gap-4 md:grid-col-2 lg:grid-cols-3 sm:gap-8">
                         <div class="border-b border-gray-300 lg:border-r lg:border-b-0 lg:col-span-2">
                             @if($post->comments->isNotEmpty())
@@ -230,22 +230,21 @@
                                 </h2>
                             @endif
 
-                            <div class="max-w-xl">
-                                <p class="mt-2">
+                            <div class="max-w-lg mx-auto">
+                                <p class="mt-2 text-xl xl:text-2xl 2xl:text-4xl">
                                     @if($post->comment_prompt)
                                         <span>{{$post->comment_prompt}}</span>
                                     @else
                                         <span>
-                                            {{ $snippets->atartAConversation }}
+                                            Was the article useful?
                                         </span>
                                     @endif
                                 </p>
-                                <p class="text-sm xl:text-xl">Was the article useful?</p>
                                 <div x-data='globalReactions({{ json_encode($post->reactionsCounts) }})'>
-                                    <div class="py-4 border-t border-slate-400">
-                                        <ul class="flex flex-row gap-3 justify-end">
+                                    <div class="py-6 border-t border-slate-300">
+                                        <ul class="flex flex-row gap-4 justify-center">
                                             <template x-for="[reaction, count] of Object.entries(reactionsCount)">
-                                                <li @click.prevent="addReaction(reaction, {{$post->id}})" class="border flex flex-row gap-1 border-slate-600 hover:border-green-500 p-1 rounded-sm text-xs cursor-pointer">
+                                                <li @click.prevent="addReaction(reaction, {{$post->id}})" class="border flex flex-row gap-2 border-slate-600 hover:border-green-500 p-2 rounded-sm text-lg cursor-pointer">
                                                     <button x-text="reaction"></button>
                                                     <span x-text="count"></span>
                                                 </li>
@@ -254,19 +253,18 @@
                                     </div>
                                     <div class="relative">
                                         <div class="absolute inset-0 flex items-center" aria-hidden="true">
-                                            <div class="w-full border-t border-slate-400"></div>
+                                            <div class="w-full border-t border-slate-300"></div>
                                         </div>
 
                                         <div class="relative flex justify-center text-sm">
                                             <span class="bg-white px-2 text-slate-500">Or leave comment</span>
                                         </div>
-
-                                        <div class="mb-8">
-                                            <a type="button"
-                                               class="block text-xl mx-auto rounded-sm text-center w-full bg-white py-2.5 px-4 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50" href="#commentForm{{$post->id}}">
-                                                {{ $snippets->leaveAComment}}
-                                            </a>
-                                        </div>
+                                    </div>
+                                    <div class="mt-8">
+                                        <a type="button"
+                                           class="block text-xl mx-auto rounded-sm text-center w-full bg-white py-2.5 px-4 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50" href="#commentForm{{$post->id}}">
+                                            {{ $snippets->leaveAComment}}
+                                        </a>
                                     </div>
                                 </div>
                             </div>
