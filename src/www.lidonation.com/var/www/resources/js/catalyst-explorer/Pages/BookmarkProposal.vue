@@ -144,7 +144,8 @@
                                                     containerActive: 'shadow-none shadow-transparent box-shadow-none',
                                                     search: 'w-full absolute inset-0 outline-none focus:ring-0 box-border border-0 text-base bg-white rounded-sm pl-3.5 rtl:pl-0 rtl:pr-3.5 custom-input',
                                                     options: 'multiselect-options border-0 bg-slate-100',
-                                                    optionPointed: 'is-pointed text-white bg-teal-600'
+                                                    optionPointed: 'is-pointed text-white bg-teal-600',
+                                                    optionSelected: 'text-white bg-teal-600',
                                                 }"
                                                 />
 
