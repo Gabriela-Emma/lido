@@ -1,7 +1,5 @@
-import Proposal from "./proposal";
-import Profile from "./profile";
-import Group from "./group";
 import BookmarkCollection from "./bookmark-collection";
+import {BookmarkItemModel} from "./bookmark-item-model";
 
 export default interface BookmarkItem {
     id: number;
@@ -13,5 +11,5 @@ export default interface BookmarkItem {
     link?: string;
     created_at: string;
     collection: BookmarkCollection;
-    model: Proposal | Profile | Group;
+    model: BookmarkItemModel;
 }

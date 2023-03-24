@@ -4,6 +4,7 @@ import {computed, onMounted, Ref, ref} from "vue";
 import {useStorage} from '@vueuse/core';
 import BookmarkCollection from "../models/bookmark-collection";
 import User from "../models/user";
+import {BookmarkItemModel} from "../models/bookmark-item-model";
 
 export const useBookmarksStore = defineStore('bookmarks', () => {
     let collections = useStorage('bookmark-collections', {}, localStorage, { mergeDefaults: true });
@@ -33,18 +34,18 @@ export const useBookmarksStore = defineStore('bookmarks', () => {
 
     let collectionsArray = computed<BookmarkCollection[]>(() => Object.values(collections.value))
 
-    let bookmarkedModels = computed(() => {
+    let bookmarkedModels = computed<BookmarkItemModel[]>(() => {
         const models = collectionsArray.value.flatMap((collection) => collection.items.map((item) => item.model));
         return models.filter((model, index, self) => self.findIndex((m) => m.id === model.id) === index);
       });
-      
+
 
     onMounted(loadCollections);
 
     return {
         loadCollections,
         saveCollection,
-        models:bookmarkedModels,
+        models: bookmarkedModels,
         collections$: collectionsArray,
     };
 });

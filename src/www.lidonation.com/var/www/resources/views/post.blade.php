@@ -1,6 +1,6 @@
 <x-public-layout class="post" :metaTitle="$post->title">
     @push('json-ld')
-     <x-public.json-ld :post="$post"></x-public.json-ld>
+        <x-public.json-ld :post="$post"></x-public.json-ld>
     @endpush
 
     @push('openGraph')
@@ -47,14 +47,14 @@
     @endpush
 
     @push('editLink')
-            <a
+        <a
             href="{{ url('voltaire/resources/articles/' .$post->id. '/edit') }}"
             class="editArticle bg-gray-400  text-white text-sm px-6 py-2 rounded-xl" >
-                    Edit Article
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="24" height="24" class="inline-block" role="presentation">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-                    </svg>
-            </a>
+            Edit Article
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="24" height="24" class="inline-block" role="presentation">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+            </svg>
+        </a>
     @endpush
 
     <header class="text-white bg-teal-500 relative">
@@ -83,9 +83,9 @@
                     <h1 class='mb-0 text-4xl xl:text-5xl 2xl:text-6xl font-bold'>{{$post->title}}</h1>
 
                     @if($post->subtitle)
-                    <h3 class='mb-0 text-xl xl:text-3xl 2xl:text-4xl subtitle relative xl:-top-2'>
-                        {{ $post->subtitle }}
-                    </h3>
+                        <h3 class='mb-0 text-xl xl:text-3xl 2xl:text-4xl subtitle relative xl:-top-2'>
+                            {{ $post->subtitle }}
+                        </h3>
                     @endif
 
                     <div class="flex justify-start pl-2">
@@ -146,7 +146,15 @@
                                                       theme="secondary"></x-public.callout>
                                 </div>
                             @endif
-                            <x-post-content class="mb-4" :post="$post" :pageLocale="(app()->getLocale())"/>
+                            <article class="mb-6 text-xl text-justify">
+                                <div class="mt-3">
+                                    @if(Lang::has($post->getTable() . '.' . $post->slug ))
+                                        <x-markdown>{{__($post->getTable() . '.' . $post->slug)}}</x-markdown>
+                                    @else
+                                        <x-markdown>{{$post->content}}</x-markdown>
+                                    @endif
+                                </div>
+                            </article>
                             @if($post->epilogue)
                                 <x-public.callout :content="$post->epilogue"
                                                   theme="secondary"></x-public.callout>
@@ -172,8 +180,8 @@
 
 
 
-            @if(! $post?->children?->isEmpty() || !!$post->parent)
-                <!-- Series -->
+                @if(! $post?->children?->isEmpty() || !!$post->parent)
+                    <!-- Series -->
                     <section
                         class="flex flex-row justify-between px-8 py-16 pt-8 max-w-6xl xl:px-0 xl:mx-auto">
                         <!-- Prev in Series -->
@@ -191,7 +199,7 @@
                             @endif
                         </div>
                         <!-- Next in Series -->
-                        <?php $nextInSeries = $post->children?->first(); ?>
+                            <?php $nextInSeries = $post->children?->first(); ?>
                         <div class="inline-block">
                             @if($nextInSeries)
                                 <div class="p-4 max-w-xl rounded-sm border min-w-25">
@@ -206,24 +214,14 @@
                             @endif
                         </div>
                     </section>
-            @endif
+                @endif
 
-            <!-- Comments Prompt -->
+                <!-- Comments Prompt -->
                 <section class="px-8 py-8 mx-auto max-w-6xl bg-white lg:bg-gray-50">
                     <div class="grid gap-4 md:grid-col-2 lg:grid-cols-3 sm:gap-8">
                         <div class="border-b border-gray-300 lg:border-r lg:border-b-0 lg:col-span-2">
-                            @if($post->comments->isNotEmpty())
-                                <h2>
-                                    <span>
-                                        {{$post->comments()->count()}} {{ $snippets->comments }}
-                                    </span>
-                                    <a href="#comments" class="text-xs subcopy text-teal-600 hover:text-teal-700">
-                                        {{ $snippets->viewComments}}</a>
-                                </h2>
-                            @endif
-
                             <div class="max-w-lg mx-auto">
-                                <p class="mt-2 text-xl xl:text-2xl 2xl:text-4xl">
+                                <p class="mt-2 text-xl xl:text-2xl 2xl:text-4xl text-slate-700">
                                     @if($post->comment_prompt)
                                         <span>{{$post->comment_prompt}}</span>
                                     @else
@@ -266,22 +264,22 @@
                     </div>
                 </section>
 
-            @if($post->related_posts->isNotEmpty())
-                <!-- Related Posts -->
-                <section class="px-4 py-12 mx-auto max-w-6xl bg-white sm:px-8 xl:px-0">
-                    <x-public.divider></x-public.divider>
+                @if($post->related_posts->isNotEmpty())
+                    <!-- Related Posts -->
+                    <section class="px-4 py-12 mx-auto max-w-6xl bg-white sm:px-8 xl:px-0">
+                        <x-public.divider></x-public.divider>
 
-                    <div>
-                        <h2 class="my-6">Related {{$post->type_name}}</h2>
-                        <div class="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 sm:gap-8">
-                            @foreach($post->related_posts as $relatedPost)
-                                <div class="md:last:hidden lg:last:block post related">
-                                    @include('post.related')
-                                </div>
-                            @endforeach
+                        <div>
+                            <h2 class="my-6">Related {{$post->type_name}}</h2>
+                            <div class="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 sm:gap-8">
+                                @foreach($post->related_posts as $relatedPost)
+                                    <div class="md:last:hidden lg:last:block post related">
+                                        @include('post.related')
+                                    </div>
+                                @endforeach
+                            </div>
                         </div>
-                    </div>
-                </section>
+                    </section>
                 @endif
             </div>
         </div>
@@ -292,40 +290,6 @@
             <livewire:comments :showNotificationOptions="Auth::check()" :hideNotificationOptions="!Auth::check()" :hideAvatars="false" :noReplies="false" :model="$post" />
         </div>
     </section>
-
-    <!-- Comments -->
-{{--    <section class="relative" id="comments">--}}
-{{--        <div class="container py-12 lg:py-16">--}}
-{{--            <div class="grid grid-cols-1 gap-10 lg:grid-cols-8">--}}
-{{--                <div class="col-span-6">--}}
-{{--                    @if($post->comments->isNotEmpty())--}}
-{{--                        <div class="">--}}
-{{--                            <h2 class="mb-8 text-4xl">--}}
-{{--                                @markdownLang('Comments')--}}
-{{--                            </h2>--}}
-{{--                            <x-public.comments :model="$post"></x-public.comments>--}}
-{{--                        </div>--}}
-{{--                    @endif--}}
-
-{{--                    <div class="pt-16" id="articleCommentForm">--}}
-{{--                        <livewire:comment-form-component--}}
-{{--                            :modelId="$post->id"--}}
-{{--                            :modelType="$post->type ?? 'App\Models\Post'"--}}
-{{--                            :prompt="$post->comments->count() > 1 ? $post->comment_prompt : null" />--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-
-{{--                <!-- Right Sidebar -->--}}
-{{--                <div class="col-span-2">--}}
-{{--                    <div class="hidden sticky top-10 gap-10 md:flex md:flex-col">--}}
-{{--                        <x-public.widgets.author :author="$post->author" :editor="$post->editor" />--}}
-{{--                        <x-public.widgets.newsletter/>--}}
-{{--                        <x-public.widgets.meetup :meetups="$meetups" :dayOfWeek="$dayOfWeek" :hourOfDay="$hourOfDay"/>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-{{--        </div>--}}
-{{--    </section>--}}
 
     <x-public.join-lido-pool></x-public.join-lido-pool>
 

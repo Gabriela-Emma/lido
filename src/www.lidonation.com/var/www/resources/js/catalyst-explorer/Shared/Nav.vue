@@ -118,6 +118,15 @@
                         </li>
 
                         <li class="flow-root menu-item">
+                            <Link
+                                class="px-1 py-3 text-white menu-link hover:text-yellow-500"
+                                :class="{ 'text-yellow-500': $page.component.startsWith('Bookmark') }"
+                                :href="$utils.localizeRoute('catalyst-explorer/bookmarks')">
+                                {{ $t('Bookmarks') }}
+                            </Link>
+                        </li>
+
+                        <li class="flow-root menu-item">
                             <a
                                 class="px-1 py-3 text-white menu-link hover:text-yellow-500"
                                 :class="{ 'text-yellow-500': $page.component.startsWith('VoterTool') }"

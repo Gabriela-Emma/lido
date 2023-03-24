@@ -272,17 +272,17 @@
 
 <script lang="ts" setup>
 import {computed, defineEmits, ref, watch} from "vue";
-import Modal from "../Shared/Components/Modal.vue";
-import Challenge from "../models/challenge";
-import Proposal from "../models/proposal";
+import Modal from "../../Shared/Components/Modal.vue";
+import Challenge from "../../models/challenge";
+import Proposal from "../../models/proposal";
 import {usePage} from "@inertiajs/vue3";
-import User from "../models/user";
-import Login from "./Auth/Login.vue";
-import {useBookmarksStore} from "../stores/bookmarks-store";
+import User from "../../models/user";
+import Login from "../../Pages/Auth/Login.vue";
+import {useBookmarksStore} from "../../stores/bookmarks-store";
 import Multiselect from '@vueform/multiselect';
 import {storeToRefs} from "pinia";
-import BookmarkCollection from "../models/bookmark-collection";
-import BookmarkItem from "../models/bookmark-item";
+import BookmarkCollection from "../../models/bookmark-collection";
+import BookmarkItem from "../../models/bookmark-item";
 import axios from "axios";
 import {XCircleIcon, ArrowTopRightOnSquareIcon} from '@heroicons/vue/20/solid';
 
