@@ -267,13 +267,11 @@
 <script lang="ts" setup>
 import Proposal from "../../models/proposal";
 import Rating from 'primevue/rating';
-import {computed, ref} from "vue";
+import {computed, ref, watch} from "vue";
 import {BookmarkIcon} from "@heroicons/vue/20/solid";
 import { Link, usePage } from '@inertiajs/vue3';
 import { useBookmarksStore } from "../../stores/bookmarks-store";
 import { storeToRefs } from "pinia";
-import User from "../../models/user";
-import BookmarkCollection from "../../models/bookmark-collection";
 import { Ref } from "@vue/reactivity";
 
 const props = withDefaults(
@@ -299,14 +297,11 @@ const authors = computed(() => {
 
 let isBookmarked:Ref<boolean> = ref()
 
-const user = computed(() => usePage().props?.user as User);
 const bookmarksStore = useBookmarksStore();
-const {models} = storeToRefs(bookmarksStore);
+const {models: bookmarkCollectionsModels$} = storeToRefs(bookmarksStore);
 
-for (const model of models.value as Array<any>) {
-    if (model.id === props?.proposal?.id) {
-        isBookmarked.value = true;
-    }
-}
+watch([bookmarkCollectionsModels$], (newValue, oldValue) => {
+    isBookmarked.value =  bookmarkCollectionsModels$.value?.some(model => model.id === props.proposal.id);
+});
 
 </script>

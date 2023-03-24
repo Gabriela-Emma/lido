@@ -78,14 +78,6 @@ class TranslationService
                 'content' => $this->translation ?? trim($model->getTranslation($field, $this->targetLang, false)),
             ]
         );
-        // getSettings
-//
-//        $model->setTranslation(
-//            $translation->source_field,
-//            $translation->lang,
-//            $translation->content
-//        );
-//        $model->save();
 
         return $this;
     }

@@ -6,6 +6,7 @@ use stdClass;
 use App\Models\Lesson;
 use Parental\HasChildren;
 use App\Scopes\LimitScope;
+use App\Enums\ReactionEnum;
 use Illuminate\Support\Str;
 use Spatie\Sitemap\Tags\Url;
 use App\Models\Traits\HasHero;
@@ -37,6 +38,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Contracts\Routing\UrlGenerator;
 use Illuminate\Contracts\Foundation\Application;
 use Spatie\Comments\Models\Concerns\HasComments;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
@@ -94,7 +96,6 @@ class Post extends Model implements HasMedia, Interfaces\IHasMetaData, Sitemapab
 
     protected $guarded = ['user_id', 'created_at', 'published_at'];
 
-    protected $appends = ['reactionsCounts'];
 
     protected $withCount = [
         'comments',
@@ -116,16 +117,20 @@ class Post extends Model implements HasMedia, Interfaces\IHasMetaData, Sitemapab
         'published_at' => 'datetime:M d y',
     ];
 
-    public function getReactionsCountsAttribute(): stdClass
-    {
-            $counts = new \stdClass;
+    public function reactionsCounts(): Attribute
+{
+    return Attribute::make(get: function () {
+        $counts = [];
 
-            foreach ($this->withCount as $relation) {
-                $counts->{$relation} = $this->{$relation.'_count'};
-            }
+        foreach (ReactionEnum::REACTIONS as $reaction => $class) {
+            $counts[$reaction] = $this->lido_reactions()
+                ->where('type', $class)
+                ->count();
+        }
 
-            return $counts;
-    }
+        return (array) $counts;
+    });
+}
 
     public static function getFilterableAttributes(): array
     {

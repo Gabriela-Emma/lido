@@ -1,18 +1,30 @@
 <template>
     <header-component titleName0="Bookmark" :titleName1="bookmarkCollection?.title"
-                      :subTitle="`Created ${$filters.timeAgo(bookmarkCollection.created_at)}. Has ${bookmarkCollection?.items_count} items${bookmarkCollection?.items_count > 1 ? 's' : ''}.`"/>
+                      :subTitle="`Created ${$filters.timeAgo(bookmarkCollection.created_at)}. Has ${bookmarkCollection?.items_count} items${bookmarkCollection?.items_count > 1 ? 's' : ''}.`" />
+<!--    <section class="container pb-4 bg-white">-->
+<!--        -->
+<!--    </section>-->
 
     <main class="flex flex-col gap-2 bg-primary-20 py-8">
         <div class="container">
             <section
-                class="relative flex flex-col items-center px-3 pt-16 pb-32 object-cover shadow-xs rounded-tl-2xl rounded-r-xs"
+                class="relative flex flex-row justify-between items-end p-6 object-cover shadow-xs rounded-tl-2xl rounded-r-xs"
                 :style="{backgroundColor: bookmarkCollection?.color}">
-                <div class="w-full flex flex-col justify-center relative">
-                    <div class="relative inline-block w-full pointer-events-none overflow-visible mb-2 ml-auto">
-                        <h2 class="text-xl font-bold tracking-tight text-slate-100 sm:text-2xl inline box-border box-decoration-cloe bg-white py-4 pl-3 pr-32 mb-3 rounded-l-lg text-slate-800 absolute -right-3">
+
+                <div class="flex flex-row justify-end items-center absolute right-0 top-1/3 z-0">
+<!--                    <div class="relative inline-block w-full pointer-events-none overflow-visible mb-2 ml-auto">-->
+                        <h2 class="text-xl font-bold tracking-tight text-slate-100 sm:text-2xl inline box-border box-decoration-clone bg-white py-4 pl-3 pr-32 rounded-l-lg text-slate-800">
                             {{ bookmarkCollection?.title }}
                         </h2>
-                    </div>
+<!--                    </div>-->
+                </div>
+
+                <div class="flex z-10 pt-20">
+                    <Link :href="$utils.localizeRoute('catalyst-explorer/bookmarks')"
+                          class="inline-flex items-center gap-x-0.5 rounded-sm border border-slate-800 py-1 px-1.5 text-xs font-semibold text-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-600">
+                        <ArrowUturnLeftIcon class="mr-0.5 h-3 w-3" aria-hidden="true"/>
+                        {{ $t("All Bookmarks") }}
+                    </Link>
                 </div>
             </section>
 
@@ -76,8 +88,9 @@
 </template>
 
 <script lang="ts" setup>
+import { Link } from '@inertiajs/vue3';
 import BookmarkCollection from "../models/bookmark-collection";
-import { CalendarIcon, ChevronRightIcon } from '@heroicons/vue/20/solid'
+import { ChevronRightIcon, ArrowUturnLeftIcon } from '@heroicons/vue/20/solid';
 
 const props = withDefaults(
     defineProps<{

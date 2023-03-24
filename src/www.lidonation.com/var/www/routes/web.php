@@ -764,17 +764,16 @@ Route::get('/reset-password/{token}', function (Request $request, $token) {
 Route::post('reset-password', [ForgotPasswordController::class, 'submitResetPasswordForm'])->name('password.update');
 Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
-
-// proposal translation
-Route::get('/validate/user', [ProposalTranslationController::class, 'validateUser']);
+// translation
+Route::post('/validate/user', [ProposalTranslationController::class, 'validateUser']);
+Route::post('/languageOptions/', [ProposalTranslationController::class, 'getLanguageOptions']);
 
 Route::group(
     [
         'middleware' => ['auth:'.config('fortify.guard')],
     ], function () {
-        Route::get('/languageOptions/{proposal:id}', [ProposalTranslationController::class, 'getLanguageOptions']);
-        Route::post('/translate/{proposal:id}', [ProposalTranslationController::class, 'makeTranslation']);
-        Route::patch('/translation/{proposal:id}', [ProposalTranslationController::class, 'updateTranslation']);
+        Route::post('/translate/', [ProposalTranslationController::class, 'makeTranslation']);
+        Route::patch('/translation/', [ProposalTranslationController::class, 'updateTranslation']);
        });
 
 Route::post('/react/post/{post:id}', [PostController::class, 'createReaction']);

@@ -59,6 +59,6 @@ class PostController extends Controller
 
         $post->save();
 
-        return $post->fresh();
+        return $post->fresh()->reactionsCounts;
     }
 }
