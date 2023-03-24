@@ -14,7 +14,7 @@ use Illuminate\Support\Fluent;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class CatalystMyBookmarksController extends Controller
+class CatalystBookmarksController extends Controller
 {
     protected int $perPage = 12;
 
@@ -78,6 +78,6 @@ class CatalystMyBookmarksController extends Controller
 
     public function index(Request $request)
     {
-        return Inertia::render('Auth/BookmarkCollections');
+        return Inertia::render('Bookmarks');
     }
 }
