@@ -34,21 +34,10 @@ export const useBookmarksStore = defineStore('bookmarks', () => {
     let collectionsArray = computed<BookmarkCollection[]>(() => Object.values(collections.value))
 
     let bookmarkedModels = computed(() => {
-        let models: Array<{}> = [];
-        let modelIDs = new Set<number>();
-
-        for (const collection of collectionsArray.value as Array<any>) {
-            for (const item of collection.items) {
-                if(!modelIDs.has(item.model.id)){
-                    models.push(item.model);
-                    modelIDs.add(item.model.id);
-                }
-            }
-        }
-
-        return models;
-
-    });
+        const models = collectionsArray.value.flatMap((collection) => collection.items.map((item) => item.model));
+        return models.filter((model, index, self) => self.findIndex((m) => m.id === model.id) === index);
+      });
+      
 
     onMounted(loadCollections);
 
