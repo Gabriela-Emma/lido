@@ -988,14 +988,7 @@ window.translateProposal = function translateProposal(proposalID) {
 
 window.globalReactions = function globalReactions(counts) {
     return {
-        reactionsCount: {
-            "❤️": counts.hearts,
-            "👍": counts.thumbs_up,
-            "🎉": counts.party_popper,
-            "🚀": counts.rocket,
-            "👎": counts.thumbs_down,
-            "👀": counts.eyes
-        },
+        reactionsCount: counts,
 
 
         async addReaction(reaction, id){
@@ -1003,14 +996,7 @@ window.globalReactions = function globalReactions(counts) {
                 comment: reaction
             }
             const res = await window.axios.post(`/react/post/${id}`, data);
-            this.reactionsCount = {
-                "❤️": res.data.reactionsCounts.hearts,
-                "👍": res.data.reactionsCounts.thumbs_up,
-                "🎉": res.data.reactionsCounts.party_popper,
-                "🚀": res.data.reactionsCounts.rocket,
-                "👎": res.data.reactionsCounts.thumbs_down,
-                "👀": res.data.reactionsCounts.eyes
-            };
+            this.reactionsCount = res.data;
         },
     }
 }
