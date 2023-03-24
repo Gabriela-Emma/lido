@@ -850,10 +850,9 @@ window.cardanoWallet = cardanoWallet;
 window.globalVideoPlayer = globalVideoPlayer;
 
 // translate proposal
-window.translateProposal = function translateProposal(proposalID) {
+window.translateProposal = function translateProposal(modelID, currPageLocale , modelClass) {
     return {
         loggedIn:false,
-        model_id: null,
         translate: false,
         editing: false,
         startTranslation: false,
@@ -862,11 +861,14 @@ window.translateProposal = function translateProposal(proposalID) {
         options: [],
         targetLang: null,
         sourceLang: null,
-        proposalContent: null,
+        modelContent: null,
         data: {
             content: '',
             sourceLanguage: '',
-            targetLanguage: ''
+            targetLanguage: '',
+            model_type :'',
+            model_id:'',
+            updates:'',
         },
         processing: false,
         translationUpdates:{
@@ -874,43 +876,44 @@ window.translateProposal = function translateProposal(proposalID) {
             translationLang:''
         },
         locale:null,
-        targetLocale:null,
+        sourceLocale:null,
         save:false,
         transalatorsLang:null,
         langExists:false,
         init() {
         this.checkLogin();
+        this.sourceLocale = currPageLocale.toString()
         this.locale = 'en';
         this.getLangOptions()
         },
         getTargetLocal(val) {
-            this.targetLocale=val
+            this.sourceLocale=val
         },
         checkLogin() {
-            axios.get('/validate/user').then(res => {
+            this.getModelData();
+            axios.post('/validate/user',this.data).then(res => {
                 if(res.data === null){
                     this.loggedIn = false;
                 }
                 if(typeof res.data === 'string')
-                {   
+                {
                     this.transalatorsLang = res.data
                     this.loggedIn = true;
                 }
-                
-            this.loggedIn = true;
-            this.langExists = true;
+                if(typeof res.data === 'number'){
+                    this.loggedIn = true;
+                    this.langExists = true;
+                }
             }).catch(error => {
             });
         },
         getLangOptions() {
-            window.axios.get('/languageOptions/'+ `${proposalID}`)
+            this.getModelData();
+            window.axios.post('/languageOptions/',this.data)
                 .then((res) => {
                     this.options = res.data;
-                    console.log(this.options)
-                    console.log(this.transalatorsLang)
                     if (this.transalatorsLang!=null){
                         this.langExists = this.options.some(option => option.value === this.transalatorsLang);
-                          console.log(this.langExists)
                     }
                 })
         },
@@ -920,53 +923,57 @@ window.translateProposal = function translateProposal(proposalID) {
                 this.getModelData();
                 this.processing = true;
                 this.editing = true;
-                window.axios.post('/translate/' + `${proposalID}`, this.data)
+                window.axios.post('/translate/', this.data)
                 .then((res) => {
                     this.processing = false;
                     if (this.responseValidity(res.data)) {
-                        this.proposalContent = res.data;
+                        this.modelContent = res.data;
                         this.save = true;
+                        this.langExists = false;
                         } else {
-                        this.proposalContent = this.proposalContent;
+                        this.modelContent = this.modelContent;
                         this.save = true;
+                        this.langExists = false;
                     }
                 }
                 )
-
             }
-
             this.translate = !this.translate;
         },
         getContent(content) {
-            this.proposalContent = content;
+            this.modelContent = content;
         },
         getModelID(id) {
             this.model_id = id;
         },
         getModelData() {
-            this.data.content = this.proposalContent;
+            this.data.content = this.modelContent;
             this.data.sourceLanguage = this.locale;
             this.translationUpdates.translationLang = this.targetLang;
             this.data.targetLanguage = this.targetLang;
+            this.data.model_type = modelClass;
+            this.data.model_id = modelID
         },
         getTranslation() {
             this.getModelData();
             this.processing = true;
             this.editing = true;
-            window.axios.post('/translate/' + `${proposalID}`, this.data)
+            window.axios.post('/translate/', this.data)
             .then((res) => {
                 this.processing = false;
                 if (this.responseValidity(res.data)) {
-                    this.proposalContent = res.data;
+                    this.modelContent = res.data;
                     this.save = true;
+                    this.langExists = false;
                     } else {
-                    this.proposalContent = this.proposalContent;
+                    this.modelContent = this.modelContent;
                     this.save = true;
+                    this.langExists = false;
                 }}
             )
         },
         responseValidity(res){
-            if ((res.length/this.proposalContent.length ) >= 0.3)
+            if ((res.length/this.modelContent.length ) >= 0.3)
             {
                 return true;
             }
@@ -976,12 +983,12 @@ window.translateProposal = function translateProposal(proposalID) {
             this.editing = false;
             this.translate = false;
             this.save = false;
-            this.translationUpdates.updates = this.proposalContent;
-            window.axios.patch('/translation/'+ `${proposalID}`, this.translationUpdates)
+            this.getModelData();
+            window.axios.patch('/translation/', this.data)
             .then((res) => {
-                this.proposalContent = res.data;
+                this.modelContent = res.data;
+                this.langExists = false;
             });
-
         }
     };
 }

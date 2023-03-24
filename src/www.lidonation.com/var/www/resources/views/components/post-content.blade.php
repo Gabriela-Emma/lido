@@ -1,10 +1,10 @@
-@props(['proposal', 'pageLocale'])
+@props(['post', 'pageLocale'])
 
-<div class="border border-slate-300 rounded-sm" x-data="translateProposal({{ $proposal->id }}, '{{ $pageLocale }}','{{'proposal'}}')">
-    @if ($proposal->content)
+<div class="border border-slate-300 rounded-sm" x-data="translateProposal({{ $post->id }}, '{{ $pageLocale }}','{{$post->type}}')">
+    @if ($post->content)
         <div x-show="locale === sourceLocale">
             <div class="relative w-full bg-white z-10">
-                <div x-show="!loggedIn" x-init="getContent({{ json_encode($proposal->content) }})"
+                <div x-show="!loggedIn" x-init="getContent({{ json_encode($post->content)}})"
                     class="mb-3 absolute rounded-sm px-1 py-0.5 right-1 top-1 text-sm bg-yellow-500 border border-yellow-800 text-pink-600 font-semibold hover:text-teal-800">
                     Help Translate! <a href="/catalyst-explorer/login">login</a>
                 </div>
@@ -40,7 +40,7 @@
             <div class="flex flex-col" x-show=" save ">
                 <p class="flex flex-row mb-2">
                     Open English text in another tab.
-                    <a class="flex flex-row" href="/proposals/{{ $proposal->slug }}" target="_blank">
+                    <a class="flex flex-row" href="/posts/{{ $post->slug }}" target="_blank">
                         Open
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                             stroke="currentColor" class="w-4 h-4">
@@ -58,16 +58,16 @@
             </div>
         </div>
     @endif
-    <div x-data="{ heightClass: 'max-h-[50rem] overflow-clip', funded: @js($proposal->funded) }" :class=" { editing: 'h-full' }" class="relative p-4 break-normal" x-show="1">
-        <div>
-            <article :class="heightClass" x-transition x-show="!editing ">
-                @if ($proposal->content)
-                    <x-markdown x-html="marked.parse(modelContent)"></x-markdown>
-                @endif
-                @if ($proposal->definition_of_success)
-                    <h2>Definition of Success</h2>
-                    <x-markdown>{{ $proposal->definition_of_success }}</x-markdown>
-                @endif
+    <div  class="h-full overflow-clip p-4 break-normal" >
+        <div x-show="!editing ">
+            <article class="mb-6 text-xl text-justify" >
+                <div class="mt-3">
+                    @if(Lang::has($post->getTable() . '.' . $post->slug ))
+                        <x-markdown>{{__($post->getTable() . '.' . $post->slug)}}</x-markdown>
+                    @else
+                        <x-markdown x-html="marked.parse(modelContent)"></x-markdown>
+                    @endif
+                </div>
             </article>
         </div>
         <template x-if="processing ===true" class="mt-4">
@@ -81,18 +81,5 @@
                 x-html="(modelContent)">
           </textarea>
         </div>
-        <div @click="heightClass = ''" x-show="heightClass"
-            class="absolute w-full  p-4 text-center bg-white/95 hover:cursor-pointer group bottom-4">
-            <span class="font-bold text-teal-600 group-hover:text-slate-600">
-                Expand
-            </span>
-        </div>
     </div>
 </div>
-
-
-
-
-
-
-
