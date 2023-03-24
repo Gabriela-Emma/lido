@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ProjectCatalyst\CatalystBookmarksController;
 use App\Http\Controllers\ProjectCatalyst\CatalystMyBookmarksController;
 use App\Models\Mint;
 use Inertia\Inertia;
@@ -220,7 +221,7 @@ Route::group(
                 ->name('voter-tool');
 
             Route::get('/proposals/{proposal:id}/bookmark', [CatalystProjectsController::class, 'bookmark']);
-            Route::get('/bookmarks', [CatalystMyBookmarksController::class, 'index'])
+            Route::get('/bookmarks', [CatalystBookmarksController::class, 'index'])
                 ->name('bookmarks');
             Route::get('/bookmarks/{bookmarkCollection:id}', [CatalystMyBookmarksController::class, 'view'])
                 ->name('bookmark`');
@@ -237,6 +238,9 @@ Route::group(
 
                 Route::get('/profiles', [CatalystUserProfilesController::class, 'index'])
                     ->name('myProfiles');
+
+                Route::get('/bookmarks', [CatalystMyBookmarksController::class, 'index'])
+                    ->name('myBookmarks');
 
                 Route::post('/profiles/{catalystUser:id}', [CatalystUserProfilesController::class, 'update']);
 
