@@ -299,14 +299,9 @@ const authors = computed(() => {
 
 let isBookmarked:Ref<boolean> = ref()
 
-const user = computed(() => usePage().props?.user as User);
 const bookmarksStore = useBookmarksStore();
 const {models} = storeToRefs(bookmarksStore);
 
-for (const model of models.value as Array<any>) {
-    if (model.id === props?.proposal?.id) {
-        isBookmarked.value = true;
-    }
-}
+isBookmarked.value =  (models.value as Array<any>).some(model => model.id === props.proposal.id);
 
 </script>
