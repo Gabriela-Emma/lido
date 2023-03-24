@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\CatalystUser;
 use Illuminate\Database\Seeder;
 
 class CatalystUserSeeder extends Seeder
@@ -13,6 +14,6 @@ class CatalystUserSeeder extends Seeder
      */
     public function run()
     {
-        //
+        CatalystUser::factory(10)->create();
     }
 }

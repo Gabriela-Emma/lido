@@ -19,6 +19,8 @@ class ProposalFactory extends Factory
 {
     use UnsplashProvider;
 
+    protected $model = Proposal::class;
+
     /**
      * Define the model's default state.
      */

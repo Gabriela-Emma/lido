@@ -14,8 +14,12 @@ class CatalystDatabaseSeeder extends Seeder
     public function run()
     {
         $this->call([
+            AnonymousBookmarkSeeder::class,
             FundSeeder::class,
             ProposalSeeder::class,
+            CatalystGroupSeeder::class,
+            CatalystUserSeeder::class,
+            CatalystReportSeeder::class,
         ]);
     }
 }
