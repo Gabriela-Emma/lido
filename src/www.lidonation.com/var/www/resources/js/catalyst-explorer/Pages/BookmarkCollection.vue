@@ -1,30 +1,33 @@
 <template>
     <header-component titleName0="Bookmark" :titleName1="bookmarkCollection?.title"
-                      :subTitle="`Created ${$filters.timeAgo(bookmarkCollection.created_at)}. Has ${bookmarkCollection?.items_count} items${bookmarkCollection?.items_count > 1 ? 's' : ''}.`" />
-<!--    <section class="container pb-4 bg-white">-->
-<!--        -->
-<!--    </section>-->
+                      :subTitle="`Created ${$filters.timeAgo(bookmarkCollection.created_at)}. Has ${bookmarkCollection?.items_count} items${bookmarkCollection?.items_count > 1 ? 's' : ''}.`"/>
 
     <main class="flex flex-col gap-2 bg-primary-20 py-8">
         <div class="container">
             <section
                 class="relative flex flex-row justify-between items-end p-6 object-cover shadow-xs rounded-tl-2xl rounded-r-xs"
+                :class="[textColor$]"
                 :style="{backgroundColor: bookmarkCollection?.color}">
 
                 <div class="flex flex-row justify-end items-center absolute right-0 top-1/3 z-0">
-<!--                    <div class="relative inline-block w-full pointer-events-none overflow-visible mb-2 ml-auto">-->
-                        <h2 class="text-xl font-bold tracking-tight text-slate-100 sm:text-2xl inline box-border box-decoration-clone bg-white py-4 pl-3 pr-32 rounded-l-lg text-slate-800">
-                            {{ bookmarkCollection?.title }}
-                        </h2>
-<!--                    </div>-->
+                    <h2 class="text-xl font-bold tracking-tight text-slate-100 sm:text-2xl inline box-border box-decoration-clone bg-white py-4 pl-3 pr-32 rounded-l-lg text-slate-800">
+                        {{ bookmarkCollection?.title }}
+                    </h2>
                 </div>
 
-                <div class="flex z-10 pt-20">
+                <div class="flex z-10 pt-20 gap-3">
                     <Link :href="$utils.localizeRoute('catalyst-explorer/bookmarks')"
-                          class="inline-flex items-center gap-x-0.5 rounded-sm border border-slate-800 py-1 px-1.5 text-xs font-semibold text-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-600">
+                          :class="[textColor$, borderColor$]"
+                          class="inline-flex items-center gap-x-0.5 rounded-sm border py-1 px-1.5 text-xs font-semibold text-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-600">
                         <ArrowUturnLeftIcon class="mr-0.5 h-3 w-3" aria-hidden="true"/>
                         {{ $t("All Bookmarks") }}
                     </Link>
+                    <Button type="buttons" disabled="disabled"
+                            :class="[textColor$, borderColor$]"
+                            class="inline-flex items-center gap-x-0.5 rounded-sm border py-1 hover:cursor-not-allowed px-1.5 text-xs font-semibold text-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-600">
+                        <ArrowDownTrayIcon class="mr-0.5 h-3 w-3" aria-hidden="true"/>
+                        {{ $t("Export") }} <span class="text-slate-500"> - {{ $t("Coming Soon") }}</span>
+                    </Button>
                 </div>
             </section>
 
@@ -47,19 +50,21 @@
                                             <div class="mt-1">
                                                 <div class="flex flex-row items-center gap-5 text-sm text-slate-500">
                                                     <div class="flex gap-1 items-center">
-                                                        <div>{{  $t("Budget") }}</div>
+                                                        <div>{{ $t("Budget") }}</div>
                                                         <div class="text-slate-700">
-                                                            {{$filters.currency(item?.model?.amount_requested)}}
+                                                            {{ $filters.currency(item?.model?.amount_requested) }}
                                                         </div>
                                                     </div>
                                                     <div class="flex gap-1 items-center">
-                                                        <div>{{  $t("Fund") }}</div>
-                                                        <div class="text-slate-700">{{item?.model?.fund?.parent?.title}}</div>
+                                                        <div>{{ $t("Fund") }}</div>
+                                                        <div class="text-slate-700">
+                                                            {{ item?.model?.fund?.parent?.title }}
+                                                        </div>
                                                     </div>
                                                     <div class="flex gap-1 items-center">
-                                                        <div>{{  $t("Challenge") }}</div>
+                                                        <div>{{ $t("Challenge") }}</div>
                                                         <div class="text-slate-700">
-                                                            {{item?.model?.fund?.title}}
+                                                            {{ item?.model?.fund?.title }}
                                                         </div>
                                                     </div>
 
@@ -88,13 +93,47 @@
 </template>
 
 <script lang="ts" setup>
-import { Link } from '@inertiajs/vue3';
+import {Link} from '@inertiajs/vue3';
 import BookmarkCollection from "../models/bookmark-collection";
-import { ChevronRightIcon, ArrowUturnLeftIcon } from '@heroicons/vue/20/solid';
+import {ChevronRightIcon, ArrowUturnLeftIcon, ArrowDownTrayIcon} from '@heroicons/vue/20/solid';
+import {computed} from "vue";
 
 const props = withDefaults(
     defineProps<{
         bookmarkCollection: BookmarkCollection
     }>(), {});
+
+const textColor$ = computed<string>(() =>
+    contrastColor(props.bookmarkCollection?.color) === 'light' ? 'text-white' : 'text-black'
+);
+const borderColor$ = computed<string>(() =>
+    contrastColor(props.bookmarkCollection?.color) === 'light' ? 'border-white' : 'border-black'
+);
+
+function contrastColor(hex) {
+
+    // If a leading # is provided, remove it
+    if (hex.slice(0, 1) === '#') {
+        hex = hex.slice(1);
+    }
+
+    // If a three-character hexcode, make six-character
+    if (hex.length === 3) {
+        hex = hex.split('').map(function (hex) {
+            return hex + hex;
+        }).join('');
+    }
+
+    // Convert to RGB value
+    let r = parseInt(hex.substr(0, 2), 16);
+    let g = parseInt(hex.substr(2, 2), 16);
+    let b = parseInt(hex.substr(4, 2), 16);
+
+    // Get YIQ ratio
+    let yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
+
+    // Check contrast
+    return (yiq >= 128) ? 'dark' : 'light';
+}
 
 </script>
