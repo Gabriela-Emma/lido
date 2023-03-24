@@ -245,7 +245,7 @@ services:
       - lido
     deploy:
       mode: replicated
-      replicas: ${LIDO_APP_REPLICAS:-3}
+      replicas: ${LIDO_APP_REPLICAS:-1}
 
 secrets:
   postgres_db:
