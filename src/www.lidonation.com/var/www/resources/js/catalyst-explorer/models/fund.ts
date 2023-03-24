@@ -12,5 +12,6 @@ export default interface Fund {
     link:string;
     gravatar:string;
     thumbnail_url:string;
+    parent?: Fund;
     challenges?: Challenge[];
 }

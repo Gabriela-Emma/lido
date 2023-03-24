@@ -5,7 +5,7 @@
     <main class="flex flex-col gap-2 bg-primary-20 py-8">
         <div class="container">
             <section
-                class="relative flex flex-col items-center px-3 py-16 object-cover shadow-xs rounded-tl-2xl rounded-r-xs"
+                class="relative flex flex-col items-center px-3 pt-16 pb-32 object-cover shadow-xs rounded-tl-2xl rounded-r-xs"
                 :style="{backgroundColor: bookmarkCollection?.color}">
                 <div class="w-full flex flex-col justify-center relative">
                     <div class="relative inline-block w-full pointer-events-none overflow-visible mb-2 ml-auto">
@@ -18,29 +18,39 @@
 
             <section class="rounded-bl-2xl rounded-r-xs py-16 border-t shadow-md bg-white">
                 <div class="">
+                    <h2 class="text-2xl lg:text-3xl xl:text-4xl px-4 py-4 sm:px-6">
+                        Proposals
+                    </h2>
                     <ul role="list" class="divide-y divide-gray-200">
                         <li v-for="item in bookmarkCollection.items" :key="item.id">
-                            <a href="#" class="block hover:bg-gray-50">
+                            <div class="block hover:bg-gray-50">
                                 <div class="flex items-center px-4 py-4 sm:px-6">
                                     <div class="min-w-0 flex-1 sm:flex sm:items-center sm:justify-between">
                                         <div class="truncate">
                                             <div class="flex text-sm">
-                                                <p class="truncate font-medium text-indigo-600">{{ item.title }}</p>
-                                                <p class="ml-1 flex-shrink-0 font-normal text-gray-500">in
-                                                    {{ item.id }}</p>
+                                                <h3 class="truncate font-medium text-xl xl:text-2xl">
+                                                    {{ item.title }}
+                                                </h3>
                                             </div>
-                                            <div class="mt-2 flex">
-                                                <div class="flex items-center text-sm text-gray-500">
-                                                    <CalendarIcon class="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400"
-                                                                  aria-hidden="true"/>
-                                                    <p>
-                                                        Closing on
-                                                        {{ ' ' }}
-                                                        <time :datetime="item.created_at">{{
-                                                                item.created_at
-                                                            }}
-                                                        </time>
-                                                    </p>
+                                            <div class="mt-1">
+                                                <div class="flex flex-row items-center gap-5 text-sm text-slate-500">
+                                                    <div class="flex gap-1 items-center">
+                                                        <div>Budget</div>
+                                                        <div class="text-slate-700">
+                                                            {{$filters.currency(item?.model?.amount_requested)}}
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex gap-1 items-center">
+                                                        <div>Fund</div>
+                                                        <div class="text-slate-700">{{item?.model?.fund?.parent?.title}}</div>
+                                                    </div>
+                                                    <div class="flex gap-1 items-center">
+                                                        <div>Challenge</div>
+                                                        <div class="text-slate-700">
+                                                            {{item?.model?.fund?.title}}
+                                                        </div>
+                                                    </div>
+
                                                 </div>
                                             </div>
                                         </div>
@@ -54,7 +64,7 @@
                                         <ChevronRightIcon class="h-5 w-5 text-gray-400" aria-hidden="true"/>
                                     </div>
                                 </div>
-                            </a>
+                            </div>
                         </li>
                     </ul>
                 </div>
