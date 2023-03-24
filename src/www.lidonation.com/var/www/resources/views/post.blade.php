@@ -146,15 +146,7 @@
                                                       theme="secondary"></x-public.callout>
                                 </div>
                             @endif
-                            <article class="mb-6 text-xl text-justify">
-                                <div class="mt-3">
-                                    @if(Lang::has($post->getTable() . '.' . $post->slug ))
-                                        <x-markdown>{{__($post->getTable() . '.' . $post->slug)}}</x-markdown>
-                                    @else
-                                        <x-markdown>{{$post->content}}</x-markdown>
-                                    @endif
-                                </div>
-                            </article>
+                            <x-post-content class="mb-4" :post="$post" :pageLocale="(app()->getLocale())"/>
                             @if($post->epilogue)
                                 <x-public.callout :content="$post->epilogue"
                                                   theme="secondary"></x-public.callout>
