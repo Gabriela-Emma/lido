@@ -159,7 +159,7 @@
                                                             </div>
                                                             <div class="ml-3">
                                                                 <h3 class="text-sm font-medium">
-                                                                    Error
+                                                                    {{  $t("Error") }}
                                                                 </h3>
                                                                 <div class="mt-2 text-sm">
                                                                     <ul role="list" class="list-disc space-y-1 pl-5">
@@ -184,7 +184,7 @@
                                                     <div class="flex w-full justify-end absolute top-1 right-1">
                                                         <button type="button"
                                                            class="inline-flex items-center gap-x-0.5 rounded-sm bg-slate-600 py-1 px-1.5 hover:text-white text-xs font-semibold text-white shadow-sm hover:bg-slate-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-600">
-                                                            View
+                                                            {{  $t("View") }}
                                                             <ArrowTopRightOnSquareIcon class="-mr-0.5 h-3 w-3" aria-hidden="true" />
                                                         </button>
                                                     </div>

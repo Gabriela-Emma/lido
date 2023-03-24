@@ -35,17 +35,17 @@
                                             <div class="mt-1">
                                                 <div class="flex flex-row items-center gap-5 text-sm text-slate-500">
                                                     <div class="flex gap-1 items-center">
-                                                        <div>Budget</div>
+                                                        <div>{{  $t("Budget") }}</div>
                                                         <div class="text-slate-700">
                                                             {{$filters.currency(item?.model?.amount_requested)}}
                                                         </div>
                                                     </div>
                                                     <div class="flex gap-1 items-center">
-                                                        <div>Fund</div>
+                                                        <div>{{  $t("Fund") }}</div>
                                                         <div class="text-slate-700">{{item?.model?.fund?.parent?.title}}</div>
                                                     </div>
                                                     <div class="flex gap-1 items-center">
-                                                        <div>Challenge</div>
+                                                        <div>{{  $t("Challenge") }}</div>
                                                         <div class="text-slate-700">
                                                             {{item?.model?.fund?.title}}
                                                         </div>
@@ -84,5 +84,4 @@ const props = withDefaults(
         bookmarkCollection: BookmarkCollection
     }>(), {});
 
-    console.log('bookmarkCollection::', props.bookmarkCollection)
 </script>
