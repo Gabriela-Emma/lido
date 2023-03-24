@@ -28,7 +28,7 @@
                             <div class="flex-1 bg-teal-500">
                                 <div class="flex flex-col lg:flex-row lg:justify-between w-full">
                                     <div class="p-4 w-full lg:w-1/2 text-white">
-                                        <div v-if="bookmarked$">
+                                        <div v-if="!bookmarked$">
                                             <div v-if="!creatingAnonymousBookmarks">
                                                 <h3 class="text-xl font-bold text-slate-100 xl:text-2xl sm:tracking-tight text-center">
                                                     {{ $t("You're not logged in") }}.
@@ -130,7 +130,7 @@
                                                     mode="single"
                                                     @option="addToNewCollection"
                                                     @select="addToCollection"
-                                                    value-prop="id"
+                                                    value-prop="hash"
                                                     label="title"
                                                     :options="collections$"
                                                     :searchable="true"
@@ -140,13 +140,14 @@
                                                     :placeholder="collections$?.length === 0 ? 'Create new collection' : 'Select Collection or Write New Col. Name'"
                                                     noOptionsText="Type collection name and hit enter"
                                                     :classes="{
-                                                    container: 'multiselect border-0 flex-wrap bg-teal-500 text-teal-800',
+                                                    container: 'multiselect border-0 flex-wrap bg-teal500 text-teal-800',
                                                     containerActive: 'shadow-none shadow-transparent box-shadow-none',
                                                     search: 'w-full absolute inset-0 outline-none focus:ring-0 box-border border-0 text-base bg-white rounded-sm pl-3.5 rtl:pl-0 rtl:pr-3.5 custom-input',
-                                                    options: 'multiselect-options border-0'
+                                                    options: 'multiselect-options border-0',
+                                                    optionPointed: 'is-pointed text-white bg-teal-600',
+                                                    optionSelected: 'text-white bg-teal-600',
                                                 }"
                                                 />
-
 
                                                 <!-- Turn this into reusable error component that takes an AxiosError or a errors: models/errors object -->
                                                 <template v-if="errors">
@@ -158,7 +159,7 @@
                                                             </div>
                                                             <div class="ml-3">
                                                                 <h3 class="text-sm font-medium">
-                                                                    Error
+                                                                    {{  $t("Error") }}
                                                                 </h3>
                                                                 <div class="mt-2 text-sm">
                                                                     <ul role="list" class="list-disc space-y-1 pl-5">
@@ -176,26 +177,35 @@
                                                 </template>
                                             </div>
                                         </div>
-                                        <div class="" v-else-if="collection$?.id">
+                                        <div class="" v-else-if="collection$?.hash">
                                             <div class="relative isolate flex flex-col items-center">
-                                                <div
-                                                    class="h-56 w-72 lg:max-w-xs p-3 object-cover shadow-xl rounded-l-xl rounded-r-xs flex flex-col justify-center"
-                                                    :style="{backgroundColor: collection$?.color}">
+                                                <a :href="collection$?.link" :style="{backgroundColor: collection$?.color}"
+                                                    class="h-56 w-72 lg:max-w-xs p-3 object-cover shadow-md hover:shadow-xl rounded-l-xl rounded-r-xs flex flex-col justify-center relative">
+                                                    <div class="flex w-full justify-end absolute top-1 right-1">
+                                                        <button type="button"
+                                                           class="inline-flex items-center gap-x-0.5 rounded-sm bg-slate-600 py-1 px-1.5 hover:text-white text-xs font-semibold text-white shadow-sm hover:bg-slate-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-600">
+                                                            {{  $t("View") }}
+                                                            <ArrowTopRightOnSquareIcon class="-mr-0.5 h-3 w-3" aria-hidden="true" />
+                                                        </button>
+                                                    </div>
                                                     <div class="relative isolate h-16 mb-2">
-                                                        <h2 class="text-xl w-4/5 font-bold tracking-tight text-slate-100 sm:text-2xl inline box-border box-decoration-cloe bg-white py-4 px-3 mb-3 rounded-l-lg text-slate-800 absolute right-0">
+                                                        <h2 class="text-xl w-4/5 font-bold tracking-tight text-slate-100 sm:text-2xl inline box-border box-decoration-cloe bg-white py-4 px-3 mb-3 rounded-l-lg text-slate-800 absolute -right-3">
                                                             {{ collection$?.title }}
                                                         </h2>
                                                     </div>
-                                                    <div class="w-full flex gap-2 justify-end">
+                                                    <div class="w-full flex gap-2 justify-end" v-if="collection$?.items_count > 0">
                                                         <div
-                                                            class="inline-flex items-center rounded-sm py-0.5 pl-2.5 pr-1 text-sm font-medium text-black border border-black">
+                                                            class="inline-flex items-center items-center rounded-sm py-0.5 pl-2.5 pr-1 text-sm font-medium text-black border border-black">
                                                             Items
-                                                            <span class="ml-0.5 inline-flex flex-shrink-0 items-center justify-center rounded-full text-black font-bold focus:outline-none">
+                                                            <span
+                                                                class="ml-0.5 inline-flex flex-shrink-0 items-center justify-center rounded-full text-black font-bold focus:outline-none">
                                                                 {{ collection$?.items_count }}
                                                             </span>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                </a>
+
+
                                                 <!--                                                <img-->
                                                 <!--                                                    class="h-96 w-full flex-none rounded-2xl object-cover shadow-xl lg:aspect-square lg:h-auto lg:max-w-sm"-->
                                                 <!--                                                    src="https://images.unsplash.com/photo-1519338381761-c7523edc1f46?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80"-->
@@ -261,7 +271,7 @@
 </template>
 
 <script lang="ts" setup>
-import {computed, defineEmits, ref} from "vue";
+import {computed, defineEmits, ref, watch} from "vue";
 import Modal from "../Shared/Components/Modal.vue";
 import Challenge from "../models/challenge";
 import Proposal from "../models/proposal";
@@ -274,8 +284,7 @@ import {storeToRefs} from "pinia";
 import BookmarkCollection from "../models/bookmark-collection";
 import BookmarkItem from "../models/bookmark-item";
 import axios from "axios";
-import {XCircleIcon} from '@heroicons/vue/20/solid';
-
+import {XCircleIcon, ArrowTopRightOnSquareIcon} from '@heroicons/vue/20/solid';
 
 const props = withDefaults(
     defineProps<{
@@ -285,16 +294,22 @@ const props = withDefaults(
 );
 const user = computed(() => usePage().props?.user as User);
 const bookmarksStore = useBookmarksStore();
-const {collections$} = storeToRefs(bookmarksStore);
+const collections$ = ref<BookmarkCollection[]>([]);
+
+const {collections$: storeCollections$} = storeToRefs(bookmarksStore);
+collections$.value = [...storeCollections$.value].map(((col: BookmarkCollection) => ({
+    ...col,
+    disabled: col.items?.some((item) => item.model_id === props.proposal.id)
+})));
 
 let creatingAnonymousBookmarks = ref(true);
 let errors = ref()
 let bookmarkProposalContent$ = ref(null)
 let creating = false;
-let bookmarked$ = ref(true);
+let bookmarked$ = ref(false);
 let collection$ = ref<BookmarkCollection>(null);
 
-collection$.value = collections$.value[0] as BookmarkCollection;
+// collection$.value = collections$.value[0] as BookmarkCollection;
 
 ////
 // events & watchers
@@ -303,9 +318,9 @@ const emit = defineEmits<{
     (e: 'update:modelValue', challenge: Challenge): void
 }>();
 
-// watch(selected$, (newChallenge, oldFund) => {
-//     emit('update:modelValue', newChallenge);
-// });
+watch(storeCollections$, (newCollections: BookmarkCollection[], oldCollections) => {
+    collections$.value = [...newCollections];
+});
 
 ////
 // Actions
@@ -322,7 +337,7 @@ async function addToCollection(option) {
         model_id: props.proposal?.id,
         model_type: 'proposals',
         content: bookmarkProposalContent$.value,
-        collection: {id: parseInt(option)} as BookmarkCollection
+        collection: {hash: option} as BookmarkCollection
     } as BookmarkItem;
 
     await bookmarkProposal(item);

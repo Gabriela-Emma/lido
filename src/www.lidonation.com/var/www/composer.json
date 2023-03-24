@@ -86,6 +86,7 @@
         "tightenco/ziggy": "^1.5",
         "timehunter/laravel-google-recaptcha-v3": "^2.5",
         "tpetry/laravel-postgresql-enhanced": "^0.23.0",
+        "vinkla/hashids": "^10.0",
         "webwizo/laravel-shortcodes": "^1.0",
         "wire-elements/modal": "^1.0"
     },

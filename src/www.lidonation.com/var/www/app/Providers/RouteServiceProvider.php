@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\BookmarkCollection;
 use App\Models\Post;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
@@ -9,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
 use Mcamara\LaravelLocalization\Traits\LoadsTranslatedCachedRoutes;
+use Vinkla\Hashids\Facades\Hashids;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -29,9 +31,14 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
+    public function boot(): void
     {
-//        Route::model('post', Post::class);
+        parent::boot();
+
+        Route::bind('bookmarkCollection', function ($value, $route) {
+            return $this->getModel(BookmarkCollection::class, $value);
+        });
+
         $this->configureRateLimiting();
 
         $this->routes(function () {
@@ -49,10 +56,18 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    protected function configureRateLimiting()
+    protected function configureRateLimiting(): void
     {
         RateLimiter::for('api', function (Request $request) {
             return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
         });
+    }
+
+    private function getModel($model, $routeKey)
+    {
+        $id = Hashids::connection($model)->decode($routeKey)[0] ?? null;
+        $modelInstance = resolve($model);
+
+        return  $modelInstance->findOrFail($id);
     }
 }

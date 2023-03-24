@@ -54,7 +54,7 @@
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="24" height="24" class="inline-block" role="presentation">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
                     </svg>
-            </a>  
+            </a>
     @endpush
 
     <header class="text-white bg-teal-500 relative">
@@ -217,7 +217,7 @@
             @endif
 
             <!-- Comments Prompt -->
-                <section class="px-8 py-12 mx-auto max-w-6xl bg-white lg:bg-gray-50">
+                <section class="px-8 py-8 mx-auto max-w-6xl bg-white lg:bg-gray-50">
                     <div class="grid gap-4 md:grid-col-2 lg:grid-cols-3 sm:gap-8">
                         <div class="border-b border-gray-300 lg:border-r lg:border-b-0 lg:col-span-2">
                             @if($post->comments->isNotEmpty())
@@ -230,19 +230,43 @@
                                 </h2>
                             @endif
 
-                            <div class="max-w-xl">
-                                <p class="mt-2">
+                            <div class="max-w-lg mx-auto">
+                                <p class="mt-2 text-xl xl:text-2xl 2xl:text-4xl">
                                     @if($post->comment_prompt)
                                         <span>{{$post->comment_prompt}}</span>
                                     @else
                                         <span>
-                                            {{ $snippets->atartAConversation }}
+                                            Was the article useful?
                                         </span>
                                     @endif
                                 </p>
-                                <a class="block text-xl" href="#commentForm{{$post->id}}">
-                                    {{ $snippets->leaveAComment}}
-                                </a>
+                                <div x-data='globalReactions({{ json_encode($post->reactionsCounts) }})'>
+                                    <div class="py-6 border-t border-slate-300">
+                                        <ul class="flex flex-row gap-4 justify-center">
+                                            <template x-for="[reaction, count] of Object.entries(reactionsCount)">
+                                                <li @click.prevent="addReaction(reaction, {{$post->id}})" class="border flex flex-row gap-2 border-slate-600 hover:border-green-500 p-2 rounded-sm text-lg cursor-pointer">
+                                                    <button x-text="reaction"></button>
+                                                    <span x-text="count"></span>
+                                                </li>
+                                            </template>
+                                        </ul>
+                                    </div>
+                                    <div class="relative">
+                                        <div class="absolute inset-0 flex items-center" aria-hidden="true">
+                                            <div class="w-full border-t border-slate-300"></div>
+                                        </div>
+
+                                        <div class="relative flex justify-center text-sm">
+                                            <span class="bg-white px-2 text-slate-500">Or leave comment</span>
+                                        </div>
+                                    </div>
+                                    <div class="mt-8">
+                                        <a type="button"
+                                           class="block text-xl mx-auto rounded-sm text-center w-full bg-white py-2.5 px-4 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50" href="#commentForm{{$post->id}}">
+                                            {{ $snippets->leaveAComment}}
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -271,7 +295,7 @@
         </div>
     </section>
 
-    <section class="py-12 bg-gray-50 border border-gray-100">
+    <section class="py-12 bg-gray-50 border border-gray-100" id="commentForm{{$post->id}}">
         <div class="px-6 max-w-6xl xl:mx-auto">
             <livewire:comments :showNotificationOptions="Auth::check()" :hideNotificationOptions="!Auth::check()" :hideAvatars="false" :noReplies="false" :model="$post" />
         </div>

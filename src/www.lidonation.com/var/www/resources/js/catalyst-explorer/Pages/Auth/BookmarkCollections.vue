@@ -1,12 +1,13 @@
 <template>
-    <header-component titleName0="Catalyst" titleName1="Bookmarks" subTitle=""/>
+    <header-component titleName0="My" titleName1="Bookmarks" subTitle=""/>
     <main class="flex flex-col gap-2 bg-primary-20 py-8">
         <div class="container">
-            <section class="space-y-6">
-                <h2 class="text-xl lg:text-2xl xl:text-4xl">
-                    My Bookmarks
-                </h2>
-                <div class="flex flex-row gap-6 flex-wrap">
+            <div class="lg:grid lg:grid-cols-12 lg:gap-x-5">
+                <aside class="px-2 py-6 sm:px-6 lg:col-span-3 xl:col-span-2 lg:py-0 lg:px-0">
+                    <UserNav/>
+                </aside>
+
+                <section class="space-y-6 sm:px-6 lg:col-span-9 xl:col-span-10">
                     <a v-for="collection in collections$" :href="collection?.link"
                        :style="{backgroundColor: collection?.color}"
                        class="h-56 w-72 lg:max-w-xs p-3 object-cover shadow-md hover:shadow-xl rounded-l-xl rounded-r-xs flex flex-col justify-center relative">
@@ -33,17 +34,18 @@
                             </div>
                         </div>
                     </a>
-                </div>
-            </section>
+                </section>
+            </div>
         </div>
     </main>
 </template>
 
 <script lang="ts" setup>
-import BookmarkCollection from "../models/bookmark-collection";
 import {ArrowTopRightOnSquareIcon} from '@heroicons/vue/20/solid';
-import {useBookmarksStore} from "../stores/bookmarks-store";
 import {storeToRefs} from "pinia";
+import {useBookmarksStore} from "../../stores/bookmarks-store";
+import BookmarkCollection from "../../models/bookmark-collection";
+import UserNav from "./UserNav.vue";
 
 const props = withDefaults(
     defineProps<{

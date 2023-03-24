@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
@@ -36,12 +36,17 @@
     @inertia
 </main>
 
+<!-- slte popup modal -->
+<x-slte-popup-modal />
+
 {{-- include squiggly svg for text animation--}}
 @include('svg.squiggle')
 
 @include('includes.footer')
 
 <script src="{{ mix('js/bootstrap.js') }}"></script>
+
+<script src="{{ mix('js/global.js') }}" ></script>
 
 {{--<livewire:global-player-component />--}}
 

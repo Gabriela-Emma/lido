@@ -60,17 +60,23 @@ yarn install
 ```
 
 ### boot up your box (for mac)
-from the root directory. This will boot up all services (on producer node, one relay node, redis, and the website) in the backdround  
+from the root directory. This will boot up all services (on producer node, one relay node, redis, and the website) in the background  
 ```bash
 npm run box:start
 ``` 
 
 ### boot up your box (for linux)
-from the root directory. This will boot up all services (on producer node, one relay node, redis, and the website) in the backdround  
+from the root directory. This will boot up all services (on producer node, one relay node, redis, and the website) in the background  
 ```bash
     sudo su
     docker-compose up -d
 ``` 
+
+from the root directory. This will start your frontend services
+```bash
+    npm run build
+``` 
+
 
 ### backend migrations
 ssh into api container and run some commands:
