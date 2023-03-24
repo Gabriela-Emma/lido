@@ -6,7 +6,7 @@
                 <h2 class="text-xl lg:text-2xl xl:text-4xl">
                     My Bookmarks
                 </h2>
-                <div class="flex flex-row gap-4">
+                <div class="flex flex-row gap-6 flex-wrap">
                     <a v-for="collection in collections$" :href="collection?.link"
                        :style="{backgroundColor: collection?.color}"
                        class="h-56 w-72 lg:max-w-xs p-3 object-cover shadow-md hover:shadow-xl rounded-l-xl rounded-r-xs flex flex-col justify-center relative">
