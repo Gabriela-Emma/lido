@@ -160,9 +160,10 @@ import {Link, router, usePage} from '@inertiajs/vue3';
 import Toggle from '@vueform/toggle'
 import Filters from "../../models/filters";
 import { VARIABLES } from "../../models/variables";
-import {watch, ref} from "vue";
+import {watch, ref, inject} from "vue";
 import Pagination from "../../Shared/Components/Pagination.vue";
 
+const $utils: any = inject('$utils');
 const props = withDefaults(
     defineProps<{
         locale: string,

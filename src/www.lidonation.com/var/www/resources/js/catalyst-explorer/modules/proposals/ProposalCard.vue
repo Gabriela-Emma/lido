@@ -267,13 +267,14 @@
 <script lang="ts" setup>
 import Proposal from "../../models/proposal";
 import Rating from 'primevue/rating';
-import {computed, ref, watch} from "vue";
+import {computed, inject, ref, watch} from "vue";
 import {BookmarkIcon} from "@heroicons/vue/20/solid";
 import { Link, usePage } from '@inertiajs/vue3';
 import { useBookmarksStore } from "../../stores/bookmarks-store";
 import { storeToRefs } from "pinia";
 import { Ref } from "@vue/reactivity";
 
+const $utils: any = inject('$utils');
 const props = withDefaults(
     defineProps<{
         proposal: Proposal

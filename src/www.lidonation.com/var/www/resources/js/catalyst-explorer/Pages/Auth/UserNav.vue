@@ -64,20 +64,16 @@
     </nav>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import {Link} from '@inertiajs/vue3';
+import {computed, inject} from "vue";
 
-export default {
-    components: {Link},
+const $utils: any = inject('$utils');
 
-    props: {
-        crumbs: Array
-    },
+const props = withDefaults(
+    defineProps<{
+        crumbs: []
+    }>(), {});
 
-    computed: {
-        crumbsLength() {
-            return this.crumbs.length;
-        }
-    }
-}
+let crumbsLength = computed<number>(() => props.crumbs?.length);
 </script>

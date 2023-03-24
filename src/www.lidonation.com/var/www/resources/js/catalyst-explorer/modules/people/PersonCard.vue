@@ -29,6 +29,9 @@
 
 <script lang="ts" setup>
 import User from "../../models/user";
+import {inject} from "vue";
+
+const $utils: any = inject('$utils');
 const props = withDefaults(
     defineProps<{
         user: User

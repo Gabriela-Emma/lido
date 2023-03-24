@@ -50,7 +50,7 @@
                 >
                     {{ report.proposal.title }}
                 </a>
-            </div> 
+            </div>
 
             <div class="flex flex-row gap-4 justify-between items-center py-4">
                 <div class="text-teal-800 opacity-50 text-sm">Status{{ $t('') }}</div>
@@ -225,7 +225,7 @@
                         <p>{{ $t('Login or Register to leave a comment') }}!</p>
                         <div class="flex gap-3 justify-center items-center">
                             <Link
-                                :href="$utils.localizeRoute(`catalyst-explorer/auth/login`)" 
+                                :href="$utils.localizeRoute(`catalyst-explorer/auth/login`)"
                                 class="font-bold text-teal-600 hover:text-teal-500"
                             >
                                 {{ $t('Sign in') }}
@@ -246,13 +246,15 @@
 
 <script lang="ts" setup>
 import {Link} from "@inertiajs/vue3";
-import {computed, onMounted, Ref, ref, reactive} from "vue";
+import {computed, Ref, ref, reactive, inject} from "vue";
 import Report from "../../models/report";
 import Comment from "../../models/comment";
 import {useForm, usePage} from "@inertiajs/vue3";
 import User from "../../models/user";
-import {CheckCircleIcon, XMarkIcon} from "@heroicons/vue/20/solid";
+import {CheckCircleIcon} from "@heroicons/vue/20/solid";
 
+
+const $utils: any = inject('$utils');
 const props = withDefaults(
     defineProps<{
         locale?: string;
@@ -325,7 +327,7 @@ async function addReaction(reaction) {
         comment: reaction,
     };
     const res = await window.axios.post(`${baseUrl}/api/catalyst-explorer/react/report/${props.report.id}`,data);
-    
+
     reactionsCount["❤️"] = res.data.hearts_count;
     reactionsCount["👍"] = res.data.thumbs_up_count;
     reactionsCount["🎉"] = res.data.party_popper_count;
