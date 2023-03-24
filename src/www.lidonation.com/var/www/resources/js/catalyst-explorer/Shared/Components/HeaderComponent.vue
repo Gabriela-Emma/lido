@@ -59,10 +59,11 @@
 </template>
 
 <script lang="ts" setup>
-import {computed} from 'vue'
+import {computed, inject} from 'vue'
 import {Link} from '@inertiajs/vue3';
 import {usePage} from '@inertiajs/vue3';
 import User from "../../models/user";
+const $utils: any = inject('$utils');
 
 const props = withDefaults(
     defineProps<{

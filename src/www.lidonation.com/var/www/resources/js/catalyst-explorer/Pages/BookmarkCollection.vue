@@ -22,12 +22,12 @@
                         <ArrowUturnLeftIcon class="mr-0.5 h-3 w-3" aria-hidden="true"/>
                         {{ $t("All Bookmarks") }}
                     </Link>
-                    <Button type="buttons" disabled="disabled"
+                    <button type="buttons" disabled="disabled"
                             :class="[textColor$, borderColor$]"
                             class="inline-flex items-center gap-x-0.5 rounded-sm border py-1 hover:cursor-not-allowed px-1.5 text-xs font-semibold text-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-600">
                         <ArrowDownTrayIcon class="mr-0.5 h-3 w-3" aria-hidden="true"/>
                         {{ $t("Export") }} <span class="text-slate-500"> - {{ $t("Coming Soon") }}</span>
-                    </Button>
+                    </button>
                 </div>
             </section>
 
@@ -96,7 +96,9 @@
 import {Link} from '@inertiajs/vue3';
 import BookmarkCollection from "../models/bookmark-collection";
 import {ChevronRightIcon, ArrowUturnLeftIcon, ArrowDownTrayIcon} from '@heroicons/vue/20/solid';
-import {computed} from "vue";
+import {computed, inject} from "vue";
+
+const $utils: any = inject('$utils');
 
 const props = withDefaults(
     defineProps<{
@@ -104,36 +106,10 @@ const props = withDefaults(
     }>(), {});
 
 const textColor$ = computed<string>(() =>
-    contrastColor(props.bookmarkCollection?.color) === 'light' ? 'text-white' : 'text-black'
+    $utils?.contrastColor(props.bookmarkCollection?.color) === 'light' ? 'text-white' : 'text-black'
 );
 const borderColor$ = computed<string>(() =>
-    contrastColor(props.bookmarkCollection?.color) === 'light' ? 'border-white' : 'border-black'
+    $utils?.contrastColor(props.bookmarkCollection?.color) === 'light' ? 'border-white' : 'border-black'
 );
-
-function contrastColor(hex) {
-
-    // If a leading # is provided, remove it
-    if (hex.slice(0, 1) === '#') {
-        hex = hex.slice(1);
-    }
-
-    // If a three-character hexcode, make six-character
-    if (hex.length === 3) {
-        hex = hex.split('').map(function (hex) {
-            return hex + hex;
-        }).join('');
-    }
-
-    // Convert to RGB value
-    let r = parseInt(hex.substr(0, 2), 16);
-    let g = parseInt(hex.substr(2, 2), 16);
-    let b = parseInt(hex.substr(4, 2), 16);
-
-    // Get YIQ ratio
-    let yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
-
-    // Check contrast
-    return (yiq >= 128) ? 'dark' : 'light';
-}
 
 </script>

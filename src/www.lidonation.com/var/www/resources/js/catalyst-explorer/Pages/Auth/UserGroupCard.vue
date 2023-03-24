@@ -176,8 +176,9 @@
 <script lang="ts" setup>
 import Group from '../../models/group';
 import {Link, useForm, usePage} from "@inertiajs/vue3";
-import {defineEmits,ref} from "vue";
+import {inject, ref} from "vue";
 import axios from "axios";
+const $utils: any = inject('$utils');
 
 const props = withDefaults(
     defineProps<{

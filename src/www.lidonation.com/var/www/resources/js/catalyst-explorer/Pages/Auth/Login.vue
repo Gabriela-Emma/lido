@@ -77,6 +77,8 @@
 <script lang="ts" setup>
 import {useForm} from '@inertiajs/vue3';
 import {Link} from '@inertiajs/vue3';
+import {inject} from "vue";
+const $utils: any = inject('$utils');
 
 
 const props = withDefaults(

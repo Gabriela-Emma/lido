@@ -6,7 +6,7 @@
                 class="w-32 h-32 lg:w-32 lg:h-32 xl:w-44 xl:h-44 rounded-full mx-auto shadow-inner shadow-md">
                 <img class="rounded-full w-full h-full"
                         :src="catalystGroup.logo"
-                        alt={{catalystGroup.name}}/> 
+                        alt={{catalystGroup.name}}/>
             </a>
             <div class="space-y-2 w-full xl:flex xl:items-center xl:justify-between items-end">
                 <div class="font-medium text-lg leading-6 space-y-1">
@@ -83,6 +83,9 @@
 
 <script lang="ts" setup>
 import Group from '../../models/group';
+import {inject} from "vue";
+
+const $utils: any = inject('$utils');
 const props=withDefaults(
     defineProps<{
         catalystGroup: Group

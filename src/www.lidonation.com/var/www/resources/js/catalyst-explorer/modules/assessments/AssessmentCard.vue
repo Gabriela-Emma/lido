@@ -80,7 +80,7 @@
 </template>
 
 <script lang="ts" setup>
-import {computed, Ref, ref} from "vue";
+import {computed, inject, Ref, ref} from "vue";
 import {usePage} from "@inertiajs/vue3";
 import User from "../../models/user";
 import Assessment from "../../models/assessment";
@@ -90,7 +90,7 @@ import {Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, Lin
 
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
 
-
+const $utils: any = inject('$utils');
 const props = withDefaults(
     defineProps<{
         locale?: string,

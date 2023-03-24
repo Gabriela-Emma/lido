@@ -57,7 +57,9 @@ import {
     ClockIcon,
     ReceiptRefundIcon,
     UsersIcon,
-} from '@heroicons/vue/24/outline'
+} from '@heroicons/vue/24/outline';
+import {inject} from "vue";
+const $utils: any = inject('$utils');
 
 const actions = [
     {
