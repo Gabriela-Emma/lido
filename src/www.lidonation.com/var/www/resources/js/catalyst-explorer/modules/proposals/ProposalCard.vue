@@ -29,7 +29,7 @@
                                       'bg-slate-600 hover:bg-teal-600 focus:ring-teal-300':!isBookmarked
                                     }"
                             class="inline-flex items-center rounded-md border border-transparent group p-0.5 text-sm font-medium leading-4 text-white shadow-sm focus:outline-none focus:ring-2  focus:ring-offset-2">
-                            <BookmarkIcon class="h-4 w-4 " 
+                            <BookmarkIcon class="h-4 w-4 "
                             :class="{
                                       'hover:text-slate-400':isBookmarked,
                                       'group-hover:text-teal-900':!isBookmarked
@@ -276,7 +276,6 @@ import User from "../../models/user";
 import BookmarkCollection from "../../models/bookmark-collection";
 import { Ref } from "@vue/reactivity";
 
-
 const props = withDefaults(
     defineProps<{
         proposal: Proposal
@@ -287,8 +286,6 @@ const props = withDefaults(
         },
     },
 );
-
-// alert('day');
 
 // computer properties
 const authors = computed(() => {
@@ -304,11 +301,12 @@ let isBookmarked:Ref<boolean> = ref()
 
 const user = computed(() => usePage().props?.user as User);
 const bookmarksStore = useBookmarksStore();
-const {models} = storeToRefs(bookmarksStore)
+const {models} = storeToRefs(bookmarksStore);
+console.log('models::', models.value);
 
 for (const model of models.value as Array<any>) {
-    if (model.id === props.proposal.id) {
-        isBookmarked.value = true;    
+    if (model.id === props?.proposal?.id) {
+        isBookmarked.value = true;
     }
 }
 

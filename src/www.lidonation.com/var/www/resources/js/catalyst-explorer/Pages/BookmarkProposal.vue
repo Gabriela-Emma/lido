@@ -143,12 +143,11 @@
                                                     container: 'multiselect border-0 flex-wrap bg-teal500 text-teal-800',
                                                     containerActive: 'shadow-none shadow-transparent box-shadow-none',
                                                     search: 'w-full absolute inset-0 outline-none focus:ring-0 box-border border-0 text-base bg-white rounded-sm pl-3.5 rtl:pl-0 rtl:pr-3.5 custom-input',
-                                                    options: 'multiselect-options border-0 bg-slate-100',
+                                                    options: 'multiselect-options border-0',
                                                     optionPointed: 'is-pointed text-white bg-teal-600',
                                                     optionSelected: 'text-white bg-teal-600',
                                                 }"
                                                 />
-
 
                                                 <!-- Turn this into reusable error component that takes an AxiosError or a errors: models/errors object -->
                                                 <template v-if="errors">
@@ -303,8 +302,6 @@ collections$.value = [...storeCollections$.value].map(((col: BookmarkCollection)
     disabled: col.items?.some((item) => item.model_id === props.proposal.id)
 })));
 
-console.log('collections$.value::', collections$.value);
-
 let creatingAnonymousBookmarks = ref(true);
 let errors = ref()
 let bookmarkProposalContent$ = ref(null)
@@ -322,7 +319,6 @@ const emit = defineEmits<{
 }>();
 
 watch(storeCollections$, (newCollections: BookmarkCollection[], oldCollections) => {
-    console.log({newCollections});
     collections$.value = [...newCollections];
 });
 
@@ -330,7 +326,6 @@ watch(storeCollections$, (newCollections: BookmarkCollection[], oldCollections) 
 // Actions
 ////////////////
 async function addToCollection(option) {
-    console.log({option});
     if (creating) {
         creating = false;
         return;

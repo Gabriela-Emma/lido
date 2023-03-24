@@ -23,7 +23,7 @@ class CatalystMyBookmarksController extends Controller
         $modelTable = $request->get('model_type');
         $data = new Fluent($request->validate([
             'model_id' => "required|exists:{$modelTable},id",
-            'parent_id' => "nullable|bail|exists:{$modelTable},id",
+            'parent_id' => "nullable|bail|hashed_exists:{$modelTable},id",
             'content' => 'nullable|bail|string',
             'link' => 'nullable|bail|active_url',
             'collection.hash' => 'nullable|bail|hashed_exists:bookmark_collections,id',
@@ -31,7 +31,7 @@ class CatalystMyBookmarksController extends Controller
         ]));
 
         // if collection doesn't exist, create one
-        $collection = BookmarkCollection::byHash($data->collection['id'] ?? null);
+        $collection = BookmarkCollection::byHash($data->collection['hash'] ?? null);
 
         if (!$collection instanceof BookmarkCollection) {
             $collection = new BookmarkCollection;
