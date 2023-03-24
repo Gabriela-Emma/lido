@@ -302,7 +302,6 @@ let isBookmarked:Ref<boolean> = ref()
 const user = computed(() => usePage().props?.user as User);
 const bookmarksStore = useBookmarksStore();
 const {models} = storeToRefs(bookmarksStore);
-console.log('models::', models.value);
 
 for (const model of models.value as Array<any>) {
     if (model.id === props?.proposal?.id) {
