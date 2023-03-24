@@ -22,7 +22,7 @@ import BookmarkCollectionCard from "../modules/bookmarks/BookmarkCollectionCard.
 
 const props = withDefaults(
     defineProps<{
-        bookmarkCollections: BookmarkCollection[]
+        bookmarkCollections?: BookmarkCollection[]
     }>(), {});
 
 const bookmarksStore = useBookmarksStore();

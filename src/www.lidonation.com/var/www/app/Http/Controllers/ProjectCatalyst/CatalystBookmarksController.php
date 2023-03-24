@@ -71,13 +71,23 @@ class CatalystBookmarksController extends Controller
     public function view(Request $request, BookmarkCollection $bookmarkCollection)
     {
         return Inertia::render('BookmarkCollection')->with([
-            'bookmarkCollection' => $bookmarkCollection
+            'bookmarkCollection' => $bookmarkCollection,
+            'crumbs' => [
+                ['label' => 'Proposals', 'link' => route('catalystExplorer.proposals')],
+                ['label' => 'Bookmarks', 'link' => route('catalystExplorer.bookmarks')],
+                ['label' => $bookmarkCollection->title, 'link' => $bookmarkCollection->link]
+            ],
         ]);
     }
 
 
     public function index(Request $request)
     {
-        return Inertia::render('Bookmarks');
+        return Inertia::render('Bookmarks')->with([
+            'crumbs' => [
+                ['label' => 'Proposals', 'link' => route('catalystExplorer.proposals')],
+                ['label' => 'Bookmarks', 'link' => route('catalystExplorer.bookmarks')]
+            ],
+        ]);
     }
 }
