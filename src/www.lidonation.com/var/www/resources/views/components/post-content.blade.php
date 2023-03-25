@@ -65,14 +65,16 @@
                     @if(Lang::has($post->getTable() . '.' . $post->slug ))
                         <x-markdown>{{__($post->getTable() . '.' . $post->slug)}}</x-markdown>
                     @else
-                    <x-markdown x-html="marked.parse(modelContent)"></x-markdown>
+                        <x-markdown x-html="marked.parse(modelContent)"></x-markdown>
                     @endif
                 </div>
             </article>
         </div>
+
         <template x-if="processing === true" class="mt-4">
             <x-theme.spinner square="8" squareXl="8" theme="teal" />
         </template>
+        
         <div x-show="editing">
             <label for="message" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Edit if needed
                 and save translation.</label>
