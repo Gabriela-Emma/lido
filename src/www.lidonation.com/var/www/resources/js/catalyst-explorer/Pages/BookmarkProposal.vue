@@ -299,7 +299,7 @@ const collections$ = ref<BookmarkCollection[]>([]);
 const {collections$: storeCollections$} = storeToRefs(bookmarksStore);
 collections$.value = [...storeCollections$.value].map(((col: BookmarkCollection) => ({
     ...col,
-    disabled: col.items?.some((item) => item.model_id === props.proposal.id)
+    disabled: col.items?.some((item) => item.model?.id === props.proposal.id)
 })));
 
 let creatingAnonymousBookmarks = ref(true);
@@ -369,11 +369,11 @@ async function bookmarkProposal(item: BookmarkItem) {
         const res = await axios.post(`${usePage().props.base_url}/catalyst-explorer/bookmarks/items`, item);
 
         // fire of store event to save collection to localStorage
-        bookmarksStore.saveCollection(res.data);
+        bookmarksStore.saveCollection(res.data?.data);
 
         // update ui
         bookmarked$.value = true;
-        collection$.value = {...res.data};
+        collection$.value = {...res.data.data};
     } catch (e) {
         errors.value = {...e?.response?.data?.errors || {message: e?.response?.data?.message}};
         console.log(e);

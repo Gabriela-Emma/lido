@@ -71,6 +71,8 @@ spec:
             value: "true"
           - name: CARDANO_NODE_CONFIG_PATH
             value: "/config/config.json"
+          - name: LOGGER_MIN_SEVERITY
+            value: "info"
         ports:
           - name: graphql
             containerPort: 3100

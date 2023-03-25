@@ -221,9 +221,9 @@ Route::group(
                 ->name('voter-tool');
 
             Route::get('/proposals/{proposal:id}/bookmark', [CatalystProjectsController::class, 'bookmark']);
-            Route::get('/bookmarks', [CatalystBookmarksController::class, 'index'])
-                ->name('bookmarks');
-            Route::get('/bookmarks/{bookmarkCollection:id}', [CatalystMyBookmarksController::class, 'view'])
+            Route::get('/bookmarks', [CatalystBookmarksController::class, 'index'])->name('bookmarks');
+            Route::get('/my/bookmarks', [CatalystMyBookmarksController::class, 'index'])->name('myBookmarks');
+            Route::get('/bookmarks/{bookmarkCollection:id}', [CatalystBookmarksController::class, 'view'])
                 ->name('bookmark`');
 
             // exports
@@ -238,9 +238,6 @@ Route::group(
 
                 Route::get('/profiles', [CatalystUserProfilesController::class, 'index'])
                     ->name('myProfiles');
-
-                Route::get('/bookmarks', [CatalystMyBookmarksController::class, 'index'])
-                    ->name('myBookmarks');
 
                 Route::post('/profiles/{catalystUser:id}', [CatalystUserProfilesController::class, 'update']);
 
