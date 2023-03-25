@@ -1,6 +1,6 @@
 @props(['proposal', 'pageLocale'])
 
-<div class="border border-slate-300 rounded-sm" x-data="translateProposal({{ $proposal->id }}, '{{ $pageLocale }}','{{'proposal'}}')">
+<div class="border border-slate-300 rounded-sm" x-data="translateProposal({{ $proposal->id }}, '{{ $pageLocale }}', '{{ 'Proposal' }}')">
     @if ($proposal->content)
         <div x-show="locale === sourceLocale">
             <div class="relative w-full bg-white z-10">
@@ -60,7 +60,7 @@
     @endif
     <div x-data="{ heightClass: 'max-h-[50rem] overflow-clip', funded: @js($proposal->funded) }" :class=" { editing: 'h-full' }" class="relative p-4 break-normal" x-show="1">
         <div>
-            <article :class="heightClass" x-transition x-show="!editing ">
+            <article :class="heightClass" x-transition x-show="!editing">
                 @if ($proposal->content)
                     <x-markdown x-html="marked.parse(modelContent)"></x-markdown>
                 @endif
@@ -70,15 +70,17 @@
                 @endif
             </article>
         </div>
-        <template x-if="processing ===true" class="mt-4">
+
+        <template x-if="processing === true" class="mt-4">
             <x-theme.spinner square="8" squareXl="8" theme="teal" />
         </template>
+        
         <div x-show="editing">
             <label for="message" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Edit if needed
                 and save translation.</label>
             <textarea :class="heightClass" x-transition
                 class="block p-4 w-full h-[50rem]   text-gray-900 bg-white rounded-md border border-slate-300 focus:ring-teal-500 focus:border-teal-500"
-                x-html="(modelContent)">
+                x-model="modelContent">
           </textarea>
         </div>
         <div @click="heightClass = ''" x-show="heightClass"
@@ -89,9 +91,3 @@
         </div>
     </div>
 </div>
-
-
-
-
-
-
