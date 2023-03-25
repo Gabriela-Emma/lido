@@ -4,7 +4,7 @@
         <div class="container">
             <div class="lg:grid lg:grid-cols-12 lg:gap-x-5">
                 <aside class="px-2 py-6 sm:px-6 lg:col-span-3 xl:col-span-2 lg:py-0 lg:px-0">
-                    <UserNav/>
+                    <UserNav  crumbs="[]"/>
                 </aside>
 
                 <section class="space-y-6 sm:px-6 lg:col-span-9 xl:col-span-10">
@@ -15,7 +15,7 @@
                             <button type="button"
                                     class="inline-flex items-center gap-x-0.5 rounded-sm bg-slate-600 py-1 px-1.5 hover:text-white text-xs font-semibold text-white shadow-sm hover:bg-slate-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-600">
                                 {{ $t("View") }}
-                                <ArrowTopRightOnSquareIcon class="-mr-0.5 h-3 w-3" aria-hidden="true"/>
+                                <LinkIcon class="-mr-0.5 h-3 w-3" aria-hidden="true"/>
                             </button>
                         </div>
                         <div class="relative isolate h-16 mb-2">
@@ -41,7 +41,7 @@
 </template>
 
 <script lang="ts" setup>
-import {ArrowTopRightOnSquareIcon} from '@heroicons/vue/20/solid';
+import {LinkIcon} from '@heroicons/vue/20/solid';
 import {storeToRefs} from "pinia";
 import {useBookmarksStore} from "../../stores/bookmarks-store";
 import BookmarkCollection from "../../models/bookmark-collection";
@@ -51,6 +51,7 @@ const props = withDefaults(
     defineProps<{
         bookmarkCollections: BookmarkCollection[]
     }>(), {});
+
 
 const bookmarksStore = useBookmarksStore();
 const {collections$} = storeToRefs(bookmarksStore);

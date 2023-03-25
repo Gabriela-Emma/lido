@@ -26,14 +26,14 @@
                             :class="[textColor$, borderColor$]"
                             class="inline-flex items-center gap-x-0.5 rounded-sm border py-1 hover:cursor-not-allowed px-1.5 text-xs font-semibold text-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-600">
                         <ArrowDownTrayIcon class="mr-0.5 h-3 w-3" aria-hidden="true"/>
-                        {{ $t("Export") }} <span class="text-slate-500"> - {{ $t("Coming Soon") }}</span>
+                        {{ $t("Export") }} <span class="text-slate-300"> - {{ $t("Coming Soon") }}</span>
                     </button>
                 </div>
             </section>
 
             <section class="rounded-bl-2xl rounded-r-xs py-16 border-t shadow-md bg-white">
                 <div class="">
-                    <h2 class="text-2xl lg:text-3xl xl:text-4xl px-4 py-4 sm:px-6">
+                    <h2 class="text-xl lg:text-2xl xl:text-3xl px-4 sm:px-6">
                         Proposals
                     </h2>
                     <ul role="list" class="divide-y divide-gray-200">
@@ -42,29 +42,32 @@
                                 <div class="flex items-center px-4 py-4 sm:px-6">
                                     <div class="min-w-0 flex-1 sm:flex sm:items-center sm:justify-between">
                                         <div class="truncate">
-                                            <div class="flex text-sm">
+                                            <div class="flex flex-col text-lg">
                                                 <h3 class="truncate font-medium text-xl xl:text-2xl">
                                                     {{ item.title }}
                                                 </h3>
+                                                <p v-if="item?.content" class="italic">
+                                                    {{item?.content}}
+                                                </p>
                                             </div>
                                             <div class="mt-1">
                                                 <div class="flex flex-row items-center gap-5 text-sm text-slate-500">
                                                     <div class="flex gap-1 items-center">
                                                         <div>{{ $t("Budget") }}</div>
-                                                        <div class="text-slate-700">
+                                                        <div class="text-slate-700 font-semibold">
                                                             {{ $filters.currency(item?.model?.amount_requested) }}
                                                         </div>
                                                     </div>
                                                     <div class="flex gap-1 items-center">
                                                         <div>{{ $t("Fund") }}</div>
-                                                        <div class="text-slate-700">
-                                                            {{ item?.model?.fund?.parent?.title }}
+                                                        <div class="text-slate-700 font-semibold">
+                                                            {{ item?.model?.fund_name }}
                                                         </div>
                                                     </div>
                                                     <div class="flex gap-1 items-center">
                                                         <div>{{ $t("Challenge") }}</div>
-                                                        <div class="text-slate-700">
-                                                            {{ item?.model?.fund?.title }}
+                                                        <div class="text-slate-700 font-semibold">
+                                                            {{ item?.model?.challenge_name }}
                                                         </div>
                                                     </div>
 
@@ -104,7 +107,6 @@ const props = withDefaults(
     defineProps<{
         bookmarkCollection: BookmarkCollection
     }>(), {});
-
 const textColor$ = computed<string>(() =>
     $utils?.contrastColor(props.bookmarkCollection?.color) === 'light' ? 'text-white' : 'text-black'
 );

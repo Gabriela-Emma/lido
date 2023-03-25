@@ -6,7 +6,7 @@
                 <h2 class="text-lg lg:text-xl xl:text-3xl">
                     My Bookmarks
                 </h2>
-                <div class="flex flex-row gap-8 flex-wrap">
+                <div class="gap-6 lg:col-span-9 xl:col-span-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 3xl:grid-cols-5">
                     <BookmarkCollectionCard  v-for="collection in collections$" :collection="collection" />
                 </div>
             </section>

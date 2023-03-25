@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\ProjectCatalyst;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\BookmarkCollectionResource;
 use App\Models\BookmarkCollection;
 use App\Models\BookmarkItem;
 use App\Models\CatalystGroup;
@@ -18,7 +19,7 @@ class CatalystBookmarksController extends Controller
 {
     protected int $perPage = 12;
 
-    public function createItem(Request $request )
+    public function createItem(Request $request)
     {
         $modelTable = $request->get('model_type');
         $data = new Fluent($request->validate([
@@ -59,7 +60,8 @@ class CatalystBookmarksController extends Controller
 
         $collection->refresh();
         $collection->load(['items']);
-        return $collection;
+
+        return (new BookmarkCollectionResource($collection))->toArray($request);
     }
 
     public function createCollection()
@@ -71,7 +73,7 @@ class CatalystBookmarksController extends Controller
     public function view(Request $request, BookmarkCollection $bookmarkCollection)
     {
         return Inertia::render('BookmarkCollection')->with([
-            'bookmarkCollection' => $bookmarkCollection,
+            'bookmarkCollection' => (new BookmarkCollectionResource($bookmarkCollection))->toArray($request),
             'crumbs' => [
                 ['label' => 'Proposals', 'link' => route('catalystExplorer.proposals')],
                 ['label' => 'Bookmarks', 'link' => route('catalystExplorer.bookmarks')],

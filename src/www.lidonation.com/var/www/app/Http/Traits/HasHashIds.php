@@ -4,6 +4,7 @@ namespace App\Http\Traits;
 
 use App\Models\BookmarkCollection;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Vinkla\Hashids\Facades\Hashids;
 
 trait HasHashIds
@@ -22,6 +23,19 @@ trait HasHashIds
     }
 
     /**
+     * Get Model by hashed key.
+     *
+     * @param Builder $query
+     * @param array $hashes
+     *
+     * @return Builder
+     */
+    public function scopeWhereHashIn(Builder $query, array $hashes = []): Builder
+    {
+        return  $query->whereIn('id', collect($hashes)->map( fn($hash) => Hashids::connection(static::class)->decode($hash)));
+    }
+
+    /**
      * Get Model by hash.
      *
      * @param $hash
@@ -31,6 +45,17 @@ trait HasHashIds
     public static function byHash($hash): ?self
     {
         return self::query()->byHash($hash)->first();
+    }
+
+    /**
+     * Get Model by hash.
+     *
+     * @param array $hashes
+     * @return Collection
+     */
+    public static function whereHashIn(array $hashes): Collection
+    {
+        return self::query()->whereHashIn($hashes)->get();
     }
 
     /**

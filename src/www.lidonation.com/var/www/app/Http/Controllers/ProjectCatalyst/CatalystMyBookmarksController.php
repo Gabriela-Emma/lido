@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\ProjectCatalyst;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\BookmarkCollectionResource;
 use App\Models\BookmarkCollection;
 use App\Models\BookmarkItem;
 use App\Models\CatalystGroup;
@@ -59,7 +60,8 @@ class CatalystMyBookmarksController extends Controller
 
         $collection->refresh();
         $collection->load(['items']);
-        return $collection;
+
+        return new BookmarkCollectionResource($collection);
     }
 
     public function createCollection()
@@ -71,7 +73,7 @@ class CatalystMyBookmarksController extends Controller
     public function view(Request $request, BookmarkCollection $bookmarkCollection)
     {
         return Inertia::render('BookmarkCollection')->with([
-            'bookmarkCollection' => $bookmarkCollection,
+            'bookmarkCollection' => new BookmarkCollectionResource($bookmarkCollection),
             'crumbs' => [
                 ['label' => 'Proposals', 'link' => route('catalystExplorer.proposals')],
                 ['label' => 'Bookmarks', 'link' => route('catalystExplorer.bookmarks')],
@@ -83,11 +85,13 @@ class CatalystMyBookmarksController extends Controller
 
     public function index(Request $request)
     {
-        return Inertia::render('Auth/BookmarkCollections')->with([
-            'crumbs' => [
-                ['label' => 'Proposals', 'link' => route('catalystExplorer.proposals')],
-                ['label' => 'Bookmarks', 'link' => route('catalystExplorer.bookmarks')],
-            ],
-        ]);
+        $collections = [];
+        $hashes = $request->get('hashes', false);
+        if ($hashes) {
+            $collections = BookmarkCollection::whereHashIn( $hashes);
+            $collections = (BookmarkCollectionResource::collection($collections))->toArray($request);
+        }
+
+        return $collections;
     }
 }

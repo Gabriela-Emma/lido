@@ -19,6 +19,8 @@ export default interface Proposal {
     website: string;
     repos: Repo[];
     fund?: Fund;
+    fund_name?: string;
+    challenge_name?: string;
     meta_data?: {
         iog_hash: string;
     };
