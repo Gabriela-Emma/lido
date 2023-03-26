@@ -763,14 +763,14 @@ Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
 // translation
 Route::post('/validate/user', [ProposalTranslationController::class, 'validateUser']);
-Route::post('/languageOptions/', [ProposalTranslationController::class, 'getLanguageOptions']);
+Route::get('/language-options', [ProposalTranslationController::class, 'getLanguageOptions']);
 
 Route::group(
     [
         'middleware' => ['auth:'.config('fortify.guard')],
     ], function () {
-        Route::post('/translate/', [ProposalTranslationController::class, 'makeTranslation']);
-        Route::patch('/translation/', [ProposalTranslationController::class, 'updateTranslation']);
+        Route::post('/translate', [ProposalTranslationController::class, 'makeTranslation']);
+        Route::patch('/translation', [ProposalTranslationController::class, 'updateTranslation']);
        });
 
 Route::post('/react/post/{post:id}', [PostController::class, 'createReaction']);

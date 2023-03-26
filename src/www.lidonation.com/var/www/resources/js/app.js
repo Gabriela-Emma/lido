@@ -909,7 +909,7 @@ window.translateProposal = function translateProposal(modelID, currPageLocale , 
         },
         getLangOptions() {
             this.getModelData();
-            window.axios.post('/languageOptions/',this.data)
+            window.axios.get('/language-options',{params:this.data})
                 .then((res) => {
                     this.options = res.data;
                     if (this.transalatorsLang!=null){
@@ -923,7 +923,7 @@ window.translateProposal = function translateProposal(modelID, currPageLocale , 
                 this.getModelData();
                 this.processing = true;
                 this.editing = true;
-                window.axios.post('/translate/', this.data)
+                window.axios.post('/translate', this.data)
                 .then((res) => {
                     this.processing = false;
                     if (this.responseValidity(res.data)) {
@@ -958,7 +958,7 @@ window.translateProposal = function translateProposal(modelID, currPageLocale , 
             this.getModelData();
             this.processing = true;
             this.editing = true;
-            window.axios.post('/translate/', this.data)
+            window.axios.post('/translate', this.data)
             .then((res) => {
                 this.processing = false;
                 if (this.responseValidity(res.data)) {
@@ -984,9 +984,9 @@ window.translateProposal = function translateProposal(modelID, currPageLocale , 
             this.translate = false;
             this.save = false;
             this.getModelData();
-            window.axios.patch('/translation/', this.data)
+            window.axios.patch('/translation', this.data)
             .then((res) => {
-                this.modelContent = res.data;
+                this.modelContent = this.modelContent;
                 this.langExists = false;
             });
         }

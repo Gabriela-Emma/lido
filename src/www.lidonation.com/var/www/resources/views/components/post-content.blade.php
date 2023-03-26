@@ -1,6 +1,6 @@
 @props(['post', 'pageLocale'])
 
-<div class="border border-slate-300 rounded-sm" x-data="translateProposal({{ $post->id }}, '{{ $pageLocale }}','{{$post->type}}')">
+<div class="border border-slate-300 rounded-sm" x-data="translateProposal({{ $post->id }}, '{{ $pageLocale }}','{{class_basename($post->type)}}')">
     @if ($post->content)
         <div x-show="locale === sourceLocale">
             <div class="relative w-full bg-white z-10">
@@ -70,16 +70,18 @@
                 </div>
             </article>
         </div>
-        <template x-if="processing ===true" class="mt-4">
+
+        <template x-if="processing === true" class="mt-4">
             <x-theme.spinner square="8" squareXl="8" theme="teal" />
         </template>
+        
         <div x-show="editing">
             <label for="message" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Edit if needed
                 and save translation.</label>
-            <textarea :class="heightClass" x-transition
+            <textarea  x-transition
                 class="block p-4 w-full h-[50rem]   text-gray-900 bg-white rounded-md border border-slate-300 focus:ring-teal-500 focus:border-teal-500"
-                x-html="(modelContent)">
-          </textarea>
+                x-model="modelContent">
+            </textarea>
         </div>
     </div>
 </div>
