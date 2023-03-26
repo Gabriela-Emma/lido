@@ -136,7 +136,7 @@
                 </div>
             @endif
 
-            <div class="pb-8 bg-white">
+            <div class="pb-8 bg-white relative">
                 <div class="relative px-4 py-8 mx-auto sm:px-6 lg:px-8">
                     <div class="max-w-6xl xl:mx-auto">
                         @if($post->content)
