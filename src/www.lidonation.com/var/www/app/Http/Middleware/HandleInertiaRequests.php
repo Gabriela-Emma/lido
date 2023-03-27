@@ -16,10 +16,9 @@ class HandleInertiaRequests extends Middleware
      */
 //    protected $rootView = 'layouts/catalyst-explorer';
 
-
     public function rootView(Request $request)
     {
-        return match($request->segment(2)) {
+        return match ($request->segment(2)) {
             'catalyst-explorer' => 'layouts/catalyst-explorer',
             'earn' => 'layouts/earn',
             default => 'layout/app'

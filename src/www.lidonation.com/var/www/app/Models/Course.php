@@ -2,11 +2,10 @@
 
 namespace App\Models;
 
-use App\Models\Lesson;
 use App\Models\Traits\HasHero;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Course extends Model
 {
@@ -18,7 +17,4 @@ class Course extends Model
     {
         return $this->belongsToMany(Lesson::class);
     }
-
-
 }
-

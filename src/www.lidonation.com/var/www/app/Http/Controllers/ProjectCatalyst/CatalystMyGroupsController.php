@@ -16,7 +16,7 @@ class CatalystMyGroupsController extends Controller
     protected int $perPage = 8;
 
     public function manage(CatalystGroup $catalystGroup = null)
-    {   
+    {
         $profilesQuery = CatalystUser::with('claimed_by_user')
             ->whereRelation('claimed_by_user', 'id', auth()?->user()?->getAuthIdentifier());
 
@@ -31,14 +31,14 @@ class CatalystMyGroupsController extends Controller
             ]);
     }
 
-    public function create(CatalystUser $catalystUser )
-    {  
+    public function create(CatalystUser $catalystUser)
+    {
         // dd($catalystUser);
         return Inertia::modal('Auth/CreateGroup')
             ->with([
-                'owner' => $catalystUser
+                'owner' => $catalystUser,
             ])->baseRoute('catalystExplorer.myGroups');
-    } 
+    }
 
     /**
      * Display a listing of the resource.
@@ -51,7 +51,8 @@ class CatalystMyGroupsController extends Controller
         $query = CatalystGroup::with('owner')
             ->whereRelation('owner', fn ($query) => $query->whereIn('id', $catalystProfiles));
         $paginator = $query->paginate($this->perPage, ['*'], 'p')?->setPath('/');
-        return Inertia::render('Auth/UserGroups', [  
+
+        return Inertia::render('Auth/UserGroups', [
             'profiles' => CatalystUser::with('claimed_by_user')
             ->whereRelation('claimed_by_user', 'id', auth()?->user()?->getAuthIdentifier())->get(),
             'groups' => $paginator->onEachSide(1)->toArray(),
@@ -66,7 +67,6 @@ class CatalystMyGroupsController extends Controller
      *
      * @return AnonymousResourceCollection
      */
-
     public function proposalsQuery(CatalystGroup $catalystGroup)
     {
         Proposal::withoutGlobalScopes();
@@ -83,7 +83,7 @@ class CatalystMyGroupsController extends Controller
 
         $proposals = $this->proposalsQuery($catalystGroup);
 
-            return $proposals->paginate($per_page, ['*'], 'p', $curr_page)->setPath('/')->onEachSide(0);
+        return $proposals->paginate($per_page, ['*'], 'p', $curr_page)->setPath('/')->onEachSide(0);
     }
 
     public function removeProposal(CatalystGroup $catalystGroup, $proposalID)
@@ -104,7 +104,7 @@ class CatalystMyGroupsController extends Controller
     }
 
     public function getMembers(Request $request, CatalystGroup $catalystGroup)
-    { 
+    {
         $members = CatalystUser::whereRelation('groups', 'id', $catalystGroup?->id)
         ->paginate(8, ['*'], 'p')->setPath('/');
 
@@ -159,8 +159,6 @@ class CatalystMyGroupsController extends Controller
 
     public function metricTotalFundsRemaining(CatalystGroup $catalystGroup)
     {
-        return ($this->metricTotalAwardedFunds($catalystGroup) - $this->metricTotalReceivedFunds($catalystGroup));
-
+        return $this->metricTotalAwardedFunds($catalystGroup) - $this->metricTotalReceivedFunds($catalystGroup);
     }
-
 }

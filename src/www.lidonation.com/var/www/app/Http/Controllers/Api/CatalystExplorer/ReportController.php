@@ -2,25 +2,22 @@
 
 namespace App\Http\Controllers\Api\CatalystExplorer;
 
-use App\Models\User;
-use App\Models\Comment;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
-use App\Models\CatalystReport;
-use Illuminate\Support\Fluent;
 use App\Http\Controllers\Controller;
+use App\Models\CatalystReport;
+use App\Models\NotificationRequestTemplate;
+use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use App\Models\NotificationRequestTemplate;
+use Illuminate\Support\Fluent;
+use Illuminate\Support\Str;
 
 class ReportController extends Controller
 {
     public function listComments(Request $request, CatalystReport $catalystReport)
     {
-
         return $catalystReport?->comments?->toArray();
     }
-
 
     public function createComment(Request $request, CatalystReport $catalystReport)
     {
@@ -60,7 +57,7 @@ class ReportController extends Controller
 
         // get authenticated user or create new one
         $who = User::where('email', $validated->where)?->first();
-        if (!$who instanceof User) {
+        if (! $who instanceof User) {
             $who = new User;
             $who->name = $validated->name;
             $who->email = $validated->where;

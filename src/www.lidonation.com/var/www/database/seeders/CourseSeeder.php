@@ -2,12 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\Course;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Faker\Generator as Faker;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
-use Faker\Generator as Faker;
 
 class CourseSeeder extends Seeder
 {

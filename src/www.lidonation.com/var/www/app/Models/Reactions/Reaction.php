@@ -2,9 +2,9 @@
 
 namespace App\Models\Reactions;
 
-use Parental\HasChildren;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Parental\HasChildren;
 
 class Reaction extends Model
 {

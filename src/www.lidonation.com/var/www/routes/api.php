@@ -1,28 +1,27 @@
 <?php
 
-use App\Models\User;
-use App\Models\Reward;
+use App\Http\Controllers\Api\CatalystExplorer;
+use App\Http\Controllers\Api\Nfts\LidoMinuteNftsController;
+use App\Http\Controllers\Api\Partners\PartnersController;
+use App\Http\Controllers\Api\Phuffycoin\PhuffycoinController;
+use App\Http\Controllers\Delegators\DelegatorController;
+use App\Http\Controllers\GenerateMnemonicPhraseController;
+use App\Http\Controllers\ProjectCatalyst\CatalystProjectsController;
+use App\Http\Controllers\PromoController;
+use App\Http\Controllers\ProposalController;
+use App\Http\Controllers\QuestionResponseController;
+use App\Http\Controllers\RewardController;
+use App\Http\Controllers\SnippetController;
+use App\Models\Catalyst\Ccv4BallotChoice;
 use App\Models\EveryEpoch;
-use Illuminate\Support\Str;
+use App\Models\Reward;
+use App\Models\User;
+use App\Services\CardanoBlockfrostService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\PostController;
-use App\Http\Controllers\PromoController;
-use App\Models\Catalyst\Ccv4BallotChoice;
-use App\Http\Controllers\RewardController;
-use App\Services\CardanoBlockfrostService;
-use App\Http\Controllers\SnippetController;
-use App\Http\Controllers\ProposalController;
-use App\Http\Controllers\Api\CatalystExplorer;
-use App\Http\Controllers\QuestionResponseController;
-use App\Http\Controllers\Delegators\DelegatorController;
-use App\Http\Controllers\Api\Partners\PartnersController;
-use App\Http\Controllers\GenerateMnemonicPhraseController;
-use App\Http\Controllers\Api\Nfts\LidoMinuteNftsController;
-use App\Http\Controllers\Api\Phuffycoin\PhuffycoinController;
-use App\Http\Controllers\ProjectCatalyst\CatalystProjectsController;
+use Illuminate\Support\Str;
 
 /*
 |--------------------------------------------------------------------------
@@ -252,9 +251,7 @@ Route::prefix('catalyst-explorer')->as('catalystExplorerApi.')
         Route::post('proposal/repo', [CatalystExplorer\RepoController::class, 'saveRepo']);
         Route::patch('proposal/repo', [CatalystExplorer\RepoController::class, 'updateRepo']);
 
-
         Route::post('/react/report/{catalystReport:id}', [CatalystExplorer\ReportController::class, 'createReaction']);
-
 
         Route::post('/logout', [CatalystExplorer\UserController::class, 'logout']);
 
