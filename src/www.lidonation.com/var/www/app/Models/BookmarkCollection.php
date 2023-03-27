@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-
 use App\Http\Traits\HasHashIds;
 use App\Models\Traits\HasAuthor;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -29,7 +28,6 @@ class BookmarkCollection extends Model
         );
     }
 
-
     public function bookmarkCollectionId(): Attribute
     {
         return Attribute::make(
@@ -47,7 +45,7 @@ class BookmarkCollection extends Model
     public function link(): Attribute
     {
         return Attribute::make(
-            get: fn() =>  LaravelLocalization::localizeURL("/catalyst-explorer/bookmarks/{$this->hash}/")
+            get: fn () => LaravelLocalization::localizeURL("/catalyst-explorer/bookmarks/{$this->hash}/")
         );
     }
 

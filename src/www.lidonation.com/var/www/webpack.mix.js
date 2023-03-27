@@ -19,11 +19,13 @@ const sassOptions = {
     ]
 };
 
-mix.ts('resources/js/phuffycoin.ts', 'public/js')
+mix.ts('resources/js/catalyst-explorer.ts', 'public/js')
+    .ts('resources/js/earn.ts', 'public/js')
+    .ts('resources/js/phuffycoin.ts', 'public/js')
     .ts('resources/js/delegators.ts', 'public/js')
     .ts('resources/js/rewards.ts', 'public/js')
     .ts('resources/js/governance-marathon.ts', 'public/js')
-    .ts('resources/js/catalyst-explorer.ts', 'public/js')
+
 
     .js('resources/js/partners.ts', 'public/js')
     .js('resources/js/app.js', 'public/js')
@@ -38,10 +40,11 @@ mix.ts('resources/js/phuffycoin.ts', 'public/js')
     .css('node_modules/@splidejs/splide/dist/css/themes/splide-default.min.css', 'public/css')
     .css('node_modules/@splidejs/splide-extension-video/dist/css/splide-extension-video.min.css', 'public/css')
 
+    .sass('resources/sass/catalyst-explorer.scss', 'public/css', {sassOptions})
+    .sass('resources/sass/earn.scss', 'public/css', {sassOptions})
     .sass('resources/sass/bootstrap.scss', 'public/css')
     .sass('resources/sass/partners.scss', 'public/css', {sassOptions})
     .sass('resources/sass/delegators.scss', 'public/css', {sassOptions})
-    .sass('resources/sass/catalyst-explorer.scss', 'public/css', {sassOptions})
     .sass('resources/sass/governance-day.scss', 'public/css', {sassOptions})
     .sass('resources/sass/app.scss', 'public/css', {sassOptions})
 

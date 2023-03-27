@@ -7,8 +7,6 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Livewire\Component;
-use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\NotFoundExceptionInterface;
 
 class ClaimLidoRewardsComponent extends Component
 {
@@ -18,8 +16,6 @@ class ClaimLidoRewardsComponent extends Component
 
     public $rewardsTemplate;
 
-    /**
-     */
     public function loadRewards()
     {
         $this->rewardPot = collect(

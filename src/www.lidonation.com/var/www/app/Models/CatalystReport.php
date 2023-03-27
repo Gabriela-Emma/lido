@@ -2,14 +2,14 @@
 
 namespace App\Models;
 
-use Illuminate\Support\Str;
-use App\Scopes\OrderByDateScope;
-use App\Models\Traits\HasMetaData;
-use Illuminate\Support\Collection;
 use App\Models\Reactions\HasReactions;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Spatie\Comments\Models\Concerns\HasComments;
+use App\Models\Traits\HasMetaData;
+use App\Scopes\OrderByDateScope;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
+use Spatie\Comments\Models\Concerns\HasComments;
 
 class CatalystReport extends Model
 {
@@ -22,7 +22,7 @@ class CatalystReport extends Model
         'party_popper',
         'rocket',
         'thumbs_down',
-        'thumbs_up'
+        'thumbs_up',
     ];
 
     public function getExcerptAttribute($value): string

@@ -2,8 +2,8 @@
 
 namespace App\Nova\Actions;
 
-use Illuminate\Bus\Queueable;
 use Exception;
+use Illuminate\Bus\Queueable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
@@ -41,20 +41,18 @@ class AttachTranslation extends Action
     /**
      * Perform the action on the given models.
      *
-     * @param  \Laravel\Nova\Fields\ActionFields  $fields
-     * @param  \Illuminate\Support\Collection  $models
      * @return mixed
      */
     public function handle(ActionFields $fields, Collection $models)
     {
-        $models->each( function($model) {
+        $models->each(function ($model) {
             try {
                 if ($model->status == 'published') {
                     $obj = App::make($model->source_type);
                     $obj->where('id', $model->source_id)
                         ->update(["content->{$model->lang}" => $model->content]);
 
-                    $this->message = Action::message("Translation attached");
+                    $this->message = Action::message('Translation attached');
                 } else {
                     $this->message = Action::danger('Cannot attach unpublished translation.');
                 }
@@ -69,7 +67,6 @@ class AttachTranslation extends Action
     /**
      * Get the fields available on the action.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function fields(NovaRequest $request)

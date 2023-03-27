@@ -11,11 +11,6 @@ trait HasHashIds
 {
     /**
      * Get Model by hashed key.
-     *
-     * @param Builder $query
-     * @param string|null $hash
-     *
-     * @return Builder
      */
     public function scopeByHash(Builder $query, ?string $hash): Builder
     {
@@ -24,21 +19,15 @@ trait HasHashIds
 
     /**
      * Get Model by hashed key.
-     *
-     * @param Builder $query
-     * @param array $hashes
-     *
-     * @return Builder
      */
     public function scopeWhereHashIn(Builder $query, array $hashes = []): Builder
     {
-        return  $query->whereIn('id', collect($hashes)->map( fn($hash) => Hashids::connection(static::class)->decode($hash)));
+        return  $query->whereIn('id', collect($hashes)->map(fn ($hash) => Hashids::connection(static::class)->decode($hash)));
     }
 
     /**
      * Get Model by hash.
      *
-     * @param $hash
      *
      * @return HasHashIds|BookmarkCollection|null
      */
@@ -49,9 +38,6 @@ trait HasHashIds
 
     /**
      * Get Model by hash.
-     *
-     * @param array $hashes
-     * @return Collection
      */
     public static function whereHashIn(array $hashes): Collection
     {
@@ -61,7 +47,6 @@ trait HasHashIds
     /**
      * Get model by hash or fail.
      *
-     * @param $hash
      *
      * @return HasHashIds|BookmarkCollection
      *

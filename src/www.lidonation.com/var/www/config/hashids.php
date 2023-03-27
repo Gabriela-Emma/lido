@@ -38,22 +38,22 @@ return [
     'connections' => [
 
         \App\Models\BookmarkCollection::class => [
-            'salt' => \App\Models\BookmarkCollection::class . env('APP_KEY'),
+            'salt' => \App\Models\BookmarkCollection::class.env('APP_KEY'),
             'length' => 11,
             'alphabet' => 'abcdefghijklmnopqrstuvwxyz0123456789',
         ],
 
-//        'main' => [
-//            'salt' =>  env('APP_KEY'),
-//            'length' => 4,
-//            // 'alphabet' => 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'
-//        ],
-//
-//        'alternative' => [
-//            'salt' => 'your-salt-string',
-//            'length' => 'your-length-integer',
-//            // 'alphabet' => 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'
-//        ],
+        //        'main' => [
+        //            'salt' =>  env('APP_KEY'),
+        //            'length' => 4,
+        //            // 'alphabet' => 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'
+        //        ],
+        //
+        //        'alternative' => [
+        //            'salt' => 'your-salt-string',
+        //            'length' => 'your-length-integer',
+        //            // 'alphabet' => 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'
+        //        ],
 
     ],
 

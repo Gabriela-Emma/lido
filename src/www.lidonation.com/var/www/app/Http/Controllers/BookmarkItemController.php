@@ -31,7 +31,6 @@ class BookmarkItemController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreBookmarkItemRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function store(StoreBookmarkItemRequest $request)
@@ -42,7 +41,6 @@ class BookmarkItemController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\BookmarkItem  $bookmarkItem
      * @return \Illuminate\Http\Response
      */
     public function show(BookmarkItem $bookmarkItem)
@@ -53,7 +51,6 @@ class BookmarkItemController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\BookmarkItem  $bookmarkItem
      * @return \Illuminate\Http\Response
      */
     public function edit(BookmarkItem $bookmarkItem)
@@ -64,8 +61,6 @@ class BookmarkItemController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateBookmarkItemRequest  $request
-     * @param  \App\Models\BookmarkItem  $bookmarkItem
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateBookmarkItemRequest $request, BookmarkItem $bookmarkItem)
@@ -76,7 +71,6 @@ class BookmarkItemController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\BookmarkItem  $bookmarkItem
      * @return \Illuminate\Http\Response
      */
     public function destroy(BookmarkItem $bookmarkItem)

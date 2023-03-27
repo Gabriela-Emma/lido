@@ -250,7 +250,7 @@ import {computed, Ref, ref, reactive, inject} from "vue";
 import Report from "../../models/report";
 import Comment from "../../models/comment";
 import {useForm, usePage} from "@inertiajs/vue3";
-import User from "../../models/user";
+import User from "../../../global/Shared/Models/user";
 import {CheckCircleIcon} from "@heroicons/vue/20/solid";
 
 

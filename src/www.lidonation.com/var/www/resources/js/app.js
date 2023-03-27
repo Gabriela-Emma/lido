@@ -303,7 +303,7 @@ window.addEventListener('analytics-event-fired', event => {
 
 let catSlider;
 if (document.querySelector('.slider-splide')) {
-    catSlider = new Splide( '.slider-splide', {
+    catSlider = new Splide('.slider-splide', {
         type: 'loop',
         perPage: 4,
         pagePerMove: 1,
@@ -312,32 +312,32 @@ if (document.querySelector('.slider-splide')) {
         drag: 'free',
         pagination: false,
         breakpoints: {
-        1030: {
-            perPage: 3,
-            gap: '.7rem',
-            drag: 'free',
-            padding: '2rem',
+            1030: {
+                perPage: 3,
+                gap: '.7rem',
+                drag: 'free',
+                padding: '2rem',
+            },
+            640: {
+                perPage: 2,
+                gap: '.7rem',
+                padding: '2rem',
+                drag: 'free',
+            },
+            480: {
+                perPage: 1,
+                gap: '.7rem',
+                arrows: false,
+                padding: '2rem',
+                drag: 'free',
+            },
         },
-        640: {
-            perPage: 2,
-            gap: '.7rem',
-            padding: '2rem',
-            drag: 'free',
-        },
-        480: {
-            perPage: 1,
-            gap: '.7rem',
-            arrows: false,
-            padding: '2rem',
-            drag: 'free',
-        },
-        },
-      } ).mount();
+    }).mount();
 }
 
 let minuteSplide;
 if (document.querySelector('.minute-splide')) {
-    minuteSplide = new Splide( '.minute-splide', {
+    minuteSplide = new Splide('.minute-splide', {
         type: 'loop',
         perPage: 3,
         pagePerMove: 1,
@@ -346,21 +346,21 @@ if (document.querySelector('.minute-splide')) {
         drag: 'free',
         pagination: false,
         breakpoints: {
-        1030: {
-            perPage: 2,
-            gap: '.7rem',
-            padding: '2rem',
-            drag: 'free',
+            1030: {
+                perPage: 2,
+                gap: '.7rem',
+                padding: '2rem',
+                drag: 'free',
+            },
+            480: {
+                perPage: 1,
+                gap: '.7rem',
+                padding: '2rem',
+                arrows: false,
+                drag: 'free',
+            },
         },
-        480: {
-            perPage: 1,
-            gap: '.7rem',
-            padding: '2rem',
-            arrows: false,
-            drag: 'free',
-        },
-        },
-      } ).mount();
+    }).mount();
 }
 
 let secondarySlider, primarySlider;
@@ -851,9 +851,9 @@ window.cardanoWallet = cardanoWallet;
 window.globalVideoPlayer = globalVideoPlayer;
 
 // translate proposal
-window.translateProposal = function translateProposal(modelID, currPageLocale , modelClass) {
+window.translateProposal = function translateProposal(modelID, currPageLocale, modelClass) {
     return {
-        loggedIn:false,
+        loggedIn: false,
         translate: false,
         editing: false,
         startTranslation: false,
@@ -867,14 +867,14 @@ window.translateProposal = function translateProposal(modelID, currPageLocale , 
             content: '',
             sourceLanguage: '',
             targetLanguage: '',
-            model_type :'',
-            model_id:'',
-            updates:'',
+            model_type: '',
+            model_id: '',
+            updates: '',
         },
         processing: false,
-        translationUpdates:{
-            updates:'',
-            translationLang:''
+        translationUpdates: {
+            updates: '',
+            translationLang: ''
         },
         locale:null,
         sourceLocale:null,
@@ -894,24 +894,23 @@ window.translateProposal = function translateProposal(modelID, currPageLocale , 
         },
         checkLogin() {
             this.getModelData();
-            axios.post('/validate/user',this.data).then(res => {
-                if(res.data === null){
+            axios.post('/validate/user', this.data).then(res => {
+                if (res.data === null) {
                     this.loggedIn = false;
                 }
                 if(typeof res.data === 'string'){
                     this.translatorsLang = res.data
                     this.loggedIn = true;
                 }
-                if(typeof res.data === 'number'){
+                if (typeof res.data === 'number') {
                     this.loggedIn = true;
                     this.langExists = true;
                 }
-            }).catch(error => {
-            });
+            }).catch(error => {});
         },
         getLangOptions() {
             this.getModelData();
-            window.axios.get('/language-options',{params:this.data})
+            window.axios.get('/language-options', {params: this.data})
                 .then((res) => {
                     this.options = res.data;
                     if (this.translatorsLang!=null){
@@ -969,9 +968,8 @@ window.translateProposal = function translateProposal(modelID, currPageLocale , 
             this.processing = true;
             this.makeRequest();
         },
-        responseValidity(res){
-            if ((res.length/this.modelContent.length ) >= 0.3)
-            {
+        responseValidity(res) {
+            if ((res.length / this.modelContent.length) >= 0.3) {
                 return true;
             }
             return false;
@@ -993,8 +991,7 @@ window.globalReactions = function globalReactions(counts) {
     return {
         reactionsCount: counts,
 
-
-        async addReaction(reaction, id){
+        async addReaction(reaction, id) {
             let data = {
                 comment: reaction
             }

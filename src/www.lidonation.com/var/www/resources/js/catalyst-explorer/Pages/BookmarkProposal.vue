@@ -276,7 +276,7 @@ import Modal from '../Shared/Components/Modal.vue';
 import Challenge from "../models/challenge";
 import Proposal from "../models/proposal";
 import {usePage} from "@inertiajs/vue3";
-import User from "../models/user";
+import User from "../../global/Shared/Models/user";
 import Login from "./Auth/Login.vue";
 import {useBookmarksStore} from "../stores/bookmarks-store";
 import Multiselect from '@vueform/multiselect';

@@ -16,11 +16,12 @@ class SnippetController extends Controller
      * @return Response
      */
     public function index()
-    {   $snippets = DB::table('snippets')->get();
+    {
+        $snippets = DB::table('snippets')->get();
         $snippetsRes = [];
         foreach ($snippets as $snippet) {
             $snippetContent = json_decode($snippet->content);
-            foreach($snippetContent as $key => $value) {
+            foreach ($snippetContent as $key => $value) {
                 $snippetsRes[$key][$snippet->name] = $value;
             }
         }

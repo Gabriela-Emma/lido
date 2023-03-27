@@ -1,6 +1,6 @@
 @props(['post', 'pageLocale'])
 
-<div class="border border-slate-300 rounded-sm" x-data="translateProposal({{ $post->id }}, '{{ $pageLocale }}','{{class_basename($post->type)}}')">
+<div class="" x-data="translateProposal({{ $post->id }}, '{{ $pageLocale }}','{{class_basename($post->type)}}')">
     @if ($post->content)
         <div x-show="locale === sourceLocale">
             <div class="relative w-full bg-white z-10">
@@ -37,7 +37,7 @@
                     </div>
                 </div>
             </template>
-            <div class="flex flex-col" x-show=" save ">
+            <div class="flex flex-col" x-show="save">
                 <p class="flex flex-row mb-2">
                     Open English text in another tab.
                     <a class="flex flex-row" href="/posts/{{ $post->slug }}" target="_blank">
@@ -68,7 +68,7 @@
                     @if(Lang::has($post->getTable() . '.' . $post->slug ))
                         <x-markdown>{{__($post->getTable() . '.' . $post->slug)}}</x-markdown>
                     @else
-                        <x-markdown x-html="marked.parse(modelContent)"></x-markdown>
+                        <x-markdown>{{$post->content}}</x-markdown>
                     @endif
                 </div>
             </article>

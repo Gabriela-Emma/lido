@@ -1,13 +1,14 @@
 <?php
+
 namespace App\Http\Controllers;
 
-use App\Models\Meta;
-use App\Models\User;
 use App\Enums\RoleEnum;
+use App\Models\Meta;
 use App\Models\Translation;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
+use App\Models\User;
 use App\Services\TranslationService;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class ModelTranslationController extends Controller
 {
@@ -16,7 +17,7 @@ class ModelTranslationController extends Controller
     public function validateUser(Request $request)
     {
         $user = $request->user();
-        if (!isset($user)) {
+        if (! isset($user)) {
             return response()->json([]);
         }
         // user translation meta
@@ -27,8 +28,10 @@ class ModelTranslationController extends Controller
         }
         // if new translator
         $user->assignRole((string) RoleEnum::translator());
+
         return $user->id;
     }
+
     public function getLanguageOptions(Request $request)
     {
         $model = $this->matchModel($request->model_type, $request->model_id);
@@ -45,6 +48,7 @@ class ModelTranslationController extends Controller
             if (in_array($allLocales['key'], $excludedLangs)) {
                 return null;
             }
+
             return [
                 'name' => $allLocales['native'],
                 'value' => $allLocales['key'],
@@ -54,6 +58,7 @@ class ModelTranslationController extends Controller
         // Remove null values from the resulting array
         $result = array_filter($result);
         $json = json_encode(array_values($result));
+
         return $json;
     }
 
@@ -65,7 +70,6 @@ class ModelTranslationController extends Controller
             $this->setTranslatorMetas($request->user(), $request->targetLanguage);
         }
 
-        
         $content = $model->getTranslation($this->field, $request->sourceLanguage, false);
 
         $translationService = $translationService
@@ -73,32 +77,33 @@ class ModelTranslationController extends Controller
             ->setSourceLang($request->sourceLanguage);
 
         $translationService = $translationService->translate($content, $request->targetLanguage, $request->sourceLanguage);
-        $translationService->save($model, $this->field,);
+        $translationService->save($model, $this->field);
 
         return $translationService->get();
     }
 
     public function updateTranslation(Request $request)
-    {  
+    {
         $model = $this->matchModel($request->model_type, $request->model_id);
-        
-         $translation = Translation::where('source_id', $request->model_id)->where('lang', $request->targetLanguage)->first();
-         $translation->update([
-                'content' => $request->content,
-                'published_at' => now(),
-                'status' => 'published',
-            ]);
+
+        $translation = Translation::where('source_id', $request->model_id)->where('lang', $request->targetLanguage)->first();
+        $translation->update([
+            'content' => $request->content,
+            'published_at' => now(),
+            'status' => 'published',
+        ]);
 
         $model->setTranslation($this->field, $request->targetLanguage, $translation->content);
-    
+
         $translatedContent = null;
-        while ($translatedContent === null ) {
-            $translatedContent = $model->getTranslation($this->field,$request->targetLanguage,false);
+        while ($translatedContent === null) {
+            $translatedContent = $model->getTranslation($this->field, $request->targetLanguage, false);
             sleep(1);
         }
+
         return $translatedContent;
     }
-    
+
     public function setTranslatorMetas(User $user, $lang)
     {
         $meta = new Meta;
@@ -112,12 +117,14 @@ class ModelTranslationController extends Controller
     public function getTranslatorMetas(User $user)
     {
         $USER_TRANSLATES_LANGUAGE = $user->metas()->where('key', 'lang')->pluck($this->field)->first();
+
         return $USER_TRANSLATES_LANGUAGE;
     }
 
     public function matchModel($modelTable, $model_id)
     {
-        $modelType = 'App\\Models\\' . Str::studly(Str::singular($modelTable));
+        $modelType = 'App\\Models\\'.Str::studly(Str::singular($modelTable));
+
         return $modelType::find($model_id);
     }
 

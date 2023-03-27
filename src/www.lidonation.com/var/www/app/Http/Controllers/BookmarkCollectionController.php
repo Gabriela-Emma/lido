@@ -31,7 +31,6 @@ class BookmarkCollectionController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreBookmarkCollectionRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function store(StoreBookmarkCollectionRequest $request)
@@ -42,7 +41,6 @@ class BookmarkCollectionController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\BookmarkCollection  $bookmarkCollection
      * @return \Illuminate\Http\Response
      */
     public function show(BookmarkCollection $bookmarkCollection)
@@ -53,7 +51,6 @@ class BookmarkCollectionController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\BookmarkCollection  $bookmarkCollection
      * @return \Illuminate\Http\Response
      */
     public function edit(BookmarkCollection $bookmarkCollection)
@@ -64,8 +61,6 @@ class BookmarkCollectionController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateBookmarkCollectionRequest  $request
-     * @param  \App\Models\BookmarkCollection  $bookmarkCollection
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateBookmarkCollectionRequest $request, BookmarkCollection $bookmarkCollection)
@@ -76,7 +71,6 @@ class BookmarkCollectionController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\BookmarkCollection  $bookmarkCollection
      * @return \Illuminate\Http\Response
      */
     public function destroy(BookmarkCollection $bookmarkCollection)

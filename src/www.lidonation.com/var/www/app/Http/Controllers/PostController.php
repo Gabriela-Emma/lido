@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Post;
 use App\Models\Category;
-use Illuminate\Http\Request;
-use Illuminate\Support\Fluent;
-use Illuminate\Contracts\View\View;
+use App\Models\Post;
 use App\Repositories\PostRepository;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\Foundation\Application;
-use Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Fluent;
 use Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist;
+use Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig;
 
 class PostController extends Controller
 {

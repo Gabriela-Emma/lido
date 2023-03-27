@@ -14,7 +14,16 @@ class HandleInertiaRequests extends Middleware
      *
      * @var string
      */
-    protected $rootView = 'layouts/catalyst-explorer';
+//    protected $rootView = 'layouts/catalyst-explorer';
+
+    public function rootView(Request $request)
+    {
+        return match ($request->segment(2)) {
+            'catalyst-explorer' => 'layouts/catalyst-explorer',
+            'earn' => 'layouts/earn',
+            default => 'layout/app'
+        };
+    }
 
     /**
      * Determines the current asset version.

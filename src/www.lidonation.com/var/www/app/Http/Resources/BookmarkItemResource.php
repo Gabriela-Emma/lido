@@ -13,11 +13,11 @@ class BookmarkItemResource extends JsonResource
      * Transform the resource into an array.
      *
      * @param  Request  $request
-     * @return array|Arrayable|\JsonSerializable
      */
     public function toArray($request): array|\JsonSerializable|Arrayable
     {
-        $modelResource = "App\\Http\\Resources\\" . Str::studly(Str::singular(class_basename($this->model))) . "Resource";
+        $modelResource = 'App\\Http\\Resources\\'.Str::studly(Str::singular(class_basename($this->model))).'Resource';
+
         return [
             'id' => $this->id,
             'bookmark_collection_id' => $this->bookmark_collection_id,

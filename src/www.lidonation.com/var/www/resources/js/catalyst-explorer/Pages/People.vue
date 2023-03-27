@@ -33,7 +33,7 @@ import Pagination from "../Shared/Components/Pagination.vue";
 import {ref, watch} from "vue";
 import {router} from "@inertiajs/vue3";
 import {VARIABLES} from "../models/variables";
-import User from "../models/user"
+import User from "../../global/Shared/Models/user"
 import People from "../modules/people/People.vue"
 const props = withDefaults(
     defineProps<{

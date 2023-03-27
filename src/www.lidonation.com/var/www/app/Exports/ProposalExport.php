@@ -5,8 +5,8 @@ namespace App\Exports;
 use App\Models\Proposal;
 use Illuminate\Contracts\Translation\HasLocalePreference;
 use Illuminate\Database\Eloquent\Builder;
-use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\Exportable;
+use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 use Maatwebsite\Excel\Concerns\WithHeadings;
@@ -23,11 +23,9 @@ class ProposalExport implements FromQuery, WithHeadings, WithMapping, HasLocaleP
     public function __construct(
         protected $proposals,
         protected string $locale
-    ){}
+    ) {
+    }
 
-    /**
-    * @return Builder
-     */
     public function query(): Builder
     {
         return Proposal::query()->whereKey($this->proposals);
@@ -49,7 +47,7 @@ class ProposalExport implements FromQuery, WithHeadings, WithMapping, HasLocaleP
             $row->problem,
             $row->solution,
             $row->experience,
-            $row->definition_of_success
+            $row->definition_of_success,
         ];
     }
 
@@ -70,7 +68,7 @@ class ProposalExport implements FromQuery, WithHeadings, WithMapping, HasLocaleP
             'solution',
             'experience',
             'definition_of_success',
-            'ideascale_link'
+            'ideascale_link',
         ];
     }
 
@@ -92,10 +90,10 @@ class ProposalExport implements FromQuery, WithHeadings, WithMapping, HasLocaleP
     public function properties(): array
     {
         return [
-            'title'        => 'Catalyst Explorer Proposals',
-            'subject'        => 'Proposals',
-            'category'        => 'Catalyst Explorer',
-            'description'        => 'LIDO Nation Catalyst Explorer Proposals Export',
+            'title' => 'Catalyst Explorer Proposals',
+            'subject' => 'Proposals',
+            'category' => 'Catalyst Explorer',
+            'description' => 'LIDO Nation Catalyst Explorer Proposals Export',
         ];
     }
 }
