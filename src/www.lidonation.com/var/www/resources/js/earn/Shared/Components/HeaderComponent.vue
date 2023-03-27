@@ -62,7 +62,8 @@
 import {computed, inject} from 'vue'
 import {Link} from '@inertiajs/vue3';
 import {usePage} from '@inertiajs/vue3';
-import User from "../../models/user";
+import User from "../../../global/Shared/Models/user";
+
 const $utils: any = inject('$utils');
 
 const props = withDefaults(

@@ -42,7 +42,7 @@ import {computed, inject} from "vue";
 import {usePage} from "@inertiajs/vue3";
 import {LinkIcon} from '@heroicons/vue/20/solid';
 
-import User from "../../models/user";
+import User from "../../../global/Shared/Models/user";
 import BookmarkCollection from "../../models/bookmark-collection";
 
 
