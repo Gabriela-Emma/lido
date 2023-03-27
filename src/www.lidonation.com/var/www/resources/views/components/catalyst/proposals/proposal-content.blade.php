@@ -4,7 +4,7 @@
     @if ($proposal->content)
         <div x-show="locale === sourceLocale">
             <div class="relative w-full bg-white z-10">
-                <div x-show="!loggedIn" x-init="getContent({{ json_encode($proposal->content) }})"
+                <div x-show="!loggedIn"
                     class="mb-3 absolute rounded-sm px-1 py-0.5 right-1 top-1 text-sm bg-yellow-500 border border-yellow-800 text-pink-600 font-semibold hover:text-teal-800">
                     Help Translate! <a href="/catalyst-explorer/login">login</a>
                 </div>
@@ -17,8 +17,8 @@
             </div>
         </div>
         <div class="pt-4 flex flex-row justify-center w-full" x-show="loggedIn && translate">
-            <template x-if="translate && !editing">
-                <div class="flex flex-col items-end bg-white shadow-sm border z-10 w-96 rounded-sm p-3">
+            <template x-if="translate && !editing && translatorsLang === null">
+                <div class="flex flex-col items-end bg-white shadow-sm border z-10 w-96 rounded-sm p-3" >
                     <div class="w-full">
                         <select x-model="targetLang"
                             class="bg-gray-50 border border-gray-300 text-gray-900 mb-6 text-sm rounded-sm focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500">
@@ -60,6 +60,9 @@
     @endif
     <div x-data="{ heightClass: 'max-h-[50rem] overflow-clip', funded: @js($proposal->funded) }" :class=" { editing: 'h-full' }" class="relative p-4 break-normal" x-show="1">
         <div>
+            <template x-if="processing === true" class="mt-4">
+                <x-theme.spinner square="8" squareXl="8" theme="teal" />
+            </template>
             <article :class="heightClass" x-transition x-show="!editing">
                 @if ($proposal->content)
                     <x-markdown x-html="marked.parse(modelContent)"></x-markdown>
@@ -70,10 +73,6 @@
                 @endif
             </article>
         </div>
-
-        <template x-if="processing === true" class="mt-4">
-            <x-theme.spinner square="8" squareXl="8" theme="teal" />
-        </template>
         
         <div x-show="editing">
             <label for="message" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Edit if needed

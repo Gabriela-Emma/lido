@@ -17,6 +17,7 @@ import WalletService from "@/lib/services/WalletService";
 import {globalVideoPlayer} from "@/lib/utils/globalVideoPlayer";
 import tippy from "tippy.js";
 import masonry from 'alpinejs-masonry';
+import { marked } from 'marked';
 
 Chart.register(WordCloudController, WordElement);
 window.Alpine = Alpine;
@@ -878,15 +879,17 @@ window.translateProposal = function translateProposal(modelID, currPageLocale , 
         locale:null,
         sourceLocale:null,
         save:false,
-        transalatorsLang:null,
+        translatorsLang:null,
         langExists:false,
         init() {
         this.checkLogin();
-        this.sourceLocale = currPageLocale.toString()
+        this.sourceLocale = currPageLocale
         this.locale = 'en';
-        this.getLangOptions()
+        this.getLangOptions();
+        this.getModelData();
+        this.getContent();
         },
-        getTargetLocal(val) {
+        getTargetLocale(val) {
             this.sourceLocale=val
         },
         checkLogin() {
@@ -895,9 +898,8 @@ window.translateProposal = function translateProposal(modelID, currPageLocale , 
                 if(res.data === null){
                     this.loggedIn = false;
                 }
-                if(typeof res.data === 'string')
-                {
-                    this.transalatorsLang = res.data
+                if(typeof res.data === 'string'){
+                    this.translatorsLang = res.data
                     this.loggedIn = true;
                 }
                 if(typeof res.data === 'number'){
@@ -912,39 +914,47 @@ window.translateProposal = function translateProposal(modelID, currPageLocale , 
             window.axios.get('/language-options',{params:this.data})
                 .then((res) => {
                     this.options = res.data;
-                    if (this.transalatorsLang!=null){
-                        this.langExists = this.options.some(option => option.value === this.transalatorsLang);
+                    if (this.translatorsLang!=null){
+                        this.langExists = this.options.some(option => option.value === this.translatorsLang);
                     }
                 })
         },
+        getContent(){
+            window.axios.get('/model-content',{params:this.data})
+            .then(res => {
+                this.modelContent = this.replaceShortcodes(res.data);
+            });
+        },
+        replaceShortcodes(data){
+            const linkRegex = /\[link model_type='link' id='(\d+)'?\]([^\]]+)\[\/link\]/g;
+            const replacedContent = data.replace(linkRegex, '<a href="/links/$1">$2</a>');
+            return replacedContent;
+        },
         translateContent(){
-            if(this.transalatorsLang != null){
-                this.targetLang = this.transalatorsLang;
+            if(this.translatorsLang != null){
+                this.targetLang = this.translatorsLang;
                 this.getModelData();
                 this.processing = true;
-                this.editing = true;
-                window.axios.post('/translate', this.data)
-                .then((res) => {
-                    this.processing = false;
-                    if (this.responseValidity(res.data)) {
-                        this.modelContent = res.data;
-                        this.save = true;
-                        this.langExists = false;
-                        } else {
-                        this.modelContent = this.modelContent;
-                        this.save = true;
-                        this.langExists = false;
-                    }
-                }
-                )
+                this.makeRequest();
+
             }
             this.translate = !this.translate;
         },
-        getContent(content) {
-            this.modelContent = content;
-        },
-        getModelID(id) {
-            this.model_id = id;
+        makeRequest(){
+            window.axios.post('/translate', this.data)
+            .then((res) => {
+                this.processing = false;
+                this.editing = true;
+                if (this.responseValidity(res.data)) {
+                    this.modelContent =res.data;
+                    this.save = true;
+                    this.langExists = false;
+                    } else {
+                    this.save = true;
+                    this.langExists = false;
+                }
+            }
+            )
         },
         getModelData() {
             this.data.content = this.modelContent;
@@ -957,20 +967,7 @@ window.translateProposal = function translateProposal(modelID, currPageLocale , 
         getTranslation() {
             this.getModelData();
             this.processing = true;
-            this.editing = true;
-            window.axios.post('/translate', this.data)
-            .then((res) => {
-                this.processing = false;
-                if (this.responseValidity(res.data)) {
-                    this.modelContent = res.data;
-                    this.save = true;
-                    this.langExists = false;
-                    } else {
-                    this.modelContent = this.modelContent;
-                    this.save = true;
-                    this.langExists = false;
-                }}
-            )
+            this.makeRequest();
         },
         responseValidity(res){
             if ((res.length/this.modelContent.length ) >= 0.3)
@@ -986,7 +983,6 @@ window.translateProposal = function translateProposal(modelID, currPageLocale , 
             this.getModelData();
             window.axios.patch('/translation', this.data)
             .then((res) => {
-                this.modelContent = this.modelContent;
                 this.langExists = false;
             });
         }

@@ -1,7 +1,5 @@
 <?php
 
-use App\Http\Controllers\ProjectCatalyst\CatalystBookmarksController;
-use App\Http\Controllers\ProjectCatalyst\CatalystMyBookmarksController;
 use App\Models\Mint;
 use Inertia\Inertia;
 use App\Models\Review;
@@ -28,6 +26,7 @@ use App\Http\Controllers\NewsletterController;
 use App\Http\Livewire\Library\LibraryComponent;
 use App\Http\Controllers\GlobalSearchController;
 use App\Http\Controllers\VerifyWalletController;
+use App\Http\Controllers\ModelTranslationController;
 use App\Http\Controllers\AnonymousBookmarkController;
 use App\Http\Controllers\TwitterAttendanceController;
 use App\Http\Livewire\Catalyst\CatalystFundComponent;
@@ -57,9 +56,11 @@ use Laravel\Fortify\Http\Controllers\ConfirmablePasswordController;
 use App\Http\Controllers\ProjectCatalyst\CatalystMyGroupsController;
 use App\Http\Controllers\ProjectCatalyst\CatalystProjectsController;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
+use App\Http\Controllers\ProjectCatalyst\CatalystBookmarksController;
 use App\Http\Controllers\ProjectCatalyst\CatalystVoterToolController;
 use App\Http\Livewire\ContributeContent\ContributeRecordingComponent;
 use App\Http\Controllers\ProjectCatalyst\CatalystAssessmentsController;
+use App\Http\Controllers\ProjectCatalyst\CatalystMyBookmarksController;
 use App\Http\Controllers\ProjectCatalyst\CatalystMyDashboardController;
 use App\Http\Controllers\ProjectCatalyst\CatalystMyProposalsController;
 use Laravel\Fortify\Http\Controllers\ConfirmedPasswordStatusController;
@@ -762,15 +763,16 @@ Route::post('reset-password', [ForgotPasswordController::class, 'submitResetPass
 Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
 // translation
-Route::post('/validate/user', [ProposalTranslationController::class, 'validateUser']);
-Route::get('/language-options', [ProposalTranslationController::class, 'getLanguageOptions']);
+Route::post('/validate/user', [ModelTranslationController::class, 'validateUser']);
+Route::get('/language-options', [ModelTranslationController::class, 'getLanguageOptions']);
+Route::get('/model-content', [ModelTranslationController::class, 'getContent']);
 
 Route::group(
     [
         'middleware' => ['auth:'.config('fortify.guard')],
     ], function () {
-        Route::post('/translate', [ProposalTranslationController::class, 'makeTranslation']);
-        Route::patch('/translation', [ProposalTranslationController::class, 'updateTranslation']);
+        Route::post('/translate', [ModelTranslationController::class, 'makeTranslation']);
+        Route::patch('/translation', [ModelTranslationController::class, 'updateTranslation']);
        });
 
 Route::post('/react/post/{post:id}', [PostController::class, 'createReaction']);

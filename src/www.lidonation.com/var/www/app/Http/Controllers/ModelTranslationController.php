@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Services\TranslationService;
 
-class ProposalTranslationController extends Controller
+class ModelTranslationController extends Controller
 {
     public $field = 'content';
 
@@ -108,14 +108,24 @@ class ProposalTranslationController extends Controller
         $meta->content = $lang;
         $meta->save();
     }
+
     public function getTranslatorMetas(User $user)
     {
         $USER_TRANSLATES_LANGUAGE = $user->metas()->where('key', 'lang')->pluck($this->field)->first();
         return $USER_TRANSLATES_LANGUAGE;
     }
+
     public function matchModel($modelTable, $model_id)
     {
         $modelType = 'App\\Models\\' . Str::studly(Str::singular($modelTable));
         return $modelType::find($model_id);
     }
+
+    public function getContent(Request $request)
+    {
+        $model = $this->matchModel($request->model_type, $request->model_id);
+
+        return $model->content;
+    }
+
 }
