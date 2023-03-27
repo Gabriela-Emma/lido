@@ -68,7 +68,7 @@
         <div class="relative w-full">
             <div class="splide podcast-slides w-full"
                  x-ref="podcastSlides" id="lido-minute-{{$post->id}}"
-                 aria-label="Splide Shader Carousel Example">
+                 aria-label="{{$post->title}} slid">
                 <div class="splide__track">
                     <div class="splide__list">
                         <div class="splide__slide relative">
@@ -81,6 +81,7 @@
                                 <x-podcast.promo
                                     :promo="$post->nfts->filter(fn($nft) => $nft->promos->isNotEmpty())?->random()?->promos?->random()"
                                     :post="$post" />
+                                @include('podcast.info-bar')
                             </div>
                         @else
                             <div class="splide__slide relative">

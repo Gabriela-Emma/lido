@@ -345,7 +345,7 @@ if (document.querySelector('.minute-splide')) {
         drag: 'free',
         pagination: false,
         breakpoints: {
-            1030: {
+            1080: {
                 perPage: 2,
                 gap: '.7rem',
                 padding: '2rem',
