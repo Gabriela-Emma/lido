@@ -38,7 +38,7 @@
                 mediaQuery: 'min',
                 mask      : '/img/wave01.jpg',
                 material: {
-                    intensity: 0.6
+                    intensity: 0.5
                 },
                 breakpoints: {
                     1024: {
