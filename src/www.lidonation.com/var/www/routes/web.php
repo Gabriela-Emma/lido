@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Earn\LearnController;
 use App\Http\Controllers\ProjectCatalyst\CatalystBookmarksController;
 use App\Http\Controllers\ProjectCatalyst\CatalystMyBookmarksController;
 use App\Models\Mint;
@@ -176,11 +177,21 @@ Route::group(
                 ->name('group');
         });
 
+        Route::prefix('/earn')->as('earn.')->group(function () {
+            Route::get('/')->name('learn')->name('home');
+            Route::middleware([])->prefix('/learn')->group(function () {
+                Route::get('/', [LearnController::class, 'index'])->name('learn');
+            });
+            Route::middleware(['auth.catalyst'])->prefix('/my')->group(function () {
+
+            });
+        });
+
         Route::prefix('/catalyst-explorer')->as('catalystExplorer.')->group(function () {
             Route::get('/login', fn () => Inertia::render('Auth/Login'))
                 ->name('login');
 
-            Route::get('/auth/login' ,[UserController::class, 'utilityLogin']);
+            Route::get('/auth/login', [UserController::class, 'utilityLogin']);
 
             Route::get('/register', fn () => Inertia::render('Auth/Register'))
                 ->name('register');

@@ -1,19 +1,16 @@
 import {createInertiaApp, usePage} from "@inertiajs/vue3";
 import {createApp, h, nextTick, watch} from "vue";
 import {createI18n} from 'vue-i18n'
-import Layout from "./catalyst-explorer/Shared/Layout.vue";
+import Layout from "./earn/Shared/Layout.vue";
 import {createPinia} from "pinia";
 import {marked} from 'marked';
-import HeaderComponent from './catalyst-explorer/Shared/Components/HeaderComponent.vue';
+import HeaderComponent from './earn/Shared/Components/HeaderComponent.vue';
 import PrimeVue from 'primevue/config';
 import route from "ziggy-js";
 import {modal} from "momentum-modal";
 import timeago from 'vue-timeago3';
-import moment from "moment-timezone";
-import {shortNumber} from "./lib/utils/shortNumber";
-import {currency} from "./lib/utils/currency";
 import {timeAgo} from "./lib/utils/timeago";
-import {contrastColor} from "./lib/utils/contrastColor";
+import {currency} from "./lib/utils/currency";
 let messages = require('../../storage/app/snippets.json');
 const axios = require('axios');
 
@@ -22,10 +19,10 @@ axios.get(`${window.location.origin}/api/cache/snippets`);
 
 createInertiaApp({
     progress: {
-        color: '#fcdc0b',
+        color: '#C02025',
     },
     resolve: name => {
-        const page = require(`./catalyst-explorer/Pages/${name}`).default;
+        const page = require(`./earn/Pages/${name}`).default;
         page.layout ??= Layout;
 
         return page
@@ -50,7 +47,7 @@ createInertiaApp({
         const app = createApp({ render: () => h(App, props) })
             .use(plugin)
             .use(modal, {
-                resolve: (name) => import(`./catalyst-explorer/Pages/${name}`),
+                resolve: (name) => import(`./earn/Pages/${name}`),
             })
             .use(PrimeVue)
             .use(timeago)
@@ -75,7 +72,6 @@ createInertiaApp({
         });
 
         app.config.globalProperties.$filters = {
-            shortNumber: shortNumber,
             currency: currency,
             timeAgo: timeAgo,
             number(number, maximumSignificantDigits = 2, locale: string = 'en-US') {
@@ -83,7 +79,7 @@ createInertiaApp({
             },
             markdown(value) {
                 return marked.parse(value);
-            },
+            }
         };
 
         app.provide('$utils', {
@@ -95,8 +91,7 @@ createInertiaApp({
             assetUrl(value) {
                 const base = usePage().props?.asset_url;
                 return `${base}${value}`
-            },
-            contrastColor: contrastColor
+            }
         });
 
         app.config.globalProperties.$route = route;
