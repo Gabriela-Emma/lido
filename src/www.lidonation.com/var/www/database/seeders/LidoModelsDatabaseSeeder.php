@@ -23,13 +23,8 @@ class LidoModelsDatabaseSeeder extends Seeder
             CategorySeeder::class,
             LinkSeeder::class,
             TagSeeder::class,
-
-            TeamSeeder::class,
-            OnboardingContentSeeder::class,
-            PostSeeder::class,
-            NewsSeeder::class,
-            InsightsSeeder::class,
-            ReviewsSeeder::class,
+            ArticlesSeeder::class,
+            TeamSeeder::class
         ]);
     }
 }
