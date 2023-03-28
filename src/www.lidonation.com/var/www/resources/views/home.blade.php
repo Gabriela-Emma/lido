@@ -184,8 +184,7 @@
 
                                                     @if($post->categories->isNotEmpty())
                                                         @foreach($post->categories as $tax)
-                                                            <x-public.post-taxonomies :tax="$tax"
-                                                                                      textColor="text-white"></x-public.post-taxonomies>
+                                                            <x-public.post-taxonomies :tax="$tax"></x-public.post-taxonomies>
                                                         @endforeach
                                                     @endif
                                                     @if($post->tags->isNotEmpty())
@@ -671,8 +670,7 @@
 
                                                 @if($post->categories->isNotEmpty())
                                                     @foreach($post->categories as $tax)
-                                                        <x-public.post-taxonomies :tax="$tax"
-                                                                                  textColor="text-white"></x-public.post-taxonomies>
+                                                        <x-public.post-taxonomies :tax="$tax"></x-public.post-taxonomies>
                                                     @endforeach
                                                 @endif
                                                 @if($post->tags->isNotEmpty())
