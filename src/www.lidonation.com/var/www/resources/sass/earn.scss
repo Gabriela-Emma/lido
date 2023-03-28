@@ -90,3 +90,111 @@
     position: absolute;
     width: 0;
 }
+
+
+body.earn {
+    @apply bg-white;
+    font-family: Inter, sans-serif, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
+body.earn #header {
+    @apply border-slate-800;
+
+    #primary-menu .menu-item .menu-link {
+        @apply text-slate-800;
+
+        .search-btn{
+            @apply text-slate-800 border-slate-800 hover:bg-primary-600 hover:text-white;
+        }
+
+        &.active{
+            @apply text-teal-600;
+        }
+    }
+    .brand-logo-wrapper .brand-link {
+        :last-child {
+            &:hover {
+                @apply text-labs-red;
+            }
+        }
+
+        :first-child {
+            @apply  text-labs-red;
+        }
+    }
+}
+
+body.earn header#header .brand-logo-wrapper .brand-logo-link img:last-of-type {
+    @apply hidden;
+}
+
+body.earn #top-blob{
+    display: none;
+}
+
+body.earn #header {
+    @apply bg-white;
+}
+
+body.earn textarea:not(.custom-input),
+body.earn input[type=text]:not(.custom-input),
+body.earn input[type=email]:not(.custom-input) {
+    @apply border-labs-red;
+}
+
+body.earn > footer,
+body.earn #footer {
+    @apply bg-labs-red;
+
+    dt, .copyright {
+        @apply text-white;
+    }
+
+    .border-b.left {
+        @apply border-transparent;
+    }
+
+    h3, a, dd{
+        @apply text-white;
+    }
+}
+body.earn .button.primary{
+    @apply bg-labs-red outline-labs-red text-white;
+}
+body.earn footer .pool-id-picker .wallet-picker{
+    @apply bg-labs-red border-labs-red;
+}
+body.earn footer .pool-graphic > div,
+body.earn-marathon footer .pool-graphic > div,
+body.earn footer .pool-graphic > div{
+    @apply text-labs-red;
+}
+
+
+.podcast-wrapper {
+    //@apply bg-labs-red-50 p-4;
+}
+
+body.earn #new-lido-minutes {
+    .episodes {
+        -ms-overflow-style: none !important;
+        scrollbar-width: none !important;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+    }
+}
+
+
+body.earn .lido-origin {
+    @apply gap-0;
+
+    > :first-child {
+        @apply rounded-r-none bg-white border-b-4 md:border-b-0 md:border-r-4 border-slate-800;
+    }
+
+    > :last-child {
+        @apply rounded-l-none;
+    }
+}

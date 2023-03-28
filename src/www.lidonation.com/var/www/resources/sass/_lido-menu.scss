@@ -1,14 +1,3 @@
-
-
-//
-//body.projectCatalyst{
-//    .lido-menu-wrapper {
-//        .lido-menu-wrapper-modal {
-//            @apply top-40;
-//        }
-//    }
-//}
-
 .lido-menu-wrapper {
     .lido-menu-wrapper-modal{
         @apply top-20;
@@ -42,6 +31,15 @@ body.logged-in.admin {
 }
 
 body.projectCatalyst, body.proposal {
+    .lido-menu-wrapper {
+        .lido-menu-wrapper-modal {
+            @apply top-32;
+        }
+    }
+}
+
+
+body.projectCatalyst, body.earn {
     .lido-menu-wrapper {
         .lido-menu-wrapper-modal {
             @apply top-32;

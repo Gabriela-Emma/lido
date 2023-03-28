@@ -81,7 +81,7 @@
     <main>
         {{ $slot }}
     </main>
-    
+
     <!-- slte popup modal -->
     <x-slte-popup-modal />
 
@@ -106,7 +106,7 @@
         <script src="//cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
         <script src="//cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
         <script src="https://unpkg.com/smoothscroll-polyfill@0.4.4/dist/smoothscroll.js"></script>
-        <script src="https://unpkg.com/three@0.140.2/build/three.min.js"></script>
+        <script src="https://unpkg.com/three@0.150.0/build/three.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
         <script src="{{ mix('vendor/splide/splide-shader-carousel.min.js') }}"></script>
 
@@ -128,5 +128,7 @@
     <x-comments::scripts />
 
     <livewire:global-player-component />
+    <link rel="preload" href="{{ asset(mix('css/catalyst-explorer.css')) }}" as="style">
+
 </body>
 </html>

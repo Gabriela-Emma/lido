@@ -4,14 +4,12 @@
     }" class="bg-slate-100 login-form-wrapper">
         <form>
             <div class=" bg-white shadow-sm  rounded  p-6 w-96">
-                <slot name="logo">
-                    <div class=" flex-col  mb-4 border-b" v-if="showLogo">
-                        <div class="flex items-center justify-center mb-4">
-                            <img alt="catalyst explorer logo" :src="$utils.assetUrl('img/catalyst-explorer-logo.jpg')"
-                                 class="h-40"/>
-                        </div>
+                <div class=" flex-col  mb-4 border-b" v-if="showLogo">
+                    <div class="flex items-center justify-center mb-4">
+                        <img alt="catalyst explorer logo" :src="$utils.assetUrl('img/catalyst-explorer-logo.jpg')"
+                             class="h-40"/>
                     </div>
-                </slot>
+                </div>
 
                 <div>
                     <div class=" flex justify-start mb-2">
@@ -101,9 +99,4 @@ let form = useForm({
     remember: false
 })
 
-let submit = () => {
-
-    form.post('/api/catalyst-explorer/login');
-
-}
 </script>
