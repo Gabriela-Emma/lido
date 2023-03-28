@@ -15,11 +15,11 @@ class SnippetFactory extends Factory
     public function definition()
     {
         return [
-            'user_id' => fn () => User::inRandomOrder()->first()->id,
-            'name' => $this->faker->unique()->words(rand(1, 9), true),
-            'status' => $this->faker->randomElement(['published', 'draft', 'published', 'pending', 'published']),
-            'content' => $this->faker->paragraphs(rand(5, 14), true),
-            'order' => $this->faker->randomElement([null, 1, 2, null, 3, null, null, 4, null, null, 5]),
+            // 'user_id' => fn () => User::inRandomOrder()->first()->id,
+            // 'name' => $this->faker->unique()->words(rand(1, 9), true),
+            // 'status' => $this->faker->randomElement(['published', 'draft', 'published', 'pending', 'published']),
+            // 'content' => $this->faker->paragraphs(rand(5, 14), true),
+            // 'order' => $this->faker->randomElement([null, 1, 2, null, 3, null, null, 4, null, null, 5]),
         ];
     }
 }
