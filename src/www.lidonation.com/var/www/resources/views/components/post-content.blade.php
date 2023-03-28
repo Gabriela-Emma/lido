@@ -6,7 +6,7 @@
             <div class="relative w-full bg-white z-10">
                 <div x-show="!loggedIn"
                     class="mb-3 absolute rounded-sm px-1 py-0.5 right-1 top-1 text-sm bg-yellow-500 border border-yellow-800 text-pink-600 font-semibold hover:text-teal-800">
-                    Help Translate! <a href="/catalyst-explorer/login">login</a>
+                    Help Translate! <a href="/login">login</a>
                 </div>
                 <button x-show="!editing && loggedIn && langExists" @click="translateContent()"
                     class="px-2 py-1 font-medium w-28 rounded-sm text-white focus:ring-4 focus:outline-none absolute right-1 top-1 text-base z-10
