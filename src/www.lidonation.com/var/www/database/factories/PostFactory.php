@@ -30,6 +30,13 @@ class PostFactory extends Factory
      */
     public function definition()
     {
+        // attach shortcode to content.
+        $content = $this->faker->paragraphs(rand(5, 18), true);
+        $link = Link::inRandomOrder()->first();
+        $linkShortcode = '[link model_type="link" id='.$link->id.']'.$link->label.'[/link]';
+        
+        $content = substr_replace( $content, $linkShortcode, 100, 0 );
+
         $this->faker->addProvider(new PicsumPhotosProvider($this->faker));
 
         return [
@@ -43,7 +50,7 @@ class PostFactory extends Factory
             'excerpt' => $this->faker->sentences(rand(2, 5), true),
             'social_excerpt' => $this->faker->sentences(rand(2, 3), true),
             'comment_prompt' => $this->faker->sentences(rand(2, 3), true),
-            'content' => $this->faker->paragraphs(rand(5, 18), true),
+            'content' => $content,
             'epilogue' => $this->faker->paragraphs(rand(2, 3), true),
             'created_at' => $this->faker->dateTimeBetween('-2 Years'),
             'published_at' => $this->faker->dateTimeBetween('-2 Years'),
