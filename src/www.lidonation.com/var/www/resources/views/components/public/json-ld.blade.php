@@ -6,17 +6,16 @@
         "@type": "WebPage",
         "@id": "{{$post?->link}}"
     },
-
     "genre": "Blockchain Technology",
     "wordcount": "{{str_word_count($post->content)}}",
     "headline": "{{$post?->title}}",
-    "keywords": "{{ collect(($post?->categories)->merge($post?->tags)) }}"
-    "image": "{{$post?->hero_url}}",  
+    "keywords": "{{ collect(($post?->categories)->merge($post?->tags)) }}",
+    "image": "{{$post?->hero_url}}",
     "author": {
         "@type": "Person",
         "name": "{{$post?->user}}",
         "url": "https://www.lidonation.com/en/team"
-    },  
+    },
     "publisher": {
         "@type": "Organization",
         "name": "Lido Nation",
