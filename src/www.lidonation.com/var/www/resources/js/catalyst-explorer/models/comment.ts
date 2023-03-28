@@ -1,4 +1,4 @@
-import User from "./user";
+import User from "../../global/Shared/Models/user";
 
 export default interface Comment {
     id: number;

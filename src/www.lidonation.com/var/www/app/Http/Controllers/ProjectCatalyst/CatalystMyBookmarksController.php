@@ -6,20 +6,16 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\BookmarkCollectionResource;
 use App\Models\BookmarkCollection;
 use App\Models\BookmarkItem;
-use App\Models\CatalystGroup;
-use App\Models\CatalystUser;
 use App\Models\Proposal;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Fluent;
 use Inertia\Inertia;
-use Inertia\Response;
 
 class CatalystMyBookmarksController extends Controller
 {
     protected int $perPage = 12;
 
-    public function createItem(Request $request )
+    public function createItem(Request $request)
     {
         $modelTable = $request->get('model_type');
         $data = new Fluent($request->validate([
@@ -28,19 +24,19 @@ class CatalystMyBookmarksController extends Controller
             'content' => 'nullable|bail|string',
             'link' => 'nullable|bail|active_url',
             'collection.hash' => 'nullable|bail|hashed_exists:bookmark_collections,id',
-            'collection.title' => 'required_without:collection.hash|min:5'
+            'collection.title' => 'required_without:collection.hash|min:5',
         ]));
 
         // if collection doesn't exist, create one
         $collection = BookmarkCollection::byHash($data->collection['hash'] ?? null);
 
-        if (!$collection instanceof BookmarkCollection) {
+        if (! $collection instanceof BookmarkCollection) {
             $collection = new BookmarkCollection;
             $collection->title = $data->collection['title'] ?? null;
             $collection->content = $data->collection['content'] ?? null;
             $collection->visibility = 'unlisted';
             $collection->status = 'published';
-            $collection->color = '#' . str_pad(dechex(mt_rand(0, 0xFFFFFF)), 6, '0', STR_PAD_LEFT);
+            $collection->color = '#'.str_pad(dechex(mt_rand(0, 0xFFFFFF)), 6, '0', STR_PAD_LEFT);
             $collection->save();
         }
 
@@ -66,9 +62,7 @@ class CatalystMyBookmarksController extends Controller
 
     public function createCollection()
     {
-
     }
-
 
     public function view(Request $request, BookmarkCollection $bookmarkCollection)
     {
@@ -77,18 +71,17 @@ class CatalystMyBookmarksController extends Controller
             'crumbs' => [
                 ['label' => 'Proposals', 'link' => route('catalystExplorer.proposals')],
                 ['label' => 'Bookmarks', 'link' => route('catalystExplorer.bookmarks')],
-                ['label' => $bookmarkCollection->title, 'link' => $bookmarkCollection->link]
+                ['label' => $bookmarkCollection->title, 'link' => $bookmarkCollection->link],
             ],
         ]);
     }
-
 
     public function index(Request $request)
     {
         $collections = [];
         $hashes = $request->get('hashes', false);
         if ($hashes) {
-            $collections = BookmarkCollection::whereHashIn( $hashes);
+            $collections = BookmarkCollection::whereHashIn($hashes);
             $collections = (BookmarkCollectionResource::collection($collections))->toArray($request);
         }
 

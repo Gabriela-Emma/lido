@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Api\CatalystExplorer;
 
-use Inertia\Inertia;
-use Illuminate\Http\Request;
-use Illuminate\Support\Fluent;
-use App\Models\User as modelUser;
 use App\Http\Controllers\Controller;
+use App\Models\User as modelUser;
 use Illuminate\Foundation\Auth\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Fluent;
+use Inertia\Inertia;
 
 class UserController extends Controller
 {
@@ -23,11 +23,10 @@ class UserController extends Controller
         $remember = $request->input('remember', false);
 
         if (Auth::attempt($credentials, $remember)) {
-            if(isset($request->baseURL))
-            {
+            if (isset($request->baseURL)) {
                 return redirect($request->baseURL);
-
             }
+
             return to_route('catalystExplorer.myDashboard');
         }
 
@@ -38,7 +37,7 @@ class UserController extends Controller
 
     public function logout(Request $request)
     {
-        $redirectUrl = url()->previous();      
+        $redirectUrl = url()->previous();
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();
@@ -104,10 +103,10 @@ class UserController extends Controller
     }
 
     public function utilityLogin()
-    {   
-        $previousUrl = url()->previous(); 
+    {
+        $previousUrl = url()->previous();
         $previousRouteName = app('router')->getRoutes()->match(app('request')->create($previousUrl))->getName();
+
         return Inertia::modal('Auth/UtilityLogin')->baseRoute($previousRouteName);
     }
-
 }

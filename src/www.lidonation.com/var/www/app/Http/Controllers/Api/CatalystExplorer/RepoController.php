@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers\Api\CatalystExplorer;
 
-use App\Models\Repo;
+use App\Actions\GitCmdRunner;
 use App\Jobs\SaveRepo;
 use App\Models\Commit;
-use App\Models\Proposal;
+use App\Models\Repo;
 use Illuminate\Http\Request;
-use App\Actions\GitCmdRunner;
 
 class RepoController extends Controller
 {
@@ -41,32 +40,31 @@ class RepoController extends Controller
     }
 
     public function updateRepo(Request $request)
-{  
-    $existingRepo = Repo::where('model_id', $request->proposal_id)->first();
+    {
+        $existingRepo = Repo::where('model_id', $request->proposal_id)->first();
 
-    Commit::withoutGlobalScope(LimitScope::class);
-    $existingCommitsIDs = Commit::where('repo_id', $existingRepo->id)->pluck('id');
-    // dd($existingCommitsIDs);
+        Commit::withoutGlobalScope(LimitScope::class);
+        $existingCommitsIDs = Commit::where('repo_id', $existingRepo->id)->pluck('id');
+        // dd($existingCommitsIDs);
 
-    // Check for changes
-    $branchChange = ($request->branch != $existingRepo->tracked_branch) && ($request->gitUrl === $existingRepo->url);
-    $repoChange = ($request->gitUrl != $existingRepo->url);
+        // Check for changes
+        $branchChange = ($request->branch != $existingRepo->tracked_branch) && ($request->gitUrl === $existingRepo->url);
+        $repoChange = ($request->gitUrl != $existingRepo->url);
 
-    // Handle changes
-    if($branchChange){
-        $existingRepo->tracked_branch = $request->branch;
-        $existingRepo->save();
+        // Handle changes
+        if ($branchChange) {
+            $existingRepo->tracked_branch = $request->branch;
+            $existingRepo->save();
+        }
+
+        if ($repoChange) {
+            Commit::destroy($existingCommitsIDs);
+
+            $existingRepo->delete();
+
+            $this->saveRepo($request);
+        }
+
+        return 'Update successful';
     }
-
-    if($repoChange){
-        Commit::destroy($existingCommitsIDs);
-        
-        $existingRepo->delete();
-
-        $this->saveRepo($request);
-        
-    }
-
-    return "Update successful";
-}
 }

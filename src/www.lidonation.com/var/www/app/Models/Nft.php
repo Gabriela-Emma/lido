@@ -65,7 +65,7 @@ class Nft extends Model implements HasLink, HasMedia
     protected function previewLink(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => $this->feature_url ?? $value,
+            get: fn ($value) => $this->thumnail_url ?? $value,
         );
     }
 

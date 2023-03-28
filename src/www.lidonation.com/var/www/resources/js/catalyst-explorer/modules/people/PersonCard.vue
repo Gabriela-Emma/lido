@@ -28,7 +28,7 @@
 </template>
 
 <script lang="ts" setup>
-import User from "../../models/user";
+import User from "../../../global/Shared/Models/user";
 import {inject} from "vue";
 
 const $utils: any = inject('$utils');

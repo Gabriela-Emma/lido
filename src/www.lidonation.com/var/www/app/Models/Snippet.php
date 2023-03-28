@@ -42,8 +42,8 @@ class Snippet extends Model implements HasMedia, Interfaces\IHasMetaData
     ];
 
     protected $casts = [
-        "content" => "array"
-   ];
+        'content' => 'array',
+    ];
 
     public array $translatableExcludedFromGeneration = [];
 

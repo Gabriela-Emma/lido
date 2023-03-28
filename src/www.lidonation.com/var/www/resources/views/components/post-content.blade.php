@@ -1,11 +1,11 @@
 @props(['post', 'pageLocale'])
 
-<div class="border border-slate-300 rounded-sm" x-data="translateProposal({{ $post->id }}, '{{ $pageLocale }}','{{$post->type}}')">
+<div class="" x-data="translateProposal({{ $post->id }}, '{{ $pageLocale }}','{{class_basename($post->type)}}')">
     @if ($post->content)
         <div x-show="locale === sourceLocale">
-            <div class="relative w-full bg-white z-10">
+            <div class="w-full max-w-6xl bg-white z-10">
                 <div x-show="!loggedIn" x-init="getContent({{ json_encode($post->content)}})"
-                    class="mb-3 absolute rounded-sm px-1 py-0.5 right-1 top-1 text-sm bg-yellow-500 border border-yellow-800 text-pink-600 font-semibold hover:text-teal-800">
+                    class="mb-3 absolute rounded-b-sm px-1 py-0.5 right-0 top-0 text-sm bg-yellow-500 border-b border-l border-r border-yellow-800 text-pink-600 font-semibold hover:text-teal-800">
                     Help Translate! <a href="/catalyst-explorer/login">login</a>
                 </div>
                 <button x-show="!editing && loggedIn && langExists" @click="translateContent()"
@@ -37,7 +37,7 @@
                     </div>
                 </div>
             </template>
-            <div class="flex flex-col" x-show=" save ">
+            <div class="flex flex-col" x-show="save">
                 <p class="flex flex-row mb-2">
                     Open English text in another tab.
                     <a class="flex flex-row" href="/posts/{{ $post->slug }}" target="_blank">
@@ -65,21 +65,23 @@
                     @if(Lang::has($post->getTable() . '.' . $post->slug ))
                         <x-markdown>{{__($post->getTable() . '.' . $post->slug)}}</x-markdown>
                     @else
-                        <x-markdown x-html="marked.parse(modelContent)"></x-markdown>
+                        <x-markdown>{{$post->content}}</x-markdown>
                     @endif
                 </div>
             </article>
         </div>
-        <template x-if="processing ===true" class="mt-4">
+
+        <template x-if="processing === true" class="mt-4">
             <x-theme.spinner square="8" squareXl="8" theme="teal" />
         </template>
-        <div x-show="editing">
+
+        <div x-show="editing"  class="rounded-sm p-6">
             <label for="message" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Edit if needed
                 and save translation.</label>
-            <textarea :class="heightClass" x-transition
+            <textarea  x-transition
                 class="block p-4 w-full h-[50rem]   text-gray-900 bg-white rounded-md border border-slate-300 focus:ring-teal-500 focus:border-teal-500"
-                x-html="(modelContent)">
-          </textarea>
+                x-model="modelContent">
+            </textarea>
         </div>
     </div>
 </div>

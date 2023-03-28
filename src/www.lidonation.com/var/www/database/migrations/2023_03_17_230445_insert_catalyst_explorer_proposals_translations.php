@@ -32,7 +32,7 @@ return new class extends Migration
                     'created_at' => date('Y-m-d', time()),
                     'updated_at' => date('Y-m-d', time()),
                 ]);
-            };
+            }
         }
     }
 

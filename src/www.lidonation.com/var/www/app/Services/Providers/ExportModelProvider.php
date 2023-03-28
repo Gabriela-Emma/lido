@@ -10,13 +10,14 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 class ExportModelProvider implements ProvidesModelExportService
 {
     public function __construct(protected $exportObj)
-    {}
+    {
+    }
 
     /**
      * Export model
      *
-     * @param string $exportFileName - naming of the generated file in any format
-     * @return BinaryFileResponse
+     * @param  string  $exportFileName - naming of the generated file in any format
+     *
      * @throws Exception
      * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
      */

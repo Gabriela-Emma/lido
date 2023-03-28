@@ -1,81 +1,109 @@
 <?php
+
 namespace App\Http\Controllers;
-use App\Models\Meta;
-use App\Models\Post;
-use App\Models\User;
-use App\Models\Model;
+
 use App\Enums\RoleEnum;
-use App\Models\Proposal;
+use App\Models\Meta;
 use App\Models\Translation;
+use App\Models\User;
+use App\Services\TranslationService;
 use Illuminate\Http\Request;
-use App\Jobs\SyncTranslationJob;
-use App\Models\Insight;
-use App\Models\News;
-use App\Models\Review;
+use Illuminate\Support\Str;
+
 class ProposalTranslationController extends Controller
 {
+    public $field = 'content';
+
     public function validateUser(Request $request)
     {
         $user = $request->user();
-        if(!isset($user)){
+        if (! isset($user)) {
             return response()->json([]);
         }
         // user translation meta
         $translators_lang = $this->getTranslatorMetas($user);
         // if existing translator
-        if(isset($translators_lang) && $user->hasRole(['translator'])){
+        if (isset($translators_lang) && $user->hasRole(['translator'])) {
             return $translators_lang;
         }
         // if new translator
         $user->assignRole((string) RoleEnum::translator());
+
         return $user->id;
     }
+
     public function getLanguageOptions(Request $request)
     {
         $model = $this->matchModel($request->model_type, $request->model_id);
-        $exclude = ['en', 'sw'];
-        $excludedLangs = array_merge($exclude, $this->transalatedLangs($model));
-        $locales = config('laravellocalization.supportedLocales');
-        $result = array_map(function ($locale) use ($excludedLangs) {
-            if (in_array($locale['key'], $excludedLangs)) {
+
+        $existingTranslatedLangs = $model->getTranslatedLocales('content');
+
+        $defaultExclutions = ['en', 'sw'];
+
+        $excludedLangs = array_merge($existingTranslatedLangs, $defaultExclutions);
+
+        $allLocales = config('laravellocalization.supportedLocales');
+
+        $result = array_map(function ($allLocales) use ($excludedLangs) {
+            if (in_array($allLocales['key'], $excludedLangs)) {
                 return null;
             }
+
             return [
-                'name' => $locale['native'],
-                'value' => $locale['key'],
+                'name' => $allLocales['native'],
+                'value' => $allLocales['key'],
             ];
-        }, $locales);
+        }, $allLocales);
+
         // Remove null values from the resulting array
         $result = array_filter($result);
         $json = json_encode(array_values($result));
+
         return $json;
     }
-    public function makeTranslation(Request $request)
+
+    public function makeTranslation(Request $request, TranslationService $translationService)
     {
         $model = $this->matchModel($request->model_type, $request->model_id);
-        if( $this->getTranslatorMetas($request->user()) === null){
+
+        if ($this->getTranslatorMetas($request->user()) === null) {
             $this->setTranslatorMetas($request->user(), $request->targetLanguage);
         }
-        // get new translation
-        SyncTranslationJob::dispatch($model, 'content', $request->sourceLanguage, $request->targetLanguage, true, true);
-        $translation = null;
-        while ($translation === null ) {
-            $translation = Translation::where('source_id', $request->model_id)->where('lang', $request->targetLanguage)->first();
-            sleep(1);
-        }
-        return $translation->content;
+
+        $content = $model->getTranslation($this->field, $request->sourceLanguage, false);
+
+        $translationService = $translationService
+            ->setTargetLang($request->targetLanguage)
+            ->setSourceLang($request->sourceLanguage);
+
+        $translationService = $translationService->translate($content, $request->targetLanguage, $request->sourceLanguage);
+        $translationService->save($model, $this->field);
+
+        return $translationService->get();
     }
+
     public function updateTranslation(Request $request)
     {
-        $translation = Translation::where('source_id', $request->model_id)->where('lang', $request->targetLanguage)->get();
-        $translation->content = $request->content;
-        return $translation->content;
+        $model = $this->matchModel($request->model_type, $request->model_id);
+
+        $translation = Translation::where('source_id', $request->model_id)->where('lang', $request->targetLanguage)->first();
+        $translation->update([
+            'content' => $request->content,
+            'published_at' => now(),
+            'status' => 'published',
+        ]);
+
+        $model->setTranslation($this->field, $request->targetLanguage, $translation->content);
+
+        $translatedContent = null;
+        while ($translatedContent === null) {
+            $translatedContent = $model->getTranslation($this->field, $request->targetLanguage, false);
+            sleep(1);
+        }
+
+        return $translatedContent;
     }
-    public function transalatedLangs(Model $model)
-    {
-        $existingLangs = Translation::where('source_id', $model->id)->pluck('lang');
-        return $existingLangs->toArray();
-    }
+
     public function setTranslatorMetas(User $user, $lang)
     {
         $meta = new Meta;
@@ -85,22 +113,18 @@ class ProposalTranslationController extends Controller
         $meta->content = $lang;
         $meta->save();
     }
+
     public function getTranslatorMetas(User $user)
     {
-        $USER_TRANSLATES_LANGUAGE = $user->metas()->where('key', 'lang')->pluck('content')->first();
+        $USER_TRANSLATES_LANGUAGE = $user->metas()->where('key', 'lang')->pluck($this->field)->first();
+
         return $USER_TRANSLATES_LANGUAGE;
     }
-    Public function matchModel($modelTable , $model_id)
+
+    public function matchModel($modelTable, $model_id)
     {
-        $modelType = match ($modelTable) {
-            'proposal' => Proposal::class,
-            'AppModelsPost' => Post::class,
-            'AppModelsOnboardingContent' => OnboardingContent::class,
-            'AppModelsNews' => News::class,
-            'AppModelsExternalPost' => ExternalPost::class,
-            'AppModelsInsights' => Insight::class,
-            'AppModelsReviews' => Review::class
-        };
+        $modelType = 'App\\Models\\'.Str::studly(Str::singular($modelTable));
+
         return $modelType::find($model_id);
     }
 }

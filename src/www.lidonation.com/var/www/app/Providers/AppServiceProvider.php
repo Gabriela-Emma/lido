@@ -6,6 +6,7 @@ use App\Contracts\ProvidesModelExportService;
 use App\Models\PersonalAccessToken;
 use App\Services\CardanoBlockfrostService;
 use App\Services\CardanoMintService;
+use App\Services\ExportModelService;
 use App\Services\PhuffycoinService;
 use App\Services\Providers\ExportModelProvider;
 use Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider;
@@ -18,7 +19,6 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Laravel\Sanctum\Sanctum;
-use App\Services\ExportModelService;
 use Vinkla\Hashids\Facades\Hashids;
 
 //use Spatie\NovaTranslatable\Translatable;
@@ -101,11 +101,11 @@ class AppServiceProvider extends ServiceProvider
 
         Validator::extend('hashed_exists', function ($attribute, $value, $parameters, $validator) {
             if (is_array($value)) {
-                $value = array_map(fn($item) => (
-                    Hashids::connection('App\\Models\\' . Str::studly(Str::singular($parameters[0])))->decode($item)
+                $value = array_map(fn ($item) => (
+                    Hashids::connection('App\\Models\\'.Str::studly(Str::singular($parameters[0])))->decode($item)
                 ), $value);
             } else {
-                $value = Hashids::connection('App\\Models\\' . Str::studly(Str::singular($parameters[0])))->decode($value);
+                $value = Hashids::connection('App\\Models\\'.Str::studly(Str::singular($parameters[0])))->decode($value);
             }
 
             // Delegate to `exists:` validator

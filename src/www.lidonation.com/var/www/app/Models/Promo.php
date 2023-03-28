@@ -28,8 +28,8 @@ class Promo extends Model implements HasMedia
     public function registerMediaConversions(Media $media = null): void
     {
         $this->addMediaConversion('thumbnail')
-            ->width(320)
-            ->height(320)
+            ->width(480)
+            ->height(480)
             ->performOnCollections('hero');
 
         $this->addMediaConversion('preview')

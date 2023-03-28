@@ -4,12 +4,14 @@
     }" class="bg-slate-100 login-form-wrapper">
         <form>
             <div class=" bg-white shadow-sm  rounded  p-6 w-96">
-                <div class=" flex-col  mb-4 border-b" v-if="showLogo">
-                    <div class="flex items-center justify-center mb-4">
-                        <img alt="catalyst explorer logo" :src="$utils.assetUrl('img/catalyst-explorer-logo.jpg')"
-                             class="h-40"/>
+                <slot name="logo">
+                    <div class=" flex-col  mb-4 border-b" v-if="showLogo">
+                        <div class="flex items-center justify-center mb-4">
+                            <img alt="catalyst explorer logo" :src="$utils.assetUrl('img/catalyst-explorer-logo.jpg')"
+                                 class="h-40"/>
+                        </div>
                     </div>
-                </div>
+                </slot>
 
                 <div>
                     <div class=" flex justify-start mb-2">
@@ -92,10 +94,7 @@ const props = withDefaults(
         embedded: false,
     },
 );
-// const props = defineProps({
-//     errors: Object,
-//     showLogo: boolean,
-// });
+
 let form = useForm({
     password: '',
     email: '',

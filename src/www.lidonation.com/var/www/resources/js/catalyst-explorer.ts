@@ -10,13 +10,15 @@ import route from "ziggy-js";
 import {modal} from "momentum-modal";
 import timeago from 'vue-timeago3';
 import moment from "moment-timezone";
+import {shortNumber} from "./lib/utils/shortNumber";
+import {currency} from "./lib/utils/currency";
+import {timeAgo} from "./lib/utils/timeago";
+import {contrastColor} from "./lib/utils/contrastColor";
 let messages = require('../../storage/app/snippets.json');
 const axios = require('axios');
 
-
 //cache snippets to disk
 axios.get(`${window.location.origin}/api/cache/snippets`);
-
 
 createInertiaApp({
     progress: {
@@ -72,71 +74,15 @@ createInertiaApp({
             }
         });
 
-
         app.config.globalProperties.$filters = {
+            shortNumber: shortNumber,
+            currency: currency,
+            timeAgo: timeAgo,
             number(number, maximumSignificantDigits = 2, locale: string = 'en-US') {
                 return new Intl.NumberFormat(locale, {maximumSignificantDigits}).format(number);
             },
-            shortNumber(value, digits = 0, locale: string = 'en-US') {
-                // Nine Zeroes for Billions
-                return Math.abs(Number(value)) >= 1.0e+9
-
-                    ? (Math.abs(Number(value)) / 1.0e+9).toFixed(digits) + "B"
-                    // Six Zeroes for Millions
-                    : Math.abs(Number(value)) >= 1.0e+6
-
-                        ? (Math.abs(Number(value)) / 1.0e+6).toFixed(digits) + "M"
-                        // Three Zeroes for Thousands
-                        : Math.abs(Number(value)) >= 1.0e+3
-
-                            ? (Math.abs(Number(value)) / 1.0e+3).toFixed(digits) + "K"
-
-                            : Math.abs(Number(value));
-            },
-            currency(value, locale: string = 'en-US') {
-                if (typeof value !== "number") {
-                    return value;
-                }
-                const formatter = new Intl.NumberFormat(locale, {
-                    style: 'currency',
-                    currency: 'USD',
-                    maximumFractionDigits: 0
-                });
-                return formatter.format(value);
-            },
             markdown(value) {
                 return marked.parse(value);
-            },
-            timeAgo(time) {
-                moment.updateLocale('en', {
-                    relativeTime: {
-                        future: 'in %s',
-                        past: '%s ago',
-                        s: (number) => number + 's ago',
-                        ss: '%ds ago',
-                        m: '1m ago',
-                        mm: '%dm ago',
-                        h: '1h ago',
-                        hh: '%dh ago',
-                        d: '1d ago',
-                        dd: '%dd ago',
-                        M: 'a month ago',
-                        MM: '%d months ago',
-                        y: 'a year ago',
-                        yy: '%d years ago',
-                    },
-                });
-
-                let secondsElapsed = moment().diff(time, 'seconds');
-                let dayStart = moment('2018-01-01').startOf('day').seconds(secondsElapsed);
-
-                if (secondsElapsed > 300) {
-                    return moment(time).fromNow(true);
-                } else if (secondsElapsed < 60) {
-                    return dayStart.format('s') + 's ago';
-                } else {
-                    return dayStart.format('m:ss') + 'm ago';
-                }
             },
         };
 
@@ -150,31 +96,7 @@ createInertiaApp({
                 const base = usePage().props?.asset_url;
                 return `${base}${value}`
             },
-            contrastColor(hex) {
-
-                // If a leading # is provided, remove it
-                if (hex.slice(0, 1) === '#') {
-                    hex = hex.slice(1);
-                }
-
-                // If a three-character hexcode, make six-character
-                if (hex.length === 3) {
-                    hex = hex.split('').map(function (hex) {
-                        return hex + hex;
-                    }).join('');
-                }
-
-                // Convert to RGB value
-                let r = parseInt(hex.substr(0, 2), 16);
-                let g = parseInt(hex.substr(2, 2), 16);
-                let b = parseInt(hex.substr(4, 2), 16);
-
-                // Get YIQ ratio
-                let yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
-
-                // Check contrast
-                return (yiq >= 128) ? 'dark' : 'light';
-            }
+            contrastColor: contrastColor
         });
 
         app.config.globalProperties.$route = route;

@@ -21,10 +21,9 @@ return new class extends Migration
             $table->timestamps();
             $table->timestamp('completed_at')->nullable();
             $table->softDeletes();
-            
+
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('course_id')->references('id')->on('courses');
-
         });
     }
 

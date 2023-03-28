@@ -65,7 +65,7 @@
                                                class="block text-sm font-medium text-slate-700">Upload a profile photo</label>
                                         <input type="file"
                                                @change="uploadProfile"
-                                               id="profile" 
+                                               id="profile"
                                                name="profile"
                                                class="mt-1 block w-full rounded-sm bg-teal-600 border border-slate-300 py-2 px-3 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-teal-500 sm:text-sm">
                                     </div> -->
@@ -323,7 +323,7 @@
 import UserNav from "./UserNav.vue";
 import {computed, ref} from "vue";
 import {useForm, usePage} from "@inertiajs/vue3";
-import User from "../../models/user";
+import User from "../../../global/Shared/Models/user";
 import Profile from "../../models/profile";
 
 const user = computed(() => usePage().props?.user as User);

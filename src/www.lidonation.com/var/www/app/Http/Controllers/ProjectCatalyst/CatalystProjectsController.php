@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\ProjectCatalyst;
 
 use App\Enums\CatalystExplorerQueryParams;
+use App\Exports\ProposalExport;
 use App\Http\Controllers\Controller;
 use App\Models\Proposal;
 use App\Services\ExportModelService;
-use App\Exports\ProposalExport;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
@@ -234,12 +234,12 @@ class CatalystProjectsController extends Controller
 
     protected function setFilters(Request $request)
     {
-        $sort = collect(explode(':', $request->input( CatalystExplorerQueryParams::SORTS, '')));
+        $sort = collect(explode(':', $request->input(CatalystExplorerQueryParams::SORTS, '')));
         $this->sortBy = $sort->first();
         $this->sortOrder = $sort->last();
 
         $this->budgets = $request->collect(CatalystExplorerQueryParams::BUDGETS);
-        $this->search = $request->input( CatalystExplorerQueryParams::SEARCH, null);
+        $this->search = $request->input(CatalystExplorerQueryParams::SEARCH, null);
         $this->limit = $request->input(CatalystExplorerQueryParams::PER_PAGE, 24);
         $this->fundingStatus = match ($request->input('f', null)) {
             'o' => 'over_budget',
@@ -274,7 +274,6 @@ class CatalystProjectsController extends Controller
         $this->peopleFilter = $request->collect(CatalystExplorerQueryParams::PEOPLE)->map(fn ($n) => intval($n));
         $this->groupsFilter = $request->collect(CatalystExplorerQueryParams::GROUPS)->map(fn ($n) => intval($n));
         $this->currentPage = $request->input(CatalystExplorerQueryParams::PAGE, 1);
-
     }
 
     protected function query($returnBuilder = false, $attrs = null)
@@ -423,11 +422,10 @@ class CatalystProjectsController extends Controller
             return $proposal['id'];
         }, $proposals);
 
-        if ($this->downloadType == 'excel'){
+        if ($this->downloadType == 'excel') {
             return (new ExportModelService)->exportExcel(new ProposalExport($idsArr, app()->getLocale()), 'proposals');
         } else {
             return (new ExportModelService)->export(new ProposalExport($idsArr, app()->getLocale()), "proposals.{$this->downloadType}");
         }
-
     }
 }

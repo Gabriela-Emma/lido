@@ -11,8 +11,9 @@ use Inertia\Response;
 class CatalystReportsController extends Controller
 {
     public int $perPage = 24;
+
     public ?string $search = null;
-    
+
     protected int $currentPage = 1;
 
     /**
@@ -43,21 +44,22 @@ class CatalystReportsController extends Controller
     {
         $query = CatalystReport::withOnly(['proposal.author'])
             ->withCount([
-            'hearts',
-            'eyes',
-            'party_popper',
-            'rocket',
-            'thumbs_down',
-            'thumbs_up'
+                'hearts',
+                'eyes',
+                'party_popper',
+                'rocket',
+                'thumbs_down',
+                'thumbs_up',
             ]);
         if (isset($this->search)) {
             $query->orWhereFullText('content', $this->search)
-                ->orWhereHas('proposal', fn($q) => $q->where('title', 'iLIKE', "%{$this->search}%"))
-                ->orWhereHas('proposal.author', fn($q) => $q->where('username', 'iLIKE', "%{$this->search}%")
+                ->orWhereHas('proposal', fn ($q) => $q->where('title', 'iLIKE', "%{$this->search}%"))
+                ->orWhereHas('proposal.author', fn ($q) => $q->where('username', 'iLIKE', "%{$this->search}%")
                     ->orWhere('name', 'iLIKE', "%{$this->search}%"));
 //            $this->dispatchBrowserEvent('analytics-event-fired', ['code' => 'HSH9YZDM']);
         }
         $paginator = $query->paginate($this->perPage, $this->currentPage, 'p');
+
         return $paginator->toArray();
     }
 }

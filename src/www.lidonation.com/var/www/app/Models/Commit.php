@@ -45,6 +45,5 @@ class Commit extends Model
     public function scopeRemoveLimitScope($query)
     {
         return $query->withoutGlobalScope(LimitScope::class);
-        
     }
 }
