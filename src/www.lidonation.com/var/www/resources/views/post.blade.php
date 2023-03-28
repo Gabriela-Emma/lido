@@ -136,7 +136,7 @@
                 </div>
             @endif
 
-            <div class="pb-8 bg-white relative">
+            <div class="pb-8 bg-white">
                 <div class="relative px-4 py-8 mx-auto sm:px-6 lg:px-8">
                     <div class="max-w-6xl xl:mx-auto">
                         @if($post->content)
@@ -146,7 +146,15 @@
                                                       theme="secondary"></x-public.callout>
                                 </div>
                             @endif
-                                <x-post-content :post="$post" :pageLocale="(app()->getLocale())"  />
+                            <article class="mb-6 text-xl text-justify">
+                                <div class="mt-3">
+                                    @if(Lang::has($post->getTable() . '.' . $post->slug ))
+                                        <x-markdown>{{__($post->getTable() . '.' . $post->slug)}}</x-markdown>
+                                    @else
+                                        <x-markdown>{{$post->content}}</x-markdown>
+                                    @endif
+                                </div>
+                            </article>
                             @if($post->epilogue)
                                 <x-public.callout :content="$post->epilogue"
                                                   theme="secondary"></x-public.callout>
