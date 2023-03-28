@@ -24,7 +24,7 @@
 
     @inertiaHead
 </head>
-<body class="lido-learn">
+<body class="earn">
 
 <x-lido-menu />
 
