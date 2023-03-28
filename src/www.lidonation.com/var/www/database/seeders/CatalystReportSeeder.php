@@ -16,44 +16,38 @@ class CatalystReportSeeder extends Seeder
      */
     public function run(Faker $faker)
     {
-        CatalystReport::factory(10)->create([
-            'project_status' => 'Launched',
-            'on_track' => 'Yes'
-        ])->each(function($report) {
-            $report->comments()->saveMany(Comment::factory(2)->make()
-                // ->map(function ($comment) {
-                //     // $comment['commentable_type'] = get_class($report);
-                //     // $comment['commentable_id'] = $report->id;
-
-                //     return $comment;
-                // })
-            );
-        });
+    
+        CatalystReport::factory(10)
+            ->has(Comment::factory()->count(2), 'comments')
+            ->create([
+                'project_status' => 'Launched',
+                'on_track' => 'Yes'
+            ]);
 
         CatalystReport::factory(10)->create([
             'project_status' => 'Launched',
             'on_track' => 'Yes'
         ]);
 
-        CatalystReport::factory(10)->create([
-            'project_status' => 'Still in progress',
-            'on_track' => 'Yes'
-        ])->each(function($report) {
-            $report->comments()->saveMany(Comment::factory(2)->make());
-        });
+        CatalystReport::factory(10)
+            ->has(Comment::factory()->count(2), 'comments')    
+            ->create([
+                'project_status' => 'Still in progress',
+                'on_track' => 'Yes'
+            ]);
 
         CatalystReport::factory(10)->create([
             'project_status' => 'Still in progress',
             'on_track' => 'Yes'
         ]);
 
-        CatalystReport::factory(10)->create([
-            'project_status' => 'Still in progress',
-            'on_track' => 'No',
-            'off_track_reason' => $faker->sentences(rand(2, 3), true)
-        ])->each(function($report) {
-            $report->comments()->saveMany(Comment::factory(2)->make());
-        });
+        CatalystReport::factory(10)
+            ->has(Comment::factory()->count(2), 'comments')
+            ->create([
+                'project_status' => 'Still in progress',
+                'on_track' => 'No',
+                'off_track_reason' => $faker->sentences(rand(2, 3), true)
+            ]);
 
         CatalystReport::factory(10)->create([
             'project_status' => 'Still in progress',
