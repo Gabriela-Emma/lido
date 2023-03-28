@@ -1,6 +1,7 @@
 <?php
 
 namespace Database\Factories;
+use App\Models\AnonymousBookmark;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -9,6 +10,8 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class AnonymousBookmarkFactory extends Factory
 {
+    
+    protected $model = AnonymousBookmark::class;
     /**
      * Define the model's default state.
      *
@@ -17,7 +20,8 @@ class AnonymousBookmarkFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'bookmark' => $this->faker->sentence(),
+            'created_at' => now(),
         ];
     }
 }

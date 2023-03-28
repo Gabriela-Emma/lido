@@ -5,6 +5,7 @@ namespace App\Observers;
 use App\Invokables\FillPostData;
 use App\Jobs\GenerateReviewRatingImagesJob;
 use App\Models\Rating;
+use Illuminate\Support\Facades\Log;
 
 class RatingObserver
 {
@@ -28,7 +29,11 @@ class RatingObserver
     public function created(Rating $rating)
     {
         if ($rating->model) {
-            GenerateReviewRatingImagesJob::dispatch($rating->model?->model);
+            try {
+                GenerateReviewRatingImagesJob::dispatch($rating->model?->model);
+            } catch (\Throwable $err) {
+                Log::error("The rating image could not be generated.");
+            }
         }
     }
 
