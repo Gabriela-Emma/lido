@@ -93,7 +93,7 @@ class ModelTranslationController extends Controller
             'status' => 'published',
         ]);
 
-        $model->setTranslation($this->field, $request->targetLanguage, $translation->content);
+        $model->setTranslation($this->field, $request->targetLanguage, $request->content);
 
         $translatedContent = null;
         while ($translatedContent === null) {

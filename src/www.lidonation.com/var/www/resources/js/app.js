@@ -878,7 +878,6 @@ window.translateProposal = function translateProposal(modelID, currPageLocale, m
         },
         locale:null,
         sourceLocale:null,
-        save:false,
         translatorsLang:null,
         langExists:false,
         init() {
@@ -946,10 +945,8 @@ window.translateProposal = function translateProposal(modelID, currPageLocale, m
                 this.editing = true;
                 if (this.responseValidity(res.data)) {
                     this.modelContent =res.data;
-                    this.save = true;
                     this.langExists = false;
                     } else {
-                    this.save = true;
                     this.langExists = false;
                 }
             }
@@ -965,6 +962,7 @@ window.translateProposal = function translateProposal(modelID, currPageLocale, m
         },
         getTranslation() {
             this.getModelData();
+            this.translate = false;
             this.processing = true;
             this.makeRequest();
         },
