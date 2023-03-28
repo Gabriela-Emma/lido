@@ -17,7 +17,7 @@
             </div>
         </div>
         <div class="pt-4 flex flex-row justify-center w-full" x-show="loggedIn && translate">
-            <template x-if="translate && !editing && translatorsLang === null">
+            <template x-if="translate && !editing && !translatorsLang">
                 <div class="flex flex-col items-end bg-white shadow-sm border z-10 w-96 rounded-sm p-3" >
                     <div class="w-full">
                         <select x-model="targetLang"
