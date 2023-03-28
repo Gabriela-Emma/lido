@@ -17,25 +17,9 @@ class DatabaseSeeder extends Seeder
         $this->call([
             SearchIndexSeeder::class,
 
-            PermissionSeeder::class,
-            RoleSeeder::class,
-            UserSeeder::class,
+            LidoModelsDatabaseSeeder::class,
 
-            SnippetSeeder::class,
-
-            CategorySeeder::class,
-            LinkSeeder::class,
-            TagSeeder::class,
-            
-            TeamSeeder::class,
-            OnboardingContentSeeder::class,
-            PostSeeder::class,
-            NewsSeeder::class,
-            InsightsSeeder::class,
-            ReviewsSeeder::class,
-            
             CatalystDatabaseSeeder::class,
-
         ]);
     }
 }
