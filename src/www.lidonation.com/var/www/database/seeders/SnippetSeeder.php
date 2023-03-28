@@ -30,7 +30,7 @@ class SnippetSeeder extends Seeder
                     'user_id' => 1,
                     "name" => $data['0'],
                     'type' => "App\Models\Snippet",
-                    "content" => json_encode(['en' => $data['1'], 'es' => '', 'swa' => '', 'fr' => '', 'zh' => '', 'ja' => '']),
+                    "content" => $data['1'],
                     "context" => 'global',
                     'status' => $faker->randomElement(['published', 'draft', 'published', 'pending', 'published']),
                     'order' => 0,
