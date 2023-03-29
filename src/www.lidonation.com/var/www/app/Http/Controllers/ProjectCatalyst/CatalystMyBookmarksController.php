@@ -96,6 +96,6 @@ class CatalystMyBookmarksController extends Controller
         $collection = BookmarkCollection::byHash($request->hash);
         $itemsArr=$collection->items()->pluck('id');
         
-        return (new ExportModelService)->export(new BookmarksCollectionExport($itemsArr, $request->locale), "bookmarkedProposals.csv");
+        return (new ExportModelService)->export(new BookmarksCollectionExport($itemsArr, $request->locale), $collection->title."-proposals.csv");
     }
 }

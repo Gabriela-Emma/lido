@@ -19,7 +19,6 @@ class BookmarksCollectionExport implements FromQuery, WithHeadings, WithMapping,
 {
     use Exportable;
 
-    protected int $id;
 
     public function __construct(
         protected $bookmarkedItems,
@@ -37,7 +36,7 @@ class BookmarksCollectionExport implements FromQuery, WithHeadings, WithMapping,
         $modelResource = 'App\\Http\\Resources\\'.Str::studly(Str::singular(class_basename($row->model))).'Resource';
         $modelDetail = new $modelResource($row->model);
         return [
-            $row->title,
+            $modelDetail->title,
             $modelDetail->amount_requested,
             $modelDetail->fund->parent->title,
             $modelDetail->fund->title,
@@ -47,7 +46,7 @@ class BookmarksCollectionExport implements FromQuery, WithHeadings, WithMapping,
     public function headings(): array
     {
         return [
-            'Title',
+            'Proposal Title',
             'Budget',
             'Fund',
             'Challenge'

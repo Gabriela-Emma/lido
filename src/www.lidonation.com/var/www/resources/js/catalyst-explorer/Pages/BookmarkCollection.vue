@@ -1,6 +1,6 @@
 <template>
     <header-component titleName0="Bookmark" :titleName1="bookmarkCollection?.title"
-                      :subTitle="`Created ${$filters.timeAgo(bookmarkCollection.created_at)}. Has ${bookmarkCollection?.items_count} items${bookmarkCollection?.items_count > 1 ? 's' : ''}.`"/>
+                      :subTitle="`Created ${$filters.timeAgo(bookmarkCollection.created_at)}. Has ${bookmarkCollection?.items_count} item${bookmarkCollection?.items_count > 1 ? 's' : ''}.`"/>
 
     <main class="flex flex-col gap-2 bg-primary-20 py-8">
         <div class="container">
@@ -121,7 +121,7 @@ const download = () => {
     const data = {};
     data['locale'] = usePage().props.locale;
     data['hash'] = props.bookmarkCollection.hash;
-    const fileName = 'bookmarked-proposals.csv';
+    const fileName = `${props.bookmarkCollection.title}-proposals.csv`;
 
     const res = axios.get(`/${usePage().props.locale}/catalyst-explorer/export/bookmarked-proposals`, {
         responseType: 'blob',
