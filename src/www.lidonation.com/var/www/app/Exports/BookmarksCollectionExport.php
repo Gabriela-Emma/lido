@@ -37,9 +37,20 @@ class BookmarksCollectionExport implements FromQuery, WithHeadings, WithMapping,
         $modelDetail = new $modelResource($row->model);
         return [
             $modelDetail->title,
-            $modelDetail->amount_requested,
             $modelDetail->fund->parent->title,
             $modelDetail->fund->title,
+            $modelDetail->amount_requested,
+            $modelDetail->amount_received,
+            $modelDetail->funding_status,
+            $modelDetail->status,
+            $modelDetail->yes_votes_count,
+            $modelDetail->no_votes_count,
+            $modelDetail->team?->name,
+            $modelDetail->ideascale_link,
+            $modelDetail->problem,
+            $modelDetail->solution,
+            $modelDetail->experience,
+            $modelDetail->definition_of_success,
         ];
     }
 
@@ -47,9 +58,21 @@ class BookmarksCollectionExport implements FromQuery, WithHeadings, WithMapping,
     {
         return [
             'Proposal Title',
-            'Budget',
             'Fund',
-            'Challenge'
+            'Challenge',
+            'amount_requested',
+            'amount_received',
+            'funding_status',
+            'project_status',
+            'yes_votes',
+            'no_votes',
+            'team',
+            'ideascale_link',
+            'problem',
+            'solution',
+            'experience',
+            'definition_of_success',
+            'ideascale_link',
         ];
     }
 
@@ -61,7 +84,10 @@ class BookmarksCollectionExport implements FromQuery, WithHeadings, WithMapping,
     public function columnFormats(): array
     {
         return [
-            'B' => NumberFormat::FORMAT_CURRENCY_USD_INTEGER,
+            'D' => NumberFormat::FORMAT_CURRENCY_USD_INTEGER,
+            'E' => NumberFormat::FORMAT_CURRENCY_USD_INTEGER,
+            'H' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
+            'I' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1,
         ];
 
     }
