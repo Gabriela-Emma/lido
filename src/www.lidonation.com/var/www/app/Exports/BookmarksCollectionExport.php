@@ -38,7 +38,7 @@ class BookmarksCollectionExport implements FromQuery, WithHeadings, WithMapping,
         $modelDetail = new $modelResource($row->model);
         return [
             $row->title,
-            $modelDetail->amount_received,
+            $modelDetail->amount_requested,
             $modelDetail->fund->parent->title,
             $modelDetail->fund->title,
         ];
