@@ -2,13 +2,13 @@
 
 namespace Database\Factories;
 
-use App\Models\Assessment;
-use App\Models\Meta;
-use App\Models\Post;
+use App\Models\Comment;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class CommentFactory extends Factory
 {
+    protected $model = Comment::class;
     /**
      * Define the model's default state.
      *
@@ -17,39 +17,14 @@ class CommentFactory extends Factory
      */
     public function definition(): array
     {
-        return [
-            'title' => $this->faker->words(random_int(3, 7), true),
-            'content' => $this->faker->paragraphs(random_int(2, 8), true),
-            'status' => $this->faker->randomElement(['draft', 'published', 'pending']),
-            'parent_id' => $this->faker->randomElement([
-                Assessment::inRandomOrder()->first()?->id,
-                null, null, null, null, null, null,
-            ]),
-            'model_id' => Post::inRandomOrder()->first()->id,
-            'model_type' => Post::class,
-        ];
-    }
+        $user = User::inRandomOrder()->first();
+        $text = $this->faker->sentence(random_int(2, 5), true);
 
-    /**
-     * Configure the model factory.
-     *
-     * @return $this
-     */
-    public function configure(): static
-    {
-        return $this->afterCreating(function (Assessment $comment) {
-            Meta::factory([
-                'model_type' => Assessment::class,
-                'model_id' => $comment->id,
-                'key' => 'name',
-                'content' => $this->faker->name(),
-            ])->create();
-            Meta::factory([
-                'model_type' => Assessment::class,
-                'model_id' => $comment->id,
-                'key' => 'email',
-                'content' => $this->faker->unique()->safeEmail(),
-            ])->create();
-        });
+        return [
+            'commentator_type' => get_class($user),
+            'commentator_id' => $user->id,
+            'original_text' => $text,
+            'text' => "<p>{$text}</p>",
+        ];
     }
 }

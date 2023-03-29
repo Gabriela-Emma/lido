@@ -4,8 +4,9 @@ namespace Database\Seeders;
 
 use App\Models\Discussion;
 use App\Models\Review;
+use Illuminate\Database\Seeder;
 
-class ReviewsSeeder extends PostSeeder
+class ReviewsSeeder extends Seeder
 {
     /**
      * Run the database seeds.

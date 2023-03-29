@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -14,22 +15,11 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call([
-            // SearchIndexSeeder::class,
-            PermissionSeeder::class,
-            RoleSeeder::class,
-            UserSeeder::class,
-            SnippetSeeder::class,
-            CategorySeeder::class,
-            LinkSeeder::class,
-            TagSeeder::class,
-            TeamSeeder::class,
-            // OnboardingContentSeeder::class,
-            //            PostSeeder::class,
-            // NewsSeeder::class,
-            // InsightsSeeder::class,
-            // ReviewsSeeder::class,
-            // CommentSeeder::class,
-            // CatalystDatabaseSeeder::class
+            SearchIndexSeeder::class,
+
+            LidoModelsDatabaseSeeder::class,
+
+            CatalystDatabaseSeeder::class,
         ]);
     }
 }

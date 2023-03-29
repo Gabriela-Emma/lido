@@ -1,6 +1,6 @@
 <template>
     <header-component titleName0="Bookmark" :titleName1="bookmarkCollection?.title"
-                      :subTitle="`Created ${$filters.timeAgo(bookmarkCollection.created_at)}. Has ${bookmarkCollection?.items_count} items${bookmarkCollection?.items_count > 1 ? 's' : ''}.`"/>
+                      :subTitle="`Created ${$filters.timeAgo(bookmarkCollection.created_at)}. Has ${bookmarkCollection?.items_count} item${bookmarkCollection?.items_count > 1 ? 's' : ''}.`"/>
 
     <main class="flex flex-col gap-2 bg-primary-20 py-8">
         <div class="container">
@@ -22,11 +22,12 @@
                         <ArrowUturnLeftIcon class="mr-0.5 h-3 w-3" aria-hidden="true"/>
                         {{ $t("All Bookmarks") }}
                     </Link>
-                    <button type="buttons" disabled="disabled"
+                    <button @click="download"
+                            type="button" 
                             :class="[textColor$, borderColor$]"
-                            class="inline-flex items-center gap-x-0.5 rounded-sm border py-1 hover:cursor-not-allowed px-1.5 text-xs font-semibold text-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-600">
+                            class="inline-flex items-center gap-x-0.5 rounded-sm border py-1 hover:text-teal-600 px-1.5 text-xs font-semibold text-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-600">
                         <ArrowDownTrayIcon class="mr-0.5 h-3 w-3" aria-hidden="true"/>
-                        {{ $t("Export") }} <span class="text-slate-300"> - {{ $t("Coming Soon") }}</span>
+                        {{ $t("Export") }} 
                     </button>
                 </div>
             </section>
@@ -96,10 +97,11 @@
 </template>
 
 <script lang="ts" setup>
-import {Link} from '@inertiajs/vue3';
+import {Link, usePage} from '@inertiajs/vue3';
 import BookmarkCollection from "../models/bookmark-collection";
 import {ChevronRightIcon, ArrowUturnLeftIcon, ArrowDownTrayIcon} from '@heroicons/vue/20/solid';
 import {computed, inject} from "vue";
+import axios from 'axios';
 
 const $utils: any = inject('$utils');
 
@@ -113,5 +115,26 @@ const textColor$ = computed<string>(() =>
 const borderColor$ = computed<string>(() =>
     $utils?.contrastColor(props.bookmarkCollection?.color) === 'light' ? 'border-white' : 'border-black'
 );
+
+
+const download = () => {
+    const data = {};
+    data['locale'] = usePage().props.locale;
+    data['hash'] = props.bookmarkCollection.hash;
+    const fileName = `${props.bookmarkCollection.title}-proposals.csv`;
+
+    const res = axios.get(`/${usePage().props.locale}/catalyst-explorer/export/bookmarked-proposals`, {
+        responseType: 'blob',
+        params: data,
+    });
+    res.then(function(res) {
+        const url = window.URL.createObjectURL(new Blob([res.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', fileName);
+        document.body.appendChild(link);
+        link.click();
+    });
+}
 
 </script>

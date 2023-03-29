@@ -14,8 +14,7 @@ class ExternalPostSeeder extends PostSeeder
     public function run()
     {
         ExternalPost::factory(8)
-            ->create([
-                'type' => 'App\Models\ExternalPost',
-            ]);
+            ->create();
+            
     }
 }

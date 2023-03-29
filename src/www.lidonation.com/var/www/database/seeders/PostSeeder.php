@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Comment;
 use App\Models\Post;
 use Illuminate\Database\Seeder;
 
@@ -15,16 +16,7 @@ class PostSeeder extends Seeder
     public function run()
     {
         Post::factory(11)
+            ->has(Comment::factory()->count(2), 'comments')
             ->create();
-
-        Post::factory(3)
-            ->create([
-                'prologue' => null,
-            ]);
-
-        Post::factory(3)
-            ->create([
-                'epilogue' => null,
-            ]);
     }
 }

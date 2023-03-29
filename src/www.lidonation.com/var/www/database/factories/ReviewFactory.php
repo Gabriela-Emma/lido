@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Factories\Sequence;
 
 class ReviewFactory extends PostFactory
 {
+    protected $model = Review::class;
     /**
      * Configure the model factory.
      *
@@ -20,7 +21,7 @@ class ReviewFactory extends PostFactory
         return $this->afterCreating(function (Review $review) {
             $this->afterCreatingJobs($review);
             Rating::factory()
-                ->count(rand(55, 847))
+                ->count(rand(5, 10))
                 ->state(new Sequence(
                     function ($sequence) use ($review) {
                         $discussion = $review->discussions()->inRandomOrder()->first();

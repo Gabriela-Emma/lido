@@ -10,7 +10,7 @@ use App\Services\TranslationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
-class ProposalTranslationController extends Controller
+class ModelTranslationController extends Controller
 {
     public $field = 'content';
 
@@ -93,7 +93,7 @@ class ProposalTranslationController extends Controller
             'status' => 'published',
         ]);
 
-        $model->setTranslation($this->field, $request->targetLanguage, $translation->content);
+        $model->setTranslation($this->field, $request->targetLanguage, $request->content);
 
         $translatedContent = null;
         while ($translatedContent === null) {
@@ -127,4 +127,12 @@ class ProposalTranslationController extends Controller
 
         return $modelType::find($model_id);
     }
+
+    public function getContent(Request $request)
+    {
+        $model = $this->matchModel($request->model_type, $request->model_id);
+
+        return $model->content;
+    }
+
 }
