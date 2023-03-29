@@ -116,7 +116,6 @@ const borderColor$ = computed<string>(() =>
     $utils?.contrastColor(props.bookmarkCollection?.color) === 'light' ? 'border-white' : 'border-black'
 );
 
-console.log(usePage().props.locale)
 
 const download = () => {
     const data = {};
