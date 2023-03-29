@@ -20,7 +20,7 @@ class RatingFactory extends Factory
 
         return [
             'user_id' => fn () => User::inRandomOrder()->first()->id,
-            'comment_id' => fn () => Assessment::factory(),
+            'comment_id' => fn () => Assessment::factory()->create(['model_type'=> $model->type, 'model_id'=> $model->id]),
             'model_id' => fn () => $model->id,
             'model_type' => fn () => $model->type,
             'rating' => $this->faker->numberBetween(1, 5),

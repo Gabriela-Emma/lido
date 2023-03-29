@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\AnonymousBookmark;
 use Illuminate\Database\Seeder;
 
 class AnonymousBookmarkSeeder extends Seeder
@@ -13,6 +14,6 @@ class AnonymousBookmarkSeeder extends Seeder
      */
     public function run()
     {
-        //
+        AnonymousBookmark::factory(10)->create([]);
     }
 }

@@ -1,72 +1,70 @@
 <?php
 
-use App\Http\Controllers\AnonymousBookmarkController;
-use App\Http\Controllers\Api\CatalystExplorer\UserController;
-use App\Http\Controllers\Auth\AuthController;
-use App\Http\Controllers\Auth\ForgotPasswordController;
-use App\Http\Controllers\CommentController;
-use App\Http\Controllers\ContactController;
-use App\Http\Controllers\Earn\LearnController;
-use App\Http\Controllers\GlobalSearchController;
-use App\Http\Controllers\NewsletterController;
-use App\Http\Controllers\OAuthController;
-use App\Http\Controllers\PostController;
-use App\Http\Controllers\ProjectCatalyst\CatalystAssessmentsController;
-use App\Http\Controllers\ProjectCatalyst\CatalystBookmarksController;
-use App\Http\Controllers\ProjectCatalyst\CatalystFundsController;
-use App\Http\Controllers\ProjectCatalyst\CatalystGroupsController;
-use App\Http\Controllers\ProjectCatalyst\CatalystMyBookmarksController;
-use App\Http\Controllers\ProjectCatalyst\CatalystMyDashboardController;
-use App\Http\Controllers\ProjectCatalyst\CatalystMyGroupsController;
-use App\Http\Controllers\ProjectCatalyst\CatalystMyProposalsController;
-use App\Http\Controllers\ProjectCatalyst\CatalystPeopleController;
-use App\Http\Controllers\ProjectCatalyst\CatalystProjectsController;
-use App\Http\Controllers\ProjectCatalyst\CatalystReportsController;
-use App\Http\Controllers\ProjectCatalyst\CatalystUserProfilesController;
-use App\Http\Controllers\ProjectCatalyst\CatalystVoterToolController;
-use App\Http\Controllers\ProjectCatalyst\ProposalSearchController;
-use App\Http\Controllers\ProposalTranslationController;
-use App\Http\Controllers\ReviewRatingImage;
-use App\Http\Controllers\StripeController;
-use App\Http\Controllers\TaxonomyController;
-use App\Http\Controllers\TwitterAttendanceController;
-use App\Http\Controllers\VerifyWalletController;
-use App\Http\Livewire\Catalyst\CatalystFundComponent;
-use App\Http\Livewire\Catalyst\CatalystGroupsComponent;
-use App\Http\Livewire\Catalyst\CatalystProposersComponent;
-use App\Http\Livewire\ContributeContent\ContributeContent;
-use App\Http\Livewire\ContributeContent\ContributeRecordingComponent;
-use App\Http\Livewire\ContributeContent\ContributeTranslation;
-use App\Http\Livewire\ContributeContent\ContributeTranslations;
-use App\Http\Livewire\Delegators\DelegatorsComponent;
-use App\Http\Livewire\Library\LibraryComponent;
-use App\Http\Livewire\LidoCatalystProposals\LidoCatalystProposals;
-use App\Http\Livewire\Partners\PartnerDashboardComponent;
-use App\Http\Livewire\PoolTool\PoolTool;
 use App\Models\Mint;
-use App\Models\OnboardingContent;
+use Inertia\Inertia;
+use App\Models\Review;
 use App\Models\Podcast;
 use App\Models\Proposal;
-use App\Models\Review;
-use App\Repositories\PostRepository;
-use Atymic\Twitter\Facade\Twitter;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
-use Illuminate\Mail\Mailables\Content;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Session;
-use Inertia\Inertia;
 use Laravel\Fortify\Features;
+use App\Models\OnboardingContent;
+use Atymic\Twitter\Facade\Twitter;
+use App\Repositories\PostRepository;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Mail\Mailables\Content;
+use Illuminate\Support\Facades\Session;
+use App\Http\Controllers\PostController;
+use App\Http\Livewire\PoolTool\PoolTool;
+use App\Http\Controllers\OAuthController;
+use App\Http\Controllers\StripeController;
+use App\Http\Controllers\CommentController;
+use App\Http\Controllers\ContactController;
+use App\Http\Controllers\ReviewRatingImage;
+use App\Http\Controllers\TaxonomyController;
+use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Earn\LearnController;
+use App\Http\Controllers\NewsletterController;
+use App\Http\Livewire\Library\LibraryComponent;
+use App\Http\Controllers\GlobalSearchController;
+use App\Http\Controllers\VerifyWalletController;
+use App\Http\Controllers\ModelTranslationController;
+use App\Http\Controllers\AnonymousBookmarkController;
+use App\Http\Controllers\TwitterAttendanceController;
+use App\Http\Livewire\Catalyst\CatalystFundComponent;
+use App\Http\Livewire\Delegators\DelegatorsComponent;
+use App\Http\Livewire\Catalyst\CatalystGroupsComponent;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Http\Livewire\Partners\PartnerDashboardComponent;
+use App\Http\Livewire\Catalyst\CatalystProposersComponent;
+use App\Http\Livewire\ContributeContent\ContributeContent;
+use Laravel\Fortify\Http\Controllers\VerifyEmailController;
+use Laravel\Fortify\Http\Controllers\RecoveryCodeController;
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
+use App\Http\Controllers\Api\CatalystExplorer\UserController;
+use App\Http\Livewire\ContributeContent\ContributeTranslation;
+use Laravel\Fortify\Http\Controllers\RegisteredUserController;
+use App\Http\Livewire\ContributeContent\ContributeTranslations;
+use Laravel\Fortify\Http\Controllers\TwoFactorQrCodeController;
+use App\Http\Controllers\ProjectCatalyst\CatalystFundsController;
+use App\Http\Controllers\ProjectCatalyst\CatalystGroupsController;
+use App\Http\Controllers\ProjectCatalyst\CatalystPeopleController;
+use App\Http\Controllers\ProjectCatalyst\ProposalSearchController;
+use App\Http\Livewire\LidoCatalystProposals\LidoCatalystProposals;
+use App\Http\Controllers\ProjectCatalyst\CatalystReportsController;
+use App\Http\Controllers\ProjectCatalyst\CatalystMyGroupsController;
+use App\Http\Controllers\ProjectCatalyst\CatalystProjectsController;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
-use Laravel\Fortify\Http\Controllers\ConfirmablePasswordController;
+use App\Http\Controllers\ProjectCatalyst\CatalystBookmarksController;
+use App\Http\Controllers\ProjectCatalyst\CatalystVoterToolController;
+use App\Http\Livewire\ContributeContent\ContributeRecordingComponent;
+use App\Http\Controllers\ProjectCatalyst\CatalystAssessmentsController;
+use App\Http\Controllers\ProjectCatalyst\CatalystMyBookmarksController;
+use App\Http\Controllers\ProjectCatalyst\CatalystMyDashboardController;
+use App\Http\Controllers\ProjectCatalyst\CatalystMyProposalsController;
 use Laravel\Fortify\Http\Controllers\ConfirmedPasswordStatusController;
 use Laravel\Fortify\Http\Controllers\EmailVerificationPromptController;
-use Laravel\Fortify\Http\Controllers\RecoveryCodeController;
-use Laravel\Fortify\Http\Controllers\RegisteredUserController;
+use App\Http\Controllers\ProjectCatalyst\CatalystUserProfilesController;
 use Laravel\Fortify\Http\Controllers\TwoFactorAuthenticatedSessionController;
-use Laravel\Fortify\Http\Controllers\TwoFactorQrCodeController;
-use Laravel\Fortify\Http\Controllers\VerifyEmailController;
-use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 /*
 |--------------------------------------------------------------------------
@@ -770,15 +768,16 @@ Route::post('reset-password', [ForgotPasswordController::class, 'submitResetPass
 Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
 // translation
-Route::post('/validate/user', [ProposalTranslationController::class, 'validateUser']);
-Route::get('/language-options', [ProposalTranslationController::class, 'getLanguageOptions']);
+Route::post('/validate/user', [ModelTranslationController::class, 'validateUser']);
+Route::get('/language-options', [ModelTranslationController::class, 'getLanguageOptions']);
+Route::get('/model-content', [ModelTranslationController::class, 'getContent']);
 
 Route::group(
     [
         'middleware' => ['auth:'.config('fortify.guard')],
     ], function () {
-        Route::post('/translate', [ProposalTranslationController::class, 'makeTranslation']);
-        Route::patch('/translation', [ProposalTranslationController::class, 'updateTranslation']);
-    });
+        Route::post('/translate', [ModelTranslationController::class, 'makeTranslation']);
+        Route::patch('/translation', [ModelTranslationController::class, 'updateTranslation']);
+       });
 
 Route::post('/react/post/{post:id}', [PostController::class, 'createReaction']);
