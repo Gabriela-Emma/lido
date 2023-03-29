@@ -15,6 +15,12 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call([
+            PermissionSeeder::class,
+            RoleSeeder::class,
+            UserSeeder::class,
+
+            SnippetSeeder::class,
+
             SearchIndexSeeder::class,
 
             LidoModelsDatabaseSeeder::class,
