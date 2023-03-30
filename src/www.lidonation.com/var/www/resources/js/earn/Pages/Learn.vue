@@ -1,4 +1,4 @@
-<style>
+<style scoped>
 ul {
     margin-left: 2rem;
 }
