@@ -72,21 +72,12 @@ class ModelTranslationController extends Controller
         $model = $this->matchModel($request->model_type, $request->model_id);
 
         $translation = Translation::where('source_id', $request->model_id)->where('lang', $request->targetLanguage)->first();
-        $translation->update([
-            'content' => $request->content,
-            'published_at' => now(),
-            'status' => 'published',
-        ]);
+        $translation->content = $request->content;
+        $translation->published_at = now();
+        $translation->save();
 
-        $model->setTranslation($this->field, $request->targetLanguage, $request->content);
-
-        $translatedContent = null;
-        while ($translatedContent === null) {
-            $translatedContent = $model->getTranslation($this->field, $request->targetLanguage, false);
-            sleep(1);
-        }
-
-        return $translatedContent;
+        $model->refresh();
+        return $model->getTranslation($this->field, $request->targetLanguage, false);
     }
 
     public function setTranslatorMetas(User $user, $lang)
