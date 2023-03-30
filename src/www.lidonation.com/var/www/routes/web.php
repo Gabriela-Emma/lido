@@ -771,7 +771,6 @@ Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 Route::post('/validate/user', [ModelTranslationController::class, 'validateUser']);
 Route::get('/language-options', [ModelTranslationController::class, 'getLanguageOptions']);
 Route::get('/model-content', [ModelTranslationController::class, 'getContent']);
-
 Route::group(
     [
         'middleware' => ['auth:'.config('fortify.guard')],
