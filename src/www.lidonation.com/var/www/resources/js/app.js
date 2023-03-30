@@ -942,7 +942,7 @@ window.translateProposal = function translateProposal(modelID, currPageLocale, m
                 this.processing = false;
                 this.editing = true;
                 if (this.responseValidity(res.data)) {
-                    this.modelContent =res.data;
+                    this.modelContent = res.data;
                     this.langExists = false;
                     } else {
                     this.langExists = false;
@@ -980,7 +980,7 @@ window.translateProposal = function translateProposal(modelID, currPageLocale, m
                     this.processing = false;
                     this.errorMessage();
                 }
-                this.modelContent =this.replaceShortcodes(res.data);
+                this.modelContent = this.replaceShortcodes(res.data);
                 this.translate = false;
                 this.processing = false;
                 this.editing = false;

@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/lidonation.iml" filepath="$PROJECT_DIR$/.idea/lidonation.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../round-table/.idea/round-table.iml" filepath="$PROJECT_DIR$/../round-table/.idea/round-table.iml" />
     </modules>
   </component>
 </project>
