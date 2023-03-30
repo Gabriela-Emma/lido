@@ -2,7 +2,7 @@
 <div class="" x-data="translateProposal({{ $post->id }}, '{{ $pageLocale }}','{{class_basename($post->type)}}')">
     @if ($post->content)
         <div x-show="locale === data.sourceLocale">
-            <div class="relative w-full bg-white z-10">
+            <div class="relative w-full bg-white z-10 -top-10 right-2">
                 <div x-show="!loggedIn"
                     class="mb-3 absolute rounded-sm px-1 py-0.5 right-1 top-1 text-sm bg-yellow-500 border border-yellow-800 text-pink-600 font-semibold hover:text-teal-800">
                     Help Translate! <a href="/login">login</a>
