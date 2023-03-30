@@ -1,8 +1,7 @@
 @props(['proposal', 'pageLocale'])
-
 <div class="border border-slate-300 rounded-sm" x-data="translateProposal({{ $proposal->id }}, '{{ $pageLocale }}', '{{ 'Proposal' }}')">
     @if ($proposal->content)
-        <div x-show="locale === sourceLocale">
+        <div x-show="locale === data.sourceLocale">
             <div class="relative w-full bg-white z-10">
                 <div x-show="!loggedIn"
                     class="mb-3 absolute rounded-sm px-1 py-0.5 right-1 top-1 text-sm bg-yellow-500 border border-yellow-800 text-pink-600 font-semibold hover:text-teal-800">
@@ -37,30 +36,43 @@
                     </div>
                 </div>
             </template>
-            <div class="flex flex-col" x-show="editing">
-                <p class="flex flex-row mb-2">
-                    Open English text in another tab.
-                    <a class="flex flex-row" href="/proposals/{{ $proposal->slug }}" target="_blank">
-                        Open
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                            stroke="currentColor" class="w-4 h-4">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
-                        </svg>
-                    </a>
-                </p>
-                <button @click="submitEdits()"
-                    class="p-2 font-medium  rounded-sm text-white bg-teal-600 hover:bg-teal-800 focus:ring-4 focus:outline-none focus:ring-teal-600text-center
-                              inline-flex items-center dark:bg-teal-600 dark:hover:bg-teal-700 dark:focus:ring-teal-800"
-                    type="button">
-                    Save Translation
-                </button>
+            <div class="flex flex-col justify-center">
+                <div class="flex flex-col" x-show="editing">
+                    <p class="flex flex-row mb-2">
+                        Open English text in another tab.
+                        <a class="flex flex-row" href="/proposals/{{ $proposal->slug }}" target="_blank">
+                            Open
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="w-4 h-4">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+                            </svg>
+                        </a>
+                    </p>
+                    <button @click="submitEdits()"
+                        class="p-2 font-medium  rounded-sm text-white bg-teal-600 hover:bg-teal-800 focus:ring-4 focus:outline-none focus:ring-teal-600text-center
+                                  inline-flex items-center dark:bg-teal-600 dark:hover:bg-teal-700 dark:focus:ring-teal-800"
+                        type="button">
+                        Save Translation
+                    </button>
+                    <span class="text-pink-600 text-sm text-bold mt-2 " x-show="failed">Error! Try saving again </span>
+                </div>
             </div>
         </div>
     @endif
     <div x-data="{ heightClass: 'max-h-[50rem] overflow-clip', funded: @js($proposal->funded) }" :class=" { editing: 'h-full' }" class="relative p-4 break-normal" x-show="1">
-        <div>
-            <template x-if="processing === true" class="mt-4">
+        <div class="flex flex-col items-center">
+            <div class="flex rounded-sm items-center w-48 mt-2 bg-green-700 p-1 text-bold" x-show="success">
+                    <span class="text-white mr-1">Translation saved</span>
+                    <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"
+                        id="IconChangeColor" height="20" width="20">
+                        <path fill="#FFFFFF" d="M512 64a448 448 0 1 1 0 896 448 448 0 0 1 0-896zm-55.808 536.384-99.52-99.584a38.4 38.4 0 1
+                                0-54.336 54.336l126.72 126.72a38.272 38.272 0 0 0 54.336 0l262.4-262.464a38.4 38.4 0 1 0-54.272-54.336L456.192 600.384z"
+                            id="mainIconPathAttribute" stroke-width="0"
+                            stroke="#FF0000"></path>
+                    </svg>
+            </div>
+            <template x-if="processing" class="mt-4">
                 <x-theme.spinner square="8" squareXl="8" theme="teal" />
             </template>
             <article :class="heightClass" x-transition x-show="!editing">
@@ -73,7 +85,6 @@
                 @endif
             </article>
         </div>
-        
         <div x-show="editing">
             <label for="message" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Edit if needed
                 and save translation.</label>
