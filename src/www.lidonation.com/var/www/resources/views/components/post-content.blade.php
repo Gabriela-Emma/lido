@@ -81,7 +81,7 @@
                         @if(Lang::has($post->getTable() . '.' . $post->slug ))
                             <x-markdown>{{__($post->getTable() . '.' . $post->slug)}}</x-markdown>
                         @else
-                            <x-markdown x-html="marked.parse(modelContent)"></x-markdown>
+                            <x-markdown>{{$post->content}}</x-markdown>
                         @endif
                     </div>
                 </article>
