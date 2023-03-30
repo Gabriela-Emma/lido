@@ -439,11 +439,11 @@ primary:
   ##
   resources:
     limits:
-      memory: 16384Mi
+      memory: 32768Mi
       cpu: 12
     requests:
-      memory: 2048Mi
-      cpu: 400m
+      memory: 16384Mi
+      cpu: 900m
   ## Pod Security Context
   ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
   ## @param primary.podSecurityContext.enabled Enable security context
@@ -655,7 +655,7 @@ primary:
       - ReadWriteOnce
     ## @param primary.persistence.size PVC Storage Request for PostgreSQL volume
     ##
-    size: 400Gi
+    size: 320Gi
     ## @param primary.persistence.annotations Annotations for the PVC
     ##
     annotations: {}
