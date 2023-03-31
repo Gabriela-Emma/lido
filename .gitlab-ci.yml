@@ -639,7 +639,6 @@ yarn:
   script: |-
     set -vx
     export PATH=$PATH:/usr/local/bin
-    apk add --no-cache python3 py3-pip make cmake
     cd ./src/www.lidonation.com/var/www
     touch ./storage/app/snippets.json
     echo '{}' > ./storage/app/snippets.json
