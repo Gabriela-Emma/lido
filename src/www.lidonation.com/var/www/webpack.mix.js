@@ -13,12 +13,6 @@ const LiveReloadPlugin = require('webpack-livereload-plugin');
  | for your Laravel applications. By default, we are compiling the CSS
  | file for the application as well as bundling up all the JS files.
 */
-const sassOptions = {
-    includePaths: [
-        require('path').resolve(__dirname, 'node_modules')
-    ]
-};
-
 mix.ts('resources/js/catalyst-explorer.ts', 'public/js')
     .ts('resources/js/earn.ts', 'public/js')
     .ts('resources/js/phuffycoin.ts', 'public/js')
@@ -40,13 +34,13 @@ mix.ts('resources/js/catalyst-explorer.ts', 'public/js')
     .css('node_modules/@splidejs/splide/dist/css/themes/splide-default.min.css', 'public/css')
     .css('node_modules/@splidejs/splide-extension-video/dist/css/splide-extension-video.min.css', 'public/css')
 
-    .sass('resources/sass/catalyst-explorer.scss', 'public/css', {sassOptions})
-    .sass('resources/sass/earn.scss', 'public/css', {sassOptions})
+    .sass('resources/sass/catalyst-explorer.scss', 'public/css')
+    .sass('resources/sass/earn.scss', 'public/css')
     .sass('resources/sass/bootstrap.scss', 'public/css')
-    .sass('resources/sass/partners.scss', 'public/css', {sassOptions})
-    .sass('resources/sass/delegators.scss', 'public/css', {sassOptions})
-    .sass('resources/sass/governance-day.scss', 'public/css', {sassOptions})
-    .sass('resources/sass/app.scss', 'public/css', {sassOptions})
+    .sass('resources/sass/partners.scss', 'public/css')
+    .sass('resources/sass/delegators.scss', 'public/css')
+    .sass('resources/sass/governance-day.scss', 'public/css')
+    .sass('resources/sass/app.scss', 'public/css')
 
     .options({
         postCss: [
