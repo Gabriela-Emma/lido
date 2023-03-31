@@ -14,6 +14,7 @@ use App\Models\Traits\HasWallets;
 use Illuminate\Database\Eloquent\Casts\AsArrayObject;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Cache;
@@ -24,6 +25,7 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 class Giveaway extends Model implements HasMedia, Interfaces\HasRules, HasRewardsContract
 {
     use HasAuthor,
+        HasFactory,
         HasHero,
         HasMetaData,
         HasModel,

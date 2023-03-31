@@ -35,7 +35,7 @@ class PostFactory extends Factory
         $link = Link::inRandomOrder()->first();
         $linkShortcode = '[link model_type="link" id='.$link->id.']'.$link->label.'[/link]';
         
-        $content = substr_replace( $content, $linkShortcode, 100, 0 );
+        $content = substr_replace( $content, $linkShortcode, 100, 0);
 
         $this->faker->addProvider(new PicsumPhotosProvider($this->faker));
 

@@ -8,11 +8,12 @@ use App\Models\Traits\HasMetaData;
 use App\Models\Traits\HasTxs;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Withdrawal extends Model implements IHasMetaData
 {
-    use HasTxs, HasMetaData, HasAuthor;
+    use HasTxs, HasMetaData, HasAuthor, HasFactory;
 
     protected $with = ['txs'];
 

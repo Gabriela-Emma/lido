@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\Tx;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class TxSeeder extends Seeder
+class RuleSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,6 +14,6 @@ class TxSeeder extends Seeder
      */
     public function run()
     {
-        Tx::factory(5)->create();
+        //
     }
 }
