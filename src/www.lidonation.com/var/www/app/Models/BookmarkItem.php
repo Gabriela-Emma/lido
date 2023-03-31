@@ -5,10 +5,11 @@ namespace App\Models;
 use App\Models\Traits\HasModel;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class BookmarkItem extends Model
 {
-    use HasModel;
+    use HasModel, SoftDeletes;
 
     public function title(): Attribute
     {

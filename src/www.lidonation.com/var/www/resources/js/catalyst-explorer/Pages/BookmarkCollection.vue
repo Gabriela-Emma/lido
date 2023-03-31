@@ -29,6 +29,13 @@
                         <ArrowDownTrayIcon class="mr-0.5 h-3 w-3" aria-hidden="true"/>
                         {{ $t("Export") }} 
                     </button>
+                    <button @click="removeCollection"
+                            type="button" 
+                            :class="[textColor$, borderColor$]"
+                            class="inline-flex items-center gap-x-0.5 rounded-sm border py-1 hover:text-teal-600 px-1.5 text-xs font-semibold text-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-600">
+                        <TrashIcon class="mr-0.5 h-3 w-3" aria-hidden="true"/>
+                        {{ $t("Delete Collection") }} 
+                    </button>
                 </div>
             </section>
 
@@ -97,11 +104,12 @@
 </template>
 
 <script lang="ts" setup>
-import {Link, usePage} from '@inertiajs/vue3';
+import {Link, router, usePage} from '@inertiajs/vue3';
 import BookmarkCollection from "../models/bookmark-collection";
-import {ChevronRightIcon, ArrowUturnLeftIcon, ArrowDownTrayIcon} from '@heroicons/vue/20/solid';
-import {computed, inject} from "vue";
+import {ChevronRightIcon, ArrowUturnLeftIcon, ArrowDownTrayIcon, TrashIcon} from '@heroicons/vue/20/solid';
+import {computed, inject, ref} from "vue";
 import axios from 'axios';
+import { useBookmarksStore } from '../stores/bookmarks-store';
 
 const $utils: any = inject('$utils');
 
@@ -135,6 +143,18 @@ const download = () => {
         document.body.appendChild(link);
         link.click();
     });
+}
+
+const bookmarksStore = useBookmarksStore();
+const hash = ref(props.bookmarkCollection.hash);
+const removeCollection = () => {
+    axios.delete(`${usePage().props.base_url}/catalyst-explorer/bookmarkCollection?hash=${hash.value}`)
+        .then((res) =>{
+            bookmarksStore.deleteCollection(hash.value)
+            router.visit(`${usePage().props.base_url}/catalyst-explorer/bookmarks`)
+        }
+    )
+
 }
 
 </script>

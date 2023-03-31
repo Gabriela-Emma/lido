@@ -68,7 +68,7 @@
                         </span>
                     </div>
                     <div class="text-right gap-2 md:gap-4 flex flex-row items-center justify-end">
-                        <p class="text-sm md:text-xl lg:text-3xl xl:text-4xl 2xl:text-5xl">
+                        <p class="text-sm md:text-xl lg:text-3xl xl:text-4xl 2xl:text-5xl hidden lg:inline-flex">
                             {{ $t("Connect your Wallet") }}
                         </p>
                         <h2 class="text-2xl sm:text-4xl xl:text-6xl 2xl:text-8xl text-right">2</h2>
