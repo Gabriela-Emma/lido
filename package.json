@@ -47,5 +47,7 @@
   "dependencies": {
     "rellax": "^1.12.1"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "sass-loader": "^12.1.0"
+  }
 }
