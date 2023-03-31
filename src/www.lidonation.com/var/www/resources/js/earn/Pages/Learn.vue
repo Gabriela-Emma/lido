@@ -116,9 +116,9 @@
                     </p>
                 </div>
 
-                <div>
+                <div class="flex w-52 lg:w-auto max-w-xs">
                     <img alt="lido nation logo" :src="$utils.assetUrl('img/llogo-transparent.png')"
-                         class="h-40"/>
+                         class="h-10 lg:h-40"/>
                 </div>
             </div>
         </div>
@@ -244,7 +244,7 @@ After 25 quizzes, you can't earn more money with this program, but you can earn 
 ]
 
 </script>
-<style lang="scss" scoped>
+<style scoped>
 :deep(li) {
     list-style: disc;
 }
