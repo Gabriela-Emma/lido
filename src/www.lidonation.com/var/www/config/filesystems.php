@@ -15,7 +15,7 @@ return [
 
     'default' => env('FILESYSTEM_DISK', 'local'),
 
-    'cloud' => env('FILESYSTEM_CLOUD', 'gcs'),
+    'cloud' => env('FILESYSTEM_CLOUD', 'local'),
 
     'backup' => env('FILESYSTEM_DISK_BACKUPS', 'local'),
 

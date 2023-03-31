@@ -77,14 +77,20 @@ mix.ts('resources/js/catalyst-explorer.ts', 'public/js')
                     exclude: /node_modules/,
                 },
 
-                // {
-                //     test: /\.scss$/,
-                //     use: [
-                //         'vue-style-loader',
-                //         'css-loader',
-                //         'sass-loader'
-                //     ]
-                // }
+                {
+                    test: /src\/www.lidonation.com\/var\/www\/resources\/js\.scss$/,
+                    exclude: /node_modules/,
+                    use: [
+                        'vue-style-loader',
+                        'css-loader',
+                        {
+                            loader: 'sass-loader',
+                            options: {
+                                indentedSyntax: true
+                            }
+                        }
+                    ]
+                }
             ],
         },
         resolve: {
