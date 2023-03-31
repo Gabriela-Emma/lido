@@ -23,6 +23,12 @@ export const useBookmarksStore = defineStore('bookmarks', () => {
         loadCollections().then();
     }
 
+    async function deleteCollection(collectionHash: string) {
+        delete localCollections.value[collectionHash];
+        loadCollections().then();
+      }
+      
+
     async function loadCollections() {
         if (Object.entries(localCollections.value)?.length == 0) {
             return;
@@ -48,6 +54,7 @@ export const useBookmarksStore = defineStore('bookmarks', () => {
     return {
         loadCollections,
         saveCollection,
+        deleteCollection,
         models: bookmarkedModels,
         collections$: collectionsArray,
     };
