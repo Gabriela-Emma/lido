@@ -40,7 +40,7 @@
                 <div class="flex flex-col" x-show="editing">
                     <p class="flex flex-row mb-2">
                         Open English text in another tab.
-                        <a class="flex flex-row" href="/proposals/{{ $post->slug }}" target="_blank">
+                        <a class="flex flex-row" href="{{ $post->link }}" target="_blank">
                             Open
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                 stroke="currentColor" class="w-4 h-4">
