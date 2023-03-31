@@ -244,7 +244,7 @@ After 25 quizzes, you can't earn more money with this program, but you can earn 
 ]
 
 </script>
-<style lang="scss" scoped>
+<style scoped>
 :deep(li) {
     list-style: disc;
 }
