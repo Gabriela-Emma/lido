@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\BookmarkCollection;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -9,6 +10,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class BookmarkCollectionFactory extends Factory
 {
+    protected $model = BookmarkCollection::class;
     /**
      * Define the model's default state.
      *
@@ -17,7 +19,11 @@ class BookmarkCollectionFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'title' => $this->faker->words(4, true),
+            'color' => $this->faker->safeHexColor(),
+            'visibility' => true,
+            'status' => $this->faker->randomElement(['published', 'draft', 'published', 'pending', 'published']),
+
         ];
     }
 }

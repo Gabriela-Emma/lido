@@ -34,6 +34,9 @@ class LidoModelsDatabaseSeeder extends Seeder
             RewardSeeder::class,
             WithdrawalSeeder::class,
 
+            EventSeeder::class,
+            TwitterEventSeeder::class,
+
         ]);
     }
 }
