@@ -6,6 +6,7 @@ use App\Models\Traits\HasAuthor;
 use App\Models\Traits\HasHero;
 use App\Models\Traits\HasTranslations;
 use App\Scopes\PublishedScope;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -13,7 +14,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class Promo extends Model implements HasMedia
 {
-    use HasAuthor, HasHero, HasTranslations, InteractsWithMedia;
+    use HasAuthor, HasFactory, HasHero, HasTranslations, InteractsWithMedia;
 
     public $translatable = [
         'title',

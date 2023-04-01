@@ -37,6 +37,7 @@ class LidoModelsDatabaseSeeder extends Seeder
             RepoSeeder::class,
             CommitSeeder::class,
             LidoMinuteSeeder::class,
+            PromoSeeder::class,
 
         ]);
     }
