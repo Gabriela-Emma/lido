@@ -76,7 +76,7 @@ services:
       - lido
 
   webdb:
-    image: postgres:15
+    image: postgres:15.2-alpine3.17
     container_name: lido_web_db
     environment:
       - POSTGRES_LOGGING=true

@@ -60,7 +60,7 @@ image: registry.lidonation.com/infra-ops/gitlab-runner:main
         --wait \
         --atomic \
         --namespace="$KUBE_NAMESPACE" \
-        -f ./chart/values.postgresql-ha.yaml \
+        -f ./chart/values.postgresql.yaml \
         --set global.postgresql.database="$POSTGRESQL_DB_SYNC_DB" \
         --set global.postgresql.username="$POSTGRESQL_DB_SYNC_USER" \
         --set global.postgresql.password="$POSTGRESQL_DB_SYNC_PASSWORD" \
@@ -80,7 +80,7 @@ image: registry.lidonation.com/infra-ops/gitlab-runner:main
         --set readReplicas.replicaCount="$POSTGRES_READ_REPLICAS" \
         --set architecture="$REPLICATION" \
         lidolovelace-dbsync-db \
-        bitnami/postgresql-ha
+        bitnami/postgresql
   }
 
   function deploy_postgres_web() {
