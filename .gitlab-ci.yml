@@ -51,7 +51,7 @@ image: registry.lidonation.com/infra-ops/gitlab-runner:main
       export REPLICATION="standalone"
       export HASURA_REPLICAS="1"
       export POSTGRES_READ_REPLICAS="0"
-      export PGPOOL_REPLICAS="1"
+      export PGPOOL_REPLICAS="0"
     fi
 
     echo "install postgres for dbsync"
@@ -61,13 +61,13 @@ image: registry.lidonation.com/infra-ops/gitlab-runner:main
         --atomic \
         --namespace="$KUBE_NAMESPACE" \
         -f ./chart/values.postgresql.yaml \
-        --set global.postgresql.database="$POSTGRESQL_DB_SYNC_DB" \
-        --set global.postgresql.username="$POSTGRESQL_DB_SYNC_USER" \
-        --set global.postgresql.password="$POSTGRESQL_DB_SYNC_PASSWORD" \
+        --set global.postgresql.auth.database="$POSTGRESQL_DB_SYNC_DB" \
+        --set global.postgresql.auth.username="$POSTGRESQL_DB_SYNC_USER" \
+        --set global.postgresql.auth.password="$POSTGRESQL_DB_SYNC_PASSWORD" \
         --set global.pgpool.adminUsername="$POSTGRESQL_DBSYNC_PGPOOL_ADMIN_USERNAME" \
         --set global.pgpool.adminPassword="$POSTGRESQL_DBSYNC_PGPOOL_ADMIN_PASSWORD" \
         --set global.postgresql.repmgrPassword="$POSTGRESQL_DBSYNC_PGPOOL_ADMIN_PASSWORD" \
-        --set global.postgresql.postgresPassword="$POSTGRESQL_DB_SYNC_POSTGRES_PASSWORD" \
+        --set global.postgresql.auth.postgresPassword="$POSTGRESQL_DB_SYNC_POSTGRES_PASSWORD" \
         --set pgpool.replicaCount="$PGPOOL_REPLICAS" \
         --set services.dbsync.hasura.replicaCount="$HASURA_REPLICAS" \
         --set services.dbsync.db.secret.POSTGRESQL_DB="$POSTGRESQL_DB_SYNC_DB" \
