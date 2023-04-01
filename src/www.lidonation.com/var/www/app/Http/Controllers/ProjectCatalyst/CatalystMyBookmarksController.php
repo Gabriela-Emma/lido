@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers\ProjectCatalyst;
 
-use App\Http\Controllers\Controller;
-use App\Http\Resources\BookmarkCollectionResource;
-use App\Models\BookmarkCollection;
-use App\Models\BookmarkItem;
+use Inertia\Inertia;
 use App\Models\Proposal;
+use App\Models\BookmarkItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Fluent;
-use Inertia\Inertia;
+use App\Models\BookmarkCollection;
+use App\Http\Controllers\Controller;
+use App\Services\ExportModelService;
+use App\Exports\BookmarksCollectionExport;
+use App\Http\Resources\BookmarkCollectionResource;
+use Google\Service\ShoppingContent\Resource\Collections;
 
 class CatalystMyBookmarksController extends Controller
 {
@@ -86,5 +89,21 @@ class CatalystMyBookmarksController extends Controller
         }
 
         return $collections;
+    }
+
+    function deleteCollection(Request $request)
+    {
+        $collection = BookmarkCollection::byHash($request->hash);
+        $collection->items()->delete();
+        $collection->delete();
+    }
+
+    public function exportBookmarks(Request $request) 
+    {
+        
+        $collection = BookmarkCollection::byHash($request->hash);
+        $itemsArr=$collection->items()->pluck('id');
+        
+        return (new ExportModelService)->export(new BookmarksCollectionExport($itemsArr, $request->locale), $collection->title."-proposals.csv");
     }
 }

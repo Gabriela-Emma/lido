@@ -865,11 +865,12 @@ window.translateProposal = function translateProposal(modelID, currPageLocale, m
         modelContent: null,
         data: {
             content: '',
-            sourceLanguage: '',
+            sourceLanguage: 'en',
             targetLanguage: '',
             model_type: '',
             model_id: '',
             updates: '',
+            sourceLocale:'',
         },
         processing: false,
         translationUpdates: {
@@ -877,19 +878,17 @@ window.translateProposal = function translateProposal(modelID, currPageLocale, m
             translationLang: ''
         },
         locale:null,
-        sourceLocale:null,
         translatorsLang:null,
         langExists:false,
+        failed:false,
+        success:false,
         init() {
         this.checkLogin();
-        this.sourceLocale = currPageLocale
+        this.data.sourceLocale = currPageLocale
         this.locale = 'en';
         this.getLangOptions();
         this.getModelData();
         this.getContent();
-        },
-        getTargetLocale(val) {
-            this.sourceLocale=val
         },
         checkLogin() {
             this.getModelData();
@@ -909,7 +908,7 @@ window.translateProposal = function translateProposal(modelID, currPageLocale, m
         },
         getLangOptions() {
             this.getModelData();
-            window.axios.get('/language-options', {params: this.data})
+            axios.get('/language-options', {params: this.data})
                 .then((res) => {
                     this.options = res.data;
                     if (this.translatorsLang!=null){
@@ -918,7 +917,7 @@ window.translateProposal = function translateProposal(modelID, currPageLocale, m
                 })
         },
         getContent(){
-            window.axios.get('/model-content',{params:this.data})
+            axios.get('/model-content',{params:this.data})
             .then(res => {
                 this.modelContent = this.replaceShortcodes(res.data);
             });
@@ -934,17 +933,16 @@ window.translateProposal = function translateProposal(modelID, currPageLocale, m
                 this.getModelData();
                 this.processing = true;
                 this.makeRequest();
-
             }
             this.translate = !this.translate;
         },
         makeRequest(){
-            window.axios.post('/translate', this.data)
+            axios.post('/translate', this.data)
             .then((res) => {
                 this.processing = false;
                 this.editing = true;
                 if (this.responseValidity(res.data)) {
-                    this.modelContent =res.data;
+                    this.modelContent = res.data;
                     this.langExists = false;
                     } else {
                     this.langExists = false;
@@ -954,7 +952,6 @@ window.translateProposal = function translateProposal(modelID, currPageLocale, m
         },
         getModelData() {
             this.data.content = this.modelContent;
-            this.data.sourceLanguage = this.locale;
             this.translationUpdates.translationLang = this.targetLang;
             this.data.targetLanguage = this.targetLang;
             this.data.model_type = modelClass;
@@ -962,7 +959,6 @@ window.translateProposal = function translateProposal(modelID, currPageLocale, m
         },
         getTranslation() {
             this.getModelData();
-            this.translate = false;
             this.processing = true;
             this.makeRequest();
         },
@@ -973,14 +969,37 @@ window.translateProposal = function translateProposal(modelID, currPageLocale, m
             return false;
         },
         submitEdits() {
-            this.editing = false;
-            this.translate = false;
+            this.processing = true;
             this.save = false;
             this.getModelData();
             window.axios.patch('/translation', this.data)
             .then((res) => {
+                if(!res.data.length>0)
+                {
+                    this.langExists = false;
+                    this.processing = false;
+                    this.errorMessage();
+                }
+                this.modelContent = this.replaceShortcodes(res.data);
+                this.translate = false;
+                this.processing = false;
+                this.editing = false;
+                this.failed = true;
                 this.langExists = false;
+                this.successMessage();
             });
+        },
+        successMessage(){
+            this.success = true;
+            setTimeout(() => {
+            this.success = false;
+            }, 3000);
+        },
+        errorMessage(){
+            this.failed = true;
+            setTimeout(() => {
+            this.failed = false;
+            }, 3000);
         }
     };
 }

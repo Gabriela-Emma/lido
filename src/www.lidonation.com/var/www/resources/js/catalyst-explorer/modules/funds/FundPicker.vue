@@ -1,10 +1,10 @@
 <style scoped lang="scss">
-.proposal-drip {
-    .drip-content p {
-        @apply mt-0 inline;
-        display: inline;
+    .proposal-drip {
+        .drip-content p {
+            @apply mt-0 inline;
+            display: inline;
+        }
     }
-}
 </style>
 <template>
     <div

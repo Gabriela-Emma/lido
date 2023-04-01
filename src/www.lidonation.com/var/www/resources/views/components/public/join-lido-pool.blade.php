@@ -36,6 +36,7 @@
                 </h2>
             </div>
             <dl class="mt-10 space-y-10 sm:space-y-0 sm:grid sm:grid-cols-2 sm:gap-x-8 sm:gap-y-10 lg:mt-0 lg:col-span-2">
+                @if($snippets->unmatchedsupportcontent)
                 <div>
                     <div class="flex justify-center items-center w-12 h-12 text-white rounded-sm bg-teal-600">
                         <!-- Heroicon name: chip -->
@@ -54,6 +55,8 @@
                         </dd>
                     </div>
                 </div>
+                @endif
+                @if($snippets->bestinserverscontent)
                 <div>
                     <div class="flex justify-center items-center w-12 h-12 text-white rounded-sm bg-teal-600">
                         <!-- Heroicon name: cloud -->
@@ -72,6 +75,8 @@
                         </dd>
                     </div>
                 </div>
+                @endif
+                @if($snippets->communitydevelopmentcontent)
                 <div>
                     <div class="flex justify-center items-center w-12 h-12 text-white rounded-sm bg-teal-600">
                         <!-- Heroicon name: library -->
@@ -90,7 +95,8 @@
                         </dd>
                     </div>
                 </div>
-
+                @endif
+                @if($snippets->amazingcommunitycontent)
                 <div>
                     <div class="flex justify-center items-center w-12 h-12 text-white rounded-sm bg-teal-600">
                         <!-- Heroicon name: heart -->
@@ -109,9 +115,7 @@
                         </dd>
                     </div>
                 </div>
-
-
-
+                @endif
 
             </dl>
         </div>

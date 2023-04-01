@@ -3,5 +3,6 @@
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/src/lucid.lidonation.com" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../round-table" vcs="Git" />
   </component>
 </project>

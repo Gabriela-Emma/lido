@@ -147,6 +147,7 @@
                                 </div>
                             @endif
                                 <x-post-content :post="$post" :pageLocale="(app()->getLocale())"  />
+
                             @if($post->epilogue)
                                 <x-public.callout :content="$post->epilogue"
                                                   theme="secondary"></x-public.callout>

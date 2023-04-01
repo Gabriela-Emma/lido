@@ -37,29 +37,15 @@ class ModelTranslationController extends Controller
         $model = $this->matchModel($request->model_type, $request->model_id);
 
         $existingTranslatedLangs = $model->getTranslatedLocales('content');
-
-        $defaultExclutions = ['en', 'sw'];
-
-        $excludedLangs = array_merge($existingTranslatedLangs, $defaultExclutions);
-
-        $allLocales = config('laravellocalization.supportedLocales');
-
-        $result = array_map(function ($allLocales) use ($excludedLangs) {
-            if (in_array($allLocales['key'], $excludedLangs)) {
-                return null;
-            }
-
+        $excludedLangs = array_merge($existingTranslatedLangs, ['en', 'sw']);
+        $availableLocales = collect(config('laravellocalization.supportedLocales'))->forget($excludedLangs)->toArray();
+        $result = array_map(function ($availableLocales) {
             return [
-                'name' => $allLocales['native'],
-                'value' => $allLocales['key'],
+                'name' => $availableLocales['native'],
+                'value' => $availableLocales['key'],
             ];
-        }, $allLocales);
-
-        // Remove null values from the resulting array
-        $result = array_filter($result);
-        $json = json_encode(array_values($result));
-
-        return $json;
+        }, $availableLocales);
+        return  json_encode(array_values($result));
     }
 
     public function makeTranslation(Request $request, TranslationService $translationService)
@@ -77,31 +63,20 @@ class ModelTranslationController extends Controller
             ->setSourceLang($request->sourceLanguage);
 
         $translationService = $translationService->translate($content, $request->targetLanguage, $request->sourceLanguage);
-        $translationService->save($model, $this->field);
-
+        $translationService->save($model, $this->field, false);
         return $translationService->get();
     }
 
     public function updateTranslation(Request $request)
     {
         $model = $this->matchModel($request->model_type, $request->model_id);
-
         $translation = Translation::where('source_id', $request->model_id)->where('lang', $request->targetLanguage)->first();
-        $translation->update([
-            'content' => $request->content,
-            'published_at' => now(),
-            'status' => 'published',
-        ]);
+        $translation->content = $request->content;
+        $translation->published_at = now();
+        $translation->save();
 
-        $model->setTranslation($this->field, $request->targetLanguage, $request->content);
-
-        $translatedContent = null;
-        while ($translatedContent === null) {
-            $translatedContent = $model->getTranslation($this->field, $request->targetLanguage, false);
-            sleep(1);
-        }
-
-        return $translatedContent;
+        $model->refresh();
+        return $model->getTranslation('content', $request->targetLanguage, false);
     }
 
     public function setTranslatorMetas(User $user, $lang)
@@ -131,8 +106,10 @@ class ModelTranslationController extends Controller
     public function getContent(Request $request)
     {
         $model = $this->matchModel($request->model_type, $request->model_id);
-
-        return $model->content;
+        $modelContent = $model->getTranslation($this->field, $request->sourceLocale, false);
+        if($modelContent == null){
+            return $model->getTranslation($this->field, 'en', false);
+        }
+        return $modelContent;
     }
-
 }

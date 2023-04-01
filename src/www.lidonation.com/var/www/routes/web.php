@@ -239,6 +239,8 @@ Route::group(
 
             Route::post('/bookmarks/items', [CatalystMyBookmarksController::class, 'createItem']);
             Route::delete('/bookmarks/items', [CatalystMyBookmarksController::class, 'deleteItem']);
+            Route::get('/export/bookmarked-proposals', [CatalystMyBookmarksController::class, 'exportBookmarks']);
+            Route::delete('/bookmarkCollection',[CatalystMyBookmarksController::class, 'deleteCollection']);
 
             Route::middleware(['auth.catalyst'])->prefix('/my')->group(function () {
                 Route::get('/dashboard', [CatalystMyDashboardController::class, 'index'])
@@ -770,7 +772,6 @@ Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 Route::post('/validate/user', [ModelTranslationController::class, 'validateUser']);
 Route::get('/language-options', [ModelTranslationController::class, 'getLanguageOptions']);
 Route::get('/model-content', [ModelTranslationController::class, 'getContent']);
-
 Route::group(
     [
         'middleware' => ['auth:'.config('fortify.guard')],
