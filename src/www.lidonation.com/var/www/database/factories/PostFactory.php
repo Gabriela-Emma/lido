@@ -51,7 +51,7 @@ class PostFactory extends Factory
             'excerpt' => $this->faker->sentences(rand(2, 5), true),
             'social_excerpt' => $this->faker->sentences(rand(2, 3), true),
             'comment_prompt' => $this->faker->sentences(rand(2, 3), true),
-            'content' => $content,
+            'content' => ['en' => $content, 'sw' => ''],
             'epilogue' => $this->faker->paragraphs(rand(2, 3), true),
             'created_at' => $this->faker->dateTimeBetween('-2 Years'),
             'published_at' => $this->faker->dateTimeBetween('-2 Years'),
