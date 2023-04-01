@@ -16,6 +16,7 @@ use Bluemmb\Faker\PicsumPhotosProvider;
 use Database\Factories\Traits\UnsplashProvider;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class PostFactory extends Factory
 {
@@ -45,7 +46,7 @@ class PostFactory extends Factory
             'title' => $this->faker->words(4, true),
             'meta_title' => $this->faker->words(5, true),
             'status' => $this->faker->randomElement(['published', 'draft', 'published', 'pending', 'published']),
-            //            'slug' => fn(array $attributes) => Str::slug($attributes['title']),
+            'slug' => fn(array $attributes) => Str::slug($attributes['title']),
             'prologue' => $this->faker->paragraphs(rand(2, 3), true),
             'excerpt' => $this->faker->sentences(rand(2, 5), true),
             'social_excerpt' => $this->faker->sentences(rand(2, 3), true),

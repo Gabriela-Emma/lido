@@ -37,6 +37,13 @@ class LidoModelsDatabaseSeeder extends Seeder
             EventSeeder::class,
             TwitterEventSeeder::class,
 
+            PodcastSeeder::class,
+            NftSeeder::class,
+
+            RepoSeeder::class,
+            CommitSeeder::class,
+            LidoMinuteSeeder::class,
+
         ]);
     }
 }

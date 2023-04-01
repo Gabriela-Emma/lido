@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\LidoMinute;
-use App\Models\User;
+use App\Models\Commit;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class LidoMinuteSeeder extends Seeder
+class CommitSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,6 +15,6 @@ class LidoMinuteSeeder extends Seeder
      */
     public function run()
     {
-        LidoMinute::factory(10)->create();
+        Commit::factory(2)->create();
     }
 }

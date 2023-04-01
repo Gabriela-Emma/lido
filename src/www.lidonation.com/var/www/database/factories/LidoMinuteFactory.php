@@ -2,19 +2,11 @@
 
 namespace Database\Factories;
 
+use App\Models\LidoMinute;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class LidoMinuteFactory extends Factory
+class LidoMinuteFactory extends PostFactory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array
-     */
-    public function definition()
-    {
-        return [
-            //
-        ];
-    }
+    protected $model = LidoMinute::class;
+
 }
