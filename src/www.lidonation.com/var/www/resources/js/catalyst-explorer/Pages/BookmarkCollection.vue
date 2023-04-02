@@ -107,9 +107,11 @@
 import {Link, router, usePage} from '@inertiajs/vue3';
 import BookmarkCollection from "../models/bookmark-collection";
 import {ChevronRightIcon, ArrowUturnLeftIcon, ArrowDownTrayIcon, TrashIcon} from '@heroicons/vue/20/solid';
-import {computed, inject, ref} from "vue";
+import {computed, inject, Ref, ref} from "vue";
 import axios from 'axios';
 import { useBookmarksStore } from '../stores/bookmarks-store';
+import { storeToRefs } from 'pinia';
+import moment from "moment-timezone";
 
 const $utils: any = inject('$utils');
 
@@ -145,16 +147,35 @@ const download = () => {
     });
 }
 
+
+let onLocal:Ref<boolean> = ref()
+const collectionHash = ref(props.bookmarkCollection.hash);
+const createdAt = ref(props.bookmarkCollection.created_at);
+const canDelete:Ref<boolean> =  ref();
+
+// check if collection is on local
 const bookmarksStore = useBookmarksStore();
-const hash = ref(props.bookmarkCollection.hash);
+const {collections$} = storeToRefs(bookmarksStore);
+console.log(collections$)
+onLocal.value =  collections$.value?.some(collection => collection.hash === collectionHash.value);
+
+// if from last 10mins
+let tenMinsAgo = moment().subtract(10, 'minutes');
+let inLastTenMins:Ref<boolean> = ref(moment(createdAt.value).isBetween(tenMinsAgo,moment()));
+
 const removeCollection = () => {
-    axios.delete(`${usePage().props.base_url}/catalyst-explorer/bookmarkCollection?hash=${hash.value}`)
+    if(onLocal.value && inLastTenMins.value){
+        axios.delete(`${usePage().props.base_url}/catalyst-explorer/bookmarkCollection?hash=${collectionHash.value}`)
         .then((res) =>{
-            bookmarksStore.deleteCollection(hash.value)
-            router.visit(`${usePage().props.base_url}/catalyst-explorer/bookmarks`)
-        }
-    )
+            bookmarksStore.deleteCollection(collectionHash.value)
+            router.get(`${usePage().props.base_url}/catalyst-explorer/bookmarks`)
+        })
+    }
+
+    canDelete.value = false;
 
 }
+
+
 
 </script>
