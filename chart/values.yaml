@@ -254,6 +254,8 @@ services:
 
       PUSHER_CLUSTER:  us2,
 
+      PRELOAD_ENABLE: true,
+
       QUEUE_DRIVER: redis,
       QUEUE_CONNECTION: redis,
       QUEUE_NAMES: "default",
