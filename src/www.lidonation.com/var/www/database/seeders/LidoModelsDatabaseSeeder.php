@@ -18,7 +18,26 @@ class LidoModelsDatabaseSeeder extends Seeder
             LinkSeeder::class,
             TagSeeder::class,
             ArticlesSeeder::class,
-            TeamSeeder::class
+            TeamSeeder::class,
+            
+            WalletSeeder::class,
+            GiveawaySeeder::class,
+            EveryEpochSeeder::class,
+            QuestionSeeder::class,
+            QuizSeeder::class,
+            RewardSeeder::class,
+            WithdrawalSeeder::class,
+
+            EventSeeder::class,
+            TwitterEventSeeder::class,
+
+            PodcastSeeder::class,
+            NftSeeder::class,
+
+            RepoSeeder::class,
+            CommitSeeder::class,
+            LidoMinuteSeeder::class,
+
         ]);
     }
 }

@@ -112,6 +112,7 @@ class Post extends Model implements HasMedia, Interfaces\IHasMetaData, Sitemapab
     protected $casts = [
         'updated_at' => 'datetime:M d y',
         'published_at' => 'datetime:M d y',
+        'content' => 'array',
     ];
 
     public function reactionsCounts(): Attribute

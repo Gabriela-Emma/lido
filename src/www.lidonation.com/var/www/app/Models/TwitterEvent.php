@@ -5,12 +5,13 @@ namespace App\Models;
 use App\Models\Interfaces\IHasMetaData;
 use App\Models\Traits\HasAuthor;
 use App\Models\Traits\HasMetaData;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class TwitterEvent extends Model implements IHasMetaData
 {
-    use SoftDeletes, HasAuthor, HasMetaData;
+    use SoftDeletes, HasFactory, HasAuthor, HasMetaData;
 
     /**
      * The attributes that should be cast.

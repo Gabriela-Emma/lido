@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Assessor;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -9,6 +11,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class AssessorFactory extends Factory
 {
+    protected $model = Assessor::class;
     /**
      * Define the model's default state.
      *
@@ -17,7 +20,7 @@ class AssessorFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'assessor_id' => User::inRandomOrder()->first()->id,
         ];
     }
 }

@@ -11,6 +11,7 @@ use App\Models\Traits\HasTranslations;
 use App\Scopes\OrderByStartAtScope;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Nova\Actions\Actionable;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -18,6 +19,7 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 class Event extends Model
 {
     use Actionable,
+        HasFactory,
         HasAuthor,
         HasAssessments,
         HasMetaData,

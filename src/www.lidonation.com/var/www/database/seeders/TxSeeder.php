@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Tx;
 use Illuminate\Database\Seeder;
 
 class TxSeeder extends Seeder
@@ -13,6 +14,6 @@ class TxSeeder extends Seeder
      */
     public function run()
     {
-        //
+        Tx::factory(5)->create();
     }
 }
