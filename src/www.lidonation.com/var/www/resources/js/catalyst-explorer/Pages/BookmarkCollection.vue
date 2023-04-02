@@ -107,9 +107,9 @@
 import {Link, router, usePage} from '@inertiajs/vue3';
 import BookmarkCollection from "../models/bookmark-collection";
 import {ChevronRightIcon, ArrowUturnLeftIcon, ArrowDownTrayIcon, TrashIcon} from '@heroicons/vue/20/solid';
-import {computed, inject, Ref, ref} from "vue";
+import {computed, inject, Ref, ref, watch} from "vue";
 import axios from 'axios';
-import { useBookmarksStore } from '../stores/bookmarks-store';
+import {useBookmarksStore} from "../stores/bookmarks-store";
 import { storeToRefs } from 'pinia';
 import moment from "moment-timezone";
 
@@ -148,23 +148,26 @@ const download = () => {
 }
 
 
-let onLocal:Ref<boolean> = ref()
+const onLocal:Ref<boolean> = ref();
+const inLastTenMins:Ref<boolean>= ref();
 const collectionHash = ref(props.bookmarkCollection.hash);
 const createdAt = ref(props.bookmarkCollection.created_at);
-const canDelete:Ref<boolean> =  ref();
 
 // check if collection is on local
 const bookmarksStore = useBookmarksStore();
-const {collections$} = storeToRefs(bookmarksStore);
-console.log(collections$)
-onLocal.value =  collections$.value?.some(collection => collection.hash === collectionHash.value);
+const {collections$: storeCollections$} = storeToRefs(bookmarksStore);
+
+watch([storeCollections$], (newValue, oldValue) => {
+    onLocal.value =  storeCollections$.value?.some(collection => collection.hash === collectionHash.value);
+});
 
 // if from last 10mins
-let tenMinsAgo = moment().subtract(10, 'minutes');
-let inLastTenMins:Ref<boolean> = ref(moment(createdAt.value).isBetween(tenMinsAgo,moment()));
+inLastTenMins.value = (moment().diff(moment(createdAt.value),'minutes')) < 10;
+
+const canDelete:Ref<boolean> =  ref(onLocal.value && inLastTenMins.value);
 
 const removeCollection = () => {
-    if(onLocal.value && inLastTenMins.value){
+    if(canDelete){
         axios.delete(`${usePage().props.base_url}/catalyst-explorer/bookmarkCollection?hash=${collectionHash.value}`)
         .then((res) =>{
             bookmarksStore.deleteCollection(collectionHash.value)
