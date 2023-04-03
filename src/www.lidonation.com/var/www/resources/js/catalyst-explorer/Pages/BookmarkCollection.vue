@@ -29,12 +29,20 @@
                         <ArrowDownTrayIcon class="mr-0.5 h-3 w-3" aria-hidden="true"/>
                         {{ $t("Export") }} 
                     </button>
-                    <button @click="removeCollection"
+                    <button @click="remove = !remove"
                             type="button" 
                             :class="[textColor$, borderColor$]"
-                            class="inline-flex items-center gap-x-0.5 rounded-sm border py-1 hover:text-teal-600 px-1.5 text-xs font-semibold text-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-600">
-                        <TrashIcon class="mr-0.5 h-3 w-3" aria-hidden="true"/>
-                        {{ $t("Delete Collection") }} 
+                            class="inline-flex items-center gap-x-0.5 rounded-sm border py-1  px-1.5 text-xs font-semibold text-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-600">
+                        <div class="flex flex-row" v-show="!remove">
+                            <TrashIcon class="mr-0.5 h-3 w-3 hover:text-teal-600" aria-hidden="true"/>
+                                <span class="hover:text-teal-600">{{ $t("Delete Collection") }} </span>
+                        </div>
+                        <div class="flex flex-row" v-show="remove">
+                                <span class="mr-1">{{ $t("Are you sure? ") }} </span> 
+                                <span class="hover:text-teal-600 mr-1" @click="removeCollection" >{{ $t("Yes") }}</span> 
+                                <span class="mr-1">{{ $t("or") }}</span> 
+                                <span class="hover:text-teal-600">{{ $t("No") }}</span>
+                        </div>
                     </button>
                 </div>
             </section>
@@ -156,6 +164,7 @@ const onLocal:Ref<boolean> = ref(false);
 const inLastTenMins:Ref<boolean>= ref(false);
 const collectionHash = ref(props.bookmarkCollection.hash);
 const createdAt = ref(props.bookmarkCollection.created_at);
+let remove = ref(false)
 
 // check if collection is on local
 const bookmarksStore = useBookmarksStore();

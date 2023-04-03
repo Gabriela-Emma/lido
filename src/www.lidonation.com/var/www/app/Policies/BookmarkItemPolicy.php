@@ -56,7 +56,7 @@ class BookmarkItemPolicy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, BookmarkItem $bookmarkItem)
+    public function delete(?User $user, BookmarkItem $bookmarkItem)
     {
         if ($user === null) {
             return Response::allow();

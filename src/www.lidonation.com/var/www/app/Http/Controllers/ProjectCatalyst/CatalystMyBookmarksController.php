@@ -101,7 +101,6 @@ class CatalystMyBookmarksController extends Controller
 
     function deleteItem( BookmarkItem $bookmarkItem)
     {   
-        dd($bookmarkItem->collection());
         $this->authorize('delete', $bookmarkItem);
         $bookmarkItem->delete();
     }

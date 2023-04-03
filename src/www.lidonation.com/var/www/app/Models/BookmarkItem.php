@@ -19,6 +19,6 @@ class BookmarkItem extends Model
 
     public function collection(): BelongsTo
     {
-        return $this->belongsTo(BookmarkCollection::class);
+        return $this->belongsTo(BookmarkCollection::class, 'bookmark_collection_id');
     }
 }
