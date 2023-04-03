@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\Promo;
+use App\Models\AnswerResponse;
 use Illuminate\Database\Seeder;
 
-class PromoSeeder extends Seeder
+class AnswerResponseSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,6 +14,6 @@ class PromoSeeder extends Seeder
      */
     public function run()
     {
-        Promo::factory(5)->create();
+        AnswerResponse::factory(10)->create();
     }
 }

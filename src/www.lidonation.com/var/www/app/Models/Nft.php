@@ -43,6 +43,7 @@ class Nft extends Model implements HasLink, HasMedia
         'created_at' => 'datetime:Y-m-d',
         'funded_at' => 'datetime:Y-m-d',
         'funding_updated_at' => 'date:Y-m-d',
+        'content' => 'array'
     ];
 
     public $translatable = [
