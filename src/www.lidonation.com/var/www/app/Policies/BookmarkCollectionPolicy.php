@@ -5,7 +5,7 @@ namespace App\Policies;
 use App\Models\BookmarkCollection;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
-
+use Illuminate\Auth\Access\Response;
 class BookmarkCollectionPolicy
 {
     use HandlesAuthorization;
@@ -55,9 +55,15 @@ class BookmarkCollectionPolicy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, BookmarkCollection $bookmarkCollection)
+    public function delete(?User $user, BookmarkCollection $bookmarkCollection)
     {
-        //
+        if ($user === null) {
+            return Response::allow();
+        }
+        $inLastTenMins = now()->diffInMinutes($bookmarkCollection) < 10;
+        $isOwner = $user->id === $bookmarkCollection->user_id;
+        
+        return $inLastTenMins && $isOwner ? Response::allow() : Response::deny('You do not own this collection.');
     }
 
     /**

@@ -12,7 +12,6 @@ use App\Http\Controllers\Controller;
 use App\Services\ExportModelService;
 use App\Exports\BookmarksCollectionExport;
 use App\Http\Resources\BookmarkCollectionResource;
-use Google\Service\ShoppingContent\Resource\Collections;
 
 class CatalystMyBookmarksController extends Controller
 {
@@ -92,15 +91,23 @@ class CatalystMyBookmarksController extends Controller
     }
 
     function deleteCollection(Request $request)
-    {
+    {   
         $collection = BookmarkCollection::byHash($request->hash);
+        $this->authorize('delete', $collection);
+
         $collection->items()->delete();
         $collection->delete();
     }
 
+    function deleteItem( BookmarkItem $bookmarkItem)
+    {   
+        $this->authorize('delete', $bookmarkItem);
+        $bookmarkItem->delete();
+    }
+
     public function exportBookmarks(Request $request) 
     {
-        
+
         $collection = BookmarkCollection::byHash($request->hash);
         $itemsArr=$collection->items()->pluck('id');
         

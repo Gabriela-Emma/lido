@@ -238,9 +238,9 @@ Route::group(
             Route::get('/export/proposals', [CatalystProjectsController::class, 'exportProposals']);
 
             Route::post('/bookmarks/items', [CatalystMyBookmarksController::class, 'createItem']);
-            Route::delete('/bookmarks/items', [CatalystMyBookmarksController::class, 'deleteItem']);
             Route::get('/export/bookmarked-proposals', [CatalystMyBookmarksController::class, 'exportBookmarks']);
-            Route::delete('/bookmarkCollection',[CatalystMyBookmarksController::class, 'deleteCollection']);
+            Route::delete('/bookmark-collection',[CatalystMyBookmarksController::class, 'deleteCollection']);
+            Route::delete('/bookmark-item/{bookmarkItem:id}', [CatalystMyBookmarksController::class, 'deleteItem']);
 
             Route::middleware(['auth.catalyst'])->prefix('/my')->group(function () {
                 Route::get('/dashboard', [CatalystMyDashboardController::class, 'index'])
