@@ -68,7 +68,7 @@ class CatalystMyBookmarksController extends Controller
         return new BookmarkCollectionResource($collection);
     }catch(\Exception $e) {
         DB::rollback();
-        throw new \Exception("There was Error");
+        throw new \Exception("There was an Error");
     }    
 }
 
