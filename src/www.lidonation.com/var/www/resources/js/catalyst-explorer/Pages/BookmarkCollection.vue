@@ -23,25 +23,24 @@
                         {{ $t("All Bookmarks") }}
                     </Link>
                     <button @click="download"
-                            type="button" 
+                            type="button"
                             :class="[textColor$, borderColor$]"
                             class="inline-flex items-center gap-x-0.5 rounded-sm border py-1 hover:text-teal-600 px-1.5 text-xs font-semibold text-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-600">
                         <ArrowDownTrayIcon class="mr-0.5 h-3 w-3" aria-hidden="true"/>
-                        {{ $t("Export") }} 
+                        {{ $t("Export") }}
                     </button>
                     <button @click="remove = !remove"
-                            type="button" 
-                            :class="[textColor$, borderColor$]"
-                            class="inline-flex items-center gap-x-0.5 rounded-sm border py-1  px-1.5 text-xs font-semibold text-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-600">
+                            type="button"
+                            :class="[textColor$, borderColor$,( remove ? 'bg-stone-100' : '' )]"
+                            class="inline-flex items-center gap-x-0.5 rounded-sm border py-1 px-1.5 text-xs font-semibold text-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-600">
                         <div class="flex flex-row" v-show="!remove">
                             <TrashIcon class="mr-0.5 h-3 w-3 hover:text-teal-600" aria-hidden="true"/>
                                 <span class="hover:text-teal-600">{{ $t("Delete Collection") }} </span>
                         </div>
-                        <div class="flex flex-row" v-show="remove">
-                                <span class="mr-1">{{ $t("Are you sure? ") }} </span> 
-                                <span class="hover:text-teal-600 mr-1" @click="removeCollection" >{{ $t("Yes") }}</span> 
-                                <span class="mr-1">{{ $t("or") }}</span> 
-                                <span class="hover:text-teal-600">{{ $t("No") }}</span>
+                        <div class="flex flex-row gap-1 text-slate-800" v-show="remove">
+                                <span class="mr-1">{{ $t("Are you sure? ") }} </span>
+                                <span type="button" class="hover:bg-pink-500 bg-pink-400 py-0.5 px-1 rounded-sm" @click="removeCollection" >{{ $t("Yes") }}</span>
+                                <span type="button" class="hover:text-teal-600 bg-slate-200 py-0.5 px-1 rounded-sm">{{ $t("No") }}</span>
                         </div>
                     </button>
                 </div>
@@ -66,9 +65,9 @@
                                                     <p v-if="item?.content" class="italic mr-3">
                                                         {{item?.content}}
                                                     </p>
-                                                    <TrashIcon @click.prevent="removeItem(item.id)" class="mr-0.5 h-5 w-5 hover:text-teal-600" aria-hidden="true"/>
+
                                                 </div>
-                                                
+
                                             </div>
                                             <div class="mt-1">
                                                 <div class="flex flex-row items-center gap-5 text-sm text-slate-500">
@@ -100,8 +99,9 @@
                                             <!--                                                </div>-->
                                         </div>
                                     </div>
-                                    <div class="ml-5 flex-shrink-0">
-                                        <ChevronRightIcon class="h-5 w-5 text-gray-400" aria-hidden="true"/>
+                                    <div class="ml-5 flex-shrink-0 flex justify-end gap-2">
+                                        <TrashIcon @click.prevent="removeItem(item.id)" class="mr-0.5 h-5 w-5 hover:text-teal-600 hover:cursor-pointer" aria-hidden="true"/>
+<!--                                        <ChevronRightIcon class="h-5 w-5 text-gray-400" aria-hidden="true"/>-->
                                     </div>
                                 </div>
                             </div>
@@ -191,7 +191,7 @@ const removeCollection = () => {
                 console.error(error);
             }
         });
-    } 
+    }
 }
 
 const removeItem = (id:number) =>{
