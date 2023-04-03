@@ -306,7 +306,7 @@ services:
       zoom_api_key:
       zoom_api_secret:
     persistence:
-      size: 260Gi
+      size: 280Gi
       storageClass: longhorn
       accessMode: ReadWriteMany
       subPath: "storage"
