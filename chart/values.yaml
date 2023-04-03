@@ -238,7 +238,7 @@ services:
 
       MAIL_FROM_ADDRESS: 'team@lidonation.com',
       MAIL_FROM_NAME: 'Lido Nation',
-      MEDIA_DISK: 'gcs',
+      MEDIA_DISK: 'public',
 
       MAILCHIMP_APIKEY: '',
       MAILGUN_SECRET: '',
@@ -306,7 +306,7 @@ services:
       zoom_api_key:
       zoom_api_secret:
     persistence:
-      size: 100Gi
+      size: 220Gi
       storageClass: longhorn
       accessMode: ReadWriteMany
       subPath: "storage"

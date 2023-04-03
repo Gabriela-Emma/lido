@@ -2,36 +2,40 @@
 
 namespace App\Providers;
 
-use App\Models\Assessment;
-use App\Models\CatalystGroup;
-use App\Models\CatalystUser;
+use App\Models\Post;
+use App\Models\Team;
+use App\Models\Event;
 use App\Models\Comment;
+use App\Models\Proposal;
+use App\Models\Assessment;
 use App\Models\Definition;
 use App\Models\Discussion;
-use App\Models\Event;
-use App\Models\Post;
-use App\Models\Proposal;
-use App\Models\Team;
 use App\Models\Translation;
-use App\Policies\CatalystGroupPolicy;
-use App\Policies\CatalystUserPolicy;
-use App\Policies\CommentPolicy;
-use App\Policies\DefinitionPolicy;
-use App\Policies\DiscussionPolicy;
-use App\Policies\EventPolicy;
-use App\Policies\LegacyCommentPolicy;
-use App\Policies\MediaPolicy;
-use App\Policies\PermissionPolicy;
+use App\Models\BookmarkItem;
+use App\Models\CatalystUser;
 use App\Policies\PostPolicy;
-use App\Policies\ProposalPolicy;
 use App\Policies\RolePolicy;
 use App\Policies\TeamPolicy;
-use App\Policies\TranslationPolicy;
-use Illuminate\Auth\Notifications\ResetPassword;
-use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
-use Spatie\Permission\Models\Permission;
+use App\Models\CatalystGroup;
+use App\Policies\EventPolicy;
+use App\Policies\MediaPolicy;
+use App\Policies\CommentPolicy;
+use App\Policies\ProposalPolicy;
+use App\Models\BookmarkCollection;
+use App\Policies\DefinitionPolicy;
+use App\Policies\DiscussionPolicy;
+use App\Policies\PermissionPolicy;
 use Spatie\Permission\Models\Role;
+use App\Policies\TranslationPolicy;
+use App\Policies\BookmarkItemPolicy;
+use App\Policies\CatalystUserPolicy;
+use App\Policies\CatalystGroupPolicy;
+use App\Policies\LegacyCommentPolicy;
+use Spatie\Permission\Models\Permission;
+use App\Policies\BookmarkCollectionPolicy;
+use Illuminate\Auth\Notifications\ResetPassword;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -54,7 +58,7 @@ class AuthServiceProvider extends ServiceProvider
         Proposal::class => ProposalPolicy::class,
         Role::class => RolePolicy::class,
         Team::class => TeamPolicy::class,
-        Translation::class => TranslationPolicy::class,
+        BookmarkCollection::class => BookmarkCollectionPolicy::class,
 
         //        LanguageLine::class => LanguageLinePolicy::class,
         //        \Spatie\TranslationLoader\LanguageLine::class => LanguageLinePolicy::class,
