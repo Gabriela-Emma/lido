@@ -58,7 +58,7 @@ class AuthServiceProvider extends ServiceProvider
         Proposal::class => ProposalPolicy::class,
         Role::class => RolePolicy::class,
         Team::class => TeamPolicy::class,
-
+        BookmarkCollection::class => BookmarkCollectionPolicy::class,
 
         //        LanguageLine::class => LanguageLinePolicy::class,
         //        \Spatie\TranslationLoader\LanguageLine::class => LanguageLinePolicy::class,

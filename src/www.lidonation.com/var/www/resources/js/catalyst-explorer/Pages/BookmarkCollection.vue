@@ -54,9 +54,13 @@
                                                 <h3 class="truncate font-medium text-xl xl:text-2xl">
                                                     {{ item.title }}
                                                 </h3>
-                                                <p v-if="item?.content" class="italic">
-                                                    {{item?.content}}
-                                                </p>
+                                                <div class="flex flex-row">
+                                                    <p v-if="item?.content" class="italic mr-3">
+                                                        {{item?.content}}
+                                                    </p>
+                                                    <TrashIcon @click.prevent="removeItem(item.id)" class="mr-0.5 h-5 w-5 hover:text-teal-600" aria-hidden="true"/>
+                                                </div>
+                                                
                                             </div>
                                             <div class="mt-1">
                                                 <div class="flex flex-row items-center gap-5 text-sm text-slate-500">
@@ -148,8 +152,8 @@ const download = () => {
 }
 
 
-const onLocal:Ref<boolean> = ref();
-const inLastTenMins:Ref<boolean>= ref();
+const onLocal:Ref<boolean> = ref(false);
+const inLastTenMins:Ref<boolean>= ref(false);
 const collectionHash = ref(props.bookmarkCollection.hash);
 const createdAt = ref(props.bookmarkCollection.created_at);
 
@@ -164,21 +168,36 @@ watch([storeCollections$], (newValue, oldValue) => {
 // if from last 10mins
 inLastTenMins.value = (moment().diff(moment(createdAt.value),'minutes')) < 10;
 
-const canDelete:Ref<boolean> =  ref(onLocal.value && inLastTenMins.value);
+// const canDelete:Ref<boolean> =  ref(onLocal.value && inLastTenMins.value);
 
 const removeCollection = () => {
-    if(canDelete){
-        axios.delete(`${usePage().props.base_url}/catalyst-explorer/bookmarkCollection?hash=${collectionHash.value}`)
+    if(onLocal.value && inLastTenMins.value){
+        axios.delete(`${usePage().props.base_url}/catalyst-explorer/bookmark-collection?hash=${collectionHash.value}`)
         .then((res) =>{
             bookmarksStore.deleteCollection(collectionHash.value)
             router.get(`${usePage().props.base_url}/catalyst-explorer/bookmarks`)
         })
-    }
-
-    canDelete.value = false;
-
+        .catch((error) => {
+            if (error.response && error.response.status === 403) {
+                console.error(error);
+            }
+        });
+    } 
 }
 
-
+const removeItem = (id:number) =>{
+    if(onLocal.value && inLastTenMins.value){
+        axios.delete(`${usePage().props.base_url}/catalyst-explorer/bookmark-item/${id}`)
+        .then((res) =>{
+            bookmarksStore.deleteItem(id,collectionHash.value)
+            router.get(`${usePage().props.base_url}/catalyst-explorer/bookmarks/${collectionHash.value}`)
+        })
+        .catch((error) => {
+            if (error.response && error.response.status === 403) {
+                console.error(error);
+            }
+        });
+    }
+}
 
 </script>

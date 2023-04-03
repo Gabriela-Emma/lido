@@ -55,10 +55,15 @@ class BookmarkCollectionPolicy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, BookmarkCollection $bookmarkCollection)
+    public function delete(?User $user, BookmarkCollection $bookmarkCollection)
     {
-        return $user->id === $bookmarkCollection->user_id ? Response::allow()
-                                                          : Response::deny('You do not own this collection.');;
+        if ($user === null) {
+            return Response::allow();
+        }
+        $inLastTenMins = now()->diffInMinutes($bookmarkCollection) < 10;
+        $isOwner = $user->id === $bookmarkCollection->user_id;
+        
+        return $inLastTenMins && $isOwner ? Response::allow() : Response::deny('You do not own this collection.');
     }
 
     /**
