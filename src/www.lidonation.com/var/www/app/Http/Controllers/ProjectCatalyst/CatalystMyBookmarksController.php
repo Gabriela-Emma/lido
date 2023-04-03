@@ -12,6 +12,8 @@ use App\Http\Controllers\Controller;
 use App\Services\ExportModelService;
 use App\Exports\BookmarksCollectionExport;
 use App\Http\Resources\BookmarkCollectionResource;
+use Google\Service\ShoppingContent\Resource\Collections;
+use Illuminate\Support\Facades\DB;
 
 class CatalystMyBookmarksController extends Controller
 {
@@ -19,6 +21,8 @@ class CatalystMyBookmarksController extends Controller
 
     public function createItem(Request $request)
     {
+        DB::beginTransaction();
+        try{
         $modelTable = $request->get('model_type');
         $data = new Fluent($request->validate([
             'model_id' => "required|exists:{$modelTable},id",
@@ -55,12 +59,18 @@ class CatalystMyBookmarksController extends Controller
         $item->content = $data->content;
         $item->link = $data->link;
         $item->save();
+         
+        DB::commit();
 
         $collection->refresh();
         $collection->load(['items']);
 
         return new BookmarkCollectionResource($collection);
-    }
+    }catch(\Exception $e) {
+        DB::rollback();
+        throw new \Exception("There was an Error");
+    }    
+}
 
     public function createCollection()
     {
