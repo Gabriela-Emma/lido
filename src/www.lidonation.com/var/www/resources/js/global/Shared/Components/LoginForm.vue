@@ -75,9 +75,9 @@
 </template>
 
 <script lang="ts" setup>
-import {useForm} from '@inertiajs/vue3';
+import {InertiaForm, useForm, usePage} from '@inertiajs/vue3';
 import {Link} from '@inertiajs/vue3';
-import {inject} from "vue";
+import {inject, ref} from "vue";
 const $utils: any = inject('$utils');
 
 
@@ -99,4 +99,28 @@ let form = useForm({
     remember: false
 })
 
+const emit = defineEmits<{
+    (e: 'endpoint', url: string): void
+    (e: 'setForm',form :InertiaForm<{}>):void
+    (e: 'submit')
+}>();
+
+let prefix = ref(usePage().url.split('/')[2])
+
+console.log(prefix.value)
+
+const explorerEndpoint = '/api/catalyst-explorer/login';
+const learnEndpoint = '/api/earn/learn/login';
+
+let submit = () => {
+    emit('setForm', form)
+    if(prefix.value ==='catalyst-explorer'){
+        emit('endpoint', explorerEndpoint);
+        emit('submit');
+    }
+    if(prefix.value === 'earn'){
+        emit('endpoint', learnEndpoint);
+        emit('submit');
+    }
+}
 </script>
