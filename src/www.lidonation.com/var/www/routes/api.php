@@ -1,27 +1,28 @@
 <?php
 
-use App\Http\Controllers\Api\CatalystExplorer;
-use App\Http\Controllers\Api\Nfts\LidoMinuteNftsController;
-use App\Http\Controllers\Api\Partners\PartnersController;
-use App\Http\Controllers\Api\Phuffycoin\PhuffycoinController;
-use App\Http\Controllers\Delegators\DelegatorController;
-use App\Http\Controllers\GenerateMnemonicPhraseController;
-use App\Http\Controllers\ProjectCatalyst\CatalystProjectsController;
-use App\Http\Controllers\PromoController;
-use App\Http\Controllers\ProposalController;
-use App\Http\Controllers\QuestionResponseController;
-use App\Http\Controllers\RewardController;
-use App\Http\Controllers\SnippetController;
-use App\Models\Catalyst\Ccv4BallotChoice;
-use App\Models\EveryEpoch;
-use App\Models\Reward;
 use App\Models\User;
-use App\Services\CardanoBlockfrostService;
+use App\Models\Reward;
+use App\Models\EveryEpoch;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Str;
+use App\Http\Controllers\PromoController;
+use App\Models\Catalyst\Ccv4BallotChoice;
+use App\Http\Controllers\RewardController;
+use App\Services\CardanoBlockfrostService;
+use App\Http\Controllers\SnippetController;
+use App\Http\Controllers\ProposalController;
+use App\Http\Controllers\Api\CatalystExplorer;
+use App\Http\Controllers\Earn\LearnController;
+use App\Http\Controllers\QuestionResponseController;
+use App\Http\Controllers\Delegators\DelegatorController;
+use App\Http\Controllers\Api\Partners\PartnersController;
+use App\Http\Controllers\GenerateMnemonicPhraseController;
+use App\Http\Controllers\Api\Nfts\LidoMinuteNftsController;
+use App\Http\Controllers\Api\Phuffycoin\PhuffycoinController;
+use App\Http\Controllers\ProjectCatalyst\CatalystProjectsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -260,6 +261,14 @@ Route::prefix('catalyst-explorer')->as('catalystExplorerApi.')
         ], function () {
             Route::post('/{catalystReport:id}', [CatalystExplorer\ReportController::class, 'createComment']);
         });
+    });
+
+    Route::prefix('earn')->as('earnApi.')->group(function () {
+        Route::post('/learn/login',[LearnController::class, 'login']);
+        Route::middleware([])->prefix('/learn')->group(function () {
+            // 
+        });
+  
     });
 
 Route::prefix('promos')->as('promos')
