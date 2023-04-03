@@ -9,4 +9,4 @@ spec:
   storageClassName: "longhorn"
   resources:
     requests:
-      storage: {{ .Values.services.cardano.persistence.size }}
+      storage: {{ .Values.services.web.persistence.size }}
