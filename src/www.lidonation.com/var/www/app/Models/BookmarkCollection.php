@@ -5,13 +5,15 @@ namespace App\Models;
 use App\Http\Traits\HasHashIds;
 use App\Models\Traits\HasAuthor;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 use Vinkla\Hashids\Facades\Hashids;
 
 class BookmarkCollection extends Model
 {
-    use HasAuthor, HasHashIds;
+    use HasAuthor, HasHashIds, HasFactory, SoftDeletes;
 
     protected $hidden = ['id'];
 

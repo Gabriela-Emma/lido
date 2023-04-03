@@ -2,10 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\TwitterEvent;
+use App\Models\Commit;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class TwitterEventSeeder extends Seeder
+class CommitSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,6 +15,6 @@ class TwitterEventSeeder extends Seeder
      */
     public function run()
     {
-        TwitterEvent::factory(8)->create();
+        Commit::factory(2)->create();
     }
 }

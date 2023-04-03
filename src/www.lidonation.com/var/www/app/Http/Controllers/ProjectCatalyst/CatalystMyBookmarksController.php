@@ -100,8 +100,24 @@ class CatalystMyBookmarksController extends Controller
         return $collections;
     }
 
-    public function exportBookmarks(Request $request) {
-        
+    function deleteCollection(Request $request)
+    {   
+        $collection = BookmarkCollection::byHash($request->hash);
+        $this->authorize('delete', $collection);
+
+        $collection->items()->delete();
+        $collection->delete();
+    }
+
+    function deleteItem( BookmarkItem $bookmarkItem)
+    {   
+        $this->authorize('delete', $bookmarkItem);
+        $bookmarkItem->delete();
+    }
+
+    public function exportBookmarks(Request $request) 
+    {
+
         $collection = BookmarkCollection::byHash($request->hash);
         $itemsArr=$collection->items()->pluck('id');
         

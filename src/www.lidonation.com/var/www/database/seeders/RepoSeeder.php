@@ -2,10 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\TwitterEvent;
+use App\Models\Repo;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class TwitterEventSeeder extends Seeder
+class RepoSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,6 +15,6 @@ class TwitterEventSeeder extends Seeder
      */
     public function run()
     {
-        TwitterEvent::factory(8)->create();
+        Repo::factory(5)->create();
     }
 }

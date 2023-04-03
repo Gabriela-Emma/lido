@@ -2,6 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Models\BookmarkCollection;
+use App\Models\BookmarkItem;
+use App\Models\Proposal;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -9,6 +12,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class BookmarkItemFactory extends Factory
 {
+    protected $model = BookmarkItem::class;
     /**
      * Define the model's default state.
      *
@@ -16,8 +20,10 @@ class BookmarkItemFactory extends Factory
      */
     public function definition()
     {
+        $proposal = Proposal::inRandomOrder()->first();
         return [
-            //
+            'model_id' => $proposal->id,
+            'model_type' => $proposal::class,
         ];
     }
 }

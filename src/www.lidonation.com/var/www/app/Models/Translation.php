@@ -6,6 +6,7 @@ use App\Models\Traits\HasAuthor;
 use App\Models\Traits\HasMetaData;
 use App\Traits\HasRemovableGlobalScopes;
 use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
@@ -14,6 +15,7 @@ use Illuminate\Support\Str;
 class Translation extends Model
 {
     use HasAuthor,
+        HasFactory,
         HasTimestamps,
         SoftDeletes,
         HasRemovableGlobalScopes,

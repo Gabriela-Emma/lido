@@ -8,6 +8,7 @@ use App\Models\Traits\HasMetaData;
 use App\Models\Traits\HasTranslations;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\MediaLibrary\HasMedia;
@@ -16,6 +17,7 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 class EveryEpoch extends Model implements HasMedia
 {
     use HasMetaData,
+        HasFactory,
         HasAuthor,
         HasTimestamps,
         HasTranslations,

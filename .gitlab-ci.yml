@@ -39,8 +39,8 @@ image: registry.lidonation.com/infra-ops/gitlab-runner:main
 
   function deploy_postgres_cdbsync() {
     helm repo add bitnami https://charts.bitnami.com/bitnami
-    helm repo update  
-    if [ "${CI_ENVIRONMENT_NAME}" != "mainnet" ]; then
+    helm repo update
+    if [ "${CI_ENVIRONMENT_NAME}" == "mainnet" ]; then
       export PRIMARY_MAX_MEM="32768Mi"
       export REPLICATION="replication"
       export HASURA_REPLICAS="3"
@@ -51,7 +51,7 @@ image: registry.lidonation.com/infra-ops/gitlab-runner:main
       export REPLICATION="standalone"
       export HASURA_REPLICAS="1"
       export POSTGRES_READ_REPLICAS="0"
-      export PGPOOL_REPLICAS="1"
+      export PGPOOL_REPLICAS="0"
     fi
 
     echo "install postgres for dbsync"
@@ -60,14 +60,14 @@ image: registry.lidonation.com/infra-ops/gitlab-runner:main
         --wait \
         --atomic \
         --namespace="$KUBE_NAMESPACE" \
-        -f ./chart/values.postgresql-ha.yaml \
-        --set global.postgresql.database="$POSTGRESQL_DB_SYNC_DB" \
-        --set global.postgresql.username="$POSTGRESQL_DB_SYNC_USER" \
-        --set global.postgresql.password="$POSTGRESQL_DB_SYNC_PASSWORD" \
+        -f ./chart/values.postgresql.yaml \
+        --set global.postgresql.auth.postgresPassword="$POSTGRESQL_DB_SYNC_POSTGRES_PASSWORD" \
+        --set global.postgresql.auth.database="$POSTGRESQL_DB_SYNC_DB" \
+        --set global.postgresql.auth.username="$POSTGRESQL_DB_SYNC_USER" \
+        --set global.postgresql.auth.password="$POSTGRESQL_DB_SYNC_PASSWORD" \
         --set global.pgpool.adminUsername="$POSTGRESQL_DBSYNC_PGPOOL_ADMIN_USERNAME" \
         --set global.pgpool.adminPassword="$POSTGRESQL_DBSYNC_PGPOOL_ADMIN_PASSWORD" \
         --set global.postgresql.repmgrPassword="$POSTGRESQL_DBSYNC_PGPOOL_ADMIN_PASSWORD" \
-        --set global.postgresql.postgresPassword="$POSTGRESQL_DB_SYNC_POSTGRES_PASSWORD" \
         --set pgpool.replicaCount="$PGPOOL_REPLICAS" \
         --set services.dbsync.hasura.replicaCount="$HASURA_REPLICAS" \
         --set services.dbsync.db.secret.POSTGRESQL_DB="$POSTGRESQL_DB_SYNC_DB" \
@@ -80,7 +80,7 @@ image: registry.lidonation.com/infra-ops/gitlab-runner:main
         --set readReplicas.replicaCount="$POSTGRES_READ_REPLICAS" \
         --set architecture="$REPLICATION" \
         lidolovelace-dbsync-db \
-        bitnami/postgresql-ha
+        bitnami/postgresql
   }
 
   function deploy_postgres_web() {
