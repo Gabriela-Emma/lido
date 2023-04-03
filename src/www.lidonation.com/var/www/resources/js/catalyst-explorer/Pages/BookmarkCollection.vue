@@ -31,11 +31,12 @@
                     </button>
                     <button @click="remove = !remove"
                             type="button"
-                            :class="[textColor$, borderColor$,( remove ? 'bg-stone-100' : '' )]"
+                            :disabled="canDelete===false"
+                            :class="[textColor$, borderColor$,( remove ? 'bg-stone-100' : '' ),(canDelete===false?'bg-slate-400  cursor-not-allowed':'')]"
                             class="inline-flex items-center gap-x-0.5 rounded-sm border py-1 px-1.5 text-xs font-semibold text-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-600">
                         <div class="flex flex-row" v-show="!remove">
-                            <TrashIcon class="mr-0.5 h-3 w-3 hover:text-teal-600" aria-hidden="true"/>
-                                <span class="hover:text-teal-600">{{ $t("Delete Collection") }} </span>
+                            <TrashIcon class="mr-0.5 h-3 w-3" :class="{'hover:text-teal-600':canDelete===true}" aria-hidden="true"/>
+                                <span :class="{'hover:text-teal-600':canDelete===true}">{{ $t("Delete Collection") }} </span>
                         </div>
                         <div class="flex flex-row gap-1 text-slate-800" v-show="remove">
                                 <span class="mr-1">{{ $t("Are you sure? ") }} </span>
@@ -100,7 +101,9 @@
                                         </div>
                                     </div>
                                     <div class="ml-5 flex-shrink-0 flex justify-end gap-2">
-                                        <TrashIcon @click.prevent="removeItem(item.id)" class="mr-0.5 h-5 w-5 hover:text-teal-600 hover:cursor-pointer" aria-hidden="true"/>
+                                        <TrashIcon @click.prevent="removeItem(item.id)" class="mr-0.5 h-5 w-5 "
+                                        type="button" 
+                                        :class="[canDelete===true?'hover:text-teal-600 hover:cursor-pointer':'cursor-not-allowed']" aria-hidden="true"/>
 <!--                                        <ChevronRightIcon class="h-5 w-5 text-gray-400" aria-hidden="true"/>-->
                                     </div>
                                 </div>
@@ -177,7 +180,11 @@ watch([storeCollections$], (newValue, oldValue) => {
 // if from last 10mins
 inLastTenMins.value = (moment().diff(moment(createdAt.value),'minutes')) < 10;
 
-// const canDelete:Ref<boolean> =  ref(onLocal.value && inLastTenMins.value);
+let canDelete:Ref<boolean> =  ref();
+watch([onLocal,inLastTenMins],()=> {
+    canDelete.value = onLocal.value && inLastTenMins.value;
+})
+
 
 const removeCollection = () => {
     if(onLocal.value && inLastTenMins.value){
