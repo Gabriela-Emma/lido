@@ -27,7 +27,7 @@
 </head>
 <body class="projectCatalyst">
 
-<x-lido-menu/>
+<x-lido-menu />
 
 @include('includes.global-search-handler')
 
