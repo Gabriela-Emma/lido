@@ -30,7 +30,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        if ($this->app->isLocal()) {
+        if ($this->app->isLocal() && class_exists(IdeHelperServiceProvider::class)) {
             $this->app->register(IdeHelperServiceProvider::class);
         }
 
