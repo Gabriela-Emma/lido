@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\CatalystReport;
 use App\Models\Comment;
+use App\Models\Reactions\Reaction;
 use Illuminate\Database\Seeder;
 use Faker\Generator as Faker;
 
@@ -19,27 +20,33 @@ class CatalystReportSeeder extends Seeder
     
         CatalystReport::factory(10)
             ->has(Comment::factory()->count(2), 'comments')
+            ->has(Reaction::factory()->count(2), 'lido_reactions')
             ->create([
                 'project_status' => 'Launched',
                 'on_track' => 'Yes'
             ]);
 
-        CatalystReport::factory(10)->create([
-            'project_status' => 'Launched',
-            'on_track' => 'Yes'
-        ]);
+        CatalystReport::factory(10)
+            ->has(Reaction::factory()->count(2), 'lido_reactions')
+            ->create([
+                'project_status' => 'Launched',
+                'on_track' => 'Yes'
+            ]);
 
         CatalystReport::factory(10)
-            ->has(Comment::factory()->count(2), 'comments')    
+            ->has(Comment::factory()->count(2), 'comments')
+            ->has(Reaction::factory()->count(2), 'lido_reactions')    
             ->create([
                 'project_status' => 'Still in progress',
                 'on_track' => 'Yes'
             ]);
 
-        CatalystReport::factory(10)->create([
-            'project_status' => 'Still in progress',
-            'on_track' => 'Yes'
-        ]);
+        CatalystReport::factory(10)
+            ->has(Reaction::factory()->count(2), 'lido_reactions')
+            ->create([
+                'project_status' => 'Still in progress',
+                'on_track' => 'Yes'
+            ]);
 
         CatalystReport::factory(10)
             ->has(Comment::factory()->count(2), 'comments')
