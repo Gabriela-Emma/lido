@@ -19,7 +19,7 @@ class LidoModelsDatabaseSeeder extends Seeder
             TagSeeder::class,
             ArticlesSeeder::class,
             TeamSeeder::class,
-            
+
             WalletSeeder::class,
             GiveawaySeeder::class,
             EveryEpochSeeder::class,
