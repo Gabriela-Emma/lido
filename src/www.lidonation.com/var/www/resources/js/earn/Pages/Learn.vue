@@ -4,13 +4,13 @@
         <div class="container">
             <div class="text-center flex flex-col gap-2 sm:gap-8 xl:gap-12">
                 <div class="text-md sm:text-xl md:text-2xl xl:text-3xl">
-                    {{ $t("Lido Nation Presents") }}
+                    {{ $t("lidonationPresents") }}
                 </div>
                 <div class="text-xl sm:text-2xl md:text-4xl xl:text-6xl font-bold">
-                    {{ $t("Jifunze Ulipweke") }}
+                    {{ $t("Learn2earn") }}
                 </div>
                 <div class="text-md sm:text-xl md:text-2xl xl:text-3xl">
-                    {{ $t("Get Paid to Learn!") }}
+                    {{ $t("paid2learn") }}
                 </div>
             </div>
         </div>
@@ -22,7 +22,7 @@
                     <div class="gap-1 md:gap-4 flex flex-row items-center justify-start">
                         <h2 class="text-2xl md:text-4xl xl:text-6xl 2xl:text-8xl">1</h2>
                         <p class="text-sm md:text-xl lg:text-2xl xl:text-4xl 2xl:text-5xl">
-                            {{ $t("Register or Login") }}
+                            {{ $t("register/login") }}
                         </p>
                     </div>
                     <div class="flex gap-3 items-center flex-row mx-auto">
@@ -34,11 +34,11 @@
                                 <path stroke-linecap="round" stroke-linejoin="round"
                                       d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9"/>
                             </svg>
-                            <span>{{ $t("Sign in") }}</span>
+                            <span>{{ $t("signIn") }}</span>
                         </Link>
                         <span class="text-sm">
                         <Link href="/earn/learn/register" class="font-bold text-labs-red hover:text-labs-black">
-                            {{ $t("Register") }}
+                            {{ $t("register") }}
                         </Link>
                     </span>
                     </div>
@@ -59,17 +59,17 @@
                                 <path stroke-linecap="round" stroke-linejoin="round"
                                       d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9"/>
                             </svg>
-                            <span>{{ $t("Connect Wallet") }}</span>
+                            <span>{{ $t("connectWallet") }}</span>
                         </Link>
                         <span class="text-sm">
                             <Link href="/earn/learn/register" class="font-bold text-labs-red text-xs md:text-base hover:text-labs-black">
-                                {{ $t("Need a Wallet?") }}
+                                {{ $t("needWallet") }}
                             </Link>
                         </span>
                     </div>
                     <div class="text-right gap-2 md:gap-4 flex flex-row items-center justify-end">
                         <p class="text-sm md:text-xl lg:text-3xl xl:text-4xl 2xl:text-5xl hidden lg:inline-flex">
-                            {{ $t("Connect your Wallet") }}
+                            {{ $t("connectYourWallet") }}
                         </p>
                         <h2 class="text-2xl sm:text-4xl xl:text-6xl 2xl:text-8xl text-right">2</h2>
                     </div>
@@ -85,7 +85,7 @@
                     <div class="gap-4 flex flex-row items-center justify-start">
                         <h2 class="text-2xl sm:text-4xl xl:text-6xl 2xl:text-8xl">3</h2>
                         <p class="text-xl sm:text-3xl xl:text-4xl 2xl:text-5xl">
-                            {{ $t("Learn") }}
+                            {{ $t("learn") }}
                         </p>
                     </div>
                     <div class="flex gap-3 items-center flex-row mx-auto">
@@ -97,7 +97,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round"
                                       d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9"/>
                             </svg>
-                            <span>{{ $t("GO!") }}</span>
+                            <span>{{ $t("go") }}</span>
                         </Link>
                     </div>
                 </div>
@@ -111,7 +111,7 @@
                 <div class="max-w-5xl text-white text-lg md:text-xl xl:text-3xl 2xl:text-4xl">
                     <p>
                         {{
-                            $t("Lido Nation was funded by Cardano's Project Catalyst to create educational materials about blockchain technology for people who speak Swahili.")
+                            $t("lidonationWasFundedByProjectCatalyst")
                         }}
                     </p>
                 </div>
@@ -128,23 +128,23 @@
             <div class="flex justify-start">
                 <div class="max-w-5xl">
                     <p>
-                        {{ $t("When you participate and learn about the Cardano blockchain, WE GIVE YOU MONEY.") }}
+                        {{ $t("whenYouParticipate") }}
                     </p>
                     <p>
                         {{
-                            $t("There is no catch - and don't get too excited, it's not a lot of money. It's a thank you present, and an invitation.")
+                            $t("thereIsNoCatch")
                         }}
                     </p>
                     <p>
                         {{
-                            $t("We hope you are interested in what you learn and we hope you will hang around. To keep learning. To participate.")
+                            $t("weHopeAreInterested")
                         }}
                     </p>
                     <p>
-                        {{ $t("And to be a part of a future that works for everyone.") }}
+                        {{ $t("partOfFuture") }}
                     </p>
                     <p class="font-bold text-xl xl:text-4xl">
-                        {{ $t("Welcome") }}
+                        {{ $t("welcome") }}
                     </p>
                 </div>
             </div>
@@ -163,10 +163,10 @@
                             <DisclosureButton
                                 class="flex w-full items-start justify-between text-left text-slate-900">
                                 <div class="max-w-5xl">
-                                    <span class="xl:text-2xl font-semibold leading-7">{{ faq.question }}</span>
+                                    <span class="xl:text-2xl font-semibold leading-7">{{ $t(faq.question) }}</span>
                                     <p class="leading-7 text-base text-slate-700">
-                                        {{ faq.shortAnswer }}
-                                        <span class="text-slate-400" v-if="!open"> Continue reading --></span>
+                                        {{ $t(faq.shortAnswer) }}
+                                        <span class="text-slate-400" v-if="!open"> {{$t("continueReading")}}</span>
                                     </p>
                                 </div>
                                 <span class="ml-6 flex h-7 items-center">
@@ -177,7 +177,7 @@
                         </dt>
                         <DisclosurePanel as="dd" class="mt-4 pr-12 max-w-5xl">
                             <div class="text-base leading-7 text-slate-700 faq-answer"
-                                 v-html="$filters.markdown(faq.answer)"></div>
+                                 v-html="$filters.markdown($t(faq.answer))"></div>
                         </DisclosurePanel>
                     </Disclosure>
                 </dl>
@@ -196,50 +196,19 @@ const $utils: any = inject('$utils');
 
 const faqs = [
     {
-        question: "What is blockchain and cryptocurrency?",
-        shortAnswer:
-            "Blockchain is a new technology, and a new way of using the internet. It leverages a global network of participants to create a type of security and record keeping that does not depend on big companies and power brokers to run the show.",
-        answer:
-            `Instead, the blockchain is a secure, decentralized ledger.
-
-It allows anyone to participate, to own their own data, and to access financial tools that they may not have had access to from traditional banks and government institutions.
-
-Blockchain-believers think that anyone should be able to use their money easily.
-* You should be able to transfer money to anyone you want without paying high fees.
-* You should be able to earn a fair return on money you save, or lend.
-
-You should have access to financial tools that allow you to build a home, and life, no matter where you live.
-
-Cardano is a blockchain that is built to be very secure, and to grow big enough to serve the whole world.
-
-**The digital money on the Cardano blockchain is called $ADA.**`,
+        question: "whatIsBlockchain",
+        shortAnswer:"blockchainIsNewTech",
+        answer:"blockchainAnswer",
     },
     {
-        question: "What can I do with $ADA?",
-        shortAnswer:
-            `$ADA is a type of money, like dollars or euros
-            More specifically, it is a "cryptocurrency", or digital currency, like bitcoin, ethereum, and others.`,
-        answer:
-            `You can trade it for another digital currency, or for your local fiat currency, on an online exchange like Coinbase.
-
-You can use it to buy things at any store that accepts $ADA. You could buy collectibles and digital art at jpg.store. You could book an overnight stay at the Hotel Ginebra in Barcelona, Spain. In the future, the number of online and physical businesses that accept $ADA will continue to grow.
-
-You might decide to learn more about the world of cryptocurrency and start to participate in liquidity farming, and other ways to let your money work for you.`,
+        question: "whatCanIDoWith$ADA",
+        shortAnswer:"$ADAIsTypeOfMoney",
+        answer:"whatToDoWith$ADA"
     },
     {
-        question: "How does this program work?",
-        shortAnswer:
-            "Every day on Lido Nation you can earn $1 worth of ADA by reading an article and taking a 1-question quiz about what you learned.",
-        answer:
-            `
-All you need is a free Cardano wallet and a Lido Nation login and password to start earning your own $ADA. Follow the steps at the top of the page to get a wallet and get connected.
-* You can read one article and earn one dollar's worth of $ADA each day.
-* The clock for each day resets at 12 Midnight EAT (Eastern Africa Time).
-* When you complete 25 quizzes, you will earn a free NFT!
-* When you want to withdraw your rewards to your Wallet, click the "Withdraw" button in the rewards center. There is a small transaction fee when you withdraw rewards, so instead of withdrawing rewards every day, wait until you have several rewards saved up. That way you get to keep MORE of your rewards!
-
-After 25 quizzes, you can't earn more money with this program, but you can earn a second NFT if you complete 25 more quizzes, and a third one if you complete all 75 quizzes. As you complete the reading and quizzes, you learn about other ways to participate in Cardano and earn more $ADA if you want to.
-`,
+        question: "howDoesProgramWork",
+        shortAnswer:"earn$1FromArticles",
+        answer:"howItWorks",
     },
 ]
 
