@@ -11,7 +11,7 @@
     @env('production')
         <!-- Cloudflare Web Analytics -->
         <script defer src='//static.cloudflareinsights.com/beacon.min.js'
-                data-cf-beacon='{"token": "{{config('services.cloudflare.token')}}"}'></script>
+                data-cf-beacon='{"token": "{{config(`services.cloudflare.token`)}}"}'></script>
 
         <!-- Fathom - beautiful, simple website analytics  -->
         <script src="https://essential-jazzy.lidonation.com/script.js" data-spa="auto"
@@ -37,8 +37,6 @@
     @inertia
 </main>
 
-<!-- slte popup modal -->
-<x-slte-popup-modal/>
 
 {{-- include squiggly svg for text animation--}}
 @include('svg.squiggle')
