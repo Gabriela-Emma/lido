@@ -3,19 +3,14 @@
 namespace Database\Factories;
 
 use App\Models\Category;
-use App\Models\ExternalPost;
-use App\Models\Insight;
 use App\Models\Link;
-use App\Models\News;
-use App\Models\OnboardingContent;
 use App\Models\Post;
-use App\Models\Review;
+use App\Models\Reactions\Reaction;
 use App\Models\Tag;
 use App\Models\User;
 use Bluemmb\Faker\PicsumPhotosProvider;
 use Database\Factories\Traits\UnsplashProvider;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
 class PostFactory extends Factory
@@ -90,6 +85,14 @@ class PostFactory extends Factory
         // add media
         $post->addMediaFromBase64($this->getImageUrl())
             ->toMediaCollection('hero');
+
+
+        Reaction::factory()
+            ->count(random_int(2, 3))
+            ->create([ 
+                "model_type" => $this->model,
+                "model_id" => $post->id
+            ]);
 
         $post->links()->attach(
             Link::inRandomOrder()

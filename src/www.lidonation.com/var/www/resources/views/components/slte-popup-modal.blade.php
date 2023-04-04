@@ -1,8 +1,12 @@
-<div style="display:none" id="slteModal">
-    <div x-data="{ 'showModal': true }" @keydown.escape="showModal = false">
+
+    <div x-data="slteModal()"
+        x-init="$nextTick(() => show())"
+        style="display:none"
+        id="slteModal"
+        @keydown.escape="showing = false">
         <div
             class="fixed inset-0 z-30 flex items-center justify-center overflow-auto bg-black bg-opacity-50"
-            x-show="showModal"
+            x-show="showing"
         >
            <div class="bg-gradient-to-b from-teal-900 to-teal-500 py-12 w-auto flex flex-col rounded-sm relative overflow-clip">
                 <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -12,10 +16,10 @@
                                 Bookmark  <span class="text-white">  Ledger Live Intergration </span>
                             </h1>
                             <p class="mt-4 mb-4 text-md text-gray-300 w-3/5">
-                                Jifunze kupata mapato kwa njia hii mupya. Weza kujifunza ukijinufaisha kwa kuweza kupata malipo.
+                                Swahili Learn To Earn
                             </p>
                         </div>
-                        <button type="button" class="z-50 cursor-pointer hover:text-white" @click="showModal = false">
+                        <button type="button" class="z-50 cursor-pointer hover:text-white" @click="showing = false">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                             </svg>
@@ -26,7 +30,7 @@
                         <div class="flex-1 bg-teal-500">
                             <div class="flex justify-between w-full">
                                 <div class="flex items-center p-4 w-auto text-white" >
-                                    Unaweza kujisajili leo hii kwa njia rahisi mno.
+                                    Inakuja hivi karibuni.
                                 </div>
                                 <div class="bg-teal-600 ml-auto">
                                     <div class="bg-slate-100 login-form-wrapper">
@@ -102,4 +106,3 @@
             </div>
         </div>
     </div>
-</div>

@@ -75,7 +75,7 @@
 </template>
 
 <script lang="ts" setup>
-import {InertiaForm, useForm, usePage} from '@inertiajs/vue3';
+import {useForm, usePage} from '@inertiajs/vue3';
 import {Link} from '@inertiajs/vue3';
 import {inject, ref} from "vue";
 const $utils: any = inject('$utils');
@@ -101,7 +101,7 @@ let form = useForm({
 
 const emit = defineEmits<{
     (e: 'endpoint', url: string): void
-    (e: 'setForm',form :InertiaForm<{}>):void
+    (e: 'setForm',form):void
     (e: 'submit')
 }>();
 
