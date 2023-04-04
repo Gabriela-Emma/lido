@@ -21,7 +21,7 @@
                 <div class="flex flew-wrap justify-between">
                     <div class="gap-1 md:gap-4 flex flex-row items-center justify-start">
                         <h2 class="text-2xl md:text-4xl xl:text-6xl 2xl:text-8xl">1</h2>
-                        <p class="text-sm md:text-xl lg:text-2xl xl:text-4xl 2xl:text-5xl">
+                        <p class="text-sm md:text-xl xl:text-3xl 2xl:text-4xl">
                             {{ $t("register/login") }}
                         </p>
                     </div>
@@ -68,7 +68,7 @@
                         </span>
                     </div>
                     <div class="text-right gap-2 md:gap-4 flex flex-row items-center justify-end">
-                        <p class="text-sm md:text-xl lg:text-3xl xl:text-4xl 2xl:text-5xl hidden lg:inline-flex">
+                        <p class="text-sm md:text-xl lg:text-3xl 2xl:text-4xl hidden lg:inline-flex">
                             {{ $t("connectYourWallet") }}
                         </p>
                         <h2 class="text-2xl sm:text-4xl xl:text-6xl 2xl:text-8xl text-right">2</h2>
