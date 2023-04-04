@@ -105,7 +105,7 @@ return [
     |
     */
 
-    'use_require' => false,
+    'use_require' => true,
     'autoload' => base_path('vendor/autoload.php'),
 
     /*
