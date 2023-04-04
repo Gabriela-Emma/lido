@@ -1,0 +1,259 @@
+{
+    "snippets":[
+        {
+            "heading":"lidonationPresents",
+            "text_en":"Lido Nation Presents",
+            "text_sw":"Lido Nation yakuletea"
+        },
+        {
+            "heading":"Learn2earn",
+            "text_en":"Learn to Earn",
+            "text_sw":"Jifunze upate tuzo"
+        },
+        {
+            "heading":"paid2earn",
+            "text_en":"Get paid to earn",
+            "text_sw":"Lipwa kwa Kujifunza"
+        },
+        {
+            "heading":"clickToLogin",
+            "text_en":"Click to Log In",
+            "text_sw":"Bofya ili Kuingia"
+        },
+        {
+            "heading":"NeedToRegister",
+            "text_en":"Need to register?",
+            "text_sw":"Je, unahitaji kujiandikisha?"
+        },
+        {
+            "heading":"register/login",
+            "text_en":"Register or Log in",
+            "text_sw":"Jisajili au Ingia"
+        },
+        {
+            "heading":"connectYourWallet",
+            "text_en":"Connect your Wallet",
+            "text_sw":"Unganisha pochi lako"
+        },
+        {
+            "heading":"connectWallet",
+            "text_en":"Connect Wallet",
+            "text_sw":"Unganisha pochi lako"
+        },
+        {
+            "heading":"needWallet",
+            "text_en":"Need a Wallet?",
+            "text_sw":"Je, unahitaji Pochi?"
+        },
+        {
+            "heading":"go",
+            "text_en":"Go",
+            "text_sw":"Twende Kazi"
+        },
+        {
+            "heading":"learn",
+            "text_en":"Learn",
+            "text_sw":"Jifunze"
+        },
+        {
+            "heading":"rewards",
+            "text_en":"Rewards",
+            "text_sw":"Tuzo"
+        },
+        {
+            "heading":"amount",
+            "text_en":"Amount",
+            "text_sw":"Kiasi"
+        },
+        {
+            "heading":"memo",
+            "text_en":"Memo",
+            "text_sw":"Memo"
+        },
+        {
+            "heading":"status",
+            "text_en":"Status",
+            "text_sw":"Hali"
+        },
+        {
+            "heading":"withdraw",
+            "text_en":"Withdraw",
+            "text_sw":"Toa"
+        },
+        {
+            "heading":"needHelp",
+            "text_en":"Need Help?",
+            "text_sw":"Je, unahitaji Msaada?"
+        },
+        {
+            "heading":"lidonationWasFundedByProjectCatalyst",
+            "text_en":"Lido Nation was funded by Cardano's Project Catalyst to create educational materials about blockchain technology for people who speak Swahili.",
+            "text_sw":"Lido Nation ilifadhiliwa na Project Catalyst ya Cardano ili kuunda nyenzo za elimu kuhusu teknolojia ya blockchain kwa watu wanaozungumza Kiswahili."
+        },
+        {
+            "heading":"whenYouParticipate",
+            "text_en":"When you participate and learn about the Cardano blockchain, WE GIVE YOU MONEY.",
+            "text_sw":"Unaposhiriki na kujifunza kuhusu blockchain ya Cardano, TUNAKUPA PESA."
+        },
+        {
+            "heading":"thereIsNoCatch",
+            "text_en":"There is no catch - and don't get too excited, it's not a lot of money.",
+            "text_sw":"Usifurahie sana, sio pesa nyingi."
+        },
+        {
+            "heading":"itsAThankYouPresent",
+            "text_en":"It's a thank you present, and an invitation.",
+            "text_sw":"Ni zawadi ya asante, na mwaliko."
+        },
+        {
+            "heading":"weHopeAreInterested",
+            "text_en":"We hope you are interested in what you learn",
+            "text_sw":"Tunatumahi kuwa unavutiwa na kile unachojifunza"
+        },
+        {
+            "heading":"hopeYouHangAround",
+            "text_en":"and we hope you will hang around.",
+            "text_sw":"na tunatumai utasalia papa hapa."
+        },
+        {
+            "heading":"toKeepLearning",
+            "text_en":"To keep learning. To participate.",
+            "text_sw":"Ili kuendelea kujifunza. Kushiriki."
+        },
+        {
+            "heading":"partOfFuture",
+            "text_en":"And to be a part of a future that works for everyone.",
+            "text_sw":"Na kuwa sehemu ya siku zijazo ambayo inafaa kwa kila mtu."
+        },
+        {
+            "heading":"welcome",
+            "text_en":"WELCOME!",
+            "text_sw":"KARIBU!"
+        },
+        {
+            "heading":"whatIsBlockchain",
+            "text_en":"What is blockchain and cryptocurrency?",
+            "text_sw":"Blockchain na cryptocurrency ni nini?"
+        },
+        {
+            "heading":"blockchainIsNewTech",
+            "text_en":"Blockchain is a new technology, and a new way of using the internet. It leverages a global network of participants to create a type of security and record keeping that does not depend on big companies and powerbrokers to run the show. ",
+            "text_sw":"Blockchain ni teknolojia mpya, na njia mpya ya kutumia mtandao. Husaidia mtandao wa kimataifa wa washiriki kuunda aina ya usalama na uwekaji rekodi ambao hautegemei makampuni makubwa na wakala kuidhibiti."
+        },
+        {
+            "heading":"continueReading",
+            "text_en":"Continue reading -->",
+            "text_sw":"Endelea kusoma -->"
+        },
+        {
+            "heading":"blockchainIsScure",
+            "text_en":"Instead, the blockchain is a secure, decentralized ledger.",
+            "text_sw":"Badala yake, blockchain ni leja salama, iliyogatuliwa."
+        },
+        {
+            "heading":"itAllowsAnyoneToParticipate",
+            "text_en":"It allows anyone to participate, to own their own data, and to access financial tools that they may not have had access to from traditional banks and government institutions.",
+            "text_sw":"Inaruhusu mtu yeyote kushiriki, kumiliki data yake mwenyewe, na kufikia zana za kifedha ambazo labda hakuwa na ufikiaji kutoka kwa benki za jadi na taasisi za serikali."
+        },
+        {
+            "heading":"blockchainBeleversThink",
+            "text_en":"Blockchain-believers think that anyone should be able to use their money easily.",
+            "text_sw":"Waumini wa Blockchain wanaonelea kwamba mtu yeyote anapaswa kuwa na uwezo wa kutumia pesa zao kwa urahisi."
+        },
+        {
+            "heading":"youShouldTransferMoneyTOAnyone",
+            "text_en":"You should be able to transfer money to anyone you want without paying high fees.",
+            "text_sw":"Unapaswa kuwa na uwezo wa kutuma pesa kwa mtu yeyote unayetaka bila kulipa ada kubwa."
+        },
+        {
+            "heading":"youShouldEarnFairReturns",
+            "text_en":"You should be able to earn a fair return on money you save, or lend.",
+            "text_sw":"Unapaswa kuwa na uwezo wa kupata faida nzuri kwa pesa unazohifadhi, au kukopesha."
+        },
+        {
+            "heading":"youShouldAccessFinancialTools",
+            "text_en":"You should have access to financial tools that allow you to build a home, and life, no matter where you live.",
+            "text_sw":"Unapaswa kupata ufikiaji wa zana za kifedha zinazokuwezesha kujenga nyumba, na maisha, bila kujali unapoishi."
+        },
+        {
+            "heading":"CardanoIsSecure",
+            "text_en":"Cardano is a blockchain that is built to be very secure, and to grow big enough to serve the whole world.",
+            "text_sw":"Cardano ni blockchain ambayo imejengwa kuwa salama sana, na kukua kubwa ya kutosha kutumikia ulimwengu wote."
+        },
+        {
+            "heading":"moneyOnCardanoIs$ADA",
+            "text_en":"The digital money on the Cardano blockchain is called $ADA.",
+            "text_sw":"Pesa ya kidijitali kwenye blockchain ya Cardano inaitwa $ADA."
+        },
+        {
+            "heading":"whatCanIDoWith$ADA",
+            "text_en":"What can I do with $ADA?",
+            "text_sw":"Ninaweza kufanya nini na $ADA?"
+        },
+        {
+            "heading":"$ADAIsTypeOfMoney",
+            "text_en":"$ADA is a type of money, like dollars or euros.",
+            "text_sw":"$ADA ni aina ya pesa, kama vile dola au euro."
+        },
+        {
+            "heading":"$ADAIsCryptoCurrency",
+            "text_en":"More specifically, it is a \"cryptocurrency\", or digital currency, like bitcoin, ethereum, and others.",
+            "text_sw":"Hasa zaidi, ni \"cryptocurrency\", au sarafu ya dijiti, kama bitcoin, ethereum, na zingine."
+        },
+        {
+            "heading":"youCanTradeForAnotherCrypto",
+            "text_en":"You can trade it for another digital currency, or for your local fiat currency, on an online exchange like Coinbase.",
+            "text_sw":"Unaweza kuibadilisha kwa sarafu nyingine ya kidijitali, au kwa sarafu ya kawaida, kwenye jukwaa za kubadilishana kama Coinbase."
+        },
+        {
+            "heading":"youCanUseItAtStores",
+            "text_en":"You can use it to buy things at any store that accepts $ADA. You could buy collectibles and digital art at jpg.store. You could book an overnight stay at the Hotel Ginebra in Barcelona, Spain. In the future, the number of online and physical businesses that accept $ADA will continue to grow.",
+            "text_sw":"Unaweza kuitumia kununua vitu kwenye duka lolote linalokubali $ADA. Unaweza kununua pambo na sanaa ya kidijiti kwenye jpg.store. Unaweza kuhifadhi nafasi ya kukaa siku moja kwenye Hoteli ya Ginebra huko Barcelona, ​​​​Hispania."
+        },
+        {
+            "heading":"youMightDecideToLearnMore",
+            "text_en":"You might decide to learn more about the world of cryptocurrency and start to participate in liquidity farming, and other ways to let your money work for you.",
+            "text_sw":"Unaweza kuamua kujifunza zaidi kuhusu ulimwengu wa cryptocurrency na kuanza kushiriki katika kilimo cha ukwasi, na njia zingine na kuruhusu pesa zako zikufanyie kazi."
+        },
+        {
+            "heading":"howDoesProgramWork",
+            "text_en":"How does this program work?",
+            "text_sw":"Je, mpango huu unafanya kazi vipi?"
+        },
+        {
+            "heading":"earn$1FromArticles",
+            "text_en":"Every day on Lido Nation you can earn $1 worth of ADA by reading an article and taking a 1-ques tion quiz about what you learned.",
+            "text_sw":"Kila siku kwenye Lido Nation unaweza kujishindia ADA yenye thamani ya $1 kwa kusoma makala na kujibu swali 1 kuhusu ulichojifunza."
+        },
+        {
+            "heading":"allYouNeedIsWallet",
+            "text_en":"All you need is a free Cardano wallet and a Lido Nation login and password to start earning your own $ADA. Follow the steps at the top of the page to get a wallet and get connected.",
+            "text_sw":"Unachohitaji ni pochi la Cardano na kuingia kwenye Lido Nation ukitumia nenosiri  ili kuanza kujipatia $ADA yako mwenyewe. Fuata hatua zilizo juu ya ukurasa ili kupata pochi na uunganishwe."
+        },
+        {
+            "heading":"readArticleGet$1",
+            "text_en":"You can read one article and earn one dollar's worth of $ADA each day.",
+            "text_sw":"Unaweza kusoma makala moja na upate $ADA yenye thamani ya dola moja kila siku."
+        },
+        {
+            "heading":"clockResets12EAT",
+            "text_en":"The clock for each day resets at 12 Midnight EAT (Eastern Africa Time).",
+            "text_sw":"Saa ya kila siku huwekwa upya saa 12 Usiku wa manane EAT (Saa za Afrika Mashariki)."
+        },
+        {
+            "heading":"complete25Quizzes",
+            "text_en":"When you complete 25 quizzes, you will earn a free NFT!",
+            "text_sw":"Unapokamilisha maswali 25, utapata NFT bila malipo!"
+        },
+        {
+            "heading":"whenYouWantToWithdraw",
+            "text_en":"When you want to withdraw your rewards to your Wallet, click the \"Withdraw\" button in the rewards center. There is a small transaction fee when you withdraw rewards, so instead of withdrawing rewards every day, wait until you have several rewards saved up. That way you get to keep MORE of your rewards!",
+            "text_sw":"Unapotaka kutoa tuzo yako hadi kwenye Wallet yako, bofya kitufe cha \"Ondoa\" katika kituo cha tuzo. Kuna ada ndogo ya muamala unapoondoa tuzo, kwa hivyo badala ya kuondoa tuzo lako  kila siku, subiri hadi uhifadhi tuzo kadhaa. Kwa njia hiyo utapata kuhifadhi ZAIDI ya tuzo lako!"
+        },
+        {
+            "heading":"cantEarnMoreAfter25Quizzes",
+            "text_en":"After 25 quizzes, you can't earn more money with this program, but you can earn a second NFT if you complete 25 more quizzes, and a third one if you complete all 75 quizzes. As you complete the reading and quizzes, you learn about other ways to participate in Cardano and earn more $ADA if you want to.",
+            "text_sw":"Baada ya maswali 25, huwezi kupata pesa zaidi ukitumia programu hii, lakini unaweza kupata NFT ya pili ikiwa utakamilisha maswali 25 zaidi, na ya tatu ikiwa utakamilisha maswali yote 75. Unapokamilisha kusoma na maswali, unajifunza kuhusu njia zingine za kushiriki katika Cardano na kupata $ADA zaidi ukitaka."
+        }
+    ]
+}
