@@ -81,3 +81,5 @@ $existingCommits->get()->count();
 exit
 route('catalystExplorer.myDashboard');
 exit
+config('app');
+exit
