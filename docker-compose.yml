@@ -54,7 +54,7 @@ services:
       - lido
 
   redis:
-    image: redis:7.0.9-alpine3.17
+    image: redis:7.2-rc1-alpine3.17
     command: [ sh, -c, "rm -f /data/dump.rdb && redis-server --save ''" ]
     networks:
       - lido
