@@ -325,7 +325,8 @@ class Post extends Model implements HasMedia, Interfaces\IHasMetaData, Sitemapab
             'news' => localizeRoute('news'),
             'reviews' => localizeRoute('reviews'),
             'insights' => localizeRoute('insights'),
-            default => 'posts' // localizeRoute('post', [$this->slug]),
+            'lido-minutes' => localizeRoute('minutes'),
+            default => localizeRoute('post', [$this->slug]),
         };
     }
 
