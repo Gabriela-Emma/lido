@@ -16,7 +16,6 @@ const axios = require('axios');
 
 //cache snippets to disk
 axios.get(`${window.location.origin}/api/cache/snippets`);
-
 createInertiaApp({
     progress: {
         color: '#C02025',
