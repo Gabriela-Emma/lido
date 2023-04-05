@@ -91,7 +91,7 @@ Route::group(
             ->name('search');
 
         Route::get('/', function () {
-            return view('home');
+            return view('home')->withShortcodes();
         })->name('home');
 
         Route::get('/subscribe', function () {
