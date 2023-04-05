@@ -17,7 +17,7 @@ class TaxonomyController extends PostController
         $postsCount = $category->models->count();
 
         return view('category')
-            ->with(compact('category', 'postsCount'));
+            ->with(compact('category', 'postsCount'))->withShortcodes();
     }
 
     public function tag(Request $request, Tag $tag): Factory|View|Application
@@ -25,6 +25,6 @@ class TaxonomyController extends PostController
         $tag->load(['news', 'reviews', 'insights']);
 
         return view('tag')
-            ->with(compact('tag'));
+            ->with(compact('tag'))->withShortcodes();
     }
 }
