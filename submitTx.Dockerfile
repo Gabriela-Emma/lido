@@ -1,4 +1,4 @@
-FROM registry.lidonation.com/lidonation/lidonation/ubuntu-ghc-cabal-libsodium-cardano:1.35.5
+FROM registry.lidonation.com/lidonation/lidonation/ubuntu-ghc-cabal-libsodium-cardano:1.35.7
 
 SHELL ["/bin/bash", "-c"]
 
