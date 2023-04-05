@@ -817,6 +817,7 @@ web:
               ($DEPLOY_WEBSITE == "True" || $DEPLOY_WEBSITE == "true")'
     - if: '$CI_COMMIT_BRANCH != "main" &&
               ($DEPLOY_WEBSITE == "True" || $DEPLOY_WEBSITE == "true")'
+      when: manual
 
 lucid:
   stage: build_app
