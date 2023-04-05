@@ -126,9 +126,9 @@ image: registry.lidonation.com/infra-ops/gitlab-runner:main
     cat $GOOGLE_CLOUD_KEY_FILE > ./chart/lidonation.com/service-account.json
     echo "Deploying $DEPLOYMENT_NAME" 
     if [ "${CI_ENVIRONMENT_NAME}" == "mainnet" ]; then
-      $ANNOTATIONS="traefik-redirect-http-to-https@kubernetescrd,traefik-redirect-to-www@kubernetescrd,traefik-default-headers@kubernetescrd"      
+      export ANNOTATIONS="traefik-redirect-http-to-https@kubernetescrd,traefik-redirect-to-www@kubernetescrd,traefik-default-headers@kubernetescrd"      
     else
-      $ANNOTATIONS="traefik-redirect-http-to-https@kubernetescrd,traefik-default-headers@kubernetescrd"
+      export ANNOTATIONS="traefik-redirect-http-to-https@kubernetescrd,traefik-default-headers@kubernetescrd"
     fi
     
     helm upgrade "$DEPLOYMENT_NAME" ./chart/lidonation.com \
