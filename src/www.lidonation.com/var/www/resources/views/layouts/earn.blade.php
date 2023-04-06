@@ -36,9 +36,6 @@
     @inertia
 </main>
 
-<!-- slte popup modal -->
-<x-slte-popup-modal />
-
 {{-- include squiggly svg for text animation--}}
 @include('svg.squiggle')
 

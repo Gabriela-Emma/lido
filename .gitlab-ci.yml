@@ -125,6 +125,12 @@ image: registry.lidonation.com/infra-ops/gitlab-runner:main
     DEPLOYMENT_NAME="$AUTO_DEVOPS_APP_PREFIX-web.$CI_ENVIRONMENT_SLUG"
     cat $GOOGLE_CLOUD_KEY_FILE > ./chart/lidonation.com/service-account.json
     echo "Deploying $DEPLOYMENT_NAME" 
+    if [ "${CI_ENVIRONMENT_NAME}" == "mainnet" ]; then
+      export ANNOTATIONS='traefik-redirect-http-to-https@kubernetescrd\,traefik-redirect-to-www@kubernetescrd\,traefik-default-headers@kubernetescrd'      
+    else
+      export ANNOTATIONS='traefik-redirect-http-to-https@kubernetescrd\,traefik-default-headers@kubernetescrd'
+    fi
+    
     helm upgrade "$DEPLOYMENT_NAME" ./chart/lidonation.com \
       --wait \
       --install \
@@ -144,6 +150,7 @@ image: registry.lidonation.com/infra-ops/gitlab-runner:main
       --set services.web.ingress.tls[0].hosts[0]="$AUTO_DEVOPS_WEB_DOMAIN" \
       --set services.web.ingress.tls[0].hosts[1]="$AUTO_DEVOPS_DOMAIN" \
       --set services.web.replicaCount="$replicas" \
+      --set services.web.ingress.annotations."traefik\.ingress\.kubernetes\.io\/router\.middlewares"="$ANNOTATIONS" \
       --set services.web.service.url="$AUTO_DEVOPS_WEB_HOST" \
       --set services.web.secret.app_key="$APP_KEY" \
       --set services.web.config.ANALYTICS_ID="$ANALYTICS_ID" \
@@ -810,6 +817,7 @@ web:
               ($DEPLOY_WEBSITE == "True" || $DEPLOY_WEBSITE == "true")'
     - if: '$CI_COMMIT_BRANCH != "main" &&
               ($DEPLOY_WEBSITE == "True" || $DEPLOY_WEBSITE == "true")'
+      when: manual
 
 lucid:
   stage: build_app

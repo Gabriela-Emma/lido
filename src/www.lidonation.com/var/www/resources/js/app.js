@@ -40,25 +40,6 @@ window.comment = function comment(comment) {
     }
 }
 
-window.slteModal = function() {
-    return {
-        modalShown: Alpine.$persist(localStorage.getItem('slteModalShown') ?? 0).as('slteModalShown'),
-        showing: false,
-        lang: document.getElementsByTagName("html")[0].getAttribute("lang"),
-        modalId: document.querySelector('#slteModal'),
-        show () {
-            if (this.modalShown != 1 && this.lang == 'sw') {
-                this.modalId.style.display = 'block';
-                this.showing = true;
-                this.modalShown = 1;
-            } else {
-                this.modalId.style.display = 'none';
-            }
-        }
-
-    };
-}
-
 window.glossary = function glossary() {
     return {
         showing: null,
