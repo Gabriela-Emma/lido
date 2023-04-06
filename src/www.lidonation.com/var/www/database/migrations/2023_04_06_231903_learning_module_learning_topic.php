@@ -11,11 +11,11 @@ return new class extends Migration
      *
      * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('learning_modules', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+        Schema::create('learning_module_learning_topic', function (Blueprint $table) {
+            $table->foreignId('learning_module_id');
+            $table->foreignId('learning_topic_id');
         });
     }
 
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('learning_modules');
+        //
     }
 };

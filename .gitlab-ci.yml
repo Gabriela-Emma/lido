@@ -449,7 +449,7 @@ image: registry.lidonation.com/infra-ops/gitlab-runner:main
     echo "Deploying $DEPLOYMENT_NAME"
     
     helm upgrade "$DEPLOYMENT_NAME" ./chart/producer \
-       --install \
+       --install --force \
        -f ./chart/values.yaml \
        --set application.track="$track" \
        --set certmanager.server="$cert_server" \
