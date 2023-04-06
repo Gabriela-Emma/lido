@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreLearningModulesRequest;
-use App\Http\Requests\UpdateLearningModulesRequest;
-use App\Models\LearningModule;
+use App\Http\Requests\StoreLearningTopicRequest;
+use App\Http\Requests\UpdateLearningTopicRequest;
+use App\LearningTopic;
 
-class LearningModulesController extends Controller
+class LearningTopicController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -31,10 +31,10 @@ class LearningModulesController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreLearningModulesRequest  $request
+     * @param  \App\Http\Requests\StoreLearningTopicRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreLearningModulesRequest $request)
+    public function store(StoreLearningTopicRequest $request)
     {
         //
     }
@@ -42,10 +42,10 @@ class LearningModulesController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\LearningModule  $learningModules
+     * @param  \App\LearningTopic  $learningTopic
      * @return \Illuminate\Http\Response
      */
-    public function show(LearningModule $learningModules)
+    public function show(LearningTopic $learningTopic)
     {
         //
     }
@@ -53,10 +53,10 @@ class LearningModulesController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\LearningModule  $learningModules
+     * @param  \App\LearningTopic  $learningTopic
      * @return \Illuminate\Http\Response
      */
-    public function edit(LearningModule $learningModules)
+    public function edit(LearningTopic $learningTopic)
     {
         //
     }
@@ -64,11 +64,11 @@ class LearningModulesController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateLearningModulesRequest  $request
-     * @param  \App\Models\LearningModule  $learningModules
+     * @param  \App\Http\Requests\UpdateLearningTopicRequest  $request
+     * @param  \App\LearningTopic  $learningTopic
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateLearningModulesRequest $request, LearningModule $learningModules)
+    public function update(UpdateLearningTopicRequest $request, LearningTopic $learningTopic)
     {
         //
     }
@@ -76,10 +76,10 @@ class LearningModulesController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\LearningModule  $learningModules
+     * @param  \App\LearningTopic  $learningTopic
      * @return \Illuminate\Http\Response
      */
-    public function destroy(LearningModule $learningModules)
+    public function destroy(LearningTopic $learningTopic)
     {
         //
     }

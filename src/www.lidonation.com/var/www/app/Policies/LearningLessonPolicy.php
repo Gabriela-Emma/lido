@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
-use App\Models\LearningModule;
+use App\Models\LearningLesson;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class LearningModulesPolicy
+class LearningLessonPolicy
 {
     use HandlesAuthorization;
 
@@ -25,10 +25,10 @@ class LearningModulesPolicy
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\LearningModule  $learningModules
+     * @param  \App\Models\LearningLesson  $learningLesson
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, LearningModule $learningModules)
+    public function view(User $user, LearningLesson $learningLesson)
     {
         //
     }
@@ -48,10 +48,10 @@ class LearningModulesPolicy
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\LearningModule  $learningModules
+     * @param  \App\Models\LearningLesson  $learningLesson
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, LearningModule $learningModules)
+    public function update(User $user, LearningLesson $learningLesson)
     {
         //
     }
@@ -60,10 +60,10 @@ class LearningModulesPolicy
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\LearningModule  $learningModules
+     * @param  \App\Models\LearningLesson  $learningLesson
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, LearningModule $learningModules)
+    public function delete(User $user, LearningLesson $learningLesson)
     {
         //
     }
@@ -72,10 +72,10 @@ class LearningModulesPolicy
      * Determine whether the user can restore the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\LearningModule  $learningModules
+     * @param  \App\Models\LearningLesson  $learningLesson
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, LearningModule $learningModules)
+    public function restore(User $user, LearningLesson $learningLesson)
     {
         //
     }
@@ -84,10 +84,10 @@ class LearningModulesPolicy
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\LearningModule  $learningModules
+     * @param  \App\Models\LearningLesson  $learningLesson
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, LearningModule $learningModules)
+    public function forceDelete(User $user, LearningLesson $learningLesson)
     {
         //
     }

@@ -8,7 +8,6 @@
         </div>
     </section>
 
-
     @if($newToLibrary)
         <section class="py-16 relative bg-primary-10 relative" id="new-to-library">
             <div class="container">
