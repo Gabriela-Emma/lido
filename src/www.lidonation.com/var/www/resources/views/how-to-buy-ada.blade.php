@@ -34,8 +34,7 @@
             <x-public.post-hero :post="$post"></x-public.post-hero>
         </div>
     </header>
-
-    @if($post->snippets->get(0)?->content)
+    
         <section class="bg-white py-12 px-6">
             <div class="bg-black rounded text-white p-4 lg:hidden w-full mb-8">
                 <x-public.post-audio :post="$post"></x-public.post-audio>
@@ -46,17 +45,15 @@
                     @include('svg.bridge')
                 </div>
                 <div class="max-w-6xl  xl:mx-auto z-20">
-                    <x-markdown>{{$post->snippets->get(0)?->content}}</x-markdown>
+                    <x-markdown>{{ $snippets->decidedToOwnSomeAda }}</x-markdown>
                 </div>
             </div>
         </section>
-    @endif
 
-    @if($post->snippets->get(1)?->content)
         <section class="bg-teal-600 text-white py-12">
             <div class="max-w-6xl px-6 xl:mx-auto flex md:flex-row md:justify-between gap-4 items-center">
                 <div class="max-w-xl">
-                    <x-markdown>{{$post->snippets->get(1)?->content}}</x-markdown>
+                    <x-markdown>{{$snippets->useCoinbaseOnDesktopComputer}}</x-markdown>
                 </div>
                 <div class="mr-auto md:mr-0 md:ml-auto">
                     <div class="flex flex-row gap-2">
@@ -75,72 +72,74 @@
                 </div>
             </div>
         </section>
-    @endif
 
-    @if($post->snippets->get(2)?->content)
         <section class="bg-accent-200 py-12">
             <div class="max-w-6xl px-6 xl:mx-auto flex flex-col md:flex-row gap-10 items-center">
                 <div class="w-1/4 mr-auto md:mr-0 md:w-[7rem]">
                     <img src="/img/coinbase.png"/>
                 </div>
                 <div>
-                    <x-markdown>{{$post->snippets->get(2)?->content}}</x-markdown>
+                    <b><x-markdown>{{$snippets->inCoinbase}}</x-markdown></b>
+                    <x-markdown>{{$snippets->useEmailToRegister}}</x-markdown>
                 </div>
             </div>
         </section>
-    @endif
 
-    @if($post->snippets->get(3)?->content)
         <section class="bg-teal-600 text-white py-12">
             <div class="max-w-6xl px-6 xl:mx-auto flex flex-col-reverse md:flex-row gap-10 md:justify-between">
                 <div>
-                    <x-markdown>{{$post->snippets->get(3)?->content}}</x-markdown>
+                    <b><x-markdown>{{$snippets->verifyYourIdentity}}</x-markdown></b>
+                    <x-markdown>{{$snippets->coinbaseIdentityVerification}}</x-markdown>
+                    <x-markdown>{{$snippets->clickSettingsPayment}}</x-markdown>
                 </div>
                 <div class="w-1/4 mr-auto md:mr-0 md:w-[9rem]">
                     @include('svg.id')
                 </div>
             </div>
         </section>
-    @endif
 
-    @if($post->snippets->get(4)?->content)
         <section class="bg-accent-200 py-12">
             <div class="max-w-6xl px-6 xl:mx-auto flex flex-col md:flex-row gap-10 md:justify-between">
                 <div class="w-1/4 mr-auto md:mx-auto md:w-[9rem]">
                     @include('svg.crypto-bank')
                 </div>
                 <div>
-                    <x-markdown>{{$post->snippets->get(4)?->content}}</x-markdown>
+                    <b><x-markdown>{{$snippets->addFundingSource}}</x-markdown></b>
+                    <x-markdown>{{$snippets->avoidFeesUsingBank}}</x-markdown>
+                    <x-markdown>{{$snippets->clickSettings}}</x-markdown>
+                    <x-markdown>{{$snippets->clickAddPaymentMethod}}</x-markdown>
                 </div>
             </div>
         </section>
-    @endif
 
-    @if($post->snippets->get(5)?->content)
         <section class="bg-teal-600 text-white py-12">
             <div class="max-w-6xl px-6 xl:mx-auto flex flex-col-reverse md:flex-row gap-10 md:justify-between">
                 <div>
-                    <x-markdown>{{$post->snippets->get(5)?->content}}</x-markdown>
+                    <b><x-markdown>{{$snippets->purchaseAda}}</x-markdown></b>
+                    <x-markdown>{{$snippets->clickTradeArrrow}}</x-markdown>
+                    <x-markdown>{{$snippets->clickBuyCardanoAda}}</x-markdown>
+                    <x-markdown>{{$snippets->confirmBankAmount}}</x-markdown>
+                    <x-markdown>{{$snippets->onNextScreenClickBuyNow}}</x-markdown>
                 </div>
                 <div class="w-1/4 mr-auto md:mr-0 md:w-[11rem] text-white">
                     @include('svg.cardano')
                 </div>
             </div>
         </section>
-    @endif
 
-    @if($post->snippets->get(6)?->content)
         <section class="bg-white py-12">
             <div class="max-w-6xl px-6 xl:mx-auto flex flex-col md:flex-row gap-10 justify-between">
                 <div class="w-1/4 mr-auto md:x-auto md:w-[24rem] text-gray-700">
                     @include('svg.funfair')
                 </div>
                 <div>
-                    <x-markdown>{{$post->snippets->get(6)?->content}}</x-markdown>
+                    <x-markdown>{{$snippets->custodialWallet}}</x-markdown>
+                    <x-markdown>{{$snippets->takeControlMoveFunds}}</x-markdown>
+                    <b><x-markdown>{{$snippets->takeControlEvenBetter}}</x-markdown></b>
+                    <x-markdown>{{$snippets->bestSecurityLidoLife}}</x-markdown>
                 </div>
             </div>
         </section>
-    @endif
 
     <section class="py-12 bg-gray-50 border border-gray-100">
         <div class="px-6 max-w-6xl xl:mx-auto">

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Str;
 use Parental\HasParent;
 use Spatie\Comments\Models\Concerns\HasComments;
@@ -11,7 +12,7 @@ use Spatie\Feed\FeedItem;
 
 class OnboardingContent extends Post implements Feedable
 {
-    use HasParent, HasComments;
+    use HasParent, HasFactory, HasComments;
 
     protected $with = ['media', 'tags.media', 'categories.media', 'author.media', 'snippets'];
 
