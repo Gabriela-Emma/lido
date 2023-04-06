@@ -1,0 +1,104 @@
+{
+    "snippets":[
+        {
+            "heading":"decidedToOwnSomeAda",
+            "text_en":"So you’ve decided you want to own some ADA, but all you have is Dollars (or any kind of fiat money). What you need is a cryptocurrency on-ramp. If you live in the, US, Canada, United Kingdom, or most parts of Europe, a simple easy-to-use exchange is Coinbase.",
+            "text_sw":"Kwa hivyo umeamua kuwa unataka kumiliki ADA, lakini ulicho nacho ni Dola (au aina yoyote ya pesa za kawaida). Unachohitaji ni ufikiaji wa  cryptocurrency. Ikiwa unaishi Marekani, Kanada, Uingereza, au sehemu nyingi za Ulaya, ubadilishanaji  ulio rahisi kutumia ni Coinbase."
+        },
+        {
+            "heading":"useCoinbaseOnDesktopComputer",
+            "text_en":"You can use [Coinbase](https://www.coinbase.com on your desktop computer, or download the free Coinbase App onto your phone.",
+            "text_sw":"Unaweza kutumia [Coinbase](https://www.coinbase.com kwenye kompyuta yako, au kupakua Programu ya Coinbase bila malipo kwenye simu yako."
+        },
+        {
+            "heading":"inCoinbase",
+            "text_en":"In Coinbase",
+            "text_sw":"Katika Coinbase"
+        },
+        {
+            "heading":"useEmailToRegister",
+            "text_en":"Use your email to register. Follow the directions to verify your email address before proceeding.",
+            "text_sw":"Tumia barua pepe yako kujiandikisha. Fuata maelekezo ili kuthibitisha anwani yako ya barua pepe kabla ya kuendelea."
+        },
+        {
+            "heading":"verifyYourIdentity",
+            "text_en":"Verify your identity",
+            "text_sw":"Thibitisha utambulisho wako"
+        },
+        {
+            "heading":"coinbaseIdentityVerification",
+            "text_en":"Coinbase will provide step-by-step directions to verify your identity",
+            "text_sw":"Coinbase itatoa maelekezo ya hatua kwa hatua ili kuthibitisha utambulisho wako."
+        },
+        {
+            "heading":"clickSettingsPayment",
+            "text_en":"Click Settings >> Add a Payment Method",
+            "text_sw":"Bofya Mipangilio >> Ongeza Mbinu ya Kulipa"
+        },
+        {
+            "heading":"addFundingSource",
+            "text_en":"Add funding source.",
+            "text_sw":"Ongeza chanzo cha fedha."
+        },
+        {
+            "heading":"avoidFeesUsingBank",
+            "text_en":"Using your bank account as a funding source for your purchase is recommended to avoid fees associated with other sources.",
+            "text_sw":"Kutumia akaunti yako ya benki kama chanzo cha ufadhili kwa ununuzi wako inapendekezwa ili kuepuka ada zinazohusiana na vyanzo vingine."
+        },
+        {
+            "heading":"clickSettings",
+            "text_en":"Click Settings",
+            "text_sw":"Bofya Mipangilio"
+        },
+        {
+            "heading":"clickAddPaymentMethod",
+            "text_en":"Click Add Payment Method",
+            "text_sw":"Bofya Ongeza Mbinu ya Kulipa"
+        },
+        {
+            "heading":"purchaseAda",
+            "text_en":"Purchase ADA",
+            "text_sw":"Nunua ADA"
+        },
+        {
+            "heading":"clickTradeArrrow",
+            "text_en":"Click the Trade (arrows) center button at the bottom of the app.",
+            "text_sw":"Bofya kitufe cha katikati cha uza kilicho chini ya programu."
+        },
+        {
+            "heading":"clickBuyCardanoAda",
+            "text_en":"Click Buy. Select Cardano (ADA) as the currency you wish to buy.",
+            "text_sw":"Bofya Nunua. Chagua Cardano (ADA) kama sarafu unayotaka kununua."
+        },
+        {
+            "heading":"confirmBankAmount",
+            "text_en":"Confirm the amount and Bank Account and click Preview buy.",
+            "text_sw":"Thibitisha kiasi na Akaunti ya Benki na ubofye Hakiki kununua."
+        },
+        {
+            "heading":"onNextScreenClickBuyNow",
+            "text_en":"On the next screen click Buy Now",
+            "text_sw":"Kwenye skrini inayofuata bonyeza Nunua Sasa"
+        },
+        {
+            "heading":"custodialWallet",
+            "text_en":"Your cryptocurrency is now held in a hosted wallet by Coinbase on your behalf (a custodial wallet).",
+            "text_sw":"Sarafu yako ya crypto sasa inashikiliwa katika pochi inayowekwa na Coinbase kwa niaba yako (pochi la kuhifadhi)."
+        },
+        {
+            "heading":"takeControlMoveFunds",
+            "text_en":"To take full control of your cryptocurrency funds you should move them to a wallet that you control.",
+            "text_sw":"Ili kuchukua udhibiti kamili wa fedha zako za cryptocurrency unapaswa kuzihamishia kwenye pochi ambayo unadhibiti."
+        },
+        {
+            "heading":"takeControlEvenBetter",
+            "text_en":"Even better: once you have moved them to a personal wallet, you can stake your ADA with Lido Nation and earn more ADA, just for participating.",
+            "text_sw":"Bora zaidi: ukishazihamisha hadi kwenye pochi ya kibinafsi, unaweza kuwekeza ADA yako na Lido Nation na upate ADA zaidi, kwa kushiriki tu."
+        },
+        {
+            "heading":"bestSecurityLidoLife",
+            "text_en":"This is the best way to secure your funds and live that LIDO life!",
+            "text_sw":"Hii ndiyo njia bora ya kupata pesa zako na kuishi maisha hayo ya LIDO!"
+        }
+    ]
+}
