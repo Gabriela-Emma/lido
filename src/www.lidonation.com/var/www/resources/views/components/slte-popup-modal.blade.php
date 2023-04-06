@@ -6,7 +6,8 @@
             lang: document.getElementsByTagName("html")[0].getAttribute("lang"),
             modalId: document.querySelector('#slteModal'),
             show() {
-                if (this.modalShown != 1 && this.lang == 'sw') {
+                if (this.lang == 'sw') {
+                // if (this.modalShown != 1 && this.lang == 'sw') {
                     this.modalId.style.display = 'block';
                     this.showing = true;
                     this.modalShown = 1;
@@ -23,7 +24,7 @@
      id="slteModal"
      @keydown.escape="showing = false">
     <div
-        class="fixed inset-0 z-30 flex items-center justify-center overflow-auto bg-black bg-opacity-50"
+        class="fixed inset-0 z-30 flex items-center justify-center overflow-auto bg-black bg-opacity-50 px-2"
         x-show="showing"
     >
         <div
@@ -42,11 +43,11 @@
                 </button>
             </div>
 
-            <div class="relative min-w-[32rem] max-w-7xl mx-auto p-4">
+            <div class="relative min-w-[22rem] lg:min-w-[32rem] max-w-7xl mx-auto p-4">
                 <div class="flex flex-col gap-8 text-slate-100">
                     <div>
                         <div class="text-white flex gap-4 items-start">
-                            <div class="w-10 h-10 bg-white text-slate-800 rounded-full flex justify-center items-center font-semibold">
+                            <div class="w-10 h-10 bg-white text-slate-800 rounded-full flex justify-center items-center font-semibold flex-shrink-0">
                                 1
                             </div>
                             <div>
@@ -67,7 +68,7 @@
 
                     <div>
                         <div class="text-white flex gap-4 items-start">
-                            <div class="w-10 h-10 bg-white text-slate-800 rounded-full flex justify-center items-center font-semibold">
+                            <div class="w-10 h-10 bg-white text-slate-800 rounded-full flex justify-center items-center font-semibold flex-shrink-0">
                                 2
                             </div>
                             <div>
@@ -89,7 +90,7 @@
 
                     <div>
                         <div class="text-white flex gap-4 items-start">
-                            <div class="w-10 h-10 bg-white text-slate-800 rounded-full flex justify-center items-center font-semibold">
+                            <div class="w-10 h-10 bg-white text-slate-800 rounded-full flex justify-center items-center font-semibold flex-shrink-0">
                                 3
                             </div>
                             <div>

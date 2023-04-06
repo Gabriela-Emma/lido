@@ -16,18 +16,18 @@
         </div>
     </section>
     <section class="py-10 md:py-16 flex flex-row justify-end mt-4">
-        <div class="bg-slate-100 rounded-l-full w-4/5 lg:w-3/4 xl:w-2/3">
+        <div class="bg-slate-100 rounded-l-full w-5/6 lg:w-3/4 xl:w-2/3">
             <div class="container py-16 px-6 md:px-8">
                 <div class="flex flew-wrap justify-between">
                     <div class="gap-1 md:gap-4 flex flex-row items-center justify-start">
-                        <h2 class="text-2xl md:text-4xl xl:text-6xl 2xl:text-8xl">1</h2>
-                        <p class="text-sm md:text-xl xl:text-3xl 2xl:text-4xl">
+                        <div class="text-xl sm:text-2xl md:text-4xl xl:text-6xl font-bold">1</div>
+                        <p class="text-md sm:text-xl md:text-2xl xl:text-3xl">
                             {{ $t("register/login") }}
                         </p>
                     </div>
                     <div class="flex gap-3 items-center flex-row mx-auto">
                         <Link href="/earn/learn/login" type="button"
-                              class="flex gap-2 md:gap-3 items-center w-full justify-center rounded-sm border border-transparent bg-labs-red py-2 px-2 md:px-4 text-lg md:text-xl 2xl:text-2xl font-medium text-white shadow-sm hover:bg-labs-black hover:text-white focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
+                              class="flex gap-2 md:gap-3 items-center w-full justify-center rounded-sm border border-transparent bg-labs-red py-2 px-2 md:px-3 text-sm md:text-lg 2xl:text-xl font-medium text-white shadow-sm hover:bg-labs-black hover:text-white focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                  stroke-width="1.5"
                                  stroke="currentColor" class="w-4 md:w-7 h-4 md:h-7">
@@ -47,12 +47,12 @@
         </div>
     </section>
     <section class="py-10 md:py-16 flex flex-row justify-start">
-        <div class="bg-slate-100 rounded-r-full w-4/5 lg:w-3/4 xl:w-2/3">
+        <div class="bg-slate-100 rounded-r-full w-5/6 lg:w-3/4 xl:w-2/3">
             <div class="container py-16 px-6 md:px-8">
                 <div class="flex flex-wrap justify-between">
                     <div class="flex flex-col md:flex-row gap-1 md:gap-3 items-center flex-row mx-auto">
                         <Link href="/earn/learn/login" type="button"
-                              class="flex gap-1 md:gap-3 items-center w-full justify-center rounded-sm border border-transparent bg-labs-red py-2 px-2 md:px-4 text-sm md:text-xl 2xl:text-2xl font-medium text-white shadow-sm hover:bg-labs-black hover:text-white focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
+                              class="flex gap-1 md:gap-3 items-center w-full justify-center rounded-sm border border-transparent bg-labs-red py-2 px-2 md:px-3 text-sm md:text-lg 2xl:text-xl font-medium text-white shadow-sm hover:bg-labs-black hover:text-white focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                  stroke-width="1.5"
                                  stroke="currentColor" class="w-4 md:w-7 h-4 md:h-7">
@@ -62,16 +62,19 @@
                             <span>{{ $t("connectWallet") }}</span>
                         </Link>
                         <span class="text-sm">
-                            <Link href="/earn/learn/register" class="font-bold text-labs-red text-xs md:text-base hover:text-labs-black">
+                            <Link href="/earn/learn/register"
+                                  class="font-bold text-labs-red text-xs md:text-base hover:text-labs-black">
                                 {{ $t("needWallet") }}
                             </Link>
                         </span>
                     </div>
                     <div class="text-right gap-2 md:gap-4 flex flex-row items-center justify-end">
-                        <p class="text-sm md:text-xl lg:text-3xl 2xl:text-4xl hidden lg:inline-flex">
+                        <p class="text-md sm:text-xl md:text-2xl xl:text-3xl hidden md:block">
                             {{ $t("connectYourWallet") }}
                         </p>
-                        <h2 class="text-2xl sm:text-4xl xl:text-6xl 2xl:text-8xl text-right">2</h2>
+                        <div class="text-xl sm:text-2xl md:text-4xl xl:text-6xl font-bold">
+                            2
+                        </div>
                     </div>
                 </div>
             </div>
@@ -79,18 +82,18 @@
         </div>
     </section>
     <section class="py-10 md:py-16 flex flex-row justify-end mb-4">
-        <div class="bg-slate-100 rounded-l-full w-4/5 lg:w-3/4 xl:w-2/3">
+        <div class="bg-slate-100 rounded-l-full w-5/6 lg:w-3/4 xl:w-2/3">
             <div class="container py-16 px-8">
                 <div class="flex flew-wrap justify-between">
                     <div class="gap-4 flex flex-row items-center justify-start">
-                        <h2 class="text-2xl sm:text-4xl xl:text-6xl 2xl:text-8xl">3</h2>
-                        <p class="text-xl sm:text-3xl xl:text-4xl 2xl:text-5xl">
+                        <div class="text-xl sm:text-2xl md:text-4xl xl:text-6xl font-bold">3</div>
+                        <p class="text-md sm:text-xl md:text-2xl xl:text-3xl">
                             {{ $t("learn") }}
                         </p>
                     </div>
                     <div class="flex gap-3 items-center flex-row mx-auto">
                         <Link href="/earn/learn/login" type="button"
-                              class="flex gap-3 items-center w-full justify-center rounded-sm border border-transparent bg-labs-red py-2 px-4 text-xl 2xl:text-2xl font-medium text-white shadow-sm hover:bg-labs-black hover:text-white focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
+                              class="flex gap-3 items-center w-full justify-center rounded-sm border border-transparent bg-labs-red py-2 px-3 text-sm md:text-lg 2xl:text-xl font-medium text-white shadow-sm hover:bg-labs-black hover:text-white focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                  stroke-width="1.5"
                                  stroke="currentColor" class="w-4 md:w-7 h-4 md:h-7">
@@ -108,12 +111,10 @@
     <section class="py-16 bg-teal-600">
         <div class="container">
             <div class="flex justify-between items-center">
-                <div class="max-w-5xl text-white text-lg md:text-xl xl:text-3xl 2xl:text-4xl">
-                    <p>
-                        {{
-                            $t("lidonationWasFundedByProjectCatalyst")
-                        }}
-                    </p>
+                <div class="max-w-5xl text-white text-md sm:text-xl md:text-2xl xl:text-3xl">
+                    {{
+                        $t("lidonationWasFundedByProjectCatalyst")
+                    }}
                 </div>
 
                 <div class="flex w-52 lg:w-auto max-w-xs">
@@ -143,7 +144,7 @@
                     <p>
                         {{ $t("partOfFuture") }}
                     </p>
-                    <p class="font-bold text-xl xl:text-4xl">
+                    <p class="font-bold text-md sm:text-xl md:text-2xl xl:text-3xl">
                         {{ $t("welcome") }}
                     </p>
                 </div>
@@ -166,7 +167,7 @@
                                     <span class="xl:text-2xl font-semibold leading-7">{{ $t(faq.question) }}</span>
                                     <p class="leading-7 text-base text-slate-700">
                                         {{ $t(faq.shortAnswer) }}
-                                        <span class="text-slate-400" v-if="!open"> {{$t("continueReading")}}</span>
+                                        <span class="text-slate-400" v-if="!open"> {{ $t("continueReading") }}</span>
                                     </p>
                                 </div>
                                 <span class="ml-6 flex h-7 items-center">
@@ -197,18 +198,18 @@ const $utils: any = inject('$utils');
 const faqs = [
     {
         question: "whatIsBlockchain",
-        shortAnswer:"blockchainIsNewTech",
-        answer:"blockchainAnswer",
+        shortAnswer: "blockchainIsNewTech",
+        answer: "blockchainAnswer",
     },
     {
         question: "whatCanIDoWith$ADA",
-        shortAnswer:"$ADAIsTypeOfMoney",
-        answer:"whatToDoWith$ADA"
+        shortAnswer: "$ADAIsTypeOfMoney",
+        answer: "whatToDoWith$ADA"
     },
     {
         question: "howDoesProgramWork",
-        shortAnswer:"earn$1FromArticles",
-        answer:"howItWorks",
+        shortAnswer: "earn$1FromArticles",
+        answer: "howItWorks",
     },
 ]
 

@@ -410,11 +410,8 @@ image: registry.lidonation.com/infra-ops/gitlab-runner:main
     echo "Deploying $DEPLOYMENT_NAME"
     
     helm upgrade "$DEPLOYMENT_NAME" ./chart/relays \
-       --wait \
        --install \
-       --atomic \
        -f ./chart/values.yaml \
-       --timeout 300s \
        --set application.track="$track" \
        --set certmanager.server="$cert_server" \
        --set postgresqlPostgresPassword="$POSTGRESQL_DB_SYNC_POSTGRES_PASSWORD" \
@@ -452,11 +449,8 @@ image: registry.lidonation.com/infra-ops/gitlab-runner:main
     echo "Deploying $DEPLOYMENT_NAME"
     
     helm upgrade "$DEPLOYMENT_NAME" ./chart/producer \
-       --wait \
        --install \
-       --atomic \
        -f ./chart/values.yaml \
-       --timeout 300s \
        --set application.track="$track" \
        --set certmanager.server="$cert_server" \
        --set postgresqlPostgresPassword="$POSTGRESQL_DB_SYNC_POSTGRES_PASSWORD" \
