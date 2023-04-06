@@ -1,7 +1,8 @@
 export default interface Wallet {
     address?: string;
-    wallet_name?:string;
+    name?:string;
     stakeAddress?:string;
-    balance?: number;
+    balance?: string;
+    lovelacesBalance?:bigint
 
 }
