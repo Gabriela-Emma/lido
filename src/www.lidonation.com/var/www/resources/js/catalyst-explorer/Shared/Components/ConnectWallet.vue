@@ -104,8 +104,12 @@
 
 <script lang="ts" setup>
 import { ref, Ref } from 'vue';
-import {cardanoWallet} from '../../..lib/utils/cardanoWallet.js'
+import {cardanoWallet} from '../../../lib/utils/cardanoWallet'
 
 let open:Ref<boolean> = ref(false)
 
+const cardano_wallet = cardanoWallet();
+cardano_wallet.init();
+
+// console.log(cardano_wallet.walletService?.supports('eternl'))
 </script>
