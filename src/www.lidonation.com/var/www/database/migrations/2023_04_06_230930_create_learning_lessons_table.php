@@ -17,9 +17,9 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id');
             $table->foreignId('model_id');
-            $table->foreignId('model_type');
-            $table->string('title');
-            $table->string('content');
+            $table->string('model_type');
+            $table->json('title');
+            $table->json('content');
             $table->integer('number');
             $table->integer('length');
             $table->string('difficulty');

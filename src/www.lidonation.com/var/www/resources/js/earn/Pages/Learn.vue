@@ -92,7 +92,7 @@
                         </p>
                     </div>
                     <div class="flex gap-3 items-center flex-row mx-auto">
-                        <Link href="/earn/learn/login" type="button"
+                        <Link :href="$utils.localizeRoute('earn/learn/modules')" type="button"
                               class="flex gap-3 items-center w-full justify-center rounded-sm border border-transparent bg-labs-red py-2 px-3 text-sm md:text-lg 2xl:text-xl font-medium text-white shadow-sm hover:bg-labs-black hover:text-white focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                  stroke-width="1.5"

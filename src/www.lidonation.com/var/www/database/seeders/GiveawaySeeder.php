@@ -14,18 +14,20 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 class GiveawaySeeder extends Seeder
 {
     use WithoutModelEvents;
+
     /**
      * Run the database seeds.
      *
+     * @param Faker $faker
      * @return void
      */
-    public function run(Faker $faker)
+    public function run(Faker $faker): void
     {
         Giveaway::factory(10)
             ->has(
                 Translation::factory()
                     ->state(function (array $attributes, Giveaway $giv) use ($faker) {
-                        return [ 
+                        return [
                             "source_id" => $giv->id,
                             "source_type" => $giv::class,
                             "source_field" => 'title',

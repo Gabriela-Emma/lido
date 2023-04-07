@@ -16,8 +16,8 @@ return new class extends Migration
         Schema::create('learning_modules', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id');
-            $table->string('title');
-            $table->string('content');
+            $table->json('title');
+            $table->json('content');
             $table->string('difficulty');
             $table->string('status');
             $table->timestamps();

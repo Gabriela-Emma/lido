@@ -11,13 +11,13 @@ return new class extends Migration
      *
      * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::create('learning_topics', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id');
-            $table->string('title');
-            $table->string('content');
+            $table->json('title');
+            $table->json('content');
             $table->string('difficulty');
             $table->string('status');
             $table->timestamps();
