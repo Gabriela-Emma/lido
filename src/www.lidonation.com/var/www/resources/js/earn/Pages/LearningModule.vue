@@ -22,7 +22,7 @@
     </section>
     <section class="py-16 bg-labs-red">
         <div class="container text-xl xl:text-2xl">
-            <LearningModuleCard v-for="module in modules" :key="module.id" :learning-module="module"/>
+            <LearningModuleCard v-for="module in modules" :key="module.id" :learning-module="module" />
         </div>
     </section>
 </template>

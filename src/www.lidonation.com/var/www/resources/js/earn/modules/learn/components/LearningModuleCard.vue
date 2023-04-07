@@ -12,7 +12,7 @@
             <div class="mb-4" v-html="$filters.markdown(learningModule.content)"></div>
 
             <Link :href="$utils.localizeRoute('earn/learn/modules')" type="button"
-                  class="inline-flex gap-2 items-center justify-center rounded-sm border border-transparent bg-labs-red py-2 px-2 md:px-3 text-sm md:text-lg 2xl:text-xl font-medium text-white shadow-sm hover:bg-labs-black hover:text-white focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2">
+                  class="inline-flex gap-2 items-center justify-center rounded-sm border border-labs-red-light bg-labs-red py-2 px-2 md:px-3 text-sm md:text-lg 2xl:text-xl font-medium text-white shadow-md hover:bg-labs-black hover:text-white focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                      stroke="currentColor" class="w-6 h-6">
                     <path stroke-linecap="round" stroke-linejoin="round"
