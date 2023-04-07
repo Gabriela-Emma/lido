@@ -1,17 +1,19 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Earn;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreLearningLessonRequest;
 use App\Http\Requests\UpdateLearningLessonRequest;
 use App\Models\LearningLesson;
+use Illuminate\Http\Response;
 
 class LearningLessonController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index()
     {
@@ -21,7 +23,7 @@ class LearningLessonController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function create()
     {
@@ -31,8 +33,8 @@ class LearningLessonController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreLearningLessonRequest  $request
-     * @return \Illuminate\Http\Response
+     * @param StoreLearningLessonRequest $request
+     * @return Response
      */
     public function store(StoreLearningLessonRequest $request)
     {
@@ -42,8 +44,8 @@ class LearningLessonController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\LearningLesson  $learningLesson
-     * @return \Illuminate\Http\Response
+     * @param LearningLesson $learningLesson
+     * @return Response
      */
     public function show(LearningLesson $learningLesson)
     {
@@ -53,8 +55,8 @@ class LearningLessonController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\LearningLesson  $learningLesson
-     * @return \Illuminate\Http\Response
+     * @param LearningLesson $learningLesson
+     * @return Response
      */
     public function edit(LearningLesson $learningLesson)
     {
@@ -64,9 +66,9 @@ class LearningLessonController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateLearningLessonRequest  $request
-     * @param  \App\Models\LearningLesson  $learningLesson
-     * @return \Illuminate\Http\Response
+     * @param UpdateLearningLessonRequest $request
+     * @param LearningLesson $learningLesson
+     * @return Response
      */
     public function update(UpdateLearningLessonRequest $request, LearningLesson $learningLesson)
     {
@@ -76,8 +78,8 @@ class LearningLessonController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\LearningLesson  $learningLesson
-     * @return \Illuminate\Http\Response
+     * @param LearningLesson $learningLesson
+     * @return Response
      */
     public function destroy(LearningLesson $learningLesson)
     {

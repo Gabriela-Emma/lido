@@ -1,27 +1,34 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Earn;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreLearningModulesRequest;
 use App\Http\Requests\UpdateLearningModulesRequest;
+use App\Http\Resources\Earn\LearningModuleResource;
 use App\Models\LearningModule;
+use Illuminate\Http\Response;
+use Inertia\Inertia;
 
 class LearningModulesController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Inertia\Response
      */
     public function index()
     {
-        //
+        $learningModules = LearningModule::with('topics.lessons')->withCount(['topics'])->published();
+        return Inertia::render('LearningModules', [
+            'modules' => LearningModuleResource::collection($learningModules->paginate(12)->onEachSide(0))
+        ]);
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function create()
     {
@@ -31,8 +38,8 @@ class LearningModulesController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreLearningModulesRequest  $request
-     * @return \Illuminate\Http\Response
+     * @param StoreLearningModulesRequest $request
+     * @return Response
      */
     public function store(StoreLearningModulesRequest $request)
     {
@@ -42,19 +49,21 @@ class LearningModulesController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\LearningModule  $learningModules
-     * @return \Illuminate\Http\Response
+     * @param LearningModule $learningModule
+     * @return \Inertia\Response
      */
-    public function show(LearningModule $learningModules)
+    public function show(LearningModule $learningModule)
     {
-        //
+        return Inertia::render('LearningModule', [
+            'module' => $learningModule->load('topics.lessons')
+        ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\LearningModule  $learningModules
-     * @return \Illuminate\Http\Response
+     * @param LearningModule $learningModules
+     * @return Response
      */
     public function edit(LearningModule $learningModules)
     {
@@ -64,9 +73,9 @@ class LearningModulesController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateLearningModulesRequest  $request
-     * @param  \App\Models\LearningModule  $learningModules
-     * @return \Illuminate\Http\Response
+     * @param UpdateLearningModulesRequest $request
+     * @param LearningModule $learningModules
+     * @return Response
      */
     public function update(UpdateLearningModulesRequest $request, LearningModule $learningModules)
     {
@@ -76,8 +85,8 @@ class LearningModulesController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\LearningModule  $learningModules
-     * @return \Illuminate\Http\Response
+     * @param LearningModule $learningModules
+     * @return Response
      */
     public function destroy(LearningModule $learningModules)
     {

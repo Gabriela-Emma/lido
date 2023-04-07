@@ -7,7 +7,7 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Question>
+ * @extends Factory<Question>
  */
 class QuestionFactory extends Factory
 {
@@ -18,7 +18,7 @@ class QuestionFactory extends Factory
      *
      * @return array<string, mixed>
      */
-    public function definition()
+    public function definition(): array
     {
         return [
             'user_id' => fn () => User::inRandomOrder()->first()->id,
@@ -26,7 +26,7 @@ class QuestionFactory extends Factory
             'content' => $this->faker->sentence(rand(2, 3), true),
             'type' => $this->faker->randomElement(['general', 'technical', 'dev']),
             'status' => $this->faker->randomElement(['published', 'draft', 'published', 'pending', 'published']),
-            'created_at' => now(),
+            'created_at' => $this->faker->dateTimeBetween('-1 year', 'now')
         ];
     }
 }
