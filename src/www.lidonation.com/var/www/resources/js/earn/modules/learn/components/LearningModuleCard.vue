@@ -1,6 +1,6 @@
 <template>
     <div v-if="learningModule"
-        class="flex flex-col gap-8 lg:flex-row flex-nowrap items-center justify-between overflow-y-hidden lg:overflow-y-visible mb-16 border-8 rounded-sm border-labs-red overflow-clip p-4">
+        class="flex flex-col gap-8 lg:flex-row flex-nowrap items-center justify-between mb-16 border-8 rounded-sm border-labs-red overflow-clip p-4">
         <div class="shrink-0  max-w-md">
             <div
                 class="flex flex-col font-semibold text-labs-black text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl">
