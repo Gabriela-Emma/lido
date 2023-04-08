@@ -25,7 +25,7 @@
             <nav class="h-full overflow-y-auto" aria-label="Directory">
                 <div v-for="topic in learningModule.topics" :key="topic?.id" class="relative">
                     <div class="sticky top-0 z-10 border-b border-t border-gray-200 px-6 py-1 text-sm font-medium text-gray-500">
-                        <h3>{{ letter }}</h3>
+                        <h3>{{ topic?.title }}</h3>
                     </div>
                     <ul role="list" class="relative z-0 divide-y divide-gray-200" v-if="topic?.lessons">
                         <li v-for="lesson in topic.lessons" :key="topic.id" class="">
