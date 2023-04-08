@@ -37,8 +37,8 @@
                                     <a href="#" class="focus:outline-none">
                                         <!-- Extend touch target to entire panel -->
                                         <span class="absolute inset-0" aria-hidden="true" />
-                                        <p class="text-sm font-medium text-gray-900">{{ topic?.name }}</p>
-                                        <p class="truncate text-sm text-gray-500">{{ topic?.role }}</p>
+                                        <p class="text-sm font-medium text-gray-900">{{ lesson?.title }}</p>
+                                        <p class="truncate text-sm text-gray-500">{{ lesson?.length }}</p>
                                     </a>
                                 </div>
                             </div>
