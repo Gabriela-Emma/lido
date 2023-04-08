@@ -9,7 +9,7 @@
                         <li class="flow-root menu-item">
                             <Link
                                 class="px-1 py-3 menu-link hover:text-black"
-                                :class="[$page.component.startsWith('Learn') ? 'text-black' : 'text-white']"
+                                :class="[$page.component.endsWith('Learn') ? 'text-black' : 'text-white']"
                                 :href="$utils.localizeRoute('earn/learn')">
                                 {{ $t('Home') }}
                             </Link>
@@ -24,7 +24,7 @@
                         </li>
                         <li class="flow-root menu-item">
                             <Link class="px-1 py-3 menu-link hover:text-black"
-                                  :class="[$page.component.startsWith('Modules') ? 'text-black' : 'text-white']"
+                                  :class="[$page.component.startsWith('LearningModules') ? 'text-black' : 'text-white']"
                                   :href="$utils.localizeRoute('earn/learn/modules')">
                                 {{ $t('Modules') }}
                             </Link>

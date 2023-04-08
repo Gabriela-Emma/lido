@@ -22,7 +22,12 @@
     </section>
     <section class="py-16 bg-white">
         <div class="container text-xl xl:text-2xl">
-            <LearningModuleCard v-for="module in learningModules" :key="module.id" :learning-module="module"/>
+            <header class="py-8">
+                <h2 class="text-center font-semibold text-labs-black text-xl md:text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl">
+                    Available Modules
+                </h2>
+            </header>
+            <LearningModuleCard v-for="module in learningModules" :key="module.id" :learning-module="module" />
         </div>
     </section>
 </template>
@@ -50,7 +55,6 @@ const props = withDefaults(
     }>(), {});
 
 let learningModules = ref<LearningModule[]>(props.modules.data);
-console.log(props.modules.data);
 </script>
 <style scoped>
 

@@ -178,12 +178,16 @@ Route::group(
 
     Route::prefix('/earn')->as('earn.')->group(function () {
         Route::get('/')->name('learn')->name('home');
+
         Route::get('/learn/login', fn() => Inertia::render('Login'))
             ->name('learn-login');
+
         Route::middleware([])->prefix('/learn')->group(function () {
             Route::get('/', [LearnController::class, 'index'])->name('learn');
             Route::get('modules', [LearningModulesController::class, 'index'])
                 ->name('learn.modules.index');
+            Route::get('modules/{learningModule:slug}', [LearningModulesController::class, 'show'])
+                ->name('learn.modules.view');
         });
         Route::middleware(['auth.catalyst'])->prefix('/my')->group(function () {
         });
