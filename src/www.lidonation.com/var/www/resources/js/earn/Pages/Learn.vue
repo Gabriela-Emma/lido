@@ -78,7 +78,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </section>
     <section class="py-10 md:py-16 flex flex-row justify-end mb-4">

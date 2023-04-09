@@ -1,7 +1,7 @@
 <template>
     <div v-if="learningModule"
         class="flex flex-col gap-8 lg:flex-row flex-nowrap items-center justify-between mb-16 border-8 rounded-sm border-labs-red overflow-clip p-4">
-        <div class="shrink-0  max-w-md">
+        <div class="shrink-0  max-w-md bg-white rounded-r-2xl z-10 p-4">
             <div
                 class="flex flex-col font-semibold text-labs-black text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl">
                     <span class="block">
@@ -22,7 +22,7 @@
             </Link>
         </div>
 
-        <div class="shrink relative flex flex-col justify-center items-center">
+        <div class="shrink relative flex flex-col justify-center items-center z-0">
             <div class="z-10 w-96 h-80 flex items-center justify-center text-white">
                 <ul class="flex gap-3 list-none">
                     <li class="border border-stone-300 py-2 px-3 rounded-sm">
@@ -39,7 +39,7 @@
                     </li>
                 </ul>
             </div>
-            <div class="absolute w-full h-full z-0 left-[-24rem] md:left-[-18rem] top-[-4rem]">
+            <div class="absolute w-full h-full z-0 left-[-24rem] md:left-[-8rem] xl:left-[-18rem] top-[-4rem]">
                 <svg id="visual" viewBox="0 0 900 600" width="900" height="600"
                      xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                     <g transform="translate(435.86526828378726 306.0637348583508)">

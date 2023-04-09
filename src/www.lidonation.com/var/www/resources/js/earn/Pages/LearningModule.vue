@@ -1,8 +1,8 @@
 <template>
     <section class="py-4 sm:py-4 md:pb-20 md:pt-8 pb-16 xl:pb-36 xl:pt-16 bg-opacity-5 text-white overflow-visible z-5"
-             style="background: url('/img/ngong-road-learn.svg') #C02025 0% 25% / 100%; background-size: 100% auto;">
+             style="background: url('/img/ngong-road-learn.svg') 0% 35% / 100%; background-size: 100% auto;">
         <div class="container">
-            <div class="text-center flex flex-col gap-1 sm:gap-2 xl:gap-4">
+            <div class="text-center flex flex-col gap-1 sm:gap-2 xl:gap-3">
                 <div class="text-xl sm:text-2xl md:text-4xl xl:text-6xl font-bold">
                     {{ $t("Learn2earn") }}
                 </div>
@@ -20,32 +20,58 @@
             </div>
         </div>
     </section>
-    <section class="py-16 bg-labs-red">
+    <section class="py-8">
         <div class="container text-xl xl:text-2xl">
-            <nav class="h-full overflow-y-auto" aria-label="Directory">
-                <div v-for="topic in learningModule.topics" :key="topic?.id" class="relative">
-                    <div class="sticky top-0 z-10 border-b border-t border-gray-200 px-6 py-1 text-sm font-medium text-gray-500">
-                        <h3>{{ topic?.title }}</h3>
-                    </div>
-                    <ul role="list" class="relative z-0 divide-y divide-gray-200" v-if="topic?.lessons">
-                        <li v-for="lesson in topic.lessons" :key="topic.id" class="">
-                            <div class="relative flex items-center space-x-3 px-6 py-5 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500">
-                                <div class="flex-shrink-0">
-<!--                                    <img class="h-10 w-10 rounded-full" :src="person.imageUrl" alt="" />-->
-                                </div>
-                                <div class="min-w-0 flex-1">
-                                    <a href="#" class="focus:outline-none">
-                                        <!-- Extend touch target to entire panel -->
-                                        <span class="absolute inset-0" aria-hidden="true" />
-                                        <p class="text-sm font-medium text-gray-900">{{ lesson?.title }}</p>
-                                        <p class="truncate text-sm text-gray-500">{{ lesson?.length }}</p>
-                                    </a>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
+            <div class="mx-auto divide-y divide-slate-900/10">
+                <div>
+                    <h2 class="text-2xl xl:text-4xl font-bold leading-10 tracking-tight text-slate-900 text-center">
+                        {{ learningModule.title }}
+                    </h2>
                 </div>
-            </nav>
+                <dl class="mt-10 space-y-6 divide-y divide-slate-900/10">
+                    <Disclosure as="div" v-for="topic in learningModule.topics" :key="topic.id" class="pt-6"
+                                v-slot="{ open }">
+                        <dt>
+                            <DisclosureButton
+                                class="flex w-full items-start justify-between text-left text-slate-900">
+                                <div class="max-w-5xl">
+                                    <span class="xl:text-2xl font-semibold leading-7">{{ $t(topic.title) }}</span>
+                                    <p class="leading-7 text-base text-slate-700" v-if="open">
+                                        {{ $t(topic.content) }}
+                                    </p>
+                                </div>
+                                <span class="ml-6 flex h-7 items-center">
+                              <PlusSmallIcon v-if="!open" class="h-6 w-6" aria-hidden="true"/>
+                              <MinusSmallIcon v-else class="h-6 w-6" aria-hidden="true"/>
+                            </span>
+                            </DisclosureButton>
+                        </dt>
+                        <DisclosurePanel as="dd" class="mt-4 pr-12 max-w-5xl">
+                            <ul role="list" class="relative z-0 divide-y divide-white" v-if="topic?.lessons">
+                                <li v-for="lesson in topic.lessons" :key="topic.id" class="">
+                                    <div class="w-full flex flex-row justify-between px-3 py-4">
+                                        <div>
+                                            <p class="text-sm font-medium">
+                                                {{ lesson?.title }}
+                                            </p>
+                                        </div>
+                                        <div class="flex gap-2 text-sm">
+                                            <div class="flex items-center gap-1">
+                                                <span>
+                                                    <ClockIcon class="h-4 w-4"/>
+                                                </span>
+                                                <span>
+                                                    {{ new Date(lesson?.length * 1000).toISOString().substring(14, 19) }}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </DisclosurePanel>
+                    </Disclosure>
+                </dl>
+            </div>
         </div>
     </section>
 </template>
@@ -55,13 +81,15 @@ import {inject, ref} from "vue";
 import {Link} from '@inertiajs/vue3';
 import LearningModule from "../../catalyst-explorer/models/learning-module";
 import LearningModuleCard from "../modules/learn/components/LearningModuleCard.vue";
+import {MinusSmallIcon, PlusSmallIcon, ClockIcon} from '@heroicons/vue/24/outline';
+import {Disclosure, DisclosureButton, DisclosurePanel} from "@headlessui/vue";
 
 const $utils: any = inject('$utils');
 
 const props = withDefaults(
     defineProps<{
         locale: string,
-        module:  LearningModule
+        module: LearningModule
     }>(), {});
 
 let learningModule = ref(props.module);
