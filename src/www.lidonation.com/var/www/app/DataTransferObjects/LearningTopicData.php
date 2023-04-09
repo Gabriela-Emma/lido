@@ -11,6 +11,7 @@ use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 class LearningTopicData extends Data
 {
     public function __construct(
+        public int $id,
         public string $title,
         public ?string $content,
         public ?int $length,

@@ -12,6 +12,7 @@ use Spatie\LaravelData\DataCollection;
 class LearningModuleData extends Data
 {
     public function __construct(
+        public int $id,
         public string $title,
         #[TypeScriptOptional]
         public ?string $content,

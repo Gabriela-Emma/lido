@@ -10,6 +10,7 @@ use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 class LearningLessonData extends Data
 {
     public function __construct(
+        public int $id,
         public string $title,
         public string $content,
         #[TypeScriptOptional]
