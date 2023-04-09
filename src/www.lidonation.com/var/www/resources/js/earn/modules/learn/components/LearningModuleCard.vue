@@ -56,13 +56,14 @@
 <script lang="ts" setup>
 import {inject} from "vue";
 import {Link} from '@inertiajs/vue3';
-import LearningModule from "../../../../catalyst-explorer/models/learning-module";
+import LearningModuleData = App.DataTransferObjects.LearningModuleData;
+// import LearningModule from "../../../../catalyst-explorer/models/learning-module";
 
 const $utils: any = inject('$utils');
 
 const props = withDefaults(
     defineProps<{
-        learningModule: LearningModule
+        learningModule: LearningModuleData
     }>(), {});
 </script>
 <style scoped>

@@ -79,17 +79,17 @@
 <script lang="ts" setup>
 import {inject, ref} from "vue";
 import {Link} from '@inertiajs/vue3';
-import LearningModule from "../../catalyst-explorer/models/learning-module";
 import LearningModuleCard from "../modules/learn/components/LearningModuleCard.vue";
 import {MinusSmallIcon, PlusSmallIcon, ClockIcon} from '@heroicons/vue/24/outline';
 import {Disclosure, DisclosureButton, DisclosurePanel} from "@headlessui/vue";
+import LearningModuleData = App.DataTransferObjects.LearningModuleData;
 
 const $utils: any = inject('$utils');
 
 const props = withDefaults(
     defineProps<{
         locale: string,
-        module: LearningModule
+        module: LearningModuleData
     }>(), {});
 
 let learningModule = ref(props.module);

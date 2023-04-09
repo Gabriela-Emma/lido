@@ -35,8 +35,8 @@
 <script lang="ts" setup>
 import {inject, ref} from "vue";
 import {Link} from '@inertiajs/vue3';
-import LearningModule from "../../catalyst-explorer/models/learning-module";
 import LearningModuleCard from "../modules/learn/components/LearningModuleCard.vue";
+import LearningModuleData = App.DataTransferObjects.LearningModuleData;
 
 const $utils: any = inject('$utils');
 
@@ -50,11 +50,11 @@ const props = withDefaults(
             total: number,
             to: number,
             from: number,
-            data: LearningModule[]
+            data: LearningModuleData[]
         };
     }>(), {});
 
-let learningModules = ref<LearningModule[]>(props.modules.data);
+let learningModules = ref<LearningModuleData[]>(props.modules.data);
 </script>
 <style scoped>
 
