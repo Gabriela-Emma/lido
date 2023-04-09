@@ -4,5 +4,6 @@ export default interface Wallet {
     stakeAddress?:string;
     balance?: string;
     lovelacesBalance?:bigint
+    handle?:string
 
 }

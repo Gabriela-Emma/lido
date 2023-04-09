@@ -1,11 +1,11 @@
 <template>
-    <div class="w-48">
+    <div class="">
         <button
             @click="open=!open"
             :aria-expanded="open"
             type="button"
             :class="{'rounded-sm': !open}"
-            class="px-2 py-1.5 rounded-sm rounded-tl-sm w-full rounded-tr-sm inline-flex justify-between gap-2 bg-teal-700 text-white menu-link font-semibold relative">
+            class="px-2 py-1.5 rounded-sm rounded-tl-sm rounded-tr-sm inline-flex justify-between gap-2 bg-teal-700 text-white menu-link font-semibold relative">
             <span
                 v-show="walletLoading"
                 class="flex items-center justify-center w-4 p-1 bg-white rounded-full bg-opacity-90">
@@ -14,16 +14,16 @@
                     viewBox="0 0 24 24"></svg>
             </span>
 
-            <span class="tracking-wide flex items-center gap-2"  v-show="wallet_data.balance" >
-                <span v-text="walletName + ' connected'" class="text-sm text-slate-200 h-full border-r border-primary-200 border-opacity-50 pr-3 capitalize">
+            <span class="tracking-wide flex items-center gap-2"  v-show="myWallet.balance" >
+                <span v-text="(myWallet.handle ?? abbvStakeId) + ' connected'" class="text-sm text-slate-200 h-full border-primary-200 border-opacity-50 p-0.5 capitalize">
                 </span>
                 <span>
-                    <span v-text="wallet_data.balance"></span>
-                    <span class="text-slate-100" aria-hidden="true">₳</span>
+                    <!-- <span v-text="myWallet.balance"></span> -->
+                    <!-- <span class="text-slate-100" aria-hidden="true">₳</span> -->
                 </span>
             </span>
 
-            <span class="tracking-wide flex gap-2" v-show="1" >
+            <span class="tracking-wide flex gap-2" v-show="!myWallet.balance" >
                 <span>Connect Your Wallet</span>
                 <span class="text-slate-100" aria-hidden="true">&darr;</span>
             </span>
@@ -37,7 +37,7 @@
             <div class="py-1 flex items-center flex-col gap-2 divide-y divide-slate-800 divide-opacity-40" role="none">
                 <a href="#" @click.stop="(open = false); supports('gerowallet') ? enableWallet('gerowallet') : ''"
                     class="text-gray-700 block px-4 py-2 text-xl w-full inline-flex gap-2"
-                    :class="{'hover:cursor-not-allowed' : supports('gerowallet')}"
+                    :class="{'hover:cursor-not-allowed' : !supports('gerowallet')}"
                     role="menuitem"
                     :disabled="!supports('gerowallet')"
                     tabindex="-1">
@@ -49,7 +49,7 @@
 
                 <a href="#" @click.stop="(open = false); supports('nami') ? enableWallet('nami') : ''"
                     class="text-gray-700 block px-4 py-2 text-xl w-full inline-flex gap-2"
-                    :class="{'hover:cursor-not-allowed' : supports('nami')}"
+                    :class="{'hover:cursor-not-allowed' : !supports('nami')}"
                     role="menuitem"
                     :disabled="!supports('nami')"
                     tabindex="-1">
@@ -62,7 +62,7 @@
                 <a href="#" @click.stop="(open = false); supports('eternl') ? enableWallet('eternl') : ''"
                     class="text-gray-700 block px-4 py-2 text-xl w-full inline-flex gap-2"
                     role="menuitem"
-                    :class="{'hover:cursor-not-allowed' : supports('eternl')}"
+                    :class="{'hover:cursor-not-allowed' : !supports('eternl')}"
                     :disabled="!supports('eternl')"
                     tabindex="-1">
                     <img alt="eternl wallet logo" class="w-6 h-auto"
@@ -74,7 +74,7 @@
                 <a href="#" @click.stop="(open = false); supports('flint') ? enableWallet('flint') : ''"
                     class="text-gray-700 block px-4 py-2 text-xl w-full inline-flex gap-2"
                     role="menuitem"
-                    :class="{'hover:cursor-not-allowed' : supports('flint')}"
+                    :class="{'hover:cursor-not-allowed' : !supports('flint')}"
                     :disabled="!supports('flint')"
                     tabindex="-1">
                     <img alt="flint wallet logo" class="w-6 h-auto"
@@ -86,7 +86,7 @@
                 <a href="#" @click.stop="(open = false); supports('typhoncip30') ? enableWallet('typhoncip30') : ''"
                     class="text-gray-700 block px-4 py-2 text-xl w-full inline-flex gap-2"
                     role="menuitem"
-                    :class="{'hover:cursor-not-allowed' : supports('typhoncip30')}"
+                    :class="{'hover:cursor-not-allowed' : !supports('typhoncip30')}"
                     :disabled="!supports('typhoncip30')"
                     tabindex="-1">
                     <img alt="typhon wallet logo" class="w-6 h-auto"
@@ -103,8 +103,9 @@
 
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia';
-import { ref, Ref, watch } from 'vue';
+import { computed, ref, Ref, watch } from 'vue';
 import WalletService from '../../../lib/services/WalletService'
+import CardanoService from '../../../lib/services/CardanoService'
 import { useWalletStore } from '../../stores/wallet-store';
 import Wallet from '../../models/wallet';
 import {C} from "lucid-cardano";
@@ -113,8 +114,17 @@ import {C} from "lucid-cardano";
 let open:Ref<boolean> = ref(false)
 
 let walletStore = useWalletStore()
-let {wallet:walletArray} = storeToRefs(walletStore)
+let {walletData} = storeToRefs(walletStore)
+let myWallet:Ref<Wallet> = computed(() => walletData.value)
+    setHandle()
 
+let abbvStakeId = ref(myWallet.value.stakeAddress.slice(-5));
+watch(walletData, () => {
+    abbvStakeId = ref(myWallet.value.stakeAddress.slice(-5)) 
+})
+console.log(abbvStakeId.value);
+
+// check for surported wallet
 const wallet_service = new WalletService()
 const supports = (wallet:string) => {
     if (typeof window.cardano === 'undefined') {
@@ -123,11 +133,10 @@ const supports = (wallet:string) => {
     return (!!window.cardano[wallet]) && typeof window.cardano[wallet] != 'undefined';
 }
 
-
+// set the wallet data
 let walletLoading = ref(false);
 let walletName = ref('');
 let wallet_data = {} as Wallet
-
 
 const  enableWallet = async (_wallet) => {
     const wallet = _wallet;
@@ -141,6 +150,7 @@ const  enableWallet = async (_wallet) => {
     await wallet_service.connectWallet(walletName.value);
     await setWalletBalance();
     await setWalletAddress();
+    await setHandle();
     walletStore.saveWallet(wallet_data);
         
 }
@@ -156,6 +166,7 @@ async function setWalletBalance(){
          walletBalance = null;
         return false;
     }
+
     walletLoading.value = true;
     walletBalance= await wallet_service.getBalance(walletName.value);
     walletBalance = C.Value.from_bytes(Buffer.from(walletBalance, 'hex')).coin().to_str();
@@ -168,8 +179,13 @@ async function setWalletBalance(){
         });
     }
     walletLoading.value = false;
-    return true;
 }
- watch(wallet_data)
+
+async function setHandle() {
+    let cardanoService = new CardanoService()
+    let handle = await cardanoService.getHandle(myWallet.value.stakeAddress)
+    wallet_data.handle =handle;
+}
+
 
 </script>

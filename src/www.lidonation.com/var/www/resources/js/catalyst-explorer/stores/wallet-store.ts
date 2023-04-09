@@ -10,10 +10,9 @@ export const useWalletStore = defineStore('wallet', () => {
         walletData.value = wallet;
     }
 
-    const walletArray = computed(() => Object.values(walletData.value));
 
     return{
         saveWallet,
-        wallet:walletArray 
+        walletData
     }
 });
