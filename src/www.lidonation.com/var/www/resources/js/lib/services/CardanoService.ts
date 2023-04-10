@@ -58,9 +58,11 @@ export default class CardanoService {
 
     public async getHandle(stakeAddress: string) {
         await this.init();
-        let asset = (await this.api.get(`/accounts/${stakeAddress}/addresses/assets`))?.data[0].unit
-        let assetName = (await this.api.get(`/assets/${asset}`))?.data.onchain_metadata.files[0].name
-        return assetName;
+        if(stakeAddress){
+            let asset = (await this.api.get(`/accounts/${stakeAddress}/addresses/assets`))?.data[0]?.unit
+            let assetName = (await this.api.get(`/assets/${asset}`))?.data.onchain_metadata?.files[0]?.name
+            return assetName;
+        }
     }
 
     public async getPoolBlocks() {

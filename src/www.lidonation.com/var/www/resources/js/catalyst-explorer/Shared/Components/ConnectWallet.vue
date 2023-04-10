@@ -116,13 +116,12 @@ let open:Ref<boolean> = ref(false)
 let walletStore = useWalletStore()
 let {walletData} = storeToRefs(walletStore)
 let myWallet:Ref<Wallet> = computed(() => walletData.value)
-    setHandle()
 
-let abbvStakeId = ref(myWallet.value.stakeAddress.slice(-5));
+let abbvStakeId = ref(myWallet?.value?.stakeAddress?.slice(-5));
+
 watch(walletData, () => {
-    abbvStakeId = ref(myWallet.value.stakeAddress.slice(-5)) 
+    abbvStakeId = ref(myWallet?.value?.stakeAddress?.slice(-5)) 
 })
-console.log(abbvStakeId.value);
 
 // check for surported wallet
 const wallet_service = new WalletService()
@@ -140,7 +139,6 @@ let wallet_data = {} as Wallet
 
 const  enableWallet = async (_wallet) => {
     const wallet = _wallet;
-    console.log(wallet)
     walletLoading.value = true;
     if (typeof window.cardano === 'undefined' || !window?.cardano || !window.cardano[wallet]) {
         walletName.value = null;
@@ -150,9 +148,8 @@ const  enableWallet = async (_wallet) => {
     await wallet_service.connectWallet(walletName.value);
     await setWalletBalance();
     await setWalletAddress();
-    await setHandle();
     walletStore.saveWallet(wallet_data);
-        
+
 }
 
 async function setWalletAddress(){
@@ -177,13 +174,17 @@ async function setWalletBalance(){
             minimumFractionDigits: 2,
             maximumFractionDigits: 2
         });
-    }
+    } 
+    // set handle
+    await setHandle()
+
     walletLoading.value = false;
 }
 
 async function setHandle() {
+    await setWalletAddress();
     let cardanoService = new CardanoService()
-    let handle = await cardanoService.getHandle(myWallet.value.stakeAddress)
+    let handle = await cardanoService.getHandle(wallet_data.stakeAddress)
     wallet_data.handle =handle;
 }
 
