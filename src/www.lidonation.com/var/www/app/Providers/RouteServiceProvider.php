@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\BookmarkCollection;
+use App\Models\LearningLesson;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Http\Request;
@@ -34,6 +35,10 @@ class RouteServiceProvider extends ServiceProvider
 
         Route::bind('bookmarkCollection', function ($value, $route) {
             return $this->getModel(BookmarkCollection::class, $value);
+        });
+
+        Route::bind('learningLesson', function ($value, $route) {
+            return $this->getModel(LearningLesson::class, $value);
         });
 
         $this->configureRateLimiting();

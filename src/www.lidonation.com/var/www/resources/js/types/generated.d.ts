@@ -3,7 +3,9 @@ export type LearningLessonData = {
 id: number;
 title: string;
 content: string;
-length?: number | null;
+length: number | null;
+order: number | null;
+completed?: boolean | null;
 link?: string | null;
 topic?: App.DataTransferObjects.LearningTopicData | null;
 };

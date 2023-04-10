@@ -48,9 +48,11 @@ class CatalystGroup extends Model implements HasMedia, HasLink
         'bio',
     ];
 
-    public function getLinkAttribute(): string|UrlGenerator|Application
+    public function link(): Attribute
     {
-        return LaravelLocalization::localizeURL("/project-catalyst/group/{$this->slug}/");
+        return Attribute::make(
+            get: fn () => LaravelLocalization::localizeURL("/project-catalyst/group/{$this->slug}/"),
+        );
     }
 
     public function getUrlAttribute()

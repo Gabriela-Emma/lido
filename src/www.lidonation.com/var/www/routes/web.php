@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Earn\LearningLessonController;
 use App\Http\Controllers\Earn\LearningModulesController;
 use App\Models\Mint;
 use Inertia\Inertia;
@@ -188,7 +189,7 @@ Route::group(
                 ->name('learn.modules.index');
             Route::get('modules/{learningModule:slug}', [LearningModulesController::class, 'show'])
                 ->name('learn.modules.view');
-            Route::get('lessons/{learningLesson:id}', [LearningModulesController::class, 'show'])
+            Route::get('lessons/{learningLesson:id}', [LearningLessonController::class, 'show'])
                 ->name('learn.modules.view');
         });
         Route::middleware(['auth.catalyst'])->prefix('/my')->group(function () {

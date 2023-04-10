@@ -115,9 +115,11 @@ class Nft extends Model implements HasLink, HasMedia
         return $meta->save();
     }
 
-    public function getLinkAttribute()
+    public function link(): Attribute
     {
-        // TODO: Implement getLinkAttribute() method.
+        return Attribute::make(
+            get: fn ($value) => '' // TODO: Implement getLinkAttribute() method.,
+        );
     }
 
     public function artist(): BelongsTo

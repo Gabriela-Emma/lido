@@ -28,7 +28,7 @@ class LearningLessonFactory extends Factory
             'title' => $this->faker->words(4, true),
             'content' => $this->faker->paragraph(rand(2, 5), true),
             'difficulty' => $this->faker->randomElement(['beginner', 'beginner', 'advance', 'intermediate']),
-            'number' => $this->faker->numberBetween(1, 14),
+            'order' => $this->faker->numberBetween(1, 14),
             'length' => $this->faker->numberBetween(240, 900),
             'status' => $this->faker->randomElement(['published', 'draft', 'published', 'published']),
             'created_at' => $this->faker->dateTimeBetween('-1 year', 'now')

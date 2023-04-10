@@ -57,7 +57,6 @@
 import {inject} from "vue";
 import {Link} from '@inertiajs/vue3';
 import LearningModuleData = App.DataTransferObjects.LearningModuleData;
-// import LearningModule from "../../../../catalyst-explorer/models/learning-module";
 
 const $utils: any = inject('$utils');
 

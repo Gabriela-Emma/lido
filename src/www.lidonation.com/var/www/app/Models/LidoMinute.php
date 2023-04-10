@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Traits\SearchableLocale;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\UrlGenerator;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Collection;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 use Parental\HasParent;
@@ -15,9 +16,11 @@ class LidoMinute extends Post implements Feedable
 {
     use HasParent, SearchableLocale;
 
-    public function getLinkAttribute(): string|UrlGenerator|Application
+    public function link(): Attribute
     {
-        return LaravelLocalization::localizeURL("/lido-minutes/{$this->slug}/");
+        return Attribute::make(
+            get: fn () => LaravelLocalization::localizeURL("/lido-minutes/{$this->slug}/"),
+        );
     }
 
     public function getPostTypeNameAttribute(): string

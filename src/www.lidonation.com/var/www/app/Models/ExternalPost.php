@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Traits\SearchableLocale;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\UrlGenerator;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Support\Str;
 use Parental\HasParent;
 use Spatie\Comments\Models\Concerns\HasComments;
@@ -38,9 +39,11 @@ class ExternalPost extends Post
         return 'external_posts';
     }
 
-    public function getLinkAttribute(): string|UrlGenerator|Application|null
+    public function link(): Attribute
     {
-        return $this->links->pluck('link')?->first()?->link;
+        return Attribute::make(
+            get: fn () => $this->links->pluck('link')?->first()?->link,
+        );
     }
 
     public function toFeedItem(): FeedItem

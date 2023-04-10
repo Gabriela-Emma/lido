@@ -56,21 +56,33 @@
                             <ul role="list" class="relative z-0 divide-y divide-white" v-if="topic?.lessons">
                                 <li v-for="lesson in topic.lessons" :key="topic.id" class="">
                                     <div class="w-full flex flex-row justify-between px-3 py-4">
-                                        <div>
-                                            <p class="text-sm font-medium">
+                                        <div class="flex gap-1">
+                                            <div class="flex gap-2 items-center text-sm">
+                                                <div class="flex items-center gap-1">
+                                                    <NewspaperIcon class="h-4 w-4" />
+                                                </div>
+                                            </div>
+                                            <Link :href="lesson.link" class="text-sm font-medium">
                                                 {{ lesson?.title }}
-                                            </p>
+                                            </Link>
                                         </div>
                                         <div class="flex gap-2 text-sm">
                                             <div class="flex items-center gap-1">
                                                 <span>
-                                                    <ClockIcon class="h-4 w-4"/>
+                                                    <CheckBadgeIconSolid v-if="lesson.completed"
+                                                                         class="h-5 w-5 text-labs-red" />
+                                                    <CheckBadgeIcon v-else class="h-5 w-5 text-slate-400"/>
                                                 </span>
-                                                <span>
+                                            </div>
+                                            <div class="flex items-center gap-1">
+                                                <div>
+                                                    <ClockIcon class="h-4 w-4"/>
+                                                </div>
+                                                <div>
                                                     {{
                                                         new Date(lesson?.length * 1000).toISOString().substring(14, 19)
                                                     }}
-                                                </span>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -87,8 +99,8 @@
 <script lang="ts" setup>
 import {inject, ref} from "vue";
 import {Link} from '@inertiajs/vue3';
-import LearningModuleCard from "../modules/learn/components/LearningModuleCard.vue";
-import {MinusSmallIcon, PlusSmallIcon, ClockIcon} from '@heroicons/vue/24/outline';
+import {MinusSmallIcon, PlusSmallIcon, ClockIcon, CheckBadgeIcon, NewspaperIcon} from '@heroicons/vue/24/outline';
+import {CheckBadgeIcon as CheckBadgeIconSolid} from '@heroicons/vue/24/solid';
 import {Disclosure, DisclosureButton, DisclosurePanel} from "@headlessui/vue";
 import LearningModuleData = App.DataTransferObjects.LearningModuleData;
 

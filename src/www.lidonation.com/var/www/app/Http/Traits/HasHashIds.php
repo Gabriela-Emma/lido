@@ -3,6 +3,7 @@
 namespace App\Http\Traits;
 
 use App\Models\BookmarkCollection;
+use App\Models\LearningLesson;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Vinkla\Hashids\Facades\Hashids;
@@ -29,7 +30,8 @@ trait HasHashIds
      * Get Model by hash.
      *
      *
-     * @return HasHashIds|BookmarkCollection|null
+     * @param $hash
+     * @return HasHashIds|BookmarkCollection|LearningLesson|null
      */
     public static function byHash($hash): ?self
     {
@@ -48,7 +50,8 @@ trait HasHashIds
      * Get model by hash or fail.
      *
      *
-     * @return HasHashIds|BookmarkCollection
+     * @param $hash
+     * @return HasHashIds|BookmarkCollection|LearningLesson
      *
      * @throw \Illuminate\Database\Eloquent\ModelNotFoundException
      */
