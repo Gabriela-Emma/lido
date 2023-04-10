@@ -641,8 +641,6 @@ yarn:
     set -vx
     export PATH=$PATH:/usr/local/bin
     cd ./src/www.lidonation.com/var/www
-    touch ./storage/app/snippets.json
-    echo '{}' > ./storage/app/snippets.json
     touch .npmrc
     echo '//npm.pkg.github.com/:_authToken=${GITHUB_PACKAGE_REGISTRY_TOKEN}' > .npmrc
     echo '@spatie:registry=https://npm.pkg.github.com' >> .npmrc
