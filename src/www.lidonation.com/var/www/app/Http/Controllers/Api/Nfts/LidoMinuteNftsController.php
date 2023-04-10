@@ -63,7 +63,8 @@ class LidoMinuteNftsController extends Controller
     public function mintStatus(Request $request): TxResource
     {
         $address = $request->input('address');
-        $tx = Tx::with(['model'])->where('address', $address)->orderByDesc('created_at')->firstOrFail();
+        $tx = Tx::with(['model'])->where('address', $address)->where('type', Nft::class)
+            ->orderByDesc('created_at')->firstOrFail();
 
         return new TxResource($tx);
     }

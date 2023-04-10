@@ -20,7 +20,7 @@ class QuestionSeeder extends Seeder
             $quiz->answers()->saveMany(QuestionAnswer::factory(4)
                 ->make()
                 ->map(function ($answer, $index) use ($correctAnswer) {
-                    $answer['correctness'] = $index === $correctAnswer - 1 ? 'true' : 'false';
+                    $answer['correctness'] = $index === $correctAnswer - 1 ? 'correct' : 'incorrect';
 
                     return $answer;
                 })

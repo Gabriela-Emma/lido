@@ -13,17 +13,16 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('lessons', function (Blueprint $table) {
+        Schema::create('learning_modules', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('course_id');
-            $table->string('title');
+            $table->string('slug');
+            $table->foreignId('user_id');
+            $table->json('title');
+            $table->json('content');
+            $table->string('difficulty');
+            $table->string('status');
             $table->timestamps();
-            $table->timestamp('completed_at')->nullable();
             $table->softDeletes();
-
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('course_id')->references('id')->on('courses');
         });
     }
 
@@ -34,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('lessons');
+        Schema::dropIfExists('learning_modules');
     }
 };

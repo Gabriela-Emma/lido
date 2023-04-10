@@ -13,12 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('lesson_post', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('lesson_id');
-            $table->unsignedBigInteger('post_id');
-            $table->foreign('lesson_id')->references('id')->on('lessons');
-            $table->foreign('post_id')->references('id')->on('posts');
+        Schema::create('learning_lesson_learning_topic', function (Blueprint $table) {
+            $table->foreignId('learning_lesson_id');
+            $table->foreignId('learning_topic_id');
         });
     }
 
@@ -29,6 +26,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('lesson_post');
+        //
     }
 };

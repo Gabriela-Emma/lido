@@ -12,6 +12,7 @@ use App\Models\Traits\HasLinks;
 use App\Models\Traits\HasMetaData;
 use App\Models\Traits\HasParent;
 use App\Models\Traits\HasPrompts;
+use App\Models\Traits\HasSlug;
 use App\Models\Traits\HasSnippets;
 use App\Models\Traits\HasTaxonomies;
 use App\Models\Traits\HasTranslations;
@@ -60,6 +61,7 @@ class Post extends Model implements HasMedia, Interfaces\IHasMetaData, Sitemapab
         HasPrompts,
         HasParent,
         HasSnippets,
+        HasSlug,
         HasLinks,
         HasTaxonomies,
         HasTranslations,
@@ -376,22 +378,7 @@ class Post extends Model implements HasMedia, Interfaces\IHasMetaData, Sitemapab
         return $query->whereNull('content_audio');
     }
 
-    /**
-     * Generate unique slug
-     *
-     * @return array|string ()
-     */
-    public function createSlug($title): array|string
-    {
-        if (static::whereSlug($slug = Str::slug($title))->exists()) {
-            $max = intval(static::whereTitle($title)->latest('id')->count());
 
-            return "{$slug}-".preg_replace_callback('/(\d+)$/', fn ($matches) => $matches[1] + 1,
-                $max);
-        }
-
-        return $slug;
-    }
 
     public function registerMediaConversions(Media $media = null): void
     {
@@ -412,14 +399,6 @@ class Post extends Model implements HasMedia, Interfaces\IHasMetaData, Sitemapab
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection('hero');
-    }
-
-    /**
-     * Get the route key for the model.
-     */
-    public function getRouteKeyName(): string
-    {
-        return 'slug';
     }
 
     public function toSitemapTag(): Url|string|array
