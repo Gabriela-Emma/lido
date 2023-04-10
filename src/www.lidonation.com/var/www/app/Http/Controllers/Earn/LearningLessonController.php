@@ -7,6 +7,7 @@ use App\Http\Requests\StoreLearningLessonRequest;
 use App\Http\Requests\UpdateLearningLessonRequest;
 use App\Models\LearningLesson;
 use Illuminate\Http\Response;
+use Inertia\Inertia;
 
 class LearningLessonController extends Controller
 {
@@ -45,11 +46,14 @@ class LearningLessonController extends Controller
      * Display the specified resource.
      *
      * @param LearningLesson $learningLesson
-     * @return Response
+     * @return \Inertia\Response
      */
     public function show(LearningLesson $learningLesson)
     {
-        //
+        $learningLesson->load('model');
+        return Inertia::render('LearningModule', [
+            'lesson' => $learningLesson
+        ]);
     }
 
     /**

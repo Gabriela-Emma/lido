@@ -188,6 +188,8 @@ Route::group(
                 ->name('learn.modules.index');
             Route::get('modules/{learningModule:slug}', [LearningModulesController::class, 'show'])
                 ->name('learn.modules.view');
+            Route::get('lessons/{learningLesson:id}', [LearningModulesController::class, 'show'])
+                ->name('learn.modules.view');
         });
         Route::middleware(['auth.catalyst'])->prefix('/my')->group(function () {
         });
