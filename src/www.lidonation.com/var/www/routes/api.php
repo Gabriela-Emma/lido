@@ -292,4 +292,4 @@ Route::prefix('quizzes')->as('quizzes')
 Route::get('/generate-mnemonic-phrase', [GenerateMnemonicPhraseController::class, 'generate']);
 
 // snippets
-Route::get('/cache/snippets', [SnippetController::class, 'index']);
+Route::get('/cache/snippets', [SnippetController::class, 'index'])->name('cache.snippets');
