@@ -8,20 +8,14 @@ use Spatie\TypeScriptTransformer\Attributes\Optional as TypeScriptOptional;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
 #[TypeScript]
-class LearningLessonData extends Data
+class ModelData extends Data
 {
     public function __construct(
-        public string $hash,
+        public ?int $id,
+        public ?string $slug,
         public string $title,
         public string $content,
-        public ?int $length,
-        public ?int $order,
-        public null | bool | Optional $completed,
         #[TypeScriptOptional]
-        public ?string $link,
-        #[TypeScriptOptional]
-        public ?ModelData $model,
-        #[TypeScriptOptional]
-        public ?LearningTopicData $topic
+        public ?string $link
     ) {}
 }
