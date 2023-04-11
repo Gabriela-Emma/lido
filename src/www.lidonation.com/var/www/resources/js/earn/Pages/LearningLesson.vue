@@ -68,7 +68,7 @@
                                         Question goes here
                                     </h2>
                                 </div>
-                                <ul class="flex justify-center gap-6 flex-wrap">
+                                <ul class="flex justify-center gap-5 flex-wrap">
                                     <li class="p-4 bg-white text-labs-black rounded-sm">
                                         Consequatur aperiam non aut answer 1
                                     </li>
@@ -82,6 +82,11 @@
                                         Answer 4 est perspiciatis
                                     </li>
                                 </ul>
+                                <div class="mt-8">
+                                    <button type="button" class="rounded-sm bg-labs-black px-3.5 py-2.5 text-md xl:text-xl font-semibold text-white shadow-sm hover:bg-labs-black/75 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-labs-black ml-auto">
+                                        Submit
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </footer>
