@@ -147,7 +147,19 @@
                                                     optionPointed: 'is-pointed text-white bg-teal-600',
                                                     optionSelected: 'text-white bg-teal-600',
                                                 }"
-                                                />
+                                                >
+                                                    <template #option="{ option }">
+                                                        <div class="flex w-full justify-between ">
+                                                            <div>
+                                                                <span>{{ option.title }}</span>
+                                                            </div>
+                                                            <div v-if="option.disabled" class="flex flex-row  justify-self-end  ">
+                                                                <span  class="text-slate-300 mr-1.5  text-sm italic" > Already added</span>
+                                                                <CheckIcon class="-mr-0.5 h-3 w-3 text-slate-300" aria-hidden="true"/>
+                                                            </div>
+                                                        </div>
+                                                    </template>
+                                                </Multiselect>
 
                                                 <!-- Turn this into reusable error component that takes an AxiosError or a errors: models/errors object -->
                                                 <template v-if="errors">
@@ -285,6 +297,7 @@ import BookmarkCollection from "../models/bookmark-collection";
 import BookmarkItem from "../models/bookmark-item";
 import axios from "axios";
 import {XCircleIcon, ArrowTopRightOnSquareIcon} from '@heroicons/vue/20/solid';
+import { CheckIcon } from '@heroicons/vue/20/solid'
 
 const props = withDefaults(
     defineProps<{
