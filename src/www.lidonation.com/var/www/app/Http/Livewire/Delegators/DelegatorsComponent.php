@@ -13,6 +13,7 @@ use App\Models\Reward;
 use App\Models\User;
 use App\Repositories\PostRepository;
 use App\Services\CardanoBlockfrostService;
+use Exception;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -45,6 +46,10 @@ class DelegatorsComponent extends Component
     public $withdrawals;
 
     public $myResponse;
+
+    public $ownNft;
+
+    public $nftLinks = [];
 
     protected $listeners = [
         'claimEveryEpochReward' => 'claimEveryEpochReward',
@@ -82,6 +87,7 @@ class DelegatorsComponent extends Component
 
         if (Auth::check() && (bool) auth()->user()?->wallet_stake_address) {
             $user = auth()->user();
+            $this->loadUserNfts($user);
             $this->loadLidoRewards($user);
 
             $this->myResponse = AnswerResponse::with('answer.question')
@@ -237,6 +243,54 @@ class DelegatorsComponent extends Component
                 'name' => $name,
                 'message' => $msg,
             ]);
+        }
+    }
+
+    protected function loadUserNfts(User $user)
+    {
+        
+        $imagesArr = [];
+        try {
+            $assets = app(CardanoBlockfrostService::class)->get('accounts/'.$user->wallet_stake_address.'/addresses/assets', null)->collect();
+
+            //loop assets and extract nft images 
+            foreach ($assets as $asset) {
+                $assetMetaObject = app(CardanoBlockfrostService::class)->get('assets/'.$asset['unit'], null)->object();
+                $imageMeta = $assetMetaObject->onchain_metadata->image;
+    
+                //from image meta establish protocol and the uri 
+                switch (gettype($imageMeta)) {
+                    case "string": //eg "https://cardano.org/favicon-32x32.png"  OR "ipfs://QmbQDvKJeo2NgGcGdnUiUFibTzuKNK5Uij7jzmK8ZccmWp"
+                        [$imageProtocol, $imageUri] = explode('://', $imageMeta);
+                        break;
+                    case "array": //eg ["ipfs://", "QmbQDvKJeo2NgGcGdnUiUFibTzuKNK5Uij7jzmK8ZccmWp"]
+                        [$protocol, $uri] = $imageMeta;
+                        $imageProtocol = str_replace('://', '', $protocol);
+                        $imageUri = $uri;
+                        break;
+                }
+            
+                //generate off-chain link based on the protocol
+                switch ($imageProtocol) {
+                    case 'ar':
+                        $imageLink = 'https://arweave.net/'.$imageUri;
+                        array_push($imagesArr, $imageLink);
+                        break;
+                    case 'ipfs':
+                        $imageLink = 'https://cloudflare-ipfs.com/ipfs/'.$imageUri;
+                        array_push($imagesArr, $imageLink);
+                        break;
+                    case 'https':
+                        $imageLink = $imageMeta;
+                        array_push($imagesArr, $imageLink);
+                        break;
+                }
+            }
+            
+            $this->nftLinks = (count($imagesArr) > 0) ? $imagesArr : null;
+            $this->ownNft = count($this->nftLinks) > 0 ? true : false;
+        } catch (Exception $e) {
+            report($e);
         }
     }
 

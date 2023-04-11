@@ -259,7 +259,11 @@
                     <div class="grid grid-cols-1 xl:grid-cols-2 gap-8">
                         <div class="flex flex-col justify-center">
                             <div class="p-8 bg-teal-900 rounded-sm py-10">
-                                @include('livewire.delegators.quiz')
+                                @if($everyEpoch->epoch == '168')
+                                    @include('livewire.delegators.nft')
+                                @else
+                                    @include('livewire.delegators.quiz')
+                                @endif
                             </div>
                         </div>
                         <div class="">
