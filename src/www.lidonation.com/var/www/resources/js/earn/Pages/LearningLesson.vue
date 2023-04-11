@@ -23,7 +23,7 @@
     <section class="py-8">
         <div class="container">
             <div class="grid grid-cols-7 gap-8">
-                <div class="col-span-7 md:col-span-4 lg:col-span-5 bg-slate-100 p-6">
+                <div class="col-span-7 md:col-span-4 xl:col-span-5 border-8 border-labs-red p-8 rounded-sm">
                     <header class="flex justify-between items-center">
                         <div>
                             <div class="flex items-center gap-3 text-slate-500">
@@ -37,7 +37,7 @@
                                     </div>
                                     <div>
                                         {{
-                                            new Date(lesson?.length * 1000).toISOString().substring(14, 19)
+                                        new Date(lesson?.length * 1000).toISOString().substring(14, 19)
                                         }}
                                     </div>
                                 </div>
@@ -55,12 +55,35 @@
                             </div>
                         </div>
                     </header>
-                    <div class="border-8 mt-4 p-6 shadow-xs rounded-xs h-96 bg-white/75 overflow-y-auto">
+                    <div class="mt-4 p-6 shadow-xs rounded-xs h-96 bg-slate-100/75 overflow-y-auto">
                         <div v-if="learningLesson.model"
                              v-html="$filters.markdown(learningLesson.model?.content)"></div>
                     </div>
                     <footer>
-
+                        <div class="bg-labs-red text-white px-8 py-16 mt-8 text-center">
+                            <div class="flex flex-col items-center gap-6">
+                                <div>
+                                    <div class="text-slate-300">Quiz</div>
+                                    <h2 class="text-2xl xl:text-3xl font-bold leading-10 tracking-tight">
+                                        Question goes here
+                                    </h2>
+                                </div>
+                                <ul class="flex justify-center gap-6 flex-wrap">
+                                    <li class="p-4 bg-white text-labs-black rounded-sm">
+                                        Consequatur aperiam non aut answer 1
+                                    </li>
+                                    <li class="p-4 bg-white text-labs-black rounded-sm">
+                                        Aperiam non aut
+                                    </li>
+                                    <li class="p-4 bg-white text-labs-black rounded-sm">
+                                        eaque est perspiciatis 3
+                                    </li>
+                                    <li class="p-4 bg-white text-labs-black rounded-sm">
+                                        Answer 4 est perspiciatis
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
                     </footer>
                 </div>
             </div>
