@@ -1,12 +1,13 @@
 declare namespace App.DataTransferObjects {
 export type LearningLessonData = {
-id: number;
+hash: string;
 title: string;
 content: string;
 length: number | null;
 order: number | null;
 completed?: boolean | null;
 link?: string | null;
+model?: App.DataTransferObjects.ModelData | null;
 topic?: App.DataTransferObjects.LearningTopicData | null;
 };
 export type LearningModuleData = {
@@ -29,5 +30,12 @@ length: number | null;
 link: string;
 lessons_count: number | null;
 lessons: Array<App.DataTransferObjects.LearningLessonData> | null;
+};
+export type ModelData = {
+id: number | null;
+slug: string | null;
+title: string;
+content: string;
+link?: string | null;
 };
 }

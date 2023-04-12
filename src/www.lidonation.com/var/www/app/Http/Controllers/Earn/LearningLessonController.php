@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Earn;
 
+use App\DataTransferObjects\LearningLessonData;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreLearningLessonRequest;
 use App\Http\Requests\UpdateLearningLessonRequest;
@@ -9,6 +10,7 @@ use App\Models\LearningLesson;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Inertia\Inertia;
+use Webwizo\Shortcodes\Facades\Shortcode;
 
 class LearningLessonController extends Controller
 {
@@ -53,8 +55,11 @@ class LearningLessonController extends Controller
     public function show(Request $request, LearningLesson $learningLesson)
     {
         $learningLesson->load('model');
+        if ($learningLesson->model?->content) {
+            $learningLesson->model->content = Shortcode::compile($learningLesson?->model?->content);
+        }
         return Inertia::render('LearningLesson', [
-            'lesson' => $learningLesson
+            'lesson' => LearningLessonData::from($learningLesson)
         ]);
     }
 
