@@ -192,8 +192,7 @@ Route::group(
             Route::get('lessons/{learningLesson:id}', [LearningLessonController::class, 'show'])
                 ->name('learn.modules.view');
         });
-        Route::middleware(['auth.catalyst'])->prefix('/my')->group(function () {
-        });
+        Route::middleware(['auth.catalyst'])->prefix('/my')->group(function () {});
     });
 
     Route::prefix('/catalyst-explorer')->as('catalystExplorer.')->group(function () {
