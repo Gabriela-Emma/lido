@@ -15,11 +15,12 @@ class UserController extends Controller
 {
     public function login(Request $request)
     {
-        $request->validate([
+        $credentials = $request->validate([
             'email' => ['required', 'email'],
             'password' => ['required'],
+            ''
         ]);
-        $credentials = $request->only(['email', 'password']);
+        
         $remember = $request->input('remember', false);
 
         if (Auth::attempt($credentials, $remember)) {

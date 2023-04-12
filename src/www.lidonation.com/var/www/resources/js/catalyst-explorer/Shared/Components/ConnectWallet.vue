@@ -1,5 +1,5 @@
 <template>
-    <div class="">
+    <div>
         <button
             @click="open=!open"
             :aria-expanded="open"
@@ -104,23 +104,29 @@
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia';
 import { computed, ref, Ref, watch } from 'vue';
-import WalletService from '../../../lib/services/WalletService'
-import CardanoService from '../../../lib/services/CardanoService'
+import WalletService from '../../../lib/services/WalletService';
+import CardanoService from '../../../lib/services/CardanoService';
 import { useWalletStore } from '../../stores/wallet-store';
 import Wallet from '../../models/wallet';
 import {C} from "lucid-cardano";
 
 
-let open:Ref<boolean> = ref(false)
+let open:Ref<boolean> = ref(false);
 
-let walletStore = useWalletStore()
-let {walletData} = storeToRefs(walletStore)
-let myWallet:Ref<Wallet> = computed(() => walletData.value)
+let walletStore = useWalletStore();
+let {walletData} = storeToRefs(walletStore);
+let myWallet:Ref<Wallet> = computed(() => walletData.value);
+
+// emit wallet data
+const emit =defineEmits<{
+    (e: 'walletData', wallet_data:Wallet):void
+}>();
+emit('walletData', myWallet.value);
 
 let abbvStakeId = ref(myWallet?.value?.stakeAddress?.slice(-5));
-
 watch(walletData, () => {
-    abbvStakeId = ref(myWallet?.value?.stakeAddress?.slice(-5)) 
+    abbvStakeId = ref(myWallet?.value?.stakeAddress?.slice(-5));
+    emit('walletData', myWallet.value);
 })
 
 // check for surported wallet
@@ -135,7 +141,7 @@ const supports = (wallet:string) => {
 // set the wallet data
 let walletLoading = ref(false);
 let walletName = ref('');
-let wallet_data = {} as Wallet
+let wallet_data = {} as Wallet;
 
 const  enableWallet = async (_wallet) => {
     const wallet = _wallet;
@@ -145,6 +151,7 @@ const  enableWallet = async (_wallet) => {
         return Promise.reject(`${wallet} wallet not installed.`);
     }
     walletName.value = wallet;
+    wallet_data.name = walletName.value;
     await wallet_service.connectWallet(walletName.value);
     await setWalletBalance();
     await setWalletAddress();
@@ -183,7 +190,7 @@ async function setWalletBalance(){
 
 async function setHandle() {
     await setWalletAddress();
-    let cardanoService = new CardanoService()
+    let cardanoService = new CardanoService();
     let handle = await cardanoService.getHandle(wallet_data.stakeAddress)
     wallet_data.handle =handle;
 }

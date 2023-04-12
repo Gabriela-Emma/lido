@@ -69,6 +69,10 @@
                         </span>
                     </div>
                 </div>
+                <Divider/>
+                <div>
+                    <WalletLoginBtn/>
+                </div>
             </div>
         </form>
     </div>
@@ -78,6 +82,8 @@
 import {useForm, usePage} from '@inertiajs/vue3';
 import {Link} from '@inertiajs/vue3';
 import {inject, ref} from "vue";
+import WalletLoginBtn from '../../../catalyst-explorer/Shared/Components/WalletLoginBtn.vue';
+import Divider from './Divider.vue';
 const $utils: any = inject('$utils');
 
 
@@ -106,8 +112,6 @@ const emit = defineEmits<{
 }>();
 
 let prefix = ref(usePage().url.split('/')[2])
-
-console.log(prefix.value)
 
 const explorerEndpoint = '/api/catalyst-explorer/login';
 const learnEndpoint = '/api/earn/learn/login';
