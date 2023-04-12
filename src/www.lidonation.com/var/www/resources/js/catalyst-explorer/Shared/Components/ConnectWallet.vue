@@ -31,7 +31,7 @@
 
         <div
             v-show="open"
-            @click.outside="open=!open"
+            ref="target"
             style="display: none;"
             class="absolute w-48 mt-3 bg-white rounded-bl-sm rounded-br-sm shadow-md overflow-visible z-40">
             <div class="py-1 flex items-center flex-col gap-2 divide-y divide-slate-800 divide-opacity-40" role="none">
@@ -109,9 +109,13 @@ import CardanoService from '../../../lib/services/CardanoService'
 import { useWalletStore } from '../../stores/wallet-store';
 import Wallet from '../../models/wallet';
 import {C} from "lucid-cardano";
+import { onClickOutside } from '@vueuse/core';
 
 
 let open:Ref<boolean> = ref(false)
+const target = ref(null)
+
+onClickOutside(target, (event) => open.value =false)
 
 let walletStore = useWalletStore()
 let {walletData} = storeToRefs(walletStore)
