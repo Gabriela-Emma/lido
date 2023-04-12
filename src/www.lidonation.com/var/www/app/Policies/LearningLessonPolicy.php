@@ -2,11 +2,12 @@
 
 namespace App\Policies;
 
+use App\Enums\PermissionEnum;
 use App\Models\LearningLesson;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class LearningLessonPolicy
+class LearningLessonPolicy extends AppPolicy
 {
     use HandlesAuthorization;
 
@@ -18,7 +19,7 @@ class LearningLessonPolicy
      */
     public function viewAny(User $user)
     {
-        //
+        return $user->hasAnyPermission([PermissionEnum::read_catalyst_groups()->value]) || $this->canViewAny($user);
     }
 
     /**
@@ -30,7 +31,7 @@ class LearningLessonPolicy
      */
     public function view(User $user, LearningLesson $learningLesson)
     {
-        //
+        return $user->hasAnyPermission([PermissionEnum::read_catalyst_groups()->value]) || $this->canView($user, $learningLesson);
     }
 
     /**
@@ -41,7 +42,7 @@ class LearningLessonPolicy
      */
     public function create(User $user)
     {
-        //
+        return $user->hasAnyPermission([PermissionEnum::create_catalyst_groups()->value]) || $this->canCreate($user);
     }
 
     /**
@@ -53,7 +54,7 @@ class LearningLessonPolicy
      */
     public function update(User $user, LearningLesson $learningLesson)
     {
-        //
+        return $user->hasAnyPermission([PermissionEnum::update_catalyst_groups()->value]) || $this->canUpdateAny($user);
     }
 
     /**
@@ -65,7 +66,7 @@ class LearningLessonPolicy
      */
     public function delete(User $user, LearningLesson $learningLesson)
     {
-        //
+        return $user->hasAnyPermission([PermissionEnum::delete_catalyst_groups()->value]) || $this->canDeleteAny($user);
     }
 
     /**
@@ -77,7 +78,7 @@ class LearningLessonPolicy
      */
     public function restore(User $user, LearningLesson $learningLesson)
     {
-        //
+        return $user->hasAnyPermission([PermissionEnum::delete_catalyst_groups()->value]) || $this->canDeleteAny($user);
     }
 
     /**
@@ -89,6 +90,6 @@ class LearningLessonPolicy
      */
     public function forceDelete(User $user, LearningLesson $learningLesson)
     {
-        //
+        // return true;
     }
 }
