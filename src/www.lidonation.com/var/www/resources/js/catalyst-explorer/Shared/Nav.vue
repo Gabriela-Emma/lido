@@ -163,15 +163,18 @@
                     </ul>
                 </nav>
 
-                <div class="mt-2 xl:hidden">
-                    <Bars3Icon v-show="toggle == false" @click.prevent="toggle = !toggle" class="w-6 h-6 text-yellow-400" aria-hidden="true" />
-                    <XMarkIcon v-show="toggle == true" @click.prevent="toggle = !toggle" class="w-6 h-6 text-yellow-400" aria-hidden="true" />
-                    <div v-show="toggle" class="flex flex-col absolute right-0 mr-3.5 w-36 bg-white rounded-sm shadow-md overflow-hidden">
+                <div class="mt-2 xl:hidden" >
+                    <Bars3Icon v-show="toggle == false" @click="toggle = !toggle" class="w-6 h-6 text-yellow-400" aria-hidden="true" />
+                    <XMarkIcon v-show="toggle == true" @click="toggle = !toggle" class="w-6 h-6 text-yellow-400" aria-hidden="true" />
+                    <div v-show="toggle"
+                        ref="target"
+                        class="flex flex-col absolute right-0 mr-3.5 w-36 bg-white rounded-sm shadow-md overflow-hidden">
                         <ul
                             class="flex flex-col items-start divide-y divide-teal-300  justify-end gap-2 py-2 text-xs md:text-sm flex-nowrap overflow-x-auto">
                             <li class="flow-root menu-item p-1.5 w-full items-center">
                                 <Link
                                     class="px-1 py-3 text-teal-600 menu-link hover:text-yellow-500"
+                                    @click.stop="(toggle = false)"
                                     :class="{ 'text-yellow-500': $page.component.startsWith('Proposals') }"
                                     :href="$utils.localizeRoute('catalyst-explorer/proposals')">
                                     {{ $t('Proposals') }}
@@ -180,6 +183,7 @@
                             <li class="flow-root menu-item p-1.5 w-full items center">
                                 <Link
                                     class="px-1 py-3 text-teal-600 menu-link hover:text-yellow-500"
+                                    @click.stop="(toggle = false)"
                                     :class="{ 'text-yellow-500': $page.component.startsWith('People') }"
                                     :href="$utils.localizeRoute('catalyst-explorer/people')">
                                     {{ $t('People') }}
@@ -188,6 +192,7 @@
                             <li class="flow-root menu-item p-1.5 w-full items center">
                                 <Link
                                     class="px-1 py-3 text-teal-600 menu-link hover:text-yellow-500"
+                                    @click.stop="(toggle = false)"
                                     :class="{ 'text-yellow-500': $page.component.startsWith('Groups') }"
                                     :href="$utils.localizeRoute('catalyst-explorer/groups')">
                                     {{ $t('Groups') }}
@@ -195,6 +200,7 @@
                             </li>
                             <li class="flow-root menu-item p-1.5 w-full items center">
                                 <Link class="px-1 py-3 text-teal-600 menu-link hover:text-yellow-500"
+                                @click.stop="(toggle = false)"
                                     :class="{ 'text-yellow-500': $page.component.startsWith('Reports')}"
                                     :href="$utils.localizeRoute('catalyst-explorer/reports')">
                                     {{ $t('Monthly Reports') }}
@@ -202,52 +208,59 @@
                             </li>
                             <li class="flow-root menu-item p-1.5 w-full items center">
                                 <Link class="px-1 py-3 text-teal-600 menu-link hover:text-yellow-500"
+                                @click.stop="(toggle = false)"
                                     :class="{ 'text-yellow-500': $page.component.endsWith('Assessments')}"
                                     :href="$utils.localizeRoute('catalyst-explorer/assessments')">
                                     {{ $t('PAs') }}
                                 </Link>
                             </li>
-                            <li class="flow-root menu-item p-1.5 w-full items center">
+                            <li class="flow-root menu-item p-1.5 w-full items-center" >
                                 <a
                                     class="px-1 py-3 text-teal-600 menu-link hover:text-yellow-500"
+                                    @click.stop="(toggle = false)"
                                     :class="{ 'text-yellow-500': $page.component.startsWith('Charts') }"
                                     :href="$utils.localizeRoute('project-catalyst/dashboard')">
                                     {{ $t('Charts') }}
                                 </a>
                             </li>
-                            <li class="flow-root menu-item p-1.5 w-full items center">
+                            <li class="flow-root menu-item p-1.5 w-full items-center" >
                                 <a class="px-1 py-3 text-teal-600 menu-link hover:text-yellow-500"
+                                @click.stop="(toggle = false)"
                                 href="/project-catalyst/votes/ccv4">
                                     {{ $t('CCV4 Votes') }}
                                 </a>
                             </li>
-                            <li class="flow-root menu-item p-1.5 w-full items center">
+                            <li class="flow-root menu-item p-1.5 w-full items-center" >
                                 <a class="px-1 py-3 text-teal-600 menu-link hover:text-yellow-500"
+                                @click.stop="(toggle = false)"
                                 href="/catalyst-explorer/api">
                                     {{ $t('Api') }}
                                 </a>
                             </li>
-                            <li class="flow-root menu-item p-1.5 w-full items center">
+                            <li class="flow-root menu-item p-1.5 w-full items-center" >
                                 <Link
                                     class="px-1 py-3 text-teal-600 menu-link hover:text-yellow-500"
+                                    @click.stop="(toggle = false)"
                                     :class="{ 'text-yellow-500': $page.component.startsWith('Funds') }"
                                     :href="$utils.localizeRoute('catalyst-explorer/funds')">
                                 {{ $t('Funds') }}
                                 </Link>
                             </li>
 
-                            <li class="flow-root menu-item p-1.5 w-full items center">
+                            <li class="flow-root menu-item p-1.5 w-full items-center" >
                                 <Link
                                      class="px-1 py-3 text-teal-600 menu-link hover:text-yellow-500"
+                                     @click.stop="(toggle = false)"
                                     :class="{ 'text-yellow-500': $page.component.startsWith('Bookmark') }"
                                     :href="$utils.localizeRoute('catalyst-explorer/bookmarks')">
                                     {{ $t('Bookmarks') }}
                                 </Link>
                             </li>
 
-                            <li class="flow-root menu-item p-1.5 w-full items center">
+                            <li class="flow-root menu-item p-1.5 w-full items-center" >
                                 <a
                                     class="px-1 py-3 text-teal-600 menu-link hover:text-yellow-500"
+                                    @click.stop="(toggle = false)"
                                     :class="{ 'text-yellow-500': $page.component.startsWith('VoterTool') }"
                                     :href="$utils.localizeRoute('project-catalyst/voter-tool')">
                                 {{ $t('Voter Tool') }}
@@ -266,6 +279,8 @@
 import { Link } from '@inertiajs/vue3';
 import {computed, inject, Ref, ref} from "vue";
 import  {Bars3Icon, XMarkIcon}  from '@heroicons/vue/20/solid'
+import { onClickOutside } from '@vueuse/core'
+
 
 
 const $utils: any = inject('$utils');
@@ -277,5 +292,9 @@ const props = withDefaults(
 let crumbsLength = computed<number>(() => props.crumbs?.length);
 
 let toggle:Ref<boolean> = ref(false);
+
+const target = ref(null)
+
+onClickOutside(target, (event) => toggle.value =false)
 
 </script>
