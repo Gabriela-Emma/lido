@@ -18,7 +18,7 @@ class LearningLessonPolicy
      */
     public function viewAny(User $user)
     {
-        //
+        return true;
     }
 
     /**
@@ -30,7 +30,7 @@ class LearningLessonPolicy
      */
     public function view(User $user, LearningLesson $learningLesson)
     {
-        //
+        return true;
     }
 
     /**
@@ -41,7 +41,7 @@ class LearningLessonPolicy
      */
     public function create(User $user)
     {
-        //
+        return true;
     }
 
     /**
@@ -53,7 +53,7 @@ class LearningLessonPolicy
      */
     public function update(User $user, LearningLesson $learningLesson)
     {
-        //
+        return true;
     }
 
     /**
@@ -65,7 +65,7 @@ class LearningLessonPolicy
      */
     public function delete(User $user, LearningLesson $learningLesson)
     {
-        //
+        return true;
     }
 
     /**
@@ -77,7 +77,7 @@ class LearningLessonPolicy
      */
     public function restore(User $user, LearningLesson $learningLesson)
     {
-        //
+        return true;
     }
 
     /**
@@ -89,6 +89,6 @@ class LearningLessonPolicy
      */
     public function forceDelete(User $user, LearningLesson $learningLesson)
     {
-        //
+        return true;
     }
 }

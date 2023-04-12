@@ -50,6 +50,11 @@ class LearningTopic extends Model
         return 'earn/learn/topics';
     }
 
+    public function learningModules(): BelongsToMany
+    {
+        return $this->belongsToMany(LearningModule::class);
+    }
+
     public function learningLessons(): BelongsToMany
     {
         return $this->belongsToMany(LearningLesson::class);
