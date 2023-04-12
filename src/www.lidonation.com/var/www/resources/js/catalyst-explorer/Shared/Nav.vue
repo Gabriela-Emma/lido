@@ -163,7 +163,7 @@
                     </ul>
                 </nav>
 
-                <div v-show="smallScreen" class="mt-2">
+                <div class="mt-2 xl:hidden">
                     <Bars3Icon v-show="toggle == false" @click.prevent="toggle = !toggle" class="w-6 h-6 text-yellow-400" aria-hidden="true" />
                     <XMarkIcon v-show="toggle == true" @click.prevent="toggle = !toggle" class="w-6 h-6 text-yellow-400" aria-hidden="true" />
                     <div v-show="toggle" class="flex flex-col absolute right-0 mr-3.5 w-36 bg-white rounded-sm shadow-md overflow-hidden">
@@ -277,9 +277,5 @@ const props = withDefaults(
 let crumbsLength = computed<number>(() => props.crumbs?.length);
 
 let toggle:Ref<boolean> = ref(false);
-let smallScreen:Ref<boolean> = ref(false);
-if (window.innerWidth < 1275)
-{
-    smallScreen.value =true;
-}
+
 </script>
