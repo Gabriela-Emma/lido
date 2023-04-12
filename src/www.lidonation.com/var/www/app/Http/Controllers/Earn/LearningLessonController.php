@@ -10,6 +10,7 @@ use App\Models\LearningLesson;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Inertia\Inertia;
+use Spatie\LaravelMarkdown\MarkdownRenderer;
 use Webwizo\Shortcodes\Facades\Shortcode;
 
 class LearningLessonController extends Controller
@@ -56,7 +57,10 @@ class LearningLessonController extends Controller
     {
         $learningLesson->load('model');
         if ($learningLesson->model?->content) {
-            $learningLesson->model->content = Shortcode::compile($learningLesson?->model?->content);
+            $learningLesson->model->content = app(MarkdownRenderer::class)
+                ->toHtml(
+                    Shortcode::compile($learningLesson?->model?->content)
+                );
         }
         return Inertia::render('LearningLesson', [
             'lesson' => LearningLessonData::from($learningLesson)

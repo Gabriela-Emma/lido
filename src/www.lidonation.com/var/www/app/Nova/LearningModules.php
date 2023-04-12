@@ -2,22 +2,19 @@
 
 namespace App\Nova;
 
+use App\Models\LearningModule;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Markdown;
 use Laravel\Nova\Fields\Select;
+use Laravel\Nova\Fields\Slug;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
-class LearningModule extends Resource
+class LearningModules extends Resource
 {
-    /**
-     * The model the resource corresponds to.
-     *
-     * @var string
-     */
-    public static $model = \App\Models\LearningModule::class;
+    public static string $model = LearningModule::class;
 
     public static $group = 'Learning';
 
@@ -42,16 +39,14 @@ class LearningModule extends Resource
     /**
      * Get the fields displayed by the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param NovaRequest $request
      * @return array
      */
-    public function fields(NovaRequest $request)
+    public function fields(NovaRequest $request): array
     {
         return [
             ID::make(__('ID'), 'id')->sortable(),
-            BelongsTo::make(__('Author'), 'author', User::class)
-                ->searchable(),
-            // Slug::make(__('Slug'), 'slug')->displayUsing(fn ($name) => Str::limit($name, 35)),
+            Slug::make(__('Slug'), 'slug'),
             Text::make(__('Title'), 'title')
                 ->translatable()
                 ->required(),
@@ -65,18 +60,20 @@ class LearningModule extends Resource
                 'published' => 'Published',
                 'draft' => 'Draft',
             ])->required(),
-            
+            BelongsTo::make(__('Author'), 'author', User::class)
+                ->searchable(),
+
             BelongsToMany::make(__('Learning Topics'), 'learningTopics', LearningTopic::class)
-            ->hideFromIndex()
-            ->searchable(),
-                    
+                ->hideFromIndex()
+                ->searchable(),
+
         ];
     }
 
     /**
      * Get the cards available for the request.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param NovaRequest $request
      * @return array
      */
     public function cards(NovaRequest $request)
@@ -87,7 +84,7 @@ class LearningModule extends Resource
     /**
      * Get the filters available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param NovaRequest $request
      * @return array
      */
     public function filters(NovaRequest $request)
@@ -98,7 +95,7 @@ class LearningModule extends Resource
     /**
      * Get the lenses available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param NovaRequest $request
      * @return array
      */
     public function lenses(NovaRequest $request)
@@ -109,7 +106,7 @@ class LearningModule extends Resource
     /**
      * Get the actions available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param NovaRequest $request
      * @return array
      */
     public function actions(NovaRequest $request)

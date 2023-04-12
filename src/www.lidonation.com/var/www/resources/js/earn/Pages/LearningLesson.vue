@@ -26,7 +26,7 @@
                 <div class="col-span-7 md:col-span-4 xl:col-span-5 border-8 border-labs-red p-8 rounded-sm">
                     <header class="flex justify-between items-center">
                         <div>
-                            <div class="flex items-center gap-3 text-slate-500">
+                            <Ldiv class="flex items-center gap-3 text-slate-500">
                                 <div class="flex items-center gap-1">
                                     <NewspaperIcon class="h-4 w-4"/>
                                     <p class="">Lesson</p>
@@ -41,7 +41,7 @@
                                         }}
                                     </div>
                                 </div>
-                            </div>
+                            </Ldiv>
 
                             <h2 class="text-2xl xl:text-3xl font-bold leading-10 tracking-tight text-slate-900">
                                 {{ learningLesson?.title }}
@@ -55,9 +55,8 @@
                             </div>
                         </div>
                     </header>
-                    <div class="mt-4 p-6 shadow-xs rounded-xs h-96 bg-slate-100/75 overflow-y-auto">
-                        <div v-if="learningLesson.model"
-                             v-html="$filters.markdown(learningLesson.model?.content)"></div>
+                    <div class="mt-4 p-6 shadow-xs rounded-xs h-[40rem] bg-slate-100/75 overflow-y-auto">
+                        <div v-if="learningLesson.model" v-html="learningLesson.model?.content"></div>
                     </div>
                     <footer>
                         <div class="bg-labs-red text-white px-8 py-16 mt-8 text-center">

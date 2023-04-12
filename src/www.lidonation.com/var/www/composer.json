@@ -46,7 +46,7 @@
         "league/html-to-markdown": "^5.1",
         "livewire/livewire": "^2.10",
         "maatwebsite/excel": "^3.1",
-        "macsidigital/laravel-zoom": "^5.0",
+        "macsidigital/laravel-zoom": "*",
         "mailchimp/marketing": "^3.0",
         "mcamara/laravel-localization": "^1.7",
         "mediconesystems/livewire-datatables": "^0.9",
@@ -160,15 +160,15 @@
             "Illuminate\\Foundation\\ComposerScripts::postUpdate",
             "@php artisan vendor:publish --force --tag=livewire:assets --ansi",
             "@php artisan vendor:publish --provider='Spatie\\MediaLibrary\\MediaLibraryServiceProvider' --tag='views'",
-            "@php artisan ide-helper:generate",
-            "@php artisan ide-helper:meta",
             "php artisan telescope:publish",
             "@php artisan nova:publish",
             "@php artisan horizon:publish",
             "@php artisan vendor:publish --tag=livewire-ui-modal-views",
             "@php artisan vendor:publish --provider='TimeHunter\\LaravelGoogleReCaptchaV3\\Providers\\GoogleReCaptchaV3ServiceProvider' --tag=googlerecaptchav3.config",
             "@php artisan vendor:publish --tag=laravel-assets --ansi --force",
-            "php artisan vendor:publish --provider=\"Spatie\\Feed\\FeedServiceProvider\" --tag=\"feed-views\" --force"
+            "php artisan vendor:publish --provider=\"Spatie\\Feed\\FeedServiceProvider\" --tag=\"feed-views\" --force",
+            "@php artisan ide-helper:generate",
+            "@php artisan ide-helper:meta"
         ]
     },
     "repositories": {
