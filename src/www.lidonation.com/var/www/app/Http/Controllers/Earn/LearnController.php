@@ -6,8 +6,12 @@ use Inertia\Inertia;
 use Inertia\Response;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Fluent;
+use Spatie\Permission\Models\Role;
 class LearnController extends Controller
 {
     /**
@@ -37,5 +41,45 @@ class LearnController extends Controller
         return redirect()->back()->withInput($request->only('email'))->withErrors([
             'email' => 'These credentials do not match our records.',
         ]);
+    }
+
+    public function register(Request $request)
+    {
+        $validated = new Fluent($request->validate([
+            'name' => 'required|min:3',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|min:5|confirmed',
+            'wallet_address' => 'wallet_address',
+            'twitter' => 'nullable|url',
+            'telegram' => 'nullable|url'
+
+        ]));
+
+        $user = User::where('email', $validated->email)->where('wallet_address', $validated->wallet_address);
+    
+        if (! $user instanceof User) {
+            
+            $user = new User;
+            $user->name = $validated->name;
+            $user->email = $validated->email;
+            $user->password = Hash::make($validated->password);
+            $user->wallet_address = $validated->wallet_address;
+            $user->twitter = $validated->twitter;
+            $user->telegram = $validated->telegram;
+            $user->save();
+            
+            
+            // role user learner role @todo assignRole spatie not working
+            $role = Role::where('name', 'learner')->first();
+            DB::table('model_has_roles')
+                ->insert([
+                    'role_id' => $role->id,
+                    'model_type' => 'App\Models\User',
+                    'model_id' => $user->id
+                ]);
+
+
+            return to_route('earn.learn.login');
+        }
     }
 }
