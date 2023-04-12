@@ -181,7 +181,9 @@ Route::group(
         Route::get('/')->name('learn')->name('home');
 
         Route::get('/learn/login', fn() => Inertia::render('Login'))
-            ->name('learn-login');
+            ->name('learn.login');
+        Route::get('/learn/register', fn() => Inertia::render('Register'))
+            ->name('learn.register');
 
         Route::middleware([])->prefix('/learn')->group(function () {
             Route::get('/', [LearnController::class, 'index'])->name('learn');
