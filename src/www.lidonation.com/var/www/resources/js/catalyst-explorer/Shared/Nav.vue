@@ -163,6 +163,99 @@
                     </ul>
                 </nav>
 
+                <div v-show="smallScreen" class="mt-2">
+                    <Bars3Icon v-show="toggle == false" @click.prevent="toggle = !toggle" class="w-6 h-6 text-yellow-400" aria-hidden="true" />
+                    <XMarkIcon v-show="toggle == true" @click.prevent="toggle = !toggle" class="w-6 h-6 text-yellow-400" aria-hidden="true" />
+                    <div v-show="toggle" class="flex flex-col absolute right-0 mr-3.5 w-36 bg-white rounded-sm shadow-md overflow-hidden">
+                        <ul
+                            class="flex flex-col items-start divide-y divide-teal-300  justify-end gap-2 py-2 text-xs md:text-sm flex-nowrap overflow-x-auto">
+                            <li class="flow-root menu-item p-1.5 w-full items-center">
+                                <Link
+                                    class="px-1 py-3 text-teal-600 menu-link hover:text-yellow-500"
+                                    :class="{ 'text-yellow-500': $page.component.startsWith('Proposals') }"
+                                    :href="$utils.localizeRoute('catalyst-explorer/proposals')">
+                                    {{ $t('Proposals') }}
+                                </Link>
+                            </li>
+                            <li class="flow-root menu-item p-1.5 w-full items center">
+                                <Link
+                                    class="px-1 py-3 text-teal-600 menu-link hover:text-yellow-500"
+                                    :class="{ 'text-yellow-500': $page.component.startsWith('People') }"
+                                    :href="$utils.localizeRoute('catalyst-explorer/people')">
+                                    {{ $t('People') }}
+                                </Link>
+                            </li>
+                            <li class="flow-root menu-item p-1.5 w-full items center">
+                                <Link
+                                    class="px-1 py-3 text-teal-600 menu-link hover:text-yellow-500"
+                                    :class="{ 'text-yellow-500': $page.component.startsWith('Groups') }"
+                                    :href="$utils.localizeRoute('catalyst-explorer/groups')">
+                                    {{ $t('Groups') }}
+                                </Link>
+                            </li>
+                            <li class="flow-root menu-item p-1.5 w-full items center">
+                                <Link class="px-1 py-3 text-teal-600 menu-link hover:text-yellow-500"
+                                    :class="{ 'text-yellow-500': $page.component.startsWith('Reports')}"
+                                    :href="$utils.localizeRoute('catalyst-explorer/reports')">
+                                    {{ $t('Monthly Reports') }}
+                                </Link>
+                            </li>
+                            <li class="flow-root menu-item p-1.5 w-full items center">
+                                <Link class="px-1 py-3 text-teal-600 menu-link hover:text-yellow-500"
+                                    :class="{ 'text-yellow-500': $page.component.endsWith('Assessments')}"
+                                    :href="$utils.localizeRoute('catalyst-explorer/assessments')">
+                                    {{ $t('PAs') }}
+                                </Link>
+                            </li>
+                            <li class="flow-root menu-item p-1.5 w-full items center">
+                                <a
+                                    class="px-1 py-3 text-teal-600 menu-link hover:text-yellow-500"
+                                    :class="{ 'text-yellow-500': $page.component.startsWith('Charts') }"
+                                    :href="$utils.localizeRoute('project-catalyst/dashboard')">
+                                    {{ $t('Charts') }}
+                                </a>
+                            </li>
+                            <li class="flow-root menu-item p-1.5 w-full items center">
+                                <a class="px-1 py-3 text-teal-600 menu-link hover:text-yellow-500"
+                                href="/project-catalyst/votes/ccv4">
+                                    {{ $t('CCV4 Votes') }}
+                                </a>
+                            </li>
+                            <li class="flow-root menu-item p-1.5 w-full items center">
+                                <a class="px-1 py-3 text-teal-600 menu-link hover:text-yellow-500"
+                                href="/catalyst-explorer/api">
+                                    {{ $t('Api') }}
+                                </a>
+                            </li>
+                            <li class="flow-root menu-item p-1.5 w-full items center">
+                                <Link
+                                    class="px-1 py-3 text-teal-600 menu-link hover:text-yellow-500"
+                                    :class="{ 'text-yellow-500': $page.component.startsWith('Funds') }"
+                                    :href="$utils.localizeRoute('catalyst-explorer/funds')">
+                                {{ $t('Funds') }}
+                                </Link>
+                            </li>
+
+                            <li class="flow-root menu-item p-1.5 w-full items center">
+                                <Link
+                                     class="px-1 py-3 text-teal-600 menu-link hover:text-yellow-500"
+                                    :class="{ 'text-yellow-500': $page.component.startsWith('Bookmark') }"
+                                    :href="$utils.localizeRoute('catalyst-explorer/bookmarks')">
+                                    {{ $t('Bookmarks') }}
+                                </Link>
+                            </li>
+
+                            <li class="flow-root menu-item p-1.5 w-full items center">
+                                <a
+                                    class="px-1 py-3 text-teal-600 menu-link hover:text-yellow-500"
+                                    :class="{ 'text-yellow-500': $page.component.startsWith('VoterTool') }"
+                                    :href="$utils.localizeRoute('project-catalyst/voter-tool')">
+                                {{ $t('Voter Tool') }}
+                                </a>
+                            </li>
+                        </ul> 
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -171,7 +264,9 @@
 
 <script lang="ts" setup>
 import { Link } from '@inertiajs/vue3';
-import {computed, inject} from "vue";
+import {computed, inject, Ref, ref} from "vue";
+import  {Bars3Icon, XMarkIcon}  from '@heroicons/vue/20/solid'
+
 
 const $utils: any = inject('$utils');
 
@@ -180,4 +275,11 @@ const props = withDefaults(
         crumbs: []
     }>(), {});
 let crumbsLength = computed<number>(() => props.crumbs?.length);
+
+let toggle:Ref<boolean> = ref(false);
+let smallScreen:Ref<boolean> = ref(false);
+if (window.innerWidth < 1275)
+{
+    smallScreen.value =true;
+}
 </script>
