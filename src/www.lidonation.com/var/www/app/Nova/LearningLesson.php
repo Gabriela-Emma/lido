@@ -56,7 +56,7 @@ class LearningLesson extends Resource
                 ->required(),
             Markdown::make(__('Content'), 'content')->translatable()->required(),
             Number::make(__('Order'), 'order')->required(),
-            Number::make(__('Length'), 'lenght')->required(),
+            Number::make(__('Length'), 'length')->required(),
             Select::make(__('Difficulty'), 'difficulty')->options([
                 'Beginner' => 'beginner',
                 'Intermediate' => 'intermediate',

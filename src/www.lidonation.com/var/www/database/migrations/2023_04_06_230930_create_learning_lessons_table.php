@@ -19,9 +19,9 @@ return new class extends Migration
             $table->foreignId('model_id');
             $table->string('model_type');
             $table->json('title');
-            $table->json('content');
+            $table->json('content')->nullable();
             $table->integer('order');
-            $table->integer('length');
+            $table->integer('length')->nullable();
             $table->string('difficulty');
             $table->string('status');
             $table->timestamps();
