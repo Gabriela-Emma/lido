@@ -637,12 +637,13 @@ yarn:
   stage: build_app
   image: node:15.9.0-alpine3.10
   retry: 1
+  before_script:
+    - apk add --update curl && rm -rf /var/cache/apk/*
   script: |-
     set -vx
     export PATH=$PATH:/usr/local/bin
     cd ./src/www.lidonation.com/var/www
-    touch ./storage/app/snippets.json
-    echo '{}' > ./storage/app/snippets.json
+    curl -X GET https://www.lidonation.com/api/cache/snippets > ./storage/app/snippets.json
     touch .npmrc
     echo '//npm.pkg.github.com/:_authToken=${GITHUB_PACKAGE_REGISTRY_TOKEN}' > .npmrc
     echo '@spatie:registry=https://npm.pkg.github.com' >> .npmrc

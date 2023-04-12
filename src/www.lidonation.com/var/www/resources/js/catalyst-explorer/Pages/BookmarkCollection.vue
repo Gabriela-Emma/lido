@@ -185,7 +185,6 @@ watch([onLocal,inLastTenMins],()=> {
     canDelete.value = onLocal.value && inLastTenMins.value;
 })
 
-
 const removeCollection = () => {
     if(onLocal.value && inLastTenMins.value){
         axios.delete(`${usePage().props.base_url}/catalyst-explorer/bookmark-collection?hash=${collectionHash.value}`)

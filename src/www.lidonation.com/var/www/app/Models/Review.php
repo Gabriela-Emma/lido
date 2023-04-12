@@ -8,6 +8,7 @@ use App\Models\Traits\HasRatings;
 use App\Traits\SearchableLocale;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\UrlGenerator;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Str;
@@ -46,9 +47,11 @@ class Review extends Post implements Feedable
         return $this->prologue;
     }
 
-    public function getLinkAttribute(): string|UrlGenerator|Application
+    public function link(): Attribute
     {
-        return LaravelLocalization::localizeURL("/reviews/{$this->slug}/");
+        return Attribute::make(
+            get: fn ($value) => LaravelLocalization::localizeURL("/reviews/{$this->slug}/")
+        );
     }
 
     public function getPostTypeNameAttribute(): string

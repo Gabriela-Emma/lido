@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('model_type');
             $table->json('title');
             $table->json('content');
-            $table->integer('number');
+            $table->integer('order');
             $table->integer('length');
             $table->string('difficulty');
             $table->string('status');

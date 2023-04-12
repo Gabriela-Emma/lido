@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Earn;
 
+use App\DataTransferObjects\LearningModuleData;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreLearningModulesRequest;
 use App\Http\Requests\UpdateLearningModulesRequest;
-use App\Http\Resources\Earn\LearningModuleResource;
 use App\Models\LearningModule;
 use Illuminate\Http\Response;
 use Inertia\Inertia;
@@ -19,9 +19,10 @@ class LearningModulesController extends Controller
      */
     public function index()
     {
-        $learningModules = LearningModule::with('topics.lessons')->withCount(['topics'])->published();
+        $learningModules = LearningModule::with('topics.lessons')
+            ->withCount(['topics'])->published();
         return Inertia::render('LearningModules', [
-            'modules' => LearningModuleResource::collection($learningModules->paginate(12)->onEachSide(0))
+            'modules' => LearningModuleData::collection($learningModules->paginate(12)->onEachSide(0))
         ]);
     }
 
@@ -54,6 +55,8 @@ class LearningModulesController extends Controller
      */
     public function show(LearningModule $learningModule)
     {
+        $learningModule->load('topics');
+        $learningModule->loadCount(['topics']);
         return Inertia::render('LearningModule', [
             'module' => $learningModule->load('topics.lessons')
         ]);

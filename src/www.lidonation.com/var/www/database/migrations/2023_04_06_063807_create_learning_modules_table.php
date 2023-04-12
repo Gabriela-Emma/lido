@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('learning_modules', function (Blueprint $table) {
             $table->id();
+            $table->string('slug');
             $table->foreignId('user_id');
             $table->json('title');
             $table->json('content');

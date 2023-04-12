@@ -2,8 +2,7 @@
 
 namespace App\Models\Traits;
 
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\Routing\UrlGenerator;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 trait HasLocaleUrl
@@ -13,11 +12,11 @@ trait HasLocaleUrl
         return $this->link;
     }
 
-    public function getLinkAttribute(): string|UrlGenerator|Application
+    public function link(): Attribute
     {
-        $urlGroup = $this->getUrlGroup();
-
-        return LaravelLocalization::localizeURL("/{$urlGroup}/{$this->slug}/", app()->getLocale());
+        return Attribute::make(
+            get: fn () => LaravelLocalization::localizeURL("/{$this->getUrlGroup()}/{$this->slug}/", app()->getLocale()),
+        );
     }
 
     protected function getUrlGroup(): string

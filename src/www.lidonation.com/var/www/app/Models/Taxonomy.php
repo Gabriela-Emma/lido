@@ -4,12 +4,9 @@ namespace App\Models;
 
 use App\Models\Interfaces\HasLink;
 use App\Models\Traits\HasMetaData;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\Routing\UrlGenerator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -22,8 +19,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class Taxonomy extends Model implements HasMedia, HasLink
 {
-    use HasFactory,
-        SoftDeletes,
+    use SoftDeletes,
         HasTimestamps,
         HasMetaData,
         InteractsWithMedia;
@@ -36,9 +32,11 @@ class Taxonomy extends Model implements HasMedia, HasLink
 
     protected $fillable = ['title'];
 
-    public function getLinkAttribute(): string|UrlGenerator|Application
+    public function link(): Attribute
     {
-        return LaravelLocalization::localizeURL("/tags/{$this->slug}/");
+        return Attribute::make(
+            get: fn ($value) => LaravelLocalization::localizeURL("/tags/{$this->slug}/"),
+        );
     }
 
     /**

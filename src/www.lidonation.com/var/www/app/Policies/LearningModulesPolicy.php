@@ -2,93 +2,55 @@
 
 namespace App\Policies;
 
+use App\Enums\PermissionEnum;
 use App\Models\LearningModule;
 use App\Models\User;
-use Illuminate\Auth\Access\HandlesAuthorization;
 
-class LearningModulesPolicy
+class LearningModulesPolicy extends AppPolicy
 {
-    use HandlesAuthorization;
-
     /**
      * Determine whether the user can view any models.
      *
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Auth\Access\Response|bool
+     *
+     * @throws \Exception
      */
-    public function viewAny(User $user)
+    public function viewAny(User $user): bool
     {
-        //
+        return $user->hasAnyPermission([PermissionEnum::read_catalyst_groups()->value]) || $this->canViewAny($user);
     }
 
     /**
      * Determine whether the user can view the model.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\LearningModule  $learningModules
-     * @return \Illuminate\Auth\Access\Response|bool
+     *
+     * @throws \Exception
      */
-    public function view(User $user, LearningModule $learningModules)
+    public function view(User $user, LearningModule $learningModule): bool
     {
-        //
+        return $user->hasAnyPermission([PermissionEnum::read_catalyst_groups()->value]) || $this->canView($user, $learningModule);
     }
 
     /**
      * Determine whether the user can create models.
-     *
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function create(User $user)
+    public function create(User $user): bool
     {
-        //
+        return $user->hasAnyPermission([PermissionEnum::create_catalyst_groups()->value]) || $this->canCreate($user);
     }
 
     /**
      * Determine whether the user can update the model.
-     *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\LearningModule  $learningModules
-     * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, LearningModule $learningModules)
+    public function update(User $user, LearningModule $learningModule): bool
     {
-        //
+        return $user->hasAnyPermission([PermissionEnum::update_catalyst_groups()->value]) || $this->canUpdateAny($user);
     }
 
     /**
      * Determine whether the user can delete the model.
-     *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\LearningModule  $learningModules
-     * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, LearningModule $learningModules)
+    public function delete(User $user, LearningModule $learningModule): bool
     {
-        //
-    }
-
-    /**
-     * Determine whether the user can restore the model.
-     *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\LearningModule  $learningModules
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
-    public function restore(User $user, LearningModule $learningModules)
-    {
-        //
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\LearningModule  $learningModules
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
-    public function forceDelete(User $user, LearningModule $learningModules)
-    {
-        //
+        return $user->hasAnyPermission([PermissionEnum::delete_catalyst_groups()->value]) || $this->canDeleteAny($user);
     }
 }

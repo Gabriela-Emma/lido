@@ -149,9 +149,9 @@ class CatalystUser extends User implements HasMedia, CanComment
         return Attribute::make(get: fn () => $this->email ?? $this->claimed_by_user?->email);
     }
 
-    public function getLinkAttribute(): string|UrlGenerator|Application
+    public function link(): Attribute
     {
-        return LaravelLocalization::localizeURL("/project-catalyst/users/{$this->id}/");
+        return Attribute::make(get: fn () => LaravelLocalization::localizeURL("/project-catalyst/users/{$this->id}/"));
     }
 
     public function scopeFilter($query, array $filters)

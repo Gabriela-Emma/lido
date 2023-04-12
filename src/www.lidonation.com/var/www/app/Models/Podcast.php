@@ -88,10 +88,13 @@ class Podcast extends Model implements HasLink, IHasMetaData, HasMedia
         return $this->hero?->getfullUrl('thumbnail') ?? $this->nfts?->shuffle()?->first()?->preview_link;
     }
 
-    public function getLinkAttribute()
+    public function link(): Attribute
     {
-        // TODO: Implement getLinkAttribute() method.
+        return Attribute::make(
+            get: fn () => '' // @todo Implement,
+        );
     }
+
 
     public function nfts(): HasMany
     {

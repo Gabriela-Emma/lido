@@ -1,3 +1,5 @@
+import Wallet from "./wallet";
+
 export default interface Profile {
     id: number;
     username: string;
@@ -12,4 +14,5 @@ export default interface Profile {
     role?:string; 
     admin?:boolean;
     title?:string;
+    wallets?:Wallet[];
 }

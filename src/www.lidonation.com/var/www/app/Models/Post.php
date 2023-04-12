@@ -12,6 +12,7 @@ use App\Models\Traits\HasLinks;
 use App\Models\Traits\HasMetaData;
 use App\Models\Traits\HasParent;
 use App\Models\Traits\HasPrompts;
+use App\Models\Traits\HasSlug;
 use App\Models\Traits\HasSnippets;
 use App\Models\Traits\HasTaxonomies;
 use App\Models\Traits\HasTranslations;
@@ -60,6 +61,7 @@ class Post extends Model implements HasMedia, Interfaces\IHasMetaData, Sitemapab
         HasPrompts,
         HasParent,
         HasSnippets,
+        HasSlug,
         HasLinks,
         HasTaxonomies,
         HasTranslations,
@@ -126,7 +128,7 @@ class Post extends Model implements HasMedia, Interfaces\IHasMetaData, Sitemapab
                     ->count();
             }
 
-            return (array) $counts;
+            return (array)$counts;
         });
     }
 
@@ -188,7 +190,7 @@ class Post extends Model implements HasMedia, Interfaces\IHasMetaData, Sitemapab
 
     public function getHashTagsAttribute()
     {
-        return $this->tags->concat($this->categories)->map(fn ($tax) => Str::remove(' ', $tax->title));
+        return $this->tags->concat($this->categories)->map(fn($tax) => Str::remove(' ', $tax->title));
     }
 
     public function getSummaryAttribute()
@@ -198,17 +200,17 @@ class Post extends Model implements HasMedia, Interfaces\IHasMetaData, Sitemapab
 
     public function getRelatedPostsAttribute()
     {
-    //     $taxs = $this->tags
-    //         ->concat($this->categories);
-    //     $query = $this::where('id', '!=', $this->id);
-    //     $query = app(PostRepository::class)
-    //         ->setQuery($query)
-    //         ->inTaxonomies(null, $taxs)
-    //         ->limit(5);
+        //     $taxs = $this->tags
+        //         ->concat($this->categories);
+        //     $query = $this::where('id', '!=', $this->id);
+        //     $query = app(PostRepository::class)
+        //         ->setQuery($query)
+        //         ->inTaxonomies(null, $taxs)
+        //         ->limit(5);
 
-    //     // @TODO fix query above sometimes returns a collection with the current post
-    //     return $query->get()
-    //         ->whereNotIn('id', $this->id)->take(4);
+        //     // @TODO fix query above sometimes returns a collection with the current post
+        //     return $query->get()
+        //         ->whereNotIn('id', $this->id)->take(4);
 
         // get related categories ids in Array
         $categories_id = $this->categories->pluck('id');
@@ -233,9 +235,9 @@ class Post extends Model implements HasMedia, Interfaces\IHasMetaData, Sitemapab
         return $related_posts->take(4);
     }
 
-    public function getLinkAttribute(): string|UrlGenerator|Application|null
+    public function link(): Attribute
     {
-        return LaravelLocalization::localizeURL("/posts/{$this->slug}/");
+        return Attribute::make(get: fn() => LaravelLocalization::localizeURL("/posts/{$this->slug}/"));
     }
 
     public function getRecordingLinkAttribute(): string|UrlGenerator|Application
@@ -292,7 +294,7 @@ class Post extends Model implements HasMedia, Interfaces\IHasMetaData, Sitemapab
     /**
      * Determine if the user owns the given team.
      *
-     * @param  mixed  $team
+     * @param mixed $team
      * @return bool
      */
     public function ownsTeam($team)
@@ -326,7 +328,7 @@ class Post extends Model implements HasMedia, Interfaces\IHasMetaData, Sitemapab
             'reviews' => localizeRoute('reviews'),
             'insights' => localizeRoute('insights'),
             'lido-minutes' => localizeRoute('lido-minute'),
-            'post' => localizeRoute('post', [ 'slug' => $this->slug]),
+            'post' => localizeRoute('post', ['slug' => $this->slug]),
             default => localizeRoute('library'),
         };
     }
@@ -376,22 +378,6 @@ class Post extends Model implements HasMedia, Interfaces\IHasMetaData, Sitemapab
         return $query->whereNull('content_audio');
     }
 
-    /**
-     * Generate unique slug
-     *
-     * @return array|string ()
-     */
-    public function createSlug($title): array|string
-    {
-        if (static::whereSlug($slug = Str::slug($title))->exists()) {
-            $max = intval(static::whereTitle($title)->latest('id')->count());
-
-            return "{$slug}-".preg_replace_callback('/(\d+)$/', fn ($matches) => $matches[1] + 1,
-                $max);
-        }
-
-        return $slug;
-    }
 
     public function registerMediaConversions(Media $media = null): void
     {
@@ -414,14 +400,6 @@ class Post extends Model implements HasMedia, Interfaces\IHasMetaData, Sitemapab
         $this->addMediaCollection('hero');
     }
 
-    /**
-     * Get the route key for the model.
-     */
-    public function getRouteKeyName(): string
-    {
-        return 'slug';
-    }
-
     public function toSitemapTag(): Url|string|array
     {
         return route('post', $this);
@@ -442,7 +420,7 @@ class Post extends Model implements HasMedia, Interfaces\IHasMetaData, Sitemapab
             'thumbnail' => $this->thumbnail_url,
             'content' => $content,
             'link' => LaravelLocalization::localizeURL("/posts/{$this->slug}/", app()->getLocale()),
-            'read_time' => (string) read_time($this->content),
+            'read_time' => (string)read_time($this->content),
             'author_name' => $this->author?->name,
             'author_gravatar' => $this->author?->gravatar,
         ]);
@@ -485,7 +463,7 @@ class Post extends Model implements HasMedia, Interfaces\IHasMetaData, Sitemapab
         static::addGlobalScope(new OrderByOrderScope);
         static::addGlobalScope(new OrderByPublishedDateScope);
         static::addGlobalScope(new OrderByDateScope);
-        if (! app()->runningInConsole()) {
+        if (!app()->runningInConsole()) {
             static::addGlobalScope(new LimitScope);
         }
     }

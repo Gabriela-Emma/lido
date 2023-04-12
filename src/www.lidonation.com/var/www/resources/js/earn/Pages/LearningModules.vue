@@ -22,7 +22,12 @@
     </section>
     <section class="py-16 bg-white">
         <div class="container text-xl xl:text-2xl">
-            <LearningModuleCard v-for="module in learningModules" :key="module.id" :learning-module="module"/>
+            <header class="py-8">
+                <h2 class="text-center font-semibold text-labs-black text-xl md:text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl">
+                    Available Modules
+                </h2>
+            </header>
+            <LearningModuleCard v-for="module in learningModules" :key="module.id" :learning-module="module" />
         </div>
     </section>
 </template>
@@ -30,8 +35,8 @@
 <script lang="ts" setup>
 import {inject, ref} from "vue";
 import {Link} from '@inertiajs/vue3';
-import LearningModule from "../../catalyst-explorer/models/learning-module";
 import LearningModuleCard from "../modules/learn/components/LearningModuleCard.vue";
+import LearningModuleData = App.DataTransferObjects.LearningModuleData;
 
 const $utils: any = inject('$utils');
 
@@ -45,12 +50,11 @@ const props = withDefaults(
             total: number,
             to: number,
             from: number,
-            data: LearningModule[]
+            data: LearningModuleData[]
         };
     }>(), {});
 
-let learningModules = ref<LearningModule[]>(props.modules.data);
-console.log(props.modules.data);
+let learningModules = ref<LearningModuleData[]>(props.modules.data);
 </script>
 <style scoped>
 

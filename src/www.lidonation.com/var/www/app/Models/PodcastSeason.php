@@ -9,6 +9,7 @@ use App\Models\Traits\HasHero;
 use App\Models\Traits\HasLinks;
 use App\Models\Traits\HasMetaData;
 use App\Models\Traits\HasTranslations;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -26,9 +27,11 @@ class PodcastSeason extends Model implements HasMedia, HasLink, IHasMetaData
         'content',
     ];
 
-    public function getLinkAttribute()
+    public function link(): Attribute
     {
-        // TODO: Implement getLinkAttribute() method.
+        return Attribute::make(
+            get: fn ($value) => '' // TODO: Implement getLinkAttribute() method.,
+        );
     }
 
     public function show(): BelongsTo
