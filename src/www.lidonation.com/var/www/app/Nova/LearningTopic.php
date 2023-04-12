@@ -56,16 +56,13 @@ class LearningTopic extends Resource
             Markdown::make(__('Content'), 'content')->translatable()->required(),
 
             Select::make(__('Difficulty'), 'difficulty')->options([
-                'easy' => 'Easy',
-                'moderate' => 'Moderate',
-                'difficult' => 'Difficulty'
+                'Beginner' => 'beginner',
+                'Intermediate' => 'intermediate',
+                'Advance' => 'advance'
             ])->required(),
             Select::make(__('Status'), 'status')->options([
                 'published' => 'Published',
                 'draft' => 'Draft',
-                'pending' => 'Pending',
-                'ready' => 'Ready',
-                'scheduled' => 'Scheduled',
             ])->required(),
             BelongsToMany::make(__('Learning Modules'), 'learningModules', LearningModule::class)
             ->hideFromIndex()

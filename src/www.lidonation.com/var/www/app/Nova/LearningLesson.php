@@ -58,9 +58,9 @@ class LearningLesson extends Resource
             Number::make(__('Order'), 'order')->required(),
             Number::make(__('Length'), 'lenght')->required(),
             Select::make(__('Difficulty'), 'difficulty')->options([
-                'easy' => 'Easy',
-                'moderate' => 'Moderate',
-                'difficult' => 'Difficult'
+                'Beginner' => 'beginner',
+                'Intermediate' => 'intermediate',
+                'Advance' => 'advance'
             ])->required(),
             MorphTo::make('model')->types([
                 News::class,
@@ -73,9 +73,6 @@ class LearningLesson extends Resource
             Select::make(__('Status'), 'status')->options([
                 'published' => 'Published',
                 'draft' => 'Draft',
-                'pending' => 'Pending',
-                'ready' => 'Ready',
-                'scheduled' => 'Scheduled',
             ])->required(),
             BelongsToMany::make(__('Learning Topics'), 'topics', LearningTopic::class)
             ->hideFromIndex()
