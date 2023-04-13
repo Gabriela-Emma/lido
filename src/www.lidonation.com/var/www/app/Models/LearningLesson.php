@@ -2,6 +2,10 @@
 
 namespace App\Models;
 
+use App\DataTransferObjects\LearningTopicData;
+use App\DataTransferObjects\QuizData;
+use App\DataTransferObjects\QuizQuestionAnswerData;
+use App\DataTransferObjects\QuizQuestionData;
 use App\Http\Traits\HasHashIds;
 use App\Models\Traits\HasAuthor;
 use App\Models\Traits\HasHero;
@@ -14,7 +18,9 @@ use App\Scopes\PublishedScope;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\LaravelData\DataCollection;
 
 class LearningLesson extends Model
 {
@@ -31,7 +37,13 @@ class LearningLesson extends Model
     protected $hidden = ['id'];
 
     protected $appends = [
-        'link', 'hash'
+        'hash',
+        'link'
+    ];
+
+    protected $casts = [
+        'quiz' => QuizData::class,
+        'quizzes' => DataCollection::class . ':' . QuizQuestionData::class
     ];
 
     public array $translatable = [
@@ -42,7 +54,14 @@ class LearningLesson extends Model
     public function slug(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->hash,
+            get: fn() => $this->hash,
+        );
+    }
+
+    public function quiz(): Attribute
+    {
+        return Attribute::make(
+            get: fn() => $this->quizzes()?->first(),
         );
     }
 
@@ -61,6 +80,17 @@ class LearningLesson extends Model
     {
         return $this->belongsToManyThrough(LearningModule::class, LearningTopic::class);
     }
+
+    public function quizzes(): MorphToMany
+    {
+        return $this->morphToMany(Quiz::class, 'model', 'model_quiz', 'model_id', 'quiz_id')
+            ->wherePivot('model_type', static::class);
+    }
+
+//    public function quiz()
+//    {
+//        return $this->quizzes()->first();
+//    }
 
     /**
      * The "booted" method of the model.

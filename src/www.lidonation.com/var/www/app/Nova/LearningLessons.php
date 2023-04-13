@@ -2,6 +2,8 @@
 
 namespace App\Nova;
 
+use App\Models\EveryEpoch;
+use App\Models\LearningLesson;
 use Laravel\Nova\Fields\MorphTo;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\BelongsToMany;
@@ -12,14 +14,14 @@ use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
-class LearningLesson extends Resource
+class LearningLessons extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = \App\Models\LearningLesson::class;
+    public static string $model = LearningLesson::class;
 
     public static $group = 'Learning';
 
@@ -76,6 +78,13 @@ class LearningLesson extends Resource
             BelongsToMany::make(__('Learning Topics'), 'topics', LearningTopic::class)
             ->hideFromIndex()
             ->searchable(),
+
+
+            BelongsToMany::make(__('Quizzes'), 'quizzes', Quizzes::class)->fields(function () {
+                return [
+                    Text::make('Type', 'model_type')->default(LearningLesson::class)->onlyOnForms(),
+                ];
+            })->searchable(),
 
         ];
     }

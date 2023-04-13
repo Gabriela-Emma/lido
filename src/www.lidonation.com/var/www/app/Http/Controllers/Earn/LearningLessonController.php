@@ -39,7 +39,7 @@ class LearningLessonController extends Controller
      * Store a newly created resource in storage.
      *
      * @param StoreLearningLessonRequest $request
-     * @return Response
+     * @return void
      */
     public function store(StoreLearningLessonRequest $request)
     {
@@ -55,7 +55,7 @@ class LearningLessonController extends Controller
      */
     public function show(Request $request, LearningLesson $learningLesson)
     {
-        $learningLesson->load('model');
+        $learningLesson->load(['model', 'quizzes.questions.answers']);
         if ($learningLesson->model?->content) {
             $learningLesson->model->content = app(MarkdownRenderer::class)
                 ->toHtml(
@@ -71,7 +71,7 @@ class LearningLessonController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param LearningLesson $learningLesson
-     * @return Response
+     * @return void
      */
     public function edit(LearningLesson $learningLesson)
     {

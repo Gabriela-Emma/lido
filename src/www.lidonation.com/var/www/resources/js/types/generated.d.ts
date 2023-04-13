@@ -7,6 +7,8 @@ length: number | null;
 order: number | null;
 completed?: boolean | null;
 link?: string | null;
+quiz?: App.DataTransferObjects.QuizData | null;
+quizzes: Array<App.DataTransferObjects.QuizData> | null;
 model?: App.DataTransferObjects.ModelData | null;
 topic?: App.DataTransferObjects.LearningTopicData | null;
 };
@@ -37,5 +39,27 @@ slug: string | null;
 title: string;
 content: string;
 link?: string | null;
+};
+export type QuizData = {
+id: number | null;
+title: string;
+content: string;
+status?: string | null;
+questions: Array<App.DataTransferObjects.QuizQuestionData> | null;
+};
+export type QuizQuestionAnswerData = {
+id: number | null;
+title: string | null;
+content?: string | null;
+type?: string | null;
+status?: string | null;
+};
+export type QuizQuestionData = {
+id: number | null;
+title: string;
+content?: string | null;
+type?: string | null;
+status?: string | null;
+answers: Array<App.DataTransferObjects.QuizQuestionAnswerData> | null;
 };
 }

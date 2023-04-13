@@ -26,7 +26,7 @@
                 <div class="col-span-7 md:col-span-4 xl:col-span-5 border-8 border-labs-red p-8 rounded-sm">
                     <header class="flex justify-between items-center">
                         <div>
-                            <Ldiv class="flex items-center gap-3 text-slate-500">
+                            <div class="flex items-center gap-3 text-slate-500">
                                 <div class="flex items-center gap-1">
                                     <NewspaperIcon class="h-4 w-4"/>
                                     <p class="">Lesson</p>
@@ -37,11 +37,11 @@
                                     </div>
                                     <div>
                                         {{
-                                        new Date(lesson?.length * 1000).toISOString().substring(14, 19)
+                                            new Date(lesson?.length * 1000).toISOString().substring(14, 19)
                                         }}
                                     </div>
                                 </div>
-                            </Ldiv>
+                            </div>
 
                             <h2 class="text-2xl xl:text-3xl font-bold leading-10 tracking-tight text-slate-900">
                                 {{ learningLesson?.title }}
@@ -60,29 +60,23 @@
                     </div>
                     <footer>
                         <div class="bg-labs-red text-white px-8 py-16 mt-8 text-center">
-                            <div class="flex flex-col items-center gap-6">
+                            <div class="flex flex-col items-center gap-6" v-if="question">
                                 <div>
                                     <div class="text-slate-300">Quiz</div>
                                     <h2 class="text-2xl xl:text-3xl font-bold leading-10 tracking-tight">
-                                        Question goes here
+                                        {{ question?.title }}
                                     </h2>
                                 </div>
                                 <ul class="flex justify-center gap-5 flex-wrap">
-                                    <li class="p-4 bg-white text-labs-black rounded-sm">
-                                        Consequatur aperiam non aut answer 1
-                                    </li>
-                                    <li class="p-4 bg-white text-labs-black rounded-sm">
-                                        Aperiam non aut
-                                    </li>
-                                    <li class="p-4 bg-white text-labs-black rounded-sm">
-                                        eaque est perspiciatis 3
-                                    </li>
-                                    <li class="p-4 bg-white text-labs-black rounded-sm">
-                                        Answer 4 est perspiciatis
-                                    </li>
+                                    <template v-for="answer in question.answers">
+                                        <li class="p-4 bg-white text-labs-black rounded-sm">
+                                            {{ answer.content }}
+                                        </li>
+                                    </template>
                                 </ul>
                                 <div class="mt-8">
-                                    <button type="button" class="rounded-sm bg-labs-black px-3.5 py-2.5 text-md xl:text-xl font-semibold text-white shadow-sm hover:bg-labs-black/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-labs-black ml-auto">
+                                    <button type="button"
+                                            class="rounded-sm bg-labs-black px-3.5 py-2.5 text-md xl:text-xl font-semibold text-white shadow-sm hover:bg-labs-black/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-labs-black ml-auto">
                                         Submit
                                     </button>
                                 </div>
@@ -112,6 +106,14 @@ const props = withDefaults(
     }>(), {});
 
 let learningLesson = ref(props.lesson);
+
+let question, questions;
+if (learningLesson.value?.quizzes?.length > 0) {
+    questions = learningLesson.value?.quizzes[0]?.questions;
+    if (questions?.length > 0) {
+        question = ref(questions[Math.floor(Math.random() * questions?.length)]);
+    }
+}
 </script>
 
 

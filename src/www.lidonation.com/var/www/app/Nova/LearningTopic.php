@@ -67,7 +67,7 @@ class LearningTopic extends Resource
             BelongsToMany::make(__('Learning Modules'), 'learningModules', LearningModules::class)
             ->hideFromIndex()
             ->searchable(),
-            BelongsToMany::make(__('Learning Lesson'), 'learningLessons', LearningLesson::class)
+            BelongsToMany::make(__('Learning Lesson'), 'learningLessons', LearningLessons::class)
             ->hideFromIndex()
             ->searchable(),
         ];
