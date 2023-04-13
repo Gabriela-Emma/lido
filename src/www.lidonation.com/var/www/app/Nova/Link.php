@@ -13,7 +13,7 @@ use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 
-class Links extends Resource
+class Link extends Resource
 {
     public static $group = 'Meta Data';
 
@@ -22,7 +22,7 @@ class Links extends Resource
      *
      * @var string
      */
-    public static $model = \App\Models\Link::class;
+    public static $model = App\Models\Link::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -110,7 +110,7 @@ class Links extends Resource
             static::getGlobalActions(),
             [
                 (new AddMetaData),
-                (new EditMetaData(\App\Models\Link::class)),
+                (new EditMetaData(Link::class)),
             ]);
     }
 }
