@@ -58,8 +58,6 @@ class CatalystMyProposalsController extends Controller
 
         $paginator = $query->paginate($this->perPage, ['*'], 'p')->setPath('/');
 
-        // dd($paginator->getCollection());
-
         return [
             'filters' => ['funded' => $this->fundedProposalsFilter],
             'proposals' => $paginator->onEachSide(1)->toArray(),
