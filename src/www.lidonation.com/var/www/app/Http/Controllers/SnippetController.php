@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use stdClass;
 
 class SnippetController extends Controller
 {
@@ -19,15 +20,31 @@ class SnippetController extends Controller
     {
         $snippets = DB::table('snippets')->get();
         $snippetsRes = [];
+        $availableLocales = config('app.available_locales');
+        $missingLocales = [];
+
         foreach ($snippets as $snippet) {
             $snippetContent = json_decode($snippet->content);
+    
             foreach ($snippetContent as $key => $value) {
-                $snippetsRes[$key][$snippet->name] = $value;
+                if (strlen($value) > 1) {
+                    $snippetsRes[$key][$snippet->name] = $value;
+                }
+            }
+        }
+
+        // confirm all the locale keys are available in final$snippetsRes
+        foreach ($availableLocales as $locale) {
+            $established_locales = array_keys($snippetsRes);
+            
+            if (! in_array($locale, $established_locales)) {
+                $snippetsRes[$locale] = new stdClass;
             }
         }
 
         //update the disk storage file
         Storage::disk('local')->put('snippets.json', json_encode($snippetsRes));
+        // dd($snippetsRes);
 
         return $snippetsRes;
     }
