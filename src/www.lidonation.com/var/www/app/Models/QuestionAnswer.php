@@ -26,6 +26,10 @@ class QuestionAnswer extends Model implements IHasMetaData
         InteractsWithMedia,
         SoftDeletes;
 
+    protected $appends = [
+        'correct'
+    ];
+
     public $translatable = [
         'content',
         'hint',
