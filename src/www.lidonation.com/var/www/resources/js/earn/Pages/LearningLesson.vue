@@ -62,9 +62,9 @@
                                    class="px-6 py-16 border-labs-black border-2 rounded-sm flex flex-col justify-center gap-4 items-center text-xl xl:text-3xl text-labs-black hover:text-labs-black hover:bg-slate-200">
                                     {{learningLesson.model?.title}}
 
-                                    <ClockIcon class="h-10 w-10" />
+                                    <ArrowTopRightOnSquareIcon class="h-16 w-16" />
 
-                                    <p class="text-center text-xl text-slate-800">
+                                    <p class="text-center text-xl text-slate-800 max-w-md mx-auto">
                                         Read Article in new take. Return to take quiz after you've read the article.
                                     </p>
                                 </a>
