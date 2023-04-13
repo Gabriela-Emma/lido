@@ -56,7 +56,21 @@
                         </div>
                     </header>
                     <div class="mt-4 p-6 shadow-xs rounded-xs h-[40rem] bg-slate-100/75 overflow-y-auto">
-                        <div v-if="learningLesson.model" v-html="learningLesson.model?.content"></div>
+                        <template v-if="learningLesson.model">
+                            <div v-if="learningLesson.model?.type === 'Link'" class="flex flex-col items-center justify-center gap-3">
+                                <a :href="learningLesson.model?.link" target="_blank"
+                                   class="px-6 p-16 border-labs-black border-2 rounded-sm flex justify-center items-center text-xl xl:text-3xl text-labs-red hover:text-labs-black hover:bg-slate-200">
+                                    {{learningLesson.model?.title}}
+
+                                    <ClockIcon class="h-10 w-10"/>
+
+                                    <p class="max-w-md">
+                                        Read Article in new take. Return to take quiz after you've read the article.
+                                    </p>
+                                </a>
+                            </div>
+                            <div v-else v-html="learningLesson.model?.content"></div>
+                        </template>
                     </div>
                     <footer>
                         <div class="bg-labs-red text-white px-8 py-16 mt-8">
@@ -94,7 +108,7 @@
 <script lang="ts" setup>
 import {inject, ref} from "vue";
 import {Link} from '@inertiajs/vue3';
-import {NewspaperIcon, CheckBadgeIcon, ClockIcon} from '@heroicons/vue/24/outline';
+import {NewspaperIcon, CheckBadgeIcon, ClockIcon, ArrowTopRightOnSquareIcon } from '@heroicons/vue/24/outline';
 import {CheckBadgeIcon as CheckBadgeIconSolid} from '@heroicons/vue/24/solid';
 import LearningLessonData = App.DataTransferObjects.LearningLessonData;
 import Footer from "../../../../vendor/laravel/nova/resources/js/layouts/Footer.vue";
@@ -108,7 +122,7 @@ const props = withDefaults(
     }>(), {});
 
 let learningLesson = ref(props.lesson);
-
+console.log(learningLesson.value);
 let question, questions;
 if (learningLesson.value?.quizzes?.length > 0) {
     questions = learningLesson.value?.quizzes[0]?.questions;
