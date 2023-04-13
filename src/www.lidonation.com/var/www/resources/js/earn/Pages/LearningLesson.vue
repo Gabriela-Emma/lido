@@ -64,7 +64,7 @@
 
                                     <ClockIcon class="h-10 w-10" />
 
-                                    <p class="max-w-md">
+                                    <p class="text-center text-xl text-slate-800">
                                         Read Article in new take. Return to take quiz after you've read the article.
                                     </p>
                                 </a>
