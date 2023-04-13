@@ -1,7 +1,5 @@
 <?php
 
-use App\Http\Controllers\Earn\LearningLessonController;
-use App\Http\Controllers\Earn\LearningModulesController;
 use App\Models\Mint;
 use Inertia\Inertia;
 use App\Models\Review;
@@ -29,12 +27,15 @@ use App\Http\Controllers\NewsletterController;
 use App\Http\Livewire\Library\LibraryComponent;
 use App\Http\Controllers\GlobalSearchController;
 use App\Http\Controllers\VerifyWalletController;
+use App\Http\Controllers\Rewards\RewardsController;
 use App\Http\Controllers\ModelTranslationController;
 use App\Http\Controllers\AnonymousBookmarkController;
 use App\Http\Controllers\TwitterAttendanceController;
 use App\Http\Livewire\Catalyst\CatalystFundComponent;
 use App\Http\Livewire\Delegators\DelegatorsComponent;
+use App\Http\Controllers\Earn\LearningLessonController;
 use App\Http\Livewire\Catalyst\CatalystGroupsComponent;
+use App\Http\Controllers\Earn\LearningModulesController;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Livewire\Partners\PartnerDashboardComponent;
 use App\Http\Livewire\Catalyst\CatalystProposersComponent;
@@ -175,6 +176,10 @@ Route::group(
 
         Route::get('/group/{catalystGroup}', fn() => view('catalyst.group'))
             ->name('group');
+    });
+
+    Route::prefix('/reward')->as('rewards')->group(function(){
+        Route::get('/myRewards', [RewardsController::class, 'index']);
     });
 
     Route::prefix('/earn')->as('earn.')->group(function () {
