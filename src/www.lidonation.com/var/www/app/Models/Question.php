@@ -7,6 +7,7 @@ use App\Models\Interfaces\IHasMetaData;
 use App\Models\Traits\HasAuthor;
 use App\Models\Traits\HasMetaData;
 use App\Models\Traits\HasTranslations;
+use App\Scopes\OrderByRandomScope;
 use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -54,5 +55,16 @@ class Question extends Model implements HasMedia, IHasMetaData
     public function responses(): HasManyThrough
     {
         return $this->hasManyThrough(AnswerResponse::class, QuestionAnswer::class);
+    }
+
+    /**
+     * The "booted" method of the model.
+     *
+     * @return void
+     */
+    protected static function booted(): void
+    {
+        parent::booted();
+        static::addGlobalScope(new OrderByRandomScope());
     }
 }
