@@ -21,7 +21,13 @@ class LearningModuleObserver
         ]);
     }
 
-    public function deleting(LearningModule $learningModule): void
+    /**
+     * Handle the User "created" event.
+     *
+     * @param LearningModule $learningModule
+     * @return void
+     */
+    public function forceDeleting(LearningModule $learningModule): void
     {
         if ($learningModule->forceDeleting) {
             $learningModule->metas()->delete();

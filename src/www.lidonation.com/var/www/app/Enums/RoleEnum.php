@@ -18,6 +18,7 @@ use Spatie\Enum\Laravel\Enum;
  * @method static self event_manager()
  * @method static self admin()
  * @method static self super_admin()
+ * @method static self learner()
  */
 final class RoleEnum extends Enum
 {

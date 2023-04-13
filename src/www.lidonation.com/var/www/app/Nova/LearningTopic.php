@@ -41,15 +41,13 @@ class LearningTopic extends Resource
     /**
      * Get the fields displayed by the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param NovaRequest $request
      * @return array
      */
     public function fields(NovaRequest $request)
     {
         return [
             ID::make(__('ID'), 'id')->sortable(),
-            BelongsTo::make(__('Author'), 'author', User::class)
-                ->searchable(),
             Text::make(__('Title'), 'title')
                 ->translatable()
                 ->required(),
@@ -64,10 +62,12 @@ class LearningTopic extends Resource
                 'published' => 'Published',
                 'draft' => 'Draft',
             ])->required(),
-            BelongsToMany::make(__('Learning Modules'), 'learningModules', LearningModule::class)
+            BelongsTo::make(__('Author'), 'author', User::class)
+                ->searchable(),
+            BelongsToMany::make(__('Learning Modules'), 'learningModules', LearningModules::class)
             ->hideFromIndex()
             ->searchable(),
-            BelongsToMany::make(__('Learning Lesson'), 'learningLessons', LearningLesson::class)
+            BelongsToMany::make(__('Learning Lesson'), 'learningLessons', LearningLessons::class)
             ->hideFromIndex()
             ->searchable(),
         ];
@@ -76,7 +76,7 @@ class LearningTopic extends Resource
     /**
      * Get the cards available for the request.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param NovaRequest $request
      * @return array
      */
     public function cards(NovaRequest $request)
@@ -87,7 +87,7 @@ class LearningTopic extends Resource
     /**
      * Get the filters available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param NovaRequest $request
      * @return array
      */
     public function filters(NovaRequest $request)
@@ -98,7 +98,7 @@ class LearningTopic extends Resource
     /**
      * Get the lenses available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param NovaRequest $request
      * @return array
      */
     public function lenses(NovaRequest $request)
@@ -109,7 +109,7 @@ class LearningTopic extends Resource
     /**
      * Get the actions available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param NovaRequest $request
      * @return array
      */
     public function actions(NovaRequest $request)

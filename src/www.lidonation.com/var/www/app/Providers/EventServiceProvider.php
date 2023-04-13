@@ -60,7 +60,7 @@ class EventServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         AnswerResponse::observe(AnswerResponseObserver::class);
         Cause::observe(CauseObserver::class);

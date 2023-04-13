@@ -265,6 +265,7 @@ Route::prefix('catalyst-explorer')->as('catalystExplorerApi.')
 
     Route::prefix('earn')->as('earnApi.')->group(function () {
         Route::post('/learn/login',[LearnController::class, 'login']);
+        Route::post('/learn/register',[LearnController::class, 'register']);
         Route::middleware([])->prefix('/learn')->group(function () {
             // 
         });

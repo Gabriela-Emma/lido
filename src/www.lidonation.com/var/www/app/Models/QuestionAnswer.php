@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\DataTransferObjects\QuizQuestionAnswerData;
 use App\Models\Interfaces\IHasMetaData;
 use App\Models\Traits\HasAuthor;
 use App\Models\Traits\HasHero;
@@ -12,6 +13,7 @@ use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\LaravelData\DataCollection;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
 class QuestionAnswer extends Model implements IHasMetaData
@@ -37,6 +39,7 @@ class QuestionAnswer extends Model implements IHasMetaData
     protected $casts = [
         'updated_at' => 'datetime:M d y',
         'published_at' => 'datetime:M d y',
+        'answers' => DataCollection::class.':'.QuizQuestionAnswerData::class,
     ];
 
     public function correct(): Attribute

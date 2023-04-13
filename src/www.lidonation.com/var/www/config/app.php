@@ -236,6 +236,7 @@ return [
 
         ShortcodesServiceProvider::class,
         App\Providers\ShortcodesServiceProvider::class,
+        App\Providers\ValidatorServiceProvider::class,
     ],
 
     /*
