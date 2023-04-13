@@ -66,7 +66,6 @@ let loginUser =async () => {
           });
           
      } catch (e: AxiosError | any) {
-          console.log(e.response.data);
           emit('walletError',e.response.data);
 
      }

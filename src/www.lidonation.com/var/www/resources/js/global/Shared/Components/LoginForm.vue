@@ -110,9 +110,6 @@ let form = useForm({
 let walletError =ref('');
 let handleWalletError = (error) => {
     walletError.value = error.message
-    // setTimeout(() => {
-    //     walletError.value = '';
-    // }, 5000);
 }
 
 const emit = defineEmits<{
