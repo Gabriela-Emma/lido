@@ -59,26 +59,28 @@
                         <div v-if="learningLesson.model" v-html="learningLesson.model?.content"></div>
                     </div>
                     <footer>
-                        <div class="bg-labs-red text-white px-8 py-16 mt-8 text-center">
-                            <div class="flex flex-col items-center gap-6" v-if="question">
-                                <div>
-                                    <div class="text-slate-300">Quiz</div>
-                                    <h2 class="text-2xl xl:text-3xl font-bold leading-10 tracking-tight">
-                                        {{ question?.title }}
-                                    </h2>
-                                </div>
-                                <ul class="flex justify-center gap-5 flex-wrap">
-                                    <template v-for="answer in question.answers">
-                                        <li class="p-4 bg-white text-labs-black rounded-sm">
-                                            {{ answer.content }}
-                                        </li>
-                                    </template>
-                                </ul>
-                                <div class="mt-8">
-                                    <button type="button"
-                                            class="rounded-sm bg-labs-black px-3.5 py-2.5 text-md xl:text-xl font-semibold text-white shadow-sm hover:bg-labs-black/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-labs-black ml-auto">
-                                        Submit
-                                    </button>
+                        <div class="bg-labs-red text-white px-8 py-16 mt-8">
+                            <div class="" v-if="question">
+                                <div class="text-slate-300 mb-2 text-center">Quiz</div>
+                                <div class="rounded-sm border border-dashed border-white p-4 flex flex-col gap-6">
+                                    <div>
+                                        <p class="text-lg md:text-xl xl:text-2xl 2xl:text-3x xl:leading-12 2xl:leading-12 inline box-border box-decoration-clone p-2 tracking-wide bg-white text-teal-900 relative -left-8">
+                                            {{ question?.title }}
+                                        </p>
+                                    </div>
+                                    <ul class="mt-4 space-y-2 relative h-full w-full ">
+                                        <template v-for="answer in question.answers">
+                                            <li class="flex cursor-pointer border border-slate-200 w-full justify-between items-center p-2 bg-slate-100 rounded-sm text-slate-800 answer">
+                                                {{ answer.content }}
+                                            </li>
+                                        </template>
+                                    </ul>
+                                    <div class="mt-8 flex justify-end">
+                                        <button type="button"
+                                                class="rounded-sm bg-labs-black px-3.5 py-2.5 text-md xl:text-xl font-semibold text-white shadow-sm hover:bg-labs-black/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-labs-black ml-auto">
+                                            Submit
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
