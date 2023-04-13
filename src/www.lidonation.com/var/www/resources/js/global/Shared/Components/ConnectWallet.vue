@@ -106,8 +106,8 @@ import { storeToRefs } from 'pinia';
 import { computed, ref, Ref, watch } from 'vue';
 import WalletService from '../../../lib/services/WalletService';
 import CardanoService from '../../../lib/services/CardanoService';
-import { useWalletStore } from '../../stores/wallet-store';
-import Wallet from '../../models/wallet';
+import { useWalletStore } from '../../../catalyst-explorer/stores/wallet-store';
+import Wallet from '../../../catalyst-explorer/models/wallet';
 import {C} from "lucid-cardano";
 
 

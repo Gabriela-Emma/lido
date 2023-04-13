@@ -82,7 +82,7 @@
 import {useForm, usePage} from '@inertiajs/vue3';
 import {Link} from '@inertiajs/vue3';
 import {inject, ref} from "vue";
-import WalletLoginBtn from '../../../catalyst-explorer/Shared/Components/WalletLoginBtn.vue';
+import WalletLoginBtn from './WalletLoginBtn.vue';
 import Divider from './Divider.vue';
 const $utils: any = inject('$utils');
 

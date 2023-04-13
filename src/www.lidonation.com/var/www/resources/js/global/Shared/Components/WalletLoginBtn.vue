@@ -33,7 +33,7 @@
 <script lang="ts" setup>
 import { Ref, ref, watch } from 'vue';
 import { defineAsyncComponent } from 'vue';
-import Wallet from '../../models/wallet';
+import Wallet from '../../../catalyst-explorer/models/wallet';
 import { AxiosError } from 'axios';
 const ConnectWallet = defineAsyncComponent(() =>import('./ConnectWallet.vue'));
 
