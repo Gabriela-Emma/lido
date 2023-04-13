@@ -66,7 +66,7 @@ class LearningLessons extends Resource
             MorphTo::make('model')->types([
                 News::class,
                 Insights::class,
-                Links::class,
+                Link::class,
                 Podcasts::class,
             ])->searchable()->nullable(),
             BelongsTo::make(__('Author'), 'author', User::class)
