@@ -165,7 +165,7 @@
 
                 <div class="mt-2 xl:hidden" >
                     <Bars3Icon v-show="toggle == false" @click="toggle = !toggle" class="w-6 h-6 text-yellow-400" aria-hidden="true" />
-                    <XMarkIcon v-show="toggle == true" @click="toggle = !toggle" class="w-6 h-6 text-yellow-400" aria-hidden="true" />
+                    <XMarkIcon v-show="toggle == true" @click="toggle = false" class="w-6 h-6 text-yellow-400" aria-hidden="true" />
                     <div v-show="toggle"
                         ref="target"
                         class="flex flex-col absolute right-0 mr-3.5 w-36 bg-white rounded-sm shadow-md overflow-hidden">
