@@ -10,6 +10,7 @@ use App\Models\LearningLesson;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Inertia\Inertia;
+use Spatie\LaravelMarkdown\MarkdownRenderer;
 use Webwizo\Shortcodes\Facades\Shortcode;
 
 class LearningLessonController extends Controller
@@ -38,7 +39,7 @@ class LearningLessonController extends Controller
      * Store a newly created resource in storage.
      *
      * @param StoreLearningLessonRequest $request
-     * @return Response
+     * @return void
      */
     public function store(StoreLearningLessonRequest $request)
     {
@@ -54,9 +55,12 @@ class LearningLessonController extends Controller
      */
     public function show(Request $request, LearningLesson $learningLesson)
     {
-        $learningLesson->load('model');
+        $learningLesson->load(['model', 'quizzes.questions.answers']);
         if ($learningLesson->model?->content) {
-            $learningLesson->model->content = Shortcode::compile($learningLesson?->model?->content);
+            $learningLesson->model->content = app(MarkdownRenderer::class)
+                ->toHtml(
+                    Shortcode::compile($learningLesson?->model?->content)
+                );
         }
         return Inertia::render('LearningLesson', [
             'lesson' => LearningLessonData::from($learningLesson)
@@ -67,7 +71,7 @@ class LearningLessonController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param LearningLesson $learningLesson
-     * @return Response
+     * @return void
      */
     public function edit(LearningLesson $learningLesson)
     {
