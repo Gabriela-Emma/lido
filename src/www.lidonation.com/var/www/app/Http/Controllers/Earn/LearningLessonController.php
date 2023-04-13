@@ -62,8 +62,14 @@ class LearningLessonController extends Controller
                     Shortcode::compile($learningLesson?->model?->content)
                 );
         }
+        
         return Inertia::render('LearningLesson', [
-            'lesson' => LearningLessonData::from($learningLesson)
+            'lesson' => LearningLessonData::from($learningLesson),
+            'crumbs' => [
+                ['label' => 'Learn & Earn', 'link' => route('earn.learn')],
+                ['label' => 'Modules', 'link' => route('earn.learn.modules.index')],
+                ['label' => $learningLesson->title, 'link' => $learningLesson->link],
+            ],
         ]);
     }
 

@@ -20,6 +20,7 @@ use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Mtownsend\ReadTime\ReadTime;
 use Spatie\LaravelData\DataCollection;
 
 class LearningLesson extends Model
@@ -62,6 +63,22 @@ class LearningLesson extends Model
     {
         return Attribute::make(
             get: fn() => $this->quizzes()?->first(),
+        );
+    }
+
+    public function length(): Attribute
+    {
+        return Attribute::make(
+            get: function($value) {
+                if ($value) {
+                    return $value;
+                }
+                $parts = (new ReadTime($this->model?->content))
+                    ->omitSeconds(false)
+                    ->timeOnly()
+                    ->toArray();
+                return ($parts['minutes'] * 60) + $parts['seconds'];
+            },
         );
     }
 
