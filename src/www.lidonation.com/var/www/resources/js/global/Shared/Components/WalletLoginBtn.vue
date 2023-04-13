@@ -52,6 +52,10 @@ watch([walletData], async (newVal, oldVal) => {
      wallet_name.value = walletData.value.name
 });
 
+const emit =defineEmits<{
+    (e: 'walletError', error: AxiosError | any):void
+}>();
+
 let loginUser =async () => {
      const { walletLogin } = await import('../../../lib/utils/walletLogin');
      try {     
@@ -62,7 +66,7 @@ let loginUser =async () => {
           });
           
      } catch (e: AxiosError | any) {
-          console.log({e});
+          emit('walletError',e.response.data);
 
      }
 }

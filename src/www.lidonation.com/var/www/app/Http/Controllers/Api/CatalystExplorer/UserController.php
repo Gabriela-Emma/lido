@@ -32,7 +32,7 @@ class UserController extends Controller
                 return to_route('catalystExplorer.myDashboard');
             } else {
                 return response()->json([
-                    'message' => 'We are having trouble logging you in with your stake address. Try your email and password or try registering again.',
+                    'message' => 'Could not find an account with those credentials',
                 ], 401);
             }
         }
