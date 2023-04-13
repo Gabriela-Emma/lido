@@ -59,7 +59,7 @@
                         <template v-if="learningLesson.model">
                             <div v-if="learningLesson.model?.type === 'Link'" class="flex flex-col items-center justify-center gap-3">
                                 <a :href="learningLesson.model?.link" target="_blank"
-                                   class="px-6 p-16 border-labs-black border-2 rounded-sm flex justify-center items-center text-xl xl:text-3xl text-labs-red hover:text-labs-black hover:bg-slate-200">
+                                   class="px-6 p-16 border-labs-black border-2 rounded-sm flex  justify-center items-center text-xl xl:text-3xl text-labs-red hover:text-labs-black hover:bg-slate-200">
                                     {{learningLesson.model?.title}}
 
                                     <ClockIcon class="h-10 w-10"/>
