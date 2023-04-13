@@ -21,12 +21,75 @@
         </div>
     </section>
     <section class="py-8">
-        <div class="container text-xl xl:text-2xl">
-            <div class="mx-auto divide-y divide-slate-900/10">
-                <div>
-                    <h2 class="text-2xl xl:text-4xl font-bold leading-10 tracking-tight text-slate-900 text-center">
-                        {{ learningLesson?.title }}
-                    </h2>
+        <div class="container">
+            <div class="grid grid-cols-7 gap-8">
+                <div class="col-span-7 md:col-span-4 xl:col-span-5 border-8 border-labs-red p-8 rounded-sm">
+                    <header class="flex justify-between items-center">
+                        <div>
+                            <div class="flex items-center gap-3 text-slate-500">
+                                <div class="flex items-center gap-1">
+                                    <NewspaperIcon class="h-4 w-4"/>
+                                    <p class="">Lesson</p>
+                                </div>
+                                <div class="flex items-center gap-1">
+                                    <div>
+                                        <ClockIcon class="h-4 w-4"/>
+                                    </div>
+                                    <div>
+                                        {{
+                                        new Date(lesson?.length * 1000).toISOString().substring(14, 19)
+                                        }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <h2 class="text-2xl xl:text-3xl font-bold leading-10 tracking-tight text-slate-900">
+                                {{ learningLesson?.title }}
+                            </h2>
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-1">
+                                <CheckBadgeIconSolid v-if="learningLesson.completed"
+                                                     class="h-8 w-8 text-labs-red"/>
+                                <CheckBadgeIcon v-else class="h-8 w-8 text-slate-400"/>
+                            </div>
+                        </div>
+                    </header>
+                    <div class="mt-4 p-6 shadow-xs rounded-xs h-96 bg-slate-100/75 overflow-y-auto">
+                        <div v-if="learningLesson.model"
+                             v-html="$filters.markdown(learningLesson.model?.content)"></div>
+                    </div>
+                    <footer>
+                        <div class="bg-labs-red text-white px-8 py-16 mt-8 text-center">
+                            <div class="flex flex-col items-center gap-6">
+                                <div>
+                                    <div class="text-slate-300">Quiz</div>
+                                    <h2 class="text-2xl xl:text-3xl font-bold leading-10 tracking-tight">
+                                        Question goes here
+                                    </h2>
+                                </div>
+                                <ul class="flex justify-center gap-5 flex-wrap">
+                                    <li class="p-4 bg-white text-labs-black rounded-sm">
+                                        Consequatur aperiam non aut answer 1
+                                    </li>
+                                    <li class="p-4 bg-white text-labs-black rounded-sm">
+                                        Aperiam non aut
+                                    </li>
+                                    <li class="p-4 bg-white text-labs-black rounded-sm">
+                                        eaque est perspiciatis 3
+                                    </li>
+                                    <li class="p-4 bg-white text-labs-black rounded-sm">
+                                        Answer 4 est perspiciatis
+                                    </li>
+                                </ul>
+                                <div class="mt-8">
+                                    <button type="button" class="rounded-sm bg-labs-black px-3.5 py-2.5 text-md xl:text-xl font-semibold text-white shadow-sm hover:bg-labs-black/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-labs-black ml-auto">
+                                        Submit
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </footer>
                 </div>
             </div>
         </div>
@@ -36,8 +99,10 @@
 <script lang="ts" setup>
 import {inject, ref} from "vue";
 import {Link} from '@inertiajs/vue3';
-import {MinusSmallIcon, PlusSmallIcon, ClockIcon} from '@heroicons/vue/24/outline';
+import {NewspaperIcon, CheckBadgeIcon, ClockIcon} from '@heroicons/vue/24/outline';
+import {CheckBadgeIcon as CheckBadgeIconSolid} from '@heroicons/vue/24/solid';
 import LearningLessonData = App.DataTransferObjects.LearningLessonData;
+import Footer from "../../../../vendor/laravel/nova/resources/js/layouts/Footer.vue";
 
 const $utils: any = inject('$utils');
 

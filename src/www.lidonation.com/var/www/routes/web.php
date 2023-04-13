@@ -181,7 +181,9 @@ Route::group(
         Route::get('/')->name('learn')->name('home');
 
         Route::get('/learn/login', fn() => Inertia::render('Login'))
-            ->name('learn-login');
+            ->name('learn.login');
+        Route::get('/learn/register', fn() => Inertia::render('Register'))
+            ->name('learn.register');
 
         Route::middleware([])->prefix('/learn')->group(function () {
             Route::get('/', [LearnController::class, 'index'])->name('learn');
@@ -192,8 +194,7 @@ Route::group(
             Route::get('lessons/{learningLesson:id}', [LearningLessonController::class, 'show'])
                 ->name('learn.modules.view');
         });
-        Route::middleware(['auth.catalyst'])->prefix('/my')->group(function () {
-        });
+        Route::middleware(['auth.catalyst'])->prefix('/my')->group(function () {});
     });
 
     Route::prefix('/catalyst-explorer')->as('catalystExplorer.')->group(function () {
