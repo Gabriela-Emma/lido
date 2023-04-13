@@ -36,8 +36,9 @@ lessons: Array<App.DataTransferObjects.LearningLessonData> | null;
 export type ModelData = {
 id: number | null;
 slug: string | null;
-title: string;
-content: string;
+title: string | null;
+content: string | null;
+type: string | null;
 link?: string | null;
 };
 export type QuizData = {

@@ -73,7 +73,7 @@ class LearningLesson extends Model
                 if ($value) {
                     return $value;
                 }
-                $parts = (new ReadTime($this->model?->content))
+                $parts = (new ReadTime($this->model?->content ?? ''))
                     ->omitSeconds(false)
                     ->timeOnly()
                     ->toArray();

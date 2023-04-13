@@ -13,7 +13,7 @@ use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 
-class Link extends Resource
+class Links extends Resource
 {
     public static $group = 'Meta Data';
 
