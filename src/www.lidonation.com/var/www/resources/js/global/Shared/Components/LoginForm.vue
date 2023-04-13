@@ -70,8 +70,10 @@
                     </div>
                 </div>
                 <Divider/>
-                <div>
-                    <WalletLoginBtn/>
+                <div class="flex flex-col">
+                    <div v-if="walletError.length>0" v-text="walletError"
+                                 class="text-red-500 text-sm my-1"></div>
+                    <WalletLoginBtn @walletError="handleWalletError($event)"/>
                 </div>
             </div>
         </form>
@@ -81,7 +83,7 @@
 <script lang="ts" setup>
 import {useForm, usePage} from '@inertiajs/vue3';
 import {Link} from '@inertiajs/vue3';
-import {inject, ref} from "vue";
+import {inject, Ref, ref} from "vue";
 import WalletLoginBtn from './WalletLoginBtn.vue';
 import Divider from './Divider.vue';
 const $utils: any = inject('$utils');
@@ -104,6 +106,14 @@ let form = useForm({
     email: '',
     remember: false
 })
+
+let walletError =ref('');
+let handleWalletError = (error) => {
+    walletError.value = error.message
+    // setTimeout(() => {
+    //     walletError.value = '';
+    // }, 5000);
+}
 
 const emit = defineEmits<{
     (e: 'endpoint', url: string): void
