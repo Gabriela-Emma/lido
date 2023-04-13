@@ -197,6 +197,16 @@ return [
                         'route_type' => 'route_name',
                         'route' => 'projectCatalyst.votes.ccv4',
                     ]),
+                    new Illuminate\Support\Fluent([
+                        'title' => 'Weekly Townhall',
+                        'route_type' => 'url',
+                        'route' => 'https://bit.ly/catalyst-townhall',
+                    ]),
+                    new Illuminate\Support\Fluent([
+                        'title' => 'Sign in',
+                        'route_type' => 'url',
+                        'route' => 'fr/catalyst-explorer/login',
+                    ]),
                 ],
             ]),
         ],
