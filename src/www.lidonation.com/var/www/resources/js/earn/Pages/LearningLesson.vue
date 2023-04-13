@@ -57,14 +57,14 @@
                     </header>
                     <div class="mt-4 p-6 shadow-xs rounded-xs h-[40rem] bg-slate-100/75 overflow-y-auto">
                         <template v-if="learningLesson.model">
-                            <div v-if="learningLesson.model?.type === 'Link'" class="flex flex-col items-center justify-center gap-3">
+                            <div v-if="learningLesson.model?.type === 'Link'" class="flex flex-col items-center justify-center gap-3 h-full">
                                 <a :href="learningLesson.model?.link" target="_blank"
                                    class="px-6 py-16 border-labs-black border-2 rounded-sm flex flex-col justify-center gap-4 items-center text-xl xl:text-3xl text-labs-black hover:text-labs-black hover:bg-slate-200">
                                     {{learningLesson.model?.title}}
 
                                     <ArrowTopRightOnSquareIcon class="h-16 w-16" />
 
-                                    <p class="text-center text-xl text-slate-800 max-w-md mx-auto">
+                                    <p class="text-center text-xl text-slate-800 max-w-md mx-auto px-8">
                                         Read Article in new take. Return to take quiz after you've read the article.
                                     </p>
                                 </a>
