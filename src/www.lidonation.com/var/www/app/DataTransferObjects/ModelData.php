@@ -31,7 +31,7 @@ class ModelData extends Data
             id: $model->id,
             slug: null,
             title: $model->title,
-            content: $model->label,
+            content: $model->content ?? $model->label,
             type: class_basename($model::class),
             link: $model->link,
         );
