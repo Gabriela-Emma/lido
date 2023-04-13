@@ -69,6 +69,12 @@
                         </span>
                     </div>
                 </div>
+                <Divider/>
+                <div class="flex flex-col">
+                    <div v-if="walletError.length>0" v-text="walletError"
+                                 class="text-red-500 text-sm my-1"></div>
+                    <WalletLoginBtn @walletError="handleWalletError($event)"/>
+                </div>
             </div>
         </form>
     </div>
@@ -77,7 +83,9 @@
 <script lang="ts" setup>
 import {useForm, usePage} from '@inertiajs/vue3';
 import {Link} from '@inertiajs/vue3';
-import {inject, ref} from "vue";
+import {inject, Ref, ref} from "vue";
+import WalletLoginBtn from './WalletLoginBtn.vue';
+import Divider from './Divider.vue';
 const $utils: any = inject('$utils');
 
 
@@ -99,6 +107,11 @@ let form = useForm({
     remember: false
 })
 
+let walletError =ref('');
+let handleWalletError = (error) => {
+    walletError.value = error.message
+}
+
 const emit = defineEmits<{
     (e: 'endpoint', url: string): void
     (e: 'setForm',form):void
@@ -106,8 +119,6 @@ const emit = defineEmits<{
 }>();
 
 let prefix = ref(usePage().url.split('/')[2])
-
-console.log(prefix.value)
 
 const explorerEndpoint = '/api/catalyst-explorer/login';
 const learnEndpoint = '/api/earn/learn/login';

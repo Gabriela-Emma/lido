@@ -10,6 +10,6 @@ export async function walletLogin(wallet: string, identifier, msg: string = 'Lid
         ...signature,
         ...data
     };
-    const res = await window.axios.post(`/api/${role}s/login`, user);
+    const res = await window.axios.post((role == 'catalyst-explorer')?`/api/${role}/login`:`/api/${role}s/login`, user) 
     return res?.data;
 }

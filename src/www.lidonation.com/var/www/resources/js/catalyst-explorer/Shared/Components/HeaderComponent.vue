@@ -70,7 +70,7 @@ import {computed, inject} from 'vue'
 import {Link} from '@inertiajs/vue3';
 import {usePage} from '@inertiajs/vue3';
 import User from "../../../global/Shared/Models/user";
-import ConnectWallet from './ConnectWallet.vue';
+import ConnectWallet from '../../../global/Shared/Components/ConnectWallet.vue';
 const $utils: any = inject('$utils');
 
 
