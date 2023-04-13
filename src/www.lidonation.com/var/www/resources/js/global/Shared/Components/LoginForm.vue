@@ -1,9 +1,11 @@
 <template>
     <div :class="{
-        'flex items-center justify-center h-screen': !embedded
-    }" class="bg-slate-100 login-form-wrapper">
+        'flex items-center justify-center h-screen': !embedded,
+        'bg-slate-100':forRewards==false
+    }" class="login-form-wrapper">
         <form>
-            <div class=" bg-white shadow-sm  rounded  p-6 w-96">
+            <div class=" rounded  p-6 w-96"
+                 :class="{'bg-white shadow-sm ':forRewards==false}">
                 <div class=" flex-col  mb-4 border-b" v-if="showLogo">
                     <div class="flex items-center justify-center mb-4">
                         <img alt="catalyst explorer logo" :src="$utils.assetUrl('img/catalyst-explorer-logo.jpg')"
@@ -12,7 +14,7 @@
                 </div>
 
                 <div>
-                    <div class=" flex justify-start mb-2">
+                    <div class=" flex justify-start mb-2" v-show="forRewards==false">
                         <h1 class="text-2xl lg:text-3xl 2xl:text-5xl 3xl:text-6xl font-semibold text-slate-700"> {{ $t("Login") }} </h1>
                     </div>
 
@@ -69,8 +71,8 @@
                         </span>
                     </div>
                 </div>
-                <Divider/>
-                <div class="flex flex-col">
+                <Divider v-show="showWalletBtn"/>
+                <div v-show="showWalletBtn" class="flex flex-col">
                     <div v-if="walletError.length>0" v-text="walletError"
                                  class="text-red-500 text-sm my-1"></div>
                     <WalletLoginBtn @walletError="handleWalletError($event)"/>
@@ -94,10 +96,14 @@ const props = withDefaults(
         errors?: Object,
         showLogo?: boolean,
         embedded?: boolean,
+        showWalletBtn?:boolean,
+        forRewards?:boolean,
     }>(),
     {
         showLogo: true,
         embedded: false,
+        showWalletBtn:true,
+        forRewards:false
     },
 );
 
