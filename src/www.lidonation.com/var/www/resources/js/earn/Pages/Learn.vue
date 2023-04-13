@@ -25,7 +25,7 @@
                             {{ $t("register/login") }}
                         </p>
                     </div>
-                    <div class="flex gap-3 items-center flex-row mx-auto">
+                    <div v-if="!user" class="flex gap-3 items-center flex-row mx-auto">
                         <Link href="/earn/learn/login" type="button"
                               class="flex gap-2 md:gap-3 items-center w-full justify-center rounded-sm border border-transparent bg-labs-red py-2 px-2 md:px-3 text-sm md:text-lg 2xl:text-xl font-medium text-white shadow-sm hover:bg-labs-black hover:text-white focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -37,10 +37,13 @@
                             <span>{{ $t("signIn") }}</span>
                         </Link>
                         <span class="text-sm">
-                        <Link href="/earn/learn/register" class="font-bold text-labs-red hover:text-labs-black">
-                            {{ $t("register") }}
-                        </Link>
-                    </span>
+                            <Link href="/earn/learn/register" class="font-bold text-labs-red hover:text-labs-black">
+                                {{ $t("register") }}
+                            </Link>
+                        </span>
+                    </div>
+                    <div v-else class="flex gap-3 items-center flex-row mx-auto">
+                        <CheckIcon class="h-8 w-8 text-green-500 font-bold" />
                     </div>
                 </div>
             </div>
@@ -50,22 +53,19 @@
         <div class="bg-slate-100 rounded-r-full w-5/6 lg:w-3/4 xl:w-2/3">
             <div class="container py-16 px-6 md:px-8">
                 <div class="flex flex-wrap justify-between">
-                    <div class="flex flex-col md:flex-row gap-1 md:gap-3 items-center flex-row mx-auto">
-                        <Link href="/earn/learn/login" type="button"
-                              class="flex gap-1 md:gap-3 items-center w-full justify-center rounded-sm border border-transparent bg-labs-red py-2 px-2 md:px-3 text-sm md:text-lg 2xl:text-xl font-medium text-white shadow-sm hover:bg-labs-black hover:text-white focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                 stroke-width="1.5"
-                                 stroke="currentColor" class="w-4 md:w-7 h-4 md:h-7">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                      d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9"/>
-                            </svg>
-                            <span>{{ $t("connectWallet") }}</span>
-                        </Link>
+                    <div v-if="! walletData.address" class="flex flex-col md:flex-row gap-1 md:gap-3 items-center  mx-auto">
+                        <ConnectWallet :background-color="'bg-labs-red'" @walletData="setWalletName($event)" />
                         <span class="text-sm">
                             <Link href="/earn/learn/register"
-                                  class="font-bold text-labs-red text-xs md:text-base hover:text-labs-black">
+                                class="font-bold text-labs-red text-xs md:text-base hover:text-labs-black">
                                 {{ $t("needWallet") }}
                             </Link>
+                        </span>
+                    </div>
+                    <div v-else  class="flex flex-col md:flex-row gap-1 md:gap-3 items-center  mx-auto">
+                        <CheckIcon class="h-8 w-8 text-green-500" />
+                        <span class="font-bold text-labs-green">
+                                {{ $t("connected") }}
                         </span>
                     </div>
                     <div class="text-right gap-2 md:gap-4 flex flex-row items-center justify-end">
@@ -187,10 +187,21 @@
 </template>
 
 <script lang="ts" setup>
-import {inject} from "vue";
-import {Link} from '@inertiajs/vue3';
+import {inject, Ref, ref, computed, watch} from "vue";
+import {Link, usePage} from '@inertiajs/vue3';
 import {Disclosure, DisclosureButton, DisclosurePanel} from '@headlessui/vue';
-import {MinusSmallIcon, PlusSmallIcon} from '@heroicons/vue/24/outline';
+import {MinusSmallIcon, PlusSmallIcon, CheckIcon} from '@heroicons/vue/24/outline';
+import { defineAsyncComponent } from 'vue';
+import User from "../../global/Shared/Models/user";
+import Wallet from '../../catalyst-explorer/models/wallet';
+const ConnectWallet = defineAsyncComponent(() =>import('../../global/Shared/Components/ConnectWallet.vue'));
+
+const user = computed(() => usePage().props.user as User)
+
+let walletData:Ref<Wallet> = ref({});
+const setWalletName = (wallet:Wallet) => {
+     walletData.value = wallet;
+}
 
 const $utils: any = inject('$utils');
 
