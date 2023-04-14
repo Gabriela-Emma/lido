@@ -16,10 +16,8 @@ use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 use Webwizo\Shortcodes\Facades\Shortcode;
 
 #[TypeScript]
-class QuizQuestionData extends Data implements Wireable
+class QuizQuestionData extends Data
 {
-    use WireableData;
-
     public function __construct(
         public ?int $id,
         public ?string $title,

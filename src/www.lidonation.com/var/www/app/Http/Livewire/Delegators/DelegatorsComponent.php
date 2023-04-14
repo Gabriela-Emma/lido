@@ -84,7 +84,7 @@ class DelegatorsComponent extends Component
         $this->rewardPot = collect(
             (new GetLidoRewardsPot)($this->everyEpoch))
             ->filter(
-                fn ($asset) => $asset['amount'] >= $this->rewardsTemplate[$asset['asset'].'.amount']
+                fn ($asset) => isset($this->rewardsTemplate[$asset['asset'].'.amount']) && $asset['amount'] >= $this->rewardsTemplate[$asset['asset'].'.amount']
             );
 
         if (Auth::check() && (bool) auth()->user()?->wallet_stake_address) {
@@ -103,7 +103,8 @@ class DelegatorsComponent extends Component
             }
         }
         if (! $this->everyEpochQuestion instanceof Question && $this->everyEpochQuiz instanceof Quiz) {
-            $this->everyEpochQuestion = (QuizData::from($this->everyEpochQuiz))?->questions?->first();
+            $this->everyEpochQuestion =
+                (QuizData::from($this->everyEpochQuiz))?->questions?->first()?->toArray();
         }
     }
 

@@ -1,4 +1,4 @@
-@if($everyEpochQuestion?->answers)
+@if($everyEpochQuestion['answers'])
     <div>
         <div class="flex flex-col justify-center items-center" x-show="!!quiz && !stakeAccount"
              @lido-rewards-loaded.window="seeRewards(true)">
@@ -30,7 +30,7 @@
                 </svg>
                 <div class="my-4" x-show="!correct">
                     <x-markdown>
-                        {{$everyEpochQuestion?->content}}
+                        {{$everyEpochQuestion['content']}}
                     </x-markdown>
                 </div>
             </div>
@@ -152,16 +152,16 @@
                 class="rounded-sm border border-dashed border-white p-4 flex flex-col gap-6">
                 <div class="space-y-3">
                     <p class="text-lg md:text-xl xl:text-2xl 2xl:text-3x xl:leading-12 2xl:leading-12 inline box-border box-decoration-clone p-2 tracking-wide bg-white text-teal-900 relative -left-8">
-                        {{$everyEpochQuestion->title}}
+                        {{$everyEpochQuestion['title']}}
                     </p>
                     <div class="text-slate-100 font-thin italic flex gap-2">
                         <p>Hint:</p>
-                        <x-markdown>
-                            {{$everyEpochQuestion->content}}
-                        </x-markdown>
+                        <div>
+                            {!! $everyEpochQuestion['content'] !!}}
+                        </div>
                     </div>
-                    <input name="question" type="hidden" value="{{$everyEpochQuestion->id}}"/>
-                    <input name="quiz" type="hidden" value="{{$everyEpochQuiz->id}}"/>
+                    <input name="question" type="hidden" value="{{$everyEpochQuestion['id']}}"/>
+                    <input name="quiz" type="hidden" value="{{$everyEpochQuiz['id']}}"/>
                 </div>
                 <div>
                     <div
@@ -209,7 +209,7 @@
                         class="max-w-lg w-full h-full relative">
                         <!-- Radio Group Label -->
                         <label :id="$id('radio-group-label')" role="none" class="hidden">
-                            {{$everyEpochQuestion->content}}<span x-text="value"></span>
+                            {{$everyEpochQuestion['content']}}<span x-text="value"></span>
                         </label>
                         <input name="answer" type="hidden" x-model="value"/>
 
@@ -218,9 +218,9 @@
                                  x-show="prefilled"></div>
 
                             <!-- Option -->
-                            @foreach($everyEpochQuestion->answers as $answer)
+                            @foreach($everyEpochQuestion['answers'] as $answer)
                                 <div
-                                    x-data="{ option: {{$answer->id}} }"
+                                    x-data="{ option: {{$answer['id']}} }"
                                     @click="select(option)"
                                     @keydown.enter.stop.prevent="select(option)"
                                     @keydown.space.stop.prevent="select(option)"
@@ -230,31 +230,31 @@
                                     :aria-describedby="$id('radio-option-description')"
                                     x-id="['radio-option-label', 'radio-option-description']"
                                     role="radio"
-                                    data-answer="{{ $answer->toJson() }}"
+                                    data-answer="{{ json_encode($answer) }}"
                                     class="flex cursor-pointer border border-slate-200 w-full justify-between items-center p-2 bg-slate-100/80 rounded-sm text-slate-800 answer"
                                 >
                                     <span class="mr-3">
                                         <!-- Primary Label -->
                                         @if(!$myResponse)
                                             <p class="text-lg leading-none"
-                                               :id="$id('radio-option-label')">{{ $answer->content }}</p>
+                                               :id="$id('radio-option-label')">{{ $answer['content'] }}</p>
                                         @else
-                                            @if($myResponse->question_answer_id === $answer->id)
+                                            @if($myResponse->question_answer_id === $answer['id'])
                                                 <p class="{{$myResponse->correct ? 'text-green-500' : 'text-pink-500'}} text-lg leading-none">
-                                                    {{ $answer->content }}
+                                                    {{ $answer['content'] }}
                                                 </p>
                                             @else
-                                                <p class="text-lg leading-none {{ $answer->correct ? 'text-green-600 font-bold' : '' }}">
-                                                    {{ $answer->content }}
+                                                <p class="text-lg leading-none {{ $answer['correct'] ? 'text-green-600 font-bold' : '' }}">
+                                                    {{ $answer['content'] }}
                                                 </p>
                                             @endif
                                         @endif
 
-                                        @if($answer->hint)
+                                        @if($answer['hint'])
                                             <!-- Hint -->
                                             <span :id="$id('radio-option-description')"
                                                   class="mt-0.5 text-sm text-slate-700">
-                                            {{$answer->hint}}
+                                            {{$answer['hint']}}
                                         </span>
                                         @endif
                                     </span>
