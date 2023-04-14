@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTransferObjects\RewardsData;
 use Exception;
 use App\Models\Tx;
 use App\Models\User;
@@ -18,9 +19,15 @@ use Illuminate\Auth\AuthenticationException;
 
 class RewardController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return Inertia::render('Rewards');
+        if($request->user()){
+            $rewards = $this->queryRewards($request->user());
+        }
+
+        return Inertia::render('Rewards',[
+            'Rewards' => $request->user() ? RewardsData::collection($rewards) : []
+        ]);
     }
 
     public function withdraw(Request $request)
@@ -128,5 +135,12 @@ class RewardController extends Controller
         } catch (Exception $e) {
             return null;
         }
+    }
+
+    public function queryRewards($user){
+
+        return Reward::where('stake_address', $user?->wallet_stake_address)
+                    ->where('status', 'issued')
+                    ->orderBy('created_at', 'desc')->with('user')->paginate(3, ['*'], 'p')->setPath('/')->onEachSide(0);
     }
 }

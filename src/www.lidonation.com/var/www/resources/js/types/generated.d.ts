@@ -52,15 +52,27 @@ export type QuizQuestionAnswerData = {
 id: number | null;
 title: string | null;
 content?: string | null;
+correctness?: string | null;
 type?: string | null;
+correct?: boolean | null;
+hint?: string | null;
 status?: string | null;
 };
 export type QuizQuestionData = {
 id: number | null;
-title: string;
+title: string | null;
 content?: string | null;
 type?: string | null;
 status?: string | null;
 answers: Array<App.DataTransferObjects.QuizQuestionAnswerData> | null;
+};
+export type RewardsData = {
+id: number | null;
+asset: string | null;
+amount: number | null;
+asset_type?: string | null;
+status: string | null;
+asset_details?: object | null;
+memo: string | null;
 };
 }

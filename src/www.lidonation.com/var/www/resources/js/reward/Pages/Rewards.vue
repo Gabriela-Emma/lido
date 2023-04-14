@@ -44,12 +44,12 @@
                         </div>
                     </section>
                     <section class="border-t border-teal-300 p-6 -my-1 ">
-                        <div v-if="user" x-show="!!wallet">
-                            <template x-if="withdrawals">
+                        <template v-if="user != null" x-show="!!wallet">
+                            <template v-if="withdrawals">
                                 <div
                                     class="absolute left-0 top-0 w-full h-full bg-teal-600 shadow-lg z-10 text-white">
                                     <div>
-                                        <div class="px-4 py-5 sm:px-6 relative" x-show="!withdrawalsProcessed">
+                                        <div class="px-4 py-5 sm:px-6 relative" v-show="!withdrawalsProcessed">
                                             <h3 class="text-lg font-medium leading-6">
                                                 Process Rewards
                                             </h3>
@@ -59,15 +59,12 @@
                                                 wallet plus your 2 Ada minus tx fee.
 
                                             </p>
-                                            <!-- @if($availableRewards?->isNotEmpty()) -->
-                                                <div class="mt-2 text-center">
-                                                    <span @click=""
-                                                            class="inline-flex items-center px-1 py-1 rounded-sm text-sm bg-accent-200 text-teal-900 hover:bg-accent-400 hover:cursor-pointer">
-                                                        Withdraw
-                                                    </span>
-                                                </div>
-                                            <!-- @endif -->
-
+                                            <div v-if="Rewards != null" class="mt-2 text-center">
+                                                <span @click="withdrawalRewards"
+                                                        class="inline-flex items-center px-1 py-1 rounded-sm text-sm bg-accent-200 text-teal-900 hover:bg-accent-400 hover:cursor-pointer">
+                                                    Withdraw
+                                                </span>
+                                            </div>
                                             <span
                                                 class="absolute right-0 top-0 p-2 bg-teal-700 hover:cursor-pointer"
                                                 @click="">
@@ -83,7 +80,7 @@
 
                                         <div class="border-t border-teal-200 px-4 py-5 sm:p-0">
                                             <div class="flex flex-col items-center gap-8 pt-8"
-                                                    x-show="withdrawalsProcessed">
+                                                    v-show="withdrawalsProcessed">
                                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                                                         fill="currentColor"
                                                         class="w-16 h-16 text-green-500">
@@ -97,12 +94,11 @@
                                                     your wallet in about 5 to 10 minutes.
                                                 </p>
                                             </div>
-                                            <dl class="overflow-y-auto" x-show="!withdrawalsProcessed">
-                                                <!-- <template x-for="(withdrawal, index) in withdrawals"
-                                                            :key="withdrawal[0]?.asset">
+                                            <dl class="overflow-y-auto" v-show="!withdrawalsProcessed">
+                                                <template v-for="withdrawal in withdrawals">
                                                     <div
                                                         class="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-5 sm:px-6"
-                                                        :class="{'bg-teal-700': index % 2 == 0 }">
+                                                        :class="{'bg-teal-700': 1 }">
                                                         <dt class="text-sm font-medium">
                                                             <span class="flex gap-2">
                                                                 <span x-text="getAssetName(withdrawal[0])"></span>
@@ -119,14 +115,13 @@
                                                                 <span
                                                                     class="relative inline-flex items-center rounded-full w-4 2xl:w-5 w-4 2xl:h-5 ml-2">
                                                                     <img class="inline-flex"
-                                                                            alt="asset logo"
-                                                                            :src="getAssetLogo(withdrawal[0])"
-                                                                            :alt="getAssetName(withdrawal[0]) + ' logo'"/>
+                                                                            :src="withdrawal[0].asset_details?.metadata?.logo"
+                                                                            :alt="`${withdrawal[0].asset_details?.metadata?.name}}`"/>
                                                                 </span>
                                                             </template>
                                                         </dd>
                                                     </div>
-                                                </template> -->
+                                                </template>
                                             </dl>
                                         </div>
                                     </div>
@@ -135,102 +130,94 @@
 
 
                             <div class="text-white bg-gray-900 bg-opacity-25 rounded-sm pb-2 relative">
-                                <div class="rounded-tl-sm rounded-tr-md bg-teal-900 shadow-sm">
-                                    <div class="flex justify-between items-center px-4">
-                                        <h3 class="py-2 font-semibold">
-                                            <span>
-                                                Rewards
-                                            </span>
-                                            <span class="text-xs text-gray-400">
-                                                <!-- {{$availableRewards?->count() ?? '-'}} -->
-                                            </span>
-                                        </h3>
-                                        <div>
-                                            <!-- @if($availableRewards?->isNotEmpty() || $withdrawals?->isNotEmpty()) -->
-                                                <span 
+                                    <div class="rounded-tl-sm rounded-tr-md bg-teal-900 shadow-sm">
+                                        <div class="flex justify-between items-center px-4">
+                                            <h3 class="py-2 font-semibold">
+                                                <span>
+                                                    Rewards
+                                                </span>
+                                                <span class="text-xs text-gray-400">
+                                                    {{Rewards.length}}
+                                                </span>
+                                            </h3>
+                                            <div>
+                                                <span v-if="Rewards!= null" @click="withdraw"
                                                         class="inline-flex items-center px-1 py-0.5 rounded text-xs bg-accent-200 text-teal-900 hover:bg-accent-400 hover:cursor-pointer">
                                                     Withdraw
                                                 </span>
-                                            <!-- @endif -->
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div>
-                                    <div class="flex flex-col">
-                                        <div class="min-w-full -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-                                            <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
-                                                <table class="min-w-full overflow-auto divide-y divide-gray-200">
-                                                    <thead class="flex flex-col justify-between min-w-full">
-                                                    <tr class="flex flex-row text-left" x-transition>
-                                                        <th class="px-6 w-32 py-4 text-sm  truncate flex gap-2">
-                                                            Amount
-                                                        </th>
-                                                        <th class="w-72 px-6 py-4 text-sm">Memo</th>
-                                                        <th class="px-2 py-4 text-sm truncate flex gap-2">Status
-                                                        </th>
-                                                    </tr>
-                                                    </thead>
-                                                    <tbody
-                                                        class="flex flex-col justify-start min-w-full divide-y divide-gray-300 h-72">
-                                                    <!-- @if($availableRewards?->isNotEmpty() || !empty($withdrawalsProcessed))
-                                                        @foreach($withdrawalsProcessed?->concat($availableRewards) ?? [] as $reward) -->
-                                                            <tr class="flex flex-row text-left" x-transition>
-                                                                <td class="px-6 py-4 w-32 text-sm truncate flex gap-2 flex items-center">
-                                                                    <span
-                                                                        class="font-semibold text-xl 2xl:text-2xl">
-                                                                        <!-- {{humanNumber($reward->amount / ($reward?->asset_details?->divisibility > 0  ? $reward?->asset_details?->divisibility : 1), 2)}} -->
-                                                                    </span>
-                                                                    <!-- @if(isset($reward->asset_details?->metadata?->logo)) -->
-                                                                        <span
-                                                                            class="relative inline-flex items-center rounded-full w-4 2xl:w-5 w-4 2xl:h-5">
-                                                                            <img class="inline-flex"
-                                                                                    alt="asset logo"
-                                                                                    src="data:image/png;base64,">
+                                    <div>
+                                        <div class="flex flex-col">
+                                            <div class="min-w-full -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                                                <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+                                                    <table class="min-w-full overflow-auto divide-y divide-gray-200">
+                                                        <thead class="flex flex-col justify-between min-w-full">
+                                                        <tr class="flex flex-row text-left" >
+                                                            <th class="px-6 w-32 py-4 text-sm  truncate flex gap-2">
+                                                                Amount
+                                                            </th>
+                                                            <th class="w-72 px-6 py-4 text-sm">Memo</th>
+                                                            <th class="px-2 py-4 text-sm truncate flex gap-2">Status
+                                                            </th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody
+                                                            class="flex flex-col justify-start min-w-full divide-y divide-gray-300 h-72">
+                                                                <tr v-for="reward in Rewards" class="flex flex-row text-left" >
+                                                                    <td class="px-6 py-4 w-32 text-sm truncate flex gap-2 flex items-center">
+                                                                         <span
+                                                                             class="font-semibold text-xl 2xl:text-2xl">
+                                                                             {{$filters.currency(reward.amount)}}
                                                                         </span>
-                                                                    <!-- @elseif(isset($reward->asset_details?->metadata?->ticker)) -->
-                                                                        <span
-                                                                            class="relative inline-block rounded-full w-3 h-3">
-                                                                        <!-- {{$reward->asset_details?->metadata?->ticker}} -->
+                                                                            <span v-if="reward.asset_details?.metadata?.logo"
+                                                                                class="relative inline-flex items-center rounded-full w-4 2xl:w-5 w-4 2xl:h-5">
+                                                                                <img class="inline-flex"
+                                                                                     alt="asset logo"
+                                                                                     src="data:image/png;base64,{{reward.asset_details.logo}}">
                                                                             </span>
-                                                                    <!-- @elseif(isset($reward->asset_details?->asset_name))  -->
-                                                                        <span
-                                                                            class="relative inline-block rounded-full w-3 h-3">
-                                                                            <!-- {{$reward->asset_details?->asset_name}} -->
-                                                                        </span>
-                                                                    <!-- @endif -->
-                                                                </td>
-                                                                <td class="w-72 px-6 py-4 text-sm">
-                                                                    <!-- // {{$reward->memo}} -->
-                                                                </td>
-                                                                <td class="px-2 py-4 text-sm truncate flex gap-2">
-                                                                    <!-- {{$reward->status}} -->
+                                                                            <span v-else-if="reward?.asset_details?.metadata?.ticker"
+                                                                                class="relative inline-block rounded-full w-3 h-3">
+                                                                                 {{reward.asset_details?.metadata?.ticker}}
+                                                                            </span>
+                                                                            <span v-else="reward?.asset_details?.asset_name"
+                                                                                class="relative inline-block rounded-full w-3 h-3">
+                                                                                {{reward.asset_details.asset_name}}
+                                                                            </span>
+                                                                    </td>
+                                                                    <td class="w-72 px-6 py-4 text-sm">
+                                                                        {{reward.memo}}
+                                                                    </td>
+                                                                    <td class="px-2 py-4 text-sm truncate flex gap-2">
+                                                                        {{reward.status}}
+                                                                    </td>
+                                                                </tr>
+                                                            <tr v-if="Rewards == null" class="flex flex-row text-left" >
+                                                                <td class="px-6 py-4 text-sm font-medium">
+                                                                    Nothing to see quit yet.
                                                                 </td>
                                                             </tr>
-                                                        <!-- @endforeach
-                                                    @endif
-                                                    @if($availableRewards?->isEmpty() && empty($withdrawalsProcessed)) -->
-                                                        <tr class="flex flex-row text-left" x-transition>
-                                                            <td class="px-6 py-4 text-sm font-medium">
-                                                                Nothing to see quit yet.
-                                                            </td>
-                                                        </tr>
-                                                    <!-- @endif -->
-                                                    </tbody>
-                                                </table>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
+                            </template>
                         
-                        <div class="flex justify-center" x-data="cardanoWallet">
+                        <div class="flex justify-center" v-show="Rewards == null">
                             <div v-show="!myWallet.name">
                                 <ConnectWallet :backgroundColor="'bg-green-700'"/>
                             </div>
                             <div class="mt-2 flex flex-col gap-6 bg-white/[.92] py-5 px-8" v-show="!!myWallet.name">
                                 <div>
-                                    <WalletLoginBtnVue @walletError="handleWalletError($event)" :role="'rewards'"/>
+                                    <div v-if="walletError.length>0" v-text="walletError"
+                                        class="text-red-500 text-sm my-1"></div>
+                                    <WalletLoginBtnVue :role="'reward'"
+                                                        @walletError="handleWalletError($event)"
+                                                        @user="setUser($event)"/>
                                 </div>
 
                                 <div>
@@ -242,9 +229,10 @@
                                                 :embedded="true"
                                                 :showLogo="false" 
                                                 :showWalletBtn="false"
-                                                @endpoint="" 
-                                                @setForm="" 
-                                                @submit=""/>
+                                                @setForm="getForm($event)" 
+                                                @submit="submit($event)"/>
+                                    <div v-if="errors.length>0" v-text="errors"
+                                        class="text-red-500 text-sm my-1"></div>
                                 </div>
                             </div>
                         </div>
@@ -263,8 +251,8 @@
 </template>
 
 <script lang="ts" setup>
-import { usePage } from '@inertiajs/vue3';
-import { computed, defineAsyncComponent, inject, ref, Ref } from 'vue';
+import { router, useForm, usePage } from '@inertiajs/vue3';
+import { computed, defineAsyncComponent, inject, ref, Ref, watch } from 'vue';
 import User from '../../global/Shared/Models/user';
 import WalletLoginBtnVue from '../../global/Shared/Components/WalletLoginBtn.vue';
 import Divider from '../../global/Shared/Components/Divider.vue';
@@ -272,21 +260,107 @@ import LoginForm from '../../global/Shared/Components/LoginForm.vue'
 import { useWalletStore } from '../../catalyst-explorer/stores/wallet-store';
 import Wallet from '../../catalyst-explorer/models/wallet';
 import { storeToRefs } from 'pinia';
+import RewardData = App.DataTransferObjects.RewardsData
+import { AxiosError } from 'axios';
 const ConnectWallet = defineAsyncComponent(() =>import('../../global/Shared/Components/ConnectWallet.vue'));
 const $utils: any = inject('$utils');
-const user = computed(() => usePage().props?.user as User);
 
+
+const props = withDefaults(
+    defineProps<{
+        Rewards?: {
+            links?: [],
+            total?: number,
+            to?: number,
+            from?: number,
+            data?: RewardData[]
+        };
+    }>(),{}
+);
+
+
+let user = ref(usePage()?.props?.user as User);
+let Rewards = ref(props?.Rewards?.data);
 
 // wallet store
 let walletStore = useWalletStore();
 let {walletData} = storeToRefs(walletStore);
-let myWallet:Ref<Wallet> = computed(() => walletData.value);
+let myWallet:Ref<Wallet> = computed(() => walletData?.value);
 
 //wallet login error
 let walletError =ref('');
 let handleWalletError = (error) => {
-    walletError.value = error.message
+    walletError.value = error.message;
 }
 
+//get loggedin user
+let setUser = (userData) => {
+    refresh();
+} 
 
+// refetch pagedata
+function refresh(){
+    router.get(`${usePage().props.base_url}/reward/myRewards`);
+}
+
+// login with email
+let form = useForm({})
+let errors=  ref('');
+let getForm = (loginForm) => {
+    form = loginForm
+}
+let submit = async (event) => {
+    try {
+            const res = await window.axios.post(`/api/rewards/login`, form);
+            if (res){
+                refresh();
+            }
+        } catch (e: AxiosError | any) {
+            console.error({e});
+            errors.value = e?.response?.data?.message
+        }
+}
+
+// withdraw
+let working = ref(false)
+let withdrawals:Ref<RewardData> = ref(null)
+let withdraw = async () => {
+    working.value = true;
+    try {
+        withdrawals.value = (await window.axios.post(`/api/rewards/withdrawals`))?.data;
+        withdrawals.value =
+
+    } catch (e) {
+        console.error(e)
+    }
+    working.value = false;
+}
+
+//withdrawalrewards
+let withdrawalsProcessed = ref(null);
+let paymentTx;
+let withdrawalRewards = async () => {
+    working.value = true;
+    const WalletService =  ((await import('../../lib/services/WalletService')).default);
+    try {
+        // start processing withdrawal
+        const processResponse = (await window.axios.post(`/api/rewards/withdrawals/process`, {address: myWallet?.value?.address}));
+        setTimeout(async () => {
+            console.log({processResponse});
+            
+            // get deposit
+            const walletService = new WalletService();
+            const rawTx = await walletService.payToAddress(myWallet?.value?.address, {lovelace: BigInt(2000000)});
+            const signedTx = await  rawTx.sign().complete();
+            paymentTx = await signedTx.submit();
+
+            // processing Withdrawal and send tx to backend
+            const withdrawalResponse = (await window.axios.post(`/api/rewards/withdrawals/withdraw`, {hash: paymentTx}));
+            withdrawalsProcessed = withdrawalResponse?.data;
+            working.value = false;
+        }, 3000);
+    } catch (e) {
+        console.error(e);
+    }
+}
 </script>

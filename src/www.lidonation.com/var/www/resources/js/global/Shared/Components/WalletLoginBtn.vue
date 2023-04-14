@@ -35,6 +35,7 @@ import { Ref, ref, watch } from 'vue';
 import { defineAsyncComponent } from 'vue';
 import Wallet from '../../../catalyst-explorer/models/wallet';
 import { AxiosError } from 'axios';
+import User from '../Models/user';
 const ConnectWallet = defineAsyncComponent(() =>import('./ConnectWallet.vue'));
 
 const props = withDefaults(
@@ -63,16 +64,20 @@ watch([walletData], async (newVal, oldVal) => {
 
 const emit =defineEmits<{
     (e: 'walletError', error: AxiosError | any):void
+    (e:'user', user:User):void
 }>();
 
 let loginUser =async () => {
      const { walletLogin } = await import('../../../lib/utils/walletLogin');
      try {     
-          await walletLogin(wallet_name.value, wallet_address.value,
+         const user= await walletLogin(wallet_name.value, wallet_address.value,
           'Lido User Login',props.role,
           {
                stake_address: stake_address.value
           });
+          if(user){
+               emit('user', user)
+          }
           
      } catch (e: AxiosError | any) {
           emit('walletError',e.response.data);

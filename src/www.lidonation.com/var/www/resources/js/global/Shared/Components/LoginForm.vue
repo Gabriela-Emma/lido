@@ -98,12 +98,13 @@ const props = withDefaults(
         embedded?: boolean,
         showWalletBtn?:boolean,
         forRewards?:boolean,
+        role?:string,
     }>(),
     {
         showLogo: true,
         embedded: false,
         showWalletBtn:true,
-        forRewards:false
+        forRewards:false,
     },
 );
 
@@ -124,20 +125,11 @@ const emit = defineEmits<{
     (e: 'submit')
 }>();
 
-let prefix = ref(usePage().url.split('/')[2])
-
-const explorerEndpoint = '/api/catalyst-explorer/login';
-const learnEndpoint = '/api/earn/learn/login';
+const endPoint = `/api/${props.role}/login`;
 
 let submit = () => {
     emit('setForm', form)
-    if(prefix.value ==='catalyst-explorer'){
-        emit('endpoint', explorerEndpoint);
-        emit('submit');
-    }
-    if(prefix.value === 'earn'){
-        emit('endpoint', learnEndpoint);
-        emit('submit');
-    }
+    emit('endpoint',endPoint)
+    emit('submit');
 }
 </script>

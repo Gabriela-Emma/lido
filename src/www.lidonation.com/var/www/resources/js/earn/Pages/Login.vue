@@ -1,6 +1,7 @@
 <template>
     <div class="bg-slate-100 login-form-wrapper">
-        <LoginForm :showLogo="false" 
+        <LoginForm :role="'earn/learn'"
+                    :showLogo="false" 
                    :errors="errors" 
                    @endpoint="setEndpoint($event)" 
                    @setForm="getForm($event)" 
