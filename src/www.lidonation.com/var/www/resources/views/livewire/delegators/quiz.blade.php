@@ -156,9 +156,9 @@
                     </p>
                     <div class="text-slate-100 font-thin italic flex gap-2">
                         <p>Hint:</p>
-                        <x-markdown>
-                            {{$everyEpochQuestion['content']}}
-                        </x-markdown>
+                        <div>
+                            {!! $everyEpochQuestion['content'] !!}}
+                        </div>
                     </div>
                     <input name="question" type="hidden" value="{{$everyEpochQuestion['id']}}"/>
                     <input name="quiz" type="hidden" value="{{$everyEpochQuiz['id']}}"/>
