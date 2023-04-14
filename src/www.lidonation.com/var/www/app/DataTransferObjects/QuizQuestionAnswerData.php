@@ -25,6 +25,9 @@ class QuizQuestionAnswerData extends Data implements Wireable
         public ?string $content,
 
         #[TypeScriptOptional]
+        public ?string $correctness,
+
+        #[TypeScriptOptional]
         public ?string $type,
 
         #[TypeScriptOptional]
