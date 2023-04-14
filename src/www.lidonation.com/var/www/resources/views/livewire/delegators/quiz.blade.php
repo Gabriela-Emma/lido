@@ -1,4 +1,4 @@
-@if($everyEpochQuestion)
+@if($everyEpochQuestion?->answers)
     <div>
         <div class="flex flex-col justify-center items-center" x-show="!!quiz && !stakeAccount"
              @lido-rewards-loaded.window="seeRewards(true)">

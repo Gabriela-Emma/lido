@@ -29,6 +29,22 @@ body.logged-in.admin {
         }
     }
 }
+.sign-in{
+    @apply inline-flex gap-1 items-center justify-center rounded-sm border border-slate-800 px-3 py-2 xl:text-xl 3xl:text-2xl font-medium text-slate-800 hover:bg-slate-200 focus:outline-none focus:ring-0 focus:ring-offset-0;
+    
+    &::before {
+        content: "";
+        display: inline-block;
+        vertical-align: middle;
+        width: 1.2rem;
+        height: 1.2rem;
+        margin-right: 0.1rem;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='1.5' stroke='currentColor' class='w-5 h-5'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: contain;
+    }
+  }
 
 body.projectCatalyst, body.proposal {
     .lido-menu-wrapper {

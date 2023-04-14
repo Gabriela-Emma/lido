@@ -2,12 +2,12 @@
 
 namespace App\DataTransferObjects;
 
-use App\Models\LearningLesson;
+use Spatie\LaravelData\Attributes\DataCollectionOf;
 use Spatie\LaravelData\Data;
+use Spatie\LaravelData\DataCollection;
 use Spatie\LaravelData\Optional;
 use Spatie\TypeScriptTransformer\Attributes\Optional as TypeScriptOptional;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
-use Webwizo\Shortcodes\Facades\Shortcode;
 
 #[TypeScript]
 class LearningLessonData extends Data
@@ -19,10 +19,19 @@ class LearningLessonData extends Data
         public ?int $length,
         public ?int $order,
         public null | bool | Optional $completed,
+
         #[TypeScriptOptional]
         public ?string $link,
+
+        #[TypeScriptOptional]
+        public ?QuizData $quiz,
+
+        #[DataCollectionOf(QuizData::class)]
+        public ?DataCollection $quizzes,
+
         #[TypeScriptOptional]
         public ?ModelData $model,
+
         #[TypeScriptOptional]
         public ?LearningTopicData $topic
     ) {}

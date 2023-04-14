@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Delegators;
 
+use App\DataTransferObjects\QuizData;
 use App\Invokables\GetLidoRewardsPot;
 use App\Invokables\GetPoolMultiplier;
 use App\Models\AnswerResponse;
@@ -9,6 +10,7 @@ use App\Models\EveryEpoch;
 use App\Models\Giveaway;
 use App\Models\Promo;
 use App\Models\Question;
+use App\Models\Quiz;
 use App\Models\Reward;
 use App\Models\User;
 use App\Repositories\PostRepository;
@@ -100,8 +102,8 @@ class DelegatorsComponent extends Component
                 $this->everyEpochQuestion = $this->myResponse?->answer?->question;
             }
         }
-        if (! $this->everyEpochQuestion instanceof Question) {
-            $this->everyEpochQuestion = $this->everyEpochQuiz?->questions?->shuffle()->first();
+        if (! $this->everyEpochQuestion instanceof Question && $this->everyEpochQuiz instanceof Quiz) {
+            $this->everyEpochQuestion = (QuizData::from($this->everyEpochQuiz))?->questions?->first();
         }
     }
 
@@ -218,7 +220,7 @@ class DelegatorsComponent extends Component
         $reward->save();
     }
 
-    protected function issueReward(string $asset)
+    protected function issueReward(string $asset): Reward
     {
         $user = auth()->user();
         $amount = $this->rewardsTemplate[$asset.'.amount'];
@@ -248,17 +250,16 @@ class DelegatorsComponent extends Component
 
     protected function loadUserNfts(User $user)
     {
-        
         $imagesArr = [];
         try {
             $assets = app(CardanoBlockfrostService::class)->get('accounts/'.$user->wallet_stake_address.'/addresses/assets', null)->collect();
 
-            //loop assets and extract nft images 
+            //loop assets and extract nft images
             foreach ($assets as $asset) {
                 $assetMetaObject = app(CardanoBlockfrostService::class)->get('assets/'.$asset['unit'], null)->object();
                 $imageMeta = $assetMetaObject->onchain_metadata->image;
-    
-                //from image meta establish protocol and the uri 
+
+                //from image meta establish protocol and the uri
                 switch (gettype($imageMeta)) {
                     case "string": //eg "https://cardano.org/favicon-32x32.png"  OR "ipfs://QmbQDvKJeo2NgGcGdnUiUFibTzuKNK5Uij7jzmK8ZccmWp"
                         [$imageProtocol, $imageUri] = explode('://', $imageMeta);
@@ -269,7 +270,7 @@ class DelegatorsComponent extends Component
                         $imageUri = $uri;
                         break;
                 }
-            
+
                 //generate off-chain link based on the protocol
                 switch ($imageProtocol) {
                     case 'ar':
@@ -286,9 +287,9 @@ class DelegatorsComponent extends Component
                         break;
                 }
             }
-            
+
             $this->nftLinks = (count($imagesArr) > 0) ? $imagesArr : null;
-            $this->ownNft = count($this->nftLinks) > 0 ? true : false;
+            $this->ownNft = isset($this->nftLinks) && count($this->nftLinks) > 0;
         } catch (Exception $e) {
             report($e);
         }

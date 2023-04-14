@@ -110,7 +110,7 @@ class Link extends Resource
             static::getGlobalActions(),
             [
                 (new AddMetaData),
-                (new EditMetaData(\App\Models\Link::class)),
+                (new EditMetaData(Link::class)),
             ]);
     }
 }

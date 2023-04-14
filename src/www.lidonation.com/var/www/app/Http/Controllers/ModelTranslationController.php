@@ -71,7 +71,7 @@ class ModelTranslationController extends Controller
     {
         $model = $this->matchModel($request->model_type, $request->model_id);
         $translation = Translation::where('source_id', $request->model_id)->where('lang', $request->targetLanguage)->first();
-        $translation->content = $request->content;
+        $translation->content = $request->get('content');
         $translation->published_at = now();
         $translation->save();
 

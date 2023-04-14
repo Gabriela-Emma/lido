@@ -25,9 +25,10 @@ class AppPolicy
     /**
      * Determine whether the user can view any models.
      *
+     * @param User $user
      * @return mixed
      */
-    public function canViewAny(User $user)
+    public function canViewAny(User $user): mixed
     {
         return $user->hasAnyRole(['admin', 'super_admin', 'super admin']);
     }
@@ -54,9 +55,10 @@ class AppPolicy
     /**
      * Determine whether the user can update the model.
      *
+     * @param User $user
      * @return mixed
      */
-    public function canUpdate(User $user)
+    public function canUpdate(User $user): mixed
     {
         return $user->hasAnyRole(['admin', 'super_admin', 'super admin']);
     }
