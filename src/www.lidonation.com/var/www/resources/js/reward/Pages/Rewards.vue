@@ -226,11 +226,11 @@
                         
                         <div class="flex justify-center" x-data="cardanoWallet">
                             <div v-show="!myWallet.name">
-                                <ConnectWallet :for-rewards="true"/>
+                                <ConnectWallet :backgroundColor="'bg-green-700'"/>
                             </div>
                             <div class="mt-2 flex flex-col gap-6 bg-white/[.92] py-5 px-8" v-show="!!myWallet.name">
                                 <div>
-                                    <WalletLoginBtnVue/>
+                                    <WalletLoginBtnVue @walletError="handleWalletError($event)" :role="'rewards'"/>
                                 </div>
 
                                 <div>
@@ -264,7 +264,7 @@
 
 <script lang="ts" setup>
 import { usePage } from '@inertiajs/vue3';
-import { computed, defineAsyncComponent, inject, Ref } from 'vue';
+import { computed, defineAsyncComponent, inject, ref, Ref } from 'vue';
 import User from '../../global/Shared/Models/user';
 import WalletLoginBtnVue from '../../global/Shared/Components/WalletLoginBtn.vue';
 import Divider from '../../global/Shared/Components/Divider.vue';
@@ -272,14 +272,21 @@ import LoginForm from '../../global/Shared/Components/LoginForm.vue'
 import { useWalletStore } from '../../catalyst-explorer/stores/wallet-store';
 import Wallet from '../../catalyst-explorer/models/wallet';
 import { storeToRefs } from 'pinia';
-
 const ConnectWallet = defineAsyncComponent(() =>import('../../global/Shared/Components/ConnectWallet.vue'));
+const $utils: any = inject('$utils');
+const user = computed(() => usePage().props?.user as User);
 
+
+// wallet store
 let walletStore = useWalletStore();
 let {walletData} = storeToRefs(walletStore);
 let myWallet:Ref<Wallet> = computed(() => walletData.value);
 
+//wallet login error
+let walletError =ref('');
+let handleWalletError = (error) => {
+    walletError.value = error.message
+}
 
-const user = computed(() => usePage().props?.user as User);
-const $utils: any = inject('$utils');
+
 </script>

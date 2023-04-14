@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\PostController;
 use App\Http\Livewire\PoolTool\PoolTool;
 use App\Http\Controllers\OAuthController;
+use App\Http\Controllers\RewardController;
 use App\Http\Controllers\StripeController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ContactController;
@@ -27,7 +28,6 @@ use App\Http\Controllers\NewsletterController;
 use App\Http\Livewire\Library\LibraryComponent;
 use App\Http\Controllers\GlobalSearchController;
 use App\Http\Controllers\VerifyWalletController;
-use App\Http\Controllers\Rewards\RewardsController;
 use App\Http\Controllers\ModelTranslationController;
 use App\Http\Controllers\AnonymousBookmarkController;
 use App\Http\Controllers\TwitterAttendanceController;
@@ -179,7 +179,7 @@ Route::group(
     });
 
     Route::prefix('/reward')->as('rewards')->group(function(){
-        Route::get('/myRewards', [RewardsController::class, 'index']);
+        Route::get('/myRewards', [RewardController::class, 'index']);
     });
 
     Route::prefix('/earn')->as('earn.')->group(function () {

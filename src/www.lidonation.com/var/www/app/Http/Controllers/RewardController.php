@@ -2,21 +2,27 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\RoleEnum;
-use App\Jobs\ProcessUserRewardsJob;
-use App\Models\Reward;
+use Exception;
 use App\Models\Tx;
 use App\Models\User;
+use Inertia\Inertia;
+use App\Models\Reward;
+use App\Enums\RoleEnum;
 use App\Models\Withdrawal;
-use App\Services\CardanoWalletService;
-use Exception;
-use Illuminate\Auth\AuthenticationException;
 use Illuminate\Http\Request;
+use App\Jobs\ProcessUserRewardsJob;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
+use App\Services\CardanoWalletService;
+use Illuminate\Auth\AuthenticationException;
 
 class RewardController extends Controller
 {
+    public function index()
+    {
+        return Inertia::render('Rewards');
+    }
+
     public function withdraw(Request $request)
     {
         $request->validate([
