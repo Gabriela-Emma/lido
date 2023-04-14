@@ -23,10 +23,10 @@ class UserController extends Controller
             'key' => 'sometimes|required_without_all:email,password|min:13',
             'signature' => 'sometimes|required_without_all:email,password|min:13',
         ]);
-        
+
         if(isset($request->stake_address)){
             $user = User::where('wallet_stake_address', $request->stake_address)->first();
-            
+
             if ((bool) $user) {
                 Auth::login($user, $remember = true);
                 return to_route('catalystExplorer.myDashboard');
@@ -122,7 +122,7 @@ class UserController extends Controller
     public function utilityLogin()
     {
         $previousUrl = url()->previous();
-        $previousRouteName = app('router')->getRoutes()->match(app('request')->create($previousUrl))->getName();
+        $previousRouteName = app('router')->getRoutes()->match(app('request')->create($previousUrl))?->getName();
 
         return Inertia::modal('Auth/UtilityLogin')->baseRoute($previousRouteName);
     }

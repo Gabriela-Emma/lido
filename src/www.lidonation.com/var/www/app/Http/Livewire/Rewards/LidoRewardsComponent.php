@@ -40,10 +40,6 @@ class LidoRewardsComponent extends Component
 
     public $myResponse;
 
-    protected $listeners = [
-        'claimEveryEpochReward' => 'claimEveryEpochReward',
-    ];
-
     /**
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface

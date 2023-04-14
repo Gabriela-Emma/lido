@@ -28,7 +28,7 @@ class LidoRewardsPotComponent extends Component
         $this->rewardPot = collect(
             (new GetLidoRewardsPot)($this->everyEpoch)
         )->filter(
-            fn ($asset) => $asset['amount'] >= $this->rewardsTemplate[$asset['asset'].'.amount']
+            fn ($asset) => isset($this->rewardsTemplate[$asset['asset'].'.amount']) && $asset['amount'] >= $this->rewardsTemplate[$asset['asset'].'.amount']
         );
     }
 
