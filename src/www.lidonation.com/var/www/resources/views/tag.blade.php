@@ -1,8 +1,8 @@
 <x-public-layout class="tag" :metaTitle="'Tag: ' . $tag->title">
-    <x-public.page-header :size="'md'">
+    <x-public.page-header :size="'sm'">
         <x-slot name="title">
-            <div class="block flex z-10 flex-col gap-2 sm:flex-row">
-                <span class='z-10 font-semibold'>{{__('Tag:') }}</span>
+            <div class="block flex z-10 flex-col">
+                <span class='z-10 font-semibold text-sm text-slate-700'>{{__('Tag') }}</span>
                 <span class='z-10 font-semibold text-teal-600'>{{ $tag->title  }}</span>
             </div>
             <p class="mt-3 mb-1 text-xl max-w-3xl font-normal text-gray-500 sm:mt-4">
