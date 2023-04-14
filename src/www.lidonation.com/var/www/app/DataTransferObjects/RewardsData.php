@@ -19,7 +19,7 @@ class RewardsData extends Data
       public ?string $asset_type,
       public ?string $status,
       #[TypeScriptOptional]
-      public ?object $asset_details,
+      public object|array $asset_details,
       public ?string $memo
 
     ) {}

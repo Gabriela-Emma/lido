@@ -67,6 +67,7 @@ status?: string | null;
 answers: Array<App.DataTransferObjects.QuizQuestionAnswerData> | null;
 };
 export type RewardsData = {
+[x: string]: any;
 id: number | null;
 asset: string | null;
 amount: number | null;

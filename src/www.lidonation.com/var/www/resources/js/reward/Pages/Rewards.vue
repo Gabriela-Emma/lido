@@ -2,7 +2,7 @@
 <div
     class="bg-gradient-to-br from-teal-500 via-teal-600 to-accent-900 relative text-white catalyst-proposals-bookmarks-wrapper min-h-[92vh]">
     <div class="container relative h-full">
-        <div v-show="0"
+        <div v-show="working"
              class="left-0 top-0 flex items-start justify-center w-full h-full p-32 absolute bg-teal-600 bg-opacity-90 z-20">
             <div
                 class="flex items-center justify-center w-24 h-24 p-3 bg-white rounded-full lg:h-32 lg:w-32 bg-opacity-90">
@@ -105,18 +105,18 @@
                                                             </span>
                                                         </dt>
                                                         <dd class="mt-1 text-sm sm:col-span-2 sm:mt-0">
-                                                            <span class="font-semibold text-xl 2xl:text-2xl"
-                                                                    x-text="(
+                                                            <!-- <span class="font-semibold text-xl 2xl:text-2xl"
+                                                                    v-text="(
                                                                     withdrawal.reduce((total, asset) => total + asset.amount, 0)
                                                                     /
                                                                     (withdrawal[0]?.asset_details?.divisibility > 0  ? withdrawal[0]?.asset_details?.divisibility : 1))
-                                                                    .toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 2})"></span>
-                                                            <template x-if="getAssetLogo(withdrawal[0])">
+                                                                    .toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 2})"></span> -->
+                                                            <template v-if="withdrawal?.asset_details?.metadata?.logo">
                                                                 <span
                                                                     class="relative inline-flex items-center rounded-full w-4 2xl:w-5 w-4 2xl:h-5 ml-2">
                                                                     <img class="inline-flex"
-                                                                            :src="withdrawal[0].asset_details?.metadata?.logo"
-                                                                            :alt="`${withdrawal[0].asset_details?.metadata?.name}}`"/>
+                                                                            :src="withdrawal?.asset_details?.metadata?.logo"
+                                                                            :alt="`${withdrawal?.asset_details?.metadata?.name}`"/>
                                                                 </span>
                                                             </template>
                                                         </dd>
@@ -323,17 +323,17 @@ let submit = async (event) => {
 
 // withdraw
 let working = ref(false)
-let withdrawals:Ref<RewardData> = ref(null)
+let withdrawals:Ref<RewardData[]> = ref(null)
 let withdraw = async () => {
     working.value = true;
     try {
         withdrawals.value = (await window.axios.post(`/api/rewards/withdrawals`))?.data;
-        withdrawals.value =
 
     } catch (e) {
         console.error(e)
     }
     working.value = false;
+    // withdrawals.value = withdrawals.value.flatMap((arr: RewardData[]) => arr) ?? [];
 }
 
 //withdrawalrewards

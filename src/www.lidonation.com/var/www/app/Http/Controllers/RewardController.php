@@ -116,12 +116,15 @@ class RewardController extends Controller
 
     public function withdrawals()
     {
-        return Reward::where('stake_address', auth()?->user()?->wallet_stake_address)
+        $rewards = Reward::where('stake_address', auth()?->user()?->wallet_stake_address)
             ->where('status', 'issued')
             ->orderBy('created_at', 'desc')
             ->get()
-            ?->groupBy('asset')
-            ->values();
+            ?->groupBy('asset');
+
+        $flattenedRewards = $rewards ? array_reduce($rewards->toArray(), 'array_merge', []) : [];
+
+        return array_values($flattenedRewards);
     }
 
     protected function mintAddressFromLucid()
