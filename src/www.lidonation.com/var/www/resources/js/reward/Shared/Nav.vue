@@ -4,7 +4,7 @@
             <div class="flex flex-row justify-between flex-nowrap gap-4">
                 <nav></nav>
                 <nav class="relative hidden lg:inline-flex">
-                    <ul
+                    <!-- <ul
                         class="flex flex-row items-center justify-end gap-2 py-2 text-xs md:text-sm flex-nowrap overflow-x-auto h-full">
                         <li class="flow-root menu-item">
                             <Link
@@ -44,7 +44,7 @@
                                 {{ $t('Profile') }}
                             </Link>
                         </li>
-                    </ul>
+                    </ul> -->
                 </nav>
 
             </div>
