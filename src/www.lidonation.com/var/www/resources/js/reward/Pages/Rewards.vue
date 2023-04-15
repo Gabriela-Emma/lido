@@ -59,7 +59,7 @@
                                                 wallet plus your 2 Ada minus tx fee.
 
                                             </p>
-                                            <div v-if="Rewards != null" class="mt-2 text-center">
+                                            <div v-show="Rewards" class="mt-2 text-center">
                                                 <span @click=""
                                                         class="inline-flex items-center px-1 py-1 rounded-sm text-sm bg-accent-200 text-teal-900 hover:bg-accent-400 hover:cursor-pointer">
                                                     Withdraw
@@ -101,7 +101,7 @@
                                                         :class="{'bg-teal-700': 1 }">
                                                         <dt class="text-sm font-medium">
                                                             <span class="flex gap-2">
-                                                                <span x-text="getAssetName(withdrawal[0])"></span>
+                                                                <span v-text="withdrawal?.asset_details?.asset_name"></span>
                                                             </span>
                                                         </dt>
                                                         <dd class="mt-1 text-sm sm:col-span-2 sm:mt-0">
@@ -113,7 +113,7 @@
                                                                     .toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 2})"></span> -->
                                                             <template v-if="withdrawal?.asset_details?.metadata?.logo">
                                                                 <span
-                                                                    class="relative inline-flex items-center rounded-full w-4 2xl:w-5 w-4 2xl:h-5 ml-2">
+                                                                    class="relative inline-flex items-center rounded-full 2xl:w-5 w-4 2xl:h-5 ml-2">
                                                                     <img class="inline-flex"
                                                                             :src="withdrawal?.asset_details?.metadata?.logo"
                                                                             :alt="`${withdrawal?.asset_details?.asset_name}`"/>
@@ -141,7 +141,7 @@
                                                 </span>
                                             </h3>
                                             <div>
-                                                <span v-if="Rewards!= null" @click="withdraw"
+                                                <span v-show="Rewards[0]" @click="withdraw"
                                                         class="inline-flex items-center px-1 py-0.5 rounded text-xs bg-accent-200 text-teal-900 hover:bg-accent-400 hover:cursor-pointer">
                                                     Withdraw
                                                 </span>
@@ -169,7 +169,8 @@
                                                                     <td class="px-6 py-4 w-32 text-sm truncate flex gap-2  items-center">
                                                                          <span
                                                                              class="font-semibold text-xl 2xl:text-2xl">
-                                                                             {{$filters.currency(reward.amount)}}
+
+                                                                             {{$filters.currency(reward.amount/(reward.asset_details?.divisibility > 0  ? reward?.asset_details?.divisibility : 1), 2)}}
                                                                         </span>
                                                                             <span v-if="reward.asset_details?.metadata?.logo"
                                                                                 class="relative inline-flex items-center rounded-full 2xl:w-5 w-4 2xl:h-5">
@@ -193,7 +194,7 @@
                                                                         {{reward.status}}
                                                                     </td>
                                                                 </tr>
-                                                            <tr v-if="Rewards == null" class="flex flex-row text-left" >
+                                                            <tr v-show="!Rewards[0]" class="flex flex-row text-left" >
                                                                 <td class="px-6 py-4 text-sm font-medium">
                                                                     Nothing to see quit yet.
                                                                 </td>
@@ -207,14 +208,14 @@
                                 </div>
                             </template>
                         
-                        <div class="flex justify-center" v-show="Rewards == null">
+                        <div class="flex justify-center" v-show="!Rewards">
                             <div v-show="!myWallet.name">
                                 <ConnectWallet :backgroundColor="'bg-green-700'"/>
                             </div>
                             <div class="mt-2 flex flex-col gap-6 bg-white/[.92] py-5 px-8" v-show="!!myWallet.name">
                                 <div>
-                                    <div v-if="walletError.length>0" v-text="walletError"
-                                        class="text-red-500 text-sm my-1"></div>
+                                    <div v-show="walletError.length>0" v-text="walletError"
+                                        class="text-red-500 w-96 text-sm my-1"></div>
                                     <WalletLoginBtnVue :role="'reward'"
                                                         @walletError="handleWalletError($event)"
                                                         @user="setUser($event)"/>
@@ -231,8 +232,8 @@
                                                 :showWalletBtn="false"
                                                 @setForm="getForm($event)" 
                                                 @submit="submit($event)"/>
-                                    <div v-if="errors.length>0" v-text="errors"
-                                        class="text-red-500 text-sm my-1"></div>
+                                    <div v-show="errors.length>0" v-text="errors"
+                                        class="text-red-500 w-96 text-sm my-1"></div>
                                 </div>
                             </div>
                         </div>
@@ -281,6 +282,7 @@ const props = withDefaults(
 
 let user = ref(usePage()?.props?.user as User);
 let Rewards = ref(props?.Rewards?.data);
+console.log(Rewards.value)
 
 // wallet store
 let walletStore = useWalletStore();

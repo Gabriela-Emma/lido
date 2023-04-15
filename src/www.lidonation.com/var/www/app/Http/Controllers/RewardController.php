@@ -26,7 +26,7 @@ class RewardController extends Controller
         }
 
         return Inertia::render('Rewards',[
-            'Rewards' => $request->user() ? RewardsData::collection($rewards) : []
+            'Rewards' => $request->user() ? RewardsData::collection($rewards) : [null]
         ]);
     }
 

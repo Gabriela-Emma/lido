@@ -427,8 +427,8 @@ Route::group(
         return view('team');
     })->name('team');
 
-    // Route::get('/rewards', App\Http\Livewire\Rewards\LidoRewardsComponent::class)
-    //     ->name('rewards');
+    Route::get('/rewards', App\Http\Livewire\Rewards\LidoRewardsComponent::class)
+        ->name('rewards');
 
     Route::post('/delegators/missed-epoch', function (Request $request) {
         $account = $request->account;
