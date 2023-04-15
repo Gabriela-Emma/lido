@@ -60,7 +60,7 @@
 
                                             </p>
                                             <div v-if="Rewards != null" class="mt-2 text-center">
-                                                <span @click="withdrawalRewards"
+                                                <span @click=""
                                                         class="inline-flex items-center px-1 py-1 rounded-sm text-sm bg-accent-200 text-teal-900 hover:bg-accent-400 hover:cursor-pointer">
                                                     Withdraw
                                                 </span>
@@ -116,7 +116,7 @@
                                                                     class="relative inline-flex items-center rounded-full w-4 2xl:w-5 w-4 2xl:h-5 ml-2">
                                                                     <img class="inline-flex"
                                                                             :src="withdrawal?.asset_details?.metadata?.logo"
-                                                                            :alt="`${withdrawal?.asset_details?.metadata?.name}`"/>
+                                                                            :alt="`${withdrawal?.asset_details?.asset_name}`"/>
                                                                 </span>
                                                             </template>
                                                         </dd>
@@ -166,16 +166,16 @@
                                                         <tbody
                                                             class="flex flex-col justify-start min-w-full divide-y divide-gray-300 h-72">
                                                                 <tr v-for="reward in Rewards" class="flex flex-row text-left" >
-                                                                    <td class="px-6 py-4 w-32 text-sm truncate flex gap-2 flex items-center">
+                                                                    <td class="px-6 py-4 w-32 text-sm truncate flex gap-2  items-center">
                                                                          <span
                                                                              class="font-semibold text-xl 2xl:text-2xl">
                                                                              {{$filters.currency(reward.amount)}}
                                                                         </span>
                                                                             <span v-if="reward.asset_details?.metadata?.logo"
-                                                                                class="relative inline-flex items-center rounded-full w-4 2xl:w-5 w-4 2xl:h-5">
+                                                                                class="relative inline-flex items-center rounded-full 2xl:w-5 w-4 2xl:h-5">
                                                                                 <img class="inline-flex"
                                                                                      alt="asset logo"
-                                                                                     src="data:image/png;base64,{{reward.asset_details.logo}}">
+                                                                                     :src="'data:image/png;base64,'+`${reward.asset_details.metadata.logo}`">
                                                                             </span>
                                                                             <span v-else-if="reward?.asset_details?.metadata?.ticker"
                                                                                 class="relative inline-block rounded-full w-3 h-3">
@@ -183,7 +183,7 @@
                                                                             </span>
                                                                             <span v-else="reward?.asset_details?.asset_name"
                                                                                 class="relative inline-block rounded-full w-3 h-3">
-                                                                                {{reward.asset_details.asset_name}}
+                                                                                {{reward.asset_details?.asset_name}}
                                                                             </span>
                                                                     </td>
                                                                     <td class="w-72 px-6 py-4 text-sm">
@@ -300,7 +300,7 @@ let setUser = (userData) => {
 
 // refetch pagedata
 function refresh(){
-    router.get(`${usePage().props.base_url}/reward/myRewards`);
+    router.get(`${usePage().props.base_url}/reward/`);
 }
 
 // login with email
