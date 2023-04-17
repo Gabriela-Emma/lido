@@ -293,7 +293,7 @@ let setUser = (userData) => {
 
 // refetch pagedata
 function refresh(){
-    router.get(`${usePage().props.base_url}/reward/`);
+    router.get(`${usePage().props.base_url}/rewards/`);
 }
 
 // login with email
