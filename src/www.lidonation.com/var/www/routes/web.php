@@ -178,7 +178,7 @@ Route::group(
             ->name('group');
     });
 
-    Route::prefix('/reward')->as('rewards')->group(function(){
+    Route::prefix('/rewards')->as('rewards')->group(function(){
         Route::get('/', [RewardController::class, 'index']);
     });
 
@@ -427,8 +427,8 @@ Route::group(
         return view('team');
     })->name('team');
 
-    Route::get('/rewards', App\Http\Livewire\Rewards\LidoRewardsComponent::class)
-        ->name('rewards');
+    // Route::get('/rewards', App\Http\Livewire\Rewards\LidoRewardsComponent::class)
+    //     ->name('rewards');
 
     Route::post('/delegators/missed-epoch', function (Request $request) {
         $account = $request->account;

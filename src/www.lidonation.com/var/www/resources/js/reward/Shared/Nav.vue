@@ -4,47 +4,47 @@
             <div class="flex flex-row justify-between flex-nowrap gap-4">
                 <nav></nav>
                 <nav class="relative hidden lg:inline-flex">
-                    <!-- <ul
+                    <ul
                         class="flex flex-row items-center justify-end gap-2 py-2 text-xs md:text-sm flex-nowrap overflow-x-auto h-full">
-                        <li class="flow-root menu-item">
+                        <!-- <li class="flow-root menu-item">
                             <Link
                                 class="px-1 py-3 menu-link hover:text-black"
                                 :class="[$page.component.endsWith('Learn') ? 'text-black' : 'text-white']"
-                                :href="$utils.localizeRoute('rewards/myRewards')">
-                                {{ $t('Home') }}
+                                :href="$utils.localizeRoute('proposals')">
+                                {{ $t('Catalyst Explorer') }}
                             </Link>
                         </li>
                         <li class="flow-root menu-item">
                             <Link
                                 class="px-1 py-3 menu-link hover:text-black"
                                 :class="[$page.component.startsWith('Dashboard') ? 'text-black' : 'text-white']"
-                                :href="$utils.localizeRoute('earn/learn/dashboard')">
-                                {{ $t('Dashboard') }}
+                                :href="$utils.localizeRoute('earn/learn')">
+                                {{ $t('Learn') }}
                             </Link>
-                        </li>
-                        <li class="flow-root menu-item">
+                        </li> -->
+                        <!-- <li class="flow-root menu-item">
                             <Link class="px-1 py-3 menu-link hover:text-black"
                                   :class="[$page.component.startsWith('LearningModules') ? 'text-black' : 'text-white']"
-                                  :href="$utils.localizeRoute('earn/learn/modules')">
+                                  :href="$utils.localizeRoute('earn/learn')">
                                 {{ $t('Modules') }}
                             </Link>
-                        </li>
-                        <li class="flow-root menu-item">
+                        </li> -->
+                        <!-- <li class="flow-root menu-item">
                             <Link class="px-1 py-3 menu-link hover:text-black"
                                   :class="[$page.component.startsWith('Rewards') ? 'text-black' : 'text-white']"
                                   :href="$utils.localizeRoute('rewards')">
                                 {{ $t('Rewards') }}
                             </Link>
-                        </li>
-                        <li class="flow-root menu-item">
+                        </li> -->
+                        <!-- <li class="flow-root menu-item">
                             <Link
                                 class="px-1 py-3 menu-link hover:text-black"
                                 :class="[$page.component.startsWith('Profile') ? 'text-black' : 'text-white']"
-                                :href="$utils.localizeRoute('earn/learn/profile')">
-                                {{ $t('Profile') }}
+                                :href="$utils.localizeRoute('earn/learn')">
+                                {{ $t('Learn') }}
                             </Link>
-                        </li>
-                    </ul> -->
+                        </li> -->
+                    </ul>
                 </nav>
 
             </div>

@@ -44,7 +44,7 @@
                         </div>
                     </section>
                     <section class="border-t border-teal-300 p-6 -my-1 ">
-                        <template v-if="user != null" x-show="!!wallet">
+                        <template v-if="user != null">
                             <template v-if="withdrawals">
                                 <div
                                     class="absolute left-0 top-0 w-full h-full bg-teal-600 shadow-lg z-10 text-white">
@@ -59,15 +59,15 @@
                                                 wallet plus your 2 Ada minus tx fee.
 
                                             </p>
-                                            <div v-show="Rewards" class="mt-2 text-center">
-                                                <span @click=""
+                                            <div v-show="rewards" class="mt-2 text-center">
+                                                <span @click="withdrawalRewards"
                                                         class="inline-flex items-center px-1 py-1 rounded-sm text-sm bg-accent-200 text-teal-900 hover:bg-accent-400 hover:cursor-pointer">
                                                     Withdraw
                                                 </span>
                                             </div>
                                             <span
                                                 class="absolute right-0 top-0 p-2 bg-teal-700 hover:cursor-pointer"
-                                                @click="">
+                                                @click="withdrawals = null">
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                                                         viewBox="0 0 24 24"
                                                         stroke-width="1.5"
@@ -95,28 +95,26 @@
                                                 </p>
                                             </div>
                                             <dl class="overflow-y-auto" v-show="!withdrawalsProcessed">
-                                                <template v-for="withdrawal in withdrawals">
-                                                    <div
+                                                <template v-for="(withdrawal, index) in withdrawals" :key="withdrawal[0]?.asset">
+                                                    <div 
                                                         class="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-5 sm:px-6"
-                                                        :class="{'bg-teal-700': 1 }">
+                                                        :class="{'bg-teal-700': index % 2 == 0}">
                                                         <dt class="text-sm font-medium">
                                                             <span class="flex gap-2">
-                                                                <span v-text="withdrawal?.asset_details?.asset_name"></span>
+                                                                <span v-text="withdrawal[0]?.asset_details?.asset_name"></span>
                                                             </span>
                                                         </dt>
                                                         <dd class="mt-1 text-sm sm:col-span-2 sm:mt-0">
-                                                            <!-- <span class="font-semibold text-xl 2xl:text-2xl"
-                                                                    v-text="(
-                                                                    withdrawal.reduce((total, asset) => total + asset.amount, 0)
-                                                                    /
-                                                                    (withdrawal[0]?.asset_details?.divisibility > 0  ? withdrawal[0]?.asset_details?.divisibility : 1))
-                                                                    .toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 2})"></span> -->
+                                                            <span class="font-semibold text-xl 2xl:text-2xl"
+                                                            v-text="(Object.values(withdrawal).reduce((total, asset) => total + asset.amount, 0) /
+                                                                      (withdrawal[0]?.asset_details?.divisibility > 0  ? withdrawal[0]?.asset_details?.divisibility : 1))
+                                                                      .toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 2})"></span>
                                                             <template v-if="withdrawal?.asset_details?.metadata?.logo">
                                                                 <span
                                                                     class="relative inline-flex items-center rounded-full 2xl:w-5 w-4 2xl:h-5 ml-2">
                                                                     <img class="inline-flex"
-                                                                            :src="withdrawal?.asset_details?.metadata?.logo"
-                                                                            :alt="`${withdrawal?.asset_details?.asset_name}`"/>
+                                                                            :src="'data:image/png;base64,'+`${withdrawal[0].asset_details.metadata.logo}`"
+                                                                            :alt="`${withdrawal[0]?.asset_details?.asset_name}`"/>
                                                                 </span>
                                                             </template>
                                                         </dd>
@@ -137,11 +135,11 @@
                                                     Rewards
                                                 </span>
                                                 <span class="text-xs text-gray-400">
-                                                    {{Rewards.length}}
+                                                    {{rewards.length}}
                                                 </span>
                                             </h3>
                                             <div>
-                                                <span v-show="Rewards[0]" @click="withdraw"
+                                                <span v-show="rewards[0]" @click="withdraw"
                                                         class="inline-flex items-center px-1 py-0.5 rounded text-xs bg-accent-200 text-teal-900 hover:bg-accent-400 hover:cursor-pointer">
                                                     Withdraw
                                                 </span>
@@ -165,12 +163,11 @@
                                                         </thead>
                                                         <tbody
                                                             class="flex flex-col justify-start min-w-full divide-y divide-gray-300 h-72">
-                                                                <tr v-for="reward in Rewards" class="flex flex-row text-left" >
+                                                                <tr v-for="reward in (rewards[0] ? rewards : processedRewards)" class="flex flex-row text-left" >
                                                                     <td class="px-6 py-4 w-32 text-sm truncate flex gap-2  items-center">
                                                                          <span
                                                                              class="font-semibold text-xl 2xl:text-2xl">
-
-                                                                             {{$filters.currency(reward.amount/(reward.asset_details?.divisibility > 0  ? reward?.asset_details?.divisibility : 1), 2)}}
+                                                                             {{ $filters.shortNumber((reward.amount/(reward.asset_details?.divisibility > 0  ? reward?.asset_details?.divisibility : 1)).toFixed(2))}}
                                                                         </span>
                                                                             <span v-if="reward.asset_details?.metadata?.logo"
                                                                                 class="relative inline-flex items-center rounded-full 2xl:w-5 w-4 2xl:h-5">
@@ -194,7 +191,7 @@
                                                                         {{reward.status}}
                                                                     </td>
                                                                 </tr>
-                                                            <tr v-show="!Rewards[0]" class="flex flex-row text-left" >
+                                                            <tr v-show="!rewards[0] && !processedRewards[0]" class="flex flex-row text-left" >
                                                                 <td class="px-6 py-4 text-sm font-medium">
                                                                     Nothing to see quit yet.
                                                                 </td>
@@ -208,19 +205,13 @@
                                 </div>
                             </template>
                         
-                        <div class="flex justify-center" v-show="!Rewards">
-                            <div v-show="!myWallet.name">
-                                <ConnectWallet :backgroundColor="'bg-green-700'"/>
-                            </div>
-                            <div class="mt-2 flex flex-col gap-6 bg-white/[.92] py-5 px-8" v-show="!!myWallet.name">
-                                <div>
-                                    <div v-show="walletError.length>0" v-text="walletError"
-                                        class="text-red-500 w-96 text-sm my-1"></div>
-                                    <WalletLoginBtnVue :role="'reward'"
-                                                        @walletError="handleWalletError($event)"
-                                                        @user="setUser($event)"/>
-                                </div>
-
+                        <div class="flex justify-center" v-show="!rewards">
+                            <div class="mt-2 flex flex-col gap-6 bg-white/[.92] py-5 px-8" >
+                                <div v-show="walletError.length>0" v-text="walletError"
+                                    class="text-red-500 w-96 text-sm my-1"></div>
+                                <WalletLoginBtnVue  :role="'reward'"
+                                                    @walletError="handleWalletError($event)"
+                                                    @user="setUser($event)"/>
                                 <div>
                                     <Divider/>
                                 </div>
@@ -229,6 +220,7 @@
                                     <LoginForm  :forRewards="true"
                                                 :embedded="true"
                                                 :showLogo="false" 
+                                                :showDivider="false"
                                                 :showWalletBtn="false"
                                                 @setForm="getForm($event)" 
                                                 @submit="submit($event)"/>
@@ -269,20 +261,20 @@ const $utils: any = inject('$utils');
 
 const props = withDefaults(
     defineProps<{
-        Rewards?: {
+        rewards?: {
             links?: [],
             total?: number,
             to?: number,
             from?: number,
             data?: RewardData[]
         };
+        processedRewards?:RewardData[]
     }>(),{}
 );
 
 
 let user = ref(usePage()?.props?.user as User);
-let Rewards = ref(props?.Rewards?.data);
-console.log(Rewards.value)
+let rewards = ref(props?.rewards?.data);
 
 // wallet store
 let walletStore = useWalletStore();
@@ -335,12 +327,12 @@ let withdraw = async () => {
         console.error(e)
     }
     working.value = false;
-    // withdrawals.value = withdrawals.value.flatMap((arr: RewardData[]) => arr) ?? [];
 }
 
 //withdrawalrewards
 let withdrawalsProcessed = ref(null);
-let paymentTx;
+let paymentTx = ref(null);
+let minterAddress = ref(null);
 let withdrawalRewards = async () => {
     working.value = true;
     const WalletService =  ((await import('../../lib/services/WalletService')).default);
@@ -350,14 +342,18 @@ let withdrawalRewards = async () => {
         setTimeout(async () => {
             console.log({processResponse});
             
-            // get deposit
             const walletService = new WalletService();
-            const rawTx = await walletService.payToAddress(myWallet?.value?.address, {lovelace: BigInt(2000000)});
+            await walletService.connectWallet(myWallet?.value?.name);
+            minterAddress.value = (await window.axios.post(`/api/rewards/withdrawals/address`))?.data;
+            console.log(minterAddress.value)
+
+            // get deposit
+            const rawTx = await walletService.payToAddress(minterAddress?.value.address, {lovelace: BigInt(2000000)});
             const signedTx = await  rawTx.sign().complete();
-            paymentTx = await signedTx.submit();
+            paymentTx.value = await signedTx.submit();
 
             // processing Withdrawal and send tx to backend
-            const withdrawalResponse = (await window.axios.post(`/api/rewards/withdrawals/withdraw`, {hash: paymentTx}));
+            const withdrawalResponse = (await window.axios.post(`/api/rewards/withdrawals/withdraw`, {hash: paymentTx.value}));
             withdrawalsProcessed = withdrawalResponse?.data;
             working.value = false;
         }, 3000);
@@ -365,4 +361,5 @@ let withdrawalRewards = async () => {
         console.error(e);
     }
 }
+
 </script>

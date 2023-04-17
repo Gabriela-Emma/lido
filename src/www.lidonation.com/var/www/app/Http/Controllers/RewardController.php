@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\DataTransferObjects\RewardsData;
 use Exception;
 use App\Models\Tx;
 use App\Models\User;
@@ -11,10 +10,12 @@ use App\Models\Reward;
 use App\Enums\RoleEnum;
 use App\Models\Withdrawal;
 use Illuminate\Http\Request;
+use Illuminate\Support\Fluent;
 use App\Jobs\ProcessUserRewardsJob;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use App\Services\CardanoWalletService;
+use App\DataTransferObjects\RewardsData;
 use Illuminate\Auth\AuthenticationException;
 
 class RewardController extends Controller
@@ -22,11 +23,13 @@ class RewardController extends Controller
     public function index(Request $request)
     {
         if($request->user()){
-            $rewards = $this->queryRewards($request->user());
+            $rewards = $this->queryNewRewards($request->user());
+            $processedRewards = $this->processedRewards($request->user());
         }
 
         return Inertia::render('Rewards',[
-            'Rewards' => $request->user() ? RewardsData::collection($rewards) : [null]
+            'rewards' => $request->user() ? RewardsData::collection($rewards) : [null],
+            'processedRewards' => $request->user() ? RewardsData::collection($processedRewards) : [null],
         ]);
     }
 
@@ -52,23 +55,17 @@ class RewardController extends Controller
     }
 
     public function process(Request $request)
-    {
-        // check if is a lido delegators
-        if (! auth()->user()?->hasRole(RoleEnum::delegator()->value)) {
-            //@todo wait for dust to be confirmed
-            // add new Tx object and attach to reward object
-            // outcome of this will set the reward model to waiting
-        } else {
-            $user = auth()?->user();
-            if (! $user->wallet_address) {
-                $user->wallet_addres = $request->input('address');
-                $user->save();
-            }
-            ProcessUserRewardsJob::dispatch(
-                auth()?->user(),
-                $request->input('address') ?? $user->wallet_address
-            );
+    {   
+        $user = auth()?->user();
+        if (! $user->wallet_address) {
+            $user->wallet_addres = $request->input('address');
+            $user->save();
         }
+        ProcessUserRewardsJob::dispatch(
+            auth()?->user(),
+            $request->input('address') ?? $user->wallet_address
+        );
+    
     }
 
     public function mintAddress()
@@ -116,15 +113,12 @@ class RewardController extends Controller
 
     public function withdrawals()
     {
-        $rewards = Reward::where('stake_address', auth()?->user()?->wallet_stake_address)
+       return Reward::where('stake_address', auth()?->user()?->wallet_stake_address)
             ->where('status', 'issued')
             ->orderBy('created_at', 'desc')
             ->get()
             ?->groupBy('asset');
 
-        $flattenedRewards = $rewards ? array_reduce($rewards->toArray(), 'array_merge', []) : [];
-
-        return array_values($flattenedRewards);
     }
 
     protected function mintAddressFromLucid()
@@ -140,10 +134,38 @@ class RewardController extends Controller
         }
     }
 
-    public function queryRewards($user){
+    public function queryNewRewards($user)
+    {
 
         return Reward::where('stake_address', $user?->wallet_stake_address)
-                    ->where('status', 'issued')
-                    ->orderBy('created_at', 'desc')->with('user')->paginate(12, ['*'], 'p')->setPath('/')->onEachSide(0);
+                    ->where('status', 'issued')->orderBy('created_at', 'desc')
+                    ->with('user')->paginate(12, ['*'], 'p')->setPath('/')->onEachSide(0);
+    }
+
+    public function processedRewards($user)
+    {
+        return Reward::where('stake_address', auth()?->user()?->wallet_stake_address)
+                    ->where('status', 'processed')
+                    ->orderBy('created_at', 'desc')
+                    ->get()
+                    ?->groupBy('asset')
+                    ->map(function ($group) {
+                        $asset = new Fluent(
+                            array_merge(
+                                $group[0]?->toArray() ?? [],
+                                [
+                                    'amount' => collect($group)->sum('amount'),
+                                    'memo' => "Withdrawals processed {$group[0]?->updated_at->diffForHumans()}",
+                                    'processed_at' => $group[0]?->updated_at->diffForHumans(),
+                                ]
+                            ));
+                        if (is_array($asset->asset_details)) {
+                            $asset->asset_details = new Fluent($asset->asset_details);
+                        }
+
+                        return $asset;
+                    })->values() ?? [];
+                    
+
     }
 }

@@ -71,7 +71,7 @@
                         </span>
                     </div>
                 </div>
-                <Divider v-show="showWalletBtn"/>
+                <Divider v-show="showDivider"/>
                 <div v-show="showWalletBtn" class="flex flex-col">
                     <div v-if="walletError.length>0" v-text="walletError"
                                  class="text-red-500 text-sm my-1"></div>
@@ -97,6 +97,7 @@ const props = withDefaults(
         showLogo?: boolean,
         embedded?: boolean,
         showWalletBtn?:boolean,
+        showDivider?:boolean,
         forRewards?:boolean,
         role?:string,
     }>(),
@@ -104,6 +105,7 @@ const props = withDefaults(
         showLogo: true,
         embedded: false,
         showWalletBtn:true,
+        showDivider:true,
         forRewards:false,
     },
 );
