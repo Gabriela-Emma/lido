@@ -105,15 +105,15 @@
                                                             </span>
                                                         </dt>
                                                         <dd class="mt-1 text-sm sm:col-span-2 sm:mt-0">
-                                                            <span class="font-semibold text-xl 2xl:text-2xl"
-                                                            v-text="(Object.values(withdrawal).reduce((total, asset) => total + asset.amount, 0) /
+                                                            <span class="font-semibold text-xl 2xl:text-2xl mr-3"
+                                                            v-text="$filters.shortNumber(Object.values(withdrawal).reduce((total:number, withdraw:any) => total + withdraw.amount, 0) /
                                                                       (withdrawal[0]?.asset_details?.divisibility > 0  ? withdrawal[0]?.asset_details?.divisibility : 1))
                                                                       .toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 2})"></span>
-                                                            <template v-if="withdrawal?.asset_details?.metadata?.logo">
+                                                            <template v-if="withdrawal[0]?.asset_details?.metadata?.logo">
                                                                 <span
                                                                     class="relative inline-flex items-center rounded-full 2xl:w-5 w-4 2xl:h-5 ml-2">
                                                                     <img class="inline-flex"
-                                                                            :src="'data:image/png;base64,'+`${withdrawal[0].asset_details.metadata.logo}`"
+                                                                            :src="'data:image/png;base64,'+`${withdrawal[0]?.asset_details?.metadata?.logo}`"
                                                                             :alt="`${withdrawal[0]?.asset_details?.asset_name}`"/>
                                                                 </span>
                                                             </template>
@@ -245,7 +245,7 @@
 
 <script lang="ts" setup>
 import { router, useForm, usePage } from '@inertiajs/vue3';
-import { computed, defineAsyncComponent, inject, ref, Ref, watch } from 'vue';
+import { computed, defineAsyncComponent, inject, ref, Ref} from 'vue';
 import User from '../../global/Shared/Models/user';
 import WalletLoginBtnVue from '../../global/Shared/Components/WalletLoginBtn.vue';
 import Divider from '../../global/Shared/Components/Divider.vue';
@@ -257,7 +257,6 @@ import RewardData = App.DataTransferObjects.RewardsData
 import { AxiosError } from 'axios';
 const ConnectWallet = defineAsyncComponent(() =>import('../../global/Shared/Components/ConnectWallet.vue'));
 const $utils: any = inject('$utils');
-
 
 const props = withDefaults(
     defineProps<{
