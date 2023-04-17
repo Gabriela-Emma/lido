@@ -55,7 +55,7 @@
 
     <div class="absolute top-0 right-0 w-screen overflow-hidden pointer-events-none h-130 top-pool-wrapper" id="top-blob">
         <div
-            class="sm:-right-40 lg:right-[-28rem] xl:right[-60rem] 2xl:right-[-45rem] 3xl:right-[-70rem] 4xl:right-[-90rem] transform rotate-115 relative -top-50 text-teal-600 h-full">
+            class="sm:-right-40 lg:right-[-44rem] xl:right[-60rem] 2xl:right-[-45rem] 3xl:right-[-70rem] 4xl:right-[-90rem] transform rotate-115 relative -top-50 text-teal-600 h-full">
             @include('svg.lido-1')
         </div>
     </div>

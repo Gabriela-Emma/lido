@@ -1,6 +1,7 @@
 <template>
     <div class="bg-slate-100 login-form-wrapper">
-        <LoginForm :showLogo="true" 
+        <LoginForm  :role="'catalyst-explorer'"
+                    :showLogo="true" 
                    :errors="errors" 
                    @endpoint="setEndpoint($event)" 
                    @setForm="getForm($event)" 

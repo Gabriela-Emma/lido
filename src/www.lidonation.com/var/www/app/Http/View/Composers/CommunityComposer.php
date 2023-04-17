@@ -61,7 +61,7 @@ class CommunityComposer
         );
     }
 
-    protected function getLidoTweets(): JsonResponse
+    protected function getLidoTweets(): ?JsonResponse
     {
         $tweets = null;
         try {
@@ -69,9 +69,9 @@ class CommunityComposer
                 'place.fields' => 'country,name',
                 'tweet.fields' => 'author_id,geo,created_at',
                 'expansions' => 'author_id,in_reply_to_user_id',
-                TwitterContract::KEY_RESPONSE_FORMAT => TwitterContract::RESPONSE_FORMAT_JSON,
+//                TwitterContract::KEY_RESPONSE_FORMAT => TwitterContract::RESPONSE_FORMAT_JSON,
             ];
-            $tweets = JsonResponse::fromJsonString(Twitter::userTweets(1334373952584638465, $params));
+//            $tweets = JsonResponse::fromJsonString(Twitter::userTweets(1334373952584638465, $params));
         } catch (\Exception $e) {
             report($e);
         }

@@ -12,10 +12,8 @@ use Spatie\TypeScriptTransformer\Attributes\Optional as TypeScriptOptional;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
 #[TypeScript]
-class QuizQuestionAnswerData extends Data implements Wireable
+class QuizQuestionAnswerData extends Data
 {
-    use WireableData;
-
     public function __construct(
         public ?int $id,
         public ?string $title,
@@ -25,7 +23,13 @@ class QuizQuestionAnswerData extends Data implements Wireable
         public ?string $content,
 
         #[TypeScriptOptional]
+        public ?string $correctness,
+
+        #[TypeScriptOptional]
         public ?string $type,
+
+        #[TypeScriptOptional]
+        public ?bool $correct,
 
         #[TypeScriptOptional]
         public ?string $hint,

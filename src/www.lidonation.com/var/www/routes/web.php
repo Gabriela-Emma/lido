@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\PostController;
 use App\Http\Livewire\PoolTool\PoolTool;
 use App\Http\Controllers\OAuthController;
+use App\Http\Controllers\RewardController;
 use App\Http\Controllers\StripeController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ContactController;
@@ -35,7 +36,9 @@ use App\Http\Controllers\AnonymousBookmarkController;
 use App\Http\Controllers\TwitterAttendanceController;
 use App\Http\Livewire\Catalyst\CatalystFundComponent;
 use App\Http\Livewire\Delegators\DelegatorsComponent;
+use App\Http\Controllers\Earn\LearningLessonController;
 use App\Http\Livewire\Catalyst\CatalystGroupsComponent;
+use App\Http\Controllers\Earn\LearningModulesController;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Livewire\Partners\PartnerDashboardComponent;
 use App\Http\Livewire\Catalyst\CatalystProposersComponent;
@@ -176,6 +179,10 @@ Route::group(
 
         Route::get('/group/{catalystGroup}', fn() => view('catalyst.group'))
             ->name('group');
+    });
+
+    Route::prefix('/rewards')->as('rewards')->group(function(){
+        Route::get('/', [RewardController::class, 'index']);
     });
 
     Route::prefix('/earn')->as('earn.')->group(function () {
@@ -426,8 +433,8 @@ Route::group(
         return view('team');
     })->name('team');
 
-    Route::get('/rewards', App\Http\Livewire\Rewards\LidoRewardsComponent::class)
-        ->name('rewards');
+    // Route::get('/rewards', App\Http\Livewire\Rewards\LidoRewardsComponent::class)
+    //     ->name('rewards');
 
     Route::post('/delegators/missed-epoch', function (Request $request) {
         $account = $request->account;

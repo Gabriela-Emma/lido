@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\DataTransferObjects\QuizQuestionAnswerData;
+use App\DataTransferObjects\QuizQuestionData;
 use App\Models\Interfaces\IHasMetaData;
 use App\Models\Traits\HasAuthor;
 use App\Models\Traits\HasHero;
@@ -26,6 +27,10 @@ class QuestionAnswer extends Model implements IHasMetaData
         InteractsWithMedia,
         SoftDeletes;
 
+    protected $appends = [
+        'correct'
+    ];
+
     public $translatable = [
         'content',
         'hint',
@@ -39,12 +44,12 @@ class QuestionAnswer extends Model implements IHasMetaData
     protected $casts = [
         'updated_at' => 'datetime:M d y',
         'published_at' => 'datetime:M d y',
-        'answers' => DataCollection::class.':'.QuizQuestionAnswerData::class,
+        'question' => QuizQuestionData::class
     ];
 
     public function correct(): Attribute
     {
-        return Attribute::make(get: fn () => $this?->correctness === 'correct');
+        return Attribute::make(get: fn() => $this?->correctness === 'correct');
     }
 
     public function question(): BelongsTo

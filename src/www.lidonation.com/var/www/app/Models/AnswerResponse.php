@@ -15,7 +15,6 @@ class AnswerResponse extends Model
     use HasAuthor,
         HasMetaData,
         HasTimestamps,
-        InteractsWithMedia,
         SoftDeletes;
 
     /**

@@ -10,6 +10,7 @@ use App\Models\EveryEpoch;
 use App\Models\Giveaway;
 use App\Models\Promo;
 use App\Models\Question;
+use App\Models\Quiz;
 use App\Models\Reward;
 use App\Models\User;
 use App\Repositories\PostRepository;
@@ -83,7 +84,7 @@ class DelegatorsComponent extends Component
         $this->rewardPot = collect(
             (new GetLidoRewardsPot)($this->everyEpoch))
             ->filter(
-                fn ($asset) => $asset['amount'] >= $this->rewardsTemplate[$asset['asset'].'.amount']
+                fn ($asset) => isset($this->rewardsTemplate[$asset['asset'].'.amount']) && $asset['amount'] >= $this->rewardsTemplate[$asset['asset'].'.amount']
             );
 
         if (Auth::check() && (bool) auth()->user()?->wallet_stake_address) {
@@ -101,8 +102,9 @@ class DelegatorsComponent extends Component
                 $this->everyEpochQuestion = $this->myResponse?->answer?->question;
             }
         }
-        if (! $this->everyEpochQuestion instanceof Question) {
-            $this->everyEpochQuestion = (QuizData::from($this->everyEpochQuiz))?->questions?->first();
+        if (! $this->everyEpochQuestion instanceof Question && $this->everyEpochQuiz instanceof Quiz) {
+            $this->everyEpochQuestion =
+                (QuizData::from($this->everyEpochQuiz))?->questions?->first()?->toArray();
         }
     }
 
@@ -219,7 +221,7 @@ class DelegatorsComponent extends Component
         $reward->save();
     }
 
-    protected function issueReward(string $asset)
+    protected function issueReward(string $asset): Reward
     {
         $user = auth()->user();
         $amount = $this->rewardsTemplate[$asset.'.amount'];
@@ -249,7 +251,6 @@ class DelegatorsComponent extends Component
 
     protected function loadUserNfts(User $user)
     {
-
         $imagesArr = [];
         try {
             $assets = app(CardanoBlockfrostService::class)->get('accounts/'.$user->wallet_stake_address.'/addresses/assets', null)->collect();
@@ -289,7 +290,7 @@ class DelegatorsComponent extends Component
             }
 
             $this->nftLinks = (count($imagesArr) > 0) ? $imagesArr : null;
-            $this->ownNft = count($this->nftLinks) > 0 ? true : false;
+            $this->ownNft = isset($this->nftLinks) && count($this->nftLinks) > 0;
         } catch (Exception $e) {
             report($e);
         }

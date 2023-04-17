@@ -65,7 +65,7 @@
                                     <ArrowTopRightOnSquareIcon class="h-16 w-16" />
 
                                     <p class="text-center text-xl text-slate-800 max-w-md mx-auto px-8">
-                                        Read Article in new take. Return to take quiz after you've read the article.
+                                        Read Article in new tab. Return to take quiz after you've read the article.
                                     </p>
                                 </a>
                             </div>

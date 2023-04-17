@@ -15,6 +15,7 @@ const LiveReloadPlugin = require('webpack-livereload-plugin');
 */
 mix.ts('resources/js/catalyst-explorer.ts', 'public/js')
     .ts('resources/js/earn.ts', 'public/js')
+    .ts('resources/js/reward.ts', 'public/js')
     .ts('resources/js/phuffycoin.ts', 'public/js')
     .ts('resources/js/delegators.ts', 'public/js')
     .ts('resources/js/rewards.ts', 'public/js')
@@ -36,6 +37,7 @@ mix.ts('resources/js/catalyst-explorer.ts', 'public/js')
 
     .sass('resources/sass/catalyst-explorer.scss', 'public/css')
     .sass('resources/sass/earn.scss', 'public/css')
+    .sass('resources/sass/rewards.scss', 'public/css')
     .sass('resources/sass/bootstrap.scss', 'public/css')
     .sass('resources/sass/partners.scss', 'public/css')
     .sass('resources/sass/delegators.scss', 'public/css')
