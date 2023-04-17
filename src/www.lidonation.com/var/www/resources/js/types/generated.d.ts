@@ -10,7 +10,7 @@ stake_address?: string | null;
 export type AssetDetailsData = {
 asset_name: string;
 divisibility: number;
-metadata: App.DataTransferObjects.AssetMetaData | null;
+metadata: Array<App.DataTransferObjects.AssetMetaData> | null;
 };
 export type AssetMetaData = {
 logo: string | null;
@@ -69,11 +69,11 @@ export type QuizQuestionAnswerData = {
 id: number | null;
 title: string | null;
 content?: string | null;
-correctness?: string | null;
 type?: string | null;
 correct?: boolean | null;
 hint?: string | null;
 status?: string | null;
+correctness?: string | null;
 };
 export type QuizQuestionData = {
 id: number | null;
@@ -83,14 +83,13 @@ type?: string | null;
 status?: string | null;
 answers: Array<App.DataTransferObjects.QuizQuestionAnswerData> | null;
 };
-export type RewardsData = {
-[x: string]: any;
+export type RewardData = {
 id: number | null;
 asset: string | null;
 amount: number | null;
 asset_type?: string | null;
 status: string | null;
-asset_details: App.DataTransferObjects.AssetDetailsData | null;
+asset_details: Array<App.DataTransferObjects.AssetDetailsData> | null;
 memo: string | null;
 };
 }

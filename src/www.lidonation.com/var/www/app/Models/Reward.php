@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\DataTransferObjects\AssetDetailsData;
+use App\DataTransferObjects\AssetMetaData;
 use App\Models\Traits\HasAuthor;
 use App\Models\Traits\HasMetaData;
 use App\Models\Traits\HasModel;
@@ -35,6 +37,8 @@ class Reward extends Model
      */
     protected $casts = [
         'amount' => 'integer',
+        'asset_details' => AssetDetailsData::class,
+        'asset_detail.metadata' => AssetMetaData::class,
     ];
 
     public $appends = ['asset_details'];

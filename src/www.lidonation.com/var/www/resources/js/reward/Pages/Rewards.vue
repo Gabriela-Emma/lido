@@ -222,6 +222,7 @@
                                                 :showLogo="false" 
                                                 :showDivider="false"
                                                 :showWalletBtn="false"
+                                                :role="'rewards'"
                                                 @setForm="getForm($event)" 
                                                 @submit="submit($event)"/>
                                     <div v-show="errors.length>0" v-text="errors"
@@ -253,7 +254,7 @@ import LoginForm from '../../global/Shared/Components/LoginForm.vue'
 import { useWalletStore } from '../../catalyst-explorer/stores/wallet-store';
 import Wallet from '../../catalyst-explorer/models/wallet';
 import { storeToRefs } from 'pinia';
-import RewardData = App.DataTransferObjects.RewardsData
+import RewardData = App.DataTransferObjects.RewardData
 import { AxiosError } from 'axios';
 const ConnectWallet = defineAsyncComponent(() =>import('../../global/Shared/Components/ConnectWallet.vue'));
 const $utils: any = inject('$utils');

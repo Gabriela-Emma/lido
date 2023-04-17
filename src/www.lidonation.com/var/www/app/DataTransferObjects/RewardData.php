@@ -3,6 +3,8 @@
 namespace App\DataTransferObjects;
 
 use Spatie\LaravelData\Data;
+use Spatie\LaravelData\DataCollection;
+use App\DataTransferObjects\AssetDetailsData;
 use Spatie\LaravelData\Attributes\DataCollectionOf;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 use Spatie\TypeScriptTransformer\Attributes\Optional as TypeScriptOptional;
@@ -10,7 +12,7 @@ use Spatie\TypeScriptTransformer\Attributes\Optional as TypeScriptOptional;
 
 
 #[TypeScript]
-class RewardsData extends Data
+class RewardData extends Data
 {
     public function __construct(
       public ?int $id,
@@ -19,27 +21,11 @@ class RewardsData extends Data
       #[TypeScriptOptional]
       public ?string $asset_type,
       public ?string $status,
-      public ?AssetDetailsData $asset_details,
+      #[DataCollectionOf(AssetDetailsData::class)]
+      public ?DataCollection $asset_details = null,
       public ?string $memo
 
     ) {}
 }
 
-#[TypeScript]
-class AssetDetailsData extends Data
-{
-    public function __construct(
-        public string $asset_name,
-        public int $divisibility,
-        public ?AssetMetaData $metadata = null,
-    ) {}
-}
 
-#[TypeScript]
-class AssetMetaData extends Data
-{
-    public function __construct(
-        public ?string $logo = null,
-        public ?string $ticker = null,
-    ) {}
-}
