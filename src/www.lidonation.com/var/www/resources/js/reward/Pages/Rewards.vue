@@ -106,7 +106,7 @@
                                                         </dt>
                                                         <dd class="mt-1 text-sm sm:col-span-2 sm:mt-0">
                                                             <span class="font-semibold text-xl 2xl:text-2xl mr-3"
-                                                            v-text="$filters.shortNumber(Object.values(withdrawal).reduce((total:number, withdraw:any) => total + withdraw.amount, 0) /
+                                                            v-text="$filters.shortNumber((withdrawal).reduce((total:number, asset) => total + asset.amount, 0) /
                                                                       (withdrawal[0]?.asset_details?.divisibility > 0  ? withdrawal[0]?.asset_details?.divisibility : 1))
                                                                       .toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 2})"></span>
                                                             <template v-if="withdrawal[0]?.asset_details?.metadata?.logo">
