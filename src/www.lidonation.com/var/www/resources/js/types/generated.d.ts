@@ -1,4 +1,12 @@
 declare namespace App.DataTransferObjects {
+export type AnswerResponseData = {
+id: number | null;
+user_id: number | null;
+question_id: number | null;
+quiz_id: number | null;
+question_answer_id: number | null;
+stake_address?: string | null;
+};
 export type AssetDetailsData = {
 asset_name: string;
 divisibility: number;

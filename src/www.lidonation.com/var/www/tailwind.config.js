@@ -156,6 +156,7 @@ const themeColors = {
         'green-light': '#52A546',
         'yellow': '#D0A52B',
         'yellow-light': '#FBDC08',
+        'orange': '#ff7400',
     },
 
     'post-type': {
