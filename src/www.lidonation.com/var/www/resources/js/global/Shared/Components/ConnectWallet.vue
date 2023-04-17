@@ -4,8 +4,8 @@
             @click="open=!open"
             :aria-expanded="open"
             type="button"
-            :class="[{'rounded-sm': !open}, backgroundColor]"
-            class="px-2 py-1.5 rounded-sm rounded-tl-sm rounded-tr-sm inline-flex justify-between gap-2 text-white menu-link font-semibold relative">
+            :class="[{'rounded-sm': !open},backgroundColor]"
+            class="px-2 py-1.5 rounded-sm rounded-tl-sm rounded-tr-sm inline-flex justify-between gap-2  text-white menu-link font-semibold relative">
             <span
                 v-show="walletLoading"
                 class="flex items-center justify-center w-4 p-1 bg-white rounded-full bg-opacity-90">
@@ -110,13 +110,18 @@ import { useWalletStore } from '../../../catalyst-explorer/stores/wallet-store';
 import Wallet from '../../../catalyst-explorer/models/wallet';
 import {C} from "lucid-cardano";
 
+
 const props = withDefaults(
     defineProps<{
         backgroundColor?: string,
-    }>(), {});
+    }>(),
+     {
+        backgroundColor:'bg-teal-700'
+     });
 
-let backgroundColor:string = props.backgroundColor ??  'bg-teal-700';
 let open:Ref<boolean> = ref(false);
+
+let backgroundColor = ref(props.backgroundColor);
 
 let walletStore = useWalletStore();
 let {walletData} = storeToRefs(walletStore);
