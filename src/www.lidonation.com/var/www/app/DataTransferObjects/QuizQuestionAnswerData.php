@@ -23,9 +23,6 @@ class QuizQuestionAnswerData extends Data
         public ?string $content,
 
         #[TypeScriptOptional]
-        public ?string $correctness,
-
-        #[TypeScriptOptional]
         public ?string $type,
 
         #[TypeScriptOptional]
