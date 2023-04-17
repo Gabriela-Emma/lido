@@ -1,11 +1,11 @@
 import {defineStore} from "pinia";
 import axios, {AxiosError} from "axios";
 import {onMounted, ref} from "vue";
-import AnswerResponse from "../models/answer-response";
+import AnswerResponseData = App.DataTransferObjects.AnswerResponseData;
 
 export const useAnswerResponseStore = defineStore('answer-response', () => {
 
-    let answerResponseData = ref<AnswerResponse[]>([]);
+    let answerResponseData = ref<AnswerResponseData[]>([]);
 
     async function submitAnswer(baseUrl, form)
     {

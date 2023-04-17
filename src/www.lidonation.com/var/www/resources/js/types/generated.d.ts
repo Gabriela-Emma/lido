@@ -1,4 +1,12 @@
 declare namespace App.DataTransferObjects {
+export type AnswerResponseData = {
+id: number | null;
+user_id: number | null;
+question_id: number | null;
+quiz_id: number | null;
+question_answer_id: number | null;
+stake_address?: string | null;
+};
 export type LearningLessonData = {
 hash: string;
 title: string;
@@ -53,11 +61,13 @@ id: number | null;
 title: string | null;
 content?: string | null;
 type?: string | null;
+hint?: string | null;
 status?: string | null;
+correctness?: string | null;
 };
 export type QuizQuestionData = {
 id: number | null;
-title: string;
+title: string | null;
 content?: string | null;
 type?: string | null;
 status?: string | null;

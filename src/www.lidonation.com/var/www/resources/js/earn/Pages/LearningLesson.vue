@@ -130,8 +130,8 @@
                                         <div class="mt-8 flex justify-end">
                                             <button type="button"
                                                     @click.prevent="submit"
-                                                    :disabled="disableSubmitButton"
-                                                    :class="{ 'opacity-25 cursor-not-allowed': disableSubmitButton }"
+                                                    :disabled="true"
+                                                    :class="{ 'opacity-25 cursor-not-allowed': true }"
                                                     class="rounded-sm bg-labs-black px-3.5 py-2.5 text-md xl:text-xl font-semibold text-white shadow-sm hover:bg-labs-black/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-labs-black ml-auto">
                                                 Submit
                                             </button>
