@@ -21,6 +21,7 @@ class HandleInertiaRequests extends Middleware
         return match ($request->segment(2)) {
             'catalyst-explorer' => 'layouts/catalyst-explorer',
             'earn' => 'layouts/earn',
+            'rewards' => 'layouts/rewards',
             default => 'layout/app'
         };
     }
