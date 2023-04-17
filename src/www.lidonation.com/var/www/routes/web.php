@@ -1,7 +1,5 @@
 <?php
 
-use App\Http\Controllers\Earn\LearningLessonController;
-use App\Http\Controllers\Earn\LearningModulesController;
 use App\Http\Controllers\Earn\LearningAnswerResponseController;
 use App\Models\Mint;
 use Inertia\Inertia;

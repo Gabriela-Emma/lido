@@ -96,9 +96,9 @@
                                             <template v-for="answer in question.answers" :key="answer.id">
                                                 <li class="mt-2 transition hover:ease-in delay-150">
                                                     <label v-if="selectedAnswer == answer.id" class="w-full">
-                                                        <input  type="radio" 
-                                                                class="peer sr-only" 
-                                                                name="answer" 
+                                                        <input  type="radio"
+                                                                class="peer sr-only"
+                                                                name="answer"
                                                                 :id="answer.id"
                                                                 v-model="selectedAnswer"/>
                                                         <div class="w-full rounded-md bg-white p-5" :class="correct == 'true' ? 'text-green-400' : 'text-orange-500'">
@@ -111,9 +111,9 @@
                                                         </div>
                                                     </label>
                                                     <label v-if="selectedAnswer != answer.id" class="w-full">
-                                                        <input  type="radio" 
-                                                                class="peer sr-only" 
-                                                                name="answer" 
+                                                        <input  type="radio"
+                                                                class="peer sr-only"
+                                                                name="answer"
                                                                 :id="answer.id"/>
                                                         <div class="w-full rounded-md bg-white p-5 text-gray-500">
                                                             <div class="flex items-center justify-between">
@@ -152,8 +152,8 @@
                                             <template v-for="answer in question.answers" :key="answer.id">
                                                 <li class="mt-2 transition hover:ease-in delay-150">
                                                     <label class="cursor-pointer w-full">
-                                                        <input  type="radio" class="peer sr-only" 
-                                                                name="answer" 
+                                                        <input  type="radio" class="peer sr-only"
+                                                                name="answer"
                                                                 :id="answer.id"
                                                                 @click="updateSelectedAnswer(answer.id)"/>
                                                         <div class="w-full rounded-md bg-white text-gray-500 p-5 transition-all hover:shadow peer-checked:text-red-600">
@@ -196,7 +196,7 @@ import {NewspaperIcon, CheckBadgeIcon, ClockIcon, ArrowTopRightOnSquareIcon } fr
 import {CheckBadgeIcon as CheckBadgeIconSolid} from '@heroicons/vue/24/solid';
 import LearningLessonData = App.DataTransferObjects.LearningLessonData;
 import Footer from "../../../../vendor/laravel/nova/resources/js/layouts/Footer.vue";
-import {useAnswerResponseStore} from "../store/answer-response-store" 
+import {useAnswerResponseStore} from "../store/answer-response-store"
 import { storeToRefs } from "pinia";
 
 // load responses from store
@@ -222,7 +222,7 @@ if (learningLesson.value?.quizzes?.length > 0) {
         answers = question.value?.answers;
         correctAnswerId = answers.filter((ans) => {
             return ans.correctness == 'true';
-        })[0].id;
+        })[0]?.id;
 
     }
 }
