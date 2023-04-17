@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Earn\LearningLessonController;
 use App\Http\Controllers\Earn\LearningModulesController;
+use App\Http\Controllers\Earn\LearningAnswerResponseController;
 use App\Models\Mint;
 use Inertia\Inertia;
 use App\Models\Review;
@@ -193,6 +194,9 @@ Route::group(
                 ->name('learn.modules.view');
             Route::get('lessons/{learningLesson:id}', [LearningLessonController::class, 'show'])
                 ->name('learn.modules.view');
+
+            Route::get('/answer-response/responses', [LearningAnswerResponseController::class, 'index']);
+            Route::post('/answer-response/store/answer', [LearningAnswerResponseController::class, 'storeAnswer']);
         });
         Route::middleware(['auth.catalyst'])->prefix('/my')->group(function () {});
     });
