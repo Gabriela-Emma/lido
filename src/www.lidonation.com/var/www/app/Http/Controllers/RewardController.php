@@ -15,7 +15,7 @@ use App\Jobs\ProcessUserRewardsJob;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use App\Services\CardanoWalletService;
-use App\DataTransferObjects\RewardsData;
+use App\DataTransferObjects\RewardData;
 use Illuminate\Auth\AuthenticationException;
 
 class RewardController extends Controller
@@ -28,8 +28,8 @@ class RewardController extends Controller
         }
 
         return Inertia::render('Rewards',[
-            'rewards' => $request->user() ? RewardsData::collection($rewards) : [null],
-            'processedRewards' => $request->user() ? RewardsData::collection($processedRewards) : [null],
+            'rewards' => $request->user() ? RewardData::collection($rewards) : [null],
+            'processedRewards' => $request->user() ? RewardData::collection($processedRewards) : [null],
         ]);
     }
 
@@ -55,7 +55,7 @@ class RewardController extends Controller
     }
 
     public function process(Request $request)
-    {   
+    {
         $user = auth()?->user();
         if (! $user->wallet_address) {
             $user->wallet_addres = $request->input('address');
@@ -65,7 +65,7 @@ class RewardController extends Controller
             auth()?->user(),
             $request->input('address') ?? $user->wallet_address
         );
-    
+
     }
 
     public function mintAddress()
@@ -165,7 +165,7 @@ class RewardController extends Controller
 
                         return $asset;
                     })->values() ?? [];
-                    
+
 
     }
 }

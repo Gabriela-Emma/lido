@@ -75,14 +75,14 @@
                     <footer>
                         <div class="text-white px-8 py-16 mt-8" :class="[quizBackGround]">
                             <div class="" v-if="question">
-                                <!--an aswer exists already submitted-->
+                                <!--an answer exists already submitted-->
                                 <div v-if="submitted">
-                                    <div class="text-slate-300 mb-2 text-center">Quiza</div>
+                                    <div class="text-slate-300 mb-2 text-center">Quiz</div>
                                     <div v-if="submitted" class="text-slate-500 mb-2 text-center">
-                                        <div v-if="correct == 'true'" class="text-white">
+                                        <div v-if="correct === 'true'" class="text-white">
                                             Correct
                                         </div>
-                                        <div v-if="correct == 'false'" class="text-white">
+                                        <div v-if="correct === 'false'" class="text-white">
                                             Incorrect
                                         </div>
                                     </div>
@@ -95,13 +95,9 @@
                                         <ul class="mt-4 space-y-2 relative h-full w-full ">
                                             <template v-for="answer in question.answers" :key="answer.id">
                                                 <li class="mt-2 transition hover:ease-in delay-150">
-                                                    <label v-if="selectedAnswer == answer.id" class="w-full">
-                                                        <input  type="radio"
-                                                                class="peer sr-only"
-                                                                name="answer"
-                                                                :id="answer.id"
-                                                                v-model="selectedAnswer"/>
-                                                        <div class="w-full rounded-md bg-white p-5" :class="correct == 'true' ? 'text-green-400' : 'text-orange-500'">
+                                                    <label v-if="selectedAnswer === answer.id" class="w-full">
+                                                        <input  type="radio" class="peer sr-only" name="answer" :id="answer.id" v-model="selectedAnswer"/>
+                                                        <div class="w-full rounded-md bg-white p-5" :class="correct === 'true' ? 'text-green-400' : 'text-orange-500'">
                                                             <div class="flex items-center justify-between">
                                                                 <p class="text-sm font-semibold">{{ answer.content }}</p>
                                                                 <div class="w-4 h-4">
@@ -110,11 +106,8 @@
                                                             </div>
                                                         </div>
                                                     </label>
-                                                    <label v-if="selectedAnswer != answer.id" class="w-full">
-                                                        <input  type="radio"
-                                                                class="peer sr-only"
-                                                                name="answer"
-                                                                :id="answer.id"/>
+                                                    <label v-if="selectedAnswer !== answer.id" class="w-full">
+                                                        <input  type="radio" class="peer sr-only" name="answer" :id="answer.id"/>
                                                         <div class="w-full rounded-md bg-white p-5 text-gray-500">
                                                             <div class="flex items-center justify-between">
                                                                 <p class="text-sm font-semibold">{{ answer.content }}</p>
@@ -246,7 +239,7 @@ watch(answerResponseData, () => {
         submitted.value = true;
         disableSubmitButton.value = true;
     }
-})
+});
 
 let updateSelectedAnswer = (answer:number) => {
     selectedAnswer = answer;

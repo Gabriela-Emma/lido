@@ -7,10 +7,8 @@ use Spatie\LaravelData\Attributes\DataCollectionOf;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 use Spatie\TypeScriptTransformer\Attributes\Optional as TypeScriptOptional;
 
-
-
 #[TypeScript]
-class RewardsData extends Data
+class RewardData extends Data
 {
     public function __construct(
       public ?int $id,

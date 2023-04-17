@@ -83,7 +83,7 @@ type?: string | null;
 status?: string | null;
 answers: Array<App.DataTransferObjects.QuizQuestionAnswerData> | null;
 };
-export type RewardsData = {
+export type RewardData = {
 id: number | null;
 asset: string | null;
 amount: number | null;
