@@ -1,4 +1,12 @@
 declare namespace App.DataTransferObjects {
+export type AnswerResponseData = {
+id: number | null;
+user_id: number | null;
+question_id: number | null;
+quiz_id: number | null;
+question_answer_id: number | null;
+stake_address?: string | null;
+};
 export type AssetDetailsData = {
 asset_name: string;
 divisibility: number;
@@ -61,11 +69,11 @@ export type QuizQuestionAnswerData = {
 id: number | null;
 title: string | null;
 content?: string | null;
-correctness?: string | null;
-type?: string | null;
 correct?: boolean | null;
+correctness?: string | null;
 hint?: string | null;
 status?: string | null;
+type?: string | null;
 };
 export type QuizQuestionData = {
 id: number | null;
@@ -76,7 +84,6 @@ status?: string | null;
 answers: Array<App.DataTransferObjects.QuizQuestionAnswerData> | null;
 };
 export type RewardsData = {
-[x: string]: any;
 id: number | null;
 asset: string | null;
 amount: number | null;
