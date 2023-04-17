@@ -40,7 +40,7 @@ class Quiz extends Model implements HasMedia, IHasMetaData
         'questions' => DataCollection::class . ':' . QuizQuestionData::class,
     ];
 
-    public $translatable = [
+    public array $translatable = [
         'title',
         'content',
     ];

@@ -10,10 +10,11 @@ class LearningAnswerResponseController extends Controller
 {
     public function index(Request $request)
     {
-        $responses = AnswerResponse::all();
-        return $responses;
+        return AnswerResponse::with(['quiz', 'question.answers', 'answer'])
+            ->where('user_id', $request->user()?->id)
+            ->get();
     }
-    
+
     public function storeAnswer(Request $request)
     {
         $ans = new AnswerResponse;
@@ -21,7 +22,11 @@ class LearningAnswerResponseController extends Controller
         $ans->question_id = $request->input('question_id');
         $ans->quiz_id = $request->input('quiz_id');
         $ans->question_answer_id = $request->input('question_answer_id');
-        
+
         $ans->save();
+
+        return back()->withInput();
+
+//        return to_route('earn.learn.lesson.view', $request->input('quiz_id'));
     }
 }

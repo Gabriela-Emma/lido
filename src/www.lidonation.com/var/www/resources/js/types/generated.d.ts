@@ -1,10 +1,12 @@
 declare namespace App.DataTransferObjects {
 export type AnswerResponseData = {
-id: number | null;
-user_id: number | null;
-question_id: number | null;
-quiz_id: number | null;
-question_answer_id: number | null;
+id: number;
+userId: number | null;
+questionAnswerId: number | null;
+correct: boolean | null;
+question: App.DataTransferObjects.QuizQuestionData | null;
+quiz: App.DataTransferObjects.QuizData | null;
+questionAnswer: App.DataTransferObjects.QuizQuestionAnswerData | null;
 stake_address?: string | null;
 };
 export type AssetDetailsData = {

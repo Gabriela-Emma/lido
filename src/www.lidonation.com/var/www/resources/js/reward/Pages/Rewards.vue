@@ -102,7 +102,7 @@
                                                               :key="withdrawal[0]?.asset">
                                                         <div
                                                             class="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-5 sm:px-6"
-                                                            :class="{'bg-teal-700': index % 2 == 0}">
+                                                            :class="{'bg-teal-700': index % 2 === 0}">
                                                             <dt class="text-sm font-medium">
                                                             <span class="flex gap-2">
                                                                 <span
@@ -354,7 +354,6 @@ let withdrawalRewards = async () => {
             const walletService = new WalletService();
             await walletService.connectWallet(myWallet?.value?.name);
             minterAddress.value = (await window.axios.post(`/api/rewards/withdrawals/address`))?.data;
-            console.log(minterAddress.value)
 
             // get deposit
             const rawTx = await walletService.payToAddress(minterAddress?.value.address, {lovelace: BigInt(2000000)});
