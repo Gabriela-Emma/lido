@@ -23,7 +23,7 @@ use App\Http\Controllers\ProjectCatalyst\CatalystMyBookmarksController;
 use App\Http\Controllers\ProjectCatalyst\CatalystMyDashboardController;
 use App\Http\Controllers\ProjectCatalyst\CatalystMyProposalsController;
 use App\Http\Controllers\ProjectCatalyst\CatalystUserProfilesController;
- 
+
  // Project Catalyst
 
  Route::group(
@@ -31,50 +31,48 @@ use App\Http\Controllers\ProjectCatalyst\CatalystUserProfilesController;
         'prefix' => LaravelLocalization::setLocale(),
         'middleware' => ['localeSessionRedirect', 'localizationRedirect', 'localeViewPath'],
     ], function () {
-        Route::get('/lido-catalyst-proposals', LidoCatalystProposals::class)
-        ->name('lidoCatalystProposals');
         Route::get('/catalyst-proposals', App\Http\Livewire\Catalyst\CatalystProposalsComponent::class);
         Route::get('/catalyst-proposals/users/{catalystUser}', fn() => view('catalyst.user'));
         Route::prefix('project-catalyst')->as('projectCatalyst.')->group(function () {
             Route::get('/reports', App\Http\Livewire\Catalyst\CatalystReportsComponent::class)
                 ->name('reports');
-    
+
             Route::get('/dashboard', App\Http\Livewire\Catalyst\CatalystDashboardComponent::class)
                 ->name('dashboard');
-    
+
             Route::get('/votes/ccv4', App\Http\Livewire\Catalyst\CatalystVotesComponent::class)
                 ->name('votes.ccv4');
-    
+
             Route::get('/voter-tool', App\Http\Livewire\Catalyst\CatalystVoterToolComponent::class)
                 ->name('voterTool');
-    
+
             Route::get('/bookmarks', App\Http\Livewire\Catalyst\CatalystBookmarksComponent::class)
                 ->name('bookmarks');
-    
+
             Route::get('/projects', App\Http\Livewire\Catalyst\CatalystProposalsComponent::class)
                 ->name('projects');
-    
+
             Route::get('/funds/{fund}/', CatalystFundComponent::class)
                 ->name('fund');
-    
+
             Route::get('/funds', App\Http\Livewire\Catalyst\CatalystFundsComponent::class)
                 ->name('funds');
-    
+
             Route::get('/proposals', App\Http\Livewire\Catalyst\CatalystProposalsComponent::class)
                 ->name('proposals');
-    
+
             Route::get('/challenges/{fund}/', fn() => view('challenge'))
                 ->name('challenge');
-    
+
             Route::get('/groups', CatalystGroupsComponent::class)
                 ->name('groups');
-    
+
             Route::get('/users', CatalystProposersComponent::class)
                 ->name('users');
-    
+
             Route::get('/users/{catalystUser}', fn() => view('catalyst.user'))
                 ->name('user');
-    
+
             Route::get('/group/{catalystGroup}', fn() => view('catalyst.group'))
                 ->name('group');
             });
@@ -182,4 +180,4 @@ Route::prefix('project-catalyst')->group(function () {
     Route::post('/bookmarks/share', [AnonymousBookmarkController::class, 'share']);
     Route::post('/proposals/search/bookmarks', [ProposalSearchController::class, 'bookmarks']);
 });
- 
+

@@ -13,6 +13,7 @@ class QuizQuestionAnswerData extends Data
 {
     public function __construct(
         public ?int $id,
+
         public ?string $title,
 
         #[TypeScriptOptional]
@@ -20,15 +21,18 @@ class QuizQuestionAnswerData extends Data
         public ?string $content,
 
         #[TypeScriptOptional]
-        public ?string $type,
+        public ?bool $correct,
 
         #[TypeScriptOptional]
-        public ?bool $correct,
+        public ?string $correctness,
 
         #[TypeScriptOptional]
         public ?string $hint,
 
         #[TypeScriptOptional]
         public ?string $status,
+
+        #[TypeScriptOptional]
+        public ?string $type,
     ) {}
 }

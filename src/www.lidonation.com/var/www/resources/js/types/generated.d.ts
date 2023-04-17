@@ -69,11 +69,11 @@ export type QuizQuestionAnswerData = {
 id: number | null;
 title: string | null;
 content?: string | null;
-correctness?: string | null;
-type?: string | null;
 correct?: boolean | null;
+correctness?: string | null;
 hint?: string | null;
 status?: string | null;
+type?: string | null;
 };
 export type QuizQuestionData = {
 id: number | null;
@@ -84,7 +84,6 @@ status?: string | null;
 answers: Array<App.DataTransferObjects.QuizQuestionAnswerData> | null;
 };
 export type RewardsData = {
-[x: string]: any;
 id: number | null;
 asset: string | null;
 amount: number | null;

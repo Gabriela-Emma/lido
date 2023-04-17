@@ -221,12 +221,11 @@ if (learningLesson.value?.quizzes?.length > 0) {
         question = ref(questions[Math.floor(Math.random() * questions?.length)]);
         answers = question.value?.answers;
         correctAnswerId = answers.filter((ans) => {
-            return ans.correctness == 'true';
+            return ans.correctness == 'correct';
         })[0]?.id;
-
     }
 }
-
+console.log({correctAnswerId, answers, question});
 
 let selectedAnswer:number = ref() as null;
 let disableSubmitButton = ref(true);
@@ -254,11 +253,10 @@ let updateSelectedAnswer = (answer:number) => {
     disableSubmitButton.value = false;
 }
 
-
 let submit = () => {
     submitted.value = true;
     correctness(correctAnswerId, selectedAnswer);
-    setQuizBackground(correctAnswerId.value);
+    setQuizBackground(correctAnswerId?.value);
 
     // submit the form
     const baseUrl = usePage().props.base_url;
