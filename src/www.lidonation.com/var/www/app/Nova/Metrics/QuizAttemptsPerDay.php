@@ -23,7 +23,7 @@ class QuizAttemptsPerDay extends Trend
      */
     public function calculate(NovaRequest $request): mixed
     {
-        return $this->countByDays($request, AnswerResponse::class);
+        return $this->countByDays($request, AnswerResponse::class)->showSumValue();
     }
 
     /**
@@ -34,9 +34,12 @@ class QuizAttemptsPerDay extends Trend
     public function ranges()
     {
         return [
+            15 => __('15 Days'),
             30 => __('30 Days'),
+            45 => __('45 Days'),
             60 => __('60 Days'),
             90 => __('90 Days'),
+            180 => __('180 Days'),
         ];
     }
 
