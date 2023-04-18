@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Enums\RoleEnum;
 use App\Models\Post;
 use App\Models\Team;
 use App\Models\Event;
@@ -36,6 +37,7 @@ use App\Policies\BookmarkCollectionPolicy;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Gate;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -75,6 +77,10 @@ class AuthServiceProvider extends ServiceProvider
 
         ResetPassword::createUrlUsing(function ($user, string $token) {
             return config('app.url').'/reset-password/'.$token;
+        });
+
+        Gate::define('learner', function ($user) {
+            return $user->hasRole(RoleEnum::learner()->value);
         });
     }
 }
