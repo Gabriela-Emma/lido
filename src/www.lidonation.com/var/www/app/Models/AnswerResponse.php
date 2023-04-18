@@ -2,9 +2,6 @@
 
 namespace App\Models;
 
-use App\DataTransferObjects\QuizData;
-use App\DataTransferObjects\QuizQuestionAnswerData;
-use App\DataTransferObjects\QuizQuestionData;
 use App\Models\Traits\HasAuthor;
 use App\Models\Traits\HasMetaData;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -34,14 +31,11 @@ class AnswerResponse extends Model
      */
     protected $casts = [
         'updated_at' => 'datetime:M d y',
-        'published_at' => 'datetime:M d y',
-        'question' => QuizQuestionData::class,
-        'quiz' => QuizData::class,
-        'answer' => QuizQuestionAnswerData::class,
+        'published_at' => 'datetime:M d y'
     ];
 
     protected $hidden = [
-        'deleted_at', 'updated_at', 'status',
+        'deleted_at', 'updated_at'
     ];
 
     public function correct(): Attribute
@@ -61,6 +55,6 @@ class AnswerResponse extends Model
 
     public function answer(): BelongsTo
     {
-        return $this->belongsTo(QuestionAnswer::class, 'question_answer_id');
+        return $this->belongsTo(QuestionAnswer::class, 'question_answer_id', 'id', 'answer');
     }
 }
