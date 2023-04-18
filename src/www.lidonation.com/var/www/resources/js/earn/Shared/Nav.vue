@@ -2,7 +2,50 @@
     <div class="sticky top-0 z-30 border-b border-labs-red-light md:border-labs-red-light bg-labs-red page-nav">
         <div class='container relative'>
             <div class="flex flex-row justify-between flex-nowrap gap-4">
-                <nav></nav>
+                <nav class="flex max-w-[70%] overflow-x-auto" aria-label="Breadcrumb">
+                    <ol role="list" class="flex space-x-0">
+                        <li class="flex">
+                            <div class="flex items-center">
+                                <Link href="/en/earn/learn"
+                                    class="text-white flex flex-row items-center hover:text-yellow-400">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
+                                            fill="currentColor">
+                                        <path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z"/>
+                                        <path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"/>
+                                    </svg>
+                                    <span class="ml-1 text-xs font-medium sr-only">
+                                        {{ $t('dashboard') }}
+                                    </span>
+                                </Link>
+                            </div>
+                        </li>
+                        <li v-show="(crumbsLength >= 1)"
+                            v-for="crumb, key in crumbs"
+                            class="flex">
+                                <div v-if="!(crumbsLength-1 == key)" class="flex items-center" >
+                                    <svg class="flex-shrink-0 w-6 h-full text-teal-200" viewBox="0 0 24 44"
+                                         preserveAspectRatio="none" fill="currentColor"
+                                         xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                        <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z"/>
+                                    </svg>
+                                        <Link :href=crumb.link
+                                           class="ml-2 text-xs inline-block font-medium text-white hover:text-yellow-400 whitespace-nowrap">
+                                            {{$t(crumb.name)}}
+                                        </Link>
+                                </div>
+                                <div v-if="(crumbsLength-1 == key)" class="flex items-center">
+                                    <svg class="flex-shrink-0 w-6 h-full text-teal-200" viewBox="0 0 24 44"
+                                         preserveAspectRatio="none" fill="currentColor"
+                                         xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                        <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z"/>
+                                    </svg>
+                                        <span class="ml-2 text-xs font-medium inline-block text-teal-light-100 whitespace-nowrap">
+                                            {{$t(crumb.name)}}
+                                        </span>
+                                </div>
+                        </li>
+                    </ol>
+                </nav>
                 <nav class="relative hidden lg:inline-flex">
                     <ul
                         class="flex flex-row items-center justify-end gap-2 py-2 text-xs md:text-sm flex-nowrap overflow-x-auto h-full">
