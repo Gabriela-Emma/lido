@@ -10,8 +10,8 @@ questionAnswer: App.DataTransferObjects.QuizQuestionAnswerData | null;
 stake_address?: string | null;
 };
 export type AssetDetailsData = {
-asset_name: string;
-divisibility: number;
+asset_name: string | null;
+divisibility: number | null;
 metadata: App.DataTransferObjects.AssetMetaData | null;
 };
 export type AssetMetaData = {

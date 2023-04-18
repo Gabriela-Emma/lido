@@ -29,7 +29,10 @@ class RewardController extends Controller
 
         return Inertia::render('Rewards',[
             'rewards' => $request->user() ? RewardData::collection($rewards) : [null],
-            'processedRewards' => $request->user() ? RewardData::collection($processedRewards) : [null],
+            'processedRewards' => $request->user() ? $processedRewards : [null],
+            'crumbs' => [
+                ['label' => 'Rewards'],
+            ],
         ]);
     }
 
@@ -117,7 +120,23 @@ class RewardController extends Controller
             ->where('status', 'issued')
             ->orderBy('created_at', 'desc')
             ->get()
-            ?->groupBy('asset');
+            ?->groupBy('asset')
+            ->map(function ($group) {
+                $asset = new Fluent(
+                    array_merge(
+                        $group[0]?->toArray() ?? [],
+                        [
+                            'amount' => collect($group)->sum('amount'),
+                            'memo' => "Withdrawals processed {$group[0]?->updated_at->diffForHumans()}",
+                            'processed_at' => $group[0]?->updated_at->diffForHumans(),
+                        ]
+                    ));
+                if (is_array($asset->asset_details)) {
+                    $asset->asset_details = new Fluent($asset->asset_details);
+                }
+
+                return $asset;
+            })->values() ?? [];
 
     }
 

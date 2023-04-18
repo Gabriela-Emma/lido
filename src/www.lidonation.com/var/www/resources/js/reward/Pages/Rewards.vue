@@ -99,28 +99,26 @@
                                                 </div>
                                                 <dl class="overflow-y-auto" v-show="!withdrawalsProcessed">
                                                     <template v-for="(withdrawal, index) in withdrawals"
-                                                              :key="withdrawal[0]?.asset">
+                                                              :key="withdrawal?.asset">
                                                         <div
                                                             class="py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-5 sm:px-6"
                                                             :class="{'bg-teal-700': index % 2 === 0}">
                                                             <dt class="text-sm font-medium">
                                                             <span class="flex gap-2">
                                                                 <span
-                                                                    v-text="withdrawal[0]?.asset_details?.asset_name"></span>
+                                                                    v-text="withdrawal?.asset_details?.asset_name"></span>
                                                             </span>
                                                             </dt>
                                                             <dd class="mt-1 text-sm sm:col-span-2 sm:mt-0">
                                                             <span class="font-semibold text-xl 2xl:text-2xl mr-3"
-                                                                  v-text="$filters.shortNumber((withdrawal)?.reduce((total:number, asset) => total + asset.amount, 0) /
-                                                                      (withdrawal[0]?.asset_details?.divisibility > 0  ? withdrawal[0]?.asset_details?.divisibility : 1))
-                                                                      .toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 2})"></span>
+                                                                  v-text="$filters.shortNumber((withdrawal.amount / (withdrawal.asset_details?.divisibility > 0 ? withdrawal?.asset_details?.divisibility : 1)).toFixed(2))"></span>
                                                                 <template
-                                                                    v-if="withdrawal[0]?.asset_details?.metadata?.logo">
+                                                                    v-if="withdrawal?.asset_details?.metadata?.logo">
                                                                 <span
                                                                     class="relative inline-flex items-center rounded-full 2xl:w-5 w-4 2xl:h-5 ml-2">
                                                                     <img class="inline-flex"
-                                                                         :src="'data:image/png;base64,'+`${withdrawal[0]?.asset_details?.metadata?.logo}`"
-                                                                         :alt="`${withdrawal[0]?.asset_details?.asset_name}`"/>
+                                                                         :src="'data:image/png;base64,'+`${withdrawal?.asset_details?.metadata?.logo}`"
+                                                                         :alt="`${withdrawal?.asset_details?.asset_name}`"/>
                                                                 </span>
                                                                 </template>
                                                             </dd>
@@ -225,19 +223,20 @@
                                         <Divider/>
                                     </div>
 
-                                    <div class="text-slate-800">
-                                        <LoginForm :forRewards="true"
-                                                   :embedded="true"
-                                                   :showLogo="false"
-                                                   :showDivider="false"
-                                                   :showWalletBtn="false"
-                                                   @setForm="getForm($event)"
-                                                   @submit="submit($event)"/>
-                                        <div v-show="errors.length>0" v-text="errors"
-                                             class="text-red-500 w-96 text-sm my-1"></div>
-                                    </div>
+                                <div class="text-slate-800">
+                                    <LoginForm  :forRewards="true"
+                                                :embedded="true"
+                                                :showLogo="false" 
+                                                :showDivider="false"
+                                                :showWalletBtn="false"
+                                                :role="'rewards'"
+                                                @setForm="getForm($event)" 
+                                                @submit="submit($event)"/>
+                                    <div v-show="errors.length>0" v-text="errors"
+                                        class="text-red-500 w-96 text-sm my-1"></div>
                                 </div>
                             </div>
+                        </div>
 
                         </section>
                     </div>
@@ -261,11 +260,10 @@ import Divider from '../../global/Shared/Components/Divider.vue';
 import LoginForm from '../../global/Shared/Components/LoginForm.vue'
 import {useWalletStore} from '../../catalyst-explorer/stores/wallet-store';
 import Wallet from '../../catalyst-explorer/models/wallet';
-import {storeToRefs} from 'pinia';
+import { storeToRefs } from 'pinia';
 import RewardData = App.DataTransferObjects.RewardData
-import {AxiosError} from 'axios';
-
-const ConnectWallet = defineAsyncComponent(() => import('../../global/Shared/Components/ConnectWallet.vue'));
+import { AxiosError } from 'axios';
+const ConnectWallet = defineAsyncComponent(() =>import('../../global/Shared/Components/ConnectWallet.vue'));
 const $utils: any = inject('$utils');
 
 const props = withDefaults(
