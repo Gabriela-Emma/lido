@@ -1,10 +1,11 @@
 <template>
     <div class="bg-slate-100 login-form-wrapper">
-        <RegisterForm :showLogo="false" 
-                   :errors="errors" 
-                   @endpoint="setEndpoint($event)" 
-                   @setForm="getForm($event)" 
-                   @submit="submit"/>
+        <RegisterForm  :showLogo="false"
+                        :role="'earn/learn'"
+                        :errors="errors" 
+                        @endpoint="setEndpoint($event)" 
+                        @setForm="getForm($event)" 
+                        @submit="submit"/>
     </div>
 </template>
 
