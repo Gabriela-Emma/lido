@@ -66,7 +66,7 @@
                         <div>
                             <div class="flex gap-3 text-sm w-full justify-center ">
                                 <span>Already have an account{{ $t("") }}?</span>
-                                <Link href="/catalyst-explorer/login" class="font-bold text-teal-600 hover:text-teal-500" preserve-scroll> {{ $t("Sign in") }}</Link>
+                                <Link :href="'/'+`${role}`+'/login'" class="font-bold text-teal-600 hover:text-teal-500" preserve-scroll> {{ $t("Sign in") }}</Link>
                             </div>
                         </div>
                     </div>
@@ -82,9 +82,17 @@ import {Link} from '@inertiajs/vue3';
 import {inject} from "vue";
 const $utils: any = inject('$utils');
 
-const props=defineProps({
-    errors:Object
-})
+const props=withDefaults(
+    defineProps<{
+        errors:Object
+        role?:string
+    }>(),
+    {
+        role:'catalyst-explorer',
+    },
+);
+
+
 let form= useForm({
     password:'',
     email:'',

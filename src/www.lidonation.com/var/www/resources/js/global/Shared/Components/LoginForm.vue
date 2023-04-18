@@ -67,7 +67,7 @@
                             <span>{{ $t("Sign in") }}</span>
                         </button>
                         <span class="text-sm">
-                            <Link href="/catalyst-explorer/register" class="font-bold text-teal-600 hover:text-teal-500" preserve-scroll >{{ $t("Register") }}</Link>
+                            <Link :href="'/'+`${role}`+'/register'" class="font-bold text-teal-600 hover:text-teal-500" preserve-scroll >{{ $t("Register") }}</Link>
                         </span>
                     </div>
                 </div>
