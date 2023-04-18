@@ -204,8 +204,8 @@ return [
                     ]),
                     new Illuminate\Support\Fluent([
                         'title' => 'Sign in',
-                        'route_type' => 'url',
-                        'route' => 'fr/catalyst-explorer/login',
+                        'route_type' => 'route_name',
+                        'route' => 'catalystExplorer.login',
                     ]),
                 ],
             ]),
