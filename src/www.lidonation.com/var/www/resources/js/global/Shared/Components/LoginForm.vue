@@ -75,7 +75,7 @@
                 <div v-show="showWalletBtn" class="flex flex-col">
                     <div v-if="walletError.length>0" v-text="walletError"
                                  class="text-red-500 text-sm my-1"></div>
-                    <WalletLoginBtn @walletError="handleWalletError($event)"/>
+                    <WalletLoginBtn :role="'login'" @walletError="handleWalletError($event)"/>
                 </div>
             </div>
         </form>
@@ -107,6 +107,7 @@ const props = withDefaults(
         showWalletBtn:true,
         showDivider:true,
         forRewards:false,
+        role:'catalyst-explorer'
     },
 );
 
