@@ -81,11 +81,11 @@
                                     <div class="text-slate-300 mb-2 text-center">Quiz</div>
                                     <div class="text-slate-500 mb-2 text-center">
                                         <div class="text-white">
-                                            <div v-if="correct === 'true'">
+                                            <div v-if="!!userLatestResponse.correct">
                                                 You're correct!
                                             </div>
                                             <div v-else>
-                                                You incorrect :(
+                                                You're incorrect :(
                                             </div>
                                         </div>
                                     </div>
