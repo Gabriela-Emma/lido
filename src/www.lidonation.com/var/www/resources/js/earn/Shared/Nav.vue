@@ -8,11 +8,7 @@
                             <div class="flex items-center">
                                 <Link href="/en/earn/learn"
                                     class="text-white flex flex-row items-center hover:text-yellow-400">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
-                                            fill="currentColor">
-                                        <path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z"/>
-                                        <path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"/>
-                                    </svg>
+                                    <AcademicCapIcon class="h-5 w-5" aria="true"/>
                                     <span class="ml-1 text-xs font-medium sr-only">
                                         {{ $t('dashboard') }}
                                     </span>
@@ -23,7 +19,7 @@
                             v-for="crumb, key in crumbs"
                             class="flex">
                                 <div v-if="!(crumbsLength-1 == key)" class="flex items-center" >
-                                    <svg class="flex-shrink-0 w-6 h-full text-teal-200" viewBox="0 0 24 44"
+                                    <svg class="flex-shrink-0 w-6 h-full text-labs-red-light" viewBox="0 0 24 44"
                                          preserveAspectRatio="none" fill="currentColor"
                                          xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                                         <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z"/>
@@ -34,7 +30,7 @@
                                         </Link>
                                 </div>
                                 <div v-if="(crumbsLength-1 == key)" class="flex items-center">
-                                    <svg class="flex-shrink-0 w-6 h-full text-teal-200" viewBox="0 0 24 44"
+                                    <svg class="flex-shrink-0 w-6 h-full text-labs-red-light" viewBox="0 0 24 44"
                                          preserveAspectRatio="none" fill="currentColor"
                                          xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                                         <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z"/>
@@ -99,7 +95,7 @@
 <script lang="ts" setup>
 import { Link } from '@inertiajs/vue3';
 import {computed, inject} from "vue";
-
+import {AcademicCapIcon} from '@heroicons/vue/24/outline';
 const $utils: any = inject('$utils');
 
 const props = withDefaults(
