@@ -6,6 +6,8 @@ use App\Models\AnswerResponse;
 use App\Models\Question;
 use App\Nova\Actions\AddMetaData;
 use App\Nova\Actions\EditMetaData;
+use App\Nova\Metrics\QuizAnswerResponseVeracity;
+use App\Nova\Metrics\QuizAttemptsPerDay;
 use Illuminate\Http\Request;
 use JetBrains\PhpStorm\Pure;
 use Laravel\Nova\Fields\BelongsTo;
@@ -102,7 +104,10 @@ class AnswerResponses extends Resource
      */
     public function cards(Request $request): array
     {
-        return [];
+        return [
+            new QuizAnswerResponseVeracity,
+            new QuizAttemptsPerDay
+        ];
     }
 
     /**
