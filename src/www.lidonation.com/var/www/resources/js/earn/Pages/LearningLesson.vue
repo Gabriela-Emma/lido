@@ -82,7 +82,7 @@
                                     <div class="text-slate-500 mb-2 text-center">
                                         <div class="text-white">
                                             <div v-if="!!userLatestResponse.correct">
-                                                You're correct!
+                                                You got it!
                                             </div>
                                             <div v-else>
                                                 You're incorrect :(
