@@ -1,0 +1,44 @@
+{
+    "snippets": [
+            {
+                "heading": "proposals",
+                "text": "Proposals"
+            },
+            {
+                "heading": "people",
+                "text": "People"
+            },
+            {
+                "heading": "groups",
+                "text": "Groups"
+            },
+            {
+                "heading": "reports",
+                "text": "Monthly Reports"
+            },
+            {
+                "heading": "assessments",
+                "text": "PAs"
+            },
+            {
+                "heading": "charts",
+                "text": "Charts"
+            },
+            {
+                "heading": "votes",
+                "text": "CCV4 Votes"
+            },
+            {
+                "heading": "api",
+                "text": "Api"
+            },
+            {
+                "heading": "funds",
+                "text": "Funds"
+            },
+            {
+                "heading": "tool",
+                "text": "Voter Tool"
+            }
+        ]
+    }
