@@ -3,6 +3,7 @@
 namespace App\DataTransferObjects;
 
 use Spatie\LaravelData\Attributes\MapOutputName;
+use Spatie\LaravelData\Attributes\WithCast;
 use Spatie\LaravelData\Concerns\WireableData;
 use Spatie\LaravelData\Data;
 use Spatie\TypeScriptTransformer\Attributes\Optional as TypeScriptOptional;
@@ -24,10 +25,13 @@ class AnswerResponseData extends Data
 
       public ?bool $correct,
 
+      #[WithCast(QuizQuestionData::class)]
       public ?QuizQuestionData $question,
 
+      #[WithCast(QuizData::class)]
       public ?QuizData $quiz,
 
+      #[WithCast(QuizQuestionAnswerData::class)]
       public ?QuizQuestionAnswerData $questionAnswer,
 
       #[TypeScriptOptional]

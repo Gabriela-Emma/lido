@@ -3,6 +3,7 @@
 namespace App\DataTransferObjects;
 
 use App\DataTransferObjects\Transformers\ShortcodeTransformer;
+use Spatie\LaravelData\Attributes\WithCast;
 use Spatie\LaravelData\Attributes\WithTransformer;
 use Spatie\LaravelData\Data;
 use Spatie\TypeScriptTransformer\Attributes\Optional as TypeScriptOptional;
@@ -34,5 +35,9 @@ class QuizQuestionAnswerData extends Data
 
         #[TypeScriptOptional]
         public ?string $type,
+
+        #[TypeScriptOptional]
+        #[WithCast(QuizQuestionData::class)]
+        public QuizQuestionData $question,
     ) {}
 }
