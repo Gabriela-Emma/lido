@@ -80,7 +80,7 @@ class AuthServiceProvider extends ServiceProvider
         });
 
         Gate::define('learner', function ($user) {
-            return $user->roles->where('name', RoleEnum::learner())->count() > 0 ? true : false;
+            return $user->hasRole(RoleEnum::learner()->value);
         });
     }
 }
