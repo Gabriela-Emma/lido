@@ -9,6 +9,7 @@ use App\Nova\Actions\EditMetaData;
 use Illuminate\Http\Request;
 use JetBrains\PhpStorm\Pure;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
@@ -64,6 +65,14 @@ class AnswerResponses extends Resource
     {
         return [
             ID::make(__('ID'), 'id')->sortable(),
+
+            Boolean::make('Correct', fn () => $this->correct ),
+
+            BelongsTo::make(__('Quiz'), 'quiz', Quizzes::class)
+                ->searchable(),
+
+            BelongsTo::make(__('Question'), 'question', Questions::class)
+                ->searchable(),
 
             BelongsTo::make(__('Answer'), 'answer', QuestionAnswers::class)
                 ->searchable(),
