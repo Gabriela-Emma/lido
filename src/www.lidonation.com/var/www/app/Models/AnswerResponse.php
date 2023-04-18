@@ -19,6 +19,10 @@ class AnswerResponse extends Model
         HasTimestamps,
         SoftDeletes;
 
+    protected $with = [
+        'answer'
+    ];
+
     protected $appends = [
         'correct'
     ];
