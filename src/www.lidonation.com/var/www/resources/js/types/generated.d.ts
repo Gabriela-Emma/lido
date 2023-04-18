@@ -10,9 +10,9 @@ questionAnswer: App.DataTransferObjects.QuizQuestionAnswerData | null;
 stake_address?: string | null;
 };
 export type AssetDetailsData = {
-asset_name: string;
-divisibility: number;
-metadata: Array<App.DataTransferObjects.AssetMetaData> | null;
+asset_name: string | null;
+divisibility: number | null;
+metadata: App.DataTransferObjects.AssetMetaData | null;
 };
 export type AssetMetaData = {
 logo: string | null;
@@ -91,7 +91,7 @@ asset: string | null;
 amount: number | null;
 asset_type?: string | null;
 status: string | null;
-asset_details: Array<App.DataTransferObjects.AssetDetailsData> | null;
+asset_details: App.DataTransferObjects.AssetDetailsData | null;
 memo: string | null;
 };
 }

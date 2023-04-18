@@ -35,13 +35,13 @@ class Reward extends Model
      *
      * @var array
      */
+    public $appends = ['asset_details'];
+
     protected $casts = [
         'amount' => 'integer',
-        'asset_details' => AssetDetailsData::class,
-        'asset_detail.metadata' => AssetMetaData::class,
+        // 'asset_details' => 'collection:' . AssetDetailsData::class,
+        // 'asset_details.*.metadata' => AssetMetaData::class,
     ];
-
-    public $appends = ['asset_details'];
 
     public function assetDetails(): Attribute
     {
