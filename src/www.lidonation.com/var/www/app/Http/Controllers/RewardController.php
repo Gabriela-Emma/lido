@@ -15,7 +15,7 @@ use App\Jobs\ProcessUserRewardsJob;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use App\Services\CardanoWalletService;
-use App\DataTransferObjects\RewardsData;
+use App\DataTransferObjects\RewardData;
 use Illuminate\Auth\AuthenticationException;
 
 class RewardController extends Controller
@@ -28,8 +28,11 @@ class RewardController extends Controller
         }
 
         return Inertia::render('Rewards',[
-            'rewards' => $request->user() ? RewardsData::collection($rewards) : [null],
-            'processedRewards' => $request->user() ? RewardsData::collection($processedRewards) : [null],
+            'rewards' => $request->user() ? RewardData::collection($rewards) : [null],
+            'processedRewards' => $request->user() ? $processedRewards : [null],
+            'crumbs' => [
+                ['label' => 'Rewards'],
+            ],
         ]);
     }
 
@@ -55,7 +58,7 @@ class RewardController extends Controller
     }
 
     public function process(Request $request)
-    {   
+    {
         $user = auth()?->user();
         if (! $user->wallet_address) {
             $user->wallet_addres = $request->input('address');
@@ -65,7 +68,7 @@ class RewardController extends Controller
             auth()?->user(),
             $request->input('address') ?? $user->wallet_address
         );
-    
+
     }
 
     public function mintAddress()
@@ -117,7 +120,23 @@ class RewardController extends Controller
             ->where('status', 'issued')
             ->orderBy('created_at', 'desc')
             ->get()
-            ?->groupBy('asset');
+            ?->groupBy('asset')
+            ->map(function ($group) {
+                $asset = new Fluent(
+                    array_merge(
+                        $group[0]?->toArray() ?? [],
+                        [
+                            'amount' => collect($group)->sum('amount'),
+                            'memo' => "Withdrawals processed {$group[0]?->updated_at->diffForHumans()}",
+                            'processed_at' => $group[0]?->updated_at->diffForHumans(),
+                        ]
+                    ));
+                if (is_array($asset->asset_details)) {
+                    $asset->asset_details = new Fluent($asset->asset_details);
+                }
+
+                return $asset;
+            })->values() ?? [];
 
     }
 
@@ -165,7 +184,7 @@ class RewardController extends Controller
 
                         return $asset;
                     })->values() ?? [];
-                    
+
 
     }
 }

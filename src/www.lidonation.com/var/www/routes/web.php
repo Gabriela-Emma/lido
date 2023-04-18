@@ -132,7 +132,7 @@ Route::group(
             Route::get('modules/{learningModule:slug}', [LearningModulesController::class, 'show'])
                 ->name('learn.modules.view');
             Route::get('lessons/{learningLesson:id}', [LearningLessonController::class, 'show'])
-                ->name('learn.modules.view');
+                ->name('learn.lesson.view');
 
             Route::get('/answer-response/responses', [LearningAnswerResponseController::class, 'index']);
             Route::post('/answer-response/store/answer', [LearningAnswerResponseController::class, 'storeAnswer']);

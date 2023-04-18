@@ -57,12 +57,13 @@
                     </header>
                     <div class="mt-4 p-6 shadow-xs rounded-xs h-[40rem] bg-slate-100/75 overflow-y-auto">
                         <template v-if="learningLesson.model">
-                            <div v-if="learningLesson.model?.type === 'Link'" class="flex flex-col items-center justify-center gap-3 h-full">
+                            <div v-if="learningLesson.model?.type === 'Link'"
+                                 class="flex flex-col items-center justify-center gap-3 h-full">
                                 <a :href="learningLesson.model?.link" target="_blank"
-                                   class="px-6 py-16 border-labs-black border-2 rounded-sm flex flex-col justify-center gap-4 items-center text-xl xl:text-3xl text-labs-black hover:text-labs-black hover:bg-slate-200">
-                                    {{learningLesson.model?.title}}
+                                   class="px-6 py-16 border-labs-black border-2 rounded-sm flex flex-col justify-center gap-4 items-center text-xl xl:text-3xl text-labs-black hover:text-teal-light-600 hover:bg-slate-200">
+                                    {{ learningLesson.model?.title }}
 
-                                    <ArrowTopRightOnSquareIcon class="h-16 w-16" />
+                                    <ArrowTopRightOnSquareIcon class="h-16 w-16"/>
 
                                     <p class="text-center text-xl text-slate-800 max-w-md mx-auto px-8">
                                         Read Article in new tab. Return to take quiz after you've read the article.
@@ -75,15 +76,17 @@
                     <footer>
                         <div class="text-white px-8 py-16 mt-8" :class="[quizBackGround]">
                             <div class="" v-if="question">
-                                <!--an aswer exists already submitted-->
-                                <div v-if="submitted">
-                                    <div class="text-slate-300 mb-2 text-center">Quiza</div>
-                                    <div v-if="submitted" class="text-slate-500 mb-2 text-center">
-                                        <div v-if="correct == 'true'" class="text-white">
-                                            Correct
-                                        </div>
-                                        <div v-if="correct == 'false'" class="text-white">
-                                            Incorrect
+                                <!--an answer exists already submitted-->
+                                <div v-if="userLatestResponse">
+                                    <div class="text-slate-300 mb-2 text-center">Quiz</div>
+                                    <div class="text-slate-500 mb-2 text-center">
+                                        <div class="text-white">
+                                            <div v-if="correct === 'true'">
+                                                You're correct!
+                                            </div>
+                                            <div v-else>
+                                                You incorrect :(
+                                            </div>
                                         </div>
                                     </div>
                                     <form class="rounded-sm border border-dashed border-white p-4 flex flex-col gap-6">
@@ -95,31 +98,25 @@
                                         <ul class="mt-4 space-y-2 relative h-full w-full ">
                                             <template v-for="answer in question.answers" :key="answer.id">
                                                 <li class="mt-2 transition hover:ease-in delay-150">
-                                                    <label v-if="selectedAnswer == answer.id" class="w-full">
-                                                        <input  type="radio"
-                                                                class="peer sr-only"
-                                                                name="answer"
-                                                                :id="answer.id"
-                                                                v-model="selectedAnswer"/>
-                                                        <div class="w-full rounded-md bg-white p-5" :class="correct == 'true' ? 'text-green-400' : 'text-orange-500'">
+                                                    <label  class="w-full">
+                                                        <input type="radio" class="peer sr-only" name="answer" :id="answer.id" v-model="userSelectionId" />
+
+                                                        <div class="w-full rounded-md bg-white p-5" :class="{
+                                                            'text-green-400' : userLatestResponse.correct && userLatestResponse.questionAnswerId === answer.id,
+                                                            'text-orange-500': !userLatestResponse.correct && userLatestResponse.questionAnswerId === answer.id,
+                                                            'text-slate-600': userLatestResponse.questionAnswerId !== answer.id
+                                                        }">
                                                             <div class="flex items-center justify-between">
-                                                                <p class="text-sm font-semibold">{{ answer.content }}</p>
+                                                                <p class="text-sm font-semibold pr-8">
+                                                                    {{ answer.content }}
+                                                                </p>
                                                                 <div class="w-4 h-4">
-                                                                    <svg fill='currentColor' id="Layer_1_1_" style="enable-background:new 0 0 16 16;" version="1.1" viewBox="0 0 16 16" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><circle cx="8" cy="8" r="8"/></svg>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </label>
-                                                    <label v-if="selectedAnswer != answer.id" class="w-full">
-                                                        <input  type="radio"
-                                                                class="peer sr-only"
-                                                                name="answer"
-                                                                :id="answer.id"/>
-                                                        <div class="w-full rounded-md bg-white p-5 text-gray-500">
-                                                            <div class="flex items-center justify-between">
-                                                                <p class="text-sm font-semibold">{{ answer.content }}</p>
-                                                                <div class="w-4 h-4">
-                                                                    <svg fill='currentColor' id="Layer_1_1_" style="enable-background:new 0 0 16 16;" version="1.1" viewBox="0 0 16 16" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><circle cx="8" cy="8" r="8"/></svg>
+                                                                    <svg fill='currentColor' id="Layer_1_1_"
+                                                                         style="enable-background:new 0 0 16 16;"
+                                                                         version="1.1" viewBox="0 0 16 16"
+                                                                         xml:space="preserve"
+                                                                         xmlns="http://www.w3.org/2000/svg"
+                                                                         xmlns:xlink="http://www.w3.org/1999/xlink"><circle cx="8" cy="8" r="8"/></svg>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -140,7 +137,7 @@
                                 </div>
 
                                 <!--actual flow if not submitted already-->
-                                <div v-if="!submitted">
+                                <div v-if="!userLatestResponse">
                                     <div class="text-slate-300 mb-2 text-center">Quiz</div>
                                     <form class="rounded-sm border border-dashed border-white p-4 flex flex-col gap-6">
                                         <div>
@@ -152,15 +149,20 @@
                                             <template v-for="answer in question.answers" :key="answer.id">
                                                 <li class="mt-2 transition hover:ease-in delay-150">
                                                     <label class="cursor-pointer w-full">
-                                                        <input  type="radio" class="peer sr-only"
-                                                                name="answer"
-                                                                :id="answer.id"
-                                                                @click="updateSelectedAnswer(answer.id)"/>
-                                                        <div class="w-full rounded-md bg-white text-gray-500 p-5 transition-all hover:shadow peer-checked:text-labs-black">
+                                                        <input type="radio" class="peer sr-only" name="answer" :id="answer.id" :value="answer.id" v-model="userSelectionId" />
+                                                        <div
+                                                            class="w-full rounded-md bg-white text-gray-500 p-5 transition-all hover:shadow peer-checked:text-teal-light-600">
                                                             <div class="flex items-center justify-between">
-                                                                <p class="text-sm font-semibold">{{ answer.content }}</p>
+                                                                <p class="text-sm font-semibold pr-8">{{
+                                                                        answer.content
+                                                                    }}</p>
                                                                 <div class="w-4 h-4">
-                                                                    <svg fill='currentColor' id="Layer_1_1_" style="enable-background:new 0 0 16 16;" version="1.1" viewBox="0 0 16 16" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><circle cx="8" cy="8" r="8"/></svg>
+                                                                    <svg fill='currentColor' id="Layer_1_1_"
+                                                                         style="enable-background:new 0 0 16 16;"
+                                                                         version="1.1" viewBox="0 0 16 16"
+                                                                         xml:space="preserve"
+                                                                         xmlns="http://www.w3.org/2000/svg"
+                                                                         xmlns:xlink="http://www.w3.org/1999/xlink"><circle cx="8" cy="8" r="8"/></svg>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -171,8 +173,8 @@
                                         <div class="mt-8 flex justify-end">
                                             <button type="button"
                                                     @click.prevent="submit"
-                                                    :disabled="disableSubmitButton"
-                                                    :class="{ 'opacity-25 cursor-not-allowed': disableSubmitButton }"
+                                                    :disabled="!!userLatestResponse"
+                                                    :class="{ 'opacity-25 cursor-not-allowed': !!userLatestResponse }"
                                                     class="rounded-sm bg-labs-black px-3.5 py-2.5 text-md xl:text-xl font-semibold text-white shadow-sm hover:bg-labs-black/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-labs-black ml-auto">
                                                 Submit
                                             </button>
@@ -189,19 +191,15 @@
 </template>
 
 <script lang="ts" setup>
-import {Ref, inject, ref, computed, watch} from "vue";
+import {Ref, inject, ref, computed} from "vue";
 import User from "../../global/Shared/Models/user";
 import {useForm, usePage} from '@inertiajs/vue3';
-import {NewspaperIcon, CheckBadgeIcon, ClockIcon, ArrowTopRightOnSquareIcon } from '@heroicons/vue/24/outline';
+import {NewspaperIcon, CheckBadgeIcon, ClockIcon, ArrowTopRightOnSquareIcon} from '@heroicons/vue/24/outline';
 import {CheckBadgeIcon as CheckBadgeIconSolid} from '@heroicons/vue/24/solid';
 import LearningLessonData = App.DataTransferObjects.LearningLessonData;
 import Footer from "../../../../vendor/laravel/nova/resources/js/layouts/Footer.vue";
 import {useAnswerResponseStore} from "../store/answer-response-store"
-import { storeToRefs } from "pinia";
-
-// load responses from store
-let answerResponseStore = useAnswerResponseStore();
-let {answerResponseData} = storeToRefs(answerResponseStore);
+import AnswerResponseData = App.DataTransferObjects.AnswerResponseData;
 
 const $utils: any = inject('$utils');
 const user = computed(() => usePage().props.user as User)
@@ -209,78 +207,63 @@ const user = computed(() => usePage().props.user as User)
 const props = withDefaults(
     defineProps<{
         locale: string,
+        userResponses: AnswerResponseData[],
         lesson: LearningLessonData
     }>(), {});
 
+
+let answerResponseStore = useAnswerResponseStore();
+
 let learningLesson = ref(props.lesson);
-let quiz, questions, question, answers, correctAnswerId, miki;
-if (learningLesson.value?.quizzes?.length > 0) {
-    quiz = learningLesson.value?.quizzes[0];
-    questions = quiz?.questions;
-    if (questions?.length > 0) {
-        question = ref(questions[Math.floor(Math.random() * questions?.length)]);
-        answers = question.value?.answers;
-        correctAnswerId = answers.filter((ans) => {
-            return ans.correctness == 'correct';
-        })[0]?.id;
+let submitted: Ref<boolean> = ref(false);
+
+let quiz, questions, question, answers, userSelectionId = ref(null);
+
+let userLatestResponse = computed(() => {
+    //@todo: filter out responses older than midnight previous day East Africa Time
+    if (props.userResponses?.length > 0) {
+        return props.userResponses[0];
     }
-}
-console.log({correctAnswerId, answers, question});
+    return null;
+});
 
-let selectedAnswer:number = ref() as null;
-let disableSubmitButton = ref(true);
-let submitted:Ref<boolean> = ref(false);
-let correct = ref('');
-let quizBackGround = ref('bg-labs-red');
+const quizBackGround = computed(() => {
+    if (userLatestResponse.value?.correct) {
+        return 'bg-labs-green';
+    } else if (userLatestResponse.value?.correct === false) {
+        return 'bg-labs-orange';
+    }
 
-watch(answerResponseData, () => {
-    let myInitialResponse  = answerResponseData.value.filter((response) => {
-        if (response.user_id == user.value?.id ) {
-            return response;
+    return 'bg-labs-red';
+});
+
+if (userLatestResponse.value) {
+    quiz = userLatestResponse.value?.quiz;
+    question = userLatestResponse.value?.question;
+} else {
+    if (learningLesson.value?.quizzes?.length > 0) {
+        quiz = learningLesson.value?.quizzes[0];
+        questions = quiz?.questions;
+        if (questions?.length > 0) {
+            question = ref(questions[Math.floor(Math.random() * questions?.length)]);
         }
-    })
-
-    if (myInitialResponse.length > 0) {
-        selectedAnswer = myInitialResponse[0].question_answer_id;
-        correctness(correctAnswerId, selectedAnswer);
-        submitted.value = true;
-        disableSubmitButton.value = true;
     }
-})
-
-let updateSelectedAnswer = (answer:number) => {
-    selectedAnswer = answer;
-    disableSubmitButton.value = false;
 }
+answers = question.value?.answers;
 
-let submit = () => {
+function submit() {
     submitted.value = true;
-    correctness(correctAnswerId, selectedAnswer);
-    setQuizBackground(correctAnswerId?.value);
 
     // submit the form
     const baseUrl = usePage().props.base_url;
-    let form= useForm({
-        question_answer_id: selectedAnswer,
+    let form = useForm({
+        question_answer_id: userSelectionId.value,
         user_id: user?.value?.id,
         quiz_id: quiz?.id,
         question_id: question?.value.id
     });
     answerResponseStore.submitAnswer(baseUrl, form);
 }
-
-let correctness = (correctId:number, responseId:number) => {
-    correct.value = (correctId == responseId) ? 'true' : 'false';
-    setQuizBackground(correct.value);
-}
-
-let setQuizBackground= (correctness: string) => {
-    if ( correctness == 'true') {
-        quizBackGround.value = 'bg-labs-green';
-    } else if  (correctness == 'false'){
-        quizBackGround.value = 'bg-labs-orange';
-    }
-};
 </script>
 
 

@@ -9,10 +9,14 @@ export const useAnswerResponseStore = defineStore('answer-response', () => {
 
     async function submitAnswer(baseUrl, form)
     {
-        form.post(`${baseUrl}/earn/learn/answer-response/store/answer`);
+        form.post(`${baseUrl}/earn/learn/answer-response/store/answer`, {
+            preserveScroll: true,
+            preserveState: false,
+
+        });
     }
 
-    async function loadAnswerResponses()
+    async function loadUserAnswerResponses()
     {
         try {
             const response = await axios.get(`/earn/learn/answer-response/responses`);
@@ -22,7 +26,7 @@ export const useAnswerResponseStore = defineStore('answer-response', () => {
         }
     }
 
-    onMounted(loadAnswerResponses);
+    // onMounted(loadUserAnswerResponses);
 
     return {
         answerResponseData,

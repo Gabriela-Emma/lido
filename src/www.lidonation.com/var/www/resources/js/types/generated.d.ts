@@ -1,15 +1,17 @@
 declare namespace App.DataTransferObjects {
 export type AnswerResponseData = {
-id: number | null;
-user_id: number | null;
-question_id: number | null;
-quiz_id: number | null;
-question_answer_id: number | null;
+id: number;
+userId: number | null;
+questionAnswerId: number | null;
+correct: boolean | null;
+question: App.DataTransferObjects.QuizQuestionData | null;
+quiz: App.DataTransferObjects.QuizData | null;
+questionAnswer: App.DataTransferObjects.QuizQuestionAnswerData | null;
 stake_address?: string | null;
 };
 export type AssetDetailsData = {
-asset_name: string;
-divisibility: number;
+asset_name: string | null;
+divisibility: number | null;
 metadata: App.DataTransferObjects.AssetMetaData | null;
 };
 export type AssetMetaData = {
@@ -83,7 +85,7 @@ type?: string | null;
 status?: string | null;
 answers: Array<App.DataTransferObjects.QuizQuestionAnswerData> | null;
 };
-export type RewardsData = {
+export type RewardData = {
 id: number | null;
 asset: string | null;
 amount: number | null;
