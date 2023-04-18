@@ -3,11 +3,8 @@
 namespace App\DataTransferObjects;
 
 use App\DataTransferObjects\Transformers\ShortcodeTransformer;
-use Livewire\Wireable;
 use Spatie\LaravelData\Attributes\WithTransformer;
-use Spatie\LaravelData\Concerns\WireableData;
 use Spatie\LaravelData\Data;
-use Spatie\LaravelData\Optional;
 use Spatie\TypeScriptTransformer\Attributes\Optional as TypeScriptOptional;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
@@ -16,6 +13,7 @@ class QuizQuestionAnswerData extends Data
 {
     public function __construct(
         public ?int $id,
+
         public ?string $title,
 
         #[TypeScriptOptional]
@@ -23,10 +21,10 @@ class QuizQuestionAnswerData extends Data
         public ?string $content,
 
         #[TypeScriptOptional]
-        public ?string $type,
+        public ?bool $correct,
 
         #[TypeScriptOptional]
-        public ?bool $correct,
+        public ?string $correctness,
 
         #[TypeScriptOptional]
         public ?string $hint,
@@ -35,6 +33,6 @@ class QuizQuestionAnswerData extends Data
         public ?string $status,
 
         #[TypeScriptOptional]
-        public ?string $correctness
+        public ?string $type,
     ) {}
 }

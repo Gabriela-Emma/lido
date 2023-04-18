@@ -53,7 +53,9 @@ class Quizzes extends Resource
     {
         return [
             ID::make(__('ID'), 'id')->sortable(),
-            Text::make(__('Title'))->translatable()->sortable(),
+            Text::make(__('Title'))->translatable()->sortable(fn ($query) =>
+                $query->orderBy('attribute_title->' . app()->getLocale())
+            ),
             Select::make(__('Status'), 'status')
                 ->options([
                     'published' => 'Published',

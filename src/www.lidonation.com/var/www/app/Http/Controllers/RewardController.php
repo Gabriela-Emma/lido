@@ -58,7 +58,7 @@ class RewardController extends Controller
     }
 
     public function process(Request $request)
-    {   
+    {
         $user = auth()?->user();
         if (! $user->wallet_address) {
             $user->wallet_addres = $request->input('address');
@@ -68,7 +68,7 @@ class RewardController extends Controller
             auth()?->user(),
             $request->input('address') ?? $user->wallet_address
         );
-    
+
     }
 
     public function mintAddress()
@@ -168,7 +168,7 @@ class RewardController extends Controller
 
                         return $asset;
                     })->values() ?? [];
-                    
+
 
     }
 }

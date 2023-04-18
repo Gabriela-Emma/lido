@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Earn;
 
+use App\DataTransferObjects\AnswerResponseData;
 use App\DataTransferObjects\LearningLessonData;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreLearningLessonRequest;
 use App\Http\Requests\UpdateLearningLessonRequest;
+use App\Models\AnswerResponse;
 use App\Models\LearningLesson;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -62,9 +64,16 @@ class LearningLessonController extends Controller
                     Shortcode::compile($learningLesson?->model?->content)
                 );
         }
-        
+
+        $userResponses = AnswerResponse::with(['quiz', 'question.answers', 'answer'])->where('user_id', $request->user()?->id)
+            ->where('quiz_id', $learningLesson->quiz?->id)
+            ->get();
+
+//        dd(AnswerResponseData::collection($userResponses)->toArray());
+
         return Inertia::render('LearningLesson', [
             'lesson' => LearningLessonData::from($learningLesson),
+            'userResponses' => AnswerResponseData::collection($userResponses),
             'crumbs' => [
                 ['label' => 'Learn & Earn', 'link' => route('earn.learn')],
                 ['label' => 'Modules', 'link' => route('earn.learn.modules.index')],

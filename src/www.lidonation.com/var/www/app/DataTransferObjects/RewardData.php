@@ -9,8 +9,6 @@ use Spatie\LaravelData\Attributes\DataCollectionOf;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 use Spatie\TypeScriptTransformer\Attributes\Optional as TypeScriptOptional;
 
-
-
 #[TypeScript]
 class RewardData extends Data
 {

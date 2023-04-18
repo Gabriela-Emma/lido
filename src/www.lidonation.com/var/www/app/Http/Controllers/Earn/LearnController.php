@@ -21,7 +21,11 @@ class LearnController extends Controller
      */
     public function index()
     {
-        return Inertia::render('Learn');
+        return Inertia::render('Learn')->with([
+            'crumbs'  => [
+                ['name' => 'Learn & Earn', 'link' => route('earn.learn')],
+            ]
+        ]);
     }
 
     public function login(Request $request)
@@ -56,9 +60,9 @@ class LearnController extends Controller
         ]));
 
         $user = User::where('email', $validated->email)->where('wallet_address', $validated->wallet_address);
-    
+
         if (! $user instanceof User) {
-            
+
             $user = new User;
             $user->name = $validated->name;
             $user->email = $validated->email;
@@ -67,8 +71,8 @@ class LearnController extends Controller
             $user->twitter = $validated->twitter;
             $user->telegram = $validated->telegram;
             $user->save();
-            
-            
+
+
             // role user learner role @todo assignRole spatie not working
             $role = Role::where('name', 'learner')->first();
             DB::table('model_has_roles')
