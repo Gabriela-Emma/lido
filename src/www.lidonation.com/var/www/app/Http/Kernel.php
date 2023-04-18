@@ -3,6 +3,7 @@
 namespace App\Http;
 
 use App\Http\Middleware\AuthenticateCatalystUser;
+use App\Http\Middleware\AuthenticateLearner;
 use App\Http\Middleware\HandleInertiaRequests;
 use App\Http\Middleware\RobotsMiddleware;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
@@ -76,6 +77,7 @@ class Kernel extends HttpKernel
         'previewAccess' => \App\Http\Middleware\PreviewAccess::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'auth.catalyst' => AuthenticateCatalystUser::class,
+        'auth.learn' => AuthenticateLearner::class,
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
@@ -90,5 +92,6 @@ class Kernel extends HttpKernel
         'localeCookieRedirect' => \Mcamara\LaravelLocalization\Middleware\LocaleCookieRedirect::class,
         'localeViewPath' => \Mcamara\LaravelLocalization\Middleware\LaravelLocalizationViewPath::class,
         'isFromAppDomain' => \App\Http\Middleware\EnsureRequestIsFromAppDomain::class,
+        'userLearner' => \App\Http\Middleware\LearnToEarnUser::class,
     ];
 }

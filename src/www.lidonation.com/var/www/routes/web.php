@@ -186,13 +186,13 @@ Route::group(
     Route::prefix('/earn')->as('earn.')->group(function () {
         Route::get('/')->name('learn')->name('home');
 
+        Route::get('/learn', [LearnController::class, 'index'])->name('learn');
         Route::get('/learn/login', fn() => Inertia::render('Login'))
             ->name('learn.login');
         Route::get('/learn/register', fn() => Inertia::render('Register'))
             ->name('learn.register');
 
-        Route::middleware([])->prefix('/learn')->group(function () {
-            Route::get('/', [LearnController::class, 'index'])->name('learn');
+        Route::middleware(['auth.learn', 'userLearner'])->prefix('/learn')->group(function () {
             Route::get('modules', [LearningModulesController::class, 'index'])
                 ->name('learn.modules.index');
             Route::get('modules/{learningModule:slug}', [LearningModulesController::class, 'show'])
