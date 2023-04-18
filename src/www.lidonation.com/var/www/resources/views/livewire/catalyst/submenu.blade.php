@@ -70,7 +70,7 @@
                     <li class="flow-root menu-item">
                         <a class="px-1 py-3 text-white menu-link {{ request()->routeIs('projectCatalyst.reports') ? 'text-yellow-500' : '' }} hover:text-yellow-500"
                            href="{{localizeRoute('catalystExplorer.reports')}}">
-                            Monthly Reports
+                            {{ $snippets->reports }}
                         </a>
                     </li>
                     <li class="flow-root menu-item">
@@ -88,7 +88,7 @@
                     <li class="flow-root menu-item">
                         <a class="px-1 py-3 text-white menu-link {{ request()->routeIs('projectCatalyst.votes.ccv4') ? 'text-yellow-500' : '' }} hover:text-yellow-500"
                            href="{{localizeRoute('projectCatalyst.votes.ccv4')}}">
-                            CCV4 Votes
+                            {{ $snippets->votes }}
                         </a>
                     </li>
                     <li class="flow-root menu-item">
@@ -107,7 +107,7 @@
                     <li class="flow-root menu-item">
                         <a class="px-1 py-3 text-white menu-link whitespace-nowrap {{ request()->routeIs('projectCatalyst.voterTool') ? 'text-yellow-500' : '' }} hover:text-yellow-500"
                            href="{{localizeRoute('projectCatalyst.voterTool')}}">
-                            Voter Tool
+                            {{ $snippets->tool }}
                         </a>
                     </li>
                     <li class="flow-root menu-item"  x-data="bookmarksMenuLink">
