@@ -52,7 +52,7 @@ class LearningAnswerResponseController extends Controller
         $giveaway = Quiz::find($ans->quiz_id)->giveaway;
         $rewardsCount =  Reward::where('user_id', $user->id)
                         ->where('model_type', Giveaway::class)
-                        ->where('model_id', $giveaway->id)
+                        ->where('model_id', $giveaway?->id)
                         ->count();
 
         // if no reward and answer is correct issue reward.
