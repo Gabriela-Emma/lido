@@ -4,11 +4,14 @@ namespace App\Http\Controllers\Earn;
 
 use App\DataTransferObjects\AnswerResponseData;
 use App\DataTransferObjects\LearningLessonData;
+use App\DataTransferObjects\RewardData;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreLearningLessonRequest;
 use App\Http\Requests\UpdateLearningLessonRequest;
 use App\Models\AnswerResponse;
+use App\Models\Giveaway;
 use App\Models\LearningLesson;
+use App\Models\Reward;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Inertia\Inertia;
@@ -70,9 +73,16 @@ class LearningLessonController extends Controller
             ->where('quiz_id', $learningLesson->quiz?->id)
             ->get();
 
+        $giveaway = $learningLesson->quiz?->giveaway;
+        $reward = Reward::where('user_id', $request->user()?->id)
+            ->where('model_id', $giveaway->id)
+            ->where('model_type', Giveaway::class)
+            ->get();
+
         return Inertia::render('LearningLesson', [
             'lesson' => LearningLessonData::from($learningLesson),
             'userResponses' => AnswerResponseData::collection($userResponses),
+            'reward' => RewardData::collection($reward),
             'crumbs' => [
                 ['name' => 'Learn & Earn', 'link' => route('earn.learn')],
                 ['name' => 'Modules', 'link' => route('earn.learn.modules.index')],

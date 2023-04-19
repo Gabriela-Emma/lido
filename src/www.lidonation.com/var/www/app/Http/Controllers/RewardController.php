@@ -156,7 +156,7 @@ class RewardController extends Controller
     public function queryNewRewards($user)
     {
 
-        return Reward::where('stake_address', $user?->wallet_stake_address)
+        return Reward::where('user_id', $user?->id)
                     ->where('status', 'issued')->orderBy('created_at', 'desc')
                     ->with('user')->paginate(12, ['*'], 'p')->setPath('/')->onEachSide(0);
     }
