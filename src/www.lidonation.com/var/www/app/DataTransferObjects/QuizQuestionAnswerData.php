@@ -34,5 +34,8 @@ class QuizQuestionAnswerData extends Data
 
         #[TypeScriptOptional]
         public ?string $type,
+
+        #[TypeScriptOptional]
+        public ?QuizQuestionData $question,
     ) {}
 }

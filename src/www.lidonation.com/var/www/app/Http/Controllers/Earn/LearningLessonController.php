@@ -83,9 +83,9 @@ class LearningLessonController extends Controller
             'userResponses' => AnswerResponseData::collection($userResponses),
             'reward' => RewardData::collection($reward),
             'crumbs' => [
-                ['label' => 'Learn & Earn', 'link' => route('earn.learn')],
-                ['label' => 'Modules', 'link' => route('earn.learn.modules.index')],
-                ['label' => $learningLesson->title, 'link' => $learningLesson->link],
+                ['name' => 'Learn & Earn', 'link' => route('earn.learn')],
+                ['name' => 'Modules', 'link' => route('earn.learn.modules.index')],
+                ['name' => $learningLesson->title, 'link' => $learningLesson->link],
             ],
         ]);
     }

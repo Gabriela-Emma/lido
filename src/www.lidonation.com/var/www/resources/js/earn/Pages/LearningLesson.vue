@@ -85,7 +85,7 @@
                                                 You're correct!
                                             </div>
                                             <div v-else>
-                                                You incorrect :(
+                                                You're incorrect :(
                                             </div>
                                         </div>
                                     </div>
