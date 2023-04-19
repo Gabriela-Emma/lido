@@ -17,7 +17,7 @@ class AnswerResponseData extends Data
       public int $id,
 
       #[MapOutputName('userId')]
-      public ?int $user_idd,
+      public ?int $user_id,
 
       #[MapOutputName('questionAnswerId')]
       public ?int $question_answer_id,
@@ -28,7 +28,7 @@ class AnswerResponseData extends Data
 
       public ?QuizData $quiz,
 
-      public ?QuizQuestionAnswerData $questionAnswer,
+      public ?QuizQuestionAnswerData $answer,
 
       #[TypeScriptOptional]
       public ?string $stake_address,

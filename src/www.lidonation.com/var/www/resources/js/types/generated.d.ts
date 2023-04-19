@@ -6,7 +6,7 @@ questionAnswerId: number | null;
 correct: boolean | null;
 question: App.DataTransferObjects.QuizQuestionData | null;
 quiz: App.DataTransferObjects.QuizData | null;
-questionAnswer: App.DataTransferObjects.QuizQuestionAnswerData | null;
+answer: App.DataTransferObjects.QuizQuestionAnswerData | null;
 stake_address?: string | null;
 };
 export type AssetDetailsData = {
