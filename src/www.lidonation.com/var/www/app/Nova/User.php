@@ -118,6 +118,8 @@ class User extends Resource
 
             HasMany::make('Rewards', 'rewards', Rewards::class),
 
+            HasMany::make('Quiz Responses', 'quiz_responses', AnswerResponses::class),
+
             HasMany::make('Mints', 'mint_txs', MintTxs::class),
 
             BelongsToMany::make(__('Teams'), 'teams', Teams::class)

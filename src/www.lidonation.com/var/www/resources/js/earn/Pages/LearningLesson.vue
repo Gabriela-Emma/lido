@@ -81,7 +81,7 @@
                                     <div class="text-slate-300 mb-2 text-center">Quiz</div>
                                     <div class="text-slate-500 mb-2 text-center">
                                         <div class="text-white">
-                                            <div v-if="!!userLatestResponse.correct">
+                                            <div v-if="userLatestResponse.correct === true">
                                                 You got it!
                                             </div>
                                             <div v-else>
@@ -98,12 +98,13 @@
                                         <ul class="mt-4 space-y-2 relative h-full w-full ">
                                             <template v-for="answer in question.answers" :key="answer.id">
                                                 <li class="mt-2 transition hover:ease-in delay-150">
-                                                    <label  class="w-full">
-                                                        <input type="radio" class="peer sr-only" name="answer" :id="answer.id" v-model="userSelectionId" />
+                                                    <label class="w-full">
+                                                        <input type="radio" class="peer sr-only" name="answer"
+                                                               :id="answer.id" v-model="userSelectionId"/>
 
                                                         <div class="w-full rounded-md bg-white p-5" :class="{
-                                                            'text-green-400' : userLatestResponse.correct && userLatestResponse.questionAnswerId === answer.id,
-                                                            'text-orange-500': !userLatestResponse.correct && userLatestResponse.questionAnswerId === answer.id,
+                                                            'text-green-400' : userLatestResponse.correct === true && userLatestResponse.questionAnswerId === answer.id,
+                                                            'text-orange-500': !userLatestResponse.correct === true && userLatestResponse.questionAnswerId === answer.id,
                                                             'text-slate-600': userLatestResponse.questionAnswerId !== answer.id
                                                         }">
                                                             <div class="flex items-center justify-between">
@@ -124,6 +125,14 @@
                                                 </li>
                                             </template>
                                         </ul>
+
+                                        <div class="font-bold flex justify-center lg:text-lg xl:text-xl" v-if="retryAt">
+                                            <countdown :time="retryAt" v-slot="{ days, hours, minutes, seconds }">
+                                                <span class="text-slate-200"> You can try again in: </span>
+                                                {{ hours }} hours, {{ minutes }} minutes, {{ seconds }} seconds.
+                                            </countdown>
+                                        </div>
+
                                         <div class="mt-8 flex justify-end">
                                             <button type="button"
                                                     @click.prevent="submit"
@@ -149,7 +158,9 @@
                                             <template v-for="answer in question.answers" :key="answer.id">
                                                 <li class="mt-2 transition hover:ease-in delay-150">
                                                     <label class="cursor-pointer w-full">
-                                                        <input type="radio" class="peer sr-only" name="answer" :id="answer.id" :value="answer.id" v-model="userSelectionId" />
+                                                        <input type="radio" class="peer sr-only" name="answer"
+                                                               :id="answer.id" :value="answer.id"
+                                                               v-model="userSelectionId"/>
                                                         <div
                                                             class="w-full rounded-md bg-white text-gray-500 p-5 transition-all hover:shadow peer-checked:text-teal-light-600">
                                                             <div class="flex items-center justify-between">
@@ -191,14 +202,16 @@
 </template>
 
 <script lang="ts" setup>
-import {Ref, inject, ref, computed} from "vue";
+import {computed, inject, ref, Ref} from "vue";
 import User from "../../global/Shared/Models/user";
 import {useForm, usePage} from '@inertiajs/vue3';
-import {NewspaperIcon, CheckBadgeIcon, ClockIcon, ArrowTopRightOnSquareIcon} from '@heroicons/vue/24/outline';
+import {ArrowTopRightOnSquareIcon, CheckBadgeIcon, ClockIcon, NewspaperIcon} from '@heroicons/vue/24/outline';
 import {CheckBadgeIcon as CheckBadgeIconSolid} from '@heroicons/vue/24/solid';
-import LearningLessonData = App.DataTransferObjects.LearningLessonData;
 import Footer from "../../../../vendor/laravel/nova/resources/js/layouts/Footer.vue";
 import {useAnswerResponseStore} from "../store/answer-response-store"
+import Countdown from "../../global/Shared/Components/countdown";
+import moment from "moment-timezone";
+import LearningLessonData = App.DataTransferObjects.LearningLessonData;
 import AnswerResponseData = App.DataTransferObjects.AnswerResponseData;
 
 const $utils: any = inject('$utils');
@@ -211,7 +224,6 @@ const props = withDefaults(
         lesson: LearningLessonData
     }>(), {});
 
-
 let answerResponseStore = useAnswerResponseStore();
 
 let learningLesson = ref(props.lesson);
@@ -220,21 +232,43 @@ let submitted: Ref<boolean> = ref(false);
 let quiz, questions, question, answers, userSelectionId = ref(null);
 
 let userLatestResponse = computed(() => {
-    //@todo: filter out responses older than midnight previous day East Africa Time
-    if (props.userResponses?.length > 0) {
-        return props.userResponses[0];
+    //filter out responses older than midnight previous day East Africa Time
+    const responses = [...props.userResponses].filter((response) => {
+        const currentDay = moment()
+            .tz('Africa/Nairobi')
+            .day();
+
+        const lastAttempt = moment(response.createdAt)
+            .tz('Africa/Nairobi')
+            .day();
+
+        return currentDay === lastAttempt
+    });
+
+    if (responses?.length > 0) {
+        return responses[0];
     }
     return null;
 });
 
 const quizBackGround = computed(() => {
-    if (userLatestResponse.value?.correct) {
+    if (userLatestResponse.value?.correct === true) {
         return 'bg-labs-green';
     } else if (userLatestResponse.value?.correct === false) {
         return 'bg-labs-orange';
     }
 
     return 'bg-labs-red';
+});
+
+const retryAt = computed(() => {
+    if (learningLesson.value.retryAt) {
+        return moment(learningLesson.value.retryAt).tz('Africa/Nairobi')
+            .diff(
+                moment().tz('Africa/Nairobi')
+            );
+    }
+    return null;
 });
 
 if (userLatestResponse.value) {

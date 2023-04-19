@@ -3,6 +3,7 @@ export type AnswerResponseData = {
 id: number;
 userId: number | null;
 questionAnswerId: number | null;
+createdAt?: any;
 correct: boolean | null;
 question: App.DataTransferObjects.QuizQuestionData | null;
 quiz: App.DataTransferObjects.QuizData | null;
@@ -25,6 +26,7 @@ content: string;
 length: number | null;
 order: number | null;
 completed?: boolean | null;
+retryAt?: any;
 link?: string | null;
 quiz?: App.DataTransferObjects.QuizData | null;
 quizzes: Array<App.DataTransferObjects.QuizData> | null;
@@ -76,6 +78,7 @@ correctness?: string | null;
 hint?: string | null;
 status?: string | null;
 type?: string | null;
+question?: App.DataTransferObjects.QuizQuestionData | null;
 };
 export type QuizQuestionData = {
 id: number | null;

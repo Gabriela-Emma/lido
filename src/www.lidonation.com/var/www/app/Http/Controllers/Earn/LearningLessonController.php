@@ -65,11 +65,10 @@ class LearningLessonController extends Controller
                 );
         }
 
-        $userResponses = AnswerResponse::with(['quiz', 'question.answers', 'answer'])->where('user_id', $request->user()?->id)
+        $userResponses = AnswerResponse::with(['quiz', 'question.answers', 'answer'])
+            ->where('user_id', $request->user()?->id)
             ->where('quiz_id', $learningLesson->quiz?->id)
             ->get();
-
-//        dd(AnswerResponseData::collection($userResponses)->toArray());
 
         return Inertia::render('LearningLesson', [
             'lesson' => LearningLessonData::from($learningLesson),
