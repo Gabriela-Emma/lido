@@ -81,7 +81,7 @@
                                     <div class="text-slate-300 mb-2 text-center">Quiz</div>
                                     <div class="text-slate-500 mb-2 text-center">
                                         <div class="text-white">
-                                            <div v-if="!!userLatestResponse.correct">
+                                            <div v-if="userLatestResponse.correct === true">
                                                 You got it!
                                             </div>
                                             <div v-else>
@@ -90,20 +90,43 @@
                                         </div>
                                     </div>
                                     <form class="rounded-sm border border-dashed border-white p-4 flex flex-col gap-6">
-                                        <div>
+                                        <div class="flex justify-between">
                                             <p class="text-lg md:text-xl xl:text-2xl 2xl:text-3x xl:leading-12 2xl:leading-12 inline box-border box-decoration-clone p-2 tracking-wide bg-white text-teal-900 relative -left-8">
                                                 {{ question?.title }}
                                             </p>
+                                            <span v-if="correct" class="flex gap-2 items-center bg-white text-md text-labs-black p-2 h-8">
+                                                <span>
+                                                    Awarded :
+                                                </span>
+                                                <span class="text-md">
+                                                    {{ awardedAmount }}
+                                                </span>
+                                                <span v-if="assetMetadata.logo"
+                                                    class="relative inline-flex items-center rounded-full 2xl:w-5 w-4 2xl:h-5">
+                                                        <img class="inline-flex"
+                                                                alt="asset logo"
+                                                                :src="'data:image/png;base64,'+`${assetMetadata.logo}`">
+                                                    </span>
+                                                <span v-else-if="assetMetadata.ticker"
+                                                    class="relative inline-block rounded-full w-3 h-3">
+                                                        {{ assetMetadata.ticker }}
+                                                </span>
+                                                <span v-else="assetName"
+                                                        class="relative inline-block rounded-full w-3 h-3">
+                                                            {{ assetName }}
+                                                </span>
+                                            </span>
                                         </div>
                                         <ul class="mt-4 space-y-2 relative h-full w-full ">
                                             <template v-for="answer in question.answers" :key="answer.id">
                                                 <li class="mt-2 transition hover:ease-in delay-150">
-                                                    <label  class="w-full">
-                                                        <input type="radio" class="peer sr-only" name="answer" :id="answer.id" v-model="userSelectionId" />
+                                                    <label class="w-full">
+                                                        <input type="radio" class="peer sr-only" name="answer"
+                                                               :id="answer.id" v-model="userSelectionId"/>
 
                                                         <div class="w-full rounded-md bg-white p-5" :class="{
-                                                            'text-green-400' : userLatestResponse.correct && userLatestResponse.questionAnswerId === answer.id,
-                                                            'text-orange-500': !userLatestResponse.correct && userLatestResponse.questionAnswerId === answer.id,
+                                                            'text-green-400' : userLatestResponse.correct === true && userLatestResponse.questionAnswerId === answer.id,
+                                                            'text-orange-500': !userLatestResponse.correct === true && userLatestResponse.questionAnswerId === answer.id,
                                                             'text-slate-600': userLatestResponse.questionAnswerId !== answer.id
                                                         }">
                                                             <div class="flex items-center justify-between">
@@ -124,6 +147,14 @@
                                                 </li>
                                             </template>
                                         </ul>
+
+                                        <div class="font-bold flex justify-center lg:text-lg xl:text-xl" v-if="retryAt">
+                                            <countdown :time="retryAt" v-slot="{ days, hours, minutes, seconds }">
+                                                <span class="text-slate-200"> You can try again in: </span>
+                                                {{ hours }} hours, {{ minutes }} minutes, {{ seconds }} seconds.
+                                            </countdown>
+                                        </div>
+
                                         <div class="mt-8 flex justify-end">
                                             <button type="button"
                                                     @click.prevent="submit"
@@ -149,7 +180,9 @@
                                             <template v-for="answer in question.answers" :key="answer.id">
                                                 <li class="mt-2 transition hover:ease-in delay-150">
                                                     <label class="cursor-pointer w-full">
-                                                        <input type="radio" class="peer sr-only" name="answer" :id="answer.id" :value="answer.id" v-model="userSelectionId" />
+                                                        <input type="radio" class="peer sr-only" name="answer"
+                                                               :id="answer.id" :value="answer.id"
+                                                               v-model="userSelectionId"/>
                                                         <div
                                                             class="w-full rounded-md bg-white text-gray-500 p-5 transition-all hover:shadow peer-checked:text-teal-light-600">
                                                             <div class="flex items-center justify-between">
@@ -191,15 +224,21 @@
 </template>
 
 <script lang="ts" setup>
-import {Ref, inject, ref, computed} from "vue";
+import {computed, inject, ref, Ref} from "vue";
+import { storeToRefs } from 'pinia';
 import User from "../../global/Shared/Models/user";
 import {useForm, usePage} from '@inertiajs/vue3';
-import {NewspaperIcon, CheckBadgeIcon, ClockIcon, ArrowTopRightOnSquareIcon} from '@heroicons/vue/24/outline';
+import {ArrowTopRightOnSquareIcon, CheckBadgeIcon, ClockIcon, NewspaperIcon} from '@heroicons/vue/24/outline';
 import {CheckBadgeIcon as CheckBadgeIconSolid} from '@heroicons/vue/24/solid';
-import LearningLessonData = App.DataTransferObjects.LearningLessonData;
 import Footer from "../../../../vendor/laravel/nova/resources/js/layouts/Footer.vue";
 import {useAnswerResponseStore} from "../store/answer-response-store"
+import Countdown from "../../global/Shared/Components/countdown";
+import moment from "moment-timezone";
+import LearningLessonData = App.DataTransferObjects.LearningLessonData;
 import AnswerResponseData = App.DataTransferObjects.AnswerResponseData;
+import RewardData = App.DataTransferObjects.RewardData;
+import { useWalletStore } from "../../catalyst-explorer/stores/wallet-store";
+import Wallet from '../../catalyst-explorer/models/wallet';
 
 const $utils: any = inject('$utils');
 const user = computed(() => usePage().props.user as User)
@@ -209,37 +248,73 @@ const props = withDefaults(
         locale: string,
         userResponses: AnswerResponseData[],
         lesson: LearningLessonData
+        reward: RewardData[]
     }>(), {});
-
 
 let answerResponseStore = useAnswerResponseStore();
 
 let learningLesson = ref(props.lesson);
+let reward = ref(props.reward);
 let submitted: Ref<boolean> = ref(false);
 
-let quiz, questions, question, answers, userSelectionId = ref(null);
+let quiz, questions, question, answers, answer, correct, userSelectionId = ref(null);
 
 let userLatestResponse = computed(() => {
-    //@todo: filter out responses older than midnight previous day East Africa Time
-    if (props.userResponses?.length > 0) {
-        return props.userResponses[0];
+    //filter out responses older than midnight previous day East Africa Time
+    const responses = [...props.userResponses].filter((response) => {
+        const currentDay = moment()
+            .tz('Africa/Nairobi')
+            .day();
+
+        const lastAttempt = moment(response.createdAt)
+            .tz('Africa/Nairobi')
+            .day();
+
+        return currentDay === lastAttempt
+    });
+
+    if (responses?.length > 0) {
+        return responses[0];
     }
     return null;
 });
 
+let userReward = computed(() => {
+    if (props.reward?.length > 0) {
+        return props.reward[0];
+    }
+    return null;
+})
+
+let awardedAmount = userReward.value?.amount / userReward.value?.asset_details?.divisibility;
+let assetName = userReward.value?.asset_details?.asset_name;
+let assetMetadata = userReward.value?.asset_details.metadata;
+
 const quizBackGround = computed(() => {
-    if (userLatestResponse.value?.correct) {
+    if (userLatestResponse.value?.correct === true) {
         return 'bg-labs-green';
-    } else if (userLatestResponse.value?.correct === false) {
+    } else if (userLatestResponse.value?.answer.correct === false) {
         return 'bg-labs-orange';
     }
 
     return 'bg-labs-red';
 });
 
+const retryAt = computed(() => {
+    if (learningLesson.value.retryAt) {
+        return moment(learningLesson.value.retryAt).tz('Africa/Nairobi')
+            .diff(
+                moment().tz('Africa/Nairobi')
+            );
+    }
+    return null;
+});
+
 if (userLatestResponse.value) {
     quiz = userLatestResponse.value?.quiz;
     question = userLatestResponse.value?.question;
+    answer = userLatestResponse.value?.answer;
+    correct = answer.correct;
 } else {
     if (learningLesson.value?.quizzes?.length > 0) {
         quiz = learningLesson.value?.quizzes[0];
@@ -249,7 +324,13 @@ if (userLatestResponse.value) {
         }
     }
 }
+
 answers = question.value?.answers;
+
+let walletStore = useWalletStore();
+let {walletData} = storeToRefs(walletStore);
+let myWallet:Ref<Wallet> = computed(() => walletData.value);
+
 
 function submit() {
     submitted.value = true;
@@ -260,7 +341,10 @@ function submit() {
         question_answer_id: userSelectionId.value,
         user_id: user?.value?.id,
         quiz_id: quiz?.id,
-        question_id: question?.value.id
+        question_id: question?.value.id,
+        wallet_stake_addr: myWallet?.value?.stakeAddress,
+        wallet_addr: myWallet?.value?.address,
+
     });
     answerResponseStore.submitAnswer(baseUrl, form);
 }

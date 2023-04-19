@@ -70,12 +70,6 @@ class AnswerResponses extends Resource
 
             Boolean::make('Correct', fn () => $this->correct ),
 
-            BelongsTo::make(__('Quiz'), 'quiz', Quizzes::class)
-                ->searchable(),
-
-            BelongsTo::make(__('Question'), 'question', Questions::class)
-                ->searchable(),
-
             BelongsTo::make(__('Answer'), 'answer', QuestionAnswers::class)
                 ->searchable(),
 
@@ -96,6 +90,12 @@ class AnswerResponses extends Resource
                     'ready' => 'Ready',
                     'scheduled' => 'Scheduled',
                 ])->default('published')->sortable(),
+
+            BelongsTo::make(__('Quiz'), 'quiz', Quizzes::class)
+                ->searchable(),
+
+            BelongsTo::make(__('Question'), 'question', Questions::class)
+                ->searchable(),
         ];
     }
 

@@ -3,6 +3,7 @@
 namespace App\DataTransferObjects;
 
 use Spatie\LaravelData\Attributes\DataCollectionOf;
+use Spatie\LaravelData\Attributes\MapOutputName;
 use Spatie\LaravelData\Data;
 use Spatie\LaravelData\DataCollection;
 use Spatie\LaravelData\Optional;
@@ -14,11 +15,21 @@ class LearningLessonData extends Data
 {
     public function __construct(
         public string $hash,
+
         public string $title,
+
         public string $content,
+
         public ?int $length,
+
         public ?int $order,
+
         public null | bool | Optional $completed,
+
+        #[TypeScriptOptional]
+        #[MapOutputName('retryAt')]
+//        #[WithCast(DateTimeInterfaceCast::class, type: CarbonImmutable::class)]
+        public $retry_at,
 
         #[TypeScriptOptional]
         public ?string $link,
