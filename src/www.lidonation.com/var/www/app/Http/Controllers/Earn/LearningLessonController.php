@@ -75,7 +75,7 @@ class LearningLessonController extends Controller
 
         $giveaway = $learningLesson->quiz?->giveaway;
         $reward = Reward::where('user_id', $request->user()?->id)
-            ->where('model_id', $giveaway->id)
+            ->where('model_id', $giveaway?->id)
             ->where('model_type', Giveaway::class)
             ->get();
 
