@@ -68,7 +68,8 @@ class LearningLessonController extends Controller
                 );
         }
 
-        $userResponses = AnswerResponse::with(['quiz', 'question.answers', 'answer'])->where('user_id', $request->user()?->id)
+        $userResponses = AnswerResponse::with(['quiz', 'question.answers', 'answer'])
+            ->where('user_id', $request->user()?->id)
             ->where('quiz_id', $learningLesson->quiz?->id)
             ->get();
 
@@ -76,7 +77,7 @@ class LearningLessonController extends Controller
         $reward = Reward::where('user_id', $request->user()?->id)
             ->where('model_id', $giveaway->id)
             ->where('model_type', Giveaway::class)
-            ->get();   
+            ->get();
 
         return Inertia::render('LearningLesson', [
             'lesson' => LearningLessonData::from($learningLesson),

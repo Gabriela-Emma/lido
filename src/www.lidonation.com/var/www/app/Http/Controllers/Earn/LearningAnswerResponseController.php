@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Earn;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\AnswerResponse;
+use Illuminate\Support\Carbon;
 use App\Models\Giveaway;
 use App\Models\QuestionAnswer;
 use App\Models\Quiz;
@@ -21,7 +22,19 @@ class LearningAnswerResponseController extends Controller
     }
 
     public function storeAnswer(Request $request)
-    {   
+    {
+        // get user previous response
+        // if user has previous response from today, return
+        $lastResponse = AnswerResponse::where('quiz_id',  $request->input('quiz_id'))
+            ->where('user_id', auth()->user()->getAuthIdentifier())
+            ->whereDate('created_at', "=", Carbon::now()->tz('Africa/Nairobi')->startOfDay())
+            ->orderBy('created_at', 'desc')
+            ->first();
+
+        if ($lastResponse instanceof AnswerResponse) {
+            return null;
+        }
+
         // save answer response
         $ans = new AnswerResponse;
         $ans->user_id = $request->input('user_id');
@@ -34,7 +47,7 @@ class LearningAnswerResponseController extends Controller
         //extract user
         $user = User::find($ans->user_id);
         $answerCorrect = QuestionAnswer::find($ans->question_answer_id)->correct;
-        
+
         //extract rewards count from quiz
         $giveaway = Quiz::find($ans->quiz_id)->giveaway;
         $rewardsCount =  Reward::where('user_id', $user->id)
@@ -59,7 +72,5 @@ class LearningAnswerResponseController extends Controller
         }
 
         return back()->withInput();
-
-//        return to_route('earn.learn.lesson.view', $request->input('quiz_id'));
     }
 }
