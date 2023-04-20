@@ -6,16 +6,19 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\AnswerResponse;
 use Illuminate\Support\Carbon;
-use App\Models\Giveaway;
 use App\Models\LearningLesson;
 use App\Models\QuestionAnswer;
-use App\Models\Quiz;
 use App\Models\Reward;
 use App\Models\User;
+use App\Repositories\AdaRepository;
 use Illuminate\Support\Facades\Auth;
 
 class LearningAnswerResponseController extends Controller
 {
+    public function __construct(protected AdaRepository $adaRepository)
+    {
+    }
+
     public function index(Request $request)
     {
         return AnswerResponse::with(['quiz', 'question.answers', 'answer'])
@@ -46,10 +49,15 @@ class LearningAnswerResponseController extends Controller
 
         $ans->save();
 
+
+        //fetch quote
+        $quote = $this->adaRepository->quote();
+        $rewardAmount = 1 / $quote;
+
         //extract user
         $user = User::find(Auth::id());
         $answerCorrect = QuestionAnswer::find($ans->question_answer_id)->correct;
-        
+
         //extract rewards count from learningLesson
         $learningLesson = LearningLesson::byHash($request->input('learningLessonHash'));
         $rewardsCount =  Reward::where('user_id', Auth::id())
@@ -65,7 +73,7 @@ class LearningAnswerResponseController extends Controller
             $reward->model_id = $learningLesson->id;
             $reward->model_type = LearningLesson::class;
             $reward->asset_type = 'ada';
-            $reward->amount = 1000000;
+            $reward->amount = number_format($rewardAmount, 6) * 1000000;
             $reward->status = 'issued';
             $reward->stake_address = $user->wallet_stake_address ?? $request->input('wallet_stake_addr');
             $reward->wallet_address = $user->wallet_address ?? $request->input('wallet_addr');

@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Delegators;
 
 use App\DataTransferObjects\QuizData;
+use App\DataTransferObjects\QuizQuestionData;
 use App\Invokables\GetLidoRewardsPot;
 use App\Invokables\GetPoolMultiplier;
 use App\Models\AnswerResponse;
@@ -99,10 +100,11 @@ class DelegatorsComponent extends Component
                 ])->first();
 
             if ($this->myResponse instanceof AnswerResponse && $this->myResponse?->answer?->question instanceof Question) {
-                $this->everyEpochQuestion = $this->myResponse?->answer?->question;
+                $this->everyEpochQuestion = QuizQuestionData::from(Question::with(['answers'])->find($this->myResponse?->question_id))->toArray();
             }
         }
-        if (! $this->everyEpochQuestion instanceof Question && $this->everyEpochQuiz instanceof Quiz) {
+
+        if (! (is_array($this->everyEpochQuestion) && count($this->everyEpochQuestion)  > 0) && $this->everyEpochQuiz instanceof Quiz) {
             $this->everyEpochQuestion =
                 (QuizData::from($this->everyEpochQuiz))?->questions?->first()?->toArray();
         }

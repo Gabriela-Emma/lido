@@ -44,11 +44,13 @@ class HandleInertiaRequests extends Middleware
     public function share(Request $request): array
     {
         $user = $request->user()
-            ->only('id', 'name', 'email', 'bio', 'git', 'discord', 'linkedin', 'telegram', 'twitter');
-        $user['roles'] = $request->user()->getRoleNames();
+            ?->only('id', 'name', 'email', 'bio', 'git', 'discord', 'linkedin', 'telegram', 'twitter');
+        if ($user) {
+            $user['roles'] = $request->user()?->getRoleNames();
+        }
 
         return array_merge(parent::share($request), [
-            'user' => fn () => $request->user() ? $user : null,
+            'user' => fn () => $user ?? null,
             'locale' => app()->getLocale(),
             'asset_url' => asset('/'),
             'base_url' => config('app.url'),
