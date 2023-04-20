@@ -29,6 +29,7 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Earn\LearnController;
 use App\Http\Controllers\NewsletterController;
 use App\Http\Livewire\Library\LibraryComponent;
+use App\Http\Livewire\Library\TagsComponent;
 use App\Http\Controllers\GlobalSearchController;
 use App\Http\Controllers\VerifyWalletController;
 use App\Http\Controllers\ModelTranslationController;
@@ -183,6 +184,8 @@ Route::group(
 
     Route::get('/library', LibraryComponent::class)
         ->name('library');
+    Route::get('/tags', \App\Http\Livewire\Tags\TagsComponent::class)
+        ->name('tags');
 
     Route::get('/news', function () {
         return view('news');
