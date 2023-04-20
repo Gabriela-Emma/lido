@@ -305,6 +305,7 @@ function submit() {
     // submit the form
     const baseUrl = usePage().props.base_url;
     let form = useForm({
+        learningLessonHash: learningLesson.value?.hash,
         question_answer_id: userSelectionId.value,
         user_id: user?.value?.id,
         quiz_id: quiz?.id,

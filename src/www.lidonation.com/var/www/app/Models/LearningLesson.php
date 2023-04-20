@@ -12,6 +12,7 @@ use App\Models\Traits\HasHero;
 use App\Models\Traits\HashIdModel;
 use App\Models\Traits\HasMetaData;
 use App\Models\Traits\HasModel;
+use App\Models\Traits\HasRewards;
 use App\Models\Traits\HasTranslations;
 use App\Scopes\OrderByOrderScope;
 use App\Scopes\PublishedScope;
@@ -27,6 +28,7 @@ class LearningLesson extends Model
 {
     use HasAuthor,
         HasHero,
+        HasRewards,
         HasHashIds,
         HashIdModel,
         HasMetaData,
