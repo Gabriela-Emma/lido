@@ -11,5 +11,6 @@ export default interface User{
     profile_photo_url:string;
     proposals_count:number;
     media: {original_url: string}[],
+    roles: string[],
     meta_data: {}
 }

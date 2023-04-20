@@ -1,17 +1,17 @@
 <template>
-    <div class="bg-slate-100 login-form-wrapper">
-        <RegisterForm  :showLogo="false"
-                        :role="'earn/learn'"
-                        :errors="errors" 
-                        @endpoint="setEndpoint($event)" 
-                        @setForm="getForm($event)" 
-                        @submit="submit"/>
+    <div class="bg-slate-100 earn--register-form-wrapper">
+        <RegisterForm :showLogo="false"
+                      :role="'earn/learn'"
+                      :errors="errors"
+                      @endpoint="setEndpoint($event)"
+                      @setForm="getForm($event)"
+                      @submit="submit"/>
     </div>
 </template>
 
 <script lang="ts" setup>
-import { useForm } from "@inertiajs/vue3";
-import { ref } from "vue";
+import {useForm} from "@inertiajs/vue3";
+import {ref} from "vue";
 import RegisterForm from "../Shared/Components/RegisterForm.vue";
 
 const props = withDefaults(
@@ -19,10 +19,10 @@ const props = withDefaults(
         errors?: Object,
     }>(), {});
 
-let Endpoint= ref('')
+let Endpoint = ref('')
 let form = useForm({})
 
-let setEndpoint = (url:string) => {
+let setEndpoint = (url: string) => {
     Endpoint.value = url
 }
 
