@@ -26,45 +26,11 @@
     </div>
 </section>
 
-@if($newToLibrary)
-    <section class="py-16 relative bg-primary-10 relative" id="new-to-library">
-        <div class="container">
-            <h2 class="text-5xl text-gray-900 decorate dark mb-6">
-               <span class="">
-                   {{$snippets->newToThe}}
-               </span>
-                <span class="text-teal-600 opacity-90">
-                  {{$snippets->library}}
-               </span>
-            </h2>
-        </div>
-        <div class="container">
-            <div class="flex flex-nowrap gap-8 overflow-x-auto posts">
-                @if($latestLidoMinute)
-                    <div class="flex flex-col shrink-0 snap-center w-[380px] lg:w-[420px] xl:w-[480px] 2xl:w-[540px]">
-                            <?php $post = $latestLidoMinute; ?>
-                        @include("podcast.drip")
-                    </div>
-                @endif
-                <div class="flex-1 flex flex-col">
-                    <div
-                        class="flex flex-row flex-nowrap xl:gridxl:grid-cols-22xl:grid-cols-3 gap-6 posts">
-                        @foreach($newToLibrary as $post)
-                            <div
-                                class="w-[380px] xl:w[420px] 2xl:w-[420px] md:border-r md:border-gray-300 px-5 -mt-px -ml-px post">
-                                    <?php $showHero = true; ?>
-                                @include("post.drip")
-                            </div>
-                        @endforeach
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-@endif
+<x-new-to-library :newToLibrary="$newToLibrary"
+                  :latestLidoMinute="$latestLidoMinute" />
 
 @if($categories && !empty($categories))
-    <section id="browse-by-categorys" class="py-16 bg-eggplant-500">
+    <section id="browse-by-categorys" class="py-16 bg-eggplant-500 relative">
         <div class="container">
             <h2 class="mb-4 text-2xl font-extrabold xl:text-4xl 2xl:text-6xl text-slate-50">
                 Browse by Category
@@ -284,36 +250,9 @@
     </section>
 @endif
 
-@if($tags && !empty($tags))
-    <section class="py-16 bg-eggplant-500">
-        <div class="container">
-            <h2 class="mb-4 text-2xl font-extrabold xl:text-4xl 2xl:text-6xl text-slate-50">
-                Browse by Tag
-            </h2>
+<x-lido-tag :tags="$tags"/>
 
-            <div>
-                <div class="flex flex-row flex-wrap justify-start gap-6">
-                    @foreach($tags as $tag)
-                        <div class="bg-white rounded-md flex flex-auto">
-                            <div class="flex flex-row w-full items-center justify-between p-4">
-                                <a href="{{$tag->url}}" class="font-medium text-slate-700">
-                                    {{$tag->title}}
-                                </a>
-                                <div class="bg-slate-100 rounded-sm ml-5">
-                                    <div class="bg-slate-300 py-3 px-4 rounded-sm aspect-square font-semibold">
-                                        {{$tag->posts_count}}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
-            </div>
-        </div>
-    </section>
-@endif
-
-<x-support-lido heading-leading='Support the' heading-span='Library'/>
+<x-support-lido heading-leading='Support the' heading-span='Library' relative="relative"/>
 
 @if($categories && !empty($categories))
     @foreach(collect($categories)->skip(2)->take(2) as $cat)

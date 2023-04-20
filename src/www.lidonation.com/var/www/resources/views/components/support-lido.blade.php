@@ -1,8 +1,8 @@
 @props([
    'heading-leading',
-   'heading-span' 
+   'heading-span'
 ])
-<section id="support-library" class="bg-primary-20 py-16 sm:py-20">
+<section id="support-library" class="bg-primary-20 py-16 sm:py-20 relative">
     <div class="container">
         <div class="mx-auto max-w-2xl text-center">
             <h2 class="text-2xl font-semibold leading-8 text-slate-800 tracking-tight text-slate-800 lg:text-4xl xl:text-5xl 2xl:text-6xl 2xl:max-w-7xl">
