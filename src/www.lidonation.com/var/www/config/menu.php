@@ -80,6 +80,11 @@ return [
                 'route' => 'lido-minute',
             ]),
             new Illuminate\Support\Fluent([
+                'title' => 'Tags',
+                'route_type' => 'route_name',
+                'route' => 'tags',
+            ]),
+            new Illuminate\Support\Fluent([
                 'title' => 'Topics',
                 'items' => [
                     new Illuminate\Support\Fluent([

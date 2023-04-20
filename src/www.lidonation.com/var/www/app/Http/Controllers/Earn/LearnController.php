@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Fluent;
 use Spatie\Permission\Models\Role;
+
 class LearnController extends Controller
 {
     /**
@@ -22,7 +23,7 @@ class LearnController extends Controller
     public function index()
     {
         return Inertia::render('Learn')->with([
-            'crumbs'  => [
+            'crumbs' => [
                 ['name' => 'Learn & Earn', 'link' => route('earn.learn')],
             ]
         ]);
@@ -48,13 +49,13 @@ class LearnController extends Controller
     }
 
     public function register(Request $request)
-    {   
-        $user = User::where('email', $request->input('email'))->first();
-        
-        if (! $user instanceof User) {
+    {
+        $user = auth()?->user() ?? User::where('email', $request->input('email'))->first();
+
+        if (!$user instanceof User) {
             $this->saveNewUser($request);
         } else {
-            $this->updateUser($request, $user);
+            $this->updateUser($request);
         }
 
         return to_route('earn.learn.login');
@@ -84,24 +85,26 @@ class LearnController extends Controller
         $this->assignLearnerRole($user);
     }
 
-    protected function updateUser($request, $user): void
+    protected function updateUser($request): void
     {
         $validated = new Fluent($request->validate([
-            'name' => 'required|min:3',
+            'name' => 'nullable|bail|min:3',
             'email' => 'required|email',
-            'wallet_address' => 'required|wallet_address',
+            'wallet_address' => 'nullable',
             'wallet_stake_address' => 'nullable',
-            'twitter' => 'nullable|handle',
-            'telegram' => 'nullable|hadle'
+            'twitter' => 'nullable|bail|handle',
+            'telegram' => 'nullable|bail|handle'
 
         ]));
 
-        $user->name = $validated->name;
-        $user->email = $validated->email;
-        $user->wallet_address = $validated->wallet_address;
-        $user->wallet_stake_address = $validated->wallet_stake_address;
-        $user->twitter = $validated->twitter;
-        $user->telegram = $validated->telegram;
+        $user = auth()->user();
+
+        $user->name = $user->name ?? $validated->name;
+        $user->email = $user->email ?? $validated->email;
+        $user->wallet_address = $validated->wallet_address ?? $user->wallet_address;
+        $user->wallet_stake_address = $validated->wallet_stake_address ?? $user->wallet_stake_address;
+        $user->twitter = $validated->twitter ?? $user->twitter;
+        $user->telegram = $validated->telegram  ?? $user->telegram;
         $user->save();
 
         $this->assignLearnerRole($user);
