@@ -252,7 +252,7 @@
 
 <x-lido-tag :tags="$tags"/>
 
-<x-support-lido heading-leading='Support the' heading-span='Library' relative="relative"/>
+<x-support-lido heading-leading='Support the' heading-span='Library'/>
 
 @if($categories && !empty($categories))
     @foreach(collect($categories)->skip(2)->take(2) as $cat)
