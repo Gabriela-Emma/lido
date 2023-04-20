@@ -6,9 +6,12 @@ use App\Models\AnswerResponse;
 use App\Models\Question;
 use App\Nova\Actions\AddMetaData;
 use App\Nova\Actions\EditMetaData;
+use App\Nova\Metrics\QuizAnswerResponseVeracity;
+use App\Nova\Metrics\QuizAttemptsPerDay;
 use Illuminate\Http\Request;
 use JetBrains\PhpStorm\Pure;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
@@ -65,6 +68,8 @@ class AnswerResponses extends Resource
         return [
             ID::make(__('ID'), 'id')->sortable(),
 
+            Boolean::make('Correct', fn () => $this->correct ),
+
             BelongsTo::make(__('Answer'), 'answer', QuestionAnswers::class)
                 ->searchable(),
 
@@ -85,6 +90,12 @@ class AnswerResponses extends Resource
                     'ready' => 'Ready',
                     'scheduled' => 'Scheduled',
                 ])->default('published')->sortable(),
+
+            BelongsTo::make(__('Quiz'), 'quiz', Quizzes::class)
+                ->searchable(),
+
+            BelongsTo::make(__('Question'), 'question', Questions::class)
+                ->searchable(),
         ];
     }
 
@@ -93,7 +104,10 @@ class AnswerResponses extends Resource
      */
     public function cards(Request $request): array
     {
-        return [];
+        return [
+            new QuizAnswerResponseVeracity,
+            new QuizAttemptsPerDay
+        ];
     }
 
     /**

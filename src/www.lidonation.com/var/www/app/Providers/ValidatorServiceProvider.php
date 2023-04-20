@@ -12,7 +12,11 @@ class ValidatorServiceProvider extends ServiceProvider {
         {
             $response = app(CardanoBlockfrostService::class)->get('addresses/'.$value, null);
             return $response->status() == 200 ? true : false;
-        }, 'wallet address not valid');
+        }, 'Invalid wallet address');
+
+        $this->app['validator']->extend('handle', function($attribute, $value) {
+            return preg_match('/^(\@)([a-z0-9_]{1,15})$/i', $value);
+        }, 'Invalid handle');
     }
 
     public function register()

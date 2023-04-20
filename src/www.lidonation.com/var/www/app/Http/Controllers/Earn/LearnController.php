@@ -6,7 +6,7 @@ use Inertia\Inertia;
 use Inertia\Response;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Foundation\Auth\User;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -48,42 +48,73 @@ class LearnController extends Controller
     }
 
     public function register(Request $request)
+    {   
+        $user = User::where('email', $request->input('email'))->first();
+        
+        if (! $user instanceof User) {
+            $this->saveNewUser($request);
+        } else {
+            $this->updateUser($request, $user);
+        }
+
+        return to_route('earn.learn.login');
+    }
+
+    protected function saveNewUser($request): void
     {
         $validated = new Fluent($request->validate([
             'name' => 'required|min:3',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:5|confirmed',
-            'wallet_address' => 'wallet_address',
-            'twitter' => 'nullable|url',
-            'telegram' => 'nullable|url'
+            'wallet_address' => 'required|wallet_address',
+            'twitter' => 'nullable|handle',
+            'telegram' => 'nullable|handle'
 
         ]));
 
-        $user = User::where('email', $validated->email)->where('wallet_address', $validated->wallet_address);
+        $user = new User;
+        $user->name = $validated->name;
+        $user->email = $validated->email;
+        $user->password = Hash::make($validated->password);
+        $user->wallet_address = $validated->wallet_address;
+        $user->twitter = $validated->twitter;
+        $user->telegram = $validated->telegram;
+        $user->save();
 
-        if (! $user instanceof User) {
+        $this->assignLearnerRole($user);
+    }
 
-            $user = new User;
-            $user->name = $validated->name;
-            $user->email = $validated->email;
-            $user->password = Hash::make($validated->password);
-            $user->wallet_address = $validated->wallet_address;
-            $user->twitter = $validated->twitter;
-            $user->telegram = $validated->telegram;
-            $user->save();
+    protected function updateUser($request, $user): void
+    {
+        $validated = new Fluent($request->validate([
+            'name' => 'required|min:3',
+            'email' => 'required|email',
+            'wallet_address' => 'required|wallet_address',
+            'wallet_stake_address' => 'nullable',
+            'twitter' => 'nullable|handle',
+            'telegram' => 'nullable|hadle'
 
+        ]));
 
-            // role user learner role @todo assignRole spatie not working
-            $role = Role::where('name', 'learner')->first();
-            DB::table('model_has_roles')
-                ->insert([
-                    'role_id' => $role->id,
-                    'model_type' => 'App\Models\User',
-                    'model_id' => $user->id
-                ]);
+        $user->name = $validated->name;
+        $user->email = $validated->email;
+        $user->wallet_address = $validated->wallet_address;
+        $user->wallet_stake_address = $validated->wallet_stake_address;
+        $user->twitter = $validated->twitter;
+        $user->telegram = $validated->telegram;
+        $user->save();
 
+        $this->assignLearnerRole($user);
+    }
 
-            return to_route('earn.learn.login');
-        }
+    protected function assignLearnerRole($user): void
+    {
+        $role = Role::where('name', 'learner')->first();
+        DB::table('model_has_roles')
+            ->insert([
+                'role_id' => $role->id,
+                'model_type' => 'App\Models\User',
+                'model_id' => $user->id
+            ]);
     }
 }

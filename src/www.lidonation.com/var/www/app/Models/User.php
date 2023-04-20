@@ -244,9 +244,9 @@ class User extends Authenticatable implements HasMedia, Interfaces\IHasMetaData,
         return $this->hasMany(Withdrawal::class, 'user_id');
     }
 
-    public function lessons()
+    public function quiz_responses(): HasMany
     {
-        return $this->hasMany(Lesson::class, 'user_id');
+        return $this->hasMany(AnswerResponse::class, 'user_id');
     }
 
     public function registerMediaConversions(Media $media = null): void
