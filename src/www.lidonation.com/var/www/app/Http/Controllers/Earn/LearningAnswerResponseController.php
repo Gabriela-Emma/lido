@@ -6,10 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\AnswerResponse;
 use Illuminate\Support\Carbon;
-use App\Models\Giveaway;
 use App\Models\LearningLesson;
 use App\Models\QuestionAnswer;
-use App\Models\Quiz;
 use App\Models\Reward;
 use App\Models\User;
 use App\Repositories\AdaRepository;
@@ -54,12 +52,12 @@ class LearningAnswerResponseController extends Controller
 
         //fetch quote
         $quote = $this->adaRepository->quote();
-        $rewardAmount = 1 / $quote; 
+        $rewardAmount = 1 / $quote;
 
         //extract user
         $user = User::find(Auth::id());
         $answerCorrect = QuestionAnswer::find($ans->question_answer_id)->correct;
-        
+
         //extract rewards count from learningLesson
         $learningLesson = LearningLesson::byHash($request->input('learningLessonHash'));
         $rewardsCount =  Reward::where('user_id', Auth::id())
