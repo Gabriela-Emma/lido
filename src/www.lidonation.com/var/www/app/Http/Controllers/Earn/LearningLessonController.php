@@ -70,8 +70,7 @@ class LearningLessonController extends Controller
                 );
         }
 
-        $slug = Str::slug(basename(parse_url(url()->previous(), PHP_URL_PATH)));
-        $module = LearningModule::where('slug', $slug)->first();
+        $module = $learningLesson->firstModule;
 
         $userResponses = AnswerResponse::with(['quiz', 'question.answers', 'answer'])
             ->where('user_id', $request->user()?->id)
