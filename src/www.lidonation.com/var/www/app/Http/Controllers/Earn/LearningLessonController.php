@@ -62,7 +62,7 @@ class LearningLessonController extends Controller
     public function show(Request $request, LearningLesson $learningLesson)
     {
         
-        $learningLesson->load(['model', 'quizzes.questions.answers']);
+        $learningLesson->load(['model', 'quizzes.questions.answers','topics', 'topics.learningModules']);
         if ($learningLesson->model?->content) {
             $learningLesson->model->content = app(MarkdownRenderer::class)
                 ->toHtml(
