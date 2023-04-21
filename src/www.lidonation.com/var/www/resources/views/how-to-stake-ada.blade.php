@@ -8,7 +8,7 @@
             <div class="z-20 flex flex-col gap-3 pb-8 lg:hidden">
                 <div class="py-0 my-0">
                     <h1 class='mb-0 text-3xl font-bold text-center'>
-                        {{$post?->title}}
+                        {{$snippets->stakeTitle}}
                     </h1>
                 </div>
                 <div class="flex justify-center text-center">
@@ -34,14 +34,14 @@
         </div>
     </header>
 
-    @if($post->snippets->get(0)?->content)
+    @if($snippets->stakeContent)
     <section class="py-12 bg-white">
         <div class="flex flex-col-reverse items-center max-w-4xl gap-4 px-6 xl:mx-auto md:flex-row">
             <div class="w-full p-4 mb-8 text-white bg-black rounded lg:hidden">
                 <x-public.post-audio :post="$post"></x-public.post-audio>
             </div>
 
-            <x-markdown>{{$post->snippets->get(0)?->content}}</x-markdown>
+            <x-markdown>{{$snippets->stakeContent}}</x-markdown>
         </div>
     </section>
     @endif
@@ -82,7 +82,7 @@
         <div class="flex flex-col max-w-4xl gap-4 px-6 xl:mx-auto">
             <div class="flex flex-row justify-between gap-4">
                 <div>
-                    {{$post->snippets->get(1)?->content}}
+                    {{$snippets->howToCreateYoroiWallet}}
                 </div>
                 <div class="w-1/4 mr-auto md:mr-0 md:w-[17rem]">
                     @include('svg.mobile')
@@ -107,7 +107,7 @@
                     </li>
                 </ul>
 
-                <x-markdown>{{$post->snippets->get(2)?->content}}</x-markdown>
+                <x-markdown>{{$snippets->howToLaunchApp}}</x-markdown>
             </div>
         </div>
     </section>
@@ -119,11 +119,11 @@
                     @include('svg.envelopesend')
                 </div>
                 <div>
-                    <x-markdown>{{$post->snippets->get(3)?->content}}</x-markdown>
+                    <x-markdown>{{$snippets->howToSendAda}}</x-markdown>
                 </div>
             </div>
             <div>
-                <x-markdown>{{$post->snippets->get(4)?->content}}</x-markdown>
+                <x-markdown>{{$snippets->howToCoinbase}}</x-markdown>
             </div>
         </div>
     </section>
@@ -131,7 +131,7 @@
     <section class="py-12 bg-accent-200">
         <div class="flex flex-col-reverse justify-between max-w-4xl gap-10 px-6 xl:mx-auto md:flex-row">
             <div>
-                <x-markdown>{{$post->snippets->get(5)?->content}}</x-markdown>
+                <x-markdown>{{$snippets->howToDelegate}}</x-markdown>
             </div>
             <div class="mr-auto w-1/4 md:mx-auto md:w-[9rem]">
                 @include('svg.fingerclick')
