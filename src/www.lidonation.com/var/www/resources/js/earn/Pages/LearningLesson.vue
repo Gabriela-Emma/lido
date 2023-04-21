@@ -1,6 +1,6 @@
 <template>
     <section class="py-4 sm:py-4 md:pb-20 md:pt-8 pb-16 xl:pb-24 xl:pt-16 bg-opacity-5 text-white overflow-visible z-5"
-             style="background: url('/img/ngong-road-learn.svg') 0% 35% / 100%; background-size: 100% auto;">
+        style="background: url('/img/ngong-road-learn.svg') 0% 35% / 100%; background-size: 100% auto;">
         <div class="container">
             <div class="text-center flex flex-col gap-1 sm:gap-2 xl:gap-3">
                 <div class="text-xl sm:text-2xl md:text-4xl xl:text-6xl font-bold">
@@ -275,8 +275,8 @@ let userLatestResponse = computed(() => {
     return null;
 });
 
-if (userReward.value?.amount && userReward.value?.asset_details) {
-    awardedAmount = userReward.value?.amount / userReward.value?.asset_details?.divisibility;
+if (userReward.value?.amount && userReward.value?.asset == 'lovelace') {
+    awardedAmount = userReward.value?.amount / 1000000;
     assetMetadata = userReward.value?.asset_details.metadata;
 }
 
