@@ -245,7 +245,6 @@ const faqs = [
     },
 ]
 
-console.log(walletData);
 function register() {
     let form = useForm({
         email: user.value.email,
