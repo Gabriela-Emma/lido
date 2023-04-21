@@ -253,8 +253,8 @@ let form = useForm({
     email,
     password: '',
     password_confirmation: '',
-    wallet_address: wallet_address.value ?? wallet_address,
-    wallet_stake_address: wallet_stake_address.value,
+    wallet_address: wallet_address,
+    wallet_stake_address: wallet_stake_address,
     twitter,
     telegram
 });
