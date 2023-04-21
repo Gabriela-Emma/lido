@@ -21,6 +21,8 @@ class Quizzes extends Resource
 {
     public static $group = 'Quizzes';
 
+    public static $perPageOptions = [50, 100, 250];
+
     /**
      * The model the resource corresponds to.
      *

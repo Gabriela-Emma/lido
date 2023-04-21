@@ -4,6 +4,9 @@ namespace App\Nova;
 
 use App\Models\EveryEpoch;
 use App\Models\LearningLesson;
+use App\Scopes\LimitScope;
+use App\Scopes\PublishedScope;
+use Illuminate\Database\Eloquent\Builder;
 use Laravel\Nova\Fields\MorphTo;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\BelongsToMany;
@@ -25,6 +28,15 @@ class LearningLessons extends Resource
 
     public static $group = 'Learning';
 
+    public static $perPageOptions = [50, 100, 250];
+
+    /**
+     * The number of resources to show per page via relationships.
+     *
+     * @var int
+     */
+    public static $perPageViaRelationship = 25;
+
     /**
      * The single value that should be used to represent the resource when being displayed.
      *
@@ -42,13 +54,20 @@ class LearningLessons extends Resource
         'title'
     ];
 
+    public static function indexQuery(NovaRequest $request, $query): Builder
+    {
+        $query->withoutGlobalScopes([PublishedScope::class]);
+
+        return parent::indexQuery($request, $query);
+    }
+
     /**
      * Get the fields displayed by the resource.
      *
      * @param NovaRequest $request
      * @return array
      */
-    public function fields(NovaRequest $request)
+    public function fields(NovaRequest $request): array
     {
         return [
             ID::make()->sortable(),
@@ -70,14 +89,15 @@ class LearningLessons extends Resource
                 Podcasts::class,
             ])->searchable()->nullable(),
             BelongsTo::make(__('Author'), 'author', User::class)
-            ->searchable(),
+                ->searchable(),
             Select::make(__('Status'), 'status')->options([
                 'published' => 'Published',
                 'draft' => 'Draft',
-            ])->required(),
+            ])->sortable()
+                ->required(),
             BelongsToMany::make(__('Learning Topics'), 'topics', LearningTopic::class)
-            ->hideFromIndex()
-            ->searchable(),
+                ->hideFromIndex()
+                ->searchable(),
 
 
             BelongsToMany::make(__('Quizzes'), 'quizzes', Quizzes::class)->fields(function () {
@@ -95,7 +115,7 @@ class LearningLessons extends Resource
      * @param NovaRequest $request
      * @return array
      */
-    public function cards(NovaRequest $request)
+    public function cards(NovaRequest $request): array
     {
         return [];
     }
@@ -106,7 +126,7 @@ class LearningLessons extends Resource
      * @param NovaRequest $request
      * @return array
      */
-    public function filters(NovaRequest $request)
+    public function filters(NovaRequest $request): array
     {
         return [];
     }
@@ -117,7 +137,7 @@ class LearningLessons extends Resource
      * @param NovaRequest $request
      * @return array
      */
-    public function lenses(NovaRequest $request)
+    public function lenses(NovaRequest $request): array
     {
         return [];
     }
@@ -128,8 +148,14 @@ class LearningLessons extends Resource
      * @param NovaRequest $request
      * @return array
      */
-    public function actions(NovaRequest $request)
+    public function actions(NovaRequest $request): array
     {
-        return [];
+
+        return array_merge(
+            static::getGlobalActions(),
+            [
+
+            ]
+        );
     }
 }
