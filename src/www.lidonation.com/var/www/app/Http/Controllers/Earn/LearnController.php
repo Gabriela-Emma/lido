@@ -52,12 +52,12 @@ class LearnController extends Controller
     {
         $user = auth()?->user() ?? User::where('email', $request->input('email'))->first();
 
-        if (!$user instanceof User) {
-            $this->saveNewUser($request);
-        } else {
+        if ($user instanceof User) {
             $this->updateUser($request);
+            return back()->withInput();
         }
 
+        $this->saveNewUser($request);
         return to_route('earn.learn.login');
     }
 

@@ -44,7 +44,7 @@
                     </div>
                     <div v-else class="flex gap-3 items-center flex-row mx-auto">
                         <div v-if="user?.roles.includes('learner')" class="flex gap-2 items-center">
-                            <p class="font-bold text-labs-green">Logged In!</p>
+                            <p class="font-bold text-labs-green">Logged In and Signed up!</p>
                             <CheckIcon class="h-10 lg:h-16 w-10 lg:w-16 text-green-500 font-bold" />
                         </div>
                         <div v-else class="flex gap-2 items-center">

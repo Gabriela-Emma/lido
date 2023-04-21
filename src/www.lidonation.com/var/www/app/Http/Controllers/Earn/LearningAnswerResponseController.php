@@ -16,8 +16,7 @@ use Illuminate\Support\Facades\Auth;
 class LearningAnswerResponseController extends Controller
 {
     public function __construct(protected AdaRepository $adaRepository)
-    {
-    }
+    {}
 
     public function index(Request $request)
     {
@@ -46,13 +45,14 @@ class LearningAnswerResponseController extends Controller
         $ans->question_id = $request->input('question_id');
         $ans->quiz_id = $request->input('quiz_id');
         $ans->question_answer_id = $request->input('question_answer_id');
-
         $ans->save();
 
-
         //fetch quote
-        $quote = $this->adaRepository->quote();
-        $rewardAmount = 1 / $quote;
+        $rewardAmount = -1;
+        $quote = $this->adaRepository->quote()?->price ?? null;
+        if($quote) {
+            $rewardAmount = 1 / $quote;
+        }
 
         //extract user
         $user = User::find(Auth::id());
@@ -73,10 +73,9 @@ class LearningAnswerResponseController extends Controller
             $reward->model_id = $learningLesson->id;
             $reward->model_type = LearningLesson::class;
             $reward->asset_type = 'ada';
-            $reward->amount = number_format($rewardAmount, 6) * 1000000;
+            $reward->amount = $rewardAmount > 0 ? number_format($rewardAmount, 6) * 1000000 : $rewardAmount;
             $reward->status = 'issued';
-            $reward->stake_address = $user->wallet_stake_address ?? $request->input('wallet_stake_addr');
-            $reward->wallet_address = $user->wallet_address ?? $request->input('wallet_addr');
+            $reward->stake_address = $user->wallet_stake_address ?? $request->input('wallet_stake_address');
             $reward->setTranslation('memo', 'en', $learningLesson->title);
             $reward->save();
         }

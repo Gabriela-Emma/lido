@@ -47,7 +47,6 @@ class GlobalComposer
         $this->snippets = app(SnippetService::class)->getSnippets();
         $this->settings = app(SettingService::class)->getSettings();
         $this->lidoMenu = (new GetLidoMenu)();
-//        dd($this->lidoMenu);
     }
 
     /**
