@@ -66,6 +66,7 @@ class LearningLessonController extends Controller
                     Shortcode::compile($learningLesson?->model?->content)
                 );
         }
+        $module = $learningLesson->topics()->first()->learningModules()->first();
 
         $userResponses = AnswerResponse::with(['quiz', 'question.answers', 'answer'])
             ->where('user_id', $request->user()?->id)
@@ -83,6 +84,7 @@ class LearningLessonController extends Controller
             'crumbs' => [
                 ['name' => 'Learn & Earn', 'link' => route('earn.learn')],
                 ['name' => 'Modules', 'link' => route('earn.learn.modules.index')],
+                ['name' => $module->title, 'link' => route('earn.learn.modules.view', $module->slug)],
                 ['name' => $learningLesson->title, 'link' => $learningLesson->link],
             ],
         ]);
