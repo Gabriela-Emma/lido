@@ -48,10 +48,10 @@
                                                 {{ $t(topic.content) }}
                                             </p>
                                         </div>
-                                        <span class="ml-6 flex h-7 items-center">
-                              <PlusSmallIcon v-if="!open" class="h-6 w-6" aria-hidden="true"/>
-                              <MinusSmallIcon v-else class="h-6 w-6" aria-hidden="true"/>
-                            </span>
+                                        <div class="ml-6 flex h-7 items-center">
+                                          <PlusSmallIcon v-if="!open" class="h-6 w-6" aria-hidden="true"/>
+                                          <MinusSmallIcon v-else class="h-6 w-6" aria-hidden="true"/>
+                                        </div>
                                     </DisclosureButton>
                                 </dt>
                                 <DisclosurePanel as="dd" class="" :class="{ 'bg-slate-100 px-4': open }">
