@@ -53,7 +53,7 @@ class LearnController extends Controller
         $user = auth()?->user() ?? User::where('email', $request->input('email'))->first();
 
         if ($user instanceof User) {
-            $this->updateUser($request);
+            $this->updateUser($request, $user);
             return back()->withInput();
         }
 
@@ -68,6 +68,7 @@ class LearnController extends Controller
             'email' => 'required|email|unique:users',
             'password' => 'required|min:5|confirmed',
             'wallet_address' => 'required|wallet_address',
+            'wallet_stake_address' => 'nullable',
             'twitter' => 'nullable|handle',
             'telegram' => 'nullable|handle'
 
@@ -78,6 +79,7 @@ class LearnController extends Controller
         $user->email = $validated->email;
         $user->password = Hash::make($validated->password);
         $user->wallet_address = $validated->wallet_address;
+        $user->wallet_stake_address = $validated->wallet_stake_address;
         $user->twitter = $validated->twitter;
         $user->telegram = $validated->telegram;
         $user->save();
@@ -85,19 +87,17 @@ class LearnController extends Controller
         $this->assignLearnerRole($user);
     }
 
-    protected function updateUser($request): void
+    protected function updateUser($request, $user): void
     {
         $validated = new Fluent($request->validate([
             'name' => 'nullable|bail|min:3',
             'email' => 'required|email',
-            'wallet_address' => 'nullable',
+            'wallet_address' => 'nullable|wallet_address',
             'wallet_stake_address' => 'nullable',
             'twitter' => 'nullable|bail|handle',
             'telegram' => 'nullable|bail|handle'
 
         ]));
-
-        $user = auth()->user();
 
         $user->name = $user->name ?? $validated->name;
         $user->email = $user->email ?? $validated->email;
