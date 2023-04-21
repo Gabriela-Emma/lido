@@ -45,6 +45,7 @@ class LearningAnswerResponseController extends Controller
         $ans->question_id = $request->input('question_id');
         $ans->quiz_id = $request->input('quiz_id');
         $ans->question_answer_id = $request->input('question_answer_id');
+        $ans->stake_address = $request->input('wallet_stake_address');
         $ans->save();
 
         //fetch quote
@@ -54,9 +55,21 @@ class LearningAnswerResponseController extends Controller
             $rewardAmount = 1 / $quote;
         }
 
-        //extract user
+        $this->issueReward($request, $ans->question_answer_id, $rewardAmount);
+
+        return back()->withInput();
+    }
+
+    protected function issueReward($request, $questionAnswerId, $rewardAmount): void
+    {
+        //find user and update wallet details incase of changes from the browser. 
         $user = User::find(Auth::id());
-        $answerCorrect = QuestionAnswer::find($ans->question_answer_id)->correct;
+        $user->wallet_address = $request->input('wallet_address') ?? $user->wallet_address;
+        $user->wallet_stake_address = $request->input('wallet_stake_address') ?? $user->wallet_stake_address;
+        $user->save();
+
+        // is the answer correct
+        $answerCorrect = QuestionAnswer::find($questionAnswerId)->correct;
 
         //extract rewards count from learningLesson
         $learningLesson = LearningLesson::byHash($request->input('learningLessonHash'));
@@ -73,13 +86,11 @@ class LearningAnswerResponseController extends Controller
             $reward->model_id = $learningLesson->id;
             $reward->model_type = LearningLesson::class;
             $reward->asset_type = 'ada';
-            $reward->amount = $rewardAmount > 0 ? number_format($rewardAmount, 6) * 1000000 : $rewardAmount;
+            $reward->amount = $rewardAmount > 0 ? number_format($rewardAmount, 6) * 1000000 : 1000000;
             $reward->status = 'issued';
-            $reward->stake_address = $user->wallet_stake_address ?? $request->input('wallet_stake_address');
+            $reward->stake_address = $user->wallet_stake_address;
             $reward->setTranslation('memo', 'en', $learningLesson->title);
             $reward->save();
         }
-
-        return back()->withInput();
     }
 }
