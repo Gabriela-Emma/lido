@@ -2,20 +2,22 @@
 
 namespace App\Http\Controllers\Earn;
 
-use App\DataTransferObjects\AnswerResponseData;
-use App\DataTransferObjects\LearningLessonData;
-use App\DataTransferObjects\RewardData;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreLearningLessonRequest;
-use App\Http\Requests\UpdateLearningLessonRequest;
-use App\Models\AnswerResponse;
-use App\Models\LearningLesson;
+use Inertia\Inertia;
 use App\Models\Reward;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Inertia\Inertia;
-use Spatie\LaravelMarkdown\MarkdownRenderer;
+use App\Models\AnswerResponse;
+use App\Models\LearningLesson;
+use App\Http\Controllers\Controller;
+use App\DataTransferObjects\RewardData;
 use Webwizo\Shortcodes\Facades\Shortcode;
+use Spatie\LaravelMarkdown\MarkdownRenderer;
+use App\DataTransferObjects\AnswerResponseData;
+use App\DataTransferObjects\LearningLessonData;
+use App\Http\Requests\StoreLearningLessonRequest;
+use App\Http\Requests\UpdateLearningLessonRequest;
+use App\Models\LearningModule;
 
 class LearningLessonController extends Controller
 {
@@ -59,6 +61,7 @@ class LearningLessonController extends Controller
      */
     public function show(Request $request, LearningLesson $learningLesson)
     {
+        
         $learningLesson->load(['model', 'quizzes.questions.answers']);
         if ($learningLesson->model?->content) {
             $learningLesson->model->content = app(MarkdownRenderer::class)
@@ -66,7 +69,9 @@ class LearningLessonController extends Controller
                     Shortcode::compile($learningLesson?->model?->content)
                 );
         }
-        $module = $learningLesson->topics()->first()->learningModules()->first();
+
+        $slug = Str::slug(basename(parse_url(url()->previous(), PHP_URL_PATH)));
+        $module = LearningModule::where('slug', $slug)->first();
 
         $userResponses = AnswerResponse::with(['quiz', 'question.answers', 'answer'])
             ->where('user_id', $request->user()?->id)
