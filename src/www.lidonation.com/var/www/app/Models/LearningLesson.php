@@ -69,9 +69,14 @@ class LearningLesson extends Model
                 // get the latest response for lesson related by current user
                 $lastResponse = AnswerResponse::where('quiz_id', $this->quiz?->id)
                     ->where('user_id', auth()->user()->getAuthIdentifier())
-                    ->whereDate('created_at', "=", Carbon::now()->tz('Africa/Nairobi')->startOfDay())
+                    ->whereDate('created_at', "=", Carbon::now()->startOfDay())
                     ->orderBy('created_at', 'desc')
                     ->first();
+
+                $q = AnswerResponse::where('quiz_id', $this->quiz?->id)
+                    ->where('user_id', auth()->user()->getAuthIdentifier())
+                    ->whereDate('created_at', "=", Carbon::now()->startOfDay())
+                    ->orderBy('created_at', 'desc');
 
                 if (!$lastResponse instanceof AnswerResponse) {
                     return null;

@@ -94,28 +94,6 @@
                                             <p class="text-lg md:text-xl xl:text-2xl 2xl:text-3x xl:leading-12 2xl:leading-12 inline box-border box-decoration-clone p-2 tracking-wide bg-white text-teal-900 relative -left-8">
                                                 {{ question?.title }}
                                             </p>
-                                            <span v-if="correct" class="flex gap-2 items-center bg-white text-md text-labs-black p-2 h-8">
-                                                <span>
-                                                    Awarded :
-                                                </span>
-                                                <span class="text-md">
-                                                    {{ awardedAmount }}
-                                                </span>
-                                                <span v-if="assetMetadata.logo"
-                                                    class="relative inline-flex items-center rounded-full 2xl:w-5 w-4 2xl:h-5">
-                                                        <img class="inline-flex"
-                                                                alt="asset logo"
-                                                                :src="'data:image/png;base64,'+`${assetMetadata.logo}`">
-                                                    </span>
-                                                <span v-else-if="assetMetadata.ticker"
-                                                    class="relative inline-block rounded-full w-3 h-3">
-                                                        {{ assetMetadata.ticker }}
-                                                </span>
-                                                <span v-else="assetName"
-                                                        class="relative inline-block rounded-full w-3 h-3">
-                                                            {{ assetName }}
-                                                </span>
-                                            </span>
                                         </div>
                                         <ul class="mt-4 space-y-2 relative h-full w-full ">
                                             <template v-for="answer in question.answers" :key="answer.id">
@@ -147,6 +125,23 @@
                                                 </li>
                                             </template>
                                         </ul>
+
+                                        <div v-if="awardedAmount"
+                                             class="inline-flex flex-wrap mx-auto mt-8 gap-2 items-center text-lg text-labs-black font-bold p-2 border border-labs-black rounded-sm">
+                                            <div class="flex gap-4 items-center">
+                                                <div class="text-slate-700">Awarded</div>
+                                                <div>{{ awardedAmount }}</div>
+                                            </div>
+                                            <div class="flex gap-1" v-if="assetMetadata?.ticker">
+                                                <div>{{ assetMetadata?.ticker }}</div>
+                                                <div v-if="assetMetadata?.logo">
+                                                    <img class="inline-flex w-5 h-5 rounded-full"
+                                                         alt="asset logo"
+                                                         :src="'data:image/png;base64,'+`${assetMetadata?.logo}`">
+                                                </div>
+                                            </div>
+
+                                        </div>
 
                                         <div class="font-bold flex justify-center lg:text-lg xl:text-xl" v-if="retryAt">
                                             <countdown :time="retryAt" v-slot="{ days, hours, minutes, seconds }">
@@ -225,7 +220,7 @@
 
 <script lang="ts" setup>
 import {computed, inject, ref, Ref} from "vue";
-import { storeToRefs } from 'pinia';
+import {storeToRefs} from 'pinia';
 import User from "../../global/Shared/Models/user";
 import {useForm, usePage} from '@inertiajs/vue3';
 import {ArrowTopRightOnSquareIcon, CheckBadgeIcon, ClockIcon, NewspaperIcon} from '@heroicons/vue/24/outline';
@@ -237,7 +232,7 @@ import moment from "moment-timezone";
 import LearningLessonData = App.DataTransferObjects.LearningLessonData;
 import AnswerResponseData = App.DataTransferObjects.AnswerResponseData;
 import RewardData = App.DataTransferObjects.RewardData;
-import { useWalletStore } from "../../catalyst-explorer/stores/wallet-store";
+import {useWalletStore} from "../../catalyst-explorer/stores/wallet-store";
 import Wallet from '../../catalyst-explorer/models/wallet';
 
 const $utils: any = inject('$utils');
@@ -248,7 +243,7 @@ const props = withDefaults(
         locale: string,
         userResponses: AnswerResponseData[],
         lesson: LearningLessonData
-        reward: RewardData[]
+        reward: RewardData
     }>(), {});
 
 let answerResponseStore = useAnswerResponseStore();
@@ -256,8 +251,9 @@ let answerResponseStore = useAnswerResponseStore();
 let learningLesson = ref(props.lesson);
 let reward = ref(props.reward);
 let submitted: Ref<boolean> = ref(false);
-
-let quiz, questions, question, answers, answer, correct, userSelectionId = ref(null);
+let userReward = ref(props.reward);
+let awardedAmount, assetMetadata, quiz, questions, question, answers, answer, correct,
+    userSelectionId = ref(null);
 
 let userLatestResponse = computed(() => {
     //filter out responses older than midnight previous day East Africa Time
@@ -279,16 +275,10 @@ let userLatestResponse = computed(() => {
     return null;
 });
 
-let userReward = computed(() => {
-    if (props.reward?.length > 0) {
-        return props.reward[0];
-    }
-    return null;
-})
-
-let awardedAmount = userReward.value?.amount / userReward.value?.asset_details?.divisibility;
-let assetName = userReward.value?.asset_details?.asset_name;
-let assetMetadata = userReward.value?.asset_details.metadata;
+if (userReward.value?.amount && userReward.value?.asset_details) {
+    awardedAmount = userReward.value?.amount / userReward.value?.asset_details?.divisibility;
+    assetMetadata = userReward.value?.asset_details.metadata;
+}
 
 const quizBackGround = computed(() => {
     if (userLatestResponse.value?.correct === true) {
@@ -329,7 +319,7 @@ answers = question.value?.answers;
 
 let walletStore = useWalletStore();
 let {walletData} = storeToRefs(walletStore);
-let myWallet:Ref<Wallet> = computed(() => walletData.value);
+let myWallet: Ref<Wallet> = computed(() => walletData.value);
 
 
 function submit() {
@@ -343,8 +333,8 @@ function submit() {
         user_id: user?.value?.id,
         quiz_id: quiz?.id,
         question_id: question?.value.id,
-        wallet_stake_addr: myWallet?.value?.stakeAddress,
-        wallet_addr: myWallet?.value?.address,
+        wallet_stake_address: myWallet?.value?.stakeAddress,
+        wallet_address: myWallet?.value?.address,
 
     });
     answerResponseStore.submitAnswer(baseUrl, form);

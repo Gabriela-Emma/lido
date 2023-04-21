@@ -9,7 +9,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreLearningLessonRequest;
 use App\Http\Requests\UpdateLearningLessonRequest;
 use App\Models\AnswerResponse;
-use App\Models\Giveaway;
 use App\Models\LearningLesson;
 use App\Models\Reward;
 use Illuminate\Http\Request;
@@ -73,12 +72,14 @@ class LearningLessonController extends Controller
             ->where('quiz_id', $learningLesson->quiz?->id)
             ->get();
 
-        $reward = $learningLesson->rewards()->where('user_id', $request->user()?->id)->get();
-            
+        $reward = $learningLesson->rewards()
+            ->where('user_id', $request->user()?->id)
+            ->first();
+
         return Inertia::render('LearningLesson', [
             'lesson' => LearningLessonData::from($learningLesson),
             'userResponses' => AnswerResponseData::collection($userResponses),
-            'reward' => RewardData::collection($reward),
+            'reward' => isset($reward) ? RewardData::from($reward) : null,
             'crumbs' => [
                 ['name' => 'Learn & Earn', 'link' => route('earn.learn')],
                 ['name' => 'Modules', 'link' => route('earn.learn.modules.index')],
