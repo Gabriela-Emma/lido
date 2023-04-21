@@ -32,6 +32,15 @@ class AnswerResponses extends Resource
      */
     public static $title = 'title';
 
+    public static $perPageOptions = [50, 100, 250];
+
+    /**
+     * The number of resources to show per page via relationships.
+     *
+     * @var int
+     */
+    public static $perPageViaRelationship = 25;
+
     /**
      * The columns that should be searched.
      *
