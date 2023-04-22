@@ -51,7 +51,7 @@ class LearningModule extends Model
     public function lessonsCount(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->topics?->sum(fn ($topic) => $topic->lessons?->count())
+            get: fn () => $this->learningTopics?->sum(fn ($topic) => $topic->learningLessons?->count())
         );
     }
 

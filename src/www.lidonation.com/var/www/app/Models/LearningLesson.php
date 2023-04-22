@@ -137,6 +137,22 @@ class LearningLesson extends Model
         return $this->belongsToManyThrough(LearningModule::class, LearningTopic::class);
     }
 
+    public function firstModule() : Attribute
+    {
+        return Attribute::make(
+            get:function (){
+                $modulesCount = $this->topics->first()->learningModules()->count();
+
+                if($modulesCount==0 || $modulesCount>1)
+                {
+                    return null;
+                }
+
+                return  $this->topics()->first()->learningModules()->first();
+            }
+        ); 
+    }
+
     public function quizzes(): MorphToMany
     {
         return $this->morphToMany(Quiz::class, 'model', 'model_quiz', 'model_id', 'quiz_id')

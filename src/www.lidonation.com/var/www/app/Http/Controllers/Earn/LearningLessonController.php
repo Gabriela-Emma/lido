@@ -2,20 +2,22 @@
 
 namespace App\Http\Controllers\Earn;
 
-use App\DataTransferObjects\AnswerResponseData;
-use App\DataTransferObjects\LearningLessonData;
-use App\DataTransferObjects\RewardData;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreLearningLessonRequest;
-use App\Http\Requests\UpdateLearningLessonRequest;
-use App\Models\AnswerResponse;
-use App\Models\LearningLesson;
+use Inertia\Inertia;
 use App\Models\Reward;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Inertia\Inertia;
-use Spatie\LaravelMarkdown\MarkdownRenderer;
+use App\Models\AnswerResponse;
+use App\Models\LearningLesson;
+use App\Http\Controllers\Controller;
+use App\DataTransferObjects\RewardData;
 use Webwizo\Shortcodes\Facades\Shortcode;
+use Spatie\LaravelMarkdown\MarkdownRenderer;
+use App\DataTransferObjects\AnswerResponseData;
+use App\DataTransferObjects\LearningLessonData;
+use App\Http\Requests\StoreLearningLessonRequest;
+use App\Http\Requests\UpdateLearningLessonRequest;
+use App\Models\LearningModule;
 
 class LearningLessonController extends Controller
 {
@@ -59,7 +61,8 @@ class LearningLessonController extends Controller
      */
     public function show(Request $request, LearningLesson $learningLesson)
     {
-        $learningLesson->load(['model', 'quizzes.questions.answers']);
+        
+        $learningLesson->load(['model', 'quizzes.questions.answers','topics', 'topics.learningModules']);
         if ($learningLesson->model?->content) {
             $learningLesson->model->content = app(MarkdownRenderer::class)
                 ->toHtml(
@@ -76,15 +79,25 @@ class LearningLessonController extends Controller
             ->where('user_id', $request->user()?->id)
             ->first();
 
+        $module = $learningLesson->firstModule;
+
+        $crumbs =  [
+            ['name' => 'Learn & Earn', 'link' => route('earn.learn')],
+            ['name' => 'Modules', 'link' => route('earn.learn.modules.index')],
+            ['name' => $learningLesson->title, 'link' => $learningLesson->link],
+        ];
+
+        if ($module !== null) {
+            array_splice($crumbs, 2, 0, [
+                ['name' => $module->title, 'link' => route('earn.learn.modules.view', $module->slug)],
+            ]);
+        }
+
         return Inertia::render('LearningLesson', [
             'lesson' => LearningLessonData::from($learningLesson),
             'userResponses' => AnswerResponseData::collection($userResponses),
             'reward' => isset($reward) ? RewardData::from($reward) : null,
-            'crumbs' => [
-                ['name' => 'Learn & Earn', 'link' => route('earn.learn')],
-                ['name' => 'Modules', 'link' => route('earn.learn.modules.index')],
-                ['name' => $learningLesson->title, 'link' => $learningLesson->link],
-            ],
+            'crumbs' =>$crumbs,
         ]);
     }
 
