@@ -247,7 +247,9 @@ const faqs = [
 
 function register() {
     let form = useForm({
-        email: user.value.email
+        email: user.value.email,
+        wallet_address: walletData.value?.address,
+        wallet_stake_address: walletData.value?.stakeAddress
     });
 
     const baseUrl = usePage().props.base_url;

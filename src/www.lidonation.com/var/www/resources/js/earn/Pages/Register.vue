@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-slate-100 earn--register-form-wrapper">
+    <div class="bg-slate-100 earn--register-form-wrapper overflow-auto">
         <RegisterForm :showLogo="false"
                       :role="'earn/learn'"
                       :errors="errors"
