@@ -1,8 +1,8 @@
 <template>
-    <section class="py-4 sm:py-8 md:pb-20 md:pt-16 pb-16 xl:pb-36 xl:pt-24 bg-opacity-5 text-white overflow-visible z-5"
-             style="background: url('/img/ngong-road-learn.svg'); background-size: 100% auto;">
+    <section class="py-4 sm:py-8 md:pb-20 md:pt-16 pb-16 xl:pb-36 2xl:pt-24 bg-opacity-5 text-white overflow-visible z-5"
+             style="background: url('/img/ngong-road-learn.svg') 0% 20% / 100%; background-size: 100% auto;">
         <div class="container">
-            <div class="text-center flex flex-col gap-2 sm:gap-8 xl:gap-12">
+            <div class="text-center flex flex-col gap-2 sm:gap-6 xl:gap-8 2xl:gap-12">
                 <div class="text-md sm:text-xl md:text-2xl xl:text-3xl">
                     {{ $t("lidonationPresents") }}
                 </div>
@@ -43,7 +43,19 @@
                         </span>
                     </div>
                     <div v-else class="flex gap-3 items-center flex-row mx-auto">
-                        <CheckIcon class="h-8 w-8 text-green-500 font-bold" />
+                        <div v-if="user?.roles.includes('learner')" class="flex gap-2 items-center">
+                            <p class="font-bold text-labs-green">Logged In and Signed up!</p>
+                            <CheckIcon class="h-10 lg:h-16 w-10 lg:w-16 text-green-500 font-bold" />
+                        </div>
+                        <div v-else class="flex gap-2 items-center">
+                            <p class="text-sm">Logged in but not registered!</p>
+                            <CheckIcon class="h-10 lg:h-16 w-10 lg:w-16 text-green-500 font-bold" />
+                            <Link @click="register" type="button"
+                                  class="flex gap-2 md:gap-3 items-center justify-center rounded-sm border border-transparent bg-labs-red py-1.5 px-1 md:px-2 text-sm xl:text-lg font-medium text-white shadow-sm hover:bg-labs-black hover:text-white focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
+                                <span>{{ $t("register") }}</span>
+                            </Link>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -63,7 +75,7 @@
                         </span>
                     </div>
                     <div v-else  class="flex flex-col md:flex-row gap-1 md:gap-3 items-center  mx-auto">
-                        <CheckIcon class="h-8 w-8 text-green-500" />
+                        <CheckIcon class="h-10 lg:h-16 w-10 lg:w-16 text-green-500" />
                         <span class="font-bold text-labs-green">
                                 {{ $t("connected") }}
                         </span>
@@ -91,7 +103,17 @@
                         </p>
                     </div>
                     <div class="flex gap-3 items-center flex-row mx-auto">
-                        <Link :href="$utils.localizeRoute('earn/learn/modules')" type="button"
+                        <div v-if="!!user && !user.roles.includes('learner')" class="flex gap-3 items-center flex-row mx-auto">
+                            <div class="flex gap-2 items-center">
+                                <p class="text-sm">{{ $t("Almost Set!") }}</p>
+                            </div>
+                            <Link @click="register" type="button"
+                                  class="flex gap-2 md:gap-3 items-center justify-center rounded-sm border border-transparent bg-labs-red py-1.5 px-1 md:px-2 text-sm xl:text-lg font-medium text-white shadow-sm hover:bg-labs-black hover:text-white focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
+                                <span>{{ $t("Sign up for the Program") }}</span>
+                            </Link>
+                        </div>
+
+                        <Link v-else :href="$utils.localizeRoute('earn/learn/modules')" type="button"
                               class="flex gap-3 items-center w-full justify-center rounded-sm border border-transparent bg-labs-red py-2 px-3 text-sm md:text-lg 2xl:text-xl font-medium text-white shadow-sm hover:bg-labs-black hover:text-white focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                  stroke-width="1.5"
@@ -187,8 +209,8 @@
 </template>
 
 <script lang="ts" setup>
-import {inject, Ref, ref, computed, watch} from "vue";
-import {Link, usePage} from '@inertiajs/vue3';
+import {inject, Ref, ref, computed} from "vue";
+import {Link, useForm, usePage} from '@inertiajs/vue3';
 import {Disclosure, DisclosureButton, DisclosurePanel} from '@headlessui/vue';
 import {MinusSmallIcon, PlusSmallIcon, CheckIcon} from '@heroicons/vue/24/outline';
 import { defineAsyncComponent } from 'vue';
@@ -196,7 +218,7 @@ import User from "../../global/Shared/Models/user";
 import Wallet from '../../catalyst-explorer/models/wallet';
 const ConnectWallet = defineAsyncComponent(() =>import('../../global/Shared/Components/ConnectWallet.vue'));
 
-const user = computed(() => usePage().props.user as User)
+const user = computed(() => usePage().props.user as User);
 
 let walletData:Ref<Wallet> = ref({});
 const setWalletName = (wallet:Wallet) => {
@@ -222,6 +244,21 @@ const faqs = [
         answer: "howItWorks",
     },
 ]
+
+function register() {
+    let form = useForm({
+        email: user.value.email,
+        wallet_address: walletData.value?.address,
+        wallet_stake_address: walletData.value?.stakeAddress
+    });
+
+    const baseUrl = usePage().props.base_url;
+    form.post(`${baseUrl}/api/earn/learn/register`, {
+        preserveState: false,
+        preserveScroll: false
+    });
+
+}
 
 </script>
 <style scoped>

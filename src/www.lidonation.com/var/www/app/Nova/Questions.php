@@ -31,6 +31,8 @@ class Questions extends Resource
      */
     public static $title = 'title';
 
+    public static $perPageOptions = [50, 100, 250];
+
     /**
      * The columns that should be searched.
      *

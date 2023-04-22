@@ -32,6 +32,15 @@ class AnswerResponses extends Resource
      */
     public static $title = 'title';
 
+    public static $perPageOptions = [50, 100, 250];
+
+    /**
+     * The number of resources to show per page via relationships.
+     *
+     * @var int
+     */
+    public static $perPageViaRelationship = 25;
+
     /**
      * The columns that should be searched.
      *
@@ -70,12 +79,6 @@ class AnswerResponses extends Resource
 
             Boolean::make('Correct', fn () => $this->correct ),
 
-            BelongsTo::make(__('Quiz'), 'quiz', Quizzes::class)
-                ->searchable(),
-
-            BelongsTo::make(__('Question'), 'question', Questions::class)
-                ->searchable(),
-
             BelongsTo::make(__('Answer'), 'answer', QuestionAnswers::class)
                 ->searchable(),
 
@@ -96,6 +99,12 @@ class AnswerResponses extends Resource
                     'ready' => 'Ready',
                     'scheduled' => 'Scheduled',
                 ])->default('published')->sortable(),
+
+            BelongsTo::make(__('Quiz'), 'quiz', Quizzes::class)
+                ->searchable(),
+
+            BelongsTo::make(__('Question'), 'question', Questions::class)
+                ->searchable(),
         ];
     }
 

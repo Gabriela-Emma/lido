@@ -9,6 +9,7 @@ use App\Repositories\AdaRepository;
 use App\Repositories\EpochRepository;
 use App\Repositories\PoolRepository;
 use App\Repositories\PostRepository;
+use App\Repositories\SnippetsRepository;
 use App\Services\SettingService;
 use App\Services\SnippetService;
 use Illuminate\Contracts\Auth\Authenticatable;
@@ -16,6 +17,7 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Fluent;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 class GlobalComposer
@@ -47,7 +49,6 @@ class GlobalComposer
         $this->snippets = app(SnippetService::class)->getSnippets();
         $this->settings = app(SettingService::class)->getSettings();
         $this->lidoMenu = (new GetLidoMenu)();
-//        dd($this->lidoMenu);
     }
 
     /**
@@ -60,7 +61,7 @@ class GlobalComposer
             'quickNews' => $this->quickNews,
             'adaQuote' => $this->adaQuote,
             'user' => $this->user,
-            'snippets' => $this->snippets,
+            'snippets' => new SnippetsRepository($this->snippets),
             'settings' => $this->settings,
             'locale' => app()->getLocale(),
             'localeDetail' => new Fluent(config('laravellocalization.supportedLocales.'.app()->getLocale())),

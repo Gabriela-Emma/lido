@@ -27,11 +27,20 @@ class Rewards extends Resource
     public static $group = 'Lido Rewards';
 
     /**
+     * The single value that should be used to represent the resource when being displayed.
+     *
+     * @var string
+     */
+    public static $title = 'amount';
+
+    /**
      * The number of resources to show per page via relationships.
      *
      * @var int
      */
-    public static $perPageViaRelationship = 15;
+    public static $perPageViaRelationship = 25;
+
+    public static $perPageOptions = [50, 100, 250];
 
     /**
      * The model the resource corresponds to.

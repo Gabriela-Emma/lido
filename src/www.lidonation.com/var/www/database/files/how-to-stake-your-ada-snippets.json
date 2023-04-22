@@ -1,0 +1,64 @@
+{
+    "snippets":[
+        {
+            "heading":"stakeTitle",
+            "text_en":"How to stake your ADA",
+            "text_sw":"Jinsi ya kuwekeza ADA yako"
+        },
+        {
+            "heading":"stakeContent",
+            "text_en":"ADA held on the Cardano network is a stake. When you stake your ADA, you earn rewards for supporting the ecosystem. The process to stake your ADA is as easy as 1-2-3.",
+            "text_sw":"ADA iliyoshikiliwa kwenye mtandao wa Cardano ni dau. Unapoweka hisa kwenye ADA yako, unapata tuzo kwa kusaidia mfumo wa ikolojia. Mchakato wa kuwekeza ADA yako ni rahisi kama vile 1-2-3."
+        },
+        {
+            "heading":"howToCreateYoroiWallet",
+            "text_en":"Create a wallet on Yoroi Yoroi is a digital wallet for ADA. You can Use Yoroi as a browser extension on your computer, or as an app on your phone. On your computer * Navigate to yoroi-wallet.com * Install browser extension for your browser (ie Chrome, Firefox, etc.)",
+            "text_sw":"Tengeneza pochi kwenye Yoroi.Yoroi ni pochi ya kidijitali ya ADA. Unaweza Kutumia Yoroi kama kiendelezi cha kivinjari kwenye kompyuta yako, au kama programu kwenye simu yako. Kwenye kompyuta yako * Nenda kwenye yoroi-wallet.com * Sakinisha kiendelezi cha kivinjari cha kivinjari chako (yaani Chrome, Firefox, n.k.)"
+        },
+        {
+            "heading":"createYoroiWallet",
+            "text_en":"Create a Yoroi wallet",
+            "text_sw":"Tengeneza pochi kwenye Yoroi"
+        },
+        {
+            "heading":"sendAdaToYourWallet",
+            "text_en":"Send ADA to your wallet",
+            "text_sw":"Tuma ADA kwenye pochi yako"
+        },
+        {
+            "heading":"deledateToLidoNation",
+            "text_en":"Delegate to Lido Nation!",
+            "text_sw":"Kabidhi kwa Lido Nation!"
+        },
+        {
+            "heading":"onYourPhone",
+            "text_en":"On Your Phone",
+            "text_sw":"Kwenye Simu Yako"
+        },
+        {
+            "heading":"installYoroiApp",
+            "text_en":"Install Yoroi app from your app store.",
+            "text_sw":"Sakinisha programu ya Yoroi kutoka kwa duka lako la programu."
+        },
+        {
+            "heading":"howToLaunchApp",
+            "text_en":"**Launch the app or browser extension.**\n\nSelect language and accept the terms agreement, select \"Simple\" setup experience, select \"Cardano\" as the currency.\n\nSelect \"Create Wallet\". Enter a wallet name and spending password.\n\nCopy the recovery phrase by hand\n\nThis phrase is your only access to your wallet.\n\nWrite carefully, and store it safely in multiple locations.\n\nEnter the recovery phrase by clicking the buttons",
+            "text_sw":"**Fungua programu au kiendelezi cha kivinjari.**\n\nChagua lugha na ukubali makubaliano ya masharti, chagua \"Utumiaji Rahisi\" wa usanidi, chagua \"Cardano\" kama sarafu.\n\nChagua \"Unda Wallet\". Weka jina la pochi na nenosiri la matumizi.\n\nNakili kifungu cha urejeshaji\n\nFungu hili ndilo ufikiaji wako pekee wa pochi yako.\n\nAndika kwa uangalifu, na uihifadhi kwa usalama katika maeneo mengi.\n\nIngiza maneno ya kurejesha kwa kubofya vifungo"
+        },
+        {
+            "heading":"howToSendAda",
+            "text_en":"**Send ADA to your wallet**\n\n**First, in Yoroi:**\n\nClick the **Receive** tab.\n\nCopy the address to the clipboard by clicking the copy button to the right of the address.",
+            "text_sw":"**Tuma ADA kwenye pochi yako**\n\n**Kwanza, kwenye Yoroi:**\n\nBofya kichupo cha **kupokea**.\n\nNakili anwani kwenye ubao wa kunakili kwa kubofya kitufe cha kunakili kilicho upande wa kulia wa anwani."
+        },
+        {
+            "heading":"howToCoinbase",
+            "text_en":"**Next, in Coinbase:**\n\nClick the **Send/Receive** button. Click the \"Send all\" button or type in the amount you'd like to send. Paste the address from Yoroi into the \"To\" field.\n\nSelect Cardano in the \"Pay with\" field. Click \"Continue\".\n\nConfirm details of the transaction and click \"Send now\". You may need to perform a 2-step verification.\n\n**You did it!**\n\nIt may take a few minutes for the transaction to be processed by the network.",
+            "text_sw":"**Ifuatayo, katika Coinbase:**\n\nBofya kitufe cha **Tuma/Pokea**. Bofya kitufe cha \"Tuma Zote\" au charaza kiasi ambacho ungependa kutuma. Bandika anwani kutoka kwa Yoroi kwenye uwanja wa \"Kwa\".\n\nChagua Cardano kwenye uwanja wa \"Lipa na\". Bonyeza \"Endelea\".\n\nThibitisha maelezo ya muamala na ubofye \"Tuma sasa\". Huenda ukahitaji kufanya uthibitishaji wa hatua 2.\n\n**Umeifanya!**\n\nInaweza kuchukua dakika chache kwa shughuli hiyo kuchakatwa na mtandao."
+        },
+        {
+            "heading":"howToDelegate",
+            "text_en":"**Delegate to Lido Nation**\n\n**In Yoroi:**\n\nClick on the Delegation tab.\n\nIn the search box Search for **lido** and click the **Delegate** button for **LIDO**",
+            "text_sw":"**Kabidhi kwa Lido Nation**\n\n**Katika Yoroi:**\n\nBofya kwenye kichupo cha Kukabidhi.\n\nKatika kisanduku cha kutafutia Tafuta **lido** na ubofye kitufe cha **kukabidhi** kwa **LIDO**"
+        }           
+    ]
+}

@@ -53,14 +53,14 @@
                                 {{ $t('Home') }}
                             </Link>
                         </li>
-                        <li class="flow-root menu-item">
-                            <Link
-                                class="px-1 py-3 menu-link hover:text-black"
-                                :class="[$page.component.startsWith('Dashboard') ? 'text-black' : 'text-white']"
-                                :href="$utils.localizeRoute('earn/learn/dashboard')">
-                                {{ $t('Dashboard') }}
-                            </Link>
-                        </li>
+<!--                        <li class="flow-root menu-item">-->
+<!--                            <Link-->
+<!--                                class="px-1 py-3 menu-link hover:text-black"-->
+<!--                                :class="[$page.component.startsWith('Dashboard') ? 'text-black' : 'text-white']"-->
+<!--                                :href="$utils.localizeRoute('earn/learn/dashboard')">-->
+<!--                                {{ $t('Dashboard') }}-->
+<!--                            </Link>-->
+<!--                        </li>-->
                         <li class="flow-root menu-item">
                             <Link class="px-1 py-3 menu-link hover:text-black"
                                   :class="[$page.component.startsWith('LearningModules') ? 'text-black' : 'text-white']"
@@ -75,14 +75,14 @@
                                 {{ $t('Rewards') }}
                             </Link>
                         </li>
-                        <li class="flow-root menu-item">
-                            <Link
-                                class="px-1 py-3 menu-link hover:text-black"
-                                :class="[$page.component.startsWith('Profile') ? 'text-black' : 'text-white']"
-                                :href="$utils.localizeRoute('earn/learn/profile')">
-                                {{ $t('Profile') }}
-                            </Link>
-                        </li>
+<!--                        <li class="flow-root menu-item">-->
+<!--                            <Link-->
+<!--                                class="px-1 py-3 menu-link hover:text-black"-->
+<!--                                :class="[$page.component.startsWith('Profile') ? 'text-black' : 'text-white']"-->
+<!--                                :href="$utils.localizeRoute('earn/learn/profile')">-->
+<!--                                {{ $t('Profile') }}-->
+<!--                            </Link>-->
+<!--                        </li>-->
                     </ul>
                 </nav>
 

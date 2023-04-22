@@ -4,11 +4,13 @@ namespace App\Http\Controllers\Earn;
 
 use App\DataTransferObjects\AnswerResponseData;
 use App\DataTransferObjects\LearningLessonData;
+use App\DataTransferObjects\RewardData;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreLearningLessonRequest;
 use App\Http\Requests\UpdateLearningLessonRequest;
 use App\Models\AnswerResponse;
 use App\Models\LearningLesson;
+use App\Models\Reward;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Inertia\Inertia;
@@ -65,15 +67,19 @@ class LearningLessonController extends Controller
                 );
         }
 
-        $userResponses = AnswerResponse::with(['quiz', 'question.answers', 'answer'])->where('user_id', $request->user()?->id)
+        $userResponses = AnswerResponse::with(['quiz', 'question.answers', 'answer'])
+            ->where('user_id', $request->user()?->id)
             ->where('quiz_id', $learningLesson->quiz?->id)
             ->get();
 
-//        dd(AnswerResponseData::collection($userResponses)->toArray());
+        $reward = $learningLesson->rewards()
+            ->where('user_id', $request->user()?->id)
+            ->first();
 
         return Inertia::render('LearningLesson', [
             'lesson' => LearningLessonData::from($learningLesson),
             'userResponses' => AnswerResponseData::collection($userResponses),
+            'reward' => isset($reward) ? RewardData::from($reward) : null,
             'crumbs' => [
                 ['name' => 'Learn & Earn', 'link' => route('earn.learn')],
                 ['name' => 'Modules', 'link' => route('earn.learn.modules.index')],
