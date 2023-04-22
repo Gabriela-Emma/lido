@@ -70,8 +70,6 @@ class LearningLessonController extends Controller
                 );
         }
 
-        $module = $learningLesson->firstModule;
-
         $userResponses = AnswerResponse::with(['quiz', 'question.answers', 'answer'])
             ->where('user_id', $request->user()?->id)
             ->where('quiz_id', $learningLesson->quiz?->id)
@@ -81,16 +79,25 @@ class LearningLessonController extends Controller
             ->where('user_id', $request->user()?->id)
             ->first();
 
+        $module = $learningLesson->firstModule;
+
+        $crumbs =  [
+            ['name' => 'Learn & Earn', 'link' => route('earn.learn')],
+            ['name' => 'Modules', 'link' => route('earn.learn.modules.index')],
+            ['name' => $learningLesson->title, 'link' => $learningLesson->link],
+        ];
+
+        if ($module !== null) {
+            array_splice($crumbs, 2, 0, [
+                ['name' => $module->title, 'link' => route('earn.learn.modules.view', $module->slug)],
+            ]);
+        }
+
         return Inertia::render('LearningLesson', [
             'lesson' => LearningLessonData::from($learningLesson),
             'userResponses' => AnswerResponseData::collection($userResponses),
             'reward' => isset($reward) ? RewardData::from($reward) : null,
-            'crumbs' => [
-                ['name' => 'Learn & Earn', 'link' => route('earn.learn')],
-                ['name' => 'Modules', 'link' => route('earn.learn.modules.index')],
-                ['name' => $module->title, 'link' => route('earn.learn.modules.view', $module->slug)],
-                ['name' => $learningLesson->title, 'link' => $learningLesson->link],
-            ],
+            'crumbs' =>$crumbs,
         ]);
     }
 
