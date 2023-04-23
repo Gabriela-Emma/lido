@@ -156,11 +156,11 @@ class DelegatorsComponent extends Component
             );
         }
 
-        $reward = Reward::where([
-            'user_id' => $user?->getAuthIdentifier(),
-            'model_id' => $this->everyEpochQuiz?->giveaway->id,
-        ])->first();
-        if ($reward instanceof Reward) {
+        $reward = Reward::where(
+            'stake_address' , $user?->wallet_stake_address)
+            ->where('model_id', $this->everyEpochQuiz?->giveaway->id)
+            ->first();
+        if (isset($reward->id)) {
             $this->addError('Reward Already Claimed',
                 'You may only be rewarded once per quiz per epoch.'
             );
@@ -208,6 +208,9 @@ class DelegatorsComponent extends Component
 
     protected function saveReward($reward, $user, $addMultiplier = true)
     {
+        if($reward ==null){
+            return;
+        }
         if (! $addMultiplier) {
             $multiplier = 1.0;
         } else {
@@ -223,14 +226,26 @@ class DelegatorsComponent extends Component
         $reward->save();
     }
 
-    protected function issueReward(string $asset): Reward
+    protected function issueReward(string $asset)
     {
         $user = auth()->user();
+
+        $reward = Reward::where(
+            'stake_address' , $user?->wallet_stake_address)
+            ->where('model_id', $this->everyEpochQuiz?->giveaway->id)
+            ->first();
+        if (isset($reward->id)) {
+            $this->addError('Reward Already Claimed',
+                'You may only be rewarded once per quiz per epoch.'
+            );
+            return null;
+        }
+
         $amount = $this->rewardsTemplate[$asset.'.amount'];
         $reward = new Reward;
         $reward->user_id = $user->id;
         $reward->asset = $asset;
-        $reward->model_id = $this->everyEpoch?->giveaway->id;
+        $reward->model_id = $this->everyEpochQuiz?->giveaway->id;
         $reward->model_type = Giveaway::class;
         $reward->asset_type = 'ft';
         $reward->amount = $amount;
