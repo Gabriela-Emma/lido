@@ -26,7 +26,7 @@
     </section>
 
     <section class="py-8">
-        <div class="container text-xl xl:text-2xl">
+        <div class="container">
             <div class="grid grid-cols-7 gap-8">
                 <div class="col-span-7 md:col-span-4 xl:col-span-5 border-8 border-labs-red p-8 rounded-sm">
                     <slot></slot>

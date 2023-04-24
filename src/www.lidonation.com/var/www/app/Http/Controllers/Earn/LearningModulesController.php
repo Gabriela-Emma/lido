@@ -8,6 +8,7 @@ use App\Http\Requests\StoreLearningModulesRequest;
 use App\Http\Requests\UpdateLearningModulesRequest;
 use App\Models\LearningModule;
 use Illuminate\Http\Response;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class LearningModulesController extends Controller
@@ -57,11 +58,12 @@ class LearningModulesController extends Controller
      * @param LearningModule $learningModule
      * @return \Inertia\Response
      */
-    public function show(LearningModule $learningModule)
+    public function show(LearningModule $learningModule, ?Request $request)
     {
         $learningModule->load('topics');
         $learningModule->loadCount(['topics']);
         return Inertia::render('LearningModule', [
+            'userRetryLimit' => $request->user()->nextRetry,
             'module' => $learningModule->load('topics.lessons'),
             'crumbs' => [
                 ['name' => 'Learn & Earn', 'link' => route('earn.learn')],

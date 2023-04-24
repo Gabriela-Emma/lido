@@ -196,9 +196,23 @@ class User extends Authenticatable implements HasMedia, Interfaces\IHasMetaData,
     {
         return Attribute::make(
             get: function() {
-                return Carbon::make($this?->quiz_responses()?->latest()?->first()?->created_at
-                    ->setTimezone('Africa/Nairobi')->tomorrow('Africa/Nairobi')->toAtomString()
-                )?->utc()?->toAtomString();
+
+                $responses = $this->quiz_responses->where('created_at', '>=', Carbon::now()->subDay());
+                $latestResponse = null;
+
+                foreach ($responses as $response) {
+                    $quiz = $response->quiz;
+
+                    if ($quiz->lessons()->exists()) {
+                        if (!$latestResponse || $response->created_at > $latestResponse->created_at) {
+                            $latestResponse = $response;
+                        }
+                    }
+                }
+
+                return Carbon::make($latestResponse?->created_at->setTimezone('Africa/Nairobi')->tomorrow('Africa/Nairobi')
+                    ->toAtomString())?->utc()?->toAtomString();
+
             }
         );
     }
