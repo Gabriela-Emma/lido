@@ -50,7 +50,7 @@
                         <div>
                             <div class="flex items-center gap-1">
                                 <CheckBadgeIconSolid v-if="learningLesson.completed"
-                                                     class="h-8 w-8 text-labs-red"/>
+                                                     class="h-8 w-8 text-labs-green"/>
                                 <CheckBadgeIcon v-else class="h-8 w-8 text-slate-400"/>
                             </div>
                         </div>
@@ -198,11 +198,17 @@
                                                 </li>
                                             </template>
                                         </ul>
+                                        <div class="font-bold flex justify-center lg:text-lg xl:text-xl" v-if="nextQuestionRetry && !retryAt">
+                                            <countdown :time="nextQuestionRetry" v-slot="{ days, hours, minutes, seconds }">
+                                                <span class="text-slate-200"> You reached your daily limit try again in: </span>
+                                                {{ hours }} hours, {{ minutes }} minutes, {{ seconds }} seconds.
+                                            </countdown>
+                                        </div>
                                         <div class="mt-8 flex justify-end">
                                             <button type="button"
                                                     @click.prevent="submit"
-                                                    :disabled="!!userLatestResponse"
-                                                    :class="{ 'opacity-25 cursor-not-allowed': !!userLatestResponse }"
+                                                    :disabled="!!userLatestResponse || nextQuestionRetry > 0 "
+                                                    :class="{ 'opacity-25 cursor-not-allowed': !!userLatestResponse || nextQuestionRetry > 0 }"
                                                     class="rounded-sm bg-labs-black px-3.5 py-2.5 text-md xl:text-xl font-semibold text-white shadow-sm hover:bg-labs-black/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-labs-black ml-auto">
                                                 Submit
                                             </button>
@@ -242,6 +248,7 @@ const props = withDefaults(
     defineProps<{
         locale: string,
         userResponses: AnswerResponseData[],
+        userRetryLimit:string,
         lesson: LearningLessonData
         reward: RewardData
     }>(), {});
@@ -255,12 +262,25 @@ let userReward = ref(props.reward);
 let awardedAmount, assetMetadata, quiz, questions, question, answers, answer, correct,
     userSelectionId = ref(null);
 
+const currentDay = moment()
+            .tz('Africa/Nairobi')
+            .day();
+
+let nextQuestionRetry = computed(() => {
+    const nextRetry = moment(props.userRetryLimit).tz('Africa/Nairobi')
+            .diff(
+                moment().tz('Africa/Nairobi')
+            );
+    if (nextRetry > 0){
+       return nextRetry
+    }
+    return null
+});
+
+
 let userLatestResponse = computed(() => {
     //filter out responses older than midnight previous day East Africa Time
     const responses = [...props.userResponses].filter((response) => {
-        const currentDay = moment()
-            .tz('Africa/Nairobi')
-            .day();
 
         const lastAttempt = moment(response.createdAt)
             .tz('Africa/Nairobi')

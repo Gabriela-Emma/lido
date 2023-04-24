@@ -1,6 +1,6 @@
 <template>
     <section class="py-4 sm:py-4 md:pb-20 md:pt-8 pb-16 xl:pb-24 xl:pt-16 bg-opacity-5 text-white overflow-visible z-5"
-             style="background: url('/img/ngong-road-learn.svg') 0% 35% / 100%; background-size: 100% auto;">
+        style="background: url('/img/ngong-road-learn.svg') 0% 35% / 100%; background-size: 100% auto;">
         <div class="container">
             <div class="text-center flex flex-col gap-1 sm:gap-2 xl:gap-3">
                 <div class="text-xl sm:text-2xl md:text-4xl xl:text-6xl font-bold">
@@ -72,7 +72,7 @@
                                                     <div class="flex items-center gap-1">
                                                 <span>
                                                     <CheckBadgeIconSolid v-if="lesson.completed"
-                                                                         class="h-5 w-5 text-labs-red"/>
+                                                                         class="h-5 w-5 text-labs-green"/>
                                                     <CheckBadgeIcon v-else class="h-5 w-5 text-slate-400"/>
                                                 </span>
                                                     </div>
@@ -101,11 +101,11 @@
 </template>
 
 <script lang="ts" setup>
-import {inject, ref} from "vue";
-import {Link} from '@inertiajs/vue3';
-import {MinusSmallIcon, PlusSmallIcon, ClockIcon, CheckBadgeIcon, NewspaperIcon} from '@heroicons/vue/24/outline';
-import {CheckBadgeIcon as CheckBadgeIconSolid} from '@heroicons/vue/24/solid';
-import {Disclosure, DisclosureButton, DisclosurePanel} from "@headlessui/vue";
+import { inject, ref } from "vue";
+import { Link } from '@inertiajs/vue3';
+import { MinusSmallIcon, PlusSmallIcon, ClockIcon, CheckBadgeIcon, NewspaperIcon } from '@heroicons/vue/24/outline';
+import { CheckBadgeIcon as CheckBadgeIconSolid } from '@heroicons/vue/24/solid';
+import { Disclosure, DisclosureButton, DisclosurePanel } from "@headlessui/vue";
 import LearningModuleData = App.DataTransferObjects.LearningModuleData;
 
 const $utils: any = inject('$utils');
@@ -120,6 +120,4 @@ let learningModule = ref(props.module);
 </script>
 
 
-<style scoped>
-
-</style>
+<style scoped></style>

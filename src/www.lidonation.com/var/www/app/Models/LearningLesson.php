@@ -41,6 +41,7 @@ class LearningLesson extends Model
     protected $appends = [
         'hash',
         'link',
+        'completed',
         'retry_at',
     ];
 
@@ -58,6 +59,23 @@ class LearningLesson extends Model
     {
         return Attribute::make(
             get: fn() => $this->hash,
+        );
+    }
+
+    public function completed(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                $answerResponse = AnswerResponse::where('quiz_id', $this->quiz?->id)
+                    ->where('user_id', auth()->user()->getAuthIdentifier())
+                    ->first();
+                
+                if (!$answerResponse instanceof AnswerResponse) {
+                    return false;
+                } else {
+                    return true;
+                };
+            },
         );
     }
 

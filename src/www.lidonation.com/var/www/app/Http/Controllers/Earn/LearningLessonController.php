@@ -94,6 +94,7 @@ class LearningLessonController extends Controller
         }
 
         return Inertia::render('LearningLesson', [
+            'userRetryLimit' => $request->user()->nextRetry ,
             'lesson' => LearningLessonData::from($learningLesson),
             'userResponses' => AnswerResponseData::collection($userResponses),
             'reward' => isset($reward) ? RewardData::from($reward) : null,
