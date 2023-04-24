@@ -195,7 +195,7 @@
     @unlessrole('delegator')
     <div class="my-2">
         <p class="text-xl 2xl:text-2xl text-center text-yellow-500">
-            The ability to withdraw coming 12/16.
+{{--            The ability to withdraw coming .--}}
         </p>
     </div>
     @endunlessrole

@@ -50,7 +50,7 @@
                         <div>
                             <div class="flex items-center gap-1">
                                 <CheckBadgeIconSolid v-if="learningLesson.completed"
-                                                     class="h-8 w-8 text-labs-red"/>
+                                                     class="h-8 w-8 text-labs-green"/>
                                 <CheckBadgeIcon v-else class="h-8 w-8 text-slate-400"/>
                             </div>
                         </div>

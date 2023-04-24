@@ -67,7 +67,7 @@ class LearnController extends Controller
             'name' => 'required|min:3',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:5|confirmed',
-            'wallet_address' => 'required|wallet_address',
+            'wallet_address' => 'nullable',
             'wallet_stake_address' => 'nullable',
             'twitter' => 'nullable|handle',
             'telegram' => 'nullable|handle'
@@ -92,7 +92,7 @@ class LearnController extends Controller
         $validated = new Fluent($request->validate([
             'name' => 'nullable|bail|min:3',
             'email' => 'required|email',
-            'wallet_address' => 'nullable|wallet_address',
+            'wallet_address' => 'nullable',
             'wallet_stake_address' => 'nullable',
             'twitter' => 'nullable|bail|handle',
             'telegram' => 'nullable|bail|handle'
