@@ -192,6 +192,17 @@ class User extends Authenticatable implements HasMedia, Interfaces\IHasMetaData,
         return "https://www.gravatar.com/avatar/$hash?d=identicon&r=r";
     }
 
+    public function nextRetry(): Attribute
+    {
+        return Attribute::make(
+            get: function() {
+                return Carbon::make($this?->quiz_responses()?->latest()?->first()?->created_at
+                    ->setTimezone('Africa/Nairobi')->tomorrow('Africa/Nairobi')->toAtomString()
+                )?->utc()?->toAtomString();
+            }
+        );
+    }
+
     public function follows(CatalystUser|int $catalystUser): bool
     {
         return $this->whereHas('following', fn ($q) => $q->whereIn('what_id', [$catalystUser?->id ?? $catalystUser]))->count() > 0;
@@ -249,17 +260,6 @@ class User extends Authenticatable implements HasMedia, Interfaces\IHasMetaData,
     public function quiz_responses(): HasMany
     {
         return $this->hasMany(AnswerResponse::class, 'user_id');
-    }
-
-    public function nextRetry(): Attribute
-    {
-        return Attribute::make(
-            get: function() {
-                return Carbon::make($this?->quiz_responses()?->latest()?->first()?->created_at
-                    ->setTimezone('Africa/Nairobi')->tomorrow('Africa/Nairobi')->toAtomString()
-                    )?->utc()?->toAtomString();
-            }
-        );
     }
 
     public function registerMediaConversions(Media $media = null): void

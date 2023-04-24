@@ -97,7 +97,7 @@
                             </div>
                         </div>
 
-                        <div class="hidden lg:flex lg:w-60 2xl:w-72">
+                        <div class="hidden lg:shrink-0 lg:flex lg:w-60 2xl:w-72">
                             <div class="top-1 right-1 absolute">
                                 <button type="button" x-on:click="open = false"
                                         class="rounded-sm bg-white hover:bg-slate-200 p-1.5 text-slate-600 z-10">
