@@ -37,17 +37,6 @@
                         </div>
                     </div>
                     <div class="mb-2">
-                        <label for="wallet_address"
-                               class="block text-sm font-medium text-slate-600">{{ $t("ADA Wallet Address") }} </label>
-                        <div class="mt-1">
-                            <input v-model="wallet_address" id="wallet_address" name="wallet_address"
-                                   type="wallet_address" autocomplete="wallet_address" required
-                                   class="block w-full appearance-none rounded-sm border border-slate-400 px-3 py-2 placeholder-slate-400 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-teal-500 sm:text-sm">
-                            <div v-if="form.errors.wallet_address" v-text="form.errors.wallet_address"
-                                 class="text-red-500 text-xs mt-1"></div>
-                        </div>
-                    </div>
-                    <div class="mb-2">
                         <label for="twitter" class="block text-sm font-medium text-slate-600">{{
                                 $t("Twitter")
                             }} </label>
@@ -122,17 +111,6 @@
                             <input v-model="email" id="email" name="email" type="email" autocomplete="email" required
                                    class="block w-full appearance-none rounded-sm border border-slate-400 px-3 py-2 placeholder-slate-400 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-teal-500 sm:text-sm">
                             <div v-if="form.errors.email" v-text="form.errors.email"
-                                 class="text-red-500 text-xs mt-1"></div>
-                        </div>
-                    </div>
-                    <div class="mb-2">
-                        <label for="wallet_address"
-                               class="block text-sm font-medium text-slate-600">{{ $t("ADA Wallet Address") }} </label>
-                        <div class="mt-1">
-                            <input v-model="wallet_address" id="wallet_address" name="wallet_address"
-                                   type="wallet_address" autocomplete="wallet_address" required
-                                   class="block w-full appearance-none rounded-sm border border-slate-400 px-3 py-2 placeholder-slate-400 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-teal-500 sm:text-sm">
-                            <div v-if="form.errors.wallet_address" v-text="form.errors.wallet_address"
                                  class="text-red-500 text-xs mt-1"></div>
                         </div>
                     </div>
