@@ -22,10 +22,8 @@
      style="display:none"
      id="slteModal"
      @keydown.escape="showing = false">
-    <div
-        class="fixed inset-0 z-30 flex items-center justify-center overflow-auto bg-black bg-opacity-50 px-2"
-        x-show="showing"
-    >
+    <div x-show="showing"
+        class="fixed inset-0 z-30 flex items-center justify-center overflow-auto bg-black bg-opacity-50 px-2" >
         <div
             class="bg-gradient-to-b from-teal-900 to-teal-500 w-auto flex flex-col rounded-sm relative overflow-clip">
             <div class="flex items-start justify-between p-4 border-b border-teal-200">
@@ -112,7 +110,7 @@
                 </div>
 
                 <footer class="flex justify-center w-full p-4 mt-4">
-                    <a type="button" href="{{localizeRoute('earn.learn')}}"
+                    <a type="button" href="{{localizeRoute('earn.learn', 'sw')}}"
                        class="inline-flex items-center gap-x-2 rounded-sm bg-labs-red px-3.5 py-2.5 text-sm xl:text-xl font-semibold text-white hover:text-black shadow-sm hover:bg-labs-red-light focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-labs-red-light">
                         {{$snippets->learnMore}}
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">

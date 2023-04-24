@@ -1,5 +1,5 @@
 <div class="menu-items-wrapper break-inside-avoid mb-8">
-    <h3 class="text-base font-bold text-teal-600">
+    <h3 class="text-base font-bold text-teal-600 w-44 truncate">
         {{$menu?->title}}
     </h3>
     @isset($menu?->items)
