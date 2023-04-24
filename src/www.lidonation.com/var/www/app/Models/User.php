@@ -3,32 +3,34 @@
 namespace App\Models;
 
 use App\Casts\NRTFilter;
-use App\Models\Traits\HasCatalystProfiles;
+use Illuminate\Support\Str;
+use Laravel\Jetstream\HasTeams;
+use Spatie\Image\Manipulations;
+use App\Models\Traits\HasPromos;
+use Laravel\Sanctum\HasApiTokens;
+use Spatie\MediaLibrary\HasMedia;
 use App\Models\Traits\HasGravatar;
 use App\Models\Traits\HasMetaData;
-use App\Models\Traits\HasPromos;
-use GuzzleHttp\Exception\GuzzleException;
-use Illuminate\Contracts\Auth\CanResetPassword;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasManyThrough;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Str;
-use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
-use Laravel\Jetstream\HasTeams;
-use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Notifications\Notifiable;
+use GuzzleHttp\Exception\GuzzleException;
+use App\Models\Traits\HasCatalystProfiles;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Laravel\Fortify\TwoFactorAuthenticatable;
+use Illuminate\Contracts\Auth\CanResetPassword;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Staudenmeir\EloquentHasManyDeep\HasRelationships;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Spatie\Comments\Models\Concerns\InteractsWithComments;
 use Spatie\Comments\Models\Concerns\Interfaces\CanComment;
-use Spatie\Image\Manipulations;
-use Spatie\MediaLibrary\HasMedia;
-use Spatie\MediaLibrary\InteractsWithMedia;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
-use Spatie\Permission\Traits\HasRoles;
-use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 use Staudenmeir\EloquentJsonRelations\HasJsonRelationships;
+use Illuminate\Support\Carbon;
 
 class User extends Authenticatable implements HasMedia, Interfaces\IHasMetaData, CanComment, CanResetPassword
 {
@@ -247,6 +249,17 @@ class User extends Authenticatable implements HasMedia, Interfaces\IHasMetaData,
     public function quiz_responses(): HasMany
     {
         return $this->hasMany(AnswerResponse::class, 'user_id');
+    }
+
+    public function nextRetry(): Attribute
+    {
+        return Attribute::make(
+            get: function() {
+                return Carbon::make($this?->quiz_responses()?->latest()?->first()?->created_at
+                    ->setTimezone('Africa/Nairobi')->tomorrow('Africa/Nairobi')->toAtomString()
+                    )?->utc()?->toAtomString();
+            }
+        );
     }
 
     public function registerMediaConversions(Media $media = null): void
