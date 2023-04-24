@@ -1,11 +1,20 @@
 <template>
     <section class="w-full flex flex-col gap-8">
-        <div class="border-labs-red border-8 rounded-sm p-4">
+        <div class="border-labs-red border-8 rounded-sm p-4 flex flex-col gap-2">
             <div class="text-sm">Welcome back <b class="text-labs-black">{{ user.name }}</b></div>
+            <div class="flex flex-row flex-wrap gap-3 text-xs 2xl:text-sm">
+                <div class="flex gap-1">
+                    <div class="text-slate-400">Earned</div>
+                    <div class="text-md" :class="{
+                        'text-labs-green font-bold': totalEarned > 0,
+                        'text-slate-400': totalEarned <= 0
+                    }">{{ totalEarned || '-' }} <span v-if="totalEarned">₳</span></div>
+                </div>
+            </div>
         </div>
         <div class="border-labs-red bg-labs-red text-white border-8 rounded-sm p-4">
             <countdown :time="nextLessonAt" v-slot="{ days, hours, minutes, seconds }">
-                <span class="text-slate-50 text-sm text-center">Next starts in:</span>
+                <span class="text-slate-100 text-sm text-center block">Next lesson starts in:</span>
                 <div class="font-bold">
                     {{ hours }} hours, {{ minutes }} {{ $t('minutes') }}, {{ seconds }} seconds.
                 </div>
@@ -37,4 +46,8 @@ axios.get(`${usePage().props.base_url}/api/earn/learn/next-lesson-at`)
             }
         }
     });
+
+let totalEarned = ref(null);
+axios.get(`${usePage().props.base_url}/api/earn/learn/rewards/sum`)
+    .then((res) => totalEarned.value = res?.data ? res?.data / 1000000 : 0);
 </script>

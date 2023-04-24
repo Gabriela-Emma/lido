@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\Repo;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class RepoSeeder extends Seeder

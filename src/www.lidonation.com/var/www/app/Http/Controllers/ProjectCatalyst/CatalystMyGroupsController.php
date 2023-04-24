@@ -71,7 +71,7 @@ class CatalystMyGroupsController extends Controller
     {
         Proposal::withoutGlobalScopes();
 
-        return  Proposal::whereRelation('groups', 'id', $catalystGroup?->id)
+        return Proposal::whereRelation('groups', 'id', $catalystGroup?->id)
             ->with(['fund', 'users'])
             ->orderBy('title');
     }

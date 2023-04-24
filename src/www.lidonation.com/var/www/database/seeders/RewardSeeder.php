@@ -24,12 +24,12 @@ class RewardSeeder extends Seeder
             ->has(
                 Translation::factory()
                     ->state(function (array $attributes, Reward $reward) {
-                        return [ 
-                            "source_id" => $reward->id,
-                            "source_type" => $reward::class,
-                            "source_field" => 'memo',
-                            "source_content" => $reward->memo,
-                            "source_lang" => 'en',
+                        return [
+                            'source_id' => $reward->id,
+                            'source_type' => $reward::class,
+                            'source_field' => 'memo',
+                            'source_content' => $reward->memo,
+                            'source_lang' => 'en',
                         ];
                     }),
                 'translations'
@@ -42,7 +42,7 @@ class RewardSeeder extends Seeder
                         ];
                     }),
                 'txs'
-            )       
+            )
             ->create();
     }
 }

@@ -1,8 +1,8 @@
 <?php
 
 namespace Database\Factories;
-use App\Models\AnonymousBookmark;
 
+use App\Models\AnonymousBookmark;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -10,8 +10,8 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class AnonymousBookmarkFactory extends Factory
 {
-    
     protected $model = AnonymousBookmark::class;
+
     /**
      * Define the model's default state.
      *

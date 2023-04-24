@@ -14,9 +14,6 @@ class LearningLessonPolicy extends AppPolicy
 
     /**
      * Determine whether the user can view any models.
-     *
-     * @param User $user
-     * @return Response|bool
      */
     public function viewAny(User $user): Response|bool
     {
@@ -26,9 +23,6 @@ class LearningLessonPolicy extends AppPolicy
     /**
      * Determine whether the user can view the model.
      *
-     * @param User $user
-     * @param LearningLesson $learningLesson
-     * @return Response|bool
      * @throws \Exception
      */
     public function view(User $user, LearningLesson $learningLesson): Response|bool
@@ -39,7 +33,6 @@ class LearningLessonPolicy extends AppPolicy
     /**
      * Determine whether the user can create models.
      *
-     * @param User $user
      * @return bool
      */
     public function create(User $user)
@@ -49,10 +42,6 @@ class LearningLessonPolicy extends AppPolicy
 
     /**
      * Determine whether the user can update the model.
-     *
-     * @param User $user
-     * @param LearningLesson $learningLesson
-     * @return bool
      */
     public function update(User $user, LearningLesson $learningLesson): bool
     {
@@ -61,10 +50,6 @@ class LearningLessonPolicy extends AppPolicy
 
     /**
      * Determine whether the user can delete the model.
-     *
-     * @param User $user
-     * @param LearningLesson $learningLesson
-     * @return Response|bool
      */
     public function delete(User $user, LearningLesson $learningLesson): Response|bool
     {
@@ -73,10 +58,6 @@ class LearningLessonPolicy extends AppPolicy
 
     /**
      * Determine whether the user can restore the model.
-     *
-     * @param User $user
-     * @param LearningLesson $learningLesson
-     * @return Response|bool
      */
     public function restore(User $user, LearningLesson $learningLesson): Response|bool
     {
@@ -85,10 +66,6 @@ class LearningLessonPolicy extends AppPolicy
 
     /**
      * Determine whether the user can permanently delete the model.
-     *
-     * @param User $user
-     * @param LearningLesson $learningLesson
-     * @return Response|bool
      */
     public function forceDelete(User $user, LearningLesson $learningLesson): Response|bool
     {

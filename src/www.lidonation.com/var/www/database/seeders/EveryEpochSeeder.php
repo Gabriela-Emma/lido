@@ -5,8 +5,8 @@ namespace Database\Seeders;
 use App\Models\EveryEpoch;
 use App\Models\Giveaway;
 use App\Models\Translation;
-use Illuminate\Database\Seeder;
 use Faker\Generator as Faker;
+use Illuminate\Database\Seeder;
 
 class EveryEpochSeeder extends Seeder
 {
@@ -21,13 +21,13 @@ class EveryEpochSeeder extends Seeder
             ->hasAttached(Giveaway::factory()->count(1), ['model_type' => EveryEpoch::class], 'giveaways')
             ->has(
                 Translation::factory()
-                    ->state(function (array $attributes, EveryEpoch $epo) use ($faker) {
-                        return [ 
-                            "source_id" => $epo->id,
-                            "source_type" => $epo::class,
-                            "source_field" => 'content',
-                            "source_content" => $epo->content,
-                            "source_lang" => 'en',
+                    ->state(function (array $attributes, EveryEpoch $epo) {
+                        return [
+                            'source_id' => $epo->id,
+                            'source_type' => $epo::class,
+                            'source_field' => 'content',
+                            'source_content' => $epo->content,
+                            'source_lang' => 'en',
                         ];
                     }),
                 'translations'

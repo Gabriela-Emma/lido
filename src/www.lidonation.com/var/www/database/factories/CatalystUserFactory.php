@@ -22,7 +22,7 @@ class CatalystUserFactory extends Factory
         return [
             'name' => $this->faker->unique()->name,
             'email' => $this->faker->email,
-            'bio'=>$this->faker->sentence(rand(2, 3), true),
+            'bio' => $this->faker->sentence(rand(2, 3), true),
             'created_at' => now(),
         ];
     }

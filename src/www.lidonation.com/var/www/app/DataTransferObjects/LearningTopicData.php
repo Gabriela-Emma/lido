@@ -19,6 +19,6 @@ class LearningTopicData extends Data
         public ?int $lessons_count,
         #[DataCollectionOf(LearningLessonData::class)]
         public ?DataCollection $lessons,
-    )
-    {}
+    ) {
+    }
 }

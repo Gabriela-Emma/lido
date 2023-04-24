@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 class AssessorFactory extends Factory
 {
     protected $model = Assessor::class;
+
     /**
      * Define the model's default state.
      *

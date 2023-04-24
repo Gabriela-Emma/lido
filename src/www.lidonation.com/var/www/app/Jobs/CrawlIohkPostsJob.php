@@ -38,7 +38,7 @@ class CrawlIohkPostsJob implements ShouldQueue
         foreach ($this->postsLinks as $key => $link) {
             try {
                 (new IohkPostCrawlerService($link, $this->langLocale));
-            } catch(e) {
+            } catch (e) {
                 echo 'error';
             }
         }

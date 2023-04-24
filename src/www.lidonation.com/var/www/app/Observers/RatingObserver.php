@@ -32,7 +32,7 @@ class RatingObserver
             try {
                 GenerateReviewRatingImagesJob::dispatch($rating->model?->model);
             } catch (\Throwable $err) {
-                Log::error("The rating image could not be generated.");
+                Log::error('The rating image could not be generated.');
             }
         }
     }

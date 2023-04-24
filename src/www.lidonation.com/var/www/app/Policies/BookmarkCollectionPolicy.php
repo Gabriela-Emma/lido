@@ -6,6 +6,7 @@ use App\Models\BookmarkCollection;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Auth\Access\Response;
+
 class BookmarkCollectionPolicy
 {
     use HandlesAuthorization;
@@ -62,7 +63,7 @@ class BookmarkCollectionPolicy
         }
         $inLastTenMins = now()->diffInMinutes($bookmarkCollection) < 10;
         $isOwner = $user->id === $bookmarkCollection->user_id;
-        
+
         return $inLastTenMins && $isOwner ? Response::allow() : Response::deny('You do not own this collection.');
     }
 

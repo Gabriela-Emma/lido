@@ -30,12 +30,12 @@ class LearningTopic extends Model
 
     public $appends = [
         'length',
-        'link'
+        'link',
     ];
 
     public array $translatable = [
         'title',
-        'content'
+        'content',
     ];
 
     public function length(): Attribute

@@ -69,7 +69,7 @@ class F9AssessmentReviewsSeeder extends FSeeder
     public function createAssessmentReview($row, Assessment $assessment, Assessor $assessor)
     {
         $assessmentReview = AssessmentReview::whereHas('assessments', fn ($q) => $q->where('assessment_id', $assessment->id))->first();
-        if (! $assessmentReview instanceof  AssessmentReview) {
+        if (! $assessmentReview instanceof AssessmentReview) {
             $assessmentReview = new AssessmentReview;
         }
 

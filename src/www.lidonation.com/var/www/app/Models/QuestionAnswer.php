@@ -21,7 +21,7 @@ class QuestionAnswer extends Model implements IHasMetaData
         SoftDeletes;
 
     protected $appends = [
-        'correct'
+        'correct',
     ];
 
     public $translatable = [
@@ -36,12 +36,12 @@ class QuestionAnswer extends Model implements IHasMetaData
      */
     protected $casts = [
         'updated_at' => 'datetime:M d y',
-        'published_at' => 'datetime:M d y'
+        'published_at' => 'datetime:M d y',
     ];
 
     public function correct(): Attribute
     {
-        return Attribute::make(get: fn() => $this?->correctness === 'correct');
+        return Attribute::make(get: fn () => $this?->correctness === 'correct');
     }
 
     public function question(): BelongsTo

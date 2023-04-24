@@ -20,13 +20,13 @@ class RuleFactory extends Factory
     public function definition()
     {
         return [
-            "subject" => $this->faker->words(5, true),
-            "operator" => $this->faker->randomElement(['lt', 'lte', 'eq', 'gt', 'gte']),
-            "predicate" => $this->faker->words(5, true),
-            "context" => $this->faker->words(rand(6, 8), true),
-            "apply_with" => $this->faker->randomElement(['and', 'or']),
-            "status" => $this->faker->randomElement(['published', 'draft', 'pending', 'ready', 'scheduled']),
-            'type' => $this->faker->randomElement(['custom', 'model', 'pool', 'epoch', 'sheduled'])
+            'subject' => $this->faker->words(5, true),
+            'operator' => $this->faker->randomElement(['lt', 'lte', 'eq', 'gt', 'gte']),
+            'predicate' => $this->faker->words(5, true),
+            'context' => $this->faker->words(rand(6, 8), true),
+            'apply_with' => $this->faker->randomElement(['and', 'or']),
+            'status' => $this->faker->randomElement(['published', 'draft', 'pending', 'ready', 'scheduled']),
+            'type' => $this->faker->randomElement(['custom', 'model', 'pool', 'epoch', 'sheduled']),
         ];
     }
 }

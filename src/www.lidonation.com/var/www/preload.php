@@ -30,11 +30,9 @@
  *
  *
  * For more information:
+ *
  * @see https://github.com/laragear/preload
  */
-
-
-
 $files = [
     '/var/www/html/vendor/laravel/framework/src/Illuminate/Foundation/resources/server.php',
     '/var/www/html/vendor/laravel/jetstream/routes/livewire.php',
@@ -2420,21 +2418,20 @@ $files = [
     '/var/www/html/vendor/spatie/laravel-comments/src/Models/Collections/ReactionCollection.php',
     '/var/www/html/storage/framework/views/fb03d7869dd0054ebf8a3539d38a219494d183cf.php',
     '/var/www/html/storage/framework/views/cace3b9e828294d13dfc4b91d5a1fd38b6f62f0d.php',
-    '/var/www/html/vendor/laravel/framework/src/Illuminate/Routing/Exceptions/UrlGenerationException.php'
+    '/var/www/html/vendor/laravel/framework/src/Illuminate/Routing/Exceptions/UrlGenerationException.php',
 ];
 
 foreach ($files as $file) {
     try {
-        if (!(\is_file($file) && \is_readable($file))) {
+        if (! (\is_file($file) && \is_readable($file))) {
             continue;
         }
         opcache_compile_file($file);
     } catch (\Throwable $e) {
-        echo 'Preloader Script has stopped with an error' . \PHP_EOL .
-             'Message: ' . $e->getMessage() . \PHP_EOL .
-             'File: ' . $file . \PHP_EOL;
+        echo 'Preloader Script has stopped with an error'.\PHP_EOL.
+             'Message: '.$e->getMessage().\PHP_EOL.
+             'File: '.$file.\PHP_EOL;
 
         throw $e;
     }
 }
-

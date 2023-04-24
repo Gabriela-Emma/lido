@@ -41,7 +41,7 @@ trait DbSyncHelpers
             report($err);
         }
 
-        return  collect();
+        return collect();
     }
 
     /**

@@ -10,7 +10,8 @@ class ModelTypeTransformer implements Transformer
 {
     public function __construct(
         protected Model $model
-    ){}
+    ) {
+    }
 
     public function transform(DataProperty $property, mixed $value): string
     {

@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 class EveryEpochFactory extends Factory
 {
     protected $model = EveryEpoch::class;
+
     /**
      * Define the model's default state.
      *
@@ -21,7 +22,7 @@ class EveryEpochFactory extends Factory
     {
         return [
             'user_id' => fn () => User::inRandomOrder()->first()->id,
-            'epoch' => $this->faker->numberBetween(0, 500), 
+            'epoch' => $this->faker->numberBetween(0, 500),
             'title' => $this->faker->words(4, true),
             'content' => $this->faker->paragraph(rand(2, 5), true),
             'status' => $this->faker->randomElement(['published', 'draft', 'published', 'pending', 'published']),

@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 class FundFactory extends Factory
 {
     protected $model = Fund::class;
+
     /**
      * Define the model's default state.
      *

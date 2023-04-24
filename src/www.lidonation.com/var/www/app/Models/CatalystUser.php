@@ -8,8 +8,6 @@ use App\Models\Traits\HasLocaleUrl;
 use App\Models\Traits\HasMetaData;
 use App\Traits\SearchableLocale;
 use DateTime;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\Routing\UrlGenerator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;

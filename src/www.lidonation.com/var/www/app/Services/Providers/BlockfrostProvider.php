@@ -69,7 +69,7 @@ class BlockfrostProvider implements ProvidesCardanoService
 
     protected function getClient($collect = true): PendingRequest
     {
-        return  Http::withHeaders([
+        return Http::withHeaders([
             'project_id' => $this->projectId,
         ])->baseUrl(config('services.blockfrost.baseUrl'))
             ->accept('application/json')

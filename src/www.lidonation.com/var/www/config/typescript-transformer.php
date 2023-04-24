@@ -7,7 +7,7 @@ return [
      */
 
     'auto_discover_types' => [
-        app_path('DataTransferObjects')
+        app_path('DataTransferObjects'),
     ],
 
     /*

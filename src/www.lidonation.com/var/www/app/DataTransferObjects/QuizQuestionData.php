@@ -7,7 +7,6 @@ use Spatie\LaravelData\Attributes\DataCollectionOf;
 use Spatie\LaravelData\Attributes\WithTransformer;
 use Spatie\LaravelData\Data;
 use Spatie\LaravelData\DataCollection;
-use Spatie\LaravelData\Optional;
 use Spatie\TypeScriptTransformer\Attributes\Optional as TypeScriptOptional;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
@@ -31,5 +30,6 @@ class QuizQuestionData extends Data
 
         #[DataCollectionOf(QuizQuestionAnswerData::class)]
         public ?DataCollection $answers
-    ) {}
+    ) {
+    }
 }

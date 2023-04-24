@@ -1,8 +1,8 @@
 <?php
 
+use App\Models\Snippet;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\DB;
-use App\Models\Snippet;
 use Illuminate\Support\Facades\File;
 
 return new class extends Migration
@@ -35,7 +35,6 @@ return new class extends Migration
             }
         }
     }
-    
 
     /**
      * Reverse the migrations.

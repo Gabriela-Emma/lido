@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 class AssessmentFactory extends Factory
 {
     protected $model = Assessment::class;
+
     /**
      * Define the model's default state.
      *
@@ -23,7 +24,7 @@ class AssessmentFactory extends Factory
             'user_id' => fn () => User::inRandomOrder()->first()->id,
             'title' => $this->faker->words(4, true),
             'content' => $this->faker->paragraphs(rand(5, 18), true),
-            'type' => 'App\Models\Comment', 
+            'type' => 'App\Models\Comment',
         ];
     }
 }

@@ -24,7 +24,7 @@ class LearningTopicFactory extends Factory
             'content' => $this->faker->paragraph(rand(5, 8), true),
             'difficulty' => $this->faker->randomElement(['beginner', 'beginner', 'advance', 'intermediate']),
             'status' => $this->faker->randomElement(['published', 'draft', 'published', 'published']),
-            'created_at' => $this->faker->dateTimeBetween('-1 year', 'now')
+            'created_at' => $this->faker->dateTimeBetween('-1 year', 'now'),
         ];
     }
 }

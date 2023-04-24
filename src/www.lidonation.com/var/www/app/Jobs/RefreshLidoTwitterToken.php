@@ -34,7 +34,7 @@ class RefreshLidoTwitterToken implements ShouldQueue
     public function handle(): void
     {
         $twitterAccessTokenSetting = Setting::where('key', 'twitter_lido_access_token')->first();
-        if (! $twitterAccessTokenSetting instanceof  Setting) {
+        if (! $twitterAccessTokenSetting instanceof Setting) {
             return;
         }
 

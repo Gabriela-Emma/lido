@@ -39,6 +39,6 @@ class AnswerResponseData extends Data
 
       #[TypeScriptOptional]
       public ?string $stake_address,
-  ) {}
+  ) {
+  }
 }
-

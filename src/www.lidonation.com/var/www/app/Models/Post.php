@@ -128,7 +128,7 @@ class Post extends Model implements HasMedia, Interfaces\IHasMetaData, Sitemapab
                     ->count();
             }
 
-            return (array)$counts;
+            return (array) $counts;
         });
     }
 
@@ -190,7 +190,7 @@ class Post extends Model implements HasMedia, Interfaces\IHasMetaData, Sitemapab
 
     public function getHashTagsAttribute()
     {
-        return $this->tags->concat($this->categories)->map(fn($tax) => Str::remove(' ', $tax->title));
+        return $this->tags->concat($this->categories)->map(fn ($tax) => Str::remove(' ', $tax->title));
     }
 
     public function getSummaryAttribute()
@@ -237,7 +237,7 @@ class Post extends Model implements HasMedia, Interfaces\IHasMetaData, Sitemapab
 
     public function link(): Attribute
     {
-        return Attribute::make(get: fn() => LaravelLocalization::localizeURL("/posts/{$this->slug}/"));
+        return Attribute::make(get: fn () => LaravelLocalization::localizeURL("/posts/{$this->slug}/"));
     }
 
     public function getRecordingLinkAttribute(): string|UrlGenerator|Application
@@ -294,7 +294,7 @@ class Post extends Model implements HasMedia, Interfaces\IHasMetaData, Sitemapab
     /**
      * Determine if the user owns the given team.
      *
-     * @param mixed $team
+     * @param  mixed  $team
      * @return bool
      */
     public function ownsTeam($team)
@@ -378,7 +378,6 @@ class Post extends Model implements HasMedia, Interfaces\IHasMetaData, Sitemapab
         return $query->whereNull('content_audio');
     }
 
-
     public function registerMediaConversions(Media $media = null): void
     {
         $this->addMediaConversion('thumbnail')
@@ -420,7 +419,7 @@ class Post extends Model implements HasMedia, Interfaces\IHasMetaData, Sitemapab
             'thumbnail' => $this->thumbnail_url,
             'content' => $content,
             'link' => LaravelLocalization::localizeURL("/posts/{$this->slug}/", app()->getLocale()),
-            'read_time' => (string)read_time($this->content),
+            'read_time' => (string) read_time($this->content),
             'author_name' => $this->author?->name,
             'author_gravatar' => $this->author?->gravatar,
         ]);
@@ -463,7 +462,7 @@ class Post extends Model implements HasMedia, Interfaces\IHasMetaData, Sitemapab
         static::addGlobalScope(new OrderByOrderScope);
         static::addGlobalScope(new OrderByPublishedDateScope);
         static::addGlobalScope(new OrderByDateScope);
-        if (!app()->runningInConsole()) {
+        if (! app()->runningInConsole()) {
             static::addGlobalScope(new LimitScope);
         }
     }

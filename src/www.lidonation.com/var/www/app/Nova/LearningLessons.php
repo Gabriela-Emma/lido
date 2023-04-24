@@ -2,16 +2,14 @@
 
 namespace App\Nova;
 
-use App\Models\EveryEpoch;
 use App\Models\LearningLesson;
-use App\Scopes\LimitScope;
 use App\Scopes\PublishedScope;
 use Illuminate\Database\Eloquent\Builder;
-use Laravel\Nova\Fields\MorphTo;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\BelongsToMany;
-use Laravel\Nova\Fields\Markdown;
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Markdown;
+use Laravel\Nova\Fields\MorphTo;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
@@ -21,8 +19,6 @@ class LearningLessons extends Resource
 {
     /**
      * The model the resource corresponds to.
-     *
-     * @var string
      */
     public static string $model = LearningLesson::class;
 
@@ -51,7 +47,7 @@ class LearningLessons extends Resource
      */
     public static $search = [
         'id',
-        'title'
+        'title',
     ];
 
     public static function indexQuery(NovaRequest $request, $query): Builder
@@ -63,9 +59,6 @@ class LearningLessons extends Resource
 
     /**
      * Get the fields displayed by the resource.
-     *
-     * @param NovaRequest $request
-     * @return array
      */
     public function fields(NovaRequest $request): array
     {
@@ -80,7 +73,7 @@ class LearningLessons extends Resource
             Select::make(__('Difficulty'), 'difficulty')->options([
                 'Beginner' => 'beginner',
                 'Intermediate' => 'intermediate',
-                'Advance' => 'advance'
+                'Advance' => 'advance',
             ])->required(),
             MorphTo::make('model')->types([
                 News::class,
@@ -99,7 +92,6 @@ class LearningLessons extends Resource
                 ->hideFromIndex()
                 ->searchable(),
 
-
             BelongsToMany::make(__('Quizzes'), 'quizzes', Quizzes::class)->fields(function () {
                 return [
                     Text::make('Type', 'model_type')->default(LearningLesson::class)->onlyOnForms(),
@@ -111,9 +103,6 @@ class LearningLessons extends Resource
 
     /**
      * Get the cards available for the request.
-     *
-     * @param NovaRequest $request
-     * @return array
      */
     public function cards(NovaRequest $request): array
     {
@@ -122,9 +111,6 @@ class LearningLessons extends Resource
 
     /**
      * Get the filters available for the resource.
-     *
-     * @param NovaRequest $request
-     * @return array
      */
     public function filters(NovaRequest $request): array
     {
@@ -133,9 +119,6 @@ class LearningLessons extends Resource
 
     /**
      * Get the lenses available for the resource.
-     *
-     * @param NovaRequest $request
-     * @return array
      */
     public function lenses(NovaRequest $request): array
     {
@@ -144,9 +127,6 @@ class LearningLessons extends Resource
 
     /**
      * Get the actions available for the resource.
-     *
-     * @param NovaRequest $request
-     * @return array
      */
     public function actions(NovaRequest $request): array
     {

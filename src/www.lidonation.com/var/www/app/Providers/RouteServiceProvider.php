@@ -50,7 +50,7 @@ class RouteServiceProvider extends ServiceProvider
 
             Route::middleware('web')
                 ->group(base_path('routes/web.php'));
-                
+
             Route::middleware('catalyst')
                 ->group(base_path('routes/catalyst.php'));
         });
@@ -71,6 +71,6 @@ class RouteServiceProvider extends ServiceProvider
         $id = Hashids::connection($model)->decode($routeKey)[0] ?? null;
         $modelInstance = resolve($model);
 
-        return  $modelInstance->findOrFail($id);
+        return $modelInstance->findOrFail($id);
     }
 }

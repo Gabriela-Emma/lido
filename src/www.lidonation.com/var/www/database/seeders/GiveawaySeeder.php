@@ -7,9 +7,9 @@ use App\Models\Reward;
 use App\Models\Rule;
 use App\Models\Translation;
 use App\Models\Tx;
-use Illuminate\Database\Seeder;
 use Faker\Generator as Faker;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Database\Seeder;
 
 class GiveawaySeeder extends Seeder
 {
@@ -17,22 +17,19 @@ class GiveawaySeeder extends Seeder
 
     /**
      * Run the database seeds.
-     *
-     * @param Faker $faker
-     * @return void
      */
     public function run(Faker $faker): void
     {
         Giveaway::factory(10)
             ->has(
                 Translation::factory()
-                    ->state(function (array $attributes, Giveaway $giv) use ($faker) {
+                    ->state(function (array $attributes, Giveaway $giv) {
                         return [
-                            "source_id" => $giv->id,
-                            "source_type" => $giv::class,
-                            "source_field" => 'title',
-                            "source_content" => $giv->title,
-                            "source_lang" => 'en',
+                            'source_id' => $giv->id,
+                            'source_type' => $giv::class,
+                            'source_field' => 'title',
+                            'source_content' => $giv->title,
+                            'source_lang' => 'en',
                         ];
                     }),
                 'translations'
@@ -40,8 +37,8 @@ class GiveawaySeeder extends Seeder
                 Rule::factory()
                     ->state(function (array $attributes, Giveaway $giv) {
                         return [
-                            "model_id" => $giv->id,
-                            "model_type" => $giv::class,
+                            'model_id' => $giv->id,
+                            'model_type' => $giv::class,
                         ];
                     }),
                 'rules'

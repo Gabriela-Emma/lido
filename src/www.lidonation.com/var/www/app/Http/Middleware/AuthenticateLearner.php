@@ -12,7 +12,7 @@ class AuthenticateLearner extends Authenticate
      * @param  Request  $request
      */
     protected function redirectTo($request): ?string
-    {  
+    {
         if (! $request->expectsJson()) {
             return route('earn.learn.login');
         }

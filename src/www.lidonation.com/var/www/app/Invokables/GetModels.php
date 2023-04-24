@@ -16,7 +16,7 @@ class GetModels
             ->map(function ($item) {
                 $path = $item->getRelativePathName();
                 if ($path === 'helpers.php') {
-                    return  false;
+                    return false;
                 }
 
                 return sprintf('\%s%s',

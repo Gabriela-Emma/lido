@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Factories\Sequence;
 class ReviewFactory extends PostFactory
 {
     protected $model = Review::class;
+
     /**
      * Configure the model factory.
      *

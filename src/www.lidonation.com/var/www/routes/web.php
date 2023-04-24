@@ -1,56 +1,55 @@
 <?php
 
+use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\CommentController;
+use App\Http\Controllers\ContactController;
+use App\Http\Controllers\Earn\LearnController;
 use App\Http\Controllers\Earn\LearningAnswerResponseController;
 use App\Http\Controllers\Earn\LearningLessonController;
 use App\Http\Controllers\Earn\LearningModulesController;
-use App\Models\Mint;
-use Inertia\Inertia;
-use App\Models\Review;
-use App\Models\Podcast;
-use App\Models\Proposal;
-use Illuminate\Http\Request;
-use Laravel\Fortify\Features;
-use App\Models\OnboardingContent;
-use Atymic\Twitter\Facade\Twitter;
-use App\Repositories\PostRepository;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Mail\Mailables\Content;
-use Illuminate\Support\Facades\Session;
-use App\Http\Controllers\PostController;
-use App\Http\Livewire\PoolTool\PoolTool;
+use App\Http\Controllers\GlobalSearchController;
+use App\Http\Controllers\ModelTranslationController;
+use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\OAuthController;
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\ReviewRatingImage;
 use App\Http\Controllers\RewardController;
 use App\Http\Controllers\StripeController;
-use App\Http\Controllers\CommentController;
-use App\Http\Controllers\ContactController;
-use App\Http\Controllers\ReviewRatingImage;
 use App\Http\Controllers\TaxonomyController;
-use App\Http\Controllers\Auth\AuthController;
-use App\Http\Controllers\Earn\LearnController;
-use App\Http\Controllers\NewsletterController;
-use App\Http\Livewire\Library\LibraryComponent;
-use App\Http\Livewire\Library\TagsComponent;
-use App\Http\Controllers\GlobalSearchController;
-use App\Http\Controllers\VerifyWalletController;
-use App\Http\Controllers\ModelTranslationController;
 use App\Http\Controllers\TwitterAttendanceController;
-use App\Http\Livewire\Delegators\DelegatorsComponent;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use App\Http\Livewire\Partners\PartnerDashboardComponent;
+use App\Http\Controllers\VerifyWalletController;
 use App\Http\Livewire\ContributeContent\ContributeContent;
-use Laravel\Fortify\Http\Controllers\VerifyEmailController;
-use Laravel\Fortify\Http\Controllers\RecoveryCodeController;
-use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
-use App\Http\Livewire\ContributeContent\ContributeTranslation;
-use Laravel\Fortify\Http\Controllers\RegisteredUserController;
-use App\Http\Livewire\ContributeContent\ContributeTranslations;
-use Laravel\Fortify\Http\Controllers\TwoFactorQrCodeController;
-use App\Http\Livewire\LidoCatalystProposals\LidoCatalystProposals;
-use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 use App\Http\Livewire\ContributeContent\ContributeRecordingComponent;
+use App\Http\Livewire\ContributeContent\ContributeTranslation;
+use App\Http\Livewire\ContributeContent\ContributeTranslations;
+use App\Http\Livewire\Delegators\DelegatorsComponent;
+use App\Http\Livewire\Library\LibraryComponent;
+use App\Http\Livewire\LidoCatalystProposals\LidoCatalystProposals;
+use App\Http\Livewire\Partners\PartnerDashboardComponent;
+use App\Http\Livewire\PoolTool\PoolTool;
+use App\Models\Mint;
+use App\Models\OnboardingContent;
+use App\Models\Podcast;
+use App\Models\Proposal;
+use App\Models\Review;
+use App\Repositories\PostRepository;
+use Atymic\Twitter\Facade\Twitter;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Request;
+use Illuminate\Mail\Mailables\Content;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Session;
+use Inertia\Inertia;
+use Laravel\Fortify\Features;
+use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 use Laravel\Fortify\Http\Controllers\ConfirmedPasswordStatusController;
 use Laravel\Fortify\Http\Controllers\EmailVerificationPromptController;
+use Laravel\Fortify\Http\Controllers\RecoveryCodeController;
+use Laravel\Fortify\Http\Controllers\RegisteredUserController;
 use Laravel\Fortify\Http\Controllers\TwoFactorAuthenticatedSessionController;
+use Laravel\Fortify\Http\Controllers\TwoFactorQrCodeController;
+use Laravel\Fortify\Http\Controllers\VerifyEmailController;
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 /*
 |--------------------------------------------------------------------------
@@ -64,7 +63,7 @@ use Laravel\Fortify\Http\Controllers\TwoFactorAuthenticatedSessionController;
 */
 
 // Redirects
-Route::get('/cardano-treasury-fund', fn() => redirect(LaravelLocalization::localizeURL('cardano-treasury')));
+Route::get('/cardano-treasury-fund', fn () => redirect(LaravelLocalization::localizeURL('cardano-treasury')));
 
 //Route::prefix(LaravelLocalization::setLocale())->middleware(['localeSessionRedirect', 'localizationRedirect', 'localeViewPath'])->group(function () {
 
@@ -114,7 +113,7 @@ Route::group(
     Route::get('/cardano-treasury', App\Http\Livewire\Catalyst\CardanoTreasuryComponent::class)
         ->name('cardano-treasury');
 
-    Route::prefix('/rewards')->as('rewards')->group(function(){
+    Route::prefix('/rewards')->as('rewards')->group(function () {
         Route::get('/', [RewardController::class, 'index']);
     });
 
@@ -122,9 +121,9 @@ Route::group(
         Route::get('/')->name('learn')->name('home');
 
         Route::get('/learn', [LearnController::class, 'index'])->name('learn');
-        Route::get('/learn/login', fn() => Inertia::render('Login'))
+        Route::get('/learn/login', fn () => Inertia::render('Login'))
             ->name('learn.login');
-        Route::get('/learn/register', fn() => Inertia::render('Register'))
+        Route::get('/learn/register', fn () => Inertia::render('Register'))
             ->name('learn.register');
 
         Route::middleware(['auth.learn', 'userLearner'])->prefix('/learn')->group(function () {
@@ -138,7 +137,8 @@ Route::group(
             Route::get('/answer-response/responses', [LearningAnswerResponseController::class, 'index']);
             Route::post('/answer-response/store/answer', [LearningAnswerResponseController::class, 'storeAnswer']);
         });
-        Route::middleware(['auth.catalyst'])->prefix('/my')->group(function () {});
+        Route::middleware(['auth.catalyst'])->prefix('/my')->group(function () {
+        });
     });
 
     Route::get('/lido-catalyst-proposals', LidoCatalystProposals::class)
@@ -150,14 +150,14 @@ Route::group(
         ->name('contributeAudio');
 
     Route::get('/contribute-content/translation', ContributeTranslations::class)
-        ->middleware(['auth:' . config('fortify.guard')])
+        ->middleware(['auth:'.config('fortify.guard')])
         ->name('contributeTranslations');
     Route::get('/contribute-content/translation/{translation}', ContributeTranslation::class)
-        ->middleware(['auth:' . config('fortify.guard')])
+        ->middleware(['auth:'.config('fortify.guard')])
         ->name('contributeTranslation');
 
     Route::get('/lido-minute/studio', ContributeTranslation::class)
-        ->middleware(['auth:' . config('fortify.guard')])
+        ->middleware(['auth:'.config('fortify.guard')])
         ->name('lidoMinuteStudio');
 
     // blog
@@ -200,7 +200,7 @@ Route::group(
     // Cardano Tools
     Route::get('/pool-tool', PoolTool::class)->name('pool-tool');
 
-    Route::get('/lido-blockchain-labs/nairobi', fn() => view('lido-blockchain-labs'))->name('lido-blockchain-labs.nairobi');
+    Route::get('/lido-blockchain-labs/nairobi', fn () => view('lido-blockchain-labs'))->name('lido-blockchain-labs.nairobi');
 
 //        Route::get('/explorer', function () {
 //            return view('explorer');
@@ -222,8 +222,8 @@ Route::group(
     })->name('proposal');
 
     // Archive News
-    Route::get('/categories/{category}/', TaxonomyController::class . '@category');
-    Route::get('/tags/{tag}/', TaxonomyController::class . '@tag');
+    Route::get('/categories/{category}/', TaxonomyController::class.'@category');
+    Route::get('/tags/{tag}/', TaxonomyController::class.'@tag');
 
     // Static Pages
     Route::get('/lido-staking-pool', function (PostRepository $posts) {
@@ -274,7 +274,8 @@ Route::group(
     Route::post('/delegators/missed-epoch', function (Request $request) {
         $account = $request->account;
         $refund = $request->refund;
-        Mail::to(config('app.system_user_email'))->send(new class($account, $refund) extends Illuminate\Mail\Mailable {
+        Mail::to(config('app.system_user_email'))->send(new class($account, $refund) extends Illuminate\Mail\Mailable
+        {
             public function __construct(public $account, public $refund)
             {
             }
@@ -320,16 +321,16 @@ Route::group(
     // Getting Started Pages
     Route::prefix('posts')->group(function () {
         Route::get('/what-is-cardano-and-how-does-it-use-the-blockchain',
-            fn() => redirect('/what-is-cardano-and-how-does-it-use-the-blockchain')
+            fn () => redirect('/what-is-cardano-and-how-does-it-use-the-blockchain')
         );
         Route::get('/what-is-the-point-of-buying-ada-and-staking-in-cardano',
-            fn() => redirect('/what-is-the-point-of-buying-ada-and-staking-in-cardano')
+            fn () => redirect('/what-is-the-point-of-buying-ada-and-staking-in-cardano')
         );
         Route::get('/how-to-buy-cardano-ada',
-            fn() => redirect('/how-to-buy-cardano-ada')
+            fn () => redirect('/how-to-buy-cardano-ada')
         );
         Route::get('/how-to-stake-ada',
-            fn() => redirect('/how-to-stake-ada')
+            fn () => redirect('/how-to-stake-ada')
         );
     });
     Route::get('/what-is-cardano-and-how-does-it-use-the-blockchain', function (PostRepository $posts) {
@@ -455,7 +456,7 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
         // Authentication...
         if ($enableViews) {// localize vendor routes
             Route::get('/login', [AuthenticatedSessionController::class, 'create'])
-                ->middleware(['guest:' . config('fortify.guard')])
+                ->middleware(['guest:'.config('fortify.guard')])
                 ->name('login');
         }
         $verificationLimiter = config('fortify.limiters.verification', '6,1');
@@ -477,7 +478,7 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
         if (Features::enabled(Features::registration())) {
             if ($enableViews) {
                 Route::get('/register', [RegisteredUserController::class, 'create'])
-                    ->middleware(['guest:' . config('fortify.guard')])
+                    ->middleware(['guest:'.config('fortify.guard')])
                     ->name('register');
             }
         }
@@ -486,37 +487,37 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
         if (Features::enabled(Features::emailVerification())) {
             if ($enableViews) {
                 Route::get('/email/verify', [EmailVerificationPromptController::class, '__invoke'])
-                    ->middleware(['auth:' . config('fortify.guard')])
+                    ->middleware(['auth:'.config('fortify.guard')])
                     ->name('verification.notice');
             }
 
             Route::get('/email/verify/{id}/{hash}', [VerifyEmailController::class, '__invoke'])
-                ->middleware(['auth:' . config('fortify.guard'), 'signed', 'throttle:' . $verificationLimiter])
+                ->middleware(['auth:'.config('fortify.guard'), 'signed', 'throttle:'.$verificationLimiter])
                 ->name('verification.verify');
         }
 
         // Password Confirmation...
         if ($enableViews) {
             Route::get('/user/confirm-password', [ConfirmablePasswordController::class, 'show'])
-                ->middleware(['auth:' . config('fortify.guard')])
+                ->middleware(['auth:'.config('fortify.guard')])
                 ->name('lido.password.confirm');
         }
 
         Route::get('/user/confirmed-password-status', [ConfirmedPasswordStatusController::class, 'show'])
-            ->middleware(['auth:' . config('fortify.guard')])
+            ->middleware(['auth:'.config('fortify.guard')])
             ->name('lido.password.confirmation');
 
         // Two-Factor Authentication...
         if (Features::enabled(Features::twoFactorAuthentication())) {
             if ($enableViews) {
                 Route::get('/two-factor-challenge', [TwoFactorAuthenticatedSessionController::class, 'create'])
-                    ->middleware(['guest:' . config('fortify.guard')])
+                    ->middleware(['guest:'.config('fortify.guard')])
                     ->name('lido.two-factor.login');
             }
 
             $twoFactorMiddleware = Features::optionEnabled(Features::twoFactorAuthentication(), 'confirmPassword')
-                ? ['auth:' . config('fortify.guard'), 'password.confirm']
-                : ['auth:' . config('fortify.guard')];
+                ? ['auth:'.config('fortify.guard'), 'password.confirm']
+                : ['auth:'.config('fortify.guard')];
 
             Route::get('/user/two-factor-qr-code', [TwoFactorQrCodeController::class, 'show'])
                 ->middleware($twoFactorMiddleware)
@@ -532,7 +533,7 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
 // localize post routes
 Route::prefix(LaravelLocalization::setLocale())->middleware(['localeSessionRedirect', 'localizationRedirect', 'localeViewPath'])->group(function () {
     //Route::post('/proposals/{proposal}/audio', PostController::class . '@storeAudio');
-    Route::post('/posts/{post}/audio', PostController::class . '@storeAudio');
+    Route::post('/posts/{post}/audio', PostController::class.'@storeAudio');
 });
 Route::post('/comment', [CommentController::class, 'store'])
     ->name('comment');
@@ -579,7 +580,7 @@ Route::get('twitter/callback', ['as' => 'twitter.callback', static function () {
         $twitter = Twitter::usingCredentials(session('twitter_oauth_request_token'), session('twitter_oauth_request_token_secret'));
         $token = $twitter->forApiV1()->getAccessToken(request('oauth_verifier'));
 
-        if (!isset($token['oauth_token_secret'])) {
+        if (! isset($token['oauth_token_secret'])) {
             return redirect()->route('governanceMarathon')->with('flash_error', 'We could not log you in on Twitter.');
         }
 
@@ -587,7 +588,7 @@ Route::get('twitter/callback', ['as' => 'twitter.callback', static function () {
         $twitter = Twitter::usingCredentials($token['oauth_token'], $token['oauth_token_secret']);
         $credentials = $twitter->forApiV1()->getCredentials();
 
-        if (is_object($credentials) && !isset($credentials->error)) {
+        if (is_object($credentials) && ! isset($credentials->error)) {
             // $credentials contains the Twitter user object with all the info about the user.
             // Add here your own user logic, store profiles, create new users on your tables...you name it!
             // Typically you'll want to store at least, user id, name and access tokens
@@ -624,7 +625,7 @@ Route::get('/language-options', [ModelTranslationController::class, 'getLanguage
 Route::get('/model-content', [ModelTranslationController::class, 'getContent']);
 Route::group(
     [
-        'middleware' => ['auth:' . config('fortify.guard')],
+        'middleware' => ['auth:'.config('fortify.guard')],
     ], function () {
     Route::post('/translate', [ModelTranslationController::class, 'makeTranslation']);
     Route::patch('/translation', [ModelTranslationController::class, 'updateTranslation']);

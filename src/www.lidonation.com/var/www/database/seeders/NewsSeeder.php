@@ -24,7 +24,7 @@ class NewsSeeder extends Seeder
                 'prologue' => null,
             ]);
 
-        News::factory(1)    
+        News::factory(1)
             ->create([
                 'epilogue' => null,
             ]);

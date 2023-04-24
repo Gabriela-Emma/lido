@@ -1,28 +1,29 @@
 <?php
 
-use App\Models\User;
-use App\Models\Reward;
+use App\Http\Controllers\Api\CatalystExplorer;
+use App\Http\Controllers\Api\Nfts\LidoMinuteNftsController;
+use App\Http\Controllers\Api\Partners\PartnersController;
+use App\Http\Controllers\Api\Phuffycoin\PhuffycoinController;
+use App\Http\Controllers\Delegators\DelegatorController;
+use App\Http\Controllers\Earn\LearnController;
+use App\Http\Controllers\GenerateMnemonicPhraseController;
+use App\Http\Controllers\ProjectCatalyst\CatalystProjectsController;
+use App\Http\Controllers\PromoController;
+use App\Http\Controllers\ProposalController;
+use App\Http\Controllers\QuestionResponseController;
+use App\Http\Controllers\RewardController;
+use App\Http\Controllers\SnippetController;
+use App\Models\Catalyst\Ccv4BallotChoice;
 use App\Models\EveryEpoch;
-use Illuminate\Support\Str;
+use App\Models\LearningLesson;
+use App\Models\Reward;
+use App\Models\User;
+use App\Services\CardanoBlockfrostService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\PromoController;
-use App\Models\Catalyst\Ccv4BallotChoice;
-use App\Http\Controllers\RewardController;
-use App\Services\CardanoBlockfrostService;
-use App\Http\Controllers\SnippetController;
-use App\Http\Controllers\ProposalController;
-use App\Http\Controllers\Api\CatalystExplorer;
-use App\Http\Controllers\Earn\LearnController;
-use App\Http\Controllers\QuestionResponseController;
-use App\Http\Controllers\Delegators\DelegatorController;
-use App\Http\Controllers\Api\Partners\PartnersController;
-use App\Http\Controllers\GenerateMnemonicPhraseController;
-use App\Http\Controllers\Api\Nfts\LidoMinuteNftsController;
-use App\Http\Controllers\Api\Phuffycoin\PhuffycoinController;
-use App\Http\Controllers\ProjectCatalyst\CatalystProjectsController;
+use Illuminate\Support\Str;
 
 /*
 |--------------------------------------------------------------------------
@@ -264,12 +265,18 @@ Route::prefix('catalyst-explorer')->as('catalystExplorerApi.')
     });
 
     Route::prefix('earn')->as('earnApi.')->group(function () {
-        Route::post('/learn/login',[LearnController::class, 'login']);
-        Route::post('/learn/register',[LearnController::class, 'register']);
+        Route::post('/learn/login', [LearnController::class, 'login']);
+        Route::post('/learn/register', [LearnController::class, 'register']);
         Route::middleware([
             'auth:sanctum',
         ])->prefix('/learn')->group(function () {
-            Route::get('next-lesson-at', fn() => auth()?->user()?->next_lesson_at);
+            Route::get('next-lesson-at', fn () => auth()?->user()?->next_lesson_at);
+            Route::get(
+                'rewards/sum',
+                fn () => auth()?->user()?->rewards()
+                    ->where('model_type', LearningLesson::class)
+                    ->sum('amount')
+            );
         });
 
     });

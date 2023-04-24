@@ -17,11 +17,11 @@ class AnswerResponse extends Model
         SoftDeletes;
 
     protected $with = [
-        'answer'
+        'answer',
     ];
 
     protected $appends = [
-        'correct'
+        'correct',
     ];
 
     /**
@@ -31,16 +31,16 @@ class AnswerResponse extends Model
      */
     protected $casts = [
         'updated_at' => 'datetime:M d y',
-        'published_at' => 'datetime:M d y'
+        'published_at' => 'datetime:M d y',
     ];
 
     protected $hidden = [
-        'deleted_at', 'updated_at'
+        'deleted_at', 'updated_at',
     ];
 
     public function correct(): Attribute
     {
-        return Attribute::make(get: fn() => $this?->answer?->correctness === 'correct');
+        return Attribute::make(get: fn () => $this?->answer?->correctness === 'correct');
     }
 
     public function quiz(): BelongsTo

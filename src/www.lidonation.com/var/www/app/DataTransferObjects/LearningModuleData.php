@@ -3,10 +3,10 @@
 namespace App\DataTransferObjects;
 
 use Spatie\LaravelData\Attributes\DataCollectionOf;
-use Spatie\TypeScriptTransformer\Attributes\TypeScript;
-use Spatie\TypeScriptTransformer\Attributes\Optional as TypeScriptOptional;
 use Spatie\LaravelData\Data;
 use Spatie\LaravelData\DataCollection;
+use Spatie\TypeScriptTransformer\Attributes\Optional as TypeScriptOptional;
+use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
 #[TypeScript]
 class LearningModuleData extends Data
@@ -33,5 +33,6 @@ class LearningModuleData extends Data
 
         #[DataCollectionOf(LearningTopicData::class)]
         public ?DataCollection $topics
-    ) {}
+    ) {
+    }
 }

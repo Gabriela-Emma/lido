@@ -37,7 +37,7 @@ class Metas extends Resource
      */
     public function fields(NovaRequest $request): array
     {
-        return  $this->metaDataFields();
+        return $this->metaDataFields();
     }
 
     /**

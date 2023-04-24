@@ -27,5 +27,6 @@ class QuizData extends Data implements Wireable
 
         #[DataCollectionOf(QuizQuestionData::class)]
         public ?DataCollection $questions
-    ) {}
+    ) {
+    }
 }

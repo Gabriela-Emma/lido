@@ -24,7 +24,7 @@ class LearningLessonData extends Data
 
         public ?int $order,
 
-        public null | bool | Optional $completed,
+        public null|bool|Optional $completed,
 
         #[TypeScriptOptional]
         #[MapOutputName('retryAt')]
@@ -49,7 +49,8 @@ class LearningLessonData extends Data
 
         #[TypeScriptOptional]
         public ?LearningTopicData $topic
-    ) {}
+    ) {
+    }
 
 //    public static function fromModel(LearningLesson $learningLesson): LearningLessonData
 //    {

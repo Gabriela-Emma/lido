@@ -63,7 +63,7 @@ class BookmarkItemPolicy
         }
         $inLastTenMins = now()->diffInMinutes($bookmarkItem->collection->created_at) < 10;
         $isOwner = $user->id === $bookmarkItem->collection->user_id;
-        
+
         return $inLastTenMins && $isOwner ? Response::allow() : Response::deny('You do not own this collection.');
     }
 

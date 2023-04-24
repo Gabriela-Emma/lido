@@ -8,8 +8,6 @@ class ArticlesSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     *
-     * @return void
      */
     public function run(): void
     {
@@ -17,7 +15,7 @@ class ArticlesSeeder extends Seeder
             PostSeeder::class,
             NewsSeeder::class,
             InsightsSeeder::class,
-            ReviewsSeeder::class
+            ReviewsSeeder::class,
         ]);
     }
 }

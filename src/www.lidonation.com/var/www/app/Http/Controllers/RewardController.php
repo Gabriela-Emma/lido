@@ -2,32 +2,31 @@
 
 namespace App\Http\Controllers;
 
-use Exception;
+use App\DataTransferObjects\RewardData;
+use App\Jobs\ProcessUserRewardsJob;
+use App\Models\Reward;
 use App\Models\Tx;
 use App\Models\User;
-use Inertia\Inertia;
-use App\Models\Reward;
-use App\Enums\RoleEnum;
 use App\Models\Withdrawal;
+use App\Services\CardanoWalletService;
+use Exception;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Http\Request;
-use Illuminate\Support\Fluent;
-use App\Jobs\ProcessUserRewardsJob;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
-use App\Services\CardanoWalletService;
-use App\DataTransferObjects\RewardData;
-use Illuminate\Auth\AuthenticationException;
+use Illuminate\Support\Fluent;
+use Inertia\Inertia;
 
 class RewardController extends Controller
 {
     public function index(Request $request)
     {
-        if($request->user()){
+        if ($request->user()) {
             $rewards = $this->queryNewRewards($request->user());
             $processedRewards = $this->processedRewards($request->user());
         }
 
-        return Inertia::render('Rewards',[
+        return Inertia::render('Rewards', [
             'rewards' => $request->user() ? RewardData::collection($rewards) : [null],
             'processedRewards' => $request->user() ? $processedRewards : [null],
             'crumbs' => [
@@ -184,7 +183,6 @@ class RewardController extends Controller
 
                         return $asset;
                     })->values() ?? [];
-
 
     }
 }

@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Assessor extends Model
 {
     use HasFactory;
-    
+
     public function assessments(): BelongsToMany
     {
         return $this->belongsToMany(Assessment::class, 'assessment_reviews_comments_assessors', 'assessment_id', 'assessor_id');

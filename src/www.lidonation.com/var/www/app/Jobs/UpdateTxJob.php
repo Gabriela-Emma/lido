@@ -28,8 +28,8 @@ class UpdateTxJob implements ShouldQueue
     public function __construct(
         protected string $hash,
         protected Wallet|string $paymentWalletOrSeed,
-        protected               $effect = null,
-        protected               $effectStatus = 'minting')
+        protected $effect = null,
+        protected $effectStatus = 'minting')
     {
     }
 

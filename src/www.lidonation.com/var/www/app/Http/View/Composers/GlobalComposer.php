@@ -17,7 +17,6 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Fluent;
-use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 class GlobalComposer

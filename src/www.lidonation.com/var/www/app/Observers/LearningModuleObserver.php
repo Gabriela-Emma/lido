@@ -10,9 +10,6 @@ class LearningModuleObserver
 {
     /**
      * Handle the User "created" event.
-     *
-     * @param LearningModule $learningModule
-     * @return void
      */
     public function creating(LearningModule $learningModule): void
     {
@@ -23,9 +20,6 @@ class LearningModuleObserver
 
     /**
      * Handle the User "created" event.
-     *
-     * @param LearningModule $learningModule
-     * @return void
      */
     public function forceDeleting(LearningModule $learningModule): void
     {
