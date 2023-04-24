@@ -1,7 +1,7 @@
 <template>
     <div>
         <button
-            @click="open=!open"
+            @click.prevent="open=!open"
             :aria-expanded="open"
             type="button"
             :class="[{'rounded-sm': !open},backgroundColor]"
@@ -35,7 +35,7 @@
             style="display: none;"
             class="absolute w-48 mt-3 bg-white rounded-bl-sm rounded-br-sm shadow-md overflow-visible z-40">
             <div class="py-1 flex items-center flex-col gap-2 divide-y divide-slate-800 divide-opacity-40" role="none">
-                <a href="#" @click.stop="(open = false); supports('gerowallet') ? enableWallet('gerowallet') : ''"
+                <a href="#" @click.prevent="(open = false); supports('gerowallet') ? enableWallet('gerowallet') : ''"
                     class="text-gray-700 block px-4 py-2 text-xl w-full inline-flex gap-2"
                     :class="{'hover:cursor-not-allowed' : !supports('gerowallet')}"
                     role="menuitem"
@@ -47,10 +47,11 @@
                     <span class="text-slate-300 text-xs" v-show="!supports('gerowallet')">Not Installed</span>
                 </a>
 
-                <a href="#" @click.stop="(open = false); supports('nami') ? enableWallet('nami') : ''"
+                <a href="#" @click.prevent="(open = false); supports('nami') ? enableWallet('nami') : ''"
                     class="text-gray-700 block px-4 py-2 text-xl w-full inline-flex gap-2"
                     :class="{'hover:cursor-not-allowed' : !supports('nami')}"
                     role="menuitem"
+                    preserve-scroll
                     :disabled="!supports('nami')"
                     tabindex="-1">
                     <img alt="nami wallet logo" class="w-6 h-auto"
@@ -59,9 +60,10 @@
                     <span class="text-slate-300 text-xs" v-show="!supports('nami')">Not Installed</span>
                 </a>
 
-                <a href="#" @click.stop="(open = false); supports('eternl') ? enableWallet('eternl') : ''"
+                <a href="#" @click.prevent="(open = false); supports('eternl') ? enableWallet('eternl') : ''"
                     class="text-gray-700 block px-4 py-2 text-xl w-full inline-flex gap-2"
                     role="menuitem"
+                    preserve-scroll
                     :class="{'hover:cursor-not-allowed' : !supports('eternl')}"
                     :disabled="!supports('eternl')"
                     tabindex="-1">
@@ -71,9 +73,10 @@
                     <span class="text-slate-300 text-xs" v-show="!supports('eternl')">Not Installed</span>
                 </a>
 
-                <a href="#" @click.stop="(open = false); supports('flint') ? enableWallet('flint') : ''"
+                <a href="#" @click.prevent="(open = false); supports('flint') ? enableWallet('flint') : ''"
                     class="text-gray-700 block px-4 py-2 text-xl w-full inline-flex gap-2"
                     role="menuitem"
+                    preserve-scroll
                     :class="{'hover:cursor-not-allowed' : !supports('flint')}"
                     :disabled="!supports('flint')"
                     tabindex="-1">
@@ -83,9 +86,10 @@
                     <span class="text-slate-300 text-xs" v-show="!supports('flint')">Not Installed</span>
                 </a>
 
-                <a href="#" @click.stop="(open = false); supports('typhoncip30') ? enableWallet('typhoncip30') : ''"
+                <a href="#" @click.prevent="(open = false); supports('typhoncip30') ? enableWallet('typhoncip30') : '' "
                     class="text-gray-700 block px-4 py-2 text-xl w-full inline-flex gap-2"
                     role="menuitem"
+                    preserve-scroll
                     :class="{'hover:cursor-not-allowed' : !supports('typhoncip30')}"
                     :disabled="!supports('typhoncip30')"
                     tabindex="-1">
