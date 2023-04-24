@@ -97,7 +97,9 @@ mix.ts('resources/js/catalyst-explorer.ts', 'public/js')
             topLevelAwait: true,
             layers: true
         },
-        plugins: []
+        plugins: [
+            // require('unplugin-vue-define-options/webpack')()
+        ]
     })
     .polyfill({
         enabled: true,

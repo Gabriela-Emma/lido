@@ -12,11 +12,12 @@ class HandleInertiaRequests extends Middleware
      *
      * @see https://inertiajs.com/server-side-setup#root-template
      *
-     * @var string
+     * @param Request $request
+     * @return string
      */
 //    protected $rootView = 'layouts/catalyst-explorer';
 
-    public function rootView(Request $request)
+    public function rootView(Request $request): string
     {
         return match ($request->segment(2)) {
             'catalyst-explorer' => 'layouts/catalyst-explorer',
