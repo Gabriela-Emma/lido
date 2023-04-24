@@ -24,12 +24,16 @@ class LearningLessonData extends Data
 
         public ?int $order,
 
-        public null | bool | Optional $completed,
+        public null|bool|Optional $completed,
 
         #[TypeScriptOptional]
         #[MapOutputName('retryAt')]
 //        #[WithCast(DateTimeInterfaceCast::class, type: CarbonImmutable::class)]
-        public $retry_at,
+        public mixed $retry_at,
+
+        #[TypeScriptOptional]
+        #[MapOutputName('nextLessonAt')]
+        public mixed $next_lesson_at,
 
         #[TypeScriptOptional]
         public ?string $link,
@@ -45,7 +49,8 @@ class LearningLessonData extends Data
 
         #[TypeScriptOptional]
         public ?LearningTopicData $topic
-    ) {}
+    ) {
+    }
 
 //    public static function fromModel(LearningLesson $learningLesson): LearningLessonData
 //    {

@@ -6,7 +6,8 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 use Vinkla\Hashids\Facades\Hashids;
 
-trait HashIdModel {
+trait HashIdModel
+{
     use HasLocaleUrl;
 
     public function hash(): Attribute

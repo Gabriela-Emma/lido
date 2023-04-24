@@ -1,28 +1,27 @@
 <?php
 
-use Inertia\Inertia;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AnonymousBookmarkController;
+use App\Http\Controllers\Api\CatalystExplorer\UserController;
+use App\Http\Controllers\ProjectCatalyst\CatalystAssessmentsController;
+use App\Http\Controllers\ProjectCatalyst\CatalystBookmarksController;
+use App\Http\Controllers\ProjectCatalyst\CatalystFundsController;
+use App\Http\Controllers\ProjectCatalyst\CatalystGroupsController;
+use App\Http\Controllers\ProjectCatalyst\CatalystMyBookmarksController;
+use App\Http\Controllers\ProjectCatalyst\CatalystMyDashboardController;
+use App\Http\Controllers\ProjectCatalyst\CatalystMyGroupsController;
+use App\Http\Controllers\ProjectCatalyst\CatalystMyProposalsController;
+use App\Http\Controllers\ProjectCatalyst\CatalystPeopleController;
+use App\Http\Controllers\ProjectCatalyst\CatalystProjectsController;
+use App\Http\Controllers\ProjectCatalyst\CatalystReportsController;
+use App\Http\Controllers\ProjectCatalyst\CatalystUserProfilesController;
+use App\Http\Controllers\ProjectCatalyst\CatalystVoterToolController;
+use App\Http\Controllers\ProjectCatalyst\ProposalSearchController;
 use App\Http\Livewire\Catalyst\CatalystFundComponent;
 use App\Http\Livewire\Catalyst\CatalystGroupsComponent;
 use App\Http\Livewire\Catalyst\CatalystProposersComponent;
+use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
-use App\Http\Controllers\Api\CatalystExplorer\UserController;
-use App\Http\Controllers\ProjectCatalyst\CatalystFundsController;
-use App\Http\Controllers\ProjectCatalyst\CatalystGroupsController;
-use App\Http\Controllers\ProjectCatalyst\CatalystPeopleController;
-use App\Http\Controllers\ProjectCatalyst\ProposalSearchController;
-use App\Http\Livewire\LidoCatalystProposals\LidoCatalystProposals;
-use App\Http\Controllers\ProjectCatalyst\CatalystReportsController;
-use App\Http\Controllers\ProjectCatalyst\CatalystMyGroupsController;
-use App\Http\Controllers\ProjectCatalyst\CatalystProjectsController;
-use App\Http\Controllers\ProjectCatalyst\CatalystBookmarksController;
-use App\Http\Controllers\ProjectCatalyst\CatalystVoterToolController;
-use App\Http\Controllers\ProjectCatalyst\CatalystAssessmentsController;
-use App\Http\Controllers\ProjectCatalyst\CatalystMyBookmarksController;
-use App\Http\Controllers\ProjectCatalyst\CatalystMyDashboardController;
-use App\Http\Controllers\ProjectCatalyst\CatalystMyProposalsController;
-use App\Http\Controllers\ProjectCatalyst\CatalystUserProfilesController;
 
  // Project Catalyst
 
@@ -32,7 +31,7 @@ use App\Http\Controllers\ProjectCatalyst\CatalystUserProfilesController;
         'middleware' => ['localeSessionRedirect', 'localizationRedirect', 'localeViewPath'],
     ], function () {
         Route::get('/catalyst-proposals', App\Http\Livewire\Catalyst\CatalystProposalsComponent::class);
-        Route::get('/catalyst-proposals/users/{catalystUser}', fn() => view('catalyst.user'));
+        Route::get('/catalyst-proposals/users/{catalystUser}', fn () => view('catalyst.user'));
         Route::prefix('project-catalyst')->as('projectCatalyst.')->group(function () {
             Route::get('/reports', App\Http\Livewire\Catalyst\CatalystReportsComponent::class)
                 ->name('reports');
@@ -61,7 +60,7 @@ use App\Http\Controllers\ProjectCatalyst\CatalystUserProfilesController;
             Route::get('/proposals', App\Http\Livewire\Catalyst\CatalystProposalsComponent::class)
                 ->name('proposals');
 
-            Route::get('/challenges/{fund}/', fn() => view('challenge'))
+            Route::get('/challenges/{fund}/', fn () => view('challenge'))
                 ->name('challenge');
 
             Route::get('/groups', CatalystGroupsComponent::class)
@@ -70,25 +69,25 @@ use App\Http\Controllers\ProjectCatalyst\CatalystUserProfilesController;
             Route::get('/users', CatalystProposersComponent::class)
                 ->name('users');
 
-            Route::get('/users/{catalystUser}', fn() => view('catalyst.user'))
+            Route::get('/users/{catalystUser}', fn () => view('catalyst.user'))
                 ->name('user');
 
-            Route::get('/group/{catalystGroup}', fn() => view('catalyst.group'))
+            Route::get('/group/{catalystGroup}', fn () => view('catalyst.group'))
                 ->name('group');
             });
             Route::prefix('/catalyst-explorer')->as('catalystExplorer.')->group(function () {
-        Route::get('/login', fn() => Inertia::render('Auth/Login'))
+        Route::get('/login', fn () => Inertia::render('Auth/Login'))
             ->name('login');
 
         Route::get('/auth/login', [UserController::class, 'utilityLogin']);
 
-        Route::get('/register', fn() => Inertia::render('Auth/Register'))
+        Route::get('/register', fn () => Inertia::render('Auth/Register'))
             ->name('register');
 
         Route::get('/reports', [CatalystReportsController::class, 'index'])
             ->name('reports');
 
-        Route::get('/charts', fn() => Inertia::render('Charts'))
+        Route::get('/charts', fn () => Inertia::render('Charts'))
             ->name('charts');
 
         Route::get('/assessments', [CatalystAssessmentsController::class, 'index'])
@@ -131,7 +130,8 @@ use App\Http\Controllers\ProjectCatalyst\CatalystUserProfilesController;
         Route::get('/export/bookmarked-proposals', [CatalystMyBookmarksController::class, 'exportBookmarks']);
         Route::delete('/bookmark-collection', [CatalystMyBookmarksController::class, 'deleteCollection']);
         Route::delete('/bookmark-item/{bookmarkItem:id}', [CatalystMyBookmarksController::class, 'deleteItem']);
-        Route::middleware(['auth.catalyst'])->prefix('/my')->group(function () {});
+        Route::middleware(['auth.catalyst'])->prefix('/my')->group(function () {
+        });
         Route::get('/cardano-treasury', App\Http\Livewire\Catalyst\CardanoTreasuryComponent::class)
         ->name('cardano-treasury');
 
@@ -180,4 +180,3 @@ Route::prefix('project-catalyst')->group(function () {
     Route::post('/bookmarks/share', [AnonymousBookmarkController::class, 'share']);
     Route::post('/proposals/search/bookmarks', [ProposalSearchController::class, 'bookmarks']);
 });
-

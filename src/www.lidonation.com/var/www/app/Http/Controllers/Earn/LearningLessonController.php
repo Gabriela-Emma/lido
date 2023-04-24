@@ -2,22 +2,19 @@
 
 namespace App\Http\Controllers\Earn;
 
-use Inertia\Inertia;
-use App\Models\Reward;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use App\Models\AnswerResponse;
-use App\Models\LearningLesson;
-use App\Http\Controllers\Controller;
-use App\DataTransferObjects\RewardData;
-use Webwizo\Shortcodes\Facades\Shortcode;
-use Spatie\LaravelMarkdown\MarkdownRenderer;
 use App\DataTransferObjects\AnswerResponseData;
 use App\DataTransferObjects\LearningLessonData;
+use App\DataTransferObjects\RewardData;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreLearningLessonRequest;
 use App\Http\Requests\UpdateLearningLessonRequest;
-use App\Models\LearningModule;
+use App\Models\AnswerResponse;
+use App\Models\LearningLesson;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Inertia\Inertia;
+use Spatie\LaravelMarkdown\MarkdownRenderer;
+use Webwizo\Shortcodes\Facades\Shortcode;
 
 class LearningLessonController extends Controller
 {
@@ -44,7 +41,6 @@ class LearningLessonController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param StoreLearningLessonRequest $request
      * @return void
      */
     public function store(StoreLearningLessonRequest $request)
@@ -55,14 +51,12 @@ class LearningLessonController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param Request $request
-     * @param LearningLesson $learningLesson
      * @return \Inertia\Response
      */
     public function show(Request $request, LearningLesson $learningLesson)
     {
-        
-        $learningLesson->load(['model', 'quizzes.questions.answers','topics', 'topics.learningModules']);
+
+        $learningLesson->load(['model', 'quizzes.questions.answers', 'topics', 'topics.learningModules']);
         if ($learningLesson->model?->content) {
             $learningLesson->model->content = app(MarkdownRenderer::class)
                 ->toHtml(
@@ -81,7 +75,7 @@ class LearningLessonController extends Controller
 
         $module = $learningLesson->firstModule;
 
-        $crumbs =  [
+        $crumbs = [
             ['name' => 'Learn & Earn', 'link' => route('earn.learn')],
             ['name' => 'Modules', 'link' => route('earn.learn.modules.index')],
             ['name' => $learningLesson->title, 'link' => $learningLesson->link],
@@ -94,18 +88,17 @@ class LearningLessonController extends Controller
         }
 
         return Inertia::render('LearningLesson', [
-            'userRetryLimit' => $request->user()->nextRetry ,
+            'nextLessonAt' => $request->user()?->next_lesson_at,
             'lesson' => LearningLessonData::from($learningLesson),
             'userResponses' => AnswerResponseData::collection($userResponses),
             'reward' => isset($reward) ? RewardData::from($reward) : null,
-            'crumbs' =>$crumbs,
+            'crumbs' => $crumbs,
         ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param LearningLesson $learningLesson
      * @return void
      */
     public function edit(LearningLesson $learningLesson)
@@ -116,8 +109,6 @@ class LearningLessonController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param UpdateLearningLessonRequest $request
-     * @param LearningLesson $learningLesson
      * @return Response
      */
     public function update(UpdateLearningLessonRequest $request, LearningLesson $learningLesson)
@@ -128,7 +119,6 @@ class LearningLessonController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param LearningLesson $learningLesson
      * @return Response
      */
     public function destroy(LearningLesson $learningLesson)

@@ -12,7 +12,7 @@ class OAuthController extends Controller
     {
         $oAuthUser = Socialite::driver('twitter-oauth-2')
             ->user();
-        if ($oAuthUser instanceof  \Laravel\Socialite\Two\User) {
+        if ($oAuthUser instanceof \Laravel\Socialite\Two\User) {
             $setting = Setting::where('key', 'twitter_lido_access_token')->first();
             if (! $setting instanceof Setting) {
                 $setting = new Setting;

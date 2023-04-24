@@ -42,7 +42,7 @@ class RecordCcv4BallotsJob implements ShouldQueue
                     'voter_id' => $ballot['voter_id'],
                     'ballot_choice' => -1,
                 ])->first();
-                if (! $ccv4Ballot instanceof  Ccv4BallotChoice) {
+                if (! $ccv4Ballot instanceof Ccv4BallotChoice) {
                     $ccv4Ballot = new Ccv4BallotChoice;
                     $ccv4Ballot->tx_hash = $this->tx;
                     $ccv4Ballot->block_time = $this->blockHeight;

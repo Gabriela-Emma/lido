@@ -20,7 +20,7 @@ return new class extends Migration
             DB::table('snippets')->insert([
                 'user_id' => 1,
                 'name' => $snippet->heading,
-                'content' => json_encode(['en' => $snippet->text_en, 'sw' => $snippet->text_sw,'es' => '',  'fr' => '', 'zh' => '', 'ja' => '']),
+                'content' => json_encode(['en' => $snippet->text_en, 'sw' => $snippet->text_sw, 'es' => '',  'fr' => '', 'zh' => '', 'ja' => '']),
                 'context' => 'global',
                 'type' => 'App\Models\Snippet',
                 'order' => 0,

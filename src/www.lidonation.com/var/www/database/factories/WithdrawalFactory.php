@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Models\Reward;
 use App\Models\Wallet;
 use App\Models\Withdrawal;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -13,13 +12,14 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 class WithdrawalFactory extends Factory
 {
     protected $model = Withdrawal::class;
+
     /**
      * Define the model's default state.
      *
      * @return array<string, mixed>
      */
     public function definition()
-    {   
+    {
         $wallet = Wallet::inRandomOrder()->first();
 
         return [

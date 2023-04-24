@@ -17,9 +17,6 @@ class QuizAttemptsPerDay extends Trend
 
     /**
      * Calculate the value of the metric.
-     *
-     * @param NovaRequest $request
-     * @return mixed
      */
     public function calculate(NovaRequest $request): mixed
     {
@@ -45,8 +42,6 @@ class QuizAttemptsPerDay extends Trend
 
     /**
      * Determine the amount of time the results of the metric should be cached.
-     *
-     * @return \DateTimeInterface|null
      */
     public function cacheFor(): ?\DateTimeInterface
     {
@@ -55,8 +50,6 @@ class QuizAttemptsPerDay extends Trend
 
     /**
      * Get the URI key for the metric.
-     *
-     * @return string
      */
     public function uriKey(): string
     {

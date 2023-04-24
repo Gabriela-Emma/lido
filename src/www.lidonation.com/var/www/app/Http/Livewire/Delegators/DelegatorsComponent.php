@@ -104,7 +104,7 @@ class DelegatorsComponent extends Component
             }
         }
 
-        if (! (is_array($this->everyEpochQuestion) && count($this->everyEpochQuestion)  > 0) && $this->everyEpochQuiz instanceof Quiz) {
+        if (! (is_array($this->everyEpochQuestion) && count($this->everyEpochQuestion) > 0) && $this->everyEpochQuiz instanceof Quiz) {
             $this->everyEpochQuestion =
                 (QuizData::from($this->everyEpochQuiz))?->questions?->first()?->toArray();
         }
@@ -157,7 +157,7 @@ class DelegatorsComponent extends Component
         }
 
         $reward = Reward::where(
-            'stake_address' , $user?->wallet_stake_address)
+            'stake_address', $user?->wallet_stake_address)
             ->where('model_id', $this->everyEpochQuiz?->giveaway->id)
             ->first();
         if (isset($reward->id)) {
@@ -208,7 +208,7 @@ class DelegatorsComponent extends Component
 
     protected function saveReward($reward, $user, $addMultiplier = true)
     {
-        if($reward ==null){
+        if ($reward == null) {
             return;
         }
         if (! $addMultiplier) {
@@ -231,7 +231,7 @@ class DelegatorsComponent extends Component
         $user = auth()->user();
 
         $reward = Reward::where(
-            'stake_address' , $user?->wallet_stake_address)
+            'stake_address', $user?->wallet_stake_address)
             ->where('model_id', $this->everyEpoch?->giveaway?->id)
             ->first();
 
@@ -239,6 +239,7 @@ class DelegatorsComponent extends Component
             $this->addError('Reward Already Claimed',
                 'You may only be rewarded once per quiz per epoch.'
             );
+
             return null;
         }
 
@@ -280,10 +281,10 @@ class DelegatorsComponent extends Component
 
                 //from image meta establish protocol and the uri
                 switch (gettype($imageMeta)) {
-                    case "string": //eg "https://cardano.org/favicon-32x32.png"  OR "ipfs://QmbQDvKJeo2NgGcGdnUiUFibTzuKNK5Uij7jzmK8ZccmWp"
+                    case 'string': //eg "https://cardano.org/favicon-32x32.png"  OR "ipfs://QmbQDvKJeo2NgGcGdnUiUFibTzuKNK5Uij7jzmK8ZccmWp"
                         [$imageProtocol, $imageUri] = explode('://', $imageMeta);
                         break;
-                    case "array": //eg ["ipfs://", "QmbQDvKJeo2NgGcGdnUiUFibTzuKNK5Uij7jzmK8ZccmWp"]
+                    case 'array': //eg ["ipfs://", "QmbQDvKJeo2NgGcGdnUiUFibTzuKNK5Uij7jzmK8ZccmWp"]
                         [$protocol, $uri] = $imageMeta;
                         $imageProtocol = str_replace('://', '', $protocol);
                         $imageUri = $uri;

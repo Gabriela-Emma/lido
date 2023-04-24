@@ -59,8 +59,6 @@ class Question extends Model implements HasMedia, IHasMetaData
 
     /**
      * The "booted" method of the model.
-     *
-     * @return void
      */
     protected static function booted(): void
     {

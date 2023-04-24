@@ -45,7 +45,8 @@ class ModelTranslationController extends Controller
                 'value' => $availableLocales['key'],
             ];
         }, $availableLocales);
-        return  json_encode(array_values($result));
+
+        return json_encode(array_values($result));
     }
 
     public function makeTranslation(Request $request, TranslationService $translationService)
@@ -64,6 +65,7 @@ class ModelTranslationController extends Controller
 
         $translationService = $translationService->translate($content, $request->targetLanguage, $request->sourceLanguage);
         $translationService->save($model, $this->field, false);
+
         return $translationService->get();
     }
 
@@ -76,6 +78,7 @@ class ModelTranslationController extends Controller
         $translation->save();
 
         $model->refresh();
+
         return $model->getTranslation('content', $request->targetLanguage, false);
     }
 
@@ -107,9 +110,10 @@ class ModelTranslationController extends Controller
     {
         $model = $this->matchModel($request->model_type, $request->model_id);
         $modelContent = $model->getTranslation($this->field, $request->sourceLocale, false);
-        if($modelContent == null){
+        if ($modelContent == null) {
             return $model->getTranslation($this->field, 'en', false);
         }
+
         return $modelContent;
     }
 }

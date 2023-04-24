@@ -2,9 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\Assessment;
-use App\Models\CatalystReport;
-use App\Models\Comment;
 use Illuminate\Database\Seeder;
 
 class CommentSeeder extends Seeder
@@ -16,6 +13,6 @@ class CommentSeeder extends Seeder
      */
     public function run()
     {
-     //   
+     //
     }
 }

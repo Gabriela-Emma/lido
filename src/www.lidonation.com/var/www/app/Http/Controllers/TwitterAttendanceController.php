@@ -30,7 +30,7 @@ class TwitterAttendanceController extends Controller
         $twitter_access_token = session('twitter_access_token');
         $event = TwitterEvent::first();
         $ta = TwitterAttendance::where('twitter_user_id', $twitter_access_token['user_id'])->first();
-        if (! $ta instanceof  TwitterAttendance) {
+        if (! $ta instanceof TwitterAttendance) {
             $ta = new TwitterAttendance;
         }
         $ta->stake_address = request()->get('stake_address');

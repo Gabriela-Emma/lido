@@ -3,7 +3,6 @@
 namespace App\Policies;
 
 use App\Enums\PermissionEnum;
-use App\Models\LearningLesson;
 use App\Models\LearningModule;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
@@ -58,10 +57,6 @@ class LearningModulesPolicy extends AppPolicy
 
     /**
      * Determine whether the user can permanently delete the model.
-     *
-     * @param User $user
-     * @param LearningModule $learningModule
-     * @return Response|bool
      */
     public function forceDelete(User $user, LearningModule $learningModule): Response|bool
     {

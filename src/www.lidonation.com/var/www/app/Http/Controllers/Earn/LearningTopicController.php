@@ -8,7 +8,6 @@ use App\Http\Requests\UpdateLearningTopicRequest;
 use App\Models\LearningTopic;
 use Illuminate\Http\Response;
 
-
 class LearningTopicController extends Controller
 {
     /**
@@ -34,7 +33,6 @@ class LearningTopicController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param StoreLearningTopicRequest $request
      * @return Response
      */
     public function store(StoreLearningTopicRequest $request)
@@ -45,7 +43,6 @@ class LearningTopicController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  LearningTopic  $learningTopic
      * @return Response
      */
     public function show(LearningTopic $learningTopic)
@@ -56,7 +53,6 @@ class LearningTopicController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  LearningTopic $learningTopic
      * @return Response
      */
     public function edit(LearningTopic $learningTopic)
@@ -67,8 +63,6 @@ class LearningTopicController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param UpdateLearningTopicRequest $request
-     * @param  LearningTopic $learningTopic
      * @return Response
      */
     public function update(UpdateLearningTopicRequest $request, LearningTopic $learningTopic)
@@ -79,7 +73,6 @@ class LearningTopicController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  LearningTopic $learningTopic
      * @return Response
      */
     public function destroy(LearningTopic $learningTopic)

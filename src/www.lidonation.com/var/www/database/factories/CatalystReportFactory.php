@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 class CatalystReportFactory extends Factory
 {
     protected $model = CatalystReport::class;
+
     /**
      * Define the model's default state.
      *

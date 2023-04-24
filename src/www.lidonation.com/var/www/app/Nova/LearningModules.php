@@ -38,9 +38,6 @@ class LearningModules extends Resource
 
     /**
      * Get the fields displayed by the resource.
-     *
-     * @param NovaRequest $request
-     * @return array
      */
     public function fields(NovaRequest $request): array
     {
@@ -54,7 +51,7 @@ class LearningModules extends Resource
             Select::make(__('Difficulty'), 'difficulty')->options([
                 'Beginner' => 'beginner',
                 'Intermediate' => 'intermediate',
-                'Advance' => 'advance'
+                'Advance' => 'advance',
             ])->required(),
             Select::make(__('Status'), 'status')->options([
                 'published' => 'Published',
@@ -73,7 +70,6 @@ class LearningModules extends Resource
     /**
      * Get the cards available for the request.
      *
-     * @param NovaRequest $request
      * @return array
      */
     public function cards(NovaRequest $request)
@@ -84,7 +80,6 @@ class LearningModules extends Resource
     /**
      * Get the filters available for the resource.
      *
-     * @param NovaRequest $request
      * @return array
      */
     public function filters(NovaRequest $request)
@@ -95,7 +90,6 @@ class LearningModules extends Resource
     /**
      * Get the lenses available for the resource.
      *
-     * @param NovaRequest $request
      * @return array
      */
     public function lenses(NovaRequest $request)
@@ -106,7 +100,6 @@ class LearningModules extends Resource
     /**
      * Get the actions available for the resource.
      *
-     * @param NovaRequest $request
      * @return array
      */
     public function actions(NovaRequest $request)

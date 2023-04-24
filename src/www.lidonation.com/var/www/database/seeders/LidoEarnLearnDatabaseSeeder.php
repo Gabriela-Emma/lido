@@ -16,7 +16,7 @@ class LidoEarnLearnDatabaseSeeder extends Seeder
         $this->call([
             LearningModulesSeeder::class,
             LearningTopicSeeder::class,
-            LearningLessonSeeder::class
+            LearningLessonSeeder::class,
         ]);
     }
 }

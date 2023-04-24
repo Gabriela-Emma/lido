@@ -19,13 +19,12 @@ class MintSeeder extends Seeder
             ->has(MintTx::factory()
                 ->count(random_int(2, 5))
                 ->state(function (array $attributes, Mint $mint) {
-                    return [ 
-                        "mint_id" => $mint->id,
-                        "user_id" => $mint->user_id,
-                        "status" => $mint->status,
+                    return [
+                        'mint_id' => $mint->id,
+                        'user_id' => $mint->user_id,
+                        'status' => $mint->status,
                     ];
-                })
-            , "txs")
+                }), 'txs')
             ->create();
     }
 }

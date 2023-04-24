@@ -26,7 +26,7 @@ class QuestionFactory extends Factory
             'content' => $this->faker->sentence(rand(2, 3), true),
             'type' => $this->faker->randomElement(['general', 'technical', 'dev']),
             'status' => $this->faker->randomElement(['published', 'draft', 'published', 'pending', 'published']),
-            'created_at' => $this->faker->dateTimeBetween('-1 year', 'now')
+            'created_at' => $this->faker->dateTimeBetween('-1 year', 'now'),
         ];
     }
 }

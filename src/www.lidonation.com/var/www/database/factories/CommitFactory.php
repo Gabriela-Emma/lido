@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 class CommitFactory extends Factory
 {
     protected $model = Commit::class;
+
     /**
      * Define the model's default state.
      *
@@ -23,8 +24,8 @@ class CommitFactory extends Factory
         return [
             'repo_id' => Repo::inRandomOrder()->first()->id,
             'content' => $this->faker->sentences(rand(2, 3), true),
-            'hash' => 'ksshsjskskks' . $this->faker->word(),   
-            'author' => User::inRandomOrder()->first()->id,    
+            'hash' => 'ksshsjskskks'.$this->faker->word(),
+            'author' => User::inRandomOrder()->first()->id,
         ];
     }
 }

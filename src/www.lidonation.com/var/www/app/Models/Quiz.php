@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\DataTransferObjects\LearningTopicData;
 use App\DataTransferObjects\QuizQuestionData;
 use App\Models\Interfaces\IHasMetaData;
 use App\Models\Traits\HasAuthor;
@@ -37,7 +36,7 @@ class Quiz extends Model implements HasMedia, IHasMetaData
     protected $casts = [
         'updated_at' => 'datetime:M d y',
         'published_at' => 'datetime:M d y',
-        'questions' => DataCollection::class . ':' . QuizQuestionData::class,
+        'questions' => DataCollection::class.':'.QuizQuestionData::class,
     ];
 
     public array $translatable = [
@@ -64,6 +63,11 @@ class Quiz extends Model implements HasMedia, IHasMetaData
     public function everyEpochs(): MorphToMany
     {
         return $this->morphedByMany(EveryEpoch::class, 'model', 'model_quiz', 'quiz_id', 'model_id');
+    }
+
+    public function lessons(): MorphToMany
+    {
+        return $this->morphedByMany(LearningLesson::class, 'model', 'model_quiz', 'quiz_id', 'model_id');
     }
 
     public function posts(): MorphToMany

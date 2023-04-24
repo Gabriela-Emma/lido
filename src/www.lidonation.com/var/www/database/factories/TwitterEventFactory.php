@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 class TwitterEventFactory extends Factory
 {
     protected $model = TwitterEvent::class;
+
     /**
      * Define the model's default state.
      *

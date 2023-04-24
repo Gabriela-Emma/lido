@@ -21,6 +21,7 @@ class LearningLessonFactory extends Factory
     public function definition()
     {
         $model = $this->faker->randomElement([Insight::class, News::class]);
+
         return [
             'user_id' => fn () => User::inRandomOrder()->first()->id,
             'model_id' => $model::inRandomOrder()->first()->id,
@@ -31,7 +32,7 @@ class LearningLessonFactory extends Factory
             'order' => $this->faker->numberBetween(1, 14),
             'length' => $this->faker->numberBetween(240, 900),
             'status' => $this->faker->randomElement(['published', 'draft', 'published', 'published']),
-            'created_at' => $this->faker->dateTimeBetween('-1 year', 'now')
+            'created_at' => $this->faker->dateTimeBetween('-1 year', 'now'),
         ];
     }
 }

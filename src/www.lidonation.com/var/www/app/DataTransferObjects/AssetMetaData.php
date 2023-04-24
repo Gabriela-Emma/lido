@@ -11,5 +11,6 @@ class AssetMetaData extends Data
     public function __construct(
         public ?string $logo = null,
         public ?string $ticker = null,
-    ) {}
+    ) {
+    }
 }

@@ -15,7 +15,7 @@ trait HasHashIds
      */
     public function scopeByHash(Builder $query, ?string $hash): Builder
     {
-        return  $query->where('id', Hashids::connection(static::class)->decode($hash));
+        return $query->where('id', Hashids::connection(static::class)->decode($hash));
     }
 
     /**
@@ -23,14 +23,13 @@ trait HasHashIds
      */
     public function scopeWhereHashIn(Builder $query, array $hashes = []): Builder
     {
-        return  $query->whereIn('id', collect($hashes)->map(fn ($hash) => Hashids::connection(static::class)->decode($hash)));
+        return $query->whereIn('id', collect($hashes)->map(fn ($hash) => Hashids::connection(static::class)->decode($hash)));
     }
 
     /**
      * Get Model by hash.
      *
      *
-     * @param $hash
      * @return HasHashIds|BookmarkCollection|LearningLesson|null
      */
     public static function byHash($hash): ?self
@@ -50,7 +49,6 @@ trait HasHashIds
      * Get model by hash or fail.
      *
      *
-     * @param $hash
      * @return HasHashIds|BookmarkCollection|LearningLesson
      *
      * @throw \Illuminate\Database\Eloquent\ModelNotFoundException

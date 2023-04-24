@@ -27,7 +27,8 @@ class ModelData extends Data implements Wireable
 
         #[TypeScriptOptional]
         public ?string $link
-    ) {}
+    ) {
+    }
 
     public static function fromModel(Model $model)
     {

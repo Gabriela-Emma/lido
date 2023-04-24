@@ -22,7 +22,6 @@ class BookmarkCollection extends Model
 
     protected $appends = ['link', 'hash'];
 
-
     public function bookmarkCollectionId(): Attribute
     {
         return Attribute::make(

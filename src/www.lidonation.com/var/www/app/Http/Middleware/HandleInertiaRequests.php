@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\LearningLesson;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -11,12 +12,10 @@ class HandleInertiaRequests extends Middleware
      * The root template that's loaded on the first page visit.
      *
      * @see https://inertiajs.com/server-side-setup#root-template
-     *
-     * @var string
      */
 //    protected $rootView = 'layouts/catalyst-explorer';
 
-    public function rootView(Request $request)
+    public function rootView(Request $request): string
     {
         return match ($request->segment(2)) {
             'catalyst-explorer' => 'layouts/catalyst-explorer',
@@ -45,6 +44,9 @@ class HandleInertiaRequests extends Middleware
     {
         $user = $request->user()
             ?->only('id', 'name', 'email', 'bio', 'git', 'discord', 'linkedin', 'telegram', 'twitter');
+//        dd(
+//            $request->user()?->rewards()->where('model_type', LearningLesson::class)->sum('amount')
+//        );
         if ($user) {
             $user['roles'] = $request->user()?->getRoleNames();
         }

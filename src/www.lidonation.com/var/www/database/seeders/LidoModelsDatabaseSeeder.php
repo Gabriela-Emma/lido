@@ -37,7 +37,7 @@ class LidoModelsDatabaseSeeder extends Seeder
             EventSeeder::class,
             TwitterEventSeeder::class,
 
-//            LidoMinuteSeeder::class,
+            //            LidoMinuteSeeder::class,
 
             PodcastSeeder::class,
             NftSeeder::class,

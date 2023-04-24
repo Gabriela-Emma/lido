@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 class BookmarkCollectionFactory extends Factory
 {
     protected $model = BookmarkCollection::class;
+
     /**
      * Define the model's default state.
      *

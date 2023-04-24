@@ -9,7 +9,6 @@ use App\Models\Post;
 use App\Models\Review;
 use App\Models\Tag;
 use App\Repositories\PostRepository;
-use App\Scopes\LimitScope;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;

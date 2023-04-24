@@ -25,7 +25,7 @@ class SnippetController extends Controller
 
         foreach ($snippets as $snippet) {
             $snippetContent = json_decode($snippet->content);
-    
+
             foreach ($snippetContent as $key => $value) {
                 if (strlen($value) > 1) {
                     $snippetsRes[$key][$snippet->name] = $value;
@@ -36,7 +36,7 @@ class SnippetController extends Controller
         // confirm all the locale keys are available in final$snippetsRes
         foreach ($availableLocales as $locale) {
             $established_locales = array_keys($snippetsRes);
-            
+
             if (! in_array($locale, $established_locales)) {
                 $snippetsRes[$locale] = new stdClass;
             }

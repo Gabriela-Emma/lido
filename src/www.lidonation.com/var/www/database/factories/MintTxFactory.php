@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 class MintTxFactory extends Factory
 {
     protected $model = MintTx::class;
+
     /**
      * Define the model's default state.
      *
@@ -16,13 +17,13 @@ class MintTxFactory extends Factory
     public function definition()
     {
         return [
-            "score" => $this->generateRandomFloat(0, 100),
-            "distribution_percent" => 14.6,
-            "amount" => random_int(99, 999)
+            'score' => $this->generateRandomFloat(0, 100),
+            'distribution_percent' => 14.6,
+            'amount' => random_int(99, 999),
         ];
     }
 
-    function generateRandomFloat(float $minValue, float $maxValue): float
+    public function generateRandomFloat(float $minValue, float $maxValue): float
     {
         return $minValue + mt_rand() / mt_getrandmax() * ($maxValue - $minValue);
     }

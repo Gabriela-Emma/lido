@@ -2,23 +2,22 @@
 
 namespace App\Exports;
 
-use Illuminate\Support\Str;
 use App\Models\BookmarkItem;
+use Illuminate\Contracts\Translation\HasLocalePreference;
 use Illuminate\Database\Eloquent\Builder;
-use Maatwebsite\Excel\Concerns\FromQuery;
+use Illuminate\Support\Str;
 use Maatwebsite\Excel\Concerns\Exportable;
-use Maatwebsite\Excel\Concerns\WithMapping;
-use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use Maatwebsite\Excel\Concerns\WithColumnFormatting;
+use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\WithProperties;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
-use Maatwebsite\Excel\Concerns\WithColumnFormatting;
-use Illuminate\Contracts\Translation\HasLocalePreference;
 
 class BookmarksCollectionExport implements FromQuery, WithHeadings, WithMapping, HasLocalePreference, WithColumnFormatting, ShouldAutoSize, WithProperties
 {
     use Exportable;
-
 
     public function __construct(
         protected $bookmarkedItems,
@@ -32,9 +31,10 @@ class BookmarksCollectionExport implements FromQuery, WithHeadings, WithMapping,
     }
 
     public function map($row): array
-    {   
+    {
         $modelResource = 'App\\Http\\Resources\\'.Str::studly(Str::singular(class_basename($row->model))).'Resource';
         $modelDetail = new $modelResource($row->model);
+
         return [
             $modelDetail->title,
             $modelDetail->fund->parent->title,

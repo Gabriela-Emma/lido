@@ -15,6 +15,6 @@ class ExternalPostSeeder extends PostSeeder
     {
         ExternalPost::factory(8)
             ->create();
-            
+
     }
 }

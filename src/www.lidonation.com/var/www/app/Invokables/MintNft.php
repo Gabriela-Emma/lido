@@ -23,7 +23,7 @@ class MintNft
 
         $nft = $tx->model;
 
-        if (! $nft instanceof  Nft) {
+        if (! $nft instanceof Nft) {
             throw new ModelNotFoundException('Related NFT not found.');
         }
 

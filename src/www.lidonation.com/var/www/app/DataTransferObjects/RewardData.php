@@ -3,8 +3,8 @@
 namespace App\DataTransferObjects;
 
 use Spatie\LaravelData\Data;
-use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 use Spatie\TypeScriptTransformer\Attributes\Optional as TypeScriptOptional;
+use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
 #[TypeScript]
 class RewardData extends Data
@@ -25,7 +25,6 @@ class RewardData extends Data
       public ?AssetDetailsData $asset_details,
 
       public ?string $memo
-    ) {}
+    ) {
+    }
 }
-
-

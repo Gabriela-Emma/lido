@@ -38,7 +38,7 @@ class LearningModule extends Model
 
     public array $translatable = [
         'title',
-        'content'
+        'content',
     ];
 
     public function length(): Attribute
@@ -82,5 +82,4 @@ class LearningModule extends Model
     {
         return 'slug';
     }
-
 }

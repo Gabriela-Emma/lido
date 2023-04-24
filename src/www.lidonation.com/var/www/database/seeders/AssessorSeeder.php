@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\Assessment;
 use App\Models\Assessor;
 use Illuminate\Database\Seeder;
 

@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 class TxFactory extends Factory
 {
     protected $model = Tx::class;
+
     /**
      * Define the model's default state.
      *
@@ -19,7 +20,7 @@ class TxFactory extends Factory
     public function definition()
     {
         return [
-            'hash' => '8d99113bc46a65d41765bf57f7e0e6ce1b4771308930ab73a2d6f86e' . $this->faker->unique()->word(8),
+            'hash' => '8d99113bc46a65d41765bf57f7e0e6ce1b4771308930ab73a2d6f86e'.$this->faker->unique()->word(8),
             'status' => $this->faker->randomElement(['published', 'draft', 'minting', 'minted', 'published', 'blacklisted']),
         ];
     }

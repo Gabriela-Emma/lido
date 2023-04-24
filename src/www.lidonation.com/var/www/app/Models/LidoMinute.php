@@ -3,8 +3,6 @@
 namespace App\Models;
 
 use App\Traits\SearchableLocale;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\Routing\UrlGenerator;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Collection;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;

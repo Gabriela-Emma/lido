@@ -30,8 +30,8 @@ class PostFactory extends Factory
         $content = $this->faker->paragraphs(rand(5, 18), true);
         $link = Link::inRandomOrder()->first();
         $linkShortcode = '[link model_type="link" id='.$link->id.']'.$link->label.'[/link]';
-        
-        $content = substr_replace( $content, $linkShortcode, 100, 0);
+
+        $content = substr_replace($content, $linkShortcode, 100, 0);
 
         $this->faker->addProvider(new PicsumPhotosProvider($this->faker));
 
@@ -41,7 +41,7 @@ class PostFactory extends Factory
             'title' => $this->faker->words(4, true),
             'meta_title' => $this->faker->words(5, true),
             'status' => $this->faker->randomElement(['published', 'draft', 'published', 'pending', 'published']),
-            'slug' => fn(array $attributes) => Str::slug($attributes['title']),
+            'slug' => fn (array $attributes) => Str::slug($attributes['title']),
             'prologue' => $this->faker->paragraphs(rand(2, 3), true),
             'excerpt' => $this->faker->sentences(rand(2, 5), true),
             'social_excerpt' => $this->faker->sentences(rand(2, 3), true),
@@ -86,12 +86,11 @@ class PostFactory extends Factory
         $post->addMediaFromBase64($this->getImageUrl())
             ->toMediaCollection('hero');
 
-
         Reaction::factory()
             ->count(random_int(2, 3))
-            ->create([ 
-                "model_type" => $this->model,
-                "model_id" => $post->id
+            ->create([
+                'model_type' => $this->model,
+                'model_id' => $post->id,
             ]);
 
         $post->links()->attach(

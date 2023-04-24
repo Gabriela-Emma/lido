@@ -47,18 +47,18 @@ class LearningLesson extends Model
 
     protected $casts = [
         'quiz' => QuizData::class,
-        'quizzes' => DataCollection::class . ':' . QuizQuestionData::class
+        'quizzes' => DataCollection::class.':'.QuizQuestionData::class,
     ];
 
     public array $translatable = [
         'title',
-        'content'
+        'content',
     ];
 
     public function slug(): Attribute
     {
         return Attribute::make(
-            get: fn() => $this->hash,
+            get: fn () => $this->hash,
         );
     }
 
@@ -69,12 +69,12 @@ class LearningLesson extends Model
                 $answerResponse = AnswerResponse::where('quiz_id', $this->quiz?->id)
                     ->where('user_id', auth()->user()->getAuthIdentifier())
                     ->first();
-                
-                if (!$answerResponse instanceof AnswerResponse) {
+
+                if (! $answerResponse instanceof AnswerResponse) {
                     return false;
                 } else {
                     return true;
-                };
+                }
             },
         );
     }
@@ -87,16 +87,16 @@ class LearningLesson extends Model
                 // get the latest response for lesson related by current user
                 $lastResponse = AnswerResponse::where('quiz_id', $this->quiz?->id)
                     ->where('user_id', auth()->user()->getAuthIdentifier())
-                    ->whereDate('created_at', "=", Carbon::now()->startOfDay())
+                    ->whereDate('created_at', '=', Carbon::now()->startOfDay())
                     ->orderBy('created_at', 'desc')
                     ->first();
 
                 $q = AnswerResponse::where('quiz_id', $this->quiz?->id)
                     ->where('user_id', auth()->user()->getAuthIdentifier())
-                    ->whereDate('created_at', "=", Carbon::now()->startOfDay())
+                    ->whereDate('created_at', '=', Carbon::now()->startOfDay())
                     ->orderBy('created_at', 'desc');
 
-                if (!$lastResponse instanceof AnswerResponse) {
+                if (! $lastResponse instanceof AnswerResponse) {
                     return null;
                 }
 
@@ -106,7 +106,11 @@ class LearningLesson extends Model
                 }
 
                 return Carbon::make(
-                    $lastResponse->created_at->setTimezone('Africa/Nairobi')->tomorrow('Africa/Nairobi')->toAtomString()
+                    $lastResponse
+                        ->created_at
+                        ->setTimezone('Africa/Nairobi')
+                        ->tomorrow('Africa/Nairobi')
+                        ->toAtomString()
                 )->utc()->toAtomString();
 
 //                return Carbon::make($lastResponse->created_at->timezone('Africa/Nairobi')->tomorrow())
@@ -119,7 +123,7 @@ class LearningLesson extends Model
     public function quiz(): Attribute
     {
         return Attribute::make(
-            get: fn() => $this->quizzes()?->first(),
+            get: fn () => $this->quizzes()?->first(),
         );
     }
 
@@ -134,6 +138,7 @@ class LearningLesson extends Model
                     ->omitSeconds(false)
                     ->timeOnly()
                     ->toArray();
+
                 return ($parts['minutes'] * 60) + $parts['seconds'];
             },
         );
@@ -155,20 +160,19 @@ class LearningLesson extends Model
         return $this->belongsToManyThrough(LearningModule::class, LearningTopic::class);
     }
 
-    public function firstModule() : Attribute
+    public function firstModule(): Attribute
     {
         return Attribute::make(
-            get:function (){
+            get: function () {
                 $modulesCount = $this->topics->first()->learningModules()->count();
 
-                if($modulesCount==0 || $modulesCount>1)
-                {
+                if ($modulesCount == 0 || $modulesCount > 1) {
                     return null;
                 }
 
-                return  $this->topics()->first()->learningModules()->first();
+                return $this->topics()->first()->learningModules()->first();
             }
-        ); 
+        );
     }
 
     public function quizzes(): MorphToMany

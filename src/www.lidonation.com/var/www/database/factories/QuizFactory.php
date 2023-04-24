@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 class QuizFactory extends Factory
 {
     protected $model = Quiz::class;
+
     /**
      * Define the model's default state.
      *
@@ -39,7 +40,7 @@ class QuizFactory extends Factory
 
             // $quiz->addMediaFromBase64($this->getImageUrl())
             //     ->toMediaCollection('hero');
-            
+
             $quiz->questions()->attach(
                 Question::inRandomOrder()
                     ->limit(random_int(1, 2))

@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers\Earn;
 
-use Inertia\Inertia;
-use Inertia\Response;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Fluent;
+use Inertia\Inertia;
+use Inertia\Response;
 use Spatie\Permission\Models\Role;
 
 class LearnController extends Controller
@@ -25,7 +25,7 @@ class LearnController extends Controller
         return Inertia::render('Learn')->with([
             'crumbs' => [
                 ['name' => 'Learn & Earn', 'link' => route('earn.learn')],
-            ]
+            ],
         ]);
     }
 
@@ -54,10 +54,12 @@ class LearnController extends Controller
 
         if ($user instanceof User) {
             $this->updateUser($request, $user);
+
             return back()->withInput();
         }
 
         $this->saveNewUser($request);
+
         return to_route('earn.learn.login');
     }
 
@@ -70,7 +72,7 @@ class LearnController extends Controller
             'wallet_address' => 'nullable',
             'wallet_stake_address' => 'nullable',
             'twitter' => 'nullable|handle',
-            'telegram' => 'nullable|handle'
+            'telegram' => 'nullable|handle',
 
         ]));
 
@@ -95,7 +97,7 @@ class LearnController extends Controller
             'wallet_address' => 'nullable',
             'wallet_stake_address' => 'nullable',
             'twitter' => 'nullable|bail|handle',
-            'telegram' => 'nullable|bail|handle'
+            'telegram' => 'nullable|bail|handle',
 
         ]));
 
@@ -104,7 +106,7 @@ class LearnController extends Controller
         $user->wallet_address = $validated->wallet_address ?? $user->wallet_address;
         $user->wallet_stake_address = $validated->wallet_stake_address ?? $user->wallet_stake_address;
         $user->twitter = $validated->twitter ?? $user->twitter;
-        $user->telegram = $validated->telegram  ?? $user->telegram;
+        $user->telegram = $validated->telegram ?? $user->telegram;
         $user->save();
 
         $this->assignLearnerRole($user);
@@ -117,7 +119,7 @@ class LearnController extends Controller
             ->insert([
                 'role_id' => $role->id,
                 'model_type' => 'App\Models\User',
-                'model_id' => $user->id
+                'model_id' => $user->id,
             ]);
     }
 }

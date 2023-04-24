@@ -2,18 +2,17 @@
 
 namespace App\Http\Controllers\ProjectCatalyst;
 
-use Inertia\Inertia;
-use App\Models\Proposal;
-use App\Models\BookmarkItem;
-use Illuminate\Http\Request;
-use Illuminate\Support\Fluent;
-use App\Models\BookmarkCollection;
-use App\Http\Controllers\Controller;
-use App\Services\ExportModelService;
 use App\Exports\BookmarksCollectionExport;
+use App\Http\Controllers\Controller;
 use App\Http\Resources\BookmarkCollectionResource;
-use Google\Service\ShoppingContent\Resource\Collections;
+use App\Models\BookmarkCollection;
+use App\Models\BookmarkItem;
+use App\Models\Proposal;
+use App\Services\ExportModelService;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Fluent;
+use Inertia\Inertia;
 
 class CatalystMyBookmarksController extends Controller
 {
@@ -22,7 +21,7 @@ class CatalystMyBookmarksController extends Controller
     public function createItem(Request $request)
     {
         DB::beginTransaction();
-        try{
+        try {
         $modelTable = $request->get('model_type');
         $data = new Fluent($request->validate([
             'model_id' => "required|exists:{$modelTable},id",
@@ -59,17 +58,17 @@ class CatalystMyBookmarksController extends Controller
         $item->content = $data->content;
         $item->link = $data->link;
         $item->save();
-         
+
         DB::commit();
 
         $collection->refresh();
         $collection->load(['items']);
 
         return new BookmarkCollectionResource($collection);
-    }catch(\Exception $e) {
+    } catch (\Exception $e) {
         DB::rollback();
-        throw new \Exception("There was an Error");
-    }    
+        throw new \Exception('There was an Error');
+    }
 }
 
     public function createCollection()
@@ -100,8 +99,8 @@ class CatalystMyBookmarksController extends Controller
         return $collections;
     }
 
-    function deleteCollection(Request $request)
-    {   
+    public function deleteCollection(Request $request)
+    {
         $collection = BookmarkCollection::byHash($request->hash);
         $this->authorize('delete', $collection);
 
@@ -109,18 +108,18 @@ class CatalystMyBookmarksController extends Controller
         $collection->delete();
     }
 
-    function deleteItem( BookmarkItem $bookmarkItem)
-    {   
+    public function deleteItem(BookmarkItem $bookmarkItem)
+    {
         $this->authorize('delete', $bookmarkItem);
         $bookmarkItem->delete();
     }
 
-    public function exportBookmarks(Request $request) 
+    public function exportBookmarks(Request $request)
     {
 
         $collection = BookmarkCollection::byHash($request->hash);
-        $itemsArr=$collection->items()->pluck('id');
-        
-        return (new ExportModelService)->export(new BookmarksCollectionExport($itemsArr, $request->locale), $collection->title."-proposals.csv");
+        $itemsArr = $collection->items()->pluck('id');
+
+        return (new ExportModelService)->export(new BookmarksCollectionExport($itemsArr, $request->locale), $collection->title.'-proposals.csv');
     }
 }

@@ -3,7 +3,6 @@
 namespace Database\Factories;
 
 use App\Models\CatalystGroup;
-use App\Models\CatalystUser;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -25,7 +24,7 @@ class CatalystGroupFactory extends Factory
             'name' => $this->faker->words(rand(1, 3), true),
             'slug' => fn (array $attributes) => Str::slug($attributes['name']),
             'bio' => $this->faker->sentence(10, 15),
-            'status' =>$this->faker->randomElement(['published', 'draft', 'published', 'pending', 'published']),
+            'status' => $this->faker->randomElement(['published', 'draft', 'published', 'pending', 'published']),
         ];
     }
 }

@@ -3,34 +3,34 @@
 namespace App\Models;
 
 use App\Casts\NRTFilter;
-use Illuminate\Support\Str;
-use Laravel\Jetstream\HasTeams;
-use Spatie\Image\Manipulations;
-use App\Models\Traits\HasPromos;
-use Laravel\Sanctum\HasApiTokens;
-use Spatie\MediaLibrary\HasMedia;
+use App\Models\Traits\HasCatalystProfiles;
 use App\Models\Traits\HasGravatar;
 use App\Models\Traits\HasMetaData;
-use Illuminate\Support\Collection;
-use Laravel\Jetstream\HasProfilePhoto;
-use Spatie\Permission\Traits\HasRoles;
-use Illuminate\Notifications\Notifiable;
+use App\Models\Traits\HasPromos;
 use GuzzleHttp\Exception\GuzzleException;
-use App\Models\Traits\HasCatalystProfiles;
-use Spatie\MediaLibrary\InteractsWithMedia;
-use Laravel\Fortify\TwoFactorAuthenticatable;
 use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
+use Laravel\Fortify\TwoFactorAuthenticatable;
+use Laravel\Jetstream\HasProfilePhoto;
+use Laravel\Jetstream\HasTeams;
+use Laravel\Sanctum\HasApiTokens;
 use Spatie\Comments\Models\Concerns\InteractsWithComments;
 use Spatie\Comments\Models\Concerns\Interfaces\CanComment;
+use Spatie\Image\Manipulations;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Spatie\Permission\Traits\HasRoles;
+use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 use Staudenmeir\EloquentJsonRelations\HasJsonRelationships;
-use Illuminate\Support\Carbon;
 
 class User extends Authenticatable implements HasMedia, Interfaces\IHasMetaData, CanComment, CanResetPassword
 {
@@ -192,13 +192,31 @@ class User extends Authenticatable implements HasMedia, Interfaces\IHasMetaData,
         return "https://www.gravatar.com/avatar/$hash?d=identicon&r=r";
     }
 
-    public function nextRetry(): Attribute
+    public function nextLessonAt(): Attribute
     {
         return Attribute::make(
-            get: function() {
-                return Carbon::make($this?->quiz_responses()?->latest()?->first()?->created_at
-                    ->setTimezone('Africa/Nairobi')->tomorrow('Africa/Nairobi')->toAtomString()
+            get: function () {
+                $responses = $this->quiz_responses->where('created_at', '>=', Carbon::now()->subDay());
+                $latestResponse = null;
+
+                foreach ($responses as $response) {
+                    $quiz = $response->quiz;
+
+                    if ($quiz->lessons()->exists()) {
+                        if (! $latestResponse || $response->created_at > $latestResponse->created_at) {
+                            $latestResponse = $response;
+                        }
+                    }
+                }
+
+                return Carbon::make(
+                    $latestResponse
+                        ?->created_at
+                        ->setTimezone('Africa/Nairobi')
+                        ->tomorrow('Africa/Nairobi')
+                        ->toAtomString()
                 )?->utc()?->toAtomString();
+
             }
         );
     }

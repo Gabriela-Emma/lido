@@ -8,8 +8,8 @@ use App\Models\Insight;
 use App\Models\News;
 use App\Models\Quiz;
 use App\Models\Translation;
-use Illuminate\Database\Seeder;
 use Faker\Generator as Faker;
+use Illuminate\Database\Seeder;
 
 class QuizSeeder extends Seeder
 {
@@ -26,13 +26,13 @@ class QuizSeeder extends Seeder
             ->hasAttached(Giveaway::factory()->count(1), ['model_type' => Quiz::class], 'giveaways')
             ->has(
                 Translation::factory()
-                    ->state(function (array $attributes, Quiz $quiz) use ($faker) {
-                        return [ 
-                            "source_id" => $quiz->id,
-                            "source_type" => $quiz::class,
-                            "source_field" => 'content',
-                            "source_content" => $quiz->content,
-                            "source_lang" => 'en',
+                    ->state(function (array $attributes, Quiz $quiz) {
+                        return [
+                            'source_id' => $quiz->id,
+                            'source_type' => $quiz::class,
+                            'source_field' => 'content',
+                            'source_content' => $quiz->content,
+                            'source_lang' => 'en',
                         ];
                     }),
                 'translations'

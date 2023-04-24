@@ -77,7 +77,7 @@ class AnswerResponses extends Resource
         return [
             ID::make(__('ID'), 'id')->sortable(),
 
-            Boolean::make('Correct', fn () => $this->correct ),
+            Boolean::make('Correct', fn () => $this->correct),
 
             BelongsTo::make(__('Answer'), 'answer', QuestionAnswers::class)
                 ->searchable(),
@@ -115,7 +115,7 @@ class AnswerResponses extends Resource
     {
         return [
             new QuizAnswerResponseVeracity,
-            new QuizAttemptsPerDay
+            new QuizAttemptsPerDay,
         ];
     }
 

@@ -13,22 +13,19 @@ class LearningModulesSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     *
-     * @param Faker $faker
-     * @return void
      */
     public function run(Faker $faker): void
     {
         LearningModule::factory(3)
             ->has(
                 Translation::factory()
-                    ->state(function (array $attributes, LearningModule $lm) use ($faker) {
+                    ->state(function (array $attributes, LearningModule $lm) {
                         return [
-                            "source_id" => $lm->id,
-                            "source_type" => $lm::class,
-                            "source_field" => 'title',
-                            "source_content" => $lm->title,
-                            "source_lang" => 'en',
+                            'source_id' => $lm->id,
+                            'source_type' => $lm::class,
+                            'source_field' => 'title',
+                            'source_content' => $lm->title,
+                            'source_lang' => 'en',
                         ];
                     }),
                 'translations'

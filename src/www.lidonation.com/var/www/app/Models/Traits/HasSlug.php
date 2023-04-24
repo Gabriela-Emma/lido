@@ -2,8 +2,6 @@
 
 namespace App\Models\Traits;
 
-use App\Models\Rule;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
 
 trait HasSlug

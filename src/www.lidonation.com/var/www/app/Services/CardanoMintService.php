@@ -20,8 +20,8 @@ class CardanoMintService
         protected User $user,
         protected ?string $policyScript = '/data/mint/policies/lido-auth/policy.script',
         protected ?string $metaData = null,
-        protected                      $graphic = null,
-        protected                      $tokenName = null,
+        protected $graphic = null,
+        protected $tokenName = null,
         protected ?string $networkArgument = null,
         protected ?string $paymentAddress = null,
         protected ?string $policyId = null

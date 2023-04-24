@@ -2,21 +2,22 @@
 
 namespace App\Http\Controllers\Earn;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\AnswerResponse;
-use Illuminate\Support\Carbon;
 use App\Models\LearningLesson;
 use App\Models\QuestionAnswer;
 use App\Models\Reward;
 use App\Models\User;
 use App\Repositories\AdaRepository;
+use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 class LearningAnswerResponseController extends Controller
 {
     public function __construct(protected AdaRepository $adaRepository)
-    {}
+    {
+    }
 
     public function index(Request $request)
     {
@@ -29,9 +30,9 @@ class LearningAnswerResponseController extends Controller
     {
         // get user previous response
         // if user has previous response from today, return
-        $lastResponse = AnswerResponse::where('quiz_id',  $request->input('quiz_id'))
+        $lastResponse = AnswerResponse::where('quiz_id', $request->input('quiz_id'))
             ->where('user_id', auth()->user()->getAuthIdentifier())
-            ->whereDate('created_at', "=", Carbon::now()->tz('Africa/Nairobi')->startOfDay())
+            ->whereDate('created_at', '=', Carbon::now()->tz('Africa/Nairobi')->startOfDay())
             ->orderBy('created_at', 'desc')
             ->first();
 
@@ -51,7 +52,7 @@ class LearningAnswerResponseController extends Controller
         //fetch quote
         $rewardAmount = -1;
         $quote = $this->adaRepository->quote()?->price ?? null;
-        if($quote) {
+        if ($quote) {
             $rewardAmount = 1 / $quote;
         }
 
@@ -62,7 +63,7 @@ class LearningAnswerResponseController extends Controller
 
     protected function issueReward($request, $questionAnswerId, $rewardAmount): void
     {
-        //find user and update wallet details incase of changes from the browser. 
+        //find user and update wallet details incase of changes from the browser.
         $user = User::find(Auth::id());
         $user->wallet_address = $request->input('wallet_address') ?? $user->wallet_address;
         $user->wallet_stake_address = $request->input('wallet_stake_address') ?? $user->wallet_stake_address;
@@ -73,7 +74,7 @@ class LearningAnswerResponseController extends Controller
 
         //extract rewards count from learningLesson
         $learningLesson = LearningLesson::byHash($request->input('learningLessonHash'));
-        $rewardsCount =  Reward::where('user_id', Auth::id())
+        $rewardsCount = Reward::where('user_id', Auth::id())
                         ->where('model_type', LearningLesson::class)
                         ->where('model_id', $learningLesson->id)
                         ->count();

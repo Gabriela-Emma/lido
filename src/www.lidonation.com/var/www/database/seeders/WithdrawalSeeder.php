@@ -11,6 +11,7 @@ use Illuminate\Database\Seeder;
 class WithdrawalSeeder extends Seeder
 {
     use WithoutModelEvents;
+
     /**
      * Run the database seeds.
      *
