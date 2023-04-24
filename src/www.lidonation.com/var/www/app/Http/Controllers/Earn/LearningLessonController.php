@@ -3,8 +3,6 @@
 namespace App\Http\Controllers\Earn;
 
 use Inertia\Inertia;
-use App\Models\Reward;
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Models\AnswerResponse;
@@ -17,7 +15,6 @@ use App\DataTransferObjects\AnswerResponseData;
 use App\DataTransferObjects\LearningLessonData;
 use App\Http\Requests\StoreLearningLessonRequest;
 use App\Http\Requests\UpdateLearningLessonRequest;
-use App\Models\LearningModule;
 
 class LearningLessonController extends Controller
 {
@@ -94,7 +91,7 @@ class LearningLessonController extends Controller
         }
 
         return Inertia::render('LearningLesson', [
-            'userRetryLimit' => $request->user()->nextRetry ,
+            'userRetryLimit' => $request->user()?->nextRetry ,
             'lesson' => LearningLessonData::from($learningLesson),
             'userResponses' => AnswerResponseData::collection($userResponses),
             'reward' => isset($reward) ? RewardData::from($reward) : null,

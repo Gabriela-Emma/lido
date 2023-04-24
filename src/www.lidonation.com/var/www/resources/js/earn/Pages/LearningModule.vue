@@ -30,6 +30,12 @@
                                 {{ learningModule.title }}
                             </h2>
                         </div>
+                        <div class="font-bold flex justify-center lg:text-lg xl:text-xl mt-3" v-if="nextQuestionRetry">
+                            <countdown :time="nextQuestionRetry" v-slot="{ days, hours, minutes, seconds }">
+                                <span class="text-slate-500"> You reached your daily limit, try again in: </span>
+                                {{ hours }} hours, {{ minutes }} minutes, {{ seconds }} seconds.
+                            </countdown>
+                        </div>
                         <dl class="mt-10 divide-y divide-slate-900/10">
                             <Disclosure as="div" v-for="(topic, index) in learningModule.topics" :key="topic.id"
                                         :default-open="index === 0"
@@ -101,12 +107,14 @@
 </template>
 
 <script lang="ts" setup>
-import {inject, ref} from "vue";
+import {computed, inject, ref} from "vue";
 import {Link} from '@inertiajs/vue3';
 import {MinusSmallIcon, PlusSmallIcon, ClockIcon, CheckBadgeIcon, NewspaperIcon} from '@heroicons/vue/24/outline';
 import {CheckBadgeIcon as CheckBadgeIconSolid} from '@heroicons/vue/24/solid';
 import {Disclosure, DisclosureButton, DisclosurePanel} from "@headlessui/vue";
 import LearningModuleData = App.DataTransferObjects.LearningModuleData;
+import Countdown from "../../global/Shared/Components/countdown";
+import moment from "moment-timezone";
 
 const $utils: any = inject('$utils');
 
@@ -114,9 +122,26 @@ const props = withDefaults(
     defineProps<{
         locale: string,
         module: LearningModuleData
+        userRetryLimit:string,
     }>(), {});
 
 let learningModule = ref(props.module);
+
+const currentDay = moment()
+            .tz('Africa/Nairobi')
+            .day();
+
+let nextQuestionRetry = computed(() => {
+    const nextRetry = moment(props.userRetryLimit).tz('Africa/Nairobi')
+            .diff(
+                moment().tz('Africa/Nairobi')
+            );
+    if (nextRetry > 0){
+       return nextRetry
+    }
+    return null
+});
+
 </script>
 
 
