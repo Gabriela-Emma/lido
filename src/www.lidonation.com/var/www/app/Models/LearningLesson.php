@@ -69,7 +69,7 @@ class LearningLesson extends Model
                 $answerResponse = AnswerResponse::where('quiz_id', $this->quiz?->id)
                     ->where('user_id', auth()->user()->getAuthIdentifier())
                     ->first();
-                
+
                 if (!$answerResponse instanceof AnswerResponse) {
                     return false;
                 } else {
@@ -106,7 +106,11 @@ class LearningLesson extends Model
                 }
 
                 return Carbon::make(
-                    $lastResponse->created_at->setTimezone('Africa/Nairobi')->tomorrow('Africa/Nairobi')->toAtomString()
+                    $lastResponse
+                        ->created_at
+                        ->setTimezone('Africa/Nairobi')
+                        ->tomorrow('Africa/Nairobi')
+                        ->toAtomString()
                 )->utc()->toAtomString();
 
 //                return Carbon::make($lastResponse->created_at->timezone('Africa/Nairobi')->tomorrow())
@@ -168,7 +172,7 @@ class LearningLesson extends Model
 
                 return  $this->topics()->first()->learningModules()->first();
             }
-        ); 
+        );
     }
 
     public function quizzes(): MorphToMany

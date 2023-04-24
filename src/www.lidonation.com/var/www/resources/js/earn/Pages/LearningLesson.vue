@@ -153,7 +153,7 @@ export default {
                                 {{ question?.title }}
                             </p>
                         </div>
-                        <ul class="mt-4 space-y-2 relative h-full w-full ">
+                        <ul class="mt-4 space-y-2 relative h-full w-full" v-if="!nextLessonAt">
                             <template v-for="answer in question.answers" :key="answer.id">
                                 <li class="mt-2 transition hover:ease-in delay-150">
                                     <label class="cursor-pointer w-full">
@@ -181,17 +181,17 @@ export default {
                             </template>
                         </ul>
                         <div class="font-bold flex justify-center lg:text-lg xl:text-xl"
-                             v-if="nextQuestionRetry && !retryAt">
-                            <countdown :time="nextQuestionRetry" v-slot="{ days, hours, minutes, seconds }">
-                                <span class="text-slate-200"> You reached your daily limit try again in: </span>
+                             v-if="nextLessonAt && !retryAt">
+                            <countdown :time="nextLessonAt" v-slot="{ days, hours, minutes, seconds }">
+                                <span class="text-slate-300 block mb-2 text-center">Quiz will unlock in: </span>
                                 {{ hours }} hours, {{ minutes }} minutes, {{ seconds }} seconds.
                             </countdown>
                         </div>
                         <div class="mt-8 flex justify-end">
                             <button type="button"
                                     @click.prevent="submit"
-                                    :disabled="!!userLatestResponse || nextQuestionRetry > 0 "
-                                    :class="{ 'opacity-25 cursor-not-allowed': !!userLatestResponse || nextQuestionRetry > 0 }"
+                                    :disabled="!!userLatestResponse || nextLessonAt > 0 "
+                                    :class="{ 'opacity-25 cursor-not-allowed': !!userLatestResponse || nextLessonAt > 0 }"
                                     class="rounded-sm bg-labs-black px-3.5 py-2.5 text-md xl:text-xl font-semibold text-white shadow-sm hover:bg-labs-black/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-labs-black ml-auto">
                                 Submit
                             </button>
@@ -226,7 +226,7 @@ const props = withDefaults(
     defineProps<{
         locale: string,
         userResponses: AnswerResponseData[],
-        userRetryLimit: string,
+        nextLessonAt: string,
         lesson: LearningLessonData
         reward: RewardData
     }>(), {});
@@ -244,13 +244,13 @@ const currentDay = moment()
     .tz('Africa/Nairobi')
     .day();
 
-let nextQuestionRetry = computed(() => {
-    const nextRetry = moment(props.userRetryLimit).tz('Africa/Nairobi')
+let nextLessonAt = computed(() => {
+    const nextLesson = moment(props.nextLessonAt).tz('Africa/Nairobi')
         .diff(
             moment().tz('Africa/Nairobi')
         );
-    if (nextRetry > 0) {
-        return nextRetry
+    if (nextLesson > 0) {
+        return nextLesson
     }
     return null
 });

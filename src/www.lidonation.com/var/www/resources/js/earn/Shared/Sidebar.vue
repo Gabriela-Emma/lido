@@ -3,17 +3,38 @@
         <div class="border-labs-red border-8 rounded-sm p-4">
             <div class="text-sm">Welcome back <b class="text-labs-black">{{ user.name }}</b></div>
         </div>
+        <div class="border-labs-red bg-labs-red text-white border-8 rounded-sm p-4">
+            <countdown :time="nextLessonAt" v-slot="{ days, hours, minutes, seconds }">
+                <span class="text-slate-50 text-sm text-center">Next starts in:</span>
+                <div class="font-bold">
+                    {{ hours }} hours, {{ minutes }} {{ $t('minutes') }}, {{ seconds }} seconds.
+                </div>
+            </countdown>
+        </div>
     </section>
 </template>
-<script lang="ts" setup>
-import {computed, inject} from "vue";
+<script setup lang="ts">
+import {computed, inject, ref} from "vue";
 import {usePage} from "@inertiajs/vue3";
 import User from "../../global/Shared/Models/user";
+import Countdown from "../../global/Shared/Components/countdown";
+import moment from "moment-timezone";
+import axios from "axios";
 
 const user = computed(() => usePage().props.user as User);
 const $utils: any = inject('$utils');
-const props = withDefaults(
-    defineProps<{
-        locale?: string
-    }>(), {});
+
+let nextLessonAt = ref(null);
+axios.get(`${usePage().props.base_url}/api/earn/learn/next-lesson-at`)
+    .then((res) => {
+        if (res && res?.data) {
+            const nextRetry = moment(res?.data).tz('Africa/Nairobi')
+                .diff(
+                    moment().tz('Africa/Nairobi')
+                );
+            if (nextRetry > 0) {
+                nextLessonAt.value = nextRetry;
+            }
+        }
+    });
 </script>

@@ -56,6 +56,7 @@ class LearningModulesController extends Controller
      * Display the specified resource.
      *
      * @param LearningModule $learningModule
+     * @param Request|null $request
      * @return \Inertia\Response
      */
     public function show(LearningModule $learningModule, ?Request $request)
@@ -63,7 +64,6 @@ class LearningModulesController extends Controller
         $learningModule->load('topics');
         $learningModule->loadCount(['topics']);
         return Inertia::render('LearningModule', [
-            'userRetryLimit' => $request->user()->nextRetry,
             'module' => $learningModule->load('topics.lessons'),
             'crumbs' => [
                 ['name' => 'Learn & Earn', 'link' => route('earn.learn')],

@@ -266,10 +266,12 @@ Route::prefix('catalyst-explorer')->as('catalystExplorerApi.')
     Route::prefix('earn')->as('earnApi.')->group(function () {
         Route::post('/learn/login',[LearnController::class, 'login']);
         Route::post('/learn/register',[LearnController::class, 'register']);
-        Route::middleware([])->prefix('/learn')->group(function () {
-            // 
+        Route::middleware([
+            'auth:sanctum',
+        ])->prefix('/learn')->group(function () {
+            Route::get('next-lesson-at', fn() => auth()?->user()?->next_lesson_at);
         });
-  
+
     });
 
 Route::prefix('promos')->as('promos')

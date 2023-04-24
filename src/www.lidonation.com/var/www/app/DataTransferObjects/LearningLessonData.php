@@ -29,7 +29,11 @@ class LearningLessonData extends Data
         #[TypeScriptOptional]
         #[MapOutputName('retryAt')]
 //        #[WithCast(DateTimeInterfaceCast::class, type: CarbonImmutable::class)]
-        public $retry_at,
+        public mixed $retry_at,
+
+        #[TypeScriptOptional]
+        #[MapOutputName('nextLessonAt')]
+        public mixed $next_lesson_at,
 
         #[TypeScriptOptional]
         public ?string $link,

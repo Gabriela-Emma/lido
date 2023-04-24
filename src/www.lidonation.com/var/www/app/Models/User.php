@@ -192,11 +192,10 @@ class User extends Authenticatable implements HasMedia, Interfaces\IHasMetaData,
         return "https://www.gravatar.com/avatar/$hash?d=identicon&r=r";
     }
 
-    public function nextRetry(): Attribute
+    public function nextLessonAt(): Attribute
     {
         return Attribute::make(
             get: function() {
-
                 $responses = $this->quiz_responses->where('created_at', '>=', Carbon::now()->subDay());
                 $latestResponse = null;
 
@@ -210,8 +209,13 @@ class User extends Authenticatable implements HasMedia, Interfaces\IHasMetaData,
                     }
                 }
 
-                return Carbon::make($latestResponse?->created_at->setTimezone('Africa/Nairobi')->tomorrow('Africa/Nairobi')
-                    ->toAtomString())?->utc()?->toAtomString();
+                return Carbon::make(
+                    $latestResponse
+                        ?->created_at
+                        ->setTimezone('Africa/Nairobi')
+                        ->tomorrow('Africa/Nairobi')
+                        ->toAtomString()
+                )?->utc()?->toAtomString();
 
             }
         );

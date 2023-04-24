@@ -58,7 +58,7 @@ class LearningLessonController extends Controller
      */
     public function show(Request $request, LearningLesson $learningLesson)
     {
-        
+
         $learningLesson->load(['model', 'quizzes.questions.answers','topics', 'topics.learningModules']);
         if ($learningLesson->model?->content) {
             $learningLesson->model->content = app(MarkdownRenderer::class)
@@ -91,7 +91,7 @@ class LearningLessonController extends Controller
         }
 
         return Inertia::render('LearningLesson', [
-            'userRetryLimit' => $request->user()?->nextRetry ,
+            'nextLessonAt' => $request->user()?->next_lesson_at ,
             'lesson' => LearningLessonData::from($learningLesson),
             'userResponses' => AnswerResponseData::collection($userResponses),
             'reward' => isset($reward) ? RewardData::from($reward) : null,
