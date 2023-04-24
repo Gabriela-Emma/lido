@@ -23,7 +23,7 @@
     <script src="{{ mix('/js/alpine.js') }}" defer></script>
     <script src="{{ mix('/js/earn.js') }}" defer></script>
 
-    @if(app()->getLocale() === 'sw')
+    @if(app()->getLocale() === 'sw' || auth()?->user()?->hasRole(\App\Enums\RoleEnum::super_admin()->value))
         @inertiaHead
     @endif
 </head>
@@ -36,7 +36,7 @@
 @include('includes.header')
 
 <main>
-    @if(app()->getLocale() === 'sw')
+    @if(app()->getLocale() === 'sw' || auth()?->user()?->hasRole(\App\Enums\RoleEnum::super_admin()->value))
         @inertia
     @else
         <section class="container py-16">
