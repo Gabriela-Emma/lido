@@ -1,6 +1,10 @@
 {
     "private": true,
     "main": "main.js",
+    "env": {
+        "node": true,
+        "vue/setup-compiler-macros": true
+    },
     "browser": {
         "fs": false,
         "path": false,
@@ -35,6 +39,7 @@
         "@types/moment-timezone": "^0.5.30",
         "@types/node": "^18.11.18",
         "@types/ziggy-js": "^1.3.2",
+        "@vue-macros/volar": "^0.9.5",
         "@vue/compiler-sfc": "^3.2.45",
         "alpinejs-masonry": "^1.0.11",
         "autoprefixer": "^10.4",
@@ -55,6 +60,7 @@
         "tailwindcss": "^3.1",
         "ts-loader": "^9.2.6",
         "typescript": "^4.9.4",
+        "unplugin-vue-define-options": "^1.3.3",
         "vue-loader": "^16.2.0",
         "vue-template-compiler": "^2.6",
         "webpack": "^5.73",
