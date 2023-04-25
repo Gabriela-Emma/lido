@@ -65,7 +65,7 @@
         <div class="bg-slate-100 rounded-r-full w-5/6 lg:w-3/4 xl:w-2/3">
             <div class="container py-16 px-6 md:px-8">
                 <div class="flex flex-wrap justify-between">
-                    <div v-if="! walletData.address" class="flex flex-col md:flex-row gap-1 md:gap-3 items-center  mx-auto">
+                    <div v-if="! walletData?.address" class="flex flex-col md:flex-row gap-1 md:gap-3 items-center  mx-auto">
                         <ConnectWallet :background-color="'bg-labs-red'" @walletData="setWalletName($event)" />
                         <span class="text-sm">
                             <Link href="/earn/learn/register"
