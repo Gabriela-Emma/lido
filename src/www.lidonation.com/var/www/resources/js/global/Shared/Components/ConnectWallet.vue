@@ -14,8 +14,8 @@
                     viewBox="0 0 24 24"></svg>
             </span>
 
-            <span class="tracking-wide flex items-center gap-2"  v-show="myWallet.balance" >
-                <span v-text="(myWallet.handle ?? abbvStakeId) + ' connected'" class="text-sm text-slate-200 h-full border-primary-200 border-opacity-50 p-0.5 capitalize">
+            <span class="tracking-wide flex items-center gap-2"  v-show="myWallet?.balance" >
+                <span v-text="(myWallet?.handle ?? abbvStakeId) + ' connected'" class="text-sm text-slate-200 h-full border-primary-200 border-opacity-50 p-0.5 capitalize">
                 </span>
                 <span>
                     <!-- <span v-text="myWallet.balance"></span> -->
@@ -23,7 +23,7 @@
                 </span>
             </span>
 
-            <span class="tracking-wide flex gap-2" v-show="!myWallet.balance" >
+            <span class="tracking-wide flex gap-2" v-show="!myWallet?.balance" >
                 <span>Connect Your Wallet</span>
                 <span class="text-slate-100" aria-hidden="true">&darr;</span>
             </span>
@@ -31,11 +31,11 @@
 
         <div
             v-show="open"
-            @click.outside="open=!open"
             style="display: none;"
+            ref="target"
             class="absolute w-48 mt-3 bg-white rounded-bl-sm rounded-br-sm shadow-md overflow-visible z-40">
             <div class="py-1 flex items-center flex-col gap-2 divide-y divide-slate-800 divide-opacity-40" role="none">
-                <a href="#" @click.prevent="(open = false); supports('gerowallet') ? enableWallet('gerowallet') : ''"
+                <a href="#" @click.prevent="(open = !open); supports('gerowallet') ? enableWallet('gerowallet') : ''"
                     class="text-gray-700 block px-4 py-2 text-xl w-full inline-flex gap-2"
                     :class="{'hover:cursor-not-allowed' : !supports('gerowallet')}"
                     role="menuitem"
@@ -47,7 +47,7 @@
                     <span class="text-slate-300 text-xs" v-show="!supports('gerowallet')">Not Installed</span>
                 </a>
 
-                <a href="#" @click.prevent="(open = false); supports('nami') ? enableWallet('nami') : ''"
+                <a href="#" @click.prevent="(open = !open); supports('nami') ? enableWallet('nami') : ''"
                     class="text-gray-700 block px-4 py-2 text-xl w-full inline-flex gap-2"
                     :class="{'hover:cursor-not-allowed' : !supports('nami')}"
                     role="menuitem"
@@ -60,7 +60,7 @@
                     <span class="text-slate-300 text-xs" v-show="!supports('nami')">Not Installed</span>
                 </a>
 
-                <a href="#" @click.prevent="(open = false); supports('eternl') ? enableWallet('eternl') : ''"
+                <a href="#" @click.prevent="(open = !open); supports('eternl') ? enableWallet('eternl') : ''"
                     class="text-gray-700 block px-4 py-2 text-xl w-full inline-flex gap-2"
                     role="menuitem"
                     preserve-scroll
@@ -73,7 +73,7 @@
                     <span class="text-slate-300 text-xs" v-show="!supports('eternl')">Not Installed</span>
                 </a>
 
-                <a href="#" @click.prevent="(open = false); supports('flint') ? enableWallet('flint') : ''"
+                <a href="#" @click.prevent="(open = !open); supports('flint') ? enableWallet('flint') : ''"
                     class="text-gray-700 block px-4 py-2 text-xl w-full inline-flex gap-2"
                     role="menuitem"
                     preserve-scroll
@@ -86,7 +86,7 @@
                     <span class="text-slate-300 text-xs" v-show="!supports('flint')">Not Installed</span>
                 </a>
 
-                <a href="#" @click.prevent="(open = false); supports('typhoncip30') ? enableWallet('typhoncip30') : '' "
+                <a href="#" @click.prevent="(open = !open); supports('typhoncip30') ? enableWallet('typhoncip30') : '' "
                     class="text-gray-700 block px-4 py-2 text-xl w-full inline-flex gap-2"
                     role="menuitem"
                     preserve-scroll
@@ -113,7 +113,7 @@ import CardanoService from '../../../lib/services/CardanoService';
 import { useWalletStore } from '../../../catalyst-explorer/stores/wallet-store';
 import Wallet from '../../../catalyst-explorer/models/wallet';
 import {C} from "lucid-cardano";
-
+import { onClickOutside } from '@vueuse/core';
 
 const props = withDefaults(
     defineProps<{
@@ -140,7 +140,7 @@ emit('walletData', myWallet.value);
 let abbvStakeId = ref(myWallet?.value?.stakeAddress?.slice(-5));
 watch(walletData, () => {
     abbvStakeId = ref(myWallet?.value?.stakeAddress?.slice(-5));
-    emit('walletData', myWallet.value);
+    emit('walletData', myWallet?.value);
 })
 
 // check for surported wallet
@@ -209,5 +209,8 @@ async function setHandle() {
     wallet_data.handle =handle;
 }
 
+
+const target = ref(null)
+onClickOutside(target, (event) => open.value =false)
 
 </script>

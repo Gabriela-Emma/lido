@@ -220,8 +220,8 @@ let myWallet: Ref<Wallet> = computed(() => walletData.value);
 if (user) {
     name.value = user.value?.name;
     email.value = user.value?.email;
-    wallet_address.value = myWallet.value?.address;
-    wallet_stake_address.value = myWallet.value?.stakeAddress;
+    wallet_address.value = myWallet?.value?.address;
+    wallet_stake_address.value = myWallet?.value?.stakeAddress;
     twitter.value = user.value?.twitter;
     telegram.value = user.value?.telegram;
 }
