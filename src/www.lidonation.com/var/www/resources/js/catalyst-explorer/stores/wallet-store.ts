@@ -5,11 +5,11 @@ import Wallet from "../models/wallet";
 
 export const useWalletStore = defineStore('wallet', () => {
     let walletData = ref<Wallet>(null)
-    let wallet_name:Ref<string> = useStorage('wallet-name', null, localStorage, {mergeDefaults: true})
+    let wallet_name:Ref<string> = useStorage('wallet-name', '', localStorage, {mergeDefaults: true})
     
     async function saveWallet(wallet:Wallet) {
         walletData.value = wallet;
-        wallet_name.value = wallet.name
+        wallet_name.value = wallet?.name
     }
 
     return{

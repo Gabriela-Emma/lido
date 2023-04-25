@@ -134,7 +134,6 @@ let {wallet_name} = storeToRefs(walletStore)
 let myWallet:Ref<Wallet> = computed(() => walletData.value);
 let my_wallet_name =  ref( wallet_name.value);
 
-console.log(my_wallet_name.value)
 // emit wallet data
 const emit =defineEmits<{
     (e: 'walletData', wallet_data:Wallet):void
