@@ -107,13 +107,14 @@
 
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia';
-import { computed, ref, Ref, watch } from 'vue';
+import { computed, defineAsyncComponent, ref, Ref, watch } from 'vue';
 import WalletService from '../../../lib/services/WalletService';
 import CardanoService from '../../../lib/services/CardanoService';
 import { useWalletStore } from '../../../catalyst-explorer/stores/wallet-store';
 import Wallet from '../../../catalyst-explorer/models/wallet';
 import {C} from "lucid-cardano";
 import { onClickOutside } from '@vueuse/core';
+
 
 const props = withDefaults(
     defineProps<{
@@ -129,8 +130,11 @@ let backgroundColor = ref(props.backgroundColor);
 
 let walletStore = useWalletStore();
 let {walletData} = storeToRefs(walletStore);
+let {wallet_name} = storeToRefs(walletStore)
 let myWallet:Ref<Wallet> = computed(() => walletData.value);
+let my_wallet_name =  ref( wallet_name.value);
 
+console.log(my_wallet_name.value)
 // emit wallet data
 const emit =defineEmits<{
     (e: 'walletData', wallet_data:Wallet):void
@@ -160,16 +164,21 @@ let wallet_data = {} as Wallet;
 const  enableWallet = async (_wallet) => {
     const wallet = _wallet;
     walletLoading.value = true;
-    if (typeof window.cardano === 'undefined' || !window?.cardano || !window.cardano[wallet]) {
-        walletName.value = null;
-        return Promise.reject(`${wallet} wallet not installed.`);
+    try{
+        
+        if (typeof window.cardano === 'undefined' || !window?.cardano || !window.cardano[wallet]) {
+            walletName.value = null;
+            return Promise.reject(`${wallet} wallet not installed.`);
+        }
+        walletName.value = wallet;
+        wallet_data.name = walletName.value;
+        await wallet_service.connectWallet(walletName.value);
+        await setWalletBalance();
+        await setWalletAddress();
+        walletStore.saveWallet(wallet_data);
+    } catch(e){
+        console.log(e)
     }
-    walletName.value = wallet;
-    wallet_data.name = walletName.value;
-    await wallet_service.connectWallet(walletName.value);
-    await setWalletBalance();
-    await setWalletAddress();
-    walletStore.saveWallet(wallet_data);
 
 }
 
@@ -209,6 +218,9 @@ async function setHandle() {
     wallet_data.handle =handle;
 }
 
+if(my_wallet_name.value && supports(my_wallet_name.value)){
+    enableWallet(my_wallet_name.value)
+}
 
 const target = ref(null)
 onClickOutside(target, (event) => open.value =false)
