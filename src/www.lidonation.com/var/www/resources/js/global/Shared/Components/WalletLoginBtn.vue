@@ -36,6 +36,7 @@ import { defineAsyncComponent } from 'vue';
 import Wallet from '../../../catalyst-explorer/models/wallet';
 import { AxiosError } from 'axios';
 import User from '../Models/user';
+import { router, usePage } from '@inertiajs/vue3';
 const ConnectWallet = defineAsyncComponent(() =>import('./ConnectWallet.vue'));
 
 const props = withDefaults(
@@ -64,7 +65,7 @@ watch([walletData], async (newVal, oldVal) => {
 
 const emit =defineEmits<{
     (e: 'walletError', error: AxiosError | any):void
-    (e:'user', user:User):void
+//     (e:'user', user:User):void
 }>();
 
 let loginUser =async () => {
@@ -76,7 +77,13 @@ let loginUser =async () => {
                stake_address: stake_address.value
           });
           if(user){
-               emit('user', user)
+               // emit('user', user)
+               if (props.role =='catalyst-explorer'){
+                    router.get(`${usePage().props.base_url}/catalyst-explorer/my/dashboard`)   
+               }else{
+                    router.get(`${usePage().props.base_url}/earn/learn`)
+               }
+               
           }
           
      } catch (e: AxiosError | any) {

@@ -29,8 +29,8 @@ class UserController extends Controller
 
             if ((bool) $user) {
                 Auth::login($user, $remember = true);
-
-                return to_route('catalystExplorer.myDashboard');
+                
+                return redirect()->route('catalystExplorer.myDashboard');
             } else {
                 return response()->json([
                     'message' => 'Could not find an account with those credentials',
