@@ -155,13 +155,13 @@ export default {
                         </div>
                         <ul class="mt-4 space-y-2 relative h-full w-full" v-if="!nextLessonAt">
                             <template v-for="answer in question.answers" :key="answer.id">
-                                <li class="mt-2 transition hover:ease-in delay-150">
+                                <li class="mt-2">
                                     <label class="cursor-pointer w-full">
                                         <input type="radio" class="peer sr-only" name="answer"
                                                :id="answer.id" :value="answer.id"
                                                v-model="userSelectionId"/>
                                         <div
-                                            class="w-full rounded-md bg-white text-gray-500 p-5 transition-all hover:shadow peer-checked:text-teal-light-600">
+                                            class="w-full rounded-md bg-white text-gray-500 p-5 transition-all hover:shadow peer-checked:text-labs-black peer-checked:ring-blue-light-900 peer-checked:ring-4 peer-checked:border-transparent">
                                             <div class="flex items-center justify-between">
                                                 <p class="text-sm font-semibold pr-8">{{
                                                         answer.content
