@@ -161,7 +161,7 @@ export default {
                                                :id="answer.id" :value="answer.id"
                                                v-model="userSelectionId"/>
                                         <div
-                                            class="w-full rounded-md bg-white text-gray-500 p-5 transition-all hover:shadow peer-checked:text-labs-black peer-checked:ring-blue-light-900 peer-checked:ring-4 peer-checked:border-transparent">
+                                            class="w-full rounded-md bg-white text-gray-500 p-5 transition-all hover:shadow peer-checked:text-labs-black peer-checked:bg-sky-400 peer-checked:ring-blue-light-900 peer-checked:ring-4 peer-checked:border-transparent">
                                             <div class="flex items-center justify-between">
                                                 <p class="text-sm font-semibold pr-8">{{
                                                         answer.content
