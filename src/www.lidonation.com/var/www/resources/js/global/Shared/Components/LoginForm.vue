@@ -75,7 +75,7 @@
                 <div v-show="showWalletBtn" class="flex flex-col">
                     <div v-if="walletError.length>0" v-text="walletError"
                                  class="text-red-500 text-sm my-1"></div>
-                    <WalletLoginBtn :role="'login'" @walletError="handleWalletError($event)"/>
+                    <WalletLoginBtn :role="`${role}`" @walletError="handleWalletError($event)"/>
                 </div>
             </div>
         </form>
