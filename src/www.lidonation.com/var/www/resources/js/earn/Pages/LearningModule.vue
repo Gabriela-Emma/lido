@@ -38,7 +38,7 @@ export default {
                 </dt>
                 <DisclosurePanel as="dd" class="" :class="{ 'bg-slate-100 px-4': open }">
                     <ul role="list" class="relative z-0 divide-y divide-white" v-if="topic?.lessons">
-                        <li v-for="lesson in topic.lessons" :key="topic.id" class="">
+                        <li v-for="(lesson, index) in topic.lessons" :key="topic.id" :class="{'hidden':index !== currentIndex(topic?.lessons) }">
                             <div class="w-full flex flex-row justify-between px-3 py-4">
                                 <div class="flex gap-1">
                                     <div class="flex gap-2 items-center text-sm">
@@ -84,6 +84,7 @@ import {MinusSmallIcon, PlusSmallIcon, ClockIcon, CheckBadgeIcon, NewspaperIcon}
 import {CheckBadgeIcon as CheckBadgeIconSolid} from '@heroicons/vue/24/solid';
 import {Disclosure, DisclosureButton, DisclosurePanel} from "@headlessui/vue";
 import LearningModuleData = App.DataTransferObjects.LearningModuleData;
+import LearningLessonData = App.DataTransferObjects.LearningLessonData;
 
 const $utils: any = inject('$utils');
 
@@ -95,5 +96,17 @@ const props = withDefaults(
 
 let learningModule = ref(props.module);
 
+let currentIndex = (lessons:LearningLessonData[]) => {
+    let  currentIndex = 0
+    const nextIndex = lessons.findIndex(lesson => {
+        if(lessons[currentIndex]?.completed){
+            return !lesson?.completed && lesson?.order > lessons[currentIndex]?.order
+        }
+         });
+    if (nextIndex !== -1) {
+        currentIndex = nextIndex
+    }
+    return currentIndex
+}
 </script>
 <style scoped></style>
