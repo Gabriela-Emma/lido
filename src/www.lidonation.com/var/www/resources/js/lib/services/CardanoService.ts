@@ -59,11 +59,11 @@ export default class CardanoService {
     public async getHandle(stakeAddress: string) {
         await this.init();
         if(stakeAddress){
-            let asset = (await this.api.get(`/accounts/${stakeAddress}/addresses/assets`))?.data[0]?.unit
+            let asset = (await this.api.get(`/accounts/${stakeAddress}/addresses/assets`))?.data?.[0]?.unit
             if(!asset){
                 return;
             }
-            let assetName = (await this.api.get(`/assets/${asset}`))?.data.onchain_metadata?.files[0]?.name
+            let assetName = (await this.api.get(`/assets/${asset}`))?.data.onchain_metadata?.files?.[0]?.name
             return assetName;
         }
     }

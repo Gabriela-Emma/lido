@@ -166,10 +166,14 @@ const  enableWallet = async (_wallet) => {
     }
     walletName.value = wallet;
     wallet_data.name = walletName.value;
-    await wallet_service.connectWallet(walletName.value);
-    await setWalletBalance();
-    await setWalletAddress();
-    walletStore.saveWallet(wallet_data);
+    try{  
+            await wallet_service.connectWallet(walletName.value);
+            await setWalletBalance();
+            await setWalletAddress();
+            walletStore.saveWallet(wallet_data);
+        }catch(e){
+            console.error(e);
+        }
 
 }
 
@@ -198,15 +202,15 @@ async function setWalletBalance(){
     } 
     // set handle
     await setHandle()
-
     walletLoading.value = false;
 }
 
 async function setHandle() {
     await setWalletAddress();
     let cardanoService = new CardanoService();
-    let handle = await cardanoService.getHandle(wallet_data?.stakeAddress)
+    let handle = await cardanoService.getHandle(wallet_data?.stakeAddress);
     wallet_data.handle =handle;
+
 }
 
 
