@@ -96,7 +96,6 @@ const props = withDefaults(
     }>(), {});
 
 let learningModule = ref(props.module);
-let lessons = ref(null)
 
 let getLessons = (id,index) => {
     let hasLessons = learningModule?.value?.topics[index]?.lessons != null;
@@ -104,23 +103,10 @@ let getLessons = (id,index) => {
         axios.get(`${usePage().props.base_url}/api/earn/module/topic/${id}/lessons`)
         .then((res) => {
             learningModule.value.topics[index].lessons = res?.data
-            // lessons.value =  learningModule.value.topics[index].lessons
         })
     }
 }
 getLessons(learningModule?.value?.topics[0]?.id,0)
 
-let currentIndex = (lessons:LearningLessonData[]) => {
-    let  currentIndex = 0
-    const nextIndex = lessons.findIndex(lesson => {
-        if(lessons[currentIndex]?.completed){
-            return !lesson?.completed && lesson?.order > lessons[currentIndex]?.order
-        }
-         });
-    if (nextIndex !== -1) {
-        currentIndex = nextIndex
-    }
-    return currentIndex
-}
 </script>
 <style scoped></style>
