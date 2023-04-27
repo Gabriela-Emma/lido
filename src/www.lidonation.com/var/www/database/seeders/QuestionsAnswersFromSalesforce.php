@@ -51,20 +51,27 @@ class QuestionsAnswersFromSalesforce extends Seeder
 
             if (! $question instanceof Question) {
                 $question = new Question;
+                $question->user_id = 3;
+                $question->status = 'published';
+                $question->type = 'multiple_choice';
+                $question->title = [
+                    'en' => $sfQuestion->en,
+                    'sw' => $sfQuestion->sw,
+                ];
+                $question->content = "See related article [link post_id={$p->id}]";
+                $question->save();
+    
+                $question->saveMeta('sf_id', $sfQuestion->sf_id, $question, true);
+    
+                $quiz->questions()->syncWithoutDetaching([$question->id]);
+            } else {
+                $question->title = [
+                    'en' => $sfQuestion->en,
+                    'sw' => $sfQuestion->sw,
+                ];
+                $question->content = "See related article [link post_id={$p->id}]";
+                $question->save(); 
             }
-            $question->user_id = 3;
-            $question->status = 'published';
-            $question->type = 'multiple_choice';
-            $question->title = [
-                'en' => $sfQuestion->en,
-                'sw' => $sfQuestion->sw,
-            ];
-            $question->content = "See related article [link post_id={$p->id}]";
-            $question->save();
-
-            $question->saveMeta('sf_id', $sfQuestion->sf_id, $question, true);
-
-            $quiz->questions()->syncWithoutDetaching([$question->id]);
         }
 
         $answers = Items::fromFile(database_path().'/files/answers.json');

@@ -1,5 +1,5 @@
 <template>
-    <Nav :crumbs=crumbs />
+<!--    <Nav :crumbs=crumbs />-->
 
     <section class="">
         <slot></slot>

@@ -24,7 +24,7 @@ class LearningLessons extends Resource
 
     public static $group = 'Learning';
 
-    public static $perPageOptions = [50, 100, 250];
+    public static $perPageOptions = [25, 50, 100, 250];
 
     /**
      * The number of resources to show per page via relationships.

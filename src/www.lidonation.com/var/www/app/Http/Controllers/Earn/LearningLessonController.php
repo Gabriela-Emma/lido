@@ -10,6 +10,7 @@ use App\Http\Requests\StoreLearningLessonRequest;
 use App\Http\Requests\UpdateLearningLessonRequest;
 use App\Models\AnswerResponse;
 use App\Models\LearningLesson;
+use App\Models\LearningTopic;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Inertia\Inertia;
@@ -94,6 +95,12 @@ class LearningLessonController extends Controller
             'reward' => isset($reward) ? RewardData::from($reward) : null,
             'crumbs' => $crumbs,
         ]);
+    }
+
+    function getLessons(LearningTopic $learningTopic)
+    {
+        return LearningLessonData::collection($learningTopic->learningLessons()->get());
+        
     }
 
     /**
