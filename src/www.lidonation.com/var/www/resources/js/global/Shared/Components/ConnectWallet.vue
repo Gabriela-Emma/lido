@@ -162,8 +162,12 @@ let wallet_data = {} as Wallet;
 
 const  enableWallet = async (_wallet) => {
     const wallet = _wallet;
+    if (typeof window.cardano === 'undefined' || !window?.cardano || !window.cardano[wallet]) {
+            walletName.value = null;
+            return Promise.reject(`${wallet} wallet not installed.`);
+        }
+        
     walletLoading.value = true;
-
     walletName.value = wallet;
     wallet_data.name = walletName.value;
     try{  
