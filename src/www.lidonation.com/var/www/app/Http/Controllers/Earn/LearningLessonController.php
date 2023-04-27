@@ -99,7 +99,8 @@ class LearningLessonController extends Controller
 
     function getLessons(LearningTopic $learningTopic)
     {
-        return $learningTopic->learningLessons()->get();
+        return LearningLessonData::collection($learningTopic->learningLessons()->get());
+        
     }
 
     /**

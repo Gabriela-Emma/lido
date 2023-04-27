@@ -268,7 +268,7 @@ Route::prefix('catalyst-explorer')->as('catalystExplorerApi.')
     Route::prefix('earn')->as('earnApi.')->group(function () {
         Route::post('/learn/login', [LearnController::class, 'login']);
         Route::post('/learn/register', [LearnController::class, 'register']);
-        Route::get('/module/topic/{learningTopic:id}/lessons', [LearningLessonController::class, 'getLessons']);
+        Route::get('/topic/{learningTopic:id}/lessons', [LearningLessonController::class, 'getLessons']);
         Route::middleware([
             'auth:sanctum',
         ])->prefix('/learn')->group(function () {
