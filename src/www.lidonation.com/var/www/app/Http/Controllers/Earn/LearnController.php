@@ -31,14 +31,34 @@ class LearnController extends Controller
 
     public function login(Request $request)
     {
-        $request->validate([
-            'email' => ['required', 'email'],
-            'password' => ['required'],
+        $credentials = $request->validate([
+            'email' => 'nullable|bail|required_unless:catalyst_explorer,null|email',
+            'password' => 'nullable|bail|required_with:email|min:5',
+            'catalyst_explorer' => 'sometimes|required_without_all:email,password|min:13',
+            'key' => 'sometimes|required_without_all:email,password|min:13',
+            'signature' => 'sometimes|required_without_all:email,password|min:13',
         ]);
-        $credentials = $request->only(['email', 'password']);
+
+        if (isset($request->stake_address)) {
+            $user = User::where('wallet_stake_address', $request->stake_address)->first();
+
+            if ((bool) $user) {
+                Auth::login($user, $remember = true);
+
+                return $user;
+            } else {
+                return response()->json([
+                    'message' => 'Could not find an account with those credentials',
+                ], 401);
+            }
+        }
+
         $remember = $request->input('remember', false);
 
         if (Auth::attempt($credentials, $remember)) {
+            if (isset($request->baseURL)) {
+                return redirect($request->baseURL);
+            }
 
             return to_route('earn.learn');
         }
