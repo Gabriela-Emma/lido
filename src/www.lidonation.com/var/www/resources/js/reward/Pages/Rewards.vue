@@ -20,7 +20,7 @@
                 </div>
                 <div class="relative">
                     <section class="border-t border-teal-300 p-6">
-                        <div class="flex flex-col gap-4 items-center">
+                        <div class="flex flex-col gap-4 items-center max-w-2xl mx-auto">
                             <p>
                                 Lido Rewards are tips and prizes you earn around lidonation for completing
                                 challenges or
@@ -43,7 +43,7 @@
                                             <h3 class="text-lg font-medium leading-6">
                                                 Process Rewards
                                             </h3>
-                                            <p class="mt-1 max-w-2xl text-sm">
+                                            <p class="mt-1 max-w-3xl text-sm">
                                                 You are about to withdraw pending rewards.
                                                 You will need to send 2 ada, and all pending rewards will be bundled
                                                 and sent to your
@@ -145,16 +145,16 @@
                                                 <table class="min-w-full overflow-auto divide-y divide-gray-200">
                                                     <thead class="flex flex-col justify-between min-w-full">
                                                     <tr class="flex flex-row text-left">
-                                                        <th class="px-6 w-32 py-4 text-sm  truncate flex gap-2">
+                                                        <th class="px-6 w-32 py-4 text-sm truncate flex gap-2 sticky top-0">
                                                             Amount
                                                         </th>
-                                                        <th class="w-72 px-6 py-4 text-sm">Memo</th>
-                                                        <th class="px-2 py-4 text-sm truncate flex gap-2">Status
+                                                        <th class="w-72 px-6 py-4 text-sm sticky top-0">Memo</th>
+                                                        <th class="px-2 py-4 text-sm truncate flex gap-2 sticky top-0">Status
                                                         </th>
                                                     </tr>
                                                     </thead>
                                                     <tbody
-                                                        class="flex flex-col justify-start min-w-full divide-y divide-gray-300 h-96">
+                                                        class="flex flex-col justify-start min-w-full divide-y divide-gray-400 max-h-[32rem]">
                                                     <tr v-for="reward in (rewards[0] ? rewards : processedRewards)"
                                                         class="flex flex-row text-left">
                                                         <td class="px-6 py-4 w-32 text-sm truncate flex gap-2  items-center">
