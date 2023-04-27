@@ -162,22 +162,22 @@ let wallet_data = {} as Wallet;
 
 const  enableWallet = async (_wallet) => {
     const wallet = _wallet;
-    walletLoading.value = true;
-    try{
-        
-        if (typeof window.cardano === 'undefined' || !window?.cardano || !window.cardano[wallet]) {
+    if (typeof window.cardano === 'undefined' || !window?.cardano || !window.cardano[wallet]) {
             walletName.value = null;
             return Promise.reject(`${wallet} wallet not installed.`);
         }
-        walletName.value = wallet;
-        wallet_data.name = walletName.value;
-        await wallet_service.connectWallet(walletName.value);
-        await setWalletBalance();
-        await setWalletAddress();
-        walletStore.saveWallet(wallet_data);
-    } catch(e){
-        console.log(e)
-    }
+        
+    walletLoading.value = true;
+    walletName.value = wallet;
+    wallet_data.name = walletName.value;
+    try{  
+            await wallet_service.connectWallet(walletName.value);
+            await setWalletBalance();
+            await setWalletAddress();
+            walletStore.saveWallet(wallet_data);
+        }catch(e){
+            console.error(e);
+        }
 
 }
 
@@ -206,15 +206,18 @@ async function setWalletBalance(){
     } 
     // set handle
     await setHandle()
-
     walletLoading.value = false;
 }
 
 async function setHandle() {
     await setWalletAddress();
-    let cardanoService = new CardanoService();
-    let handle = await cardanoService.getHandle(wallet_data.stakeAddress)
-    wallet_data.handle =handle;
+    if(wallet_data.lovelacesBalance >0){
+        let cardanoService = new CardanoService();
+        let handle = await cardanoService.getHandle(wallet_data?.stakeAddress);
+        wallet_data.handle =handle;
+    }
+    wallet_data.handle=null
+
 }
 
 if(my_wallet_name.value && supports(my_wallet_name.value)){
