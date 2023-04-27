@@ -1,5 +1,6 @@
 <script lang="ts">
 import LayoutWithSidebar from "../Shared/LayoutWithSidebar.vue";
+import axios from "axios";
 
 export default {
     layout: LayoutWithSidebar
@@ -16,12 +17,12 @@ export default {
             <Disclosure as="div" v-for="(topic, index) in learningModule.topics" :key="topic.id"
                         :default-open="index === 0"
                         v-slot="{ open }">
-                <dt :class="{'bg-slate-100': open }">
+                <dt :class="{'bg-slate-100': open }" @click="getLessons(topic.id,index)">
                     <DisclosureButton
                         class="flex w-full items-start justify-between text-left text-slate-900 py-5"
                         :class="{
                         'hover:bg-slate-100': !open
-                    }">
+                        }" >
                         <div class="">
                                 <span class="xl:text-2xl font-semibold leading-7 px-4">{{
                                         $t(topic.title)
@@ -38,7 +39,7 @@ export default {
                 </dt>
                 <DisclosurePanel as="dd" class="" :class="{ 'bg-slate-100 px-4': open }">
                     <ul role="list" class="relative z-0 divide-y divide-white" v-if="topic?.lessons">
-                        <li v-for="(lesson, index) in topic.lessons" :key="topic.id" :class="{'hidden':index !== currentIndex(topic?.lessons) }">
+                        <li v-for="(lesson, index) in topic.lessons" :key="topic.id" >
                             <div class="w-full flex flex-row justify-between px-3 py-4">
                                 <div class="flex gap-1">
                                     <div class="flex gap-2 items-center text-sm">
@@ -78,13 +79,13 @@ export default {
     </div>
 </template>
 <script setup lang="ts">
-import {inject, ref} from "vue";
-import {Link} from '@inertiajs/vue3';
+import {inject, Ref, ref} from "vue";
+import {Link, usePage} from '@inertiajs/vue3';
 import {MinusSmallIcon, PlusSmallIcon, ClockIcon, CheckBadgeIcon, NewspaperIcon} from '@heroicons/vue/24/outline';
 import {CheckBadgeIcon as CheckBadgeIconSolid} from '@heroicons/vue/24/solid';
 import {Disclosure, DisclosureButton, DisclosurePanel} from "@headlessui/vue";
 import LearningModuleData = App.DataTransferObjects.LearningModuleData;
-import LearningLessonData = App.DataTransferObjects.LearningLessonData;
+import LearningLessonsData  = App.DataTransferObjects.LearningLessonData;
 
 const $utils: any = inject('$utils');
 
@@ -95,6 +96,19 @@ const props = withDefaults(
     }>(), {});
 
 let learningModule = ref(props.module);
+let lessons = ref(null)
+
+let getLessons = (id,index) => {
+    let hasLessons = learningModule?.value?.topics[index]?.lessons != null;
+    if(!hasLessons){
+        axios.get(`${usePage().props.base_url}/api/earn/module/topic/${id}/lessons`)
+        .then((res) => {
+            learningModule.value.topics[index].lessons = res?.data
+            // lessons.value =  learningModule.value.topics[index].lessons
+        })
+    }
+}
+getLessons(learningModule?.value?.topics[0]?.id,0)
 
 let currentIndex = (lessons:LearningLessonData[]) => {
     let  currentIndex = 0

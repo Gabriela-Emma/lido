@@ -205,7 +205,7 @@ async function setWalletBalance(){
 async function setHandle() {
     await setWalletAddress();
     let cardanoService = new CardanoService();
-    let handle = await cardanoService.getHandle(wallet_data.stakeAddress)
+    let handle = await cardanoService.getHandle(wallet_data?.stakeAddress)
     wallet_data.handle =handle;
 }
 
