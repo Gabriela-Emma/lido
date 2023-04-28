@@ -128,10 +128,10 @@ export default {
                         <div class="font-bold flex justify-center lg:text-lg xl:text-xl" v-if="retryAt" >
                             <countdown :time="retryAt" v-slot="{ days, hours, minutes, seconds }" class="flex flex-row">
                                 <span class="text-slate-200 mr-1"> {{$t('tryIn')}}: </span>
-                                <div  v-if="page_locale !== 'sw'">
+                                <div  v-if="locale !== 'sw'">
                                     {{ hours }} {{$t('hours')}}, {{ minutes }} {{$t('minutes')}}, {{ seconds }} {{$t('seconds')}}.
                                 </div>
-                                <div  v-if="page_locale == 'sw'" >
+                                <div  v-if="locale == 'sw'" >
                                     {{$t('hours')}} {{ hours }}, {{$t('minutes')}} {{ minutes }},  {{$t('seconds')}} {{ seconds }}.
                                 </div>
                             </countdown>
@@ -189,10 +189,10 @@ export default {
                              v-if="nextLessonAt && !retryAt">
                             <countdown :time="nextLessonAt" v-slot="{ days, hours, minutes, seconds }" class="flex flex-row">
                                 <span class="text-slate-300 block mb-2 text-center mr-1">{{$t('quizUnlocksIn')}}: </span>
-                                <div v-if="page_locale !== 'sw'">
+                                <div v-if="locale !== 'sw'">
                                     {{ hours }} {{$t('hours')}}, {{ minutes }} {{$t('minutes')}}, {{ seconds }} {{$t('seconds')}}.
                                 </div>
-                                <div v-if="page_locale == 'sw'" >
+                                <div v-if="locale == 'sw'" >
                                     {{$t('hours')}} {{ hours }}, {{$t('minutes')}} {{ minutes }},  {{$t('seconds')}} {{ seconds }}.
                                 </div>
                             </countdown>
@@ -231,13 +231,11 @@ import Wallet from '../../catalyst-explorer/models/wallet';
 
 const $utils: any = inject('$utils');
 const user = computed(() => usePage().props.user as User)
-let page_locale = computed(() => usePage().props.locale);
-console.log(page_locale);
+let locale = computed(() => usePage().props.locale);
 
 
 const props = withDefaults(
     defineProps<{
-        locale: string,
         userResponses: AnswerResponseData[],
         nextLessonAt: string,
         lesson: LearningLessonData
