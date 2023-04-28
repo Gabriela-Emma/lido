@@ -234,7 +234,6 @@ const props = withDefaults(
 let answerResponseStore = useAnswerResponseStore();
 
 let learningLesson = ref(props.lesson);
-let reward = ref(props.reward);
 let submitted: Ref<boolean> = ref(false);
 let userReward = ref(props.reward);
 let awardedAmount, assetMetadata, quiz, questions, question, answers, answer, correct,
