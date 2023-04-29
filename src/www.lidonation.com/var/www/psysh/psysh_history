@@ -83,3 +83,13 @@ route('catalystExplorer.myDashboard');
 exit
 config('app');
 exit
+User::find(2)->last_learning_attemp();
+User::find(2)->last_learning_attempt;
+User::find(2)->last_learning_attempt;
+exit
+User::find(2)->next_lesson_at
+User::find(2)->next_lesson_at
+User::find(2)->next_lesson_at
+User::find(2)->next_lesson_at
+User::find(2)->next_lesson_at
+exit

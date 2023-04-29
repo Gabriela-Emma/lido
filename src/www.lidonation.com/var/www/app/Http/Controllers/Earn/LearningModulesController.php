@@ -7,7 +7,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreLearningModulesRequest;
 use App\Http\Requests\UpdateLearningModulesRequest;
 use App\Models\LearningModule;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Inertia\Inertia;
 

@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
@@ -192,28 +193,22 @@ class User extends Authenticatable implements HasMedia, Interfaces\IHasMetaData,
         return "https://www.gravatar.com/avatar/$hash?d=identicon&r=r";
     }
 
+    public function nextLesson(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->last_learning_attempt->learning->next_lesson
+        );
+    }
+
     public function nextLessonAt(): Attribute
     {
         return Attribute::make(
             get: function () {
-                $responses = $this->quiz_responses->where('created_at', '>=', Carbon::now()->subDay());
-                $latestResponse = null;
-
-                foreach ($responses as $response) {
-                    $quiz = $response->quiz;
-
-                    if ($quiz->lessons()->exists()) {
-                        if (! $latestResponse || $response->created_at > $latestResponse->created_at) {
-                            $latestResponse = $response;
-                        }
-                    }
-                }
-
                 return Carbon::make(
-                    $latestResponse
+                    $this->last_learning_attempt
                         ?->created_at
                         ->setTimezone('Africa/Nairobi')
-                        ->tomorrow('Africa/Nairobi')
+                        ->addDay()
                         ->toAtomString()
                 )?->utc()?->toAtomString();
 
@@ -278,6 +273,16 @@ class User extends Authenticatable implements HasMedia, Interfaces\IHasMetaData,
     public function quiz_responses(): HasMany
     {
         return $this->hasMany(AnswerResponse::class, 'user_id');
+    }
+
+    public function last_learning_attempt(): HasOne
+    {
+        return $this->hasOne(LearningAttempt::class)->latestOfMany();
+    }
+
+    public function learning_attempts(): HasMany
+    {
+        return $this->hasMany(LearningAttempt::class)->orderByDesc('created_at');
     }
 
     public function registerMediaConversions(Media $media = null): void

@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Earn;
 
+use App\Enums\LearningAttemptStatuses;
 use App\Http\Controllers\Controller;
 use App\Models\AnswerResponse;
+use App\Models\LearningAttempt;
 use App\Models\LearningLesson;
 use App\Models\QuestionAnswer;
 use App\Models\Reward;
@@ -49,6 +51,15 @@ class LearningAnswerResponseController extends Controller
         $ans->stake_address = $request->input('wallet_stake_address');
         $ans->save();
 
+        $learningLesson = LearningLesson::byHash($request->input('learningLessonHash'));
+        $this->recordLearningAttempt($ans, $learningLesson);
+        $this->issueReward($request, $ans->question_answer_id, $learningLesson);
+
+        return back()->withInput();
+    }
+
+    protected function issueReward($request, $questionAnswerId, LearningLesson $learningLesson): void
+    {
         //fetch quote
         $rewardAmount = -1;
         $quote = $this->adaRepository->quote()?->price ?? null;
@@ -56,14 +67,7 @@ class LearningAnswerResponseController extends Controller
             $rewardAmount = 1 / $quote;
         }
 
-        $this->issueReward($request, $ans->question_answer_id, $rewardAmount);
-
-        return back()->withInput();
-    }
-
-    protected function issueReward($request, $questionAnswerId, $rewardAmount): void
-    {
-        //find user and update wallet details incase of changes from the browser.
+        //find user and update wallet details in case of changes from the browser.
         $user = User::find(Auth::id());
         $user->wallet_address = $request->input('wallet_address') ?? $user->wallet_address;
         $user->wallet_stake_address = $request->input('wallet_stake_address') ?? $user->wallet_stake_address;
@@ -73,7 +77,7 @@ class LearningAnswerResponseController extends Controller
         $answerCorrect = QuestionAnswer::find($questionAnswerId)->correct;
 
         //extract rewards count from learningLesson
-        $learningLesson = LearningLesson::byHash($request->input('learningLessonHash'));
+
         $rewardsCount = Reward::where('user_id', Auth::id())
                         ->where('model_type', LearningLesson::class)
                         ->where('model_id', $learningLesson->id)
@@ -93,5 +97,30 @@ class LearningAnswerResponseController extends Controller
             $reward->setTranslation('memo', 'en', $learningLesson->title);
             $reward->save();
         }
+    }
+
+    protected function recordLearningAttempt(AnswerResponse $answerResponse, LearningLesson $learningLesson): void
+    {
+        LearningAttempt::updateOrCreate(
+            [
+                'user_id' => Auth::id(),
+                'learning_lesson_id' => $learningLesson->id,
+                'answer_response_id' => $answerResponse->id,
+            ],
+            [
+                'user_id' => Auth::id(),
+
+                'learning_module_id' => $learningLesson->firstModule->id,
+                'learning_topic_id' => $learningLesson->topic->id,
+                'learning_lesson_id' => $learningLesson->id,
+
+                'quiz_id' => $answerResponse->quiz_id,
+                'question_id' => $answerResponse->question_id,
+                'question_answer_id' => $answerResponse->question_answer_id,
+                'answer_response_id' => $answerResponse->id,
+
+                'status' => $answerResponse->correct ? LearningAttemptStatuses::COMPLETED : LearningAttemptStatuses::STARTED,
+            ]
+        );
     }
 }

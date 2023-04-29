@@ -211,6 +211,7 @@ return [
                         'title' => 'Sign in',
                         'route_type' => 'route_name',
                         'route' => 'catalystExplorer.login',
+                        'guest' => true,
                     ]),
                 ],
             ]),

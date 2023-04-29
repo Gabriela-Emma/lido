@@ -19,6 +19,15 @@ export type AssetMetaData = {
 logo: string | null;
 ticker: string | null;
 };
+export type LearningAttemptData = {
+retryAt?: any;
+nextLessonAt?: any;
+response?: App.DataTransferObjects.AnswerResponseData | null;
+quiz?: App.DataTransferObjects.QuizData | null;
+module?: App.DataTransferObjects.LearningModuleData | null;
+topic?: App.DataTransferObjects.LearningTopicData | null;
+lesson?: App.DataTransferObjects.LearningLessonData | null;
+};
 export type LearningLessonData = {
 hash: string;
 title: string;
@@ -27,6 +36,7 @@ length: number | null;
 order: number | null;
 completed?: boolean | null;
 retryAt?: any;
+nextLessonAt?: any;
 link?: string | null;
 quiz?: App.DataTransferObjects.QuizData | null;
 quizzes: Array<App.DataTransferObjects.QuizData> | null;
@@ -94,7 +104,7 @@ asset: string | null;
 amount: number | null;
 asset_type?: string | null;
 status: string | null;
-asset_details: App.DataTransferObjects.AssetDetailsData | null;
+asset_details?: App.DataTransferObjects.AssetDetailsData | null;
 memo: string | null;
 };
 }

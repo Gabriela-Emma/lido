@@ -29,7 +29,7 @@ class UserController extends Controller
 
             if ((bool) $user) {
                 Auth::login($user, $remember = true);
-                
+
                 return redirect()->route('catalystExplorer.myDashboard');
             } else {
                 return response()->json([
