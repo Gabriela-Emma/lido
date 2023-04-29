@@ -1,17 +1,17 @@
-<script lang="ts">
+<!-- <script lang="ts">
 import LayoutWithSidebar from "../Shared/LayoutWithSidebar.vue";
 
 export default {
     layout: LayoutWithSidebar
 };
-</script>
+</script> -->
 <template>
     <header class="flex justify-between items-center">
         <div>
             <div class="flex items-center gap-3 text-slate-500">
                 <div class="flex items-center gap-1">
                     <NewspaperIcon class="h-4 w-4"/>
-                    <p class="">Lesson</p>
+                    <p class="">{{$t('lesson')}}</p>
                 </div>
                 <div class="flex items-center gap-1">
                     <div>
@@ -48,7 +48,7 @@ export default {
                     <ArrowTopRightOnSquareIcon class="h-16 w-16"/>
 
                     <p class="text-center text-xl text-slate-800 max-w-md mx-auto px-8">
-                        Read Article in new tab. Return to take quiz after you've read the article.
+                       {{$t('readInNewTab')}}
                     </p>
                 </a>
             </div>
@@ -60,14 +60,14 @@ export default {
             <div class="" v-if="question">
                 <!--an answer exists already submitted-->
                 <div v-if="userLatestResponse">
-                    <div class="text-slate-300 mb-2 text-center">Quiz</div>
+                    <div class="text-slate-300 mb-2 text-center">{{$t('quiz')}}</div>
                     <div class="text-slate-500 mb-2 text-center">
                         <div class="text-white">
                             <div v-if="userLatestResponse.correct === true">
-                                You got it!
+                                {{$t('gotIt')}}!
                             </div>
                             <div v-else>
-                                You're incorrect :(
+                                {{$t('uIncorrect')}} :(
                             </div>
                         </div>
                     </div>
@@ -111,7 +111,7 @@ export default {
                         <div v-if="awardedAmount"
                              class="inline-flex flex-wrap mx-auto mt-8 gap-2 items-center text-lg text-labs-black font-bold p-2 border border-labs-black rounded-sm">
                             <div class="flex gap-4 items-center">
-                                <div class="text-slate-700">Awarded</div>
+                                <div class="text-slate-700">{{$t('awarded')}}</div>
                                 <div>{{ awardedAmount }}</div>
                             </div>
                             <div class="flex gap-1" v-if="assetMetadata?.ticker">
@@ -125,10 +125,15 @@ export default {
 
                         </div>
 
-                        <div class="font-bold flex justify-center lg:text-lg xl:text-xl" v-if="retryAt">
-                            <countdown :time="retryAt" v-slot="{ days, hours, minutes, seconds }">
-                                <span class="text-slate-200"> You can try again in: </span>
-                                {{ hours }} hours, {{ minutes }} minutes, {{ seconds }} seconds.
+                        <div class="font-bold flex justify-center lg:text-lg xl:text-xl" v-if="retryAt" >
+                            <countdown :time="retryAt" v-slot="{ days, hours, minutes, seconds }" class="flex flex-row">
+                                <span class="text-slate-200 mr-1"> {{$t('tryIn')}}: </span>
+                                <div  v-if="locale !== 'sw'">
+                                    {{ hours }} {{$t('hours')}}, {{ minutes }} {{$t('minutes')}}, {{ seconds }} {{$t('seconds')}}.
+                                </div>
+                                <div  v-if="locale == 'sw'" >
+                                    {{$t('hours')}} {{ hours }}, {{$t('minutes')}} {{ minutes }},  {{$t('seconds')}} {{ seconds }}.
+                                </div>
                             </countdown>
                         </div>
 
@@ -138,7 +143,7 @@ export default {
                                     :disabled="true"
                                     :class="{ 'opacity-25 cursor-not-allowed': true }"
                                     class="rounded-sm bg-labs-black px-3.5 py-2.5 text-md xl:text-xl font-semibold text-white shadow-sm hover:bg-labs-black/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-labs-black ml-auto">
-                                Submit
+                                {{('submit')}}
                             </button>
                         </div>
                     </form>
@@ -146,7 +151,7 @@ export default {
 
                 <!--actual flow if not submitted already-->
                 <div v-if="!userLatestResponse">
-                    <div class="text-slate-300 mb-2 text-center">Quiz</div>
+                    <div class="text-slate-300 mb-2 text-center">{{$t('quiz')}}</div>
                     <form class="rounded-sm border border-dashed border-white p-4 flex flex-col gap-6">
                         <div>
                             <p class="text-lg md:text-xl xl:text-2xl 2xl:text-3x xl:leading-12 2xl:leading-12 inline box-border box-decoration-clone p-2 tracking-wide bg-white text-teal-900 relative -left-8">
@@ -182,9 +187,14 @@ export default {
                         </ul>
                         <div class="font-bold flex justify-center lg:text-lg xl:text-xl"
                              v-if="nextLessonAt && !retryAt">
-                            <countdown :time="nextLessonAt" v-slot="{ days, hours, minutes, seconds }">
-                                <span class="text-slate-300 block mb-2 text-center">Quiz will unlock in: </span>
-                                {{ hours }} hours, {{ minutes }} minutes, {{ seconds }} seconds.
+                            <countdown :time="nextLessonAt" v-slot="{ days, hours, minutes, seconds }" class="flex flex-row">
+                                <span class="text-slate-300 block mb-2 text-center mr-1">{{$t('quizUnlocksIn')}}: </span>
+                                <div v-if="locale !== 'sw'">
+                                    {{ hours }} {{$t('hours')}}, {{ minutes }} {{$t('minutes')}}, {{ seconds }} {{$t('seconds')}}.
+                                </div>
+                                <div v-if="locale == 'sw'" >
+                                    {{$t('hours')}} {{ hours }}, {{$t('minutes')}} {{ minutes }},  {{$t('seconds')}} {{ seconds }}.
+                                </div>
                             </countdown>
                         </div>
                         <div class="mt-8 flex justify-end">
@@ -193,7 +203,7 @@ export default {
                                     :disabled="!!userLatestResponse || nextLessonAt > 0 "
                                     :class="{ 'opacity-25 cursor-not-allowed': !!userLatestResponse || nextLessonAt > 0 }"
                                     class="rounded-sm bg-labs-black px-3.5 py-2.5 text-md xl:text-xl font-semibold text-white shadow-sm hover:bg-labs-black/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-labs-black ml-auto">
-                                Submit
+                                {{('submit')}}
                             </button>
                         </div>
                     </form>
@@ -221,10 +231,11 @@ import Wallet from '../../catalyst-explorer/models/wallet';
 
 const $utils: any = inject('$utils');
 const user = computed(() => usePage().props.user as User)
+let locale = computed(() => usePage().props.locale);
+
 
 const props = withDefaults(
     defineProps<{
-        locale: string,
         userResponses: AnswerResponseData[],
         nextLessonAt: string,
         lesson: LearningLessonData
@@ -234,7 +245,6 @@ const props = withDefaults(
 let answerResponseStore = useAnswerResponseStore();
 
 let learningLesson = ref(props.lesson);
-let reward = ref(props.reward);
 let submitted: Ref<boolean> = ref(false);
 let userReward = ref(props.reward);
 let awardedAmount, assetMetadata, quiz, questions, question, answers, answer, correct,
