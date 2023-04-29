@@ -1,0 +1,39 @@
+{
+    "snippets": [
+        {
+            "heading":"comingSoon",
+            "text_en":"Coming soon",
+            "text_sw":"Inakuja hivi karibuni"
+        },
+        {
+            "heading":"learn",
+            "text_en":"Learn",
+            "text_sw":"Jifunze"
+        },
+        {
+            "heading":"learnText",
+            "text_en":"Read an article about blockchain in Swahili.",
+            "text_sw":"Soma makala kuhusu blockchain kwa lugha ya Kiswahili."
+        },
+        {
+            "heading":"quiz",
+            "text_en":"Quiz",
+            "text_sw":"Swali"
+        },
+        {
+            "heading":"quizText",
+            "text_en":"Answer a multiple-choice question about the article.",
+            "text_sw":"Jibu swali la chaguo nyingi kuhusu makala."
+        },
+        {
+            "heading":"earn",
+            "text_en":"Earn",
+            "text_sw":"Pokea"
+        },
+        {
+            "heading":"earnText",
+            "text_en":"Once you pass the quiz, you earn ada (cryptocurrency). Complete lessons to earn NFT bonuses!",
+            "text_sw":"Mara tu unapopita jaribio, unapata ada (sarafu ya crypto). Kamilisha masomo ili upate NFT za ziada!"
+        }
+    ]
+}

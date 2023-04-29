@@ -28,7 +28,7 @@
             class="bg-gradient-to-b from-teal-900 to-teal-500 w-auto flex flex-col rounded-sm relative overflow-clip">
             <div class="flex items-start justify-between p-4 border-b border-teal-200">
                 <h2 class="font-medium text-gray-300 w-auto brightness-100 ">
-                    Inakuja hivi karibuni
+                    {{$snippets->comingSoon}}
                 </h2>
 
                 <button type="button" class="z-50 cursor-pointer hover:text-white absolute right-4 top-4" @click="showing = false">
@@ -56,7 +56,7 @@
                                 </h2>
                                 <div class="max-w-sm">
                                     <p>
-                                        Read an article about blockchain in plain Swahili.
+                                        {{$snippets->learnText}}
                                     </p>
                                 </div>
                             </div>
@@ -79,7 +79,7 @@
                                 </h2>
                                 <div class="max-w-md">
                                     <p>
-                                        Answer a few multiple-choice questions about the article. No trick questions, we promise.
+                                        {{$snippets->quizText}}
                                     </p>
                                 </div>
                             </div>
@@ -101,7 +101,7 @@
                                 </h2>
                                 <div class="max-w-sm">
                                     <p>
-                                        Once you pass the quiz, you earn ada. Complete modules, earn nft bonuses.
+                                        {{$snippets->earnText}}
                                     </p>
                                 </div>
                             </div>
