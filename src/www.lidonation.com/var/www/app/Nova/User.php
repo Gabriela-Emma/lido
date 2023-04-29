@@ -5,7 +5,7 @@ namespace App\Nova;
 use App\Nova\Actions\AddMetaData;
 use App\Nova\Actions\EditMetaData;
 use App\Nova\Actions\PopulatePaymentAddress;
-use App\Nova\Lenses\LidoDelegates;
+use App\Nova\Lenses\LidoDelegators;
 use Ebess\AdvancedNovaMediaLibrary\Fields\Images;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -177,7 +177,7 @@ class User extends Resource
     public function lenses(Request $request): array
     {
         return [
-            new LidoDelegates(),
+            new LidoDelegators(),
         ];
     }
 
