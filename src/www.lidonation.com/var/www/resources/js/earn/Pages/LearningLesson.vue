@@ -233,7 +233,6 @@ const $utils: any = inject('$utils');
 const user = computed(() => usePage().props.user as User)
 let locale = computed(() => usePage().props.locale);
 
-
 const props = withDefaults(
     defineProps<{
         userResponses: AnswerResponseData[],

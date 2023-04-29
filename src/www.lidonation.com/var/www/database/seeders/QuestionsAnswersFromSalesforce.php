@@ -60,9 +60,9 @@ class QuestionsAnswersFromSalesforce extends Seeder
                 ];
                 $question->content = "See related article [link post_id={$p->id}]";
                 $question->save();
-    
+
                 $question->saveMeta('sf_id', $sfQuestion->sf_id, $question, true);
-    
+
                 $quiz->questions()->syncWithoutDetaching([$question->id]);
             } else {
                 $question->title = [
@@ -70,7 +70,7 @@ class QuestionsAnswersFromSalesforce extends Seeder
                     'sw' => $sfQuestion->sw,
                 ];
                 $question->content = "See related article [link post_id={$p->id}]";
-                $question->save(); 
+                $question->save();
             }
         }
 

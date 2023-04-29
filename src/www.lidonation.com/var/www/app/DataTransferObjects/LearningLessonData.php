@@ -36,6 +36,10 @@ class LearningLessonData extends Data
         public mixed $next_lesson_at,
 
         #[TypeScriptOptional]
+        #[MapOutputName('nextLesson')]
+        public ?LearningLessonData $next_lesson,
+
+        #[TypeScriptOptional]
         public ?string $link,
 
         #[TypeScriptOptional]

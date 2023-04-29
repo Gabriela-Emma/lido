@@ -13,8 +13,8 @@
             </div>
         </div>
         <div class="border-labs-red bg-labs-red text-white border-8 rounded-sm p-4">
-            <countdown :time="nextLessonAt" v-slot="{ days, hours, minutes, seconds }">
-                <span class="text-slate-100 text-sm text-center block">{{$t('nextLessonStart')}}:</span>
+            <countdown :time="nextLessonAt" v-slot="{ days, hours, minutes, seconds }" class="text-center">
+                <span class="text-slate-100 text-sm block">{{$t('nextLessonStart')}}:</span>
                 <div class="font-bold" v-if="locale !== 'sw'">
                     {{ hours }} {{$t('hours')}}, {{ minutes }} {{$t('minutes')}}, {{ seconds }} {{$t('seconds')}}.
                 </div>

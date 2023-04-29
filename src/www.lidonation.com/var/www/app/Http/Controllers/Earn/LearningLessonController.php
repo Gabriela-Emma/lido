@@ -97,10 +97,10 @@ class LearningLessonController extends Controller
         ]);
     }
 
-    function getLessons(LearningTopic $learningTopic)
+    public function getLessons(LearningTopic $learningTopic)
     {
         return LearningLessonData::collection($learningTopic->learningLessons()->get());
-        
+
     }
 
     /**

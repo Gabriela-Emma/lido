@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\DataTransferObjects\QuizData;
 use App\DataTransferObjects\QuizQuestionData;
+use App\Enums\LearningAttemptStatuses;
 use App\Http\Traits\HasHashIds;
 use App\Models\Traits\HasAuthor;
 use App\Models\Traits\HasHero;
@@ -65,18 +66,18 @@ class LearningLesson extends Model
     public function completed(): Attribute
     {
         return Attribute::make(
-            get: function () {
-                $reward = Reward::where('model_id', $this->id)
-                    ->where('model_type', $this::class)
-                    ->where('user_id', auth()->user()->getAuthIdentifier())
-                    ->first();
+            get: fn () => LearningAttempt::where([
+                'learning_lesson_id' => $this->id,
+                'status' => LearningAttemptStatuses::COMPLETED,
+                'user_id' => auth()->user()->getAuthIdentifier(),
+            ])->count() > 0
+        );
+    }
 
-                if (! $reward instanceof Reward) {
-                    return false;
-                } else {
-                    return true;
-                }
-            },
+    public function nextLesson(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => LearningLesson::where('order', '>', $this->id)->orderBy('order', 'asc')->first()
         );
     }
 
@@ -125,6 +126,13 @@ class LearningLesson extends Model
     {
         return Attribute::make(
             get: fn () => $this->quizzes()?->first(),
+        );
+    }
+
+    public function topic(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->topics()?->first(),
         );
     }
 

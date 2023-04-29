@@ -141,7 +141,7 @@
                         <footer class="flex justify-center w-full p-4 mt-4">
                             <a type="button" href="{{localizeRoute('earn.learn', 'sw')}}"
                                class="inline-flex items-center gap-x-2 rounded-sm bg-labs-red px-3.5 py-2.5 text-sm xl:text-xl font-semibold text-white hover:text-black shadow-sm hover:bg-labs-red-light focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-labs-red-light">
-                                {{$snippets->learnMore}}
+                                {{$snippets->goToSwahili}}
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                      stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                     <path stroke-linecap="round" stroke-linejoin="round"
