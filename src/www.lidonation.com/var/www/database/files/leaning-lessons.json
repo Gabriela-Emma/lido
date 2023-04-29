@@ -1,0 +1,76 @@
+{
+    "snippets":[
+        {
+            "heading":"lesson",
+            "text_en":"Lesson",
+            "text_sw":"Somo"
+        },
+        {
+            "heading":"readInNewTab",
+            "text_en":" Read Article in new tab. Return to take quiz after you've read the article.",
+            "text_sw":"Soma Makala katika kichupo kipya kisha rudi kujaribu swali"
+        },
+        {
+            "heading":"quiz",
+            "text_en":"Quiz",
+            "text_sw":"Jaribio"
+        },
+        {
+            "heading":"gotIt",
+            "text_en":"You got it",
+            "text_sw":"Umepata"
+        },
+        {
+            "heading":"uIncorrect",
+            "text_en":"You're incorrect ",
+            "text_sw":"Umekosa"
+        },
+        {
+            "heading":"awarded",
+            "text_en":"Awarded",
+            "text_sw":"Tuzo"
+        },
+        {
+            "heading":"tryIn",
+            "text_en":"You can try again in",
+            "text_sw":"Waweza jaribu baada ya"
+        },
+        {
+            "heading":"hours",
+            "text_en":"hours",
+            "text_sw":"saa"
+        },
+        {
+            "heading":"minutes",
+            "text_en":"minutes",
+            "text_sw":"dakika"
+        },
+        {
+            "heading":"seconds",
+            "text_en":"seconds",
+            "text_sw":"sekunde"
+        },
+        {
+            "heading":"submit",
+            "text_en":"Submit",
+            "text_sw":"Wasilisha"
+        },
+        {
+            "heading":"quizUnlocksIn",
+            "text_en":"Quiz will unlock in",
+            "text_sw":"Jaribio litafunguka baada ya"
+        },
+        {
+            "heading":"welcomeBack",
+            "text_en":"Welcome back",
+            "text_sw":"Karibu"
+        },
+        {
+            "heading":"nextLessonStart",
+            "text_en":"Next lesson starts in",
+            "text_sw":"Somo lijalo litaanza baada ya"
+        }
+
+
+    ]
+}
