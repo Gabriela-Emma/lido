@@ -66,11 +66,12 @@ class LearningLesson extends Model
     {
         return Attribute::make(
             get: function () {
-                $answerResponse = AnswerResponse::where('quiz_id', $this->quiz?->id)
+                $reward = Reward::where('model_id', $this->id)
+                    ->where('model_type', $this::class)
                     ->where('user_id', auth()->user()->getAuthIdentifier())
                     ->first();
 
-                if (! $answerResponse instanceof AnswerResponse) {
+                if (! $reward instanceof Reward) {
                     return false;
                 } else {
                     return true;
