@@ -1,10 +1,10 @@
-<script lang="ts">
+<!-- <script lang="ts">
 import LayoutWithSidebar from "../Shared/LayoutWithSidebar.vue";
 
 export default {
     layout: LayoutWithSidebar
 };
-</script>
+</script> -->
 <template>
     <header class="flex justify-between items-center">
         <div>
