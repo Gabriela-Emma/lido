@@ -6,6 +6,7 @@ use App\Services\CardanoBlockfrostService;
 use Illuminate\Database\Eloquent\Builder;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\URL;
 use Laravel\Nova\Http\Requests\LensRequest;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Lenses\Lens;
@@ -25,14 +26,10 @@ class LidoDelegators extends Lens
      */
     public static function query(LensRequest $request, $query): Builder
     {
-        $poolId = config('cardano.pool.hash');
-        $delegatorsAddresses = app(CardanoBlockfrostService::class)
-            ->get('pools/'.$poolId.'/delegators', null)
-            ->collect()
-            ->pluck('address');
+        $lidoPoolId = config('cardano.pool.hash');
 
         return $request->withOrdering($request->withFilters(
-            $query->whereIn('wallet_stake_address', $delegatorsAddresses)
+            $query->where('active_pool_id', $lidoPoolId)
         ));
     }
 
@@ -44,6 +41,12 @@ class LidoDelegators extends Lens
      */
     public function fields(NovaRequest $request): array
     {
+        $network = config('cardano.network');
+        $cardanoScanUri = [
+                'mainnet' => 'https://cardanoscan.io/stakekey',
+                'preview' => 'https://preview.cardanoscan.io/stakekey'
+            ];
+
         return [
             ID::make(__('ID'), 'id')->sortable(),
 
@@ -52,6 +55,8 @@ class LidoDelegators extends Lens
 
             Text::make('Email')
                 ->sortable(),
+
+            URL::make('Cardanoscan Link', 'wallet_stake_address', fn ($value) => $cardanoScanUri[$network].'/'.$value)
         ];
     }
 
