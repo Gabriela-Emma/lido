@@ -37,6 +37,7 @@ order: number | null;
 completed?: boolean | null;
 retryAt?: any;
 nextLessonAt?: any;
+nextLesson?: App.DataTransferObjects.LearningLessonData | null;
 link?: string | null;
 quiz?: App.DataTransferObjects.QuizData | null;
 quizzes: Array<App.DataTransferObjects.QuizData> | null;
