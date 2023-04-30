@@ -1,16 +1,16 @@
 <template>
     <div class="bg-slate-100 login-form-wrapper">
-        <LoginForm :role="'earn/learn'"
-                    :showLogo="false" 
-                   :errors="errors" 
-                   @endpoint="setEndpoint($event)" 
-                   @setForm="getForm($event)" 
-                   @submit="submit"/>
+        <LoginForm :showLogo="false"
+                   :errors="errors"
+                   @success="router.get(`${usePage().props.base_url}/sw/earn/learn/modules`)"
+                   @endpoint="setEndpoint($event)"
+                   @setForm="getForm($event)"
+                   @submit="submit" />
     </div>
 </template>
 
 <script lang="ts" setup>
-import { useForm } from "@inertiajs/vue3";
+import { useForm, router } from "@inertiajs/vue3";
 import { ref } from "vue";
 import LoginForm from "../../global/Shared/Components/LoginForm.vue";
 

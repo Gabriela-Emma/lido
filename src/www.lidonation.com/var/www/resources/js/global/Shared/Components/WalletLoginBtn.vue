@@ -72,7 +72,8 @@ let loginUser = async () => {
         );
         emit('walletLoginSuccessful', user);
     } catch (e: AxiosError | any) {
-        emit('walletError', e.response.data);
+        console.log(e);
+        emit('walletError', 'error connecting with wallet');
     }
 }
 </script>
