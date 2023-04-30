@@ -19,6 +19,15 @@ export type AssetMetaData = {
 logo: string | null;
 ticker: string | null;
 };
+export type LearnerData = {
+name: string | null;
+wallet_address?: string | null;
+email: string | null;
+stake_address?: string | null;
+nextLessonAt?: any;
+nextLesson?: any;
+retry_at?: any;
+};
 export type LearningAttemptData = {
 retryAt?: any;
 nextLessonAt?: any;
