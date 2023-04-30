@@ -18,6 +18,7 @@ use App\Http\Controllers\StripeController;
 use App\Http\Controllers\TaxonomyController;
 use App\Http\Controllers\TwitterAttendanceController;
 use App\Http\Controllers\VerifyWalletController;
+use App\Http\Controllers\WalletLoginController;
 use App\Http\Livewire\ContributeContent\ContributeContent;
 use App\Http\Livewire\ContributeContent\ContributeRecordingComponent;
 use App\Http\Livewire\ContributeContent\ContributeTranslation;
@@ -387,7 +388,8 @@ Route::group(
     });
 });
 
-// Wallet Validation
+// Wallet
+Route::post('/wallet-login', [WalletLoginController::class, 'login']);
 Route::prefix('validate-wallet')->group(function () {
     Route::post('/start',
         [VerifyWalletController::class, 'getValidationAddress'])

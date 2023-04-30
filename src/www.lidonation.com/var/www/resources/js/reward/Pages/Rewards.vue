@@ -208,11 +208,13 @@
                             <div class="mt-2 flex flex-col gap-6 bg-white/[.92] py-5 px-8">
                                 <div v-show="walletError.length>0" v-text="walletError"
                                      class="text-red-500 w-96 text-sm my-1"></div>
-                                <WalletLoginBtnVue :role="'reward'"
+                                <WalletLoginBtnVue role="reward"
+                                                   redirect="rewards"
                                                    @walletError="handleWalletError($event)"
+                                                   @walletLoginSuccessful="refresh"
                                                    @user="setUser($event)"/>
                                 <div>
-                                    <Divider/>
+                                    <Divider />
                                 </div>
 
                                 <div class="text-slate-800">
@@ -280,6 +282,7 @@ let walletError = ref('');
 let handleWalletError = (error) => {
     walletError.value = error.message;
 }
+
 
 //get loggedin user
 let setUser = (userData) => {
