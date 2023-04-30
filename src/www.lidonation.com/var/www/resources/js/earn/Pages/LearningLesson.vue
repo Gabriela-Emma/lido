@@ -1,5 +1,6 @@
 <script lang="ts">
 import LayoutWithSidebar from "../Shared/LayoutWithSidebar.vue";
+import App from "@inertiajs/vue3/types/app";
 
 export default {
     layout: LayoutWithSidebar
@@ -226,8 +227,10 @@ import moment from "moment-timezone";
 import LearningLessonData = App.DataTransferObjects.LearningLessonData;
 import AnswerResponseData = App.DataTransferObjects.AnswerResponseData;
 import RewardData = App.DataTransferObjects.RewardData;
+import LearnerData = App.DataTransferObjects.LearnerData;
 import {useWalletStore} from "../../catalyst-explorer/stores/wallet-store";
 import Wallet from '../../catalyst-explorer/models/wallet';
+
 
 const $utils: any = inject('$utils');
 const user = computed(() => usePage().props.user as User)
@@ -239,6 +242,7 @@ const props = withDefaults(
         nextLessonAt: string,
         lesson: LearningLessonData
         reward: RewardData
+        learnerData:LearnerData
     }>(), {});
 
 let answerResponseStore = useAnswerResponseStore();
