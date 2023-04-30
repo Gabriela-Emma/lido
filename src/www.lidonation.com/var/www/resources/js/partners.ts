@@ -45,7 +45,7 @@ Alpine.data('lidoPartners', function () {
 
         async walletLogin(walletName: string) {
             try {
-                const user = await walletLogin(walletName, this.stakeAddr, undefined, 'partner');
+                const user = await walletLogin(walletName, this.stakeAddr);
                 if (!!user) {
                     location.reload();
                 }
