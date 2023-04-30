@@ -2,17 +2,19 @@
 
 namespace App\Models;
 
-use App\DataTransferObjects\LearningTopicData;
-use App\Models\Traits\HasAuthor;
 use App\Models\Traits\HasHero;
-use App\Models\Traits\HasLocaleUrl;
+use App\Models\Traits\HasAuthor;
+use App\Scopes\OrderByOrderScope;
 use App\Models\Traits\HasMetaData;
+use App\Models\Traits\HasLocaleUrl;
 use App\Models\Traits\HasTranslations;
+use Spatie\LaravelData\DataCollection;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use App\DataTransferObjects\LearningTopicData;
+use Attribute as GlobalAttribute;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Spatie\LaravelData\DataCollection;
 
 class LearningTopic extends Model
 {
@@ -63,5 +65,30 @@ class LearningTopic extends Model
     public function lessons(): BelongsToMany
     {
         return $this->learningLessons();
+    }
+
+    public function topicAvailable(): Attribute
+    {
+        return Attribute::make(
+            get: function() {
+                $topicsBefore = LearningTopic::where('order', '<', $this->order)->get();
+                $incompleteLessons = $topicsBefore->flatMap(function ($topic) {
+                    return $topic->lessons()->get()->reject(function ($lesson) {
+                        return $lesson->completed;
+                    });
+                });
+                return $incompleteLessons->isEmpty();
+            }
+        );
+    }
+        /**
+     * The "booted" method of the model.
+     *
+     * @return void
+     */
+    protected static function booted()
+    {
+        parent::booted();
+        static::addGlobalScope(new OrderByOrderScope);
     }
 }
