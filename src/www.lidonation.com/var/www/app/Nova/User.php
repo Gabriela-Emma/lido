@@ -4,6 +4,7 @@ namespace App\Nova;
 
 use App\Nova\Actions\AddMetaData;
 use App\Nova\Actions\EditMetaData;
+use App\Nova\Actions\FetchDelegation;
 use App\Nova\Actions\PopulatePaymentAddress;
 use App\Nova\Lenses\LidoDelegators;
 use Ebess\AdvancedNovaMediaLibrary\Fields\Images;
@@ -190,6 +191,7 @@ class User extends Resource
             (new AddMetaData),
             (new EditMetaData(\App\Models\User::class)),
             (new PopulatePaymentAddress)->confirmText('Check skip, to skip updating wallet_address field on models that already have one!'),
+            (new FetchDelegation),
         ];
     }
 
