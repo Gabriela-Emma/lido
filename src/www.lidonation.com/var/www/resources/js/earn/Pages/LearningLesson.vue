@@ -1,6 +1,5 @@
 <script lang="ts">
 import LayoutWithSidebar from "../Shared/LayoutWithSidebar.vue";
-import App from "@inertiajs/vue3/types/app";
 
 export default {
     layout: LayoutWithSidebar
