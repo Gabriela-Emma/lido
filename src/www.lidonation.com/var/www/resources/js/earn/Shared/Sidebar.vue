@@ -1,5 +1,5 @@
 <template>
-    <section class="w-full flex flex-col gap-8 sticky top-1">
+    <section class="w-full flex flex-col gap-8 sticky  top-1">
         <div class="border-labs-red border-8 rounded-sm p-4 flex flex-col gap-2">
             <div class="text-sm">{{$t('welcomeBack')}} <b class="text-labs-black">{{ user.name }}</b></div>
             <div class="flex flex-row flex-wrap gap-3 text-xs 2xl:text-sm">
