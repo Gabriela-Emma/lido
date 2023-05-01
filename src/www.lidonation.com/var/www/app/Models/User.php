@@ -97,8 +97,10 @@ class User extends Authenticatable implements HasMedia, Interfaces\IHasMetaData,
      */
     protected $appends = [
         'profile_photo_url',
-        'getNextLessonAttribute',
-        'getNextLessonAtAttribute'
+        'next_lesson',
+        'next_lesson_at',
+        'total_reward_sum',
+        'available_rewards'
 
     ];
 
@@ -199,14 +201,16 @@ class User extends Authenticatable implements HasMedia, Interfaces\IHasMetaData,
         return "https://www.gravatar.com/avatar/$hash?d=identicon&r=r";
     }
 
-    public function getNextLessonAttribute(): ?LearningLesson
+    public function nextLesson(): Attribute
     {
-        return $this->last_learning_attempt->learning->next_lesson;
+        return Attribute::make(
+            get: fn () => $this->last_learning_attempt?->learning?->next_lesson
+        );
     }
-
-    public function getNextLessonAtAttribute(): ?string
+    public function nextLessonAt(): Attribute
     {
-    
+        return Attribute::make(
+            get: function () {
                 return Carbon::make(
                     $this->last_learning_attempt
                         ?->created_at
@@ -214,9 +218,26 @@ class User extends Authenticatable implements HasMedia, Interfaces\IHasMetaData,
                         ->addDay()
                         ->toAtomString()
                 )?->utc()?->toAtomString();
+            }
+        );
+    }
 
-        
-    
+    public function totalRewardSum(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->rewards()
+                                    ->where('model_type', LearningLesson::class)
+                                    ->sum('amount')
+        );
+    }
+
+    public function availableRewards(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->rewards()
+                            ->where('status', 'issued')
+                            ->orderBy('created_at', 'desc')->get()
+        );
     }
 
     public function follows(CatalystUser|int $catalystUser): bool
