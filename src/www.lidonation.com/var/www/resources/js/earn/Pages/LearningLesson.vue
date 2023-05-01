@@ -227,10 +227,8 @@ import moment from "moment-timezone";
 import LearningLessonData = App.DataTransferObjects.LearningLessonData;
 import AnswerResponseData = App.DataTransferObjects.AnswerResponseData;
 import RewardData = App.DataTransferObjects.RewardData;
-import LearnerData = App.DataTransferObjects.LearnerData;
 import {useWalletStore} from "../../catalyst-explorer/stores/wallet-store";
 import Wallet from '../../catalyst-explorer/models/wallet';
-
 
 const $utils: any = inject('$utils');
 const user = computed(() => usePage().props.user as User)
