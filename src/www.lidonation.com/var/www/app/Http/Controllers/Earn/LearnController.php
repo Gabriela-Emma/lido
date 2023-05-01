@@ -146,6 +146,12 @@ class LearnController extends Controller
 
     public function learnerData(Request $request)
     {
-        return LearnerData::from($request->user());
+        return LearnerData::from($request->user()
+            ->setAppends([
+                'next_lesson',
+                'next_lesson_at',
+                'total_reward_sum',
+                'available_rewards'
+            ])->toArray());
     }
 }

@@ -242,7 +242,6 @@ const props = withDefaults(
         nextLessonAt: string,
         lesson: LearningLessonData
         reward: RewardData
-        learnerData:LearnerData
     }>(), {});
 
 let answerResponseStore = useAnswerResponseStore();
