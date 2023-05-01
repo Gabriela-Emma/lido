@@ -272,13 +272,14 @@ Route::prefix('catalyst-explorer')->as('catalystExplorerApi.')
         Route::middleware([
             'auth:sanctum',
         ])->prefix('/learn')->group(function () {
-            Route::get('next-lesson-at', fn () => auth()?->user()?->next_lesson_at);
-            Route::get(
-                'rewards/sum',
-                fn () => auth()?->user()?->rewards()
-                    ->where('model_type', LearningLesson::class)
-                    ->sum('amount')
-            );
+            Route::get('/learner-data', [LearnController::class, 'learnerData']);
+        //     Route::get('next-lesson-at', fn () => auth()?->user()?->next_lesson_at);
+        //     Route::get(
+        //         'rewards/sum',
+        //         fn () => auth()?->user()?->rewards()
+        //             ->where('model_type', LearningLesson::class)
+        //             ->sum('amount')
+        //     );
         });
 
     });

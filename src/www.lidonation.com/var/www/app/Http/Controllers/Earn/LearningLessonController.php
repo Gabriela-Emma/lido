@@ -56,6 +56,7 @@ class LearningLessonController extends Controller
      */
     public function show(Request $request, LearningLesson $learningLesson)
     {
+        $user = $request->user();
 
         $learningLesson->load(['model', 'quizzes.questions.answers', 'topics', 'topics.learningModules']);
         if ($learningLesson->model?->content) {
@@ -66,12 +67,12 @@ class LearningLessonController extends Controller
         }
 
         $userResponses = AnswerResponse::with(['quiz', 'question.answers', 'answer'])
-            ->where('user_id', $request->user()?->id)
+            ->where('user_id', $user?->id)
             ->where('quiz_id', $learningLesson->quiz?->id)
             ->get();
 
         $reward = $learningLesson->rewards()
-            ->where('user_id', $request->user()?->id)
+            ->where('user_id', $user->id)
             ->first();
 
         $module = $learningLesson->firstModule;
@@ -89,7 +90,7 @@ class LearningLessonController extends Controller
         }
 
         return Inertia::render('LearningLesson', [
-            'nextLessonAt' => $request->user()?->next_lesson_at,
+            'nextLessonAt' => $user?->next_lesson_at,
             'lesson' => LearningLessonData::from($learningLesson),
             'userResponses' => AnswerResponseData::collection($userResponses),
             'reward' => isset($reward) ? RewardData::from($reward) : null,

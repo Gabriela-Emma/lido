@@ -69,7 +69,7 @@ class LearningLesson extends Model
             get: fn () => LearningAttempt::where([
                 'learning_lesson_id' => $this->id,
                 'status' => LearningAttemptStatuses::COMPLETED,
-                'user_id' => auth()->user()->getAuthIdentifier(),
+                'user_id' => auth()?->user()?->getAuthIdentifier(),
             ])->count() > 0
         );
     }
@@ -77,7 +77,7 @@ class LearningLesson extends Model
     public function nextLesson(): Attribute
     {
         return Attribute::make(
-            get: fn () => LearningLesson::where('order', '>', $this->id)->orderBy('order', 'asc')->first()
+            get: fn () => LearningLesson::where('order', '>', $this->order)->orderBy('order', 'asc')->first()
         );
     }
 
@@ -88,13 +88,13 @@ class LearningLesson extends Model
             get: function () {
                 // get the latest response for lesson related by current user
                 $lastResponse = AnswerResponse::where('quiz_id', $this->quiz?->id)
-                    ->where('user_id', auth()->user()->getAuthIdentifier())
+                    ->where('user_id', auth()?->user()?->getAuthIdentifier())
                     ->whereDate('created_at', '=', Carbon::now()->startOfDay())
                     ->orderBy('created_at', 'desc')
                     ->first();
 
                 $q = AnswerResponse::where('quiz_id', $this->quiz?->id)
-                    ->where('user_id', auth()->user()->getAuthIdentifier())
+                    ->where('user_id', auth()?->user()?->getAuthIdentifier())
                     ->whereDate('created_at', '=', Carbon::now()->startOfDay())
                     ->orderBy('created_at', 'desc');
 

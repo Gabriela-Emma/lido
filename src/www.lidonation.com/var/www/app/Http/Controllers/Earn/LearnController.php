@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Earn;
 
+use App\DataTransferObjects\LearnerData;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -141,5 +142,10 @@ class LearnController extends Controller
                 'model_type' => 'App\Models\User',
                 'model_id' => $user->id,
             ]);
+    }
+
+    public function learnerData(Request $request)
+    {
+        return LearnerData::from($request->user());
     }
 }

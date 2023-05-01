@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Casts\NRTFilter;
+use App\DataTransferObjects\LearningLessonData;
 use App\Models\Traits\HasCatalystProfiles;
 use App\Models\Traits\HasGravatar;
 use App\Models\Traits\HasMetaData;
@@ -84,6 +85,7 @@ class User extends Authenticatable implements HasMedia, Interfaces\IHasMetaData,
     protected $casts = [
         'email_verified_at' => 'datetime',
         'what_filter' => 'json',
+        'nextLesson' => LearningLessonData::class,
         //        'what_filter' => NRTFilter::class
     ];
 
@@ -94,6 +96,11 @@ class User extends Authenticatable implements HasMedia, Interfaces\IHasMetaData,
      */
     protected $appends = [
         'profile_photo_url',
+//        'next_lesson',
+//        'next_lesson_at',
+//        'total_reward_sum',
+//        'available_rewards',
+
     ];
 
     public function getFacebookLinkAttribute(): ?string
@@ -196,7 +203,7 @@ class User extends Authenticatable implements HasMedia, Interfaces\IHasMetaData,
     public function nextLesson(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->last_learning_attempt->learning->next_lesson
+            get: fn () => $this->last_learning_attempt?->learning?->next_lesson
         );
     }
 
@@ -211,8 +218,25 @@ class User extends Authenticatable implements HasMedia, Interfaces\IHasMetaData,
                         ->addDay()
                         ->toAtomString()
                 )?->utc()?->toAtomString();
-
             }
+        );
+    }
+
+    public function totalRewardSum(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->rewards()
+                                    ->where('model_type', LearningLesson::class)
+                                    ->sum('amount')
+        );
+    }
+
+    public function availableRewards(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->rewards()
+                            ->where('status', 'issued')
+                            ->orderBy('created_at', 'desc')->get()
         );
     }
 
