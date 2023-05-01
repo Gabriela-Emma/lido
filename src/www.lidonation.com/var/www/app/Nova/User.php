@@ -7,6 +7,7 @@ use App\Nova\Actions\EditMetaData;
 use App\Nova\Actions\FetchDelegation;
 use App\Nova\Actions\PopulatePaymentAddress;
 use App\Nova\Lenses\LidoDelegators;
+use App\Nova\Metrics\Delegation;
 use Ebess\AdvancedNovaMediaLibrary\Fields\Images;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -159,7 +160,9 @@ class User extends Resource
      */
     public function cards(Request $request)
     {
-        return [];
+        return [
+            new Delegation()
+        ];
     }
 
     /**
