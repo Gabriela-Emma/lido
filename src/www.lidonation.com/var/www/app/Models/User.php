@@ -97,10 +97,10 @@ class User extends Authenticatable implements HasMedia, Interfaces\IHasMetaData,
      */
     protected $appends = [
         'profile_photo_url',
-        'next_lesson',
-        'next_lesson_at',
-        'total_reward_sum',
-        'available_rewards'
+        // 'next_lesson',
+        // 'next_lesson_at',
+        // 'total_reward_sum',
+        // 'available_rewards'
 
     ];
 
