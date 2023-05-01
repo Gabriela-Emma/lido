@@ -26,32 +26,39 @@
     </section>
 </template>
 <script setup lang="ts">
-import {computed, inject, ref} from "vue";
+import {Ref, computed, inject, ref,watch} from "vue";
 import {usePage} from "@inertiajs/vue3";
 import User from "../../global/Shared/Models/user";
 import Countdown from "../../global/Shared/Components/countdown";
 import moment from "moment-timezone";
 import axios from "axios";
+import { useLearnerDataStore } from "../store/learner-data-store";
+import LearnerData = App.DataTransferObjects.LearnerData
+import { storeToRefs } from "pinia";
+
 
 const user = computed(() => usePage().props.user as User);
 const $utils: any = inject('$utils');
 let locale = computed(() => usePage().props.locale);
 
-let nextLessonAt = ref(null);
-axios.get(`${usePage().props.base_url}/api/earn/learn/next-lesson-at`)
-    .then((res) => {
-        if (res && res?.data) {
-            const nextRetry = moment(res?.data).tz('Africa/Nairobi')
-                .diff(
-                    moment().tz('Africa/Nairobi')
-                );
-            if (nextRetry > 0) {
-                nextLessonAt.value = nextRetry;
-            }
-        }
-    });
+let learnerDataStore = useLearnerDataStore();
+learnerDataStore.getLearnerData();
+const {learnerData}  = storeToRefs(learnerDataStore);
 
+let nextLessonAt=ref(null);
 let totalEarned = ref(null);
-axios.get(`${usePage().props.base_url}/api/earn/learn/rewards/sum`)
-    .then((res) => totalEarned.value = res?.data ? res?.data / 1000000 : 0);
+watch(learnerData, (newValue) => {
+    if (learnerData.value?.nextLessonAt) {
+        const nextRetry = moment(learnerData.value?.nextLessonAt).tz('Africa/Nairobi')
+            .diff(
+                moment().tz('Africa/Nairobi')
+            );
+        if (nextRetry > 0) {
+            nextLessonAt.value = nextRetry;
+    }
+    }
+
+    totalEarned.value = learnerData.value?.totalRewardSum ? learnerData.value?.totalRewardSum  / 1000000 : 0
+})
+
 </script>

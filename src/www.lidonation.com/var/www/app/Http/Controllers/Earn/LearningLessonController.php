@@ -90,11 +90,9 @@ class LearningLessonController extends Controller
                 ['name' => $module->title, 'link' => route('earn.learn.modules.view', $module->slug)],
             ]);
         }
-        dd( UserData::from($user));
 
 
         return Inertia::render('LearningLesson', [
-            'learnerData' => UserData::from($user),
             'nextLessonAt' => $user?->next_lesson_at,
             'lesson' => LearningLessonData::from($learningLesson),
             'userResponses' => AnswerResponseData::collection($userResponses),
