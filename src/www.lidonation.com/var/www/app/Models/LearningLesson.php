@@ -69,7 +69,7 @@ class LearningLesson extends Model
             get: fn () => LearningAttempt::where([
                 'learning_lesson_id' => $this->id,
                 'status' => LearningAttemptStatuses::COMPLETED,
-                'user_id' => auth()->user()->getAuthIdentifier(),
+                'user_id' => auth()?->user()?->getAuthIdentifier(),
             ])->count() > 0
         );
     }
@@ -88,13 +88,13 @@ class LearningLesson extends Model
             get: function () {
                 // get the latest response for lesson related by current user
                 $lastResponse = AnswerResponse::where('quiz_id', $this->quiz?->id)
-                    ->where('user_id', auth()->user()->getAuthIdentifier())
+                    ->where('user_id', auth()?->user()?->getAuthIdentifier())
                     ->whereDate('created_at', '=', Carbon::now()->startOfDay())
                     ->orderBy('created_at', 'desc')
                     ->first();
 
                 $q = AnswerResponse::where('quiz_id', $this->quiz?->id)
-                    ->where('user_id', auth()->user()->getAuthIdentifier())
+                    ->where('user_id', auth()?->user()?->getAuthIdentifier())
                     ->whereDate('created_at', '=', Carbon::now()->startOfDay())
                     ->orderBy('created_at', 'desc');
 

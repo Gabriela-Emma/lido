@@ -2,12 +2,12 @@
 
 namespace App\DataTransferObjects;
 
+use Spatie\LaravelData\Attributes\DataCollectionOf;
+use Spatie\LaravelData\Attributes\MapOutputName;
 use Spatie\LaravelData\Data;
 use Spatie\LaravelData\DataCollection;
-use Spatie\LaravelData\Attributes\MapOutputName;
-use Spatie\LaravelData\Attributes\DataCollectionOf;
-use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 use Spatie\TypeScriptTransformer\Attributes\Optional as TypeScriptOptional;
+use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
 #[TypeScript]
 class LearnerData extends Data
@@ -21,7 +21,7 @@ class LearnerData extends Data
       public ?string $email,
 
       #[TypeScriptOptional]
-      public ?string $stake_address, 
+      public ?string $stake_address,
 
       #[TypeScriptOptional]
       #[MapOutputName('nextLessonAt')]
@@ -40,6 +40,6 @@ class LearnerData extends Data
       #[DataCollectionOf(RewardData::class)]
       public ?DataCollection $available_rewards,
 
-
-    ) {}
+    ) {
+    }
 }

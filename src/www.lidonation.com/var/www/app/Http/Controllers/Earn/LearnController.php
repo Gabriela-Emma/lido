@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers\Earn;
 
+use App\DataTransferObjects\LearnerData;
+use App\Http\Controllers\Controller;
 use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Fluent;
 use Inertia\Inertia;
 use Inertia\Response;
-use Illuminate\Http\Request;
-use Illuminate\Support\Fluent;
-use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use App\DataTransferObjects\LearnerData;
 
 class LearnController extends Controller
 {
