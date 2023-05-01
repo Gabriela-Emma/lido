@@ -2,8 +2,8 @@
 
 namespace App\Jobs;
 
-use App\Services\CardanoBlockfrostService;
 use App\Models\User;
+use App\Services\CardanoBlockfrostService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
