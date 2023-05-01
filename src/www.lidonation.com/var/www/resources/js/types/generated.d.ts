@@ -19,15 +19,6 @@ export type AssetMetaData = {
 logo: string | null;
 ticker: string | null;
 };
-export type LearnerData = {
-name: string | null;
-wallet_address?: string | null;
-email: string | null;
-stake_address?: string | null;
-nextLessonAt?: any;
-nextLesson?: any;
-retry_at?: any;
-};
 export type LearningAttemptData = {
 retryAt?: any;
 nextLessonAt?: any;
@@ -116,5 +107,14 @@ asset_type?: string | null;
 status: string | null;
 asset_details?: App.DataTransferObjects.AssetDetailsData | null;
 memo: string | null;
+};
+export type UserData = {
+name: string | null;
+wallet_address?: string | null;
+email: string | null;
+stake_address: string | null;
+next_lesson_at: string | null;
+nextLesson?: App.DataTransferObjects.LearningLessonData | null;
+retry_at: string | null;
 };
 }
