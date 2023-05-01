@@ -1,6 +1,5 @@
 <script lang="ts">
 import LayoutWithSidebar from "../Shared/LayoutWithSidebar.vue";
-import App from "@inertiajs/vue3/types/app";
 
 export default {
     layout: LayoutWithSidebar
@@ -227,10 +226,8 @@ import moment from "moment-timezone";
 import LearningLessonData = App.DataTransferObjects.LearningLessonData;
 import AnswerResponseData = App.DataTransferObjects.AnswerResponseData;
 import RewardData = App.DataTransferObjects.RewardData;
-import LearnerData = App.DataTransferObjects.LearnerData;
 import {useWalletStore} from "../../catalyst-explorer/stores/wallet-store";
 import Wallet from '../../catalyst-explorer/models/wallet';
-
 
 const $utils: any = inject('$utils');
 const user = computed(() => usePage().props.user as User)
@@ -267,10 +264,12 @@ let nextLessonAt = computed(() => {
     return null
 });
 
-
 let userLatestResponse = computed(() => {
     //filter out responses older than midnight previous day East Africa Time
     const responses = [...props.userResponses].filter((response) => {
+        if (response.correct) {
+            return true;
+        }
 
         const lastAttempt = moment(response.createdAt)
             .tz('Africa/Nairobi')
@@ -331,6 +330,7 @@ let walletStore = useWalletStore();
 let {walletData} = storeToRefs(walletStore);
 let myWallet: Ref<Wallet> = computed(() => walletData.value);
 
+console.log('userLatestResponse::', userLatestResponse.value);
 
 function submit() {
     submitted.value = true;
