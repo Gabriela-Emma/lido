@@ -2,21 +2,22 @@
 
 namespace App\Http\Controllers\Earn;
 
-use App\DataTransferObjects\AnswerResponseData;
-use App\DataTransferObjects\LearnerData;
-use App\DataTransferObjects\LearningLessonData;
-use App\DataTransferObjects\RewardData;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreLearningLessonRequest;
-use App\Http\Requests\UpdateLearningLessonRequest;
+use Inertia\Inertia;
+use Illuminate\Http\Request;
+use App\Models\LearningTopic;
+use Illuminate\Http\Response;
 use App\Models\AnswerResponse;
 use App\Models\LearningLesson;
-use App\Models\LearningTopic;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Inertia\Inertia;
-use Spatie\LaravelMarkdown\MarkdownRenderer;
+use App\Http\Controllers\Controller;
+use App\DataTransferObjects\UserData;
+use App\DataTransferObjects\RewardData;
+use App\DataTransferObjects\LearnerData;
 use Webwizo\Shortcodes\Facades\Shortcode;
+use Spatie\LaravelMarkdown\MarkdownRenderer;
+use App\DataTransferObjects\AnswerResponseData;
+use App\DataTransferObjects\LearningLessonData;
+use App\Http\Requests\StoreLearningLessonRequest;
+use App\Http\Requests\UpdateLearningLessonRequest;
 
 class LearningLessonController extends Controller
 {
@@ -89,10 +90,11 @@ class LearningLessonController extends Controller
                 ['name' => $module->title, 'link' => route('earn.learn.modules.view', $module->slug)],
             ]);
         }
+        dd( UserData::from($user));
 
 
         return Inertia::render('LearningLesson', [
-            'learnerData' => LearnerData::from($user),
+            'learnerData' => UserData::from($user),
             'nextLessonAt' => $user?->next_lesson_at,
             'lesson' => LearningLessonData::from($learningLesson),
             'userResponses' => AnswerResponseData::collection($userResponses),

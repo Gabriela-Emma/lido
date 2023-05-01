@@ -77,7 +77,7 @@ class LearningLesson extends Model
     public function nextLesson(): Attribute
     {
         return Attribute::make(
-            get: fn () => LearningLesson::where('order', '>', $this->id)->orderBy('order', 'asc')->first()
+            get: fn () => LearningLesson::where('order', '>', $this->order)->orderBy('order', 'asc')->first()
         );
     }
 

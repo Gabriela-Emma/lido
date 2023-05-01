@@ -227,7 +227,7 @@ import moment from "moment-timezone";
 import LearningLessonData = App.DataTransferObjects.LearningLessonData;
 import AnswerResponseData = App.DataTransferObjects.AnswerResponseData;
 import RewardData = App.DataTransferObjects.RewardData;
-import LearnerData = App.DataTransferObjects.LearnerData;
+import LearnerData = App.DataTransferObjects.UserData;
 import {useWalletStore} from "../../catalyst-explorer/stores/wallet-store";
 import Wallet from '../../catalyst-explorer/models/wallet';
 

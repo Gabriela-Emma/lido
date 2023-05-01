@@ -3,34 +3,36 @@
 namespace App\Models;
 
 use App\Casts\NRTFilter;
-use App\Models\Traits\HasCatalystProfiles;
+use Illuminate\Support\Str;
+use App\Models\LearningLesson;
+use Illuminate\Support\Carbon;
+use Laravel\Jetstream\HasTeams;
+use Spatie\Image\Manipulations;
+use App\Models\Traits\HasPromos;
+use Laravel\Sanctum\HasApiTokens;
+use Spatie\MediaLibrary\HasMedia;
 use App\Models\Traits\HasGravatar;
 use App\Models\Traits\HasMetaData;
-use App\Models\Traits\HasPromos;
+use Illuminate\Support\Collection;
+use Laravel\Jetstream\HasProfilePhoto;
+use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Notifications\Notifiable;
 use GuzzleHttp\Exception\GuzzleException;
+use App\Models\Traits\HasCatalystProfiles;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Laravel\Fortify\TwoFactorAuthenticatable;
+use App\DataTransferObjects\LearningLessonData;
 use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Staudenmeir\EloquentHasManyDeep\HasRelationships;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Carbon;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Str;
-use Laravel\Fortify\TwoFactorAuthenticatable;
-use Laravel\Jetstream\HasProfilePhoto;
-use Laravel\Jetstream\HasTeams;
-use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Spatie\Comments\Models\Concerns\InteractsWithComments;
 use Spatie\Comments\Models\Concerns\Interfaces\CanComment;
-use Spatie\Image\Manipulations;
-use Spatie\MediaLibrary\HasMedia;
-use Spatie\MediaLibrary\InteractsWithMedia;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
-use Spatie\Permission\Traits\HasRoles;
-use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 use Staudenmeir\EloquentJsonRelations\HasJsonRelationships;
 
 class User extends Authenticatable implements HasMedia, Interfaces\IHasMetaData, CanComment, CanResetPassword
@@ -84,6 +86,7 @@ class User extends Authenticatable implements HasMedia, Interfaces\IHasMetaData,
     protected $casts = [
         'email_verified_at' => 'datetime',
         'what_filter' => 'json',
+        'nextLesson' => LearningLessonData::class
         //        'what_filter' => NRTFilter::class
     ];
 
@@ -94,6 +97,9 @@ class User extends Authenticatable implements HasMedia, Interfaces\IHasMetaData,
      */
     protected $appends = [
         'profile_photo_url',
+        'getNextLessonAttribute',
+        'getNextLessonAtAttribute'
+
     ];
 
     public function getFacebookLinkAttribute(): ?string
@@ -193,17 +199,14 @@ class User extends Authenticatable implements HasMedia, Interfaces\IHasMetaData,
         return "https://www.gravatar.com/avatar/$hash?d=identicon&r=r";
     }
 
-    public function nextLesson(): Attribute
+    public function getNextLessonAttribute(): ?LearningLesson
     {
-        return Attribute::make(
-            get: fn () => $this->last_learning_attempt->learning->next_lesson
-        );
+        return $this->last_learning_attempt->learning->next_lesson;
     }
 
-    public function nextLessonAt(): Attribute
+    public function getNextLessonAtAttribute(): ?string
     {
-        return Attribute::make(
-            get: function () {
+    
                 return Carbon::make(
                     $this->last_learning_attempt
                         ?->created_at
@@ -212,8 +215,8 @@ class User extends Authenticatable implements HasMedia, Interfaces\IHasMetaData,
                         ->toAtomString()
                 )?->utc()?->toAtomString();
 
-            }
-        );
+        
+    
     }
 
     public function follows(CatalystUser|int $catalystUser): bool
