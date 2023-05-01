@@ -19,6 +19,16 @@ export type AssetMetaData = {
 logo: string | null;
 ticker: string | null;
 };
+export type LearnerData = {
+name: string | null;
+wallet_address?: string | null;
+email: string | null;
+stake_address?: string | null;
+nextLessonAt?: string | null;
+nextLesson?: App.DataTransferObjects.LearningLessonData | null;
+totalRewardSum?: number | null;
+availableRewards?: Array<App.DataTransferObjects.RewardData> | null;
+};
 export type LearningAttemptData = {
 retryAt?: any;
 nextLessonAt?: any;
