@@ -9,6 +9,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 
 class FetchUserDelegationJob implements ShouldQueue
 {
@@ -36,10 +37,14 @@ class FetchUserDelegationJob implements ShouldQueue
         $userAccDetails = app(CardanoBlockfrostService::class)
             ->get('accounts/'.$user->wallet_stake_address, null)
             ->collect();
-
-        if ($userAccDetails['active']) {
-            $user->active_pool_id = $userAccDetails['pool_id'];
-            $user->save();
+        try {
+            if ($userAccDetails['active'] == true) {
+                $user->active_pool_id = $userAccDetails['pool_id'];
+                $user->save();
+            }
+        } catch (\Throwable $th) {
+            Log::info("Not an active account");
         }
+        
     }
 }
