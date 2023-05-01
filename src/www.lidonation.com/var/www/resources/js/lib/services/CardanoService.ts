@@ -1,7 +1,6 @@
 // @ts-nocheck
-import WalletService, {NetworkMainnet, NetworkTestnet} from "./WalletService";
-import {Memoize} from "typescript-memoize";
-import { reject, some } from "lodash";
+import WalletService from "./WalletService";
+import {reject, some} from "lodash";
 import BlockfrostKeysService from "./BlockfrostKeysService";
 
 const axios = require('axios').default;
@@ -54,20 +53,19 @@ export default class CardanoService {
             return null;
         }
         return (await this.api.get(`/addresses/${walletAddress}`))?.data.stake_address;
-    }   
+    }
 
     public async getHandle(stakeAddress: string) {
         await this.init();
-        if(stakeAddress){
+        if (stakeAddress) {
             try {
                 let asset = (await this.api.get(`/accounts/${stakeAddress}/addresses/assets`))?.data?.[0]?.unit
-                if(!asset){
-                    return;
+                if (!asset) {
+                    return null;
                 }
-                let assetName = (await this.api.get(`/assets/${asset}`))?.data.onchain_metadata?.files?.[0]?.name
-                return assetName;
+                return (await this.api.get(`/assets/${asset}`))?.data.onchain_metadata?.files?.[0]?.name;
             } catch (error) {
-                return;
+                return null;
             }
 
         }
@@ -76,10 +74,10 @@ export default class CardanoService {
     public async getPoolBlocks() {
         await this.init();
         const upcomingBlocks = [
-        //     {
-        //         slot: 69334598,
-        //         date: (new Date('08/19/2022 09:21:29 UTC')).toLocaleString()
-        //     },
+            //     {
+            //         slot: 69334598,
+            //         date: (new Date('08/19/2022 09:21:29 UTC')).toLocaleString()
+            //     },
             // {
             //     slot: 68820020,
             //     date: (new Date('08/13/2022 10:25:11 UTC')).toLocaleString()

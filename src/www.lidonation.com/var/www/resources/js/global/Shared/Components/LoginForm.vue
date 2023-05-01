@@ -15,11 +15,14 @@
 
                 <div>
                     <div class=" flex justify-start mb-2" v-show="forRewards==false">
-                        <h1 class="text-2xl lg:text-3xl 2xl:text-5xl 3xl:text-6xl font-semibold text-slate-700"> {{ $t("Login") }} </h1>
+                        <h1 class="text-2xl lg:text-3xl 2xl:text-5xl 3xl:text-6xl font-semibold text-slate-700">
+                            {{ $t("Login") }} </h1>
                     </div>
 
                     <div class="mb-2">
-                        <label for="email" class="block text-sm font-medium text-slate-700">{{ $t("Email address") }}</label>
+                        <label for="email" class="block text-sm font-medium text-slate-700">{{
+                                $t("Email address")
+                            }}</label>
                         <div class="mt-1 ">
                             <input v-model="form.email" id="email" name="email" type="email" autocomplete="email"
                                    required
@@ -44,7 +47,9 @@
                         <div class="flex items-center">
                             <input v-model="form.remember" id="remember-me" name="remember-me" type="checkbox"
                                    class="h-4 w-4 rounded border-slate-300 text-teal-600 focus:ring-teal-500">
-                            <label for="remember" class="ml-2 block text-sm text-slate-900">{{ $t("Remember me") }}</label>
+                            <label for="remember" class="ml-2 block text-sm text-slate-900">{{
+                                    $t("Remember me")
+                                }}</label>
                         </div>
 
                         <div class="text-sm">
@@ -67,15 +72,16 @@
                             <span>{{ $t("Sign in") }}</span>
                         </button>
                         <span class="text-sm">
-                            <Link :href="'/'+`${role}`+'/register'" class="font-bold text-teal-600 hover:text-teal-500" preserve-scroll >{{ $t("Register") }}</Link>
+                            <Link :href="'/'+`${role}`+'/register'" class="font-bold text-teal-600 hover:text-teal-500"
+                                  preserve-scroll>{{ $t("Register") }}</Link>
                         </span>
                     </div>
                 </div>
                 <Divider v-show="showDivider"/>
                 <div v-show="showWalletBtn" class="flex flex-col">
-                    <div v-if="walletError.length>0" v-text="walletError"
-                                 class="text-red-500 text-sm my-1"></div>
-                    <WalletLoginBtn :role="`${role}`" @walletError="handleWalletError($event)"/>
+                    <div v-if="walletError" v-text="walletError"
+                         class="text-red-500 text-sm my-1"></div>
+                    <WalletLoginBtn @walletLoginSuccessful="emit('success', $event)" @walletError="handleWalletError($event)"/>
                 </div>
             </div>
         </form>
@@ -88,26 +94,27 @@ import {Link} from '@inertiajs/vue3';
 import {inject, Ref, ref} from "vue";
 import WalletLoginBtn from './WalletLoginBtn.vue';
 import Divider from './Divider.vue';
-const $utils: any = inject('$utils');
+import User from "../Models/user";
 
+const $utils: any = inject('$utils');
 
 const props = withDefaults(
     defineProps<{
         errors?: Object,
         showLogo?: boolean,
         embedded?: boolean,
-        showWalletBtn?:boolean,
-        showDivider?:boolean,
-        forRewards?:boolean,
-        role?:string,
+        showWalletBtn?: boolean,
+        showDivider?: boolean,
+        forRewards?: boolean,
+        role?: string,
     }>(),
     {
         showLogo: true,
         embedded: false,
-        showWalletBtn:true,
-        showDivider:true,
-        forRewards:false,
-        role:'catalyst-explorer'
+        showWalletBtn: true,
+        showDivider: true,
+        forRewards: false,
+        role: 'catalyst-explorer'
     },
 );
 
@@ -117,22 +124,23 @@ let form = useForm({
     remember: false
 })
 
-let walletError =ref('');
+let walletError = ref('');
 let handleWalletError = (error) => {
     walletError.value = error.message
 }
 
 const emit = defineEmits<{
     (e: 'endpoint', url: string): void
-    (e: 'setForm',form):void
+    (e: 'setForm', form): void
     (e: 'submit')
+    (e: 'success', user: User)
 }>();
 
 const endPoint = `/api/${props.role}/login`;
 
 let submit = () => {
     emit('setForm', form)
-    emit('endpoint',endPoint)
+    emit('endpoint', endPoint)
     emit('submit');
 }
 </script>

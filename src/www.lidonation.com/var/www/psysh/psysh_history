@@ -93,3 +93,6 @@ User::find(2)->next_lesson_at
 User::find(2)->next_lesson_at
 User::find(2)->next_lesson_at
 exit
+\134Illuminate\134Support\134Facades\134Route::has('rewards.index');
+\134Illuminate\134Support\134Facades\134Route::has('rewards');
+exit
