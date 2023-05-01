@@ -62,7 +62,7 @@
                         <div class="bg-gray-900 mb-3">
                             <a href="{{localizeRoute('what-is-cardano')}}">
                                 <img class="filter hover:contrast-200"
-                                     src="https://storage.googleapis.com/www.lidonation.com/340/responsive-images/what-is-cardano-future-boy___large_2048_2048.jpg"
+                                     src="https://www.lidonation.com/storage/340/responsive-images/what-is-cardano-future-boy___large_2048_2048.jpg"
                                      alt="What is Cardano"/>
                             </a>
                         </div>
@@ -75,7 +75,7 @@
                         <div class="bg-gray-900 mb-3">
                             <a href="{{localizeRoute('what-is-staking')}}">
                                 <img class="filter hover:contrast-200"
-                                     src="https://storage.googleapis.com/www.lidonation.com/435/responsive-images/what-is-the-point-of-buying-ada-and-staking-in-cardano-hero-image___large_2048_2048.jpg"
+                                     src="https://www.lidonation.com/storage/435/responsive-images/what-is-the-point-of-buying-ada-and-staking-in-cardano-hero-image___large_2048_2048.jpg"
                                      alt="What is Cardano">
                             </a>
                         </div>
@@ -89,7 +89,7 @@
                     <div class="bg-gray-900 mb-3">
                         <a href="//www.lidonation.com/posts/lido-nation-getting-in-the-middle-of-it">
                             <img class="filter hover:contrast-200"
-                                 src="https://storage.googleapis.com/www.lidonation.com/535/responsive-images/Lido-Getting-In-The_Middle-Of-It___large_2048_2048.jpg"
+                                 src="https://www.lidonation.com/storage/535/responsive-images/Lido-Getting-In-The_Middle-Of-It___large_2048_2048.jpg"
                                  alt="What is Cardano">
                         </a>
                     </div>
@@ -103,7 +103,7 @@
                         <div class="bg-gray-900 mb-3">
                             <a href="{{localizeRoute('how-to-buy-ada')}}">
                                 <img class="filter hover:contrast-200"
-                                     src="https://storage.googleapis.com/www.lidonation.com/432/responsive-images/how-to-buy-cardano-ada-hero-image___large_2048_2048.jpg"
+                                     src="https://www.lidonation.com/storage/432/responsive-images/how-to-buy-cardano-ada-hero-image___large_2048_2048.jpg"
                                      alt="How to buy ada">
                             </a>
                         </div>
@@ -116,7 +116,7 @@
                         <div class="bg-gray-900 mb-3">
                             <a href="{{localizeRoute('how-to-stake-ada')}}">
                                 <img class="filter hover:contrast-200"
-                                     src="https://storage.googleapis.com/www.lidonation.com/433/responsive-images/how-to-stake-your-ada-hero-image___large_2048_2048.jpg"
+                                     src="https://www.lidonation.com/storage/433/responsive-images/how-to-stake-your-ada-hero-image___large_2048_2048.jpg"
                                      alt="How to stake your ada">
                             </a>
                         </div>
