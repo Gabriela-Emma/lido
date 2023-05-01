@@ -264,10 +264,12 @@ let nextLessonAt = computed(() => {
     return null
 });
 
-
 let userLatestResponse = computed(() => {
     //filter out responses older than midnight previous day East Africa Time
     const responses = [...props.userResponses].filter((response) => {
+        if (response.correct) {
+            return true;
+        }
 
         const lastAttempt = moment(response.createdAt)
             .tz('Africa/Nairobi')
@@ -328,6 +330,7 @@ let walletStore = useWalletStore();
 let {walletData} = storeToRefs(walletStore);
 let myWallet: Ref<Wallet> = computed(() => walletData.value);
 
+console.log('userLatestResponse::', userLatestResponse.value);
 
 function submit() {
     submitted.value = true;
