@@ -2,7 +2,7 @@
     <div class="bg-slate-100 login-form-wrapper">
         <LoginForm :showLogo="false"
                    :errors="errors"
-                   @success="router.get(`${usePage().props.base_url}/sw/earn/learn/modules`)"
+                   :role="'earn/learn'"
                    @endpoint="setEndpoint($event)"
                    @setForm="getForm($event)"
                    @submit="submit" />
