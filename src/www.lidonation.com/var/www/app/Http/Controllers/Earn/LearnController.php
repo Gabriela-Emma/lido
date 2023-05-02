@@ -61,7 +61,7 @@ class LearnController extends Controller
                 return redirect($request->baseURL);
             }
 
-            return to_route('earn.learn');
+            return back()->withInput();
         }
 
         return redirect()->back()->withInput($request->only('email'))->withErrors([
