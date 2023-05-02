@@ -12,7 +12,9 @@ import timeago from 'vue-timeago3';
 import {timeAgo} from "./lib/utils/timeago";
 import {currency} from "./lib/utils/currency";
 let messages = require('../../storage/app/snippets.json');
-const axios = require('axios');
+import './bootstrap';
+import axios from "./lib/utils/axios";
+// const axios = require('axios');
 
 //cache snippets to disk
 axios.get(`${window.location.origin}/api/cache/snippets`);
