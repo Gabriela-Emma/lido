@@ -4,7 +4,16 @@
     }
 
     .my-lido-rewards {
-        @apply bg-green-600 text-white px-2 py-0.5 text-base xl:text-xl rounded-sm hover:bg-green-700 hover:text-white;
+        @apply bg-green-600 text-white px-1.5 py-0.5 text-sm xl:text-sm rounded-sm hover:bg-green-700 hover:text-white block w-full text-center tracking-wide leading-loose;
+    }
+
+    .jifunze-upate-tuzo {
+        @apply bg-labs-red text-white p-1.5 text-xs 2xl:text-sm rounded-sm hover:bg-labs-red-light hover:text-labs-black w-full block text-center tracking-wide leading-loose;
+
+        &:after{
+            content: 'new';
+            @apply text-xs px-1 py-0.5 bg-labs-black text-white inline-block rounded-md ml-1;
+        }
     }
 
     .user-menu-wrapper {
@@ -31,7 +40,7 @@ body.logged-in.admin {
 }
 .sign-in{
     @apply inline-flex gap-1 items-center justify-center rounded-sm border border-slate-800 px-3 py-2 xl:text-xl 3xl:text-2xl font-medium text-slate-800 hover:bg-slate-200 focus:outline-none focus:ring-0 focus:ring-offset-0;
-    
+
     &::before {
         content: "";
         display: inline-block;

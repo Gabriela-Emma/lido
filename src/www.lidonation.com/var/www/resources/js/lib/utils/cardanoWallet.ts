@@ -78,3 +78,10 @@ export function cardanoWallet() {
         }
     }
 }
+
+export function supports(wallet) {
+    if (typeof window?.cardano === 'undefined') {
+        return false;
+    }
+    return (!!window?.cardano[wallet]) && typeof window?.cardano[wallet] != 'undefined';
+}
