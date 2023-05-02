@@ -28,7 +28,7 @@ trait HashIdModel
     public function link(): Attribute
     {
         return Attribute::make(
-            get: fn () => LaravelLocalization::getLocalizedURL( Auth::user()?->lang ?? app()->getLocale(), "{$this->getUrlGroup()}/{$this->hash}/")
+            get: fn () => LaravelLocalization::getLocalizedURL( app()->getLocale(), "{$this->getUrlGroup()}/{$this->hash}/")
         );
     }
 }
