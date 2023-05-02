@@ -58,6 +58,7 @@
         "psr/simple-cache": "2.0",
         "rennokki/laravel-eloquent-query-cache": "^3.3",
         "revolution/laravel-google-sheets": "^6.0",
+        "sammyjo20/saloon": "^2.0",
         "simplesoftwareio/simple-qrcode": "^4.2",
         "spatie/browsershot": "^3.52",
         "spatie/crawler": "^7.1",
@@ -112,9 +113,6 @@
         "optimize-autoloader": true,
         "preferred-install": "dist",
         "sort-packages": true,
-        "gitlab-domains": [
-            "git.raddcreative.io"
-        ],
         "allow-plugins": {
             "php-http/discovery": true
         }
@@ -179,14 +177,6 @@
         "nova.laravel.com": {
             "type": "composer",
             "url": "https://nova.laravel.com"
-        },
-        "git.raddcreative.io/55": {
-            "type": "composer",
-            "url": "https://git.raddcreative.io/api/v4/group/55/-/packages/composer/packages.json"
-        },
-        "git.raddcreative.io/118": {
-            "type": "composer",
-            "url": "https://git.raddcreative.io/api/v4/group/118/-/packages/composer/packages.json"
         }
     }
 }
