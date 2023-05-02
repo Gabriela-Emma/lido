@@ -15,7 +15,7 @@ class UserObserver
      *
      * @return void
      */
-    public function updating(User $user)
+    public function updating(User $user): void
     {
         if ($user->facebook_user) {
             $user->saveMeta('facebook_user', $user->facebook_user, $user);
@@ -31,7 +31,12 @@ class UserObserver
         unset($user->facebook_user);
     }
 
-    public function created(User $user)
+    public function creating(User $user): void
+    {
+        $user->locale = app()->getLocale();
+    }
+
+    public function created(User $user): void
     {
         if (isset($user->wallet_stake_address) && $user->hasRole(RoleEnum::delegator()->value)) {
             try {

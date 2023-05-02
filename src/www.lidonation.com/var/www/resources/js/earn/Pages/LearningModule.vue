@@ -79,13 +79,12 @@ export default {
     </div>
 </template>
 <script setup lang="ts">
-import {inject, Ref, ref} from "vue";
+import {inject, ref} from "vue";
 import {Link, usePage} from '@inertiajs/vue3';
 import {MinusSmallIcon, PlusSmallIcon, ClockIcon, CheckBadgeIcon, NewspaperIcon} from '@heroicons/vue/24/outline';
 import {CheckBadgeIcon as CheckBadgeIconSolid} from '@heroicons/vue/24/solid';
 import {Disclosure, DisclosureButton, DisclosurePanel} from "@headlessui/vue";
 import LearningModuleData = App.DataTransferObjects.LearningModuleData;
-import LearningLessonsData  = App.DataTransferObjects.LearningLessonData;
 
 const $utils: any = inject('$utils');
 
