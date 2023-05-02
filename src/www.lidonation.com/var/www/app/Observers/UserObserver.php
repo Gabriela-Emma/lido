@@ -33,7 +33,7 @@ class UserObserver
 
     public function creating(User $user): void
     {
-        $user->locale = app()->getLocale();
+        $user->lang = app()->getLocale();
     }
 
     public function created(User $user): void
