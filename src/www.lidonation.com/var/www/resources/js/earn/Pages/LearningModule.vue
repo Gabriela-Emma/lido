@@ -1,6 +1,5 @@
 <script lang="ts">
 import LayoutWithSidebar from "../Shared/LayoutWithSidebar.vue";
-import axios from "axios";
 
 export default {
     layout: LayoutWithSidebar
@@ -85,6 +84,7 @@ import {MinusSmallIcon, PlusSmallIcon, ClockIcon, CheckBadgeIcon, NewspaperIcon}
 import {CheckBadgeIcon as CheckBadgeIconSolid} from '@heroicons/vue/24/solid';
 import {Disclosure, DisclosureButton, DisclosurePanel} from "@headlessui/vue";
 import LearningModuleData = App.DataTransferObjects.LearningModuleData;
+import axios from "../../lib/utils/axios";
 
 const $utils: any = inject('$utils');
 
