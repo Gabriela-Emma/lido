@@ -270,6 +270,11 @@ return [
                 'route_type' => 'route_name',
                 'route' => 'rewards',
             ]),
+            new Illuminate\Support\Fluent([
+                'title' => 'Jifunze upate tuzo',
+                'route_type' => 'route_name',
+                'route' => 'earn.learn',
+            ]),
         ],
     ]),
 ];

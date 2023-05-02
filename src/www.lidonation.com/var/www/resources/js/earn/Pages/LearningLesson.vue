@@ -192,7 +192,7 @@ export default {
                                 <div v-if="locale !== 'sw'">
                                     {{ hours }} {{$t('hours')}}, {{ minutes }} {{$t('minutes')}}, {{ seconds }} {{$t('seconds')}}.
                                 </div>
-                                <div v-if="locale == 'sw'" >
+                                <div v-if="locale === 'sw'" >
                                     {{$t('hours')}} {{ hours }}, {{$t('minutes')}} {{ minutes }},  {{$t('seconds')}} {{ seconds }}.
                                 </div>
                             </countdown>
@@ -236,7 +236,7 @@ let locale = computed(() => usePage().props.locale);
 const props = withDefaults(
     defineProps<{
         userResponses: AnswerResponseData[],
-        nextLessonAt: string,
+        nextLessonAt?: string,
         lesson: LearningLessonData
         reward: RewardData
     }>(), {});
