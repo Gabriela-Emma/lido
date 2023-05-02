@@ -97,7 +97,7 @@ const props = withDefaults(
 let learningModule = ref(props.module);
 
 let getLessons = (id,index) => {
-    let hasLessons = learningModule?.value?.topics[index]?.lessons != null;
+    let hasLessons = learningModule?.value?.topics?.[index]?.lessons != null;
     if(!hasLessons){
         axios.get(`${usePage().props.base_url}/api/earn/topics/${id}/lessons`)
         .then((res) => {
@@ -105,7 +105,7 @@ let getLessons = (id,index) => {
         })
     }
 }
-getLessons(learningModule?.value?.topics[0]?.id,0)
+getLessons(learningModule?.value?.topics?.[0]?.id,0)
 
 </script>
 <style scoped></style>
