@@ -26,7 +26,7 @@ class LearningTopic extends Model
         SoftDeletes;
 
     protected $casts = [
-        'lessons' => DataCollection::class.':'.LearningTopicData::class,
+//        'lessons' => DataCollection::class.':'.LearningTopicData::class,
     ];
 
     public $appends = [
@@ -42,7 +42,7 @@ class LearningTopic extends Model
     public function length(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->lessons?->count('length')
+            get: fn () => $this->lessons()?->count('length')
         );
     }
 
