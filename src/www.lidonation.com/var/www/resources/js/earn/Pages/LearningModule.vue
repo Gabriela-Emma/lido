@@ -1,9 +1,11 @@
 <script lang="ts">
 import LayoutWithSidebar from "../Shared/LayoutWithSidebar.vue";
 import axios from "axios";
+import Spinner from "../../global/Shared/Components/Spinner.vue";
 
 export default {
-    layout: LayoutWithSidebar
+    layout: LayoutWithSidebar,
+    components: { Spinner }
 };
 </script>
 <template>
@@ -38,7 +40,10 @@ export default {
                     </DisclosureButton>
                 </dt>
                 <DisclosurePanel as="dd" class="" :class="{ 'bg-slate-100 px-4': open }">
-                    <ul role="list" class="relative z-0 divide-y divide-white" v-if="topic?.lessons">
+                    <div class="w-full">
+                        <Spinner  :fill-color="'fill-labs-red'"/>
+                    </div>
+                    <ul role="list" class="relative z-0 divide-y divide-white" v-if="0">
                         <li v-for="(lesson, index) in topic.lessons" :key="topic.id" >
                             <div class="w-full flex flex-row justify-between px-3 py-4">
                                 <div class="flex gap-1">
