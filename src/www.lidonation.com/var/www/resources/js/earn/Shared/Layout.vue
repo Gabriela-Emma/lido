@@ -6,7 +6,6 @@
     <section class="">
         <slot></slot>
         <Modal />
-        <Spinner />
     </section>
 </template>
 

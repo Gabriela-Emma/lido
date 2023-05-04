@@ -1,7 +1,6 @@
 <script lang="ts">
 import LayoutWithSidebar from "../Shared/LayoutWithSidebar.vue";
 import axios from "axios";
-import Spinner from "../../global/Shared/Components/Spinner.vue";
 
 export default {
     layout: LayoutWithSidebar,
@@ -86,7 +85,7 @@ import {MinusSmallIcon, PlusSmallIcon, ClockIcon, CheckBadgeIcon, NewspaperIcon}
 import {CheckBadgeIcon as CheckBadgeIconSolid} from '@heroicons/vue/24/solid';
 import {Disclosure, DisclosureButton, DisclosurePanel} from "@headlessui/vue";
 import LearningModuleData = App.DataTransferObjects.LearningModuleData;
-import LearningLessonsData  = App.DataTransferObjects.LearningLessonData;
+import {useSpinnerStore} from '../../global/Shared/store/Spinner-store'
 
 const $utils: any = inject('$utils');
 
@@ -96,13 +95,16 @@ const props = withDefaults(
         module: LearningModuleData
     }>(), {});
 
+const spinnerStore = useSpinnerStore();
 let learningModule = ref(props.module);
 
 let getLessons = (id,index) => {
     let hasLessons = learningModule?.value?.topics[index]?.lessons != null;
     if(!hasLessons){
+        spinnerStore.showSpinner('fill-labs-red');
         axios.get(`${usePage().props.base_url}/api/earn/topics/${id}/lessons`)
         .then((res) => {
+            spinnerStore.stopSpinner();
             learningModule.value.topics[index].lessons = res?.data
         })
     }
