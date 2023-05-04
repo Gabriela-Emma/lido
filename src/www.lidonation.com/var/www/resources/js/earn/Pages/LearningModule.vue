@@ -5,11 +5,10 @@ import Spinner from "../../global/Shared/Components/Spinner.vue";
 
 export default {
     layout: LayoutWithSidebar,
-    components: { Spinner }
 };
 </script>
 <template>
-    <div class="mx-auto divide-y divide-slate-900/10">
+    <div class="mx-auto  divide-y divide-slate-900/10">
         <div>
             <h2 class="text-2xl xl:text-4xl font-bold leading-10 tracking-tight text-slate-900 text-center">
                 {{ learningModule.title }}
@@ -40,10 +39,7 @@ export default {
                     </DisclosureButton>
                 </dt>
                 <DisclosurePanel as="dd" class="" :class="{ 'bg-slate-100 px-4': open }">
-                    <div class="w-full">
-                        <Spinner  :fill-color="'fill-labs-red'"/>
-                    </div>
-                    <ul role="list" class="relative z-0 divide-y divide-white" v-if="0">
+                    <ul role="list" class="relative z-0 divide-y divide-white" v-if="topic?.lessons">
                         <li v-for="(lesson, index) in topic.lessons" :key="topic.id" >
                             <div class="w-full flex flex-row justify-between px-3 py-4">
                                 <div class="flex gap-1">

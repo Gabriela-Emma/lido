@@ -6,6 +6,7 @@
     <section class="">
         <slot></slot>
         <Modal />
+        <Spinner />
     </section>
 </template>
 
@@ -14,6 +15,7 @@ import { Modal } from "momentum-modal"
 import Nav from "./Nav.vue";
 import {useForm, usePage} from '@inertiajs/vue3';
 import {computed} from "vue";
+import Spinner from "../../global/Shared/Components/Spinner.vue";
 import User from '../../global/Shared/Models/user'
 
 const props = withDefaults(
