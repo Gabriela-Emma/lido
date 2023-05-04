@@ -1,7 +1,7 @@
 <template>
-    <section class="w-full flex flex-col gap-8 sticky  top-1">
-        <div class="border-labs-red border-8 rounded-sm p-4 flex flex-col gap-2">
-            <div class="text-sm">{{ $t('welcomeBack') }} <b class="text-labs-black">{{ user.name }}</b></div>
+    <section class="sticky flex flex-col w-full gap-8 top-1">
+        <div class="flex flex-col gap-2 p-4 border-8 rounded-sm border-labs-red">
+            <div class="text-sm">{{$t('welcomeBack')}} <b class="text-labs-black">{{ user.name }}</b></div>
             <div class="flex flex-row flex-wrap gap-3 text-xs 2xl:text-sm">
                 <div class="flex gap-1">
                     <div class="text-slate-400">{{ $t('awarded') }}</div>
@@ -12,9 +12,10 @@
                 </div>
             </div>
         </div>
-        <div class="border-labs-red bg-labs-red text-white border-8 rounded-sm p-4">
+        <div class="p-4 text-white border-8 rounded-sm border-labs-red bg-labs-red">
             <countdown :time="nextLessonAt" v-slot="{ days, hours, minutes, seconds }" class="text-center">
-                <span class="text-slate-100 text-sm block">{{ $t('nextLessonStart') }}:</span>
+                <span class="block text-sm text-slate-100">{{$t('nextLessonStart')}}:</span>
+                <span class="block text-sm text-slate-100">{{ $t('nextLessonStart') }}:</span>
                 <div class="font-bold" v-if="locale !== 'sw'">
                     {{ hours }} {{ $t('hours') }}, {{ minutes }} {{ $t('minutes') }}, {{ seconds }} {{ $t('seconds') }}.
                 </div>
