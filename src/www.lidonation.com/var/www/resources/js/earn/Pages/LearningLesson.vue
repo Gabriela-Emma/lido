@@ -45,7 +45,7 @@ export default {
                    class="px-6 py-16 border-labs-black border-2 rounded-sm flex flex-col justify-center gap-4 items-center text-xl xl:text-3xl text-labs-black hover:text-teal-light-600 hover:bg-slate-200">
                     {{ learningLesson.model?.title }}
 
-                    <ArrowTopRightOnSquareIcon class="h-16 w-16"/>
+                    <ArrowTopRightOnSquareIcon class="h-16 w-16" />
 
                     <p class="text-center text-xl text-slate-800 max-w-md mx-auto px-8">
                        {{$t('readInNewTab')}}
@@ -228,6 +228,7 @@ import AnswerResponseData = App.DataTransferObjects.AnswerResponseData;
 import RewardData = App.DataTransferObjects.RewardData;
 import {useWalletStore} from "../../catalyst-explorer/stores/wallet-store";
 import Wallet from '../../catalyst-explorer/models/wallet';
+import {useLearnerDataStore} from "../store/learner-data-store";
 
 const $utils: any = inject('$utils');
 const user = computed(() => usePage().props.user as User)
@@ -330,8 +331,6 @@ let walletStore = useWalletStore();
 let {walletData} = storeToRefs(walletStore);
 let myWallet: Ref<Wallet> = computed(() => walletData.value);
 
-console.log('userLatestResponse::', userLatestResponse.value);
-
 function submit() {
     submitted.value = true;
 
@@ -348,6 +347,7 @@ function submit() {
 
     });
     answerResponseStore.submitAnswer(baseUrl, form);
+    useLearnerDataStore().getLearnerData();
 }
 </script>
 
