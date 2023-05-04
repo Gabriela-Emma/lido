@@ -27,7 +27,7 @@ services:
   ## Databases
   lidolovelace-search-service:
     container_name: meili
-    image: getmeili/meilisearch:v1.1.0-rc.3
+    image: getmeili/meilisearch:v1.1.1
     ports:
       - "7700:7700"
     environment:
@@ -63,7 +63,7 @@ services:
     depends_on:
       webdb:
         condition: service_healthy
-    image: nocodb/nocodb:0.105.3
+    image: nocodb/nocodb:0.106.1
     ports:
       - "8088:8080"
     volumes:

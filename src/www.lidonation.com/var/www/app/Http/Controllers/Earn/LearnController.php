@@ -74,7 +74,7 @@ class LearnController extends Controller
         $user = auth()?->user() ?? User::where('email', $request->input('email'))->first();
 
         if ($user instanceof User) {
-            $user->locale = app()->getLocale();
+            $user->lang = app()->getLocale();
             $this->updateUser($request, $user);
 
             return back()->withInput();

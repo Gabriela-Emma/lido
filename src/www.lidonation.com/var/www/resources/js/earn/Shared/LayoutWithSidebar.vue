@@ -28,9 +28,9 @@
     <section class="py-8">
         <div class="container">
             <div class="grid grid-cols-7 gap-8">
-                <div class="col-span-7 relative md:col-span-4 xl:col-span-5 border-8 border-labs-red p-8 rounded-sm">
+                <div class="col-span-7 relative md:col-span-4 xl:col-span-5 border-8 border-labs-red p-8 rounded-sm min-h-full">
                     <slot></slot>
-                    <Spinner/>
+                    <Spinner />
                 </div>
 
                 <aside class="md:col-span-3 xl:col-span-2">
@@ -48,7 +48,7 @@
 import {Modal} from "momentum-modal"
 import Nav from "./Nav.vue";
 import Sidebar from "./Sidebar.vue";
-import {useForm, usePage} from '@inertiajs/vue3';
+import {usePage} from '@inertiajs/vue3';
 import {computed} from "vue";
 import User from '../../global/Shared/Models/user'
 import Spinner from "../../global/Shared/Components/Spinner.vue";

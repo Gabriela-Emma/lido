@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Casts\NRTFilter;
 use App\DataTransferObjects\LearningLessonData;
 use App\Models\Traits\HasCatalystProfiles;
 use App\Models\Traits\HasGravatar;
