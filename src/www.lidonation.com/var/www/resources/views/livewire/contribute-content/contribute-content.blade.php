@@ -32,81 +32,81 @@
         <div class="container">
             <div class="text-center">
                 <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 3xl:grid-cols-4">
-                    <div class="pt-6">
-                        <div class="flow-root bg-gray-100 rounded-sm h-full px-6 pb-8">
-                            <div class="-mt-6">
-                                <div>
-                                    <button
-                                        onclick='Livewire.emit("openModal", "contribute-content.contribute-idea")'
-                                        type="button"
-                                        class="hover:cursor-pointer hover:shadow-lg inline-flex font-semibold items-center text-white justify-center p-3 bg-secondary-500 rounded-sm shadow-xs">
-                                        Submit Idea
-                                    </button>
-                                </div>
-                                <h3 class="mt-8 text-lg font-semibold text-gray-900 tracking-tight">
-                                    Got an Idea ?
-                                </h3>
-                                <div class="mt-2 font-normal">
-                                    <div>Submit a new topic</div>
-                                    <div>
-                                        and vote for other ideas here.
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+{{--                    <div class="pt-6">--}}
+{{--                        <div class="flow-root bg-gray-100 rounded-sm h-full px-6 pb-8">--}}
+{{--                            <div class="-mt-6">--}}
+{{--                                <div>--}}
+{{--                                    <button--}}
+{{--                                        onclick='Livewire.emit("openModal", "contribute-content.contribute-idea")'--}}
+{{--                                        type="button"--}}
+{{--                                        class="hover:cursor-pointer hover:shadow-lg inline-flex font-semibold items-center text-white justify-center p-3 bg-secondary-500 rounded-sm shadow-xs">--}}
+{{--                                        Submit Idea--}}
+{{--                                    </button>--}}
+{{--                                </div>--}}
+{{--                                <h3 class="mt-8 text-lg font-semibold text-gray-900 tracking-tight">--}}
+{{--                                    Got an Idea ?--}}
+{{--                                </h3>--}}
+{{--                                <div class="mt-2 font-normal">--}}
+{{--                                    <div>Submit a new topic</div>--}}
+{{--                                    <div>--}}
+{{--                                        and vote for other ideas here.--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
 
-                    <div class="pt-6">
-                        <div class="flow-root bg-gray-100 rounded-sm h-full px-6 pb-8">
-                            <div class="-mt-6">
-                                <div>
-                                    <button
-                                        onclick='Livewire.emit("openModal", "contribute-content.contribute-article")'
-                                        type="button"
-                                        class="hover:cursor-pointer hover:shadow-lg inline-flex font-semibold items-center text-white justify-center p-3 bg-teal-600 rounded-sm shadow-xs">
-                                        Submit Article
-                                    </button>
-                                </div>
-                                <h3 class="mt-8 text-lg font-semibold text-gray-900 tracking-tight">
-                                    News & Insights
-                                </h3>
-                                <div class="mt-2 font-normal">
-                                    <p>
-                                        Give us your perspective on the headlines.
-                                        <br/>What should everyone understand
-                                        <br/>about cryptos and Cardano?
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+{{--                    <div class="pt-6">--}}
+{{--                        <div class="flow-root bg-gray-100 rounded-sm h-full px-6 pb-8">--}}
+{{--                            <div class="-mt-6">--}}
+{{--                                <div>--}}
+{{--                                    <button--}}
+{{--                                        onclick='Livewire.emit("openModal", "contribute-content.contribute-article")'--}}
+{{--                                        type="button"--}}
+{{--                                        class="hover:cursor-pointer hover:shadow-lg inline-flex font-semibold items-center text-white justify-center p-3 bg-teal-600 rounded-sm shadow-xs">--}}
+{{--                                        Submit Article--}}
+{{--                                    </button>--}}
+{{--                                </div>--}}
+{{--                                <h3 class="mt-8 text-lg font-semibold text-gray-900 tracking-tight">--}}
+{{--                                    News & Insights--}}
+{{--                                </h3>--}}
+{{--                                <div class="mt-2 font-normal">--}}
+{{--                                    <p>--}}
+{{--                                        Give us your perspective on the headlines.--}}
+{{--                                        <br/>What should everyone understand--}}
+{{--                                        <br/>about cryptos and Cardano?--}}
+{{--                                    </p>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
 
-                    <div class="pt-6">
-                        <div class="flow-root bg-gray-100 rounded-sm h-full px-6 pb-8">
-                            <div class="-mt-6">
-                                <div>
-                                    <button
-                                        onclick='Livewire.emit("openModal", "contribute-content.contribute-review")'
-                                        class="hover:cursor-pointer hover:shadow-lg inline-flex font-semibold items-center text-white justify-center p-3 bg-teal-600 rounded-sm shadow-xs">
-                                        Submit Review
-                                    </button>
-                                </div>
-                                <h3 class="mt-8 text-lg font-semibold text-gray-900 tracking-tight">
-                                    Write a Review
-                                </h3>
-                                <div class="mt-2 font-normal">
-                                    <p>
-                                        As you explore crypto tools, projects, website, apps and DApps - what do you
-                                        think
-                                        about what you see?
-                                    </p>
-                                    <p>
-                                        We provide the template; your provide the opinions.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+{{--                    <div class="pt-6">--}}
+{{--                        <div class="flow-root bg-gray-100 rounded-sm h-full px-6 pb-8">--}}
+{{--                            <div class="-mt-6">--}}
+{{--                                <div>--}}
+{{--                                    <button--}}
+{{--                                        onclick='Livewire.emit("openModal", "contribute-content.contribute-review")'--}}
+{{--                                        class="hover:cursor-pointer hover:shadow-lg inline-flex font-semibold items-center text-white justify-center p-3 bg-teal-600 rounded-sm shadow-xs">--}}
+{{--                                        Submit Review--}}
+{{--                                    </button>--}}
+{{--                                </div>--}}
+{{--                                <h3 class="mt-8 text-lg font-semibold text-gray-900 tracking-tight">--}}
+{{--                                    Write a Review--}}
+{{--                                </h3>--}}
+{{--                                <div class="mt-2 font-normal">--}}
+{{--                                    <p>--}}
+{{--                                        As you explore crypto tools, projects, website, apps and DApps - what do you--}}
+{{--                                        think--}}
+{{--                                        about what you see?--}}
+{{--                                    </p>--}}
+{{--                                    <p>--}}
+{{--                                        We provide the template; your provide the opinions.--}}
+{{--                                    </p>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
 
 {{--                    <div class="pt-6">--}}
 {{--                        <div class="flow-root bg-gray-100 rounded-sm h-full px-6 pb-8">--}}
@@ -179,29 +179,29 @@
                             </div>
                         </div>
                     </div>
-                    <div class="pt-6">
-                        <div class="flow-root bg-gray-100 rounded-sm h-full px-6 pb-8">
-                            <div class="-mt-6">
-                                <div>
-                                    <a
-                                        href="{{ route('portal') }}"
-                                        class="hover:cursor-pointer hover:shadow-lg inline-flex font-semibold items-center text-white justify-center p-3 bg-teal-800 rounded-sm shadow-xs">
-                                        Portal
-                                    </a>
-                                </div>
+{{--                    <div class="pt-6">--}}
+{{--                        <div class="flow-root bg-gray-100 rounded-sm h-full px-6 pb-8">--}}
+{{--                            <div class="-mt-6">--}}
+{{--                                <div>--}}
+{{--                                    <a--}}
+{{--                                        href="{{ route('portal') }}"--}}
+{{--                                        class="hover:cursor-pointer hover:shadow-lg inline-flex font-semibold items-center text-white justify-center p-3 bg-teal-800 rounded-sm shadow-xs">--}}
+{{--                                        Portal--}}
+{{--                                    </a>--}}
+{{--                                </div>--}}
 
-                                <h3 class="mt-8 text-lg font-semibold text-gray-900 tracking-tight">
-                                    Go to your portal
-                                </h3>
+{{--                                <h3 class="mt-8 text-lg font-semibold text-gray-900 tracking-tight">--}}
+{{--                                    Go to your portal--}}
+{{--                                </h3>--}}
 
-                                <div class="mt-2 font-normal">
-                                    <p>
-                                        Manage your account, validate wallet, see contribute stats, etc.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+{{--                                <div class="mt-2 font-normal">--}}
+{{--                                    <p>--}}
+{{--                                        Manage your account, validate wallet, see contribute stats, etc.--}}
+{{--                                    </p>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
                 </div>
             </div>
         </div>

@@ -13,7 +13,6 @@ export const useLearnerDataStore = defineStore('learner-data', () => {
             ).then((res) => {
                 learnerData.value = res?.data
             });
-
         } catch (e: AxiosError | any) {
             console.log({e});
         }
