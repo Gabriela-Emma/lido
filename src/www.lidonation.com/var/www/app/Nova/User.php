@@ -93,6 +93,8 @@ class User extends Resource
                 ->creationRules('unique:users,email')
                 ->updateRules('unique:users,email,{{resourceId}}'),
 
+            Text::make('Lang')->nullable(),
+
             new Panel('Bio', [
                 Markdown::make('Short Bio')
                     ->hideFromIndex()
@@ -102,7 +104,7 @@ class User extends Resource
                     ->help('content for the about us page.'),
             ]),
 
-            BelongsTo::make('Current Team', 'currentTeam', Teams::class)->searchable(),
+//            BelongsTo::make('Current Team', 'currentTeam', Teams::class)->searchable(),
 
             new Panel('Meta', $this->metaDataFields()),
 

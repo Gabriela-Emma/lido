@@ -14,8 +14,8 @@
                     viewBox="0 0 24 24"></svg>
             </span>
 
-            <span class="tracking-wide flex items-center gap-2" v-show="myWallet?.balance">
-                <span v-text="(myWallet?.handle ?? shortStakeId) + ' connected'"
+            <span class="tracking-wide flex items-center gap-2" v-show="walletData?.handle">
+                <span v-text="(walletData?.handle) + ' connected'"
                       class="text-sm text-slate-200 h-full border-primary-200 border-opacity-50 p-0.5 capitalize">
                 </span>
                 <span>
@@ -24,7 +24,7 @@
                 </span>
             </span>
 
-            <span class="tracking-wide flex gap-2" v-show="!myWallet?.balance">
+            <span class="tracking-wide flex gap-2" v-show="!walletData?.handle">
                 <span>Connect Your Wallet</span>
                 <span class="text-slate-100" aria-hidden="true">&darr;</span>
             </span>
@@ -115,6 +115,7 @@ import Wallet from '../../../catalyst-explorer/models/wallet';
 import {C} from "lucid-cardano";
 import {onClickOutside} from '@vueuse/core';
 import {storeToRefs} from "pinia";
+import {supports} from "../../../lib/utils/cardanoWallet";
 
 const props = withDefaults(
     defineProps<{
@@ -129,12 +130,6 @@ let backgroundColor = ref(props.backgroundColor);
 
 // check for supported wallet
 const walletService = new WalletService();
-const supports = (wallet: string) => {
-    if (typeof window?.cardano === 'undefined') {
-        return false;
-    }
-    return (!!window?.cardano[wallet]) && typeof window?.cardano[wallet] != 'undefined';
-}
 
 // set the wallet data
 let walletLoading = ref(false);
@@ -145,21 +140,16 @@ let {walletData: wallet} = storeToRefs(walletStore);
 let {walletName} = storeToRefs(walletStore);
 
 async function enableWallet(walletName: string) {
-    if (typeof window.cardano === 'undefined' || !window?.cardano || !window.cardano[walletName]) {
-        return Promise.reject(`${walletName} wallet not installed.`);
-    }
-
     walletLoading.value = true;
     let walletData = {
         name: walletName
     } as Wallet;
     try {
-        // set prerequisites
         await walletService.connectWallet(walletName);
         walletData = {
             ...walletData,
             ...await getWalletAddress(),
-            ...await getWalletBalance(),
+            // ...await getWalletBalance(),
             // ...await getHandle(walletData.stakeAddress)
         }
         await walletStore.saveWallet(walletData);
@@ -181,18 +171,14 @@ async function getWalletBalance(): Promise<Wallet> {
     walletBalance = await walletService.getBalance(walletName.value);
     walletBalance = C.Value.from_bytes(Buffer.from(walletBalance, 'hex')).coin().to_str();
 
-    try {
-        if (!!walletBalance) {
-            return {
-                lovelacesBalance: walletBalance,
-                balance: (walletBalance / (1000000)).toLocaleString(undefined, {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2
-                })
-            }
+    if (!!walletBalance) {
+        return {
+            lovelacesBalance: walletBalance,
+            balance: (walletBalance / (1000000)).toLocaleString(undefined, {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            })
         }
-    } catch (e) {
-        console.error(e);
     }
 
     return {

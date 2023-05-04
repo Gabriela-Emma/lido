@@ -1,11 +1,11 @@
 <template>
     <div :class="{
         'flex items-center justify-center h-screen': !embedded,
-        'bg-slate-100':forRewards==false
+        'bg-slate-100':forRewards === false
     }" class="login-form-wrapper">
         <form>
             <div class=" rounded  p-6 w-96"
-                 :class="{'bg-white shadow-sm ':forRewards==false}">
+                 :class="{'bg-white shadow-sm ':forRewards === false}">
                 <div class=" flex-col  mb-4 border-b" v-if="showLogo">
                     <div class="flex items-center justify-center mb-4">
                         <img alt="catalyst explorer logo" :src="$utils.assetUrl('img/catalyst-explorer-logo.jpg')"
@@ -14,7 +14,7 @@
                 </div>
 
                 <div>
-                    <div class=" flex justify-start mb-2" v-show="forRewards==false">
+                    <div class=" flex justify-start mb-2" v-show="forRewards === false">
                         <h1 class="text-2xl lg:text-3xl 2xl:text-5xl 3xl:text-6xl font-semibold text-slate-700">
                             {{ $t("Login") }} </h1>
                     </div>
@@ -72,7 +72,8 @@
                             <span>{{ $t("Sign in") }}</span>
                         </button>
                         <span class="text-sm">
-                            <Link :href="'/'+`${role}`+'/register'" class="font-bold text-teal-600 hover:text-teal-500"
+                            <Link @click.prevent="emit('go-to-register')"
+                                  class="font-bold text-teal-600 hover:text-teal-500"
                                   preserve-scroll>{{ $t("Register") }}</Link>
                         </span>
                     </div>
@@ -81,7 +82,8 @@
                 <div v-show="showWalletBtn" class="flex flex-col">
                     <div v-if="walletError" v-text="walletError"
                          class="text-red-500 text-sm my-1"></div>
-                    <WalletLoginBtn @walletLoginSuccessful="emit('success', $event)" @walletError="handleWalletError($event)"/>
+                    <WalletLoginBtn @walletLoginSuccessful="emit('success', $event)"
+                                    @walletError="handleWalletError($event)"/>
                 </div>
             </div>
         </form>
@@ -106,15 +108,13 @@ const props = withDefaults(
         showWalletBtn?: boolean,
         showDivider?: boolean,
         forRewards?: boolean,
-        role?: string,
     }>(),
     {
         showLogo: true,
         embedded: false,
         showWalletBtn: true,
         showDivider: true,
-        forRewards: false,
-        role: 'catalyst-explorer'
+        forRewards: false
     },
 );
 
@@ -130,17 +130,14 @@ let handleWalletError = (error) => {
 }
 
 const emit = defineEmits<{
-    (e: 'endpoint', url: string): void
     (e: 'setForm', form): void
     (e: 'submit')
+    (e: 'go-to-register')
     (e: 'success', user: User)
 }>();
 
-const endPoint = `/api/${props.role}/login`;
-
 let submit = () => {
     emit('setForm', form)
-    emit('endpoint', endPoint)
     emit('submit');
 }
 </script>
