@@ -7,9 +7,9 @@ export const useSpinnerStore = defineStore('spinner', () => {
     let show:Ref<boolean> = ref(false);
     let fillColor:Ref<string> = ref(null);
 
-    function showSpinner(fill_color:string,){
+    function showSpinner(color:string,){
         show.value = true;
-        fillColor.value = fill_color;
+        fillColor.value = color;
     }
 
     function stopSpinner(){
