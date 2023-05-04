@@ -1,6 +1,5 @@
 <script lang="ts">
 import LayoutWithSidebar from "../Shared/LayoutWithSidebar.vue";
-import axios from "axios";
 
 export default {
     layout: LayoutWithSidebar,
@@ -79,7 +78,7 @@ export default {
     </div>
 </template>
 <script setup lang="ts">
-import {inject, Ref, ref} from "vue";
+import {inject, ref} from "vue";
 import {Link, usePage} from '@inertiajs/vue3';
 import {MinusSmallIcon, PlusSmallIcon, ClockIcon, CheckBadgeIcon, NewspaperIcon} from '@heroicons/vue/24/outline';
 import {CheckBadgeIcon as CheckBadgeIconSolid} from '@heroicons/vue/24/solid';
@@ -99,7 +98,7 @@ const spinnerStore = useSpinnerStore();
 let learningModule = ref(props.module);
 
 let getLessons = (id,index) => {
-    let hasLessons = learningModule?.value?.topics[index]?.lessons != null;
+    let hasLessons = learningModule?.value?.topics?.[index]?.lessons != null;
     if(!hasLessons){
         spinnerStore.showSpinner('fill-labs-red');
         axios.get(`${usePage().props.base_url}/api/earn/topics/${id}/lessons`)
@@ -109,7 +108,7 @@ let getLessons = (id,index) => {
         })
     }
 }
-getLessons(learningModule?.value?.topics[0]?.id,0)
+getLessons(learningModule?.value?.topics?.[0]?.id,0)
 
 </script>
 <style scoped></style>
