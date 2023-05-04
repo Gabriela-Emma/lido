@@ -1,9 +1,9 @@
-<x-public-layout class="post" title="Privacy Policy">
+<x-public-layout class="post" title="Contribute Content FAQs">
     <x-public.page-header :size="'md'">
         <x-slot name="title">
             <span class="block z-20 flex flex-col sm:flex-row gap-3">
-                <span class='font-black text-teal-600 z-20'>{{__('Privacy') }}</span>
-                <span class='font-light z-20'>{{__('Policy') }}</span>
+                <span class='font-black text-teal-600 z-20'>{{__('Contribute') }}</span>
+                <span class='font-light z-20'>{{__('Content FAQ') }}</span>
             </span>
         </x-slot>
     </x-public.page-header>
@@ -64,7 +64,7 @@ If we don’t think it’s a good fit, we will let you know why, and what change
 
 We will never steal your stuff or rip off your ideas.
 
-**What if I have another question that isn’t answered here?**  
+**What if I have another question that isn’t answered here?**
 
 Drop us a line: hello@lidonation.com
             </x-markdown>
