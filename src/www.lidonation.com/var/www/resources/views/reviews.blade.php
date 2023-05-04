@@ -127,6 +127,6 @@
         </div>
     </section>
 
-    <x-public.join-lido-pool></x-public.join-lido-pool>
+    <x-support-lido heading-leading='Support the' heading-span='Library'/>
 
 </x-public-layout>

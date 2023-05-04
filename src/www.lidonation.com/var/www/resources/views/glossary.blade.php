@@ -36,7 +36,7 @@
     </section>
 
     <div class="relative">
-    <x-public.join-lido-pool></x-public.join-lido-pool>
+        <x-support-lido heading-leading='Support the' heading-span='Library'/>
     </div>
 
 </x-public-layout>
