@@ -336,7 +336,7 @@
                             <a class="block" href="{{localizeRoute('financial-details')}}">
                                 <img
                                     class="responsive w-full h-28 object-cover object-top rounded-sm bg-teal-600 filter hover:contrast-200"
-                                    src="//storage.googleapis.com/www.lidonation.com/317/lido-finantial-details-kenny-eliason-unsplash.jpg"
+                                    src="//www.lidonation.com/storage/317/lido-finantial-details-kenny-eliason-unsplash.jpg"
                                     alt="{{$pages?->pool?->hero->name}}"/>
                             </a>
 
@@ -353,7 +353,7 @@
                             <a class="block" href="{{localizeRoute('contributeContent')}}">
                                 <img
                                     class="responsive w-full h-28 object-cover object-top rounded-sm bg-teal-600 filter hover:contrast-200"
-                                    src="//storage.googleapis.com/www.lidonation.com/318/lidonation-idea-junior-ferreira-unsplash.jpg"
+                                    src="//www.lidonation.com/storage/318/lidonation-idea-junior-ferreira-unsplash.jpg"
                                     alt="{{$pages?->pool?->hero->name}}"/>
                             </a>
                         </div>

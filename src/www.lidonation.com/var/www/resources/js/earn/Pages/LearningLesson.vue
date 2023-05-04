@@ -255,7 +255,7 @@ const currentDay = moment()
     .day();
 
 let nextLessonAt = computed(() => {
-    const nextLesson = moment(props.nextLessonAt).tz('Africa/Nairobi')
+    const nextLesson = moment(props.nextLessonAt).tz('Africa/Nairobi').startOf('day')
         .diff(
             moment().tz('Africa/Nairobi')
         );
@@ -302,7 +302,7 @@ const quizBackGround = computed(() => {
 
 const retryAt = computed(() => {
     if (learningLesson.value.retryAt) {
-        return moment(learningLesson.value.retryAt).tz('Africa/Nairobi')
+        return moment(learningLesson.value.retryAt).tz('Africa/Nairobi').startOf('day')
             .diff(
                 moment().tz('Africa/Nairobi')
             );
