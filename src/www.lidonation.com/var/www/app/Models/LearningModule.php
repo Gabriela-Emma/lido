@@ -27,7 +27,7 @@ class LearningModule extends Model
         SoftDeletes;
 
     protected $casts = [
-        'topics' => DataCollection::class.':'.LearningTopicData::class,
+//        'topics' => DataCollection::class.':'.LearningTopicData::class,
     ];
 
     public $appends = [
@@ -44,14 +44,14 @@ class LearningModule extends Model
     public function length(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->topics?->sum(fn ($topic) => $topic->lessons->sum('length'))
+            get: fn () => $this->learning_topics?->sum(fn ($topic) => $topic->lessons()->sum('length'))
         );
     }
 
     public function lessonsCount(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->learningTopics?->sum(fn ($topic) => $topic->learningLessons?->count())
+            get: fn () => $this->learning_topics?->sum(fn ($topic) => $topic->learningLessons()?->count())
         );
     }
 
@@ -65,14 +65,9 @@ class LearningModule extends Model
         return 'earn/learn/modules';
     }
 
-    public function learningTopics(): BelongsToMany
+    public function learning_topics(): BelongsToMany
     {
         return $this->belongsToMany(LearningTopic::class);
-    }
-
-    public function topics(): BelongsToMany
-    {
-        return $this->learningTopics();
     }
 
     /**

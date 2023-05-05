@@ -2,7 +2,7 @@
     @push('json-ld')
         <x-public.json-ld :post="$post"></x-public.json-ld>
     @endpush
-    
+
     <header class="z-20 text-white bg-teal-600">
         <div class="flex z-20 flex-col items-center px-6 py-16 max-w-4xl md:mx-auto">
             <div class="flex z-20 flex-col gap-3 pb-8 lg:hidden">
@@ -172,5 +172,5 @@
 {{--        </div>--}}
 {{--    </section>--}}
 
-    <x-public.join-lido-pool></x-public.join-lido-pool>
+<x-support-lido heading-leading='Support the' heading-span='Library'/>
 </x-public-layout>

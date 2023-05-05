@@ -66,7 +66,7 @@
             <div class="container py-16 px-6 md:px-8">
                 <div class="flex flex-wrap justify-between">
                     <div v-if="! walletData?.address" class="flex flex-col md:flex-row gap-1 md:gap-3 items-center  mx-auto">
-                        <ConnectWallet :background-color="'bg-labs-red'" @walletData="setWalletName($event)" />
+                        <ConnectWallet :background-color="'bg-labs-red'" />
                         <span class="text-sm">
                             <Link href="/earn/learn/register"
                                 class="font-bold text-labs-red text-xs md:text-base hover:text-labs-black">
@@ -216,14 +216,13 @@ import {MinusSmallIcon, PlusSmallIcon, CheckIcon} from '@heroicons/vue/24/outlin
 import { defineAsyncComponent } from 'vue';
 import User from "../../global/Shared/Models/user";
 import Wallet from '../../catalyst-explorer/models/wallet';
+import {storeToRefs} from "pinia";
+import {useWalletStore} from "../../catalyst-explorer/stores/wallet-store";
 const ConnectWallet = defineAsyncComponent(() =>import('../../global/Shared/Components/ConnectWallet.vue'));
 
+let walletStore = useWalletStore();
 const user = computed(() => usePage().props.user as User);
-
-let walletData:Ref<Wallet> = ref({});
-const setWalletName = (wallet:Wallet) => {
-     walletData.value = wallet;
-}
+let {walletData} = storeToRefs(walletStore);
 
 const $utils: any = inject('$utils');
 

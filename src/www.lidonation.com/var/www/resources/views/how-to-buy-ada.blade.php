@@ -2,7 +2,7 @@
     @push('json-ld')
      <x-public.json-ld :post="$post"></x-public.json-ld>
     @endpush
-    
+
     <header class="bg-teal-600 z-20 text-white">
         <div class="max-w-4xl px-6 md:mx-auto z-20 flex flex-col items-center py-16">
             <div class="z-20 pb-8 flex flex-col gap-3 lg:hidden">
@@ -34,7 +34,7 @@
             <x-public.post-hero :post="$post"></x-public.post-hero>
         </div>
     </header>
-    
+
         <section class="bg-white py-12 px-6">
             <div class="bg-black rounded text-white p-4 lg:hidden w-full mb-8">
                 <x-public.post-audio :post="$post"></x-public.post-audio>
@@ -189,6 +189,6 @@
 {{--    </section>--}}
 
 
-    <x-public.join-lido-pool></x-public.join-lido-pool>
+<x-support-lido heading-leading='Support the' heading-span='Library'/>
 
 </x-public-layout>

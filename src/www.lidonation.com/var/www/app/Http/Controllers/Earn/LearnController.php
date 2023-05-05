@@ -61,7 +61,7 @@ class LearnController extends Controller
                 return redirect($request->baseURL);
             }
 
-            return to_route('earn.learn');
+            return back()->withInput();
         }
 
         return redirect()->back()->withInput($request->only('email'))->withErrors([
@@ -74,6 +74,7 @@ class LearnController extends Controller
         $user = auth()?->user() ?? User::where('email', $request->input('email'))->first();
 
         if ($user instanceof User) {
+            $user->lang = app()->getLocale();
             $this->updateUser($request, $user);
 
             return back()->withInput();
