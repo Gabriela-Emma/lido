@@ -13,10 +13,16 @@ export const useWalletStore = defineStore('wallet', () => {
         wallet.handle = wallet.stakeAddress.substring(0, 6) + wallet.stakeAddress.slice(-5);
         // make an async call to set the handle
     }
+    
+    function disconnect() {
+       walletData.value = null;
+       walletName.value = null;
+    }
 
     return {
         saveWallet,
+        disconnect,
         walletData,
-        walletName: walletName
+        walletName: walletName,
     }
 });
