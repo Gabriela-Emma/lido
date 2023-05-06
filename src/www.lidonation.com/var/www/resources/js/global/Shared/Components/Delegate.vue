@@ -151,7 +151,7 @@
 <script lang="ts" setup >
 import { ref, Ref } from 'vue';
 import { storeToRefs } from "pinia";
-import { supports } from "../../../lib/utils/cardanoWallet";
+import  {supports}  from "../../../lib/utils/cardanoWallet";
 import WalletService from '../../../lib/services/WalletService';
 import { useWalletStore } from '../../../catalyst-explorer/stores/wallet-store';
 import {onClickOutside} from '@vueuse/core';
@@ -177,14 +177,14 @@ let delegate = async (wallet) => {
 }
 
 let toggle = () => {
-     open.value = !open.value;
+    if (walletName.value && supports(walletName.value)) {
+        delegate(walletName.value);
+    }else{
+        open.value = !open.value;
+    }
 
 }
 
-// if wallet already connected
-if (walletName.value && supports(walletName.value)) {
-    delegate(walletName.value)
-}
 
 const target = ref(null);
 onClickOutside(target, (event) => open.value = false);

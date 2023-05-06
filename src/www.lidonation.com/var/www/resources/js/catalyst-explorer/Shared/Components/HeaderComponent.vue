@@ -18,9 +18,6 @@
                 <div class="mr-3">
                     <ConnectWallet />
                 </div>
-                <div class="mr-3">
-                    <Delegate />
-                </div>
                 <div>
                     <div class="flex flex-col gap-1 xl:ml-auto" v-if="!!user">
                         <p>{{ $t('Welcome back') }}, <strong>{{ user?.name }}</strong></p>
