@@ -159,9 +159,7 @@ import {onClickOutside} from '@vueuse/core';
 let open:Ref<boolean> = ref(false)
 // wallet store
 let walletStore = useWalletStore();
-let { walletData: wallet } = storeToRefs(walletStore);
-let { walletName } = storeToRefs(walletStore);
-
+let { walletData} = storeToRefs(walletStore);
 const walletService = new WalletService();
 let delegating: Ref<boolean> = ref(false);
 let delegationTransactionId = ref(null);
@@ -177,14 +175,13 @@ let delegate = async (wallet) => {
 }
 
 let toggle = () => {
-    if (walletName.value && supports(walletName.value)) {
-        delegate(walletName.value);
+    if (walletData.value?.name && supports(walletData.value?.name)) {
+        delegate(walletData.value?.name);
     }else{
         open.value = !open.value;
     }
 
 }
-
 
 const target = ref(null);
 onClickOutside(target, (event) => open.value = false);
