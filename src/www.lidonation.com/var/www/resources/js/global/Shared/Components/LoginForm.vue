@@ -80,18 +80,15 @@
                 </div>
                 <Divider v-show="showDivider"/>
                 <div v-show="showWalletBtn" class="flex flex-col items-center">
-                    <div v-if="walletName">
-                        <DisconnectWalletBtn >
-                            <Link class="text-slate-800 hover:text-slate-800">
-                                {{ $t("Disconnect wallet") }}
-                            </Link>
-                        </DisconnectWalletBtn>
-                        <!-- class="bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded" -->
-                    </div>
                     <div v-if="walletError" v-text="walletError"
                          class="text-red-500 text-sm my-1"></div>
                     <WalletLoginBtn @walletLoginSuccessful="emit('success', $event)"
                                     @walletError="handleWalletError($event)"/>
+                    <DisconnectWalletBtn v-if="walletName" class="my-1">
+                        <Link class="text-sm text-slate-800 hover:text-slate-800">
+                            {{ $t("Disconnect") }} {{ walletName }}
+                        </Link>
+                    </DisconnectWalletBtn>
                 </div>
             </div>
         </form>
