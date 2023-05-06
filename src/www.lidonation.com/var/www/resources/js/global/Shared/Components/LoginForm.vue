@@ -79,11 +79,16 @@
                     </div>
                 </div>
                 <Divider v-show="showDivider"/>
-                <div v-show="showWalletBtn" class="flex flex-col">
+                <div v-show="showWalletBtn" class="flex flex-col items-center">
                     <div v-if="walletError" v-text="walletError"
                          class="text-red-500 text-sm my-1"></div>
                     <WalletLoginBtn @walletLoginSuccessful="emit('success', $event)"
                                     @walletError="handleWalletError($event)"/>
+                    <DisconnectWalletBtn v-if="walletName" class="my-1">
+                        <Link class="text-sm text-slate-800 hover:text-slate-800">
+                            {{ $t("Disconnect") }} {{ walletName }}
+                        </Link>
+                    </DisconnectWalletBtn>
                 </div>
             </div>
         </form>
@@ -95,6 +100,9 @@ import {useForm, usePage} from '@inertiajs/vue3';
 import {Link} from '@inertiajs/vue3';
 import {inject, Ref, ref} from "vue";
 import WalletLoginBtn from './WalletLoginBtn.vue';
+import DisconnectWalletBtn from './DisconnetWalletBtn.vue'
+import { storeToRefs } from 'pinia';
+import {useWalletStore} from "../../../catalyst-explorer/stores/wallet-store";
 import Divider from './Divider.vue';
 import User from "../Models/user";
 
@@ -123,6 +131,9 @@ let form = useForm({
     email: '',
     remember: false
 })
+
+let walletStore = useWalletStore();
+let {walletName} = storeToRefs(walletStore);
 
 let walletError = ref('');
 let handleWalletError = (error) => {
