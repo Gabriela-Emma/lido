@@ -1,8 +1,7 @@
 <template>
-     <button @click.prevent="disconnectWallet()" 
-            class="bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded">
-        {{ $t("Disconnect wallet") }}
-    </button>
+     <div @click.prevent="disconnectWallet()">
+        <slot></slot> 
+    </div>
 </template>
 
 <script lang="ts" setup>
