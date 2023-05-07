@@ -1,6 +1,6 @@
 <template>
-    <header v-if="user">
-        <EarnNav :crumbs=crumbs />
+    <header>
+        <EarnNav :crumbs="crumbs" />
     </header>
 
     <main
@@ -16,11 +16,11 @@
                 </div>
             </div>
 
-            <div class="pb-8 border border-teal-300 border-t-0 col-span-6 xl:col-span-7">
+            <div class="pb-8 border border-teal-300 border-t-0">
                 <div class="flex flex-row gap-3 justify-between p-5">
                     <div class="flex flex-col md:flex-rowmd:gap-2md:items-end">
                         <h1 class="text-md md:text-2xl xl:text-4xl 2xl:text-5xl">LIDO Earn</h1>
-                        <p>
+                        <p class="text-md xl:text-lg xl:max-2-4xl">
                             Take a few minutes to help around the site or learn something thing.
                             Earn Ada, Cardano Tokens and Nfts.
                         </p>
@@ -29,10 +29,12 @@
                 <div class="relative">
                     <section class="border-t border-teal-300 p-6">
                         <div class="max-w-2xl">
-                            <h2 class="font-bold leading-10 tracking-tight text-slate-900">
-                                Kiswahili Jifunze upate tuzo
-                            </h2>
-                            <p>Lipwa kwa Kujifunza</p>
+                            <div class="flex flex-col gap-0">
+                                <h2 class="font-bold leading-6 tracking-tight text-slate-900 mb-0 pb-0">
+                                    Kiswahili Jifunze upate tuzo
+                                </h2>
+                                <p>Lipwa kwa Kujifunza</p>
+                            </div>
                             <a href="https://www.lidonation.com/sw/earn/learn"
                                class="inline-flex flex-col gap-4 btn bg-labs-red text-white rounded-sm px-3 py-1 my-4">
                                 Earn
@@ -42,7 +44,7 @@
 
                     <section class="border-t border-teal-300 p-6 -my-1 ">
                         <div class="max-w-2xl">
-                            <h2 class="font-bold leading-10 tracking-tight text-slate-900">
+                            <h2 class="font-bold leading-10 tracking-tight text-slate-900 mb-0 pb-0">
                                 Every Epoch
                             </h2>
                             <p>
@@ -59,7 +61,6 @@
                                 Earn
                             </a>
                         </div>
-
                     </section>
                 </div>
             </div>

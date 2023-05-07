@@ -1,7 +1,7 @@
 <template>
-    <div class="sticky top-0 z-30 border-b border-teal-700 md:border-teal-700 bg-teal-800 page-nav">
+    <div class="sticky top-0 z-30 border-b border-teal-300 bg-teal-800 page-nav">
         <div class='container relative'>
-            <div class="flex flex-row justify-between flex-nowrap gap-4">
+            <div class="flex flex-row justify-between flex-nowrap gap-4 border-x border-teal-300 px-5">
                 <nav class="flex max-w-[70%] overflow-x-auto" aria-label="Breadcrumb">
                     <ol role="list" class="flex space-x-0">
 <!--                        <li class="flex">-->
