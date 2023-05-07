@@ -35,8 +35,8 @@
 <script lang="ts" setup>
 import {inject, ref} from "vue";
 import {Link} from '@inertiajs/vue3';
-import LearningModuleCard from "../modules/learn/components/LearningModuleCard.vue";
 import LearningModuleData = App.DataTransferObjects.LearningModuleData;
+import LearningModuleCard from "../modules/earn/components/LearningModuleCard.vue";
 
 const $utils: any = inject('$utils');
 

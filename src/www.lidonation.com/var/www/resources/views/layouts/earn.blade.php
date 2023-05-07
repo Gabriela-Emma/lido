@@ -27,7 +27,7 @@
         @inertiaHead
     @endif
 </head>
-<body class="earn {{Route::is('earn.learn.*') ? 'learn' : ''}}">
+<body class="earn {{Route::is('earn.learn.*') || Route::is('earn.learn') ? 'learn' : ''}}">
 
 <x-lido-menu/>
 

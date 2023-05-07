@@ -1,6 +1,6 @@
 <template>
     <header v-if="user">
-        <Nav :crumbs=crumbs />
+        <LearnNav :crumbs=crumbs />
     </header>
 
     <section class="py-4 sm:py-4 md:pb-20 md:pt-8 pb-16 xl:pb-24 xl:pt-16 bg-opacity-5 text-white overflow-visible z-5"
@@ -46,12 +46,12 @@
 
 <script lang="ts" setup>
 import {Modal} from "momentum-modal"
-import Nav from "./Nav.vue";
 import Sidebar from "./Sidebar.vue";
 import {usePage} from '@inertiajs/vue3';
 import {computed} from "vue";
 import User from '../../global/Shared/Models/user'
 import Spinner from "../../global/Shared/Components/Spinner.vue";
+import LearnNav from "../modules/learn/components/LearnNav.vue";
 
 const props = withDefaults(
     defineProps<{
