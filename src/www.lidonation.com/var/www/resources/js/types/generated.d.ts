@@ -83,6 +83,12 @@ content: string | null;
 type: string | null;
 link?: string | null;
 };
+export type PromoData = {
+title: string | null;
+uri: string | null;
+feature_url: string | null;
+content: string | null;
+};
 export type QuizData = {
 id: number | null;
 title: string;
