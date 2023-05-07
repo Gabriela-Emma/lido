@@ -27,7 +27,7 @@
         @inertiaHead
     @endif
 </head>
-<body class="earn">
+<body class="earn {{Route::is('earn.learn.*') ? 'learn' : ''}}">
 
 <x-lido-menu/>
 
@@ -36,7 +36,7 @@
 @include('includes.header')
 
 <main>
-    @if(app()->getLocale() === 'sw' || auth()?->user()?->hasRole(\App\Enums\RoleEnum::super_admin()->value))
+    @if(!Route::is('earn.learn.*') || app()->getLocale() === 'sw' || auth()?->user()?->hasRole(\App\Enums\RoleEnum::super_admin()->value))
         @inertia
     @else
         <section class="container py-16">

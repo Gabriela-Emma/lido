@@ -1,17 +1,15 @@
 <template>
     <div class="bg-slate-100 login-form-wrapper">
         <LoginForm  :role="'catalyst-explorer'"
-                    :showLogo="true" 
-                   :errors="errors" 
-                   @endpoint="setEndpoint($event)" 
-                   @setForm="getForm($event)" 
+                    :showLogo="true"
+                   :errors="errors"
+                   @setForm="getForm($event)"
                    @submit="submit"/>
     </div>
 </template>
 
 <script lang="ts" setup>
-import { useForm } from "@inertiajs/vue3";
-import { ref } from "vue";
+import {router, useForm, usePage} from "@inertiajs/vue3";
 import LoginForm from "../../../global/Shared/Components/LoginForm.vue";
 
 const props = withDefaults(
@@ -19,18 +17,17 @@ const props = withDefaults(
         errors?: Object,
     }>(), {});
 
-let Endpoint= ref('')
 let form = useForm({})
-
-let setEndpoint = (url:string) => {
-    Endpoint.value = url
-}
 
 let getForm = (loginForm) => {
     form = loginForm
 }
 
 let submit = () => {
-    form.post(Endpoint.value);
+    form.post(`${usePage().props.base_url}/api/catalyst-explorer/login`, {
+        onSuccess: () => {
+            router.get(`${usePage().props.base_url}/catalyst-explorer/my/dashboard`)
+        }
+    });
 }
 </script>

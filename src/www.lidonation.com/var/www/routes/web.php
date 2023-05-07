@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\Earn\EarnController;
 use App\Http\Controllers\Earn\LearnController;
 use App\Http\Controllers\Earn\LearningAnswerResponseController;
 use App\Http\Controllers\Earn\LearningLessonController;
@@ -119,7 +120,7 @@ Route::group(
     });
 
     Route::prefix('/earn')->as('earn.')->group(function () {
-        Route::get('/')->name('learn')->name('home');
+        Route::get('/', [EarnController::class, 'index'])->name('home');
 
         Route::get('/learn', [LearnController::class, 'index'])->name('learn');
         Route::get('/learn/login', fn() => Inertia::render('Login'))
