@@ -9,7 +9,7 @@ class ProposalObserver
 {
     public function saved(Proposal $proposal)
     {
-//        dispatch(fn() => Artisan::call('ln:sitemap-generate'));
+        //        dispatch(fn() => Artisan::call('ln:sitemap-generate'));
     }
 
     /**
@@ -33,18 +33,18 @@ class ProposalObserver
 
     protected function generateTranslations(Proposal $proposal)
     {
-//        LanguageLine::updateOrCreate(
-//            [
-//                'group' => 'proposals',
-//                'key' => $proposal->slug,
-//            ],
-//            [
-//                'group' => 'proposals',
-//                'key' => $proposal->slug,
-//                'text' => [
-//                    'en' => $proposal->content,
-//                ],
-//            ]
-//        );
+        //        LanguageLine::updateOrCreate(
+        //            [
+        //                'group' => 'proposals',
+        //                'key' => $proposal->slug,
+        //            ],
+        //            [
+        //                'group' => 'proposals',
+        //                'key' => $proposal->slug,
+        //                'text' => [
+        //                    'en' => $proposal->content,
+        //                ],
+        //            ]
+        //        );
     }
 }

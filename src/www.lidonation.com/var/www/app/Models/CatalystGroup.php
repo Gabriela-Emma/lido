@@ -96,10 +96,10 @@ class CatalystGroup extends Model implements HasMedia, HasLink
     {
         return $this->belongsToMany(Proposal::class, 'catalyst_group_has_proposal', 'catalyst_group_id', 'proposal_id', 'id', 'id', 'proposals')
             ->where('type', 'proposal');
-//        return $this->hasManyDeep(
-//            Proposal::class,
-//            ['catalyst_group_has_catalyst_user', CatalystUser::class, 'catalyst_user_has_proposal']
-//        )->groupBy(['proposals.id'])->where('type', 'proposal');
+        //        return $this->hasManyDeep(
+        //            Proposal::class,
+        //            ['catalyst_group_has_catalyst_user', CatalystUser::class, 'catalyst_user_has_proposal']
+        //        )->groupBy(['proposals.id'])->where('type', 'proposal');
     }
 
     /**
@@ -109,11 +109,11 @@ class CatalystGroup extends Model implements HasMedia, HasLink
     {
         return $this->belongsToMany(Proposal::class, 'catalyst_group_has_proposal', 'catalyst_group_id', 'proposal_id', 'id', 'id', 'challenges')
             ->where('type', 'challenge');
-//        return $this->hasManyDeep(
-//            Proposal::class,
-//            ['catalyst_group_has_catalyst_user', CatalystUser::class, 'catalyst_user_has_proposal']
-//        )->where('type', 'challenge')
-//            ->groupBy(['proposals.id']);
+        //        return $this->hasManyDeep(
+        //            Proposal::class,
+        //            ['catalyst_group_has_catalyst_user', CatalystUser::class, 'catalyst_user_has_proposal']
+        //        )->where('type', 'challenge')
+        //            ->groupBy(['proposals.id']);
     }
 
     /**

@@ -13,7 +13,7 @@ class HandleInertiaRequests extends Middleware
      *
      * @see https://inertiajs.com/server-side-setup#root-template
      */
-//    protected $rootView = 'layouts/catalyst-explorer';
+    //    protected $rootView = 'layouts/catalyst-explorer';
 
     public function rootView(Request $request): string
     {
@@ -44,9 +44,9 @@ class HandleInertiaRequests extends Middleware
     {
         $user = $request->user()
             ?->only('id', 'name', 'email', 'bio', 'git', 'discord', 'linkedin', 'telegram', 'twitter');
-//        dd(
-//            $request->user()?->rewards()->where('model_type', LearningLesson::class)->sum('amount')
-//        );
+        //        dd(
+        //            $request->user()?->rewards()->where('model_type', LearningLesson::class)->sum('amount')
+        //        );
         if ($user) {
             $user['roles'] = $request->user()?->getRoleNames();
         }

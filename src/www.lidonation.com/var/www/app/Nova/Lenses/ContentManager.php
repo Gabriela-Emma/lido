@@ -32,14 +32,14 @@ class ContentManager extends Lens
                 ->orderBy('created_at', 'desc')
         ));
 
-//        return $request->withOrdering($request->withFilters(
-//            $query->withoutGlobalScopes()
-//                ->select(self::columns($request))
-//                ->join('metas', "$table.id", '=', 'metas.model_id')
-//                ->where("$table.status", '!=', 'published')
-//                ->groupBy("$table.id")
-//            ->orderBy("$table.created_at", 'asc')
-//        ));
+        //        return $request->withOrdering($request->withFilters(
+        //            $query->withoutGlobalScopes()
+        //                ->select(self::columns($request))
+        //                ->join('metas', "$table.id", '=', 'metas.model_id')
+        //                ->where("$table.status", '!=', 'published')
+        //                ->groupBy("$table.id")
+        //            ->orderBy("$table.created_at", 'asc')
+        //        ));
     }
 
     /**

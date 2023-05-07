@@ -59,13 +59,13 @@ class ViewServiceProvider extends ServiceProvider
         View::composer('*', GlobalComposer::class);
         View::composer(['library'], LibraryComposer::class);
 
-//        View::composer(['includes.footer'], function(\Illuminate\View\View $view){
-//            $view->with([]);
-//        });
+        //        View::composer(['includes.footer'], function(\Illuminate\View\View $view){
+        //            $view->with([]);
+        //        });
 
         View::composer(['phuffycoin'], PhuffycoinComposer::class);
         View::composer(['glossary'], DefinitionsComposer::class);
-//        View::composer(['causes'],  DefinitionsComposer::class);
+        //        View::composer(['causes'],  DefinitionsComposer::class);
         View::composer(['community', 'home', 'library', 'post', 'review'], MeetupComposer::class);
 
         View::composer(['noobs', 'home'], NoobsComposer::class);

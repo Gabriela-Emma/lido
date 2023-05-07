@@ -55,12 +55,12 @@ class TranslateModel extends Action
         }
 
         $models->each(fn ($model) => (collect($fields->targets))
-                ->each(fn ($target) => collect($model->translatable)->each(function ($field) use ($model, $fields, $target) {
-                    if (! in_array($field, $model->translatableExcludedFromGeneration)) {
-                        SyncTranslationJob::dispatch($model, $field, $fields->source, $target, $fields->publish, $fields->pre_populate);
-                    }
-                })
-                )
+            ->each(fn ($target) => collect($model->translatable)->each(function ($field) use ($model, $fields, $target) {
+                if (! in_array($field, $model->translatableExcludedFromGeneration)) {
+                    SyncTranslationJob::dispatch($model, $field, $fields->source, $target, $fields->publish, $fields->pre_populate);
+                }
+            })
+            )
         );
     }
 

@@ -1,6 +1,6 @@
 <template>
     <div v-if="user">
-        <Nav :crumbs=crumbs />
+        <LearnNav :crumbs=crumbs />
     </div>
 
     <section class="">
@@ -11,11 +11,10 @@
 
 <script lang="ts" setup>
 import { Modal } from "momentum-modal"
-import Nav from "./Nav.vue";
-import {useForm, usePage} from '@inertiajs/vue3';
+import {usePage} from '@inertiajs/vue3';
 import {computed} from "vue";
-import Spinner from "../../global/Shared/Components/Spinner.vue";
 import User from '../../global/Shared/Models/user'
+import LearnNav from "../modules/learn/components/LearnNav.vue";
 
 const props = withDefaults(
     defineProps<{

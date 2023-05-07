@@ -35,7 +35,7 @@ class CreateUserController extends Controller
             $user->password = Hash::make($validated->password) ?? null;
             $user->wallet_stake_address = $validated->stake_address;
             $user->wallet_address = $validated->wallet_address ?? null;
-//            $user->assets = $request->assets ?? null;
+            //            $user->assets = $request->assets ?? null;
 
             if (isset($user->wallet_stake_address)) {
                 $user->assignRole((string) RoleEnum::partner());

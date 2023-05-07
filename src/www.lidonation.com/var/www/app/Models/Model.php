@@ -32,9 +32,9 @@ class Model extends EloquentModel
      */
     protected function cacheForValue(): DateTime|int|null
     {
-//        if (optional(request()->user())->hasRole('admin')) {
-//            return null;
-//        }
+        //        if (optional(request()->user())->hasRole('admin')) {
+        //            return null;
+        //        }
 
         return $this->cacheFor;
     }

@@ -19,7 +19,7 @@ class ReviewComponent extends Component
 
     public ?int $parentId = null;
 
-//    public ?string $prompt = null;
+    //    public ?string $prompt = null;
     public ?string $modelType = null;
 
     public ?bool $writing = false;

@@ -45,7 +45,7 @@ class QuizAttemptsPerDay extends Trend
      */
     public function cacheFor(): ?\DateTimeInterface
     {
-         return now()->addMinutes(15);
+        return now()->addMinutes(15);
     }
 
     /**

@@ -64,11 +64,11 @@ class LearningTopic extends Resource
             BelongsTo::make(__('Author'), 'author', User::class)
                 ->searchable(),
             BelongsToMany::make(__('Learning Modules'), 'learningModules', LearningModules::class)
-            ->hideFromIndex()
-            ->searchable(),
+                ->hideFromIndex()
+                ->searchable(),
             BelongsToMany::make(__('Learning Lesson'), 'learningLessons', LearningLessons::class)
-            ->hideFromIndex()
-            ->searchable(),
+                ->hideFromIndex()
+                ->searchable(),
         ];
     }
 

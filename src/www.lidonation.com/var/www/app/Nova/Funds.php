@@ -80,8 +80,8 @@ class Funds extends Resource
         return [
             ID::make(__('ID'), 'id')->sortable(),
             Text::make(__('Title'))
-            ->sortable()
-            ->required(),
+                ->sortable()
+                ->required(),
             Text::make(__('Slug'))->sortable(),
 
             Text::make(__('Type'))->sortable(),
@@ -116,7 +116,7 @@ class Funds extends Resource
                 ->sortable(),
 
             Number::make('Amount')
-            ->required(),
+                ->required(),
 
             // DateTime::make('Awarded At')
             //     ->sortable()

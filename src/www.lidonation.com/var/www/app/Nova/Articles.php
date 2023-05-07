@@ -102,9 +102,9 @@ class Articles extends Resource
         return [
             ID::make(__('ID'), 'id')->sortable(),
             Text::make(__('Title'), 'title')
-            ->onlyOnForms()
-            ->translatable()
-            ->required(),
+                ->onlyOnForms()
+                ->translatable()
+                ->required(),
 
             Text::make(__('Subtitle'), 'subtitle')
                 ->translatable()
@@ -136,7 +136,7 @@ class Articles extends Resource
                 'ready' => 'Ready',
                 'scheduled' => 'Scheduled',
             ])->sortable()
-            ->required(),
+                ->required(),
             Select::make(__('Type'), 'type')->options([
                 Review::class => 'Reviews',
                 \App\Models\News::class => 'News',

@@ -273,7 +273,7 @@ return [
             new Illuminate\Support\Fluent([
                 'title' => 'Jifunze upate tuzo',
                 'route_type' => 'url',
-                'route' => 'https://www.lidonation.com/sw/earn/learn'
+                'route' => 'https://www.lidonation.com/sw/earn/learn',
             ]),
         ],
     ]),

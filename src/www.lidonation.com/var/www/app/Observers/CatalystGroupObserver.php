@@ -22,7 +22,7 @@ class CatalystGroupObserver
      */
     public function updating(CatalystGroup $catalystGroup): void
     {
-//        SyncCatalystGroupProposalsJob::dispatch($catalystGroup->id);
+        //        SyncCatalystGroupProposalsJob::dispatch($catalystGroup->id);
     }
 
     public function deleting(Post $post): void

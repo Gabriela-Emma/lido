@@ -10,7 +10,7 @@ class PostObserver
 {
     public function saved(Post $post)
     {
-//        dispatch(fn() => Artisan::call('ln:sitemap-generate'));
+        //        dispatch(fn() => Artisan::call('ln:sitemap-generate'));
     }
 
     /**
@@ -33,18 +33,18 @@ class PostObserver
 
     protected function generateTranslations(Post $post)
     {
-//        LanguageLine::updateOrCreate(
-//            [
-//                'group' => 'posts',
-//                'key' => $post->slug,
-//            ],
-//            [
-//                'group' => 'posts',
-//                'key' => $post->slug,
-//                'text' => [
-//                    'en' => $post->content,
-//                ],
-//            ]
-//        );
+        //        LanguageLine::updateOrCreate(
+        //            [
+        //                'group' => 'posts',
+        //                'key' => $post->slug,
+        //            ],
+        //            [
+        //                'group' => 'posts',
+        //                'key' => $post->slug,
+        //                'text' => [
+        //                    'en' => $post->content,
+        //                ],
+        //            ]
+        //        );
     }
 }

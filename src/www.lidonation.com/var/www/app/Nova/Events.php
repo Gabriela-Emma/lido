@@ -51,10 +51,10 @@ class Events extends Resource
             ID::make(__('ID'), 'id')->sortable(),
 
             Text::make(__('Name'))
-            ->sortable()
-            ->required()
-            ->rules('max:255')
-            ->translatable(),
+                ->sortable()
+                ->required()
+                ->rules('max:255')
+                ->translatable(),
 
             DateTime::make(__('Starts'), 'starts_at')->sortable(),
             DateTime::make(__('Ends'), 'ends_at')->sortable(),

@@ -2,24 +2,22 @@
 
 namespace App\DataTransferObjects;
 
-
-use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Attributes\MapOutputName;
+use Spatie\LaravelData\Data;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
-use Spatie\TypeScriptTransformer\Attributes\Optional as TypeScriptOptional;
 
 #[TypeScript]
 class PromoData extends Data
 {
     public function __construct(
-      public ?string $title,
+        public ?string $title,
 
-      public ?string $uri,
+        public ?string $uri,
 
-      #[MapOutputName('feature_url')]
-      public ?string $feature_url,
+        #[MapOutputName('feature_url')]
+        public ?string $feature_url,
 
-      public ?string $content,
+        public ?string $content,
 
     ) {
     }

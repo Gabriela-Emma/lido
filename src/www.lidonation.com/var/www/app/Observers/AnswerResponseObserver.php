@@ -12,7 +12,7 @@ class AnswerResponseObserver
     public function creating(AnswerResponse $answerResponse): void
     {
         if (! $answerResponse->user_id && auth()->check()) {
-//            $answerResponse->user_id = auth()?->user()?->getAuthIdentifier();
+            //            $answerResponse->user_id = auth()?->user()?->getAuthIdentifier();
         }
     }
 }

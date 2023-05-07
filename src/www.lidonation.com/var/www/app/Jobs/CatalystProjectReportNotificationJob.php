@@ -34,8 +34,8 @@ class CatalystProjectReportNotificationJob implements ShouldQueue
         // create new NotificationRequest
 
         // In Observer
-//            onCreate
-//                *onCreate
+        //            onCreate
+        //                *onCreate
         // create new Mailable
         // send
         // update status

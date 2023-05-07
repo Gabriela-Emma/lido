@@ -3,7 +3,6 @@
 namespace App\Models\Traits;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Support\Facades\Auth;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 use Vinkla\Hashids\Facades\Hashids;
 
@@ -28,7 +27,7 @@ trait HashIdModel
     public function link(): Attribute
     {
         return Attribute::make(
-            get: fn () => LaravelLocalization::getLocalizedURL( app()->getLocale(), "{$this->getUrlGroup()}/{$this->hash}/")
+            get: fn () => LaravelLocalization::getLocalizedURL(app()->getLocale(), "{$this->getUrlGroup()}/{$this->hash}/")
         );
     }
 }

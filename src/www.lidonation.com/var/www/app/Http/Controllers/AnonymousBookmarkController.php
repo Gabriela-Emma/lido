@@ -18,7 +18,7 @@ class AnonymousBookmarkController extends Controller
         ]);
         $bookmark = $request->input('bookmark');
 
-//        $bookmark = LZString::decompressFromEncodedURIComponent($bookmark);
+        //        $bookmark = LZString::decompressFromEncodedURIComponent($bookmark);
 
         return AnonymousBookmark::updateOrCreate(
             [

@@ -89,8 +89,8 @@ class ProposalQuickViewComponent extends ModalComponent
         $this->proposal = Proposal::findOrFail($proposalId);
         // @todo replace this with primary user on the proposal object
         $this->catalystUser = $catalystUserRepository->get($this->proposal->users?->first()?->id);
-//
-//        // @todo This should be an injecktable operation
+        //
+        //        // @todo This should be an injecktable operation
         $discussions = $this->catalystUser?->proposals
             ->map(
                 fn ($p) => $p->discussions

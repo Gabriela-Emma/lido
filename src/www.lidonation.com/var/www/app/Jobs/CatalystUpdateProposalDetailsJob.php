@@ -260,11 +260,11 @@ class CatalystUpdateProposalDetailsJob implements ShouldQueue
             return $converter->convert('<h3 class="mt-6">'.$field?->title.'</h3>'.$ideaFieldValues.'<br /><br /><p></p>');
         });
 
-//        return $fieldSections->map(function ($field) {
-//            $converter = new HtmlConverter();
-//
-//            return $converter->convert('<h3>'.$field->ideaFieldValues[0]?->title.'</h3>'.$field->ideaFieldValues[0]?->value.'<br /><br />');
-//        });
+        //        return $fieldSections->map(function ($field) {
+        //            $converter = new HtmlConverter();
+        //
+        //            return $converter->convert('<h3>'.$field->ideaFieldValues[0]?->title.'</h3>'.$field->ideaFieldValues[0]?->value.'<br /><br />');
+        //        });
     }
 
     protected function getFund7ProposalDetails($sections): Collection

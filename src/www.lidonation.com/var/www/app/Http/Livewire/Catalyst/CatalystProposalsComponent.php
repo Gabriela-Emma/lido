@@ -124,17 +124,17 @@ class CatalystProposalsComponent extends Component
         $this->paginator = $this->searchBuilder->paginate(
             $this->perPage,
             // @todo, skip converting to eloquent models and paginate directly out of search engine with only columns needed for the drip
-//            [
-//                'id',
-//                'title',
-//                'funded_at',
-//                'funding_status',
-//                'ideascale_link',
-//                'website',
-//                'funding_updated_at',
-//                'amount_requested',
-//                'amount_received'
-//            ]
+            //            [
+            //                'id',
+            //                'title',
+            //                'funded_at',
+            //                'funding_status',
+            //                'ideascale_link',
+            //                'website',
+            //                'funding_updated_at',
+            //                'amount_requested',
+            //                'amount_received'
+            //            ]
         );
         $this->proposals = $this->paginator->items();
 

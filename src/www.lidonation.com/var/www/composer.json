@@ -46,7 +46,6 @@
         "league/html-to-markdown": "^5.1",
         "livewire/livewire": "^2.10",
         "maatwebsite/excel": "^3.1",
-        "macsidigital/laravel-zoom": "*",
         "mailchimp/marketing": "^3.0",
         "mcamara/laravel-localization": "^1.7",
         "mediconesystems/livewire-datatables": "^0.9",
