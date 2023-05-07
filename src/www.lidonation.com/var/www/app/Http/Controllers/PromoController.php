@@ -60,7 +60,6 @@ class PromoController extends Controller
         ->setAppends([
             'feature_url',
         ])->toArray());
-        // return dd(Promo::find(19)->feature_url);
     }
 
     /**
