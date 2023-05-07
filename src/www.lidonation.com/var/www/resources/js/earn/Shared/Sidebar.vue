@@ -26,10 +26,10 @@
                     {{ $t('hours') }} {{ hours }}, {{ $t('minutes') }} {{ minutes }}, {{ $t('seconds') }} {{ seconds }}.
                 </div>
             </countdown>
-            <div v-if="learnerData?.nextLesson" class="border-t border-labs-black/20 px-2 py-3 flex flex-col gap-4 mt-4">
+            <div v-if="learnerData?.nextLesson" class="flex flex-col gap-4 px-2 py-3 mt-4 border-t border-labs-black/20">
                 <div class="flex flex-col">
-                    <small class="text-xs text-labs-black font-semibold">{{ $t('Next Lesson') }} </small>
-                    <div class="text-sm xl:text-md text-white font-bold">
+                    <small class="text-xs font-semibold text-labs-black">{{ $t('Next Lesson') }} </small>
+                    <div class="text-sm font-bold text-white xl:text-md">
                         {{ learnerData?.nextLesson?.title }}
                     </div>
                 </div>
@@ -40,6 +40,7 @@
                 </div>
             </div>
         </div>
+        <Promo />
     </section>
 </template>
 <script setup lang="ts">
@@ -51,7 +52,7 @@ import moment from "moment-timezone";
 import {Link} from "@inertiajs/vue3";
 import {useLearnerDataStore} from "../store/learner-data-store";
 import {storeToRefs} from "pinia";
-
+import Promo from '../../global/Shared/Components/Promo.vue'
 
 const user = computed(() => usePage().props.user as User);
 const $utils: any = inject('$utils');

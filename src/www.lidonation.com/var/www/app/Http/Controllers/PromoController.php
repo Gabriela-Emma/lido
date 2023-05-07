@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTransferObjects\PromoData;
 use App\Http\Requests\StorePromoRequest;
 use App\Http\Requests\UpdatePromoRequest;
 use App\Models\Nft;
@@ -54,8 +55,12 @@ class PromoController extends Controller
      * @return Response
      */
     public function show(Promo $promo)
-    {
-        //
+    {   
+        return PromoData::from(Promo::find(19)
+        ->setAppends([
+            'feature_url',
+        ])->toArray());
+        // return dd(Promo::find(19)->feature_url);
     }
 
     /**

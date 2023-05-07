@@ -290,6 +290,7 @@ Route::prefix('promos')->as('promos')
     ])
     ->group(function () {
         Route::post('/create', [PromoController::class, 'store'])->name('store');
+        Route::get('/',[PromoController::class, 'show']);
     });
 
 Route::prefix('quizzes')->as('quizzes')
