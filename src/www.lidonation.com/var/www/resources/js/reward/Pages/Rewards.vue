@@ -12,7 +12,7 @@
                 </div>
             </div>
 
-            <div class="mb-8 border border-teal-300 border-t-0 col-span-6 xl:col-span-7">
+            <div class="pb-8 border border-teal-300 border-t-0 col-span-6 xl:col-span-7">
                 <div class="flex flex-row gap-3 justify-between p-5">
                     <div class="flex flex-col md:flex-row md:gap-2 md:items-center">
                         <h2 class="text-sm md:text-2xl xl:text-3xl">My Lido Rewards</h2>
