@@ -56,7 +56,7 @@ class PromoController extends Controller
      */
     public function show(Promo $promo)
     {   
-        return PromoData::from(Promo::find(19)
+        return PromoData::from(Promo::inRandomOrder()->first()
         ->setAppends([
             'feature_url',
         ])->toArray());
