@@ -12,8 +12,6 @@ class UserObserver
 {
     /**
      * Handle the User "created" event.
-     *
-     * @return void
      */
     public function updating(User $user): void
     {

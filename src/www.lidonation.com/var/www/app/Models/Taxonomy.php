@@ -172,8 +172,8 @@ class Taxonomy extends Model implements HasMedia, HasLink
      */
     protected static function booted()
     {
-//        static::addGlobalScope(new PublishedScope);
-//        static::addGlobalScope(new OrderByOrderScope);
-//        static::addGlobalScope(new OrderByDateScope);
+        //        static::addGlobalScope(new PublishedScope);
+        //        static::addGlobalScope(new OrderByOrderScope);
+        //        static::addGlobalScope(new OrderByDateScope);
     }
 }

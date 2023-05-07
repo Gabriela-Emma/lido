@@ -17,7 +17,7 @@ trait HasSlug
             $max = intval(static::whereTitle($title)->latest('id')->count());
 
             return "{$slug}-".preg_replace_callback('/(\d+)$/', fn ($matches) => $matches[1] + 1,
-                    $max);
+                $max);
         }
 
         return $slug;

@@ -92,12 +92,12 @@
 }
 
 
-body.earn {
+body.earn.learn {
     @apply bg-white;
     font-family: Inter, sans-serif, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
 
-body.earn #header {
+body.earn.learn #header {
     @apply border-slate-800;
 
     #primary-menu .menu-item .menu-link {
@@ -124,26 +124,26 @@ body.earn #header {
     }
 }
 
-body.earn header#header .brand-logo-wrapper .brand-logo-link img:last-of-type {
+body.earn.learn header#header .brand-logo-wrapper .brand-logo-link img:last-of-type {
     @apply hidden;
 }
 
-body.earn #top-blob{
+body.earn.learn #top-blob{
     display: none;
 }
 
-body.earn #header {
+body.earn.learn #header {
     @apply bg-white;
 }
 
-body.earn textarea:not(.custom-input),
-body.earn input[type=text]:not(.custom-input),
-body.earn input[type=email]:not(.custom-input) {
+body.earn.learn textarea:not(.custom-input),
+body.earn.learn input[type=text]:not(.custom-input),
+body.earn.learn input[type=email]:not(.custom-input) {
     @apply border-labs-red;
 }
 
-body.earn > footer,
-body.earn #footer {
+body.earn.learn > footer,
+body.earn.learn #footer {
     @apply bg-labs-red;
 
     dt, .copyright {
@@ -158,15 +158,15 @@ body.earn #footer {
         @apply text-white;
     }
 }
-body.earn .button.primary{
+body.earn.learn .button.primary{
     @apply bg-labs-red outline-labs-red text-white;
 }
-body.earn footer .pool-id-picker .wallet-picker{
+body.earn.learn footer .pool-id-picker .wallet-picker{
     @apply bg-labs-red border-labs-red;
 }
-body.earn footer .pool-graphic > div,
-body.earn-marathon footer .pool-graphic > div,
-body.earn footer .pool-graphic > div{
+body.earn.learn footer .pool-graphic > div,
+body.earn.learn-marathon footer .pool-graphic > div,
+body.earn.learn footer .pool-graphic > div{
     @apply text-labs-red;
 }
 
@@ -175,7 +175,7 @@ body.earn footer .pool-graphic > div{
     //@apply bg-labs-red-50 p-4;
 }
 
-body.earn #new-lido-minutes {
+body.earn.learn #new-lido-minutes {
     .episodes {
         -ms-overflow-style: none !important;
         scrollbar-width: none !important;
@@ -187,7 +187,7 @@ body.earn #new-lido-minutes {
 }
 
 
-body.earn .lido-origin {
+body.earn.learn .lido-origin {
     @apply gap-0;
 
     > :first-child {

@@ -13,32 +13,32 @@ use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 class LearnerData extends Data
 {
     public function __construct(
-      public ?string $name,
+        public ?string $name,
 
-      #[TypeScriptOptional]
-      public ?string $wallet_address,
+        #[TypeScriptOptional]
+        public ?string $wallet_address,
 
-      public ?string $email,
+        public ?string $email,
 
-      #[TypeScriptOptional]
-      public ?string $stake_address,
+        #[TypeScriptOptional]
+        public ?string $stake_address,
 
-      #[TypeScriptOptional]
-      #[MapOutputName('nextLessonAt')]
-      public ?string $next_lesson_at,
+        #[TypeScriptOptional]
+        #[MapOutputName('nextLessonAt')]
+        public ?string $next_lesson_at,
 
-      #[TypeScriptOptional]
-      #[MapOutputName('nextLesson')]
-      public ?LearningLessonData $next_lesson,
+        #[TypeScriptOptional]
+        #[MapOutputName('nextLesson')]
+        public ?LearningLessonData $next_lesson,
 
-      #[TypeScriptOptional]
-      #[MapOutputName('totalRewardSum')]
-      public ?int $total_reward_sum,
+        #[TypeScriptOptional]
+        #[MapOutputName('totalRewardSum')]
+        public ?int $total_reward_sum,
 
-      #[TypeScriptOptional]
-      #[MapOutputName('availableRewards')]
-      #[DataCollectionOf(RewardData::class)]
-      public ?DataCollection $available_rewards,
+        #[TypeScriptOptional]
+        #[MapOutputName('availableRewards')]
+        #[DataCollectionOf(RewardData::class)]
+        public ?DataCollection $available_rewards,
 
     ) {
     }

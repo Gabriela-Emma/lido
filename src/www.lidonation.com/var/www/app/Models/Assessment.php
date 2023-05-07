@@ -192,7 +192,7 @@ class Assessment extends Model implements IHasMetaData
      */
     public function toSearchableArray(): array
     {
-//        $array = $this->toArray();
+        //        $array = $this->toArray();
         $proposal = collect($this->model?->model?->toSearchableArray())
             ->only(['id', 'slug', 'title', 'users', 'fund', 'challenge', 'groups', 'funded', 'completed', 'challenge_label']);
 

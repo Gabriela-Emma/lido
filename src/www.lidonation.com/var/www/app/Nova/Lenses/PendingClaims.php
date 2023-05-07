@@ -21,7 +21,7 @@ class PendingClaims extends Lens
     {
         return $query->whereHas('metas', function ($query) {
             $query->where('key', 'ideascale_verification_code')
-                  ->whereNull('claimed_by');
+                ->whereNull('claimed_by');
         });
     }
 

@@ -43,8 +43,8 @@ class FetchUserDelegationJob implements ShouldQueue
                 $user->save();
             }
         } catch (\Throwable $th) {
-            Log::info("Not an active account");
+            Log::info('Not an active account');
         }
-        
+
     }
 }

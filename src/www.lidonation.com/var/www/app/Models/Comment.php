@@ -14,9 +14,9 @@ class Comment extends \Spatie\Comments\Models\Comment
         'commentator',
     ];
 
-//    public array $translatable = [
-//        'text'
-//    ];
+    //    public array $translatable = [
+    //        'text'
+    //    ];
 
     public function react(string $reaction, CanComment $commentator = null): self
     {

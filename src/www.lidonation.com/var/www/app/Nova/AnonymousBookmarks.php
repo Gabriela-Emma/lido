@@ -29,7 +29,7 @@ class AnonymousBookmarks extends Resource
 
     public static $perPageViaRelationship = 25;
 
-//    public static $with = ['proposals', 'parent'];
+    //    public static $with = ['proposals', 'parent'];
 
     /**
      * The single value that should be used to represent the resource when being displayed.

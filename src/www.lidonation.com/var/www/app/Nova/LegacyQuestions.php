@@ -72,9 +72,9 @@ class LegacyQuestions extends Resource
             Markdown::make(__('Answer'), 'content'),
 
             Text::make(__('Model Type'), 'model_type')
-            ->default(function (NovaRequest $request) {
-                return $request->model()::class;
-            }),
+                ->default(function (NovaRequest $request) {
+                    return $request->model()::class;
+                }),
 
             BelongsTo::make(__('Author'), 'author', User::class)
                 ->searchable()

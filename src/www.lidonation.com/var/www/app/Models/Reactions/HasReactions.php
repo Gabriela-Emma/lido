@@ -19,11 +19,11 @@ trait HasReactions
 
         if ($commenter !== null) {
             $existingReaction = $this->lido_reactions()
-            ->where('reaction', $reaction)
-            ->where('commenter_id', optional($commenter)->id ?: auth()->id())
-            ->where('model_type', get_class($this))
-            ->where('model_id', $this->id)
-            ->first();
+                ->where('reaction', $reaction)
+                ->where('commenter_id', optional($commenter)->id ?: auth()->id())
+                ->where('model_type', get_class($this))
+                ->where('model_id', $this->id)
+                ->first();
 
             if ($existingReaction) {
                 throw new \Exception('This reaction exists for this user in this model.');

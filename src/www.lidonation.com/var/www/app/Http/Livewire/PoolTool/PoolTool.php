@@ -17,12 +17,12 @@ class PoolTool extends LivewireDatatable
 {
     public $model = PoolUpdate::class;
 
-//    public $searchable = ['title'];
+    //    public $searchable = ['title'];
     public $beforeTableSlot = 'livewire.pool-tool.filters';
 
     public $beforePageSlot = 'livewire.pool-tool.header';
 
-//    public $activeSelectFilters = ['fund'];
+    //    public $activeSelectFilters = ['fund'];
     public $perPage = 50;
 
     public function builder()

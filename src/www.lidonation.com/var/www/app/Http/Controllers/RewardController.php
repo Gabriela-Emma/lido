@@ -115,7 +115,7 @@ class RewardController extends Controller
 
     public function withdrawals()
     {
-       return Reward::where('stake_address', auth()?->user()?->wallet_stake_address)
+        return Reward::where('stake_address', auth()?->user()?->wallet_stake_address)
             ->where('status', 'issued')
             ->orderBy('created_at', 'desc')
             ->get()
@@ -156,33 +156,33 @@ class RewardController extends Controller
     {
 
         return Reward::where('user_id', $user?->id)
-                    ->where('status', 'issued')->orderBy('created_at', 'desc')
-                    ->with('user')->paginate(12, ['*'], 'p')->setPath('/')->onEachSide(0);
+            ->where('status', 'issued')->orderBy('created_at', 'desc')
+            ->with('user')->paginate(12, ['*'], 'p')->setPath('/')->onEachSide(0);
     }
 
     public function processedRewards($user)
     {
         return Reward::where('stake_address', auth()?->user()?->wallet_stake_address)
-                    ->where('status', 'processed')
-                    ->orderBy('created_at', 'desc')
-                    ->get()
-                    ?->groupBy('asset')
-                    ->map(function ($group) {
-                        $asset = new Fluent(
-                            array_merge(
-                                $group[0]?->toArray() ?? [],
-                                [
-                                    'amount' => collect($group)->sum('amount'),
-                                    'memo' => "Withdrawals processed {$group[0]?->updated_at->diffForHumans()}",
-                                    'processed_at' => $group[0]?->updated_at->diffForHumans(),
-                                ]
-                            ));
-                        if (is_array($asset->asset_details)) {
-                            $asset->asset_details = new Fluent($asset->asset_details);
-                        }
+            ->where('status', 'processed')
+            ->orderBy('created_at', 'desc')
+            ->get()
+            ?->groupBy('asset')
+            ->map(function ($group) {
+                $asset = new Fluent(
+                    array_merge(
+                        $group[0]?->toArray() ?? [],
+                        [
+                            'amount' => collect($group)->sum('amount'),
+                            'memo' => "Withdrawals processed {$group[0]?->updated_at->diffForHumans()}",
+                            'processed_at' => $group[0]?->updated_at->diffForHumans(),
+                        ]
+                    ));
+                if (is_array($asset->asset_details)) {
+                    $asset->asset_details = new Fluent($asset->asset_details);
+                }
 
-                        return $asset;
-                    })->values() ?? [];
+                return $asset;
+            })->values() ?? [];
 
     }
 }

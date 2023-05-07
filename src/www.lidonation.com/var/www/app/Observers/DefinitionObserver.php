@@ -30,31 +30,31 @@ class DefinitionObserver
 
     protected function generateTranslations(Definition $definition)
     {
-//        LanguageLine::updateOrCreate(
-//            [
-//                'group' => 'definitions',
-//                'key' =>  "{$definition->slug}.title",
-//            ],
-//            [
-//                'group' => 'definitions',
-//                'key' => "{$definition->slug}.title",
-//                'text' => [
-//                    'en' => $definition->title,
-//                ],
-//            ]
-//        );
-//        LanguageLine::updateOrCreate(
-//            [
-//                'group' => 'definitions',
-//                'key' =>  "{$definition->slug}.content",
-//            ],
-//            [
-//                'group' => 'definitions',
-//                'key' => "{$definition->slug}.content",
-//                'text' => [
-//                    'en' => $definition->content,
-//                ],
-//            ]
-//        );
+        //        LanguageLine::updateOrCreate(
+        //            [
+        //                'group' => 'definitions',
+        //                'key' =>  "{$definition->slug}.title",
+        //            ],
+        //            [
+        //                'group' => 'definitions',
+        //                'key' => "{$definition->slug}.title",
+        //                'text' => [
+        //                    'en' => $definition->title,
+        //                ],
+        //            ]
+        //        );
+        //        LanguageLine::updateOrCreate(
+        //            [
+        //                'group' => 'definitions',
+        //                'key' =>  "{$definition->slug}.content",
+        //            ],
+        //            [
+        //                'group' => 'definitions',
+        //                'key' => "{$definition->slug}.content",
+        //                'text' => [
+        //                    'en' => $definition->content,
+        //                ],
+        //            ]
+        //        );
     }
 }

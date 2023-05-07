@@ -99,12 +99,12 @@ class CatalystDashboardComponent extends Component
             ->orderByDesc('amount_requested')
             ->limit(15)
             ->get();
-//
+        //
         $this->fundedOver75K = Proposal::where('proposals.type', 'proposal')
             ->whereNotNull('funded_at')
             ->where('amount_requested', '>=', 75000)
             ->count();
-//
+        //
         $this->completedProposals = Proposal::where('proposals.type', 'proposal')
             ->where('status', 'complete')
             ->count();

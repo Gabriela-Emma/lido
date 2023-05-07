@@ -46,8 +46,8 @@ class LidoStats extends Component
                     'active_stake',
                 ]
             )->get(['key', 'value'])
-            ->map(fn ($stats) => ([$stats['key'] => $stats['value']]))
-            ->collapse();
+                ->map(fn ($stats) => ([$stats['key'] => $stats['value']]))
+                ->collapse();
 
             // turn array into object
             $stats = new Fluent($stats);

@@ -75,10 +75,10 @@ class CatalystGroupRepository extends Repository
                 'amount_received')
             ->withSum('proposals as alltime_funding_amount_requested', 'amount_requested');
 
-//            ->withAvg([
-//                'proposals.discussions.ratings as rating' => function ($query) {
-//                    $query->whereNotNull('funded_at');
-//                }], 'rating');
+        //            ->withAvg([
+        //                'proposals.discussions.ratings as rating' => function ($query) {
+        //                    $query->whereNotNull('funded_at');
+        //                }], 'rating');
 
         return $this->query;
     }

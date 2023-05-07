@@ -33,7 +33,7 @@ class NewlyRecordedArticles extends Lens
                 ->join('media', "$table.id", '=', 'media.model_id')
                 ->where('media.created_at', '>=', Carbon::today()->subDays(14))
                 ->where('media.collection_name', 'audio')
-//            ->orderBy('media.id', 'asc')
+            //            ->orderBy('media.id', 'asc')
         ));
     }
 

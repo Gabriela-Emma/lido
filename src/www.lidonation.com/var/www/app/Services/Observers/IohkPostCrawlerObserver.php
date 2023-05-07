@@ -252,9 +252,9 @@ class IohkPostCrawlerObserver extends CrawlObserver
     protected function saveModelLink($modelObj, $linkId)
     {
         $duplicateModelLink = ModelLink::where('link_id', $linkId)
-                                ->where('model_id', $modelObj->id)
-                                ->where('model_type', $modelObj->type)
-                                ->first() ?? null;
+            ->where('model_id', $modelObj->id)
+            ->where('model_type', $modelObj->type)
+            ->first() ?? null;
 
         if ($duplicateModelLink == null) {
             $rel = new ModelLink;

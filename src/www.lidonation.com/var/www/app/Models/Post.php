@@ -69,7 +69,7 @@ class Post extends Model implements HasMedia, Interfaces\IHasMetaData, Sitemapab
         SearchableLocale,
         SoftDeletes;
 
-//    public int|DateTime|null $cacheFor = 900;
+    //    public int|DateTime|null $cacheFor = 900;
 
     /**
      * Invalidate the cache automatically

@@ -32,18 +32,18 @@ class FundObserver
 
     protected function generateTranslations(Fund $fund)
     {
-//        LanguageLine::updateOrCreate(
-//            [
-//                'group' => 'funds',
-//                'key' => $fund->slug,
-//            ],
-//            [
-//                'group' => 'funds',
-//                'key' => $fund->slug,
-//                'text' => [
-//                    'en' => $fund->content,
-//                ],
-//            ]
-//        );
+        //        LanguageLine::updateOrCreate(
+        //            [
+        //                'group' => 'funds',
+        //                'key' => $fund->slug,
+        //            ],
+        //            [
+        //                'group' => 'funds',
+        //                'key' => $fund->slug,
+        //                'text' => [
+        //                    'en' => $fund->content,
+        //                ],
+        //            ]
+        //        );
     }
 }

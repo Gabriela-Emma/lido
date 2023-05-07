@@ -21,7 +21,7 @@ class CatalystProfileVerifiedMail extends Mailable implements ShouldQueue
     public function __construct(public CatalystUser $catalystUser)
     {
         //
-//        Password::createToken()
+        //        Password::createToken()
     }
 
     /**

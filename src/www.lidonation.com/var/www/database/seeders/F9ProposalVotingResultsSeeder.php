@@ -21,17 +21,17 @@ class F9ProposalVotingResultsSeeder extends FSeeder
             $sheet = $sheets->sheet($sheetName)?->get();
             $sheet->each(function ($row) {
                 Proposal::withoutSyncingToSearch(function () use ($row) {
-//                        0 => "Proposal"
-//                        1 => "Overall score"
-//                        2 => "Votes cast"
-//                        3 => "YES"
-//                        4 => "NO"
-//                        5 => "Result"
-//                        6 => "Meets approval threshold"
-//                        7 => "REQUESTED $"
-//                        8 => "STATUS"
-//                        9 => "FUND DEPLETION"
-//                        10 => "Reason for not funded status"
+                    //                        0 => "Proposal"
+                    //                        1 => "Overall score"
+                    //                        2 => "Votes cast"
+                    //                        3 => "YES"
+                    //                        4 => "NO"
+                    //                        5 => "Result"
+                    //                        6 => "Meets approval threshold"
+                    //                        7 => "REQUESTED $"
+                    //                        8 => "STATUS"
+                    //                        9 => "FUND DEPLETION"
+                    //                        10 => "Reason for not funded status"
                     if (! isset($row[2]) || intval($row[2]) <= 0) {
                         return true;
                     }

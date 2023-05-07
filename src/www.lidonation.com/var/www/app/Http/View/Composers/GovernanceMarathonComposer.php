@@ -58,9 +58,9 @@ class GovernanceMarathonComposer
             );
         }
 
-//        dd (
-//            $event->metas->filter(fn($m) => $m->key = 'giveaways')->map(fn($m) => collect((array)json_decode($m?->content, false))->values())
-//        );
+        //        dd (
+        //            $event->metas->filter(fn($m) => $m->key = 'giveaways')->map(fn($m) => collect((array)json_decode($m?->content, false))->values())
+        //        );
 
         $view->with([
             'twitter_access_token' => $twitter_access_token ? new Fluent($twitter_access_token) : null,

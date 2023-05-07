@@ -40,7 +40,7 @@ class WithdrawalSeeder extends Seeder
                         'model_id' => $withdrawal->id,
                         'model_type' => $withdrawal::class,
                     ];
-                    }),
+                }),
                 'txs'
             )
             ->create();

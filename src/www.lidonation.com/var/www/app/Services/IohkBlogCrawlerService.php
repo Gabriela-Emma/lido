@@ -29,12 +29,12 @@ class IohkBlogCrawlerService
 
         //# initiate crawler
         Crawler::create([RequestOptions::ALLOW_REDIRECTS => false, RequestOptions::TIMEOUT => 30])
-        ->setCrawlProfile(new CrawlInternalUrls($this->baseUrl))
-        ->setParseableMimeTypes(['text/html', 'text/plain'])
-        ->setCrawlObserver(new IohkBlogCrawlerObserver($this->langLocale))
-        ->setMaximumDepth(0)
-        ->setDelayBetweenRequests(100)
-        ->startCrawling($fullUrl);
+            ->setCrawlProfile(new CrawlInternalUrls($this->baseUrl))
+            ->setParseableMimeTypes(['text/html', 'text/plain'])
+            ->setCrawlObserver(new IohkBlogCrawlerObserver($this->langLocale))
+            ->setMaximumDepth(0)
+            ->setDelayBetweenRequests(100)
+            ->startCrawling($fullUrl);
 
         return true;
     }

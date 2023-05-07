@@ -45,9 +45,9 @@ class CatalystUserComposer
                 $perPage = 18, $columns = ['*'], $pageName = 'proposals'
             );
 
-//        $this->userProposals = $this->catalystUser->proposals()->sortBy('proposals.fund.launched_at')->paginate(
-//            $perPage = 16, $columns = ['*'], $pageName = 'proposals'
-//        );
+        //        $this->userProposals = $this->catalystUser->proposals()->sortBy('proposals.fund.launched_at')->paginate(
+        //            $perPage = 16, $columns = ['*'], $pageName = 'proposals'
+        //        );
 
         // @todo This should be an injecktable operation
         $discussions = $this->catalystUser?->proposals

@@ -99,7 +99,7 @@ class Podcast extends Model implements HasLink, IHasMetaData, HasMedia
     {
         return $this->hasMany(Nft::class, 'model_id')
             ->where('model_type', static::class);
-//            ->whereHas('promos');
+        //            ->whereHas('promos');
     }
 
     public function host(): BelongsTo

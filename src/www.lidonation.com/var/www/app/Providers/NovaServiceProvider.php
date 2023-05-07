@@ -24,8 +24,8 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             return method_exists($resource, 'sortOrder') ?
                 $resource::sortOrder() : $resource::label();
         });
-//        $this->app->register(NovaResourceProvider::class);
-//        $this->app->register(NovaResourceProvider::class);
+        //        $this->app->register(NovaResourceProvider::class);
+        //        $this->app->register(NovaResourceProvider::class);
     }
 
     /**
@@ -36,9 +36,9 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     protected function routes()
     {
         Nova::routes()
-                ->withAuthenticationRoutes()
-                ->withPasswordResetRoutes()
-                ->register();
+            ->withAuthenticationRoutes()
+            ->withPasswordResetRoutes()
+            ->register();
     }
 
     /**
@@ -95,9 +95,9 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
      */
     public function register()
     {
-//        Nova::sortResourcesBy(function ($resource) {
-//            return $resource::$priority ?? 9999;
-//        });
+        //        Nova::sortResourcesBy(function ($resource) {
+        //            return $resource::$priority ?? 9999;
+        //        });
     }
 
     /**

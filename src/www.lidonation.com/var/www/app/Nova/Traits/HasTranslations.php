@@ -23,19 +23,19 @@ trait HasTranslations
                 "$group.".($model->slug ?? ($model?->name ?? $model?->title)),
                 $lang['key']
             ))->map(fn ($lang) => Markdown::make(__($lang['native']), $lang['key'])
-                ->withMeta([
-                    'height' => '50px',
-                ])
-                ->resolveUsing(
-                    fn () => Lang::get(
-                        "$group.".($model->slug ?? ($model?->name ?? $model?->title)),
-                        [],
-                        $lang['key'],
-                        false
-                    )
+            ->withMeta([
+                'height' => '50px',
+            ])
+            ->resolveUsing(
+                fn () => Lang::get(
+                    "$group.".($model->slug ?? ($model?->name ?? $model?->title)),
+                    [],
+                    $lang['key'],
+                    false
                 )
-                ->showOnDetail()
-                ->showOnUpdating()
+            )
+            ->showOnDetail()
+            ->showOnUpdating()
             )->all();
     }
 }

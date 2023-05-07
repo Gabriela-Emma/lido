@@ -26,7 +26,6 @@ class LearningModuleData extends Data
 
         public ?int $lessons_count,
 
-
         #[MapOutputName('topics_count')]
         public ?int $learning_topics_count,
 

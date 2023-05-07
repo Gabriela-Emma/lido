@@ -32,7 +32,7 @@ class SyncCatalystGroupProposalsJob implements ShouldQueue
     {
         $catalystGroup = $catalystGroupRepository->get($this->catalystGroupId);
         $proposalIds = [];
-//        $catalystGroup->proposals_and_challenges()->sync([]);
+        //        $catalystGroup->proposals_and_challenges()->sync([]);
         $catalystGroup->members()->with('own_proposals_and_challenges.groups')
             ->get()->each(function (CatalystUser $member) use (&$proposalIds) {
                 $member->own_proposals_and_challenges->each(function (Proposal $proposal) use (&$proposalIds) {

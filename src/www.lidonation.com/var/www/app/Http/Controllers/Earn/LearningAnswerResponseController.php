@@ -79,9 +79,9 @@ class LearningAnswerResponseController extends Controller
         //extract rewards count from learningLesson
 
         $rewardsCount = Reward::where('user_id', Auth::id())
-                        ->where('model_type', LearningLesson::class)
-                        ->where('model_id', $learningLesson->id)
-                        ->count();
+            ->where('model_type', LearningLesson::class)
+            ->where('model_id', $learningLesson->id)
+            ->count();
 
         // if no reward and answer is correct issue reward.
         if ($rewardsCount < 1 && $answerCorrect == 'true') {

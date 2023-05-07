@@ -17,7 +17,7 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 
 class SyncWithTwitterSpaceApi extends Action
 {
-//    use InteractsWithQueue, Queueable;
+    //    use InteractsWithQueue, Queueable;
 
     /**
      * Perform the action on the given models.

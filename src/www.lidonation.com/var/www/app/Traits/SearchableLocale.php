@@ -35,9 +35,9 @@ trait SearchableLocale
             ->onQueue($models->first()->syncWithSearchUsingQueue())
             ->onConnection($models->first()->syncWithSearchUsing()));
 
-//        dispatch((new Scout::$makeSearchableJob($models))
-//            ->onQueue($models->first()->syncWithSearchUsingQueue())
-//            ->onConnection($models->first()->syncWithSearchUsing()));
+        //        dispatch((new Scout::$makeSearchableJob($models))
+        //            ->onQueue($models->first()->syncWithSearchUsingQueue())
+        //            ->onConnection($models->first()->syncWithSearchUsing()));
     }
 
     /**

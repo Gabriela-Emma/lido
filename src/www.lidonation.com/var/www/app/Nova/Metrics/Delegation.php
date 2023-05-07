@@ -11,7 +11,6 @@ class Delegation extends Partition
     /**
      * Calculate the value of the metric.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return mixed
      */
     public function calculate(NovaRequest $request)
@@ -20,14 +19,15 @@ class Delegation extends Partition
 
         $lidoCount = User::where('active_pool_id', '=', $lidoPoolId)->count();
         $otherPoolsCount = User::where('active_pool_id', '!=', $lidoPoolId)
-                                ->whereNotNull('active_pool_id')
-                                ->count();
+            ->whereNotNull('active_pool_id')
+            ->count();
         $undelegatedCount = User::whereNull('active_pool_id')
-                                ->whereNotNull('wallet_stake_address')
-                                ->count();
+            ->whereNotNull('wallet_stake_address')
+            ->count();
         $unknownCount = User::whereNull('active_pool_id')
-                                ->whereNull('wallet_stake_address')
-                                ->count();
+            ->whereNull('wallet_stake_address')
+            ->count();
+
         return $this->result([
             'Lido' => $lidoCount,
             'Other pools' => $otherPoolsCount,

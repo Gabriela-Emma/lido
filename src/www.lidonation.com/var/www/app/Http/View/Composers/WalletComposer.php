@@ -29,22 +29,22 @@ class WalletComposer
     public function compose(View $view)
     {
         try {
-//            [$rewards, $rewardsAggregate] = $this->graphQLService->getStakingRewardTxs(null, true);
-//            [$txs, $aggregate] = $this->graphQLService->getStakeAddressTokenTxs(null, null, true);
+            //            [$rewards, $rewardsAggregate] = $this->graphQLService->getStakingRewardTxs(null, true);
+            //            [$txs, $aggregate] = $this->graphQLService->getStakeAddressTokenTxs(null, null, true);
             // $txs = $this->graphQLService->getAddressesTokenUtxos(config('cardano.mint.policies.phuffycoin'));
-//            $rewards = $rewards?->map(function ($reward) {
-//                $reward->type = 'reward';
-//                $reward->date = Carbon::make($reward->date);
-//
-//                return $reward;
-//            });
+            //            $rewards = $rewards?->map(function ($reward) {
+            //                $reward->type = 'reward';
+            //                $reward->date = Carbon::make($reward->date);
+            //
+            //                return $reward;
+            //            });
 
-//            $txs = $txs?->map(function ($tx) {
-//                $tx->type = 'PHUFFY';
-//                $tx->date = Carbon::make($tx->forgedAt);
-//
-//                return $tx;
-//            })->concat($rewards)->sortByDesc('date');
+            //            $txs = $txs?->map(function ($tx) {
+            //                $tx->type = 'PHUFFY';
+            //                $tx->date = Carbon::make($tx->forgedAt);
+            //
+            //                return $tx;
+            //            })->concat($rewards)->sortByDesc('date');
         } catch (ErrorException|\Exception $e) {
             report($e);
             $txs = [];

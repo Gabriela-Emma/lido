@@ -125,7 +125,7 @@ class CatalystUser extends User implements HasMedia, CanComment
         }
 
         return null;
-//        return $this->proposals?->first()?->experience;
+        //        return $this->proposals?->first()?->experience;
     }
 
     public function getNameAttribute($value)

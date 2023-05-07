@@ -60,9 +60,9 @@ class MintPhuffycoinComponent extends Component
     public function submitDetails(CardanoWalletService $cardanoWalletService)
     {
         //@todo restore when Cardano service works
-//        $maxEpoch = $this->currEpoch - 1;
-//        $this->rules['mintEpoch'] = "required|numeric|min:1|max:$maxEpoch";
-//        $this->validate();
+        //        $maxEpoch = $this->currEpoch - 1;
+        //        $this->rules['mintEpoch'] = "required|numeric|min:1|max:$maxEpoch";
+        //        $this->validate();
 
         if (empty($this->getErrorBag()?->messages())) {
             $this->emit('mintDetailsSubmitted');
