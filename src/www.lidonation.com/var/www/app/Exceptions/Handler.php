@@ -88,9 +88,9 @@ class Handler extends ExceptionHandler
             }
         })->stop();
 
-//        $this->reportable(function (Throwable $e) {
-//            //
-//        });
+        //        $this->reportable(function (Throwable $e) {
+        //            //
+        //        });
 
         $this->reportable(function (InvalidArgumentException $e) {
             Log::warning($e->getMessage());

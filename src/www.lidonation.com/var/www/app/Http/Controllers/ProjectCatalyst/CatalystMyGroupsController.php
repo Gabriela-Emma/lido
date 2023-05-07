@@ -54,7 +54,7 @@ class CatalystMyGroupsController extends Controller
 
         return Inertia::render('Auth/UserGroups', [
             'profiles' => CatalystUser::with('claimed_by_user')
-            ->whereRelation('claimed_by_user', 'id', auth()?->user()?->getAuthIdentifier())->get(),
+                ->whereRelation('claimed_by_user', 'id', auth()?->user()?->getAuthIdentifier())->get(),
             'groups' => $paginator->onEachSide(1)->toArray(),
             'crumbs' => [
                 ['label' => 'My Groups'],
@@ -106,7 +106,7 @@ class CatalystMyGroupsController extends Controller
     public function getMembers(Request $request, CatalystGroup $catalystGroup)
     {
         $members = CatalystUser::whereRelation('groups', 'id', $catalystGroup?->id)
-        ->paginate(8, ['*'], 'p')->setPath('/');
+            ->paginate(8, ['*'], 'p')->setPath('/');
 
         return $members->through(fn ($user) => [
             'id' => $user->id,

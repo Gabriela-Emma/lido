@@ -56,7 +56,7 @@ class CatalystReportsController extends Controller
                 ->orWhereHas('proposal', fn ($q) => $q->where('title', 'iLIKE', "%{$this->search}%"))
                 ->orWhereHas('proposal.author', fn ($q) => $q->where('username', 'iLIKE', "%{$this->search}%")
                     ->orWhere('name', 'iLIKE', "%{$this->search}%"));
-//            $this->dispatchBrowserEvent('analytics-event-fired', ['code' => 'HSH9YZDM']);
+            //            $this->dispatchBrowserEvent('analytics-event-fired', ['code' => 'HSH9YZDM']);
         }
         $paginator = $query->paginate($this->perPage, $this->currentPage, 'p');
 

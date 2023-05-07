@@ -42,11 +42,11 @@ class CatalystUserRepository extends Repository
             ],
                 'amount_received')
             ->withSum("$relation as alltime_funding_amount_requested", 'amount_requested');
-//            ->withSum('own_proposals as alltime_own_funding_amount_requested', 'amount_requested');
-//            ->withAvg([
-//                'proposals.discussions.ratings as rating' => function ($query) {
-//                    $query->whereNotNull('funded_at');
-//                }], 'rating');
+        //            ->withSum('own_proposals as alltime_own_funding_amount_requested', 'amount_requested');
+        //            ->withAvg([
+        //                'proposals.discussions.ratings as rating' => function ($query) {
+        //                    $query->whereNotNull('funded_at');
+        //                }], 'rating');
         if (intval($idOrSlug) > 0) {
             $this->query->where('id', $idOrSlug);
         } else {

@@ -27,7 +27,7 @@ class LearningModule extends Model
         SoftDeletes;
 
     protected $casts = [
-//        'topics' => DataCollection::class.':'.LearningTopicData::class,
+        //        'topics' => DataCollection::class.':'.LearningTopicData::class,
     ];
 
     public $appends = [

@@ -83,8 +83,8 @@ class CatalystFundComponent extends Component
             'status' => 'complete',
             'type' => $type,
         ])
-        ->whereIn('fund_id', $this->fund?->fundChallenges->pluck('id'))
-        ->count();
+            ->whereIn('fund_id', $this->fund?->fundChallenges->pluck('id'))
+            ->count();
 
         $this->totalProposalsCount = DB::table('proposals')
             ->where('type', $type)

@@ -47,7 +47,7 @@ class Rules extends Resource
     public function title(): string
     {
         return "{$this->subject} {$this->operator} {$this->predicate}";
-//        return (string) data_get($this, static::$title);
+        //        return (string) data_get($this, static::$title);
     }
 
     /**

@@ -44,7 +44,7 @@ class DbSyncService
     public function poolDelegationAmount($humanReadable = true, $useCache = true): float|string
     {
         $delegations = $this->getEpochDelegations($this->epochRepository->current()?->no)
-                ->sum('amount') / 1000000;
+            ->sum('amount') / 1000000;
 
         if ($humanReadable) {
             $delegations = humanNumber($delegations, 2);

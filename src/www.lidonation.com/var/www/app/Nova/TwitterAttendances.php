@@ -115,10 +115,10 @@ class TwitterAttendances extends Resource
                 ->onlyOnDetail();
         })->all();
 
-//        return $modelObj->metas?->map(fn ($meta) => Text::make(Str::title($meta->key))
-//            ->resolveUsing(fn () => $this->metas?->firstWhere('key', $meta->key)?->content)
-//            ->hideFromIndex()
-//            ->exceptOnForms()
-//        )->all();
+        //        return $modelObj->metas?->map(fn ($meta) => Text::make(Str::title($meta->key))
+        //            ->resolveUsing(fn () => $this->metas?->firstWhere('key', $meta->key)?->content)
+        //            ->hideFromIndex()
+        //            ->exceptOnForms()
+        //        )->all();
     }
 }

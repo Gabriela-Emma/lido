@@ -214,7 +214,7 @@ class PhuffyVoteComponent extends Component
                 $this->wallet = $wallet;
             }
             $this->voteDepositAddress = $cardanoWalletService
-                    ->makeWalletObject($wallet->address)->toArray();
+                ->makeWalletObject($wallet->address)->toArray();
         }
 
         $this->phuffyUtxos = $graphQLService->getAddressesTokenUtxos(config('cardano.mint.policies.phuffycoin'));

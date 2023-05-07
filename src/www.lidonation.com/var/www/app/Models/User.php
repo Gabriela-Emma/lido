@@ -95,10 +95,10 @@ class User extends Authenticatable implements HasMedia, Interfaces\IHasMetaData,
      */
     protected $appends = [
         'profile_photo_url',
-//        'next_lesson',
-//        'next_lesson_at',
-//        'total_reward_sum',
-//        'available_rewards',
+        //        'next_lesson',
+        //        'next_lesson_at',
+        //        'total_reward_sum',
+        //        'available_rewards',
 
     ];
 
@@ -118,8 +118,8 @@ class User extends Authenticatable implements HasMedia, Interfaces\IHasMetaData,
     public function getHasLidoNftAttribute(): ?bool
     {
         return false;
-//        return app(CardanoGraphQLService::class)
-//        ->getAddressesTokenUtxos(config('cardano.mint.policies.lido_delegate'))->isNotEmpty();
+        //        return app(CardanoGraphQLService::class)
+        //        ->getAddressesTokenUtxos(config('cardano.mint.policies.lido_delegate'))->isNotEmpty();
     }
 
     public function getTwitterLinkAttribute(): ?string
@@ -161,10 +161,10 @@ class User extends Authenticatable implements HasMedia, Interfaces\IHasMetaData,
     public function getPhuffyCoinBalanceAttribute(): int
     {
         return 0;
-//        [$txs, $aggregate] = app(CardanoGraphQLService::class)
-//            ->getStakeAddressTokenTxs($this, null, true);
-//
-//        return humanNumber($aggregate?->sum?->quantity, 2);
+        //        [$txs, $aggregate] = app(CardanoGraphQLService::class)
+        //            ->getStakeAddressTokenTxs($this, null, true);
+        //
+        //        return humanNumber($aggregate?->sum?->quantity, 2);
     }
 
     public function getShortBioAttribute()
@@ -225,8 +225,8 @@ class User extends Authenticatable implements HasMedia, Interfaces\IHasMetaData,
     {
         return Attribute::make(
             get: fn () => $this->rewards()
-                                    ->where('model_type', LearningLesson::class)
-                                    ->sum('amount')
+                ->where('model_type', LearningLesson::class)
+                ->sum('amount')
         );
     }
 
@@ -234,8 +234,8 @@ class User extends Authenticatable implements HasMedia, Interfaces\IHasMetaData,
     {
         return Attribute::make(
             get: fn () => $this->rewards()
-                            ->where('status', 'issued')
-                            ->orderBy('created_at', 'desc')->get()
+                ->where('status', 'issued')
+                ->orderBy('created_at', 'desc')->get()
         );
     }
 

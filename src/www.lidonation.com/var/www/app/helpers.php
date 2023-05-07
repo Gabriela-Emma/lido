@@ -22,7 +22,7 @@ function ___(string $key = null, bool $oneLiner = true, array $replace = [], str
     if (is_array($trans)) {
         return $trans;
     }
-//    $html = Markdow \GrahamCampbell\Markdown\Facades\Markdown::convert($trans);
+    //    $html = Markdow \GrahamCampbell\Markdown\Facades\Markdown::convert($trans);
     $html = app(Spatie\LaravelMarkdown\MarkdownRenderer::class)->toHtml($trans);
 
     if ($oneLiner) {

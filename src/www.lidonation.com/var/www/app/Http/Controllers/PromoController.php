@@ -55,11 +55,11 @@ class PromoController extends Controller
      * @return Response
      */
     public function show(Promo $promo)
-    {   
+    {
         return PromoData::from(Promo::find(19)
-        ->setAppends([
-            'feature_url',
-        ])->toArray());
+            ->setAppends([
+                'feature_url',
+            ])->toArray());
     }
 
     /**

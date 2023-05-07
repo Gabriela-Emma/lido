@@ -10,21 +10,21 @@ use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 class RewardData extends Data
 {
     public function __construct(
-      public ?int $id,
+        public ?int $id,
 
-      public ?string $asset,
+        public ?string $asset,
 
-      public ?int $amount,
+        public ?int $amount,
 
-      #[TypeScriptOptional]
-      public ?string $asset_type,
+        #[TypeScriptOptional]
+        public ?string $asset_type,
 
-      public ?string $status,
+        public ?string $status,
 
-      #[TypeScriptOptional]
-      public ?AssetDetailsData $asset_details,
+        #[TypeScriptOptional]
+        public ?AssetDetailsData $asset_details,
 
-      public ?string $memo
+        public ?string $memo
     ) {
     }
 }

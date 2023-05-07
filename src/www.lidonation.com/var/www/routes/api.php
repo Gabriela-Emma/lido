@@ -235,7 +235,7 @@ Route::prefix('catalyst-explorer')->as('catalystExplorerApi.')
         Route::get('/metrics/metrics/sum/approved', [CatalystProjectsController::class, 'metricSumApproved']);
         Route::get('/metrics/metrics/sum/distributed', [CatalystProjectsController::class, 'metricSumDistributed']);
         Route::get('/metrics/metrics/sum/completed', [CatalystProjectsController::class, 'metricSumCompleted']);
-//        Route::post('/profiles', [CatalystUserProfilesController::class, 'update'])->name('myProfileUpdate');
+        //        Route::post('/profiles', [CatalystUserProfilesController::class, 'update'])->name('myProfileUpdate');
     });
 
 // Catalyst Explorer Private API
@@ -263,14 +263,14 @@ Route::prefix('catalyst-explorer')->as('catalystExplorerApi.')
         });
     });
 
-    Route::prefix('earn')->as('earnApi.')->group(function () {
-        Route::post('/learn/login', [LearnController::class, 'login']);
-        Route::post('/learn/register', [LearnController::class, 'register']);
-        Route::get('/topics/{learningTopic:id}/lessons', [LearningLessonController::class, 'getLessons']);
-        Route::middleware([
-            'auth:sanctum',
-        ])->prefix('/learn')->group(function () {
-            Route::get('/learner-data', [LearnController::class, 'learnerData']);
+Route::prefix('earn')->as('earnApi.')->group(function () {
+    Route::post('/learn/login', [LearnController::class, 'login']);
+    Route::post('/learn/register', [LearnController::class, 'register']);
+    Route::get('/topics/{learningTopic:id}/lessons', [LearningLessonController::class, 'getLessons']);
+    Route::middleware([
+        'auth:sanctum',
+    ])->prefix('/learn')->group(function () {
+        Route::get('/learner-data', [LearnController::class, 'learnerData']);
         //     Route::get('next-lesson-at', fn () => auth()?->user()?->next_lesson_at);
         //     Route::get(
         //         'rewards/sum',
@@ -278,9 +278,9 @@ Route::prefix('catalyst-explorer')->as('catalystExplorerApi.')
         //             ->where('model_type', LearningLesson::class)
         //             ->sum('amount')
         //     );
-        });
-
     });
+
+});
 
 Route::prefix('promos')->as('promos')
     ->middleware([
@@ -288,7 +288,7 @@ Route::prefix('promos')->as('promos')
     ])
     ->group(function () {
         Route::post('/create', [PromoController::class, 'store'])->name('store');
-        Route::get('/',[PromoController::class, 'show']);
+        Route::get('/', [PromoController::class, 'show']);
     });
 
 Route::prefix('quizzes')->as('quizzes')

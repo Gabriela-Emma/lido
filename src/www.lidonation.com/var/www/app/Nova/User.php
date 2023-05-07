@@ -11,13 +11,13 @@ use App\Nova\Metrics\Delegation;
 use Ebess\AdvancedNovaMediaLibrary\Fields\Images;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\Gravatar;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Markdown;
 use Laravel\Nova\Fields\Password;
+use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
@@ -93,8 +93,8 @@ class User extends Resource
                 ->creationRules('unique:users,email')
                 ->updateRules('unique:users,email,{{resourceId}}'),
 
-            Select::make(__('Lang'), 'lang')->options(function() {
-                return collect(config('laravellocalization.supportedLocales'))->mapWithKeys(fn ($lang) => ([$lang['key'] => $lang['native'],]))->toArray();
+            Select::make(__('Lang'), 'lang')->options(function () {
+                return collect(config('laravellocalization.supportedLocales'))->mapWithKeys(fn ($lang) => ([$lang['key'] => $lang['native']]))->toArray();
             }
             ),
 
@@ -107,7 +107,7 @@ class User extends Resource
                     ->help('content for the about us page.'),
             ]),
 
-//            BelongsTo::make('Current Team', 'currentTeam', Teams::class)->searchable(),
+            //            BelongsTo::make('Current Team', 'currentTeam', Teams::class)->searchable(),
 
             new Panel('Meta', $this->metaDataFields()),
 
@@ -166,7 +166,7 @@ class User extends Resource
     public function cards(Request $request)
     {
         return [
-            new Delegation()
+            new Delegation(),
         ];
     }
 

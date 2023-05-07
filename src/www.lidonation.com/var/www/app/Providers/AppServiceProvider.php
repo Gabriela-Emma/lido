@@ -68,11 +68,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-//        Translatable::defaultLocales(
-//            collect(
-//                config('laravellocalization.supportedLocales')
-//            )->keys()->toArray()
-//        );
+        //        Translatable::defaultLocales(
+        //            collect(
+        //                config('laravellocalization.supportedLocales')
+        //            )->keys()->toArray()
+        //        );
         Sanctum::usePersonalAccessTokenModel(PersonalAccessToken::class);
         Blade::directive('percent', fn ($expression) => (round(((float) $expression) * 100, 3).'%'));
         Blade::directive('markdownLang', function ($expression) {
@@ -112,10 +112,10 @@ class AppServiceProvider extends ServiceProvider
             return $validator->validateExists($attribute, $value, $parameters);
         });
 
-//        Builder::macro('createFilters', function () {
-//            return $this->engine()->getTotalCount(
-//                $this->engine()->search($this)
-//            );
-//        });
+        //        Builder::macro('createFilters', function () {
+        //            return $this->engine()->getTotalCount(
+        //                $this->engine()->search($this)
+        //            );
+        //        });
     }
 }

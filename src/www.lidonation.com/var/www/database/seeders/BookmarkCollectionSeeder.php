@@ -17,12 +17,12 @@ class BookmarkCollectionSeeder extends Seeder
     {
         BookmarkCollection::factory(4)
             ->has(BookmarkItem::factory(4)
-                    ->state(function (array $attributes, BookmarkCollection $col) {
-                        return [
-                            'bookmark_collection_id' => $col->rawId,
-                        ];
-                    }),
-                 'items')
+                ->state(function (array $attributes, BookmarkCollection $col) {
+                    return [
+                        'bookmark_collection_id' => $col->rawId,
+                    ];
+                }),
+                'items')
             ->create();
 
         // dd(BookmarkCollection::first());

@@ -47,9 +47,9 @@ class CatalystMyProposalsController extends Controller
         $catalystProfiles = $user->catalyst_users?->pluck('id');
 
         $query = Proposal::whereIn('user_id', $catalystProfiles)
-        ->when($this->fundedProposalsFilter, function ($query) {
-            return $query->whereNotNull('funded_at');
-        });
+            ->when($this->fundedProposalsFilter, function ($query) {
+                return $query->whereNotNull('funded_at');
+            });
 
         $totalDistributed = intval($query->sum('amount_received'));
         $budgetSummary = intval($query->sum('amount_requested'));

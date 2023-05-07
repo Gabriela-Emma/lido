@@ -71,7 +71,7 @@ class CommunityComposer
                 'expansions' => 'author_id,in_reply_to_user_id',
                 //                TwitterContract::KEY_RESPONSE_FORMAT => TwitterContract::RESPONSE_FORMAT_JSON,
             ];
-//            $tweets = JsonResponse::fromJsonString(Twitter::userTweets(1334373952584638465, $params));
+            //            $tweets = JsonResponse::fromJsonString(Twitter::userTweets(1334373952584638465, $params));
         } catch (\Exception $e) {
             report($e);
         }

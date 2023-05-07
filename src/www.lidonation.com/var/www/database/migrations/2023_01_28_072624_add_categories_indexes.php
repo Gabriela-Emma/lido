@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::table('categories', function (Blueprint $table) {
             //@todo update all records to have valid slugs and no nulls before creating index
-//            $table->string('slug')->unique();
+            //            $table->string('slug')->unique();
             $table->fullText('title');
             $table->fullText('content');
         });
@@ -29,7 +29,7 @@ return new class extends Migration
     public function down()
     {
         Schema::table('categories', function (Blueprint $table) {
-//            $table->dropIndex(['slug']);
+            //            $table->dropIndex(['slug']);
             $table->dropFullText(['title']);
             $table->dropFullText(['content']);
         });
