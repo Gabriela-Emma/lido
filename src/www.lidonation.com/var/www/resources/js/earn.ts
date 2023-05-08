@@ -14,7 +14,6 @@ import {currency} from "./lib/utils/currency";
 let messages = require('../../storage/app/snippets.json');
 import './bootstrap';
 import axios from "./lib/utils/axios";
-// const axios = require('axios');
 
 //cache snippets to disk
 axios.get(`${window.location.origin}/api/cache/snippets`);
@@ -25,6 +24,7 @@ createInertiaApp({
     resolve: name => {
         const page = require(`./earn/Pages/${name}`).default;
         page.layout ??= Layout;
+        console.log({page});
 
         return page
     },
