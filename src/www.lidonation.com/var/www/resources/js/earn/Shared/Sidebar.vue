@@ -44,7 +44,7 @@
     </section>
 </template>
 <script setup lang="ts">
-import {computed, inject, ref, watch} from "vue";
+import {computed, inject, ref, watch, defineAsyncComponent} from "vue";
 import {usePage} from "@inertiajs/vue3";
 import User from "../../global/Shared/Models/user";
 import Countdown from "../../global/Shared/Components/countdown";
@@ -52,7 +52,8 @@ import moment from "moment-timezone";
 import {Link} from "@inertiajs/vue3";
 import {useLearnerDataStore} from "../store/learner-data-store";
 import {storeToRefs} from "pinia";
-import Promo from '../../global/Shared/Components/Promo.vue'
+const Promo = defineAsyncComponent(() => import('../../global/Shared/Components/Promo.vue'));
+
 
 const user = computed(() => usePage().props.user as User);
 const $utils: any = inject('$utils');

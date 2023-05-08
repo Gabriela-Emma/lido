@@ -1,5 +1,5 @@
 <template>
-    <div class="px-8 bg-teal-600 xl:px-8 2xl:px-16">
+    <div v-if="promo"  class="px-8 bg-teal-600 xl:px-8 2xl:px-16">
         <div class="px-4 py-4 mb-8 rounded-sm xl:px-8 2xl:px-16">
             <div class="relative rounded-sm">
                 <div :href="promo?.uri" target="_blank">
@@ -19,15 +19,15 @@
 <script lang="ts" setup>
 import { usePage } from '@inertiajs/vue3';
 import axios from 'axios';
-import {inject} from 'vue';
+import {inject,ref,Ref} from 'vue';
 import PromoData =App.DataTransferObjects.PromoData
 const $utils: any = inject('$utils');
 
 
-let promo:PromoData
+let promo:Ref<PromoData> = ref(null)
 axios.get(`${usePage().props.base_url}/api/promos/`)
 .then((res) =>{
-    promo = res.data;
+    promo.value = res.data;
 })
 
 
