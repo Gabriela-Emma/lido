@@ -122,6 +122,7 @@ Route::group(
         Route::prefix('/earn')->as('earn.')->group(function () {
             Route::get('/', [EarnController::class, 'index'])->name('home');
 
+            Route::get('/ccv4', [EarnController::class, 'ccv4'])->name('ccv4');
             Route::get('/learn', [LearnController::class, 'index'])->name('learn');
             Route::get('/learn/login', fn () => Inertia::render('Login'))
                 ->name('learn.login');
@@ -154,7 +155,6 @@ Route::group(
                         //                    ->name('contributeTranslations');
                     });
             });
-
         });
 
         Route::get('/lido-catalyst-proposals', LidoCatalystProposals::class)

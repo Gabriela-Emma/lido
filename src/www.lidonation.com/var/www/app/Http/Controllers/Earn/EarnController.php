@@ -21,4 +21,14 @@ class EarnController extends Controller
             ],
         ]);
     }
+
+    public function ccv4()
+    {
+        return Inertia::render('CCv4')->with([
+            'crumbs' => [
+                ['name' => 'Ways to Earn', 'link' => route('earn.home')],
+                ['name' => 'CCv4', 'link' => route('earn.ccv4')],
+            ],
+        ]);
+    }
 }
