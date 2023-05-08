@@ -273,7 +273,7 @@ return [
             new Illuminate\Support\Fluent([
                 'title' => 'Lido Earn',
                 'route_type' => 'route_name',
-                'route' => 'earn',
+                'route' => 'earn.home',
             ]),
             new Illuminate\Support\Fluent([
                 'title' => 'Jifunze upate tuzo',
