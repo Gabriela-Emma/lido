@@ -271,6 +271,11 @@ return [
                 'route' => 'rewards',
             ]),
             new Illuminate\Support\Fluent([
+                'title' => 'Lido Earn',
+                'route_type' => 'route_name',
+                'route' => 'earn',
+            ]),
+            new Illuminate\Support\Fluent([
                 'title' => 'Jifunze upate tuzo',
                 'route_type' => 'url',
                 'route' => 'https://www.lidonation.com/sw/earn/learn',
