@@ -3,8 +3,17 @@
         @apply top-20;
     }
 
+    .lido-earn {
+        @apply bg-teal-600 text-white px-1.5 py-1 text-sm xl:text-sm rounded-sm hover:bg-teal-700 hover:text-white block w-full text-center tracking-wide leading-loose;
+
+        &:after{
+            content: 'new';
+            @apply text-xs px-1 py-0.5 bg-labs-black text-white inline-block rounded-md ml-1;
+        }
+    }
+
     .my-lido-rewards {
-        @apply bg-green-600 text-white px-1.5 py-0.5 text-sm xl:text-sm rounded-sm hover:bg-green-700 hover:text-white block w-full text-center tracking-wide leading-loose;
+        @apply bg-green-600 text-white px-1.5 py-1 text-sm xl:text-sm rounded-sm hover:bg-green-700 hover:text-white block w-full text-center tracking-wide leading-loose;
     }
 
     .jifunze-upate-tuzo {

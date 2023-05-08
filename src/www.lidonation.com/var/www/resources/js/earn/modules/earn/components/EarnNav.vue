@@ -1,20 +1,20 @@
 <template>
-    <div class="sticky top-0 z-30 border-b border-teal-300 bg-teal-800 page-nav">
+    <div class="sticky top-0 z-30 border-b border-teal-300 bg-teal-600 page-nav">
         <div class='container relative'>
             <div class="flex flex-row justify-between flex-nowrap gap-4 border-x border-teal-300 px-5">
                 <nav class="flex max-w-[70%] overflow-x-auto" aria-label="Breadcrumb">
                     <ol role="list" class="flex space-x-0">
-<!--                        <li class="flex">-->
-<!--                            <div class="flex items-center">-->
-<!--                                <Link href="/en/earn/learn"-->
-<!--                                      class="text-white flex flex-row items-center hover:text-yellow-400">-->
-<!--                                    <AcademicCapIcon class="h-5 w-5" aria="true"/>-->
-<!--                                    <span class="ml-1 text-xs font-medium sr-only">-->
-<!--                                        {{ $t('dashboard') }}-->
-<!--                                    </span>-->
-<!--                                </Link>-->
-<!--                            </div>-->
-<!--                        </li>-->
+                        <li class="flex">
+                            <div class="flex items-center">
+                                <Link href="/earn"
+                                      class="text-white flex flex-row items-center hover:text-yellow-400">
+                                    <BanknotesIcon class="h-5 w-5" aria="true" />
+                                    <span class="ml-1 text-xs font-medium sr-only">
+                                        {{ $t('dashboard') }}
+                                    </span>
+                                </Link>
+                            </div>
+                        </li>
                         <li v-show="(crumbsLength >= 1)"
                             v-for="(crumb, key) in crumbs"
                             class="flex">
@@ -73,7 +73,7 @@
 <script lang="ts" setup>
 import {Link} from '@inertiajs/vue3';
 import {computed, inject} from "vue";
-import {AcademicCapIcon} from '@heroicons/vue/24/outline';
+import {BanknotesIcon} from '@heroicons/vue/24/outline';
 
 const $utils: any = inject('$utils');
 

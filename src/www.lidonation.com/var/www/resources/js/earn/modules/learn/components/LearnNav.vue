@@ -6,11 +6,11 @@
                     <ol role="list" class="flex space-x-0">
                         <li class="flex">
                             <div class="flex items-center">
-                                <Link href="/en/earn/learn"
+                                <Link href="/earn"
                                       class="text-white flex flex-row items-center hover:text-yellow-400">
-                                    <AcademicCapIcon class="h-5 w-5" aria="true"/>
+                                    <BanknotesIcon class="h-5 w-5" aria="true" />
                                     <span class="ml-1 text-xs font-medium sr-only">
-                                        {{ $t('dashboard') }}
+                                        {{ $t('LIDO Earn') }}
                                     </span>
                                 </Link>
                             </div>
@@ -96,7 +96,7 @@
 <script lang="ts" setup>
 import {Link} from '@inertiajs/vue3';
 import {computed, inject} from "vue";
-import {AcademicCapIcon} from '@heroicons/vue/24/outline';
+import {BanknotesIcon} from '@heroicons/vue/24/outline';
 
 const $utils: any = inject('$utils');
 
