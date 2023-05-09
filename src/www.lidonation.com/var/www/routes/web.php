@@ -76,6 +76,9 @@ Route::group(
     ], function () {
         Route::get('/search/{term}', [GlobalSearchController::class, 'index'])
             ->name('search');
+        Route::get('/{slug}/s', [GlobalSearchController::class, 'newSearch'])->name('search.slug')->where('slug', '.*');
+
+
 
         Route::get('/', function () {
             return view('home')->withShortcodes();
