@@ -5,28 +5,44 @@ import {computed, ref, Ref } from "vue";
 
 export const useGlobalSearchStore = defineStore('global-search', () => {
     
-    let result:Ref<boolean> = ref(false);
+    let results= ref(null);
+    let noResults =ref(false)
 
     async function search(term) {
         try {
-            const {data} = await window.axios.get(
+            await window.axios.get(
                 `/s`,
                 {
                     params: {
                         q: term
                     }
                 }
-            );
-            result.value = data?.data;
+            ).then((res) => {
+                results.value = res?.data;
+                if(!results.value.length){
+                    noResults.value = true;
+                }else{
+                    noResults.value = false;
+                }
+                
+            });
+
         } catch (e: AxiosError | any) {
             console.log({e});
         }
     }
 
+    function clearSearch(){
+         results= ref(null);
+         noResults =ref(false)
+    }
+
 
 
     return {
-        result,
-        search 
+        results,
+        search,
+        noResults,
+        clearSearch 
     }
 });

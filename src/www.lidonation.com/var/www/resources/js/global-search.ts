@@ -1,27 +1,30 @@
 import {createInertiaApp, usePage} from "@inertiajs/vue3";
 import {createApp, h, nextTick, watch} from "vue";
 import {createI18n} from 'vue-i18n'
+import Layout from "./global-search/Shared/Layout.vue";
+import GlobalSearch from './global-search/Pages/GlobalSearch.vue'
 import {createPinia} from "pinia";
 import {marked} from 'marked';
 import PrimeVue from 'primevue/config';
 import route from "ziggy-js";
 import {modal} from "momentum-modal";
 import timeago from 'vue-timeago3';
-import {timeAgo} from "./lib/utils/timeago";
+import moment from "moment-timezone";
+import {shortNumber} from "./lib/utils/shortNumber";
 import {currency} from "./lib/utils/currency";
+import {timeAgo} from "./lib/utils/timeago";
+import {contrastColor} from "./lib/utils/contrastColor";
 let messages = require('../../storage/app/snippets.json');
-import './bootstrap';
-import axios from "./lib/utils/axios";
-// const axios = require('axios');
+const axios = require('axios');
 
 //cache snippets to disk
 axios.get(`${window.location.origin}/api/cache/snippets`);
+
 createInertiaApp({
-    progress: {
-        color: '#C02025',
-    },
+
     resolve: name => {
         const page = require(`./global-search/Pages/${name}`).default;
+        page.layout ??= Layout;
         return page
     },
     setup({el, App, props, plugin}) {
@@ -44,7 +47,7 @@ createInertiaApp({
         const app = createApp({ render: () => h(App, props) })
             .use(plugin)
             .use(modal, {
-                resolve: (name) => import(`./global-search/Pages/Pages/${name}`),
+                resolve: (name) => import(`./global-search/Pages/${name}`),
             })
             .use(PrimeVue)
             .use(timeago)
@@ -69,6 +72,7 @@ createInertiaApp({
         });
 
         app.config.globalProperties.$filters = {
+            shortNumber: shortNumber,
             currency: currency,
             timeAgo: timeAgo,
             number(number, maximumSignificantDigits = 2, locale: string = 'en-US') {
@@ -76,7 +80,7 @@ createInertiaApp({
             },
             markdown(value) {
                 return marked.parse(value);
-            }
+            },
         };
 
         app.provide('$utils', {
@@ -88,10 +92,12 @@ createInertiaApp({
             assetUrl(value) {
                 const base = usePage().props?.asset_url;
                 return `${base}${value}`
-            }
+            },
+            contrastColor: contrastColor
         });
 
         app.config.globalProperties.$route = route;
+        app.component('global-search', GlobalSearch)
         app.mount(el);
     },
 }).then();

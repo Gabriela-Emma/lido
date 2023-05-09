@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Insight;
 use App\Models\News;
 use App\Models\Post;
+use Inertia\Inertia;
 use App\Models\Review;
+use App\Models\Insight;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use MeiliSearch\Endpoints\Indexes;
@@ -15,8 +16,8 @@ class GlobalSearchController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request, string $term): Response
-    {
+    public function index(Request $request): Response
+    {   
         $searchBuilder = Post::search($term,
             function (Indexes $index, $query, $options) {
                 $options['filter'] = ' status = published';
@@ -48,11 +49,13 @@ class GlobalSearchController extends Controller
             })->values());
     }
 
-    public function newSearch(Request $request): Response
+    public function newSearch(Request $request)
     {  
-        //  dd($request);
         $term = $request->input('q');
-        
+        if (!isset($term)){
+            return null;
+        }
+
         $searchBuilder = Post::search($term,
             function (Indexes $index, $query, $options) {
                 $options['filter'] = ' status = published';
@@ -83,4 +86,8 @@ class GlobalSearchController extends Controller
                 ];
             })->values());
     }
+
+    public function render(Request $request){
+        return Inertia::render('GlobalSearch');
+    } 
 }

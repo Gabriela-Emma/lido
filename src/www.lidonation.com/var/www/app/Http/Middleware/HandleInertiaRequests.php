@@ -21,6 +21,7 @@ class HandleInertiaRequests extends Middleware
             'catalyst-explorer' => 'layouts/catalyst-explorer',
             'earn' => 'layouts/earn',
             'rewards' => 'layouts/rewards',
+            's'=> 'layouts/search',
             default => 'layout/app'
         };
     }
