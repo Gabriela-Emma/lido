@@ -1,15 +1,11 @@
 <template>
-    <div v-if="promo"  class="px-8 bg-teal-600 xl:px-8 2xl:px-16">
-        <div class="px-4 py-4 mb-8 rounded-sm xl:px-8 2xl:px-16">
-            <div class="relative rounded-sm">
-                <div :href="promo?.uri" target="_blank">
-                    <a :href="promo?.uri" target="_blank" :title="promo?.content">
-                        <img :src="promo?.feature_url" :alt="`${promo?.title}'s promo`" :title="promo?.content">
-                    </a>
-                </div>
-            </div>
+    <div v-if="promo"  class="px-0 bg-slate-800">
+        <div class="relative rounded-sm">
+            <a :href="promo?.uri" target="_blank" :title="promo?.content" class="block">
+                <img :src="promo?.feature_url" :alt="`${promo?.title}'s promo`" :title="promo?.content">
+            </a>
         </div>
-        <p class="mx-auto mb-1 text-xs text-center ">
+        <p class="mx-auto my-2 text-xs text-center text-slate-100">
             Put your ad here:
             <a title="Lido Advertisement NFTs" class="text-labs-red-light" :href="$utils.localizeRoute('lido-minute-nft')">Lido Ad NFT</a>
         </p>
@@ -22,7 +18,6 @@ import axios from 'axios';
 import {inject,ref,Ref} from 'vue';
 import PromoData =App.DataTransferObjects.PromoData
 const $utils: any = inject('$utils');
-
 
 let promo:Ref<PromoData> = ref(null)
 axios.get(`${usePage().props.base_url}/api/promos/`)

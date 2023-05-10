@@ -1,10 +1,12 @@
 import {defineStore} from "pinia";
-import {ref} from "vue";
+import {Ref, ref} from "vue";
 import LearnerData = App.DataTransferObjects.LearnerData
 import { AxiosError } from "axios";
+import {useStorage} from "@vueuse/core";
 
 export const useLearnerDataStore = defineStore('learner-data', () => {
-    let learnerData = ref<LearnerData>(null);
+    // let learnerData = ref<LearnerData>(null);
+    let learnerData: Ref<LearnerData> = useStorage<LearnerData>('earn-user-data', {} as LearnerData, localStorage, {mergeDefaults: true});
 
     async function getLearnerData() {
         try {
