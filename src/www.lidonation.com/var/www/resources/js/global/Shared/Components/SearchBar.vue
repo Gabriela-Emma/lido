@@ -2,11 +2,6 @@
     <div class="flex w-full h-full rounded-l-sm">
         <div class="relative flex-grow w-full h-full overflow-hidden focus-within:z-10">
             <div class="absolute inset-y-0 left-0 flex items-center pl-2 pointer-events-none lg:pl-3">
-                <!-- <svg class="w-4 h-4 text-gray-400 lg:w-5 lg:h-5" viewBox="0 0 20 20" stroke="currentColor"
-                     fill="none">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                          d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-                </svg> -->
                 <MagnifyingGlassIcon class="w-4 h-4 text-gray-400 lg:w-7 lg:h-7"/>
             </div>
 
@@ -53,7 +48,7 @@ const emit = defineEmits({
 });
 let search = ref(props.search);
 watch(search, debounce((term) => {
-    if (term.length > 1) {
+    if (term.length > 0) {
         emit('search', term);
     }
 }, 500));

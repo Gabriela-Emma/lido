@@ -74,14 +74,14 @@ Route::group(
         'prefix' => LaravelLocalization::setLocale(),
         'middleware' => ['localeSessionRedirect', 'localizationRedirect', 'localeViewPath'],
     ], function () {
-        Route::get('/search', [GlobalSearchController::class, 'index'])
+        Route::get('/search/{term}', [GlobalSearchController::class, 'index'])
             ->name('search');
-        Route::get('/s', [GlobalSearchController::class, 'render'])->name('search');
-        
 
-        Route::prefix('/global-search')->as('global-search')->group(function () {
-            Route::get('/', [GlobalSearchController::class, 'render']);
-        });
+        Route::get('/search', [GlobalSearchController::class, 'index'])
+        ->name('search');
+        Route::get('/s',fn () => Inertia::render('GlobalSearch'));
+
+
         Route::get('/', function () {
             return view('home')->withShortcodes();
         })->name('home');
