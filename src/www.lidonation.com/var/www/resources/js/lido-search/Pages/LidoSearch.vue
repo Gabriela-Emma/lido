@@ -11,8 +11,8 @@
                     </svg>
                 </span>
                 <div class="w-full h-full">
-                    <Search :search="search" 
-                            @clearSearch="() => searchStore.closeSearch() " 
+                    <Search :search="search"
+                            @clearSearch="() => searchStore.closeSearch() "
                             @search="(term) => search = term"/>
                 </div>
             </header>
@@ -91,7 +91,7 @@
 <script lang="ts" setup>
 import Search from '../../global/Shared/Components/SearchBar.vue';
 import { ref, watch } from 'vue';
-import { useGlobalSearchStore } from '../store/global-search-store';
+import { useGlobalSearchStore } from '../store/lido-search-store';
 import { storeToRefs } from 'pinia';
 
 let search = ref('');

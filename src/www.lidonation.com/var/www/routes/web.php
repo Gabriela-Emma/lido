@@ -79,7 +79,7 @@ Route::group(
 
         Route::get('/search', [GlobalSearchController::class, 'index'])
         ->name('search');
-        Route::get('/s',fn () => Inertia::render('GlobalSearch'));
+        Route::get('/s',fn () => Inertia::render('LidoSearch'));
 
 
         Route::get('/', function () {

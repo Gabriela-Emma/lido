@@ -21,12 +21,12 @@
 
     @routes
     <script src="{{ mix('/js/alpine.js') }}" defer></script>
-    <script src="{{ mix('/js/global-search.js') }}" defer></script>
+    <script src="{{ mix('/js/lido-search.js') }}" defer></script>
 
     @inertiaHead
 </head>
 <body class="search">
-{{-- 
+{{--
 <x-lido-menu />
 
 @include('includes.global-search-handler')

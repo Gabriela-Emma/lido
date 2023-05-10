@@ -1,8 +1,8 @@
 import {createInertiaApp, usePage} from "@inertiajs/vue3";
 import {createApp, h, nextTick, watch} from "vue";
 import {createI18n} from 'vue-i18n'
-import Layout from "./global-search/Shared/Layout.vue";
-import GlobalSearch from './global-search/Pages/GlobalSearch.vue'
+import Layout from "./lido-search/Shared/Layout.vue";
+import LidoSearch from './lido-search/Pages/LidoSearch.vue';
 import {createPinia} from "pinia";
 import {marked} from 'marked';
 import PrimeVue from 'primevue/config';
@@ -23,7 +23,7 @@ axios.get(`${window.location.origin}/api/cache/snippets`);
 createInertiaApp({
 
     resolve: name => {
-        const page = require(`./global-search/Pages/${name}`).default;
+        const page = require(`./lido-search/Pages/${name}`).default;
         page.layout ??= Layout;
         return page
     },
@@ -47,7 +47,7 @@ createInertiaApp({
         const app = createApp({ render: () => h(App, props) })
             .use(plugin)
             .use(modal, {
-                resolve: (name) => import(`./global-search/Pages/${name}`),
+                resolve: (name) => import(`./lido-search/Pages/${name}`),
             })
             .use(PrimeVue)
             .use(timeago)
@@ -97,7 +97,7 @@ createInertiaApp({
         });
 
         app.config.globalProperties.$route = route;
-        app.component('global-search', GlobalSearch)
+        app.component('lido-search', LidoSearch)
         app.mount(el);
     },
 }).then();
