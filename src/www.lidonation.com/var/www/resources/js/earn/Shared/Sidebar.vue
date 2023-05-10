@@ -22,7 +22,7 @@
                 <div class="font-bold" v-if="locale !== 'sw'">
                     {{ hours }} {{ $t('hours') }}, {{ minutes }} {{ $t('minutes') }}, {{ seconds }} {{ $t('seconds') }}.
                 </div>
-                <div class="font-bold" v-if="locale == 'sw'">
+                <div class="font-bold" v-if="locale === 'sw'">
                     {{ $t('hours') }} {{ hours }}, {{ $t('minutes') }} {{ minutes }}, {{ $t('seconds') }} {{ seconds }}.
                 </div>
             </countdown>
