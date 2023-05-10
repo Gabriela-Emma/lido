@@ -7,7 +7,7 @@
 
     <span
         class="block text-center text-xs md:text-base text-slate-500 hover:text-slate-500 font-normal">
-        Learn, Play, & Win<br/>every 5 days!
+        Learn + Earn. Every 5 days!
     </span>
 
     <span

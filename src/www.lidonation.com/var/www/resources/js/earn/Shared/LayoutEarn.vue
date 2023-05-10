@@ -21,7 +21,7 @@
                     <div class="flex flex-col md:flex-rowmd:gap-2md:items-end">
                         <h1 class="text-md md:text-2xl xl:text-4xl 2xl:text-5xl">Ways to <span class="text-black">LIDO Earn</span></h1>
                         <p class="text-md xl:text-lg xl:max-2-4xl">
-                            Take a few minutes to help around the site or learn something thing.
+                            Take a few minutes to help around the site or learn something.
                             Earn Ada, Cardano Tokens and Nfts.
                         </p>
                     </div>
@@ -48,7 +48,7 @@
                                 Every Epoch
                             </h2>
                             <p class="text-slate-100">
-                                Learn, Play, & Win. Every 5 days!
+                                Learn + Earn. Every 5 days!
                                 <span
                                     class="text-center inline-flex gap-1 text-xs md:text-base font-normal ml-1">
                                     <span>$PHUFFY</span>
