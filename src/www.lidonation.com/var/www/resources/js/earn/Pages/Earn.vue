@@ -39,7 +39,7 @@ export default {
                     Every Epoch
                 </h2>
                 <p class="text-slate-100">
-                    Learn, Play, & Win. Every 5 days!
+                    Learn + Earn. Every 5 days!
                     <span
                         class="text-center inline-flex gap-1 text-xs md:text-base font-normal ml-1">
                                     <span>$PHUFFY</span>
