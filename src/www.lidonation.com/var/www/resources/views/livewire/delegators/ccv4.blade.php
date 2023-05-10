@@ -11,7 +11,7 @@
             Let's get you connected!
         </h2>
 
-        <x-delegators.connect-wallet/>
+        <x-delegators.connect-wallet />
     </div>
 
 
