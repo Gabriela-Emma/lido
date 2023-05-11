@@ -4,12 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\News;
 use App\Models\Post;
-use Inertia\Inertia;
 use App\Models\Review;
 use App\Models\Insight;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use MeiliSearch\Endpoints\Indexes;
+use App\DataTransferObjects\PostData;
+use App\DataTransferObjects\PostSearchResultData;
 
 class GlobalSearchController extends Controller
 {
@@ -48,10 +49,10 @@ class GlobalSearchController extends Controller
             return $hit;
         })->groupBy('type')
             ->map(function ($group, $key) {
-                return [
+                return PostSearchResultData::from([
                     'type' => $key,
                     'items' => $group,
-                ];
+                ]);
             })->values());
     }
 

@@ -1,22 +1,21 @@
-import { AxiosError } from "axios";
 import { defineStore } from "pinia";
-import { ref } from "vue";
-import axios from "../../lib/utils/axios";
+import { Ref, ref } from "vue";
+import PostSearchResultsData = App.DataTransferObjects.PostSearchResultData;
+import GlobalSearchHttpService from '../../global/Services/GlobalSearchHttpService'
 
 export const useGlobalSearchStore = defineStore("global-search", () => {
-  let results = ref(null);
-  let noResults = ref(false);
-  let working = ref(false);
-  let open = ref(true);
+  let results: Ref<PostSearchResultsData[]> = ref(null);
+  let noResults: Ref<boolean> = ref(false);
+  let working: Ref<boolean> = ref(false);
 
   async function search(term) {
     try {
       working.value = true;
-      const response = await axios.get("/search", { params: { q: term } });
+      const response = await GlobalSearchHttpService.search(term);
       results.value = response?.data;
       if (!results.value.length) {
         noResults.value = true;
-        results.value  = null;
+        results.value = null;
       } else {
         noResults.value = false;
       }
@@ -29,7 +28,7 @@ export const useGlobalSearchStore = defineStore("global-search", () => {
     }
   }
 
-  function closeSearch() {
+  function clearSearch() {
     results.value = null;
     noResults.value = false;
   }
@@ -38,8 +37,7 @@ export const useGlobalSearchStore = defineStore("global-search", () => {
     results,
     search,
     noResults,
-    closeSearch,
+    clearSearch,
     working,
-    open,
   };
 });
