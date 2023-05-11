@@ -12,7 +12,7 @@ export const useGlobalSearchStore = defineStore("global-search", () => {
     try {
       working.value = true;
       const response = await GlobalSearchHttpService.search(term);
-      results.value = response?.data;
+      results.value = response;
       if (!results.value.length) {
         noResults.value = true;
         results.value = null;

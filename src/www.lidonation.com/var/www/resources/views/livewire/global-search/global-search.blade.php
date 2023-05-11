@@ -1,4 +1,4 @@
-<div class="h-full pb-20 relative z-40" x-data="globalSearch">
+<div class="relative z-40 h-full pb-20" x-data="globalSearch" >
     <header class="relative h-20 border-b border-gray-300">
         <span @click="$dispatch('close-global-search')"
               class="absolute top-0 right-0 p-2 font-semibold text-white hover:cursor-pointer bg-primary-600 hover:bg-teal-800">
@@ -21,6 +21,9 @@
     </header>
 
     <nav class="h-full overflow-y-auto" aria-label="Directory" x-show="results">
+            <div class="relative text-sm -top-1" >
+                <x-public.continue-reading  :text="'See More results'" route="search.app"  x-bind:query="search" />
+            </div>
         <template x-for="group in results" :key="group.type">
             <div class="relative">
                 <div
@@ -33,7 +36,7 @@
                             <div
                                 class="relative flex items-center px-6 py-5 space-x-3 hover:bg-gray-50 focus-within:ring-2 focus-within:ring-inset focus-within:ring-primary-500">
                                 <div class="flex-shrink-0">
-                                    <img class="w-10 h-10 rounded-full bg-teal-800"
+                                    <img class="w-10 h-10 bg-teal-800 rounded-full"
                                          :src="getThumbnail(item)"
                                          alt="">
                                 </div>
@@ -91,36 +94,38 @@
         </div>
     </div>
 
-    <script type="text/javascript">
-        window.globalSearch = function globalSearch() {
-            return {
-                search: '',
-                results: null,
-                noResults: false,
-                working: false,
-                locale: '{{ $locale }}',
-                init: function () {
-                    this.$watch('search', this.runSearch.bind(this));
-                    // this.$focus('search');
-                },
-                getThumbnail(item) {
-                    return item?.thumbnail || '/img/bleu.png';
-                },
-                runSearch: async function (value, oldValue) {
-                    this.working = true;
-                    const res = await axios.get(`/${this.locale}/search/${value}`);
-                    const data = await res.data;
-                    if (data.length) {
-                        this.results = data;
-                    } else {
-                        this.results = null;
-                        this.noResults = true;
-                    }
-                    this.working = false;
-                    window.fathom.trackGoal('T9S57PLY', 0);
-                }
-            }
-        }
-    </script>
+    
 </div>
 
+<script >
+    window.globalSearch = function globalSearch() {
+        return {
+            search: null,
+            results: null,
+            noResults: false,
+            working: false,
+            locale: '{{ $locale }}',
+            init: function () {
+                this.$watch('search', this.runSearch.bind(this));
+                // this.$focus('search');
+            },
+            getThumbnail(item) {
+                return item?.thumbnail || '/img/bleu.png';
+            },
+            runSearch: async function (value, oldValue) {
+                this.working = true;
+                const res = await axios.get(`/${this.locale}/search/${value}`);
+                
+                const data = await res.data;
+                if (data.length) {
+                    this.results = data;
+                } else {
+                    this.results = null;
+                    this.noResults = true;
+                }
+                this.working = false;
+                window.fathom.trackGoal('T9S57PLY', 0);
+            }
+        }
+    }
+</script>

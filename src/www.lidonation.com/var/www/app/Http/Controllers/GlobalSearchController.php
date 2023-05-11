@@ -14,16 +14,16 @@ use App\DataTransferObjects\PostSearchResultData;
 
 class GlobalSearchController extends Controller
 {
+    public $inputTerm;
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request, string $term=null)
     {  
-        $inputTerm = $request->input('q');
+        $this->inputTerm = $request->input('q');
         if(isset($inputTerm)){
             $term = $inputTerm;
         }
-
         $searchBuilder = Post::search($term,
             function (Indexes $index, $query, $options) {
                 $options['filter'] = ' status = published';
@@ -51,7 +51,7 @@ class GlobalSearchController extends Controller
             ->map(function ($group, $key) {
                 return PostSearchResultData::from([
                     'type' => $key,
-                    'items' => $group,
+                    'items' => isset($this->inputTerm) ? $group :$group->take(5),
                 ]);
             })->values());
     }

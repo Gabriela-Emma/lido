@@ -26,18 +26,20 @@
     @inertiaHead
 </head>
 <body class="search">
-{{--
+
 <x-lido-menu />
 
-@include('includes.global-search-handler')
+{{-- @include('includes.global-search-handler') --}}
 
-@include('includes.header') --}}
+@include('includes.header')
 
 <main>
     @inertia
 </main>
 
+@include('svg.squiggle')
 
+@include('includes.footer')
 
 <script src="{{ mix('js/bootstrap.js') }}"></script>
 
