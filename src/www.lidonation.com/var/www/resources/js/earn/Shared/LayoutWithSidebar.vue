@@ -33,7 +33,7 @@
                     <Spinner />
                 </div>
 
-                <aside class="md:col-span-3 xl:col-span-2">
+                <aside class="col-span-7 md:col-span-3 xl:col-span-2">
                     <Sidebar />
                 </aside>
             </div>
