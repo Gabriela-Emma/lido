@@ -7,7 +7,7 @@
 # Common variables set in env file   #
 ######################################
 
-#NODE_NAME="Cardano Node"                  # Change your node's name prefix here, keep at or below 19 characters!
+NODE_NAME="Cardano Node"                  # Change your node's name prefix here, keep at or below 19 characters!
 REFRESH_RATE=2                            # How often (in seconds) to refresh the view (additional time for processing and output may slow it down)
 LEGACY_MODE=false                         # (true|false) If enabled unicode box-drawing characters will be replaced by standard ASCII characters
 RETRIES=3                                 # How many attempts to connect to running Cardano node before erroring out and quitting (0 for continuous retries)
@@ -57,7 +57,7 @@ setTheme() {
 # Do NOT modify code below           #
 ######################################
 
-GLV_VERSION=v1.27.3
+GLV_VERSION=v1.27.4
 
 PARENT="$(dirname $0)"
 
@@ -116,7 +116,7 @@ clear
 
 if [[ ! -f "${PARENT}"/env ]]; then
   echo -e "\nCommon env file missing: ${PARENT}/env"
-  echo -e "This is a mandatory prerequisite, please install with prereqs.sh or manually download from GitHub\n"
+  echo -e "This is a mandatory prerequisite, please install with guild-deploy.sh or manually download from GitHub\n"
   myExit 1
 fi
 
@@ -124,7 +124,7 @@ fi
 
 if [[ ${UPDATE_CHECK} = Y && ${SKIP_UPDATE} != Y ]]; then
 
-  if command -v cncli >/dev/null && systemctl is-active --quiet ${CNODE_VNAME}-cncli-sync.service; then
+  if command -v cncli >/dev/null && command -v systemctl >/dev/null && systemctl is-active --quiet ${CNODE_VNAME}-cncli-sync.service; then
     vcur=$(cncli -V | sed 's/cncli /v/g')
     vrem=$(curl -s https://api.github.com/repos/cardano-community/cncli/releases/latest | jq -r .tag_name)
     [[ ${vcur} != ${vrem} ]] && printf "${FG_MAGENTA}CNCLI current version (${vcur}) different from repo (${vrem}), consider upgrading!.${NC}" && waitToProceed

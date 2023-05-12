@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC2034,SC2086,SC2230,SC2206,SC2140
 
+######################################
+# Do NOT modify code below           #
+######################################
+
 ############################################################
 # Variables to keep counter for versions                   #
 ############################################################
@@ -9,9 +13,9 @@
 # Major: Any considerable change in the code base, big feature, workflow or breaking change from previous version
 CNTOOLS_MAJOR_VERSION=10
 # Minor: Changes and features of minor character that can be applied without breaking existing functionality or workflow
-CNTOOLS_MINOR_VERSION=0
+CNTOOLS_MINOR_VERSION=2
 # Patch: Backwards compatible bug fixes. No additional functionality or major changes
-CNTOOLS_PATCH_VERSION=5
+CNTOOLS_PATCH_VERSION=1
 
 CNTOOLS_VERSION="${CNTOOLS_MAJOR_VERSION}.${CNTOOLS_MINOR_VERSION}.${CNTOOLS_PATCH_VERSION}"
 
@@ -31,12 +35,11 @@ if ! mkdir -p "${ASSET_FOLDER}" 2>/dev/null; then myExit 1 "${FG_RED}ERROR${NC}:
 [[ -z ${KES_WARNING_PERIOD} ]] && KES_WARNING_PERIOD=604800 # default 7 days
 [[ $(uname) == Darwin ]] && ENABLE_CHATTR=false
 [[ -z ${ENABLE_CHATTR} ]] && ENABLE_CHATTR=true
-[[ -z ${ENABLE_DIALOG} ]] && ENABLE_DIALOG=true
+[[ -z ${ENABLE_DIALOG} ]] && ENABLE_DIALOG=false
 [[ ${ENABLE_ADVANCED} = "true" ]] && ADVANCED_MODE="true"
 [[ -z ${CHECK_KES} ]] && CHECK_KES=true
 [[ -z ${CNTOOLS_LOG} ]] && CNTOOLS_LOG="${LOG_DIR}/cntools-history.log"
 getEraIdentifier
-test_koios
 
 ############################################################
 # library sourced by cntools with common taskes to perform #
@@ -506,7 +509,7 @@ selectWallet() {
     fi
     return 1
   fi
-  if ! selectDir "wallet" "${wallet_dirs[@]}"; then return 1; fi # ${dir_name} populated by selectDir function
+  if ! selectDir "wallet" "${wallet_dirs[@]}"; then return 2; fi # ${dir_name} populated by selectDir function
   wallet_name="$(echo ${dir_name} | cut -d' ' -f1)"
 }
 
@@ -550,7 +553,7 @@ selectPool() {
     return 1
   fi
   [[ ${enc_req_files} -gt 0 ]] && println DEBUG "${FG_YELLOW}encrypted pools found but NOT listed, please decrypt to show${NC}"
-  if ! selectDir "pool" "${pool_dirs[@]}"; then return 1; fi # ${dir_name} populated by selectDir function
+  if ! selectDir "pool" "${pool_dirs[@]}"; then return 2; fi # ${dir_name} populated by selectDir function
   pool_name="$(echo ${dir_name} | cut -d' ' -f1)"
 }
 
@@ -633,8 +636,8 @@ isPoolRegistered() {
 #               1: on error ($error_msg contains error message)
 #               2: offline/disabled/no result
 getAssetInfo() {
-  unset 
-  if [[ ${CNTOOLS_MODE} = "OFFLINE" || -z ${KOIOS_API} || "$#" -ne 2 ]]; then
+  unset
+  if [[ ${CNTOOLS_MODE} = "OFFLINE" || -z ${KOIOS_API} || $# -ge 1 ]]; then
     return 2
   else
     println ACTION "curl -sSL -f -d _asset_policy=$1 -d _asset_name=$2  ${KOIOS_API}/asset_info"
@@ -643,28 +646,28 @@ getAssetInfo() {
       return 2
     fi
     asset_info_tsv=$(jq -r '[
-    .[0].asset_name_ascii //"-",
+    (.[0].asset_name_ascii //"-" | @base64),
     .[0].fingerprint //"-",
     .[0].minting_tx_hash //"-",
     .[0].total_supply //0,
     .[0].mint_cnt //0,
     .[0].burn_cnt //0,
     .[0].creation_time //0,
-    (.[0].minting_tx_metadata|@json),
-    (.[0].token_registry_metadata|@json)
+    (.[0].minting_tx_metadata //"-" | @base64),
+    (.[0].token_registry_metadata //"-" | @base64)
     ] | @tsv' <<< "${asset_info}")
 
     read -ra asset_info_arr <<< ${asset_info_tsv}
 
-    a_asset_name_ascii=${asset_info_arr[0]}
+    a_asset_name_ascii=$(base64 -d <<< ${asset_info_arr[0]})
     a_fingerprint=${asset_info_arr[1]}
     a_minting_tx_hash=${asset_info_arr[2]}
     a_total_supply=${asset_info_arr[3]}
     a_mint_cnt=${asset_info_arr[4]}
     a_burn_cnt=${asset_info_arr[5]}
     a_creation_time=${asset_info_arr[6]}
-    a_minting_tx_metadata=${asset_info_arr[7]}
-    a_token_registry_metadata=${asset_info_arr[8]}
+    a_minting_tx_metadata=$(base64 -d <<< ${asset_info_arr[7]})
+    a_token_registry_metadata=$(base64 -d <<< ${asset_info_arr[8]})
   fi
 }
 
@@ -699,7 +702,7 @@ selectPolicy() {
     return 1
   fi
   [[ ${enc_req_files} -gt 0 ]] && println DEBUG "${FG_YELLOW}encrypted policies found but NOT listed, please decrypt to show${NC}"
-  if ! selectDir "policy" "${policy_dirs[@]}"; then return 1; fi # ${dir_name} populated by selectDir function
+  if ! selectDir "policy" "${policy_dirs[@]}"; then return 2; fi # ${dir_name} populated by selectDir function
   policy_name="$(echo ${dir_name} | cut -d' ' -f1)"
 }
 
@@ -721,7 +724,7 @@ selectAsset() {
     println ERROR "${FG_YELLOW}WARN${NC}: No assets found on disk!"
     return 1
   fi
-  if ! selectDir "asset" "${asset_list[@]}"; then return 1; fi # ${dir_name} populated by selected value
+  if ! selectDir "asset" "${asset_list[@]}"; then return 2; fi # ${dir_name} populated by selected value
   policy_dir="${dir_name%%/*}"
   asset_name="${dir_name##*/}"
   asset_file="${ASSET_FOLDER}/${policy_dir}/${asset_name}.asset"
@@ -955,81 +958,39 @@ getBalance() {
   asset_name_maxlen=5; asset_amount_maxlen=12
   tx_in=""
   
-  if [[ -z ${KOIOS_API} ]]; then
-    if [[ -z ${1} ]] || ! utxo_raw=$(${CCLI} query utxo ${NETWORK_IDENTIFIER} --address "${1}"); then return 1; fi
-    [[ -z ${utxo_raw} ]] && return
-    
-    while IFS= read -r line; do
-      IFS=' ' read -ra utxo_entry <<< "${line}"
-      [[ ${#utxo_entry[@]} -lt 4 ]] && continue
-      ((utxo_cnt++))
-      tx_in+=" --tx-in ${utxo_entry[0]}#${utxo_entry[1]}"
-      if [[ ${utxo_entry[3]} = "lovelace" ]]; then
-        utxos["${utxo_entry[0]}#${utxo_entry[1]}. Ada"]=${utxo_entry[2]} # Space added before 'Ada' for sort to place it first
-        assets["lovelace"]=$(( ${assets["lovelace"]:-0} + utxo_entry[2] ))
-        idx=5
-      else
-        utxos["${utxo_entry[0]}#${utxo_entry[1]}. Ada"]=0 # Space added before 'Ada' for sort to place it first
-        assets["lovelace"]=0
-        idx=2
-      fi
-      if [[ ${#utxo_entry[@]} -gt "${idx}" ]]; then
-        while [[ ${#utxo_entry[@]} -gt ${idx} ]]; do
-          asset_amount=${utxo_entry[${idx}]}
-          if ! isNumber "${asset_amount}"; then break; fi
-          asset_hash_name="${utxo_entry[$((idx+1))]}"
-          IFS='.' read -ra asset <<< "${asset_hash_name}"
-          policyIDs["${asset[0]}"]=1
-          [[ ${#asset[@]} -eq 2 && ${#asset[1]} -gt ${asset_name_maxlen} ]] && asset_name_maxlen=${#asset[1]}
-          asset_amount_fmt="$(formatAsset ${asset_amount})"
-          [[ ${#asset_amount_fmt} -gt ${asset_amount_maxlen} ]] && asset_amount_maxlen=${#asset_amount_fmt}
-          assets["${asset_hash_name}"]=$(( ${assets["${asset_hash_name}"]:-0} + asset_amount ))
-          utxos["${utxo_entry[0]}#${utxo_entry[1]}.${asset_hash_name}"]=${asset_amount}
-          idx=$(( idx + 3 ))
-        done
-      fi
-    done <<< "${utxo_raw}"
-  else
-    println ACTION "curl -sSL -f -H \"Content-Type: application/json\" -H \"Accept: application/json\" -X POST -d '{\"_addresses\":[\"${1}\"]}' ${KOIOS_API}/address_info"
-    ! addr_info=$(curl -sSL -f -H "Content-Type: application/json" -H "Accept: application/json" -X POST -d "{\"_addresses\":[\"${1}\"]}" ${KOIOS_API}/address_info 2>&1) && return 1
-    [[ ${addr_info} = '[]' || $(jq -r '.[0].balance //0' <<< ${addr_info}) -eq 0 ]] && return
-
-    assets["lovelace"]=$(jq -r .[0].balance <<< ${addr_info})
-
-    if [[ -n $(jq -r '.[0].utxo_set //empty' <<< "${addr_info}") ]]; then
-      for utxo in $(jq -r '.[0].utxo_set[] | @base64' <<< "${addr_info}"); do
-        ((utxo_cnt++))
-        utxo_tsv=$(jq -r '[
-        .tx_hash,
-        .tx_index,
-        .value,
-        (.asset_list|@base64)
-        ] | @tsv' <<< "$(base64 -d <<< ${utxo})")
-        read -ra utxo_entry <<< ${utxo_tsv}
-        utxos["${utxo_entry[0]}#${utxo_entry[1]}. Ada"]=${utxo_entry[2]} # Space added before 'Ada' for sort to place it first
-        tx_in+=" --tx-in ${utxo_entry[0]}#${utxo_entry[1]}"
-        asset_list=$(base64 -d <<< ${utxo_entry[3]})
-        if [[ ${asset_list} != '[]' ]]; then
-          for asset in $(jq -r '.[] | @base64' <<< "${asset_list}"); do
-            asset_tsv=$(jq -r '[
-            .policy_id,
-            (.asset_name|select(. != "") //"-"),
-            .quantity
-            ] | @tsv' <<< "$(base64 -d <<< ${asset})")
-            read -ra asset_entry <<< ${asset_tsv}
-            [[ ${asset_entry[1]} = '-' ]] && asset_entry[1]=""
-            policyIDs["${asset_entry[0]}"]=1
-            [[ ${#asset_entry[1]} -gt ${asset_name_maxlen} ]] && asset_name_maxlen=${#asset_entry[1]}
-            asset_amount_fmt="$(formatAsset ${asset_entry[2]})"
-            [[ ${#asset_amount_fmt} -gt ${asset_amount_maxlen} ]] && asset_amount_maxlen=${#asset_amount_fmt}
-            asset_hash_name="${asset_entry[0]}.${asset_entry[1]}"
-            assets["${asset_entry[0]}.${asset_entry[1]}"]=$(( ${assets["${asset_hash_name}"]:-0} + asset_entry[2] ))
-            utxos["${utxo_entry[0]}#${utxo_entry[1]}.${asset_hash_name}"]=${asset_entry[2]}
-          done
-        fi
+  if [[ -z ${1} ]] || ! utxo_raw=$(${CCLI} query utxo ${NETWORK_IDENTIFIER} --address "${1}"); then return 1; fi
+  [[ -z ${utxo_raw} ]] && return
+  
+  while IFS= read -r line; do
+    IFS=' ' read -ra utxo_entry <<< "${line}"
+    [[ ${#utxo_entry[@]} -lt 4 ]] && continue
+    ((utxo_cnt++))
+    tx_in+=" --tx-in ${utxo_entry[0]}#${utxo_entry[1]}"
+    if [[ ${utxo_entry[3]} = "lovelace" ]]; then
+      utxos["${utxo_entry[0]}#${utxo_entry[1]}. Ada"]=${utxo_entry[2]} # Space added before 'Ada' for sort to place it first
+      assets["lovelace"]=$(( ${assets["lovelace"]:-0} + utxo_entry[2] ))
+      idx=5
+    else
+      utxos["${utxo_entry[0]}#${utxo_entry[1]}. Ada"]=0 # Space added before 'Ada' for sort to place it first
+      assets["lovelace"]=0
+      idx=2
+    fi
+    if [[ ${#utxo_entry[@]} -gt "${idx}" ]]; then
+      while [[ ${#utxo_entry[@]} -gt ${idx} ]]; do
+        asset_amount=${utxo_entry[${idx}]}
+        if ! isNumber "${asset_amount}"; then break; fi
+        asset_hash_name="${utxo_entry[$((idx+1))]}"
+        IFS='.' read -ra asset <<< "${asset_hash_name}"
+        policyIDs["${asset[0]}"]=1
+        [[ ${#asset[@]} -eq 2 && ${#asset[1]} -gt ${asset_name_maxlen} ]] && asset_name_maxlen=${#asset[1]}
+        asset_amount_fmt="$(formatAsset ${asset_amount})"
+        [[ ${#asset_amount_fmt} -gt ${asset_amount_maxlen} ]] && asset_amount_maxlen=${#asset_amount_fmt}
+        assets["${asset_hash_name}"]=$(( ${assets["${asset_hash_name}"]:-0} + asset_amount ))
+        utxos["${utxo_entry[0]}#${utxo_entry[1]}.${asset_hash_name}"]=${asset_amount}
+        idx=$(( idx + 3 ))
       done
     fi
-  fi
+  done <<< "${utxo_raw}"
 
   [[ ${asset_name_maxlen} -ne 5 ]] && asset_name_maxlen=$(( asset_name_maxlen / 2 ))
   lovelace_fmt="$(formatLovelace ${assets["lovelace"]})"
@@ -1166,8 +1127,28 @@ getWalletType() {
       ([[ ${op_mode} = "online" && ( ! -f ${payment_sk_file} || ! -f ${stake_sk_file} ) ]]) && return 3 || return 0
     elif [[ -f "${WALLET_FOLDER}/${1}/${WALLET_PAY_SK_FILENAME}.gpg" || -f "${WALLET_FOLDER}/${1}/${WALLET_STAKE_SK_FILENAME}.gpg" ]]; then
       return 2
-    else    
+    else
       ([[ ${op_mode} = "online" && ( ! -f ${payment_sk_file} || ! -f ${stake_sk_file} ) ]]) && return 3 || return 1
+    fi
+  else
+    return 4
+  fi
+}
+
+# Command     : getPoolType [pool name]
+# Description : check if pool is a hardware pool, 0=yes, 1=cli, 2=cli & encrypted, 3=signing keys missing, 4=verification keys missing
+# Parameters  : pool name  >  the name of the pool
+getPoolType() {
+  pool_coldkey_vk_file="${POOL_FOLDER}/${1}/${POOL_COLDKEY_VK_FILENAME}"
+  pool_coldkey_sk_file="${POOL_FOLDER}/${1}/${POOL_COLDKEY_SK_FILENAME}"
+  if [[ -f "${POOL_FOLDER}/${1}/${POOL_COLDKEY_VK_FILENAME}" ]]; then # CNTools pool
+    if [[ $(jq -r '.description' "${pool_coldkey_vk_file}") = *"Hardware"* ]]; then
+      pool_coldkey_sk_file="${POOL_FOLDER}/${1}/${POOL_HW_COLDKEY_SK_FILENAME}"
+      ([[ ${op_mode} = "online" && ( ! -f ${pool_coldkey_sk_file} ) ]]) && return 3 || return 0
+    elif [[ -f "${POOL_FOLDER}/${1}/${POOL_COLDKEY_SK_FILENAME}.gpg" ]]; then
+      return 2
+    else
+      ([[ ${op_mode} = "online" && ( ! -f ${pool_coldkey_sk_file} ) ]]) && return 3 || return 1
     fi
   else
     return 4
@@ -1306,7 +1287,8 @@ registerStakeWallet() {
     return 2 # return as failed to stop main processing and return to home menu
   fi
   
-  if ! signTx "${TMP_DIR}/tx.raw" "${stake_sk_file}" "${payment_sk_file}"; then return 1; fi
+  if ! witnessTx "${TMP_DIR}/tx.raw" "${stake_sk_file}" "${payment_sk_file}"; then return 1; fi
+  if ! assembleTx "${TMP_DIR}/tx.raw"; then return 1; fi
   if ! submitTx "${tx_signed}"; then return 1; fi
   echo
   if ! verifyTx ${base_addr}; then return 1; fi
@@ -1405,7 +1387,8 @@ deregisterStakeWallet() {
     return 2 # return as failed to stop main processing and return to home menu
   fi
   
-  if ! signTx "${TMP_DIR}/tx.raw" "${stake_sk_file}" "${payment_sk_file}"; then return 1; fi
+  if ! witnessTx "${TMP_DIR}/tx.raw" "${stake_sk_file}" "${payment_sk_file}"; then return 1; fi
+  if ! assembleTx "${TMP_DIR}/tx.raw"; then return 1; fi
   if ! submitTx "${tx_signed}"; then return 1; fi
 }
 
@@ -1542,7 +1525,8 @@ sendAssets() {
     return 2 # return as failed to stop main processing and return to home menu
   fi
   
-  if ! signTx "${TMP_DIR}/tx.raw" "${s_payment_sk_file}"; then return 1; fi
+  if ! witnessTx "${TMP_DIR}/tx.raw" "${s_payment_sk_file}"; then return 1; fi
+  if ! assembleTx "${TMP_DIR}/tx.raw"; then return 1; fi
   if ! submitTx "${tx_signed}"; then return 1; fi
 }
 
@@ -1632,7 +1616,8 @@ delegate() {
     return 2 # return as failed to stop main processing and return to home menu
   fi
   
-  if ! signTx "${TMP_DIR}/tx.raw" "${stake_sk_file}" "${payment_sk_file}"; then return 1; fi
+  if ! witnessTx "${TMP_DIR}/tx.raw" "${stake_sk_file}" "${payment_sk_file}"; then return 1; fi
+  if ! assembleTx "${TMP_DIR}/tx.raw"; then return 1; fi
   if ! submitTx "${tx_signed}"; then return 1; fi
 }
 
@@ -1718,7 +1703,8 @@ withdrawRewards() {
     return 2 # return as failed to stop main processing and return to home menu
   fi
   
-  if ! signTx "${TMP_DIR}/tx.raw" "${stake_sk_file}" "${payment_sk_file}"; then return 1; fi
+  if ! witnessTx "${TMP_DIR}/tx.raw" "${stake_sk_file}" "${payment_sk_file}"; then return 1; fi
+  if ! assembleTx "${TMP_DIR}/tx.raw"; then return 1; fi
   if ! submitTx "${tx_signed}"; then return 1; fi
 }
 
@@ -1959,24 +1945,24 @@ modifyPool() {
     offline_tx="${TMP_DIR}/offline_tx_$(jq -r .id <<< ${offlineJSON}).json"
     jq -r . <<< "${offlineJSON}" > "${offline_tx}"
     echo
-    println "Offline transaction successfully built and saved to: ${FG_LGRAY}${offline_tx}${NC}" 
-    println DEBUG "move file to offline computer and sign it using CNTools in offline mode '-o' [Transaction >> Sign] with:" 
-    println DEBUG "Pool ${FG_GREEN}${pool_name} ${FG_LGRAY}${POOL_COLDKEY_SK_FILENAME}${NC}" 
-    println DEBUG "Owner #1 ${FG_GREEN}${owner_wallets[0]} ${FG_LGRAY}${WALLET_PAY_SK_FILENAME}${NC} & ${FG_LGRAY}${WALLET_STAKE_SK_FILENAME}${NC}" 
+    println "Offline transaction successfully built and saved to: ${FG_LGRAY}${offline_tx}${NC}"
+    println DEBUG "move file to offline computer and sign it using CNTools in offline mode '-o' [Transaction >> Sign] with:"
+    println DEBUG "Pool ${FG_GREEN}${pool_name} ${FG_LGRAY}${POOL_COLDKEY_SK_FILENAME}${NC}"
+    println DEBUG "Owner #1 ${FG_GREEN}${owner_wallets[0]} ${FG_LGRAY}${WALLET_PAY_SK_FILENAME}${NC} & ${FG_LGRAY}${WALLET_STAKE_SK_FILENAME}${NC}"
     for index in "${!owner_wallets[@]}"; do
       [[ ${index} -eq 0 ]] && continue # skip main owner
       println DEBUG "Owner #$((index+1)) ${FG_GREEN}${owner_wallets[${index}]} ${FG_LGRAY}${WALLET_STAKE_SK_FILENAME}${NC}"
     done
     return 2 # return as failed to stop main processing and return to home menu
   fi
-  
+
   multi_owner_keys=()
   for index in "${!owner_wallets[@]}"; do
     [[ ${index} -eq 0 ]] && continue # skip main owner
     getWalletType ${owner_wallets[${index}]}
     multi_owner_keys+=( "${stake_sk_file}" )
   done
-  
+
   if ! witnessTx "${TMP_DIR}/tx.raw" "${owner_payment_sk_file}" "${pool_coldkey_sk_file}" "${owner_stake_sk_file}" "${multi_owner_keys[@]}"; then return 1; fi
   if ! assembleTx "${TMP_DIR}/tx.raw"; then return 1; fi
   if ! submitTx "${tx_signed}"; then return 1; fi
@@ -1990,9 +1976,9 @@ deRegisterPool() {
 
   getBalance ${addr}
   if ! getTTL; then return 1; fi
-  
+
   getAssetsTxOut
-  
+
   build_args=(
     ${tx_in}
     --tx-out "${addr}+0${assets_tx_out}"
@@ -2027,14 +2013,14 @@ deRegisterPool() {
 			"Minimum required: ${FG_LBLUE}$(formatLovelace ${min_fee})${NC} Ada"
     return 1
   fi
-  
+
   tx_out="${addr}+${newBalance}${assets_tx_out}"
   getMinUTxO "${tx_out}"
   if [[ ${newBalance} -lt ${min_utxo_out} ]]; then
     println ERROR "\n${FG_RED}ERROR${NC}: minimum UTxO value not fulfilled, only ${FG_LBLUE}$(formatLovelace ${newBalance})${NC} Ada left in address after tx fee, at least ${FG_LBLUE}$(formatLovelace ${min_utxo_out})${NC} Ada required!"
     return 1
   fi
-  
+
   build_args=(
     ${tx_in}
     --tx-out "${tx_out}"
@@ -2045,7 +2031,15 @@ deRegisterPool() {
   )
 
   if ! buildTx; then return 1; fi
-  
+
+  needHWCLI=false
+  pay_vk_file="${WALLET_FOLDER}/${wallet_name}/${WALLET_PAY_VK_FILENAME}"
+  [[ $(jq .description "${pay_vk_file}") = *Hardware* ]] && needHWCLI=true
+  if [[ ${needHWCLI} = true ]]; then
+    if ! HWCLIversionCheck; then return 1; fi
+    if ! transformRawTx "${TMP_DIR}"/tx.raw; then return 1; fi
+  fi
+
   if [[ ${op_mode} = "hybrid" ]]; then
     if ! buildOfflineJSON "Pool De-Registration"; then return 1; fi
     if ! offlineJSON=$(jq ". += { \"wallet-name\": \"${wallet_name}\" }" <<< ${offlineJSON}); then return 1; fi
@@ -2066,24 +2060,28 @@ deRegisterPool() {
     offline_tx="${TMP_DIR}/offline_tx_$(jq -r .id <<< ${offlineJSON}).json"
     jq -r . <<< "${offlineJSON}" > "${offline_tx}"
     echo
-    println "Offline transaction successfully built and saved to: ${FG_LGRAY}${offline_tx}${NC}" 
-    println DEBUG "move file to offline computer and sign it using CNTools in offline mode '-o' [Transaction >> Sign] with:" 
-    println DEBUG "Wallet ${FG_GREEN}${wallet_name} ${FG_LGRAY}$(basename ${payment_sk_file})${NC}" 
-    println DEBUG "Pool ${FG_GREEN}${pool_name} ${FG_LGRAY}$(basename ${pool_coldkey_sk_file})${NC}" 
+    println "Offline transaction successfully built and saved to: ${FG_LGRAY}${offline_tx}${NC}"
+    println DEBUG "move file to offline computer and sign it using CNTools in offline mode '-o' [Transaction >> Sign] with:"
+    println DEBUG "Wallet ${FG_GREEN}${wallet_name} ${FG_LGRAY}$(basename ${payment_sk_file})${NC}"
+    println DEBUG "Pool ${FG_GREEN}${pool_name} ${FG_LGRAY}$(basename ${pool_coldkey_sk_file})${NC}"
     return 2 # return as failed to stop main processing and return to home menu
   fi
-  
-  if ! signTx "${TMP_DIR}/tx.raw" "${payment_sk_file}" "${pool_coldkey_sk_file}"; then return 1; fi
+
+  getWalletType ${wallet_name}
+
+  if ! witnessTx "${TMP_DIR}/tx.raw" "${payment_sk_file}" "${pool_coldkey_sk_file}"; then return 1; fi
+  if ! assembleTx "${TMP_DIR}/tx.raw"; then return 1; fi
   if ! submitTx "${tx_signed}"; then return 1; fi
+
 }
 
 # Command     : rotatePoolKeys
 # Description : Rotate pool's KES keys
 # parameters  : $1 = cold counter (offline mode)
 rotatePoolKeys() {
+
   # cold keys
-  pool_coldkey_sk_file="${POOL_FOLDER}/${pool_name}/${POOL_COLDKEY_SK_FILENAME}"
-  pool_coldkey_vk_file="${POOL_FOLDER}/${pool_name}/${POOL_COLDKEY_VK_FILENAME}"
+  if getPoolType ${pool_name} ; then needHWCLI="true" ;fi
 
   # generated files
   pool_hotkey_vk_file="${POOL_FOLDER}/${pool_name}/${POOL_HOTKEY_VK_FILENAME}"
@@ -2135,8 +2133,22 @@ rotatePoolKeys() {
     println "ERROR" "\n${FG_RED}ERROR${NC}: op cert file missing and Koios disabled/unavailable. Unable to get current on-chain counter value!\n" && return 1
   fi
 
-  println ACTION "${CCLI} node issue-op-cert --kes-verification-key-file ${pool_hotkey_vk_file} --cold-signing-key-file ${pool_coldkey_sk_file} --operational-certificate-issue-counter-file ${pool_opcert_counter_file} --kes-period ${current_kes_period} --out-file ${pool_opcert_file}"
-  ! ${CCLI} node issue-op-cert --kes-verification-key-file "${pool_hotkey_vk_file}" --cold-signing-key-file "${pool_coldkey_sk_file}" --operational-certificate-issue-counter-file "${pool_opcert_counter_file}" --kes-period "${current_kes_period}" --out-file "${pool_opcert_file}" && return 1
+  if [[ ${needHWCLI} = true ]]; then
+    if ! unlockHWDevice "issue the opcert"; then return 1; fi
+    println ACTION "cardano-hw-cli node issue-op-cert --kes-verification-key-file ${pool_hotkey_vk_file} --hw-signing-file ${pool_coldkey_sk_file} --operational-certificate-issue-counter-file ${pool_opcert_counter_file} --kes-period ${current_kes_period} --out-file ${pool_opcert_file}"
+    ! cardano-hw-cli node issue-op-cert \
+    --kes-verification-key-file "${pool_hotkey_vk_file}" \
+    --hw-signing-file "${pool_coldkey_sk_file}" \
+    --operational-certificate-issue-counter-file "${pool_opcert_counter_file}" \
+    --kes-period "${current_kes_period}" \
+    --out-file "${pool_opcert_file}" \
+    && return 1
+
+  else
+    println ACTION "${CCLI} node issue-op-cert --kes-verification-key-file ${pool_hotkey_vk_file} --cold-signing-key-file ${pool_coldkey_sk_file} --operational-certificate-issue-counter-file ${pool_opcert_counter_file} --kes-period ${current_kes_period} --out-file ${pool_opcert_file}"
+    ! ${CCLI} node issue-op-cert --kes-verification-key-file "${pool_hotkey_vk_file}" --cold-signing-key-file "${pool_coldkey_sk_file}" --operational-certificate-issue-counter-file "${pool_opcert_counter_file}" --kes-period "${current_kes_period}" --out-file "${pool_opcert_file}" && return 1
+  fi
+
   chmod 700 ${POOL_FOLDER}/${pool_name}/*
 
   unset remaining_kes_periods
@@ -2162,9 +2174,9 @@ sendMetadata() {
 
   getBalance ${addr}
   if ! getTTL; then return 1; fi
-  
+
   getAssetsTxOut
-  
+
   build_args=(
     ${tx_in}
     --tx-out "${addr}+0${assets_tx_out}"
@@ -2236,7 +2248,8 @@ sendMetadata() {
     return 2 # return as failed to stop main processing and return to home menu
   fi
   
-  if ! signTx "${TMP_DIR}/tx.raw" "${payment_sk_file}"; then return 1; fi
+  if ! witnessTx "${TMP_DIR}/tx.raw" "${payment_sk_file}"; then return 1; fi
+  if ! assembleTx "${TMP_DIR}/tx.raw"; then return 1; fi
   if ! submitTx "${tx_signed}"; then return 1; fi
 }
 
@@ -2343,7 +2356,8 @@ mintAsset() {
     return 2 # return as failed to stop main processing and return to home menu
   fi
   
-  if ! signTx "${TMP_DIR}/tx.raw" "${payment_sk_file}" "${policy_sk_file}"; then return 1; fi
+  if ! witnessTx "${TMP_DIR}/tx.raw" "${payment_sk_file}" "${policy_sk_file}"; then return 1; fi
+  if ! assembleTx "${TMP_DIR}/tx.raw"; then return 1; fi
   if ! submitTx "${tx_signed}"; then return 1; fi
 }
 
@@ -2448,7 +2462,8 @@ burnAsset() {
     return 2 # return as failed to stop main processing and return to home menu
   fi
   
-  if ! signTx "${TMP_DIR}/tx.raw" "${payment_sk_file}" "${policy_sk_file}"; then return 1; fi
+  if ! witnessTx "${TMP_DIR}/tx.raw" "${payment_sk_file}" "${policy_sk_file}"; then return 1; fi
+  if ! assembleTx "${TMP_DIR}/tx.raw"; then return 1; fi
   if ! submitTx "${tx_signed}"; then return 1; fi
 }
 
@@ -2533,65 +2548,6 @@ assembleTx() {
   fi
 }
 
-# Command     : signTx [raw tx file] [signing keys ...]
-# Description : Helper function to sign a raw transaction
-# Parameters  : raw tx file    >  the transaction file to sign
-#             : signing keys   >  list of signing keys to use when signing the transaction, for direct signing
-signTx() {
-  tx_raw="$1"
-  shift
-  tx_signed="${TMP_DIR}/tx.signed_$(date +%s)"
-  if HWCLIversionCheck >/dev/null; then 
-    if ! transformRawTx "${tx_raw}"; then return 1; fi
-  fi
-  if [[ $# -gt 0 ]]; then
-    tx_sign_out=()
-    hw_wallet='N'
-    for skey in "$@"; do
-      [[ -z ${skey//[[:blank:]]/} ]] && continue
-      skey_desc="$(jq -r '.description //empty' "${skey}")"
-      if [[ ! -f "${skey}" ]]; then
-        println ERROR "\n${FG_RED}ERROR${NC}: file not found: ${skey}"
-        return 1
-      elif [[ ${skey_desc} = *"Hardware"* ]]; then # HW signing key
-        tx_sign_out+=( "--hw-signing-file ${skey}" )
-        if [[ ${wallet_source} = "base" && ${skey_desc} = "Payment"* ]]; then
-          tx_sign_out+=( "--change-output-key-file ${skey}" )
-          # Add stake.hwsfile as well as a change output
-          [[ -f "$(dirname "${skey}")/${WALLET_HW_STAKE_SK_FILENAME}" ]] && tx_sign_out+=( "--change-output-key-file $(dirname "${skey}")/${WALLET_HW_STAKE_SK_FILENAME}" )
-        fi
-        hw_wallet='Y'
-      else
-        tx_sign_out+=( "--signing-key-file ${skey}" )
-      fi
-    done
-    if [[ ${hw_wallet} = 'Y' ]]; then
-      if ! unlockHWDevice "sign the transaction"; then return 1; fi
-      sign_command=(
-        cardano-hw-cli transaction sign
-        --tx-file "${tx_raw}"
-        ${tx_sign_out[@]}
-        ${NETWORK_IDENTIFIER}
-        --out-file "${tx_signed}"
-      )
-    else
-      sign_command=(
-        ${CCLI} transaction sign
-        --tx-body-file "${tx_raw}"
-        ${tx_sign_out[@]}
-        ${NETWORK_IDENTIFIER}
-        --out-file "${tx_signed}"
-      )
-    fi
-  else
-    println ERROR "\n${FG_RED}ERROR${NC}: no signing keys provided, unable to sign tx!"
-    return 1
-  fi
-  
-  println ACTION "${sign_command[@]}"
-  "${sign_command[@]}"
-}
-
 # Command     : submitTx [signed tx file]
 # Description : Helper function to submit signed transaction file
 # Parameters  : signed tx file   >  the signed transaction file to submit
@@ -2653,13 +2609,13 @@ unlockHWDevice() {
 }
 
 HWCLIversionCheck() {
-  ! command -v "cardano-hw-cli" &>/dev/null && echo "cardano-hw-cli not found, please install using prereqs.sh with -w option" && return 1
+  ! command -v "cardano-hw-cli" &>/dev/null && echo "cardano-hw-cli not found, please install using guild-deploy.sh with '-s w' option" && return 1
   println ACTION "cardano-hw-cli version"
   HWCLI_version="$(cardano-hw-cli version 2>/dev/null | head -n 1 | cut -d' ' -f6)"
   println LOG "cardano-hw-cli version: ${HWCLI_version}"
   if ! versionCheck "1.10.0" "${HWCLI_version}"; then
     println ERROR "${FG_RED}ERROR${NC}: Vacuumlabs cardano-hw-cli ${FG_LGRAY}v${HWCLI_version}${NC} installed on system, minimum required version is ${FG_GREEN}v1.10.0${NC} !!"
-    println ERROR "Please run ${FG_LGRAY}prereqs.sh -w${NC} to upgrade to the latest version."
+    println ERROR "Please run ${FG_LGRAY}guild-deploy.sh -s w${NC} to upgrade to the latest version."
     return 1
   fi
   return 0
