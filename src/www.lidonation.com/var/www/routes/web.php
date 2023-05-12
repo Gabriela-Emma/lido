@@ -77,6 +77,9 @@ Route::group(
         Route::get('/search/{term}', [GlobalSearchController::class, 'index'])
             ->name('search');
 
+        Route::get('/s',fn () => Inertia::render('LidoSearch'))->name('search.app');;
+
+
         Route::get('/', function () {
             return view('home')->withShortcodes();
         })->name('home');
