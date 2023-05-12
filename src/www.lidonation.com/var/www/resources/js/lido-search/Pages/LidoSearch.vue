@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="absolute top-0 bottom-0 right-0 z-40 w-full bg-white shadow ">
+        <div class="top-0 bottom-0 right-0 z-40 w-full bg-white shadow ">
             <header class="relative h-20 border-b border-gray-300">
                 <div class="w-full h-full">
                     <Search :search="search"

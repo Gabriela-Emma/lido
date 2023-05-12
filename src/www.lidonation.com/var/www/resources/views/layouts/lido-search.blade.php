@@ -6,7 +6,7 @@
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <link rel="stylesheet" href="{{ asset(mix('css/app.css')) }}">
+    <link rel="stylesheet" href="{{ asset(mix('css/lido-search.css')) }}">
 
     @env('production')
         <!-- Cloudflare Web Analytics -->
@@ -25,11 +25,11 @@
 
     @inertiaHead
 </head>
-<body class="search">
+<body class="lidoSearch">
 
 <x-lido-menu />
 
-{{-- @include('includes.global-search-handler') --}}
+@include('includes.global-search-handler')
 
 @include('includes.header')
 
@@ -37,6 +37,8 @@
     @inertia
 </main>
 
+
+{{-- include squiggly svg for text animation--}}
 @include('svg.squiggle')
 
 @include('includes.footer')

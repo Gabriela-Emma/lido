@@ -43,6 +43,7 @@ mix.ts('resources/js/catalyst-explorer.ts', 'public/js')
     .sass('resources/sass/delegators.scss', 'public/css')
     .sass('resources/sass/governance-day.scss', 'public/css')
     .sass('resources/sass/app.scss', 'public/css')
+    .sass('resources/sass/lido-search.scss', 'public/css')
 
     .options({
         postCss: [

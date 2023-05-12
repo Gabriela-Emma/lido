@@ -21,8 +21,8 @@ class GlobalSearchController extends Controller
     public function index(Request $request, string $term=null)
     {  
         $this->inputTerm = $request->input('q');
-        if(isset($inputTerm)){
-            $term = $inputTerm;
+        if(isset($this->inputTerm)){
+            $term = $this->inputTerm;
         }
         $searchBuilder = Post::search($term,
             function (Indexes $index, $query, $options) {
