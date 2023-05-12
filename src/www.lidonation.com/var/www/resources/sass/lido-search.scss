@@ -1,0 +1,11 @@
+@import 'app';
+@import '@vueform/slider/themes/default.css';
+@import "@vueform/toggle/themes/default.css";
+@import "@vueform/multiselect/themes/default.css";
+//@import "vuetify/styles";
+
+body.lidoSearch header#header section li#search {
+
+        display: none !important;
+    
+}

@@ -3,9 +3,9 @@
     'style' => 'link',
     'theme' => 'gray',
     'linkClasses' => '',
-    'text' => $snippets->continueReading
+    'text' => $snippets->continueReading,
     ])
-<span {{$attributes->merge(['class' => 'my-2 mt-auto pt-4 inline-block'])}}>
+<span {{$attributes->merge(['class' => 'my-2 mt-auto pt-4 inline-block'])}} >
     @switch($style)
         @case('button')
         <a href="{{$link ?? route($route)}}" type="button"

@@ -64,7 +64,7 @@ RUN wget https://downloads.haskell.org/cabal/cabal-install-3.6.2.0/cabal-install
 # Install libsodium
 RUN git clone https://github.com/input-output-hk/libsodium \
     && cd libsodium \
-    && git checkout 66f017f1 \
+    && git checkout dbb48cc \
     && ./autogen.sh \
     && ./configure \
     && make \

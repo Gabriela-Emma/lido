@@ -82,7 +82,7 @@ export default {
                                 <li class="mt-2 transition hover:ease-in delay-150">
                                     <label class="w-full">
                                         <input type="radio" class="peer sr-only" name="answer"
-                                               :id="answer.id" v-model="userSelectionId"/>
+                                               :id="answer.id" v-model="userSelectionId" />
 
                                         <div class="w-full rounded-md bg-white p-5" :class="{
                                                             'text-green-400' : userLatestResponse.correct === true && userLatestResponse.questionAnswerId === answer.id,
@@ -244,6 +244,10 @@ const props = withDefaults(
 
 let answerResponseStore = useAnswerResponseStore();
 
+let learnerDataStore = useLearnerDataStore();
+learnerDataStore.getLearnerData();
+const {learnerData} = storeToRefs(learnerDataStore);
+
 let learningLesson = ref(props.lesson);
 let submitted: Ref<boolean> = ref(false);
 let userReward = ref(props.reward);
@@ -255,7 +259,7 @@ const currentDay = moment()
     .day();
 
 let nextLessonAt = computed(() => {
-    const nextLesson = moment(props.nextLessonAt).tz('Africa/Nairobi').startOf('day')
+    const nextLesson = moment(learnerData.value.nextLessonAt).tz('Africa/Nairobi').startOf('day')
         .diff(
             moment().tz('Africa/Nairobi')
         );
