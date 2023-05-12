@@ -23,19 +23,6 @@
     </header>
 
     <nav class="h-full overflow-y-auto" aria-label="Directory" x-show="results">
-        <div class="relative text-sm -top-1">
-            <a :href="route('search.app', {q: search})" type="button"
-                class="flex items-center w-full px-6 py-3 font-medium text-gray-700 bg-white border rounded-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 ">
-                <span>See more results</span>
-                <span class="ml-3">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                    </svg>
-                </span>
-            </a>
-        </div>
         <template x-for="group in results" :key="group.type">
             <div class="relative">
                 <div
@@ -125,7 +112,6 @@
             runSearch: async function(value, oldValue) {
                 this.working = true;
                 const res = await axios.get(`/${this.locale}/search/${value}`);
-
                 const data = await res.data;
                 if (data.length) {
                     this.results = data;
@@ -136,9 +122,6 @@
                 this.working = false;
                 window.fathom.trackGoal('T9S57PLY', 0);
             },
-            goToSearchPage() {
-                axios.get(`/${this.locale}/search/${value}`)
-            }
         }
     }
 </script>
