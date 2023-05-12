@@ -402,8 +402,8 @@ image: registry.lidonation.com/infra-ops/gitlab-runner:main
       --set-file configurationFiles.mainnetShelleyGenesis=./src/pool/config/build/mainnet-shelley-genesis.json \
       --set-file configurationFiles.testnetAlonzoGenesis=./src/pool/config/build/preview-alonzo-genesis.json \
       --set-file configurationFiles.mainnetAlonzoGenesis=./src/pool/config/build/mainnet-alonzo-genesis.json \
-      --set-file configurationFiles.testnetAlonzoGenesis=./src/pool/config/build/preview-conway-genesis.json \
-      --set-file configurationFiles.mainnetAlonzoGenesis=./src/pool/config/build/mainnet-conway-genesis.json \
+      --set-file configurationFiles.testnetConwayGenesis=./src/pool/config/build/preview-conway-genesis.json \
+      --set-file configurationFiles.mainnetConwayGenesis=./src/pool/config/build/mainnet-conway-genesis.json \
       --set namespace=${KUBE_NAMESPACE} \
       --namespace="$KUBE_NAMESPACE" \
       --version="$APP_VERSION"
