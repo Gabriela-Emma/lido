@@ -97,6 +97,8 @@ spec:
             - sleep
             - "2592000"
           volumeMounts:
+            - name: node-configurations
+              mountPath: /tmp/config
             - name: "{{ $.Chart.Name }}-cardano-relay-1-pv"
               mountPath: /data
               readOnly: false
