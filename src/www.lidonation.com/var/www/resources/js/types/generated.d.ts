@@ -83,6 +83,19 @@ content: string | null;
 type: string | null;
 link?: string | null;
 };
+export type PostData = {
+title: string | null;
+id: number | null;
+author_name: string | null;
+author_gravatar: string | null;
+link: string | null;
+published_at: string | null;
+read_time: string | null;
+};
+export type PostSearchResultData = {
+type: string | null;
+items: Array<App.DataTransferObjects.PostData> | null;
+};
 export type PromoData = {
 title: string | null;
 uri: string | null;
