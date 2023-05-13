@@ -80,8 +80,7 @@
 
 
 CNODE_HOME="/cntools/cnode"                             # Override default CNODE_HOME path (defaults to /opt/cardano/cnode)
-CNODE_PORT=${NODE_PORT}                                         # Set node port
-CONFIG="/config/config.json"               # Override automatic detection of node config path
+CNODE_PORT=${NODE_PORT}                                         # Set node port               # Override automatic detection of node config path
 SOCKET="/ipc/node.socket"            # Override automatic detection of path to socket
 DB_DIR="/data/db"                               # Folder to store the cardano-node blockchain db
 UPDATE_CHECK="N"                                       # Check for updates to scripts, it will still be prompted before proceeding (Y|N).
@@ -105,8 +104,10 @@ elif [[ "$NODE_NAME" == "relay2" ]]; then
   fi
 elif [[ "$NODE_NAME" == "submittx" ]]; then
   export TOPOLOGY="/config/topology.submittx.json"             # Override default topology.json path
+  export CONFIG="/config/config.json"
 else
   export TOPOLOGY="/config/topology.relay.json"
+  export CONFIG="/config/config.json"
 fi
 
 
