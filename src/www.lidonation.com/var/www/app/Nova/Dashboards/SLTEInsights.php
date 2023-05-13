@@ -12,21 +12,42 @@ use JetBrains\PhpStorm\Pure;
 use Laravel\Nova\Cards\Help;
 use Laravel\Nova\Dashboards\Main as Dashboard;
 
-class Main extends Dashboard
+class SLTEInsights extends Dashboard
 {
+    /**
+     * Get the displayable name of the dashboard.
+     *
+     * @return string
+     */
+    public function name()
+    {
+        return 'SLTE Insights';
+    }
+
+    /**
+     * Get the URI key of the dashboard.
+     *
+     * @return string
+     */
+    public function uriKey(): string
+    {
+        return 'slte-insights';
+    }
+
+
+
     /**
      * Get the cards for the dashboard.
      *
      * @return array
      */
-    #[Pure]
-    public function cards()
+    public function cards(): array
     {
         return [
             // new Help,
-            (new WalletsStakedPercentage)->help('Relationship of users with delegated wallets aganist undelegated wallets'),
+            (new WalletsStakedPercentage)->help('Relationship of users with delegated wallets against undelegated wallets'),
             (new LTERegisteredUsers)->help('Total number of learners registered as Learn to Earn Users.'),
-            (new QuizzesTakenCount)->help('Total number of quizzes attemped.'),
+            (new QuizzesTakenCount)->help('Total number of quizzes attempted.'),
             (new ResponsesCorrectness)->help('Correct and incorrect responses proportions'),
             (new TotalAdaEarned)->help("Learn to earn total Ada Earned."),
             (new TotalAdaDistributed)->help("Learn to earn total Ada distributed.")
