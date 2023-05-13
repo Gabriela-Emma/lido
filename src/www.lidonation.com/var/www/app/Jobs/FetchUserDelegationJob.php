@@ -39,7 +39,7 @@ class FetchUserDelegationJob implements ShouldQueue
             ->collect();
         try {
             if ($userAccDetails['active'] == true) {
-                $user->active_pool_id = $userAccDetails['pool_id'];
+                $user->active_pool_id = $userAccDetails['pool_id'] ?? null;
                 $user->save();
             }
         } catch (\Throwable $th) {
