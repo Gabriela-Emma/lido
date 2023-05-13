@@ -19,15 +19,14 @@ class Delegation extends Partition
 
         $lidoCount = User::where('active_pool_id', '=', $lidoPoolId)->count();
         $otherPoolsCount = User::where('active_pool_id', '!=', $lidoPoolId)
-            ->whereNotNull('active_pool_id')
-            ->count();
-        $undelegatedCount = User::whereNull('active_pool_id')
-            ->whereNotNull('wallet_stake_address')
-            ->count();
+                                ->whereRaw("Length(active_pool_id) > 5 " )
+                                ->count();
+        $undelegatedCount = User::whereNotNull('wallet_stake_address')
+                                ->whereRaw("Length(active_pool_id) < 5 " )
+                                ->count();
         $unknownCount = User::whereNull('active_pool_id')
-            ->whereNull('wallet_stake_address')
-            ->count();
-
+                            ->whereNull('wallet_stake_address')
+                            ->count();
         return $this->result([
             'Lido' => $lidoCount,
             'Other pools' => $otherPoolsCount,

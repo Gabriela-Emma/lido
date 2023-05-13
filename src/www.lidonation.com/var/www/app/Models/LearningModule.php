@@ -65,7 +65,7 @@ class LearningModule extends Model
         return 'earn/learn/modules';
     }
 
-    public function learning_topics(): BelongsToMany
+    public function learningTopics(): BelongsToMany
     {
         return $this->belongsToMany(LearningTopic::class);
     }

@@ -19,7 +19,7 @@ class LearningModulesController extends Controller
      */
     public function index()
     {
-        $learningModules = LearningModule::withCount(['learning_topics'])->published();
+        $learningModules = LearningModule::withCount(['learningTopics'])->published();
 
         return Inertia::render('LearningModules', [
             'modules' => LearningModuleData::collection($learningModules->paginate(12)->onEachSide(0)),
@@ -58,7 +58,7 @@ class LearningModulesController extends Controller
     public function show(LearningModule $learningModule)
     {
         return Inertia::render('LearningModule', [
-            'module' => LearningModuleData::from($learningModule->load('learning_topics')),
+            'module' => LearningModuleData::from($learningModule->load('learningTopics')),
             'crumbs' => [
                 ['name' => 'Learn & Earn', 'link' => route('earn.learn')],
                 ['name' => 'Learning Modules', 'link' => route('earn.learn.modules.index')],
