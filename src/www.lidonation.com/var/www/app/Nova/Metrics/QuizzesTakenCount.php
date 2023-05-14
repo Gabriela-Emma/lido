@@ -6,6 +6,7 @@ use App\Models\AnswerResponse;
 use App\Models\LearningLesson;
 use App\Models\LearningTopic;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Metrics\Value;
 
@@ -19,10 +20,12 @@ class QuizzesTakenCount extends Value
      */
     public function calculate(NovaRequest $request)
     {
-        $lessonsQuizIds = DB::table('model_quiz')
-                            ->where('model_type', LearningLesson::class)
-                            ->pluck('id');
-        return $this->count($request, AnswerResponse::whereIn('quiz_id', $lessonsQuizIds));
+        $lessons = LearningLesson::all();
+        $learningLessonsQuizzesIds = $lessons->flatMap(function ($lesson) {
+            return $lesson->quizzes()->get()->pluck('id');
+        });
+
+        return $this->count($request, AnswerResponse::whereIn('quiz_id', $learningLessonsQuizzesIds));
     }
 
     /**
