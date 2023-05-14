@@ -3,6 +3,9 @@
 namespace App\Nova\Metrics;
 
 use App\Models\AnswerResponse;
+use App\Models\LearningLesson;
+use App\Models\LearningTopic;
+use Illuminate\Support\Facades\DB;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Metrics\Value;
 
@@ -16,8 +19,10 @@ class QuizzesTakenCount extends Value
      */
     public function calculate(NovaRequest $request)
     {
-        // $answerResponse = AnswerRespon::groupby(['quiz_id', 'question_id', 'user_id'])->get('quiz_id');
-        return $this->count($request, AnswerResponse::class);
+        $lessonsQuizIds = DB::table('model_quiz')
+                            ->where('model_type', LearningLesson::class)
+                            ->pluck('id');
+        return $this->count($request, AnswerResponse::whereIn('quiz_id', $lessonsQuizIds));
     }
 
     /**
@@ -60,6 +65,6 @@ class QuizzesTakenCount extends Value
 
     public function name() 
     {
-        return 'Total Quizzes Attempted (lte)';
+        return 'Total Quizzes Attempted';
     }
 }

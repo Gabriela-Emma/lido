@@ -5,6 +5,7 @@ namespace App\Nova\Metrics;
 use App\Models\AnswerResponse;
 use App\Models\LearningLesson;
 use App\Models\Reward;
+use Illuminate\Support\Facades\DB;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Metrics\Partition;
 
@@ -18,9 +19,14 @@ class ResponsesCorrectness extends Partition
      */
     public function calculate(NovaRequest $request)
     {
-        $totalAttempts = AnswerResponse::all()
-                                ->count();
-        $correctAnswers = Reward::where('model_type', LearningLesson::class)
+        $lessonsQuizIds = DB::table('model_quiz')->where('model_type', LearningLesson::class)->pluck('id');
+        $questionsId = DB::table('question_answers')->distinct()->pluck('question_id');
+        $correctAnswersIds = DB::table('question_answers')->where('correctness', 'correct')->pluck('id');
+
+        $totalAttempts = AnswerResponse::whereIn('quiz_id', $lessonsQuizIds)->whereIn('question_id', $questionsId)->count();
+        $correctAnswers = AnswerResponse::whereIn('quiz_id', $lessonsQuizIds)
+                                ->whereIn('question_id', $questionsId)
+                                ->whereIn('question_answer_id', $correctAnswersIds)
                                 ->count();
 
         return $this->result([
@@ -51,6 +57,6 @@ class ResponsesCorrectness extends Partition
 
     public function name()
     {
-        return 'Responses Correctness (lte)';
+        return 'Responses Correctness';
     }
 }
