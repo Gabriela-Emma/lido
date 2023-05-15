@@ -28,7 +28,7 @@
     <section class="py-8">
         <div class="container">
             <div class="grid grid-cols-7 gap-8">
-                <div class="col-span-7 relative md:col-span-4 xl:col-span-5 border-8 border-labs-red p-8 rounded-sm min-h-full">
+                <div class="col-span-7 relative md:col-span-4 xl:col-span-5 border-8 border-labs-red py-8 px-4 rounded-sm min-h-full">
                     <slot></slot>
                     <Spinner />
                 </div>
