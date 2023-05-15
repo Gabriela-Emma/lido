@@ -60,6 +60,6 @@ class LTERegisteredUsers extends Value
 
     public function name()
     {
-        return 'Total Users (lte)';
+        return 'Learners Registered';
     }
 }

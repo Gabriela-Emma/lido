@@ -65,6 +65,6 @@ class TotalAdaEarned extends Value
 
     public function name()
     {
-        return 'Total Ada Earned (lte)';
+        return 'Total Ada Earned';
     }
 }

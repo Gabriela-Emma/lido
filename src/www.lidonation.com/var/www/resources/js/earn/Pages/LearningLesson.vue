@@ -93,7 +93,7 @@ export default {
                                                 <p class="text-sm font-semibold pr-8">
                                                     {{ answer.content }}
                                                 </p>
-                                                <div class="w-4 h-4">
+                                                <div class="w-4 h-4 flex-shrink-0">
                                                     <svg fill='currentColor' id="Layer_1_1_"
                                                          style="enable-background:new 0 0 16 16;"
                                                          version="1.1" viewBox="0 0 16 16"
@@ -171,7 +171,7 @@ export default {
                                                 <p class="text-sm font-semibold pr-8">{{
                                                         answer.content
                                                     }}</p>
-                                                <div class="w-4 h-4">
+                                                <div class="w-4 h-4 flex-shrink-0">
                                                     <svg fill='currentColor' id="Layer_1_1_"
                                                          style="enable-background:new 0 0 16 16;"
                                                          version="1.1" viewBox="0 0 16 16"

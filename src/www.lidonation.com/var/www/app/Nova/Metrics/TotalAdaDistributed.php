@@ -66,6 +66,6 @@ class TotalAdaDistributed extends Value
 
     public function name()
     {
-        return 'Total Ada Distributed (lte)';
+        return 'Total Ada Distributed';
     }
 }
