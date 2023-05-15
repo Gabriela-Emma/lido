@@ -17,11 +17,11 @@ class WalletsStakedPercentage extends Partition
      */
     public function calculate(NovaRequest $request)
     {
-        $totalWallets = User::whereNotNull('wallet_address')
+        $totalWallets = User::whereRaw('Length(wallet_stake_address) > 5')
                             ->count();
         $delegatedWallets = User::whereRaw("Length(active_pool_id) > 5 " )
                                 ->count();
-                            // ->count();
+
         return $this->result([
             'Delegated' => $delegatedWallets,
             'Not Delegated' => $totalWallets - $delegatedWallets,
@@ -64,5 +64,10 @@ class WalletsStakedPercentage extends Partition
     public function uriKey()
     {
         return 'wallets-staked';
+    }
+
+    public function name()
+    {
+        return 'Wallets Staked';
     }
 }
