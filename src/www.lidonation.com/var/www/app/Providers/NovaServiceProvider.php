@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Nova\Dashboards\SLTEInsights;
 use Illuminate\Support\Facades\Gate;
 use JetBrains\PhpStorm\Pure;
+use Laravel\Nova\Dashboards\Main;
 use Laravel\Nova\Nova;
 use Laravel\Nova\NovaApplicationServiceProvider;
 use Parental\Providers\NovaResourceProvider;
@@ -70,9 +71,10 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
      *
      * @return array
      */
-    protected function dashboards()
- {
+    protected function dashboards(): array
+    {
      return [
+         Main::make(),
          SLTEInsights::make()->showRefreshButton(),
      ];
  }
@@ -82,7 +84,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
      *
      * @return array
      */
-    public function tools()
+    public function tools(): array
     {
         return [];
     }
