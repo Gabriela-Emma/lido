@@ -13,6 +13,7 @@ use Illuminate\Support\Fluent;
 use Inertia\Inertia;
 use Inertia\Response;
 use Spatie\Permission\Models\Role;
+use Illuminate\Auth\Events\Registered;
 
 class LearnController extends Controller
 {
@@ -130,7 +131,7 @@ class LearnController extends Controller
         $user->twitter = $validated->twitter ?? $user->twitter;
         $user->telegram = $validated->telegram ?? $user->telegram;
         $user->save();
-
+        event(new Registered($user));
         $this->assignLearnerRole($user);
     }
 
