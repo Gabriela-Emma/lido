@@ -8,7 +8,7 @@
             <div class="px-8 py-16 sm:px-24">
                 <h2 class="text-xl text-white xl:text-2xl text-center">Lets Add Your Wallet</h2>
                 <div class="bg-labs-black rounded-sm flex justify-center w-64 py-4">
-                    <ConnectWallet @wallet-updated="handleWalletUpdated($event)" :background-color="'bg-labs-black'"/>
+                    <ConnectWallet :auto-connect="false" @wallet-updated="handleWalletUpdated($event)" :background-color="'bg-labs-black'" />
                 </div>
             </div>
         </div>
