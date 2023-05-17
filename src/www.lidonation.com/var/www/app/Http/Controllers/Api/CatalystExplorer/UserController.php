@@ -122,9 +122,6 @@ class UserController extends Controller
 
     public function utilityLogin()
     {
-        $previousUrl = url()->previous();
-        $previousRouteName = app('router')->getRoutes()->match(app('request')->create($previousUrl))?->getName();
-
-        return Inertia::modal('Auth/UtilityLogin')->baseRoute($previousRouteName);
+        return Inertia::modal('Auth/UtilityLogin')->baseRoute(previous_route_name());
     }
 }

@@ -32,6 +32,17 @@ function ___(string $key = null, bool $oneLiner = true, array $replace = [], str
     return $html;
 }
 
+
+function previous_route_name(): string
+{
+    return app('router')->getRoutes()->match(app('request')->create(url()->previous()))->getName();
+}
+
+function previous_route_name_is(string $routeName): bool
+{
+    return previous_route_name() === $routeName;
+}
+
 function humanNumber($num, $precision = 1): string
 {
     if ($num < 900) {

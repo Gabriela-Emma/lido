@@ -23,7 +23,7 @@ export type LearnerData = {
 name: string | null;
 wallet_address?: string | null;
 email: string | null;
-stake_address?: string | null;
+wallet_stake_address?: string | null;
 nextLessonAt?: string | null;
 nextLesson?: App.DataTransferObjects.LearningLessonData | null;
 totalRewardSum?: number | null;

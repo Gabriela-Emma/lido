@@ -21,7 +21,7 @@ class LearnerData extends Data
         public ?string $email,
 
         #[TypeScriptOptional]
-        public ?string $stake_address,
+        public ?string $wallet_stake_address,
 
         #[TypeScriptOptional]
         #[MapOutputName('nextLessonAt')]
