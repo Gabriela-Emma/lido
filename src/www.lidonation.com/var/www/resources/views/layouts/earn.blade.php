@@ -21,6 +21,7 @@
     @endenv
 
     @routes
+
     <script src="{{ mix('/js/alpine.js') }}" defer></script>
     <script src="{{ mix('/js/earn.js') }}" defer></script>
 

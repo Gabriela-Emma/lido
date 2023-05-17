@@ -54,7 +54,7 @@
 </template>
 
 <script lang="ts" setup>
-import {ref, Ref} from 'vue';
+import {defineEmits, ref, Ref} from 'vue';
 import WalletService from '../../../lib/services/WalletService';
 import CardanoService from '../../../lib/services/CardanoService';
 import {useWalletStore} from '../../../catalyst-explorer/stores/wallet-store';
@@ -72,6 +72,9 @@ const props = withDefaults(
     {
         backgroundColor: 'bg-teal-700'
     });
+const emit = defineEmits<{
+    (e: 'walletUpdated', wallet: Wallet): void
+}>();
 
 let open: Ref<boolean> = ref(false);
 let backgroundColor = ref(props.backgroundColor);
@@ -102,6 +105,7 @@ async function enableWallet(walletName: string) {
         }
         await walletStore.saveWallet(walletData);
         walletLoading.value = false;
+        emit('walletUpdated', walletData);
     } catch (e) {
         console.error(e);
     }

@@ -46,7 +46,7 @@
 
 <script lang="ts" setup>
 import {Modal} from "momentum-modal"
-import Sidebar from "./Sidebar.vue";
+import Sidebar from "../modules/learn/components/Sidebar.vue";
 import {usePage} from '@inertiajs/vue3';
 import {computed} from "vue";
 import User from '../../global/Shared/Models/user'

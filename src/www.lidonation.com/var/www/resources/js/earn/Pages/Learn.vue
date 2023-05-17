@@ -66,7 +66,9 @@
             <div class="container py-16 px-6 md:px-8">
                 <div class="flex flex-wrap justify-between">
                     <div v-if="! walletData?.address" class="flex flex-col md:flex-row gap-1 md:gap-3 items-center  mx-auto">
+
                         <ConnectWallet :background-color="'bg-labs-red'" />
+
                         <span class="text-sm">
                             <Link href="/earn/learn/register"
                                 class="font-bold text-labs-red text-xs md:text-base hover:text-labs-black">

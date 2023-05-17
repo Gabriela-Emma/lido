@@ -91,7 +91,7 @@
 <script lang="ts" setup>
 import {defineEmits, computed, ref, watch, ComputedRef} from "vue";
 import Multiselect from '@vueform/multiselect';
-import PaginationLink from "../../models/pagination-link";
+import PaginationLink from "../../../catalyst-explorer/models/pagination-link";
 
 const props = withDefaults(
     defineProps<{

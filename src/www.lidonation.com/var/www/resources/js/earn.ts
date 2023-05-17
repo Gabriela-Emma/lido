@@ -24,7 +24,6 @@ createInertiaApp({
     resolve: name => {
         const page = require(`./earn/Pages/${name}`).default;
         page.layout ??= Layout;
-        console.log({page});
 
         return page
     },
@@ -83,6 +82,7 @@ createInertiaApp({
             }
         };
 
+        app.mixin({ methods: { route } })
         app.provide('$utils', {
             localizeRoute(value) {
                 const base = usePage().props?.base_url;
@@ -95,7 +95,7 @@ createInertiaApp({
             }
         });
 
-        app.config.globalProperties.$route = route;
+        // app.config.globalProperties.$route = route;
 
         app.component('header-component', HeaderComponent);
         app.mount(el);
