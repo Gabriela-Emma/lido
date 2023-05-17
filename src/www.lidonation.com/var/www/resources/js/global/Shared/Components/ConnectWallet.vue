@@ -50,7 +50,6 @@
             </div>
         </div>
     </div>
-
 </template>
 
 <script lang="ts" setup>
@@ -68,9 +67,11 @@ import { AvailableWallets } from '../../../lib/utils/wallets-list';
 const props = withDefaults(
     defineProps<{
         backgroundColor?: string,
+        autoConnect?: boolean
     }>(),
     {
-        backgroundColor: 'bg-teal-700'
+        backgroundColor: 'bg-teal-700',
+        autoConnect: true
     });
 const emit = defineEmits<{
     (e: 'walletUpdated', wallet: Wallet): void
@@ -150,7 +151,7 @@ async function getHandle(stakeAddress: string): Promise<Wallet> {
     return {handle: null} as Wallet;
 }
 
-if (walletName.value && supports(walletName.value)) {
+if (props.autoConnect && walletName.value && supports(walletName.value)) {
     enableWallet(walletName.value)
 }
 
