@@ -8,8 +8,6 @@ use App\Nova\Metrics\ResponsesCorrectness;
 use App\Nova\Metrics\TotalAdaDistributed;
 use App\Nova\Metrics\TotalAdaEarned;
 use App\Nova\Metrics\WalletsStakedPercentage;
-use JetBrains\PhpStorm\Pure;
-use Laravel\Nova\Cards\Help;
 use Laravel\Nova\Dashboards\Main as Dashboard;
 
 class SLTEInsights extends Dashboard
@@ -19,7 +17,7 @@ class SLTEInsights extends Dashboard
      *
      * @return string
      */
-    public function name()
+    public function name(): string
     {
         return 'SLTE Insights';
     }
