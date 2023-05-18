@@ -47,18 +47,18 @@ Route::group(
         'prefix' => 'delegators',
         'middleware' => ['auth:sanctum'],
     ], function () {
-        Route::get('/current', [DelegatorController::class, 'current']);
-        Route::get('/{id}', [DelegatorController::class, 'index']);
-    });
+    Route::get('/current', [DelegatorController::class, 'current']);
+    Route::get('/{id}', [DelegatorController::class, 'index']);
+});
 Route::group(
     [
         'prefix' => 'delegators',
         'middleware' => [],
     ], function () {
-        Route::post('/create', [DelegatorController::class, 'create']);
-        Route::post('/logout', [DelegatorController::class, 'logout']);
-        Route::post('/login', [DelegatorController::class, 'login']);
-    });
+    Route::post('/create', [DelegatorController::class, 'create']);
+    Route::post('/logout', [DelegatorController::class, 'logout']);
+    Route::post('/login', [DelegatorController::class, 'login']);
+});
 
 // Partners
 
@@ -67,19 +67,19 @@ Route::group(
         'prefix' => 'partners',
         'middleware' => ['auth:sanctum'],
     ], function () {
-        Route::get('/promos', [PromoController::class, 'index']);
-        Route::get('/promos/{id}', [PromoController::class, 'read']);
-    });
+    Route::get('/promos', [PromoController::class, 'index']);
+    Route::get('/promos/{id}', [PromoController::class, 'read']);
+});
 Route::group(
     [
         'prefix' => 'partners',
         'middleware' => [],
     ], function () {
-        Route::post('/policies', [PartnersController::class, 'policies']);
-        Route::post('/create', [PartnersController::class, 'create']);
-        Route::post('/logout', [PartnersController::class, 'logout']);
-        Route::post('/login', [PartnersController::class, 'login']);
-    });
+    Route::post('/policies', [PartnersController::class, 'policies']);
+    Route::post('/create', [PartnersController::class, 'create']);
+    Route::post('/logout', [PartnersController::class, 'logout']);
+    Route::post('/login', [PartnersController::class, 'login']);
+});
 
 Route::group([
     'prefix' => 'phuffycoin',
@@ -116,12 +116,12 @@ Route::post('/ccv4/ballot', function (Request $request) {
 
     $ballots = $ballots->get();
     if ($ballots->isNotEmpty()) {
-        if (! $user instanceof User) {
+        if (!$user instanceof User) {
             $user = new User;
             $user->name = $request->account;
             $user->wallet_stake_address = $request->account;
             $user->wallet_address = $request->wallet_address;
-            $user->email = $request->email ?? substr($request->account, -4).'@anonymous.com';
+            $user->email = $request->email ?? substr($request->account, -4) . '@anonymous.com';
             $user->password = Hash::make(Str::random(10));
             $user->save();
         }
@@ -139,16 +139,20 @@ Route::post('/ccv4/ballot', function (Request $request) {
 
 // Rewards
 Route::post('/rewards/login', [RewardController::class, 'login']);
-Route::group([
-    'prefix' => 'rewards',
-    'middleware' => ['auth:sanctum'],
-], function () {
-    Route::get('/', [PhuffycoinController::class, 'index']);
-    Route::post('/withdrawals/withdraw', [RewardController::class, 'withdraw']);
-    Route::post('/withdrawals/process', [RewardController::class, 'process']);
-    Route::post('/withdrawals', [RewardController::class, 'withdrawals']);
-    Route::post('/withdrawals/address', [RewardController::class, 'mintAddress']);
-});
+Route::prefix('rewards')->as('rewardsApi.')
+    ->middleware(['auth:sanctum'])
+    ->group(function () {
+        Route::get('/', [PhuffycoinController::class, 'index'])->name('index');
+
+        // withdrawals
+        Route::prefix('withdrawals')->as('withdrawals.')->group(function() {
+            Route::post('/withdrawals', [RewardController::class, 'withdrawals'])->name('index');
+
+            Route::post('/withdrawals/withdraw', [RewardController::class, 'withdraw'])->name('withdraw');
+            Route::post('/withdrawals/process', [RewardController::class, 'process'])->name('process');
+            Route::post('/withdrawals/address', [RewardController::class, 'mintAddress'])->name('mintAddress');
+        });
+    });
 
 Route::group([
     'prefix' => 'lido-minute-nft',
@@ -164,32 +168,32 @@ Route::group(
         'prefix' => 'catalyst',
         'middleware' => ['localize'],
     ], function () {
-        Route::get('/proposals', [ProposalController::class, 'index']);
-    });
+    Route::get('/proposals', [ProposalController::class, 'index']);
+});
 
 Route::group(
     [
         'middleware' => [],
     ], function () {
-        Route::get('cardano/config', function (Request $request) {
-            $credentials = [
-                'poolId' => config('cardano.pool.hash'),
-                'blockExplorer' => config('cardano.pool.block_explorer'),
-                'blockfrostUrl' => config('services.blockfrost.baseUrl'),
-                'projectId' => config('services.blockfrost.projectId'),
-            ];
+    Route::get('cardano/config', function (Request $request) {
+        $credentials = [
+            'poolId' => config('cardano.pool.hash'),
+            'blockExplorer' => config('cardano.pool.block_explorer'),
+            'blockfrostUrl' => config('services.blockfrost.baseUrl'),
+            'projectId' => config('services.blockfrost.projectId'),
+        ];
 
-            return json_encode($credentials);
-        });
-
-        Route::any('cardano/{relativePath?}', function (CardanoBlockfrostService $frost, Request $request, $relativePath = null) {
-            $method = $request->method();
-            $uri = '/'.$relativePath;
-            $data = $request->all();
-
-            return $frost->request($method, $uri, $data);
-        })->where('relativePath', ('.*'));
+        return json_encode($credentials);
     });
+
+    Route::any('cardano/{relativePath?}', function (CardanoBlockfrostService $frost, Request $request, $relativePath = null) {
+        $method = $request->method();
+        $uri = '/' . $relativePath;
+        $data = $request->all();
+
+        return $frost->request($method, $uri, $data);
+    })->where('relativePath', ('.*'));
+});
 
 // Catalyst Explorer Public API
 Route::prefix('catalyst-explorer')->as('catalystExplorerApi.')
@@ -311,4 +315,4 @@ Route::get('/cache/snippets', [SnippetController::class, 'index'])->name('cache.
 
 
 Route::get('/s', [GlobalSearchController::class, 'index'])
-->name('search');
+    ->name('search');
