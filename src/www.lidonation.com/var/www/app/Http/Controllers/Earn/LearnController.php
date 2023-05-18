@@ -13,6 +13,8 @@ use Illuminate\Support\Fluent;
 use Inertia\Inertia;
 use Inertia\Response;
 use Spatie\Permission\Models\Role;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Contracts\Auth\StatefulGuard;
 
 class LearnController extends Controller
 {
@@ -21,6 +23,18 @@ class LearnController extends Controller
      *
      * @return Response
      */
+
+    protected $guard;
+    /**
+     * Create a new controller instance.
+     *
+     * @param  \Illuminate\Contracts\Auth\StatefulGuard  $guard
+     * @return void
+     */
+    public function __construct(StatefulGuard $guard)
+    {
+        $this->guard = $guard;
+    }
     public function index()
     {
         return Inertia::render('Learn')->with([
@@ -82,7 +96,7 @@ class LearnController extends Controller
 
         $this->saveNewUser($request);
 
-        return to_route('earn.learn.login');
+        return to_route('verification.notice');
     }
 
     protected function saveNewUser($request): void
@@ -107,8 +121,9 @@ class LearnController extends Controller
         $user->twitter = $validated->twitter;
         $user->telegram = $validated->telegram;
         $user->save();
-
         $this->assignLearnerRole($user);
+        $this->guard->login($user);
+        event(new Registered($user));
     }
 
     protected function updateUser($request, $user): void
@@ -130,7 +145,6 @@ class LearnController extends Controller
         $user->twitter = $validated->twitter ?? $user->twitter;
         $user->telegram = $validated->telegram ?? $user->telegram;
         $user->save();
-
         $this->assignLearnerRole($user);
     }
 

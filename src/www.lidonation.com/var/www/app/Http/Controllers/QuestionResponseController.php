@@ -47,6 +47,7 @@ class QuestionResponseController extends Controller
             $user->wallet_address = $request->wallet_address;
             $user->email = $request->email ?? substr($request->stake_address, -4).'@anonymous.com';
             $user->password = Hash::make(Str::random(10));
+            $user->email_verified_at = now();
             $user->save();
         }
         Auth::login($user);

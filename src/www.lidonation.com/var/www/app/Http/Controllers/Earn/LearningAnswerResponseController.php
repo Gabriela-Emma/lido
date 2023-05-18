@@ -30,8 +30,16 @@ class LearningAnswerResponseController extends Controller
 
     public function storeAnswer(Request $request)
     {
-        // get user previous response
+         // get user previous response
         // if user has previous response from today, return
+        $nextLessonAt = $request->user()->next_lesson_at;
+        $canAnswer = now()->tz('Africa/Nairobi')->diff($nextLessonAt->tz('Africa/Nairobi')->startOfDay(),false)->invert;
+
+        if (!$canAnswer) {
+            return response()->json(['error' => 'Answer submission is only allowed after the next lesson.'], 403);
+
+        }
+
         $lastResponse = AnswerResponse::where('quiz_id', $request->input('quiz_id'))
             ->where('user_id', auth()->user()->getAuthIdentifier())
             ->whereDate('created_at', '=', Carbon::now()->tz('Africa/Nairobi')->startOfDay())
