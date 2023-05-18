@@ -43,7 +43,7 @@
                                                 Process Rewards
                                             </h3>
                                             <div class="mt-1 max-w-3xl text-sm">
-                                                <p  v-if="adaReward < 2000000">
+                                                <p  v-if="adaReward < BigInt(2000000)">
                                                     You are about to withdraw pending rewards.
                                                     You will need to send 2 ada, and all pending rewards will be bundled
                                                     and sent to your wallet plus your 2 Ada minus tx fee.
