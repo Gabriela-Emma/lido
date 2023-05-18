@@ -36,7 +36,8 @@ class LearningAnswerResponseController extends Controller
         $canAnswer = now()->tz('Africa/Nairobi')->diff($nextLessonAt->tz('Africa/Nairobi')->startOfDay(),false)->invert;
 
         if (!$canAnswer) {
-            return null;
+            return response()->json(['error' => 'Answer submission is only allowed after the next lesson.'], 403);
+
         }
 
         $lastResponse = AnswerResponse::where('quiz_id', $request->input('quiz_id'))
