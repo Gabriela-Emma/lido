@@ -24,7 +24,7 @@
                 </span>
             </span>
 
-            <span class="flex gap-2 tracking-wide" v-show="!walletData?.handle">
+            <span class="flex gap-2 tracking-wide items-center" v-show="!walletData?.handle">
                 <span>Connect Your Wallet</span>
                 <span class="text-slate-100" aria-hidden="true">&darr;</span>
             </span>

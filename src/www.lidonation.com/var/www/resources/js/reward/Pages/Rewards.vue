@@ -21,13 +21,12 @@
                 <div class="relative">
                     <section class="border-t border-teal-300 p-6">
                         <div class="flex flex-col gap-4 items-center max-w-2xl mx-auto">
+                            <span v-text="adaReward"></span>
                             <p>
                                 Lido Rewards are tips and prizes you earn around lidonation for completing
-                                challenges or
-                                contributing to the site, or delegating to the stake pool.
-                                They are typically in the form of cardano native tokens (ie: $hosky, $nmkr,
-                                $discoin,
-                                etc). They can also be NFTs!
+                                challenges or contributing to the site, or delegating to the stake pool.
+                                They are typically in the form of cardano native tokens
+                                (ie: $hosky, $nmkr, $discoin, etc). They can also be NFTs!
                             </p>
                             <p>All your rewards shows up here for accounting and withdrawal!</p>
                             <p>Happy earning!</p>
@@ -43,13 +42,18 @@
                                             <h3 class="text-lg font-medium leading-6">
                                                 Process Rewards
                                             </h3>
-                                            <p class="mt-1 max-w-3xl text-sm">
-                                                You are about to withdraw pending rewards.
-                                                You will need to send 2 ada, and all pending rewards will be bundled
-                                                and sent to your
-                                                wallet plus your 2 Ada minus tx fee.
-
-                                            </p>
+                                            <div class="mt-1 max-w-3xl text-sm">
+                                                <p  v-if="adaReward < 2000000">
+                                                    You are about to withdraw pending rewards.
+                                                    You will need to send 2 ada, and all pending rewards will be bundled
+                                                    and sent to your wallet plus your 2 Ada minus tx fee.
+                                                </p>
+                                                <p v-else>
+                                                    You are about to withdraw pending rewards.
+                                                    Since you have more than 2 Ada in rewards you do not have to provide any min utxo.
+                                                    All pending rewards will be bundled and sent to your wallet.
+                                                </p>
+                                            </div>
                                             <div v-show="rewards" class="mt-2 text-center">
                                                 <span @click="withdrawalRewards"
                                                       class="inline-flex items-center px-1 py-1 rounded-sm text-sm bg-accent-200 text-teal-900 hover:bg-accent-400 hover:cursor-pointer">
@@ -204,7 +208,7 @@
                             </div>
                         </template>
 
-                        <div class="flex justify-center" v-show="!rewards">
+                        <div class="flex justify-center" v-if="!rewards">
                             <div class="mt-2 flex flex-col gap-6 bg-white/[.92] py-5 px-8">
                                 <div v-show="walletError" v-text="walletError"
                                      class="text-red-500 w-96 text-sm my-1"></div>
@@ -251,6 +255,7 @@ import Wallet from '../../catalyst-explorer/models/wallet';
 import {storeToRefs} from 'pinia';
 import RewardData = App.DataTransferObjects.RewardData
 import {AxiosError} from 'axios';
+import route from "ziggy-js";
 
 const ConnectWallet = defineAsyncComponent(() => import('../../global/Shared/Components/ConnectWallet.vue'));
 const $utils: any = inject('$utils');
@@ -276,6 +281,9 @@ let rewards = ref(props?.rewards?.data);
 let walletStore = useWalletStore();
 let {walletData} = storeToRefs(walletStore);
 let myWallet: Ref<Wallet> = computed(() => walletData?.value);
+let adaReward: Ref<BigInt> = computed(
+    () => BigInt(rewards.value.filter((reward: RewardData) => reward.asset === 'lovelace').reduce((acc, reward: RewardData) => acc + reward.amount, 0))
+);
 
 //wallet login error
 let walletError = ref(null);
@@ -283,13 +291,12 @@ let handleWalletError = (error) => {
     walletError.value = error.message;
 }
 
-
-//get loggedin user
+//get logged user
 let setUser = (userData) => {
     refresh();
 }
 
-// refetch pagedata
+// re-fetch page data
 function refresh() {
     router.get(`${usePage().props.base_url}/rewards/`);
 }
@@ -300,6 +307,7 @@ let errors = ref('');
 let getForm = (loginForm) => {
     form = loginForm
 }
+
 let submit = async (event) => {
     try {
         const res = await window.axios.post(`/api/rewards/login`, form);
@@ -313,18 +321,18 @@ let submit = async (event) => {
 }
 
 // withdraw
-let working = ref(false)
-let withdrawals: Ref<RewardData[]> = ref(null)
+let working = ref(false);
+let withdrawals: Ref<RewardData[]> = ref(null);
 let withdraw = async () => {
     working.value = true;
     try {
-        withdrawals.value = (await window.axios.post(`/api/rewards/withdrawals`))?.data;
-
+        withdrawals.value = (await window.axios.post(route('rewardsApi.withdrawals.index')))?.data;
     } catch (e) {
         console.error(e)
     }
     working.value = false;
 }
+
 
 //withdrawal-rewards
 let withdrawalsProcessed = ref(null);
@@ -335,21 +343,24 @@ let withdrawalRewards = async () => {
     const WalletService = ((await import('../../lib/services/WalletService')).default);
     try {
         // start processing withdrawal
-        const processResponse = (await window.axios.post(`/api/rewards/withdrawals/process`, {address: myWallet?.value?.address}));
+        const processResponse = (await window.axios.post(route('rewardsApi.withdrawals.process'), {address: myWallet?.value?.address}));
         setTimeout(async () => {
-            console.log({processResponse});
+            working.value = false;
 
-            const walletService = new WalletService();
-            await walletService.connectWallet(myWallet?.value?.name);
-            minterAddress.value = (await window.axios.post(`/api/rewards/withdrawals/address`))?.data;
 
-            // get deposit
-            const rawTx = await walletService.payToAddress(minterAddress?.value.address, {lovelace: BigInt(2000000)});
-            const signedTx = await rawTx.sign().complete();
-            paymentTx.value = await signedTx.submit();
+            if (adaReward.value > BigInt(2000000)) {
+                const walletService = new WalletService();
+                await walletService.connectWallet(myWallet?.value?.name);
+                minterAddress.value = (await window.axios.post(route('rewardsApi.withdrawals.mintAddress')))?.data;
+
+                // get deposit
+                const rawTx = await walletService.payToAddress(minterAddress?.value.address, {lovelace: BigInt(2000000)});
+                const signedTx = await rawTx.sign().complete();
+                paymentTx.value = await signedTx.submit();
+            }
 
             // processing Withdrawal and send tx to backend
-            const withdrawalResponse = (await window.axios.post(`/api/rewards/withdrawals/withdraw`, {hash: paymentTx.value}));
+            const withdrawalResponse = (await window.axios.post(route('rewardsApi.withdrawals.withdraw'), {hash: paymentTx.value}));
             withdrawalsProcessed = withdrawalResponse?.data;
             working.value = false;
         }, 3000);

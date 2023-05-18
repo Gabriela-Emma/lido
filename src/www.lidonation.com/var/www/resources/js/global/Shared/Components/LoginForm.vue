@@ -72,9 +72,9 @@
                             <span>{{ $t("Sign in") }}</span>
                         </button>
                         <span class="text-sm">
-                            <Link @click.prevent="emit('go-to-register')"
+                            <button type="button" @click.prevent="emit('go-to-register')"
                                   class="font-bold text-teal-600 hover:text-teal-500"
-                                  preserve-scroll>{{ $t("Register") }}</Link>
+                                  preserve-scroll>{{ $t("Register") }}</button>
                         </span>
                     </div>
                 </div>
@@ -83,11 +83,11 @@
                     <div v-if="walletError" v-text="walletError"
                          class="text-red-500 text-sm my-1"></div>
                     <WalletLoginBtn @walletLoginSuccessful="emit('success', $event)"
-                                    @walletError="handleWalletError($event)"/>
+                                    @walletError="handleWalletError($event)" />
                     <DisconnectWalletBtn v-if="walletName" class="my-1">
-                        <Link class="text-sm text-slate-800 hover:text-slate-800">
+                        <button type="button" class="text-sm text-slate-800 hover:text-slate-800">
                             {{ $t("Disconnect") }} {{ walletName }}
-                        </Link>
+                        </button>
                     </DisconnectWalletBtn>
                 </div>
             </div>

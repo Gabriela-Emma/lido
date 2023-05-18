@@ -44,7 +44,14 @@
             </div>
         </div>
 
-        <Promo/>
+        <Promo />
+
+        <div class="bg-slate-100 text-labs-black p-4 flex gap-2 items-center rounded-sm">
+            <LifebuoyIcon class="w-5 h-5"></LifebuoyIcon>
+            <div>
+                {{ $t('Need help?') }}: &nbsp; <span class="font-bold">msaada@lidonation.com</span>
+            </div>
+        </div>
 
     </section>
 </template>
@@ -59,6 +66,7 @@ import {useLearnerDataStore} from "../../../store/learner-data-store";
 import {storeToRefs} from "pinia";
 import LearnerWelcomeWidget from "./LearnerWelcomeWidget.vue";
 import AddWalletWidget from "./AddWalletWidget.vue";
+import {LifebuoyIcon} from "@heroicons/vue/20/solid";
 
 const Promo = defineAsyncComponent(() => import('../../../../global/Shared/Components/Promo.vue'));
 
