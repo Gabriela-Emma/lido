@@ -52,12 +52,21 @@ use App\Observers\UserObserver;
 use App\Observers\WalletObserver;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Spatie\Comments\Notifications\PendingCommentNotification;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 
 class EventServiceProvider extends ServiceProvider
 {
     /**
      * Register any events for your application.
      */
+
+    protected $listen = [
+        Registered::class => [
+            SendEmailVerificationNotification::class,
+        ],
+    ];
+    
     public function boot(): void
     {
         AnswerResponse::observe(AnswerResponseObserver::class);

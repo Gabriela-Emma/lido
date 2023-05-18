@@ -133,7 +133,7 @@ Route::group(
             Route::get('/learn/register', fn () => Inertia::render('Register'))
                 ->name('learn.register');
 
-            Route::middleware(['auth.learn', 'userLearner'])->prefix('/learn')->group(function () {
+            Route::middleware(['auth.learn', 'userLearner', 'verified'])->prefix('/learn')->group(function () {
                 Route::get('modules', [LearningModulesController::class, 'index'])
                     ->name('learn.modules.index');
                 Route::get('modules/{learningModule:slug}', [LearningModulesController::class, 'show'])
@@ -512,9 +512,9 @@ Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedire
                     ->name('verification.notice');
             }
 
-            Route::get('/email/verify/{id}/{hash}', [VerifyEmailController::class, '__invoke'])
-                ->middleware(['auth:'.config('fortify.guard'), 'signed', 'throttle:'.$verificationLimiter])
-                ->name('verification.verify');
+            // Route::get('/email/verify/{id}/{hash}', [VerifyEmailController::class, '__invoke'])
+            //     ->middleware(['auth:'.config('fortify.guard'), 'signed', 'throttle:'.$verificationLimiter])
+            //     ->name('verification.verify');
         }
 
         // Password Confirmation...
