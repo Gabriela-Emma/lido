@@ -209,6 +209,9 @@ export default {
                     </form>
                 </div>
             </div>
+            <div class="text-center" v-else>
+                <p class="lg:text-xl">Error loading quiz. Contact support.</p>
+            </div>
         </div>
     </footer>
 </template>
@@ -329,7 +332,7 @@ if (userLatestResponse.value) {
     }
 }
 
-answers = question.value?.answers;
+answers = question?.value?.answers;
 
 let walletStore = useWalletStore();
 let {walletData} = storeToRefs(walletStore);
