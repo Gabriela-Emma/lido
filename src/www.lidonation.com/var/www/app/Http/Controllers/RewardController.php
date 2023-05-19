@@ -43,14 +43,14 @@ class RewardController extends Controller
             ]);
         }
 
-        // get first pending withdrawal from user
-        $withdrawal = Withdrawal::pending()
-            ->where('user_id', auth()->user()->getAuthIdentifier())
-            ->firstOrFail();
-
         // create this tx model will trigger the dispatchLidoWithdrawalPaymentJob method in the
         // TxObserver to update the Withdrawal model after tx is confirmed on the blockchain
         if ($lovelacesAmount <= 2000000) {
+            // get first pending withdrawal from user
+            $withdrawal = Withdrawal::pending()
+                ->where('user_id', auth()->user()->getAuthIdentifier())
+                ->firstOrFail();
+
             $tx = new Tx;
             $tx->hash = $request->hash;
             $tx->model_id = $withdrawal->id;
@@ -58,9 +58,13 @@ class RewardController extends Controller
             $tx->model_type = Withdrawal::class;
             $tx->save();
         } else {
-            $withdrawal->status = 'validated';
-            $withdrawal->save();
+            $withdrawal = Withdrawal::validated()
+                ->with('rewards')
+                ->where('user_id', auth()->user()->getAuthIdentifier())
+                ->firstOrFail();
         }
+
+
 
         return [$withdrawal];
     }
