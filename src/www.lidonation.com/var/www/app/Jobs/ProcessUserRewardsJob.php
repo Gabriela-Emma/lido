@@ -52,12 +52,17 @@ class ProcessUserRewardsJob implements ShouldQueue
         // get all orphan rewards not associated with a withdrawal and lump in.
         $this->user?->rewards()->whereIn('status', ['processed'])->get()
             ?->each(function ($reward) use ($withdrawal) {
-                if (! $reward?->withdrawal_id) {
+                if (!$reward?->withdrawal_id) {
                     $reward->status = 'processed';
                     $reward->withdrawal_id = $withdrawal->id;
                     $reward->save();
                 }
             });
+
+        if ($withdrawal->rewards?->filter(fn($r) => $r->asset == 'lovelace')->sum('amount')) {
+            $withdrawal->status = 'validated';
+            $withdrawal->save();
+        }
     }
 
     /**
