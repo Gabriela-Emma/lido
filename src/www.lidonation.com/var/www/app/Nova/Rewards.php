@@ -14,6 +14,7 @@ use App\Nova\Metrics\UnpaidRewards;
 use Illuminate\Http\Request;
 use JetBrains\PhpStorm\Pure;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Markdown;
@@ -82,6 +83,8 @@ class Rewards extends Resource
     {
         return [
             ID::make(__('ID'), 'id')->sortable(),
+
+            Date::make('Created At', 'created_at')->sortable(),
 
             BelongsTo::make(__('Recipient'), 'author', User::class)
                 ->searchable(),

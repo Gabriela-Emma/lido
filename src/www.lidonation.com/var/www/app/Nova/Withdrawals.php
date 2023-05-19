@@ -6,6 +6,7 @@ use App\Models\Withdrawal;
 use App\Nova\Actions\CacheNftImage;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
@@ -54,6 +55,7 @@ class Withdrawals extends Resource
     {
         return [
             ID::make(__('ID'), 'id')->sortable(),
+            Date::make('Created At', 'created_at')->sortable(),
             Text::make(__('Address'), 'wallet_address'),
             BelongsTo::make('User', 'user', User::class)->searchable()->hideFromIndex(),
             Select::make(__('Status'), 'status')
