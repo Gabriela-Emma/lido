@@ -21,14 +21,12 @@ class RewardController extends Controller
 {
     public function index(Request $request)
     {
-        if ($request->user()) {
-            $rewards = $this->queryNewRewards($request->user());
-            $processedRewards = $this->processedRewards($request->user());
-        }
+        $rewards = $this->queryNewRewards($request->user());
+        $processedRewards = $this->processedRewards($request->user());
 
         return Inertia::render('Rewards', [
-            'rewards' => $request->user() ? RewardData::collection($rewards) : [null],
-            'processedRewards' => $request->user() ? $processedRewards : [null],
+            'rewards' => RewardData::collection($rewards),
+            'processedRewards' => $processedRewards,
             'crumbs' => [
                 ['label' => 'Rewards'],
             ],
@@ -37,10 +35,9 @@ class RewardController extends Controller
 
     public function withdraw(Request $request)
     {
-
         $lovelacesAmount = $this->processedRewards($request->user())->sum('amount');
 
-        if ($lovelacesAmount < 2000000) {
+        if ($lovelacesAmount <= 2000000) {
             $request->validate([
                 'hash' => 'required|string|min:10',
             ]);
@@ -51,12 +48,19 @@ class RewardController extends Controller
             ->where('user_id', auth()->user()->getAuthIdentifier())
             ->firstOrFail();
 
-        $tx = new Tx;
-        $tx->hash = $request->hash;
-        $tx->model_id = $withdrawal->id;
-        $tx->user_id = auth()?->user()?->getAuthIdentifier();
-        $tx->model_type = Withdrawal::class;
-        $tx->save();
+        // create this tx model will trigger the dispatchLidoWithdrawalPaymentJob method in the
+        // TxObserver to update the Withdrawal model after tx is confirmed on the blockchain
+        if ($lovelacesAmount <= 2000000) {
+            $tx = new Tx;
+            $tx->hash = $request->hash;
+            $tx->model_id = $withdrawal->id;
+            $tx->user_id = auth()?->user()?->getAuthIdentifier();
+            $tx->model_type = Withdrawal::class;
+            $tx->save();
+        } else {
+            $withdrawal->status = 'validated';
+            $withdrawal->save();
+        }
 
         return [$withdrawal];
     }
@@ -78,7 +82,6 @@ class RewardController extends Controller
             auth()?->user(),
             $request->input('address') ?? $user->wallet_address
         );
-
     }
 
     public function mintAddress()
@@ -165,7 +168,6 @@ class RewardController extends Controller
 
     public function queryNewRewards($user)
     {
-
         return Reward::where('user_id', $user?->id)
             ->where('status', 'issued')->orderBy('created_at', 'desc')
             ->with('user')->paginate(12, ['*'], 'p')->setPath('/')->onEachSide(0);
