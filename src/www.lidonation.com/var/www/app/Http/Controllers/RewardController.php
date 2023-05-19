@@ -82,7 +82,6 @@ class RewardController extends Controller
             auth()?->user(),
             $request->input('address') ?? $user->wallet_address
         );
-
     }
 
     public function mintAddress()
@@ -169,7 +168,6 @@ class RewardController extends Controller
 
     public function queryNewRewards($user)
     {
-
         return Reward::where('user_id', $user?->id)
             ->where('status', 'issued')->orderBy('created_at', 'desc')
             ->with('user')->paginate(12, ['*'], 'p')->setPath('/')->onEachSide(0);

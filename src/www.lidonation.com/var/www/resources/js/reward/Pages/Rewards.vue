@@ -33,11 +33,11 @@
                     </section>
                     <section class="border-t border-teal-300 p-6 -my-1 ">
                         <template v-if="user != null">
-                            <template v-if="!!withdrawals?.length || !!withdrawalsProcessed?.length">
+                            <template v-if="!!withdrawals?.length || withdrawalsProcessed">
                                 <div
                                     class="absolute left-0 top-0 w-full h-full bg-teal-600 shadow-lg z-10 text-white">
                                     <div>
-                                        <div class="px-4 py-5 sm:px-6 relative" v-if="!withdrawalsProcessed?.length">
+                                        <div class="px-4 py-5 sm:px-6 relative" v-if="!withdrawalsProcessed">
                                             <h3 class="text-lg font-medium leading-6">
                                                 Process Rewards
                                             </h3>
@@ -74,7 +74,7 @@
 
                                         <div class="border-t border-teal-200 px-4 py-5 sm:p-0">
                                             <div class="flex flex-col items-center gap-8 pt-8"
-                                                 v-if="!!withdrawalsProcessed?.length">
+                                                 v-if="withdrawalsProcessed">
                                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                                                      fill="currentColor"
                                                      class="w-16 h-16 text-green-500">
@@ -88,7 +88,7 @@
                                                     your wallet in about 5 to 10 minutes.
                                                 </p>
                                             </div>
-                                            <dl class="overflow-y-auto" v-if="!withdrawalsProcessed?.length">
+                                            <dl class="overflow-y-auto" v-if="!withdrawalsProcessed && !!withdrawals?.length">
                                                 <template v-for="(withdrawal, index) in withdrawals"
                                                           :key="withdrawal?.asset">
                                                     <div
@@ -151,7 +151,8 @@
                                                             Amount
                                                         </th>
                                                         <th class="w-72 px-6 py-4 text-sm sticky top-0">Memo</th>
-                                                        <th class="px-2 py-4 text-sm truncate flex gap-2 sticky top-0">Status
+                                                        <th class="px-2 py-4 text-sm truncate flex gap-2 sticky top-0">
+                                                            Status
                                                         </th>
                                                     </tr>
                                                     </thead>
@@ -160,29 +161,27 @@
                                                     <tr v-for="reward in (rewards[0] ? rewards : processedRewards)"
                                                         class="flex flex-row text-left">
                                                         <td class="px-6 py-4 w-32 text-sm truncate flex gap-2  items-center">
-                                                                         <span
-                                                                             class="font-semibold text-xl 2xl:text-2xl">
-                                                                             {{
-                                                                                 $filters.shortNumber((reward.amount / (reward.asset_details?.divisibility > 0 ? reward?.asset_details?.divisibility : 1)).toFixed(2))
-                                                                             }}
-                                                                        </span>
+                                                             <span
+                                                                 class="font-semibold text-xl 2xl:text-2xl">
+                                                                 {{
+                                                                     $filters.shortNumber((reward.amount / (reward.asset_details?.divisibility > 0 ? reward?.asset_details?.divisibility : 1)).toFixed(2))
+                                                                 }}
+                                                            </span>
                                                             <span v-if="reward.asset_details?.metadata?.logo"
                                                                   class="relative inline-flex items-center rounded-full 2xl:w-5 w-4 2xl:h-5">
-                                                                                <img class="inline-flex"
-                                                                                     alt="asset logo"
-                                                                                     :src="'data:image/png;base64,'+`${reward.asset_details.metadata.logo}`">
-                                                                            </span>
+                                                                <img class="inline-flex"
+                                                                     alt="asset logo"
+                                                                     :src="'data:image/png;base64,'+`${reward.asset_details.metadata.logo}`">
+                                                            </span>
                                                             <span
                                                                 v-else-if="reward?.asset_details?.metadata?.ticker"
                                                                 class="relative inline-block rounded-full w-3 h-3">
-                                                                                 {{
-                                                                    reward.asset_details?.metadata?.ticker
-                                                                }}
-                                                                            </span>
+                                                                {{reward.asset_details?.metadata?.ticker }}
+                                                            </span>
                                                             <span v-else="reward?.asset_details?.asset_name"
                                                                   class="relative inline-block rounded-full w-3 h-3">
-                                                                                {{ reward.asset_details?.asset_name }}
-                                                                            </span>
+                                                                {{ reward.asset_details?.asset_name }}
+                                                            </span>
                                                         </td>
                                                         <td class="w-72 px-6 py-4 text-sm">
                                                             {{ reward.memo }}
@@ -270,7 +269,6 @@ const props = withDefaults(
     }>(), {}
 );
 
-
 let user = ref(usePage()?.props?.user as User);
 let rewards = ref(props?.rewards?.data ?? []);
 
@@ -334,7 +332,11 @@ let withdraw = async () => {
 }
 
 //withdrawal-rewards
-let withdrawalsProcessed = ref([]);
+let withdrawalsProcessed = computed(
+    () => withdrawals?.value?.filter(
+        (withdrawal: RewardData) => (withdrawal.status === 'processed' ||  withdrawal.status === 'validated')
+    ).length > 0
+);
 let paymentTx = ref(null);
 let minterAddress = ref(null);
 let withdrawalRewards = async () => {
@@ -358,9 +360,8 @@ let withdrawalRewards = async () => {
             }
 
             // processing Withdrawal and send tx to backend
-            const withdrawalResponse = (await window.axios.post(route('rewardsApi.withdrawals.withdraw'), {hash: paymentTx.value}));
-            withdrawalsProcessed = withdrawalResponse?.data;
-            console.log({withdrawalsProcessed});
+            const withdrawalResponse = (await window.axios.post(route('rewardsApi.withdrawals.withdraw'), {hash: paymentTx?.value}));
+            withdrawals.value = withdrawalResponse?.data;
             working.value = false;
         }, 3000);
     } catch (e) {
