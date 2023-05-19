@@ -96,3 +96,11 @@ exit
 \134Illuminate\134Support\134Facades\134Route::has('rewards.index');
 \134Illuminate\134Support\134Facades\134Route::has('rewards');
 exit
+$w\040=\040Withdrawal::first();
+$w->rewards
+$w\040=\040Withdrawal::find(1213);
+$w->rewards
+$w\040=\040Withdrawal::find(1228);
+$w->rewards
+$w?->rewards?->filter(fn($r)\040=>\040$r->asset\040==\040'lovelace')->sum('amount');
+exit
