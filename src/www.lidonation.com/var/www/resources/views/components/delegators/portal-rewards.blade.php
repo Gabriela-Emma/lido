@@ -114,7 +114,7 @@
                 </h3>
                 <div>
                     @if($availableRewards?->isNotEmpty())
-                        <a  href="{{localizeRoute('rewards')}}"
+                        <a  href="{{localizeRoute('rewards.index')}}"
                               class="inline-flex items-center px-1 py-0.5 rounded text-xs bg-accent-200 text-teal-900 hover:bg-accent-400 hover:cursor-pointer">
                             My Lido Rewards
                         </a>
