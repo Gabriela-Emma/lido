@@ -55,7 +55,6 @@ class Withdrawals extends Resource
     {
         return [
             ID::make(__('ID'), 'id')->sortable(),
-            Date::make('Created At', 'created_at')->sortable(),
             Text::make(__('Address'), 'wallet_address'),
             BelongsTo::make('User', 'user', User::class)->searchable()->hideFromIndex(),
             Select::make(__('Status'), 'status')
