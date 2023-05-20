@@ -149,7 +149,7 @@
                                     <div class="flex flex-col">
                                         <div class="min-w-full -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                                             <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
-                                               <RewardList :rewards="rewards?.data ?? []"></RewardList>
+                                               <RewardList :rewards="rewards ?? []"></RewardList>
                                             </div>
                                         </div>
                                     </div>
@@ -204,7 +204,6 @@ import {storeToRefs} from 'pinia';
 import RewardData = App.DataTransferObjects.RewardData
 import {AxiosError} from 'axios';
 import route from "ziggy-js";
-import {Link} from '@inertiajs/vue3';
 import RewardNav from "../Components/RewardNav.vue";
 import RewardList from "../Components/RewardList.vue";
 
