@@ -268,7 +268,7 @@ return [
             new Illuminate\Support\Fluent([
                 'title' => 'My Lido Rewards',
                 'route_type' => 'route_name',
-                'route' => 'rewards',
+                'route' => 'rewards.index',
             ]),
             new Illuminate\Support\Fluent([
                 'title' => 'Lido Earn',
