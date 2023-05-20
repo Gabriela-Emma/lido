@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\DataTransferObjects\RewardData;
 use App\Models\Interfaces\IHasMetaData;
 use App\Models\Traits\HasAuthor;
 use App\Models\Traits\HasMetaData;
@@ -10,6 +11,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Spatie\LaravelData\DataCollection;
 
 class Withdrawal extends Model implements IHasMetaData
 {
@@ -18,6 +20,19 @@ class Withdrawal extends Model implements IHasMetaData
     protected $with = ['txs'];
 
     protected $withCount = ['txs'];
+
+    protected $appends = ['withdrawal_tx'];
+
+    protected $casts = [
+//        'rewards' => DataCollection::class.':'.RewardData::class,
+    ];
+
+    public function withdrawalTx(): Attribute
+    {
+        return Attribute::make(get: function ($value) {
+            return $this->metas->where('key', '=', 'withdrawal_tx')->first()?->content;
+        });
+    }
 
     /**
      * Scope a query to only include popular users.

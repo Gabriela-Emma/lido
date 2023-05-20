@@ -38,7 +38,7 @@ class AppPolicy
      */
     public function canView(User $user, $model): mixed
     {
-        return $user->hasAnyRole(['admin', 'super_admin', 'super admin']);
+        return $user->hasAnyRole(['admin', 'super_admin', 'super admin']) || $this->ownsModel($user, $model);
     }
 
     /**
@@ -52,9 +52,9 @@ class AppPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function canUpdate(User $user): mixed
+    public function canUpdate(User $user, $model): mixed
     {
-        return $user->hasAnyRole(['admin', 'super_admin', 'super admin']);
+        return $user->hasAnyRole(['admin', 'super_admin', 'super admin']) || $this->ownsModel($user, $model);
     }
 
     /**
@@ -72,9 +72,9 @@ class AppPolicy
      *
      * @return mixed
      */
-    public function canDelete(User $user)
+    public function canDelete(User $user, $model)
     {
-        return $user->hasAnyRole(['admin', 'super_admin', 'super admin']);
+        return $user->hasAnyRole(['admin', 'super_admin', 'super admin']) || $this->ownsModel($user, $model);
     }
 
     /**
@@ -85,5 +85,10 @@ class AppPolicy
     public function canDeleteAny(User $user)
     {
         return $user->hasAnyRole(['admin', 'super_admin', 'super admin']);
+    }
+
+    protected function ownsModel(User $user, $model): bool
+    {
+        return $user->id === $model->user_id;
     }
 }

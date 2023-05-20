@@ -95,8 +95,6 @@ createInertiaApp({
             }
         });
 
-        // app.config.globalProperties.$route = route;
-
         app.component('header-component', HeaderComponent);
         app.mount(el);
     },

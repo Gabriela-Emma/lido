@@ -12,29 +12,24 @@ use Spatie\TypeScriptTransformer\Attributes\Optional as TypeScriptOptional;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
 #[TypeScript]
-class RewardData extends Data
+class TxData extends Data
 {
     public function __construct(
         public ?int $id,
 
-        public ?string $asset,
+        public ?string $policy,
 
-        public ?int $amount,
+        public ?string $hash,
 
-        #[TypeScriptOptional]
-        public ?string $asset_type,
+        public ?string $address,
+
+        public ?string $status,
+
+        public ?string $quantity,
 
         #[TypeScriptOptional]
         #[WithCast(DateTimeInterfaceCast::class)]
         #[WithTransformer(DateTimeInterfaceTransformer::class)]
-        public ?DateTime $created_at,
-
-        public ?string $status,
-
-        #[TypeScriptOptional]
-        public ?AssetDetailsData $asset_details,
-
-        public ?string $memo
-    ) {
-    }
+        public ?DateTime $created_at
+    ) {}
 }

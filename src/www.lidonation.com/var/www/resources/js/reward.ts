@@ -98,6 +98,7 @@ createInertiaApp({
             },
             contrastColor: contrastColor
         });
+        app.mixin({ methods: { route } });
 
         app.config.globalProperties.$route = route;
 
