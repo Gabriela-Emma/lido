@@ -133,8 +133,28 @@ id: number | null;
 asset: string | null;
 amount: number | null;
 asset_type?: string | null;
+created_at?: string | null;
 status: string | null;
 asset_details?: App.DataTransferObjects.AssetDetailsData | null;
 memo: string | null;
+};
+export type TxData = {
+id: number | null;
+policy: string | null;
+hash: string | null;
+address: string | null;
+status: string | null;
+quantity: string | null;
+created_at?: string | null;
+};
+export type WithdrawalData = {
+id: number | null;
+status: string | null;
+rewards_count: number | null;
+created_at?: string | null;
+txs?: Array<App.DataTransferObjects.TxData> | null;
+withdrawal_tx?: string | null;
+amounts?: any | null;
+rewards?: Array<App.DataTransferObjects.RewardData> | null;
 };
 }

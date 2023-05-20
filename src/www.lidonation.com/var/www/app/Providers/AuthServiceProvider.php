@@ -14,6 +14,7 @@ use App\Models\Event;
 use App\Models\Post;
 use App\Models\Proposal;
 use App\Models\Team;
+use App\Models\Withdrawal;
 use App\Policies\BookmarkCollectionPolicy;
 use App\Policies\CatalystGroupPolicy;
 use App\Policies\CatalystUserPolicy;
@@ -28,6 +29,7 @@ use App\Policies\PostPolicy;
 use App\Policies\ProposalPolicy;
 use App\Policies\RolePolicy;
 use App\Policies\TeamPolicy;
+use App\Policies\WithdrawalPolicy;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
@@ -57,6 +59,7 @@ class AuthServiceProvider extends ServiceProvider
         Role::class => RolePolicy::class,
         Team::class => TeamPolicy::class,
         BookmarkCollection::class => BookmarkCollectionPolicy::class,
+        Withdrawal::class => WithdrawalPolicy::class,
 
         //        LanguageLine::class => LanguageLinePolicy::class,
         //        \Spatie\TranslationLoader\LanguageLine::class => LanguageLinePolicy::class,

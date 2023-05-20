@@ -1,6 +1,6 @@
 <template>
     <div
-        class="bg-gradient-to-br from-teal-500 via-teal-600 to-accent-900 relative text-white catalyst-proposals-bookmarks-wrapper min-h-[92vh]">
+        class="bg-gradient-to-br from-teal-500 via-teal-600 to-accent-900 relative text-white lido-rewards-wrapper min-h-[92vh]">
         <div class="container relative h-full">
             <div v-show="working"
                  class="left-0 top-0 flex items-start justify-center w-full h-full p-32 absolute bg-teal-600 bg-opacity-90 z-20">
@@ -20,7 +20,7 @@
                 </div>
                 <div class="relative">
                     <section class="border-t border-teal-300 p-6">
-                        <div class="flex flex-col gap-4 items-center max-w-2xl mx-auto">
+                        <div class="flex flex-col gap-4 items-center max-w-2xl mx-auto text-center">
                             <p>
                                 Lido Rewards are tips and prizes you earn around lidonation for completing
                                 challenges or contributing to the site, or delegating to the stake pool.
@@ -129,14 +129,19 @@
                                                 Rewards
                                             </span>
                                             <span class="text-xs text-gray-400">
-                                                {{ rewards.length }}
+<!--                                                {{ rewards.length }}-->
                                             </span>
                                         </h3>
-                                        <div>
-                                            <span v-show="rewards[0]" @click="withdraw"
+                                        <div class="flex flex-row gap-3">
+                                            <RewardNav class="flex gap-3 text-white"></RewardNav>
+                                            <button v-if="rewards[0]" @click="withdraw"
                                                   class="inline-flex items-center px-1 py-0.5 rounded text-xs bg-accent-200 text-teal-900 hover:bg-accent-400 hover:cursor-pointer">
                                                 Withdraw
-                                            </span>
+                                            </button>
+                                            <button v-else
+                                                  class="inline-flex items-center px-1 py-0.5 rounded text-xs bg-slate-500">
+                                                No New Rewards
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -144,60 +149,7 @@
                                     <div class="flex flex-col">
                                         <div class="min-w-full -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                                             <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
-                                                <table class="min-w-full overflow-auto divide-y divide-gray-200">
-                                                    <thead class="flex flex-col justify-between min-w-full">
-                                                    <tr class="flex flex-row text-left">
-                                                        <th class="px-6 w-32 py-4 text-sm truncate flex gap-2 sticky top-0">
-                                                            Amount
-                                                        </th>
-                                                        <th class="w-72 px-6 py-4 text-sm sticky top-0">Memo</th>
-                                                        <th class="px-2 py-4 text-sm truncate flex gap-2 sticky top-0">
-                                                            Status
-                                                        </th>
-                                                    </tr>
-                                                    </thead>
-                                                    <tbody
-                                                        class="flex flex-col justify-start min-w-full divide-y divide-gray-400 max-h-[32rem]">
-                                                    <tr v-for="reward in (rewards[0] ? rewards : processedRewards)"
-                                                        class="flex flex-row text-left">
-                                                        <td class="px-6 py-4 w-32 text-sm truncate flex gap-2  items-center">
-                                                             <span
-                                                                 class="font-semibold text-xl 2xl:text-2xl">
-                                                                 {{
-                                                                     $filters.shortNumber((reward.amount / (reward.asset_details?.divisibility > 0 ? reward?.asset_details?.divisibility : 1)).toFixed(2))
-                                                                 }}
-                                                            </span>
-                                                            <span v-if="reward.asset_details?.metadata?.logo"
-                                                                  class="relative inline-flex items-center rounded-full 2xl:w-5 w-4 2xl:h-5">
-                                                                <img class="inline-flex"
-                                                                     alt="asset logo"
-                                                                     :src="'data:image/png;base64,'+`${reward.asset_details.metadata.logo}`">
-                                                            </span>
-                                                            <span
-                                                                v-else-if="reward?.asset_details?.metadata?.ticker"
-                                                                class="relative inline-block rounded-full w-3 h-3">
-                                                                {{reward.asset_details?.metadata?.ticker }}
-                                                            </span>
-                                                            <span v-else="reward?.asset_details?.asset_name"
-                                                                  class="relative inline-block rounded-full w-3 h-3">
-                                                                {{ reward.asset_details?.asset_name }}
-                                                            </span>
-                                                        </td>
-                                                        <td class="w-72 px-6 py-4 text-sm">
-                                                            {{ reward.memo }}
-                                                        </td>
-                                                        <td class="px-2 py-4 text-sm truncate flex gap-2">
-                                                            {{ reward.status }}
-                                                        </td>
-                                                    </tr>
-                                                    <tr v-show="!rewards[0] && !processedRewards[0]"
-                                                        class="flex flex-row text-left">
-                                                        <td class="px-6 py-4 text-sm font-medium">
-                                                            Nothing to see quit yet.
-                                                        </td>
-                                                    </tr>
-                                                    </tbody>
-                                                </table>
+                                               <RewardList :rewards="rewards?.data ?? []"></RewardList>
                                             </div>
                                         </div>
                                     </div>
@@ -252,6 +204,9 @@ import {storeToRefs} from 'pinia';
 import RewardData = App.DataTransferObjects.RewardData
 import {AxiosError} from 'axios';
 import route from "ziggy-js";
+import {Link} from '@inertiajs/vue3';
+import RewardNav from "../Components/RewardNav.vue";
+import RewardList from "../Components/RewardList.vue";
 
 const ConnectWallet = defineAsyncComponent(() => import('../../global/Shared/Components/ConnectWallet.vue'));
 const $utils: any = inject('$utils');

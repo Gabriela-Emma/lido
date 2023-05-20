@@ -20,6 +20,7 @@ use App\Http\Controllers\TaxonomyController;
 use App\Http\Controllers\TwitterAttendanceController;
 use App\Http\Controllers\VerifyWalletController;
 use App\Http\Controllers\WalletLoginController;
+use App\Http\Controllers\WithdrawalController;
 use App\Http\Livewire\ContributeContent\ContributeContent;
 use App\Http\Livewire\ContributeContent\ContributeRecordingComponent;
 use App\Http\Livewire\ContributeContent\ContributeTranslation;
@@ -121,6 +122,12 @@ Route::group(
     Route::prefix('/rewards')->as('rewards.')
         ->middleware(['auth:' . config('fortify.guard')])->group(function () {
             Route::get('/', [RewardController::class, 'index'])->name('index');
+
+            Route::prefix('/withdrawals')->as('withdrawals.')->group(function () {
+                Route::get('/', [WithdrawalController::class, 'index'])->name('index');
+                Route::get('/{withdrawal:id}', [WithdrawalController::class, 'view'])->name('view');
+            });
+
         });
 
     Route::prefix('/earn')->as('earn.')->group(function () {

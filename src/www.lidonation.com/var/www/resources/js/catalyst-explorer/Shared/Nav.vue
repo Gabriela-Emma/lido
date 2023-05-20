@@ -266,7 +266,7 @@
                                 {{ $t('Voter Tool') }}
                                 </a>
                             </li>
-                        </ul> 
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -280,7 +280,6 @@ import { Link } from '@inertiajs/vue3';
 import {computed, inject, Ref, ref} from "vue";
 import  {Bars3Icon, XMarkIcon}  from '@heroicons/vue/20/solid'
 import { onClickOutside } from '@vueuse/core'
-
 
 
 const $utils: any = inject('$utils');

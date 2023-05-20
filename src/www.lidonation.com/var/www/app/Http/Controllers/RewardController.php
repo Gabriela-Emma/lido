@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\DataTransferObjects\RewardData;
+use App\DataTransferObjects\WithdrawalData;
 use App\Jobs\ProcessUserRewardsJob;
 use App\Models\Reward;
 use App\Models\Tx;
@@ -29,6 +30,32 @@ class RewardController extends Controller
             'processedRewards' => $processedRewards,
             'crumbs' => [
                 ['label' => 'Rewards'],
+            ],
+        ]);
+    }
+
+    public function withdrawal(WithdrawalData $withdrawalData)
+    {
+
+        return Inertia::render('Withdrawal', [
+            'withdrawal' => $withdrawalData,
+            'crumbs' => [
+                ['label' => 'Rewards'],
+                ['label' => 'Withdrawals'],
+                ['label' => 'Withdraw'],
+            ],
+        ]);
+      }
+
+    public function history(Request $request)
+    {
+        return Inertia::render('RewardHistory', [
+            'withdrawalsPaginated' => WithdrawalData::collection(
+                $request->user()->withdrawals()->orderByDesc('created_at')->with(['rewards', 'txs'])->paginate(10)
+            ),
+            'crumbs' => [
+                ['label' => 'Rewards'],
+                ['label' => 'Withdrawals'],
             ],
         ]);
     }
