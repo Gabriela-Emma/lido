@@ -103,7 +103,7 @@
                         <p class="px-28" x-show="!!reward">
                             Rewards already issued!
                         </p>
-                        <a href="{{localizeRoute('rewards')}}" type="button"
+                        <a href="{{localizeRoute('rewards.index')}}" type="button"
                            class="inline-flex items-center justify-center rounded-sm border border-transparent bg-teal-600 px-4 py-2 text-xl xl:text-2xl font-medium text-white shadow-sm hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 sm:w-auto">
                             See your Lido Rewards
                         </a>
