@@ -133,7 +133,7 @@
                                             </span>
                                         </h3>
                                         <div class="flex flex-row gap-3">
-                                            <RewardNav class="flex gap-3 text-white"></RewardNav>
+                                            <RewardNav class="flex gap-3 text-white text-xs"></RewardNav>
                                             <button v-if="rewards[0]" @click="withdraw"
                                                   class="inline-flex items-center px-1 py-0.5 rounded text-xs bg-accent-200 text-teal-900 hover:bg-accent-400 hover:cursor-pointer">
                                                 Withdraw
