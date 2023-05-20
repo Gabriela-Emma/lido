@@ -16,28 +16,28 @@
                         <div class="flex flex-col gap-4 bg-gray-800/20 rounded-sm">
                             <div class="flex w-full gap-8 lg:gap-12 p-4 lg:p-8 items-center">
                                 <div class="flex gap-2 items-center">
-                                    <div class="text-slate-200">Withdrawal Started</div>
-                                    <div class="text-lg xl:text-xl">
+                                    <div class="text-slate-200 text-sm">Withdrawal Started</div>
+                                    <div class="text-md xl:text-lg">
                                         {{ createAt }}
                                     </div>
                                 </div>
                                 <div class="flex gap-2 items-center">
-                                    <div class="text-slate-200">
+                                    <div class="text-slate-200 text-sm">
                                         Status
                                     </div>
-                                    <div class="text-lg xl:text-xl">
+                                    <div class="text-md xl:text-lg">
                                         {{ withdrawal.status }}
                                     </div>
                                 </div>
                                 <div class="flex gap-2 items-center">
-                                    <div></div>
-                                    <div></div>
+                                    <div class=" text-sm"></div>
+                                    <div class="text-md xl:text-lg"></div>
                                 </div>
                             </div>
                             <RewardList :rewards="withdrawal.rewards"></RewardList>
                         </div>
 
-                        <div class="flex gap-4 justify-around w-full p-4 lg:p-6">
+                        <div class="flex gap-4 justify-around w-full p-4 lg:p-6 text-sm">
                             <div class="flex items-center gap-3">
                                 <div class="text-slate-200">pending</div>
                                 <div>withdrawal started, waiting for min utxo deposit</div>
