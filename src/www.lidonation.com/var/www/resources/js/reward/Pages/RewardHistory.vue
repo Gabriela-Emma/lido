@@ -41,7 +41,7 @@
                                         </span>
                                     </h3>
                                     <div class="flex flex-row gap-3">
-                                        <RewardNav class="flex gap-3 text-white"></RewardNav>
+                                        <RewardNav class="flex gap-3 text-white text-xs"></RewardNav>
                                     </div>
                                 </div>
                             </div>

@@ -3,12 +3,12 @@
         <Link
             :href="route('rewards.index')"
             :class="{ 'active': $page.component.endsWith('Rewards') }"
-            class="inline-flex items-center px-1 py-0.5 rounded text-xs">
+            class="inline-flex items-center px-1 py-0.5 rounded">
             Rewards
         </Link>
         <Link :href="route('rewards.withdrawals.index')"
               :class="{ 'active': $page.component.endsWith('History') }"
-              class="inline-flex items-center px-1 py-0.5 rounded text-xs">
+              class="inline-flex items-center px-1 py-0.5 rounded">
             History
         </Link>
     </nav>

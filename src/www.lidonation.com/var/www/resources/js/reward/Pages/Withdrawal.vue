@@ -36,6 +36,21 @@
                             </div>
                             <RewardList :rewards="withdrawal.rewards"></RewardList>
                         </div>
+
+                        <div class="flex gap-4 justify-around w-full p-4 lg:p-6">
+                            <div class="flex items-center gap-3">
+                                <div class="text-slate-200">pending</div>
+                                <div>withdrawal started, waiting for min utxo deposit</div>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <div class="text-slate-200">processed</div>
+                                <div>Nothing to do. Your rewards will be sent shortly.</div>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <div class="text-slate-200">paid</div>
+                                <div>Rewards should be in your wallet now.</div>
+                            </div>
+                        </div>
                     </section>
                 </div>
             </div>

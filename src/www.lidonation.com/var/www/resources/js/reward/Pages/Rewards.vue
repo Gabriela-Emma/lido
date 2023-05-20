@@ -133,7 +133,7 @@
                                             </span>
                                         </h3>
                                         <div class="flex flex-row gap-3">
-                                            <RewardNav class="flex gap-3 text-white"></RewardNav>
+                                            <RewardNav class="flex gap-3 text-white text-xs"></RewardNav>
                                             <button v-if="rewards[0]" @click="withdraw"
                                                   class="inline-flex items-center px-1 py-0.5 rounded text-xs bg-accent-200 text-teal-900 hover:bg-accent-400 hover:cursor-pointer">
                                                 Withdraw
@@ -149,7 +149,7 @@
                                     <div class="flex flex-col">
                                         <div class="min-w-full -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                                             <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
-                                               <RewardList :rewards="rewards?.data ?? []"></RewardList>
+                                               <RewardList :rewards="rewards ?? []"></RewardList>
                                             </div>
                                         </div>
                                     </div>
@@ -204,7 +204,6 @@ import {storeToRefs} from 'pinia';
 import RewardData = App.DataTransferObjects.RewardData
 import {AxiosError} from 'axios';
 import route from "ziggy-js";
-import {Link} from '@inertiajs/vue3';
 import RewardNav from "../Components/RewardNav.vue";
 import RewardList from "../Components/RewardList.vue";
 
