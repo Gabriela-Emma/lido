@@ -53,7 +53,7 @@
                                                     All pending rewards will be bundled and sent to your wallet.
                                                 </p>
                                             </div>
-                                            <div v-show="rewards" class="mt-2 text-center">
+                                            <div v-if="rewards && !withdrawing" class="mt-2 text-center">
                                                 <span @click="withdrawalRewards"
                                                       class="inline-flex items-center px-1 py-1 rounded-sm text-sm bg-accent-200 text-teal-900 hover:bg-accent-400 hover:cursor-pointer">
                                                     Withdraw
@@ -294,8 +294,10 @@ let withdrawalsProcessed = computed(
 );
 let paymentTx = ref(null);
 let minterAddress = ref(null);
+let withdrawing = ref(false);
 let withdrawalRewards = async () => {
     working.value = true;
+    withdrawing.value = true;
     const WalletService = ((await import('../../lib/services/WalletService')).default);
     try {
         // start processing withdrawal
