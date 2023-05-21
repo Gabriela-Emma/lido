@@ -139,6 +139,10 @@
         </div>
     </section>
 
+    <section class="flex flex-row justify-start px-8 py-16 pt-8 max-w-6xl xl:px-0 xl:mx-auto">
+        <x-next-previous :name="$snippets->previousInSeries" title="How to buy Ada" link="how-to-buy-cardano-ada" />
+    </section>
+
     <section class="py-12 bg-gray-50 border border-gray-100">
         <div class="px-6 max-w-6xl xl:mx-auto">
             <livewire:comments :showNotificationOptions="Auth::check()" :hideNotificationOptions="!Auth::check()" :hideAvatars="false" :noReplies="false" :model="$post" />
