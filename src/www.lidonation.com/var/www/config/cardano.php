@@ -22,6 +22,10 @@ return [
         'stake_address' => env('CARDANO_POOL_STAKE_ADDRESS'),
     ],
 
+    'network' => [
+        'network_id' => env('CARDANO_NETWORK_ID')
+    ],
+
     'mint' => [
         'payment-address' => env('CARDANO_MINT_PAYMENT_ADDRESS'),
         'policy-id' => env('CARDANO_MINT_POLICY_ID'),
