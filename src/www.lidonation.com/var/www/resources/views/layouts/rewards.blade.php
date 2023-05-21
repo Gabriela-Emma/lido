@@ -4,6 +4,8 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
 
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <link rel="stylesheet" href="{{ asset(mix('css/rewards.css')) }}">
 
     @env('production')
@@ -19,7 +21,7 @@
 
     @routes
     <script src="{{ mix('/js/alpine.js') }}" defer></script>
-    <script src="{{ mix('/js/reward.js') }}" defer></script>
+    <script src="{{ mix('/js/rewards.js') }}" defer></script>
 
     @inertiaHead
 </head>
@@ -41,12 +43,7 @@
 
 @include('includes.footer')
 
-<script src="{{ mix('js/bootstrap.js') }}"></script>
-
-<script src="{{ mix('js/global.js') }}"></script>
-
 {{--<livewire:global-player-component />--}}
 
-<link rel="preload" href="{{ asset(mix('css/app.css')) }}" as="style">
 </body>
 </html>
