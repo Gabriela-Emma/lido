@@ -181,6 +181,7 @@ Route::group(
             'blockExplorer' => config('cardano.pool.block_explorer'),
             'blockfrostUrl' => config('services.blockfrost.baseUrl'),
             'projectId' => config('services.blockfrost.projectId'),
+            'network_id' => config('cardano.network.network_id'),
         ];
 
         return json_encode($credentials);
