@@ -9,13 +9,13 @@ import PrimeVue from 'primevue/config';
 import route from "ziggy-js";
 import {modal} from "momentum-modal";
 import timeago from 'vue-timeago3';
-import moment from "moment-timezone";
 import {shortNumber} from "./lib/utils/shortNumber";
 import {currency} from "./lib/utils/currency";
 import {timeAgo} from "./lib/utils/timeago";
 import {contrastColor} from "./lib/utils/contrastColor";
 let messages = require('../../storage/app/snippets.json');
 const axios = require('axios');
+import './bootstrap';
 
 //cache snippets to disk
 axios.get(`${window.location.origin}/api/cache/snippets`);
