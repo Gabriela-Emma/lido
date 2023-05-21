@@ -206,6 +206,7 @@ import {AxiosError} from 'axios';
 import route from "ziggy-js";
 import RewardNav from "../Components/RewardNav.vue";
 import RewardList from "../Components/RewardList.vue";
+import axios from "../../lib/utils/axios";
 
 const ConnectWallet = defineAsyncComponent(() => import('../../global/Shared/Components/ConnectWallet.vue'));
 const $utils: any = inject('$utils');
@@ -262,7 +263,7 @@ let getForm = (loginForm) => {
 
 let submit = async (event) => {
     try {
-        const res = await window.axios.post(`/api/rewards/login`, form);
+        const res = await axios.post(`/api/rewards/login`, form);
         if (res) {
             refresh();
         }
@@ -278,7 +279,7 @@ let withdrawals: Ref<RewardData[]> = ref([]);
 let withdraw = async () => {
     working.value = true;
     try {
-        withdrawals.value = (await window.axios.post(route('rewardsApi.withdrawals.index')))?.data;
+        withdrawals.value = (await axios.post(route('rewardsApi.withdrawals.index')))?.data;
     } catch (e) {
         console.error(e)
     }
@@ -298,14 +299,14 @@ let withdrawalRewards = async () => {
     const WalletService = ((await import('../../lib/services/WalletService')).default);
     try {
         // start processing withdrawal
-        const processResponse = (await window.axios.post(route('rewardsApi.withdrawals.process'), {address: myWallet?.value?.address}));
+        const processResponse = (await axios.post(route('rewardsApi.withdrawals.process'), {address: myWallet?.value?.address}));
         setTimeout(async () => {
             working.value = false;
 
             if (adaReward.value < BigInt(2000000)) {
                 const walletService = new WalletService();
                 await walletService.connectWallet(myWallet?.value?.name);
-                minterAddress.value = (await window.axios.post(route('rewardsApi.withdrawals.mintAddress')))?.data;
+                minterAddress.value = (await axios.post(route('rewardsApi.withdrawals.mintAddress')))?.data;
 
                 // get deposit
                 const rawTx = await walletService.payToAddress(minterAddress?.value.address, {lovelace: BigInt(2000000)});
@@ -314,7 +315,7 @@ let withdrawalRewards = async () => {
             }
 
             // processing Withdrawal and send tx to backend
-            const withdrawalResponse = (await window.axios.post(route('rewardsApi.withdrawals.withdraw'), {hash: paymentTx?.value}));
+            const withdrawalResponse = (await axios.post(route('rewardsApi.withdrawals.withdraw'), {hash: paymentTx?.value}));
             withdrawals.value = withdrawalResponse?.data;
             working.value = false;
         }, 3000);
