@@ -151,6 +151,7 @@ export default class WalletService {
             }
         } catch (e) {
             console.log({e});
+            return e.message;
         }
     }
 
@@ -198,18 +199,30 @@ export default class WalletService {
             }
 
             const networkId = await  api.getNetworkId();
-            let network;
-            switch (networkId) {
-                case 0:
-                    network = 'Preview';
-                    break;
-                default:
-                    network = 'Mainnet';
-            }
             const blockfrostKeysService = new BlockfrostKeysService();
             const keys = await blockfrostKeysService.getConfig();
             this.blockfrostUrl = keys?.blockfrostUrl;
             this.projectId = keys?.projectId
+            const envNetworkId = keys?.network_id
+            let network;
+            switch (envNetworkId) {
+                case '0':
+                    if (networkId !== 0) {
+                    throw new Error('Preview wallet needed');
+                    }
+                    network = 'Preview';
+                    break;
+    
+                case '1':
+                    if (networkId !== 1) {
+                    throw new Error('Mainnet wallet needed');
+                    }
+                    network = 'Mainnet';
+                    break;
+    
+                default:
+                    throw new Error('Invalid network.');
+            }
 
             lucid = await Lucid.new(
                 new Blockfrost(this.blockfrostUrl, this.projectId),
