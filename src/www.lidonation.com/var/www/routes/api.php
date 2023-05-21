@@ -138,7 +138,7 @@ Route::post('/ccv4/ballot', function (Request $request) {
 });
 
 // Rewards
-Route::post('/rewards/login', [RewardController::class, 'login']);
+Route::post('/rewards/login', [RewardController::class, 'login'])->name('rewardsApi.login');
 Route::prefix('rewards')->as('rewardsApi.')
     ->middleware(['auth:sanctum'])
     ->group(function () {
