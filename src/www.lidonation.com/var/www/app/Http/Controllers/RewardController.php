@@ -20,6 +20,10 @@ use Inertia\Inertia;
 
 class RewardController extends Controller
 {
+    public function loginForm(Request $request)
+    {
+        return Inertia::render('Login', []);
+    }
     public function index(Request $request)
     {
         $rewards = $this->queryNewRewards($request->user());
@@ -138,7 +142,7 @@ class RewardController extends Controller
             'signature' => 'sometimes|required_without_all:email,password|min:13',
         ]);
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
-            return auth()->user();
+            return back()->withInput();
         }
 
         if ((bool)$request->stake_address) {
@@ -147,7 +151,7 @@ class RewardController extends Controller
             if ((bool)$user) {
                 Auth::login($user);
 
-                return auth()->user();
+                return back()->withInput();
             } else {
                 return response()->json([
                     'message' => 'We are having trouble logging you in with your stake address. Try your email and password. Note: You will only be able to login after earning your first Lido reward.',
