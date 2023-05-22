@@ -163,6 +163,7 @@ image: registry.lidonation.com/infra-ops/gitlab-runner:main
       --set services.web.config.CARDANO_PHUFFY_GOVERNOR_ADDRESS="$CARDANO_PHUFFY_GOVERNOR_ADDRESS" \
       --set services.web.config.CARDANO_PHUFFY_ESCROW_ADDRESS="$CARDANO_PHUFFY_ESCROW_ADDRESS" \
       --set services.web.config.CARDANO_MINT_POLICY_ID="$CARDANO_MINT_POLICY_ID" \
+      --set services.web.config.CARDANO_NETWORK_ID="$CARDANO_NETWORK_ID" \
       --set services.web.config.CARDANO_LIDO_DELEGATE_POLICY_ID="$CARDANO_LIDO_DELEGATE_POLICY_ID" \
       --set services.web.config.CARDANO_PHUFFY_VOTER_POLICY_ID="$CARDANO_PHUFFY_VOTER_POLICY_ID" \
       --set services.web.config.CARDANO_POOL_HASH="$CARDANO_POOL_HASH" \

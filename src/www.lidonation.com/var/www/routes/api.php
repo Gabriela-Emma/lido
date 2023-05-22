@@ -138,7 +138,7 @@ Route::post('/ccv4/ballot', function (Request $request) {
 });
 
 // Rewards
-Route::post('/rewards/login', [RewardController::class, 'login']);
+Route::post('/rewards/login', [RewardController::class, 'login'])->name('rewardsApi.login');
 Route::prefix('rewards')->as('rewardsApi.')
     ->middleware(['auth:sanctum'])
     ->group(function () {
@@ -181,6 +181,7 @@ Route::group(
             'blockExplorer' => config('cardano.pool.block_explorer'),
             'blockfrostUrl' => config('services.blockfrost.baseUrl'),
             'projectId' => config('services.blockfrost.projectId'),
+            'network_id' => config('cardano.network.network_id'),
         ];
 
         return json_encode($credentials);

@@ -141,6 +141,11 @@
             </div>
         </section>
 
+        <section class="flex flex-row justify-between px-8 py-16 pt-8 max-w-6xl xl:px-0 xl:mx-auto">
+            <x-next-previous :name="$snippets->previousInSeries" title="What is Staking" link="what-is-the-point-of-buying-ada-and-staking-in-cardano" />
+            <x-next-previous :name="$snippets->nextInSeries" title="How to stake your Ada" link="how-to-stake-ada" />
+        </section>
+
     <section class="py-12 bg-gray-50 border border-gray-100">
         <div class="px-6 max-w-6xl xl:mx-auto">
             <livewire:comments :showNotificationOptions="Auth::check()" :hideNotificationOptions="!Auth::check()" :hideAvatars="false" :noReplies="false" :model="$post" />

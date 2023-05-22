@@ -72,7 +72,7 @@
                         <li class="flow-root menu-item">
                             <a class="px-1 py-3 menu-link hover:text-black"
                                   :class="[$page.component.startsWith('Rewards') ? 'text-black' : 'text-white']"
-                                  :href="$utils.localizeRoute('rewards.index')">
+                                  :href="route('rewards.index')">
                                 {{ $t('Rewards') }}
                             </a>
                         </li>

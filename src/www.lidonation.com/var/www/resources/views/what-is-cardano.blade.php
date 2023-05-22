@@ -138,6 +138,10 @@
         </section>
     @endif
 
+    <section class="flex flex-row justify-end px-8 py-16 pt-8 max-w-6xl xl:px-0 xl:mx-auto">
+        <x-next-previous :name="$snippets->nextInSeries" title="What is staking" link="what-is-the-point-of-buying-ada-and-staking-in-cardano" />
+    </section>
+
     <section class="py-12 bg-gray-50 border border-gray-100">
         <div class="px-6 max-w-6xl xl:mx-auto">
             <livewire:comments :showNotificationOptions="Auth::check()" :hideNotificationOptions="!Auth::check()" :hideAvatars="false" :noReplies="false" :model="$post" />

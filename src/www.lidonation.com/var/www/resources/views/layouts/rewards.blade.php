@@ -21,7 +21,7 @@
 
     @routes
     <script src="{{ mix('/js/alpine.js') }}" defer></script>
-    <script src="{{ mix('/js/reward.js') }}" defer></script>
+    <script src="{{ mix('/js/rewards.js') }}" defer></script>
 
     @inertiaHead
 </head>
@@ -43,12 +43,7 @@
 
 @include('includes.footer')
 
-<script src="{{ mix('js/bootstrap.js') }}"></script>
-
-<script src="{{ mix('js/global.js') }}"></script>
-
 {{--<livewire:global-player-component />--}}
 
-<link rel="preload" href="{{ asset(mix('css/app.css')) }}" as="style">
 </body>
 </html>

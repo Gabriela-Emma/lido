@@ -30,6 +30,10 @@
             </span>
         </button>
 
+        <div v-if="unsupportedNetwork" class="text-xs text-red-600 border p-1 text-center">
+            <span class="">{{ unsupportedNetworkRes }} try again!</span>
+        </div>
+
         <div
             v-show="open"
             style="display: none;"
@@ -91,13 +95,22 @@ let walletStore = useWalletStore();
 let {walletData: wallet} = storeToRefs(walletStore);
 let {walletName} = storeToRefs(walletStore);
 
+let unsupportedNetwork = ref(false);
+let unsupportedNetworkRes = ref(null);
+
 async function enableWallet(walletName: string) {
     walletLoading.value = true;
+    unsupportedNetwork.value = false;
     let walletData = {
         name: walletName
     } as Wallet;
     try {
-        await walletService.connectWallet(walletName);
+        let connectRes = await walletService.connectWallet(walletName)
+        if(connectRes){
+            unsupportedNetwork.value = true;
+            unsupportedNetworkRes.value = connectRes;
+            walletLoading.value = false;
+        }
         walletData = {
             ...walletData,
             ...await getWalletAddress(),

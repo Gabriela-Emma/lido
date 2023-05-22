@@ -119,8 +119,9 @@ Route::group(
     Route::get('/cardano-treasury', App\Http\Livewire\Catalyst\CardanoTreasuryComponent::class)
         ->name('cardano-treasury');
 
+    Route::get('/rewards/login', [RewardController::class, 'loginForm'])->name('rewards.login');
     Route::prefix('/rewards')->as('rewards.')
-        ->middleware(['auth:' . config('fortify.guard')])->group(function () {
+        ->middleware(['auth.reward'])->group(function () {
             Route::get('/', [RewardController::class, 'index'])->name('index');
 
             Route::prefix('/withdrawals')->as('withdrawals.')->group(function () {

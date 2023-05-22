@@ -96,7 +96,7 @@
 </template>
 
 <script lang="ts" setup>
-import {useForm, usePage} from '@inertiajs/vue3';
+import {useForm} from '@inertiajs/vue3';
 import {Link} from '@inertiajs/vue3';
 import {inject, Ref, ref} from "vue";
 import WalletLoginBtn from './WalletLoginBtn.vue';
