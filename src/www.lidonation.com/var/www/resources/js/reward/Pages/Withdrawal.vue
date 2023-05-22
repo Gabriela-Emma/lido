@@ -37,18 +37,21 @@
                             <RewardList :rewards="withdrawal.rewards"></RewardList>
                         </div>
 
-                        <div class="flex gap-4 justify-around w-full p-4 lg:p-6">
-                            <div class="flex items-center gap-3">
-                                <div class="text-slate-200">pending</div>
-                                <div>withdrawal started, waiting for min utxo deposit</div>
-                            </div>
-                            <div class="flex items-center gap-3">
-                                <div class="text-slate-200">processed</div>
-                                <div>Nothing to do. Your rewards will be sent shortly.</div>
-                            </div>
-                            <div class="flex items-center gap-3">
-                                <div class="text-slate-200">paid</div>
-                                <div>Rewards should be in your wallet now.</div>
+                        <div class="p-4 lg:p-6 border-teal-300 mt-4">
+                            <h3>Withdrawal Status Legend</h3>
+                            <div class="flex gap-4 justify-around w-full ">
+                                <div class="flex items-center gap-3">
+                                    <div class="text-slate-300">pending</div>
+                                    <div>withdrawal started, waiting for min utxo deposit</div>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <div class="text-slate-300">processed</div>
+                                    <div>Nothing to do. Your rewards will be sent shortly.</div>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <div class="text-slate-300">paid</div>
+                                    <div>Rewards should be in your wallet now.</div>
+                                </div>
                             </div>
                         </div>
                     </section>
