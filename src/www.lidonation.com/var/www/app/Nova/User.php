@@ -208,6 +208,8 @@ class User extends Resource
         return [
             Text::make('Stake Address', 'wallet_stake_address')
                 ->sortable(),
+            Text::make('Wallet Address', 'wallet_address')
+                ->sortable(),
         ];
     }
 
