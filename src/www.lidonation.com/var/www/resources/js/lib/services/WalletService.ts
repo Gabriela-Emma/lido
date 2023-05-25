@@ -221,7 +221,7 @@ export default class WalletService {
                     break;
     
                 default:
-                    throw new Error('Invalid network.');
+                    throw new Error('Invalid network');
             }
 
             lucid = await Lucid.new(
