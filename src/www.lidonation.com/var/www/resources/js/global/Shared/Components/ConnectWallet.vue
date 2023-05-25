@@ -30,8 +30,8 @@
             </span>
         </button>
 
-        <div v-if="unsupportedNetwork" class="text-xs text-red-600 border p-1 text-center">
-            <span class="">{{ unsupportedNetworkRes }} try again!</span>
+        <div v-if="unsupportedNetwork" class="text-xs text-red-600 p-1 text-center">
+            <span class="underline">{{ unsupportedNetworkRes }} try again!</span>
         </div>
 
         <div
