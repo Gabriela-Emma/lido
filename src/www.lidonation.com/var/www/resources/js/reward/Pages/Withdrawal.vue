@@ -14,7 +14,14 @@
                 <div class="relative">
                     <section class="border-t border-teal-300 p-6">
                         <div class="flex flex-col gap-4 bg-gray-800/20 rounded-sm">
-                            <div class="flex w-full gap-8 lg:gap-12 p-4 lg:p-8 items-center">
+                            <div class="flex flex-row">
+                                 <span class="font-bold mr-2 mt-2 px-4">Total Rewards:</span>
+                                 <div v-for="groupedAsset in resultArray" :key="groupedAsset.asset" class="flex flex-column justify-between p-2">
+                                 <div class="font-bold mr-2">{{ groupedAsset.asset }}</div>
+                                 <div>{{ $filters.shortNumber((groupedAsset.amount/ groupedAsset.divisibility).toFixed(2))}}</div>
+                                </div>
+                            </div>
+                        <div class="flex w-full gap-8 lg:gap-12 p-4 lg:p-8 items-center">
                                 <div class="flex gap-2 items-center">
                                     <div class="text-slate-200 text-sm">Withdrawal Started</div>
                                     <div class="text-md xl:text-lg">
@@ -33,7 +40,7 @@
                                     <div class=" text-sm"></div>
                                     <div class="text-md xl:text-lg"></div>
                                 </div>
-                            </div>
+                        </div>
                             <RewardList :rewards="withdrawal.rewards"></RewardList>
                         </div>
 
@@ -73,6 +80,21 @@ const props = defineProps<{
     withdrawal: WithdrawalData;
 }>();
 
+let rewards = ref(
+    props.withdrawal.rewards
+)
+
+const groupedAsset = rewards.value.reduce((result, obj) => {
+const asset = obj.asset_details.asset_name;
+  if (!result[asset]) {
+    result[asset] = { asset, amount: 0 };
+  }
+  result[asset].amount += obj.amount
+  result[asset].divisibility = obj.asset_details.divisibility;
+  return result;
+}, {});
+
+const resultArray = Object.values(groupedAsset);
 let createAt = ref(
     localTime(props.withdrawal.created_at)
 );
