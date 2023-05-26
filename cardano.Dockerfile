@@ -7,7 +7,7 @@ SHELL ["/bin/bash", "-c"]
 EXPOSE 3010 3011 3012 12788 12798 6000
 
 # Add scripts
-RUN mkdir -p /config && apt-get update && apt-get install sqlite3 sudo -y
+RUN mkdir -p /config && apt-get update && apt-get install sqlite3 xxd sudo -y
 COPY src/pool/config/build/ /config/
 COPY src/pool/cntools/ /cntools/
 
