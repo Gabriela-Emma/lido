@@ -687,7 +687,7 @@ cnode_base:
   stage: build
   image: docker:20.10.12-git
   services:
-    - name: docker:dind-20.10.12
+    - name: docker:dind
       alias: docker
       command: ["--tls=false"]
   retry: 1
