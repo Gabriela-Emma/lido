@@ -685,7 +685,7 @@ composer:
 
 cnode_base:
   stage: build
-  image: docker:20.10.12-git
+  image: docker:24.0.2-git
   services:
     - name: docker:dind
       alias: docker
