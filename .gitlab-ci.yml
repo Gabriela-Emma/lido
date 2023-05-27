@@ -685,6 +685,8 @@ composer:
 cnode_base:
   stage: build
   image: docker:20.10.8-git
+  services:
+    - docker:dind
   retry: 1
   cache: { }
   script:
@@ -707,6 +709,8 @@ cnode_base:
 cdbsync_base:
   stage: build
   image: docker:20.10.8-git
+  services:
+    - docker:dind
   retry: 1
   cache: { }
   script:
@@ -727,6 +731,8 @@ cdbsync_base:
 metadata_base:
   stage: .pre
   image: docker:20.10.8-git
+  services:
+    - docker:dind
   retry: 1
   cache: { }
   script:
@@ -775,6 +781,8 @@ web_base:
 web:
   stage: build
   image: docker:20.10.8-git
+  services:
+    - docker:dind
   retry: 1
   cache: { }
   needs:
@@ -819,6 +827,8 @@ web:
 lucid:
   stage: .pre
   image: docker:20.10.8-git
+  services:
+    - docker:dind
   retry: 1
   cache: { }
   script:
@@ -844,6 +854,8 @@ lucid:
 cnode_submit_api:
   stage: build
   image: docker:20.10.8-git
+  services:
+    - docker:dind
   retry: 1
   cache: {}
   needs:
@@ -866,6 +878,8 @@ cnode_submit_api:
 cnode:
   stage: build
   image: docker:20.10.8-git
+  services:
+    - docker:dind
   retry: 1
   cache: {}
   needs:
@@ -895,6 +909,8 @@ cnode:
 cncli:
   stage: build
   image: docker:20.10.8-git
+  services:
+    - docker:dind
   retry: 1
   cache: {}
   needs:
@@ -920,6 +936,8 @@ cncli:
 cdbsync:
   stage: build
   image: docker:20.10.8-git
+  services:
+    - docker:dind
   retry: 1
   cache: {}
   needs:
