@@ -1,6 +1,3 @@
-include:
-  - remote: 'https://gitlab.lidonation.com/infra-ops/autodevop/raw/main/gitlab-ci-20230108.yml'
-
 image: registry.lidonation.com/infra-ops/gitlab-runner:main
 
 # ---------------------------------------------------------------------------
@@ -639,7 +636,7 @@ workflow:
 ########## Pre-Build jobs #########
 ###################################
 yarn:
-  stage: build_app
+  stage: .pre
   image: node:15.9.0-alpine3.10
   retry: 1
   before_script:
@@ -665,7 +662,7 @@ yarn:
     - if: '$CI_COMMIT_BRANCH == "main" && ($DEPLOY_WEBSITE == "True" || $DEPLOY_WEBSITE == "true")'
 
 composer:
-  stage: build_app
+  stage: .pre
   image: composer:2.2.6
   retry: 1
   cache: { }
@@ -686,7 +683,7 @@ composer:
     - if: '$CI_COMMIT_BRANCH == "main" && ($DEPLOY_WEBSITE == "True" || $DEPLOY_WEBSITE == "true")'
 
 cnode_base:
-  stage: build_app
+  stage: .pre
   image: docker:20.10.8-git
   retry: 1
   cache: { }
@@ -708,7 +705,7 @@ cnode_base:
     - if: '$CARDANO_BASE_IMAGE_VER'
 
 cdbsync_base:
-  stage: build_app
+  stage: .pre
   image: docker:20.10.8-git
   retry: 1
   cache: { }
@@ -728,7 +725,7 @@ cdbsync_base:
     - if: '$CARDANO_DB_SYNC_BASE_IMAGE_VER'
 
 metadata_base:
-  stage: build_app
+  stage: .pre
   image: docker:20.10.8-git
   retry: 1
   cache: { }
@@ -750,7 +747,7 @@ metadata_base:
     - if: '$CARDANO_METADATA_SERVER_IMAGE_VER'
 
 web_base:
-  stage: build_app
+  stage: .pre
   image: docker:20.10.8-git
   retry: 1
   cache: { }
@@ -776,7 +773,7 @@ web_base:
 ########## Docker jobs #########
 ###################################
 web:
-  stage: build_image
+  stage: build
   image: docker:20.10.8-git
   retry: 1
   cache: { }
@@ -820,7 +817,7 @@ web:
       when: manual
 
 lucid:
-  stage: build_app
+  stage: .pre
   image: docker:20.10.8-git
   retry: 1
   cache: { }
@@ -845,7 +842,7 @@ lucid:
               ($DEPLOY_LUCID == "True" || $DEPLOY_LUCID == "true")'
 
 cnode_submit_api:
-  stage: build_image
+  stage: build
   image: docker:20.10.8-git
   retry: 1
   cache: {}
@@ -867,7 +864,7 @@ cnode_submit_api:
     - if: '$DEPLOY_CARDANO_TX_SUBMIT == "True" || $DEPLOY_CARDANO_TX_SUBMIT == "true"'
 
 cnode:
-  stage: build_image
+  stage: build
   image: docker:20.10.8-git
   retry: 1
   cache: {}
@@ -896,7 +893,7 @@ cnode:
             || ($DEPLOY_CARDANO_PRODUCER == "True" || $DEPLOY_CARDANO_PRODUCER == "true")'
 
 cncli:
-  stage: build_image
+  stage: build
   image: docker:20.10.8-git
   retry: 1
   cache: {}
@@ -921,7 +918,7 @@ cncli:
               ($DEPLOY_CARDANO_CNCLI == "True" || $DEPLOY_CARDANO_CNCLI == "true")'
 
 cdbsync:
-  stage: build_image
+  stage: build
   image: docker:20.10.8-git
   retry: 1
   cache: {}
@@ -1000,7 +997,7 @@ postgres-web-test:
 
 review:
   <<: *deploy_template
-  stage: review
+  stage: test
   retry: 1
   needs:
     - job: web
@@ -1067,7 +1064,7 @@ testnet:
 
 redis-prod:
   <<: *deploy_redis
-  stage: production
+  stage: deploy
   needs:
     - redis-test
   environment:
@@ -1075,7 +1072,7 @@ redis-prod:
 
 postgres-cdbsync-prod:
   <<: *deploy_postgres_cdbsync
-  stage: production
+  stage: deploy
   needs:
     - postgres-cdbsync-test
   environment:
@@ -1083,7 +1080,7 @@ postgres-cdbsync-prod:
 
 postgres-web-prod:
   <<: *deploy_postgres_web
-  stage: production
+  stage: deploy
   needs:
     - postgres-web-test
   environment:
@@ -1091,7 +1088,7 @@ postgres-web-prod:
 
 mainnet:
   <<: *deploy_template
-  stage: production
+  stage: deploy
   retry: 1
   needs:
     - review
@@ -1114,7 +1111,7 @@ mainnet:
 
 production:
   <<: *deploy_template
-  stage: production
+  stage: deploy
   retry: 1
   needs:
     - testnet

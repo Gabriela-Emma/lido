@@ -97,7 +97,7 @@
                     </span>
                     <p class="text-xs py-1  border-b mb-2 block">
                         {{ $t("These filters are not based on primary catalyst data but rather self assembled datasets by community groups") }}.
-                        {{ $t("We do not perform any validation at LIDO Nation") }}.
+                        {{ $t("noValidation") }}.
                     </p>
                     <CohortPicker
                         v-model="filters.cohort"
