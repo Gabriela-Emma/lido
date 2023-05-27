@@ -532,7 +532,7 @@ cache:
 variables:
   DOCKER_TLS_CERTDIR: ""
   DOCKER_HOST: tcp://docker:2375/
-  DOCKER_DRIVER: overlay
+  DOCKER_DRIVER: overlay2
   HELM_VERSION: 3.12.0
   #  DOCKER_HOST: unix:///var/run/docker.sock
   DEPLOY_INFRA:
@@ -685,9 +685,11 @@ composer:
 
 cnode_base:
   stage: build
-  image: docker:24.0.2-git
+  image: docker:20.10.12-git
   services:
-    - docker:dind
+    - name: docker:dind-20.10.12
+      alias: docker
+      command: ["--tls=false"]
   retry: 1
   cache: { }
   script:
