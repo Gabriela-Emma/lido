@@ -521,6 +521,7 @@ image: registry.lidonation.com/infra-ops/gitlab-runner:main
   }
 
 
+
 cache:
   key: ${CI_COMMIT_REF_SLUG}
   paths:
@@ -584,6 +585,11 @@ variables:
     value: ''
     description: 'Enter the mainnet dbsync snapshot if you wan to restore dbsync from snapshot.'
 
+services:
+  - name: docker:dind
+    alias: docker
+    command: ["--tls=false"]
+
 workflow:
   rules:
     - if: $CI_COMMIT_TAG
@@ -639,6 +645,7 @@ workflow:
 yarn:
   stage: .pre
   image: node:15.9.0-alpine3.10
+  services: {}
   retry: 1
   before_script:
     - apk add --update curl && rm -rf /var/cache/apk/*
@@ -665,6 +672,7 @@ yarn:
 composer:
   stage: .pre
   image: composer:2.2.6
+  services: {}
   retry: 1
   cache: { }
   variables:
@@ -686,10 +694,6 @@ composer:
 cnode_base:
   stage: build
   image: docker:24.0.2-git
-  services:
-    - name: docker:dind
-      alias: docker
-      command: ["--tls=false"]
   retry: 1
   cache: { }
   script:
@@ -713,8 +717,6 @@ cnode_base:
 cdbsync_base:
   stage: build
   image: docker:24.0.2-git
-  services:
-    - docker:dind
   retry: 1
   cache: { }
   script:
