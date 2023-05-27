@@ -685,12 +685,11 @@ composer:
 
 cnode_base:
   stage: build
-  image: docker:24.0.2-git
+  image: docker:20.10.12-git
   services:
-    - docker:dind-24.0.2
-#    - name: docker:dind-24.0.2
-#      alias: docker
-#      command: ["--tls=false"]
+    - name: docker:dind-20.10.12
+      alias: docker
+      command: ["--tls=false"]
   retry: 1
   cache: { }
   script:
