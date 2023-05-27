@@ -687,9 +687,10 @@ cnode_base:
   stage: build
   image: docker:24.0.2-git
   services:
-    - name: docker:dind-24.0.2
-      alias: docker
-      command: ["--tls=false"]
+    - docker:dind-24.0.2
+#    - name: docker:dind-24.0.2
+#      alias: docker
+#      command: ["--tls=false"]
   retry: 1
   cache: { }
   script:
