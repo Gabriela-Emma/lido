@@ -531,7 +531,7 @@ cache:
 
 variables:
   DOCKER_TLS_CERTDIR: "/certs"
-  DOCKER_HOST: tcp://localhost:2375/
+  DOCKER_HOST: tcp://docker:2375/
   DOCKER_DRIVER: overlay2
   HELM_VERSION: 3.12.0
   #  DOCKER_HOST: unix:///var/run/docker.sock
@@ -693,6 +693,7 @@ cnode_base:
   script:
     - *auto_devops_custom
     - |
+      docker --version
       docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
       docker build --network host \
         --build-arg VERSION="${CARDANO_BASE_IMAGE_VER}" \
