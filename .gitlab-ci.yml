@@ -1,6 +1,3 @@
-include:
-  - remote: 'https://gitlab.lidonation.com/infra-ops/autodevop/raw/main/gitlab-ci-20230108.yml'
-
 image: registry.lidonation.com/infra-ops/gitlab-runner:main
 
 # ---------------------------------------------------------------------------
