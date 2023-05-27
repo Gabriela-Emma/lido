@@ -581,7 +581,7 @@ variables:
     description: '[Optional] If branch name is different from node version.'
   RESTORE_SNAPSHOT_TESTNET:
     value: ''
-    description: 'Enter the testnet dbsync snapshot if you wan to restore dbsync from snapshot.'
+    description: 'Enter the preview dbsync snapshot if you wan to restore dbsync from snapshot.'
   RESTORE_SNAPSHOT_MAINNET:
     value: ''
     description: 'Enter the mainnet dbsync snapshot if you wan to restore dbsync from snapshot.'
@@ -982,21 +982,21 @@ redis-test:
   stage: test
   needs: []
   environment:
-    name: testnet
+    name: preview
 
 postgres-cdbsync-test:
   <<: *deploy_postgres_cdbsync
   stage: test
   needs: []
   environment:
-    name: testnet
+    name: preview
 
 postgres-web-test:
   <<: *deploy_postgres_web
   stage: test
   needs: []
   environment:
-    name: testnet
+    name: preview
 
 review:
   <<: *deploy_template
@@ -1030,7 +1030,7 @@ review:
             )'
       when: manual
 
-testnet:
+preview:
   <<: *deploy_template
   stage: test
   retry: 1
@@ -1048,7 +1048,7 @@ testnet:
     - deploy_services
     - persist_environment_url
   environment:
-    name: testnet
+    name: preview
   rules:
     - if: '$CI_COMMIT_BRANCH == "main" && (
               ($DEPLOY_WEBSITE == "True" || $DEPLOY_WEBSITE == "true")
@@ -1117,7 +1117,7 @@ production:
   stage: production
   retry: 1
   needs:
-    - testnet
+    - preview
   script:
     - *setup
     - deploy_services
