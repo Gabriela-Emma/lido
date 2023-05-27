@@ -531,6 +531,7 @@ cache:
 
 variables:
   DOCKER_HOST: tcp://127.0.0.1:2375/
+  DOCKER_TLS_CERTDIR: ""
   HELM_VERSION: 3.12.0
   #  DOCKER_HOST: unix:///var/run/docker.sock
   DEPLOY_INFRA:
