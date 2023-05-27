@@ -753,7 +753,7 @@ web_base:
   cache: { }
   script:
     - *auto_devops_custom
-    - setup_docker
+#    - setup_docker
     - |
       docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
       echo "Building web BASE Dockerfile..."
@@ -784,7 +784,7 @@ web:
       optional: true
   script:
     - *auto_devops_custom
-    - setup_docker
+#    - setup_docker
     - |
       if [[  $CI_COMMIT_BRANCH != 'mainnet' ]]; then
         cat ./src/pool/config/metadata.tmpl.json |
@@ -823,7 +823,7 @@ lucid:
   cache: { }
   script:
     - *auto_devops_custom
-    - setup_docker
+#    - setup_docker
     - |
       docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
       echo "Building lucid Dockerfile..."
@@ -851,7 +851,7 @@ cnode_submit_api:
       optional: true
   script:
     - *auto_devops_custom
-    - setup_docker
+#    - setup_docker
     - |
       docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"      
       docker build --network host -f submitTx.Dockerfile \
@@ -873,7 +873,7 @@ cnode:
       optional: true
   script:
     - *auto_devops_custom
-    - setup_docker
+#    - setup_docker
     - |
       docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
       docker build --network host -f cardano.Dockerfile \
@@ -902,7 +902,7 @@ cncli:
       optional: true
   script:
     - *auto_devops_custom
-    - setup_docker
+#    - setup_docker
     - |
       docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
       docker build --network host -f cncli.Dockerfile \
@@ -927,7 +927,7 @@ cdbsync:
       optional: true
   script:
     - *auto_devops_custom
-    - setup_docker
+#    - setup_docker
     - |
       docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
       docker build --network host -f cardano.dbSync.Dockerfile \
