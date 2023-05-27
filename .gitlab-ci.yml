@@ -521,8 +521,6 @@ image: registry.lidonation.com/infra-ops/gitlab-runner:main
   }
 
 
-
-
 cache:
   key: ${CI_COMMIT_REF_SLUG}
   paths:
@@ -532,7 +530,8 @@ cache:
 #   - yarn install --cache-folder ./src/www.lidonation.com/var/www/node_modules --prefer-offline
 
 variables:
-  HELM_VERSION: 3.11.1
+  DOCKER_HOST: tcp://docker:2375/
+  HELM_VERSION: 3.12.0
   #  DOCKER_HOST: unix:///var/run/docker.sock
   DEPLOY_INFRA:
     value: 'False'
@@ -684,7 +683,7 @@ composer:
 
 cnode_base:
   stage: build
-  image: docker:20.10.8-git
+  image: docker:24.0.2-git
   services:
     - docker:dind
   retry: 1
@@ -708,7 +707,7 @@ cnode_base:
 
 cdbsync_base:
   stage: build
-  image: docker:20.10.8-git
+  image: docker:24.0.2-git
   services:
     - docker:dind
   retry: 1
@@ -730,7 +729,7 @@ cdbsync_base:
 
 metadata_base:
   stage: .pre
-  image: docker:20.10.8-git
+  image: docker:24.0.2-git
   services:
     - docker:dind
   retry: 1
@@ -754,7 +753,7 @@ metadata_base:
 
 web_base:
   stage: .pre
-  image: docker:20.10.8-git
+  image: docker:24.0.2-git
   retry: 1
   cache: { }
   script:
@@ -780,7 +779,7 @@ web_base:
 ###################################
 web:
   stage: build
-  image: docker:20.10.8-git
+  image: docker:24.0.2-git
   services:
     - docker:dind
   retry: 1
@@ -826,7 +825,7 @@ web:
 
 lucid:
   stage: .pre
-  image: docker:20.10.8-git
+  image: docker:24.0.2-git
   services:
     - docker:dind
   retry: 1
@@ -853,7 +852,7 @@ lucid:
 
 cnode_submit_api:
   stage: build
-  image: docker:20.10.8-git
+  image: docker:24.0.2-git
   services:
     - docker:dind
   retry: 1
@@ -877,7 +876,7 @@ cnode_submit_api:
 
 cnode:
   stage: build
-  image: docker:20.10.8-git
+  image: docker:24.0.2-git
   services:
     - docker:dind
   retry: 1
@@ -908,7 +907,7 @@ cnode:
 
 cncli:
   stage: build
-  image: docker:20.10.8-git
+  image: docker:24.0.2-git
   services:
     - docker:dind
   retry: 1
@@ -935,7 +934,7 @@ cncli:
 
 cdbsync:
   stage: build
-  image: docker:20.10.8-git
+  image: docker:24.0.2-git
   services:
     - docker:dind
   retry: 1
