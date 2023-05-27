@@ -650,7 +650,7 @@ yarn:
     cd ./src/www.lidonation.com/var/www
     curl -X GET https://www.lidonation.com/api/cache/snippets > ./storage/app/snippets.json
     touch .npmrc
-    echo '//npm.pkg.github.com/:_authToken=${GITHUB_PACKAGE_REGISTRY_TOKEN}' > .npmrc
+    echo "//npm.pkg.github.com/:_authToken=${GITHUB_PACKAGE_REGISTRY_TOKEN}" > .npmrc
     echo '@spatie:registry=https://npm.pkg.github.com' >> .npmrc
     echo '@splidejs:registry=https://npm.pkg.github.com' >> .npmrc
     yarn config set ignore-engines true
