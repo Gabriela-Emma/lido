@@ -645,7 +645,7 @@ workflow:
 yarn:
   stage: .pre
   image: node:15.9.0-alpine3.10
-  services: {}
+  services: []
   retry: 1
   before_script:
     - apk add --update curl && rm -rf /var/cache/apk/*
@@ -672,7 +672,7 @@ yarn:
 composer:
   stage: .pre
   image: composer:2.2.6
-  services: {}
+  services: []
   retry: 1
   cache: { }
   variables:
