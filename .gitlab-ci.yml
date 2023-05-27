@@ -757,7 +757,7 @@ metadata_base:
     - if: '$CARDANO_METADATA_SERVER_IMAGE_VER'
 
 web_base:
-  stage: .pre
+  stage: build
   image: docker:24.0.2-git
   retry: 1
   cache: { }
