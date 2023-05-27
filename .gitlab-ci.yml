@@ -683,7 +683,7 @@ composer:
     - if: '$CI_COMMIT_BRANCH == "main" && ($DEPLOY_WEBSITE == "True" || $DEPLOY_WEBSITE == "true")'
 
 cnode_base:
-  stage: .pre
+  stage: build
   image: docker:20.10.8-git
   retry: 1
   cache: { }
@@ -705,7 +705,7 @@ cnode_base:
     - if: '$CARDANO_BASE_IMAGE_VER'
 
 cdbsync_base:
-  stage: .pre
+  stage: build
   image: docker:20.10.8-git
   retry: 1
   cache: { }
