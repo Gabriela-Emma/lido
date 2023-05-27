@@ -530,7 +530,7 @@ cache:
 #   - yarn install --cache-folder ./src/www.lidonation.com/var/www/node_modules --prefer-offline
 
 variables:
-  DOCKER_HOST: tcp://127.0.0.1:2375/
+  DOCKER_HOST: tcp://docker:2375/
   DOCKER_TLS_CERTDIR: ""
   HELM_VERSION: 3.12.0
   #  DOCKER_HOST: unix:///var/run/docker.sock
