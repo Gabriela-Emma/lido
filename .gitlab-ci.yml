@@ -1064,7 +1064,7 @@ testnet:
 
 redis-prod:
   <<: *deploy_redis
-  stage: production
+  stage: deploy
   needs:
     - redis-test
   environment:
@@ -1072,7 +1072,7 @@ redis-prod:
 
 postgres-cdbsync-prod:
   <<: *deploy_postgres_cdbsync
-  stage: production
+  stage: deploy
   needs:
     - postgres-cdbsync-test
   environment:
@@ -1080,7 +1080,7 @@ postgres-cdbsync-prod:
 
 postgres-web-prod:
   <<: *deploy_postgres_web
-  stage: production
+  stage: deploy
   needs:
     - postgres-web-test
   environment:
