@@ -908,9 +908,9 @@ cnode:
 
 cncli:
   stage: build
-  image: docker:19-git
+  image: docker:18.0.9-git
   services:
-    - docker:dind-19
+    - docker:dind-18.0.9
   retry: 1
   cache: {}
   needs:
