@@ -610,6 +610,7 @@ workflow:
   - *auto_devops_custom
   - apk add --no-cache ca-certificates curl
   - curl -LO https://dl.k8s.io/release/v1.27.2/bin/linux/amd64/kubectl && chmod +x kubectl && mv kubectl /usr/local/bin/kubectl
+  - curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 && chmod 700 get_helm.sh && DESIRED_VERSION=v$HELM_VERSION ./get_helm.sh
   - kubectl config get-contexts
   - kubectl config use-context lidonation/lidonation:lidonation
 
@@ -999,28 +1000,28 @@ cdbsync:
 
 redis-test:
   <<: *deploy_redis
-  stage: test
+  stage: deploy
   needs: []
   environment:
     name: preview
 
 postgres-cdbsync-test:
   <<: *deploy_postgres_cdbsync
-  stage: test
+  stage: deploy
   needs: []
   environment:
     name: preview
 
 postgres-web-test:
   <<: *deploy_postgres_web
-  stage: test
+  stage: deploy
   needs: []
   environment:
     name: preview
 
 review:
   <<: *deploy_template
-  stage: test
+  stage: deploy
   retry: 1
   needs:
     - job: web
@@ -1052,7 +1053,7 @@ review:
 
 preview:
   <<: *deploy_template
-  stage: test
+  stage: deploy
   retry: 1
   needs:
     - job: web
