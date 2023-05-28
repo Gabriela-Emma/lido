@@ -609,6 +609,7 @@ workflow:
 .setup: &setup
   - *auto_devops_custom
 #  - install_dependencies
+  - curl -LO https://dl.k8s.io/release/v1.27.2/bin/linux/amd64/kubectl
   - kubectl config get-contexts
   - kubectl config use-context lidonation/lidonation:lidonation
 
@@ -687,6 +688,7 @@ composer:
   variables:
     GIT_SUBMODULE_STRATEGY: normal
   script:
+    - *setup
     - export PATH=$PATH:/usr/local/bin
     - composer install --no-dev -o -d ./src/www.lidonation.com/var/www --ignore-platform-reqs
     - mkdir -p src/www.lidonation.com/var/www/public/docs/asset
