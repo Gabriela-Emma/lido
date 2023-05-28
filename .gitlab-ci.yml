@@ -57,6 +57,7 @@ image: registry.lidonation.com/infra-ops/gitlab-runner:main
         --wait \
         --atomic \
         --namespace="$KUBE_NAMESPACE" \
+        --create-namespace \
         -f ./chart/values.postgresql.yaml \
         --set global.postgresql.auth.postgresPassword="$POSTGRESQL_DB_SYNC_POSTGRES_PASSWORD" \
         --set global.postgresql.auth.database="$POSTGRESQL_DB_SYNC_DB" \
@@ -90,6 +91,7 @@ image: registry.lidonation.com/infra-ops/gitlab-runner:main
         --wait \
         --atomic \
         --namespace="$KUBE_NAMESPACE" \
+        --create-namespace \
         -f ./chart/values.postgresql.yaml \
         --set global.postgresql.auth.database="$POSTGRESQL_WEB_DB" \
         --set global.postgresql.auth.username="$POSTGRESQL_WEB_USER" \
@@ -110,6 +112,7 @@ image: registry.lidonation.com/infra-ops/gitlab-runner:main
         --wait \
         --atomic \
         --namespace="$KUBE_NAMESPACE" \
+        --create-namespace \
         -f ./chart/values.redis.yaml \
         --set global.redis.password="$REDIS_PASSWORD" \
         --set auth.password="$REDIS_PASSWORD" \
@@ -227,6 +230,7 @@ image: registry.lidonation.com/infra-ops/gitlab-runner:main
       --set image.pullSecret="$secret_name" \
       --set namespace=${KUBE_NAMESPACE} \
       --namespace="$KUBE_NAMESPACE" \
+      --create-namespace \
       --version="$APP_VERSION"
   }
 
@@ -271,6 +275,7 @@ image: registry.lidonation.com/infra-ops/gitlab-runner:main
          --set image.pullSecret="$secret_name" \
          --set namespace=${KUBE_NAMESPACE} \
          --namespace="$KUBE_NAMESPACE" \
+         --create-namespace \
          --version="$APP_VERSION"
   }
 
@@ -296,6 +301,7 @@ image: registry.lidonation.com/infra-ops/gitlab-runner:main
       --set image.pullSecret="$secret_name" \
       --set namespace=${KUBE_NAMESPACE} \
       --namespace="$KUBE_NAMESPACE" \
+      --create-namespace \
       --version="$APP_VERSION"
   }
 
@@ -313,6 +319,7 @@ image: registry.lidonation.com/infra-ops/gitlab-runner:main
       --set services.lucid.secret.blockfront_project_id="$BLOCKFROST_PROJECT_ID" \
       --set namespace=${KUBE_NAMESPACE} \
       --namespace="$KUBE_NAMESPACE" \
+      --create-namespace \
       --version="$APP_VERSION"
   }
   
@@ -361,6 +368,8 @@ image: registry.lidonation.com/infra-ops/gitlab-runner:main
       --set image.pullSecret="$secret_name" \
       --set namespace=${KUBE_NAMESPACE} \
       --namespace="$KUBE_NAMESPACE" \
+      --create-namespace \
+      --create-namespace \
       --version="$APP_VERSION"
   }
 
@@ -404,6 +413,7 @@ image: registry.lidonation.com/infra-ops/gitlab-runner:main
       --set-file configurationFiles.mainnetConwayGenesis=./src/pool/config/build/mainnet-conway-genesis.json \
       --set namespace=${KUBE_NAMESPACE} \
       --namespace="$KUBE_NAMESPACE" \
+      --create-namespace \
       --version="$APP_VERSION"
   }
 
@@ -443,6 +453,7 @@ image: registry.lidonation.com/infra-ops/gitlab-runner:main
        --set image.pullSecret="$secret_name" \
        --set namespace=${KUBE_NAMESPACE} \
        --namespace="$KUBE_NAMESPACE" \
+      --create-namespace \
        --version="$APP_VERSION"
   }
 
@@ -482,6 +493,7 @@ image: registry.lidonation.com/infra-ops/gitlab-runner:main
        --set image.pullSecret="$secret_name" \
        --set namespace=${KUBE_NAMESPACE} \
        --namespace="$KUBE_NAMESPACE" \
+       --create-namespace \
        --version="$APP_VERSION"
   }
 
@@ -535,7 +547,6 @@ variables:
   DOCKER_HOST: tcp://docker:2375/
   DOCKER_DRIVER: overlay2
   HELM_VERSION: 3.12.0
-  #  DOCKER_HOST: unix:///var/run/docker.sock
   DEPLOY_INFRA:
     value: 'False'
     description: 'Install infrastructure services (redis, db-sync)'
@@ -597,11 +608,9 @@ workflow:
 
 .setup: &setup
   - *auto_devops_custom
-  - check_kube_domain
-  - install_dependencies
+#  - install_dependencies
   - kubectl config get-contexts
   - kubectl config use-context lidonation/lidonation:lidonation
-  - create_secret
 
 .infra_rules: &infra_rules
   - if: '$CI_COMMIT_BRANCH == "main" &&
@@ -833,7 +842,6 @@ lucid:
   cache: { }
   script:
     - *auto_devops_custom
-#    - setup_docker
     - |
       docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
       echo "Building lucid Dockerfile..."
@@ -863,7 +871,6 @@ cnode_submit_api:
       optional: true
   script:
     - *auto_devops_custom
-#    - setup_docker
     - |
       docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"      
       docker build --network host -f submitTx.Dockerfile \
@@ -887,7 +894,6 @@ cnode:
       optional: true
   script:
     - *auto_devops_custom
-#    - setup_docker
     - |
       docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
       docker build --network host -f cardano.Dockerfile \
@@ -918,7 +924,6 @@ cncli:
       optional: true
   script:
     - *auto_devops_custom
-#    - setup_docker
     - |
       docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
       docker build --network host -f cncli.Dockerfile \
@@ -945,7 +950,6 @@ cdbsync:
       optional: true
   script:
     - *auto_devops_custom
-#    - setup_docker
     - |
       docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
       docker build --network host -f cardano.dbSync.Dockerfile \

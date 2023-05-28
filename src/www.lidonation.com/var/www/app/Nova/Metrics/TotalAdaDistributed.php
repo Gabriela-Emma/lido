@@ -19,7 +19,7 @@ class TotalAdaDistributed extends Value
     {
         $slteLovelaceDistributed = Reward::where('asset_type', 'ada')
                         ->where('model_type', LearningLesson::class)
-                        ->whereIn('status', ['processed', 'claimed']);
+                        ->whereIn('status', ['processed', 'claimed', 'paid']);
 
         return $this->sum($request, $slteLovelaceDistributed, 'amount')
                     ->transform(fn($value) => $value / 1000000)
