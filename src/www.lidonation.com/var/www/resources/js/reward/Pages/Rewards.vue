@@ -87,6 +87,7 @@
                                                     Your withdrawal will be posted to
                                                     your wallet in about 5 to 10 minutes.
                                                 </p>
+                                               <span> See <Link :href="route('rewards.withdrawals.index')">history and pending withdrawals</Link></span>
                                             </div>
                                             <dl class="overflow-y-auto" v-if="!withdrawalsProcessed && !!withdrawals?.length">
                                                 <template v-for="(withdrawal, index) in withdrawals"
@@ -207,6 +208,8 @@ import route from "ziggy-js";
 import RewardNav from "../Components/RewardNav.vue";
 import RewardList from "../Components/RewardList.vue";
 import axios from "../../lib/utils/axios";
+import {Link} from '@inertiajs/vue3';
+
 
 const ConnectWallet = defineAsyncComponent(() => import('../../global/Shared/Components/ConnectWallet.vue'));
 const $utils: any = inject('$utils');
