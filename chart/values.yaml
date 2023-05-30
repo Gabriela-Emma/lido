@@ -130,6 +130,7 @@ services:
       subPath: "data"
       mountPath: "/usr/app/data"
     ingress:
+      host: ncdb.lidonation.com
       controller:
         headers:
           HTTPS: "on"
@@ -138,8 +139,7 @@ services:
         traefik.ingress.kubernetes.io/router.entrypoints: "websecure,web",
         cert-manager.io/cluster-issuer: letsencrypt-issuer,
         traefik.ingress.kubernetes.io/router.middlewares: traefik-redirect-http-to-https@kubernetescrd
-      }
-      host: ncdb.lidonation.com
+      }      
       tls:
         secretName: ncdb-lidonation-com-tls
   lucid:
