@@ -238,10 +238,10 @@
       --set services.web.ingress.tls[0].hosts[1]="$AUTO_DEVOPS_DOMAIN" \
       --set services.web.replicaCount="$replicas" \
       --set services.web.ingress.annotations."traefik\.ingress\.kubernetes\.io\/router\.middlewares"="$ANNOTATIONS" \
-      --set services.web.service.url="$AUTO_DEVOPS_WEB_HOST" \
+      --set services.web.service.url="$APP_URL" \
       --set services.web.secret.app_key="$APP_KEY" \
       --set services.web.config.ANALYTICS_ID="$ANALYTICS_ID" \
-      --set services.web.config.APP_URL="$AUTO_DEVOPS_WEB_HOST" \
+      --set services.web.config.APP_URL="$APP_URL" \
       --set services.web.config.BLOCKFROST_PROJECT_ID="$BLOCKFROST_PROJECT_ID" \
       --set services.web.config.BLOCKFROST_BASE_URL="$BLOCKFROST_BASE_URL" \
       --set services.web.config.CLOUDFLARE_TOKEN="$CLOUDFLARE_TOKEN" \
