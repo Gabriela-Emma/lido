@@ -1104,7 +1104,6 @@ review:
   script:
     - *setup
     - deploy_services
-    - persist_environment_url
   environment:
     name: preview
   rules:
@@ -1136,7 +1135,6 @@ preview:
   script:
     - *setup
     - deploy_services
-    - persist_environment_url
   environment:
     name: preview
   rules:
@@ -1188,7 +1186,6 @@ mainnet:
   script:
     - *setup
     - deploy_services
-    - persist_environment_url
   environment:
     name: mainnet
   rules:
@@ -1211,7 +1208,6 @@ production:
   script:
     - *setup
     - deploy_services
-    - persist_environment_url
   environment:
     name: mainnet
   rules:
