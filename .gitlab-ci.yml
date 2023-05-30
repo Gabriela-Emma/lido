@@ -127,7 +127,7 @@
       export ANNOTATIONS='traefik-redirect-http-to-https@kubernetescrd\,traefik-default-headers@kubernetescrd'
     fi
 
-    helm template "$DEPLOYMENT_NAME" ./chart/lidonation.com \      
+    helm template "$DEPLOYMENT_NAME" ./chart/lidonation.com \
       -f ./chart/values.yaml \
       --set application.track="$track" \
       --set GOOGLE_CLOUD_KEY_FILE="$GOOGLE_CLOUD_KEY_FILE" \
@@ -217,7 +217,6 @@
       --set image.pullSecret="$secret_name" \
       --set namespace=${KUBE_NAMESPACE} \
       --namespace="$KUBE_NAMESPACE" \
-      --create-namespace \
       --version="$APP_VERSION"
 
 
