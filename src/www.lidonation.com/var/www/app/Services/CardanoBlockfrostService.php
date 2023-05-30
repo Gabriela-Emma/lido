@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Facades\Http;
 
 class CardanoBlockfrostService
@@ -31,13 +32,11 @@ class CardanoBlockfrostService
     * @param $relativePath -> relative path to endpoint
     * @param $data -> an array to hold data that we pass to endpoint
     *
-    * @return $response -> response is an obje$ct
+    * @return $response -> response is an object
     */
     public function request($method, $relativePath, $data = [])
     {
-        $response = $this->getClient()->{$method}($relativePath, $data);
-
-        return $response;
+        return $this->getClient()->{$method}($relativePath, $data);
     }
 
     /**
@@ -48,10 +47,10 @@ class CardanoBlockfrostService
     }
 
     /**
-     * Method called automatically on instanciation and sets base variables for blockfrost interactions
+     * Method called automatically on instantiation and sets base variables for blockfrost interactions
      * Variables set are -> $blockfrostUrl, $projectId and $poolId
      */
-    private function init()
+    private function init(): void
     {
         $this->poolId = config('cardano.pool.hash');
         $envBlockfrost = config('services.blockfrost');
@@ -59,7 +58,7 @@ class CardanoBlockfrostService
         $this->blockfrostUrl = $envBlockfrost['baseUrl'];
     }
 
-    protected function getClient()
+    protected function getClient(): PendingRequest
     {
         return Http::withHeaders([
             'project_id' => $this->projectId,

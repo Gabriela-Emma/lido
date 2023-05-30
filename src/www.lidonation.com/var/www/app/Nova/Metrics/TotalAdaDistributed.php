@@ -6,20 +6,21 @@ use App\Models\LearningLesson;
 use App\Models\Reward;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Metrics\Value;
+use Laravel\Nova\Metrics\ValueResult;
 
 class TotalAdaDistributed extends Value
 {
     /**
      * Calculate the value of the metric.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @return mixed
+     * @param NovaRequest $request
+     * @return ValueResult
      */
-    public function calculate(NovaRequest $request)
+    public function calculate(NovaRequest $request): ValueResult
     {
         $slteLovelaceDistributed = Reward::where('asset_type', 'ada')
                         ->where('model_type', LearningLesson::class)
-                        ->whereIn('status', ['processed', 'claimed']);
+                        ->whereIn('status', ['processed', 'claimed', 'paid']);
 
         return $this->sum($request, $slteLovelaceDistributed, 'amount')
                     ->transform(fn($value) => $value / 1000000)
@@ -31,9 +32,10 @@ class TotalAdaDistributed extends Value
      *
      * @return array
      */
-    public function ranges()
+    public function ranges(): array
     {
         return [
+            15 => __('15 Days'),
             30 => __('30 Days'),
             60 => __('60 Days'),
             365 => __('365 Days'),
@@ -59,12 +61,12 @@ class TotalAdaDistributed extends Value
      *
      * @return string
      */
-    public function uriKey()
+    public function uriKey(): string
     {
         return 'total-ada-distributed';
     }
 
-    public function name()
+    public function name(): string
     {
         return 'Total Ada Distributed';
     }
