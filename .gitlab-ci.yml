@@ -605,6 +605,13 @@
     fi
   }
 
+stages:
+  - .pre
+  - test
+  - preview
+  - mainnet
+  - .post
+
 
 cache:
   key: ${CI_COMMIT_REF_SLUG}
@@ -1069,28 +1076,28 @@ cdbsync:
 
 redis-test:
   <<: *deploy_redis
-  stage: staging
+  stage: preview
   needs: []
   environment:
     name: preview
 
 postgres-cdbsync-test:
   <<: *deploy_postgres_cdbsync
-  stage: staging
+  stage: preview
   needs: []
   environment:
     name: preview
 
 postgres-web-test:
   <<: *deploy_postgres_web
-  stage: staging
+  stage: preview
   needs: []
   environment:
     name: preview
 
 review:
   <<: *deploy_template
-  stage: staging
+  stage: preview
   retry: 1
   needs:
     - job: web
@@ -1121,7 +1128,7 @@ review:
 
 preview:
   <<: *deploy_template
-  stage: staging
+  stage: preview
   retry: 1
   needs:
     - job: web
@@ -1155,7 +1162,7 @@ preview:
 
 redis-prod:
   <<: *deploy_redis
-  stage: production
+  stage: mainnet
   needs:
     - redis-test
   environment:
@@ -1163,7 +1170,7 @@ redis-prod:
 
 postgres-cdbsync-prod:
   <<: *deploy_postgres_cdbsync
-  stage: production
+  stage: mainnet
   needs:
     - postgres-cdbsync-test
   environment:
@@ -1171,7 +1178,7 @@ postgres-cdbsync-prod:
 
 postgres-web-prod:
   <<: *deploy_postgres_web
-  stage: production
+  stage: mainnet
   needs:
     - postgres-web-test
   environment:
@@ -1179,7 +1186,7 @@ postgres-web-prod:
 
 mainnet:
   <<: *deploy_template
-  stage: production
+  stage: mainnet
   retry: 1
   needs:
     - review
@@ -1201,7 +1208,7 @@ mainnet:
 
 production:
   <<: *deploy_template
-  stage: production
+  stage: mainnet
   retry: 1
   needs:
     - preview
