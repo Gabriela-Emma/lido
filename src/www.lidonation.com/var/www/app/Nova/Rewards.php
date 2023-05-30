@@ -87,6 +87,7 @@ class Rewards extends Resource
             Date::make('Created At', 'created_at')->sortable(),
 
             BelongsTo::make(__('Recipient'), 'author', User::class)
+                ->sortable()
                 ->searchable(),
 
             Text::make(__('Stake Address'), 'stake_address')->sortable(),
