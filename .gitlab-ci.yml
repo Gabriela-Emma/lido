@@ -607,6 +607,7 @@
 
 stages:
   - .pre
+  - build
   - test
   - preview
   - mainnet
