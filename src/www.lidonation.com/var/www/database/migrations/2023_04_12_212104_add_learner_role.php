@@ -13,7 +13,17 @@ return new class extends Migration
      */
     public function up()
     {
-        // dd(RoleEnum::learner()->values());
+        
         Role::create(['name' => 'learner']);
+    }
+
+     /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Role::where('name', 'learner')->delete();
     }
 };

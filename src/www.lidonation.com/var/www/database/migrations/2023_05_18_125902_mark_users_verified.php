@@ -16,16 +16,17 @@ return new class extends Migration
     public function up()
     {
         $role = Role::where('name', 'learner')->first();
-        DB::table('users')
-            ->whereNotExists(function ($query) use ($role) {
-                $query->select(DB::raw(1))
-                    ->from('model_has_roles')
-                    ->whereRaw('model_has_roles.model_id = users.id')
-                    ->whereRaw('model_has_roles.role_id = ?', [$role->id]);
-            })
-            ->whereNull('email_verified_at')
-            ->update(['email_verified_at' => now()]);
-
+        if (! is_null($role)) {
+            DB::table('users')
+                ->whereNotExists(function ($query) use ($role) {
+                    $query->select(DB::raw(1))
+                        ->from('model_has_roles')
+                        ->whereRaw('model_has_roles.model_id = users.id')
+                        ->whereRaw('model_has_roles.role_id = ?', [$role->id]);
+                })
+                ->whereNull('email_verified_at')
+                ->update(['email_verified_at' => now()]);
+        }
     }
 
     /**
