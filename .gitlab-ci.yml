@@ -688,7 +688,7 @@ workflow:
 
 .setup: &setup
   - *auto_devops_custom
-  - apk add --no-cache ca-certificates curl bash openssl
+  - apk add --no-cache ca-certificates curl bash openssl git
   - curl -LO https://dl.k8s.io/release/v1.25.9/bin/linux/amd64/kubectl && chmod +x kubectl && mv kubectl /usr/local/bin/kubectl
   - curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 && chmod 700 get_helm.sh && DESIRED_VERSION=v$HELM_VERSION ./get_helm.sh
   - kubectl config get-contexts
