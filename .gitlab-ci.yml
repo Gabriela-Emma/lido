@@ -159,7 +159,7 @@
       --set services.web.config.CARDANO_LIDO_DELEGATE_POLICY_ID="$CARDANO_LIDO_DELEGATE_POLICY_ID" \
       --set services.web.config.CARDANO_PHUFFY_VOTER_POLICY_ID="$CARDANO_PHUFFY_VOTER_POLICY_ID" \
       --set services.web.config.CARDANO_POOL_HASH="$CARDANO_POOL_HASH" \
-      --set services.web.config.CARDANO_NETWORK_ARGUMENT="$NETWORK_ARGUMENT" \
+      --set services.web.config.CARDANO_NETWORK_ARGUMENT="$CARDANO_NETWORK_ARGUMENT" \
       --set services.web.config.CARDANO_NETWORK="$CARDANO_NETWORK" \
       --set services.web.config.CARDANO_NODE_SOCKET_PATH="$CARDANO_NODE_SOCKET_PATH" \
       --set services.web.config.CARDANO_PHUFFY_CAUSE_PAYMENT_ADDRESS="$CARDANO_PHUFFY_CAUSE_PAYMENT_ADDRESS" \
@@ -205,7 +205,7 @@
       --set services.cardano.replicaCount="$replicas" \
       --set services.cardano.image.repository="$CI_APPLICATION_REPOSITORY/cardano" \
       --set services.cardano.config.METADATA_URL="$METADATA_URL" \
-      --set services.cardano.config.NETWORK_ARGUMENT="$NETWORK_ARGUMENT" \
+      --set services.cardano.config.NETWORK_ARGUMENT="$CARDANO_NETWORK_ARGUMENT" \
       --set services.cardano.config.CARDANO_NETWORK="$CARDANO_NETWORK" \
       --set services.cardano.config.NODE_PORT="$CARDANO_NODE_PORT" \
       --set services.cardano.config.RELAY2_PORT="$RELAY2_PORT" \
@@ -257,7 +257,7 @@
       --set services.web.config.CARDANO_LIDO_DELEGATE_POLICY_ID="$CARDANO_LIDO_DELEGATE_POLICY_ID" \
       --set services.web.config.CARDANO_PHUFFY_VOTER_POLICY_ID="$CARDANO_PHUFFY_VOTER_POLICY_ID" \
       --set services.web.config.CARDANO_POOL_HASH="$CARDANO_POOL_HASH" \
-      --set services.web.config.CARDANO_NETWORK_ARGUMENT="$NETWORK_ARGUMENT" \
+      --set services.web.config.CARDANO_NETWORK_ARGUMENT="$CARDANO_NETWORK_ARGUMENT" \
       --set services.web.config.CARDANO_NETWORK="$CARDANO_NETWORK" \
       --set services.web.config.CARDANO_NODE_SOCKET_PATH="$CARDANO_NODE_SOCKET_PATH" \
       --set services.web.config.CARDANO_PHUFFY_CAUSE_PAYMENT_ADDRESS="$CARDANO_PHUFFY_CAUSE_PAYMENT_ADDRESS" \
@@ -303,7 +303,7 @@
       --set services.cardano.replicaCount="$replicas" \
       --set services.cardano.image.repository="$CI_APPLICATION_REPOSITORY/cardano" \
       --set services.cardano.config.METADATA_URL="$METADATA_URL" \
-      --set services.cardano.config.NETWORK_ARGUMENT="$NETWORK_ARGUMENT" \
+      --set services.cardano.config.NETWORK_ARGUMENT="$CARDANO_NETWORK_ARGUMENT" \
       --set services.cardano.config.CARDANO_NETWORK="$CARDANO_NETWORK" \
       --set services.cardano.config.NODE_PORT="$CARDANO_NODE_PORT" \
       --set services.cardano.config.RELAY2_PORT="$RELAY2_PORT" \
@@ -434,7 +434,7 @@
       --set services.cardano.image.repository="$CI_APPLICATION_REPOSITORY/cardano" \
       --set services.cardano.config.AUTO_TOPOLOGY="$AUTO_TOPOLOGY" \
       --set services.cardano.config.METADATA_URL="$METADATA_URL" \
-      --set services.cardano.config.NETWORK_ARGUMENT="$NETWORK_ARGUMENT" \
+      --set services.cardano.config.NETWORK_ARGUMENT="$CARDANO_NETWORK_ARGUMENT" \
       --set services.cardano.config.CARDANO_NETWORK="$CARDANO_NETWORK" \
       --set services.cardano.config.NODE_PORT="$CARDANO_NODE_PORT" \
       --set services.cardano.config.RELAY2_PORT="$RELAY2_PORT" \
@@ -446,7 +446,7 @@
       --set services.cardano.persistence.size="$CARDANO_NODE_STORAGE_SIZE" \
       --set services.elasticsearch.realm.user="$ES_ADMIN_USER" \
       --set services.submitApi.image.repository="$CI_APPLICATION_REPOSITORY/cardano-submit-tx-api" \
-      --set services.submitApi.networkArg="$NETWORK_ARGUMENT" \
+      --set services.submitApi.networkArg="$CARDANO_NETWORK_ARGUMENT" \
       --set services.submitApi.ingress.host="$SUBMIT_API_HOSTS" \
       --set-file configurationFiles.submitApiConfig=./src/pool/config/$CARDANO_NETWORK/submit-api-config.json \
       --set image.tag="$CI_APPLICATION_TAG" \
@@ -471,7 +471,7 @@
       --set application.track="$track" \
       --set services.cardano.config.AUTO_TOPOLOGY="$AUTO_TOPOLOGY" \
       --set services.cardano.config.METADATA_URL="$METADATA_URL" \
-      --set services.cardano.config.NETWORK_ARGUMENT="$NETWORK_ARGUMENT" \
+      --set services.cardano.config.NETWORK_ARGUMENT="$CARDANO_NETWORK_ARGUMENT" \
       --set services.cardano.config.CARDANO_NETWORK="$CARDANO_NETWORK" \
       --set services.cardano.config.NODE_PORT="$CARDANO_NODE_PORT" \
       --set services.cardano.config.RELAY2_PORT="$RELAY2_PORT" \
@@ -523,7 +523,7 @@
        --set services.cardano.image.repository="$CI_APPLICATION_REPOSITORY/cardano" \
        --set services.cardano.config.AUTO_TOPOLOGY="$AUTO_TOPOLOGY" \
        --set services.cardano.config.METADATA_URL="$METADATA_URL" \
-       --set services.cardano.config.NETWORK_ARGUMENT="$NETWORK_ARGUMENT" \
+       --set services.cardano.config.NETWORK_ARGUMENT="$CARDANO_NETWORK_ARGUMENT" \
        --set services.cardano.config.CARDANO_NETWORK="$CARDANO_NETWORK" \
        --set services.cardano.config.NODE_PORT="$CARDANO_NODE_PORT" \
        --set services.cardano.config.RELAY2_PORT="$RELAY2_PORT" \
@@ -562,7 +562,7 @@
        --set services.cardano.image.repository="$CI_APPLICATION_REPOSITORY/cardano" \
        --set services.cardano.config.AUTO_TOPOLOGY="$AUTO_TOPOLOGY" \
        --set services.cardano.config.METADATA_URL="$METADATA_URL" \
-       --set services.cardano.config.NETWORK_ARGUMENT="$NETWORK_ARGUMENT" \
+       --set services.cardano.config.NETWORK_ARGUMENT="$CARDANO_NETWORK_ARGUMENT" \
        --set services.cardano.config.CARDANO_NETWORK="$CARDANO_NETWORK" \
        --set services.cardano.config.NODE_PORT="$CARDANO_NODE_PORT" \
        --set services.cardano.config.RELAY2_PORT="$RELAY2_PORT" \
