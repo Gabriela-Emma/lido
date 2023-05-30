@@ -57,7 +57,7 @@ services:
       size: 20Gi
     secret:
       POSTGRESQL_DB: lidoweb
-      POSTGRESQL_USERNAME: lnation
+      POSTGRESQL_USERNAME: llovelace
       POSTGRESQL_PASSWORD:
       POSTGRESQL_POSTGRES_PASSWORD:
   cncli:
@@ -75,8 +75,8 @@ services:
         enabled: true
         size: 120Gi
       secret:
-        POSTGRESQL_DB:
-        POSTGRESQL_USERNAME:
+        POSTGRESQL_DB: cexplorer
+        POSTGRESQL_USERNAME: llovelace
         POSTGRESQL_PASSWORD:
         POSTGRESQL_POSTGRES_PASSWORD:
     image:
@@ -227,7 +227,7 @@ services:
       POSTGRESQL_DB_SYNC_USER: postgres,
       POSTGRESQL_WEB_DB_HOST: lidolovelace-web-db-postgresql,
       POSTGRESQL_WEB_DB: lidoweb,
-      POSTGRESQL_WEB_USER: lnation,
+      POSTGRESQL_WEB_USER: llovelace,
 
       KUBERNETES_NAMESPACE: lidonation,
 
@@ -276,9 +276,6 @@ services:
       SESSION_DRIVER: redis,
       SESSION_CONNECTION: session,
       STRIPE_MODEL: App\User,
-      STRIPE_KEY: "",
-
-      STRIPE_SECRET: "",
 
       TELESCOPE_ENABLED: "false",
       TWITTER_API_VERSION: 2,
@@ -318,7 +315,7 @@ services:
       size: 100Gi
     secret:
       POSTGRESQL_DB: lidoweb
-      POSTGRESQL_USERNAME: lnation
+      POSTGRESQL_USERNAME: llovelace
       POSTGRESQL_PASSWORD:
       POSTGRESQL_POSTGRES_PASSWORD:
   submitApi:
@@ -348,7 +345,7 @@ services:
       CARDANO_NODE_SOCKET_PATH: "/ipc/node.socket",
       EKG_PORT: 12788,
       HARDFORK_EPOCH: 1,
-      PUBLIC_IP: "104.198.217.123",
+      PUBLIC_IP: "142.132.245.12",
       KUBERNETES_NAMESPACE: lidonation,
       METADATA_URL: "https://test.lidonation.com/metadata.json",
       NODE_PORT: 3010,

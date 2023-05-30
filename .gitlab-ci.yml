@@ -120,7 +120,7 @@
 
   function deploy_web_services() {
     DEPLOYMENT_NAME="$AUTO_DEVOPS_APP_PREFIX-web.$CI_ENVIRONMENT_SLUG"
-    cat $GOOGLE_CLOUD_KEY_FILE > ./chart/lidonation.com/service-account.json
+    # cat $GOOGLE_CLOUD_KEY_FILE > ./chart/lidonation.com/service-account.json
     echo "Deploying $DEPLOYMENT_NAME" 
     if [ "${CI_ENVIRONMENT_NAME}" == "mainnet" ]; then
       export ANNOTATIONS='traefik-redirect-http-to-https@kubernetescrd\,traefik-redirect-to-www@kubernetescrd\,traefik-default-headers@kubernetescrd'      
