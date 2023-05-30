@@ -58,7 +58,6 @@
         -f ./chart/values.postgresql.yaml \
         --set global.postgresql.auth.postgresPassword="$POSTGRESQL_DB_SYNC_POSTGRES_PASSWORD" \
         --set global.postgresql.auth.database="$POSTGRESQL_DB_SYNC_DB" \
-        --set global.postgresql.auth.username="$POSTGRESQL_DB_SYNC_USER" \
         --set global.postgresql.auth.password="$POSTGRESQL_DB_SYNC_PASSWORD" \
         --set global.pgpool.adminUsername="$POSTGRESQL_DBSYNC_PGPOOL_ADMIN_USERNAME" \
         --set global.pgpool.adminPassword="$POSTGRESQL_DBSYNC_PGPOOL_ADMIN_PASSWORD" \
@@ -175,7 +174,6 @@
       --set services.web.config.MAIL_MAILER="$MAIL_MAILER" \
       --set services.web.config.MAILCHIMP_LIST_ID="$MAILCHIMP_LIST_ID" \
       --set services.web.config.POSTGRESQL_WEB_USER="$POSTGRESQL_WEB_USER" \
-      --set services.web.config.POSTGRESQL_DB_SYNC_USER="$POSTGRESQL_DB_SYNC_USER" \
       --set services.web.config.ZOOM_DEFAULT_MEETING_USER="$ZOOM_DEFAULT_MEETING_USER" \
       --set services.web.secret.zoom_api_key="$ZOOM_CLIENT_KEY" \
       --set services.web.secret.zoom_api_secret="$ZOOM_CLIENT_SECRET" \
@@ -273,7 +271,6 @@
       --set services.web.config.MAIL_MAILER="$MAIL_MAILER" \
       --set services.web.config.MAILCHIMP_LIST_ID="$MAILCHIMP_LIST_ID" \
       --set services.web.config.POSTGRESQL_WEB_USER="$POSTGRESQL_WEB_USER" \
-      --set services.web.config.POSTGRESQL_DB_SYNC_USER="$POSTGRESQL_DB_SYNC_USER" \
       --set services.web.config.ZOOM_DEFAULT_MEETING_USER="$ZOOM_DEFAULT_MEETING_USER" \
       --set services.web.secret.zoom_api_key="$ZOOM_CLIENT_KEY" \
       --set services.web.secret.zoom_api_secret="$ZOOM_CLIENT_SECRET" \
@@ -321,8 +318,7 @@
   function deploy_dbsync() {
        DEPLOYMENT_NAME="$AUTO_DEVOPS_APP_PREFIX-dbsync.$CI_ENVIRONMENT_SLUG"
 
-       echo "install $DEPLOYMENT_NAME via helm with cert manger $cert_server and $replicas replicas in $KUBE_NAMESPACE"
-       echo "POSTGRESQL_DB_SYNC_USER: $POSTGRESQL_DB_SYNC_USER \n"
+       echo "install $DEPLOYMENT_NAME via helm with cert manger $cert_server and $replicas replicas in $KUBE_NAMESPACE"       
 
       if [ "${CI_ENVIRONMENT_NAME}" != "main" ]; then
         export RESTORE_SNAPSHOT="$RESTORE_SNAPSHOT_TESTNET"
@@ -342,7 +338,6 @@
          --set services.cardano.config.CARDANO_NETWORK="$CARDANO_NETWORK" \
          --set services.dbsync.restore_snapshot="$RESTORE_SNAPSHOT" \
          --set services.dbsync.db.secret.POSTGRESQL_DB="$POSTGRESQL_DB_SYNC_DB" \
-         --set services.dbsync.db.secret.POSTGRESQL_USERNAME="$POSTGRESQL_DB_SYNC_USER" \
          --set services.dbsync.db.secret.POSTGRESQL_PASSWORD="$POSTGRESQL_DB_SYNC_PASSWORD" \
          --set services.dbsync.db.secret.POSTGRESQL_POSTGRES_PASSWORD="$POSTGRESQL_DB_SYNC_POSTGRES_PASSWORD" \
          --set services.dbsync.graphql.image.tag="$DBSYNC_GRAPHQL_IMAGE_TAG" \
@@ -410,8 +405,7 @@
   function deploy_tx_sumit_api() {
     DEPLOYMENT_NAME="$AUTO_DEVOPS_APP_PREFIX-cardano-submit-tx.$CI_ENVIRONMENT_SLUG"
   
-    echo "install $DEPLOYMENT_NAME via helm with cert manger $cert_server and $replicas replicas in $KUBE_NAMESPACE"
-    echo "POSTGRESQL_DB_SYNC_USER: $POSTGRESQL_DB_SYNC_USER \n"
+    echo "install $DEPLOYMENT_NAME via helm with cert manger $cert_server and $replicas replicas in $KUBE_NAMESPACE"    
 
     helm upgrade "$DEPLOYMENT_NAME" ./chart/tx \
       --wait \
@@ -425,7 +419,6 @@
       --set postgresqlPassword="$POSTGRESQL_DB_SYNC_PASSWORD" \
       --set postgresqlDatabase="$POSTGRESQL_DB_SYNC_DB" \
       --set services.dbsync.db.secret.POSTGRESQL_DB="$POSTGRESQL_DB_SYNC_DB" \
-      --set services.dbsync.db.secret.POSTGRESQL_USERNAME="$POSTGRESQL_DB_SYNC_USER" \
       --set services.dbsync.db.secret.POSTGRESQL_PASSWORD="$POSTGRESQL_DB_SYNC_PASSWORD" \
       --set services.dbsync.db.secret.POSTGRESQL_POSTGRES_PASSWORD="$POSTGRESQL_DB_SYNC_POSTGRES_PASSWORD" \
       --set services.redis.secret.REDIS_PASSWORD="$REDIS_PASSWORD" \
@@ -514,7 +507,6 @@
        --set postgresqlPassword="$POSTGRESQL_DB_SYNC_PASSWORD" \
        --set postgresqlDatabase="$POSTGRESQL_DB_SYNC_DB" \
        --set services.dbsync.db.secret.POSTGRESQL_DB="$POSTGRESQL_DB_SYNC_DB" \
-       --set services.dbsync.db.secret.POSTGRESQL_USERNAME="$POSTGRESQL_DB_SYNC_USER" \
        --set services.dbsync.db.secret.POSTGRESQL_PASSWORD="$POSTGRESQL_DB_SYNC_PASSWORD" \
        --set services.dbsync.db.secret.POSTGRESQL_POSTGRES_PASSWORD="$POSTGRESQL_DB_SYNC_POSTGRES_PASSWORD" \
        --set services.redis.secret.REDIS_PASSWORD="$REDIS_PASSWORD" \
@@ -553,7 +545,6 @@
        --set postgresqlPassword="$POSTGRESQL_DB_SYNC_PASSWORD" \
        --set postgresqlDatabase="$POSTGRESQL_DB_SYNC_DB" \
        --set services.dbsync.db.secret.POSTGRESQL_DB="$POSTGRESQL_DB_SYNC_DB" \
-       --set services.dbsync.db.secret.POSTGRESQL_USERNAME="$POSTGRESQL_DB_SYNC_USER" \
        --set services.dbsync.db.secret.POSTGRESQL_PASSWORD="$POSTGRESQL_DB_SYNC_PASSWORD" \
        --set services.dbsync.db.secret.POSTGRESQL_POSTGRES_PASSWORD="$POSTGRESQL_DB_SYNC_POSTGRES_PASSWORD" \
        --set services.redis.secret.REDIS_PASSWORD="$REDIS_PASSWORD" \
@@ -624,7 +615,7 @@ variables:
   DOCKER_TLS_CERTDIR: ""
   DOCKER_HOST: tcp://docker:2375/
   DOCKER_DRIVER: overlay2
-  HELM_VERSION: 3.10.2
+  HELM_VERSION: 3.12.0
   DEPLOY_INFRA:
     value: 'False'
     description: 'Install infrastructure services (redis, db-sync)'
