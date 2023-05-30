@@ -175,13 +175,11 @@
       --set services.web.config.FACEBOOK_APP_ID="$FACEBOOK_APP_ID" \
       --set services.web.config.GOOGLE_CLIENT_ID="$GOOGLE_CLIENT_ID" \
       --set services.web.config.GOOGLE_CLIENT_SECRET="$GOOGLE_CLIENT_SECRET" \
-      --set services.web.config.GOOGLE_CLOUD_STORAGE_BUCKET="$GOOGLE_CLOUD_STORAGE_BUCKET" \
       --set services.web.config.KUBERNETES_NAMESPACE="$KUBE_NAMESPACE" \
       --set services.web.config.MAILCHIMP_APIKEY="$MAILCHIMP_APIKEY" \
       --set services.web.config.MAILGUN_SECRET="$MAILGUN_SECRET" \
       --set services.web.config.MAIL_MAILER="$MAIL_MAILER" \
       --set services.web.config.MAILCHIMP_LIST_ID="$MAILCHIMP_LIST_ID" \
-      --set services.web.config.MEDIA_DISK="$MEDIA_DISK" \
       --set services.web.config.POSTGRESQL_WEB_USER="$POSTGRESQL_WEB_USER" \
       --set services.web.config.POSTGRESQL_DB_SYNC_USER="$POSTGRESQL_DB_SYNC_USER" \
       --set services.web.config.ZOOM_DEFAULT_MEETING_USER="$ZOOM_DEFAULT_MEETING_USER" \
@@ -206,8 +204,6 @@
       --set services.web.secret.TWITTER_OAUTH_CALLBACK_URL="$TWITTER_OAUTH_CALLBACK_URL" \
       --set services.web_db.secret.POSTGRESQL_PASSWORD="$POSTGRESQL_WEB_PASSWORD" \
       --set services.web_db.secret.POSTGRESQL_POSTGRES_PASSWORD="$POSTGRESQL_WEB_POSTGRES_PASSWORD" \
-      --set services.dbsync.db.secret.POSTGRESQL_DB="$POSTGRESQL_DB_SYNC_DB" \
-      --set services.dbsync.db.secret.POSTGRESQL_USERNAME="$POSTGRESQL_DB_SYNC_USER" \
       --set services.dbsync.db.secret.POSTGRESQL_PASSWORD="$POSTGRESQL_DB_SYNC_PASSWORD" \
       --set services.dbsync.db.secret.POSTGRESQL_POSTGRES_PASSWORD="$POSTGRESQL_DB_SYNC_POSTGRES_PASSWORD" \
       --set services.redis.secret.REDIS_PASSWORD="$REDIS_PASSWORD" \
@@ -222,7 +218,6 @@
       --set services.cardano.config.STAKE_ADDR="$STAKE_ADDR" \
       --set services.cardano.config.PAYMENT_ADDR="$PAYMENT_ADDR" \
       --set services.elasticsearch.realm.user="$ES_ADMIN_USER" \
-      --set services.elasticsearch.realm.passwordSha256="$(printf ${ES_ADMIN_PASSWORD} | base64 -d)" \
       --set image.tag="$CI_APPLICATION_TAG" \
       --set image.pullSecret="$secret_name" \
       --set namespace=${KUBE_NAMESPACE} \
@@ -445,7 +440,6 @@
        --set services.cardano.config.PAYMENT_ADDR="$PAYMENT_ADDR" \
        --set services.cardano.config.KUBERNETES_NAMESPACE="$KUBE_NAMESPACE" \
        --set services.elasticsearch.realm.user="$ES_ADMIN_USER" \
-       --set services.elasticsearch.realm.passwordSha256="$(printf ${ES_ADMIN_PASSWORD} | base64 -d)" \
        --set image.tag="$CI_APPLICATION_TAG" \
        --set image.pullSecret="$secret_name" \
        --set namespace=${KUBE_NAMESPACE} \
@@ -485,7 +479,6 @@
        --set services.cardano.config.KUBERNETES_NAMESPACE="$KUBE_NAMESPACE" \
        --set services.cardano.persistence.size="$CARDANO_NODE_STORAGE_SIZE" \
        --set services.elasticsearch.realm.user="$ES_ADMIN_USER" \
-       --set services.elasticsearch.realm.passwordSha256="$(printf ${ES_ADMIN_PASSWORD} | base64 -d)" \
        --set image.tag="$CI_APPLICATION_TAG" \
        --set image.pullSecret="$secret_name" \
        --set namespace=${KUBE_NAMESPACE} \
