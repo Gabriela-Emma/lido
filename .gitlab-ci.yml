@@ -615,7 +615,7 @@ variables:
   DOCKER_TLS_CERTDIR: ""
   DOCKER_HOST: tcp://docker:2375/
   DOCKER_DRIVER: overlay2
-  HELM_VERSION: 3.12.0
+  HELM_VERSION: 3.10.2
   DEPLOY_INFRA:
     value: 'False'
     description: 'Install infrastructure services (redis, db-sync)'
