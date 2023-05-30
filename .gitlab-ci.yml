@@ -1069,28 +1069,28 @@ cdbsync:
 
 redis-test:
   <<: *deploy_redis
-  stage: deploy
+  stage: staging
   needs: []
   environment:
     name: preview
 
 postgres-cdbsync-test:
   <<: *deploy_postgres_cdbsync
-  stage: deploy
+  stage: staging
   needs: []
   environment:
     name: preview
 
 postgres-web-test:
   <<: *deploy_postgres_web
-  stage: deploy
+  stage: staging
   needs: []
   environment:
     name: preview
 
 review:
   <<: *deploy_template
-  stage: deploy
+  stage: staging
   retry: 1
   needs:
     - job: web
@@ -1121,7 +1121,7 @@ review:
 
 preview:
   <<: *deploy_template
-  stage: deploy
+  stage: staging
   retry: 1
   needs:
     - job: web
@@ -1155,7 +1155,7 @@ preview:
 
 redis-prod:
   <<: *deploy_redis
-  stage: deploy
+  stage: production
   needs:
     - redis-test
   environment:
@@ -1163,7 +1163,7 @@ redis-prod:
 
 postgres-cdbsync-prod:
   <<: *deploy_postgres_cdbsync
-  stage: deploy
+  stage: production
   needs:
     - postgres-cdbsync-test
   environment:
@@ -1171,7 +1171,7 @@ postgres-cdbsync-prod:
 
 postgres-web-prod:
   <<: *deploy_postgres_web
-  stage: deploy
+  stage: production
   needs:
     - postgres-web-test
   environment:
@@ -1179,7 +1179,7 @@ postgres-web-prod:
 
 mainnet:
   <<: *deploy_template
-  stage: deploy
+  stage: production
   retry: 1
   needs:
     - review
@@ -1201,7 +1201,7 @@ mainnet:
 
 production:
   <<: *deploy_template
-  stage: deploy
+  stage: production
   retry: 1
   needs:
     - preview
