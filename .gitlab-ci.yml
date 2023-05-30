@@ -171,7 +171,6 @@
       --set services.web.config.KUBERNETES_NAMESPACE="$KUBE_NAMESPACE" \
       --set services.web.config.MAILCHIMP_APIKEY="$MAILCHIMP_APIKEY" \
       --set services.web.config.MAILGUN_SECRET="$MAILGUN_SECRET" \
-      --set services.web.config.MAIL_MAILER="$MAIL_MAILER" \
       --set services.web.config.MAILCHIMP_LIST_ID="$MAILCHIMP_LIST_ID" \
       --set services.web.config.POSTGRESQL_WEB_USER="$POSTGRESQL_WEB_USER" \
       --set services.web.config.ZOOM_DEFAULT_MEETING_USER="$ZOOM_DEFAULT_MEETING_USER" \
@@ -268,7 +267,6 @@
       --set services.web.config.KUBERNETES_NAMESPACE="$KUBE_NAMESPACE" \
       --set services.web.config.MAILCHIMP_APIKEY="$MAILCHIMP_APIKEY" \
       --set services.web.config.MAILGUN_SECRET="$MAILGUN_SECRET" \
-      --set services.web.config.MAIL_MAILER="$MAIL_MAILER" \
       --set services.web.config.MAILCHIMP_LIST_ID="$MAILCHIMP_LIST_ID" \
       --set services.web.config.POSTGRESQL_WEB_USER="$POSTGRESQL_WEB_USER" \
       --set services.web.config.ZOOM_DEFAULT_MEETING_USER="$ZOOM_DEFAULT_MEETING_USER" \
