@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('learning_module_learning_topic');
     }
 };

@@ -171,7 +171,6 @@
       --set services.web.config.KUBERNETES_NAMESPACE="$KUBE_NAMESPACE" \
       --set services.web.config.MAILCHIMP_APIKEY="$MAILCHIMP_APIKEY" \
       --set services.web.config.MAILGUN_SECRET="$MAILGUN_SECRET" \
-      --set services.web.config.MAIL_MAILER="$MAIL_MAILER" \
       --set services.web.config.MAILCHIMP_LIST_ID="$MAILCHIMP_LIST_ID" \
       --set services.web.config.POSTGRESQL_WEB_USER="$POSTGRESQL_WEB_USER" \
       --set services.web.config.ZOOM_DEFAULT_MEETING_USER="$ZOOM_DEFAULT_MEETING_USER" \
@@ -238,10 +237,10 @@
       --set services.web.ingress.tls[0].hosts[1]="$AUTO_DEVOPS_DOMAIN" \
       --set services.web.replicaCount="$replicas" \
       --set services.web.ingress.annotations."traefik\.ingress\.kubernetes\.io\/router\.middlewares"="$ANNOTATIONS" \
-      --set services.web.service.url="$AUTO_DEVOPS_WEB_HOST" \
+      --set services.web.service.url="$APP_URL" \
       --set services.web.secret.app_key="$APP_KEY" \
       --set services.web.config.ANALYTICS_ID="$ANALYTICS_ID" \
-      --set services.web.config.APP_URL="$AUTO_DEVOPS_WEB_HOST" \
+      --set services.web.config.APP_URL="$APP_URL" \
       --set services.web.config.BLOCKFROST_PROJECT_ID="$BLOCKFROST_PROJECT_ID" \
       --set services.web.config.BLOCKFROST_BASE_URL="$BLOCKFROST_BASE_URL" \
       --set services.web.config.CLOUDFLARE_TOKEN="$CLOUDFLARE_TOKEN" \
@@ -268,7 +267,6 @@
       --set services.web.config.KUBERNETES_NAMESPACE="$KUBE_NAMESPACE" \
       --set services.web.config.MAILCHIMP_APIKEY="$MAILCHIMP_APIKEY" \
       --set services.web.config.MAILGUN_SECRET="$MAILGUN_SECRET" \
-      --set services.web.config.MAIL_MAILER="$MAIL_MAILER" \
       --set services.web.config.MAILCHIMP_LIST_ID="$MAILCHIMP_LIST_ID" \
       --set services.web.config.POSTGRESQL_WEB_USER="$POSTGRESQL_WEB_USER" \
       --set services.web.config.ZOOM_DEFAULT_MEETING_USER="$ZOOM_DEFAULT_MEETING_USER" \
