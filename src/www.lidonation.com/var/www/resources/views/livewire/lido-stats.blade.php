@@ -1,4 +1,4 @@
-<div wire:init="loadStats" class="overflow-hidden" >
+<div class="overflow-hidden" >
     <dl class="flex flex-wrap gap-6">
         <div class="flex flex-col pr-8">
             <dt class="order-2 text-sm font-medium text-teal-50">
