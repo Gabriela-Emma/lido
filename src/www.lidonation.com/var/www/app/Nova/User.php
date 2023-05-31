@@ -11,6 +11,7 @@ use App\Nova\Metrics\Delegation;
 use Ebess\AdvancedNovaMediaLibrary\Fields\Images;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\Gravatar;
 use Laravel\Nova\Fields\HasMany;
@@ -95,8 +96,19 @@ class User extends Resource
 
             Select::make(__('Lang'), 'lang')->options(function () {
                 return collect(config('laravellocalization.supportedLocales'))->mapWithKeys(fn ($lang) => ([$lang['key'] => $lang['native']]))->toArray();
-            }
-            ),
+            }),
+            Password::make('Password')
+                ->onlyOnForms()->withMeta(
+                    [
+                        'extraAttributes' => [
+                            'autocomplete' => 'off',
+                        ],
+                    ]
+                )
+                ->creationRules('string', 'min:8')
+                ->updateRules('nullable', 'string', 'min:8'),
+
+            BelongsTo::make('Primary Account', 'currentTeam', User::class)->nullable()->searchable(),
 
             new Panel('Bio', [
                 Markdown::make('Short Bio')
@@ -113,16 +125,7 @@ class User extends Resource
 
             new Panel('Stake Profile', $this->stakeProfile()),
 
-            Password::make('Password')
-                ->onlyOnForms()->withMeta(
-                    [
-                        'extraAttributes' => [
-                            'autocomplete' => 'off',
-                        ],
-                    ]
-                )
-                ->creationRules('string', 'min:8')
-                ->updateRules('nullable', 'string', 'min:8'),
+
 
             HasMany::make('Rewards', 'rewards', Rewards::class),
 
