@@ -6,7 +6,7 @@ function localizeRoute($routeName, $locale = null, $parameters = []): bool|strin
         $locale = Auth::user()->lang;
     }
 
-    return $locale ? \Mcamara\LaravelLocalization\Facades\LaravelLocalization::getLocalizedURL($locale, route($routeName, $parameters, false)) : route($routeName, $parameters, false);
+    return $locale ? \Mcamara\LaravelLocalization\Facades\LaravelLocalization::getLocalizedURL($locale, route($routeName, $parameters, true)) : route($routeName, $parameters, true);
 }
 
 /**

@@ -255,7 +255,6 @@
       --set services.web.config.CARDANO_POOL_HASH="$CARDANO_POOL_HASH" \
       --set services.web.config.CARDANO_NETWORK_ARGUMENT="$CARDANO_NETWORK_ARGUMENT" \
       --set services.web.config.CARDANO_NETWORK="$CARDANO_NETWORK" \
-      --set services.web.config.CARDANO_NODE_SOCKET_PATH="$CARDANO_NODE_SOCKET_PATH" \
       --set services.web.config.CARDANO_PHUFFY_CAUSE_PAYMENT_ADDRESS="$CARDANO_PHUFFY_CAUSE_PAYMENT_ADDRESS" \
       --set services.web.config.CARDANO_PHUFFY_COIN_POLICY_ID="$CARDANO_PHUFFY_COIN_POLICY_ID" \
       --set services.web.config.CARDANO_BLOCK_EXPLORER="$CARDANO_BLOCK_EXPLORER" \
