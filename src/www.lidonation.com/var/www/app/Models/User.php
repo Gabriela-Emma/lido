@@ -33,6 +33,7 @@ use Spatie\Permission\Traits\HasRoles;
 use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 use Staudenmeir\EloquentJsonRelations\HasJsonRelationships;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class User extends Authenticatable implements HasMedia, Interfaces\IHasMetaData, CanComment, CanResetPassword, MustVerifyEmail
 {
@@ -323,6 +324,11 @@ class User extends Authenticatable implements HasMedia, Interfaces\IHasMetaData,
             ->crop(Manipulations::CROP_TOP, 1080, 1350)
             ->withResponsiveImages()
             ->performOnCollections('profile');
+    }
+
+    public function primary_account(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 
     public function __toString()

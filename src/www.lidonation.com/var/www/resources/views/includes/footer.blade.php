@@ -6,22 +6,20 @@
         <!-- First Row -->
         <div class="mb-6 md:flex md:items-center md:justify-between md:mt-0">
             <div
-                class='z-10 flex-col justify-center items-start pt-2 pb-8 border-b border-gray-100 border-opacity-90 md:w-3/5 xl:w-2/5 md:h-64 xl:h-80 sm:flex left'>
+                class='z-10 flex-col items-start justify-center pt-2 pb-8 border-b border-gray-100 border-opacity-90 md:w-3/5 xl:w-2/5 md:h-64 xl:h-80 sm:flex left'>
                 <h3 class="text-sm font-semibold tracking-wider text-white uppercase">
                     {{$snippets->lIDOStats}}
                 </h3>
 
-                @if(app()->environment('production') && Route::currentRouteName() != 'home' )
+                {{-- @if(app()->environment('production') && Route::currentRouteName() != 'home' )
                     @livewire('lido-stats')
-                @endif
+                @endif --}}
 
-                @if(app()->environment('local'))
-                    @livewire('lido-stats')
-                @endif
+                @livewire('lido-stats')
             </div>
             <div
-                class="z-10 text-white rounded-sm border-b border-gray-100 border-opacity-90 lg:px-0 md:h-64 xl:h-80 md:text-gray-700 right">
-                <div class="ml-auto max-w-2xl">
+                class="z-10 text-white border-b border-gray-100 rounded-sm border-opacity-90 lg:px-0 md:h-64 xl:h-80 md:text-gray-700 right">
+                <div class="max-w-2xl ml-auto">
                     <x-public.pool-id-picker theme="transparent"></x-public.pool-id-picker>
                 </div>
             </div>
@@ -29,7 +27,7 @@
 
         <!-- Second Row -->
         <div class="pb-8 md:grid md:grid-cols-8 lg:grid-cols-8 md:gap-8 lg:gap-4 second">
-            <div class="grid z-10 gap-8 sm:grid-cols-2 md:col-span-6">
+            <div class="z-10 grid gap-8 sm:grid-cols-2 md:col-span-6">
                 <div class="flex flex-row gap-6 md:grid md:grid-cols-2 left">
                     <div>
                         <h3 class="font-semibold tracking-wider text-white uppercase text-md">
@@ -118,7 +116,7 @@
                     </div>
                     <div class="lg:hidden"></div>
                     <div class="z-10 mt-12 md:mt-0">
-                        <h3 class="hidden invisible font-semibold tracking-wider text-white uppercase capitalize text-md lg:block">
+                        <h3 class="invisible hidden font-semibold tracking-wider text-white uppercase capitalize text-md lg:block">
                             {{$snippets->aboutUs}}
                         </h3>
                         <ul class="space-y-4 lg:mt-4 md:text-gray-500">
@@ -169,7 +167,7 @@
         <!-- Third Row -->
         <div class="md:grid md:grid-cols-2 md:mt-0">
             <div
-                class='z-10 flex-col justify-center items-start py-8 w-full h-60 border-t border-b border-gray-100 border-opacity-90 lg:h-48 sm:flex left'>
+                class='z-10 flex-col items-start justify-center w-full py-8 border-t border-b border-gray-100 h-60 border-opacity-90 lg:h-48 sm:flex left'>
                 <h3 class="text-sm font-semibold tracking-wider text-white uppercase">
                     {{$snippets->cardanoStats}}
                 </h3>
@@ -184,7 +182,7 @@
             </div>
             <div class="grid grid-cols-2 gap-6 right">
                 <div
-                    class="z-10 flex-col gap-1 justify-center py-8 mt-4 w-full h-60 border-b border-gray-100 md:px-4 xl:pl-0 md:border-t lg:h-48 sm:flex md:mt-0 left">
+                    class="z-10 flex-col justify-center w-full gap-1 py-8 mt-4 border-b border-gray-100 h-60 md:px-4 xl:pl-0 md:border-t lg:h-48 sm:flex md:mt-0 left">
                     <div class=''>
                         <p class="text-white md:text-gray-800">
                         {{$snippets->mailingListCta}}
@@ -254,7 +252,7 @@
 
         <!-- Attribution -->
         <div class="pt-8 md:flex md:items-center md:justify-between">
-            <div class="flex z-10 space-x-6 md:order-2">
+            <div class="z-10 flex space-x-6 md:order-2">
                 <a href="//www.facebook.com/lidonation" class="font-medium text-gray-400 hover:text-gray-300">
                     <span class="sr-only">
                         {{$snippets->facebook}}
@@ -310,7 +308,7 @@
         </div>
     </div>
     <!-- Pool Graphic -->
-    <div class='hidden overflow-hidden absolute right-0 bottom-0 z-0 px-4 w-3/5 h-full bg-white md:block pool-graphic'>
+    <div class='absolute bottom-0 right-0 z-0 hidden w-3/5 h-full px-4 overflow-hidden bg-white md:block pool-graphic'>
         <div class="w-[75rem] text-teal-600 absolute top-24 lg:top-20 left-[-54rem] z-0 transform rotate-[132deg]">
             @include('svg.lido-2')
         </div>
