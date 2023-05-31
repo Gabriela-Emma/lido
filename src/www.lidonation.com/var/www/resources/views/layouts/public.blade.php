@@ -64,7 +64,7 @@
     @hasanyrole('editor|admin|super admin')
     <section class='w-full h-[40px] bg-slate-800 text-white z-40 relative text-xs'>
         <div class="container h-full">
-            <div class="flex flex-row justify-between h-full items-center">
+            <div class="flex flex-row items-center justify-between h-full">
                 <div >
                     @stack('editLink')
                 </div>
@@ -121,14 +121,14 @@
         <script src="{{ mix('js/bootstrap.js') }}"></script>
 
         <!-- Dynamic tailwind classes -->
-        <span class="hidden md:visible xl:invisible md:w-8 md:h-8 text-white"></span>
-        <span class="sm:max-w-2xl sm:max-w-3xl sm:max-w-4xl sm:max-w-5xl sm:max-w-6xl sm:max-w-7xl 2xl:max-w-4xl  2xl:max-w-5xl  2xl:max-w-6xl 2xl:max-w-7xl "></span>
+        <span class="hidden text-white md:visible xl:invisible md:w-8 md:h-8"></span>
+        <span class="sm:max-w-2xl sm:max-w-3xl sm:max-w-4xl sm:max-w-5xl sm:max-w-6xl sm:max-w-7xl 2xl:max-w-4xl 2xl:max-w-5xl 2xl:max-w-6xl 2xl:max-w-7xl "></span>
     </section>
 
     <x-comments::scripts />
 
     <livewire:global-player-component />
-    <link rel="preload" href="{{ asset(mix('css/catalyst-explorer.css')) }}" as="style">
 
+    <link rel="preload" href="{{ asset(mix('css/catalyst-explorer.css')) }}" as="style">
 </body>
 </html>
