@@ -1,4 +1,4 @@
-<div wire:init="loadStats" class="overflow-hidden">
+<div class="overflow-hidden">
     <dl class="flex flex-wrap">
         {{--        <div class="flex flex-col p-2 pl-0 pr-8">--}}
         {{--            <dt class="order-2 text-sm font-medium text-teal-50">--}}

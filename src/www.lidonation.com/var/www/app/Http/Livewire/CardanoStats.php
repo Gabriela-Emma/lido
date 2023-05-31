@@ -24,9 +24,25 @@ class CardanoStats extends Component
 
     public ?int $currEpochNo;
 
-    public function loadStats()
+    public function mount()
     {
-        $this->readyToLoad = true;
+        $stats = Stats::whereIn(
+            'key',
+            [
+                'total_staked_address',
+                'total_pools',
+                'curr_epoch',
+            ]
+        )->get(['key', 'value'])
+            ->map(fn ($stats) => ([$stats['key'] => intval($stats['value'])]))
+            ->collapse();
+
+        // turn array into object
+        $stats = new Fluent($stats);
+
+        $this->cardanoStakedAddresses = $stats->total_staked_address ?? null;
+        $this->totalPools = $stats->total_pools ?? null;
+        $this->currEpochNo = $stats->curr_epoch ?? null;
     }
 
     /**
@@ -34,26 +50,6 @@ class CardanoStats extends Component
      */
     public function render(PoolRepository $pools, EpochRepository $epochs, DbSyncService $dbSyncService, CardanoGraphQLService $graphQLService): Factory|View|Application
     {
-        if ($this->readyToLoad) {
-            $stats = Stats::whereIn(
-                'key',
-                [
-                    'total_staked_address',
-                    'total_pools',
-                    'curr_epoch',
-                ]
-            )->get(['key', 'value'])
-                ->map(fn ($stats) => ([$stats['key'] => intval($stats['value'])]))
-                ->collapse();
-
-            // turn array into object
-            $stats = new Fluent($stats);
-
-            $this->cardanoStakedAddresses = $stats->total_staked_address ?? null;
-            $this->totalPools = $stats->total_pools ?? null;
-            $this->currEpochNo = $stats->curr_epoch ?? null;
-        }
-
         return view('livewire.cardano-stats');
     }
 }
