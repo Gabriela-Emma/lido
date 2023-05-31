@@ -108,7 +108,7 @@ class User extends Resource
                 ->creationRules('string', 'min:8')
                 ->updateRules('nullable', 'string', 'min:8'),
 
-            BelongsTo::make('Primary Account', 'currentTeam', User::class)->nullable()->searchable(),
+            BelongsTo::make('Primary Account', 'primary_account', User::class)->nullable()->searchable(),
 
             new Panel('Bio', [
                 Markdown::make('Short Bio')
