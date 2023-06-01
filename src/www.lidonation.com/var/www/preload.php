@@ -33,7 +33,8 @@
  * @see https://github.com/laragear/preload
  */
 
-// require_once '/var/www';
+require_once '/var/www/app';
+require_once '/var/www/vendor';
 
 $files = [
     '/var/www/storage/framework/views/baa50fcad37543136a6cfa3d19227749f766ddcd.php',
