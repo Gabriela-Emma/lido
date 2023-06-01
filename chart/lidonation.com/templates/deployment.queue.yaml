@@ -82,7 +82,7 @@ spec:
           - name: NEWRELIC_APP_NAME
             value: Lighthouse Queue
           - name: PHP_MEMORY_LIMIT
-            value: 2048M
+            value: 4096M
         envFrom:
           - configMapRef:
               name: "{{ $.Chart.Name }}-configmap"
