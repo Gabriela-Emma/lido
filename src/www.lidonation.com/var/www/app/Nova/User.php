@@ -198,12 +198,13 @@ class User extends Resource
      */
     public function actions(Request $request): array
     {
-        return [
+        return array_merge(
+            static::getGlobalActions(), [
             (new AddMetaData),
             (new EditMetaData(\App\Models\User::class)),
             (new PopulatePaymentAddress)->confirmText('Check skip, to skip updating wallet_address field on models that already have one!'),
             (new FetchDelegation),
-        ];
+        ]);
     }
 
     public function stakeProfile(): array
