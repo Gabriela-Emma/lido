@@ -104,20 +104,8 @@
                         <span class="text-slate-500 text-sm block">Category</span> <span class="block">{{$cat->title}}</span>
                     </h2>
 
-                    <button class="hidden lg:flex absolute left-4 top-1/2 transform -translate-y-1/2 bg-yellow-500 rounded-full p-2 shadow"
-                    @click.prevent="scroll('left', {{$cat->id}})"
-                    >
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-                        </svg>
-                    </button>
-                    <button class="hidden lg:flex absolute right-4 top-1/2 transform -translate-y-1/2 bg-yellow-500 rounded-full p-2 shadow"
-                    @click.prevent="scroll('right', {{$cat->id}})"
-                    >
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                        </svg>
-                    </button>
+                    <x-left-arrow :category="$cat->id"/>
+                    <x-right-arrow :category="$cat->id"/>
 
                     <div>
                         <div class="flex flex-row md:flex-nowrap overflow-x-auto gap-6 no-scrollbar" id="{{$cat->id}}">
@@ -297,20 +285,8 @@
                             </div>
                         </div>
                     </div>
-                    <button class="hidden lg:flex absolute left-4 top-1/2 transform -translate-y-1/2 bg-yellow-500 rounded-full p-2 shadow"
-                    @click.prevent="scroll('left', {{$cat->id}})"
-                    >
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-                        </svg>
-                    </button>
-                    <button class="hidden lg:flex absolute right-4 top-1/2 transform -translate-y-1/2 bg-yellow-500 rounded-full p-2 shadow"
-                    @click.prevent="scroll('right', {{$cat->id}})"
-                    >
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                        </svg>
-                    </button>
+                    <x-left-arrow :category="$cat->id"/>
+                    <x-right-arrow :category="$cat->id"/>
                 </div>
             </section>
         @endif
@@ -406,41 +382,10 @@
                             </div>
                         </div>
                     </div>
-                    <button class="hidden lg:flex absolute left-4 top-1/2 transform -translate-y-1/2 bg-yellow-500 rounded-full p-2 shadow"
-                    @click.prevent="scroll('left', {{$cat->id}})"
-                    >
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-                        </svg>
-                    </button>
-                    <button class="hidden lg:flex absolute right-4 top-1/2 transform -translate-y-1/2 bg-yellow-500 rounded-full p-2 shadow"
-                    @click.prevent="scroll('right', {{$cat->id}})"
-                    >
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                        </svg>
-                    </button>
+                    <x-left-arrow :category="$cat->id"/>
+                    <x-right-arrow :category="$cat->id"/>
                 </div>
             </section>
         @endif
     @endforeach
 @endif
-
-
-<script>
-    window.scrollSection = function scrollSection() {
-    return {
-        scroll(position, id){
-            
-            const scrollableDiv = document.getElementById(id);
-            const scrollAmount = 300; 
-
-            if (position === 'left') {
-                scrollableDiv.scrollLeft -= scrollAmount;
-            } else if (position === 'right') {
-                scrollableDiv.scrollLeft += scrollAmount;
-            }
-        }
-    }
-}
-</script>
