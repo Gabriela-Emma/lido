@@ -58,9 +58,14 @@ class LearnController extends Controller
             $user = User::where('wallet_stake_address', $request->stake_address)->first();
 
             if ((bool) $user) {
-                Auth::login($user, $remember = true);
-
-                return $user;
+                if($user->primary_account === null){
+                    Auth::login($user, $remember = true);
+                    return $user;
+                }else{
+                    return redirect()->back()->withErrors([
+                        'duplicate' => 'Duplicate account found. Please contact support.',
+                    ]);
+                }
             } else {
                 return response()->json([
                     'message' => 'Could not find an account with those credentials',
@@ -69,19 +74,25 @@ class LearnController extends Controller
         }
 
         $remember = $request->input('remember', false);
+        $user = User::where('email', $request->email)->first();
 
-        if (Auth::attempt($credentials, $remember)) {
+        if ($user && $user->primary_account === null && Auth::attempt($credentials, $remember)) {
             if (isset($request->baseURL)) {
                 return redirect($request->baseURL);
             }
 
             return back()->withInput();
+        } elseif ($user && $user->primary_account !== null) {
+            return redirect()->back()->withErrors([
+                'duplicate' => 'Duplicate account found. Please contact support.',
+            ]);
         }
 
         return redirect()->back()->withInput($request->only('email'))->withErrors([
             'email' => 'These credentials do not match our records.',
         ]);
     }
+
 
     public function register(Request $request)
     {

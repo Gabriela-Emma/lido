@@ -1,0 +1,19 @@
+{
+    "snippets":[
+        {
+            "heading":"duplicateAccountTitle",
+            "text_en":"Duplicate account warning",
+            "text_sw":"Onyo la Akaunti duwa"
+        },
+        {
+            "heading":"duplicateAccountWarningMessage",
+            "text_en":"This has been flagged as a duplicate account. The first account you registered with is still active. Please only participate once so that more people can participate and learn. If you need help, contact us at msaada@lidonation.com",
+            "text_sw":"Hii imepewa bendera kama akaunti duwa. Akaunti yako ya kwanza uliyosajiliwa bado ni hai. Tafadhali shiriki mara moja tu ili watu wengine waweze kushiriki na kujifunza. Ikiwa unahitaji msaada, wasiliana nasi kupitia msaada@lidonation.com."
+        },
+        {
+            "heading":"duplicateAccountClose",
+            "text_en":"Close",
+            "text_sw":"Funga"
+        }
+    ]
+}
