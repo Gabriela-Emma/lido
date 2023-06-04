@@ -20,6 +20,7 @@
         <!-- Scripts -->
         <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
         <script src="{{ mix('js/app.js') }}" defer></script>
+        <script src="{{ mix('/js/alpine.js') }}" defer></script>
     </head>
     <body class="font-sans antialiased">
         <x-jet-banner />
