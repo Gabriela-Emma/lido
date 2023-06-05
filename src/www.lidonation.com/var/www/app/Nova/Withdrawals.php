@@ -58,7 +58,7 @@ class Withdrawals extends Resource
             ID::make(__('ID'), 'id')->sortable(),
             Text::make(__('Address'), 'wallet_address')->sortable()
                 ->displayUsing(function($value) use ($request) {
-                    if ($request->isResourceIndexRequest()) {
+                    if (!!$value && $request->isResourceIndexRequest()) {
                         return Str::truncate($value, 16);
                     }
 
