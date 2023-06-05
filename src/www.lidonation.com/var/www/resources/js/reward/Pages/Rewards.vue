@@ -85,7 +85,7 @@
 
                                                 <p class="my-2 max-w-2xl text-lg px-8">
                                                     Your withdrawal will be posted to
-                                                    your wallet in about 30 to 60 minutes.
+                                                    your wallet in about 4 to 12 hours.
                                                 </p>
                                                <span> See <Link :href="route('rewards.withdrawals.index')">history and pending withdrawals</Link></span>
                                             </div>
