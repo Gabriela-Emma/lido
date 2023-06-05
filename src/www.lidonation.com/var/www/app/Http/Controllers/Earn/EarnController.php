@@ -26,6 +26,16 @@ class EarnController extends Controller
         }
     }
 
+    public function duplicateAccount()
+    {
+        if (previous_route_name_is('earn.learn.duplicate')) {
+            return to_route('earn.learn');
+        } else {
+            return Inertia::modal('DuplicateAccount')
+                ->baseURL(url()->previous());
+        }
+    }
+
     /**
      * Display a listing of the resource.
      *
