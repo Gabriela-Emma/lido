@@ -79,7 +79,7 @@ class User extends Resource
                     ]
                 )
                 ->displayUsing(function($value) use ($request) {
-                    if ($request->isResourceIndexRequest()) {
+                    if (!!$value && $request->isResourceIndexRequest()) {
                         return Str::truncate($value, 16);
                     }
 
