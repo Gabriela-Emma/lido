@@ -5,6 +5,7 @@ namespace App\Nova;
 use App\Models\Withdrawal;
 use App\Nova\Actions\CacheNftImage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\DateTime;
@@ -55,7 +56,14 @@ class Withdrawals extends Resource
     {
         return [
             ID::make(__('ID'), 'id')->sortable(),
-            Text::make(__('Address'), 'wallet_address'),
+            Text::make(__('Address'), 'wallet_address')->sortable()
+                ->displayUsing(function($value) use ($request) {
+                    if ($request->isResourceIndexRequest()) {
+                        return Str::truncate($value, 16);
+                    }
+
+                    return $value;
+                }),
             BelongsTo::make('User', 'user', User::class)->searchable()->hideFromIndex(),
             Select::make(__('Status'), 'status')
                 ->sortable()

@@ -12,6 +12,7 @@ use App\Nova\Actions\RecalculateRewards;
 use App\Nova\Metrics\RewardStatus;
 use App\Nova\Metrics\UnpaidRewards;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use JetBrains\PhpStorm\Pure;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Date;
@@ -22,6 +23,7 @@ use Laravel\Nova\Fields\MorphTo;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
+use function MongoDB\BSON\toJSON;
 
 class Rewards extends Resource
 {
@@ -90,7 +92,14 @@ class Rewards extends Resource
                 ->sortable()
                 ->searchable(),
 
-            Text::make(__('Stake Address'), 'stake_address')->sortable(),
+            Text::make(__('Stake Address'), 'stake_address')->sortable()
+                ->displayUsing(function($value) use ($request) {
+                    if ($request->isResourceIndexRequest()) {
+                        return Str::truncate($value, 16);
+                    }
+
+                    return $value;
+                }),
 
             MorphTo::make(__('Model'), 'model')
                 ->types([Giveaways::class])

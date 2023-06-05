@@ -78,6 +78,13 @@ class User extends Resource
                         ],
                     ]
                 )
+                ->displayUsing(function($value) use ($request) {
+                    if ($request->isResourceIndexRequest()) {
+                        return Str::truncate($value, 16);
+                    }
+
+                    return $value;
+                })
                 ->required()
                 ->rules('max:255'),
 
@@ -123,7 +130,7 @@ class User extends Resource
 
             new Panel('Meta', $this->metaDataFields()),
 
-            new Panel('Stake Profile', $this->stakeProfile()),
+            new Panel('Stake Profile', $this->stakeProfile($request)),
 
 
 
@@ -207,7 +214,7 @@ class User extends Resource
         ]);
     }
 
-    public function stakeProfile(): array
+    public function stakeProfile(Request $request): array
     {
         return [
             Text::make('Stake Address', 'wallet_stake_address')

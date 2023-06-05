@@ -116,6 +116,30 @@ function breakLongText($text, $length = 1000, $maxLength = 1100, $needle = '.'):
     return $splitText;
 }
 
+/**
+ * Removes characters from the middle of the string to ensure it is no more
+ * than $maxLength characters long.
+ *
+ * Removed characters are replaced with "..."
+ *
+ * This method will give priority to the right-hand side of the string when
+ * data is truncated.
+ *
+ * @param $string
+ * @param $maxLength
+ * @return string
+ */
+function truncate_middle($string, $maxLength): string
+{
+    // Early exit if no truncation necessary
+    if (strlen($string) <= $maxLength) return $string;
+
+    $numRightChars = ceil($maxLength / 2);
+    $numLeftChars = floor($maxLength / 2) - 3; // to accommodate the "..."
+
+    return sprintf("%s...%s", substr($string, 0, $numLeftChars), substr($string, 0 - $numRightChars));
+}
+
 function has_preview_access(): bool
 {
     $user = auth()?->user();
