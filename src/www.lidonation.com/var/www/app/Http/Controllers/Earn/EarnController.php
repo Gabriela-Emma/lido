@@ -32,7 +32,7 @@ class EarnController extends Controller
             return to_route('earn.learn');
         } else {
             return Inertia::modal('DuplicateAccount')
-                ->baseURL(url()->previous());
+                ->baseRoute('earn.learn');
         }
     }
 
