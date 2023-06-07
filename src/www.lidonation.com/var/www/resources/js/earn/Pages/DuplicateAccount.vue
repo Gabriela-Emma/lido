@@ -15,7 +15,7 @@
                     />
                 </div>
                 <p class="text-xl text-white">
-                    {{ $t('duplicateAccountMessage') }}&nbsp; <span class="font-bold">msaada@lidonation.com</span>
+                    {{ $t('duplicateAccountMessage') }}:&nbsp; <span class="font-bold">msaada@lidonation.com</span>
                 </p>
             </div>
             <div
