@@ -47,10 +47,10 @@
                                         <DialogTitle
                                             as="h3"
                                             class="text-base font-semibold leading-6 text-gray-900"
-                                            >{{$t('duplicateAccountTitle')}}</DialogTitle>
+                                            >Duplicate account warning</DialogTitle>
                                         <div class="mt-2">
                                             <p class="text-sm text-gray-500">
-                                                {{$t('duplicateAccountWarningMessage')}}
+                                                This has been flagged as a duplicate account. The first account you registered with is still active. Please only participate once so that more people can participate and learn. If you need help, contact us at "msaada@lidonation.com"
                                             </p>
                                         </div>
                                     </div>
@@ -65,7 +65,7 @@
                                     @click.prevent="$emit('close')"
                                     ref="cancelButtonRef"
                                 >
-                                {{$t('duplicateAccountClose')}}
+                                Close
                                 </button>
                             </div>
                         </DialogPanel>
