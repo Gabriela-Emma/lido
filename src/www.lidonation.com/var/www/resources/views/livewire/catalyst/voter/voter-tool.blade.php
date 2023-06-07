@@ -11,9 +11,9 @@
             {{ $snippets->allVotesMustBeSubmittedInTheApp}}
         </h2>
 
-        @if($snippets)
-            <x-markdown>{{$snippets[0]?->content}}</x-markdown>
-        @endif
+        {{-- @if($snippets) --}}
+            {{-- <x-markdown>{{$snippets[0]?->content}}</x-markdown> --}}
+        {{-- @endif --}}
     </x-public.page-header>
 
     <section class="relative py-8 text-white bg-teal-600 text-md">
@@ -448,8 +448,8 @@
 
                             @if(!empty($proposals))
                                 @if($searchGroup === 'quickPitchProposals')
-                                    <div class="relative bg-slate-50 border rounded-sm">
-                                        <div class="mx-auto max-w-7xl py-3 px-3 sm:px-6 lg:px-8">
+                                    <div class="relative border rounded-sm bg-slate-50">
+                                        <div class="px-3 py-3 mx-auto max-w-7xl sm:px-6 lg:px-8">
                                             <div class="pr-16 sm:px-16 sm:text-center">
                                                 <p class="font-medium text-slate-400">
                                                         <span>
@@ -458,7 +458,7 @@
                                                     <span class="block sm:ml-2 sm:inline-block">
                                                           <a href="{{$settings->quick_pitch_link}}"
                                                              target="_blank"
-                                                             class="font-semibold underline flex flex-row gap-2 items-center">
+                                                             class="flex flex-row items-center gap-2 font-semibold underline">
                                                             <span>quickpitch</span>
                                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-4 h-4">
                                                               <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
@@ -502,9 +502,9 @@
                                                 this.bookmarked = true;
                                             }
                                         }"
-                                         class="p-8 bg-primary-30 w-full col-span-1 lg:grid-cols-2 xl:col-span-3 w-full relative overflow-hidden">
+                                         class="relative w-full col-span-1 p-8 overflow-hidden bg-primary-30 lg:grid-cols-2 xl:col-span-3">
                                         <div class="hidden pointer-events-none sm:block sm:absolute sm:inset-y-0 sm:h-full sm:w-full" aria-hidden="true">
-                                            <div class="relative h-full w-full p-2">
+                                            <div class="relative w-full h-full p-2">
                                                 <svg class="absolute right-full transform translate-y-[12%] translate-x-1/4 lg:translate-x-1/3" width="404" height="640" fill="none" viewBox="0 0 404 640">
                                                     <defs>
                                                         <pattern id="f210dbf6-a58d-4871-961e-36d5016a0f49" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
@@ -526,7 +526,7 @@
 
                                         <div class="" @bookmark-proposals.window="bookmarking = false" x-show="">
                                             <div x-show="bookmarking"
-                                                 class="left-0 z-10 flex items-start justify-center w-full h-full absolute">
+                                                 class="absolute left-0 z-10 flex items-start justify-center w-full h-full">
                                                 <div
                                                     class="flex items-center justify-center w-16 h-16 p-3 bg-white rounded-full lg:h-24 lg:w-24 bg-opacity-90">
                                                     <svg
@@ -536,7 +536,7 @@
                                             </div>
 
                                             <div class="text-center" id="bookmark-helper" x-show="bookmarked">
-                                                <h1 class="text-2xl tracking-tight font-bold text-gray-900 sm:tracking-tight md:text-4xl md:tracking-tight">
+                                                <h1 class="text-2xl font-bold tracking-tight text-gray-900 sm:tracking-tight md:text-4xl md:tracking-tight">
                                                     <span class="block xl:inline">All {{count($proposals ?? [])}} proposals <span class="block text-teal-800 xl:inline">successfully</span><br />
                                                         added to your</span>
                                                     <a class="inline" href="{{localizeRoute('projectCatalyst.voterTool')}}">bookmarks</a>.
@@ -544,31 +544,31 @@
                                             </div>
 
                                             <div class="text-center" id="bookmark-helper" x-show="!bookmarked">
-                                                <h1 class="text-2xl tracking-tight font-bold text-gray-900 sm:tracking-tight md:text-4xl md:tracking-tight">
+                                                <h1 class="text-2xl font-bold tracking-tight text-gray-900 sm:tracking-tight md:text-4xl md:tracking-tight">
                                                     <span class="block text-teal-800 xl:inline">BookmarkItem</span>
                                                     <span class="block xl:inline"> all <span x-text="searchArgs?.count || 0"></span> matching proposals</span>
                                                 </h1>
-                                                <div class="mt-1 max-w-md mx-auto flex flex-col md:flex-row md:justify-center md:mt-4 gap-4 items-center">
-                                                    <div class="border border-primary-700 w-full rounded-sm px-3 py-2 focus-within:ring-1 focus-within:ring-primary-600 focus-within:border-primary-600 text-left">
+                                                <div class="flex flex-col items-center max-w-md gap-4 mx-auto mt-1 md:flex-row md:justify-center md:mt-4">
+                                                    <div class="w-full px-3 py-2 text-left border rounded-sm border-primary-700 focus-within:ring-1 focus-within:ring-primary-600 focus-within:border-primary-600">
                                                         <label for="name" class="block text-xs font-semibold text-teal-900">Label (optional)</label>
                                                         <input type="text" name="name" id="name" placeholder="List Label or Title" x-model="label"
-                                                               class="block custom-input w-full border-0 p-0 text-teal-900 placeholder-primary-100 bg-transparent focus:ring-0 sm:text-sm">
+                                                               class="block w-full p-0 text-teal-900 bg-transparent border-0 custom-input placeholder-primary-100 focus:ring-0 sm:text-sm">
                                                     </div>
 
-                                                    <div class="rounded-md shadow-xs w-full lg:w-auto h-full flex">
+                                                    <div class="flex w-full h-full rounded-md shadow-xs lg:w-auto">
                                                         <a
                                                             :disable="searchArgs.count > 80"
                                                             :class="{
                                                                 'disable bg-slate-600 hover:cursor-not-allowed pointer-events-none': searchArgs.count > 80
                                                             }"
                                                             @click.prevent="bookmarkResults()"
-                                                            href="#bookmarkResults" class="h-full flex items-center justify-center px-4 py-2 border border-transparent text-base font-medium rounded-sm text-white hover:text-yellow-500 bg-teal-800 hover:bg-teal-600 md:py-3 md:text-lg md:px-4">
+                                                            href="#bookmarkResults" class="flex items-center justify-center h-full px-4 py-2 text-base font-medium text-white bg-teal-800 border border-transparent rounded-sm hover:text-yellow-500 hover:bg-teal-600 md:py-3 md:text-lg md:px-4">
                                                             BookmarkItem
                                                         </a>
                                                     </div>
 
-                                                    <div class="absolute -bottom-1 w-full p-2" x-show="searchArgs.count > 80">
-                                                        <p class="text-teal-900 font-medium text-xs">
+                                                    <div class="absolute w-full p-2 -bottom-1" x-show="searchArgs.count > 80">
+                                                        <p class="text-xs font-medium text-teal-900">
                                                             Anonymous bulk bookmark creation is limited to 80 at a time.
                                                         </p>
                                                     </div>
@@ -578,7 +578,7 @@
                                     </div>
 
                                     @empty($search)
-                                        <div class="paginator  col-span-1 lg:grid-cols-2 xl:col-span-3 flex justify-center ">
+                                        <div class="flex justify-center col-span-1 paginator lg:grid-cols-2 xl:col-span-3 ">
                                             {{ $this->getSearchGroupPaginator()->links() }}
                                         </div>
                                     @endempty
