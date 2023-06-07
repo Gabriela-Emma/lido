@@ -129,7 +129,7 @@ function breakLongText($text, $length = 1000, $maxLength = 1100, $needle = '.'):
  * @param $maxLength
  * @return string
  */
-function truncate_middle($string = '', $maxLength = 16): string
+function truncate_middle($string = '', $maxLength = 16): string|null
 {
     // Early exit if no truncation necessary
     if (strlen($string) <= $maxLength) return $string;
