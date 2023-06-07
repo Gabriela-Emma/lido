@@ -47,10 +47,10 @@
                                         <DialogTitle
                                             as="h3"
                                             class="text-base font-semibold leading-6 text-gray-900"
-                                            >{{$t('duplicateAccountTitle')}}</DialogTitle>
+                                            >{{ $t('duplicateAccountTitle') }}</DialogTitle>
                                         <div class="mt-2">
                                             <p class="text-sm text-gray-500">
-                                                {{$t('duplicateAccountWarningMessage')}}
+                                                Hii imepewa bendera kama akaunti duwa, akaunti yako ya kwanza uliyosajiliwa bado ni hai. Tafadhali shiriki mara moja tu ili watu wengine waweze kushiriki na kujifunza. Ikiwa unahitaji msaada, wasiliana nasi kupitia:&nbsp; <span class="font-bold">msaada@lidonation.com</span>
                                             </p>
                                         </div>
                                     </div>
@@ -65,7 +65,7 @@
                                     @click.prevent="$emit('close')"
                                     ref="cancelButtonRef"
                                 >
-                                {{$t('duplicateAccountClose')}}
+                                {{ $t('duplicateAccountClose') }}
                                 </button>
                             </div>
                         </DialogPanel>
