@@ -92,6 +92,11 @@ class Rewards extends Resource
                 ->sortable()
                 ->searchable(),
 
+
+            BelongsTo::make(__('Withdrawal'), 'withdrawal', Withdrawals::class)
+            ->sortable()
+            ->searchable(),
+
             Text::make(__('Stake Address'), 'stake_address')->sortable()
                 ->displayUsing(function($value) use ($request) {
                     if ($request->isResourceIndexRequest()) {
