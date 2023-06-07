@@ -52,6 +52,9 @@
                                             <p class="text-sm text-gray-500">
                                                 {{ $t('duplicateAccountMessage') }}:&nbsp; <span class="font-bold">msaada@lidonation.com</span>
                                             </p>
+                                            <p class="text-sm text-gray-500">
+                                                {{ $t('duplicateAccountNew') }}
+                                            </p>
                                         </div>
                                     </div>
                                 </div>

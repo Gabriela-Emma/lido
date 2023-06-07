@@ -14,6 +14,11 @@
             "heading":"duplicateAccountClose",
             "text_en":"Close",
             "text_sw":"Funga"
+        },
+        {
+            "heading":"duplicateAccountNew",
+            "text_en":"This code will delete the snippets from the table based on their name",
+            "text_sw":"Kiswahili ni ngumu sana inafaa kuandikwa kwa njia ya urahisi"
         }
     ]
 }
