@@ -2,7 +2,7 @@
     <Modal :show="show">
         <div class="z-50 bg-labs-red flex flex-col">
             <header class="p-6 bg-labs-black text-white">
-                <h2>{{ $t("duplicateAccountTitle") }}</h2>
+                <h2>{{ $t('duplicateAccountTitle') }}</h2>
             </header>
 
             <div class="px-8 py-16 sm:px-24 flex items-center gap-2">
@@ -15,7 +15,7 @@
                     />
                 </div>
                 <p class="text-xl text-white">
-                    {{ $t("duplicateAccountWarningMessage") }}
+                    Hii imepewa bendera kama akaunti duwa, akaunti yako ya kwanza uliyosajiliwa bado ni hai. Tafadhali shiriki mara moja tu ili watu wengine waweze kushiriki na kujifunza. Ikiwa unahitaji msaada, wasiliana nasi kupitia:&nbsp; <span class="font-bold">msaada@lidonation.com</span>
                 </p>
             </div>
             <div
@@ -26,7 +26,7 @@
                     @click.prevent="closeModal"
                     class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
                 >
-                    {{ $t("duplicateAccountClose") }}
+                {{ $t('duplicateAccountClose') }}
                 </button>
             </div>
         </div>
