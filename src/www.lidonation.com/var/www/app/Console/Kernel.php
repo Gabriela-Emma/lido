@@ -27,7 +27,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('model:prune')->weekly();
         $schedule->command('sync:repo')->daily();
 
-        $schedule->job(new ProcessPendingWithdrawalsJob)->everyFourHours();
+        $schedule->job(new ProcessPendingWithdrawalsJob)->daily();
         $schedule->job(new CalculateDelegationEpochs)->daily();
         $schedule->job(new LidoStatsJob)->everyFifteenMinutes();
         $schedule->job(new CardanoStatsJob)->everyTwoHours();
