@@ -8,7 +8,7 @@
         {
             "heading":"duplicateAccountWarningMessage",
             "text_en":"This has been flagged as a duplicate account, the first account you registered with is still active. Please only participate once so that more people can participate and learn. If you need help, contact us at",
-            "text_sw":"Hii imepewa bendera kama akaunti duwa. Akaunti yako ya kwanza uliyosajiliwa bado ni hai. Tafadhali shiriki mara moja tu ili watu wengine waweze kushiriki na kujifunza. Ikiwa unahitaji msaada, wasiliana nasi kupitia"
+            "text_sw":"Hii imepewa bendera kama akaunti duwa, akaunti yako ya kwanza uliyosajiliwa bado ni hai. Tafadhali shiriki mara moja tu ili watu wengine waweze kushiriki na kujifunza. Ikiwa unahitaji msaada, wasiliana nasi kupitia"
         },
         {
             "heading":"duplicateAccountClose",

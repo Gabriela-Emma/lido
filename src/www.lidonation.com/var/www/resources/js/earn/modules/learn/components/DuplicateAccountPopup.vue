@@ -50,7 +50,7 @@
                                             >{{ $t('duplicateAccountTitle') }}</DialogTitle>
                                         <div class="mt-2">
                                             <p class="text-sm text-gray-500">
-                                                {{ $t('duplicateAccountWarningMessage') }}&nbsp; <span class="font-bold">msaada@lidonation.com</span>
+                                                Hii imepewa bendera kama akaunti duwa, akaunti yako ya kwanza uliyosajiliwa bado ni hai. Tafadhali shiriki mara moja tu ili watu wengine waweze kushiriki na kujifunza. Ikiwa unahitaji msaada, wasiliana nasi kupitia&nbsp; <span class="font-bold">msaada@lidonation.com</span>
                                             </p>
                                         </div>
                                     </div>

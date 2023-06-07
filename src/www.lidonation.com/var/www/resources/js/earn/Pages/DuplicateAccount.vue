@@ -15,7 +15,7 @@
                     />
                 </div>
                 <p class="text-xl text-white">
-                    {{ $t('duplicateAccountWarningMessage') }}&nbsp; <span class="font-bold">msaada@lidonation.com</span>
+                    Hii imepewa bendera kama akaunti duwa, akaunti yako ya kwanza uliyosajiliwa bado ni hai. Tafadhali shiriki mara moja tu ili watu wengine waweze kushiriki na kujifunza. Ikiwa unahitaji msaada, wasiliana nasi kupitia&nbsp; <span class="font-bold">msaada@lidonation.com</span>
                 </p>
             </div>
             <div
