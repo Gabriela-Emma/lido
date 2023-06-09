@@ -107,7 +107,7 @@ class Rewards extends Resource
                 }),
 
             MorphTo::make(__('Model'), 'model')
-                ->types([Giveaways::class])
+                ->types([Giveaways::class, LearningLessons::class])
                 ->searchable(),
 
             Select::make(__('Asset Type'), 'asset_type')
