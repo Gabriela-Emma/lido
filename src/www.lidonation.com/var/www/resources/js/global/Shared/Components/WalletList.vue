@@ -29,12 +29,10 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, Ref, watch } from 'vue';
 import { storeToRefs } from "pinia";
 import { supports } from "../../../lib/utils/cardanoWallet";
 import { useWalletStore } from '../../../catalyst-explorer/stores/wallet-store';
 import { AvailableWallets } from '../../../lib/utils/wallets-list';
-import SupportedWallet from '../Models/supported-wallets'
 
 
 const props = withDefaults(
@@ -45,7 +43,6 @@ const props = withDefaults(
         open: false
     });
 
-let open = ref(props.open);
 
 
 let walletStore = useWalletStore();
