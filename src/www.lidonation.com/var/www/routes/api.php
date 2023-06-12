@@ -279,6 +279,7 @@ Route::prefix('earn')->as('earnApi.')->group(function () {
         'auth:sanctum',
     ])->prefix('/learn')->group(function () {
         Route::get('/learner-data', [LearnController::class, 'learnerData']);
+    });
 });
 
 Route::prefix('promos')->as('promos')

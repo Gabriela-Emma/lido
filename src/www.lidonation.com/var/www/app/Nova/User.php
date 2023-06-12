@@ -218,9 +218,21 @@ class User extends Resource
     {
         return [
             Text::make('Stake Address', 'wallet_stake_address')
-                ->sortable(),
+                ->displayUsing(function($value) use ($request) {
+                    if (!!$value && $request->isResourceIndexRequest()) {
+                        return Str::truncate($value, 16);
+                    }
+
+                    return $value;
+                })->sortable(),
             Text::make('Wallet Address', 'wallet_address')
-                ->sortable(),
+                ->displayUsing(function($value) use ($request) {
+                    if (!!$value && $request->isResourceIndexRequest()) {
+                        return Str::truncate($value, 16);
+                    }
+
+                    return $value;
+                })->sortable(),
         ];
     }
 
