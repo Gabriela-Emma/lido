@@ -34,6 +34,7 @@ use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 use Staudenmeir\EloquentJsonRelations\HasJsonRelationships;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Builder;
 
 class User extends Authenticatable implements HasMedia, Interfaces\IHasMetaData, CanComment, CanResetPassword, MustVerifyEmail
 {
@@ -239,6 +240,14 @@ class User extends Authenticatable implements HasMedia, Interfaces\IHasMetaData,
                 ->where('status', 'issued')
                 ->orderBy('created_at', 'desc')->get()
         );
+    }
+
+    public function scopeIncludeDuplicates(Builder $query, $include = true): Builder
+    {
+        if ($include) {
+            return $query;
+        }
+        return $query->whereDoesntHave('primary_account');
     }
 
     public function follows(CatalystUser|int $catalystUser): bool

@@ -17,7 +17,7 @@ class WalletsStakedPercentage extends Partition
      */
     public function calculate(NovaRequest $request)
     {
-        $learners = User::role('learner');
+        $learners = User::role('learner')->includeDuplicates(false);
 
         $totalWallets = $learners->whereRaw('Length(wallet_stake_address) > 5')
                             ->count();

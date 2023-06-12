@@ -17,7 +17,7 @@ class LTERegisteredUsers extends Value
      */
     public function calculate(NovaRequest $request)
     {
-        return $this->count($request, User::role('learner'));
+        return $this->count($request, User::role('learner')->includeDuplicates(false));
     }
 
     /**
