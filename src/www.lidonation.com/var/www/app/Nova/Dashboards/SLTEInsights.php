@@ -14,8 +14,6 @@ class SLTEInsights extends Dashboard
 {
     /**
      * Get the displayable name of the dashboard.
-     *
-     * @return string
      */
     public function name(): string
     {
@@ -24,8 +22,6 @@ class SLTEInsights extends Dashboard
 
     /**
      * Get the URI key of the dashboard.
-     *
-     * @return string
      */
     public function uriKey(): string
     {
@@ -34,8 +30,6 @@ class SLTEInsights extends Dashboard
 
     /**
      * Get the cards for the dashboard.
-     *
-     * @return array
      */
     public function cards(): array
     {
@@ -45,8 +39,8 @@ class SLTEInsights extends Dashboard
             (new LTERegisteredUsers)->help('Total number of learners registered as Learn to Earn Users.'),
             (new QuizzesTakenCount)->help('Total number of quizzes attempted.'),
             (new ResponsesCorrectness)->help('Correct and incorrect responses proportions'),
-            (new TotalAdaEarned)->help("Learn to earn total Ada Earned."),
-            (new TotalAdaDistributed)->help("Learn to earn total Ada distributed.")
+            (new TotalAdaEarned)->help('Learn to earn total Ada Earned.'),
+            (new TotalAdaDistributed)->help('Learn to earn total Ada distributed.'),
         ];
     }
 }

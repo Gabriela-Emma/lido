@@ -9,8 +9,6 @@ class Main extends Dashboard
 {
     /**
      * Get the URI key of the dashboard.
-     *
-     * @return string
      */
     public function uriKey(): string
     {
@@ -19,8 +17,6 @@ class Main extends Dashboard
 
     /**
      * Get the cards for the dashboard.
-     *
-     * @return array
      */
     public function cards(): array
     {

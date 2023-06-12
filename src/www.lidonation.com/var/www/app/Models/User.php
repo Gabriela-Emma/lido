@@ -9,8 +9,11 @@ use App\Models\Traits\HasMetaData;
 use App\Models\Traits\HasPromos;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Contracts\Auth\CanResetPassword;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -32,9 +35,6 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\Permission\Traits\HasRoles;
 use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 use Staudenmeir\EloquentJsonRelations\HasJsonRelationships;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Builder;
 
 class User extends Authenticatable implements HasMedia, Interfaces\IHasMetaData, CanComment, CanResetPassword, MustVerifyEmail
 {
@@ -247,6 +247,7 @@ class User extends Authenticatable implements HasMedia, Interfaces\IHasMetaData,
         if ($include) {
             return $query;
         }
+
         return $query->whereDoesntHave('primary_account');
     }
 

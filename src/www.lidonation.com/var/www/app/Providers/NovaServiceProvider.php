@@ -5,7 +5,6 @@ namespace App\Providers;
 use App\Models\User;
 use App\Nova\Dashboards\SLTEInsights;
 use Illuminate\Support\Facades\Gate;
-use JetBrains\PhpStorm\Pure;
 use Laravel\Nova\Dashboards\Main;
 use Laravel\Nova\Nova;
 use Laravel\Nova\NovaApplicationServiceProvider;
@@ -68,22 +67,18 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 
     /**
      * Get the extra dashboards that should be displayed on the Nova dashboard.
-     *
-     * @return array
      */
     protected function dashboards(): array
     {
-     return [
-         Main::make(),
-         SLTEInsights::make()->showRefreshButton(),
-     ];
- }
+        return [
+            Main::make(),
+            SLTEInsights::make()->showRefreshButton(),
+        ];
+    }
 
     /**
-     * Get the tools that should be listed in the Nova sidebar.
-     *
-     * @return array
-     */
+        * Get the tools that should be listed in the Nova sidebar.
+        */
     public function tools(): array
     {
         return [];

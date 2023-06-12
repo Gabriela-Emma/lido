@@ -23,7 +23,6 @@ use Laravel\Nova\Fields\MorphTo;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
-use function MongoDB\BSON\toJSON;
 
 class Rewards extends Resource
 {
@@ -92,13 +91,12 @@ class Rewards extends Resource
                 ->sortable()
                 ->searchable(),
 
-
             BelongsTo::make(__('Withdrawal'), 'withdrawal', Withdrawals::class)
-            ->sortable()
-            ->searchable(),
+                ->sortable()
+                ->searchable(),
 
             Text::make(__('Stake Address'), 'stake_address')->sortable()
-                ->displayUsing(function($value) use ($request) {
+                ->displayUsing(function ($value) use ($request) {
                     if ($request->isResourceIndexRequest()) {
                         return Str::truncate($value, 16);
                     }

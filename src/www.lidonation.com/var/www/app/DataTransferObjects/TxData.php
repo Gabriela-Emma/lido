@@ -31,5 +31,6 @@ class TxData extends Data
         #[WithCast(DateTimeInterfaceCast::class)]
         #[WithTransformer(DateTimeInterfaceTransformer::class)]
         public ?DateTime $created_at
-    ) {}
+    ) {
+    }
 }

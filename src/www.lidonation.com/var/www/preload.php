@@ -30,6 +30,6 @@
  *
  *
  * For more information:
+ *
  * @see https://github.com/laragear/preload
  */
-

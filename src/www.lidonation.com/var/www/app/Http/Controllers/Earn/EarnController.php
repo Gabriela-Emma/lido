@@ -62,10 +62,11 @@ class EarnController extends Controller
 
     public function storeWallet()
     {
-        $u  = Auth::user();
+        $u = Auth::user();
         $u->wallet_address = request('wallet_address');
         $u->wallet_stake_address = request('wallet_stake_address');
         $u->save();
+
         return true;
     }
 }

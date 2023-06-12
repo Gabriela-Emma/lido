@@ -3,29 +3,41 @@
 namespace App\Nova\Metrics;
 
 use App\Models\AnswerResponse;
-use App\Models\LearningLesson;
-use App\Models\LearningTopic;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Metrics\Value;
+use Illuminate\Database\Eloquent\Builder;
 
 class QuizzesTakenCount extends Value
 {
     /**
      * Calculate the value of the metric.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return mixed
      */
     public function calculate(NovaRequest $request)
     {
-        $lessons = LearningLesson::all();
-        $learningLessonsQuizzesIds = $lessons->flatMap(function ($lesson) {
-            return $lesson->quizzes()->get()->pluck('id');
-        });
+        $total = $this->count($request,
+            AnswerResponse::whereHas(
+                'quiz',
+                fn ( Builder $query) => $query->whereHas('lessons')
+            )->whereHas(
+                'user',
+                fn (Builder $userQuery) => $userQuery->includeDuplicates(true)
+            )
+        );
 
-        return $this->count($request, AnswerResponse::whereIn('quiz_id', $learningLessonsQuizzesIds));
+        $unique = $this->count($request,
+            AnswerResponse::whereHas(
+                'quiz',
+                fn ($query) => $query->whereHas('lessons')
+            )->whereHas(
+                'user',
+                fn ($userQuery) => $userQuery->includeDuplicates(false)
+            )
+        );
+        $duplicates = $total->value - $unique->value;
+
+        return $unique->suffix("({$duplicates} Duplicates)");
     }
 
     /**
@@ -36,6 +48,8 @@ class QuizzesTakenCount extends Value
     public function ranges()
     {
         return [
+            7 => __('7 Days'),
+            15 => __('15 Days'),
             30 => __('30 Days'),
             60 => __('60 Days'),
             365 => __('365 Days'),

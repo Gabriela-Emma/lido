@@ -23,7 +23,7 @@ return [
     ],
 
     'network' => [
-        'network_id' => env('CARDANO_NETWORK_ID')
+        'network_id' => env('CARDANO_NETWORK_ID'),
     ],
 
     'mint' => [

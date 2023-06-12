@@ -32,7 +32,6 @@ function ___(string $key = null, bool $oneLiner = true, array $replace = [], str
     return $html;
 }
 
-
 function previous_route_name(): string
 {
     return app('router')->getRoutes()->match(app('request')->create(url()->previous()))->getName();
@@ -125,19 +124,19 @@ function breakLongText($text, $length = 1000, $maxLength = 1100, $needle = '.'):
  * This method will give priority to the right-hand side of the string when
  * data is truncated.
  *
- * @param $string
- * @param $maxLength
  * @return string
  */
 function truncate_middle($string = '', $maxLength = 16): string|null
 {
     // Early exit if no truncation necessary
-    if (strlen($string) <= $maxLength) return $string;
+    if (strlen($string) <= $maxLength) {
+        return $string;
+    }
 
     $numRightChars = ceil($maxLength / 2);
     $numLeftChars = floor($maxLength / 2) - 3; // to accommodate the "..."
 
-    return sprintf("%s...%s", substr($string, 0, $numLeftChars), substr($string, 0 - $numRightChars));
+    return sprintf('%s...%s', substr($string, 0, $numLeftChars), substr($string, 0 - $numRightChars));
 }
 
 function has_preview_access(): bool

@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Earn;
 use App\DataTransferObjects\LearnerData;
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -13,8 +15,6 @@ use Illuminate\Support\Fluent;
 use Inertia\Inertia;
 use Inertia\Response;
 use Spatie\Permission\Models\Role;
-use Illuminate\Auth\Events\Registered;
-use Illuminate\Contracts\Auth\StatefulGuard;
 
 class LearnController extends Controller
 {
@@ -23,18 +23,18 @@ class LearnController extends Controller
      *
      * @return Response
      */
-
     protected $guard;
+
     /**
      * Create a new controller instance.
      *
-     * @param  \Illuminate\Contracts\Auth\StatefulGuard  $guard
      * @return void
      */
     public function __construct(StatefulGuard $guard)
     {
         $this->guard = $guard;
     }
+
     public function index()
     {
         return Inertia::render('Learn')->with([
@@ -58,10 +58,11 @@ class LearnController extends Controller
             $user = User::where('wallet_stake_address', $request->stake_address)->first();
 
             if ((bool) $user) {
-                if($user->primary_account === null){
+                if ($user->primary_account === null) {
                     Auth::login($user, $remember = true);
+
                     return $user;
-                }else{
+                } else {
                     return redirect()->back()->withErrors([
                         'duplicate' => 'Duplicate account found. Please contact support.',
                     ]);
@@ -92,7 +93,6 @@ class LearnController extends Controller
             'email' => 'These credentials do not match our records.',
         ]);
     }
-
 
     public function register(Request $request)
     {
