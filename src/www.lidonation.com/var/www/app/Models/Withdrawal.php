@@ -24,7 +24,7 @@ class Withdrawal extends Model implements IHasMetaData
     protected $appends = ['withdrawal_tx'];
 
     protected $casts = [
-//        'rewards' => DataCollection::class.':'.RewardData::class,
+        //        'rewards' => DataCollection::class.':'.RewardData::class,
     ];
 
     public function withdrawalTx(): Attribute

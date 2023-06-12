@@ -5,19 +5,21 @@ namespace App\Nova\Metrics;
 use App\Models\User;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Metrics\Value;
-use Spatie\Permission\Models\Role;
 
 class LTERegisteredUsers extends Value
 {
     /**
      * Calculate the value of the metric.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return mixed
      */
     public function calculate(NovaRequest $request)
     {
-        return $this->count($request, User::role('learner')->includeDuplicates(false));
+        $total = $this->count($request, User::role('learner')->includeDuplicates(true));
+        $unique = $this->count($request, User::role('learner')->includeDuplicates(false));
+        $duplicates = $total->value - $unique->value;
+
+        return $unique->suffix("({$duplicates} Duplicates)");
     }
 
     /**
@@ -28,6 +30,8 @@ class LTERegisteredUsers extends Value
     public function ranges()
     {
         return [
+            7 => __('7 Days'),
+            15 => __('15 Days'),
             30 => __('30 Days'),
             60 => __('60 Days'),
             365 => __('365 Days'),

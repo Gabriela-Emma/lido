@@ -78,8 +78,8 @@ class User extends Resource
                         ],
                     ]
                 )
-                ->displayUsing(function($value) use ($request) {
-                    if (!!$value && $request->isResourceIndexRequest()) {
+                ->displayUsing(function ($value) use ($request) {
+                    if ((bool) $value && $request->isResourceIndexRequest()) {
                         return Str::truncate($value, 16);
                     }
 
@@ -131,8 +131,6 @@ class User extends Resource
             new Panel('Meta', $this->metaDataFields()),
 
             new Panel('Stake Profile', $this->stakeProfile($request)),
-
-
 
             HasMany::make('Rewards', 'rewards', Rewards::class),
 
@@ -207,27 +205,27 @@ class User extends Resource
     {
         return array_merge(
             static::getGlobalActions(), [
-            (new AddMetaData),
-            (new EditMetaData(\App\Models\User::class)),
-            (new PopulatePaymentAddress)->confirmText('Check skip, to skip updating wallet_address field on models that already have one!'),
-            (new FetchDelegation),
-        ]);
+                (new AddMetaData),
+                (new EditMetaData(\App\Models\User::class)),
+                (new PopulatePaymentAddress)->confirmText('Check skip, to skip updating wallet_address field on models that already have one!'),
+                (new FetchDelegation),
+            ]);
     }
 
     public function stakeProfile(Request $request): array
     {
         return [
             Text::make('Stake Address', 'wallet_stake_address')
-                ->displayUsing(function($value) use ($request) {
-                    if (!!$value && $request->isResourceIndexRequest()) {
+                ->displayUsing(function ($value) use ($request) {
+                    if ((bool) $value && $request->isResourceIndexRequest()) {
                         return Str::truncate($value, 16);
                     }
 
                     return $value;
                 })->sortable(),
             Text::make('Wallet Address', 'wallet_address')
-                ->displayUsing(function($value) use ($request) {
-                    if (!!$value && $request->isResourceIndexRequest()) {
+                ->displayUsing(function ($value) use ($request) {
+                    if ((bool) $value && $request->isResourceIndexRequest()) {
                         return Str::truncate($value, 16);
                     }
 

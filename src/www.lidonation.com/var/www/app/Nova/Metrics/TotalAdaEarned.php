@@ -12,17 +12,16 @@ class TotalAdaEarned extends Value
     /**
      * Calculate the value of the metric.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return mixed
      */
     public function calculate(NovaRequest $request)
     {
         $lteAdaRewards = Reward::where('asset_type', 'ada')
-                        ->where('model_type', LearningLesson::class);
+            ->where('model_type', LearningLesson::class);
 
         return $this->sum($request, $lteAdaRewards, 'amount')
-                    ->transform(fn($value) => $value / 1000000)
-                    ->currency('₳');
+            ->transform(fn ($value) => $value / 1000000)
+            ->currency('₳');
     }
 
     /**

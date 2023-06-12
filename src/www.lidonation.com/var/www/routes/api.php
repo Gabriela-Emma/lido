@@ -1,30 +1,30 @@
 <?php
 
+use App\Http\Controllers\Api\CatalystExplorer;
+use App\Http\Controllers\Api\Nfts\LidoMinuteNftsController;
+use App\Http\Controllers\Api\Partners\PartnersController;
+use App\Http\Controllers\Api\Phuffycoin\PhuffycoinController;
+use App\Http\Controllers\Delegators\DelegatorController;
 use App\Http\Controllers\Earn\EarnController;
-use App\Models\User;
-use App\Models\Reward;
+use App\Http\Controllers\Earn\LearnController;
+use App\Http\Controllers\Earn\LearningLessonController;
+use App\Http\Controllers\GenerateMnemonicPhraseController;
+use App\Http\Controllers\GlobalSearchController;
+use App\Http\Controllers\ProjectCatalyst\CatalystProjectsController;
+use App\Http\Controllers\PromoController;
+use App\Http\Controllers\QuestionResponseController;
+use App\Http\Controllers\RewardController;
+use App\Http\Controllers\SnippetController;
+use App\Models\Catalyst\Ccv4BallotChoice;
 use App\Models\EveryEpoch;
-use Illuminate\Support\Str;
+use App\Models\Reward;
+use App\Models\User;
+use App\Services\CardanoBlockfrostService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\PromoController;
-use App\Models\Catalyst\Ccv4BallotChoice;
-use App\Http\Controllers\RewardController;
-use App\Services\CardanoBlockfrostService;
-use App\Http\Controllers\SnippetController;
-use App\Http\Controllers\Api\CatalystExplorer;
-use App\Http\Controllers\Earn\LearnController;
-use App\Http\Controllers\GlobalSearchController;
-use App\Http\Controllers\QuestionResponseController;
-use App\Http\Controllers\Earn\LearningLessonController;
-use App\Http\Controllers\Delegators\DelegatorController;
-use App\Http\Controllers\Api\Partners\PartnersController;
-use App\Http\Controllers\GenerateMnemonicPhraseController;
-use App\Http\Controllers\Api\Nfts\LidoMinuteNftsController;
-use App\Http\Controllers\Api\Phuffycoin\PhuffycoinController;
-use App\Http\Controllers\ProjectCatalyst\CatalystProjectsController;
+use Illuminate\Support\Str;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,18 +47,18 @@ Route::group(
         'prefix' => 'delegators',
         'middleware' => ['auth:sanctum'],
     ], function () {
-    Route::get('/current', [DelegatorController::class, 'current']);
-    Route::get('/{id}', [DelegatorController::class, 'index']);
-});
+        Route::get('/current', [DelegatorController::class, 'current']);
+        Route::get('/{id}', [DelegatorController::class, 'index']);
+    });
 Route::group(
     [
         'prefix' => 'delegators',
         'middleware' => [],
     ], function () {
-    Route::post('/create', [DelegatorController::class, 'create']);
-    Route::post('/logout', [DelegatorController::class, 'logout']);
-    Route::post('/login', [DelegatorController::class, 'login']);
-});
+        Route::post('/create', [DelegatorController::class, 'create']);
+        Route::post('/logout', [DelegatorController::class, 'logout']);
+        Route::post('/login', [DelegatorController::class, 'login']);
+    });
 
 // Partners
 
@@ -67,19 +67,19 @@ Route::group(
         'prefix' => 'partners',
         'middleware' => ['auth:sanctum'],
     ], function () {
-    Route::get('/promos', [PromoController::class, 'index']);
-    Route::get('/promos/{id}', [PromoController::class, 'read']);
-});
+        Route::get('/promos', [PromoController::class, 'index']);
+        Route::get('/promos/{id}', [PromoController::class, 'read']);
+    });
 Route::group(
     [
         'prefix' => 'partners',
         'middleware' => [],
     ], function () {
-    Route::post('/policies', [PartnersController::class, 'policies']);
-    Route::post('/create', [PartnersController::class, 'create']);
-    Route::post('/logout', [PartnersController::class, 'logout']);
-    Route::post('/login', [PartnersController::class, 'login']);
-});
+        Route::post('/policies', [PartnersController::class, 'policies']);
+        Route::post('/create', [PartnersController::class, 'create']);
+        Route::post('/logout', [PartnersController::class, 'logout']);
+        Route::post('/login', [PartnersController::class, 'login']);
+    });
 
 Route::group([
     'prefix' => 'phuffycoin',
@@ -116,12 +116,12 @@ Route::post('/ccv4/ballot', function (Request $request) {
 
     $ballots = $ballots->get();
     if ($ballots->isNotEmpty()) {
-        if (!$user instanceof User) {
+        if (! $user instanceof User) {
             $user = new User;
             $user->name = $request->account;
             $user->wallet_stake_address = $request->account;
             $user->wallet_address = $request->wallet_address;
-            $user->email = $request->email ?? substr($request->account, -4) . '@anonymous.com';
+            $user->email = $request->email ?? substr($request->account, -4).'@anonymous.com';
             $user->password = Hash::make(Str::random(10));
             $user->save();
         }
@@ -145,7 +145,7 @@ Route::prefix('rewards')->as('rewardsApi.')
         Route::get('/', [PhuffycoinController::class, 'index'])->name('index');
 
         // withdrawals
-        Route::prefix('withdrawals')->as('withdrawals.')->group(function() {
+        Route::prefix('withdrawals')->as('withdrawals.')->group(function () {
             Route::post('/withdrawals', [RewardController::class, 'withdrawals'])->name('index');
 
             Route::post('/withdrawals/withdraw', [RewardController::class, 'withdraw'])->name('withdraw');
@@ -168,33 +168,33 @@ Route::group(
         'prefix' => 'catalyst',
         'middleware' => ['localize'],
     ], function () {
-    Route::get('/proposals', [ProposalController::class, 'index']);
-});
+        Route::get('/proposals', [ProposalController::class, 'index']);
+    });
 
 Route::group(
     [
         'middleware' => [],
     ], function () {
-    Route::get('cardano/config', function (Request $request) {
-        $credentials = [
-            'poolId' => config('cardano.pool.hash'),
-            'blockExplorer' => config('cardano.pool.block_explorer'),
-            'blockfrostUrl' => config('services.blockfrost.baseUrl'),
-            'projectId' => config('services.blockfrost.projectId'),
-            'network_id' => config('cardano.network.network_id'),
-        ];
+        Route::get('cardano/config', function (Request $request) {
+            $credentials = [
+                'poolId' => config('cardano.pool.hash'),
+                'blockExplorer' => config('cardano.pool.block_explorer'),
+                'blockfrostUrl' => config('services.blockfrost.baseUrl'),
+                'projectId' => config('services.blockfrost.projectId'),
+                'network_id' => config('cardano.network.network_id'),
+            ];
 
-        return json_encode($credentials);
+            return json_encode($credentials);
+        });
+
+        Route::any('cardano/{relativePath?}', function (CardanoBlockfrostService $frost, Request $request, $relativePath = null) {
+            $method = $request->method();
+            $uri = '/'.$relativePath;
+            $data = $request->all();
+
+            return $frost->request($method, $uri, $data);
+        })->where('relativePath', ('.*'));
     });
-
-    Route::any('cardano/{relativePath?}', function (CardanoBlockfrostService $frost, Request $request, $relativePath = null) {
-        $method = $request->method();
-        $uri = '/' . $relativePath;
-        $data = $request->all();
-
-        return $frost->request($method, $uri, $data);
-    })->where('relativePath', ('.*'));
-});
 
 // Catalyst Explorer Public API
 Route::prefix('catalyst-explorer')->as('catalystExplorerApi.')
@@ -305,7 +305,6 @@ Route::get('/generate-mnemonic-phrase', [GenerateMnemonicPhraseController::class
 
 // snippets
 Route::get('/cache/snippets', [SnippetController::class, 'index'])->name('cache.snippets');
-
 
 Route::get('/s', [GlobalSearchController::class, 'index'])
     ->name('search');

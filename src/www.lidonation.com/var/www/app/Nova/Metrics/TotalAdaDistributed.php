@@ -12,25 +12,20 @@ class TotalAdaDistributed extends Value
 {
     /**
      * Calculate the value of the metric.
-     *
-     * @param NovaRequest $request
-     * @return ValueResult
      */
     public function calculate(NovaRequest $request): ValueResult
     {
         $slteLovelaceDistributed = Reward::where('asset_type', 'ada')
-                        ->where('model_type', LearningLesson::class)
-                        ->whereIn('status', ['processed', 'claimed', 'paid']);
+            ->where('model_type', LearningLesson::class)
+            ->whereIn('status', ['processed', 'claimed', 'paid']);
 
         return $this->sum($request, $slteLovelaceDistributed, 'amount')
-                    ->transform(fn($value) => $value / 1000000)
-                    ->currency('₳');
+            ->transform(fn ($value) => $value / 1000000)
+            ->currency('₳');
     }
 
     /**
      * Get the ranges available for the metric.
-     *
-     * @return array
      */
     public function ranges(): array
     {
@@ -58,8 +53,6 @@ class TotalAdaDistributed extends Value
 
     /**
      * Get the URI key for the metric.
-     *
-     * @return string
      */
     public function uriKey(): string
     {

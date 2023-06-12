@@ -2,26 +2,25 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTransferObjects\PostSearchResultData;
+use App\Models\Insight;
 use App\Models\News;
 use App\Models\Post;
 use App\Models\Review;
-use App\Models\Insight;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use MeiliSearch\Endpoints\Indexes;
-use App\DataTransferObjects\PostData;
-use App\DataTransferObjects\PostSearchResultData;
 
 class GlobalSearchController extends Controller
 {
     public $inputTerm;
+
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request, string $term=null)
-    {  
+    public function index(Request $request, string $term = null)
+    {
         $this->inputTerm = $request->input('q');
-        if(isset($this->inputTerm)){
+        if (isset($this->inputTerm)) {
             $term = $this->inputTerm;
         }
         $searchBuilder = Post::search($term,
@@ -33,7 +32,7 @@ class GlobalSearchController extends Controller
             }
         );
         $results = $searchBuilder->raw();
-        if (!isset($results['hits'])) {
+        if (! isset($results['hits'])) {
             return response([]);
         }
         $hits = collect($results['hits']);
@@ -55,5 +54,4 @@ class GlobalSearchController extends Controller
                 ]);
             })->values());
     }
-
 }

@@ -2,10 +2,8 @@
 
 use App\Models\Snippet;
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
@@ -18,7 +16,7 @@ return new class extends Migration
     {
         $json = File::get(base_path('database/files/duplicate-account-snippets.json'));
         $data = json_decode($json);
-       
+
         foreach ($data->snippets as $snippet) {
             if (! Snippet::where('name', '=', $snippet->heading)->exists()) {
                 $id = DB::table('snippets')->pluck('id')->max() + 1;

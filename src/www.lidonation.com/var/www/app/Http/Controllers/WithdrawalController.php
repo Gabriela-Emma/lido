@@ -9,10 +9,10 @@ use Inertia\Inertia;
 
 class WithdrawalController extends Controller
 {
-
     public function view(Request $request, Withdrawal $withdrawal)
     {
         $withdrawal->load(['rewards', 'txs']);
+
         return Inertia::render('Withdrawal', [
             'withdrawal' => $withdrawal,
             'crumbs' => [
@@ -21,7 +21,7 @@ class WithdrawalController extends Controller
                 ['label' => 'Withdraw'],
             ],
         ]);
-      }
+    }
 
     public function index(Request $request)
     {
