@@ -66,7 +66,7 @@ class QuizzesTakenCount extends Value
         return 'total-quizzes-attempted';
     }
 
-    public function name() 
+    public function name()
     {
         return 'Total Quizzes Attempted';
     }

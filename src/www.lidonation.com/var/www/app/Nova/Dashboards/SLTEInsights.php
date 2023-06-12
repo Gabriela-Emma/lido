@@ -32,8 +32,6 @@ class SLTEInsights extends Dashboard
         return 'slte-insights';
     }
 
-
-
     /**
      * Get the cards for the dashboard.
      *
