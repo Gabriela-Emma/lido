@@ -38,11 +38,11 @@ class ResponsesCorrectness extends Partition
 
 
         $totalAttempts = AnswerResponse::whereHas('quiz', fn (Builder $query) => $query->whereHas('lessons'))
-            ->whereHas('user', fn (Builder $userQuery) => $userQuery->includeDuplicates(true))
+            ->whereHas('user', fn (Builder $userQuery) => $userQuery->includeDuplicates(false))
             ->count();
 
         $correctAnswers = AnswerResponse::whereHas('quiz', fn (Builder $query) => $query->whereHas('lessons'))
-            ->whereHas('user', fn (Builder $userQuery) => $userQuery->includeDuplicates(true))
+            ->whereHas('user', fn (Builder $userQuery) => $userQuery->includeDuplicates(false))
             ->whereRelation('answer', 'correctness', '=', 'correct')
             // ->whereIn('question_answer_id', $correctAnswersIds)
             ->count();
