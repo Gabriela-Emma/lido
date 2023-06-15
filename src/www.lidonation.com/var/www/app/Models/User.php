@@ -245,7 +245,7 @@ class User extends Authenticatable implements HasMedia, Interfaces\IHasMetaData,
     public function scopeIncludeDuplicates(Builder $query, $include = true): Builder
     {
         if ($include) {
-            return $query;
+            return $query->whereNotNull('primary_account_id');
         }
 
         return $query->whereDoesntHave('primary_account');
@@ -340,6 +340,12 @@ class User extends Authenticatable implements HasMedia, Interfaces\IHasMetaData,
     {
         return $this->belongsTo(User::class);
     }
+
+    public function duplicate_accounts(): HasMany
+    {
+        return $this->hasMany(User::class ,'primary_account_id');
+    }
+
 
     public function __toString()
     {
