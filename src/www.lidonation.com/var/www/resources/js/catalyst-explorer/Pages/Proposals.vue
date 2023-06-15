@@ -344,7 +344,7 @@ const filtering = computed(() => {
     return getFiltering();
 });
 
-let showFilters = ref(getFiltering());
+let showFilters = ref(getFiltering() || true);
 
 watch([search, filtersRef, selectedSortRef], () => {
     currPageRef.value = null;
