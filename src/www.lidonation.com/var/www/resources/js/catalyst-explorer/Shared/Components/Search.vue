@@ -12,7 +12,7 @@
             <input name="searchProposals" id="searchProposals" v-focus.ignoreEmpty
                    :placeholder='$t("Search title, proposal detail, or (co)authors")' v-model="search"
                    :class="{
-                        'bg-teal-500 text-white border-teal-500': (search?.length > 0),
+                        'bg-teal-500 text-slate-400 border-teal-500': (search?.length > 0),
                         'bg-white border-white': !(search?.length <= 0)
                    }"
                    class="block sm:text-sm sm:leading-5 placeholder:text-xs placeholder:text-slate-400 focus:placeholder:text-slate-100 placeholder:lg:text-base w-full border-white h-full pl-7 lg:pl-10 transition duration-150 ease-in-out border-4 border-r-0 rounded-l-sm form-input focus:bg-teal-500 focus:text-white focus:border-teal-500 focus:outline-none"/>
