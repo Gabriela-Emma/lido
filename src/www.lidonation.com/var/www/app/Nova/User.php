@@ -2,26 +2,27 @@
 
 namespace App\Nova;
 
-use App\Nova\Actions\AddMetaData;
-use App\Nova\Actions\EditMetaData;
-use App\Nova\Actions\FetchDelegation;
-use App\Nova\Actions\PopulatePaymentAddress;
-use App\Nova\Lenses\LidoDelegators;
-use App\Nova\Metrics\Delegation;
-use Ebess\AdvancedNovaMediaLibrary\Fields\Images;
-use Illuminate\Http\Request;
+use Laravel\Nova\Panel;
 use Illuminate\Support\Str;
-use Laravel\Nova\Fields\BelongsTo;
-use Laravel\Nova\Fields\BelongsToMany;
-use Laravel\Nova\Fields\Gravatar;
-use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
+use Illuminate\Http\Request;
+use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Select;
+use App\Nova\Metrics\Delegation;
+use Laravel\Nova\Fields\HasMany;
+use App\Nova\Actions\AddMetaData;
+use Laravel\Nova\Fields\Gravatar;
 use Laravel\Nova\Fields\Markdown;
 use Laravel\Nova\Fields\Password;
-use Laravel\Nova\Fields\Select;
-use Laravel\Nova\Fields\Text;
+use App\Nova\Actions\EditMetaData;
+use Laravel\Nova\Fields\BelongsTo;
+use App\Nova\Lenses\LidoDelegators;
+use App\Nova\Actions\FetchDelegation;
+use App\Nova\Lenses\DuplicateAccounts;
+use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Laravel\Nova\Panel;
+use App\Nova\Actions\PopulatePaymentAddress;
+use Ebess\AdvancedNovaMediaLibrary\Fields\Images;
 
 class User extends Resource
 {
@@ -132,6 +133,8 @@ class User extends Resource
 
             new Panel('Stake Profile', $this->stakeProfile($request)),
 
+            HasMany::make('Duplicate Accounts', 'duplicate_accounts', User::class),
+
             HasMany::make('Rewards', 'rewards', Rewards::class),
 
             HasMany::make('Quiz Responses', 'quiz_responses', AnswerResponses::class),
@@ -194,7 +197,7 @@ class User extends Resource
     public function lenses(Request $request): array
     {
         return [
-            new LidoDelegators(),
+            new LidoDelegators(), new DuplicateAccounts()
         ];
     }
 
