@@ -22,7 +22,7 @@ class DuplicateAccounts extends Lens
     public static function query(LensRequest $request, $query)
     {
         return $request->withOrdering($request->withFilters(
-            $query->includeDuplicates()
+            $query->includeDuplicates()->whereNotNull('primary_account_id')
         ));
     }
 
@@ -44,7 +44,7 @@ class DuplicateAccounts extends Lens
             Text::make('Primary Account', 'primary_account')
                      ->nullable()
                      ->displayUsing(function ($user) {
-                    return $user->name;
+                    return $user?->name;
             }),
             Text::make('FACEBOOK USERNAME'),
             Text::make('LINKEDIN'),

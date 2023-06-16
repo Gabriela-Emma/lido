@@ -245,7 +245,7 @@ class User extends Authenticatable implements HasMedia, Interfaces\IHasMetaData,
     public function scopeIncludeDuplicates(Builder $query, $include = true): Builder
     {
         if ($include) {
-            return $query->whereNotNull('primary_account_id');
+            return $query;
         }
 
         return $query->whereDoesntHave('primary_account');
