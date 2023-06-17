@@ -23,7 +23,7 @@ class ValidateClaims extends Action
      *
      * @return string[]
      */
-    public function handle(ActionFields $fields, Collection $models): array
+    public function handle(ActionFields $fields, Collection $models)
     {
         $code = $fields->code;
         foreach ($models as $model) {
