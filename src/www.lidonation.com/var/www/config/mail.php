@@ -39,10 +39,10 @@ return [
             'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
             'port' => env('MAIL_PORT', 587),
             'encryption' => env('MAIL_ENCRYPTION', 'tls'),
-            'username' => env('MAIL_USERNAME'),
+            'username' => env('MAIL_USERNAME', 'hello@lidonation.com'),
             'password' => env('MAIL_PASSWORD'),
             'timeout' => null,
-            'local_domain' => 'mydomain.com',
+            'local_domain' => 'lidonation.com',
         ],
 
         'ses' => [
