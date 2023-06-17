@@ -31,12 +31,12 @@ class CrawlIohkBlog extends Command
      */
     public function handle()
     {
-        $baseUrl = $this->option('base-url') ?? 'https://iohk.io';
-        $uri = $this->option('uri') ?? '/blog/posts/page-1/';
-        $uriPrefix = ($this->option('lang') == 'ja') ? 'jp' : $this->option('lang');
-        $langLocale = $this->option('lang');
+        $baseUrl = trim($this->option('base-url') ?? 'https://iohk.io', '/');
+        $uri = trim($this->option('uri') ?? '/blog/posts/page-1', '/');
+        $langLocale = $this->option('lang') ?? 'en';
+        $uriPrefix = ($this->option('lang') == 'ja') ? 'jp' : $langLocale;
 
-        $relativeUri = $uriPrefix.'/'.$uri;
+        $relativeUri = "/{$uriPrefix}/{$uri}";
 
         CrawlIohkBlogJob::dispatch($baseUrl, $relativeUri, $langLocale); //initiate the crawler
     }
