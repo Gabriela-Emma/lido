@@ -237,8 +237,8 @@ services:
       MAIL_HOST: smtp.mailgun.org,
       MAIL_PORT: 587,
 
-      MAIL_FROM_ADDRESS: 'team@lidonation.com',
-      MAIL_FROM_NAME: 'Lido Nation',
+      MAIL_FROM_ADDRESS: 'hello@lidonation.com',
+      MAIL_FROM_NAME: 'Lido Nation Foundation',
       MEDIA_DISK: 'public',
 
       MAILCHIMP_APIKEY: '',
