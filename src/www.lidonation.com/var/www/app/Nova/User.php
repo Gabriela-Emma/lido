@@ -6,6 +6,7 @@ use App\Nova\Actions\AddMetaData;
 use App\Nova\Actions\EditMetaData;
 use App\Nova\Actions\FetchDelegation;
 use App\Nova\Actions\PopulatePaymentAddress;
+use App\Nova\Actions\SendVerificationEmail;
 use App\Nova\Lenses\LidoDelegators;
 use App\Nova\Metrics\Delegation;
 use Ebess\AdvancedNovaMediaLibrary\Fields\Images;
@@ -13,6 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\BelongsToMany;
+use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\Gravatar;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
@@ -67,8 +69,8 @@ class User extends Resource
 
             Gravatar::make()->maxWidth(50),
 
-            Images::make('Bio Pic', 'profile')
-                ->conversionOnIndexView('thumbnail'),
+            // Images::make('Bio Pic', 'profile')
+            //     ->conversionOnIndexView('thumbnail'),
 
             Text::make('Name')
                 ->sortable()->withMeta(
@@ -101,6 +103,24 @@ class User extends Resource
                 ->creationRules('unique:users,email')
                 ->updateRules('unique:users,email,{{resourceId}}'),
 
+            Boolean::make('Email Verified', 'email_verified_at')
+                ->sortable()
+                ->filterable(fn ($request, $query, $value, $attribute) =>
+                    !!$value ? $query->whereNotNull('email_verified_at') : $query->whereNull('email_verified_at')
+                )
+                ->hideWhenCreating(),
+
+
+            Boolean::make('Duplicate', 'primary_account_id')
+                ->sortable()
+                ->hideFromDetail()
+                ->hideFromIndex()
+                ->hide()
+                ->filterable(fn ($request, $query, $value, $attribute) =>
+                    !!$value ? $query->whereNotNull('primary_account_id') : $query->whereNull('primary_account_id')
+                )
+                ->hideWhenCreating(),
+
             Select::make(__('Lang'), 'lang')->options(function () {
                 return collect(config('laravellocalization.supportedLocales'))->mapWithKeys(fn ($lang) => ([$lang['key'] => $lang['native']]))->toArray();
             }),
@@ -115,7 +135,9 @@ class User extends Resource
                 ->creationRules('string', 'min:8')
                 ->updateRules('nullable', 'string', 'min:8'),
 
-            BelongsTo::make('Primary Account', 'primary_account', User::class)->nullable()->searchable(),
+            BelongsTo::make('Primary Account', 'primary_account', User::class)
+            ->nullable()
+            ->searchable(),
 
             new Panel('Bio', [
                 Markdown::make('Short Bio')
@@ -144,6 +166,7 @@ class User extends Resource
 
             BelongsToMany::make(__('Roles'), 'roles')
                 ->hideFromIndex()
+                ->filterable()
                 ->searchable()->fields(function () {
                     return [
                         Text::make(__('Model'), 'model_type')
@@ -207,6 +230,7 @@ class User extends Resource
             static::getGlobalActions(), [
                 (new AddMetaData),
                 (new EditMetaData(\App\Models\User::class)),
+                (new SendVerificationEmail),
                 (new PopulatePaymentAddress)->confirmText('Check skip, to skip updating wallet_address field on models that already have one!'),
                 (new FetchDelegation),
             ]);
@@ -240,14 +264,17 @@ class User extends Resource
             Text::make('Facebook Username', 'facebook_user')
                 ->help('username only.')
                 ->resolveUsing(fn () => $this->metas?->firstWhere('key', 'facebook_user')?->content)
-                ->hideWhenCreating(),
+                ->hideWhenCreating()
+                ->hideFromIndex(),
             Text::make('LinkedIn Username', 'linkedin_user')
                 ->help('username only.')
                 ->resolveUsing(fn () => $this->metas?->firstWhere('key', 'linkedin_user')?->content)
-                ->hideWhenCreating(),
+                ->hideWhenCreating()
+                ->hideFromIndex(),
             Text::make('Twitter Handler')
                 ->resolveUsing(fn () => $this->metas?->firstWhere('key', 'twitter_handler')?->content)
                 ->help('username only.')
+                ->hideFromIndex()
                 ->hideWhenCreating(),
         ];
         $modelObj = \App\Models\User::find(request()->resourceId);
