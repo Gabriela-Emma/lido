@@ -213,10 +213,14 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
 
     public function getCurrencySymbolAttribute()
     {
-        return match ($this->fund?->currency) {
-            'ada' => '₳',
-            default => '$'
-        };
+        if ($this->currency) {
+            return match ($this->currency) {
+                'ADA' => '₳',
+                'USD' => '$',
+            };
+        } else {
+            return $this->fund->currency_symbol;
+        }
     }
 
     public function getFormattedAmountRequestedAttribute()
@@ -481,6 +485,7 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
             'impact_proposal' => $this->is_impact_proposal ? 1 : 0,
             'woman_proposal' => $this->is_woman_proposal ? 1 : 0,
             'ideafest_proposal' => $this->is_ideafest_proposal ? 1 : 0,
+            'currency_symbol' => $this->currency_symbol,
         ]);
     }
 

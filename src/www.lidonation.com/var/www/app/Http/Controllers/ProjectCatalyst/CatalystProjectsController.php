@@ -316,6 +316,7 @@ class CatalystProjectsController extends Controller
                     'users.profile_photo_url',
                     'amount_requested',
                     'amount_received',
+                    'currency_symbol',
                 ];
                 if ((bool) $this->sortBy && (bool) $this->sortOrder) {
                     $options['sort'] = ["$this->sortBy:$this->sortOrder"];

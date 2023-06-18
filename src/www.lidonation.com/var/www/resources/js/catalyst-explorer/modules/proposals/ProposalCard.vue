@@ -43,7 +43,7 @@
                         v-if="proposal.amount_received > 0.00"
                         class="inline-flex text-xs xl:text-lg font-semibold rounded-l-sm py-0.5">
                         <div class="px-1 py-1.5 pb-4 bg-accent-800">
-                            {{ $filters.currency(proposal.amount_received) }}
+                            {{proposal.currency_symbol}}
                             <sub class="text-gray-200 block mt-0.5 italic">
                                 {{  $t("Distributed") }}
                             </sub>
@@ -64,7 +64,7 @@
 
                     <div
                         class="flex flex-col justify-center items-start p-1.5 text-xs xl:text-lg leading-3 font-semibold rounded-r-sm bg-teal-800">
-                        <div>{{ $filters.currency(proposal.amount_requested) }}</div>
+                        <div>{{proposal.currency_symbol}} {{ proposal.amount_requested }}</div>
                         <small class="text-gray-200 block italic text-sm">
                             {{  $t("Requested") }}
                         </small>
