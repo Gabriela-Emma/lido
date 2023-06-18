@@ -63,7 +63,7 @@ class User extends Authenticatable implements HasMedia, Interfaces\IHasMetaData,
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'lang'
     ];
 
     /**
