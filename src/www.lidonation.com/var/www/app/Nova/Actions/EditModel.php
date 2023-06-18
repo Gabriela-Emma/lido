@@ -4,6 +4,7 @@ namespace App\Nova\Actions;
 
 use App\Models\Model;
 use Illuminate\Bus\Queueable;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Collection;
@@ -28,7 +29,7 @@ class EditModel extends Action implements ShouldQueue
      */
     public function handle(ActionFields $fields, Collection $models)
     {
-        $models->each(function (Model $m) use ($fields) {
+        $models->each(function (Model|Authenticatable $m) use ($fields) {
             try {
                 $m->{$fields->name} = $fields->value;
                 $m->save();
