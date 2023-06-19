@@ -213,10 +213,14 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
 
     public function getCurrencySymbolAttribute()
     {
-        return match ($this->fund?->currency) {
-            'ada' => '₳',
-            default => '$'
-        };
+        if ($this->currency) {
+            return match ($this->currency) {
+                'ADA' => '₳',
+                'USD' => '$',
+            };
+        } else {
+            return $this->fund->currency_symbol;
+        }
     }
 
     public function getFormattedAmountRequestedAttribute()

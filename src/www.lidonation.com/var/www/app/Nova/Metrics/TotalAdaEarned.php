@@ -32,8 +32,9 @@ class TotalAdaEarned extends Value
     public function ranges()
     {
         return [
+            7 => __('7 Days'),
+            15 => __('15 Days'),
             30 => __('30 Days'),
-            15 => __('30 Days'),
             60 => __('60 Days'),
             365 => __('365 Days'),
             'TODAY' => __('Today'),
