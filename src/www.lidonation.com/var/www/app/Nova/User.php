@@ -108,7 +108,8 @@ class User extends Resource
                 ->filterable(fn ($request, $query, $value, $attribute) =>
                     !!$value ? $query->whereNotNull('email_verified_at') : $query->whereNull('email_verified_at')
                 )
-                ->hideWhenCreating(),
+                ->hideWhenCreating()
+                ->hideWhenUpdating(),
 
 
             Boolean::make('Duplicate', 'primary_account_id')
