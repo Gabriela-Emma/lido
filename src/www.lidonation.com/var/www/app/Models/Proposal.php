@@ -211,6 +211,13 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
         return false;
     }
 
+    public function currency(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->currency ?? $this->challenge->currency ?? $this->fund->currency ?? null,
+        );
+    }
+
     public function getCurrencySymbolAttribute()
     {
         if ($this->currency) {
@@ -473,6 +480,7 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
             'completed' => $this->status === 'complete' ? 1 : 0,
             'over_budget' => $this->status === 'over_budget' ? 1 : 0,
             'challenge' => $this->fund?->id,
+            'currency' => $this->currency,
             'challenge_label' => $this->fund?->label,
             'fund' => $this->fund?->parent?->id,
             'groups' => $this->groups,
