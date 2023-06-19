@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Enums\CatalystCurrencyEnum;
+use App\Enums\CurrencySymbolEnum;
 use App\Models\Interfaces\HasLink;
 use App\Models\Traits\HasCommits;
 use App\Models\Traits\HasDiscussions;
@@ -222,8 +224,8 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
     {
         if ($this->currency) {
             return match ($this->currency) {
-                'ADA' => '₳',
-                'USD' => '$',
+                CatalystCurrencyEnum::ADA => CurrencySymbolEnum::ADA,
+                CatalystCurrencyEnum::USD => CurrencySymbolEnum::USD,
             };
         } else {
             return $this->fund->currency_symbol;

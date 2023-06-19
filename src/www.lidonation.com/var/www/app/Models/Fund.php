@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Enums\CatalystCurrencyEnum;
+use App\Enums\CurrencySymbolEnum;
 use App\Models\Interfaces\IHasMetaData;
 use App\Models\Traits\HasAssessments;
 use App\Models\Traits\HasHero;
@@ -57,8 +59,8 @@ class Fund extends Model implements HasMedia, IHasMetaData
     public function getCurrencySymbolAttribute()
     {
         return match ($this->currency) {
-            'ADA' => '₳',
-            default => '$'
+            CatalystCurrencyEnum::ADA => CurrencySymbolEnum::ADA,
+            default => CurrencySymbolEnum::USD
         };
     }
 

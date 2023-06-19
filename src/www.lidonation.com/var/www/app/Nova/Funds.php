@@ -2,6 +2,7 @@
 
 namespace App\Nova;
 
+use App\Enums\CatalystCurrencyEnum;
 use App\Models\Fund;
 use App\Nova\Actions\AddMetaData;
 use App\Nova\Actions\AttachCategory;
@@ -108,9 +109,9 @@ class Funds extends Resource
                 'completed' => 'Completed',
             ])->default(fn () => 'pending')->sortable(),
             Select::make(__('Currency'), 'currency')->options([
-                'USD' => 'USD',
-                'ADA' => 'ADA',
-            ])->default(fn () => 'USD')->sortable(),
+                CatalystCurrencyEnum::USD => CatalystCurrencyEnum::USD,
+                CatalystCurrencyEnum::ADA => CatalystCurrencyEnum::ADA,
+            ])->default(fn () => CatalystCurrencyEnum::USD)->sortable(),
 
             DateTime::make('Launched At')
                 ->sortable(),

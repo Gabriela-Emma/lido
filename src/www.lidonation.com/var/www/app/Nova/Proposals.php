@@ -2,6 +2,7 @@
 
 namespace App\Nova;
 
+use App\Enums\CatalystCurrencyEnum;
 use App\Models\Proposal;
 use App\Nova\Actions\AddMetaData;
 use App\Nova\Actions\AttachCategory;
@@ -111,9 +112,9 @@ class Proposals extends Resource
             //            Currency::make(__('Requested'), 'amount_requested')->sortable(),
             Number::make(__('Requested'), 'amount_requested')->sortable()->required(),
             Select::make(__('Currency'), 'currency')->options([
-                'USD' => 'USD',
-                'ADA' => 'ADA',
-            ])->default(fn () => 'USD')->sortable(),
+                CatalystCurrencyEnum::USD => CatalystCurrencyEnum::USD,
+                CatalystCurrencyEnum::ADA => CatalystCurrencyEnum::ADA,
+            ])->default(fn () => CatalystCurrencyEnum::USD)->sortable(),
 
             Select::make(__('Project Status'), 'status')->options([
                 'pending' => 'Pending',
