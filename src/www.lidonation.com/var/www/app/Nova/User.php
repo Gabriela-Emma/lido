@@ -122,7 +122,10 @@ class User extends Resource
                 ->hideWhenCreating(),
 
             Select::make(__('Lang'), 'lang')->options(function () {
-                return collect(config('laravellocalization.supportedLocales'))->mapWithKeys(fn ($lang) => ([$lang['key'] => $lang['native']]))->toArray();
+                return collect(config('laravellocalization.supportedLocales'))
+                ->mapWithKeys(
+                    fn ($lang) => ([$lang['key'] => $lang['native']])
+                )->toArray();
             }),
             Password::make('Password')
                 ->onlyOnForms()->withMeta(
