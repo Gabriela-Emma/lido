@@ -11,7 +11,7 @@ export default interface Proposal {
     funding_status: string;
     amount_received: number;
     amount_requested:number;
-    currency_symbol: string;
+    currency: string;
     no_votes_count: number;
     yes_votes_count: number;
     ideascale_link: string;

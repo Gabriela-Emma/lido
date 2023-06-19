@@ -8,10 +8,10 @@
 </style>
 <template>
     <div
-        class="bg-white border border-slate-100 flex flex-col divide-y bg-white rounded-sm w-full h-full relative proposal-drip overflow-clip">
-        <div class="p-4 flex flex-col justify-start gap-4 h-full">
+        class="relative flex flex-col w-full h-full bg-white border divide-y rounded-sm border-slate-100 proposal-drip overflow-clip">
+        <div class="flex flex-col justify-start h-full gap-4 p-4">
             <header class="flex flex-col justify-center gap-y-1">
-                <div class="flex justify-between gap-4 relative">
+                <div class="relative flex justify-between gap-4">
                     <h2 class="flex items-start justify-between h-16 pr-8">
                         <span>
                             <a class="font-medium text-gray-800 text-md"
@@ -29,7 +29,7 @@
                                       'bg-slate-600 hover:bg-teal-600 focus:ring-teal-300':!isBookmarked
                                     }"
                             class="inline-flex items-center rounded-md border border-transparent group p-0.5 text-sm font-medium leading-4 text-white shadow-sm focus:outline-none focus:ring-2  focus:ring-offset-2">
-                            <BookmarkIcon class="h-4 w-4 "
+                            <BookmarkIcon class="w-4 h-4 "
                             :class="{
                                       'hover:text-slate-400':isBookmarked,
                                       'group-hover:text-teal-900':!isBookmarked
@@ -38,12 +38,12 @@
                         </Link>
                     </div>
                 </div>
-                <div class="flex flex-row flex-nowrap mb-2 text-white">
+                <div class="flex flex-row mb-2 text-white flex-nowrap">
                     <div
                         v-if="proposal.amount_received > 0.00"
                         class="inline-flex text-xs xl:text-lg font-semibold rounded-l-sm py-0.5">
                         <div class="px-1 py-1.5 pb-4 bg-accent-800">
-                            {{proposal.currency_symbol}}
+                            {{ $filters.currency(proposal.amount_received, proposal.currency) }}
                             <sub class="text-gray-200 block mt-0.5 italic">
                                 {{  $t("Distributed") }}
                             </sub>
@@ -55,7 +55,7 @@
                             {{  $t("Paid") }}
                         </div>
                         <div class="px-1 py-1.5 bg-accent-900" v-else>
-                            {{ $filters.currency(proposal.amount_requested - proposal.amount_received) }}
+                            {{ $filters.currency(proposal.amount_requested - proposal.amount_received, proposal.currency) }}
                             <sub class="text-gray-200 block mt-0.5 italic">
                                 {{  $t("Remaining") }}
                             </sub>
@@ -64,20 +64,20 @@
 
                     <div
                         class="flex flex-col justify-center items-start p-1.5 text-xs xl:text-lg leading-3 font-semibold rounded-r-sm bg-teal-800">
-                        <div>{{proposal.currency_symbol}} {{ proposal.amount_requested }}</div>
-                        <small class="text-gray-200 block italic text-sm">
+                        <div>{{ $filters.currency(proposal.amount_requested, proposal.currency) }}</div>
+                        <small class="block text-sm italic text-gray-200">
                             {{  $t("Requested") }}
                         </small>
                     </div>
                 </div>
             </header>
-            <div class="text-sm space-y-3">
+            <div class="space-y-3 text-sm">
                 <div class="font-normal drip-content">
                     <div v-if="proposal.solution"
                          v-html="$filters.markdown('**Solution:** ' + proposal.solution)"></div>
                     <div v-else v-html="$filters.markdown('**Problem:** ' + proposal.problem)"></div>
                 </div>
-                <div class="flex flex-row flex-wrap gap-2 items-center">
+                <div class="flex flex-row flex-wrap items-center gap-2">
                     <div v-if="proposal.challenge_label" class="inline gap-1">
                         <strong>{{  $t("Challenge") }}: </strong>
                         {{ proposal.challenge_label }}
@@ -151,7 +151,7 @@
         </div>
 
         <footer class="mt-auto divide-y">
-            <div class="-mt-px grid grid-cols-2 divide-x text-xs xl:text-sm">
+            <div class="grid grid-cols-2 -mt-px text-xs divide-x xl:text-sm">
                 <div class="flex items-center justify-start flex-1 gap-2 p-2">
                     <div class="text-xs">
                         <a v-if="proposal?.ideascale_link" :href="proposal?.ideascale_link" target="_blank"
@@ -174,10 +174,10 @@
                     </div>
                 </div>
 
-                <div class="flex flex-1 justify-end w-full -ml-px">
+                <div class="flex justify-end flex-1 w-full -ml-px">
                     <div
                         class="flex items-center justify-center flex-1 py-2 -mr-px text-sm font-medium text-gray-700 border border-transparent rounded-bl-sm hover:text-gray-500">
-                        <div class="flex gap-1 items-center">
+                        <div class="flex items-center gap-1">
                             <div class="text-sm font-semibold">
                                 {{ $filters.shortNumber(proposal.ca_rating)?.toFixed(2) }}
                             </div>
@@ -200,7 +200,7 @@
                                     </template>
                                 </Rating>
                             </div>
-                            <div class="text-slate-400 text-xs">
+                            <div class="text-xs text-slate-400">
                                 ({{ proposal.ratings_count }})
                             </div>
                         </div>
@@ -209,7 +209,7 @@
             </div>
 
 
-            <div class="-mt-px grid grid-cols-2 divide-x text-xs xl:text-sm 2xl:text-md">
+            <div class="grid grid-cols-2 -mt-px text-xs divide-x xl:text-sm 2xl:text-md">
                 <div class="flex items-center justify-start flex-1 gap-2 p-2">
                     <div class="text-xs">
                         {{  $t("Voted Yes") }}:
@@ -232,7 +232,7 @@
                 </div>
             </div>
 
-            <div class="-mt-px grid grid-cols-2 divide-x text-xs xl:text-sm 2xl:text-md">
+            <div class="grid grid-cols-2 -mt-px text-xs divide-x xl:text-sm 2xl:text-md">
                 <div class="flex flex-row flex-wrap items-center justify-start flex-1 gap-1 px-2 py-2" :class="{
                             'bg-teal-500': proposal.funding_status === 'funded',
                             'bg-slate-500': proposal.funding_status === 'over_budget',
@@ -240,14 +240,14 @@
                     <div class="text-xs text-slate-200">
                         {{  $t("Funding Status") }}:
                     </div>
-                    <div class="inline-block py-0 px-1 font-semibold text-white text-xs rounded-sm capitalize">
+                    <div class="inline-block px-1 py-0 text-xs font-semibold text-white capitalize rounded-sm">
                         {{ proposal.funding_status?.replace('_', ' ') }}
                     </div>
                 </div>
 
                 <div class="flex flex-1 -ml-px">
                     <div
-                        class="flex items-center gap-1 justify-end flex-1 py-2 px-1 -mr-px text-xs font-medium text-gray-700 border border-transparent rounded-bl-sm hover:text-gray-500"
+                        class="flex items-center justify-end flex-1 gap-1 px-1 py-2 -mr-px text-xs font-medium text-gray-700 border border-transparent rounded-bl-sm hover:text-gray-500"
                         :class="{
                             'bg-pink-400': proposal.status === 'complete',
                             'bg-slate-200': proposal.status === 'in_progress'}">

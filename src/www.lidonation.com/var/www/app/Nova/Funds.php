@@ -108,9 +108,9 @@ class Funds extends Resource
                 'completed' => 'Completed',
             ])->default(fn () => 'pending')->sortable(),
             Select::make(__('Currency'), 'currency')->options([
-                'usd' => 'USD',
-                'ada' => 'ADA',
-            ])->default(fn () => 'ada')->sortable(),
+                'USD' => 'USD',
+                'ADA' => 'ADA',
+            ])->default(fn () => 'USD')->sortable(),
 
             DateTime::make('Launched At')
                 ->sortable(),
