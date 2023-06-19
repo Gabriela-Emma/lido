@@ -2,7 +2,6 @@ export function currency(value, currency: string = 'USD', locale: string = 'en-U
     if (typeof value !== "number") {
         return value;
     }
-    console.log({value, locale, currency, maximumFractionDigits});
     switch (currency) {
         case 'ADA':
             return `${value} ₳`;
