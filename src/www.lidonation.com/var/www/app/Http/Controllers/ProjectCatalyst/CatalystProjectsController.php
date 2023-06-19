@@ -291,6 +291,9 @@ class CatalystProjectsController extends Controller
 
                 $options['attributesToRetrieve'] = $attrs ?? [
                     'id',
+                    'amount_requested',
+                    'amount_received',
+                    'currency',
                     'ca_rating',
                     'ratings_count',
                     'slug',
@@ -313,9 +316,7 @@ class CatalystProjectsController extends Controller
                     'users.name',
                     'users.username',
                     'users.media.original_url',
-                    'users.profile_photo_url',
-                    'amount_requested',
-                    'amount_received',
+                    'users.profile_photo_url'
                 ];
                 if ((bool) $this->sortBy && (bool) $this->sortOrder) {
                     $options['sort'] = ["$this->sortBy:$this->sortOrder"];
@@ -333,6 +334,7 @@ class CatalystProjectsController extends Controller
             return $this->searchBuilder;
         }
         $response = new Fluent($this->searchBuilder->raw());
+
         $pagination = new LengthAwarePaginator(
             $response->hits,
             $response->estimatedTotalHits,

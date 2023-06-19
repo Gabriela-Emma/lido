@@ -110,6 +110,10 @@ class Proposals extends Resource
             Text::make(__('Ideascale Link'), 'ideascale_link')->hideFromIndex(),
             //            Currency::make(__('Requested'), 'amount_requested')->sortable(),
             Number::make(__('Requested'), 'amount_requested')->sortable()->required(),
+            Select::make(__('Currency'), 'currency')->options([
+                'USD' => 'USD',
+                'ADA' => 'ADA',
+            ])->default(fn () => 'USD')->sortable(),
 
             Select::make(__('Project Status'), 'status')->options([
                 'pending' => 'Pending',

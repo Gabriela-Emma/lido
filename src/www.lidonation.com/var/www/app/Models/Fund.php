@@ -57,14 +57,14 @@ class Fund extends Model implements HasMedia, IHasMetaData
     public function getCurrencySymbolAttribute()
     {
         return match ($this->currency) {
-            'ada' => '₳',
+            'ADA' => '₳',
             default => '$'
         };
     }
 
     public function getFormattedAmountAttribute()
     {
-        return $this->currency_symbol.number_format($this->amount, 0, '.', ',');
+        return $this->currency_symbol . number_format($this->amount, 0, '.', ',');
     }
 
     public function getWiningProposalsAttribute()

@@ -21,7 +21,7 @@
                                 }"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                 stroke="currentColor" class="w-4 lg:w-6 w-4 lg:h-6">
+                                 stroke="currentColor" class="w-4 lg:w-6 lg:h-6">
                                 <path stroke-linecap="round" stroke-linejoin="round"
                                       d="M6 13.5V3.75m0 9.75a1.5 1.5 0 010 3m0-3a1.5 1.5 0 000 3m0 3.75V16.5m12-3V3.75m0 9.75a1.5 1.5 0 010 3m0-3a1.5 1.5 0 000 3m0 3.75V16.5m-6-9V3.75m0 3.75a1.5 1.5 0 010 3m0-3a1.5 1.5 0 000 3m0 9.75V10.5"/>
                             </svg>
@@ -31,7 +31,7 @@
                 </div>
             </div>
         </section>
-        <section class="py-8 w-full relative">
+        <section class="relative w-full py-8">
             <!-- Sorts and controls -->
             <div :class="{ 'lg:pr-16 opacity-10 lg:opacity-100': showFilters, 'container': !showFilters }"
                  class="flex w-full items-center justify-end space-x-0.5 mb-3 gap-2">
@@ -95,11 +95,11 @@
             </div>
 
             <div :class="{ 'gap-5': showFilters }"
-                 class="flex flex-row relative w-full">
+                 class="relative flex flex-row w-full">
                 <!-- Proposal Filters -->
-                <div class="absolute left-0 lg:static z-10 bg-white shadow-lg lg:shadow-0">
+                <div class="absolute left-0 z-10 bg-white shadow-lg lg:static lg:shadow-0">
                     <button type="button" @click="showFilters = !showFilters"
-                            class="inline-flex absolute right-0 -top-9 lg:hidden items-center rounded-t-sm border border-transparent bg-teal-600 p-2 text-white hover:bg-teal-700 focus:outline-none focus:ring-0 focus:ring-teal-500 focus:ring-offset-0">
+                            class="absolute right-0 inline-flex items-center p-2 text-white bg-teal-600 border border-transparent rounded-t-sm -top-9 lg:hidden hover:bg-teal-700 focus:outline-none focus:ring-0 focus:ring-teal-500 focus:ring-offset-0">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                              stroke="currentColor" class="w-5 h-5">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/>
@@ -118,9 +118,9 @@
                 <!-- Proposal lists -->
                 <div class="flex-1 mx-auto"
                      :class="{ 'lg:pr-16 opacity-10 lg:opacity-100': showFilters, 'container': !showFilters }">
-                    <Proposals :proposals="props.proposals.data"></Proposals>
+                    <Proposals :proposals="props.proposals?.data"></Proposals>
 
-                    <div class="flex my-16 gap-16 xl:gap-24 justify-between items-start w-full">
+                    <div class="flex items-start justify-between w-full gap-16 my-16 xl:gap-24">
                         <div class="flex-1">
                             <Pagination :links="props.proposals.links"
                                         :per-page="props.perPage"
@@ -135,17 +135,17 @@
                     <footer class="sticky bottom-8">
                         <div class="flex justify-center">
                             <div
-                                class="rounded-full py-3 px-4 bg-slate-800 text-white shadow-xl text-sm lg:text-md xl:text-lg relative">
+                                class="relative px-4 py-3 text-sm text-white rounded-full shadow-xl bg-slate-800 lg:text-md xl:text-lg">
 
 <!--                                <TransitionGroup tag="div" name="fade"-->
 <!--                                                 v-if="(metricCountApproved || metricCountCompleted) && metricSumApproved"-->
-<!--                                                 class="absolute -top-2 w-full flex justify-center">-->
-<!--                                    <b class="text-yellow-500 inline-block text-xs px-2 py-1 text-center bg-slate-800 rounded-full">Search-->
+<!--                                                 class="absolute flex justify-center w-full -top-2">-->
+<!--                                    <b class="inline-block px-2 py-1 text-xs text-center text-yellow-500 rounded-full bg-slate-800">Search-->
 <!--                                        metrics</b>-->
 <!--                                </TransitionGroup>-->
 
                                 <TransitionGroup tag="div" name="fade"
-                                                 class="inline-flex mx-auto justify-center h-full flex-wrap md:flex-nowrap gap-1 md:gap-2 divide-x-reverse divide-slate-100 space-x-2 md:space-x-4">
+                                                 class="inline-flex flex-wrap justify-center h-full gap-1 mx-auto space-x-2 divide-x-reverse md:flex-nowrap md:gap-2 divide-slate-100 md:space-x-4">
                                     <div class="flex flex-col text-center" key="countTotal">
                                          <span class="font-semibold">
                                             {{ $filters.number(props.proposals.total) }}
@@ -182,7 +182,7 @@
 
                                     <div class="h-full w-full h-[1px] md:h-full md:w-[1px] bg-slate-100 relative"
                                          v-if="(metricCountApproved || metricCountCompleted) && metricSumApproved">
-                                        <b class="text-yellow-500 hidden md:inline-block absolute -top-6 -left-10 w-28 text-xs px-2 py-1 text-center bg-slate-800 rounded-full">
+                                        <b class="absolute hidden px-2 py-1 text-xs text-center text-yellow-500 rounded-full md:inline-block -top-6 -left-10 w-28 bg-slate-800">
                                             {{ $t('Search metrics') }}
                                         </b>
                                     </div>
