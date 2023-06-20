@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Interfaces\IHasMetaData;
 use App\Models\Traits\HasAuthor;
 use App\Models\Traits\HasMetaData;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -9,7 +10,7 @@ use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class AnswerResponse extends Model
+class AnswerResponse extends Model implements IHasMetaData
 {
     use HasAuthor,
         HasMetaData,
