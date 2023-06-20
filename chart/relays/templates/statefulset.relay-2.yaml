@@ -1,4 +1,4 @@
-{{- if eq .Values.services.cardano.config.CARDANO_NETWORK "main" -}}
+{{- if eq .Values.services.cardano.config.CARDANO_NETWORK "mainnet" -}}
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
