@@ -5,9 +5,9 @@ namespace App\Nova\Metrics;
 use App\Models\AnswerResponse;
 use App\Models\LearningLesson;
 use App\Models\QuestionAnswer;
+use Illuminate\Database\Eloquent\Builder;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Metrics\Partition;
-use Illuminate\Database\Eloquent\Builder;
 
 class ResponsesCorrectness extends Partition
 {
@@ -33,9 +33,6 @@ class ResponsesCorrectness extends Partition
         //     'Correct answers' => $correctAnswers,
         //     'Incorrect answers' => $totalAttempts - $correctAnswers,
         // ])->colors(['green', 'red']);
-
-
-
 
         $totalAttempts = AnswerResponse::whereHas('quiz', fn (Builder $query) => $query->whereHas('lessons'))
             ->whereHas('user', fn (Builder $userQuery) => $userQuery->includeDuplicates(false))

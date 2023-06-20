@@ -5,11 +5,10 @@ namespace App\Nova\Actions;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 use Laravel\Nova\Actions\Action;
 use Laravel\Nova\Fields\ActionFields;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Illuminate\Support\Str;
 
 class SendVerificationEmail extends Action
 {
@@ -26,7 +25,7 @@ class SendVerificationEmail extends Action
             $user->sendEmailVerificationNotification();
         }
 
-        return Action::message('Verification ' . Str::plural('email', count($models)) . ' sent!');
+        return Action::message('Verification '.Str::plural('email', count($models)).' sent!');
     }
 
     /**

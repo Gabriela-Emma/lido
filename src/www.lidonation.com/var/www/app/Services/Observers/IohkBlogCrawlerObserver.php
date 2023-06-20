@@ -16,7 +16,8 @@ class IohkBlogCrawlerObserver extends CrawlObserver
     protected $postsLinks;
 
     public function __construct(protected $lang)
-    {}
+    {
+    }
 
     /**
      * Called when the crawler will crawl the url.

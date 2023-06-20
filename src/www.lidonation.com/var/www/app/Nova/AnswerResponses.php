@@ -9,13 +9,14 @@ use App\Nova\Actions\EditMetaData;
 use App\Nova\Metrics\QuizAnswerResponseVeracity;
 use App\Nova\Metrics\QuizAttemptsPerDay;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use JetBrains\PhpStorm\Pure;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Boolean;
+use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\HasMany;
 
 class AnswerResponses extends Resource
 {
@@ -80,17 +81,24 @@ class AnswerResponses extends Resource
 
             Boolean::make('Correct', fn () => $this->correct),
 
-            BelongsTo::make(__('Answer'), 'answer', QuestionAnswers::class)
-                ->searchable(),
+            Text::make(__('Stake Address'))
+                ->displayUsing(function ($value) use ($request) {
+                    if ((bool) $value && $request->isResourceIndexRequest()) {
+                        return Str::truncate($value, 16);
+                    }
+
+                    return $value;
+                })->sortable(),
+
+            Text::make('IP')
+                ->displayUsing(fn () => $this->meta_data?->ip_address)
+                ->filterable(
+                    fn ($request, $query, $value, $attribute) => $query->whereRelation('metas', 'content', '=', $value)
+                )->hideWhenUpdating()
+                ->hideWhenCreating(),
 
             BelongsTo::make(__('Author'), 'author', User::class)
                 ->searchable(),
-
-            Text::make(__('Stake Address')),
-
-            //            Text::make('Answer', function () {
-            //                return $this->answer?->content;
-            //            })->onlyOnIndex(),
 
             Select::make(__('Status'), 'status')
                 ->options([
@@ -100,6 +108,9 @@ class AnswerResponses extends Resource
                     'ready' => 'Ready',
                     'scheduled' => 'Scheduled',
                 ])->default('published')->sortable(),
+
+            BelongsTo::make(__('Answer'), 'answer', QuestionAnswers::class)
+                ->searchable(),
 
             BelongsTo::make(__('Quiz'), 'quiz', Quizzes::class)
                 ->searchable(),

@@ -316,7 +316,7 @@ class CatalystProjectsController extends Controller
                     'users.name',
                     'users.username',
                     'users.media.original_url',
-                    'users.profile_photo_url'
+                    'users.profile_photo_url',
                 ];
                 if ((bool) $this->sortBy && (bool) $this->sortOrder) {
                     $options['sort'] = ["$this->sortBy:$this->sortOrder"];

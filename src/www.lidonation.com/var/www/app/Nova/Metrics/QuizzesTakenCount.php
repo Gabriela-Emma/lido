@@ -3,9 +3,9 @@
 namespace App\Nova\Metrics;
 
 use App\Models\AnswerResponse;
+use Illuminate\Database\Eloquent\Builder;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Metrics\Value;
-use Illuminate\Database\Eloquent\Builder;
 
 class QuizzesTakenCount extends Value
 {
@@ -19,7 +19,7 @@ class QuizzesTakenCount extends Value
         $total = $this->count($request,
             AnswerResponse::whereHas(
                 'quiz',
-                fn ( Builder $query) => $query->whereHas('lessons')
+                fn (Builder $query) => $query->whereHas('lessons')
             )->whereHas(
                 'user',
                 fn (Builder $userQuery) => $userQuery->includeDuplicates(true)

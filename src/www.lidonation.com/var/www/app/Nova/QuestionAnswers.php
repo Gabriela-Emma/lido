@@ -6,6 +6,7 @@ use App\Models\QuestionAnswer;
 use App\Nova\Actions\AddMetaData;
 use App\Nova\Actions\EditMetaData;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use JetBrains\PhpStorm\Pure;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\HasMany;
@@ -55,6 +56,16 @@ class QuestionAnswers extends Resource
     public static function label(): string
     {
         return 'Answers';
+    }
+
+    /**
+     * Get the value that should be displayed to represent the resource.
+     *
+     * @return string
+     */
+    public function title()
+    {
+        return Str::limit(data_get($this, static::$title), 24);
     }
 
     /**

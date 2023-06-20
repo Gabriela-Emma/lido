@@ -77,8 +77,8 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     }
 
     /**
-        * Get the tools that should be listed in the Nova sidebar.
-        */
+     * Get the tools that should be listed in the Nova sidebar.
+     */
     public function tools(): array
     {
         return [];
