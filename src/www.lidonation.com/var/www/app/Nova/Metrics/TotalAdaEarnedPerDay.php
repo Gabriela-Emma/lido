@@ -5,29 +5,31 @@ namespace App\Nova\Metrics;
 use App\Models\LearningLesson;
 use App\Models\Reward;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Laravel\Nova\Metrics\Value;
-use Laravel\Nova\Metrics\ValueResult;
+use Laravel\Nova\Metrics\Trend;
 
-class TotalAdaDistributed extends Value
+class TotalAdaEarnedPerDay extends Trend
 {
     /**
      * Calculate the value of the metric.
+     *
+     * @return mixed
      */
-    public function calculate(NovaRequest $request): ValueResult
+    public function calculate(NovaRequest $request)
     {
-        $slteLovelaceDistributed = Reward::where('asset_type', 'ada')
-            ->where('model_type', LearningLesson::class)
-            ->whereIn('status', ['processed', 'claimed', 'paid']);
+        $lteAdaRewards = Reward::where('asset_type', 'ada')
+            ->where('model_type', LearningLesson::class);
 
-        return $this->sum($request, $slteLovelaceDistributed, 'amount')
+        return $this->sumByDays($request, $lteAdaRewards, 'amount')
             ->transform(fn ($value) => $value / 1000000)
-            ->currency('₳');
+            ->prefix('₳');
     }
 
     /**
      * Get the ranges available for the metric.
+     *
+     * @return array
      */
-    public function ranges(): array
+    public function ranges()
     {
         return [
             15 => __('15 Days'),
@@ -54,14 +56,16 @@ class TotalAdaDistributed extends Value
 
     /**
      * Get the URI key for the metric.
+     *
+     * @return string
      */
-    public function uriKey(): string
+    public function uriKey()
     {
-        return 'total-ada-distributed';
+        return 'total-ada-earned-per-day';
     }
 
-    public function name(): string
+    public function name()
     {
-        return 'Total Ada Distributed';
+        return 'Total Ada Earned Per Day';
     }
 }

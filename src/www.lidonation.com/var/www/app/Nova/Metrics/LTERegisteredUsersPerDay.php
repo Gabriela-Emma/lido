@@ -3,10 +3,11 @@
 namespace App\Nova\Metrics;
 
 use App\Models\AnswerResponse;
+use App\Models\User;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Metrics\Trend;
 
-class QuizAttemptsPerDay extends Trend
+class LTERegisteredUsersPerDay extends Trend
 {
     /**
      * The width of the card (1/3, 2/3, 1/2, 1/4, 3/4, or full).
@@ -16,11 +17,18 @@ class QuizAttemptsPerDay extends Trend
     public $width = '2/3';
 
     /**
+     * The displayable name of the metric.
+     *
+     * @var string
+     */
+    public $name = 'Registered Users Per Day';
+
+    /**
      * Calculate the value of the metric.
      */
     public function calculate(NovaRequest $request): mixed
     {
-        return $this->countByDays($request, AnswerResponse::class)->showSumValue();
+        return $this->countByDays($request, User::role('learner')->includeDuplicates(false))->showSumValue();
     }
 
     /**
@@ -54,6 +62,6 @@ class QuizAttemptsPerDay extends Trend
      */
     public function uriKey(): string
     {
-        return 'quiz-attempts-per-day';
+        return 'users-registered-per-day';
     }
 }
