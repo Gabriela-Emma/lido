@@ -22,6 +22,7 @@ use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Staudenmeir\EloquentHasManyDeep\HasRelationships;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class Fund extends Model implements HasMedia, IHasMetaData
 {
@@ -55,6 +56,13 @@ class Fund extends Model implements HasMedia, IHasMetaData
         'awarded_at' => 'datetime:Y-m-d',
         'assessment_started_at' => 'datetime:Y-m-d',
     ];
+
+    public function currency(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->currency ?? ($this->parent ? $this->parent->currency : null) ?? 'USD',
+        );
+    }
 
     public function getCurrencySymbolAttribute()
     {
