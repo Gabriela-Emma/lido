@@ -17,7 +17,7 @@
                             <div class="flex flex-row">
                                  <span class="font-bold mr-2 mt-2 px-4">Total Rewards:</span>
                                  <div v-for="groupedAsset in resultArray" :key="groupedAsset?.asset" class="flex flex-column justify-between p-2">
-                                 <div class="font-bold mr-2">{{ (groupedAsset?.asset === 'lovelace') ? 'Ada' : groupedAsset?.asset}}</div>
+                                 <div class="font-bold mr-2">{{ groupedAsset?.asset }}</div>
                                  <div>{{ $filters.shortNumber((groupedAsset?.amount/ groupedAsset?.divisibility).toFixed(2))}}</div>
                                 </div>
                             </div>
@@ -86,7 +86,7 @@ let rewards = ref(
 )
 
 const groupedAsset = rewards.value.reduce((result, obj) => {
-const asset = obj?.asset;
+const asset = obj?.asset_details?.metadata?.ticker;
   if (!result[asset]) {
     result[asset] = { asset, amount: 0 };
   }
