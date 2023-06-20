@@ -961,8 +961,6 @@ cnode_submit_api:
 cnode:
   stage: build
   image: docker:24.0.2-git
-  services:
-    - docker:dind
   retry: 1
   cache: {}
   needs:
@@ -1017,8 +1015,6 @@ cncli:
 cdbsync:
   stage: build
   image: docker:24.0.2-git
-  services:
-    - docker:dind
   retry: 1
   cache: {}
   needs:
