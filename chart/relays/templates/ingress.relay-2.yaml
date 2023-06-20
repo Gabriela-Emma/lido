@@ -1,4 +1,4 @@
-{{- if eq .Values.services.cardano.config.CARDANO_NETWORK "main" -}}
+{{- if eq .Values.services.cardano.config.CARDANO_NETWORK "mainnet" -}}
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRouteTCP
 metadata:
