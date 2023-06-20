@@ -15,6 +15,7 @@ use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\HasMany;
 
 class AnswerResponses extends Resource
 {
@@ -105,6 +106,7 @@ class AnswerResponses extends Resource
 
             BelongsTo::make(__('Question'), 'question', Questions::class)
                 ->searchable(),
+            HasMany::make('Metadata', 'metas', Metas::class),
         ];
     }
 

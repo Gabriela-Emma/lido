@@ -30,6 +30,8 @@ class LearningAnswerResponseController extends Controller
 
     public function storeAnswer(Request $request)
     {
+
+        $ipAddress = $request->ip();
         // get user previous response
         // if user has previous response from today, return
         $nextLessonAt = new Carbon($request->user()->next_lesson_at);
@@ -58,6 +60,8 @@ class LearningAnswerResponseController extends Controller
         $ans->question_answer_id = $request->input('question_answer_id');
         $ans->stake_address = $request->input('wallet_stake_address');
         $ans->save();
+
+        $ans->saveMeta('ip_address', $ipAddress, $ans, true);
 
         $learningLesson = LearningLesson::byHash($request->input('learningLessonHash'));
         $this->recordLearningAttempt($ans, $learningLesson);

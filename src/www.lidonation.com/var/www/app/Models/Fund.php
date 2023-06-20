@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Enums\CatalystCurrencyEnum;
+use App\Enums\CurrencySymbolEnum;
 use App\Models\Interfaces\IHasMetaData;
 use App\Models\Traits\HasAssessments;
 use App\Models\Traits\HasHero;
@@ -20,6 +22,7 @@ use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Staudenmeir\EloquentHasManyDeep\HasRelationships;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class Fund extends Model implements HasMedia, IHasMetaData
 {
@@ -54,11 +57,18 @@ class Fund extends Model implements HasMedia, IHasMetaData
         'assessment_started_at' => 'datetime:Y-m-d',
     ];
 
+    public function currency(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->currency ?? ($this->parent ? $this->parent->currency : null) ?? 'USD',
+        );
+    }
+
     public function getCurrencySymbolAttribute()
     {
         return match ($this->currency) {
-            'ADA' => '₳',
-            default => '$'
+            CatalystCurrencyEnum::ADA => CurrencySymbolEnum::ADA,
+            default => CurrencySymbolEnum::USD
         };
     }
 
