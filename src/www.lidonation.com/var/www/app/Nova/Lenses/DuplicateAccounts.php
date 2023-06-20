@@ -2,20 +2,18 @@
 
 namespace App\Nova\Lenses;
 
-use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Lenses\Lens;
+use Ebess\AdvancedNovaMediaLibrary\Fields\Images;
 use Laravel\Nova\Fields\Gravatar;
+use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\LensRequest;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Ebess\AdvancedNovaMediaLibrary\Fields\Images;
+use Laravel\Nova\Lenses\Lens;
 
 class DuplicateAccounts extends Lens
 {
     /**
      * Get the query builder / paginator for the lens.
      *
-     * @param  \Laravel\Nova\Http\Requests\LensRequest  $request
      * @param  Builder  $query
      * @return mixed
      */
@@ -29,7 +27,6 @@ class DuplicateAccounts extends Lens
     /**
      * Get the fields available to the lens.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function fields(NovaRequest $request)
@@ -42,10 +39,10 @@ class DuplicateAccounts extends Lens
             Text::make('EMAIL'),
             Text::make('LANG'),
             Text::make('Primary Account', 'primary_account')
-                     ->nullable()
-                     ->displayUsing(function ($user) {
+                ->nullable()
+                ->displayUsing(function ($user) {
                     return $user?->name;
-            }),
+                }),
             Text::make('FACEBOOK USERNAME'),
             Text::make('LINKEDIN'),
             Text::make('TWITTER HANDLER'),
@@ -57,7 +54,6 @@ class DuplicateAccounts extends Lens
     /**
      * Get the cards available on the lens.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function cards(NovaRequest $request)
@@ -68,7 +64,6 @@ class DuplicateAccounts extends Lens
     /**
      * Get the filters available for the lens.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function filters(NovaRequest $request)
@@ -79,7 +74,6 @@ class DuplicateAccounts extends Lens
     /**
      * Get the actions available on the lens.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function actions(NovaRequest $request)

@@ -7,6 +7,7 @@ use App\Nova\Actions\EditMetaData;
 use App\Nova\Actions\FetchDelegation;
 use App\Nova\Actions\PopulatePaymentAddress;
 use App\Nova\Actions\SendVerificationEmail;
+use App\Nova\Lenses\DuplicateAccounts;
 use App\Nova\Lenses\LidoDelegators;
 use App\Nova\Metrics\Delegation;
 use Illuminate\Http\Request;
@@ -16,14 +17,13 @@ use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\Gravatar;
 use Laravel\Nova\Fields\HasMany;
-use Laravel\Nova\Panel;
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Markdown;
 use Laravel\Nova\Fields\Password;
-use App\Nova\Lenses\DuplicateAccounts;
+use Laravel\Nova\Fields\Select;
+use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Panel;
 
 class User extends Resource
 {
@@ -60,6 +60,16 @@ class User extends Resource
     ];
 
     /**
+     * Get the value that should be displayed to represent the resource.
+     *
+     * @return string
+     */
+    public function title()
+    {
+        return Str::truncate(data_get($this, static::$title), 18);
+    }
+
+    /**
      * Get the fields displayed by the resource.
      */
     public function fields(Request $request): array
@@ -68,9 +78,6 @@ class User extends Resource
             ID::make()->sortable(),
 
             Gravatar::make()->maxWidth(50),
-
-            // Images::make('Bio Pic', 'profile')
-            //     ->conversionOnIndexView('thumbnail'),
 
             Text::make('Name')
                 ->sortable()->withMeta(
@@ -105,28 +112,26 @@ class User extends Resource
 
             Boolean::make('Email Verified', 'email_verified_at')
                 ->sortable()
-                ->filterable(fn ($request, $query, $value, $attribute) =>
-                    !!$value ? $query->whereNotNull('email_verified_at') : $query->whereNull('email_verified_at')
+                ->filterable(
+                    fn ($request, $query, $value, $attribute) => (bool) $value ? $query->whereNotNull('email_verified_at') : $query->whereNull('email_verified_at')
                 )
                 ->hideWhenCreating()
                 ->hideWhenUpdating(),
-
 
             Boolean::make('Duplicate', 'primary_account_id')
                 ->sortable()
                 ->hideFromDetail()
                 ->hideFromIndex()
                 ->hide()
-                ->filterable(fn ($request, $query, $value, $attribute) =>
-                    !!$value ? $query->whereNotNull('primary_account_id') : $query->whereNull('primary_account_id')
+                ->filterable(fn ($request, $query, $value, $attribute) => (bool) $value ? $query->whereNotNull('primary_account_id') : $query->whereNull('primary_account_id')
                 )
                 ->hideWhenCreating(),
 
             Select::make(__('Lang'), 'lang')->options(function () {
                 return collect(config('laravellocalization.supportedLocales'))
-                ->mapWithKeys(
-                    fn ($lang) => ([$lang['key'] => $lang['native']])
-                )->toArray();
+                    ->mapWithKeys(
+                        fn ($lang) => ([$lang['key'] => $lang['native']])
+                    )->toArray();
             }),
             Password::make('Password')
                 ->onlyOnForms()->withMeta(
@@ -140,8 +145,8 @@ class User extends Resource
                 ->updateRules('nullable', 'string', 'min:8'),
 
             BelongsTo::make('Primary Account', 'primary_account', User::class)
-            ->nullable()
-            ->searchable(),
+                ->nullable()
+                ->searchable(),
 
             new Panel('Bio', [
                 Markdown::make('Short Bio')
@@ -223,7 +228,7 @@ class User extends Resource
     public function lenses(Request $request): array
     {
         return [
-            new LidoDelegators(), new DuplicateAccounts()
+            new LidoDelegators(), new DuplicateAccounts(),
         ];
     }
 

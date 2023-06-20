@@ -13,6 +13,7 @@ use App\Models\Traits\HasParent;
 use App\Models\Traits\HasTaxonomies;
 use App\Scopes\OrderByLaunchedDateScope;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
@@ -22,7 +23,6 @@ use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Staudenmeir\EloquentHasManyDeep\HasRelationships;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class Fund extends Model implements HasMedia, IHasMetaData
 {
@@ -74,7 +74,7 @@ class Fund extends Model implements HasMedia, IHasMetaData
 
     public function getFormattedAmountAttribute()
     {
-        return $this->currency_symbol . number_format($this->amount, 0, '.', ',');
+        return $this->currency_symbol.number_format($this->amount, 0, '.', ',');
     }
 
     public function getWiningProposalsAttribute()

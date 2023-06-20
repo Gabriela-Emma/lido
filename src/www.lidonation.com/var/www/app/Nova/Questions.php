@@ -6,6 +6,7 @@ use App\Models\Question;
 use App\Nova\Actions\AddMetaData;
 use App\Nova\Actions\EditMetaData;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use JetBrains\PhpStorm\Pure;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\BelongsToMany;
@@ -45,13 +46,30 @@ class Questions extends Resource
     ];
 
     /**
+     * Get the value that should be displayed to represent the resource.
+     *
+     * @return string
+     */
+    public function title()
+    {
+        return Str::limit(data_get($this, static::$title), 24);
+    }
+
+    /**
      * Get the fields displayed by the resource.
      */
     public function fields(Request $request): array
     {
         return [
             ID::make(__('ID'), 'id')->sortable(),
-            Text::make(__('Title'))->translatable()->sortable(),
+            Text::make(__('Title'))->translatable()
+                ->displayUsing(function ($value) use ($request) {
+                    if ((bool) $value && $request->isResourceIndexRequest()) {
+                        return Str::truncate($value, 16);
+                    }
+
+                    return $value;
+                })->sortable(),
             Text::make(__('Type')),
             BelongsTo::make(__('Author'), 'author', User::class)
                 ->searchable(),

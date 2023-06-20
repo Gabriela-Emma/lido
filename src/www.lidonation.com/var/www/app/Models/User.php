@@ -63,7 +63,7 @@ class User extends Authenticatable implements HasMedia, Interfaces\IHasMetaData,
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'lang'
+        'name', 'email', 'password', 'lang',
     ];
 
     /**
@@ -343,9 +343,8 @@ class User extends Authenticatable implements HasMedia, Interfaces\IHasMetaData,
 
     public function duplicate_accounts(): HasMany
     {
-        return $this->hasMany(User::class ,'primary_account_id');
+        return $this->hasMany(User::class, 'primary_account_id');
     }
-
 
     public function __toString()
     {

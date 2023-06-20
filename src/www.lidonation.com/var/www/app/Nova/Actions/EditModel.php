@@ -4,8 +4,8 @@ namespace App\Nova\Actions;
 
 use App\Models\Model;
 use Illuminate\Bus\Queueable;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Collection;
 use Laravel\Nova\Actions\Action;
