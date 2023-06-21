@@ -4,7 +4,9 @@
                     :showLogo="true"
                    :errors="errors"
                    @setForm="getForm($event)"
-                   @submit="submit"/>
+                   @submit="submit"
+                   @go-to-register="router.get(`${usePage().props.base_url}/en/catalyst-explorer/register`)"
+                   />
     </div>
 </template>
 
