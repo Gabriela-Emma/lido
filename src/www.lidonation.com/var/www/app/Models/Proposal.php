@@ -216,7 +216,7 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
     public function currency(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->currency ?? $this->challenge->currency ?? $this->fund->currency ?? 'USD',
+            get: fn ($currency) => $currency ?? $this->challenge?->currency ?? $this->fund?->currency ?? 'USD',
         );
     }
 

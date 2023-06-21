@@ -120,3 +120,14 @@ AnswerResponse::whereHas('quiz',\040fn\040($query)\040\040=>\040$query->whereRel
 AnswerResponse::whereHas('quiz',\040fn\040($query)\040\040=>\040$query->whereHas('lessons'))->count();
 exiut
 exit
+$f\040=\040Fund::latest();
+$f->toArray()
+$f->get()
+$f\040=\040$f->first()
+$f->currency
+exit
+$f\040=\040Fund::latest()->first();
+$f->currency
+exit
+$f\040=\040Fund::latest()->first();
+$f->currency

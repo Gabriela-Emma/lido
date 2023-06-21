@@ -60,7 +60,7 @@ class Fund extends Model implements HasMedia, IHasMetaData
     public function currency(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->currency ?? ($this->parent ? $this->parent->currency : null) ?? 'USD',
+            get: fn ($currency) => $currency ?? $this->parent?->currency ?? 'USD',
         );
     }
 
