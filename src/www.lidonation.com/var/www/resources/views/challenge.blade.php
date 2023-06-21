@@ -46,7 +46,7 @@
 
                     <x-markdown>{{$fund->content}}</x-markdown>
 
-                    <div  x-show="!expanded" class="absolute w-full h-20 text-center -bottom-8 bg-teal-600 bg-opacity-90">
+                    <div  x-show="!expanded" class="absolute w-full h-20 text-center bg-teal-600 -bottom-8 bg-opacity-90">
                         <div class="flex items-center justify-center w-full h-full">
                             <div class="py-3 text-xl font-bold text-white hover:cursor-pointer hover:text-yellow-400" @click="expanded = !expanded">
                                 <span>Expand</span>
@@ -60,13 +60,13 @@
                     <div
                         class="border border-gray-300 -mt-px -ml-px inline-flex flex-col gap-6 justify-between border-opacity-50 p-4 pr-8pl-8first-of-type:pl-0 min-w-20 xl:min-w-[initial]">
                         <div
-                            class="flex flex-row gap-5 justify-between items-center flex-no-wrap md:justify-start text-gray-200">
-                            <div class="flex flex-wrap flex-nowrap font-semibold text-xl xl:text-3xl">
+                            class="flex flex-row flex-no-wrap items-center justify-between gap-5 text-gray-200 md:justify-start">
+                            <div class="flex text-xl font-semibold flex-nowrap xl:text-3xl">
                                 <span class="font-semibold">
                                     {{$totalProposalsCount ?? '-'}}
                                 </span>
                             </div>
-                            <div class="flex flex-wrap flex-nowrap gap-1 font-normal leading-2 text-base">
+                            <div class="flex gap-1 text-base font-normal flex-nowrap leading-2">
                                 <span>
                                     {{__('Total Proposals')}}
                                 </span>
@@ -77,13 +77,13 @@
                     <div
                         class="border border-gray-300 -mt-px -ml-px inline-flex flex-col gap-6 justify-between border-opacity-50 p-4 pr-8pl-8first-of-type:pl-0 min-w-20 xl:min-w-[initial]">
                         <div
-                            class="flex flex-row gap-5 justify-between items-center flex-no-wrap md:justify-start text-gray-200">
-                            <div class="flex flex-wrap flex-nowrap font-semibold text-xl xl:text-3xl">
+                            class="flex flex-row flex-no-wrap items-center justify-between gap-5 text-gray-200 md:justify-start">
+                            <div class="flex text-xl font-semibold flex-nowrap xl:text-3xl">
                                 <span class="font-semibold">
                                     {{$fundedProposalsCount ?? '-'}}
                                 </span>
                             </div>
-                            <div class="flex flex-wrap flex-nowrap gap-1 font-normal leading-2 text-base">
+                            <div class="flex gap-1 text-base font-normal flex-nowrap leading-2">
                                 <span>
                                     {{__('Funded Proposals')}}
                                 </span>
@@ -94,13 +94,13 @@
                     <div
                         class="border border-gray-300 -mt-px -ml-px inline-flex flex-col gap-6 justify-between border-opacity-50 p-4 pr-8pl-8first-of-type:pl-0 min-w-20 xl:min-w-[initial]">
                         <div
-                            class="flex flex-row gap-5 justify-between items-center flex-no-wrap md:justify-start text-gray-200">
-                            <div class="flex flex-wrap flex-nowrap font-semibold text-xl xl:text-3xl">
+                            class="flex flex-row flex-no-wrap items-center justify-between gap-5 text-gray-200 md:justify-start">
+                            <div class="flex text-xl font-semibold flex-nowrap xl:text-3xl">
                                 <span class="font-semibold">
                                     {{$completedProposalsCount ?? '-'}}
                                 </span>
                             </div>
-                            <div class="flex flex-wrap flex-nowrap gap-1 font-normal leading-2 text-base">
+                            <div class="flex gap-1 text-base font-normal flex-nowrap leading-2">
                                 <span>
                                     {{__('Completed Proposals')}}
                                 </span>
@@ -111,15 +111,15 @@
                     <div
                         class="border border-gray-300 -mt-px -ml-px inline-flex flex-col gap-6 justify-between border-opacity-50 p-4 pr-8pl-8first-of-type:pl-0 min-w-20 xl:min-w-[initial]">
                         <div
-                            class="flex flex-row gap-5 justify-between items-center flex-no-wrap md:justify-start text-gray-200">
-                            <div class="flex flex-wrap flex-nowrap font-semibold text-xl xl:text-3xl">
+                            class="flex flex-row flex-no-wrap items-center justify-between gap-5 text-gray-200 md:justify-start">
+                            <div class="flex text-xl font-semibold flex-nowrap xl:text-3xl">
                                 <span class="font-semibold">
-                                    ${{humanNumber($totalAmountRequested)}}
+                                    {{$fund->currency_symbol}}{{humanNumber($totalAmountRequested)}}
                                 </span>
                             </div>
-                            <div class="flex flex-wrap flex-nowrap gap-1 font-normal leading-2 text-base">
+                            <div class="flex gap-1 text-base font-normal flex-nowrap leading-2">
                                 <span>
-                                    {{__('Total $$ Requested')}}
+                                    {{__('Total Requested')}}
                                 </span>
                             </div>
                         </div>
@@ -128,15 +128,15 @@
                     <div
                         class="border border-gray-300 -mt-px -ml-px inline-flex flex-col gap-6 justify-between border-opacity-50 p-4 pr-8pl-8first-of-type:pl-0 min-w-20 xl:min-w-[initial]">
                         <div
-                            class="flex flex-row gap-5 justify-between items-center flex-no-wrap md:justify-start text-gray-200">
-                            <div class="flex flex-wrap flex-nowrap font-semibold text-xl xl:text-3xl">
+                            class="flex flex-row flex-no-wrap items-center justify-between gap-5 text-gray-200 md:justify-start">
+                            <div class="flex text-xl font-semibold flex-nowrap xl:text-3xl">
                                 <span class="font-semibold">
-                                    ${{humanNumber($totalAmountAwarded)}}
+                                    {{$fund->currency_symbol}}{{humanNumber($totalAmountAwarded)}}
                                 </span>
                             </div>
-                            <div class="flex flex-wrap flex-nowrap gap-1 font-normal leading-2 text-base">
+                            <div class="flex gap-1 text-base font-normal flex-nowrap leading-2">
                                 <span>
-                                    {{__('Total $$ Awarded')}}
+                                    {{__('Total Awarded')}}
                                 </span>
                             </div>
                         </div>
