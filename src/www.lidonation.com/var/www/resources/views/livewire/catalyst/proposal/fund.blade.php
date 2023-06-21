@@ -135,7 +135,7 @@
     </section>
 
     {{-- Catalyst Voting --}}
-    @if($quickPitches)
+    {{-- @if($quickPitches)
         <section id="catalystVoting" class="text-white bg-gradient-to-br from-primary-800 via-primary-600 to-accent-900">
             <div class="container">
                 <x-catalyst.ballot-quick-pitches :proposals="$quickPitches" />
@@ -162,5 +162,5 @@
                 </div>
             </div>
         </section>
-    @endif
+    @endif --}}
 </div>
