@@ -11,7 +11,7 @@
 import { Modal } from "momentum-modal"
 import Nav from "./Nav.vue";
 
-const props = withDefaults(
+withDefaults(
     defineProps<{
         crumbs: []
     }>(), {});

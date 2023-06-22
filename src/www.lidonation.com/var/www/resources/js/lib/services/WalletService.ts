@@ -119,7 +119,7 @@ export default class WalletService {
     public async confirmWalletOwnership(frostStakeAddress:string, userStakeAddress: string) {
 
         return (frostStakeAddress == userStakeAddress);
- 
+
     }
 
     public async signMessage(wallet: string, msg: string) {
@@ -170,7 +170,6 @@ export default class WalletService {
                 return;
             }
             const rewardAddressHex = <string>await this.lucid.wallet.rewardAddress();
-            // const rewardAddress = C.RewardAddress.from_address(C.Address.from_bytes(Buffer.from(rewardAddressHex, 'hex')));
 
             return await new Tx(this.lucid)
                 .delegateTo(rewardAddressHex, this.poolId)
@@ -204,22 +203,23 @@ export default class WalletService {
             this.blockfrostUrl = keys?.blockfrostUrl;
             this.projectId = keys?.projectId
             const envNetworkId = keys?.network_id
+            console.log({envNetworkId, networkId});
             let network;
             switch (envNetworkId) {
                 case '0':
                     if (networkId !== 0) {
-                    throw new Error('Preview wallet needed');
+                        throw new Error('Preview wallet needed');
                     }
                     network = 'Preview';
                     break;
-    
+
                 case '1':
                     if (networkId !== 1) {
-                    throw new Error('Mainnet wallet needed');
+                        throw new Error('Mainnet wallet needed');
                     }
                     network = 'Mainnet';
                     break;
-    
+
                 default:
                     throw new Error('Invalid network');
             }

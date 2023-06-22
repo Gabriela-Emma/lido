@@ -4,9 +4,9 @@
         'bg-slate-100':forRewards === false
     }" class="login-form-wrapper">
         <form>
-            <div class=" rounded  p-6 w-96"
+            <div class="p-6 rounded  w-96"
                  :class="{'bg-white shadow-sm ':forRewards === false}">
-                <div class=" flex-col  mb-4 border-b" v-if="showLogo">
+                <div class="flex-col mb-4 border-b " v-if="showLogo">
                     <div class="flex items-center justify-center mb-4">
                         <img alt="catalyst explorer logo" :src="$utils.assetUrl('img/catalyst-explorer-logo.jpg')"
                              class="h-40"/>
@@ -14,8 +14,8 @@
                 </div>
 
                 <div>
-                    <div class=" flex justify-start mb-2" v-show="forRewards === false">
-                        <h1 class="text-2xl lg:text-3xl 2xl:text-5xl 3xl:text-6xl font-semibold text-slate-700">
+                    <div class="flex justify-start mb-2 " v-show="forRewards === false">
+                        <h1 class="text-2xl font-semibold lg:text-3xl 2xl:text-5xl 3xl:text-6xl text-slate-700">
                             {{ $t("Login") }} </h1>
                     </div>
 
@@ -26,9 +26,9 @@
                         <div class="mt-1 ">
                             <input v-model="form.email" id="email" name="email" type="email" autocomplete="email"
                                    required
-                                   class="block w-full appearance-none rounded-sm border border-slate-400 px-3  py-2 placeholder-slate-400 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-teal-500 sm:text-sm">
+                                   class="block w-full px-3 py-2 border rounded-sm shadow-sm appearance-none border-slate-400 placeholder-slate-400 focus:border-teal-500 focus:outline-none focus:ring-teal-500 sm:text-sm">
                             <div v-if="form.errors.email" v-text="form.errors.email"
-                                 class="text-red-500 text-xs mt-1"></div>
+                                 class="mt-1 text-xs text-red-500"></div>
                         </div>
                     </div>
 
@@ -37,17 +37,17 @@
                         <div class="mt-1">
                             <input v-model="form.password" id="password" name="password" type="password"
                                    autocomplete="password" required
-                                   class="block w-full appearance-none rounded-sm border border-slate-400 px-3  py-2 placeholder-slate-400 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-teal-500 sm:text-sm">
+                                   class="block w-full px-3 py-2 border rounded-sm shadow-sm appearance-none border-slate-400 placeholder-slate-400 focus:border-teal-500 focus:outline-none focus:ring-teal-500 sm:text-sm">
                             <div v-if="form.errors.password" v-text="form.errors.password"
-                                 class="text-red-500 text-xs mt-1"></div>
+                                 class="mt-1 text-xs text-red-500"></div>
                         </div>
                     </div>
 
                     <div class="flex items-center justify-between mt-4 mb-2">
                         <div class="flex items-center">
                             <input v-model="form.remember" id="remember-me" name="remember-me" type="checkbox"
-                                   class="h-4 w-4 rounded border-slate-300 text-teal-600 focus:ring-teal-500">
-                            <label for="remember" class="ml-2 block text-sm text-slate-900">{{
+                                   class="w-4 h-4 text-teal-600 rounded border-slate-300 focus:ring-teal-500">
+                            <label for="remember" class="block ml-2 text-sm text-slate-900">{{
                                     $t("Remember me")
                                 }}</label>
                         </div>
@@ -60,10 +60,10 @@
                         </div>
                     </div>
 
-                    <div class="justify-between flex items-end ">
+                    <div class="flex items-end justify-between ">
                         <button @click.prevent="submit"
                                 type="submit"
-                                class="flex gap-3 items-center w-full justify-center rounded-sm border border-transparent bg-teal-600 py-2 px-4 text-xl 2xl:text-2xl font-medium text-white shadow-sm hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
+                                class="flex items-center justify-center w-full gap-3 px-4 py-2 text-xl font-medium text-white bg-teal-600 border border-transparent rounded-sm shadow-sm 2xl:text-2xl hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                  stroke="currentColor" class="w-7 h-7">
                                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -81,7 +81,7 @@
                 <Divider v-show="showDivider"/>
                 <div v-show="showWalletBtn" class="flex flex-col items-center">
                     <div v-if="walletError" v-text="walletError"
-                         class="text-red-500 text-sm my-1"></div>
+                         class="my-1 text-sm text-red-500"></div>
                     <WalletLoginBtn @walletLoginSuccessful="emit('success', $event)"
                                     @walletError="handleWalletError($event)" />
                     <DisconnectWalletBtn v-if="walletName" class="my-1">
