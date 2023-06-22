@@ -6,7 +6,6 @@
                       @endpoint="setEndpoint($event)"
                       @setForm="getForm($event)"
                       @submit="submit"/>
-        <RegistrationClosed :isOpen="!registerOpen"/>
     </div>
 </template>
 
@@ -19,7 +18,6 @@ import RegistrationClosed from "../modules/learn/components/RegistrationClosed.v
 const props = withDefaults(
     defineProps<{
         errors?: Object,
-        registerOpen?: boolean,
     }>(), {});
 
 let Endpoint = ref('')
