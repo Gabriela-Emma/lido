@@ -1,0 +1,14 @@
+{
+    "snippets":[
+        {
+            "heading":"registerCloseTitle",
+            "text_en":"Registration is currently unavailable.",
+            "text_sw":"Usajili haufanyiki kwa sasa."
+        },
+        {
+            "heading":"registerCloseMessage",
+            "text_en":"The LTE program is currently closed for new registrations, but we will be reopening it to users in the near future. Thank you for your understanding and patience.",
+            "text_sw":"Programu ya LTE kwa sasa imefungwa kwa usajili mpya, lakini tutaifungua tena kwa watumiaji hivi karibuni. Asante kwa uelewa wako na uvumilivu."
+        }
+    ]
+}
