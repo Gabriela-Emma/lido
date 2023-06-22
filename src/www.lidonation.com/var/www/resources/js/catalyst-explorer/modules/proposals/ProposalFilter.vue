@@ -46,7 +46,8 @@
                         v-model="filters.type"
                         :filters="{
                             p: 'Only Proposals',
-                            c: 'Only Challenges'
+                            c: 'Only Challenges',
+                            b: 'Both Proposals & Challenges'
                         }" />
                 </li>
 
