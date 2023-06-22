@@ -6,6 +6,7 @@
                       @endpoint="setEndpoint($event)"
                       @setForm="getForm($event)"
                       @submit="submit"/>
+        <RegistrationClosed :isOpen="!registerOpen"/>
     </div>
 </template>
 
@@ -13,10 +14,12 @@
 import {useForm} from "@inertiajs/vue3";
 import {ref} from "vue";
 import RegisterForm from "../Shared/Components/RegisterForm.vue";
+import RegistrationClosed from "../modules/learn/components/RegistrationClosed.vue";
 
 const props = withDefaults(
     defineProps<{
         errors?: Object,
+        registerOpen?: boolean,
     }>(), {});
 
 let Endpoint = ref('')

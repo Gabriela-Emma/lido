@@ -96,6 +96,13 @@ class LearnController extends Controller
 
     public function register(Request $request)
     {
+
+        if(config('app.registration_open') === false) {
+            return redirect()->back()->withErrors([
+                'message' => 'Registration closed, please contact support.',
+            ]);
+        }
+
         $user = auth()?->user() ?? User::where('email', $request->input('email'))->first();
 
         if ($user instanceof User) {
