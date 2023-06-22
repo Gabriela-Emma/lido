@@ -37,7 +37,7 @@
                     @if($proposal->amount_received > 0.00)
                         <div
                             class="inline-block px-2 py-0.5 pb-3 text-sm font-semibold rounded-tl-sm rounded-bl-sm bg-pink-600">
-                            ${{ number_format($proposal->amount_received, 2, '.', ',') }}
+                            {{$proposal->currency_symbol}}{{ number_format($proposal->amount_received, 2, '.', ',') }}
                             <sub class="text-gray-200 block mt-0.5 italic">
                                 Received
                             </sub>
@@ -45,7 +45,7 @@
                     @endif
                     <div
                         class="inline-block px-2 py-0.5 pb-3 text-sm font-semibold rounded-tr-sm rounded-br-2m bg-accent-700">
-                        ${{ number_format($proposal->amount_requested, 2, '.', ',') }}
+                        {{$proposal->currency_symbol}}{{ number_format($proposal->amount_requested, 2, '.', ',') }}
                         <sub class="text-gray-200 block mt-0.5 italic">
                             Requested
                         </sub>
@@ -55,11 +55,11 @@
                             <a href="{{$proposal['ideascale_link']}}" target="_blank"
                                x-data="{ tooltip: 'View proposal on cardano.ideascale.com' }"
                                class="inline-flex items-center px-2.5 py-1.5 ml-3 border border-primary-50 text-xs font-medium-xs rounded-xs text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent-500 hover:text-yellow-500">
-                                <img x-tooltip.theme.primary="tooltip" class="rounded-sm w-5 h-5"
+                                <img x-tooltip.theme.primary="tooltip" class="w-5 h-5 rounded-sm"
                                      src="{{asset('img/ideascale-logo.png')}}"
                                      alt="Ideascale logo">
                                 <span class="inline-block mx-2 sm:text-md xl:text-lg">View on ideascale</span>
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                                 </svg>
                             </a>

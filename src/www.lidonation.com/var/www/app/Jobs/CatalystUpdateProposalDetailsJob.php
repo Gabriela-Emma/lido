@@ -13,6 +13,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Fluent;
 use Illuminate\Support\Str;
 use League\HTMLToMarkdown\HtmlConverter;
 use Spatie\MediaLibrary\MediaCollections\Exceptions\FileCannotBeAdded;
@@ -44,12 +45,13 @@ class CatalystUpdateProposalDetailsJob implements ShouldQueue
         }
         $parts = collect(explode('/', $this->proposal->ideascale_link))->last();
         $ideascaleId = collect(explode('-', $parts))->first();
+
         $authResponse = Http::get('https://cardano.ideascale.com/a/community/api/get-token');
         if (! $authResponse->successful()) {
             return;
         }
         $response = Http::withToken($authResponse->body())
-            ->get("https://cardano.ideascale.com/a/community/api/idea/${ideascaleId}/detail");
+            ->get("https://cardano.ideascale.com/a/community/api/idea/{$ideascaleId}/detail");
 
         if (! $response->successful()) {
             return;
@@ -92,6 +94,16 @@ class CatalystUpdateProposalDetailsJob implements ShouldQueue
             $fieldSections = $this->getFund9ProposalDetails($data->fieldSections);
 
             $this->proposal->content = (string) $fieldSections->implode('');
+        }
+        if ($this->proposal->fund?->parent_id == 113) {
+            $fieldSections = $this->getFund10ProposalDetails($data->fieldSections);
+            $this->proposal->content = (string) $fieldSections->implode('');
+
+            // save requested amount
+            $proposalMeta = $this->getFund10ProposalMetas($data->fieldSections);
+            $this->proposal->amount_requested = $proposalMeta?->amount_requested;
+
+            $this->proposal->saveMeta('project_length', $proposalMeta?->project_length, $this->proposal);
         }
         if ($this->proposal->fund?->parent_id == 61) {
             $fieldSections = $this->getFund8ProposalDetails($data->fieldSections);
@@ -265,6 +277,36 @@ class CatalystUpdateProposalDetailsJob implements ShouldQueue
         //
         //            return $converter->convert('<h3>'.$field->ideaFieldValues[0]?->title.'</h3>'.$field->ideaFieldValues[0]?->value.'<br /><br />');
         //        });
+    }
+
+    protected function getFund10ProposalDetails($sections)
+    {
+        $fieldSections = collect($sections)
+            ->filter(fn ($field) => isset($field->ideaFieldValues[0]) && $field->ideaFieldValues[0]?->fieldDisplayType === 'TEXTAREA');
+        if ($this->proposal->type == 'proposal') {
+            $fieldSections = $fieldSections->filter(fn ($field) => Str::contains($field?->title, ['[IMPACT]', '[CAPABILITY/ FEASIBILITY]', '[RESOURCES & VALUE FOR MONEY]', '[FEASIBILITY]', '[AUDITABILITY]', '(SDG) Rating'], true));
+        }
+
+        return $fieldSections->map(function ($field) {
+            $ideaFieldValues = collect($field->ideaFieldValues)->pluck('value')->implode('<br /><br />>');
+            $converter = new HtmlConverter();
+
+            return $converter->convert('<h3 class="mt-6">'.$field?->title.'</h3>'.$ideaFieldValues.'<br /><br /><p></p>');
+        });
+    }
+
+    protected function getFund10ProposalMetas($sections): Fluent
+    {
+        $requestedAmount = collect($sections)
+            ->filter(fn ($field) => isset($field->ideaFieldValues[0]) && $field->ideaFieldValues[0]?->fieldName === 'CF_210');
+
+        $length = collect($sections)
+            ->filter(fn ($field) => isset($field->ideaFieldValues[0]) && $field->ideaFieldValues[0]?->fieldName === 'CF_211');
+
+        return new Fluent([
+            'amount_requested' => intval( $requestedAmount->first()?->ideaFieldValues[0]?->value ?? 0 ),
+            'project_length' => intval( $length->first()?->ideaFieldValues[0]?->value ?? 0 ),
+        ]);
     }
 
     protected function getFund7ProposalDetails($sections): Collection

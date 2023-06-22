@@ -6,7 +6,7 @@
                 @click="resetValues"
                 @mouseenter="clearRange = true"
                 @mouseleave="clearRange = false"
-                class="text-slate-300 hover:text-yellow-500 focus:outline-none flex items-center gap-1 absolute right-0">
+                class="absolute right-0 flex items-center gap-1 text-slate-300 hover:text-yellow-500 focus:outline-none">
                 <span class="text-xs" v-if="clearRange">clear</span>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                 stroke="currentColor" class="w-4 h-4">
@@ -21,7 +21,7 @@
             :max="VARIABLES.MAX_BUDGET"
             :step="500"
             :format="function (value) {
-                return `₳${$filters.shortNumber(value)}`
+                return `${$filters.shortNumber(value)}`
             }"
             tooltipPosition="bottom"
             v-model="rangeRef" />
