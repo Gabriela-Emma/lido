@@ -133,7 +133,11 @@ class CatalystUpdateProposalDetailsJob implements ShouldQueue
         ], false);
 
         // save proposal without trigger search index
-        Proposal::withoutSyncingToSearch(fn () => $this->proposal->save());
+        if ($this->proposal->fund?->parent_id == 113) {
+            $this->proposal->save();
+        } else {
+            Proposal::withoutSyncingToSearch(fn () => $this->proposal->save());
+        }
 
         // save videos
         $videos = $this->getFund98ProposalVideos($data->fieldSections);
