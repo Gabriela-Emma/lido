@@ -495,6 +495,7 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
             'impact_proposal' => $this->is_impact_proposal ? 1 : 0,
             'woman_proposal' => $this->is_woman_proposal ? 1 : 0,
             'ideafest_proposal' => $this->is_ideafest_proposal ? 1 : 0,
+            'project_length' => $this->meta_data->project_length ?? null,
         ]);
     }
 
