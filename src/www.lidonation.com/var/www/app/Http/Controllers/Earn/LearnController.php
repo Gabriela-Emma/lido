@@ -97,7 +97,7 @@ class LearnController extends Controller
     public function register(Request $request)
     {
 
-        if(config('app.registration_open') === false) {
+        if(config('app.slte.registration_open') === false) {
             return redirect()->back()->withErrors([
                 'message' => 'Registration closed, please contact support.',
             ]);
@@ -186,5 +186,15 @@ class LearnController extends Controller
                 'total_reward_sum',
                 'available_rewards',
             ])->toArray());
+    }
+
+    public function closeRegister()
+    {
+        if (previous_route_name_is('earn.learn.stopped')) {
+            return to_route('earn.learn');
+        } else {
+            return Inertia::modal('RegistrationStopped')
+                ->baseRoute('earn.learn');
+        }
     }
 }
