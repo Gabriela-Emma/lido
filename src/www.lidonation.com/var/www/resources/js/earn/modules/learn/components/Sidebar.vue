@@ -3,9 +3,9 @@
         <div class="p-4 border-8 rounded-sm border-labs-red">
             <LearnerWelcomeWidget :user="user" />
 
-            <div class="p-2 bg-labs-black rounded-sm mt-4 hover:bg-labs-red"
+            <div class="p-2 mt-4 rounded-sm bg-labs-black hover:bg-labs-red"
                 v-if="!learnerData.wallet_address || !learnerData.wallet_stake_address">
-                <AddWalletWidget :user="user" class="text-white flex flex-col items-center justify-center gap-3">
+                <AddWalletWidget :user="user" class="flex flex-col items-center justify-center gap-3 text-white">
                     <Link as="button" :href="route('earn.wallet.add')">
                     Add a wallet to withdraw rewards
                     </Link>
@@ -56,12 +56,34 @@
 
         <Promo />
 
-        <div class="bg-slate-100 text-labs-black p-4 flex gap-2 items-center rounded-sm">
+        <div class="flex items-center gap-2 p-4 rounded-sm bg-slate-100 text-labs-black">
             <LifebuoyIcon class="w-5 h-5"></LifebuoyIcon>
             <div>
                 {{ $t('Need help?') }}: &nbsp; <span class="font-bold">msaada@lidonation.com</span>
             </div>
         </div>
+
+        <a :href="route('delegators') + '#everyEpoch'" class="flex flex-col gap-4 p-4 border-8 border-labs-black round-sm">
+            <span class="block mb-2 text-lg lg:text-xl xl:text-2xl text-labs-black">More ways to earn</span>
+
+            <img class="block" src="/img/every-epoch-logo.png" alt="Every Epoch logo">
+
+            <span class="block text-xl text-center xl:text-3xl">
+                Every Epoch
+            </span>
+
+            <span
+                class="block text-xs font-normal text-center md:text-base text-slate-500 hover:text-slate-500">
+                Learn + Earn. Every 5 days!
+            </span>
+
+            <span
+                class="flex flex-col gap-1 text-xs font-normal text-center md:text-base text-slate-500 hover:text-slate-500">
+                <span>$PHUFFY</span>
+                <span>$HOSKY</span>
+                <span>$NMKR</span>
+            </span>
+        </a>
 
     </section>
 </template>
