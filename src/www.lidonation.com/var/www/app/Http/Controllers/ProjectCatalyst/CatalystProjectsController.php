@@ -209,6 +209,7 @@ class CatalystProjectsController extends Controller
                 'type' => match ($this->proposalType) {
                     'proposal' => 'p',
                     'challenge' => 'c',
+                    null => 'b',
                     default => null
                 },
                 'budgets' => $this->budgets->isNotEmpty() ? $this->budgets->toArray() : [CatalystExplorerQueryParams::MIN_BUDGET, CatalystExplorerQueryParams::MAX_BUDGET],
@@ -265,6 +266,7 @@ class CatalystProjectsController extends Controller
         $this->proposalType = match ($request->input(CatalystExplorerQueryParams::TYPE, CatalystExplorerQueryParams::PAGE)) {
             'p' => 'proposal',
             'c' => 'challenge',
+            'b' => null,
             default => null
         };
         $this->fundedProposalsFilter = $request->input(CatalystExplorerQueryParams::FUNDED_PROPOSALS, false);
