@@ -140,7 +140,7 @@ Route::group(
             Route::get('/learn', [LearnController::class, 'index'])->name('learn');
             Route::get('/learn/login', fn () => Inertia::render('Login'))
                 ->name('learn.login');
-            Route::get('/learn/register', fn () => Inertia::render('Register'))
+            Route::get('/learn/register', fn () => Inertia::render('Register')->with('registerOpen', config('app.registration_open')))
                 ->name('learn.register');
 
             Route::middleware(['auth.learn', 'userLearner', 'verified', 'duplicateAccount'])->prefix('/learn')->group(function () {
