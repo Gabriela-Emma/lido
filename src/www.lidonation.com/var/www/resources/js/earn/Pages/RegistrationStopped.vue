@@ -2,7 +2,7 @@
     <Modal :show="show">
         <div class="z-50 bg-labs-red flex flex-col">
             <header class="p-6 bg-labs-black text-white">
-                <h2>{{ $t("registerCloseTitle") }}</h2>
+                <h2>Usajili haufanyiki kwa sasa.</h2>
             </header>
 
             <div class="px-8 py-16 sm:px-24 flex items-center gap-2">
@@ -15,11 +15,11 @@
                     />
                 </div>
                 <p class="text-xl text-white">
-                    {{ $t("registerCloseMessage") }}
+                    Programu ya LTE kwa sasa imefungwa kwa usajili mpya, lakini tutaifungua tena kwa watumiaji hivi karibuni. Asante kwa uelewa wako na uvumilivu.
                 </p>
             </div>
             <div class="flex gap-3 text-md w-full justify-center mb-3">
-                <span>Already have an account{{ $t("") }}?</span>
+                <span>Tayari una akaunti{{ $t("") }}?</span>
                 <Link
                     href="/earn/learn/login"
                     class="font-bold text-teal-600 hover:text-teal-500 border-none px-2"
