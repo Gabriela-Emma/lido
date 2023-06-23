@@ -85,12 +85,15 @@ class CatalystIdeascaleF10SyncJob implements ShouldQueue
             $proposal->funding_status = 'pending';
             $proposal->fund_id = $this->challenge?->id;
             $proposal->ideascale_link = "https://cardano.ideascale.com/c/idea/{$data->id}";
-            $proposal->saveMeta('ideascale_id', $data->id);
         }
 
         $proposal->title = $data->title;
         $proposal->slug = Str::slug($proposal->title) . '-' . 'f10';
         $proposal->save();
+
+        if (!$proposal->meta_data?->ideascale_id) {
+            $proposal->saveMeta('ideascale_id', $data->id);
+        }
 
         return $proposal;
     }
