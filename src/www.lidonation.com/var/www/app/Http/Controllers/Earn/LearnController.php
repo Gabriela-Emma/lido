@@ -15,6 +15,8 @@ use Illuminate\Support\Fluent;
 use Inertia\Inertia;
 use Inertia\Response;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Password;
 
 class LearnController extends Controller
 {
@@ -190,11 +192,62 @@ class LearnController extends Controller
 
     public function closeRegister()
     {
-        if (previous_route_name_is('earn.learn.stopped')) {
-            return to_route('earn.learn');
-        } else {
-            return Inertia::modal('RegistrationStopped')
+        // if (previous_route_name_is('earn.learn.stopped')) {
+        //     return to_route('earn.learn');
+        // } else {
+        //     return Inertia::modal('RegistrationStopped')
+        //         ->baseRoute('earn.learn');
+        // }
+        return Inertia::modal('RegistrationStopped')
                 ->baseRoute('earn.learn');
+    }
+
+    public function waitList(Request $request){
+        $user = auth()?->user() ?? User::where('email', $request->input('email'))->first();
+
+        if ($user instanceof User) {
+            $res = $this->waitListUser($request, $user);
+        } else {
+            $res = $this->waitListNewUser($request);
         }
+
+        return $res;
+        
+    }
+
+    protected function waitListUser($request, $user){
+        $user->email_verified_at = now();
+        $user->save();
+        $user->saveMeta('slte_waitlist', 1, $user, true);
+        return redirect()->back();
+    }
+    protected function waitListNewUser($request){
+        $validated = new Fluent($request->validate([
+            'name' => 'nullable|bail|min:3',
+            'email' => 'required|email',
+        ]));
+        $user = new User;
+        $user->name = $validated->name;
+        $user->email = $validated->email;
+        $user->password = Hash::make(Str::random(10));
+        $user->email_verified_at = now();
+        $user->save();
+        $user->saveMeta('slte_waitlist', 1, $user, true);
+        $this->sendResetLinkEmail($request);
+        return redirect()->back();
+    }
+
+    protected function sendResetLinkEmail($request)
+    {
+        $response = $this->broker()->sendResetLink(
+            $request->only('email')
+        );
+
+        return $response;
+    }
+
+    protected function broker()
+    {
+        return Password::broker();
     }
 }

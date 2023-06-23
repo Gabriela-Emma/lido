@@ -47,6 +47,7 @@ class EarnController extends Controller
             'crumbs' => [
                 ['name' => 'Ways to Earn', 'link' => route('earn.home')],
             ],
+            'learnOpen' => config('app.slte.registration_open'),
         ]);
     }
 
