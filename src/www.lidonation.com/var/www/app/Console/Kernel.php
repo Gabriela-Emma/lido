@@ -4,6 +4,7 @@ namespace App\Console;
 
 use App\Jobs\CalculateDelegationEpochs;
 use App\Jobs\CardanoStatsJob;
+use App\Jobs\CatalystIdeascaleF10CleanupProposalsJob;
 use App\Jobs\LidoStatsJob;
 use App\Jobs\ProcessPendingWithdrawalsJob;
 use App\Jobs\RefreshLidoTwitterToken;
@@ -37,6 +38,7 @@ class Kernel extends ConsoleKernel
 
         $schedule->command('media-library:delete-old-temporary-uploads')->daily();
         $schedule->command('ln:ca-sync-f10 113')->everyFifteenMinutes();
+        $schedule->command('ln:ca-cleanup-f10 113')->everyThirtyMinutes();
 
         //crawler commands
         //        $schedule->command('ln:crawl-iohk-blog --lang=en')->daily()->at('05::00');

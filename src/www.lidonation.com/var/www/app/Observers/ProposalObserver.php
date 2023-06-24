@@ -31,6 +31,13 @@ class ProposalObserver
         }
     }
 
+    public function forceDeleting(Proposal $proposal): void
+    {
+        if ($proposal->forceDeleting) {
+            $proposal->metas()->delete();
+        }
+    }
+
     protected function generateTranslations(Proposal $proposal)
     {
         //        LanguageLine::updateOrCreate(
