@@ -2,21 +2,22 @@
 
 namespace App\Nova;
 
-use App\Models\AnswerResponse;
 use App\Models\Question;
-use App\Nova\Actions\AddMetaData;
-use App\Nova\Actions\EditMetaData;
-use App\Nova\Metrics\QuizAnswerResponseVeracity;
-use App\Nova\Metrics\QuizAttemptsPerDay;
-use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Laravel\Nova\Fields\ID;
+use Illuminate\Http\Request;
 use JetBrains\PhpStorm\Pure;
-use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\Text;
+use App\Models\AnswerResponse;
+use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\HasMany;
-use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\Select;
-use Laravel\Nova\Fields\Text;
+use App\Invokables\TruncateValue;
+use App\Nova\Actions\AddMetaData;
+use App\Nova\Actions\EditMetaData;
+use Laravel\Nova\Fields\BelongsTo;
+use App\Nova\Metrics\QuizAttemptsPerDay;
+use App\Nova\Metrics\QuizAnswerResponseVeracity;
 
 class AnswerResponses extends Resource
 {
@@ -82,13 +83,8 @@ class AnswerResponses extends Resource
             Boolean::make('Correct', fn () => $this->correct),
 
             Text::make(__('Stake Address'))
-                ->displayUsing(function ($value) use ($request) {
-                    if ((bool) $value && $request->isResourceIndexRequest()) {
-                        return Str::truncate($value, 16);
-                    }
-
-                    return $value;
-                })->sortable(),
+                ->displayUsing(new TruncateValue($request))
+                ->sortable(),
 
             Text::make('IP')
                 ->displayUsing(fn () => $this->meta_data?->ip_address)
@@ -159,6 +155,7 @@ class AnswerResponses extends Resource
             [
                 (new AddMetaData),
                 (new EditMetaData(Question::class)),
-            ]);
+            ]
+        );
     }
 }

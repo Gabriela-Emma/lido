@@ -3,15 +3,16 @@
 namespace App\Nova;
 
 use App\Models\Withdrawal;
-use App\Nova\Actions\CacheNftImage;
-use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-use Laravel\Nova\Fields\BelongsTo;
-use Laravel\Nova\Fields\DateTime;
-use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\Select;
+use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Select;
+use Laravel\Nova\Fields\HasMany;
+use App\Invokables\TruncateValue;
+use Laravel\Nova\Fields\DateTime;
+use Laravel\Nova\Fields\BelongsTo;
+use App\Nova\Actions\CacheNftImage;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Withdrawals extends Resource
@@ -56,13 +57,8 @@ class Withdrawals extends Resource
         return [
             ID::make(__('ID'), 'id')->sortable(),
             Text::make(__('Address'), 'wallet_address')->sortable()
-                ->displayUsing(function ($value) use ($request) {
-                    if ((bool) $value && $request->isResourceIndexRequest()) {
-                        return Str::truncate($value, 16);
-                    }
+                ->displayUsing(new TruncateValue($request)),
 
-                    return $value;
-                }),
             BelongsTo::make('User', 'user', User::class)->searchable()->hideFromIndex(),
             Select::make(__('Status'), 'status')
                 ->sortable()
@@ -121,6 +117,7 @@ class Withdrawals extends Resource
             static::getGlobalActions(),
             [
                 new CacheNftImage,
-            ]);
+            ]
+        );
     }
 }
