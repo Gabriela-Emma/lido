@@ -1,41 +1,38 @@
 <template>
-    <Modal :show="show">
+    <NonRouteModal :isOpen="show">
         <div class="z-50 flex flex-col bg-labs-red">
             <header class="p-6 text-white bg-labs-black text-md">
                 <h2>Usajili haufanyiki kwa sasa.</h2>
             </header>
 
             <div class="flex items-center gap-2 px-8 py-10 sm:px-16">
-                <!-- <div
-                    class="flex items-center justify-center flex-shrink-0 w-12 h-12 mx-auto bg-red-100 rounded-full sm:mx-0 sm:h-10 sm:w-10"
-                >
-                    <ExclamationTriangleIcon
-                        class="w-6 h-6 text-red-600"
-                        aria-hidden="true"
-                    />
-                </div> -->
                 <div class="flex flex-col gap-6">
                     <div>
                         <p class="text-white text-md">
-                            Our first cohort of Learn-to-Earn users is full!
+                            Kundi letu la kwanza la watumiaji wa "Learn-to-Earn"
+                            limejaa!
                         </p>
                         <p class="text-white text-md">
-                            Sign up below to be placed on the waiting list to be
-                            notified of future learn-to-earn opportunities
+                            Jisajili hapa chini ili uwekwe kwenye orodha ya
+                            kusubiri ndiposa ujulishwe kuhusu fursa za baadaye
+                            za kujisajili.
                         </p>
                     </div>
 
-                    <form v-if="showForm" @submit.prevent="submit" class="flex flex-col gap-4 p-4 text-black round-sm bg-labs-black/50">
+                    <form
+                        v-if="showForm"
+                        @submit.prevent="submit"
+                        class="flex flex-col gap-4 p-4 text-black round-sm bg-labs-black/50"
+                    >
                         <div class="">
                             <label
                                 for="name"
                                 class="block text-sm font-medium text-white"
-                                >{{ $t("Name") }}
+                                >Jina
                             </label>
                             <div class="mt-1">
                                 <input
                                     v-model="name"
-                                    v-text="form.errors.name"
                                     id="name"
                                     name="name"
                                     type="text"
@@ -43,18 +40,13 @@
                                     required
                                     class="block w-full px-3 py-2 border rounded-sm shadow-sm appearance-none border-slate-400 placeholder-slate-400 focus:border-teal-500 focus:outline-none focus:ring-teal-500 sm:text-sm"
                                 />
-                                <div
-                                    v-if="form.errors.name"
-                                    v-text="form.errors.name"
-                                    class="p-2 mt-1 text-xs text-red-500 bg-white"
-                                ></div>
                             </div>
                         </div>
                         <div class="">
                             <label
                                 for="email"
                                 class="block text-sm font-medium text-white"
-                                >{{ $t("Email address") }}
+                                >barua pepe
                             </label>
                             <div class="mt-1">
                                 <input
@@ -66,12 +58,16 @@
                                     required
                                     class="block w-full px-3 py-2 border rounded-sm shadow-sm appearance-none border-slate-400 placeholder-slate-400 focus:border-teal-500 focus:outline-none focus:ring-teal-500 sm:text-sm"
                                 />
-                                <div
-                                    v-if="form.errors.email"
-                                    v-text="form.errors.email"
-                                    class="p-2 mt-1 text-xs text-red-500 bg-white"
-                                ></div>
                             </div>
+                        </div>
+                        <div
+                            v-if="showErrors"
+                            class="p-2 mt-1 text-xs text-red-500 bg-white"
+                        >
+                            <span
+                                >Kumetokea kosa wakati wa kuwasilisha ombi lako,
+                                jaribu tena!</span
+                            >
                         </div>
                         <div class="">
                             <button
@@ -92,15 +88,23 @@
                                         d="M21 7.5l-9-5.25L3 7.5m18 0l-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9"
                                     />
                                 </svg>
-                                <span>{{ $t("Enroll") }}</span>
+                                <span>Jisajili</span>
                             </button>
                         </div>
                     </form>
 
-                    <div class="p-4 text-white round-sm bg-labs-black/50" v-if="!showForm" >
+                    <div
+                        class="p-4 text-white round-sm bg-labs-black/50"
+                        v-if="!showForm"
+                    >
                         <p class="text-white text-md">
-                            Check your email after you enroll for a link to set your
-                            password and checkout other ways to earn on lido nation!
+                            Angalia barua pepe yako baada ya kujiandikisha ili
+                            kuweka nenosiri lako mpya ikiwa wewe ni mtumiaji mpya kisha
+                            angalia njia nyingine za kupata mapato kwenye Lido
+                            Nation!
+                        </p>
+                        <p class="text-white text-md">
+                            Umefanikiwa kuongezwa kwenye orodha ya kusubiri ya "Learn-to-Earn".
                         </p>
                     </div>
 
@@ -109,7 +113,7 @@
                             href="/earn"
                             class="px-2 py-2 font-medium text-white bg-teal-600 border border-transparent rounded-sm shadow-sm text-md hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2"
                         >
-                            Other Ways to Earn
+                            <span class="text-white">Njia nyingine za kupata mapato</span>
                         </Link>
                     </div>
                 </div>
@@ -125,44 +129,50 @@
                 </Link>
             </div>
         </div>
-    </Modal>
+    </NonRouteModal>
 </template>
 
 <script lang="ts" setup>
-import Modal from "../../global/Shared/Components/Modal.vue";
-import { ExclamationTriangleIcon } from "@heroicons/vue/24/outline";
 import { ref, computed } from "vue";
 import { Link } from "@inertiajs/vue3";
-import { useForm, usePage } from "@inertiajs/vue3";
-import User from "../../global/Shared/Models/user";
+import { usePage } from "@inertiajs/vue3";
+import User from "../../../global/Shared/Models/user";
+import NonRouteModal from "../../../global/Shared/Components/NonRouteModal.vue";
+import axios from "../../../lib/utils/axios";
+import route from "ziggy-js";
 
-const params = new URLSearchParams(window.location.search);;
+const props = withDefaults(
+    defineProps<{
+        show?: boolean;
+    }>(),
+    {}
+);
 
-let show = ref(true);
 const user = computed(() => usePage().props.user as User);
 
 let name = ref(null);
 let email = ref(null);
-let showForm = ref(!params.get('waitlisted'));
+let showForm = ref(true);
+let showErrors = ref(false);
 
 if (user) {
     name.value = user.value?.name;
     email.value = user.value?.email;
 }
 
-let form = useForm({
-    name,
-    email,
-});
-
-const baseUrl = usePage().props.base_url;
-let submit = () => {
-    form.post(`${baseUrl}/api/earn/learn/waitList`, {
-        preserveScroll: true,
-        preserveState: true,
-        onSuccess: () => {
-            showForm.value = false;
-        },
-    });
-};
+function submit() {
+    axios
+        .post(route("earnApi.learn.waitList"), {
+            name: name.value,
+            email: email.value,
+        })
+        .then((res) => {
+            if (res.status === 200) {
+                showForm.value = false;
+            }
+        })
+        .catch((error) => {
+            showErrors.value = true;
+        });
+}
 </script>
