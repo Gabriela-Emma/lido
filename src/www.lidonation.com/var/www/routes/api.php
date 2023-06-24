@@ -274,6 +274,7 @@ Route::prefix('earn')->as('earnApi.')->group(function () {
     Route::post('/wallet/update', [EarnController::class, 'storeWallet'])->name('wallet.add');
     Route::post('/learn/login', [LearnController::class, 'login']);
     Route::post('/learn/register', [LearnController::class, 'register']);
+    Route::post('/learn/waitList', [LearnController::class, 'waitList']);
     Route::get('/topics/{learningTopic:id}/lessons', [LearningLessonController::class, 'getLessons']);
     Route::middleware([
         'auth:sanctum',
