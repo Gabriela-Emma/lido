@@ -135,7 +135,7 @@ Route::group(
             Route::get('/', [EarnController::class, 'index'])->name('home');
             Route::get('/wallet/add', [EarnController::class, 'addWallet'])->name('wallet.add');
             Route::get('/duplicate-account', [EarnController::class, 'duplicateAccount'])->name('learn.duplicate');
-            Route::get('/registration-stopped', [LearnController::class, 'closeRegister'])->name('learn.stopped');
+            Route::get('/registration-closed', [LearnController::class, 'closeRegister'])->name('learn.stopped');
 
             Route::get('/ccv4', [EarnController::class, 'ccv4'])->name('ccv4');
             Route::get('/learn', [LearnController::class, 'index'])->name('learn');

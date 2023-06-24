@@ -2,28 +2,29 @@
 
 namespace App\Nova;
 
-use App\Nova\Actions\AddMetaData;
-use App\Nova\Actions\EditMetaData;
-use App\Nova\Actions\FetchDelegation;
-use App\Nova\Actions\PopulatePaymentAddress;
-use App\Nova\Actions\SendVerificationEmail;
-use App\Nova\Lenses\DuplicateAccounts;
-use App\Nova\Lenses\LidoDelegators;
-use App\Nova\Metrics\Delegation;
-use Illuminate\Http\Request;
+use App\Invokables\TruncateValue;
+use Laravel\Nova\Panel;
 use Illuminate\Support\Str;
-use Laravel\Nova\Fields\BelongsTo;
-use Laravel\Nova\Fields\BelongsToMany;
-use Laravel\Nova\Fields\Boolean;
-use Laravel\Nova\Fields\Gravatar;
-use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
+use Illuminate\Http\Request;
+use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Select;
+use App\Nova\Metrics\Delegation;
+use Laravel\Nova\Fields\Boolean;
+use Laravel\Nova\Fields\HasMany;
+use App\Nova\Actions\AddMetaData;
+use Laravel\Nova\Fields\Gravatar;
 use Laravel\Nova\Fields\Markdown;
 use Laravel\Nova\Fields\Password;
-use Laravel\Nova\Fields\Select;
-use Laravel\Nova\Fields\Text;
+use App\Nova\Actions\EditMetaData;
+use Laravel\Nova\Fields\BelongsTo;
+use App\Nova\Lenses\LidoDelegators;
+use App\Nova\Actions\FetchDelegation;
+use App\Nova\Lenses\DuplicateAccounts;
+use Laravel\Nova\Fields\BelongsToMany;
+use App\Nova\Actions\SendVerificationEmail;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Laravel\Nova\Panel;
+use App\Nova\Actions\PopulatePaymentAddress;
 
 class User extends Resource
 {
@@ -87,13 +88,7 @@ class User extends Resource
                         ],
                     ]
                 )
-                ->displayUsing(function ($value) use ($request) {
-                    if ((bool) $value && $request->isResourceIndexRequest()) {
-                        return Str::truncate($value, 16);
-                    }
-
-                    return $value;
-                })
+                ->displayUsing(new TruncateValue($request))
                 ->required()
                 ->rules('max:255'),
 
@@ -123,7 +118,8 @@ class User extends Resource
                 ->hideFromDetail()
                 ->hideFromIndex()
                 ->hide()
-                ->filterable(fn ($request, $query, $value, $attribute) => (bool) $value ? $query->whereNotNull('primary_account_id') : $query->whereNull('primary_account_id')
+                ->filterable(
+                    fn ($request, $query, $value, $attribute) => (bool) $value ? $query->whereNotNull('primary_account_id') : $query->whereNull('primary_account_id')
                 )
                 ->hideWhenCreating(),
 
@@ -238,34 +234,26 @@ class User extends Resource
     public function actions(Request $request): array
     {
         return array_merge(
-            static::getGlobalActions(), [
+            static::getGlobalActions(),
+            [
                 (new AddMetaData),
                 (new EditMetaData(\App\Models\User::class)),
                 (new SendVerificationEmail),
                 (new PopulatePaymentAddress)->confirmText('Check skip, to skip updating wallet_address field on models that already have one!'),
                 (new FetchDelegation),
-            ]);
+            ]
+        );
     }
 
     public function stakeProfile(Request $request): array
     {
         return [
             Text::make('Stake Address', 'wallet_stake_address')
-                ->displayUsing(function ($value) use ($request) {
-                    if ((bool) $value && $request->isResourceIndexRequest()) {
-                        return Str::truncate($value, 16);
-                    }
-
-                    return $value;
-                })->sortable(),
+                ->displayUsing(new TruncateValue($request))
+                ->sortable(),
             Text::make('Wallet Address', 'wallet_address')
-                ->displayUsing(function ($value) use ($request) {
-                    if ((bool) $value && $request->isResourceIndexRequest()) {
-                        return Str::truncate($value, 16);
-                    }
-
-                    return $value;
-                })->sortable(),
+                ->displayUsing(new TruncateValue($request))
+                ->sortable(),
         ];
     }
 
@@ -289,7 +277,7 @@ class User extends Resource
                 ->hideWhenCreating(),
         ];
         $modelObj = \App\Models\User::find(request()->resourceId);
-        if (! isset($modelObj)) {
+        if (!isset($modelObj)) {
             return $metaFields;
         }
 
