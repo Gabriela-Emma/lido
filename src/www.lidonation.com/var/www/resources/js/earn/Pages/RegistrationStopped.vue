@@ -1,28 +1,28 @@
 <template>
     <Modal :show="show">
-        <div class="z-50 bg-labs-red flex flex-col">
-            <header class="p-6 bg-labs-black text-white">
+        <div class="z-50 flex flex-col bg-labs-red">
+            <header class="p-6 text-white bg-labs-black">
                 <h2>Usajili haufanyiki kwa sasa.</h2>
             </header>
 
-            <div class="px-8 py-16 sm:px-24 flex items-center gap-2">
-                <div
-                    class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10"
+            <div class="flex items-center gap-2 px-8 py-16 sm:px-24">
+                <!-- <div
+                    class="flex items-center justify-center flex-shrink-0 w-12 h-12 mx-auto bg-red-100 rounded-full sm:mx-0 sm:h-10 sm:w-10"
                 >
                     <ExclamationTriangleIcon
-                        class="h-6 w-6 text-red-600"
+                        class="w-6 h-6 text-red-600"
                         aria-hidden="true"
                     />
-                </div>
+                </div> -->
                 <p class="text-xl text-white">
                     Programu ya LTE kwa sasa imefungwa kwa usajili mpya, lakini tutaifungua tena kwa watumiaji hivi karibuni. Asante kwa uelewa wako na uvumilivu.
                 </p>
             </div>
-            <div class="flex gap-3 text-md w-full justify-center mb-3">
+            <div class="flex justify-center w-full gap-3 mb-3 text-md">
                 <span>Tayari una akaunti{{ $t("") }}?</span>
                 <Link
                     href="/earn/learn/login"
-                    class="font-bold text-teal-600 hover:text-teal-500 border-none px-2"
+                    class="px-2 font-bold border-none text-labs-yellow hover:text-labs-yellow-light"
                 >
                     {{ $t("Sign in") }}
                 </Link>
