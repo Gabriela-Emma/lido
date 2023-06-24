@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 use Spatie\MediaLibrary\MediaCollections\Exceptions\FileCannotBeAdded;
 
-class CatalystIdeascaleF10SyncJob implements ShouldQueue
+class CatalystIdeascaleF10CleanupProposalsJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -46,7 +46,7 @@ class CatalystIdeascaleF10SyncJob implements ShouldQueue
             return;
         }
 
-        $url = Str::replace('{$ideascaleId}', $ideascaleId, $settingService->getSettings()?->catalyst_f10_ideascale_sync_link);
+        $url = Str::replace('{$ideascaleId}', $ideascaleId, $settingService->getSettings()?->catalyst_f10_ideascale_archive_link);
         $response = Http::withToken($authResponse->body())
             ->post(
                 $url,
@@ -69,35 +69,15 @@ class CatalystIdeascaleF10SyncJob implements ShouldQueue
         $proposals = $response->object()?->data?->content ?? [];
 
         foreach($proposals as $proposal) {
-            $p = $this->processProposal($proposal);
-            dispatch(new CatalystUpdateProposalDetailsJob($p));
+            $proposal = Proposal::whereRelation('metas', [
+                'key' => 'ideascale_id',
+                'content' => $proposal->id,
+            ])->first();
+
+            if ($proposal instanceof Proposal) {
+                $proposal->forceDelete();
+            }
         }
-    }
-
-    protected function processProposal(&$data): Proposal
-    {
-        $proposal = Proposal::whereRelation('metas', [
-            'key' => 'ideascale_id',
-            'content' => $data->id,
-        ])->first();
-
-        if (!$proposal instanceof Proposal) {
-            $proposal = new Proposal;
-            $proposal->status = 'pending';
-            $proposal->funding_status = 'pending';
-            $proposal->fund_id = $this->challenge?->id;
-            $proposal->ideascale_link = "https://cardano.ideascale.com/c/idea/{$data->id}";
-        }
-
-        $proposal->title = $data->title;
-        $proposal->slug = Str::slug($proposal->title) . '-' . 'f10';
-        $proposal->save();
-
-        if (!$proposal->meta_data?->ideascale_id) {
-            $proposal->saveMeta('ideascale_id', $data->id);
-        }
-
-        return $proposal;
     }
 
 }
