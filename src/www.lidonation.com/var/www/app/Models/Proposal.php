@@ -538,11 +538,11 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
 
     public function commentableName(): string
     {
-        // TODO: Implement commentableName() method.
+        return $this->title;
     }
 
     public function commentUrl(): string
     {
-        // TODO: Implement commentUrl() method.
+        return $this->link;
     }
 }

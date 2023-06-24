@@ -26,10 +26,13 @@ export default {
                     </h2>
                     <p class="text-slate-100">Lipwa kwa Kujifunza</p>
                 </div>
-                <a href="https://www.lidonation.com/sw/earn/learn"
-                   class="inline-flex flex-col gap-4 px-3 py-1 my-4 text-white rounded-sm btn bg-labs-red">
-                    Earn
-                </a>
+                <Link href="earn/learn"
+                   class="inline-flex px-3 py-1 my-4 text-white rounded-sm btn bg-labs-red"
+                   :disabled="!learnOpen"
+                   :class="{ 'opacity-50 cursor-not-allowed': !learnOpen }"
+                   >
+                    Earn &nbsp;<span v-if="!learnOpen"> - Registration Closed</span>
+                </Link>
             </div>
         </section>
 
@@ -74,12 +77,18 @@ export default {
 
 <script lang="ts" setup>
 import {computed, defineAsyncComponent, inject} from 'vue';
-import {useForm, usePage} from '@inertiajs/vue3';
+import {useForm, usePage, Link} from '@inertiajs/vue3';
 import User from "../../global/Shared/Models/user";
 import {storeToRefs} from "pinia";
 import {useWalletStore} from "../../catalyst-explorer/stores/wallet-store";
 
 const ConnectWallet = defineAsyncComponent(() => import('../../global/Shared/Components/ConnectWallet.vue'));
+
+
+const props = withDefaults(
+    defineProps<{
+        learnOpen?: boolean,
+    }>(), {});
 
 let walletStore = useWalletStore();
 const user = computed(() => usePage().props.user as User);
