@@ -190,20 +190,8 @@ class LearnController extends Controller
             ])->toArray());
     }
 
-    public function closeRegister()
-    {
-        // if (previous_route_name_is('earn.learn.stopped')) {
-        //     return to_route('earn.learn');
-        // } else {
-        //     return Inertia::modal('RegistrationStopped')
-        //         ->baseRoute('earn.learn');
-        // }
-        return Inertia::modal('RegistrationStopped')
-                ->baseRoute('earn.learn');
-    }
-
     public function waitList(Request $request){
-        $user = auth()?->user() ?? User::where('email', $request->input('email'))->first();
+        $user = auth()?->user() ?? User::where('email', $request->email)->first();
 
         if ($user instanceof User) {
             return $this->waitListUser($request, $user);
@@ -216,12 +204,12 @@ class LearnController extends Controller
         $user->email_verified_at = now();
         $user->save();
         $user->saveMeta('slte_waitlist', 1, $user, true);
-        return to_route('earn.learn.stopped', ['waitlisted' => true]);
+        return "Added to wait list";
     }
 
     protected function waitListNewUser(Request $request){
         $validated = new Fluent($request->validate([
-            'name' => 'nullable|bail|min:3',
+            'name' => 'required|nullable|bail|min:3',
             'email' => 'required|email',
         ]));
         $user = new User;
@@ -232,7 +220,7 @@ class LearnController extends Controller
         $user->save();
         $user->saveMeta('slte_waitlist', 1, $user, true);
         $this->sendResetLinkEmail($request);
-        return to_route('earn.learn.stopped', ['waitlisted' => true]);
+        return "Added to wait list";
     }
 
     protected function sendResetLinkEmail($request)
