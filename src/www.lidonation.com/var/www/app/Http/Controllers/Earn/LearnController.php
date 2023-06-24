@@ -206,22 +206,20 @@ class LearnController extends Controller
         $user = auth()?->user() ?? User::where('email', $request->input('email'))->first();
 
         if ($user instanceof User) {
-            $res = $this->waitListUser($request, $user);
-        } else {
-            $res = $this->waitListNewUser($request);
+            return $this->waitListUser($request, $user);
         }
 
-        return $res;
-        
+        return $this->waitListNewUser($request);
     }
 
-    protected function waitListUser($request, $user){
+    protected function waitListUser(Request $request, $user){
         $user->email_verified_at = now();
         $user->save();
         $user->saveMeta('slte_waitlist', 1, $user, true);
-        return redirect()->back();
+        return to_route('earn.learn.stopped', ['waitlisted' => true]);
     }
-    protected function waitListNewUser($request){
+
+    protected function waitListNewUser(Request $request){
         $validated = new Fluent($request->validate([
             'name' => 'nullable|bail|min:3',
             'email' => 'required|email',
@@ -234,7 +232,7 @@ class LearnController extends Controller
         $user->save();
         $user->saveMeta('slte_waitlist', 1, $user, true);
         $this->sendResetLinkEmail($request);
-        return redirect()->back();
+        return to_route('earn.learn.stopped', ['waitlisted' => true]);
     }
 
     protected function sendResetLinkEmail($request)

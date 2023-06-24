@@ -1,32 +1,35 @@
 <template>
     <Modal :show="show">
-        <div class="z-50 bg-labs-red flex flex-col">
-            <header class="p-6 bg-labs-black text-white text-md">
+        <div class="z-50 flex flex-col bg-labs-red">
+            <header class="p-6 text-white bg-labs-black text-md">
                 <h2>Usajili haufanyiki kwa sasa.</h2>
             </header>
 
-            <div class="px-8 py-16 sm:px-24 flex items-center gap-2">
-                <div
-                    class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10"
+            <div class="flex items-center gap-2 px-8 py-10 sm:px-16">
+                <!-- <div
+                    class="flex items-center justify-center flex-shrink-0 w-12 h-12 mx-auto bg-red-100 rounded-full sm:mx-0 sm:h-10 sm:w-10"
                 >
                     <ExclamationTriangleIcon
-                        class="h-6 w-6 text-red-600"
+                        class="w-6 h-6 text-red-600"
                         aria-hidden="true"
                     />
-                </div>
-                <div>
-                    <p class="text-md text-white">
-                        Our first cohort of Learn-to-Earn users is full!
-                    </p>
-                    <p class="text-md text-white">
-                        Sign-up below to be placed on the waiting list to be
-                        notified of future learn-to-earn opportunities
-                    </p>
-                    <form v-if="showForm">
-                        <div class="mb-2">
+                </div> -->
+                <div class="flex flex-col gap-6">
+                    <div>
+                        <p class="text-white text-md">
+                            Our first cohort of Learn-to-Earn users is full!
+                        </p>
+                        <p class="text-white text-md">
+                            Sign up below to be placed on the waiting list to be
+                            notified of future learn-to-earn opportunities
+                        </p>
+                    </div>
+
+                    <form v-if="showForm" @submit.prevent="submit" class="flex flex-col gap-4 p-4 text-black round-sm bg-labs-black/50">
+                        <div class="">
                             <label
                                 for="name"
-                                class="block text-sm font-medium text-black"
+                                class="block text-sm font-medium text-white"
                                 >{{ $t("Name") }}
                             </label>
                             <div class="mt-1">
@@ -38,19 +41,19 @@
                                     type="text"
                                     autocomplete="name"
                                     required
-                                    class="block w-full appearance-none rounded-sm border border-slate-400 px-3 py-2 placeholder-slate-400 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-teal-500 sm:text-sm"
+                                    class="block w-full px-3 py-2 border rounded-sm shadow-sm appearance-none border-slate-400 placeholder-slate-400 focus:border-teal-500 focus:outline-none focus:ring-teal-500 sm:text-sm"
                                 />
                                 <div
                                     v-if="form.errors.name"
                                     v-text="form.errors.name"
-                                    class="text-red-500 text-xs mt-1 bg-white p-2"
+                                    class="p-2 mt-1 text-xs text-red-500 bg-white"
                                 ></div>
                             </div>
                         </div>
-                        <div class="mb-2">
+                        <div class="">
                             <label
                                 for="email"
-                                class="block text-sm font-medium text-black"
+                                class="block text-sm font-medium text-white"
                                 >{{ $t("Email address") }}
                             </label>
                             <div class="mt-1">
@@ -61,20 +64,19 @@
                                     type="email"
                                     autocomplete="email"
                                     required
-                                    class="block w-full appearance-none rounded-sm border border-slate-400 px-3 py-2 placeholder-slate-400 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-teal-500 sm:text-sm"
+                                    class="block w-full px-3 py-2 border rounded-sm shadow-sm appearance-none border-slate-400 placeholder-slate-400 focus:border-teal-500 focus:outline-none focus:ring-teal-500 sm:text-sm"
                                 />
                                 <div
                                     v-if="form.errors.email"
                                     v-text="form.errors.email"
-                                    class="text-red-500 text-xs mt-1 bg-white p-2"
+                                    class="p-2 mt-1 text-xs text-red-500 bg-white"
                                 ></div>
                             </div>
                         </div>
                         <div class="">
                             <button
-                                @click.prevent="submit"
                                 type="submit"
-                                class="flex gap-3 items-center w-full justify-center rounded-sm border border-transparent bg-teal-600 py-1 px-2 text-md font-medium text-white shadow-sm hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2"
+                                class="flex items-center justify-center w-full gap-3 px-2 py-1 font-medium text-white bg-teal-600 border border-transparent rounded-sm shadow-sm text-md hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2"
                             >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -94,29 +96,30 @@
                             </button>
                         </div>
                     </form>
-                    <p v-if="!user" class="text-md text-white">
-                        Check your email after you enroll for a link to set your
-                        password and checkout other ways to earn on lido nation!
-                    </p>
-                    <div>
-                        <p class="text-md text-white mb-1">
-                            Try our Every Epoch quiz or other ways to earn on
-                            lidonation.
+
+                    <div class="p-4 text-white round-sm bg-labs-black/50" v-if="!showForm" >
+                        <p class="text-white text-md">
+                            Check your email after you enroll for a link to set your
+                            password and checkout other ways to earn on lido nation!
                         </p>
+                    </div>
+
+                    <div class="flex justify-center">
                         <Link
                             href="/earn"
-                            class="rounded-sm border border-transparent bg-teal-600 py-1 px-2 text-md font-medium text-white shadow-sm hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2"
+                            class="px-2 py-2 font-medium text-white bg-teal-600 border border-transparent rounded-sm shadow-sm text-md hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2"
                         >
                             Other Ways to Earn
                         </Link>
                     </div>
                 </div>
             </div>
-            <div class="flex gap-3 text-md w-full justify-center mb-3">
+
+            <div class="flex justify-center w-full gap-3 my-3 text-md">
                 <span>Tayari una akaunti{{ $t("") }}?</span>
                 <Link
                     href="/earn/learn/login"
-                    class="font-bold text-teal-600 hover:text-teal-700 border-none px-2"
+                    class="px-2 font-bold border-none text-labs-yellow hover:text-labs-yellow-light"
                 >
                     {{ $t("Sign in") }}
                 </Link>
@@ -133,12 +136,14 @@ import { Link } from "@inertiajs/vue3";
 import { useForm, usePage } from "@inertiajs/vue3";
 import User from "../../global/Shared/Models/user";
 
+const params = new URLSearchParams(window.location.search);;
+
 let show = ref(true);
 const user = computed(() => usePage().props.user as User);
 
 let name = ref(null);
 let email = ref(null);
-let showForm = ref(true);
+let showForm = ref(!params.get('waitlisted'));
 
 if (user) {
     name.value = user.value?.name;
@@ -154,6 +159,7 @@ const baseUrl = usePage().props.base_url;
 let submit = () => {
     form.post(`${baseUrl}/api/earn/learn/waitList`, {
         preserveScroll: true,
+        preserveState: true,
         onSuccess: () => {
             showForm.value = false;
         },
