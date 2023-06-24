@@ -137,13 +137,6 @@
                             <div
                                 class="relative px-4 py-3 text-sm text-white rounded-full shadow-xl bg-slate-800 lg:text-md xl:text-lg">
 
-<!--                                <TransitionGroup tag="div" name="fade"-->
-<!--                                                 v-if="(metricCountApproved || metricCountCompleted) && metricSumApproved"-->
-<!--                                                 class="absolute flex justify-center w-full -top-2">-->
-<!--                                    <b class="inline-block px-2 py-1 text-xs text-center text-yellow-500 rounded-full bg-slate-800">Search-->
-<!--                                        metrics</b>-->
-<!--                                </TransitionGroup>-->
-
                                 <TransitionGroup tag="div" name="fade"
                                                  class="inline-flex flex-wrap justify-center h-full gap-1 mx-auto space-x-2 divide-x-reverse md:flex-nowrap md:gap-2 divide-slate-100 md:space-x-4">
                                     <div class="flex flex-col text-center" key="countTotal">
@@ -180,7 +173,7 @@
                                     </div>
 
 
-                                    <div class="h-full w-full h-[1px] md:h-full md:w-[1px] bg-slate-100 relative"
+                                    <div class="w-full h-[1px] md:h-full md:w-[1px] bg-slate-100 relative"
                                          v-if="(metricCountApproved || metricCountCompleted) && metricSumApproved">
                                         <b class="absolute hidden px-2 py-1 text-xs text-center text-yellow-500 rounded-full md:inline-block -top-6 -left-10 w-28 bg-slate-800">
                                             {{ $t('Search metrics') }}
@@ -196,6 +189,15 @@
                                             $ {{ $t('Requested') }}
                                         </span>
                                     </div>
+                                    <div class="flex flex-col text-center" v-if="metricSumAdaBudget" key="metricSumAdaBudget">
+                                         <span class="font-semibold">
+                                            ₳{{ $filters.shortNumber(metricSumAdaBudget, 2) }}
+                                        </span>
+                                        <span class="text-xs">
+                                            ₳ {{ $t('Requested') }}
+                                        </span>
+                                    </div>
+
                                     <div class="flex flex-col text-center text-teal-light-500" v-if="metricSumApproved"
                                          key="sumApproved">
                                          <span class="font-semibold">
@@ -328,11 +330,18 @@ let metricCountApproved = ref<number>(null);
 let metricCountTotalPaid = ref<number>(null);
 let metricCountCompleted = ref<number>(null);
 
-// metrics count
+// metrics Sum
 let metricSumApproved = ref<number>(null);
 let metricSumDistributed = ref<number>(null);
 let metricSumCompleted = ref<number>(null);
 let metricSumBudget = ref<number>(null);
+
+
+// metrics Sum
+let metricSumAdaApproved = ref<number>(null);
+let metricSumAdaDistributed = ref<number>(null);
+let metricSumAdaCompleted = ref<number>(null);
+let metricSumAdaBudget = ref<number>(null);
 
 ////
 // computed properties
@@ -455,6 +464,34 @@ function getMetrics() {
     // get requested sum
     window.axios.get(`${usePage().props.base_url}/catalyst-explorer/proposals/metrics/sum/budget`, {params})
         .then((res) => metricSumBudget.value = res?.data)
+        .catch((error) => {
+            console.error(error);
+        });
+
+
+
+
+    // get funded ada sum
+    window.axios.get(`${usePage().props.base_url}/catalyst-explorer/proposals/metrics/sum/approved?currency=ADA`, {params})
+        .then((res) => metricSumAdaApproved.value = res?.data)
+        .catch((error) => {
+            console.error(error);
+        });
+    // get funded ada sum
+    window.axios.get(`${usePage().props.base_url}/catalyst-explorer/proposals/metrics/sum/distributed?currency=ADA`, {params})
+        .then((res) => metricSumAdaDistributed.value = res?.data)
+        .catch((error) => {
+            console.error(error);
+        });
+    // get funded ada sum
+    window.axios.get(`${usePage().props.base_url}/catalyst-explorer/proposals/metrics/sum/completed?currency=ADA`, {params})
+        .then((res) => metricSumAdaCompleted.value = res?.data)
+        .catch((error) => {
+            console.error(error);
+        });
+    // get requested ada sum
+    window.axios.get(`${usePage().props.base_url}/catalyst-explorer/proposals/metrics/sum/budget?currency=ADA`, {params})
+        .then((res) => metricSumAdaBudget.value = res?.data)
         .catch((error) => {
             console.error(error);
         });

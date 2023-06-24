@@ -132,3 +132,5 @@ exit
 $f\040=\040Fund::latest()->first();
 $f->currency
 exit
+Proposal::runCustomIndex()
+exit

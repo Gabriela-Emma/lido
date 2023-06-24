@@ -102,8 +102,9 @@ class CatalystProjectsController extends Controller
     public function metricSumBudget(Request $request)
     {
         $this->setFilters($request);
+        $currency = $request->get('currency', 'USD');
         $this->limit = 10000;
-        $res = $this->query(true, ['amount_requested'])->raw();
+        $res = $this->query(true, ['amount_requested'], ["currency = {$currency}"])->raw();
 
         if (isset($res['hits'])) {
             return collect($res['hits'])->sum('amount_requested');
@@ -114,10 +115,11 @@ class CatalystProjectsController extends Controller
 
     public function metricSumApproved(Request $request)
     {
+        $currency = $request->get('currency', 'USD');
         $this->setFilters($request);
         $this->fundedProposalsFilter = true;
         $this->limit = 10000;
-        $res = $this->query(true, ['amount_requested'])->raw();
+        $res = $this->query(true, ['amount_requested'], ["currency = {$currency}"])->raw();
 
         if (isset($res['hits'])) {
             return collect($res['hits'])->sum('amount_requested');
@@ -128,10 +130,11 @@ class CatalystProjectsController extends Controller
 
     public function metricSumDistributed(Request $request)
     {
+        $currency = $request->get('currency', 'USD');
         $this->setFilters($request);
         $this->fundedProposalsFilter = true;
         $this->limit = 10000;
-        $res = $this->query(true, ['amount_received'])->raw();
+        $res = $this->query(true, ['amount_received'], ["currency = {$currency}"])->raw();
 
         if (isset($res['hits'])) {
             return collect($res['hits'])->sum('amount_received');
@@ -142,10 +145,11 @@ class CatalystProjectsController extends Controller
 
     public function metricSumCompleted(Request $request)
     {
+        $currency = $request->get('currency', 'USD');
         $this->setFilters($request);
         $this->projectStatus = 'complete';
         $this->limit = 10000;
-        $res = $this->query(true, ['amount_requested'])->raw();
+        $res = $this->query(true, ['amount_requested'], ["currency = {$currency}"])->raw();
 
         if (isset($res['hits'])) {
             return collect($res['hits'])->sum('amount_requested');
@@ -278,11 +282,11 @@ class CatalystProjectsController extends Controller
         $this->currentPage = $request->input(CatalystExplorerQueryParams::PAGE, 1);
     }
 
-    protected function query($returnBuilder = false, $attrs = null)
+    protected function query($returnBuilder = false, $attrs = null, $filters = [])
     {
         $_options = [
             'filters' => array_merge([
-            ], $this->getUserFilters()),
+            ], $this->getUserFilters(), $filters),
         ];
 
         $this->searchBuilder = Proposal::search($this->search,
