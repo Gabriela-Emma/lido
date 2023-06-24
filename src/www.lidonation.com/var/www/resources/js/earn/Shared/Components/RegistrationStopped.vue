@@ -46,7 +46,7 @@
                             <label
                                 for="email"
                                 class="block text-sm font-medium text-white"
-                                >barua pepe
+                                >Barua pepe
                             </label>
                             <div class="mt-1">
                                 <input
