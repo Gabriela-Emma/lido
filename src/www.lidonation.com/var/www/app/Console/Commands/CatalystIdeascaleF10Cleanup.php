@@ -35,12 +35,12 @@ class CatalystIdeascaleF10Cleanup extends Command
 
     public function handle()
     {
-       Fund::filter(['fund_id' => $this->argument('fund')])
-       ->whereHas('metas', function ($query) {
-            $query->where('key', 'ideascale_id');
-        })->get()->each(function($challenge) {
-            dispatch_sync(new CatalystIdeascaleF10CleanupProposalsJob($challenge));
-        });
+        Fund::filter(['fund_id' => $this->argument('fund')])
+            ->whereHas('metas', function ($query) {
+                $query->where('key', 'ideascale_id');
+            })->get()->each(function ($challenge) {
+                dispatch(new CatalystIdeascaleF10CleanupProposalsJob($challenge));
+            });
     }
 
     protected function getArguments(): array

@@ -43,10 +43,8 @@ class SLTEInsights extends Dashboard
             (new QuizzesTakenCount)->help('Total number of quizzes attempted.'),
             (new QuizAttemptsPerDay)->help('Total number of quizzes attempted per day.')->width('2/3'),
 
-
             (new LTERegisteredUsers)->help('Total number of learners registered as Learn to Earn Users.'),
             (new LTERegisteredUsersPerDay)->width('2/3'),
-
 
             (new WalletsStakedPercentage)->width('1/2')->help('Relationship of users with delegated wallets against undelegated wallets'),
             (new ResponsesCorrectness)->width('1/2')->help('Correct and incorrect responses proportions'),

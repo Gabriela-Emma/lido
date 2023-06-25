@@ -4,7 +4,6 @@ namespace App\Console;
 
 use App\Jobs\CalculateDelegationEpochs;
 use App\Jobs\CardanoStatsJob;
-use App\Jobs\CatalystIdeascaleF10CleanupProposalsJob;
 use App\Jobs\LidoStatsJob;
 use App\Jobs\ProcessPendingWithdrawalsJob;
 use App\Jobs\RefreshLidoTwitterToken;

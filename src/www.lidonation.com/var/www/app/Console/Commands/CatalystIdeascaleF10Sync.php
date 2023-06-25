@@ -36,12 +36,12 @@ class CatalystIdeascaleF10Sync extends Command
 
     public function handle(SettingService $settingService)
     {
-       Fund::filter(['fund_id' => $this->argument('fund')])
-       ->whereHas('metas', function ($query) {
-            $query->where('key', 'ideascale_id');
-        })->get()->each(function($challenge) {
-            dispatch(new CatalystIdeascaleF10SyncJob($challenge));
-        });
+        Fund::filter(['fund_id' => $this->argument('fund')])
+            ->whereHas('metas', function ($query) {
+                $query->where('key', 'ideascale_id');
+            })->get()->each(function ($challenge) {
+                dispatch(new CatalystIdeascaleF10SyncJob($challenge));
+            });
     }
 
     protected function getArguments(): array

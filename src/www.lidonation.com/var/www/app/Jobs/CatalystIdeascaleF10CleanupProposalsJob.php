@@ -46,8 +46,29 @@ class CatalystIdeascaleF10CleanupProposalsJob implements ShouldQueue
             return;
         }
 
+        $token = $authResponse->body();
+        $ideascaleProposls = array_merge(
+            $this->getActiveProposals($settingService, $ideascaleId, $token),
+            $this->getArchiveProposals($settingService, $ideascaleId, $token)
+        );
+
+        $proposalsToDelete = Proposal::with('metas')->where('fund_id', $this->challenge->id)->whereHas(
+            'metas',
+            fn ($q) => $q->whereNotIn('content', $ideascaleProposls)
+                ->where('key', 'ideascale_id')
+        )->get();
+
+        if ($proposalsToDelete->isNotEmpty()) {
+            $proposalsToDelete->each(
+                fn ($proposal) => $proposal->forceDelete()
+            );
+        }
+    }
+
+    protected function getArchiveProposals(SettingService $settingService, $ideascaleId, $token)
+    {
         $url = Str::replace('{$ideascaleId}', $ideascaleId, $settingService->getSettings()?->catalyst_f10_ideascale_archive_link);
-        $response = Http::withToken($authResponse->body())
+        $response = Http::withToken($token)
             ->post(
                 $url,
                 [
@@ -63,21 +84,38 @@ class CatalystIdeascaleF10CleanupProposalsJob implements ShouldQueue
             );
 
         if (! $response->successful()) {
-            return;
+            return [];
         }
 
-        $proposals = $response->object()?->data?->content ?? [];
-
-        foreach($proposals as $proposal) {
-            $proposal = Proposal::whereRelation('metas', [
-                'key' => 'ideascale_id',
-                'content' => $proposal->id,
-            ])->first();
-
-            if ($proposal instanceof Proposal) {
-                $proposal->forceDelete();
-            }
-        }
+        return collect(
+            $response->object()?->data?->content ?? []
+        )->pluck('id')->toArray();
     }
 
+    protected function getActiveProposals(SettingService $settingService, $ideascaleId, $token)
+    {
+        $url = Str::replace('{$ideascaleId}', $ideascaleId, $settingService->getSettings()?->catalyst_f10_ideascale_sync_link);
+        $response = Http::withToken($token)
+            ->post(
+                $url,
+                [
+                    'tag' => '',
+                    'labelKey' => '',
+                    'applicableIdeasOnly' => false,
+                    'moderatorTag' => '',
+                    'pageParameters' => [
+                        'limit' => 600,
+                        'page' => 0,
+                    ],
+                ]
+            );
+
+        if (! $response->successful()) {
+            return [];
+        }
+
+        return collect(
+            $response->object()?->data?->content ?? []
+        )->pluck('id')->toArray();
+    }
 }

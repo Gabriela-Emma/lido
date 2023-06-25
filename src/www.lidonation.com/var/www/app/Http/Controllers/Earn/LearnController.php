@@ -11,12 +11,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Fluent;
+use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Inertia\Response;
 use Spatie\Permission\Models\Role;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Password;
 
 class LearnController extends Controller
 {
@@ -99,7 +99,7 @@ class LearnController extends Controller
     public function register(Request $request)
     {
 
-        if(config('app.slte.registration_open') === false) {
+        if (config('app.slte.registration_open') === false) {
             return redirect()->back()->withErrors([
                 'message' => 'Registration closed, please contact support.',
             ]);
@@ -190,7 +190,8 @@ class LearnController extends Controller
             ])->toArray());
     }
 
-    public function waitList(Request $request){
+    public function waitList(Request $request)
+    {
         $user = auth()?->user() ?? User::where('email', $request->email)->first();
 
         if ($user instanceof User) {
@@ -200,14 +201,17 @@ class LearnController extends Controller
         return $this->waitListNewUser($request);
     }
 
-    protected function waitListUser(Request $request, $user){
+    protected function waitListUser(Request $request, $user)
+    {
         $user->email_verified_at = now();
         $user->save();
         $user->saveMeta('slte_waitlist', 1, $user, true);
-        return "Added to wait list";
+
+        return 'Added to wait list';
     }
 
-    protected function waitListNewUser(Request $request){
+    protected function waitListNewUser(Request $request)
+    {
         $validated = new Fluent($request->validate([
             'name' => 'required|nullable|bail|min:3',
             'email' => 'required|email',
@@ -220,7 +224,8 @@ class LearnController extends Controller
         $user->save();
         $user->saveMeta('slte_waitlist', 1, $user, true);
         $this->sendResetLinkEmail($request);
-        return "Added to wait list";
+
+        return 'Added to wait list';
     }
 
     protected function sendResetLinkEmail($request)
