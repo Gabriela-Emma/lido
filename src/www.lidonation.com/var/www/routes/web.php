@@ -415,7 +415,7 @@ Route::group(
     });
 
 // Wallet
-Route::post('/wallet-login', [WalletLoginController::class, 'login']);
+Route::post('/wallet-login', [WalletLoginController::class, 'login'])->name('walletLogin');
 Route::prefix('validate-wallet')->group(function () {
     Route::post('/start',
         [VerifyWalletController::class, 'getValidationAddress'])
