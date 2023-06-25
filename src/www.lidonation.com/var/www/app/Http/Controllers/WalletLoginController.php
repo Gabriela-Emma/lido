@@ -46,20 +46,6 @@ class WalletLoginController extends Controller
 
                 return auth()->user();
             }
-
-            $password = Str::random(8);
-            $user = User::create([
-                'name' => $request->stakeAddr,
-                'voter_id' => $request->stakeAddr,
-                'password' => Hash::make($password),
-            ]);
-            Auth::login($user);
-
-            if ($request->has('redirect') && Route::has($request->redirect)) {
-                redirect()->route($request->redirect);
-            }
-
-            return auth()->user();
         }
 
         return response()->json([
