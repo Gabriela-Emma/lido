@@ -121,9 +121,9 @@
                                 </span>
                             </div>
 
-                            <button @click="handleFilterToUserProposals(profileQuickView)" class="flex flex-col items-start justify-center h-full p-2 text-center text-white bg-teal-700 hover:cursor-pointer hover:bg-teal-500">
+                            <button @click="handleFilterToUserProposals(profileQuickView)" class="flex flex-col items-start justify-center h-full p-2 text-center text-white bg-teal-700 rounded-sm hover:cursor-pointer hover:shadow-md hover:bg-teal-500">
                                 <span class="text-xs">
-                                    See all {{profileQuickView.username}}'s proposals
+                                    See all {{profileQuickView.username || 'user'}}'s proposals.
                                 </span>
                             </button>
 
