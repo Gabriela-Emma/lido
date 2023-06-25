@@ -71,7 +71,6 @@ class CatalystUsers extends Resource
                     ]
                 ),
 
-
             Text::make('ideascale Id')
                 ->sortable()->withMeta(
                     [

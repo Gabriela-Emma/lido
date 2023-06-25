@@ -3,6 +3,11 @@
     'classes' => '',
     'textColor' => 'text-teal-800'
 ])
+{{-- <div class="relative select-none w-[44px]">
+     <input type="checkbox" id="toggle" class="sr-only peer" x-model="annual" />
+     <label class="block h-6 overflow-hidden bg-gray-400 rounded-full cursor-pointer peer-checked:{{$textColor}}"
+          for="toggle">
+<div/> --}}
 <a
     href="#" @click.prevent="walletLogin(walletName)"
     class="flex w-full gap-3 items-center justify-center mx-auto py-2 px-4 rounded-sm shadow-sm {{$bg}} text-lg xl:text-xl 2xl:text-2xl font-medium text-teal-800 {{$classes}}">

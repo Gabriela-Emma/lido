@@ -1,11 +1,11 @@
 // @ts-nocheck
-import {Blockfrost, Lucid, Network, Tx} from 'lucid-cardano';
-import {C} from "lucid-cardano";
+import { Blockfrost, Lucid, Network, Tx } from 'lucid-cardano';
+import { C } from "lucid-cardano";
 import CardanoWallet from "../interfaces/CardanoWallet";
 import BlockfrostKeysService from './BlockfrostKeysService';
 import typhonjs from '@stricahq/typhonjs'
 
-export {};
+export { };
 declare global {
     interface Window {
         cardano: CardanoWallet;
@@ -24,15 +24,13 @@ export default class WalletService {
     private blockfrostUrl: any;
     private projectId: any;
 
-    constructor() {}
+    constructor() { }
 
-    public get lucidInstance()
-    {
+    public get lucidInstance() {
         return this.lucid;
     }
 
-    public get apiInstance()
-    {
+    public get apiInstance() {
         return this.api;
     }
 
@@ -47,23 +45,45 @@ export default class WalletService {
             const signedTx = await tx.sign().complete();
             return signedTx.submit();
         } catch (e) {
-            console.log({e});
+            console.log({ e });
             throw e;
         }
     }
 
-    public async payToAddress(address, assets)
-    {
-        return await new Tx(this.lucid).payToAddress(address, assets).validTo(Date.now() + 1000000).complete();
+    public async payToAddress(address, assets) {
+        return await new Tx(this.lucid)
+            .payToAddress(address, assets)
+            .validTo(Date.now() + 1000000)
+            .complete();
+    }
+
+    public async expiredTx(wallet, assets, stakeAddr) {
+        await this.init(wallet);
+        if (!this.api) {
+            return;
+        }
+
+        const addr = await this.getAddress(wallet);
+        return await new Tx(this.lucid)
+            .payToAddress(addr, assets)
+            .validTo(Date.now() - 1000000)
+            .addSigner(stakeAddr)
+            .complete();
     }
 
     public async withdrawRewards(amount) {
         if (!this.api) {
-            throw new Error('Your wallet must be connected to withdraw rewards!');
+            throw new Error(
+                "Your wallet must be connected to withdraw rewards!"
+            );
         }
         try {
-            const rewardAddressHex = <string>await this.lucid.wallet.rewardAddress();
-            const bech32 = C.Address.from_bytes(Buffer.from(rewardAddressHex, 'hex')).to_bech32();
+            const rewardAddressHex = <string>(
+                await this.lucid.wallet.rewardAddress()
+            );
+            const bech32 = C.Address.from_bytes(
+                Buffer.from(rewardAddressHex, "hex")
+            ).to_bech32();
 
             const tx = await new Tx(this.lucid)
                 .withdraw(bech32, amount)
@@ -76,7 +96,7 @@ export default class WalletService {
     }
 
     public supports(wallet: string): boolean {
-        if (typeof window.cardano === 'undefined') {
+        if (typeof window.cardano === "undefined") {
             return false;
         }
         return !!window.cardano[wallet];
@@ -116,10 +136,11 @@ export default class WalletService {
         return <string>await this.lucid.wallet.address();
     }
 
-    public async confirmWalletOwnership(frostStakeAddress:string, userStakeAddress: string) {
-
-        return (frostStakeAddress == userStakeAddress);
-
+    public async confirmWalletOwnership(
+        frostStakeAddress: string,
+        userStakeAddress: string
+    ) {
+        return frostStakeAddress == userStakeAddress;
     }
 
     public async signMessage(wallet: string, msg: string) {
@@ -142,7 +163,7 @@ export default class WalletService {
 
     public async connectWallet(wallet: string) {
         try {
-            if (!this.lucid || typeof this.lucid === 'undefined') {
+            if (!this.lucid || typeof this.lucid === "undefined") {
                 await this.init(wallet);
             } else {
                 const api = await this.enableWallet(wallet);
@@ -150,13 +171,17 @@ export default class WalletService {
                 this.api = api;
             }
         } catch (e) {
-            console.log({e});
+            console.log({ e });
             return e.message;
         }
     }
 
     protected async enableWallet(wallet: string) {
-        if (typeof window.cardano === 'undefined' || !window?.cardano || !window.cardano[wallet]) {
+        if (
+            typeof window.cardano === "undefined" ||
+            !window?.cardano ||
+            !window.cardano[wallet]
+        ) {
             return Promise.reject(`${wallet} wallet not installed.`);
         }
         console.log(`${wallet} enabled.`);
@@ -169,19 +194,20 @@ export default class WalletService {
             if (!this.api) {
                 return;
             }
-            const rewardAddressHex = <string>await this.lucid.wallet.rewardAddress();
+            const rewardAddressHex = <string>(
+                await this.lucid.wallet.rewardAddress()
+            );
 
             return await new Tx(this.lucid)
                 .delegateTo(rewardAddressHex, this.poolId)
-                .complete()
-
+                .complete();
         } catch (e) {
             throw e;
         }
     }
 
     protected async init(wallet: string) {
-        if (!!this.lucid || typeof this.lucid !== 'undefined') {
+        if (!!this.lucid || typeof this.lucid !== "undefined") {
             const api = await this.enableWallet(wallet);
             this.lucid.selectWallet(api);
             this.api = api;
@@ -197,31 +223,31 @@ export default class WalletService {
                 return;
             }
 
-            const networkId = await  api.getNetworkId();
+            const networkId = await api.getNetworkId();
             const blockfrostKeysService = new BlockfrostKeysService();
             const keys = await blockfrostKeysService.getConfig();
             this.blockfrostUrl = keys?.blockfrostUrl;
-            this.projectId = keys?.projectId
-            const envNetworkId = keys?.network_id
-            console.log({envNetworkId, networkId});
+            this.projectId = keys?.projectId;
+            const envNetworkId = keys?.network_id;
+            console.log({ envNetworkId, networkId });
             let network;
             switch (envNetworkId) {
-                case '0':
+                case "0":
                     if (networkId !== 0) {
-                        throw new Error('Preview wallet needed');
+                        throw new Error("Preview wallet needed");
                     }
-                    network = 'Preview';
+                    network = "Preview";
                     break;
 
-                case '1':
+                case "1":
                     if (networkId !== 1) {
-                        throw new Error('Mainnet wallet needed');
+                        throw new Error("Mainnet wallet needed");
                     }
-                    network = 'Mainnet';
+                    network = "Mainnet";
                     break;
 
                 default:
-                    throw new Error('Invalid network');
+                    throw new Error("Invalid network");
             }
 
             lucid = await Lucid.new(
@@ -234,7 +260,7 @@ export default class WalletService {
             this.poolId = keys.poolId;
             this.api = api;
         } catch (e) {
-            throw  e;
+            throw e;
         }
     }
 }

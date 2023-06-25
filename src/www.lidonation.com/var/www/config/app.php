@@ -271,6 +271,6 @@ return [
     ])->toArray(),
 
     'slte' => [
-        'registration_open' => env('REGISTRATION_OPEN', false)
-    ]
+        'registration_open' => env('REGISTRATION_OPEN', false),
+    ],
 ];

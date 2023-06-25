@@ -308,8 +308,8 @@ class CatalystUpdateProposalDetailsJob implements ShouldQueue
             ->filter(fn ($field) => isset($field->ideaFieldValues[0]) && $field->ideaFieldValues[0]?->fieldName === 'CF_211');
 
         return new Fluent([
-            'amount_requested' => intval( $requestedAmount->first()?->ideaFieldValues[0]?->value ?? 0 ),
-            'project_length' => intval( $length->first()?->ideaFieldValues[0]?->value ?? 0 ),
+            'amount_requested' => intval($requestedAmount->first()?->ideaFieldValues[0]?->value ?? 0),
+            'project_length' => intval($length->first()?->ideaFieldValues[0]?->value ?? 0),
         ]);
     }
 

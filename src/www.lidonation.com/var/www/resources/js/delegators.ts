@@ -10,7 +10,7 @@ import CardanoService from "./lib/services/CardanoService";
 import Notice from "./lib/interfaces/Notice";
 import {Axios, AxiosError} from "axios";
 import BlockfrostKeysService from "./lib/services/BlockfrostKeysService";
-import {walletLogin} from "./lib/utils/walletLogin";
+import { messageLogin ,txLogin} from "./lib/utils/walletLogin";
 import {globalVideoPlayer} from "./lib/utils/globalVideoPlayer";
 import Plyr from 'plyr';
 import KUTE from 'kute.js'
@@ -597,7 +597,11 @@ Alpine.data('delegateToLido', function () {
         },
         async walletLogin(wallet: string) {
             try {
-                this.user = await walletLogin(wallet, this.stakeAccount.stake_address, 'Lido Delegator Login');
+                this.user = await messageLogin(
+                    wallet,
+                    this.stakeAccount.stake_address,
+                    "Lido Delegator Login"
+                );
                 await this.setPhuffyBalance();
                 this.navigate('home');
                 location.reload();

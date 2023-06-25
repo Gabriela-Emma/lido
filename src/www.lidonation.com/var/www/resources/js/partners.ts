@@ -2,7 +2,7 @@ import Alpine, {Alpine as AlpineType} from "alpinejs";
 import {Axios, AxiosError} from "axios";
 import {Cardano, UTxO} from "lucid-cardano";
 import persist from '@alpinejs/persist';
-import {walletLogin} from "./lib/utils/walletLogin";
+import { messageLogin ,txLogin} from "./lib/utils/walletLogin";
 import {cardanoWallet} from "./lib/utils/cardanoWallet";
 import WalletService from "./lib/services/WalletService";
 import focus from '@alpinejs/focus';
@@ -45,7 +45,7 @@ Alpine.data('lidoPartners', function () {
 
         async walletLogin(walletName: string) {
             try {
-                const user = await walletLogin(walletName, this.stakeAddr);
+                const user = await messageLogin(walletName, this.stakeAddr);
                 if (!!user) {
                     location.reload();
                 }

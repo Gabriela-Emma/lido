@@ -68,7 +68,7 @@ class CatalystIdeascaleF10SyncJob implements ShouldQueue
 
         $proposals = $response->object()?->data?->content ?? [];
 
-        foreach($proposals as $proposal) {
+        foreach ($proposals as $proposal) {
             $p = $this->processProposal($proposal);
             dispatch(new CatalystUpdateProposalDetailsJob($p));
         }
@@ -81,7 +81,7 @@ class CatalystIdeascaleF10SyncJob implements ShouldQueue
             'content' => $data->id,
         ])->first();
 
-        if (!$proposal instanceof Proposal) {
+        if (! $proposal instanceof Proposal) {
             $proposal = new Proposal;
             $proposal->status = 'pending';
             $proposal->funding_status = 'pending';
@@ -90,14 +90,13 @@ class CatalystIdeascaleF10SyncJob implements ShouldQueue
         }
 
         $proposal->title = $data->title;
-        $proposal->slug = Str::slug($proposal->title) . '-' . 'f10';
+        $proposal->slug = Str::limit(Str::slug($proposal->title), 150).'-'.'f10';
         $proposal->save();
 
-        if (!$proposal->meta_data?->ideascale_id) {
+        if (! $proposal->meta_data?->ideascale_id) {
             $proposal->saveMeta('ideascale_id', $data->id);
         }
 
         return $proposal;
     }
-
 }
