@@ -44,7 +44,6 @@ use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitemapable, HasLink
 {
     use Actionable,
-        SoftDeletes,
         HasComments,
         HasCommits,
         HasTimestamps,
@@ -58,7 +57,8 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
         HasTranslations,
         HasLocaleUrl,
         HasHero,
-        HasRelationships;
+        HasRelationships,
+        SoftDeletes;
 
     public static string $group = 'Catalyst';
 
