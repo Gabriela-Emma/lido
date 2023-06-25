@@ -26,14 +26,7 @@ class ProposalObserver
 
     public function deleting(Proposal $proposal)
     {
-        if ($proposal->forceDeleting) {
-            $proposal->metas()->delete();
-        }
-    }
-
-    public function forceDeleting(Proposal $proposal): void
-    {
-        if ($proposal->forceDeleting) {
+        if ($proposal->isForceDeleting()) {
             $proposal->metas()->delete();
         }
     }
