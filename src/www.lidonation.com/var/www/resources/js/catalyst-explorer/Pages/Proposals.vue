@@ -252,6 +252,8 @@ import {VARIABLES} from "../models/variables";
 import Search from "../Shared/Components/Search.vue";
 import Pagination from "../Shared/Components/Pagination.vue";
 import axios from 'axios';
+import { usePeopleStore } from '../stores/people-store';
+import { storeToRefs } from 'pinia';
 
 /// props and class properties
 const props = withDefaults(
@@ -355,6 +357,11 @@ const filtering = computed(() => {
 
 let showFilters = ref(getFiltering() || true);
 
+const peopleStore = usePeopleStore();
+peopleStore.loadPeople(props?.filters?.people);
+const {selectedPeople} = storeToRefs(peopleStore);
+
+
 watch([search, filtersRef, selectedSortRef], () => {
     currPageRef.value = null;
     query();
@@ -365,12 +372,15 @@ watch([currPageRef, perPageRef], () => {
     query();
 });
 
+watch([selectedPeople], () => {
+    filtersRef.value.people = [...filtersRef.value.people, ...selectedPeople.value]
+});
+
 watch(selectedDownloadFormat, () => {
     if (selectedDownloadFormat.value != null) {
         download(selectedDownloadFormat.value);
     }
 });
-
 
 getMetrics();
 

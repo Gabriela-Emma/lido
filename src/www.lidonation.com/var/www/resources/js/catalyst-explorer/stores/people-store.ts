@@ -7,6 +7,7 @@ import Profile from "../models/profile";
 export const usePeopleStore = defineStore('people', () => {
     let filters: Ref<PeopleFilters> = ref();
     let people = ref<Profile[]>([]);
+    let selected = ref<number[]>([]);
 
     async function search(f: PeopleFilters) {
         filters.value = f;
@@ -24,6 +25,7 @@ export const usePeopleStore = defineStore('people', () => {
             console.log({e});
         }
     }
+
     async function loadPeople(pp: number[]) {
         try {
             const {data} = await window.axios.get(
@@ -40,9 +42,15 @@ export const usePeopleStore = defineStore('people', () => {
         }
     }
 
+    async function select(pp: number[]) {
+        selected.value = [...pp];
+    }
+
     return {
         search,
+        select,
         loadPeople,
+        selectedPeople: selected,
         filters,
         people
     };

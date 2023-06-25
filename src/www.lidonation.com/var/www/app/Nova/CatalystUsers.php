@@ -71,6 +71,16 @@ class CatalystUsers extends Resource
                     ]
                 ),
 
+
+            Text::make('ideascale Id')
+                ->sortable()->withMeta(
+                    [
+                        'extraAttributes' => [
+                            'autocomplete' => 'off',
+                        ],
+                    ]
+                ),
+
             Text::make('Email')
                 ->sortable()->withMeta(
                     [
