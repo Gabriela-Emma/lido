@@ -321,6 +321,7 @@ class CatalystProjectsController extends Controller
                     'users.id',
                     'users.name',
                     'users.username',
+                    'users.ideascale_id',
                     'users.media.original_url',
                     'users.profile_photo_url',
                 ];

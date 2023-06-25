@@ -30,6 +30,7 @@ export default interface Proposal {
         name: string;
         username: string;
         profile_photo_url: string;
+        ideascale_id: number;
         media: {original_url: string}[]
     }[];
 }

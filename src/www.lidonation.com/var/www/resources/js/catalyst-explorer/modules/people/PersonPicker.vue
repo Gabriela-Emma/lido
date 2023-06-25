@@ -29,28 +29,28 @@
 import Multiselect from '@vueform/multiselect';
 import {defineEmits, ref, watch} from "vue";
 import {storeToRefs} from "pinia";
-import Challenge from "../../models/challenge";
 import {usePeopleStore} from "../../stores/people-store";
+import User from '../../../global/Shared/Models/user';
 
 const props = withDefaults(
     defineProps<{
-        modelValue?: Challenge
+        modelValue?: User
     }>(),
     {},
 );
 let selectedRef = ref(props.modelValue);
 const peopleStore = usePeopleStore();
-const {people} = storeToRefs(peopleStore);
+const {people, selectedPeople} = storeToRefs(peopleStore);
 
 ////
 // events & watchers
 ////
 const emit = defineEmits<{
-    (e: 'update:modelValue', challenge: Challenge): void
+    (e: 'update:modelValue', user: User): void
 }>();
 
-watch(selectedRef, (newChallenge, oldFund) => {
-    emit('update:modelValue', newChallenge);
+watch(selectedRef, (newUser, oldUser) => {
+    emit('update:modelValue', newUser);
 });
 
 ////
