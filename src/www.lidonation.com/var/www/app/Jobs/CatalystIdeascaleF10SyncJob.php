@@ -90,7 +90,7 @@ class CatalystIdeascaleF10SyncJob implements ShouldQueue
         }
 
         $proposal->title = $data->title;
-        $proposal->slug = Str::limit(Str::slug($proposal->title), 150).'-'.'f10';
+        $proposal->slug = Str::limit(Str::slug($proposal->title), 150, '').'-'.'f10';
         $proposal->save();
 
         if (! $proposal->meta_data?->ideascale_id) {
