@@ -9,7 +9,7 @@
         display: none !important;
     }
 
-    .drip-content {
+    .drip-content strong {
         font-weight: normal !important;
     }
 }
