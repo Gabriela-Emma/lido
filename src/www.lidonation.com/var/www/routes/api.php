@@ -17,6 +17,7 @@ use App\Http\Controllers\RewardController;
 use App\Http\Controllers\SnippetController;
 use App\Models\Catalyst\Ccv4BallotChoice;
 use App\Models\EveryEpoch;
+use App\Models\Giveaway;
 use App\Models\Reward;
 use App\Models\User;
 use App\Services\CardanoBlockfrostService;
@@ -103,9 +104,11 @@ Route::group([
 
 Route::post('/ccv4/ballot', function (Request $request) {
     // get epoch
-    $epoch = app(CardanoBlockfrostService::class)->get('epochs/latest/', null)->collect();
+    // $epoch = app(CardanoBlockfrostService::class)->get('epochs/latest/', null)->collect();
 
-    $everyEpoch = EveryEpoch::where('epoch', $epoch['epoch'])->first();
+    // get the giveaway
+    // Giveaway::whereRelation('metas', ['key' => 'program', 'content' => 'ccv4'])->first();
+
     $user = User::where('wallet_stake_address', $request->input('account'))->first();
 
     // use lucid to verify signature
@@ -127,6 +130,8 @@ Route::post('/ccv4/ballot', function (Request $request) {
         }
         Auth::login($user);
     }
+
+
 
     return [
         'ballots' => $ballots,
