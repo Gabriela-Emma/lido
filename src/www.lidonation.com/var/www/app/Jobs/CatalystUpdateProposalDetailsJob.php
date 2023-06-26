@@ -61,8 +61,17 @@ class CatalystUpdateProposalDetailsJob implements ShouldQueue
 
         $author = $this->processPrimaryAuthor($data);
 
-        if ($data?->description && ! $this->proposal?->problem) {
-            $this->proposal->problem = $data->description;
+        $converter = new HtmlConverter();
+        if ($this->proposal->fund?->parent?->id == 113) {
+            $this->proposal->problem = $converter->convert(
+                Str::replace('/a/attachments/', 'https://cardano.ideascale.com/a/attachments/', $data->description)
+            );
+        } else {
+            if ($data?->description && ! $this->proposal?->problem) {
+                $this->proposal->problem = $converter->convert(
+                    Str::replace('/a/attachments/', 'https://cardano.ideascale.com/a/attachments/', $data->description)
+                );
+            }
         }
 
         // basic details
@@ -82,22 +91,23 @@ class CatalystUpdateProposalDetailsJob implements ShouldQueue
         $this->proposal?->users()->sync($coSubmitters->filter()->values()->push($author->id));
 
         // save detailed content
+        $content = null;
         if ($this->proposal->fund?->parent_id == 21) {
             $fieldSections = $this->getFund7ProposalDetails($data->fieldSections);
-            $this->proposal->content = (string) $fieldSections->implode('');
+            $content = (string) $fieldSections->implode('');
         }
         if ($this->proposal->fund?->parent_id == 58) {
             $fieldSections = $this->getFund7ProposalDetails($data->fieldSections);
-            $this->proposal->content = (string) $fieldSections->implode('');
+            $content = (string) $fieldSections->implode('');
         }
         if ($this->proposal->fund?->parent_id == 97) {
             $fieldSections = $this->getFund9ProposalDetails($data->fieldSections);
 
-            $this->proposal->content = (string) $fieldSections->implode('');
+            $content = (string) $fieldSections->implode('');
         }
         if ($this->proposal->fund?->parent_id == 113) {
             $fieldSections = $this->getFund10ProposalDetails($data->fieldSections);
-            $this->proposal->content = (string) $fieldSections->implode('');
+            $content = (string) $fieldSections->implode('');
 
             // save requested amount
             $proposalMeta = $this->getFund10ProposalMetas($data->fieldSections);
@@ -107,8 +117,10 @@ class CatalystUpdateProposalDetailsJob implements ShouldQueue
         }
         if ($this->proposal->fund?->parent_id == 61) {
             $fieldSections = $this->getFund8ProposalDetails($data->fieldSections);
-            $this->proposal->content = (string) $fieldSections->implode('');
+            $content = (string) $fieldSections->implode('');
         }
+
+        $this->proposal->content = Str::replace('/a/attachments/', 'https://cardano.ideascale.com/a/attachments/', $content);
 
         $this->proposal->user_id = $author?->id;
 
