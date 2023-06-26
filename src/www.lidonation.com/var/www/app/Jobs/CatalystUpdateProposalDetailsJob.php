@@ -28,7 +28,7 @@ class CatalystUpdateProposalDetailsJob implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(public Proposal|int $proposal)
+    public function __construct(public Proposal|int $proposal, public $includeBasicDetails = false)
     {
     }
 
@@ -62,29 +62,36 @@ class CatalystUpdateProposalDetailsJob implements ShouldQueue
         $author = $this->processPrimaryAuthor($data);
 
         $converter = new HtmlConverter();
-        if ($this->proposal->fund?->parent?->id == 113) {
+
+        // basic details
+        [$solution, $experience] = [null, null];
+        if ($this->proposal->fund?->parent_id == 113) {
             $this->proposal->problem = $converter->convert(
                 Str::replace('/a/attachments/', 'https://cardano.ideascale.com/a/attachments/', $data->description)
             );
+
+            $solution = collect($data->fieldSections)
+            ->filter(fn ($field) => isset($field->ideaFieldValues[0]) && $field->ideaFieldValues[0]?->fieldName === 'CF_213');
+            $this->proposal->solution = $converter->convert(
+                Str::replace('/a/attachments/', 'https://cardano.ideascale.com/a/attachments/', $solution)
+            );
         } else {
+            if ($this->proposal->fund?->parent?->id == 58) {
+                [$solution, $experience] = $this->getFund7BasicDetails($data->fieldSections);
+            }
             if ($data?->description && ! $this->proposal?->problem) {
                 $this->proposal->problem = $converter->convert(
                     Str::replace('/a/attachments/', 'https://cardano.ideascale.com/a/attachments/', $data->description)
                 );
             }
+            if ($solution && ! $this->proposal?->solution) {
+                $this->proposal->solution = $solution;
+            }
+            if ($experience && ! $this->proposal?->experience) {
+                $this->proposal->experience = $experience;
+            }
         }
 
-        // basic details
-        [$solution, $experience] = [null, null];
-        if ($this->proposal->fund?->parent?->id == 58) {
-            [$solution, $experience] = $this->getFund7BasicDetails($data->fieldSections);
-        }
-        if ($solution && ! $this->proposal?->solution) {
-            $this->proposal->solution = $solution;
-        }
-        if ($experience && ! $this->proposal?->experience) {
-            $this->proposal->experience = $experience;
-        }
 
         // sync co-proposers
         $coSubmitters = $this->processCoProposers($data);
@@ -236,6 +243,7 @@ class CatalystUpdateProposalDetailsJob implements ShouldQueue
 
         return [$solution, $experience];
     }
+
 
     protected function processPrimaryAuthor(&$data)
     {
