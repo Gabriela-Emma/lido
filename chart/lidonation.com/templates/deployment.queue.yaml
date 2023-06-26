@@ -75,14 +75,14 @@ spec:
             cpu: 4
           requests:
             cpu: 80m
-            memory: 300Mi
+            memory: 1024Mi
         env:
           - name: CONTAINER_ROLE
             value: queue
           - name: NEWRELIC_APP_NAME
             value: Lighthouse Queue
           - name: PHP_MEMORY_LIMIT
-            value: 4096M
+            value: 6144M
         envFrom:
           - configMapRef:
               name: "{{ $.Chart.Name }}-configmap"
