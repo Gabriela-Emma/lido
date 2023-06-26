@@ -71,7 +71,8 @@ class CatalystUpdateProposalDetailsJob implements ShouldQueue
             );
 
             $solution = collect($data->fieldSections)
-            ->filter(fn ($field) => isset($field->ideaFieldValues[0]) && $field->ideaFieldValues[0]?->fieldName === 'CF_213');
+            ->filter(fn ($field) => isset($field->ideaFieldValues[0]) && $field->ideaFieldValues[0]?->fieldName === 'CF_213')
+            ->first()?->ideaFieldValues[0]?->value ?? null;
             $this->proposal->solution = $converter->convert(
                 Str::replace('/a/attachments/', 'https://cardano.ideascale.com/a/attachments/', $solution)
             );
