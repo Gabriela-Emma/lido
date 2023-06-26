@@ -4,6 +4,14 @@
         @apply mt-0 inline;
         display: inline;
     }
+
+    .drip-content img{
+        display: none !important;
+    }
+
+    .drip-content {
+        font-weight: normal !important;
+    }
 }
 </style>
 <template>
