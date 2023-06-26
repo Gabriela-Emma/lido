@@ -135,3 +135,4 @@ exit
 Proposal::runCustomIndex()
 exit
 Tpetry\134PostgresqlEnhanced\134Support\134Facades\134Schema::refreshMaterializedView('_proposal_ratings');
+$u\040=\040User::where('email',\040'darlington@wlehfam.com')->first();
