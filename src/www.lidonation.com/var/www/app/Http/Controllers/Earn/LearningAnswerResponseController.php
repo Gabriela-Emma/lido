@@ -52,6 +52,8 @@ class LearningAnswerResponseController extends Controller
             return null;
         }
 
+        $learningLesson = LearningLesson::byHash($request->input('learningLessonHash'));
+
         // save answer response
         $ans = new AnswerResponse;
         $ans->user_id = Auth::id();
@@ -59,11 +61,14 @@ class LearningAnswerResponseController extends Controller
         $ans->quiz_id = $request->input('quiz_id');
         $ans->question_answer_id = $request->input('question_answer_id');
         $ans->stake_address = $request->input('wallet_stake_address');
+        $ans->context_id = $learningLesson->id;
+        $ans->context_type = LearningLesson::class;
+
         $ans->save();
 
         $ans->saveMeta('ip_address', $ipAddress, $ans, true);
 
-        $learningLesson = LearningLesson::byHash($request->input('learningLessonHash'));
+
         $this->recordLearningAttempt($ans, $learningLesson);
         $this->issueReward($request, $ans->question_answer_id, $learningLesson);
 

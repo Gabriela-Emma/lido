@@ -108,7 +108,7 @@ use OpenApi\Annotations as OA;
  *      @OA\Property(property="from", type="integer", example=1),
  *      @OA\Property(property="last_page", type="integer", example=1),
  *      @OA\Property(property="links", ref="#/components/schemas/proposals_meta_links_array"),
- *      @OA\Property(property="path", type="string", example="http://localhost:8880/api/catalyst-explorer/proposals"),
+ *      @OA\Property(property="path", type="string", example="/api/catalyst-explorer/proposals"),
  *      @OA\Property(property="per_page", type="integer", example=24),
  *      @OA\Property(property="to", type="integer", example=1),
  *      @OA\Property(property="total", type="integer", example=1),
@@ -128,7 +128,7 @@ use OpenApi\Annotations as OA;
  *      schema="proposals_meta_links_array_object",
  *      type="object",
  *
- *      @OA\Property(property="url", type="string", example="http://localhost:8880/api/catalyst-explorer/proposals?page=1"),
+ *      @OA\Property(property="url", type="string", example="/api/catalyst-explorer/proposals?page=1"),
  *      @OA\Property(property="label", type="string", example="1"),
  *      @OA\Property(property="active", type="boolean", example=false),
  *),
@@ -144,7 +144,7 @@ use OpenApi\Annotations as OA;
  *       @OA\Property(property="currency", type="string", example="usd"),
  *       @OA\Property(property="launch_date", type="string", example="09/21/20"),
  *       @OA\Property(property="currency_symbol", type="string", example="$"),
- *       @OA\Property(property="link", type="string", example="http://localhost:8880/en/project-catalyst/funds/fund-2"),
+ *       @OA\Property(property="link", type="string", example="/en/catalyst-explorer/funds/fund-2"),
  *       @OA\Property(property="thumbnail_url", type="null", example=null),
  *       @OA\Property(property="gravatar", type="null", example=null),
  *   ),
@@ -162,10 +162,10 @@ use OpenApi\Annotations as OA;
  *      schema="funds_links",
  *      type="object",
  *
- *      @OA\Property(property="first", type="string", example="http://localhost:8880/api/catalyst-explorer/funds?page=1"),
- *      @OA\Property(property="last", type="string", example="http://localhost:8880/api/catalyst-explorer/funds?page=1"),
+ *      @OA\Property(property="first", type="string", example="/api/catalyst-explorer/funds?page=1"),
+ *      @OA\Property(property="last", type="string", example="/api/catalyst-explorer/funds?page=1"),
  *      @OA\Property(property="prev", type="string", example=null),
- *      @OA\Property(property="next", type="string", example="http://localhost:8880/api/catalyst-explorer/funds?page=2"),
+ *      @OA\Property(property="next", type="string", example="/api/catalyst-explorer/funds?page=2"),
  * ),
  *
  *  @OA\Schema(
@@ -176,7 +176,7 @@ use OpenApi\Annotations as OA;
  *      @OA\Property(property="from", type="integer", example=1),
  *      @OA\Property(property="last_page", type="integer", example=1),
  *      @OA\Property(property="links", ref="#/components/schemas/funds_meta_links_array"),
- *      @OA\Property(property="path", type="string", example="http://localhost:8880/api/catalyst-explorer/funds"),
+ *      @OA\Property(property="path", type="string", example="/api/catalyst-explorer/funds"),
  *      @OA\Property(property="per_page", type="integer", example=24),
  *      @OA\Property(property="to", type="integer", example=9),
  *      @OA\Property(property="total", type="integer", example=9),
@@ -195,7 +195,7 @@ use OpenApi\Annotations as OA;
  *      schema="funds_meta_links_array_object",
  *      type="object",
  *
- *      @OA\Property(property="url", type="string", example="http://localhost:8880/api/catalyst-explorer/funds?page=1"),
+ *      @OA\Property(property="url", type="string", example="/api/catalyst-explorer/funds?page=1"),
  *      @OA\Property(property="label", type="string", example="1"),
  *      @OA\Property(property="active", type="boolean", example=false),
  *),
@@ -222,10 +222,10 @@ use OpenApi\Annotations as OA;
  *      schema="tags_links",
  *      type="object",
  *
- *      @OA\Property(property="first", type="string", example="http://localhost:8880/api/catalyst-explorer/tags?page=1"),
- *      @OA\Property(property="last", type="string", example="http://localhost:8880/api/catalyst-explorer/tags?page=1"),
+ *      @OA\Property(property="first", type="string", example="/api/catalyst-explorer/tags?page=1"),
+ *      @OA\Property(property="last", type="string", example="/api/catalyst-explorer/tags?page=1"),
  *      @OA\Property(property="prev", type="string", example=null),
- *      @OA\Property(property="next", type="string", example="http://localhost:8880/api/catalyst-explorer/tags?page=2"),
+ *      @OA\Property(property="next", type="string", example="/api/catalyst-explorer/tags?page=2"),
  * ),
  *
  *  @OA\Schema(
@@ -236,7 +236,7 @@ use OpenApi\Annotations as OA;
  *      @OA\Property(property="from", type="integer", example=1),
  *      @OA\Property(property="last_page", type="integer", example=1),
  *      @OA\Property(property="links", ref="#/components/schemas/tags_meta_links_array"),
- *      @OA\Property(property="path", type="string", example="http://localhost:8880/api/catalyst-explorer/tags"),
+ *      @OA\Property(property="path", type="string", example="/api/catalyst-explorer/tags"),
  *      @OA\Property(property="per_page", type="integer", example=24),
  *      @OA\Property(property="to", type="integer", example=9),
  *      @OA\Property(property="total", type="integer", example=9),
@@ -255,7 +255,7 @@ use OpenApi\Annotations as OA;
  *      schema="tags_meta_links_array_object",
  *      type="object",
  *
- *      @OA\Property(property="url", type="string", example="http://localhost:8880/api/catalyst-explorer/tags?page=1"),
+ *      @OA\Property(property="url", type="string", example="/api/catalyst-explorer/tags?page=1"),
  *      @OA\Property(property="label", type="string", example="1"),
  *      @OA\Property(property="active", type="boolean", example=false),
  *),
@@ -285,10 +285,10 @@ use OpenApi\Annotations as OA;
  *      schema="challenges_links",
  *      type="object",
  *
- *      @OA\Property(property="first", type="string", example="http://localhost:8880/api/catalyst-explorer/challenges?page=1"),
- *      @OA\Property(property="last", type="string", example="http://localhost:8880/api/catalyst-explorer/challenges?page=1"),
+ *      @OA\Property(property="first", type="string", example="/api/catalyst-explorer/challenges?page=1"),
+ *      @OA\Property(property="last", type="string", example="/api/catalyst-explorer/challenges?page=1"),
  *      @OA\Property(property="prev", type="string", example=null),
- *      @OA\Property(property="next", type="string", example="http://localhost:8880/api/catalyst-explorer/challenges?page=2"),
+ *      @OA\Property(property="next", type="string", example="/api/catalyst-explorer/challenges?page=2"),
  * ),
  *
  *  @OA\Schema(
@@ -299,7 +299,7 @@ use OpenApi\Annotations as OA;
  *      @OA\Property(property="from", type="integer", example=1),
  *      @OA\Property(property="last_page", type="integer", example=1),
  *      @OA\Property(property="links", ref="#/components/schemas/challenges_meta_links_array"),
- *      @OA\Property(property="path", type="string", example="http://localhost:8880/api/catalyst-explorer/challenges"),
+ *      @OA\Property(property="path", type="string", example="/api/catalyst-explorer/challenges"),
  *      @OA\Property(property="per_page", type="integer", example=200),
  *      @OA\Property(property="to", type="integer", example=100),
  *      @OA\Property(property="total", type="integer", example=100),
@@ -318,7 +318,7 @@ use OpenApi\Annotations as OA;
  *      schema="challenges_meta_links_array_object",
  *      type="object",
  *
- *      @OA\Property(property="url", type="string", example="http://localhost:8880/api/catalyst-explorer/challenges?page=1"),
+ *      @OA\Property(property="url", type="string", example="/api/catalyst-explorer/challenges?page=1"),
  *      @OA\Property(property="label", type="string", example="1"),
  *      @OA\Property(property="active", type="boolean", example=true),
  *),
@@ -350,10 +350,10 @@ use OpenApi\Annotations as OA;
  *      schema="groups_links",
  *      type="object",
  *
- *      @OA\Property(property="first", type="string", example="http://localhost:8880/api/catalyst-explorer/groups?page=1"),
- *      @OA\Property(property="last", type="string", example="http://localhost:8880/api/catalyst-explorer/groups?page=3"),
+ *      @OA\Property(property="first", type="string", example="/api/catalyst-explorer/groups?page=1"),
+ *      @OA\Property(property="last", type="string", example="/api/catalyst-explorer/groups?page=3"),
  *      @OA\Property(property="prev", type="string", example=null),
- *      @OA\Property(property="next", type="string", example="http://localhost:8880/api/catalyst-explorer/groups?page=2"),
+ *      @OA\Property(property="next", type="string", example="/api/catalyst-explorer/groups?page=2"),
  * ),
  *
  *  @OA\Schema(
@@ -364,7 +364,7 @@ use OpenApi\Annotations as OA;
  *      @OA\Property(property="from", type="integer", example=1),
  *      @OA\Property(property="last_page", type="integer", example=3),
  *      @OA\Property(property="links", ref="#/components/schemas/groups_meta_links_array"),
- *      @OA\Property(property="path", type="string", example="http://localhost:8880/api/catalyst-explorer/groups"),
+ *      @OA\Property(property="path", type="string", example="/api/catalyst-explorer/groups"),
  *      @OA\Property(property="per_page", type="integer", example=24),
  *      @OA\Property(property="to", type="integer", example=24),
  *      @OA\Property(property="total", type="integer", example=69),
@@ -383,7 +383,7 @@ use OpenApi\Annotations as OA;
  *      schema="groups_meta_links_array_object",
  *      type="object",
  *
- *      @OA\Property(property="url", type="string", example="http://localhost:8880/api/catalyst-explorer/groups?page=1"),
+ *      @OA\Property(property="url", type="string", example="/api/catalyst-explorer/groups?page=1"),
  *      @OA\Property(property="label", type="string", example="1"),
  *      @OA\Property(property="active", type="boolean", example=true),
  *),
@@ -396,7 +396,7 @@ use OpenApi\Annotations as OA;
  *       @OA\Property(property="username", type="string", example="swhitenstall"),
  *       @OA\Property(property="name", type="string", example="Stephen Whitenstall"),
  *       @OA\Property(property="website", type="string", example=null),
- *       @OA\Property(property="link", type="string", example="http://localhost:8880/en/project-catalyst/users/23"),
+ *       @OA\Property(property="link", type="string", example="/en/project-catalyst/users/23"),
  *       @OA\Property(property="ideascale_link", type="string", example=null),
  *       @OA\Property(property="ideascale_user", type="string", example=""),
  *       @OA\Property(property="ideascale_id", type="integer", example=0),
@@ -416,10 +416,10 @@ use OpenApi\Annotations as OA;
  *      schema="people_links",
  *      type="object",
  *
- *      @OA\Property(property="first", type="string", example="http://localhost:8880/api/catalyst-explorer/people?page=1"),
- *      @OA\Property(property="last", type="string", example="http://localhost:8880/api/catalyst-explorer/people?page=23"),
+ *      @OA\Property(property="first", type="string", example="/api/catalyst-explorer/people?page=1"),
+ *      @OA\Property(property="last", type="string", example="/api/catalyst-explorer/people?page=23"),
  *      @OA\Property(property="prev", type="string", example=null),
- *      @OA\Property(property="next", type="string", example="http://localhost:8880/api/catalyst-explorer/people?page=2"),
+ *      @OA\Property(property="next", type="string", example="/api/catalyst-explorer/people?page=2"),
  * ),
  *
  *  @OA\Schema(
@@ -430,7 +430,7 @@ use OpenApi\Annotations as OA;
  *      @OA\Property(property="from", type="integer", example=1),
  *      @OA\Property(property="last_page", type="integer", example=23),
  *      @OA\Property(property="links", ref="#/components/schemas/people_meta_links_array"),
- *      @OA\Property(property="path", type="string", example="http://localhost:8880/api/catalyst-explorer/people"),
+ *      @OA\Property(property="path", type="string", example="/api/catalyst-explorer/people"),
  *      @OA\Property(property="per_page", type="integer", example=24),
  *      @OA\Property(property="to", type="integer", example=24),
  *      @OA\Property(property="total", type="integer", example=2941),
@@ -449,7 +449,7 @@ use OpenApi\Annotations as OA;
  *      schema="people_meta_links_array_object",
  *      type="object",
  *
- *      @OA\Property(property="url", type="string", example="http://localhost:8880/api/catalyst-explorer/people?page=1"),
+ *      @OA\Property(property="url", type="string", example="/api/catalyst-explorer/people?page=1"),
  *      @OA\Property(property="label", type="string", example="1"),
  *      @OA\Property(property="active", type="boolean", example=true),
  *),

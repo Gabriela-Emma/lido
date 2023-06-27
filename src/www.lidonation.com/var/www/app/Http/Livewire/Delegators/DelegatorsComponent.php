@@ -97,8 +97,11 @@ class DelegatorsComponent extends Component
                 ->where([
                     'user_id' => $user->id,
                     'quiz_id' => $this->everyEpochQuiz?->id,
-                ])->first();
+                    'context_type' => EveryEpoch::class,
+                ])
+                ->first();
 
+                dd($this->myResponse);
             if ($this->myResponse instanceof AnswerResponse && $this->myResponse?->answer?->question instanceof Question) {
                 $this->everyEpochQuestion = QuizQuestionData::from(Question::with(['answers'])->find($this->myResponse?->question_id))->toArray();
             }

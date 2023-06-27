@@ -17,8 +17,7 @@ class CatalystFundsController extends Controller
     {
         return Inertia::render('Funds', [
             'crumbs' => [
-                ['link' => '/project-catalyst/funds', 'label' => 'Funds'],
-                ['label' => 'Fund 6'],
+                ['link' => '/catalyst-explorer/funds', 'label' => 'Funds'],
             ],
         ]);
     }

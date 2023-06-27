@@ -67,8 +67,14 @@ class LearningLessonController extends Controller
         }
 
         $userResponses = AnswerResponse::with(['quiz', 'question.answers', 'answer'])
-            ->where('user_id', $user?->id)
-            ->where('quiz_id', $learningLesson->quiz?->id)
+            ->where(
+                [
+                    'user_id' => $user?->id,
+                    'quiz_id' => $learningLesson->quiz?->id,
+                    'context_id' => $learningLesson->id,
+                    'context_type' => LearningLesson::class,
+                ]
+            )
             ->get();
 
         $reward = $learningLesson->rewards()
