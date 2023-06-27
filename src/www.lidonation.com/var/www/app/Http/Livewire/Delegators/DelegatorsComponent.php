@@ -20,6 +20,7 @@ use Exception;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Fluent;
 use Livewire\Component;
@@ -93,15 +94,15 @@ class DelegatorsComponent extends Component
             $this->loadUserNfts($user);
             $this->loadLidoRewards($user);
 
+            $date = Carbon::now()->subDays(7);
             $this->myResponse = AnswerResponse::with('answer.question')
                 ->where([
                     'user_id' => $user->id,
                     'quiz_id' => $this->everyEpochQuiz?->id,
                     'context_type' => EveryEpoch::class,
-                ])
+                ])->where('created_at', '>=', $date)
                 ->first();
 
-                dd($this->myResponse);
             if ($this->myResponse instanceof AnswerResponse && $this->myResponse?->answer?->question instanceof Question) {
                 $this->everyEpochQuestion = QuizQuestionData::from(Question::with(['answers'])->find($this->myResponse?->question_id))->toArray();
             }
