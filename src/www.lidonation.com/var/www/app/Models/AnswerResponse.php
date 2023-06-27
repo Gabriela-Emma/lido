@@ -8,6 +8,7 @@ use App\Models\Traits\HasMetaData;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class AnswerResponse extends Model implements IHasMetaData
@@ -57,5 +58,10 @@ class AnswerResponse extends Model implements IHasMetaData
     public function answer(): BelongsTo
     {
         return $this->belongsTo(QuestionAnswer::class, 'question_answer_id', 'id', 'answer');
+    }
+
+    public function learningAttempts(): HasMany
+    {
+        return $this->hasMany(LearningAttempt::class);
     }
 }

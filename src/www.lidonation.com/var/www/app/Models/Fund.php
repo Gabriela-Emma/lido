@@ -204,10 +204,10 @@ class Fund extends Model implements HasMedia, IHasMetaData
     protected function getUrlGroup(): string
     {
         if (! $this->parent) {
-            return 'project-catalyst/funds';
+            return 'catalyst-explorer/funds';
         }
 
-        return 'project-catalyst/challenges';
+        return 'catalyst-explorer/challenges';
     }
 
     /**

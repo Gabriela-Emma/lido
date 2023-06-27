@@ -1,6 +1,6 @@
 @if($everyEpochQuestion['answers'])
     <div>
-        <div class="flex flex-col justify-center items-center" x-show="!!quiz && !stakeAccount"
+        <div class="flex flex-col items-center justify-center" x-show="!!quiz && !stakeAccount"
              @lido-rewards-loaded.window="seeRewards(true)">
             <h2>
                 Let's get you connected!
@@ -8,7 +8,7 @@
             <x-delegators.connect-wallet/>
         </div>
         <div x-show="!!quiz && stakeAccount" x-transition
-             class="flex flex-col gap-4 justify-center items-center">
+             class="flex flex-col items-center justify-center gap-4">
             <div>
                 <p class="text-xl lg:text-2xl xl:text-4xl 2xl:text-6xl">
                     <span x-show="correct">You're Correct!</span>
@@ -17,13 +17,13 @@
             </div>
             <div class="text-center">
                 <svg x-show="correct" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                     fill="currentColor" class="w-16 h-16 text-green-500 mx-auto">
+                     fill="currentColor" class="w-16 h-16 mx-auto text-green-500">
                     <path fill-rule="evenodd"
                           d="M8.603 3.799A4.49 4.49 0 0112 2.25c1.357 0 2.573.6 3.397 1.549a4.49 4.49 0 013.498 1.307 4.491 4.491 0 011.307 3.497A4.49 4.49 0 0121.75 12a4.49 4.49 0 01-1.549 3.397 4.491 4.491 0 01-1.307 3.497 4.491 4.491 0 01-3.497 1.307A4.49 4.49 0 0112 21.75a4.49 4.49 0 01-3.397-1.549 4.49 4.49 0 01-3.498-1.306 4.491 4.491 0 01-1.307-3.498A4.49 4.49 0 012.25 12c0-1.357.6-2.573 1.549-3.397a4.49 4.49 0 011.307-3.497 4.49 4.49 0 013.497-1.307zm7.007 6.387a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z"
                           clip-rule="evenodd"/>
                 </svg>
                 <svg x-show="!correct" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                     fill="currentColor" class="w-16 h-16 text-pink-600 mx-auto">
+                     fill="currentColor" class="w-16 h-16 mx-auto text-pink-600">
                     <path fill-rule="evenodd"
                           d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zm-2.625 6c-.54 0-.828.419-.936.634a1.96 1.96 0 00-.189.866c0 .298.059.605.189.866.108.215.395.634.936.634.54 0 .828-.419.936-.634.13-.26.189-.568.189-.866 0-.298-.059-.605-.189-.866-.108-.215-.395-.634-.936-.634zm4.314.634c.108-.215.395-.634.936-.634.54 0 .828.419.936.634.13.26.189.568.189.866 0 .298-.059.605-.189.866-.108.215-.395.634-.936.634-.54 0-.828-.419-.936-.634a1.96 1.96 0 01-.189-.866c0-.298.059-.605.189-.866zm-4.34 7.964a.75.75 0 01-1.061-1.06 5.236 5.236 0 013.73-1.538 5.236 5.236 0 013.695 1.538.75.75 0 11-1.061 1.06 3.736 3.736 0 00-2.639-1.098 3.736 3.736 0 00-2.664 1.098z"
                           clip-rule="evenodd"/>
@@ -34,10 +34,10 @@
                     </x-markdown>
                 </div>
             </div>
-            <div class="border-b border-teal-900 w-full">
+            <div class="w-full border-b border-teal-900">
                 <div x-show="correct">
                     <h2 class="text-center">Claim your reward</h2>
-                    <div class="flex gap-4 my-4 w-full">
+                    <div class="flex w-full gap-4 my-4">
                         <livewire:rewards.claim-lido-rewards-component :rewards-template="$rewardsTemplate"
                                                                        :every-epoch="$everyEpoch"/>
                     </div>
@@ -52,7 +52,7 @@
                         </div>
                     </div>
                     <div
-                        class="-mx-4 mt-4 overflow-hidden ring-1 ring-teal-800 sm:-mx-6 md:mx-0 md:rounded-sm">
+                        class="mt-4 -mx-4 overflow-hidden ring-1 ring-teal-800 sm:-mx-6 md:mx-0 md:rounded-sm">
                         <table class="min-w-full divide-y divide-teal-800">
                             <thead class="">
                             <tr>
@@ -68,72 +68,72 @@
                             </thead>
                             <tbody class="divide-y divide-teal-800">
                             <tr>
-                                <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-slate-100 sm:pl-6">
+                                <td class="py-4 pl-4 pr-3 text-sm font-medium whitespace-nowrap text-slate-100 sm:pl-6">
                                     100 staked
                                 </td>
-                                <td class="hidden whitespace-nowrap px-3 py-4 text-sm text-slate-50 sm:table-cell">
+                                <td class="hidden px-3 py-4 text-sm whitespace-nowrap text-slate-50 sm:table-cell">
                                     15%
                                 </td>
                             </tr>
                             <tr>
-                                <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-slate-100 sm:pl-6">
+                                <td class="py-4 pl-4 pr-3 text-sm font-medium whitespace-nowrap text-slate-100 sm:pl-6">
                                     1,000 staked
                                 </td>
-                                <td class="hidden whitespace-nowrap px-3 py-4 text-sm text-slate-50 sm:table-cell">
+                                <td class="hidden px-3 py-4 text-sm whitespace-nowrap text-slate-50 sm:table-cell">
                                     30%
                                 </td>
                             </tr>
 
                             <tr>
-                                <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-slate-100 sm:pl-6">
+                                <td class="py-4 pl-4 pr-3 text-sm font-medium whitespace-nowrap text-slate-100 sm:pl-6">
                                     8,000 staked
                                 </td>
-                                <td class="hidden whitespace-nowrap px-3 py-4 text-sm text-slate-50 sm:table-cell">
+                                <td class="hidden px-3 py-4 text-sm whitespace-nowrap text-slate-50 sm:table-cell">
                                     55%
                                 </td>
                             </tr>
 
                             <tr>
-                                <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-slate-100 sm:pl-6">
+                                <td class="py-4 pl-4 pr-3 text-sm font-medium whitespace-nowrap text-slate-100 sm:pl-6">
                                     20,000 staked
                                 </td>
-                                <td class="hidden whitespace-nowrap px-3 py-4 text-sm text-slate-50 sm:table-cell">
+                                <td class="hidden px-3 py-4 text-sm whitespace-nowrap text-slate-50 sm:table-cell">
                                     85%
                                 </td>
                             </tr>
 
                             <tr>
-                                <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-slate-100 sm:pl-6">
+                                <td class="py-4 pl-4 pr-3 text-sm font-medium whitespace-nowrap text-slate-100 sm:pl-6">
                                     30,000 staked
                                 </td>
-                                <td class="hidden whitespace-nowrap px-3 py-4 text-sm text-slate-50 sm:table-cell">
+                                <td class="hidden px-3 py-4 text-sm whitespace-nowrap text-slate-50 sm:table-cell">
                                     100%
                                 </td>
                             </tr>
 
                             <tr>
-                                <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-slate-100 sm:pl-6">
+                                <td class="py-4 pl-4 pr-3 text-sm font-medium whitespace-nowrap text-slate-100 sm:pl-6">
                                     50,000 staked
                                 </td>
-                                <td class="hidden whitespace-nowrap px-3 py-4 text-sm text-slate-50 sm:table-cell">
+                                <td class="hidden px-3 py-4 text-sm whitespace-nowrap text-slate-50 sm:table-cell">
                                     125%
                                 </td>
                             </tr>
 
                             <tr>
-                                <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-slate-100 sm:pl-6">
+                                <td class="py-4 pl-4 pr-3 text-sm font-medium whitespace-nowrap text-slate-100 sm:pl-6">
                                     75,000 staked
                                 </td>
-                                <td class="hidden whitespace-nowrap px-3 py-4 text-sm text-slate-50 sm:table-cell">
+                                <td class="hidden px-3 py-4 text-sm whitespace-nowrap text-slate-50 sm:table-cell">
                                     150%
                                 </td>
                             </tr>
 
                             <tr>
-                                <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-slate-100 sm:pl-6">
+                                <td class="py-4 pl-4 pr-3 text-sm font-medium whitespace-nowrap text-slate-100 sm:pl-6">
                                     100,000 staked
                                 </td>
-                                <td class="hidden whitespace-nowrap px-3 py-4 text-sm text-slate-50 sm:table-cell">
+                                <td class="hidden px-3 py-4 text-sm whitespace-nowrap text-slate-50 sm:table-cell">
                                     200%
                                 </td>
                             </tr>
@@ -144,17 +144,17 @@
             </div>
         </div>
         <form class="" @submit.prevent="submitResponse" x-show="!quiz" x-transition>
-            <h2 class="text-xl md:text-2xl xl:text-3xl 2xl:text-4xl mb-3">
-                {{$everyEpochQuiz->title}} <span class="text-white text-lg text-yellow-500"> - Take the quiz!</span>
+            <h2 class="mb-3 text-xl md:text-2xl xl:text-3xl 2xl:text-4xl">
+                {{$everyEpochQuiz->title}} <span class="text-lg text-white text-yellow-500"> - Take the quiz!</span>
             </h2>
             @csrf
             <div
-                class="rounded-sm border border-dashed border-white p-4 flex flex-col gap-6">
+                class="flex flex-col gap-6 p-4 border border-white border-dashed rounded-sm">
                 <div class="space-y-3">
-                    <p class="text-lg md:text-xl xl:text-2xl 2xl:text-3x xl:leading-12 2xl:leading-12 inline box-border box-decoration-clone p-2 tracking-wide bg-white text-teal-900 relative -left-8">
+                    <p class="box-border relative inline p-2 text-lg tracking-wide text-teal-900 bg-white md:text-xl xl:text-2xl 2xl:text-3x xl:leading-12 2xl:leading-12 box-decoration-clone -left-8">
                         {{$everyEpochQuestion['title']}}
                     </p>
-                    <div class="text-slate-100 font-thin italic flex gap-2">
+                    <div class="flex gap-2 italic font-thin text-slate-100">
                         <p>Hint:</p>
                         <div>
                             {!! $everyEpochQuestion['content'] !!}}
@@ -206,15 +206,15 @@
                         role="radiogroup"
                         :aria-labelledby="$id('radio-group-label')"
                         x-id="['radio-group-label']"
-                        class="max-w-lg w-full h-full relative">
+                        class="relative w-full h-full max-w-lg">
                         <!-- Radio Group Label -->
                         <label :id="$id('radio-group-label')" role="none" class="hidden">
                             {{$everyEpochQuestion['content']}}<span x-text="value"></span>
                         </label>
                         <input name="answer" type="hidden" x-model="value"/>
 
-                        <div class="mt-4 space-y-2 relative h-full w-full">
-                            <div class="absolute w-full h-full left-0 top-0 z-10"
+                        <div class="relative w-full h-full mt-4 space-y-2">
+                            <div class="absolute top-0 left-0 z-10 w-full h-full"
                                  x-show="prefilled"></div>
 
                             <!-- Option -->
@@ -231,7 +231,7 @@
                                     x-id="['radio-option-label', 'radio-option-description']"
                                     role="radio"
                                     data-answer="{{ json_encode($answer) }}"
-                                    class="flex cursor-pointer border border-slate-200 w-full justify-between items-center p-2 bg-slate-100/80 rounded-sm text-slate-800 answer"
+                                    class="flex items-center justify-between w-full p-2 border rounded-sm cursor-pointer border-slate-200 bg-slate-100/80 text-slate-800 answer"
                                 >
                                     <span class="mr-3">
                                         <!-- Primary Label -->
@@ -263,7 +263,7 @@
                                     @if(!$myResponse)
                                         <span
                                             :class="{ 'bg-green-500': isSelected(option) }"
-                                            class="mt-1 inline-flex h-4 w-4 shrink-0 items-center justify-center rounded-full border-2 border-white ring-1 ring-slate-600"
+                                            class="inline-flex items-center justify-center w-4 h-4 mt-1 border-2 border-white rounded-full shrink-0 ring-1 ring-slate-600"
                                             aria-hidden="true"></span>
                                     @endif
                                 </div>
@@ -276,7 +276,7 @@
                 <div
                     class="flex {{!!$myResponse?->question_answer_id ? 'justify-between' : 'justify-end'}} items-center gap-8">
                     @if($myResponse)
-                        <div class="text-slate-200 text-sm">
+                        <div class="text-sm text-slate-200">
                             <div class="font-bold">
                                 Quiz Completed
                                 <x-carbon :date="$myResponse->created_at" human/>
@@ -288,9 +288,9 @@
                         </div>
                     @endif
                     <button type="submit" :disabled="@js($myResponse?->question_answer_id)"
-                            class="inline-flex items-center gap-2 rounded-sm border border-slate-300 bg-white px-3 py-2 text-lg font-medium leading-5 text-slate-700 shadow-sm hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
+                            class="inline-flex items-center gap-2 px-3 py-2 text-lg font-medium leading-5 bg-white border rounded-sm shadow-sm border-slate-300 text-slate-700 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
                         <span>Submit</span>
-                        <span class="text-slate-400 text-sm">
+                        <span class="text-sm text-slate-400">
                             {{ !!$myResponse?->question_answer_id ? ' - completed' : '' }}
                         </span>
                     </button>

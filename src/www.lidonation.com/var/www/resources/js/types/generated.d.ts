@@ -21,6 +21,7 @@ ticker: string | null;
 };
 export type LearnerData = {
 name: string | null;
+active_pool_id: string | null;
 wallet_address?: string | null;
 email: string | null;
 wallet_stake_address?: string | null;
@@ -28,7 +29,6 @@ nextLessonAt?: string | null;
 nextLesson?: App.DataTransferObjects.LearningLessonData | null;
 totalRewardSum?: number | null;
 availableRewards?: Array<App.DataTransferObjects.RewardData> | null;
-active_pool_id:string;
 };
 export type LearningAttemptData = {
 retryAt?: any;

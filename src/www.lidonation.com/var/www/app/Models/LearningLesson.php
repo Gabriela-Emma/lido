@@ -69,7 +69,10 @@ class LearningLesson extends Model
             get: fn () => LearningAttempt::where([
                 'learning_lesson_id' => $this->id,
                 'status' => LearningAttemptStatuses::COMPLETED,
-                'user_id' => auth()?->user()?->getAuthIdentifier(),
+                'user_id' => auth()?->user()?->getAuthIdentifier()
+            ])->whereRelation('response', [
+                'context_id' => $this->id,
+                'context_type' => LearningLesson::class,
             ])->count() > 0
         );
     }

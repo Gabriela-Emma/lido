@@ -16,7 +16,6 @@ use App\Http\Controllers\ProjectCatalyst\CatalystReportsController;
 use App\Http\Controllers\ProjectCatalyst\CatalystUserProfilesController;
 use App\Http\Controllers\ProjectCatalyst\CatalystVoterToolController;
 use App\Http\Controllers\ProjectCatalyst\ProposalSearchController;
-use App\Http\Livewire\Catalyst\CatalystFundComponent;
 use App\Http\Livewire\Catalyst\CatalystGroupsComponent;
 use App\Http\Livewire\Catalyst\CatalystProposersComponent;
 use Illuminate\Support\Facades\Route;
@@ -47,8 +46,6 @@ Route::group(
             Route::get('/bookmarks', App\Http\Livewire\Catalyst\CatalystBookmarksComponent::class)
                 ->name('bookmarks');
 
-            Route::get('/funds/{fund}/', CatalystFundComponent::class)
-                ->name('fund');
 
             Route::get('/funds', App\Http\Livewire\Catalyst\CatalystFundsComponent::class)
                 ->name('funds');

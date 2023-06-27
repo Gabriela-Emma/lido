@@ -11,6 +11,7 @@ use App\Models\Traits\HasMetaData;
 use App\Models\Traits\HasTranslations;
 use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\LaravelData\DataCollection;
@@ -49,16 +50,16 @@ class Quiz extends Model implements HasMedia, IHasMetaData
         return $this->belongsToMany(Question::class);
     }
 
+    public function responses(): HasMany
+    {
+        return $this->hasMany(AnswerResponse::class);
+    }
+
 //    public function giveaways(): MorphToMany
 //    {
 //        return $this->morphToMany(Giveaway::class, 'giveaways', 'giveaway_model', 'model_id', 'giveaway_id')
 //            ->wherePivot('type', static::class);
 //    }
-
-    public function models(): MorphToMany
-    {
-        return $this->morphedByMany(Model::class, 'model', 'model_quiz', 'quiz_id', 'model_id');
-    }
 
     public function everyEpochs(): MorphToMany
     {

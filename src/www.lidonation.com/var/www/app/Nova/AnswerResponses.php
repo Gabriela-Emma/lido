@@ -15,6 +15,7 @@ use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\MorphTo;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 
@@ -104,6 +105,12 @@ class AnswerResponses extends Resource
                     'scheduled' => 'Scheduled',
                 ])->default('published')->sortable(),
 
+
+            // MorphTo::make('model')->types([
+            //    EveryEpochs::class,
+            //    LearningLessons::class,
+            // ])->searchable()->nullable(),
+
             BelongsTo::make(__('Answer'), 'answer', QuestionAnswers::class)
                 ->searchable(),
 
@@ -112,6 +119,7 @@ class AnswerResponses extends Resource
 
             BelongsTo::make(__('Question'), 'question', Questions::class)
                 ->searchable(),
+
             HasMany::make('Metadata', 'metas', Metas::class),
         ];
     }

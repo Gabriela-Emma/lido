@@ -100,6 +100,8 @@ class Quizzes extends Resource
                     ];
                 })->searchable(),
 
+            HasMany::make(__('Responses'), 'responses', AnswerResponses::class),
+
             HasMany::make('Metadata', 'metas', Metas::class),
         ];
     }
