@@ -18,12 +18,10 @@ class RepoController extends Controller
         $cmd = ['ls-remote', '--heads', $gitUrl];
         $result = $runner->run('', $cmd);
         $output = $result->getOutputAsString();
-        // dd($output);
 
         $branches = [];
         foreach (explode("\n", $output) as $line) {
             $parts = preg_split('/\t+/', $line);
-            // dd($parts);
             $branch = str_replace('refs/heads/', '', end($parts));
             $branches[] = $branch;
         }
@@ -33,7 +31,6 @@ class RepoController extends Controller
 
     public function saveRepo(Request $request)
     {
-        // dd($request);
         SaveRepo::dispatch($request->gitUrl, $request->branch, $request->proposal_id, $request->user_id);
 
         return 'Repository was saved';
@@ -45,7 +42,6 @@ class RepoController extends Controller
 
         Commit::withoutGlobalScope(LimitScope::class);
         $existingCommitsIDs = Commit::where('repo_id', $existingRepo->id)->pluck('id');
-        // dd($existingCommitsIDs);
 
         // Check for changes
         $branchChange = ($request->branch != $existingRepo->tracked_branch) && ($request->gitUrl === $existingRepo->url);

@@ -354,8 +354,6 @@ class CatalystProposalsController extends Controller
             ]
         );
 
-        // dd( $pagination);
-
         return $pagination->onEachSide(1)->toArray();
     }
 
