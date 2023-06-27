@@ -15,6 +15,8 @@ class LearnerData extends Data
     public function __construct(
         public ?string $name,
 
+        public ?string $active_pool_id,
+
         #[TypeScriptOptional]
         public ?string $wallet_address,
 
