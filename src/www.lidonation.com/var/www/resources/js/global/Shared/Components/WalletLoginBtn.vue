@@ -1,4 +1,23 @@
 <template>
+    <div class="mt-3">
+        <a v-show="wallet?.name" href="#" @click="loginUser"
+            class="flex items-center justify-center w-full gap-3 px-4 py-2 mx-auto text-lg font-medium text-teal-800 rounded-sm shadow bg-slate-200 xl:text-xl 2xl:text-2xl ">
+            <WalletLogo :wallet="wallet" />
+            <div class="output">Sign in with <span v-if="signTx"> hardware</span> wallet </div>
+        </a>
+
+        <div v-show="!wallet?.name"
+            class="flex items-center justify-center w-full gap-3 px-4 py-2 mx-auto font-medium xl:text-xl 2xl:text-2xl">
+            <ConnectWallet />
+        </div>
+    </div>
+
+    <DisconnectWalletBtn v-if="wallet?.name" class="my-1">
+        <button type="button" class="text-sm text-slate-800 hover:text-slate-800">
+            {{ $t("Disconnect") }} {{ wallet?.name }}
+        </button>
+    </DisconnectWalletBtn>
+
     <div>
         <Toggle v-model="signTx" offLabel="Use hardware wallet" onLabel="Use hot wallet" :classes="{
             container: 'inline-block rounded-xl outline-none focus:ring focus:ring-teal-500 focus:ring-opacity-40 w-48',
@@ -13,18 +32,6 @@
             label: 'text-center w-auto px-3 border-box whitespace-nowrap select-none',
         }" />
     </div>
-    <div class="mt-3">
-        <a v-show="wallet?.name" href="#" @click="loginUser"
-            class="flex items-center justify-center w-full gap-3 px-4 py-2 mx-auto text-lg font-medium text-teal-800 rounded-sm shadow bg-slate-200 xl:text-xl 2xl:text-2xl ">
-            <WalletLogo :wallet="wallet" />
-            <div class="output">Sign in with <span v-if="signTx">a hardware</span> wallet </div>
-        </a>
-
-        <div v-show="!wallet?.name"
-            class="flex items-center justify-center w-full gap-3 px-4 py-2 mx-auto font-medium xl:text-xl 2xl:text-2xl">
-            <ConnectWallet />
-        </div>
-    </div>
 </template>
 
 <script lang="ts" setup>
@@ -35,6 +42,7 @@ import { useWalletStore } from "../../../catalyst-explorer/stores/wallet-store";
 import User from "../Models/user";
 import WalletLogo from "./WalletLogo.vue";
 import Toggle from '@vueform/toggle';
+import DisconnectWalletBtn from '../../Shared/Components/DisconnetWalletBtn.vue'
 
 
 const ConnectWallet = defineAsyncComponent(() => import('./ConnectWallet.vue'));
