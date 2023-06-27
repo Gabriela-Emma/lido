@@ -45,9 +45,6 @@ class HandleInertiaRequests extends Middleware
     {
         $user = $request->user()
             ?->only('id', 'name', 'email', 'bio', 'git', 'discord', 'linkedin', 'telegram', 'twitter');
-        //        dd(
-        //            $request->user()?->rewards()->where('model_type', LearningLesson::class)->sum('amount')
-        //        );
         if ($user) {
             $user['roles'] = $request->user()?->getRoleNames();
         }

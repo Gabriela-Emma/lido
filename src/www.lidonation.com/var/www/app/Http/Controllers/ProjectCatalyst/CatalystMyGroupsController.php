@@ -33,7 +33,6 @@ class CatalystMyGroupsController extends Controller
 
     public function create(CatalystUser $catalystUser)
     {
-        // dd($catalystUser);
         return Inertia::modal('Auth/CreateGroup')
             ->with([
                 'owner' => $catalystUser,

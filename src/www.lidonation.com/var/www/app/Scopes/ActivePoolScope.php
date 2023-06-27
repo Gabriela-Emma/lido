@@ -30,13 +30,5 @@ class ActivePoolScope implements Scope
         } catch (QueryException $exception) {
             dd($exception);
         }
-//        $retirements = PoolRetire::get(['hash_id'])->pluck('hash_id');
-//        $builder
-//            ->whereIn(
-//                'registered_tx_id',
-//                fn(\Illuminate\Database\Query\Builder $b) => $b->max('registered_tx_id')
-//                    ->groupBy('hash_id')
-//            );
-//        ->whereNotIn('hash_id', $retirements);
     }
 }

@@ -44,7 +44,6 @@ class SnippetController extends Controller
 
         //update the disk storage file
         Storage::disk('local')->put('snippets.json', json_encode($snippetsRes));
-        // dd($snippetsRes);
 
         return $snippetsRes;
     }

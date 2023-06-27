@@ -15,7 +15,6 @@ class UserController extends Controller
 {
     public function login(Request $request)
     {
-        // dd($request);
         $credentials = $request->validate([
             'email' => 'nullable|bail|required_unless:catalyst_explorer,null|email',
             'password' => 'nullable|bail|required_with:email|min:5',

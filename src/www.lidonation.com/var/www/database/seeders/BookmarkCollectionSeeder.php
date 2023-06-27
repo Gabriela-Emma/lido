@@ -24,7 +24,5 @@ class BookmarkCollectionSeeder extends Seeder
                 }),
                 'items')
             ->create();
-
-        // dd(BookmarkCollection::first());
     }
 }
