@@ -10,7 +10,7 @@ use App\Http\Controllers\Earn\LearnController;
 use App\Http\Controllers\Earn\LearningLessonController;
 use App\Http\Controllers\GenerateMnemonicPhraseController;
 use App\Http\Controllers\GlobalSearchController;
-use App\Http\Controllers\ProjectCatalyst\CatalystProjectsController;
+use App\Http\Controllers\ProjectCatalyst\CatalystProposalsController;
 use App\Http\Controllers\PromoController;
 use App\Http\Controllers\QuestionResponseController;
 use App\Http\Controllers\RewardController;
@@ -238,15 +238,15 @@ Route::prefix('catalyst-explorer')->as('catalystExplorerApi.')
         Route::post('/register', [CatalystExplorer\UserController::class, 'create']);
 
         // counts
-        Route::get('/metrics/proposals/count/approved', [CatalystProjectsController::class, 'metricCountFunded']);
-        Route::get('/metrics/metrics/count/paid', [CatalystProjectsController::class, 'metricCountTotalPaid']);
-        Route::get('/metrics/metrics/count/completed', [CatalystProjectsController::class, 'metricCountCompleted']);
+        Route::get('/metrics/proposals/count/approved', [CatalystProposalsController::class, 'metricCountFunded']);
+        Route::get('/metrics/metrics/count/paid', [CatalystProposalsController::class, 'metricCountTotalPaid']);
+        Route::get('/metrics/metrics/count/completed', [CatalystProposalsController::class, 'metricCountCompleted']);
 
         // sums
-        Route::get('/metrics/metrics/sum/budget', [CatalystProjectsController::class, 'metricSumBudget']);
-        Route::get('/metrics/metrics/sum/approved', [CatalystProjectsController::class, 'metricSumApproved']);
-        Route::get('/metrics/metrics/sum/distributed', [CatalystProjectsController::class, 'metricSumDistributed']);
-        Route::get('/metrics/metrics/sum/completed', [CatalystProjectsController::class, 'metricSumCompleted']);
+        Route::get('/metrics/metrics/sum/budget', [CatalystProposalsController::class, 'metricSumBudget']);
+        Route::get('/metrics/metrics/sum/approved', [CatalystProposalsController::class, 'metricSumApproved']);
+        Route::get('/metrics/metrics/sum/distributed', [CatalystProposalsController::class, 'metricSumDistributed']);
+        Route::get('/metrics/metrics/sum/completed', [CatalystProposalsController::class, 'metricSumCompleted']);
         //        Route::post('/profiles', [CatalystUserProfilesController::class, 'update'])->name('myProfileUpdate');
     });
 

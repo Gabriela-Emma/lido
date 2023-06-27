@@ -184,7 +184,7 @@ class CatalystUser extends User implements HasMedia, CanComment
     }
 
     /**
-     * The roles that belong to the user.
+     * The proposals that belong to the user.
      */
     public function proposals(): BelongsToMany
     {
@@ -193,7 +193,7 @@ class CatalystUser extends User implements HasMedia, CanComment
     }
 
     /**
-     * The roles that belong to the user.
+     * The own_proposals that belong to the user.
      */
     public function own_proposals(): HasMany
     {

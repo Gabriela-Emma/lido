@@ -542,7 +542,7 @@
                         <div
                             class="rounded-sm bg-gradient-to-br from-teal-800 via-teal-600 to-accent-900 min-w-[28rem] text-white relative">
                             <div class="absolute right-0 z-30 flex flex-row justify-end p-4 px-6 bg-transparent">
-                                <a href="{{localizeRoute('projectCatalyst.projects')}}" type="button"
+                                <a href="{{localizeRoute('catalystExplorer.proposals')}}" type="button"
                                    class="inline-flex items-center px-2 py-1 text-xs font-semibold text-white bg-teal-600 border border-white rounded-sm hover:text-white hover:bg-accent-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent-500">
                                     Explore Proposals
                                 </a>
