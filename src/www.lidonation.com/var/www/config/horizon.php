@@ -151,7 +151,7 @@ return [
     |
     */
 
-    'memory_limit' => 512,
+    'memory_limit' => 1024,
 
     /*
     |--------------------------------------------------------------------------
@@ -184,6 +184,7 @@ return [
                 'balanceMaxShift' => 1,
                 'balanceCooldown' => 3,
                 'timeout' => 1260,
+                'memory' => 4096,
             ],
         ],
 

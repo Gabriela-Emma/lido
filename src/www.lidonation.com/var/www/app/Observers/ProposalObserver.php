@@ -3,14 +3,12 @@
 namespace App\Observers;
 
 use App\Invokables\FillPostData;
+use App\Models\Model;
 use App\Models\Proposal;
+use App\Models\User;
 
-class ProposalObserver
+class ProposalObserver extends CatalystObserver
 {
-    public function saved(Proposal $proposal)
-    {
-        //        dispatch(fn() => Artisan::call('ln:sitemap-generate'));
-    }
 
     /**
      * Handle the User "created" event.
@@ -24,27 +22,10 @@ class ProposalObserver
         ]);
     }
 
-    public function deleting(Proposal $proposal)
+    public function deleting(Model|User $model)
     {
-        if ($proposal->isForceDeleting()) {
-            $proposal->metas()->delete();
+        if ($model->isForceDeleting()) {
+            parent::deleting($model);
         }
-    }
-
-    protected function generateTranslations(Proposal $proposal)
-    {
-        //        LanguageLine::updateOrCreate(
-        //            [
-        //                'group' => 'proposals',
-        //                'key' => $proposal->slug,
-        //            ],
-        //            [
-        //                'group' => 'proposals',
-        //                'key' => $proposal->slug,
-        //                'text' => [
-        //                    'en' => $proposal->content,
-        //                ],
-        //            ]
-        //        );
     }
 }

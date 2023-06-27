@@ -12,7 +12,7 @@
 
                 </AddWalletWidget>
             </div>
-            <div v-if="learnerData?.totalRewardSum / 1000000 > 5">
+            <div v-if="learnerData?.totalRewardSum / 1000000 > 5 && !learnerData.active_pool_id">
                 <Delegate>
                     <template v-slot:button-title>
                         <button class="mt-3 rounded-sm px-3 py-1.5 bg-labs-black text-white text-sm">

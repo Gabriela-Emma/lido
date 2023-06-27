@@ -20,7 +20,7 @@ use Meilisearch\Endpoints\Indexes;
 use Momentum\Modal\Modal;
 use PhpOffice\PhpSpreadsheet\Exception;
 
-class CatalystProjectsController extends Controller
+class CatalystProposalsController extends Controller
 {
     protected null|string|Stringable $search = null;
 
@@ -233,6 +233,8 @@ class CatalystProjectsController extends Controller
         if ($this->currentPage > 1) {
             $props['currPage'] = $this->currentPage;
         }
+
+
         // get filter(s) from request
         return Inertia::render('Proposals', $props);
     }
@@ -351,6 +353,8 @@ class CatalystProjectsController extends Controller
                 'pageName' => 'p',
             ]
         );
+
+        // dd( $pagination);
 
         return $pagination->onEachSide(1)->toArray();
     }

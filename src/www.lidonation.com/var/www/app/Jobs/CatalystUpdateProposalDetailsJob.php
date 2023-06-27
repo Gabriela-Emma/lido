@@ -12,6 +12,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Fluent;
 use Illuminate\Support\Str;
@@ -209,19 +210,18 @@ class CatalystUpdateProposalDetailsJob implements ShouldQueue
             if (! $user->username) {
                 return false;
             }
-            $cu = CatalystUser::where('username', $user->username)->first();
-            if (! $cu) {
-                $cu = CatalystUser::updateOrCreate(
-                    [
-                        'username' => $user->username,
-                    ],
-                    [
-                        'username' => $user->username,
-                    ],
-                );
+            $cu = CatalystUser::where('username', $user->username)
+                ->orWhere('ideascale_id', $user->id)
+                ->first();
+
+            if (! $cu instanceof CatalystUser) {
+                $cu =  new CatalystUser;
             }
             $cu->name = $user?->name;
+            $cu->username = $user?->username;
             $cu->ideascale_id = $user?->id;
+            $cu->save();
+
             try {
                 if (! $cu->hero) {
                     $cu->addMediaFromUrl($user?->avatar)

@@ -25,19 +25,29 @@ class WalletLoginController extends Controller
         ]);
 
         // @todo validate that signature belongs to stake address in account
-        $validationResponse = $this->validateAddress(
-            $request->key, 
-            $request->signature, 
-            $request->txHash, 
-            $request->account,
-            $request->stakeAddrHex
-        );
+        if($request->signature){
+            $validationResponse = $this->validateAddress(
+                $request->key,
+                $request->signature,
+                null,
+                $request->account,
+                $request->stakeAddrHex
+            );
+
+        }else{
+            $validationResponse = $this->validateAddress(
+                null,
+                null,
+                $request->txHash,
+                $request->account,
+                $request->stakeAddrHex
+            );
+        }
 
         $user = User::where('wallet_stake_address', $credentials['account'])->first();
 
         // since it's possible for an account not to have an email address.
-        if($validationResponse){
-            if ($user instanceof User) {
+            if ($user instanceof User && $validationResponse) {
                 Auth::login($user, $request->get('remember', false));
 
                 if ($request->has('redirect') && Route::has($request->redirect)) {
@@ -46,12 +56,9 @@ class WalletLoginController extends Controller
 
                 return auth()->user();
             }
-        }
-
-        return response()->json([
-            'message' => 'We are having trouble logging you in with your stake address. Try your email and password or try registering again.',
-        ], 401);
-
+            return response()->json([
+                'message' => 'We are having trouble logging you in with your stake address. Try your email and password or try registering again.',
+            ], 401);
     }
 
     public function validateAddress(
