@@ -12,6 +12,7 @@ use App\Http\Controllers\ProjectCatalyst\CatalystMyGroupsController;
 use App\Http\Controllers\ProjectCatalyst\CatalystMyProposalsController;
 use App\Http\Controllers\ProjectCatalyst\CatalystPeopleController;
 use App\Http\Controllers\ProjectCatalyst\CatalystProjectsController;
+use App\Http\Controllers\ProjectCatalyst\CatalystProposalsController;
 use App\Http\Controllers\ProjectCatalyst\CatalystReportsController;
 use App\Http\Controllers\ProjectCatalyst\CatalystUserProfilesController;
 use App\Http\Controllers\ProjectCatalyst\CatalystVoterToolController;
@@ -115,7 +116,7 @@ Route::group(
             Route::get('/voter-tool', [CatalystVoterToolController::class, 'index'])
                 ->name('voter-tool');
 
-            Route::get('/proposals/{proposal:id}/bookmark', [CatalystProjectsController::class, 'bookmark']);
+            Route::get('/proposals/{proposal:id}/bookmark', [CatalystProposalsController::class, 'bookmark']);
             Route::get('/bookmarks', [CatalystBookmarksController::class, 'index'])->name('bookmarks');
             Route::get('/my/bookmarks', [CatalystMyBookmarksController::class, 'index'])->name('myBookmarks');
             Route::get('/bookmarks/{bookmarkCollection:id}', [CatalystBookmarksController::class, 'view'])
