@@ -89,6 +89,11 @@ Route::group(
             Route::get('/funds', [CatalystFundsController::class, 'index'])
                 ->name('funds');
 
+            Route::get('/funds/{fund}/', CatalystFundComponent::class)
+                ->name('fund');
+
+
+
             Route::get('/proposals', [CatalystProjectsController::class, 'index'])
                 ->name('proposals');
 
