@@ -11,7 +11,6 @@ use App\Http\Controllers\ProjectCatalyst\CatalystMyDashboardController;
 use App\Http\Controllers\ProjectCatalyst\CatalystMyGroupsController;
 use App\Http\Controllers\ProjectCatalyst\CatalystMyProposalsController;
 use App\Http\Controllers\ProjectCatalyst\CatalystPeopleController;
-use App\Http\Controllers\ProjectCatalyst\CatalystProjectsController;
 use App\Http\Controllers\ProjectCatalyst\CatalystProposalsController;
 use App\Http\Controllers\ProjectCatalyst\CatalystReportsController;
 use App\Http\Controllers\ProjectCatalyst\CatalystUserProfilesController;
@@ -95,17 +94,17 @@ Route::group(
 
 
 
-            Route::get('/proposals', [CatalystProjectsController::class, 'index'])
+            Route::get('/proposals', [CatalystProposalsController::class, 'index'])
                 ->name('proposals');
 
-            Route::get('/proposals/metrics/count/approved', [CatalystProjectsController::class, 'metricCountFunded']);
-            Route::get('/proposals/metrics/count/paid', [CatalystProjectsController::class, 'metricCountTotalPaid']);
-            Route::get('/proposals/metrics/count/completed', [CatalystProjectsController::class, 'metricCountCompleted']);
+            Route::get('/proposals/metrics/count/approved', [CatalystProposalsController::class, 'metricCountFunded']);
+            Route::get('/proposals/metrics/count/paid', [CatalystProposalsController::class, 'metricCountTotalPaid']);
+            Route::get('/proposals/metrics/count/completed', [CatalystProposalsController::class, 'metricCountCompleted']);
 
-            Route::get('/proposals/metrics/sum/budget', [CatalystProjectsController::class, 'metricSumBudget']);
-            Route::get('/proposals/metrics/sum/approved', [CatalystProjectsController::class, 'metricSumApproved']);
-            Route::get('/proposals/metrics/sum/distributed', [CatalystProjectsController::class, 'metricSumDistributed']);
-            Route::get('/proposals/metrics/sum/completed', [CatalystProjectsController::class, 'metricSumCompleted']);
+            Route::get('/proposals/metrics/sum/budget', [CatalystProposalsController::class, 'metricSumBudget']);
+            Route::get('/proposals/metrics/sum/approved', [CatalystProposalsController::class, 'metricSumApproved']);
+            Route::get('/proposals/metrics/sum/distributed', [CatalystProposalsController::class, 'metricSumDistributed']);
+            Route::get('/proposals/metrics/sum/completed', [CatalystProposalsController::class, 'metricSumCompleted']);
 
             Route::get('/people', [CatalystPeopleController::class, 'index'])
                 ->name('people');
@@ -123,7 +122,7 @@ Route::group(
                 ->name('bookmark`');
 
             // exports
-            Route::get('/export/proposals', [CatalystProjectsController::class, 'exportProposals']);
+            Route::get('/export/proposals', [CatalystProposalsController::class, 'exportProposals']);
 
             Route::post('/bookmarks/items', [CatalystMyBookmarksController::class, 'createItem']);
             Route::get('/export/bookmarked-proposals', [CatalystMyBookmarksController::class, 'exportBookmarks']);
