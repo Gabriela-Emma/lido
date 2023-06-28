@@ -65,10 +65,9 @@ export default {
                 <p class="text-slate-100">
                     If you voted during the election you can claim $hosky and $discoin per wallet.
                 </p>
-                <a href="#"
+                <a :href="$utils.localizeRoute('earn/ccv4')"
                    class="inline-flex items-center gap-2 px-3 py-1 my-4 bg-white rounded-sm btn text-slate-800">
-                    Claim Tokens <span
-                    class="inline-flex px-1 py-0 text-xs font-bold text-white bg-teal-600 rounded-sm">coming soon</span>
+                    Claim Tokens 
                 </a>
             </div>
         </section>
