@@ -106,7 +106,6 @@ class LearningLessonController extends Controller
 
     public function getLessons(LearningTopic $learningTopic)
     {
-        dd($learningTopic->learningLessons()->get()->toArray());
         return LearningLessonData::collection($learningTopic->learningLessons()->get());
     }
 
