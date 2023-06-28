@@ -40,7 +40,7 @@ class CatalystIdeascaleF10Sync extends Command
             ->whereHas('metas', function ($query) {
                 $query->where('key', 'ideascale_id');
             })->get()->each(function ($challenge) {
-                dispatch_sync(new CatalystIdeascaleF10SyncJob($challenge));
+                dispatch(new CatalystIdeascaleF10SyncJob($challenge));
             });
     }
 

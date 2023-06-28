@@ -35,6 +35,7 @@
             <!-- Sorts and controls -->
             <div :class="{ 'lg:pr-16 opacity-10 lg:opacity-100': showFilters, 'container': !showFilters }"
                  class="flex w-full items-center justify-end space-x-0.5 mb-3 gap-2">
+                 <button @click="openIdeascaleLinks" v-if="props.proposals.total <= 35" class="rounded-sm px-2 py-1 flex-wrap bg-teal-500 hover:text-yellow-500">Open Ideascale Links</button>
                  <div class="flex flex-col text-center text-pink-500" v-if="filtering || search">
                     <span>
                         <div class="text-xs w-[140px] lg:text-base">
@@ -149,7 +150,7 @@
                                     </div>
                                     <div class="flex flex-col text-center" v-if="metricCountApproved" key="countFunded">
                                      <span class="font-semibold">
-                                        {{ $filters.number(metricCountApproved, 3) }}
+                                        {{ $filters.number(metricCountApproved, 4) }}
                                     </span>
                                         <span class="text-xs">
                                         {{ $t('Approved') }}
@@ -157,7 +158,7 @@
                                     </div>
                                     <div class="flex flex-col text-center" v-if="metricCountTotalPaid" key="countPaid">
                                          <span class="font-semibold">
-                                            {{ $filters.number(metricCountTotalPaid, 3) }}
+                                            {{ $filters.number(metricCountTotalPaid, 4) }}
                                         </span>
                                             <span class="text-xs">
                                             {{ $t('Fully Paid') }}
@@ -165,7 +166,7 @@
                                     </div>
                                     <div class="flex flex-col text-center text-pink-500" v-if="metricCountCompleted" key="completed">
                                          <span class="font-semibold">
-                                            {{ $filters.number(metricCountCompleted, 3) }}
+                                            {{ $filters.number(metricCountCompleted, 4) }}
                                         </span>
                                             <span class="text-xs">
                                             {{ $t('Completed') }}
@@ -594,6 +595,14 @@ function download(format) {
         link.click();
         preparingDownload.value = false;
     });
+}
+
+function openIdeascaleLinks(){
+  for (let proposal of props.proposals.data) {
+    if (proposal.ideascale_link && proposal.ideascale_link.trim() !== "") {
+      window.open(proposal.ideascale_link, "_blank");
+    }
+  }
 }
 </script>
 <style>

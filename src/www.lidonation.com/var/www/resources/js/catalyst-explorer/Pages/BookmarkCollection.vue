@@ -29,6 +29,13 @@
                         <ArrowDownTrayIcon class="mr-0.5 h-3 w-3" aria-hidden="true"/>
                         {{ $t("Export") }}
                     </button>
+                    <button @click="openIdeascaleLinks"
+                            type="button"
+                            :class="[textColor$, borderColor$]"
+                            class="inline-flex items-center gap-x-0.5 rounded-sm border py-1 hover:text-teal-600 px-1.5 text-xs font-semibold text-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-600">
+                        <BookOpenIcon class="mr-0.5 h-3 w-3" aria-hidden="true"/>
+                        {{ $t("Open All items") }}
+                    </button>
                     <button @click="remove = !remove"
                             type="button"
                             :disabled="canDelete===false"
@@ -121,12 +128,14 @@
 <script lang="ts" setup>
 import {Link, router, usePage} from '@inertiajs/vue3';
 import BookmarkCollection from "../models/bookmark-collection";
-import {ChevronRightIcon, ArrowUturnLeftIcon, ArrowDownTrayIcon, TrashIcon} from '@heroicons/vue/20/solid';
+import {ChevronRightIcon, ArrowUturnLeftIcon, ArrowDownTrayIcon, TrashIcon, BookOpenIcon} from '@heroicons/vue/20/solid';
 import {computed, inject, Ref, ref, watch} from "vue";
 import axios from 'axios';
 import {useBookmarksStore} from "../stores/bookmarks-store";
 import { storeToRefs } from 'pinia';
 import moment from "moment-timezone";
+import { BookmarkItemModel } from '../models/bookmark-item-model';
+import Proposal from '../models/proposal';
 
 const $utils: any = inject('$utils');
 
@@ -215,4 +224,15 @@ const removeItem = (id:number) =>{
     }
 }
 
+function isProposal(item: BookmarkItemModel): item is Proposal {
+  return (item as Proposal).ideascale_link !== undefined;
+}
+
+function openIdeascaleLinks() {
+  for (let item of props.bookmarkCollection.items) {
+    if (isProposal(item.model) && item.model.ideascale_link && item.model.ideascale_link.trim() !== "") {
+      window.open(item.model.ideascale_link, "_blank");
+    }
+  }
+}
 </script>
