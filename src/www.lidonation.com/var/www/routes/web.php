@@ -27,6 +27,7 @@ use App\Http\Livewire\ContributeContent\ContributeRecordingComponent;
 use App\Http\Livewire\ContributeContent\ContributeTranslation;
 use App\Http\Livewire\ContributeContent\ContributeTranslations;
 use App\Http\Livewire\Delegators\DelegatorsComponent;
+use App\Http\Livewire\Earn\CcvComponent;
 use App\Http\Livewire\Library\LibraryComponent;
 use App\Http\Livewire\LidoCatalystProposals\LidoCatalystProposals;
 use App\Http\Livewire\Partners\PartnerDashboardComponent;
@@ -136,7 +137,7 @@ Route::group(
             Route::get('/wallet/add', [EarnController::class, 'addWallet'])->name('wallet.add');
             Route::get('/duplicate-account', [EarnController::class, 'duplicateAccount'])->name('learn.duplicate');
 
-            Route::get('/ccv4', [EarnController::class, 'ccv4'])->name('ccv4');
+            Route::get('/ccv4', CcvComponent::class)->name('ccv4');
             Route::get('/learn', [LearnController::class, 'index'])->name('learn');
             Route::get('/learn/login', fn () => Inertia::render('Login'))
                 ->name('learn.login');
