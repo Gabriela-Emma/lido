@@ -70,7 +70,7 @@ class CatalystIdeascaleF10SyncJob implements ShouldQueue
 
         foreach ($proposals as $proposal) {
             $p = $this->processProposal($proposal);
-            dispatch_sync(new CatalystUpdateProposalDetailsJob($p, true));
+            dispatch(new CatalystUpdateProposalDetailsJob($p, true));
         }
     }
 
