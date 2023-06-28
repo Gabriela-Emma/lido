@@ -149,7 +149,7 @@
                                     </div>
                                     <div class="flex flex-col text-center" v-if="metricCountApproved" key="countFunded">
                                      <span class="font-semibold">
-                                        {{ $filters.number(metricCountApproved, 3) }}
+                                        {{ $filters.number(metricCountApproved, 4) }}
                                     </span>
                                         <span class="text-xs">
                                         {{ $t('Approved') }}
@@ -157,7 +157,7 @@
                                     </div>
                                     <div class="flex flex-col text-center" v-if="metricCountTotalPaid" key="countPaid">
                                          <span class="font-semibold">
-                                            {{ $filters.number(metricCountTotalPaid, 3) }}
+                                            {{ $filters.number(metricCountTotalPaid, 4) }}
                                         </span>
                                             <span class="text-xs">
                                             {{ $t('Fully Paid') }}
@@ -165,7 +165,7 @@
                                     </div>
                                     <div class="flex flex-col text-center text-pink-500" v-if="metricCountCompleted" key="completed">
                                          <span class="font-semibold">
-                                            {{ $filters.number(metricCountCompleted, 3) }}
+                                            {{ $filters.number(metricCountCompleted, 4) }}
                                         </span>
                                             <span class="text-xs">
                                             {{ $t('Completed') }}
