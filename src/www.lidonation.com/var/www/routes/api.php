@@ -102,12 +102,50 @@ Route::group([
     });
 });
 
-Route::post('/ccv4/ballot', function (Request $request) {
-    // get epoch
-    // $epoch = app(CardanoBlockfrostService::class)->get('epochs/latest/', null)->collect();
+Route::get('/ccv4/check-eligibility', function (Request $request) {
+    $response = [];
+    $votesCasted = Ccv4BallotChoice::where('voter_id', $request->input('account'))->get();
+    if ($votesCasted->count() > 0) {
+        $response['eligibility'] = 'true';
+    } else {
+        $response['eligibility'] = 'false';
+    }
 
+    return json_encode($response);
+});
+
+Route::get('/ccv4/rewards', function (Request $request) {
+    $user = User::where('wallet_stake_address', $request->input('account'))->first();
+    $giveaway = Giveaway::with(['rules'])
+        ->whereRelation('metas', ['key' => 'program', 'content' => 'ccv4'])->first();
+
+    $reward = Reward::where(
+        'stake_address', $user?->wallet_stake_address)
+        ->where('model_id', $giveaway?->id)
+        ->get();
+
+    if ($reward->count() > 0) {
+        return json_encode($reward);
+    } else {
+        return [];
+    }
+});
+
+Route::post('/ccv4/claim-rewards', function (Request $request) {
     // get the giveaway
-    // Giveaway::whereRelation('metas', ['key' => 'program', 'content' => 'ccv4'])->first();
+    $giveaway = Giveaway::with(['rules'])
+        ->whereRelation('metas', ['key' => 'program', 'content' => 'ccv4'])->first();
+
+    // handle if $giveway is null and let the user know there is an error and to try again later
+    if (is_null($giveaway)) {
+        $error = [
+            'name' => 'Giveaway Error',
+            'message' => 'Giveaway error, try again later.',
+            'type' => 'error'
+        ];
+
+        return json_encode($error);
+    }
 
     $user = User::where('wallet_stake_address', $request->input('account'))->first();
 
@@ -132,14 +170,38 @@ Route::post('/ccv4/ballot', function (Request $request) {
     }
 
 
+    $rewards = [];
 
-    return [
-        'ballots' => $ballots,
-        'reward' => Reward::where([
-            'user_id' => $user?->id,
-            'model_id' => $everyEpoch?->giveaway->id,
-        ])->first(),
-    ];
+    // for each rule in the giveaway
+    $giveaway->rules?->each(function($rule) use ($user, $ballots, &$rewards, $giveaway) {
+
+        // issue a reward to the user if one hasn't already been issued
+        $reward = Reward::where(
+            'stake_address', $user?->wallet_stake_address)
+            ->where('model_id', $giveaway?->id)
+            ->get();
+
+        if (!$reward instanceof Reward) {
+            $asset_name = trim($rule->subject, '.amount');
+            $amount = $rule->predicate;
+
+            $reward = new Reward;
+            $reward->user_id = $user->id;
+            $reward->asset = $asset_name;
+            $reward->model_id = $giveaway->id;
+            $reward->model_type = Giveaway::class;
+            $reward->asset_type = 'ft';
+            $reward->amount = $amount;
+            $reward->status = 'issued';
+            $reward->memo = 'voting reward';
+            $reward->stake_address = $user->wallet_stake_address;
+
+            $reward->save();
+            $rewards[] = $reward;
+        }
+    });
+
+    return compact('ballots', 'rewards');
 });
 
 // Rewards
