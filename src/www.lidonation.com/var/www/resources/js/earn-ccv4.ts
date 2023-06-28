@@ -45,7 +45,7 @@ Alpine.data('earnCcv4', function () {
                     this.environment = 'production';
                 }
 
-                if (!this.walletName) {
+                if (!!this.walletName) {
                     await this.enableWallet(this.walletName);
                 }
         },
