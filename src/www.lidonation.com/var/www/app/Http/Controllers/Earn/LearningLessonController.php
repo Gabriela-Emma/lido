@@ -13,6 +13,7 @@ use App\Models\LearningLesson;
 use App\Models\LearningTopic;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\App;
 use Inertia\Inertia;
 use Spatie\LaravelMarkdown\MarkdownRenderer;
 use Webwizo\Shortcodes\Facades\Shortcode;
@@ -106,6 +107,9 @@ class LearningLessonController extends Controller
 
     public function getLessons(LearningTopic $learningTopic)
     {
+        if (auth()?->user() && !auth()->user()->hasRole('admin')) {
+            App::setLocale('sw');
+        }
         return LearningLessonData::collection($learningTopic->learningLessons()->get());
     }
 
