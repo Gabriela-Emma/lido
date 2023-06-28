@@ -89,8 +89,10 @@ Route::group(
             Route::get('/funds', [CatalystFundsController::class, 'index'])
                 ->name('funds');
 
-            Route::get('/funds', App\Http\Livewire\Catalyst\CatalystFundsComponent::class)
-                ->name('funds');
+            Route::get('/funds/{fund}/', CatalystFundComponent::class)
+                ->name('fund');
+
+
 
             Route::get('/proposals', [CatalystProjectsController::class, 'index'])
                 ->name('proposals');
