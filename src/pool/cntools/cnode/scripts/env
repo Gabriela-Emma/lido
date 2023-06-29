@@ -105,7 +105,7 @@ elif [[ "$NODE_NAME" == "relay2" ]]; then
   fi
 elif [[ "$NODE_NAME" == "submittx" ]]; then
   export TOPOLOGY="/config/topology.submittx.json"             # Override default topology.json path
-  export CONFIG="/config/config.json"
+  export CONFIG="/config/config.tx.json"
 else
   export TOPOLOGY="/config/topology.relay.json"
   export CONFIG="/config/config.json"

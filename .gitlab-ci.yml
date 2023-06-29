@@ -472,6 +472,7 @@
       --set-file configurationFiles.config=./src/pool/config/$CARDANO_NETWORK/config.json \
       --set-file configurationFiles.configProducer=./src/pool/config/$CARDANO_NETWORK/config.producer.json \
       --set-file configurationFiles.configRelay2=./src/pool/config/$CARDANO_NETWORK/config.relay2.json \
+      --set-file configurationFiles.configTx=./src/pool/config/$CARDANO_NETWORK/config.tx.json \
       --set-file configurationFiles.dbSyncConfig=./src/pool/config/$CARDANO_NETWORK/dbsync-config.json \
       --set-file configurationFiles.submitApiConfig=./src/pool/config/$CARDANO_NETWORK/config.submittx.json \
       --set-file configurationFiles.topology.producer=./src/pool/config/$CARDANO_NETWORK/topology.producer.json \
