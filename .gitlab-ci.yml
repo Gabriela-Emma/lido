@@ -912,8 +912,6 @@ web:
 lucid:
   stage: .pre
   image: docker:24.0.2-git
-  services:
-    - docker:dind
   retry: 1
   cache: { }
   script:
@@ -938,8 +936,6 @@ lucid:
 cnode_submit_api:
   stage: build
   image: docker:24.0.2-git
-  services:
-    - docker:dind
   retry: 1
   cache: {}
   needs:
@@ -989,8 +985,6 @@ cnode:
 cncli:
   stage: build
   image: docker:20.10.12-git
-  services:
-    - docker:dind-20.10.12
   retry: 1
   cache: {}
   needs:
