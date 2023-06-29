@@ -38,7 +38,7 @@ spec:
         - name: node-configurations
           configMap:
             name: "lidolovelace-cardano-configurations-configmap"
-        - name: config.submittxurations
+        - name: config-submittx-configurations
           configMap:
             name: "{{ $.Chart.Name }}-configurations-configmap"
       containers:
@@ -97,7 +97,7 @@ spec:
           volumeMounts:
             - name: node-ipc
               mountPath: /ipc
-            - name: config.submittxurations
+            - name: config-submittx-configurations
               mountPath: /tmp/config
               readOnly: true
         - name: sidecar
