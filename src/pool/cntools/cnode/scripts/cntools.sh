@@ -1973,7 +1973,6 @@ function main {
               relay_output=""
               relay_array=()
               println DEBUG "\n# Pool Relay Registration"
-              # ToDo SRV support
               if [[ -f "${pool_config}" && $(jq '.relays | length' "${pool_config}") -gt 0 ]]; then
                 println DEBUG "\nPrevious relay configuration:\n"
                 jq -r '["TYPE","ADDRESS","PORT"], (.relays[] | [.type //"-",.address //"-",.port //"-"]) | @tsv' "${pool_config}" | column -t >&3
@@ -1987,7 +1986,9 @@ function main {
                       elif [[ ${type} = "IPv4" ]]; then
                         relay_output+="--pool-relay-port ${port} --pool-relay-ipv4 ${address} "
                       elif [[ ${type} = "IPv6" ]]; then
-                        relay_output+="--pool-relay-port ${port} --pool-relay-ipv6 ${address} "
+                        relay_output+="--pool-relay-port ${port} --pool-relay-ipv6 ${address} "                      
+		      elif [[ ${type} = "DNS_SRV" ]]; then
+                        relay_output+="--multi-host-pool-relay ${address} "
                       fi
                     done< <(jq -r '.relays[] | "\(.type) \(.address) \(.port)"' "${pool_config}")
                     ;;
@@ -1997,10 +1998,10 @@ function main {
               fi
               if [[ -z ${relay_output} ]]; then
                 while true; do
-                  select_opt "[d] A or AAAA DNS record" "[i] IPv4/v6 address" "[Esc] Cancel"
+                  select_opt "[d] A or AAAA DNS record" "[i] IPv4/v6 address" "[s] SRV DNS record" "[Esc] Cancel"
                   case $? in
-                    0) getAnswerAnyCust relay_dns_enter "Enter relays's DNS record, only A or AAAA DNS records"
-                      if [[ -z "${relay_dns_enter}" ]]; then
+                    0) getAnswerAnyCust relay_dns_a_enter "Enter relays's DNS record, only A or AAAA DNS records"
+                      if [[ -z "${relay_dns_a_enter}" ]]; then
                         println ERROR "${FG_RED}ERROR${NC}: DNS record can not be empty!"
                       else
                         getAnswerAnyCust relay_port_enter "Enter relays's port"
@@ -2008,8 +2009,8 @@ function main {
                           if ! isNumber ${relay_port_enter} || [[ ${relay_port_enter} -lt 1 || ${relay_port_enter} -gt 65535 ]]; then
                             println ERROR "${FG_RED}ERROR${NC}: invalid port number!"
                           else
-                            relay_array+=( "type" "DNS_A" "address" "${relay_dns_enter}" "port" "${relay_port_enter}" )
-                            relay_output+="--single-host-pool-relay ${relay_dns_enter} --pool-relay-port ${relay_port_enter} "
+                            relay_array+=( "type" "DNS_A" "address" "${relay_dns_a_enter}" "port" "${relay_port_enter}" )
+                            relay_output+="--single-host-pool-relay ${relay_dns_a_enter} --pool-relay-port ${relay_port_enter} "
                           fi
                         else
                           println ERROR "${FG_RED}ERROR${NC}: Port can not be empty!"
@@ -2040,7 +2041,15 @@ function main {
                         println ERROR "${FG_RED}ERROR${NC}: IPv4/v6 address empty!"
                       fi
                       ;;
-                    2) continue 2 ;;
+                    2) getAnswerAnyCust relay_dns_srv_enter "Enter relays's DNS record, only SRV records"
+                      if [[ -z "${relay_dns_srv_enter}" ]]; then
+                        println ERROR "${FG_RED}ERROR${NC}: DNS record can not be empty!"
+                      else
+                        relay_array+=( "type" "DNS_SRV" "address" "${relay_dns_srv_enter}" "port" "" )
+                        relay_output+="--multi-host-pool-relay ${relay_dns_srv_enter} "
+                      fi
+                      ;;		    
+                    3) continue 2 ;;
                   esac
                   println DEBUG "Add more relay entries?"
                   select_opt "[n] No" "[y] Yes" "[Esc] Cancel"
@@ -3153,7 +3162,7 @@ function main {
                     esac
                     getWalletType ${wallet_name}
                     case $? in
-                      0) println ERROR "${FG_RED}ERROR${NC}: please use a CLI wallet to pay for pool de-registration transaction fee!" && waitForInput && continue ;;
+                      0) println ERROR "${FG_RED}ERROR${NC}: please use a CLI wallet to pay for transaction fee!" && waitForInput && continue ;;
                       2) println ERROR "${FG_RED}ERROR${NC}: signing keys encrypted, please decrypt before use!" && waitForInput && continue ;;
                       3) println ERROR "${FG_RED}ERROR${NC}: payment and/or stake signing keys missing from wallet!" && waitForInput && continue ;;
                     esac
@@ -3165,7 +3174,7 @@ function main {
                     esac
                     getWalletType ${wallet_name}
                     case $? in
-                      0) println ERROR "${FG_RED}ERROR${NC}: please use a CLI wallet to pay for pool de-registration transaction fee!" && waitForInput && continue ;;
+                      0) println ERROR "${FG_RED}ERROR${NC}: please use a CLI wallet to pay for transaction fee!" && waitForInput && continue ;;
                     esac
                   fi
                   getBaseAddress ${wallet_name}
@@ -3997,14 +4006,14 @@ function main {
             select_opt "[n] No" "[y] Yes"
             case $? in
               0) excluded_files=(
-                   "--delete *${WALLET_PAY_SK_FILENAME}"
-                   "--delete *${WALLET_PAY_SK_FILENAME}.gpg"
-                   "--delete *${WALLET_STAKE_SK_FILENAME}"
-                   "--delete *${WALLET_STAKE_SK_FILENAME}.gpg"
-                   "--delete *${POOL_COLDKEY_SK_FILENAME}"
-                   "--delete *${POOL_COLDKEY_SK_FILENAME}.gpg"
-                   "--delete *${ASSET_POLICY_SK_FILENAME}"
-                   "--delete *${ASSET_POLICY_SK_FILENAME}.gpg"
+                   --exclude=${WALLET_PAY_SK_FILENAME}
+                   --exclude=${WALLET_PAY_SK_FILENAME}.gpg
+                   --exclude=${WALLET_STAKE_SK_FILENAME}
+                   --exclude=${WALLET_STAKE_SK_FILENAME}.gpg
+                   --exclude=${POOL_COLDKEY_SK_FILENAME}
+                   --exclude=${POOL_COLDKEY_SK_FILENAME}.gpg
+                   --exclude=${ASSET_POLICY_SK_FILENAME}
+                   --exclude=${ASSET_POLICY_SK_FILENAME}.gpg
                  )
                  backup_file="${backup_path}online_cntools_backup-$(date '+%Y%m%d%H%M%S').${CNODE_NAME}.tar"
                  ;;
@@ -4030,15 +4039,15 @@ function main {
             done
             [[ ${backup_cnt} -eq 0 ]] && println "\nNo folders found to include in backup :(" && waitForInput && continue
             echo
-            println ACTION "tar cf ${backup_file} ${backup_list[*]}"
-            if ! output=$(tar cf "${backup_file}" "${backup_list[@]}" 2>&1); then println ERROR "${FG_RED}ERROR${NC}: during tarball creation:\n${output}" && waitForInput && continue; fi
             if [[ ${#excluded_files[@]} -gt 0 ]]; then
-              println ACTION "tar --wildcards --file=\"${backup_file}\" ${excluded_files[*]}"
-              tar --wildcards --file="${backup_file}" "${excluded_files[@]}" &>/dev/null # ignore any error, tar will write error if some of the keys to delete are not found
+              println ACTION "tar ${excluded_files[*]} -cf ${backup_file} ${backup_list[*]}"
+              if ! output=$(tar "${excluded_files[@]}" -cf "${backup_file}" "${backup_list[@]}" 2>&1); then println ERROR "${FG_RED}ERROR${NC}: during tarball creation:\n${output}" && waitForInput && continue; fi
               println ACTION "gzip ${backup_file}"
               if ! output=$(gzip "${backup_file}" 2>&1); then println ERROR "${FG_RED}ERROR${NC}: gzip error:\n${output}" && waitForInput && continue; fi
               backup_file+=".gz"
             else
+              println ACTION "tar -cf ${backup_file} ${backup_list[*]}"
+              if ! output=$(tar -cf "${backup_file}" "${backup_list[@]}" 2>&1); then println ERROR "${FG_RED}ERROR${NC}: during tarball creation:\n${output}" && waitForInput && continue; fi
               println ACTION "gzip ${backup_file}"
               if ! output=$(gzip "${backup_file}" 2>&1); then println ERROR "${FG_RED}ERROR${NC}: gzip error:\n${output}" && waitForInput && continue; fi
               backup_file+=".gz"
