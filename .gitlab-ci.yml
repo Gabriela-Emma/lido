@@ -437,7 +437,7 @@
       --set services.submitApi.image.repository="$CI_APPLICATION_REPOSITORY/cardano-submit-tx-api" \
       --set services.submitApi.networkArg="$CARDANO_NETWORK_ARGUMENT" \
       --set services.submitApi.ingress.host="$SUBMIT_API_HOST" \
-      --set-file configurationFiles.submitApiConfig=./src/pool/config/$CARDANO_NETWORK/submit-api-config.json \
+      --set-file configurationFiles.submitApiConfig=./src/pool/config/$CARDANO_NETWORK/config.submittx.json \      
       --set image.tag="$CI_APPLICATION_TAG" \
       --set image.pullSecret="$secret_name" \
       --set namespace=${KUBE_NAMESPACE} \
@@ -473,7 +473,7 @@
       --set-file configurationFiles.configProducer=./src/pool/config/$CARDANO_NETWORK/config.producer.json \
       --set-file configurationFiles.configRelay2=./src/pool/config/$CARDANO_NETWORK/config.relay2.json \
       --set-file configurationFiles.dbSyncConfig=./src/pool/config/$CARDANO_NETWORK/dbsync-config.json \
-      --set-file configurationFiles.submitApiConfig=./src/pool/config/$CARDANO_NETWORK/submit-api-config.json \
+      --set-file configurationFiles.submitApiConfig=./src/pool/config/$CARDANO_NETWORK/config.submittx.json \
       --set-file configurationFiles.topology.producer=./src/pool/config/$CARDANO_NETWORK/topology.producer.json \
       --set-file configurationFiles.topology.relay=./src/pool/config/$CARDANO_NETWORK/topology.relay.json \
       --set-file configurationFiles.topology.relay2=./src/pool/config/$CARDANO_NETWORK/topology.relay2.json \

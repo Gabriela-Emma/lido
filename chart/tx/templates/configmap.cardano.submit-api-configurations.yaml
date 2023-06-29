@@ -6,5 +6,5 @@ metadata:
     name: "{{ $.Chart.Name }}-configurations-configmap"
   namespace: {{ .Values.namespace }}
 data:
-  submit-api-config.json: |-
+  config.submittx.json: |-
   {{- .Values.configurationFiles.submitApiConfig | nindent 4}}

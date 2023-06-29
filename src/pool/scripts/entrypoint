@@ -13,7 +13,6 @@ sudo chown -R cardano-node /ipc
 [[ -z "${CNODE_HOME}" ]] && CNODE_HOME="/cntools/cnode"
 
 if [[ "$NODE_NAME" == "producer" ]]; then
-
   echo "Starting block producer node";
 else
   echo "Starting relay node";
