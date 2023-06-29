@@ -436,7 +436,7 @@
       --set services.elasticsearch.realm.user="$ES_ADMIN_USER" \
       --set services.submitApi.image.repository="$CI_APPLICATION_REPOSITORY/cardano-submit-tx-api" \
       --set services.submitApi.networkArg="$CARDANO_NETWORK_ARGUMENT" \
-      --set services.submitApi.ingress.host="$SUBMIT_API_HOSTS" \
+      --set services.submitApi.ingress.host="$SUBMIT_API_HOST" \
       --set-file configurationFiles.submitApiConfig=./src/pool/config/$CARDANO_NETWORK/submit-api-config.json \
       --set image.tag="$CI_APPLICATION_TAG" \
       --set image.pullSecret="$secret_name" \
