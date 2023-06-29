@@ -229,10 +229,20 @@ function isProposal(item: BookmarkItemModel): item is Proposal {
 }
 
 function openIdeascaleLinks() {
-  for (let item of props.bookmarkCollection.items) {
-    if (isProposal(item.model) && item.model.ideascale_link && item.model.ideascale_link.trim() !== "") {
-      window.open(item.model.ideascale_link, "_blank");
+  const items = props.bookmarkCollection.items;
+  let index = 0;
+
+  function openNextTab() {
+    if (index < items.length) {
+      const item = items[index];
+      if (isProposal(item.model) && item.model.ideascale_link && item.model.ideascale_link.trim() !== "") {
+        window.open(item.model.ideascale_link, "_blank");
+      }
+      index++;
+      setTimeout(openNextTab, 300);
     }
   }
+
+  openNextTab();
 }
 </script>
