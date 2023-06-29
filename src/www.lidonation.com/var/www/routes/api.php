@@ -20,6 +20,7 @@ use App\Models\EveryEpoch;
 use App\Models\Giveaway;
 use App\Models\Reward;
 use App\Models\User;
+use App\Models\Withdrawal;
 use App\Services\CardanoBlockfrostService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -103,32 +104,41 @@ Route::group([
 });
 
 Route::get('/ccv4/check-eligibility', function (Request $request) {
+    $stake_address = $request->input('account');
+
+    // check user by account and log them in
+    $user = User::where('wallet_stake_address', $stake_address)->first();
+    !is_null($user) ? Auth::login($user) : '';
+
+    // build response based on ballots casted
     $response = [];
-    $votesCasted = Ccv4BallotChoice::where('voter_id', $request->input('account'))->get();
-    if ($votesCasted->count() > 0) {
+    $ballots = Ccv4BallotChoice::where('voter_id', $stake_address)->get();
+    if ($ballots->isNotEmpty()) {
+        $giveaway = Giveaway::with(['rules'])
+            ->whereRelation('metas', ['key' => 'program', 'content' => 'ccv4'])->first();
+
+        $rewards = Reward::where(
+            'stake_address', $user?->wallet_stake_address)
+            ->where('model_id', $giveaway?->id);
+
+        $withdrawals = Withdrawal::with(['txs', 'metas'])
+            ->whereRelation('metas', ['key' => 'withdrawal_tx'])
+            ->withWhereHas('rewards', function ($query) use($rewards) {
+                $query->whereIn('id',  $rewards->get()->pluck('id'));
+            })
+            ->get();
+
+        // response array
         $response['eligibility'] = 'true';
-    } else {
+        $response['rewards']['awarded'] = $rewards->whereIn('status', ['issued', 'processed'])->get();
+        $response['rewards']['withdrawal_txs'] = $withdrawals->isNotEmpty() ? $withdrawals->map(fn($withdrawal) => $withdrawal->withdrawal_tx) : [];
+    }else {
         $response['eligibility'] = 'false';
+        $response['rewards']['awarded'] = [];
+        $response['rewards']['withdrawal_txs'] = [];
     }
 
     return json_encode($response);
-});
-
-Route::get('/ccv4/rewards', function (Request $request) {
-    $user = User::where('wallet_stake_address', $request->input('account'))->first();
-    $giveaway = Giveaway::with(['rules'])
-        ->whereRelation('metas', ['key' => 'program', 'content' => 'ccv4'])->first();
-
-    $reward = Reward::where(
-        'stake_address', $user?->wallet_stake_address)
-        ->where('model_id', $giveaway?->id)
-        ->get();
-
-    if ($reward->count() > 0) {
-        return json_encode($reward);
-    } else {
-        return [];
-    }
 });
 
 Route::post('/ccv4/claim-rewards', function (Request $request) {
@@ -166,9 +176,9 @@ Route::post('/ccv4/claim-rewards', function (Request $request) {
             $user->password = Hash::make(Str::random(10));
             $user->save();
         }
+
         Auth::login($user);
     }
-
 
     $rewards = [];
 
