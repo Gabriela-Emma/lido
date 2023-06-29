@@ -12,6 +12,8 @@ data:
   {{- .Values.configurationFiles.configProducer | nindent 4}}
   config.relay2.json: |-
   {{- .Values.configurationFiles.configRelay2 | nindent 4}}
+  config.tx.json: |-
+  {{- .Values.configurationFiles.configTx | nindent 4}}
   topology.producer.json: |-
   {{- .Values.configurationFiles.topology.producer | nindent 4}}
   topology.relay.json: |-
