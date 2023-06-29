@@ -36,13 +36,17 @@ Alpine.data('earnCcv4', function () {
 
         eligible: null,
         rewards: [],
-
+        withdrawalCardanoScanLinks: [],
+        cardanoScanRelativeUrl: null,
         async init() {
                 this.walletService = new WalletService();
                 this.cardanoService = new CardanoService();
 
                 if (window.location.origin === 'https://www.lidonation.com') {
                     this.environment = 'production';
+                    this.cardanoScanRelativeUrl = `https://cardanoscan.io/transaction/`;
+                }else {
+                    this.cardanoScanRelativeUrl =`https://preview.cardanoscan.io/transaction/`;
                 }
 
                 if (!!this.walletName) {
@@ -55,10 +59,9 @@ Alpine.data('earnCcv4', function () {
             try {
                 await this.walletService.connectWallet(this.walletName);
                 await this.getWalletDetails();
-                await this.getRewards();
-                this.walletLoaded = true;
             } catch (e) {
-                this.$dispatch('new-notice', e.toString());
+                this.walletLoaded = false;
+                this.$dispatch('new-notice', {name: 'Wallet Error', message: 'Please check wallet connection, make sure you are in the right network. ', type: 'error'} as Notice);
             }
 
         },
@@ -79,11 +82,12 @@ Alpine.data('earnCcv4', function () {
                         maximumFractionDigits: 2
                     });
                 }
-                
+                this.walletLoaded = true;
                 this.walletLoading = false;
                 return true;
             } catch (e) {
-                this.$dispatch('new-notice', e.toString());
+                this.walletLoaded = false;
+                this.$dispatch('new-notice', {name: 'Wallet Error', message: 'Please check wallet connection, make sure you are in the right network. ', type: 'error'} as Notice);
             }
         },
         async checkEligibility() {
@@ -92,29 +96,19 @@ Alpine.data('earnCcv4', function () {
             };
             const params = new URLSearchParams(payload).toString();
             
-            const res = (await window.axios.get(`/api/ccv4/check-eligibility?` + params));
+            const res = await window.axios.get(`/api/ccv4/check-eligibility?` + params);
             if (res?.data) {
+                this.withdrawalCardanoScanLinks = res?.data?.rewards?.withdrawal_txs.map((tx) => this.cardanoScanRelativeUrl + tx) ?? [];
                 this.eligible = res?.data.eligibility;
-            }
-
-        },
-        async getRewards() {
-            const payload = {
-                account: this.stakeAddress,
-            };
-            const params = new URLSearchParams(payload).toString();
-            
-            const res = (await window.axios.get(`/api/ccv4/rewards?` + params));
-            if (res?.data) {
-                this.rewards = res?.data;
+                this.rewards = res?.data?.rewards?.awarded ?? [];
             }
 
         },
         async claimReward() {
-            const res = (await window.axios.post(`/api/ccv4/claim-rewards`, {
+            const res = await window.axios.post(`/api/ccv4/claim-rewards`, {
                 'account': this.stakeAddress,
                 'wallet_address': this.walletAddress
-            }));
+            });
             
             if (res?.data.rewards) {
                 this.rewards = res?.data.rewards;
