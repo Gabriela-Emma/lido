@@ -9,12 +9,16 @@
               "port": 3011
             },
             {
-              "address": "relay1.lidonation.com",
+              "address": "lidolovelace-cardano-relay-1-service.lidolovelace.svc.cluster.local",
               "port": 3011
             },
             {
-              "address": "relay2.lidonation.com",
+              "address": "lidolovelace-cardano-relay-2-service.lidolovelace.svc.cluster.local",
               "port": 3012
+            },
+            {
+              "address": "cardano.hopto.org",
+              "port": 6370
             }
           ],
           "advertise": false
