@@ -15,7 +15,7 @@
             {
               "address": "relay2.lidonation.com",
               "port": 3012
-            },
+            }
           ],
           "advertise": false
         },
@@ -45,8 +45,7 @@
           },
           {
             "addr": "relay4.adaocean.com",
-            "port": 6000,
-            "valency": 1
+            "port": 6000
           }
         ],
         "advertise": true
