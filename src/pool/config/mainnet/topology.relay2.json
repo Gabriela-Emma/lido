@@ -9,7 +9,7 @@
               "port": 3011
             },
             {
-              "address": "lidolovelace-cardano-relay-1-service.lidolovelace.svc.cluster.local",
+              "address": "relay1.lidonation.com",
               "port": 3011
             },
             {
