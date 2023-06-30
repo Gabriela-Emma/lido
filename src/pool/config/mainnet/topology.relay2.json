@@ -1,44 +1,40 @@
 {
-  "Producers": [
+  "LocalRoots": {
+    "groups": [
+      {
+        "localRoots": {
+          "accessPoints": [
+            {
+              "address": "lidolovelace-cardano-producer-service.lidolovelace.svc.cluster.local",
+              "port": 3011
+            },
+            {
+              "address": "lidolovelace-cardano-relay-2-service.lidolovelace.svc.cluster.local",
+              "port": 3012
+            },
+            {
+              "address": "lidolovelace-submit-tx-relay-service.lidolovelace.svc.cluster.local",
+              "port": 3032
+            }
+          ],
+          "advertise": false
+        },
+        "valency": 1
+      }
+    ]
+  },
+  "PublicRoots": [
     {
-      "addr": "relays-new.cardano-mainnet.iohk.io",
-      "port": 3001,
-      "valency": 3
-    },
-    {
-      "addr": "lidolovelace-cardano-producer-service.lidolovelace.svc.cluster.local",
-      "port": 3011,
-      "valency": 1
-    },
-    {
-      "addr": "relay4.adaocean.com",
-      "port": 6000,
-      "valency": 1
-    },
-    {
-      "addr": "34.91.176.78",
-      "port": 3001,
-      "valency": 1
-    },
-    {
-      "addr": "132.145.175.139",
-      "port": 6001,
-      "valency": 1
-    },
-    {
-      "addr": "lidolovelace-submit-tx-relay-service.lidolovelace.svc.cluster.local",
-      "port": 3032,
-      "valency": 1
-    },
-    {
-      "addr": "170.106.160.40",
-      "port": 3001,
-      "valency": 1
-    },
-    {
-      "addr": "lidolovelace-cardano-relay-1-service.lidolovelace.svc.cluster.local",
-      "port": 3011,
-      "valency": 1
+      "publicRoots": {
+        "accessPoints": [
+          {
+            "address": "relays-new.cardano-mainnet.iohk.io",
+            "port": 3001
+          }
+        ],
+        "advertise": true
+      }
     }
-  ]
+  ],
+  "useLedgerAfterSlot": 322000
 }

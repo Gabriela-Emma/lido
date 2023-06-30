@@ -93,24 +93,6 @@ POOL_ID_FILENAME="POOL_ID"                             # Standardized names for 
 
 #CUSTOM_PEERS="$(cat /config/topology.producer.json | jq -r '.Producers[] | "\(.addr):\(.port)"' | paste -s -d "|")|lidolovelace-cardano-producer-service.${KUBERNETES_NAMESPACE}.svc.cluster.local:${NODE_PORT}"
 
-if [[ "$NODE_NAME" == "producer" ]]; then
-  export TOPOLOGY="/config/topology.producer.json"
-  if [[ -f /config/config.producer.json ]]; then
-    export CONFIG="/config/config.producer.json"
-  fi
-elif [[ "$NODE_NAME" == "relay2" ]]; then
-  export TOPOLOGY="/config/topology.relay2.json"
-  if [[ -f /config/config.relay2.json ]]; then
-    export CONFIG="/config/config.relay2.json"
-  fi
-elif [[ "$NODE_NAME" == "submittx" ]]; then
-  export TOPOLOGY="/config/topology.submittx.json"             # Override default topology.json path
-  export CONFIG="/config/config.tx.json"
-else
-  export TOPOLOGY="/config/topology.relay.json"
-  export CONFIG="/config/config.json"
-fi
-
 #!/usr/bin/env bash
 # shellcheck disable=SC2034,SC2086,SC2230,SC2009,SC2206,SC2062,SC2059,SC2229,SC2154,SC2162,SC2120
 
