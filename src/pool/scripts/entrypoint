@@ -13,6 +13,27 @@ sudo chown -R cardano-node /ipc
 [[ -z "${CNODE_HOME}" ]] && CNODE_HOME="/cntools/cnode"
 
 if [[ "$NODE_NAME" == "producer" ]]; then
+  export TOPOLOGY="/config/topology.producer.json"
+  if [[ -f /config/config.producer.json ]]; then
+    export CONFIG="/config/config.producer.json"
+    cp /config/config.producer.json /config/config.json
+  fi
+elif [[ "$NODE_NAME" == "relay2" ]]; then
+  export TOPOLOGY="/config/topology.relay2.json"
+  if [[ -f /config/config.relay2.json ]]; then
+    export CONFIG="/config/config.relay2.json"
+    cp /config/config.relay2.json /config/config.json
+  fi
+elif [[ "$NODE_NAME" == "submittx" ]]; then
+  export TOPOLOGY="/config/topology.submittx.json"             # Override default topology.json path
+  export CONFIG="/config/config.tx.json"
+  cp /config/config.tx.json /config/config.json
+else
+  export TOPOLOGY="/config/topology.relay.json"
+  export CONFIG="/config/config.json"
+fi
+
+if [[ "$NODE_NAME" == "producer" ]]; then
   echo "Starting block producer node";
 else
   echo "Starting relay node";
