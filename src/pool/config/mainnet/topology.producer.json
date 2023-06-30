@@ -1,12 +1,12 @@
 {
   "Producers": [
     {
-      "addr": "lidolovelace-cardano-relay-1-service.lidolovelace.svc.cluster.local",
+      "addr": "relay1.lidonation.com",
       "port": 3011,
       "valency": 1
     },
     {
-      "addr": "lidolovelace-cardano-relay-2-service.lidolovelace.svc.cluster.local",
+      "addr": "relay2.lidonation.com",
       "port": 3012,
       "valency": 1
     },
