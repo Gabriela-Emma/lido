@@ -47,6 +47,6 @@ fi
 
 . "${CNODE_HOME}"/scripts/env offline
 
-echo "startING $NODE_NAME with topology $TOPOLOGY"
+echo "starting $NODE_NAME with topology $TOPOLOGY \n"
 
 /cntools/cnode/scripts/cnode.sh
