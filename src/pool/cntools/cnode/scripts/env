@@ -90,7 +90,7 @@ POOL_NAME=lido                                           # Set the pool's name t
 POOL_FOLDER=/data/cnode/pools
 WALLET_FOLDER="${POOL_FOLDER}/${POOL_NAME}/wallets"
 POOL_ID_FILENAME="POOL_ID"
-CPU_CORES=5
+CPU_CORES=6
 
 #CUSTOM_PEERS="$(cat /config/topology.producer.json | jq -r '.Producers[] | "\(.addr):\(.port)"' | paste -s -d "|")|lidolovelace-cardano-producer-service.${KUBERNETES_NAMESPACE}.svc.cluster.local:${NODE_PORT}"
 
