@@ -9,8 +9,8 @@
               "port": 3011
             },
             {
-              "address": "lidolovelace-cardano-relay-2-service.lidolovelace.svc.cluster.local",
-              "port": 3012
+              "address": "lidolovelace-cardano-relay-1-service.lidolovelace.svc.cluster.local",
+              "port": 3011
             },
             {
               "address": "lidolovelace-submit-tx-relay-service.lidolovelace.svc.cluster.local",
