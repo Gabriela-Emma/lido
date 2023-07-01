@@ -2,6 +2,7 @@
 
 namespace App\Nova;
 
+use App\Models\Giveaway;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\ID;
@@ -9,15 +10,16 @@ use Laravel\Nova\Fields\Markdown;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use App\Models\LearningTopic;
 
-class LearningTopic extends Resource
+class LearningTopics extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = \App\Models\LearningTopic::class;
+    public static $model = LearningTopic::class;
 
     public static $group = 'Learning';
 
@@ -57,15 +59,29 @@ class LearningTopic extends Resource
                 'Intermediate' => 'intermediate',
                 'Advance' => 'advance',
             ])->required(),
+
             Select::make(__('Status'), 'status')->options([
                 'published' => 'Published',
                 'draft' => 'Draft',
             ])->required(),
+
             BelongsTo::make(__('Author'), 'author', User::class)
                 ->searchable(),
+
+
+            BelongsToMany::make(__('Giveaways'), 'giveaways', Giveaways::class)
+                ->fields(function () {
+                    return [
+                        Text::make('Type', 'model_type')->default(LearningTopic::class)->onlyOnForms(),
+                    ];
+                })
+                ->hideFromIndex()
+                ->searchable(),
+
             BelongsToMany::make(__('Learning Modules'), 'learningModules', LearningModules::class)
                 ->hideFromIndex()
                 ->searchable(),
+
             BelongsToMany::make(__('Learning Lesson'), 'learningLessons', LearningLessons::class)
                 ->hideFromIndex()
                 ->searchable(),

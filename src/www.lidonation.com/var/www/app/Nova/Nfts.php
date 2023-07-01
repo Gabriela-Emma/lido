@@ -79,6 +79,7 @@ class Nfts extends Resource
                 Reviews::class,
                 Insights::class,
                 Podcasts::class,
+                User::class,
             ])->searchable()->nullable(),
             Select::make(__('Status'), 'status')
                 ->sortable()
@@ -102,6 +103,7 @@ class Nfts extends Resource
             Markdown::make(__('description'))->translatable(),
             HasMany::make('Promos', 'promos', Promos::class),
             HasMany::make('Transactions', 'txs', Txs::class),
+            HasMany::make('Metadata', 'metas', Metas::class),
         ];
     }
 
