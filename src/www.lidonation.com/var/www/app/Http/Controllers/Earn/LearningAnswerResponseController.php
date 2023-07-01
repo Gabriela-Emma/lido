@@ -13,6 +13,7 @@ use App\Models\User;
 use App\Repositories\AdaRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 
 class LearningAnswerResponseController extends Controller
@@ -30,7 +31,6 @@ class LearningAnswerResponseController extends Controller
 
     public function storeAnswer(Request $request)
     {
-
         $ipAddress = $request->ip();
         // get user previous response
         // if user has previous response from today, return
@@ -77,13 +77,6 @@ class LearningAnswerResponseController extends Controller
 
     protected function issueReward($request, $questionAnswerId, LearningLesson $learningLesson): void
     {
-        //fetch quote
-        $rewardAmount = -1;
-        $quote = $this->adaRepository->quote()?->price ?? null;
-        if ($quote) {
-            $rewardAmount = 1 / $quote;
-        }
-
         //find user and update wallet details in case of changes from the browser.
         $user = User::find(Auth::id());
         $user->wallet_address = $request->input('wallet_address') ?? $user->wallet_address;
@@ -102,18 +95,40 @@ class LearningAnswerResponseController extends Controller
 
         // if no reward and answer is correct issue reward.
         if ($rewardsCount < 1 && $answerCorrect == 'true') {
+            // get first rule
             $reward = new Reward;
             $reward->user_id = Auth::id();
-            $reward->asset = 'lovelace';
             $reward->model_id = $learningLesson->id;
             $reward->model_type = LearningLesson::class;
-            $reward->asset_type = 'ada';
-            $reward->amount = $rewardAmount > 0 ? number_format($rewardAmount, 6) * 1000000 : 1000000;
+
+             // get related giveaway
+            $giveaway = $learningLesson->topic->giveaway;
+            $rule = $giveaway->rules->first();
+            if ( $rule?->subject ?? null !== 'usd.amount' ) {
+                $reward->asset = Str::of( $rule->subject)->trim('.amount');
+                $reward->asset_type = 'ft';
+                $reward->amount = $rule->predicate;
+            } else {
+                $reward->asset = 'lovelace';
+                $reward->asset_type = 'ada';
+                $reward->amount = $this->usdInAda();
+            }
             $reward->status = 'issued';
             $reward->stake_address = $user->wallet_stake_address;
             $reward->setTranslation('memo', 'en', $learningLesson->title);
             $reward->save();
         }
+    }
+
+    protected function usdInAda()
+    {
+         //fetch quote
+         $rewardAmount = -1;
+         $quote = $this->adaRepository->quote()?->price ?? null;
+         if ($quote) {
+             $rewardAmount = 1 / $quote;
+         }
+         return $rewardAmount > 0 ? number_format($rewardAmount, 6) * 1000000 : 1000000;
     }
 
     protected function recordLearningAttempt(AnswerResponse $answerResponse, LearningLesson $learningLesson): void

@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\DataTransferObjects\LearningTopicData;
 use App\Models\Traits\HasAuthor;
 use App\Models\Traits\HasHero;
 use App\Models\Traits\HasLocaleUrl;
@@ -13,7 +12,6 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Spatie\LaravelData\DataCollection;
 
 class LearningModule extends Model
 {

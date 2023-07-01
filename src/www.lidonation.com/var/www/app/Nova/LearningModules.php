@@ -60,7 +60,7 @@ class LearningModules extends Resource
             BelongsTo::make(__('Author'), 'author', User::class)
                 ->searchable(),
 
-            BelongsToMany::make(__('Learning Topics'), 'learningTopics', LearningTopic::class)
+            BelongsToMany::make(__('Learning Topics'), 'learningTopics', LearningTopics::class)
                 ->hideFromIndex()
                 ->searchable(),
 

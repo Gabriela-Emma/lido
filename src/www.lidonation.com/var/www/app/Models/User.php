@@ -242,6 +242,24 @@ class User extends Authenticatable implements HasMedia, Interfaces\IHasMetaData,
         );
     }
 
+    public function completedTopics(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                $topics = LearningTopic::whereRelation('learningLessons.answers', 'user_id', $this->id)->get();
+                return $topics->filter(function($topic) {
+                    $completedLessonsCount = $topic->learningLessons()->whereHas(
+                        'answers',
+                        fn($query) =>
+                            $query->where('user_id', $this->id)
+                            ->whereRelation('answer', 'correctness', 'correct')
+                        )->count();
+                    return $topic->learningLessons()->count() == $completedLessonsCount;
+                });
+            }
+        );
+    }
+
     public function scopeIncludeDuplicates(Builder $query, $include = true): Builder
     {
         if ($include) {

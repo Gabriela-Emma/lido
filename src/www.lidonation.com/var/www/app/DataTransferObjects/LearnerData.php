@@ -2,6 +2,7 @@
 
 namespace App\DataTransferObjects;
 
+use App\Models\LearningTopic;
 use Spatie\LaravelData\Attributes\DataCollectionOf;
 use Spatie\LaravelData\Attributes\MapOutputName;
 use Spatie\LaravelData\Data;
@@ -42,6 +43,8 @@ class LearnerData extends Data
         #[DataCollectionOf(RewardData::class)]
         public ?DataCollection $available_rewards,
 
+        #[DataCollectionOf(LearningTopicData::class)]
+        public ?DataCollection $completed_topics
     ) {
     }
 }

@@ -80,6 +80,7 @@ class Metas extends Resource
             Markdown::make(__('Content'), 'content'),
             MorphTo::make(__('Type'), 'model')->types([
                 Rating::class,
+                Nfts::class,
             ]),
         ];
 

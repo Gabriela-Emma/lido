@@ -36,6 +36,11 @@ class EarnController extends Controller
         }
     }
 
+    public function awardNft(){
+        return Inertia::modal('NftAwarded')
+                ->baseRoute('earn.learn');
+    }
+
     /**
      * Display a listing of the resource.
      *
