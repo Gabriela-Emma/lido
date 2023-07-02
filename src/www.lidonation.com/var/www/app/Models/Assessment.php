@@ -65,7 +65,7 @@ class Assessment extends Model implements IHasMetaData
     public static function getSearchableAttributes(): array
     {
         return [
-            'rational',
+            'rationale',
             'assessor',
             'qa_rationale',
             'proposal.title',
