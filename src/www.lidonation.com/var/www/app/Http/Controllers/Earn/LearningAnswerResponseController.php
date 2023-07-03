@@ -104,8 +104,8 @@ class LearningAnswerResponseController extends Controller
              // get related giveaway
             $giveaway = $learningLesson->topic->giveaway;
             $rule = $giveaway->rules->first();
-            if ( $rule?->subject ?? null !== 'usd.amount' ) {
-                $reward->asset = Str::of( $rule->subject)->trim('.amount');
+            if ( ($rule?->subject ?? null) !== 'usd.amount' ) {
+                $reward->asset = explode('.',  $rule->subject)[0];
                 $reward->asset_type = 'ft';
                 $reward->amount = $rule->predicate;
             } else {
@@ -118,6 +118,8 @@ class LearningAnswerResponseController extends Controller
             $reward->setTranslation('memo', 'en', $learningLesson->title);
             $reward->save();
         }
+
+
     }
 
     protected function usdInAda()
