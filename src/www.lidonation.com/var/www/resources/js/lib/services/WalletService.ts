@@ -4,6 +4,8 @@ import { C } from "lucid-cardano";
 import CardanoWallet from "../interfaces/CardanoWallet";
 import BlockfrostKeysService from './BlockfrostKeysService';
 import typhonjs from '@stricahq/typhonjs'
+import { log } from 'console';
+import CardanoService from './CardanoService';
 
 export { };
 declare global {
@@ -169,6 +171,7 @@ export default class WalletService {
                 const api = await this.enableWallet(wallet);
                 this.lucid.selectWallet(api);
                 this.api = api;
+ 
             }
         } catch (e) {
             console.log({ e });
@@ -177,6 +180,7 @@ export default class WalletService {
     }
 
     protected async enableWallet(wallet: string) {
+
         if (
             typeof window.cardano === "undefined" ||
             !window?.cardano ||
@@ -185,7 +189,7 @@ export default class WalletService {
             return Promise.reject(`${wallet} wallet not installed.`);
         }
         console.log(`${wallet} enabled.`);
-        return window.cardano[wallet]?.enable();
+          return window.cardano[wallet]?.enable();
     }
 
     protected async getDelegateTx(wallet: string) {
@@ -259,6 +263,19 @@ export default class WalletService {
             this.lucid = lucid;
             this.poolId = keys.poolId;
             this.api = api;
+            console.log("tyty");
+
+            console.log(
+                this.lucid.utils.unixTimeToSlot(
+                    Date.now()
+                )
+            
+            );   
+            const h = new CardanoService()  
+            console.log(
+               await h.getEpoch(await this.lucid.utils.unixTimeToSlot(Date.now()))
+            );
+                     
         } catch (e) {
             throw e;
         }

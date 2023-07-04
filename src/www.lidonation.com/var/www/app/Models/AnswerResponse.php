@@ -26,6 +26,10 @@ class AnswerResponse extends Model implements IHasMetaData
         'correct',
     ];
 
+    protected $fillable = [
+        'context_id', 'context_type','craeted_at'
+    ];
+
     /**
      * The attributes that should be cast.
      *
