@@ -89,13 +89,16 @@ class Rewards extends Resource
 
             BelongsTo::make(__('Recipient'), 'author', User::class)
                 ->sortable()
+                ->filterable()
                 ->searchable(),
 
             BelongsTo::make(__('Withdrawal'), 'withdrawal', Withdrawals::class)
                 ->sortable()
                 ->searchable(),
 
-            Text::make(__('Stake Address'), 'stake_address')->sortable()
+            Text::make(__('Stake Address'), 'stake_address')
+            ->filterable()
+            ->sortable()
                 ->displayUsing(function ($value) use ($request) {
                     if ($request->isResourceIndexRequest()) {
                         return Str::truncate($value, 16);
@@ -109,6 +112,7 @@ class Rewards extends Resource
                 ->searchable(),
 
             Select::make(__('Asset Type'), 'asset_type')
+                ->filterable()
                 ->options([
                     'ft' => 'Fungible Token',
                     'nft' => 'NFT',
@@ -116,6 +120,17 @@ class Rewards extends Resource
                     'fiat' => 'Fiat',
                 ])->default('ft')->sortable(),
             Text::make(__('Asset')),
+
+            Text::make('tx')
+                ->filterable(
+                    fn ($request, $query, $value, $attribute) => $query->whereRelation('withdrawal.metas', 'content', $value)
+                )
+                ->displayUsing(function ($value) {
+                    return $this->withdrawal?->meta_data?->withdrawal_tx;
+                })
+                ->hideFromIndex()
+                ->hideWhenCreating()
+                ->hideWhenUpdating(),
 
             Number::make(__('Amount')),
 
@@ -127,9 +142,13 @@ class Rewards extends Resource
                     'pending' => 'Pending',
                     'issued' => 'Issued',
                     'processed' => 'Processed',
+                    'paid' => 'Paid',
                     'claimed' => 'Claimed',
                     'expired' => 'Expired',
-                ])->default('draft')->sortable(),
+                ])
+                ->filterable()
+                ->default('draft')
+                ->sortable(),
 
             HasMany::make('Transactions', 'txs', Txs::class),
         ];
