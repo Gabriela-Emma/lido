@@ -29,6 +29,7 @@ nextLessonAt?: string | null;
 nextLesson?: App.DataTransferObjects.LearningLessonData | null;
 totalRewardSum?: number | null;
 availableRewards?: Array<App.DataTransferObjects.RewardData> | null;
+completed_topics: Array<App.DataTransferObjects.LearningTopicData> | null;
 };
 export type LearningAttemptData = {
 retryAt?: any;
