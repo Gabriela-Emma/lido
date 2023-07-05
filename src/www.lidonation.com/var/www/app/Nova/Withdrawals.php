@@ -70,7 +70,9 @@ class Withdrawals extends Resource
                     'pending' => 'Pending',
                     'paid' => 'Paid',
                     'minted' => 'Sending',
-                    'burnt' => 'Sent',
+                    'burnt' => 'Burnt',
+                    'sent' => 'Sent',
+                    'hold' => 'Hold',
                 ]),
 
             DateTime::make(__('Created At'), 'created_at')
