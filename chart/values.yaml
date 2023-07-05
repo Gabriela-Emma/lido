@@ -250,7 +250,7 @@ services:
       PHP_OPCACHE_ENABLE: 1,
       PHP_OPCACHE_SAVE_COMMENTS: 1,
       PHP_OPCACHE_VALIDATE_TIMESTAMPS: 0,
-      PHP_MEMORY_LIMIT: 2048M,
+      PHP_MEMORY_LIMIT: 4096M,
       PHP_DISABLE_FUNCTIONS: "passthru,shell_exec,show_source,symlink,system",
 
       PUSHER_CLUSTER:  us2,
