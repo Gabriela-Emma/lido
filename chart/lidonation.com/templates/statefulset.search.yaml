@@ -28,7 +28,7 @@ spec:
               cpu: 5
             requests:
               cpu: 600m
-              memory: 2048Mi
+              memory: 4096Mi
           envFrom:
             - secretRef:
                 name: "{{ $.Chart.Name }}-search-secret"
