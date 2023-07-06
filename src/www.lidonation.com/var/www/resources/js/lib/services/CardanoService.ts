@@ -129,11 +129,6 @@ export default class CardanoService {
         return (await this.api?.get(`/epochs/latest/parameters`))?.data;
     }
 
-    public async getEpoch(slot_number) {
-        await this.init();
-        return (await this.api?.get(`/blocks/slot/${slot_number}`))?.data;
-    }
-
     public async isLidoDelegate(stakeAddress: string) {
         await this.init();
         if (typeof stakeAddress === "undefined" || !stakeAddress) {

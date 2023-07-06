@@ -3,9 +3,6 @@ import { Blockfrost, Lucid, Network, Tx } from 'lucid-cardano';
 import { C } from "lucid-cardano";
 import CardanoWallet from "../interfaces/CardanoWallet";
 import BlockfrostKeysService from './BlockfrostKeysService';
-import typhonjs from '@stricahq/typhonjs'
-import { log } from 'console';
-import CardanoService from './CardanoService';
 
 export { };
 declare global {
@@ -263,18 +260,17 @@ export default class WalletService {
             this.lucid = lucid;
             this.poolId = keys.poolId;
             this.api = api;
-            console.log("tyty");
+            console.log(moment("2023-06-05 06:36:42").unix());
+            console.log(new Date("2023-06-05 06:36:42").getTime());
+            const floor = Math.floor;
 
-            console.log(
-                this.lucid.utils.unixTimeToSlot(
-                    Date.now()
-                )
-            
-            );   
-            const h = new CardanoService()  
-            console.log(
-               await h.getEpoch(await this.lucid.utils.unixTimeToSlot(Date.now()))
-            );
+               let slot_number = this.lucid.utils.unixTimeToSlot(
+                 Date.now()
+               );
+               console.log(floor((254 * 86400 - slot_number) / 86400));
+               
+                console.log(
+                floor(slot_number / 86400))
                      
         } catch (e) {
             throw e;

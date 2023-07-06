@@ -16,24 +16,24 @@ return new class extends Migration
      */
     public function up()
     {
-        AnswerResponse::where('context_type', EveryEpoch::class)
-            ->orderBy('id')
-            ->chunk(100, function ($responses) {
-                foreach ($responses as $response) {
-                    // $epochNumber = $this->convertToEpoch($response->created_at);
+        $epochresponses = AnswerResponse::cursor()->filter(function (AnswerResponse $answerResponse) {
+            return $answerResponse->context_type == EveryEpoch::class;
+        });
+        foreach ($epochresponses as $response) {
+            // $epochNumber = $this->convertToEpoch($response->created_at);
 
-                    $everyEpoch = EveryEpoch::where('epoch', 380)->first();
+            $everyEpoch = EveryEpoch::where('epoch', 380)->first();
 
-                    if ($everyEpoch instanceof EveryEpoch) {
-                        DB::table('answer_responses')
-                            ->where('id', $response->id)
-                            ->update([
-                                'context_id' => $everyEpoch->id,
-                            ]);
-                    }
-                }
-            });
+            if ($everyEpoch instanceof EveryEpoch) {
+                DB::table('answer_responses')
+                    ->where('id', $response->id)
+                    ->update([
+                        'context_id' => $everyEpoch->id,
+                    ]);
+            }
+        }
     }
+
 
     /**
      * Reverse the migrations.
