@@ -3,6 +3,7 @@
 use App\Models\EveryEpoch;
 use App\Models\AnswerResponse;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -20,9 +21,9 @@ return new class extends Migration
             return $answerResponse->context_type == EveryEpoch::class;
         });
         foreach ($epochresponses as $response) {
-            // $epochNumber = $this->convertToEpoch($response->created_at);
+            $epochNumber = $this->convertToEpoch($response->created_at);
 
-            $everyEpoch = EveryEpoch::where('epoch', 380)->first();
+            $everyEpoch = EveryEpoch::where('epoch', $epochNumber)->first();
 
             if ($everyEpoch instanceof EveryEpoch) {
                 DB::table('answer_responses')
@@ -35,6 +36,19 @@ return new class extends Migration
     }
 
 
+    public function convertToEpoch($created_at)
+    {
+        $date = $created_at;
+        try {
+           return Http::post(
+                config('cardano.lucidEndpoint') . '/cardano/epoch',
+                compact('date')
+            )->throw();
+        } catch (\Throwable $th) {
+            return null;
+        }
+
+    }
     /**
      * Reverse the migrations.
      *

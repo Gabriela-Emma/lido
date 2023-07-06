@@ -260,17 +260,7 @@ export default class WalletService {
             this.lucid = lucid;
             this.poolId = keys.poolId;
             this.api = api;
-            console.log(moment("2023-06-05 06:36:42").unix());
-            console.log(new Date("2023-06-05 06:36:42").getTime());
-            const floor = Math.floor;
 
-               let slot_number = this.lucid.utils.unixTimeToSlot(
-                 Date.now()
-               );
-               console.log(floor((254 * 86400 - slot_number) / 86400));
-               
-                console.log(
-                floor(slot_number / 86400))
                      
         } catch (e) {
             throw e;
