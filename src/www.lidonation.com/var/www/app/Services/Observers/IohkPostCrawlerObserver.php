@@ -6,7 +6,6 @@ use App\Models\ExternalPost;
 use App\Models\Link;
 use App\Models\Meta;
 use App\Models\ModelLink;
-use App\Models\Post;
 use DOMDocument;
 use GuzzleHttp\Exception\RequestException;
 use Illuminate\Support\Facades\Log;
@@ -27,16 +26,13 @@ class IohkPostCrawlerObserver extends CrawlObserver
 
     protected $slug;
 
-    protected $links;
+    protected $link;
 
     protected $author;
 
     protected $authorEmail;
 
-    public function __construct(protected $langLocale)
-    {
-        $this->lang = $langLocale;
-    }
+    public function __construct(protected $lang){}
 
     /**
      * Called when the crawler will crawl the url.
@@ -98,35 +94,32 @@ class IohkPostCrawlerObserver extends CrawlObserver
     public function finishedCrawling(): void
     {
         Log::info('finishedCrawling');
-
-        // save post
         $locale = $this->lang;
-        $post = new ExternalPost;
-        $post->title = [$locale => $this->title];
-        $post->meta_title = [$locale => $this->subTitle];
-        $post->content = [$locale => $this->content];
-        $post->slug = $this->slug;
-        $post->published_at = $this->postedDate;
-        $post->status = 'published';
 
         try {
-            $dbPost = ExternalPost::where('slug', '=', $this->slug)->first() ?? null;
+            $externalPost = ExternalPost::where('slug', '=', $this->slug)->first() ?? null;
 
-            if ($dbPost != null) {
-                ExternalPost::where('slug', $this->slug)->update([
-                    'title->'.$locale => $this->title,
-                    'meta_title->'.$locale => $this->subTitle,
-                    'content->'.$locale => $this->content,
-                ]);
+            if ($externalPost instanceof ExternalPost) {
+                $externalPost->title = $this->title;
+                $externalPost->subTitle = $this->subTitle;
+                $externalPost->content = $this->content;
+                $externalPost->save();
             } else {
-                $post->save();
-                $this->saveUserMeta($post, $this->author, $this->authorEmail);
+                $externalPost = new ExternalPost;
+                $externalPost->title = [$locale => $this->title];
+                $externalPost->meta_title = [$locale => $this->subTitle];
+                $externalPost->content = [$locale => $this->content];
+                $externalPost->slug = $this->slug;
+                $externalPost->published_at = $this->postedDate;
+                $externalPost->status = 'published';
+                $externalPost->save();
+                $this->saveUserMeta($externalPost, $this->author, $this->authorEmail);
             }
-        } catch (exception $e) {
+        } catch (\Exception $e) {
             Log::error('Error post not saved');
         }
 
-        //save links
+        //save link
         $exPostObj = ExternalPost::where('slug', $this->slug)->first();
         $this->saveLink($exPostObj, $this->link);
     }
@@ -245,7 +238,7 @@ class IohkPostCrawlerObserver extends CrawlObserver
                 echo 'link is this';
                 $this->saveModelLink($modelObj, $duplicateLink->id);
             }
-        } catch (exception $e) {
+        } catch (\Exception $e) {
         }
     }
 
