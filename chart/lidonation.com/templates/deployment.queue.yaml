@@ -71,7 +71,7 @@ spec:
                 command: ["php", "/var/www/artisan", "horizon:terminate"]
         resources:
           limits:
-            memory: 8192Mi
+            memory: 9216Mi
             cpu: 4
           requests:
             cpu: 80m
@@ -82,7 +82,7 @@ spec:
           - name: NEWRELIC_APP_NAME
             value: Lighthouse Queue
           - name: PHP_MEMORY_LIMIT
-            value: 6144M
+            value: 8192M
         envFrom:
           - configMapRef:
               name: "{{ $.Chart.Name }}-configmap"
