@@ -104,7 +104,7 @@ class IohkPostCrawlerObserver extends CrawlObserver
                 $externalPost->subTitle = $this->subTitle;
                 $externalPost->content = $this->content;
                 $externalPost->save();
-            } else {
+            } elseif (!is_null($this->title)) {
                 $externalPost = new ExternalPost;
                 $externalPost->title = [$locale => $this->title];
                 $externalPost->meta_title = [$locale => $this->subTitle];
