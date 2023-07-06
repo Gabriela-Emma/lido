@@ -168,7 +168,6 @@ export default class WalletService {
                 const api = await this.enableWallet(wallet);
                 this.lucid.selectWallet(api);
                 this.api = api;
- 
             }
         } catch (e) {
             console.log({ e });
@@ -259,9 +258,7 @@ export default class WalletService {
             lucid = lucid.selectWallet(api);
             this.lucid = lucid;
             this.poolId = keys.poolId;
-            this.api = api;
-
-                     
+            this.api = api;        
         } catch (e) {
             throw e;
         }
