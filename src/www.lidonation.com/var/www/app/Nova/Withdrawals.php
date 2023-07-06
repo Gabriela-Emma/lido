@@ -63,14 +63,31 @@ class Withdrawals extends Resource
                 ->sortable()
                 ->default('pending')
                 ->rules(['required'])
+                ->filterable()
                 ->options([
                     'minting' => 'Processing',
                     'validated' => 'Validated',
+                    'pending' => 'Pending',
                     'paid' => 'Paid',
                     'minted' => 'Sending',
-                    'burnt' => 'Sent',
+                    'burnt' => 'Burnt',
+                    'sent' => 'Sent',
+                    'hold' => 'Hold',
                 ]),
-            DateTime::make(__('Created At'), 'created_at'),
+
+            DateTime::make(__('Created At'), 'created_at')
+            ->filterable(),
+
+            Text::make('tx')
+                ->filterable(
+                    fn ($request, $query, $value, $attribute) => $query->whereRelation('metas', 'content', $value)
+                )
+                ->displayUsing(function ($value) {
+                    return $this->meta_data?->withdrawal_tx;
+                })
+                ->hideWhenCreating()
+                ->hideWhenUpdating(),
+
             HasMany::make('Metadata', 'metas', Metas::class),
             HasMany::make('Rewards', 'rewards', Rewards::class),
             HasMany::make('Transactions', 'txs', Txs::class),

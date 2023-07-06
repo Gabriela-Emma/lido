@@ -77,7 +77,9 @@ class Metas extends Resource
         $metaFields = [
             ID::make('ID', 'id')->sortable(),
             Text::make(__('Key'), 'key')->sortable(),
-            Markdown::make(__('Content'), 'content'),
+            Markdown::make(__('Content'), 'content')
+            ->showOnIndex()
+            ->filterable(),
             MorphTo::make(__('Type'), 'model')->types([
                 Rating::class,
                 Nfts::class,

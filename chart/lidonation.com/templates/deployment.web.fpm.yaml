@@ -69,11 +69,11 @@ spec:
               command: ["/bin/sleep","5"]
         resources:
           limits:
-            memory: 8192Mi
+            memory: 9216Mi
             cpu: 4
           requests:
             cpu: 120m
-            memory: 512Mi
+            memory: 1024Mi
         envFrom:
           - configMapRef:
               name: "{{ $.Chart.Name }}-configmap"
@@ -83,7 +83,7 @@ spec:
           - name: CONTAINER_ROLE
             value: app
           - name: PHP_MEMORY_LIMIT
-            value: 2048M
+            value: 8192M
           - name: PHP_DISABLED_FUNCTION
             value: "exec, passthru, proc_open, proc_close, shell_exec, show_source, symlink, system"
         ports:

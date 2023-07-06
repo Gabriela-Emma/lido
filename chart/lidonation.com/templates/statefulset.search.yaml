@@ -24,11 +24,11 @@ spec:
           image: getmeili/meilisearch:v1.2.0
           resources:
             limits:
-              memory: 12288Mi
+              memory: 16384Mi
               cpu: 5
             requests:
               cpu: 600m
-              memory: 2048Mi
+              memory: 4096Mi
           envFrom:
             - secretRef:
                 name: "{{ $.Chart.Name }}-search-secret"
