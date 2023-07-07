@@ -10,11 +10,8 @@ use Spatie\Crawler\CrawlProfiles\CrawlInternalUrls;
 
 class IohkPostCrawlerService
 {
-    public function __construct(protected $absoluteUrl, protected $langLocale, protected $baseUrl = 'https://iohk.io')
+    public function __construct(protected $absoluteUrl, protected $lang, protected $baseUrl = 'https://iohk.io')
     {
-        $this->absoluteUrl = $absoluteUrl;
-        $this->lang = $langLocale;
-
         $this->fetchContent();
     }
 
@@ -25,9 +22,6 @@ class IohkPostCrawlerService
      */
     public function fetchContent()
     {
-        //set language locale
-        //  App::setLocale($this->lang);
-
         // Store a piece of data in the session...
         session(['lang-locale' => $this->lang]);
 
