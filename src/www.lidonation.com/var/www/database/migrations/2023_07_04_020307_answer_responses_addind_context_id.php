@@ -17,12 +17,10 @@ return new class extends Migration
      */
     public function up()
     {
-        $epochresponses = AnswerResponse::cursor()->filter(function (AnswerResponse $answerResponse) {
-            return $answerResponse->context_type == EveryEpoch::class;
-        });
+        $epochresponses = AnswerResponse::where('context_type', EveryEpoch::class)->cursor();
+
         foreach ($epochresponses as $response) {
             $epochNumber = $this->convertToEpoch($response->created_at);
-
             $everyEpoch = EveryEpoch::where('epoch', $epochNumber)->first();
 
             if ($everyEpoch instanceof EveryEpoch) {
