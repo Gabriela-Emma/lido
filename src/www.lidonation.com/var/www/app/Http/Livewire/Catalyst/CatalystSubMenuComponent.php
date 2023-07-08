@@ -50,7 +50,9 @@ class CatalystSubMenuComponent extends Component
                 ->filter()
                 ->prepend('proposals');
         } else {
-            $this->routeParts = collect(explode('/', Str::after(url()->current(), 'project-catalyst')))->filter();
+            $this->routeParts =
+            collect(explode('/', Str::after(url()->current(), 'catalyst-explorer')))->filter();
+
         }
 
         $this->path = $this->routeParts->last();
@@ -148,10 +150,10 @@ class CatalystSubMenuComponent extends Component
     protected function buildBreadCrumbs(): static
     {
         $routeName = Str::camel($this->section);
-        if ($this->section && $this->section !== 'dashboard' && Route::has("projectCatalyst.{$routeName}")) {
+        if ($this->section && $this->section !== 'dashboard' && Route::has("catalystExplorer.{$routeName}")) {
             $this->crumbs->push([
                 'label' => Str::title(Str::replace('-', ' ', $this->section)),
-                'link' => route("projectCatalyst.{$routeName}"),
+                'link' => route("catalystExplorer.{$routeName}"),
                 'order' => $this->crumbs->count() + 1,
             ]);
         }
@@ -159,7 +161,7 @@ class CatalystSubMenuComponent extends Component
         if ($this->section === 'proposals' && $this->model) {
             $this->crumbs->push([
                 'label' => 'Funds',
-                'link' => route('projectCatalyst.funds'),
+                'link' => route('catalystExplorer.funds'),
                 'order' => $this->crumbs->count() + 3,
             ]);
             $this->crumbs->push([

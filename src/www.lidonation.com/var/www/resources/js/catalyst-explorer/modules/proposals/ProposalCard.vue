@@ -380,7 +380,7 @@
                             'bg-teal-500': proposal.funding_status === 'funded',
                             'bg-slate-500': proposal.funding_status === 'over_budget',
                             'bg-slate-400': proposal.funding_status === 'not_approved'}">
-                    <div class="text-xs text-slate-200">
+                    <div class="text-xs text-slate-400">
                         {{  $t("Funding Status") }}:
                     </div>
                     <div class="inline-block px-1 py-0 text-xs font-semibold text-white capitalize rounded-sm">

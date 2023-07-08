@@ -10,7 +10,7 @@
                     </a>
                 </li>
                 <li class="flow-root menu-item">
-                    <a class="px-1 py-3 text-white menu-link {{ request()->routeIs('projectCatalyst.funds') ? 'text-yellow-500' : '' }} hover:text-yellow-500"
+                    <a class="px-1 py-3 text-white menu-link {{ request()->routeIs('catalystExplorer.funds') ? 'text-yellow-500' : '' }} hover:text-yellow-500"
                        href="{{localizeRoute('catalystExplorer.funds')}}">
                         {{ $snippets->funds }}
                     </a>
@@ -29,7 +29,7 @@
                     </a>
                 </li>
                 <li class="flow-root menu-item">
-                    <a class="px-1 py-3 text-white menu-link {{ request()->routeIs('projectCatalyst.groups') ? 'text-yellow-500' : '' }} hover:text-yellow-500"
+                    <a class="px-1 py-3 text-white menu-link {{ request()->routeIs('catalystExplorer.groups') ? 'text-yellow-500' : '' }} hover:text-yellow-500"
                         href="{{localizeRoute('catalystExplorer.groups')}}">
                         {{ $snippets->groups }}
                     </a>

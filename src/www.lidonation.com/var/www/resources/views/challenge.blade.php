@@ -19,6 +19,7 @@
     @endpush
 
     @livewire('catalyst.catalyst-sub-menu-component')
+
     <header class="text-white bg-teal-600">
         <div class="container">
             <section class="overflow-visible relative z-0 py-10 min-h-[28rem]">
