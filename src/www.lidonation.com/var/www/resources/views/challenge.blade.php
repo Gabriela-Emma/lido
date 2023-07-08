@@ -1,4 +1,4 @@
-<x-public-layout class="post" :metaTitle="$fund->label">
+<x-public-layout class="challenge" :metaTitle="$fund->label">
     @push('openGraph')
         <meta property="og:type" content="article"/>
         <meta property="og:title" content="{{$fund->label}}"/>

@@ -27,6 +27,8 @@
 </head>
 <body class="rewards">
 
+@include('includes.top-banner')
+
 <x-lido-menu />
 
 @include('includes.global-search-handler')
