@@ -1,4 +1,9 @@
-<li class="flex items-center flow-root h-full menu-item" x-data>
+<li class="items-center h-full gap-2 flex-root menu-item" x-data>
+    <a href="{{url('/catalyst-explorer/proposals?l=24&fs[]=113&t=p')}}" class="inline-flex items-center flex-1 px-4 py-1 mr-3 text-black align-middle menu-link">
+        <span class="px-3 py-1 font-bold text-black border border-black text-md xl:text-lg hover:bg-white">
+            Catalyst Fund 10 is Live!
+        </span>
+    </a>
     <a href="#" @click.prevent="$dispatch('toggle-lido-menu')" class="inline-flex items-center flex-1 menu-link">
         <span class="text-xl font-normal uppercase xl:text-2xl">
             Menu

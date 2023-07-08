@@ -181,3 +181,4 @@ $u\040=\040User::find(354);
 $u->completed_topics
 $u\040=\040User::find(354);
 $u->completed_topics
+config('app.url')
