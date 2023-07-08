@@ -78,8 +78,11 @@ class Metas extends Resource
             ID::make('ID', 'id')->sortable(),
             Text::make(__('Key'), 'key')->sortable(),
             Markdown::make(__('Content'), 'content')
-            ->showOnIndex()
-            ->filterable(),
+                ->displayUsing(function ($content) {
+                    return $content;
+                })
+                ->alwaysShow()
+                ->showOnIndex(),
             MorphTo::make(__('Type'), 'model')->types([
                 Rating::class,
                 Nfts::class,
@@ -88,7 +91,7 @@ class Metas extends Resource
 
         $modelObj = Meta::find(request()->resourceId);
 
-        if (! isset($modelObj)) {
+        if (!isset($modelObj)) {
             return $metaFields;
         }
 
