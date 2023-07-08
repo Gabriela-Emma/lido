@@ -132,7 +132,7 @@ class Rewards extends Resource
                 ->hideWhenCreating()
                 ->hideWhenUpdating(),
 
-            Number::make(__('Amount')),
+            Number::make(__('Amount'))->sortable(),
 
             Markdown::make(__('Memo'), 'memo')->translatable()->alwaysShow(),
 

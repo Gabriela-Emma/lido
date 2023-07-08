@@ -21,3 +21,10 @@ body.proposal #discussions {
 .proposal-drip {
     --plyr-badge-background: #FFF;
 }
+
+
+body.challenge{
+    .menu-item.global-search a > *{
+        @apply text-white border-white hover:text-black;
+    }
+}

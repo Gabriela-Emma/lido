@@ -31,6 +31,8 @@
 </head>
 <body class="earn {{Route::is('earn.learn.*') || Route::is('earn.learn') ? 'learn' : ''}}">
 
+@include('includes.top-banner')
+
 <x-lido-menu/>
 
 @include('includes.global-search-handler')
@@ -43,16 +45,16 @@
     @else
         <section class="container py-16">
             <div class="flex flex-col items-center justify-center">
-                <div class="text-center text-labs-black py-6">
+                <div class="py-6 text-center text-labs-black">
                     <h3 class=" xl:text-4xl">Only Available in Swahili</h3>
                     <p class="max-w-sm mx-auto">
                         Inakuja hivi karibuni is a Blockchain User learning program only available in Swahili.
                     </p>
                 </div>
                 <div
-                    class="bg-gradient-to-b from-teal-900 to-teal-500 w-auto flex flex-col rounded-sm relative overflow-clip">
+                    class="relative flex flex-col w-auto rounded-sm bg-gradient-to-b from-teal-900 to-teal-500 overflow-clip">
                     <div class="flex items-start justify-between p-4 border-b border-teal-200">
-                        <h2 class="font-medium text-gray-300 w-auto brightness-100">
+                        <h2 class="w-auto font-medium text-gray-300 brightness-100">
                             Inakuja hivi karibuni
                         </h2>
                     </div>
@@ -60,13 +62,13 @@
                     <div class="relative min-w-[22rem] lg:min-w-[32rem] max-w-7xl mx-auto p-4">
                         <div class="flex flex-col gap-8 text-slate-100">
                             <div>
-                                <div class="text-white flex gap-4 items-start">
+                                <div class="flex items-start gap-4 text-white">
                                     <div
-                                        class="w-10 h-10 bg-white text-slate-800 rounded-full flex justify-center items-center font-semibold flex-shrink-0">
+                                        class="flex items-center justify-center flex-shrink-0 w-10 h-10 font-semibold bg-white rounded-full text-slate-800">
                                         1
                                     </div>
                                     <div>
-                                        <h2 class="text-white flex gap-2 items-center">
+                                        <h2 class="flex items-center gap-2 text-white">
                                             <span>{{$snippets->learn}}</span>
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                                  stroke-width="1.5" stroke="currentColor"
@@ -85,13 +87,13 @@
                             </div>
 
                             <div>
-                                <div class="text-white flex gap-4 items-start">
+                                <div class="flex items-start gap-4 text-white">
                                     <div
-                                        class="w-10 h-10 bg-white text-slate-800 rounded-full flex justify-center items-center font-semibold flex-shrink-0">
+                                        class="flex items-center justify-center flex-shrink-0 w-10 h-10 font-semibold bg-white rounded-full text-slate-800">
                                         2
                                     </div>
                                     <div>
-                                        <h2 class="text-white flex gap-2 items-center">
+                                        <h2 class="flex items-center gap-2 text-white">
                                     <span>
                                         {{$snippets->quiz}}
                                     </span>
@@ -114,13 +116,13 @@
 
 
                             <div>
-                                <div class="text-white flex gap-4 items-start">
+                                <div class="flex items-start gap-4 text-white">
                                     <div
-                                        class="w-10 h-10 bg-white text-slate-800 rounded-full flex justify-center items-center font-semibold flex-shrink-0">
+                                        class="flex items-center justify-center flex-shrink-0 w-10 h-10 font-semibold bg-white rounded-full text-slate-800">
                                         3
                                     </div>
                                     <div>
-                                        <h2 class="text-white flex gap-2 items-center">
+                                        <h2 class="flex items-center gap-2 text-white">
                                             <span>{{$snippets->earn}}</span>
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                                  stroke-width="1.5" stroke="currentColor"

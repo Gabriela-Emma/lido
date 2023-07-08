@@ -51,6 +51,8 @@
         'class' => 'min-h-screen min-w-[320px] relative text-lg xl:text-xl h-0 font-sans text-gray-900 antialiased w-screen ' . app()->getLocale() . ' ' . implode(' ', explode('.', Route::currentRouteName())) . (\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::user()?->hasAnyRole(['editor','admin', 'super admin']) ? ' logged-in admin ' : '')
     ])}}>
 
+    @include('includes.top-banner')
+
     @include('includes.global-search-handler')
 
     <div class="absolute top-0 right-0 w-screen overflow-hidden pointer-events-none h-130 top-pool-wrapper" id="top-blob">
