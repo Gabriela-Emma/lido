@@ -1,4 +1,4 @@
-<x-public-layout class="post" :metaTitle="$fund->label">
+<x-public-layout class="fund" :metaTitle="$fund->label">
     @push('openGraph')
         <meta property="og:type" content="article"/>
         <meta property="og:title" content="{{$fund->label}}"/>
@@ -8,7 +8,6 @@
         <meta property="og:image:width" content="2048"/>
         <meta property="og:image:height" content="2048"/>
         <meta property="article:publisher" content="{{config('app.name')}}"/>
-        {{--        <meta property="article:author" content="{{$fund->author?->name}}"/>--}}
         <meta property="article:published_time" content="{{$fund->launched_at}}"/>
         <meta property="twitter:card" content="summary_large_image"/>
         <meta property="twitter:title" content="{{$fund->label}}"/>
@@ -22,7 +21,7 @@
 
     <header class="text-white bg-teal-600">
         <div class="container">
-            <section class="overflow-visible relative z-0 py-10">
+            <section class="relative z-0 py-10 overflow-visible">
                 <h1 class='flex flex-row flex-wrap items-end gap-2 mb-6 text-3xl font-bold 2xl:text-5xl decorate light'>
                     <img class="w-10 h-10 rounded-sm lg:w-16 lg:h-16"
                          src="{{$fund->hero_url}}"
