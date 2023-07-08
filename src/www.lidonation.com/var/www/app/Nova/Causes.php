@@ -3,22 +3,24 @@
 namespace App\Nova;
 
 use App\Models\Cause;
-use Ebess\AdvancedNovaMediaLibrary\Fields\Images;
-use Illuminate\Http\Request;
+use Laravel\Nova\Panel;
 use Illuminate\Support\Str;
+use Laravel\Nova\Fields\ID;
+use Illuminate\Http\Request;
 use JetBrains\PhpStorm\Pure;
+use Laravel\Nova\Fields\Slug;
+use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Stack;
+use Laravel\Nova\Fields\Select;
+use Laravel\Nova\Fields\HasMany;
+use App\Nova\Actions\AddMetaData;
+use Laravel\Nova\Fields\DateTime;
+use Laravel\Nova\Fields\Markdown;
+use App\Nova\Actions\EditMetaData;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\BelongsToMany;
-use Laravel\Nova\Fields\DateTime;
-use Laravel\Nova\Fields\HasMany;
-use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\Markdown;
-use Laravel\Nova\Fields\Select;
-use Laravel\Nova\Fields\Slug;
-use Laravel\Nova\Fields\Stack;
-use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Laravel\Nova\Panel;
+use Ebess\AdvancedNovaMediaLibrary\Fields\Images;
 
 //use Spatie\NovaTranslatable\Translatable;
 
@@ -134,7 +136,11 @@ class Causes extends Resource
  public function actions(Request $request): array
  {
      return array_merge([
-         static::getGlobalActions(),
+         static::getGlobalActions(
+            (new AddMetaData),
+            (new EditMetaData(\App\Models\Cause::class)),
+
+         ),
      ]);
  }
 

@@ -30,29 +30,30 @@ class CatalystChallengeComposer
 
         $title = $fund->label;
 
-        $totalProposalsCount = Proposal::where('type', 'challenge')
+        $totalProposalsCount = Proposal::where('type', 'proposal')
             ->where('fund_id', $fund->id)
             ->count();
 
-        $fundedProposalsCount = Proposal::where('type', 'challenge')
+        $fundedProposalsCount = Proposal::where('type', 'proposal')
             ->whereNotNull('funded_at')
             ->where('fund_id', $fund->id)
             ->count();
 
-        $completedProposalsCount = Proposal::where(['status' => 'challenge'])
+        $completedProposalsCount = Proposal::where(['status' => 'proposal'])
             ->where('type', 'proposal')
             ->where('fund_id', $fund->id)
             ->count();
 
-        $totalAmountRequested = Proposal::where('type', 'challenge')
+        $totalAmountRequested = Proposal::where('type', 'proposal')
             ->where('fund_id', $fund->id)
             ->sum('amount_requested');
 
-        $totalAmountAwarded = Proposal::where('type', 'challenge')
+        $totalAmountAwarded = Proposal::where('type', 'proposal')
             ->whereNotNull('funded_at')
             ->where('fund_id', $fund->id)
             ->sum('amount_requested');
 
+  
         $view->with(compact(
             'proposals',
             'title',

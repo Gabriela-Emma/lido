@@ -2,14 +2,12 @@
 
 namespace App\Nova;
 
-use App\Models\CatalystUser;
 use App\Models\Comment;
 use App\Nova\Actions\PublishModel;
 use App\Scopes\PublishedScope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\DateTime;
-use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\Markdown;
 use Laravel\Nova\Fields\MorphTo;
 use Laravel\Nova\Fields\Text;
