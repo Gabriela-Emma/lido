@@ -50,7 +50,9 @@ class CatalystSubMenuComponent extends Component
                 ->filter()
                 ->prepend('proposals');
         } else {
-            $this->routeParts = collect(explode('/', Str::after(url()->current(), 'project-catalyst')))->filter();
+            $this->routeParts =
+            collect(explode('/', Str::after(url()->current(), 'catalyst-explorer')))->filter();
+
         }
 
         $this->path = $this->routeParts->last();
