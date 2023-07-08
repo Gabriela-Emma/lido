@@ -2,6 +2,7 @@
 
 namespace App\Nova;
 
+use App\Nova\Actions\fetchIohkBlog;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class ExternalPost extends Articles
@@ -25,5 +26,18 @@ class ExternalPost extends Articles
         return [
             //
         ];
+    }
+
+    /**
+     * Get the actions available for the resource.
+     */
+    #[Pure]
+    public function actions(NovaRequest $request): array
+    {
+        return array_merge(
+            static::getGlobalActions(),
+            [
+                (new fetchIohkBlog),
+            ]);
     }
 }

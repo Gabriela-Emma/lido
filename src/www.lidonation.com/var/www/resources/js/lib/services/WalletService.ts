@@ -3,7 +3,6 @@ import { Blockfrost, Lucid, Network, Tx } from 'lucid-cardano';
 import { C } from "lucid-cardano";
 import CardanoWallet from "../interfaces/CardanoWallet";
 import BlockfrostKeysService from './BlockfrostKeysService';
-import typhonjs from '@stricahq/typhonjs'
 
 export { };
 declare global {
@@ -177,6 +176,7 @@ export default class WalletService {
     }
 
     protected async enableWallet(wallet: string) {
+
         if (
             typeof window.cardano === "undefined" ||
             !window?.cardano ||
@@ -185,7 +185,7 @@ export default class WalletService {
             return Promise.reject(`${wallet} wallet not installed.`);
         }
         console.log(`${wallet} enabled.`);
-        return window.cardano[wallet]?.enable();
+          return window.cardano[wallet]?.enable();
     }
 
     protected async getDelegateTx(wallet: string) {
@@ -258,7 +258,7 @@ export default class WalletService {
             lucid = lucid.selectWallet(api);
             this.lucid = lucid;
             this.poolId = keys.poolId;
-            this.api = api;
+            this.api = api;        
         } catch (e) {
             throw e;
         }
