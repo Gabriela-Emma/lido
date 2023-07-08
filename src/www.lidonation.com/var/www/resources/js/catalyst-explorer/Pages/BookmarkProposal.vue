@@ -23,11 +23,11 @@
                 <div class="relative">
                     <div class="absolute inset-0 bg-teal-900 h-1/2"></div>
                     <div class="relative px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
-                        <div class="max-w-lg mx-auto rounded-sm shadow-lg lg:max-w-none lg:flex">
+                        <div class="max-w-lg rounded-sm shadow-lg mx-aut56o lg:max-w-none lg:flex">
 
                             <div class="flex-1 bg-teal-500">
                                 <div class="flex flex-col w-full lg:flex-row lg:justify-between">
-                                    <div class="w-full p-4 text-white lg:w-1/2">
+                                    <div class="w-full p-4 text-white">
                                         <div v-if="!bookmarked$">
                                             <div v-if="!creatingAnonymousBookmarks">
                                                 <h3 class="text-xl font-bold text-center text-slate-100 xl:text-2xl sm:tracking-tight">
@@ -107,7 +107,7 @@
                                                     </button>
                                                 </div>
                                             </div>
-                                            <div class="flex flex-col justify-center h-full gap-4" v-else>
+                                            <div class="flex flex-col justify-center gap-4" v-else>
                                                 <div
                                                     class="relative flex flex-col w-full gap-4 border rounded-sm border-slate-300 text-slate-800">
                                                     <div
@@ -207,7 +207,7 @@
                                                     </div>
                                                     <div class="flex justify-end w-full gap-2" v-if="collection$?.items_count > 0">
                                                         <div
-                                                            class="inline-flex items-center items-center rounded-sm py-0.5 pl-2.5 pr-1 text-sm font-medium text-black border border-black">
+                                                            class="inline-flex items-center rounded-sm py-0.5 pl-2.5 pr-1 text-sm font-medium text-black border border-black">
                                                             Items
                                                             <span
                                                                 class="ml-0.5 inline-flex flex-shrink-0 items-center justify-center rounded-full text-black font-bold focus:outline-none">
@@ -217,28 +217,11 @@
                                                     </div>
                                                 </a>
 
-
-                                                <!--                                                <img-->
-                                                <!--                                                    class="flex-none object-cover w-full shadow-xl h-96 rounded-2xl lg:aspect-square lg:h-auto lg:max-w-sm"-->
-                                                <!--                                                    src="https://images.unsplash.com/photo-1519338381761-c7523edc1f46?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80"-->
-                                                <!--                                                    alt=""/>-->
-
                                                 <div class="flex-auto mt-4">
                                                     <h2 class="pl-8 mx-auto text-sm font-bold tracking-tight w-80 text-slate-200 sm:text-lg">
                                                         <span class="text-white">{{ proposal?.title }}</span>
                                                         bookmarked!
                                                     </h2>
-                                                    <!--                                                    <p class="mt-6 text-lg leading-8 text-gray-300">-->
-                                                    <!--                                                        Lorem ipsum dolor sit amet consect adipisicing elit.-->
-                                                    <!--                                                    </p>-->
-                                                    <!--                                                    <ul role="list"-->
-                                                    <!--                                                        class="grid grid-cols-1 mt-10 text-base leading-7 text-white gap-y-3 gap-x-8 sm:grid-cols-2">-->
-                                                    <!--                                                        <li class="flex gap-x-3">-->
-                                                    <!--                                                            <CheckCircleIcon class="flex-none w-5 h-7"-->
-                                                    <!--                                                                             aria-hidden="true"/>-->
-                                                    <!--                                                            Bookmark Saved-->
-                                                    <!--                                                        </li>-->
-                                                    <!--                                                    </ul>-->
                                                 </div>
 
                                                 <div
@@ -263,8 +246,10 @@
                                     </div>
 
                                     <div
-                                        class="flex flex-col items-center justify-center h-full p-4 bg-teal-600 lg:ml-auto lg:w-1/2">
+                                        class="flex flex-col items-center justify-center h-full p-4 bg-teal-600 lg:ml-auto">
+
                                         <Login :show-logo="false" v-if="!user?.id" :embedded="true"/>
+
                                         <div v-else>
                                             <img
                                                 src="https://storage.googleapis.com/www.lidonation.com/8651/conversions/VvemcGIMNQfjogVsxCVKDe4_po5VTjV_wFLGrKU-BaI-preview.jpg"

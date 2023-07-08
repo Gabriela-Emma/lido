@@ -3,6 +3,7 @@
         <LoginForm  :role="'catalyst-explorer'"
                     :showLogo="true"
                    :errors="errors"
+                   :embedded="embedded"
                    @setForm="getForm($event)"
                    @submit="submit"
                    @go-to-register="router.get(`${usePage().props.base_url}/en/catalyst-explorer/register`)"
@@ -14,10 +15,11 @@
 import {router, useForm, usePage} from "@inertiajs/vue3";
 import LoginForm from "../../../global/Shared/Components/LoginForm.vue";
 
-const props = withDefaults(
+withDefaults(
     defineProps<{
         errors?: Object,
-    }>(), {});
+        embedded?: boolean,
+    }>(), {embedded: false});
 
 let form = useForm({})
 
