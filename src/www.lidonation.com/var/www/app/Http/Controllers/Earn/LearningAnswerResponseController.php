@@ -5,8 +5,6 @@ namespace App\Http\Controllers\Earn;
 use App\Models\Nft;
 use App\Models\User;
 use App\Models\Reward;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\LearningTopic;
 use App\Models\AnswerResponse;
@@ -151,7 +149,6 @@ class LearningAnswerResponseController extends Controller
         $userNft = new Nft;
         $originalAttributes = $nftTemplate->getAttributes();
         unset($originalAttributes['id'], $originalAttributes['txs_count']); 
-        // dd($originalAttributes);
         $userNft->setRawAttributes($originalAttributes);
         $userNft-> user_id = Auth::id();
         $userNft->model_type = LearningTopic::class;
