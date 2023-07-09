@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Earn;
 
+use App\Models\Nft;
 use App\Models\User;
 use App\Models\Reward;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\LearningTopic;
@@ -16,7 +18,6 @@ use App\Repositories\AdaRepository;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Enums\LearningAttemptStatuses;
-use App\Models\Nft;
 
 class LearningAnswerResponseController extends Controller
 {
@@ -79,13 +80,14 @@ class LearningAnswerResponseController extends Controller
         $topicNft = $user->nfts()->where([
             'model_id' => $learningTopic->id,
             'model_type' => LearningTopic::class
-        ])->get();
+        ])->first();
+        
         if($topicCompleted && !$topicNft instanceof Nft){
             $this->issueNft($learningTopic, $learningLesson);
             return back()->withInput();
         }
 
-        // issue normal reward
+        //issue normal reward
         $this->issueReward($request, $ans->question_answer_id, $learningLesson);
         return back()->withInput();
     }
@@ -140,18 +142,21 @@ class LearningAnswerResponseController extends Controller
     public function issueNft(LearningTopic $topic, LearningLesson $learningLesson)
     {
         $user = Auth::user();
-        $nftTemplate = $topic->nftTemplate()->first();
+        $nftTemplate = $topic->nftTemplate;
 
         if(!$nftTemplate instanceOf Nft){
             return null;
         }
 
         $userNft = new Nft;
-        $userNft->fill($nftTemplate->toArray());
+        $originalAttributes = $nftTemplate->getAttributes();
+        unset($originalAttributes['id'], $originalAttributes['txs_count']); 
+        // dd($originalAttributes);
+        $userNft->setRawAttributes($originalAttributes);
         $userNft-> user_id = Auth::id();
         $userNft->model_type = LearningTopic::class;
         $userNft->model_id = $topic->id;
-        $userNft->name = $nftTemplate.$topic->nfts->count();
+        $userNft->name = $nftTemplate->name.$topic->nfts->count();
         $userNft->save();
 
         // issue nft reward 

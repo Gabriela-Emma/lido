@@ -86,11 +86,19 @@ class LearningTopic extends Model
         );
     }
 
-    public function nftTemplate(): HasOne
+    // public function nftTemplate(): HasOne
+    // {
+    //     return $this->nfts()->one()->ofMany()->where(
+    //         'metadata->topic_id',$this->id
+    //     );
+    // }
+
+    public function nftTemplate(): Attribute
     {
-        return $this->nftTemplate()->one()->ofMany()->where(
-            Nft::class,
-            'metadata->topic_id'
+        return Attribute::make(
+            get: fn () => $this->nfts()->where(
+            'metadata->topic_id',$this->id
+        )->first()
         );
     }
 
