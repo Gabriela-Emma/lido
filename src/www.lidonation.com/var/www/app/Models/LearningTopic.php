@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Traits\HasHero;
 use App\Models\Traits\HasAuthor;
+use App\Models\Traits\MintsNfts;
 use App\Scopes\OrderByOrderScope;
 use App\Models\Traits\HasMetaData;
 use App\Models\Traits\HasGiveaways;
@@ -26,6 +27,7 @@ class LearningTopic extends Model
         HasTranslations,
         HasTimestamps,
         SoftDeletes;
+        
 
     protected $casts = [
         //        'lessons' => DataCollection::class.':'.LearningTopicData::class,
@@ -89,6 +91,19 @@ class LearningTopic extends Model
         return $this->nftTemplate()->one()->ofMany()->where(
             Nft::class,
             'metadata->topic_id'
+        );
+    }
+
+    public function nfts(): HasMany
+    {
+        return $this->hasMany(Nft::class, 'model_id')
+        ->where('model_type', static::class);
+    }
+
+    public function mintedNfts(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->nfts->count()
         );
     }
 
