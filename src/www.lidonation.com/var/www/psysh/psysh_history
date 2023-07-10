@@ -205,3 +205,9 @@ $p->quick_pitch_id
 exit
 $p\040=\040Proposal::find(5412);
 $p->quick_pitch_id
+Proposal::runCustomIndex();
+exit
+Proposal::runCustomIndex();
+exit
+Proposal::runCustomIndex();
+exit

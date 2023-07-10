@@ -2,31 +2,33 @@ import Repo from "./repo";
 import Fund from "./fund";
 
 export default interface Proposal {
-    id: number;
-    slug: string;
-    title: string;
-    solution: string;
-    problem: string;
-    user_id: number;
-    funding_status: string;
     amount_received: number;
     amount_requested:number;
-    currency: string;
-    no_votes_count: number;
-    yes_votes_count: number;
-    ideascale_link: string;
     ca_rating: number;
-    ratings_count: number;
-    website: string;
-    repos: Repo[];
-    fund?: Fund;
+    currency: string;
+    funding_status: string;
     fund_name?: string;
-    challenge_name?: string;
+    id: number;
+    ideascale_link: string;
+    no_votes_count: number;
+    problem: string;
+    ratings_count: number;
+    slug: string;
+    solution: string;
+    title: string;
+    user_id: number;
     quickpitch?: string;
+    website: string;
+    yes_votes_count: number;
+
+    // relationships
+    challenge?: Fund;
+    fund?: Fund;
     meta_data?: {
         iog_hash?: string;
         quickpitch?: string;
     };
+    repos: Repo[];
     users: {
         id: number;
         name: string;

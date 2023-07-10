@@ -122,12 +122,12 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
             'ideafest_proposal',
             'ca_rating',
             'over_budget',
-            'challenge',
+            'challenge.id',
             'groups',
             'amount_requested',
             'amount_received',
             'paid',
-            'fund',
+            'fund.id',
             'type',
             'users',
             'tags',
@@ -494,13 +494,8 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
             'quickpitch' => $this->quick_pitch_id ?? null,
             'completed' => $this->status === 'complete' ? 1 : 0,
             'over_budget' => $this->status === 'over_budget' ? 1 : 0,
-            'challenge' => $this->fund?->id,
             'currency' => $this->currency,
-            'challenge_label' => $this->fund?->label,
-            'fund' => $this->fund?->parent?->id,
             'groups' => $this->groups,
-            'fund_label' => $this->fund?->parent?->label,
-            'fund_status' => $this->fund?->status,
             'ca_rating' => $this->ratings_average ?? 0.00,
             'amount_requested' => $this->amount_requested ? intval($this->amount_requested) : 0,
             'amount_received' => $this->amount_received ? intval($this->amount_received) : 0,
@@ -509,6 +504,18 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
             'woman_proposal' => $this->is_woman_proposal ? 1 : 0,
             'ideafest_proposal' => $this->is_ideafest_proposal ? 1 : 0,
             'project_length' => $this->meta_data->project_length ?? null,
+            'fund' => [
+                'id' => $this->fund?->parent?->id,
+                'amount' => $this->fund?->parent?->amount ? intval($this->fund?->parent?->amount) : null,
+                'label' => $this->fund?->parent?->label,
+                'status' => $this->fund?->parent->status,
+            ],
+            'challenge' => [
+                'id' =>  $this->fund?->id,
+                'amount' => $this->fund?->amount ? intval($this->fund?->amount) : null,
+                'label' => $this->fund?->label,
+                'status' => $this->fund?->status,
+            ]
         ]);
     }
 

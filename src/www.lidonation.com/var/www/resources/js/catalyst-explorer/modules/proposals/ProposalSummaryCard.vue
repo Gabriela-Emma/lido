@@ -1,6 +1,6 @@
 <template>
     <div
-        class="relative flex flex-col w-full h-full bg-white border divide-y rounded-sm border-slate-100 proposal-drip overflow-clip">
+        class="relative flex flex-col w-full h-full divide-y ">
         <div class="flex flex-col justify-start h-full gap-4 p-4" >
             <transition
                 enter-active-class="transition duration-200 ease-out"
@@ -162,7 +162,13 @@
                     </div>
                 </div>
 
-                <div class="flex flex-row mb-2 text-white flex-nowrap">
+
+                <div>
+                    <ProposalBudget :proposal="proposal" />
+                </div>
+
+
+                <!-- <div class="flex flex-row mb-2 text-white flex-nowrap">
                     <div
                         v-if="proposal.amount_received > 0.00"
                         class="inline-flex text-xs xl:text-lg font-semibold rounded-l-sm py-0.5">
@@ -193,7 +199,7 @@
                             {{  $t("Requested") }}
                         </small>
                     </div>
-                </div>
+                </div> -->
             </header>
 
             <div class="space-y-3 text-sm">
@@ -203,14 +209,18 @@
                     <div v-else v-html="$filters.markdown('**Problem:** ' + proposal.problem)"></div>
                 </div>
                 <div class="flex flex-row flex-wrap items-center gap-2">
-                    <div v-if="proposal.challenge_label" class="inline gap-1">
+                    <div v-if="proposal.challenge.label" class="inline gap-1">
                         <strong>{{  $t("Challenge") }}: </strong>
-                        {{ proposal.challenge_label }}
+                        {{ proposal.challenge.label }}
                     </div>
-                    <div v-if="proposal.fund_label"
+                    <div v-if="proposal.fund.label" class="inline gap-1">
+                        <strong>{{  $t("Fund") }}: </strong>
+                        {{ proposal.fund.label }}
+                    </div>
+                    <!-- <div v-if="proposal.fund.label"
                          class="rounded-sm bg-slate-200 text-xs xl:text-sm text-slate-900 px-2 font-semibold py-0.5 inline gap-1">
-                        {{ proposal.fund_label }}
-                    </div>
+                        {{ proposal.fund.label }}
+                    </div> -->
                 </div>
             </div>
             <div class="space-x-1 italic">
@@ -353,6 +363,7 @@ import { storeToRefs } from "pinia";
 import { Ref } from "@vue/reactivity";
 import { usePeopleStore } from "../../stores/people-store";
 import ProposalStatus from "./partials/ProposalStatus.vue"
+import ProposalBudget from "./ProposalBudget.vue";
 
 const emit = defineEmits<{
     (e: 'quickpitch'): void,
@@ -369,6 +380,7 @@ const props = withDefaults(
         },
     },
 );
+
 
 interface Author {
     id: number;

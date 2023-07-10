@@ -15,17 +15,9 @@
 }
 </style>
 <template>
-    <div>
-        <transition
-                enter-active-class="transition duration-200 ease-out"
-                enter-from-class="translate-y-1 opacity-0"
-                enter-to-class="translate-y-0 opacity-100"
-                leave-active-class="transition duration-150 ease-in"
-                leave-from-class="translate-y-0 opacity-100"
-                leave-to-class="translate-y-1 opacity-0">
-            <ProposalSummaryCard v-if="!quickpitch" @quickpitch="quickpitch = true" :proposal="props.proposal" />
-            <ProposalQuickPitchCard v-else @quickpitch="quickpitch = false" :proposal="props.proposal" />
-        </transition>
+    <div class="relative w-full h-full overflow-hidden bg-white border rounded-sm border-slate-100 proposal-drip">
+        <ProposalSummaryCard v-if="!quickpitch" @quickpitch="quickpitch = true" :proposal="props.proposal" />
+        <ProposalQuickPitchCard v-else @summary="quickpitch = false" :proposal="props.proposal" />
     </div>
 </template>
 
@@ -53,8 +45,6 @@ const props = withDefaults(
     },
 );
 let quickpitch = ref(props.quickpitch);
-
-// computer properties
 
 let isBookmarked:Ref<boolean> = ref()
 
