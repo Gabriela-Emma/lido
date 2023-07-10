@@ -82,7 +82,10 @@ class Metas extends Resource
             Markdown::make(__('Content'), 'content')
                 ->alwaysShow()
                 ->hideFromIndex(),
-            Text::make(__('Value'), 'content')->onlyOnIndex(),
+            Text::make(__('Value'), 'content')
+            ->onlyOnIndex()
+            ->filterable()
+            ->sortable(),
             MorphTo::make(__('Type'), 'model')->types([
                 Articles::class,
                 AnswerResponses::class,

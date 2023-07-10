@@ -1,7 +1,7 @@
 <template>
     <div class="bg-slate-100 login-form-wrapper">
         <LoginForm  :role="'catalyst-explorer'"
-                    :showLogo="true"
+                    :showLogo="showLogo"
                    :errors="errors"
                    :embedded="embedded"
                    @setForm="getForm($event)"
@@ -19,7 +19,8 @@ withDefaults(
     defineProps<{
         errors?: Object,
         embedded?: boolean,
-    }>(), {embedded: false});
+        showLogo?: boolean,
+    }>(), {embedded: false, showLogo:true});
 
 let form = useForm({})
 

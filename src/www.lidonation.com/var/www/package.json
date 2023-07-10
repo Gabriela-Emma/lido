@@ -122,6 +122,7 @@
         "vue": "^3.2.36",
         "vue-chartjs": "^5.2.0",
         "vue-i18n": "^9.2.2",
+        "vue-plyr": "^7.0.0",
         "vue-timeago3": "^2.3.0",
         "vue3-easy-data-table": "^1.5.32"
     }

@@ -136,7 +136,6 @@
                                     <button
                                         type="button"
                                         class="relative inline-flex items-center px-2 py-1 -ml-px text-sm font-medium text-white bg-white bg-pink-700 border border-pink-300 rounded-r-sm group-hover:bg-pink-600 focus:z-10 focus:outline-none">
-                                        <span class="min-w-[1.45rem]" x-text="getBookmarkCount()"></span>
                                     </button>
                                 </span>
                         </a>
@@ -195,7 +194,6 @@
                                     <button
                                         type="button"
                                         class="relative inline-flex items-center px-2 py-1 -ml-px text-sm font-medium text-white bg-white bg-pink-700 border border-pink-300 rounded-r-sm group-hover:bg-pink-600 focus:z-10 focus:outline-none">
-                                        <span class="min-w-[1.45rem]" x-text="getBookmarkCount()"></span>
                                     </button>
                                     </span>
                         </a>

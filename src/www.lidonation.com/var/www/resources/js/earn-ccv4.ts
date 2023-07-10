@@ -6,7 +6,7 @@ import WalletService from "./lib/services/WalletService";
 import {C, Cardano} from "lucid-cardano";
 import CardanoService from "./lib/services/CardanoService";
 import {Axios, AxiosError} from "axios";
-import {globalVideoPlayer} from "./lib/utils/globalVideoPlayer";
+import Plyr from 'plyr';
 export {};
 declare global {
     interface Window {
@@ -24,7 +24,7 @@ Alpine.data('earnCcv4', function () {
     return {
         cardanoService: null,
         environment: 'test',
-        
+
         wallet: null,
         stakeAddress: null,
         walletAddress: null,
@@ -95,7 +95,7 @@ Alpine.data('earnCcv4', function () {
                 account: this.stakeAddress,
             };
             const params = new URLSearchParams(payload).toString();
-            
+
             const res = await window.axios.get(`/api/ccv4/check-eligibility?` + params);
             if (res?.data) {
                 this.withdrawalCardanoScanLinks = res?.data?.rewards?.withdrawal_txs.map((tx) => this.cardanoScanRelativeUrl + tx) ?? [];
@@ -109,7 +109,7 @@ Alpine.data('earnCcv4', function () {
                 'account': this.stakeAddress,
                 'wallet_address': this.walletAddress
             });
-            
+
             if (res?.data.rewards) {
                 this.rewards = res?.data.rewards;
             } else {

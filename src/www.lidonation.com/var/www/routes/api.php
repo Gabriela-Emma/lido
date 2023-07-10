@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\CatalystExplorer;
+use App\Http\Controllers\Api\CatalystExplorer\ProposalController;
 use App\Http\Controllers\Api\Nfts\LidoMinuteNftsController;
 use App\Http\Controllers\Api\Partners\PartnersController;
 use App\Http\Controllers\Api\Phuffycoin\PhuffycoinController;
@@ -16,7 +17,6 @@ use App\Http\Controllers\QuestionResponseController;
 use App\Http\Controllers\RewardController;
 use App\Http\Controllers\SnippetController;
 use App\Models\Catalyst\Ccv4BallotChoice;
-use App\Models\EveryEpoch;
 use App\Models\Giveaway;
 use App\Models\Reward;
 use App\Models\User;
@@ -333,8 +333,21 @@ Route::prefix('catalyst-explorer')->as('catalystExplorerApi.')
         Route::post('/user', [CatalystExplorer\UserController::class, 'update']);
 
         Route::get('/branches', [CatalystExplorer\RepoController::class, 'getBranches']);
-        Route::post('proposal/repo', [CatalystExplorer\RepoController::class, 'saveRepo']);
+
+        Route::post('proposal/repo', [CatalystExplorer\RepoController::class, 'store']);
         Route::patch('proposal/repo', [CatalystExplorer\RepoController::class, 'updateRepo']);
+
+        Route::prefix('proposals')->as('proposals.')->group(function () {
+            Route::post('/login', [CatalystExplorer\UserController::class, 'login']);
+
+            Route::prefix('/{proposal:id}')->group(function () {
+                Route::post('/repo', [CatalystExplorer\RepoController::class, 'store'])
+                ->name('storeRepo');
+
+                Route::post('/quickpitch', [ProposalController::class, 'storeQuickpitch'])
+                ->name('storeQuickpitch');
+            });
+        });
 
         Route::post('/react/report/{catalystReport:id}', [CatalystExplorer\ReportController::class, 'createReaction']);
 
