@@ -165,7 +165,7 @@ class LearningAnswerResponseController extends Controller
         $reward->model_id = $learningLesson->id;
         $reward->model_type = LearningLesson::class;
         $reward->asset = $userNft->name ;
-        $reward->asset_type = $nftTemplate->metadata['policy_id'];
+        $reward->asset_type = $nftTemplate->policy;
         $reward->amount = 1;
         $reward->status = 'issued';
         $reward->stake_address = $user->wallet_stake_address;
