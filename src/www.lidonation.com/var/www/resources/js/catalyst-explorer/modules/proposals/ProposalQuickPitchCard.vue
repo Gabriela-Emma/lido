@@ -14,7 +14,7 @@
         </transition>
     </div>
 
-    <h2 class="flex items-start justify-between h-24 pr-6 overflow-clip line-clamp-3">
+    <h2 class="flex items-start justify-between h-24 pr-6 xl:pr-8 overflow-clip line-clamp-3">
         <span>
             <a class="font-medium text-gray-800 text-md"
                 target="_blank"
