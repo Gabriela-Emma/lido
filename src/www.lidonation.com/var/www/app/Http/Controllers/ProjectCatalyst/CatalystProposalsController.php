@@ -389,12 +389,12 @@ class CatalystProposalsController extends Controller
 
         // filter by fund
         if ($this->fundsFilter->isNotEmpty()) {
-            $_options[] = '('.$this->fundsFilter->map(fn ($f) => "fund = {$f}")->implode(' OR ').')';
+            $_options[] = '('.$this->fundsFilter->map(fn ($f) => "fund.id = {$f}")->implode(' OR ').')';
         }
 
         // filter by challenge
         if ($this->challengesFilter->isNotEmpty()) {
-            $_options[] = '('.$this->challengesFilter->map(fn ($c) => "challenge = {$c}")->implode(' OR ').')';
+            $_options[] = '('.$this->challengesFilter->map(fn ($c) => "challenge.id = {$c}")->implode(' OR ').')';
         }
 
         // filter by tags
