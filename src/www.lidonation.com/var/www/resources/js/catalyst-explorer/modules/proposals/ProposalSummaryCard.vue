@@ -4,7 +4,7 @@
         <div class="flex flex-col justify-start h-full gap-4 p-4">
             <header class="flex flex-col justify-center gap-y-1">
                 <div class="relative flex justify-between gap-4">
-                    <h2 class="flex items-start justify-between h-24 pr-6 overflow-clip line-clamp-3">
+                    <h2 class="flex items-start justify-between h-24 pr-6 xl:pr-8 overflow-clip line-clamp-3">
                         <span>
                             <a class="font-medium text-gray-800 text-md"
                                target="_blank"

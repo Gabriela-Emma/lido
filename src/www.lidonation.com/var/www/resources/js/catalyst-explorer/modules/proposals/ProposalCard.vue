@@ -1,19 +1,3 @@
-<style scoped lang="scss">
-.proposal-drip {
-    .drip-content p {
-        @apply mt-0 inline;
-        display: inline;
-    }
-
-    .drip-content img{
-        display: none !important;
-    }
-
-    .drip-content strong {
-        font-weight: normal !important;
-    }
-}
-</style>
 <template>
     <div class="relative w-full h-full overflow-hidden bg-white border rounded-sm border-slate-100 proposal-drip">
         <ProposalUserQuickView v-if="profileQuickView"

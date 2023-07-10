@@ -1,7 +1,7 @@
 <template>
     <div class="flex flex-col gap-2">
-        <div class="grid flex-1 h-4 rounded-md bg-slate-400 grid-cols-100">
-            <div class="h-4 p-1 text-xs font-semibold bg-teal-600 rounded-md rounded-l-sm text-teal-light-800"
+        <div class="grid flex-1 h-3 rounded-md bg-slate-400 grid-cols-100">
+            <div class="h-3 p-1 text-xs font-semibold bg-teal-600 rounded-l-md text-teal-light-800"
                 :style="{  gridColumn: `span ${Math.ceil(challengePercentage)} / span ${Math.ceil(challengePercentage)}`, }"></div>
         </div>
         <div class="flex justify-between gap-4 text-sm flex-nowrap">
