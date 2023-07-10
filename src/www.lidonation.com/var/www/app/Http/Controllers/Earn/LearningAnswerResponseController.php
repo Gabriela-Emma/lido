@@ -148,7 +148,10 @@ class LearningAnswerResponseController extends Controller
 
         $userNft = new Nft;
         $originalAttributes = $nftTemplate->getAttributes();
-        unset($originalAttributes['id'], $originalAttributes['txs_count']); 
+        unset($originalAttributes['id'], $originalAttributes['txs_count']);
+        $metadata = json_decode($originalAttributes['metadata'], true);
+        unset($metadata['topic_id']);
+        $originalAttributes['metadata'] = json_encode($metadata);
         $userNft->setRawAttributes($originalAttributes);
         $userNft-> user_id = Auth::id();
         $userNft->model_type = LearningTopic::class;
