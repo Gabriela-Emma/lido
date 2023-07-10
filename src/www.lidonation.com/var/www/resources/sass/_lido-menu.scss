@@ -1,6 +1,6 @@
 .lido-menu-wrapper {
     .lido-menu-wrapper-modal{
-        @apply top-20;
+        @apply top-24;
     }
 
     .lido-earn {
@@ -35,7 +35,7 @@
 body.delegators {
     .lido-menu-wrapper {
         .lido-menu-wrapper-modal {
-            @apply top-32;
+            @apply top-36;
         }
     }
 }
@@ -43,7 +43,7 @@ body.delegators {
 body.logged-in.admin {
     .lido-menu-wrapper {
         .lido-menu-wrapper-modal {
-            @apply top-32;
+            @apply top-36;
         }
     }
 }
@@ -67,7 +67,7 @@ body.logged-in.admin {
 body.projectCatalyst, body.proposal {
     .lido-menu-wrapper {
         .lido-menu-wrapper-modal {
-            @apply top-32;
+            @apply top-36;
         }
     }
 }
@@ -76,7 +76,7 @@ body.projectCatalyst, body.proposal {
 body.projectCatalyst, body.earn {
     .lido-menu-wrapper {
         .lido-menu-wrapper-modal {
-            @apply top-32;
+            @apply top-36;
         }
     }
 }

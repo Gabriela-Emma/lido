@@ -24,8 +24,6 @@ export class LidoMinuteController {
         const policyId: PolicyId = lucid.utils.mintingPolicyToId(mintingPolicy);
         const unit: Unit = policyId + toText(nft.key);
 
-        // console.log({policyId, unit, metadata: nft.metadata, files: nft.metadata.files});
-
         const tx = await lucid
             .newTx()
             .payToAddress(nft.owner, {lovelace: BigInt(2000000), [unit]: 1n })

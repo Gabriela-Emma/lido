@@ -22,8 +22,10 @@ export default interface Proposal {
     fund?: Fund;
     fund_name?: string;
     challenge_name?: string;
+    quickpitch?: string;
     meta_data?: {
-        iog_hash: string;
+        iog_hash?: string;
+        quickpitch?: string;
     };
     users: {
         id: number;

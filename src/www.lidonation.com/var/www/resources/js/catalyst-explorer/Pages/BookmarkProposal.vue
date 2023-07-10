@@ -248,7 +248,7 @@
                                     <div
                                         class="flex flex-col items-center justify-center h-full p-4 bg-teal-600 lg:ml-auto">
 
-                                        <Login :show-logo="false" v-if="!user?.id" :embedded="true"/>
+                                        <Login :show-logo="false" v-if="!user?.id" :embedded="true" :showLogo="false" />
 
                                         <div v-else>
                                             <img

@@ -214,6 +214,13 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
         return false;
     }
 
+    public function quickpitch(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => $this->meta_data?->quick_pitch ?? null,
+        );
+    }
+
     public function currency(): Attribute
     {
         return Attribute::make(
@@ -285,9 +292,13 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
         );
     }
 
-    public function getQuickPitchIdAttribute()
+    public function quickPitchId(): Attribute
     {
-        return collect(explode('/', $this->meta_data?->quick_pitch))?->last();
+        return Attribute::make(
+            get: fn () => collect(
+                    explode('/', $this->meta_data?->quickpitch)
+                )?->last()
+        );
     }
 
     public function getQuickPitchAttribute()
@@ -480,6 +491,7 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
         return array_merge($array, [
             'funded' => (bool) $this->funded_at ? 1 : 0,
             'has_quick_pitch' => (bool) $this->quick_pitch ? 1 : 0,
+            'quickpitch' => $this->quick_pitch_id ?? null,
             'completed' => $this->status === 'complete' ? 1 : 0,
             'over_budget' => $this->status === 'over_budget' ? 1 : 0,
             'challenge' => $this->fund?->id,

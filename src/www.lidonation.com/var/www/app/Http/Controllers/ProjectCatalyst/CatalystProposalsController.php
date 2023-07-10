@@ -316,6 +316,7 @@ class CatalystProposalsController extends Controller
                     'no_votes_count',
                     'paid',
                     'problem',
+                    'quickpitch',
                     'solution',
                     'status',
                     'website',

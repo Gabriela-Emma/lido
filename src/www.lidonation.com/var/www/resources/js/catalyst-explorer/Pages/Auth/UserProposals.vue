@@ -4,43 +4,45 @@
     <section class="py-16 bg-primary-20">
         <div class="container">
             <div class="lg:grid lg:grid-cols-12 lg:gap-x-5">
-                <aside class="py-6 px-2 sm:px-6 lg:col-span-3 xl:col-span-2 lg:py-0 lg:px-0">
-                    <UserNav/>
+                <aside class="px-2 py-6 sm:px-6 lg:col-span-3 xl:col-span-2 lg:py-0 lg:px-0">
+                    <UserNav :crumbs="crumbs" />
                 </aside>
 
                 <div class="lg:col-span-9 xl:col-span-10">
-                    <div class="flex flex-row  w-full justify-between items-center bg-white  mb-4 py-2 px-6 ">
-                        <div class="flex-0 py-4">
+                    <div class="flex flex-row items-center justify-between w-full px-6 py-2 mb-4 bg-white ">
+                        <div class="py-4 flex-0">
                             <h2 class="text-bold text-slate-900">{{ $t("Amount Summary") }}</h2>
                         </div>
                         <div class="flex justify-between flex-1 px-6">
-                            <div class="flex flex-1 flex-col p-2">
-                                <dd class="order-1 text-center xl:text-lg font-semibold text-slate-900">
-                                    {{ $filters.currency(totalDistributed) }}
-                                </dd>
-                                <dt class="order-2 text-xs  text-center md:text-sm font-semibold text-slate-500">
-                                    {{ $t("Distributed") }}
-                                </dt>
-                            </div>
-                            <div class="flex flex-1 flex-col p-2">
-                                <dd class="order-1 text-center xl:text-lg font-semibold text-slate-900 ">
+                            <div class="flex flex-col flex-1 p-2">
+                                <dd class="order-1 font-semibold text-center xl:text-lg text-slate-900 ">
                                     {{ $filters.currency(totalRemaining) }}
                                 </dd>
-                                <dt class="order-2 text-xs text-center md:text-sm  font-semibold text-slate-500">
+                                <dt class="order-2 text-xs font-semibold text-center md:text-sm text-slate-500">
                                     {{ $t("Remaining") }}
                                 </dt>
                             </div>
-                            <div class="flex flex-1 flex-col p-2">
-                                <dd class="order-1 text-center xl:text-lg font-semibold text-slate-900 ">
+
+                            <div class="flex flex-col flex-1 p-2">
+                                <dd class="order-1 font-semibold text-center xl:text-lg text-slate-900">
+                                    {{ $filters.currency(totalDistributed) }}
+                                </dd>
+                                <dt class="order-2 text-xs font-semibold text-center md:text-sm text-slate-500">
+                                    {{ $t("Distributed") }}
+                                </dt>
+                            </div>
+
+                            <div class="flex flex-col flex-1 p-2">
+                                <dd class="order-1 font-semibold text-center xl:text-lg text-slate-900 ">
                                     {{ $filters.currency(budgetSummary) }}
                                 </dd>
-                                <dt class="order-2 text-center text-xs md:text-sm  font-semibold text-slate-500">
+                                <dt class="order-2 text-xs font-semibold text-center md:text-sm text-slate-500">
                                     {{ $t("Awarded") }}
                                 </dt>
                             </div>
                         </div>
                     </div>
-                    <div class="space-y-6 sm:px-6  bg-white p-6">
+                    <div class="p-6 space-y-6 bg-white sm:px-6">
                         <div class="">
                             <div class="flex items-center justify-between">
                                 <div class="">
@@ -69,7 +71,7 @@
                             </div>
 
                             <div
-                                class="-mx-4 mt-8 overflow-hidden ring-1 ring-black ring-opacity-5 sm:-mx-6 md:mx-0 md:rounded-sm">
+                                class="mt-8 -mx-4 overflow-hidden ring-1 ring-black ring-opacity-5 sm:-mx-6 md:mx-0 md:rounded-sm">
                                 <table class="min-w-full divide-y divide-slate-300">
                                     <thead class="bg-slate-50">
                                     <tr>
@@ -78,13 +80,14 @@
                                             {{ $t("Title") }}
                                         </th>
                                         <th scope="col"
-                                            class="hidden px-3 py-3.5 text-left text-sm font-semibold text-slate-900 lg:table-cell">
-                                            $ {{ $t("Distributed") }}
-                                        </th>
-                                        <th scope="col"
                                             class="hidden px-3 py-3.5 text-left text-sm font-semibold text-slate-900 sm:table-cell">
                                             $ {{ $t("Remaining") }}
                                         </th>
+                                        <th scope="col"
+                                            class="hidden px-3 py-3.5 text-left text-sm font-semibold text-slate-900 lg:table-cell">
+                                            $ {{ $t("Distributed") }}
+                                        </th>
+
                                         <th scope="col"
                                             class="px-3 py-3.5 text-left text-sm font-semibold text-slate-900">
                                             {{ $t("Total Budget") }}
@@ -94,9 +97,12 @@
                                         </th>
                                     </tr>
                                     </thead>
-                                    <tbody class="divide-y divide-slate-200 bg-white">
-                                    <tr v-for="proposal in proposals?.data">
-                                        <td class="w-full max-w-0 py-4 pl-4 pr-3 text-sm font-medium text-slate-900 sm:w-auto sm:max-w-none sm:pl-6">
+                                    <tbody class="bg-white divide-y divide-slate-200 text-slate-900">
+                                    <tr v-for="proposal in proposals?.data" :class="{
+                                            'text-slate-500': proposal.funding_status !== 'funded',
+                                            'font-medium': proposal.funding_status === 'funded'
+                                        }">
+                                        <td class="w-full py-4 pl-4 pr-3 text-sm max-w-0 sm:w-auto sm:max-w-none sm:pl-6">
                                             {{ proposal.title }}
                                             <dl class="font-normal lg:hidden">
                                                 <dt class="sr-only">{{ $t("Distributed") }}</dt>
@@ -111,18 +117,28 @@
                                                 </dd>
                                             </dl>
                                         </td>
-                                        <td class="hidden px-3 py-4 text-sm text-slate-500 lg:table-cell">
-                                            {{ $filters.currency(proposal.amount_received) }}
-                                        </td>
-                                        <td class="hidden px-3 py-4 text-sm text-slate-500 sm:table-cell">
+
+                                        <!-- Remaining -->
+                                        <td class="hidden px-3 py-4 text-sm sm:table-cell">
+                                            <span v-if="proposal.funding_status === 'funded'">
                                             {{
                                                 $filters.currency(proposal.amount_requested - proposal.amount_received)
                                             }}
+                                            </span>
+                                            <span v-else>{{ $t("Not funded") }}</span>
                                         </td>
-                                        <td class="px-3 py-4 text-sm text-slate-500">
+
+                                        <td class="hidden px-3 py-4 text-sm lg:table-cell">
+                                            <span v-if="proposal.funding_status === 'funded'">
+                                                {{ $filters.currency(proposal.amount_received) }}
+                                            </span>
+                                            <span v-else>{{ $t("Not funded") }}</span>
+                                        </td>
+
+                                        <td class="px-3 py-4 text-sm">
                                             {{ $filters.currency(proposal.amount_requested) }}
                                         </td>
-                                        <td class="py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+                                        <td class="py-4 pl-3 pr-4 text-sm text-right sm:pr-6">
                                             <Link
                                                 :href="$utils.localizeRoute(`catalyst-explorer/my/proposals/${proposal.id}`)"
                                                 class="text-teal-600 hover:text-teal-900">{{ $t("Manage") }}<span
@@ -132,7 +148,7 @@
 
                                     </tbody>
                                 </table>
-                                <div class="flex my-16 gap-16 xl:gap-24 justify-between  w-full">
+                                <div class="flex justify-between w-full gap-16 my-16 xl:gap-24">
                                     <div class="flex-1 w-full px-6">
                                         <Pagination :links="props.proposals.links"
                                                     :per-page="props.perPage"
@@ -173,6 +189,7 @@ const props = withDefaults(
         budgetSummary: number,
         currPage?: number,
         perPage?: number,
+        crumbs: [],
         proposals: {
             links: [],
             total: number,

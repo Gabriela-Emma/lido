@@ -17,6 +17,7 @@ import {contrastColor} from "./lib/utils/contrastColor";
 let messages = require('../../storage/app/snippets.json');
 const axios = require('axios');
 
+
 //cache snippets to disk
 axios.get(`${window.location.origin}/api/cache/snippets`);
 
