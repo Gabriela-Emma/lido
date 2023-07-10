@@ -10,7 +10,7 @@
                     Budget
                 </span>
                 <span class="font-bold text-md xl:text-lg">
-                    {{ $filters.currency(proposal.amount_received, proposal.currency) }} ({{ challengePercentage.toFixed(2) }}%)
+                    {{ $filters.currency(proposal.amount_requested, proposal.currency) }} ({{ challengePercentage.toFixed(2) }}%)
                 </span>
             </div>
             <div class="flex gap-2">
