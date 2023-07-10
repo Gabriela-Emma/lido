@@ -28,9 +28,9 @@
         <ProposalBudget v-if="proposal" :proposal="proposal" />
     </div>
 
-    <div class="relative z-0 flex flex-row-reverse mt-auto -space-x-1">
+    <div class="relative z-0 flex flex-row-reverse px-4 -space-x-1">
         <div class="mr-auto" v-for="(author, index) in authors">
-            <button class="w-10 h-10 rounded-full" @click="handleProfileQuickView(author)">
+            <button class="w-10 h-10 rounded-full" @click="emit('profileQuickView', author)">
                 <img
                     v-if="index === 0"
                     class="h-10 w-10 relative -left-2 z-{{index}} inline-block h-10 w-10 rounded-full ring-2 ring-white"
@@ -78,7 +78,8 @@ const props = withDefaults(
 );
 
 const emit = defineEmits<{
-    (e: 'summary'): void
+    (e: 'summary'): void,
+    (e: 'profileQuickView', profile: Author): void,
 }>();
 
 interface Author {
@@ -107,7 +108,4 @@ let handleProfileQuickView  = (user: Author) => {
 }
 
 const peopleStore = usePeopleStore();
-let handleFilterToUserProposals = (user: Author) => {
-    peopleStore.select([user.id]);
-}
 </script>

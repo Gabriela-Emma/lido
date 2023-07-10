@@ -1,129 +1,7 @@
 <template>
     <div
         class="relative flex flex-col w-full h-full divide-y ">
-        <div class="flex flex-col justify-start h-full gap-4 p-4" >
-            <transition
-                enter-active-class="transition duration-200 ease-out"
-                enter-from-class="translate-y-1 opacity-0"
-                enter-to-class="translate-y-0 opacity-100"
-                leave-active-class="transition duration-150 ease-in"
-                leave-from-class="translate-y-0 opacity-100"
-                leave-to-class="translate-y-1 opacity-0">
-
-                <div class="absolute z-10 w-full h-full px-4 transform -translate-x-1/2 -translate-y-4 left-1/2 sm:px-0 bg-white/90" v-if="profileQuickView">
-                    <div class="overflow-hidden rounded-sm shadow-xs ring-1 ring-black/5">
-                        <div class="relative flex gap-3 p-2 pt-16 text-white bg-teal-600 shadow-sm">
-                            <div class="absolute top-0 flex justify-end w-full h-16 px-5 py-3">
-                                <button type="button" @click="profileQuickView = null"
-                                        class="flex justify-center w-10 h-10 p-2 text-white rounded-lg shadow-sm bg-slate-600 hover:bg-slate-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-600">
-                                    <XMarkIcon class="w-5 h-5" aria-hidden="true" />
-                                </button>
-                            </div>
-                            <div class="flex items-center justify-center w-12 h-12 bg-white rounded-full">
-                                <img
-                                    class="relative inline-block w-10 h-10 rounded-full ring-2 ring-white"
-                                    :src="profileQuickView?.profile_photo_url"
-                                    :alt="`${profileQuickView?.name} gravatar`"/>
-                            </div>
-                            <div class="flex flex-0">
-                                <h3 class="text-md md:text-xl">{{ profileQuickView?.name }}</h3>
-                            </div>
-                        </div>
-
-                        <div class="relative flex flex-col gap-4 bg-white p-7">
-                            <a :href="$utils.localizeRoute(`project-catalyst/users/${profileQuickView.username}`)" target="_blank"
-                                class="flex items-center p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-gray-50 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50">
-                                <div class="flex items-center justify-center w-10 h-10 text-white shrink-0 sm:h-12 sm:w-12">
-                                    <LinkIcon class="w-5 h-5 text-slate-700"
-                                    :class="{
-                                        'hover:text-slate-400':isBookmarked,
-                                        'group-hover:text-teal-900':!isBookmarked
-                                    }"
-                                    aria-hidden="true" />
-                                </div>
-                                <div class="ml-4">
-                                    <div class="text-sm font-medium text-gray-900">
-                                        LIDO Profile
-                                    </div>
-                                    <p class="text-sm text-gray-500">
-                                        View Full Profile
-                                    </p>
-                                </div>
-                            </a>
-
-
-                            <a :href="`https://cardano.ideascale.com/c/profile/${profileQuickView.ideascale_id}/`" target="_blank"
-                                class="flex items-center p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-gray-50 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50">
-                                <div class="flex items-center justify-center w-10 h-10 text-white shrink-0 sm:h-12 sm:w-12">
-                                    <img class="rounded-sm w-7 h-7"
-                                        :src="$utils.assetUrl('img/ideascale-logo.png')"
-                                        alt="Ideascale logo">
-                                </div>
-                                <div class="ml-4">
-                                    <div class="text-sm font-medium text-gray-900">
-                                        Ideascale Profile
-                                    </div>
-                                    <p class="text-sm text-gray-500">
-                                        View & Contact user on Ideascale
-                                    </p>
-                                </div>
-                            </a>
-                        </div>
-
-                        <div class="grid grid-cols-3 p-4 text-left gap-y-3 bg-gray-50">
-                            <div class="flex flex-col items-start justify-between p-2">
-                                <span class="flex justify-start text-xs font-medium text-gray-900">
-                                    <span class="inline-flex">F10 Primary Proposals</span>
-                                </span>
-                                <span class="block text-xs text-gray-500">
-                                    Coming Soon...
-                                </span>
-                            </div>
-                            <div class="flex flex-col items-start justify-between p-2">
-                                <span class="flex justify-start text-xs font-medium text-gray-900">
-                                    <span class="indline-flex">F10 Co-proposing</span>
-                                </span>
-                                <span class="block text-xs text-gray-500">
-                                    Coming Soon...
-                                </span>
-                            </div>
-                            <div class="flex flex-col items-start justify-between p-2">
-                                <span class="flex justify-start text-xs font-medium text-gray-900">
-                                    <span>Completed Proposals</span>
-                                </span>
-                                <span class="block text-xs text-gray-500">
-                                    Coming Soon...
-                                </span>
-                            </div>
-                            <div class="flex flex-col items-start justify-between p-2">
-                                <span class="flex justify-start text-xs font-medium text-gray-900">
-                                    <span>Outstanding Proposals</span>
-                                </span>
-                                <span class="block text-xs text-gray-500">
-                                    Coming Soon...
-                                </span>
-                            </div>
-
-                            <div class="flex flex-col items-start justify-between p-2">
-                                <span class="flex justify-start text-xs font-medium text-gray-900">
-                                    <span>Outstanding Co-Proposals</span>
-                                </span>
-                                <span class="block text-xs text-gray-500">
-                                    Coming Soon...
-                                </span>
-                            </div>
-
-                            <button @click="handleFilterToUserProposals(profileQuickView)" class="flex flex-col items-start justify-center h-full p-2 text-center text-white bg-teal-700 rounded-sm hover:cursor-pointer hover:shadow-md hover:bg-teal-500">
-                                <span class="text-xs">
-                                    See all {{profileQuickView.username || 'user'}}'s proposals.
-                                </span>
-                            </button>
-
-                        </div>
-                    </div>
-                </div>
-            </transition>
-
+        <div class="flex flex-col justify-start h-full gap-4 p-4">
             <header class="flex flex-col justify-center gap-y-1">
                 <div class="relative flex justify-between gap-4">
                     <h2 class="flex items-start justify-between h-24 pr-6 overflow-clip line-clamp-3">
@@ -162,44 +40,9 @@
                     </div>
                 </div>
 
-
                 <div>
                     <ProposalBudget :proposal="proposal" />
                 </div>
-
-
-                <!-- <div class="flex flex-row mb-2 text-white flex-nowrap">
-                    <div
-                        v-if="proposal.amount_received > 0.00"
-                        class="inline-flex text-xs xl:text-lg font-semibold rounded-l-sm py-0.5">
-                        <div class="px-1 py-1.5 pb-4 bg-accent-800">
-                            {{ $filters.currency(proposal.amount_received, proposal.currency) }}
-                            <sub class="text-gray-200 block mt-0.5 italic">
-                                {{  $t("Distributed") }}
-                            </sub>
-                        </div>
-
-                        <div class="px-3 py-1.5 text-sm xl:text-md bg-accent-900 inline-flex items-center"
-                             v-if="(proposal.amount_requested - proposal.amount_received) === 0">
-                            {{  $t("Fully") }}<br/>
-                            {{  $t("Paid") }}
-                        </div>
-                        <div class="px-1 py-1.5 bg-accent-900" v-else>
-                            {{ $filters.currency(proposal.amount_requested - proposal.amount_received, proposal.currency) }}
-                            <sub class="text-gray-200 block mt-0.5 italic">
-                                {{  $t("Remaining") }}
-                            </sub>
-                        </div>
-                    </div>
-
-                    <div
-                        class="flex flex-col justify-center items-start p-1.5 text-xs xl:text-lg leading-3 font-semibold rounded-r-sm bg-teal-800">
-                        <div>{{ $filters.currency(proposal.amount_requested, proposal.currency) }}</div>
-                        <small class="block text-sm italic text-gray-200">
-                            {{  $t("Requested") }}
-                        </small>
-                    </div>
-                </div> -->
             </header>
 
             <div class="space-y-3 text-sm">
@@ -217,10 +60,6 @@
                         <strong>{{  $t("Fund") }}: </strong>
                         {{ proposal.fund.label }}
                     </div>
-                    <!-- <div v-if="proposal.fund.label"
-                         class="rounded-sm bg-slate-200 text-xs xl:text-sm text-slate-900 px-2 font-semibold py-0.5 inline gap-1">
-                        {{ proposal.fund.label }}
-                    </div> -->
                 </div>
             </div>
             <div class="space-x-1 italic">
@@ -228,7 +67,7 @@
 
             <div class="relative z-0 flex flex-row-reverse mt-auto -space-x-1">
                 <div class="mr-auto" v-for="(author, index) in authors">
-                    <button class="w-10 h-10 rounded-full" @click="handleProfileQuickView(author)">
+                    <button class="w-10 h-10 rounded-full" @click="emit('profileQuickView', author)">
                         <img
                             v-if="index === 0"
                             class="h-10 w-10 relative -left-2 z-{{index}} inline-block h-10 w-10 rounded-full ring-2 ring-white"
@@ -356,7 +195,7 @@
 import Proposal from "../../models/proposal";
 import Rating from 'primevue/rating';
 import {ComputedRef, computed, inject, ref, watch} from "vue";
-import {BookmarkIcon, LinkIcon, XMarkIcon} from "@heroicons/vue/20/solid";
+import {BookmarkIcon} from "@heroicons/vue/20/solid";
 import { Link } from '@inertiajs/vue3';
 import { useBookmarksStore } from "../../stores/bookmarks-store";
 import { storeToRefs } from "pinia";
@@ -365,8 +204,18 @@ import { usePeopleStore } from "../../stores/people-store";
 import ProposalStatus from "./partials/ProposalStatus.vue"
 import ProposalBudget from "./ProposalBudget.vue";
 
+interface Author {
+    id: number;
+    name: string;
+    username: string;
+    profile_photo_url: string;
+    ideascale_id: number;
+    media: {original_url: string}[]
+}
+
 const emit = defineEmits<{
     (e: 'quickpitch'): void,
+    (e: 'profileQuickView', profile: Author): void,
 }>();
 
 const $utils: any = inject('$utils');
@@ -381,21 +230,10 @@ const props = withDefaults(
     },
 );
 
-
-interface Author {
-    id: number;
-    name: string;
-    username: string;
-    profile_photo_url: string;
-    ideascale_id: number;
-    media: {original_url: string}[]
-}
-
 /**
  * Init People
  */
  const peopleStore = usePeopleStore();
- const {people} = storeToRefs(peopleStore);
 
 // computer properties
 const authors: ComputedRef<Author[]> = computed(() => {
@@ -415,13 +253,4 @@ const {models: bookmarkCollectionsModels$} = storeToRefs(bookmarksStore);
 watch([bookmarkCollectionsModels$], (newValue, oldValue) => {
     isBookmarked.value =  bookmarkCollectionsModels$.value?.some(model => model.id === props.proposal.id);
 });
-
-let profileQuickView = ref(null);
-let handleProfileQuickView  = (user: Author) => {
-    profileQuickView.value = user;
-}
-
-let handleFilterToUserProposals = (user: Author) => {
-    peopleStore.select([user.id]);
-}
 </script>

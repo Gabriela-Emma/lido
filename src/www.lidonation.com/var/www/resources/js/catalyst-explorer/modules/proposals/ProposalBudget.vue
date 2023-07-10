@@ -5,11 +5,11 @@
                 :style="{  gridColumn: `span ${Math.ceil(challengePercentage)} / span ${Math.ceil(challengePercentage)}`, }"></div>
         </div>
         <div class="flex justify-between gap-4 text-sm flex-nowrap">
-            <div class="flex gap-2">
+            <div class="flex items-center gap-2">
                 <span>
                     Budget
                 </span>
-                <span class="font-bold">
+                <span class="font-bold text-md xl:text-lg">
                     {{ $filters.currency(proposal.amount_received, proposal.currency) }} ({{ challengePercentage.toFixed(2) }}%)
                 </span>
             </div>
