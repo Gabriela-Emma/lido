@@ -24,7 +24,7 @@
         </span>
     </h2>
 
-    <div>
+    <div class="mb-4">
         <ProposalBudget v-if="proposal" :proposal="proposal" />
     </div>
 
