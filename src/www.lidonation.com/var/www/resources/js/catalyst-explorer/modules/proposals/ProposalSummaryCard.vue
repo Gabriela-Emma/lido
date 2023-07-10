@@ -331,16 +331,11 @@
 
                 <div class="flex flex-1 -ml-px">
                     <div
-                        class="flex items-center justify-end flex-1 gap-1 px-1 py-2 -mr-px text-xs font-medium text-gray-700 border border-transparent rounded-bl-sm hover:text-gray-500"
-                        :class="{
-                            'bg-pink-400': proposal.status === 'complete',
-                            'bg-slate-200': proposal.status === 'in_progress'}">
-                        <div class="text-xs" :class="{ 'text-slate-200': proposal.status === 'complete'}">
-                            {{  $t("Project Status") }}:
-                        </div>
-                        <div class="font-semibold capitalize" :class="{ 'text-white': proposal.status === 'complete'}">
-                            {{ proposal.status?.replace('_', ' ') }}
-                        </div>
+                        class="flex items-center justify-end flex-1 gap-1 px-1 py-2 -mr-px text-xs font-medium text-gray-700 border border-transparent rounded-bl-sm bg-slate-200 hover:text-gray-500">
+                            <span class="inline-block text-xs whitespace-nowrap">
+                                Project Status:
+                            </span>
+                            <ProposalStatus :proposal="proposal" />
                     </div>
                 </div>
             </div>
@@ -357,6 +352,7 @@ import { useBookmarksStore } from "../../stores/bookmarks-store";
 import { storeToRefs } from "pinia";
 import { Ref } from "@vue/reactivity";
 import { usePeopleStore } from "../../stores/people-store";
+import ProposalStatus from "./partials/ProposalStatus.vue"
 
 const emit = defineEmits<{
     (e: 'quickpitch'): void,
