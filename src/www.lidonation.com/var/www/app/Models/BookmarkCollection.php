@@ -8,11 +8,12 @@ use App\Models\Traits\HashIdModel;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Parental\HasChildren;
 use Vinkla\Hashids\Facades\Hashids;
 
 class BookmarkCollection extends Model
 {
-    use HasAuthor, HasHashIds, HashIdModel, SoftDeletes;
+    use HasAuthor, HasChildren, HasHashIds, HashIdModel, SoftDeletes;
 
     protected $with = ['items'];
 

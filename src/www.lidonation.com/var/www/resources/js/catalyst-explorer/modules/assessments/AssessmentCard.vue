@@ -1,21 +1,21 @@
 <template>
     <div
-        class="w-full bg-white rounded-sm relative flex flex-col justify-start bg-white shadow-sm mb-4 relative break-inside-avoid drip">
-        <div class="p-5 break-long-words break-words">
+        class="relative flex flex-col justify-start w-full mb-4 bg-white rounded-sm shadow-sm break-inside-avoid drip">
+        <div class="p-5 break-words break-long-words">
             <b class="block text-sm font-bold">{{ assessment.label }}</b>
             <div v-html="$filters.markdown(assessment.rationale)"></div>
         </div>
 
-        <div class="mt-16 divide-y divide-teal-300 specs p-5">
+        <div class="p-5 mt-16 divide-y divide-teal-300 specs">
             <div
-                class="flex flex-row gap-4 justify-between border-t border-teal-300 items-center py-4 spec-amount-received">
-                <div class="text-teal-800 opacity-50 text-sm">{{ $t('Assessor') }}</div>
-                <div class="text-teal-800 font-bold text-base">
+                class="flex flex-row items-center justify-between gap-4 py-4 border-t border-teal-300 spec-amount-received">
+                <div class="text-sm text-teal-800 opacity-50">{{ $t('Assessor') }}</div>
+                <div class="text-base font-bold text-teal-800">
                     {{ assessment.assessor }}
                 </div>
             </div>
-            <div class="flex flex-row gap-4 justify-between items-center py-4 spec-amount-received">
-                <div class="text-teal-800 opacity-50 text-sm">{{ $t('Rating') }}</div>
+            <div class="flex flex-row items-center justify-between gap-4 py-4 spec-amount-received">
+                <div class="text-sm text-teal-800 opacity-50">{{ $t('Rating') }}</div>
                 <div>
                     <Rating :modelValue="assessment.rating" :stars="5" :readonly="true" :cancel="false">
                         <template #onicon>
@@ -36,26 +36,26 @@
                 </div>
             </div>
 
-            <div class="flex flex-row gap-4 justify-between items-center py-4 spec-title">
-                <div class="text-teal-800 opacity-50 text-sm">{{ $t('Proposal') }}</div>
-                <a class="text-teal-800 font-medium inline-flex text-base hover:text-yellow-500"
+            <div class="flex flex-row items-center justify-between gap-4 py-4 spec-title">
+                <div class="text-sm text-teal-800 opacity-50">{{ $t('Proposal') }}</div>
+                <a class="inline-flex text-base font-medium text-teal-800 hover:text-yellow-500"
                    target="_blank" :href="$utils.localizeRoute(`proposals/${assessment?.proposal?.slug}`)">
                     {{ assessment.proposal.title }}
                 </a>
             </div>
 
-            <!--            <div class="flex flex-row gap-4 justify-between items-center py-4">-->
-            <!--                <div class="text-teal-800 opacity-50 text-sm">Status</div>-->
-            <!--                <div class="text-teal-800 font-medium text-base">-->
+            <!--            <div class="flex flex-row items-center justify-between gap-4 py-4">-->
+            <!--                <div class="text-sm text-teal-800 opacity-50">Status</div>-->
+            <!--                <div class="text-base font-medium text-teal-800">-->
             <!--                    {{ assessment.project_status || '-' }}-->
             <!--                </div>-->
             <!--            </div>-->
 
-            <!--            <div class="flex flex-row gap-4 justify-between items-center py-4">-->
-            <!--                <div class="text-teal-800 opacity-50 text-sm">-->
+            <!--            <div class="flex flex-row items-center justify-between gap-4 py-4">-->
+            <!--                <div class="text-sm text-teal-800 opacity-50">-->
             <!--                    Completion Target-->
             <!--                </div>-->
-            <!--                <div class="text-teal-800 font-medium text-base">-->
+            <!--                <div class="text-base font-medium text-teal-800">-->
             <!--                    {{ assessment.completion_target || '-' }}-->
             <!--                </div>-->
             <!--            </div>-->
@@ -181,6 +181,4 @@ let chartOptions = ref({
         }
     }
 });
-
-const user = computed(() => usePage().props?.user as User);
 </script>

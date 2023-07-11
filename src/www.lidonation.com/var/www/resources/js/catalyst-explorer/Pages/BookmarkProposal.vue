@@ -2,7 +2,7 @@
     <Modal>
         <div class="relative flex flex-col w-full bg-teal-900 rounded-sm overflow-clip">
             <div class="pt-12 xl:pt-16">
-                <div class="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
+                <div class="px-4 mx-auto max-w-8xl sm:px-6 lg:px-8">
                     <div class="text-center">
                         <h2 class="flex items-center justify-center gap-1 text-lg tracking-tight text-slate-300 sm:text-xl sm:tracking-tight lg:text-2xl lg:tracking-tight">
                             <span>
@@ -22,12 +22,12 @@
             <div class="pb-16 mt-8 bg-teal-700 sm:mt-12 sm:pb-20 lg:pb-28">
                 <div class="relative">
                     <div class="absolute inset-0 bg-teal-900 h-1/2"></div>
-                    <div class="relative px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
+                    <div class="relative px-4 mx-auto max-w-8xl sm:px-6 lg:px-8">
                         <div class="max-w-lg rounded-sm shadow-lg mx-aut56o lg:max-w-none lg:flex">
 
                             <div class="flex-1 bg-teal-500">
                                 <div class="flex flex-col w-full lg:flex-row lg:justify-between">
-                                    <div class="w-full p-4 text-white">
+                                    <div class="flex-1 w-full p-4 text-white lg:w-1/2">
                                         <div v-if="!bookmarked$">
                                             <div v-if="!creatingAnonymousBookmarks">
                                                 <h3 class="text-xl font-bold text-center text-slate-100 xl:text-2xl sm:tracking-tight">
@@ -140,14 +140,13 @@
                                                     :placeholder="collections$?.length === 0 ? 'Create new collection' : 'Select Collection or Write New Col. Name'"
                                                     noOptionsText="Type collection name and hit enter"
                                                     :classes="{
-                                                    container: 'multiselect border-0 flex-wrap bg-teal500 text-teal-800',
-                                                    containerActive: 'shadow-none shadow-transparent box-shadow-none',
-                                                    search: 'w-full absolute inset-0 outline-none focus:ring-0 box-border border-0 text-base bg-white rounded-sm pl-3.5 rtl:pl-0 rtl:pr-3.5 custom-input',
-                                                    options: 'multiselect-options border-0',
-                                                    optionPointed: 'is-pointed text-white bg-teal-600',
-                                                    optionSelected: 'text-white bg-teal-600',
-                                                }"
-                                                >
+                                                        container: 'multiselect border-0 flex-wrap bg-teal500 text-teal-800',
+                                                        containerActive: 'shadow-none shadow-transparent box-shadow-none',
+                                                        search: 'w-full absolute inset-0 outline-none focus:ring-0 box-border border-0 text-xs bg-white rounded-sm pl-3 rtl:pl-0 rtl:pr-3.5 custom-input',
+                                                        options: 'multiselect-options border-0',
+                                                        optionPointed: 'is-pointed text-white bg-teal-600',
+                                                        optionSelected: 'text-white bg-teal-600',
+                                                    }">
                                                     <template #option="{ option }">
                                                         <div class="flex justify-between w-full ">
                                                             <div>
@@ -160,6 +159,9 @@
                                                         </div>
                                                     </template>
                                                 </Multiselect>
+                                                <div class="px-3 text-sm text-center text-slate-200">
+                                                    Select and existing bookmark or create a new one by entering it above.
+                                                </div>
 
                                                 <!-- Turn this into reusable error component that takes an AxiosError or a errors: models/errors object -->
                                                 <template v-if="errors">
@@ -248,7 +250,7 @@
                                     <div
                                         class="flex flex-col items-center justify-center h-full p-4 bg-teal-600 lg:ml-auto">
 
-                                        <Login :show-logo="false" v-if="!user?.id" :embedded="true" :showLogo="false" />
+                                        <Login v-if="!user$?.id" :embedded="true" :showLogo="false" />
 
                                         <div v-else>
                                             <img
@@ -268,12 +270,11 @@
 </template>
 
 <script lang="ts" setup>
-import {computed, defineEmits, ref, watch} from "vue";
+import {defineEmits, ref, watch} from "vue";
 import Modal from '../Shared/Components/Modal.vue';
 import Challenge from "../models/challenge";
 import Proposal from "../models/proposal";
 import {usePage} from "@inertiajs/vue3";
-import User from "../../global/Shared/Models/user";
 import Login from "./Auth/Login.vue";
 import {useBookmarksStore} from "../stores/bookmarks-store";
 import Multiselect from '@vueform/multiselect';
@@ -283,6 +284,7 @@ import BookmarkItem from "../models/bookmark-item";
 import axios from "axios";
 import {XCircleIcon, ArrowTopRightOnSquareIcon} from '@heroicons/vue/20/solid';
 import { CheckIcon } from '@heroicons/vue/20/solid'
+import { useUserStore } from "../../global/Shared/store/user-store";
 
 const props = withDefaults(
     defineProps<{
@@ -290,7 +292,8 @@ const props = withDefaults(
     }>(),
     {},
 );
-const user = computed(() => usePage().props?.user as User);
+const userStore = useUserStore();
+const {user$} = storeToRefs(userStore);
 const bookmarksStore = useBookmarksStore();
 const collections$ = ref<BookmarkCollection[]>([]);
 
