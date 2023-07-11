@@ -2,19 +2,20 @@
 
 namespace App\Http\Controllers\Earn;
 
-use App\Enums\LearningAttemptStatuses;
-use App\Http\Controllers\Controller;
+use App\Models\Nft;
+use App\Models\User;
+use App\Models\Reward;
+use Illuminate\Http\Request;
+use App\Models\LearningTopic;
 use App\Models\AnswerResponse;
-use App\Models\LearningAttempt;
 use App\Models\LearningLesson;
 use App\Models\QuestionAnswer;
-use App\Models\Reward;
-use App\Models\User;
-use App\Repositories\AdaRepository;
-use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Str;
+use App\Models\LearningAttempt;
+use App\Repositories\AdaRepository;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Enums\LearningAttemptStatuses;
 
 class LearningAnswerResponseController extends Controller
 {
@@ -32,6 +33,8 @@ class LearningAnswerResponseController extends Controller
     public function storeAnswer(Request $request)
     {
         $ipAddress = $request->ip();
+        $user = Auth::user();
+
         // get user previous response
         // if user has previous response from today, return
         $nextLessonAt = new Carbon($request->user()->next_lesson_at);
@@ -43,7 +46,7 @@ class LearningAnswerResponseController extends Controller
         }
 
         $lastResponse = AnswerResponse::where('quiz_id', $request->input('quiz_id'))
-            ->where('user_id', auth()->user()->getAuthIdentifier())
+            ->where('user_id', $user->id)
             ->whereDate('created_at', '=', Carbon::now()->tz('Africa/Nairobi')->startOfDay())
             ->orderBy('created_at', 'desc')
             ->first();
@@ -53,10 +56,11 @@ class LearningAnswerResponseController extends Controller
         }
 
         $learningLesson = LearningLesson::byHash($request->input('learningLessonHash'));
+        $learningTopic = $learningLesson->topic;
 
         // save answer response
         $ans = new AnswerResponse;
-        $ans->user_id = Auth::id();
+        $ans->user_id = $user->id;
         $ans->question_id = $request->input('question_id');
         $ans->quiz_id = $request->input('quiz_id');
         $ans->question_answer_id = $request->input('question_answer_id');
@@ -67,11 +71,22 @@ class LearningAnswerResponseController extends Controller
         $ans->save();
 
         $ans->saveMeta('ip_address', $ipAddress, $ans, true);
-
-
         $this->recordLearningAttempt($ans, $learningLesson);
-        $this->issueReward($request, $ans->question_answer_id, $learningLesson);
 
+        // issue nft if topic complete
+        $topicCompleted = $user->completedTopics->contains($learningTopic);
+        $topicNft = $user->nfts()->where([
+            'model_id' => $learningTopic->id,
+            'model_type' => LearningTopic::class
+        ])->first();
+        
+        if($topicCompleted && !$topicNft instanceof Nft){
+            $this->issueNft($learningTopic, $learningLesson);
+            return back()->withInput();
+        }
+
+        //issue normal reward
+        $this->issueReward($request, $ans->question_answer_id, $learningLesson);
         return back()->withInput();
     }
 
@@ -119,6 +134,43 @@ class LearningAnswerResponseController extends Controller
             $reward->save();
         }
 
+
+    }
+
+    public function issueNft(LearningTopic $topic, LearningLesson $learningLesson)
+    {
+        $user = Auth::user();
+        $nftTemplate = $topic->nftTemplate;
+
+        if(!$nftTemplate instanceOf Nft){
+            return null;
+        }
+
+        $userNft = new Nft;
+        $originalAttributes = $nftTemplate->getAttributes();
+        unset($originalAttributes['id'], $originalAttributes['txs_count']);
+        $metadata = json_decode($originalAttributes['metadata'], true);
+        unset($metadata['topic_id']);
+        $originalAttributes['metadata'] = json_encode($metadata);
+        $userNft->setRawAttributes($originalAttributes);
+        $userNft-> user_id = Auth::id();
+        $userNft->model_type = LearningTopic::class;
+        $userNft->model_id = $topic->id;
+        $userNft->name = $nftTemplate->name.$topic->nfts->count();
+        $userNft->save();
+
+        // issue nft reward 
+        $reward = new Reward;
+        $reward->user_id = Auth::id();
+        $reward->model_id = $learningLesson->id;
+        $reward->model_type = LearningLesson::class;
+        $reward->asset = $userNft->name ;
+        $reward->asset_type = $nftTemplate->policy;
+        $reward->amount = 1;
+        $reward->status = 'issued';
+        $reward->stake_address = $user->wallet_stake_address;
+        $reward->setTranslation('memo', 'en', $learningLesson->title);
+        $reward->save();
 
     }
 

@@ -119,7 +119,7 @@
 </template>
 <script lang="ts" setup>
 import { inject, ref } from 'vue';
-import { usePeopleStore } from '../../stores/people-store';
+import { usePeopleStore } from '../../../stores/people-store';
 import {LinkIcon, XMarkIcon} from "@heroicons/vue/20/solid";
 
 interface Author {

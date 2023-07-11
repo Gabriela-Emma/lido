@@ -297,6 +297,11 @@ class User extends Authenticatable implements HasMedia, Interfaces\IHasMetaData,
         return $this->hasMany(Promo::class, 'user_id');
     }
 
+    public function nfts():HasMany
+    {
+        return $this->hasMany(Nft::class);
+    }
+
     public function mint_txs_phuffycoin(): HasMany
     {
         return $this->hasMany(MintTx::class, 'user_id')
