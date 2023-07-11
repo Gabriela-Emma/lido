@@ -23,6 +23,8 @@ class BookmarkCollection extends Model
 
     protected $appends = ['link', 'hash'];
 
+    protected $fillable = ['title', 'content', 'type'];
+
     public function bookmarkCollectionId(): Attribute
     {
         return Attribute::make(
