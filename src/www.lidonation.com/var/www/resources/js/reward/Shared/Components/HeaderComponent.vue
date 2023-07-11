@@ -1,12 +1,12 @@
 <template>
     <header class="container">
-        <div class="flex flex-wrap gap-4 items-center py-6">
-            <div class="flex gap-4 items-center">
+        <div class="flex flex-wrap items-center gap-4 py-6">
+            <div class="flex items-center gap-4">
                 <div class="w-40 lg:w-32">
                     <img alt="catalyst explorer logo" :src="$utils.assetUrl('img/catalyst-explorer-logo.jpg')"/>
                 </div>
                 <div>
-                    <h1 class="text-2xl lg:text-3xl 2xl:text-4xl font-semibold text-slate-700">
+                    <h1 class="text-2xl font-semibold lg:text-3xl 2xl:text-4xl text-slate-700">
                         {{ $t(titleName0) }} <span class="text-teal-600"> {{ $t(titleName1) }}</span>
                     </h1>
                     <p class="text-slate-600">
@@ -15,11 +15,11 @@
                 </div>
             </div>
 
-            <div class="xl:ml-auto flex flex-col gap-1" v-if="!!user">
-                <p>{{ $t('Welcome back') }}, <strong>{{ user?.name }}</strong></p>
-                <ul class="flex gap-4 justify-end items-center">
+            <div class="flex flex-col gap-1 xl:ml-auto" v-if="!!user$">
+                <p>{{ $t('Welcome back') }}, <strong>{{ user$?.name }}</strong></p>
+                <ul class="flex items-center justify-end gap-4">
                     <li>
-                        <Link class="flex gap-1 items-center"
+                        <Link class="flex items-center gap-1"
                               :href="$utils.localizeRoute('catalyst-explorer/my/dashboard')">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                  stroke="currentColor" class="w-4 h-4">
@@ -30,10 +30,10 @@
                         </Link>
                     </li>
                     <li>
-                        <Link class="flex gap-1 items-center text-teal-600 font-bold hover:text-red-600"
+                        <Link class="flex items-center gap-1 font-bold text-teal-600 hover:text-red-600"
                               href="/api/catalyst-explorer/logout" method="POST" as="button">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                 stroke="currentColor" class="w-4 h-4 relative">
+                                 stroke="currentColor" class="relative w-4 h-4">
                                 <path stroke-linecap="round" stroke-linejoin="round"
                                       d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75"/>
                             </svg>
@@ -45,7 +45,7 @@
 
             <div class="xl:ml-auto" v-else>
                 <Link :href="$utils.localizeRoute('catalyst-explorer/auth/login')"
-                      class="inline-flex gap-1 items-center justify-center rounded-sm border border-slate-800 px-3 py-2 xl:text-xl 3xl:text-2xl font-medium text-slate-800 hover:bg-slate-200 focus:outline-none focus:ring-0 focus:ring-offset-0">
+                      class="inline-flex items-center justify-center gap-1 px-3 py-2 font-medium border rounded-sm border-slate-800 xl:text-xl 3xl:text-2xl text-slate-800 hover:bg-slate-200 focus:outline-none focus:ring-0 focus:ring-offset-0">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                          stroke="currentColor" class="w-5 h-5">
                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -59,19 +59,19 @@
 </template>
 
 <script lang="ts" setup>
-import {computed, inject} from 'vue'
+import {inject} from 'vue'
 import {Link} from '@inertiajs/vue3';
-import {usePage} from '@inertiajs/vue3';
-import User from "../../../global/Shared/Models/user";
+import { storeToRefs } from 'pinia';
+import { useUserStore } from '../../../global/Shared/store/user-store';
 
 const $utils: any = inject('$utils');
 
-const props = withDefaults(
+withDefaults(
     defineProps<{
         titleName0: String,
         titleName1: String,
         subTitle: String
     }>(), {});
-
-const user = computed(() => usePage().props?.user as User);
+const userStore = useUserStore();
+const {user$} = storeToRefs(userStore);
 </script>

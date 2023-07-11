@@ -19,8 +19,8 @@
                     <ConnectWallet />
                 </div>
                 <div>
-                    <div class="flex flex-col gap-1 xl:ml-auto" v-if="!!user">
-                        <p>{{ $t('Welcome back') }}, <strong>{{ user?.name }}</strong></p>
+                    <div class="flex flex-col gap-1 xl:ml-auto" v-if="!!user$">
+                        <p>{{ $t('Welcome back') }}, <strong>{{ user$?.name }}</strong></p>
                         <ul class="flex items-center justify-end gap-4">
                             <li>
                                 <Link class="flex items-center gap-1"
@@ -65,22 +65,20 @@
 </template>
 
 <script lang="ts" setup>
-import {computed, inject} from 'vue'
+import {inject} from 'vue'
 import {Link} from '@inertiajs/vue3';
-import {usePage} from '@inertiajs/vue3';
-import User from "../../../global/Shared/Models/user";
-import Delegate from '../../../global/Shared/Components/Delegate.vue';
 import ConnectWallet from '../../../global/Shared/Components/ConnectWallet.vue';
+import { storeToRefs } from 'pinia';
+import { useUserStore } from '../../../global/Shared/store/user-store';
+
 const $utils: any = inject('$utils');
+const userStore = useUserStore();
+const {user$} = storeToRefs(userStore);
 
-
-
-const props = withDefaults(
+withDefaults(
     defineProps<{
         titleName0: String,
         titleName1: String,
         subTitle: String
     }>(), {});
-
-const user = computed(() => usePage().props?.user as User);
 </script>

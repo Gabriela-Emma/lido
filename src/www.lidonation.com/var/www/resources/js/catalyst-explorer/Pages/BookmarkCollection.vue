@@ -2,26 +2,27 @@
     <header-component titleName0="Bookmark" :titleName1="bookmarkCollection?.title"
                       :subTitle="`Created ${$filters.timeAgo(bookmarkCollection.created_at)}. Has ${bookmarkCollection?.items_count} item${bookmarkCollection?.items_count > 1 ? 's' : ''}.`"/>
 
-    <main class="flex flex-col gap-2 bg-primary-20 py-8">
+    <main class="flex flex-col gap-2 py-8 bg-primary-20">
         <div class="container">
             <section
-                class="relative flex flex-row justify-between items-end p-6 object-cover shadow-xs rounded-tl-2xl rounded-r-xs"
+                class="relative flex flex-row items-end justify-between object-cover p-6 shadow-xs rounded-tl-2xl rounded-r-xs"
                 :class="[textColor$]"
                 :style="{backgroundColor: bookmarkCollection?.color}">
 
-                <div class="flex flex-row justify-end items-center absolute right-0 top-1/3 z-0">
-                    <h2 class="text-xl font-bold tracking-tight text-slate-100 sm:text-2xl inline box-border box-decoration-clone bg-white py-4 pl-3 pr-32 rounded-l-lg text-slate-800">
+                <div class="absolute right-0 z-0 flex flex-row items-center justify-end top-1/3">
+                    <h2 class="box-border inline py-4 pl-3 pr-32 text-xl font-bold tracking-tight bg-white rounded-l-lg text-slate-100 sm:text-2xl box-decoration-clone text-slate-800">
                         {{ bookmarkCollection?.title }}
                     </h2>
                 </div>
 
-                <div class="flex z-10 pt-20 gap-3">
+                <div class="z-10 flex gap-3 pt-20">
                     <Link :href="$utils.localizeRoute('catalyst-explorer/bookmarks')"
                           :class="[textColor$, borderColor$]"
                           class="inline-flex items-center gap-x-0.5 rounded-sm border py-1 px-1.5 text-xs font-semibold text-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-600">
                         <ArrowUturnLeftIcon class="mr-0.5 h-3 w-3" aria-hidden="true"/>
                         {{ $t("All Bookmarks") }}
                     </Link>
+
                     <button @click="download"
                             type="button"
                             :class="[textColor$, borderColor$]"
@@ -36,6 +37,16 @@
                         <BookOpenIcon class="mr-0.5 h-3 w-3" aria-hidden="true"/>
                         {{ $t("Open All items") }}
                     </button>
+
+                    <!-- <button @click="createDraftBallot"
+                            type="button"
+                            :disabled="!user$?.id"
+                            :title="!user$?.id ? $t('You must be logged in to create a draft ballot') : 'Convert to draft ballot'"
+                            :class="[textColor$, borderColor$, user$?.id ? 'hover:text-teal-light-400' : 'cursor-not-allowed']"
+                            class="inline-flex items-center gap-x-0.5 rounded-sm border py-1 px-1.5 text-xs bg-black font-semibold text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-600">
+                        <ArchiveBoxArrowDownIcon class="mr-0.5 h-3 w-3" aria-hidden="true"/>
+                        {{ $t("Create Draft Ballot") }}
+                    </button> -->
                     <button @click="remove = !remove"
                             type="button"
                             :disabled="canDelete===false"
@@ -43,7 +54,7 @@
                             class="inline-flex items-center gap-x-0.5 rounded-sm border py-1 px-1.5 text-xs font-semibold text-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-600">
                         <div class="flex flex-row" v-show="!remove">
                             <TrashIcon class="mr-0.5 h-3 w-3" :class="{'hover:text-teal-600':canDelete===true}" aria-hidden="true"/>
-                                <span :class="{'hover:text-teal-600':canDelete===true}">{{ $t("Delete Collection") }} </span>
+                                <!-- <span :class="{'hover:text-teal-600':canDelete===true}">{{ $t("Delete Collection") }} </span> -->
                         </div>
                         <div class="flex flex-row gap-1 text-slate-800" v-show="remove">
                                 <span class="mr-1">{{ $t("Are you sure? ") }} </span>
@@ -54,23 +65,23 @@
                 </div>
             </section>
 
-            <section class="rounded-bl-2xl rounded-r-xs py-16 border-t shadow-md bg-white">
+            <section class="py-16 bg-white border-t shadow-md rounded-bl-2xl rounded-r-xs">
                 <div class="">
-                    <h2 class="text-xl lg:text-2xl xl:text-3xl px-4 sm:px-6">
+                    <h2 class="px-4 text-xl lg:text-2xl xl:text-3xl sm:px-6">
                         Proposals
                     </h2>
                     <ul role="list" class="divide-y divide-gray-200">
                         <li v-for="item in bookmarkCollection.items" :key="item.id">
                             <div class="block hover:bg-gray-50">
                                 <div class="flex items-center px-4 py-4 sm:px-6">
-                                    <div class="min-w-0 flex-1 sm:flex sm:items-center sm:justify-between">
+                                    <div class="flex-1 min-w-0 sm:flex sm:items-center sm:justify-between">
                                         <div class="truncate">
                                             <div class="flex flex-col text-lg">
-                                                <h3 class="truncate font-medium text-xl xl:text-2xl">
+                                                <h3 class="text-xl font-medium truncate xl:text-2xl">
                                                     {{ item.title }}
                                                 </h3>
                                                 <div class="flex flex-row">
-                                                    <p v-if="item?.content" class="italic mr-3">
+                                                    <p v-if="item?.content" class="mr-3 italic">
                                                         {{item?.content}}
                                                     </p>
 
@@ -79,21 +90,21 @@
                                             </div>
                                             <div class="mt-1">
                                                 <div class="flex flex-row items-center gap-5 text-sm text-slate-500">
-                                                    <div class="flex gap-1 items-center">
+                                                    <div class="flex items-center gap-1">
                                                         <div>{{ $t("Budget") }}</div>
-                                                        <div class="text-slate-700 font-semibold">
+                                                        <div class="font-semibold text-slate-700">
                                                             {{ $filters.currency(item?.model?.amount_requested) }}
                                                         </div>
                                                     </div>
-                                                    <div class="flex gap-1 items-center">
+                                                    <div class="flex items-center gap-1">
                                                         <div>{{ $t("Fund") }}</div>
-                                                        <div class="text-slate-700 font-semibold">
+                                                        <div class="font-semibold text-slate-700">
                                                             {{ item?.model?.fund_name }}
                                                         </div>
                                                     </div>
-                                                    <div class="flex gap-1 items-center">
+                                                    <div class="flex items-center gap-1">
                                                         <div>{{ $t("Challenge") }}</div>
-                                                        <div class="text-slate-700 font-semibold">
+                                                        <div class="font-semibold text-slate-700">
                                                             {{ item?.model?.challenge_name }}
                                                         </div>
                                                     </div>
@@ -101,17 +112,17 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="mt-4 flex-shrink-0 sm:mt-0 sm:ml-5">
+                                        <div class="flex-shrink-0 mt-4 sm:mt-0 sm:ml-5">
                                             <!--                                                <div class="flex -space-x-1 overflow-hidden">-->
-                                            <!--                                                    <img v-for="applicant in item.applicants" :key="applicant.email" class="inline-block h-6 w-6 rounded-full ring-2 ring-white" :src="applicant.imageUrl" :alt="applicant.name" />-->
+                                            <!--                                                    <img v-for="applicant in item.applicants" :key="applicant.email" class="inline-block w-6 h-6 rounded-full ring-2 ring-white" :src="applicant.imageUrl" :alt="applicant.name" />-->
                                             <!--                                                </div>-->
                                         </div>
                                     </div>
-                                    <div class="ml-5 flex-shrink-0 flex justify-end gap-2">
+                                    <div class="flex justify-end flex-shrink-0 gap-2 ml-5">
                                         <TrashIcon @click.prevent="removeItem(item.id)" class="mr-0.5 h-5 w-5 "
-                                        type="button" 
+                                        type="button"
                                         :class="[canDelete===true?'hover:text-teal-600 hover:cursor-pointer':'cursor-not-allowed']" aria-hidden="true"/>
-<!--                                        <ChevronRightIcon class="h-5 w-5 text-gray-400" aria-hidden="true"/>-->
+<!--                                        <ChevronRightIcon class="w-5 h-5 text-gray-400" aria-hidden="true"/>-->
                                     </div>
                                 </div>
                             </div>
@@ -128,7 +139,7 @@
 <script lang="ts" setup>
 import {Link, router, usePage} from '@inertiajs/vue3';
 import BookmarkCollection from "../models/bookmark-collection";
-import {ChevronRightIcon, ArrowUturnLeftIcon, ArrowDownTrayIcon, TrashIcon, BookOpenIcon} from '@heroicons/vue/20/solid';
+import {ChevronRightIcon, ArrowUturnLeftIcon, ArrowDownTrayIcon, TrashIcon, BookOpenIcon, ArchiveBoxArrowDownIcon} from '@heroicons/vue/20/solid';
 import {computed, inject, Ref, ref, watch} from "vue";
 import axios from 'axios';
 import {useBookmarksStore} from "../stores/bookmarks-store";
@@ -136,6 +147,12 @@ import { storeToRefs } from 'pinia';
 import moment from "moment-timezone";
 import { BookmarkItemModel } from '../models/bookmark-item-model';
 import Proposal from '../models/proposal';
+import { useUserStore } from '../../global/Shared/store/user-store';
+
+const userStore = useUserStore();
+const {user$} = storeToRefs(userStore);
+
+console.log({user$});
 
 const $utils: any = inject('$utils');
 
@@ -149,7 +166,6 @@ const textColor$ = computed<string>(() =>
 const borderColor$ = computed<string>(() =>
     $utils?.contrastColor(props.bookmarkCollection?.color) === 'light' ? 'border-white' : 'border-black'
 );
-
 
 const download = () => {
     const data = {};
@@ -170,7 +186,6 @@ const download = () => {
         link.click();
     });
 }
-
 
 const onLocal:Ref<boolean> = ref(false);
 const inLastTenMins:Ref<boolean>= ref(false);
@@ -244,5 +259,9 @@ function openIdeascaleLinks() {
   }
 
   openNextTab();
+}
+
+function createDraftBallot() {
+    //
 }
 </script>
