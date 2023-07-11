@@ -19,6 +19,8 @@ class Metas extends Resource
      */
     public static $model = Meta::class;
 
+    public static $perPageOptions = [50, 100, 250, 400];
+
     /**
      * The columns that should be searched.
      *
@@ -81,6 +83,7 @@ class Metas extends Resource
             Text::make(__('Key'), 'key')->sortable()->filterable(),
             Markdown::make(__('Content'), 'content')
                 ->alwaysShow()
+                ->filterable()
                 ->hideFromIndex(),
             Text::make(__('Value'), 'content')
             ->onlyOnIndex()
