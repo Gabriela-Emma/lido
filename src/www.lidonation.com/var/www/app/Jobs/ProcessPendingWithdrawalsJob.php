@@ -38,7 +38,7 @@ class ProcessPendingWithdrawalsJob implements ShouldQueue
     {
         $msg = 'Lido Rewards Withdrawal';
         $payments = collect([]);
-
+        
         // get all pending withdrawals or bail
         $withdrawals = Withdrawal::validated()
             ->get()
@@ -72,6 +72,7 @@ class ProcessPendingWithdrawalsJob implements ShouldQueue
                 }
             }
             $payments->push(array_merge(['address' => $withdrawal->wallet_address], $assets));
+        
         }
 
         // send them to lucid
