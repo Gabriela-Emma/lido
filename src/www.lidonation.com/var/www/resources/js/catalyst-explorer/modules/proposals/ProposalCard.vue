@@ -16,14 +16,13 @@
 
 <script lang="ts" setup>
 import Proposal from "../../models/proposal";
-import {inject, ref, watch} from "vue";
-import { Link } from '@inertiajs/vue3';
+import {ref, watch} from "vue";
 import { useBookmarksStore } from "../../stores/bookmarks-store";
 import { storeToRefs } from "pinia";
 import { Ref } from "@vue/reactivity";
-import ProposalSummaryCard from "./ProposalSummaryCard.vue";
-import ProposalQuickPitchCard from "./ProposalQuickPitchCard.vue";
-import ProposalUserQuickView from "./ProposalUserQuickView.vue";
+import ProposalSummaryCard from "./partials/ProposalSummaryCard.vue";
+import ProposalQuickPitchCard from "./partials/ProposalQuickPitchCard.vue";
+import ProposalUserQuickView from "./partials/ProposalUserQuickView.vue";
 
 
 interface Author {

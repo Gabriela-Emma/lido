@@ -734,8 +734,8 @@
 
                             <x-public.widgets.newsletter bg="bg-yellow-500" classes="text-yellow-900" layout="col"/>
 
-                            <x-public.widgets.meetup :meetups="$meetups" :dayOfWeek="$dayOfWeek"
-                                                     :hourOfDay="$hourOfDay"/>
+                            {{-- <x-public.widgets.meetup :meetups="$meetups" :dayOfWeek="$dayOfWeek"
+                                                     :hourOfDay="$hourOfDay"/> --}}
                         </div>
                     </div>
                 </div>

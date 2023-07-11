@@ -13,6 +13,7 @@ export default interface Proposal {
     no_votes_count: number;
     problem: string;
     ratings_count: number;
+    status: string;
     slug: string;
     solution: string;
     title: string;

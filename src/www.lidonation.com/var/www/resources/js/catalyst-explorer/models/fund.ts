@@ -4,6 +4,7 @@ export default interface Fund {
     id: number;
     title: string;
     label: string;
+    status: string;
     launch_date:string;
     proposals_count: string;
     parent_proposals: number;

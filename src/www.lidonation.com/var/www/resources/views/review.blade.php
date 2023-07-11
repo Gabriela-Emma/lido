@@ -42,8 +42,8 @@
     @endpush
     <header class="text-white bg-teal-600">
         <div class="container">
-            <section class="overflow-visible relative z-0 py-10 lg:px-4">
-                <h1 class='flex relative flex-row flex-wrap gap-0 items-end mb-6 text-3xl font-bold 2xl:text-5xl decorate'>
+            <section class="relative z-0 py-10 overflow-visible lg:px-4">
+                <h1 class='relative flex flex-row flex-wrap items-end gap-0 mb-6 text-3xl font-bold 2xl:text-5xl decorate'>
                     <span class="pr-2">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12" fill="none" viewBox="0 0 24 24"
                              stroke="currentColor">
@@ -70,11 +70,11 @@
     </header>
 
     <section
-        class="overflow-visible relative py-10 bg-white bg-opacity-90 bg-left-bottom bg-repeat-y bg-contain bg-blend-color-burn lg:py-20 bg-pool-bw-light">
+        class="relative py-10 overflow-visible bg-white bg-left-bottom bg-repeat-y bg-contain bg-opacity-90 bg-blend-color-burn lg:py-20 bg-pool-bw-light">
         <div class="container">
             @if(Lang::hasAny($review->getTable() . '.' . $review->slug, collect(config('laravellocalization.supportedLocales'))->keys()))
-                <div class="mb-8 max-w-6xl">
-                    <div class="flex flex-row flex-wrap gap-4 justify-center items-end w-full text-sm">
+                <div class="max-w-6xl mb-8">
+                    <div class="flex flex-row flex-wrap items-end justify-center w-full gap-4 text-sm">
                         <h3 class="text-sm text-center text-gray-600 capitalize">{{ $snippets->alsoAvailableIn }}</h3>
                         @foreach(config('laravellocalization.supportedLocales') as $key => $locale)
                             @if($key == app()->getLocale())
@@ -82,14 +82,14 @@
                             @endif
                             @if(Lang::has($review->getTable() . '.' . $review->slug, $key ))
                                 <a href="{{LaravelLocalization::getLocalizedURL($key)}}"
-                                   class="inline-block px-2 py-1 font-semibold text-white rounded-sm bg-teal-600 hover:text-gray-500">
+                                   class="inline-block px-2 py-1 font-semibold text-white bg-teal-600 rounded-sm hover:text-gray-500">
                                     {{$locale['native']}}
                                 </a>
                             @endif
                         @endforeach
                         @if(config('app.fallback_locale') != app()->getLocale())
                             <a href="{{LaravelLocalization::getLocalizedURL(config('app.fallback_locale'))}}"
-                               class="inline-block px-2 py-1 font-semibold text-white rounded-sm bg-teal-600">
+                               class="inline-block px-2 py-1 font-semibold text-white bg-teal-600 rounded-sm">
                                 english
                             </a>
                         @endif
@@ -152,10 +152,10 @@
 
                 <!-- Right Sidebar -->
                 <div class="col-span-2">
-                    <div class="hidden sticky top-10 gap-10 md:flex md:flex-col">
+                    <div class="sticky hidden gap-10 top-10 md:flex md:flex-col">
                         <x-public.widgets.author :author="$review->author"/>
                         <x-public.widgets.newsletter/>
-                        <x-public.widgets.meetup :meetups="$meetups" :dayOfWeek="$dayOfWeek" :hourOfDay="$hourOfDay"/>
+                        {{-- <x-public.widgets.meetup :meetups="$meetups" :dayOfWeek="$dayOfWeek" :hourOfDay="$hourOfDay"/> --}}
                     </div>
                 </div>
             </div>

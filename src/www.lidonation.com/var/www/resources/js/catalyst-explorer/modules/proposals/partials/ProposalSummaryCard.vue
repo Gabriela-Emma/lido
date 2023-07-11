@@ -51,7 +51,7 @@
                          v-html="$filters.markdown('**Solution:** ' + proposal.solution)"></div>
                     <div v-else v-html="$filters.markdown('**Problem:** ' + proposal.problem)"></div>
                 </div>
-                <div class="flex flex-row flex-wrap items-center gap-2">
+                <div class="flex flex-row flex-wrap items-center gap-2 mb-2">
                     <div v-if="proposal.challenge.label" class="inline gap-1">
                         <strong>{{  $t("Challenge") }}: </strong>
                         {{ proposal.challenge.label }}
@@ -60,26 +60,25 @@
                         <strong>{{  $t("Fund") }}: </strong>
                         {{ proposal.fund.label }}
                     </div>
+
+                    <div class="flex items-center border rounded-sm border-slate-200">
+                        <div class="py-0.5 px-1 text-xs">Funding Status</div>
+                        <div class="inline-flex">
+                            <ProposalFundingStatus :proposal="proposal" />
+                        </div>
+                    </div>
+
+                    <div class="flex items-center border rounded-sm border-slate-200" v-if="proposal.fund?.status !== 'governance'">
+                        <div class="px-1 py-0.5 text-xs">Project Status</div>
+                        <div class="inline-flex">
+                            <ProposalProjectStatus :proposal="proposal" />
+                        </div>
+                    </div>
+
                 </div>
-            </div>
-            <div class="space-x-1 italic">
             </div>
 
-            <div class="relative z-0 flex flex-row-reverse mt-auto -space-x-1">
-                <div class="mr-auto" v-for="(author, index) in authors">
-                    <button class="w-10 h-10 rounded-full" @click="emit('profileQuickView', author)">
-                        <img
-                            v-if="index === 0"
-                            class="h-10 w-10 relative -left-2 z-{{index}} inline-block h-10 w-10 rounded-full ring-2 ring-white"
-                            :src="author.profile_photo_url"
-                            :alt="`${author.name} gravatar`"/>
-                        <img v-else
-                             class="h-10 w-10 relative z-{{index}} inline-block h-10 w-10 rounded-full ring-2 ring-white"
-                             :src="author.profile_photo_url"
-                             :alt="`${author.name} gravatar`"/>
-                    </button>
-                </div>
-            </div>
+            <ProposalAuthors :proposal="proposal" @profileQuickView="emit('profileQuickView', $event)"/>
         </div>
 
         <footer class="mt-auto divide-y">
@@ -165,7 +164,7 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-2 -mt-px text-xs divide-x xl:text-sm 2xl:text-md">
+            <!-- <div class="grid grid-cols-2 -mt-px text-xs divide-x xl:text-sm 2xl:text-md">
                 <div class="flex flex-row flex-wrap items-center justify-start flex-1 gap-1 px-2 py-2" :class="{
                             'bg-teal-500': proposal.funding_status === 'funded',
                             'bg-slate-500': proposal.funding_status === 'over_budget',
@@ -187,22 +186,23 @@
                             <ProposalStatus :proposal="proposal" />
                     </div>
                 </div>
-            </div>
+            </div> -->
         </footer>
     </div>
 </template>
 <script lang="ts" setup>
-import Proposal from "../../models/proposal";
+import Proposal from "../../../models/proposal";
 import Rating from 'primevue/rating';
-import {ComputedRef, computed, inject, ref, watch} from "vue";
+import {inject, ref, watch} from "vue";
 import {BookmarkIcon} from "@heroicons/vue/20/solid";
 import { Link } from '@inertiajs/vue3';
-import { useBookmarksStore } from "../../stores/bookmarks-store";
+import { useBookmarksStore } from "../../../stores/bookmarks-store";
 import { storeToRefs } from "pinia";
 import { Ref } from "@vue/reactivity";
-import { usePeopleStore } from "../../stores/people-store";
-import ProposalStatus from "./partials/ProposalStatus.vue"
+import ProposalFundingStatus from "./ProposalFundingStatus.vue"
+import ProposalProjectStatus from "./ProposalProjectStatus.vue"
 import ProposalBudget from "./ProposalBudget.vue";
+import ProposalAuthors from "./ProposalAuthors.vue";
 
 interface Author {
     id: number;
@@ -230,20 +230,6 @@ const props = withDefaults(
     },
 );
 
-/**
- * Init People
- */
- const peopleStore = usePeopleStore();
-
-// computer properties
-const authors: ComputedRef<Author[]> = computed(() => {
-    return props.proposal.users?.reverse().map((user) => {
-        return {
-            ...user,
-            profile_photo_url: user.media?.length > 0 ? user.media[0]?.original_url : user.profile_photo_url
-        }
-    })
-});
 
 let isBookmarked:Ref<boolean> = ref()
 

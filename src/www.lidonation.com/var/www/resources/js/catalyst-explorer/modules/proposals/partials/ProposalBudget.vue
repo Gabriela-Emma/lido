@@ -23,7 +23,7 @@
     </div>
 </template>
 <script lang="ts" setup>
-import Proposal from "../../models/proposal";
+import Proposal from "../../../models/proposal";
 import { ComputedRef, computed } from "vue";
 
 const props = withDefaults(

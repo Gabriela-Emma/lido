@@ -28,21 +28,7 @@
         <ProposalBudget v-if="proposal" :proposal="proposal" />
     </div>
 
-    <div class="relative z-0 flex flex-row-reverse px-4 -space-x-1">
-        <div class="mr-auto" v-for="(author, index) in authors">
-            <button class="w-10 h-10 rounded-full" @click="emit('profileQuickView', author)">
-                <img
-                    v-if="index === 0"
-                    class="h-10 w-10 relative -left-2 z-{{index}} inline-block h-10 w-10 rounded-full ring-2 ring-white"
-                    :src="author.profile_photo_url"
-                    :alt="`${author.name} gravatar`"/>
-                <img v-else
-                        class="h-10 w-10 relative z-{{index}} inline-block h-10 w-10 rounded-full ring-2 ring-white"
-                        :src="author.profile_photo_url"
-                        :alt="`${author.name} gravatar`"/>
-            </button>
-        </div>
-    </div>
+    <ProposalAuthors :proposal="proposal" @profileQuickView="emit('profileQuickView', $event)"/>
 
     <div class='absolute right-0 -bottom-1 details-toggle-wrapper'>
         <button type="button"
@@ -59,10 +45,10 @@
 </div>
 </template>
 <script lang="ts" setup>
-import { ComputedRef, computed, inject, ref } from "vue";
-import Proposal from "../../models/proposal";
+import { computed, inject, ref } from "vue";
+import Proposal from "../../../models/proposal";
 import ProposalBudget from "./ProposalBudget.vue";
-import { usePeopleStore } from "../../stores/people-store";
+import ProposalAuthors from "./ProposalAuthors.vue";
 
 const $utils: any = inject('$utils');
 
@@ -91,21 +77,5 @@ interface Author {
     media: {original_url: string}[]
 }
 
-const authors: ComputedRef<Author[]> = computed(() => {
-    return props.proposal.users?.reverse().map((user) => {
-        return {
-            ...user,
-            profile_photo_url: user.media?.length > 0 ? user.media[0]?.original_url : user.profile_photo_url
-        }
-    })
-});
-
 const quickpitchProvider = computed(() => Number.isInteger(props.proposal?.quickpitch) ? "vimeo" : "youtube" );
-
-let profileQuickView = ref(null);
-let handleProfileQuickView  = (user: Author) => {
-    profileQuickView.value = user;
-}
-
-const peopleStore = usePeopleStore();
 </script>
