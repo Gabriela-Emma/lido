@@ -61,16 +61,16 @@
                         {{ proposal.fund.label }}
                     </div>
 
-                    <div class="flex items-center border rounded-sm border-slate-200">
+                    <div class="flex items-center border rounded-sm border-slate-600">
                         <div class="py-0.5 px-1 text-xs">Funding Status</div>
-                        <div class="inline-flex">
+                        <div class="inline-flex py-0.5 pr-0.5">
                             <ProposalFundingStatus :proposal="proposal" />
                         </div>
                     </div>
 
-                    <div class="flex items-center border rounded-sm border-slate-200" v-if="proposal.fund?.status !== 'governance'">
+                    <div class="flex items-center border rounded-sm border-slate-600" v-if="proposal.fund?.status !== 'governance'">
                         <div class="px-1 py-0.5 text-xs">Project Status</div>
-                        <div class="inline-flex">
+                        <div class="inline-flex py-0.5 pr-0.5">
                             <ProposalProjectStatus :proposal="proposal" />
                         </div>
                     </div>

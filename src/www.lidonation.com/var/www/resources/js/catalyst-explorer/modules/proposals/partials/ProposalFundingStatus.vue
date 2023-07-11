@@ -5,7 +5,7 @@
         <span v-else-if="proposal.funding_status == 'pending'"
             class="inline-block px-1.5 py-0.5 font-semibold text-white text-xs rounded-sm bg-gray-600">vote pending</span>
         <span v-else-if="proposal.funding_status == 'funded'"
-            class="inline-block px-1.5 py-0.5 font-semibold text-white text-xs rounded-sm bg-gray-600">funded</span>
+            class="inline-block px-1.5 py-0.5 font-semibold text-white text-xs rounded-sm bg-teal-600">funded</span>
         <span v-else class="inline-block px-1.5 py-0.5 font-semibold text-white text-xs rounded-sm bg-slate-400">
             Unfunded
         </span>
