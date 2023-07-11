@@ -86,6 +86,7 @@ class LearningTopic extends Model
         );
     }
 
+    // @todo implement after laravel 10
     // public function nftTemplate(): HasOne
     // {
     //     return $this->nfts()->one()->ofMany()->where(
@@ -106,13 +107,6 @@ class LearningTopic extends Model
     {
         return $this->hasMany(Nft::class, 'model_id')
         ->where('model_type', static::class);
-    }
-
-    public function mintedNfts(): Attribute
-    {
-        return Attribute::make(
-            get: fn () => $this->nfts->count()
-        );
     }
 
     /**
