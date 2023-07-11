@@ -7,6 +7,7 @@ use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Markdown;
 use Laravel\Nova\Fields\MorphTo;
 use Laravel\Nova\Fields\Text;
+use Illuminate\Support\Str;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Metas extends Resource
@@ -17,6 +18,8 @@ class Metas extends Resource
      * @var string
      */
     public static $model = Meta::class;
+
+    public static $perPageOptions = [50, 100, 250, 400];
 
     /**
      * The columns that should be searched.
@@ -74,21 +77,44 @@ class Metas extends Resource
 
     public function metaDataFields(): array
     {
+
         $metaFields = [
             ID::make('ID', 'id')->sortable(),
-            Text::make(__('Key'), 'key')->sortable(),
+            Text::make(__('Key'), 'key')->sortable()->filterable(),
             Markdown::make(__('Content'), 'content')
-            ->showOnIndex()
-            ->filterable(),
+                ->alwaysShow()
+                ->filterable()
+                ->hideFromIndex(),
+            Text::make(__('Value'), 'content')
+            ->onlyOnIndex()
+            ->filterable()
+            ->sortable(),
             MorphTo::make(__('Type'), 'model')->types([
-                Rating::class,
+                Articles::class,
+                AnswerResponses::class,
+                Comments::class,
+                Category::class,
+                EveryEpochs::class,
+                Discussions::class,
+                Funds::class,
+                Giveaways::class,
+                LearningLessons::class,
+                LearningModules::class,
+                LearningTopics::class,
                 Nfts::class,
-            ]),
+                Podcasts::class,
+                Proposals::class,
+                Rating::class,
+                Rewards::class,
+                CatalystUsers::class,
+                CatalystGroups::class,
+            ])->searchable()
+            ->filterable(),
         ];
 
         $modelObj = Meta::find(request()->resourceId);
 
-        if (! isset($modelObj)) {
+        if (!isset($modelObj)) {
             return $metaFields;
         }
 

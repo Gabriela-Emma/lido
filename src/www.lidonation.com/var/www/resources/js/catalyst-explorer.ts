@@ -9,13 +9,15 @@ import PrimeVue from 'primevue/config';
 import route from "ziggy-js";
 import {modal} from "momentum-modal";
 import timeago from 'vue-timeago3';
-import moment from "moment-timezone";
 import {shortNumber} from "./lib/utils/shortNumber";
 import {currency} from "./lib/utils/currency";
 import {timeAgo} from "./lib/utils/timeago";
+import VuePlyr from 'vue-plyr';
+import 'vue-plyr/dist/vue-plyr.css';
 import {contrastColor} from "./lib/utils/contrastColor";
 let messages = require('../../storage/app/snippets.json');
 const axios = require('axios');
+
 
 //cache snippets to disk
 axios.get(`${window.location.origin}/api/cache/snippets`);
@@ -55,7 +57,9 @@ createInertiaApp({
             .use(PrimeVue)
             .use(timeago)
             .use(pinia)
-            .use(i18n);
+            .use(i18n).use(VuePlyr, {
+                plyr: {}
+            });
 
         app.directive('focus', {
             mounted(el, binding, vnode) {

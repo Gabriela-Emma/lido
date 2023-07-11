@@ -13,12 +13,6 @@
                         {{$fund->label}}
                     </span>
                 </h1>
-
-                {{--                <div class="my-4 summary">--}}
-                {{--                    <div class="max-w-4xl font-semibold">--}}
-                {{--                        Charts and Reports coming soon--}}
-                {{--                    </div>--}}
-                {{--                </div>--}}
             </section>
         </div>
     </header>
@@ -83,12 +77,29 @@
                         class="flex flex-row flex-no-wrap items-center justify-between gap-5 text-gray-200 md:justify-start">
                         <div class="flex text-xl font-semibold flex-nowrap xl:text-3xl">
                             <span class="font-semibold">
+                                {{$fund->currency_symbol}} {{humanNumber($fund->amount)}}
+                            </span>
+                        </div>
+                        <div class="flex gap-1 text-base font-normal flex-nowrap leading-2">
+                            <span>
+                                {{__('Available')}}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    class="border border-gray-300 -mt-px -ml-px inline-flex flex-col gap-6 justify-between border-opacity-50 p-4 pr-8pl-8first-of-type:pl-0 min-w-20 xl:min-w-[initial]">
+                    <div
+                        class="flex flex-row flex-no-wrap items-center justify-between gap-5 text-gray-200 md:justify-start">
+                        <div class="flex text-xl font-semibold flex-nowrap xl:text-3xl">
+                            <span class="font-semibold">
                                 {{$fund->currency_symbol}}{{humanNumber($totalAmountRequested)}}
                             </span>
                         </div>
                         <div class="flex gap-1 text-base font-normal flex-nowrap leading-2">
                             <span>
-                                {{__('Total Requested')}}
+                                {{__('Requested')}}
                             </span>
                         </div>
                     </div>
@@ -105,7 +116,7 @@
                         </div>
                         <div class="flex gap-1 text-base font-normal flex-nowrap leading-2">
                             <span>
-                                {{__('Total Awarded')}}
+                                {{__('Awarded')}}
                             </span>
                         </div>
                     </div>

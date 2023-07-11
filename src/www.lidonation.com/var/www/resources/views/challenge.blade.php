@@ -1,4 +1,4 @@
-<x-public-layout class="post" :metaTitle="$fund->label">
+<x-public-layout class="challenge" :metaTitle="$fund->label">
     @push('openGraph')
         <meta property="og:type" content="article"/>
         <meta property="og:title" content="{{$fund->label}}"/>
@@ -110,6 +110,23 @@
                     </div>
 
                     <div
+                    class="border border-gray-300 -mt-px -ml-px inline-flex flex-col gap-6 justify-between border-opacity-50 p-4 pr-8pl-8first-of-type:pl-0 min-w-20 xl:min-w-[initial]">
+                        <div
+                            class="flex flex-row flex-no-wrap items-center justify-between gap-5 text-gray-200 md:justify-start">
+                            <div class="flex text-xl font-semibold flex-nowrap xl:text-3xl">
+                                <span class="font-semibold">
+                                    {{$fund->currency_symbol}} {{humanNumber($fund->amount)}}
+                                </span>
+                            </div>
+                            <div class="flex gap-1 text-base font-normal flex-nowrap leading-2">
+                                <span>
+                                    {{__('Available')}}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div
                         class="border border-gray-300 -mt-px -ml-px inline-flex flex-col gap-6 justify-between border-opacity-50 p-4 pr-8pl-8first-of-type:pl-0 min-w-20 xl:min-w-[initial]">
                         <div
                             class="flex flex-row flex-no-wrap items-center justify-between gap-5 text-gray-200 md:justify-start">
@@ -120,7 +137,7 @@
                             </div>
                             <div class="flex gap-1 text-base font-normal flex-nowrap leading-2">
                                 <span>
-                                    {{__('Total Requested')}}
+                                    {{__('Requested')}}
                                 </span>
                             </div>
                         </div>
@@ -137,7 +154,7 @@
                             </div>
                             <div class="flex gap-1 text-base font-normal flex-nowrap leading-2">
                                 <span>
-                                    {{__('Total Awarded')}}
+                                    {{__('Awarded')}}
                                 </span>
                             </div>
                         </div>

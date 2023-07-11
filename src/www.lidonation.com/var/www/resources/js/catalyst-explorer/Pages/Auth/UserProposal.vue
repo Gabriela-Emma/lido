@@ -1,24 +1,24 @@
 <template>
     <Modal position="sidebar">
-        <div class="pt-28 relative">
-            <header class="bg-teal-700 text-white py-8 px-4 w-full sticky top-28">
-                <div class="flex items-center justify-between relative">
-                    <DialogTitle class="text-lg xl:text-xl 2xl:text-2xl font-medium text-white">
+        <div class="relative pt-28">
+            <header class="sticky w-full px-4 py-8 text-white bg-teal-700 top-28">
+                <div class="relative flex items-center justify-between">
+                    <DialogTitle class="text-lg font-medium text-white xl:text-xl 2xl:text-2xl">
                         {{
                             proposal.title
                         }}
                     </DialogTitle>
-                    <div class="flex h-7 items-center absolute -right-1 -top-1">
+                    <div class="absolute flex items-center h-7 -right-1 -top-1">
                         <button type="button"
-                                class="rounded-sm bg-teal-900 text-teal-200 hover:text-white focus:outline-none focus:ring-2 focus:ring-white"
-                                @click="open = false">
+                                class="text-teal-200 bg-teal-900 rounded-sm hover:text-white focus:outline-none focus:ring-2 focus:ring-white"
+                                @click="close()">
                             <span class="sr-only">Close panel</span>
-                            <XMarkIcon class="h-6 w-6" aria-hidden="true"/>
+                            <XMarkIcon class="w-6 h-6" aria-hidden="true"/>
                         </button>
                     </div>
                 </div>
 
-                <dl class="flex flex-row gap-6 w-full text-sm w-full">
+                <dl class="flex flex-row w-full gap-6 text-sm">
                     <div class="flex gap-2">
                         <dt class="text-slate-100">
                             {{ $t('Budget') }}
@@ -48,17 +48,17 @@
 
             <div class="shadow-xl">
                 <div v-if="!currAction"
-                     class="divide-y divide-gray-200 overflow-hidden bg-gray-200  sm:grid sm:grid-cols-2 sm:gap-px sm:divide-y-0">
+                     class="overflow-hidden bg-gray-200 divide-y divide-gray-200 sm:grid sm:grid-cols-2 sm:gap-px sm:divide-y-0">
                     <div v-for="(action, actionIdx) in actions" :key="action.title"
                          :class="[actionIdx === 0 ? 'rounded-tl-sm rounded-tr-sm sm:rounded-tr-none' : '', actionIdx === 1 ? 'sm:rounded-tr-sm' : '', actionIdx === actions.length - 2 ? 'sm:rounded-bl-sm' : '', actionIdx === actions.length - 1 ? 'rounded-bl-md rounded-br-sm sm:rounded-bl-none' : '', 'relative group bg-white p-6 focus-within:ring-2 focus-within:ring-inset focus-within:ring-teal-500']">
                         <div>
                         <span
                             :class="[action.iconBackground, action.iconForeground, 'rounded-md inline-flex p-3 ring-4 ring-white']">
-                          <component :is="action.icon" class="h-6 w-6" aria-hidden="true"/>
+                          <component :is="action.icon" class="w-6 h-6" aria-hidden="true"/>
                         </span>
                         </div>
                         <div class="mt-8">
-                            <h3 class="text-md font-medium">
+                            <h3 class="font-medium text-md">
                                 <a :href="action['href']" class="focus:outline-none" target="_blank" v-if="action['href']">
                                     <!-- Extend touch target to entire panel -->
                                     <span class="absolute inset-0" aria-hidden="true"/>
@@ -75,52 +75,56 @@
                                 {{ action.excerpt }}
                             </p>
                         </div>
-                        <span class="pointer-events-none absolute top-6 right-6 text-gray-300 group-hover:text-gray-400"
+                        <span class="absolute text-gray-300 pointer-events-none top-6 right-6 group-hover:text-gray-400"
                               aria-hidden="true">
-                         <component :is="action.hint || ArrowUpRightIcon" class="h-6 w-6" aria-hidden="true"/>
+                         <component :is="action.hint || ArrowUpRightIcon" class="w-6 h-6" aria-hidden="true"/>
                     </span>
                     </div>
+                </div>
+
+                <div v-if="currAction === 'quickpitch'">
+                    <ProposalAddQuickpitch :proposal="proposal" @cancelled="currAction = null"/>
                 </div>
 
                 <div v-if="currAction === 'git'">
                     <ProposalAddGitRepo :proposal="proposal" @cancelled="currAction = null"/>
                 </div>
 
-                <div class="flex h-full flex-col divide-y divide-gray-200 bg-white" v-if="currAction === 'reports'">
-                    <div class="p-4 w-full" v-if="proposal.meta_data?.iog_hash">
+                <div class="flex flex-col h-full bg-white divide-y divide-gray-200" v-if="currAction === 'reports'">
+                    <div class="w-full p-4" v-if="proposal.meta_data?.iog_hash">
                         {{ $t('Links to official required reporting and evidence submission to the community') }}.
                         {{ $t('Your Project ID is') }}:   <b> {{proposal.meta_data?.iog_hash}}</b>
                     </div>
                     <ul role="list" class="divide-y divide-gray-200">
                         <li v-for="iogAction in iogReportActions" class="px-4">
-                            <a :href="iogAction?.href" class="flex w-full items-start py-4 h-full" target="_blank" v-if="iogAction.href">
-                                <div class="h-10 w-10 rounded-full">
-                                    <component :is="iogAction.icon" class="h-10 w-10" aria-hidden="true"/>
+                            <a :href="iogAction?.href" class="flex items-start w-full h-full py-4" target="_blank" v-if="iogAction.href">
+                                <div class="w-10 h-10 rounded-full">
+                                    <component :is="iogAction.icon" class="w-10 h-10" aria-hidden="true"/>
                                 </div>
                                 <div class="ml-3">
                                     <div class="text-lg text-gray-600">{{ iogAction.title }}</div>
                                     <p class="text-sm font-medium text-gray-500">{{ iogAction.excerpt }}</p>
                                 </div>
-                                <div class="w-8 ml-auto flex h-full flex items-center justify-end">
+                                <div class="flex items-center justify-end w-8 h-full ml-auto">
                                     <ArrowUpRightIcon class="w-4 h-4" />
                                 </div>
                             </a>
                         </li>
                     </ul>
-                    <div class="flex gap-4 justify-center items-center p-4 w-full">
+                    <div class="flex items-center justify-center w-full gap-4 p-4">
                         <button type="submit" @click="currAction = null"
-                                class="inline-flex gap-2 justify-center rounded-sm border border-transparent bg-slate-300 py-2 px-4 text-sm font-medium text-white shadow-xs hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
+                                class="inline-flex justify-center gap-2 px-4 py-2 text-sm font-medium text-white border border-transparent rounded-sm shadow-xs bg-slate-300 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
                             <ArrowUturnLeftIcon class="w-4 h-4"/>
                             <span>{{ $t('Back') }}}}</span>
                         </button>
                     </div>
                 </div>
 
-                <div class="flex h-full flex-col divide-y divide-gray-200 bg-white" v-if="currAction === 'youtube'">
-                    <h2 class="text-center py-4">{{ $t('Feature coming soon') }}</h2>
-                    <div class="flex gap-4 justify-center items-center p-4 w-full">
+                <div class="flex flex-col h-full bg-white divide-y divide-gray-200" v-if="currAction === 'youtube'">
+                    <h2 class="py-4 text-center">{{ $t('Feature coming soon') }}</h2>
+                    <div class="flex items-center justify-center w-full gap-4 p-4">
                         <button type="submit" @click="currAction = null"
-                                class="inline-flex gap-2 justify-center rounded-sm border border-transparent bg-slate-300 py-2 px-4 text-sm font-medium text-white shadow-xs hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
+                                class="inline-flex justify-center gap-2 px-4 py-2 text-sm font-medium text-white border border-transparent rounded-sm shadow-xs bg-slate-300 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
                             <ArrowUturnLeftIcon class="w-4 h-4"/>
                             <span>{{ $t('Back') }}</span>
                         </button>
@@ -148,7 +152,11 @@ import {
 } from '@heroicons/vue/24/outline';
 import {DialogTitle} from "@headlessui/vue";
 import {computed, ref} from "vue";
+import {useModal} from "momentum-modal";
 import ProposalAddGitRepo from "../../modules/proposals/ProposalAddGitRepo.vue";
+import ProposalAddQuickpitch from "../../modules/proposals/ProposalAddQuickpitch.vue";
+
+const {close} = useModal();
 
 const props = withDefaults(
     defineProps<{
@@ -195,14 +203,23 @@ const actions = [
         iconBackground: 'bg-yellow-50',
     },
     {
-        title: 'Youtube Channel - coming soon',
-        excerpt: 'Do you have a dedicated YouTube Channel for this project?',
-        handler: 'youtube',
+        title: 'Add Quickpitch',
+        excerpt: 'Add a 2 mins or less youtube or vimeo video to your proposal. They will be featured on lidonation and used to promote your proposal.',
+        handler: 'quickpitch',
         icon: VideoCameraIcon,
         hint: PlusIcon,
         iconForeground: 'text-pink-700',
         iconBackground: 'bg-pink-50',
     },
+    // {
+    //     title: 'Youtube Channel - coming soon',
+    //     excerpt: 'Do you have a dedicated YouTube Channel for this project?',
+    //     handler: 'youtube',
+    //     icon: VideoCameraIcon,
+    //     hint: PlusIcon,
+    //     iconForeground: 'text-pink-700',
+    //     iconBackground: 'bg-pink-50',
+    // },
 ];
 
 const iogReportActions = [

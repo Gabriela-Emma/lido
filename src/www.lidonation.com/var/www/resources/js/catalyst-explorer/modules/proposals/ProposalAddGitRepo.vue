@@ -1,7 +1,6 @@
 <template>
-    <form class="flex h-full flex-col divide-y divide-gray-200 bg-white p-4">
-        <div class="flex flex-row h-full justify-between">
-
+    <form class="flex flex-col h-full p-4 bg-white divide-y divide-gray-200">
+        <div class="flex flex-row justify-between h-full">
                 <h3>
                     {{ $t("Add a git repo") }}
                 </h3>
@@ -10,32 +9,32 @@
                 <button @click.prevent="initUpdating"
                         v-if="hasRepo"
                         as="button"
-                        class="inline-flex custom-input justify-center mb-3 rounded-sm border border-transparent bg-teal-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
+                        class="inline-flex justify-center px-4 py-2 mb-3 text-sm font-medium text-white bg-teal-600 border border-transparent rounded-sm shadow-sm custom-input hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
                     {{ $t("Update Repo") }}
                 </button>
             </div>
         </div>
-        <div class=" flex-1 overflow-y-auto ">
-            <div class="flex flex-1 flex-col justify-between">
-                <div class="divide-y divide-gray-200 px-4 sm:px-6 h-64">
-                    <div class="space-y-6 pt-6 pb-5">
+        <div class="flex-1 overflow-y-auto ">
+            <div class="flex flex-col justify-between flex-1">
+                <div class="h-64 divide-y divide-gray-200">
+                    <div class="pt-6 pb-5 space-y-6">
                         <div>
                             <label for="project-name" class="block text-sm font-medium text-gray-900">
-                                ){{ $t("Git (https url") }}
+                                {{ $t("Git (https url)") }}
                             </label>
-                            <div class="mt-1 flex-grow">
+                            <div class="flex-grow mt-1">
                                 <input v-model="repoForm.gitUrl" type="text" name="gitUrl" id="git"
-                                       class="block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
+                                       class="block w-full border-gray-300 rounded-md shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
                                        :class="{'bg-gray-100':hasRepo}"
                                        :disabled="hasRepo"/>
                                 <div v-if="errorMessage && repoForm.gitUrl !== '' "
-                                     class="text-red-500 mt-2 text-sm">{{ errorMessage }}
+                                     class="mt-2 text-sm text-red-500">{{ errorMessage }}
                                 </div>
                                 <input v-model="repoForm.proposal_id" type="text" class="hidden"
                                        name="proposal_id">
                                 <input v-model="repoForm.user_id" type="text" class="hidden"
                                        name="catalystUser_id">
-                                <div class="flex text-xs w-full lg:text-base justify-start mt-2">
+                                <div class="flex justify-start w-full mt-2 text-xs lg:text-base">
                                     <multiselect
                                         class="block mt-3 rounded-sm z-10  p-0.5"
                                         :class="{'bg-gray-100':hasRepo}"
@@ -55,7 +54,7 @@
                                 </div>
                                 <div class="w-full items center" v-show="success">
                                     <div
-                                        class="flex justify-between  rounded-md bg-green-700  w-48 mt-4 p-1">
+                                        class="flex justify-between w-48 p-1 mt-4 bg-green-700 rounded-md">
                                         <span class="text-white ">{{ success }}</span>
                                         <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"
                                              id="IconChangeColor" height="20" width="20">
@@ -72,22 +71,22 @@
                 </div>
             </div>
         </div>
-        <div class="flex gap-4 justify-end px-4 py-4">
+        <div class="flex justify-end gap-4 px-4 py-4">
             <button @click.prevent="saveChanges"
                     v-if="startUpdate === true "
                     as="button"
-                    class="inline-flex custom-input justify-center rounded-sm border border-transparent bg-teal-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
+                    class="inline-flex justify-center px-4 py-2 text-sm font-medium text-white bg-teal-600 border border-transparent rounded-sm shadow-sm custom-input hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
                 {{ $t("Save Changes") }}
             </button>
             <button type="button" @click="emit('cancelled')"
-                    class="rounded-sm border border-gray-300 bg-white py-2 inline-flex  gap-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
+                    class="inline-flex gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-sm shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
                 <ArrowUturnLeftIcon class="w-4 h-4"/>
                 <span>{{ $t("Back") }}</span>
             </button>
             <button @click.prevent="submitRepo"
                     v-if="!hasRepo && !startUpdate"
                     as="button"
-                    class="inline-flex custom-input justify-center rounded-sm border border-transparent bg-teal-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
+                    class="inline-flex justify-center px-4 py-2 text-sm font-medium text-white bg-teal-600 border border-transparent rounded-sm shadow-sm custom-input hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
                 {{ $t("Save") }}
             </button>
         </div>
@@ -188,7 +187,7 @@ let startUpdate = ref(false);
 let hasRepo = ref(repo.value != null);
 
 
-// start updating 
+// start updating
 let initUpdating = () =>{
     hasRepo.value =!hasRepo;
     startUpdate.value = true;

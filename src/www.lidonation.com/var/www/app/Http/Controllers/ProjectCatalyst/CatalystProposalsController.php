@@ -306,16 +306,14 @@ class CatalystProposalsController extends Controller
                     'ratings_count',
                     'slug',
                     'title',
-                    'fund_label',
-                    'fund_label',
                     'funding_status',
                     'groups.id',
-                    'challenge_label',
                     'ideascale_link',
                     'yes_votes_count',
                     'no_votes_count',
                     'paid',
                     'problem',
+                    'quickpitch',
                     'solution',
                     'status',
                     'website',
@@ -326,6 +324,13 @@ class CatalystProposalsController extends Controller
                     'users.ideascale_id',
                     'users.media.original_url',
                     'users.profile_photo_url',
+                    'fund.id',
+                    'fund.label',
+                    'fund.amount',
+                    'fund.status',
+                    'challenge.id',
+                    'challenge.label',
+                    'challenge.amount',
                 ];
                 if ((bool) $this->sortBy && (bool) $this->sortOrder) {
                     $options['sort'] = ["$this->sortBy:$this->sortOrder"];
@@ -384,12 +389,12 @@ class CatalystProposalsController extends Controller
 
         // filter by fund
         if ($this->fundsFilter->isNotEmpty()) {
-            $_options[] = '('.$this->fundsFilter->map(fn ($f) => "fund = {$f}")->implode(' OR ').')';
+            $_options[] = '('.$this->fundsFilter->map(fn ($f) => "fund.id = {$f}")->implode(' OR ').')';
         }
 
         // filter by challenge
         if ($this->challengesFilter->isNotEmpty()) {
-            $_options[] = '('.$this->challengesFilter->map(fn ($c) => "challenge = {$c}")->implode(' OR ').')';
+            $_options[] = '('.$this->challengesFilter->map(fn ($c) => "challenge.id = {$c}")->implode(' OR ').')';
         }
 
         // filter by tags

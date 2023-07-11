@@ -3,21 +3,23 @@
 namespace App\Nova;
 
 use App\Models\Nft;
-use App\Nova\Actions\CacheNftImage;
-use Ebess\AdvancedNovaMediaLibrary\Fields\Images;
-use Illuminate\Http\Request;
-use Laravel\Nova\Fields\BelongsTo;
-use Laravel\Nova\Fields\DateTime;
-use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\KeyValue;
-use Laravel\Nova\Fields\Markdown;
-use Laravel\Nova\Fields\MorphTo;
+use Illuminate\Http\Request;
+use Laravel\Nova\Fields\URL;
+use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
-use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\URL;
+use Laravel\Nova\Fields\HasMany;
+use Laravel\Nova\Fields\MorphTo;
+use App\Nova\Actions\AddMetaData;
+use Laravel\Nova\Fields\DateTime;
+use Laravel\Nova\Fields\KeyValue;
+use Laravel\Nova\Fields\Markdown;
+use App\Nova\Actions\EditMetaData;
+use Laravel\Nova\Fields\BelongsTo;
+use App\Nova\Actions\CacheNftImage;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Ebess\AdvancedNovaMediaLibrary\Fields\Images;
 
 class Nfts extends Resource
 {
@@ -146,6 +148,9 @@ class Nfts extends Resource
             static::getGlobalActions(),
             [
                 new CacheNftImage,
+                (new AddMetaData),
+                (new EditMetaData(\App\Models\Nft::class)),
+
             ]);
     }
 }

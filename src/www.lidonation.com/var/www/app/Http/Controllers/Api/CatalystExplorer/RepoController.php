@@ -29,7 +29,7 @@ class RepoController extends Controller
         return array_filter($branches);
     }
 
-    public function saveRepo(Request $request)
+    public function store(Request $request)
     {
         SaveRepo::dispatch($request->gitUrl, $request->branch, $request->proposal_id, $request->user_id);
 

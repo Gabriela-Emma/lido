@@ -32,7 +32,7 @@ class CatalystMyProposalsController extends Controller
      */
     public function index(Request $request)
     {
-        $this->fundedProposalsFilter = $request->input('fp', true);
+        $this->fundedProposalsFilter = $request->input('fp', false);
         $this->currentPage = $request->input('p', 1);
         $this->perPage = $request->input('l', 24);
 
@@ -46,17 +46,21 @@ class CatalystMyProposalsController extends Controller
 
         $catalystProfiles = $user->catalyst_users?->pluck('id');
 
-        $query = Proposal::whereIn('user_id', $catalystProfiles)
-            ->when($this->fundedProposalsFilter, function ($query) {
-                return $query->whereNotNull('funded_at');
-            });
+        // $query = Proposal::whereIn('user_id', $catalystProfiles)
+        //     ->when(
+        //         $this->fundedProposalsFilter,
+        //         fn ($query) => $query->whereNotNull('funded_at')
+        //     );
+        $query = Proposal::whereIn('user_id', $catalystProfiles);
+        $paginator = $query->paginate($this->perPage, ['*'], 'p')->setPath('/');
 
+
+        $query->whereNotNull('funded_at');
         $totalDistributed = intval($query->sum('amount_received'));
         $budgetSummary = intval($query->sum('amount_requested'));
 
         $totalRemaining = ($budgetSummary - $totalDistributed);
 
-        $paginator = $query->paginate($this->perPage, ['*'], 'p')->setPath('/');
 
         return [
             'filters' => ['funded' => $this->fundedProposalsFilter],

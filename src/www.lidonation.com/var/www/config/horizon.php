@@ -151,7 +151,7 @@ return [
     |
     */
 
-    'memory_limit' => 1024,
+    'memory_limit' => 2048,
 
     /*
     |--------------------------------------------------------------------------
@@ -180,7 +180,7 @@ return [
     'environments' => [
         'production' => [
             'supervisor-1' => [
-                'maxProcesses' => 10,
+                'maxProcesses' => 16,
                 'balanceMaxShift' => 1,
                 'balanceCooldown' => 3,
                 'timeout' => 1260,

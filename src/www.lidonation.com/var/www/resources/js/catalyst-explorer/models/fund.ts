@@ -7,7 +7,7 @@ export default interface Fund {
     launch_date:string;
     proposals_count: string;
     parent_proposals: number;
-    amount: string;
+    amount: number;
     currency: string;
     currency_symbol:string;
     link:string;

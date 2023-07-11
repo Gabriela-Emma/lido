@@ -1,5 +1,5 @@
-import {Controller, Get, HttpException, HttpStatus, Post, Req} from '@nestjs/common';
-import {Blockfrost, Lucid, MintingPolicy, PolicyId, Unit, toText} from "lucid-cardano";
+import {Controller, HttpException, HttpStatus, Post, Req} from '@nestjs/common';
+import {Blockfrost, Lucid, MintingPolicy, PolicyId, Unit, fromText, toText} from "lucid-cardano";
 import {Request} from "express";
 import lucidInstance from '@lido/utils/lucidInstance';
 
@@ -20,21 +20,18 @@ export class LidoMinuteController {
     const nft = request?.body?.nft;
     let lucid = await this.getConfigs(request);
 
-    lucid.selectWalletFromSeed(request?.body?.seed);
-    const mintingPolicy = await this.getPolicy(lucid);
-    const policyId: PolicyId = lucid.utils.mintingPolicyToId(mintingPolicy);
-    const unit: Unit = policyId + toText(nft.key);
-
-    // console.log({policyId, unit, metadata: nft.metadata, files: nft.metadata.files});
-
-    const tx = await lucid
-      .newTx()
-      .payToAddress(nft.owner, { lovelace: BigInt(2000000), [unit]: 1n })
-      .mintAssets({ [unit]: 1n })
-      .validTo(Date.now() + 100000)
-      .attachMintingPolicy(mintingPolicy)
-      .attachMetadata(721, { [policyId]: { [nft.key]: nft.metadata } })
-      .complete();
+        lucid.selectWalletFromSeed(request?.body?.seed);
+        const mintingPolicy = await this.getPolicy(lucid);
+        const policyId: PolicyId = lucid.utils.mintingPolicyToId(mintingPolicy);
+        const unit: Unit = policyId + fromText(nft.key);
+        const tx = await lucid
+            .newTx()
+            .payToAddress(nft.owner, {lovelace: BigInt(2000000), [unit]: 1n })
+            .mintAssets({ [unit]: 1n } )
+            .validTo(Date.now() + 100000 )
+            .attachMintingPolicy(mintingPolicy)
+            .attachMetadata(721, {[policyId]: { [nft.key]: nft.metadata}})
+            .complete();
 
     const signedTx = await tx.sign().complete();
     const hash = await signedTx.submit();
