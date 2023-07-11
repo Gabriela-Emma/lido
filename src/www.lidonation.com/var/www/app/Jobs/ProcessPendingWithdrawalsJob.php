@@ -38,7 +38,7 @@ class ProcessPendingWithdrawalsJob implements ShouldQueue
     {
         $msg = 'Lido Rewards Withdrawal';
         $payments = collect([]);
-        dd('tyty');
+        
         // get all pending withdrawals or bail
         $withdrawals = Withdrawal::validated()
             ->get()
