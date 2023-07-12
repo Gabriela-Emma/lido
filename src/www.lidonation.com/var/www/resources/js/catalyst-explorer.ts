@@ -17,6 +17,7 @@ import 'vue-plyr/dist/vue-plyr.css';
 import {contrastColor} from "./lib/utils/contrastColor";
 let messages = require('../../storage/app/snippets.json');
 const axios = require('axios');
+import MasonryWall from '@yeger/vue-masonry-wall';
 
 
 //cache snippets to disk
@@ -57,6 +58,7 @@ createInertiaApp({
             .use(PrimeVue)
             .use(timeago)
             .use(pinia)
+            .use(MasonryWall)
             .use(i18n).use(VuePlyr, {
                 plyr: {}
             });

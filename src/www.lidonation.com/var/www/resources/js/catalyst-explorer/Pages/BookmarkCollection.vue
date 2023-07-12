@@ -261,10 +261,9 @@ function openIdeascaleLinks() {
 }
 
 function createDraftBallot() {
-    axios.delete(`${usePage().props.base_url}/catalyst-explorer/bookmark-collection?hash=${collectionHash.value}`)
-        .then((res) =>{
-            bookmarksStore.deleteCollection(collectionHash.value)
-            router.get(`${usePage().props.base_url}/catalyst-explorer/bookmarks`)
+    axios.post(route('catalystExplorer.bookmark.createBallot', {bookmarkCollection: collectionHash.value}))
+        .then((res) => {
+            console.log(res);
         })
         .catch((error) => {
             if (error.response && error.response.status === 403) {

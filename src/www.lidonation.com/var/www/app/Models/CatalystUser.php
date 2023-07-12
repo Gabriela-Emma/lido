@@ -254,7 +254,7 @@ class CatalystUser extends User implements HasMedia, CanComment
             'first_timer' => (
                 count(
                     array_unique(
-                        $proposals->pluck('fund')->toArray()
+                        $proposals?->pluck('fund_id')->toArray()
                     )
                 ) === 1
             ),

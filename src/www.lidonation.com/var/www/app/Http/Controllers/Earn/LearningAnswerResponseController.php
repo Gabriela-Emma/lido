@@ -82,7 +82,7 @@ class LearningAnswerResponseController extends Controller
         
         if($topicCompleted && !$topicNft instanceof Nft){
             $this->issueNft($learningTopic, $learningLesson);
-            return back()->withInput();
+            return redirect()->route('earn.learn.nft.awarded');
         }
 
         //issue normal reward

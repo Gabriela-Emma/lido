@@ -295,9 +295,11 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
     public function quickPitchId(): Attribute
     {
         return Attribute::make(
-            get: fn () => collect(
-                    explode('/', $this->meta_data?->quickpitch)
-                )?->last()
+            get: fn () => $this->meta_data?->quickpitch ? collect(
+                    explode(
+                        '/',
+                         $this->meta_data?->quickpitch)
+                )?->last() : null
         );
     }
 
