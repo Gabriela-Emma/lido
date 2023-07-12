@@ -212,3 +212,7 @@ $l->topic
 $n\040=\040Nft::find(62)
 $n->metadata
 $n->metadata['policy']
+php\040artisan\040Proposal::runCustomIndex
+php\040artisan\040Proposal::runCustomIndex()
+Proposal::runCustomIndex();
+exit

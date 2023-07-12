@@ -2,28 +2,27 @@
 
 namespace App\Nova;
 
-use Illuminate\Http\Request;
-use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Http\Requests\NovaRequest;
-use App\Models\BookmarkCollection;
-use Laravel\Nova\Fields\Color;
+use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\DateTime;
-use Laravel\Nova\Fields\HasMany;
+use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Markdown;
+use Laravel\Nova\Fields\MorphTo;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Http\Requests\NovaRequest;
 
-class BookmarkCollections extends Resource
+class BookmarkItems extends Resource
 {
+    public static $group = 'Catalyst';
+
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = BookmarkCollection::class;
+    public static $model = \App\Models\BookmarkItem::class;
 
-    public static $group = 'Catalyst';
 
-    public static $perPageViaRelationship = 15;
+    public static $perPageViaRelationship = 25;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -38,7 +37,7 @@ class BookmarkCollections extends Resource
      * @var array
      */
     public static $search = [
-        'id', 'title',
+        'id', 'title'
     ];
 
     /**
@@ -47,28 +46,18 @@ class BookmarkCollections extends Resource
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
-    public function fields(NovaRequest $request): array
+    public function fields(NovaRequest $request)
     {
         return [
             ID::make()->sortable(),
-            Text::make('Title')
-                ->sortable()->withMeta(
-                    [
-                        'extraAttributes' => [
-                            'autocomplete' => 'off',
-                        ],
-                    ]
-                )
-                ->required()
-                ->rules('max:255'),
-            Color::make('Color'),
-            Text::make('visibility')->sortable(),
-            Text::make('status')->sortable(),
+            Text::make("Title")->sortable(),
+            BelongsTo::make('Bookmark', 'collection', BookmarkCollections::class),
+            Markdown::make('Content'),
+            Text::make('Link')->sortable(),
             DateTime::make('Created At')->sortable(),
-            DateTime::make('Updated At')->sortable(),
-            Markdown::make(__('Content'), 'content')->sortable(),
-
-            HasMany::make('Items', 'items', BookmarkItems::class),
+            MorphTo::make('Bookmarkable', 'model')->types([
+                Proposals::class
+            ])->searchable(),
         ];
     }
 
@@ -105,15 +94,14 @@ class BookmarkCollections extends Resource
         return [];
     }
 
-     /**
+    /**
      * Get the actions available for the resource.
      *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
-    public function actions(Request $request)
+    public function actions(NovaRequest $request)
     {
-        return array_merge(
-            static::getGlobalActions(),
-            []);
+        return [];
     }
 }
