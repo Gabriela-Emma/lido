@@ -74,4 +74,5 @@ withDefaults(
     }>(), {});
 const userStore = useUserStore();
 const {user$} = storeToRefs(userStore);
+console.log(user$)
 </script>

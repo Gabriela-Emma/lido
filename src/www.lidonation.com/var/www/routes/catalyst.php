@@ -1,27 +1,28 @@
 <?php
 
+use Inertia\Inertia;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AnonymousBookmarkController;
-use App\Http\Controllers\Api\CatalystExplorer\UserController;
-use App\Http\Controllers\ProjectCatalyst\CatalystAssessmentsController;
-use App\Http\Controllers\ProjectCatalyst\CatalystBookmarksController;
-use App\Http\Controllers\ProjectCatalyst\CatalystFundsController;
-use App\Http\Controllers\ProjectCatalyst\CatalystGroupsController;
-use App\Http\Controllers\ProjectCatalyst\CatalystMyBookmarksController;
-use App\Http\Controllers\ProjectCatalyst\CatalystMyDashboardController;
-use App\Http\Controllers\ProjectCatalyst\CatalystMyGroupsController;
-use App\Http\Controllers\ProjectCatalyst\CatalystMyProposalsController;
-use App\Http\Controllers\ProjectCatalyst\CatalystPeopleController;
-use App\Http\Controllers\ProjectCatalyst\CatalystProposalsController;
-use App\Http\Controllers\ProjectCatalyst\CatalystReportsController;
-use App\Http\Controllers\ProjectCatalyst\CatalystUserProfilesController;
-use App\Http\Controllers\ProjectCatalyst\CatalystVoterToolController;
-use App\Http\Controllers\ProjectCatalyst\ProposalSearchController;
 use App\Http\Livewire\Catalyst\CatalystFundComponent;
 use App\Http\Livewire\Catalyst\CatalystGroupsComponent;
 use App\Http\Livewire\Catalyst\CatalystProposersComponent;
-use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
+use App\Http\Controllers\Api\CatalystExplorer\UserController;
+use App\Http\Controllers\ProjectCatalyst\CatalystFundsController;
+use App\Http\Controllers\ProjectCatalyst\CatalystGroupsController;
+use App\Http\Controllers\ProjectCatalyst\CatalystPeopleController;
+use App\Http\Controllers\ProjectCatalyst\ProposalSearchController;
+use App\Http\Controllers\ProjectCatalyst\CatalystReportsController;
+use App\Http\Controllers\ProjectCatalyst\CatalystMyGroupsController;
+use App\Http\Controllers\ProjectCatalyst\CatalystProposerController;
+use App\Http\Controllers\ProjectCatalyst\CatalystBookmarksController;
+use App\Http\Controllers\ProjectCatalyst\CatalystProposalsController;
+use App\Http\Controllers\ProjectCatalyst\CatalystVoterToolController;
+use App\Http\Controllers\ProjectCatalyst\CatalystAssessmentsController;
+use App\Http\Controllers\ProjectCatalyst\CatalystMyBookmarksController;
+use App\Http\Controllers\ProjectCatalyst\CatalystMyDashboardController;
+use App\Http\Controllers\ProjectCatalyst\CatalystMyProposalsController;
+use App\Http\Controllers\ProjectCatalyst\CatalystUserProfilesController;
 
 // Project Catalyst
 
@@ -29,7 +30,8 @@ Route::group(
     [
         'prefix' => LaravelLocalization::setLocale(),
         'middleware' => ['localeSessionRedirect', 'localizationRedirect', 'localeViewPath'],
-    ], function () {
+    ],
+    function () {
         Route::get('/catalyst-proposals/users/{catalystUser}', fn () => view('catalyst.user'));
         Route::prefix('project-catalyst')->as('projectCatalyst.')->group(function () {
             Route::get('/reports', App\Http\Livewire\Catalyst\CatalystReportsComponent::class)
@@ -107,6 +109,14 @@ Route::group(
             Route::get('/proposals/metrics/sum/distributed', [CatalystProposalsController::class, 'metricSumDistributed']);
             Route::get('/proposals/metrics/sum/completed', [CatalystProposalsController::class, 'metricSumCompleted']);
 
+            Route::get('people/{catalystUser:id}/metrics/sum/completed-proposals', [CatalystProposerController::class, 'getCompletedProposalCount']);
+            Route::get('people/{catalystUser:id}/metrics/sum/outstanding-proposals', [CatalystProposerController::class, 'getOutsandingProposalCount']);
+            Route::get('people/{catalystUser:id}/metrics/sum/outstanding-co-proposals', [CatalystProposerController::class, 'getCoProposalCount']);
+            Route::get('people/{catalystUser:id}/metrics/sum/F10primary-proposals', [CatalystProposerController::class, 'getF10PrimaryProposalCount']);
+            Route::get('people/{catalystUser:id}/metrics/sum/F10-co-proposals', [CatalystProposerController::class, 'getF10CoProposalCount']);
+
+
+
             Route::get('/people', [CatalystPeopleController::class, 'index'])
                 ->name('people');
 
@@ -125,10 +135,10 @@ Route::group(
             // exports
             Route::get('/export/proposals', [CatalystProposalsController::class, 'exportProposals']);
 
-            Route::post('/bookmarks/items', [CatalystMyBookmarksController::class, 'createItem']);
+            Route::post('/bookmarks/items', [CatalystMyBookmarksController::class, 'createItem'])->name('bookmarkItem.create');
             Route::get('/export/bookmarked-proposals', [CatalystMyBookmarksController::class, 'exportBookmarks']);
-            Route::delete('/bookmark-collection', [CatalystMyBookmarksController::class, 'deleteCollection']);
-            Route::delete('/bookmark-item/{bookmarkItem:id}', [CatalystMyBookmarksController::class, 'deleteItem']);
+            Route::delete('/bookmark-collection', [CatalystMyBookmarksController::class, 'deleteCollection'])->name('bookmarkCollection.delete');
+            Route::delete('/bookmark-item/{bookmarkItem:id}', [CatalystMyBookmarksController::class, 'deleteItem'])->name('bookmarkItem.delete');
             Route::middleware(['auth.catalyst'])->prefix('/my')->group(function () {
             });
             Route::get('/cardano-treasury', App\Http\Livewire\Catalyst\CardanoTreasuryComponent::class)
@@ -172,7 +182,8 @@ Route::group(
                 Route::get('/groups/{catalystGroup:id}/sum/remaining', [CatalystMyGroupsController::class, 'metricTotalFundsRemaining']);
             });
         });
-    });
+    }
+);
 Route::prefix('project-catalyst')->group(function () {
     Route::get('/bookmarks/share/{anonymousBookmark}', [AnonymousBookmarkController::class, 'show']);
     Route::get('/bookmarks/share/{anonymousBookmark}', [AnonymousBookmarkController::class, 'show']);
