@@ -1,6 +1,6 @@
 import {Controller, Post, Req} from '@nestjs/common';
 import {Request} from "express";
-import {Blockfrost, Lucid} from "lucid-cardano";
+import {Blockfrost, Lucid, PolicyId, Unit, fromText} from "lucid-cardano";
 
 @Controller('rewards')
 export class RewardsController {
@@ -52,5 +52,33 @@ export class RewardsController {
         const txHash = await signedTx.submit();
 
         return {tx: txHash};
+    }
+
+    protected async mintNft(nfts, lucid:Lucid){
+        for (let i = 0; i < nfts.length; i++) {
+            const nft = nfts[i];
+            const mintingPolicy = await this.getPolicy(lucid);
+            const policyId: PolicyId =
+                lucid.utils.mintingPolicyToId(mintingPolicy);
+            const unit: Unit = policyId + fromText(nft.key);
+            const tx = await lucid
+                .newTx()
+                .payToAddress(nft.owner, {
+                lovelace: BigInt(2000000),
+                [unit]: 1n,
+                })
+                .mintAssets({ [unit]: 1n })
+                .validTo(Date.now() + 100000)
+                .attachMintingPolicy(mintingPolicy)
+                .attachMetadata(721, {
+                [policyId]: { [nft.key]: nft.metadata },
+                })
+                .complete();
+
+            const signedTx = await tx.sign().complete();
+            const hash = await signedTx.submit();
+
+            return { hash };
+        }
     }
 }
