@@ -3,17 +3,14 @@
 namespace App\Models;
 
 use App\Http\Traits\HasHashIds;
-use App\Models\BookmarkCollection as ModelsBookmarkCollection;
-use App\Models\Traits\HasAuthor;
 use App\Models\Traits\HashIdModel;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 use Parental\HasParent;
 
-class DraftBallot extends ModelsBookmarkCollection
+class DraftBallot extends BookmarkCollection
 {
-    use HasAuthor, HasHashIds, HashIdModel, HasParent, SoftDeletes;
+    use HasHashIds, HashIdModel, HasParent;
 
-
+    protected $urlGroup = 'catalyst-explorer/draft-ballots';
 
 }

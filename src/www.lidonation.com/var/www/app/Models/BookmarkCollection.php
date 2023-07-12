@@ -25,16 +25,13 @@ class BookmarkCollection extends Model
 
     protected $fillable = ['title', 'content', 'type'];
 
+    protected $urlGroup = 'catalyst-explorer/bookmarks';
+
     public function bookmarkCollectionId(): Attribute
     {
         return Attribute::make(
             get: fn ($value) => Hashids::connection(static::class)->encode($value)
         );
-    }
-
-    public function getUrlGroup(): string
-    {
-        return 'catalyst-explorer/bookmarks';
     }
 
     public function items(): HasMany

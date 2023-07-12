@@ -4,8 +4,10 @@ namespace App\Http\Controllers\ProjectCatalyst;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\BookmarkCollectionResource;
+use App\Http\Resources\DraftBallotResource;
 use App\Models\BookmarkCollection;
 use App\Models\BookmarkItem;
+use App\Models\DraftBallot;
 use App\Models\Proposal;
 use Illuminate\Http\Request;
 use Illuminate\Support\Fluent;
@@ -66,12 +68,29 @@ class CatalystBookmarksController extends Controller
 
     public function view(Request $request, BookmarkCollection $bookmarkCollection)
     {
+
+        if ($bookmarkCollection instanceof DraftBallot) {
+            return to_route('catalystExplorer.draftBallot.view', $bookmarkCollection->hash);
+        }
         return Inertia::render('BookmarkCollection')->with([
-            'bookmarkCollection' => (new BookmarkCollectionResource($bookmarkCollection))->toArray($request),
+            'bookmarkCollection' => (new BookmarkCollectionResource($bookmarkCollection))
+            ->toArray($request),
             'crumbs' => [
                 ['label' => 'Proposals', 'link' => route('catalystExplorer.proposals')],
                 ['label' => 'Bookmarks', 'link' => route('catalystExplorer.bookmarks')],
                 ['label' => $bookmarkCollection->title, 'link' => $bookmarkCollection->link],
+            ],
+        ]);
+    }
+
+    public function viewDraftBallot(Request $request, DraftBallot $draftBallot)
+    {
+        return Inertia::render('DraftBallot')->with([
+            'draftBallot' => (new DraftBallotResource($draftBallot))->toArray($request),
+            'crumbs' => [
+                ['label' => 'Proposals', 'link' => route('catalystExplorer.proposals')],
+                ['label' => 'Bookmarks', 'link' => route('catalystExplorer.bookmarks')],
+                ['label' => $draftBallot->title, 'link' => $draftBallot->link],
             ],
         ]);
     }
@@ -84,5 +103,13 @@ class CatalystBookmarksController extends Controller
                 ['label' => 'Bookmarks', 'link' => route('catalystExplorer.bookmarks')],
             ],
         ]);
+    }
+
+    public function createDraftBallot(Request $request, BookmarkCollection $bookmarkCollection)
+    {
+        //@todo validate against policy with gate to make sure only collection owner can do this
+        $bookmarkCollection->type = DraftBallot::class;
+        $bookmarkCollection->save();
+        return to_route('catalystExplorer.draftBallot.view', $bookmarkCollection->hash);
     }
 }

@@ -81,6 +81,4 @@ withDefaults(
         titleName1: String,
         subTitle: String
     }>(), {});
-
-    console.log('user::',user$);
 </script>

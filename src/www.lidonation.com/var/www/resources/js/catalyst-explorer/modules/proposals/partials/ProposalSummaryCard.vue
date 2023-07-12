@@ -57,8 +57,7 @@
                         {{ proposal.challenge.label }}
                     </div>
                     <div v-if="proposal.fund.label" class="inline gap-1">
-                        <strong>{{  $t("Fund") }}: </strong>
-                        {{ proposal.fund.label }}
+                        <strong>{{ proposal.fund.label }}</strong>
                     </div>
 
                     <div class="flex items-center border rounded-sm border-slate-600">

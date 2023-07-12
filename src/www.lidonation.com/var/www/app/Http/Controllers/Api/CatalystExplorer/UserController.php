@@ -121,6 +121,6 @@ class UserController extends Controller
 
     public function utilityLogin()
     {
-        return Inertia::modal('Auth/UtilityLogin')->baseRoute(previous_route_name());
+        return Inertia::modal('Auth/UtilityLogin')->baseUrl(previous_route_url());
     }
 }
