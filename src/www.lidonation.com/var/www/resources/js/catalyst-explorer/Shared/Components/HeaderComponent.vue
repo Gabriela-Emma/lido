@@ -73,7 +73,7 @@ import { useUserStore } from '../../../global/Shared/store/user-store';
 
 const $utils: any = inject('$utils');
 const userStore = useUserStore();
-const {user$} = storeToRefs(userStore);
+let {user$} = storeToRefs(userStore);
 
 withDefaults(
     defineProps<{
@@ -81,4 +81,6 @@ withDefaults(
         titleName1: String,
         subTitle: String
     }>(), {});
+
+    console.log('user::',user$);
 </script>
