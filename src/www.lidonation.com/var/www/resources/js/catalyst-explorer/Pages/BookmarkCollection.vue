@@ -38,7 +38,7 @@
                         {{ $t("Open All items") }}
                     </button>
 
-                    <!-- <button @click="createDraftBallot"
+                    <button @click="createDraftBallot"
                             type="button"
                             :disabled="!user$?.id"
                             :title="!user$?.id ? $t('You must be logged in to create a draft ballot') : 'Convert to draft ballot'"
@@ -46,7 +46,7 @@
                             class="inline-flex items-center gap-x-0.5 rounded-sm border py-1 px-1.5 text-xs bg-black font-semibold text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-600">
                         <ArchiveBoxArrowDownIcon class="mr-0.5 h-3 w-3" aria-hidden="true"/>
                         {{ $t("Create Draft Ballot") }}
-                    </button> -->
+                    </button>
                     <button @click="remove = !remove"
                             type="button"
                             :disabled="canDelete===false"
@@ -148,11 +148,10 @@ import moment from "moment-timezone";
 import { BookmarkItemModel } from '../models/bookmark-item-model';
 import Proposal from '../models/proposal';
 import { useUserStore } from '../../global/Shared/store/user-store';
+import route from 'ziggy-js';
 
 const userStore = useUserStore();
 const {user$} = storeToRefs(userStore);
-
-console.log({user$});
 
 const $utils: any = inject('$utils');
 
@@ -224,12 +223,12 @@ const removeCollection = () => {
     }
 }
 
-const removeItem = (id:number) =>{
+const removeItem = (id:number) => {
     if(onLocal.value && inLastTenMins.value){
-        axios.delete(`${usePage().props.base_url}/catalyst-explorer/bookmark-item/${id}`)
+        axios.delete(route('catalystExplorer.bookmarkItem.delete', {bookmarkItem: id}))
         .then((res) =>{
             bookmarksStore.deleteItem(id,collectionHash.value)
-            router.get(`${usePage().props.base_url}/catalyst-explorer/bookmarks/${collectionHash.value}`)
+            router.get(route('catalystExplorer.bookmark', {bookmarkCollection: collectionHash.value}))
         })
         .catch((error) => {
             if (error.response && error.response.status === 403) {
@@ -262,6 +261,15 @@ function openIdeascaleLinks() {
 }
 
 function createDraftBallot() {
-    //
+    axios.delete(`${usePage().props.base_url}/catalyst-explorer/bookmark-collection?hash=${collectionHash.value}`)
+        .then((res) =>{
+            bookmarksStore.deleteCollection(collectionHash.value)
+            router.get(`${usePage().props.base_url}/catalyst-explorer/bookmarks`)
+        })
+        .catch((error) => {
+            if (error.response && error.response.status === 403) {
+                console.error(error);
+            }
+        });
 }
 </script>

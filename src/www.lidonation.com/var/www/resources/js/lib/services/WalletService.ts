@@ -106,7 +106,6 @@ export default class WalletService {
         if (!this.api) {
             return;
         }
-        console.log(<string>await this.lucid.wallet.rewardAddress());
     }
 
     public async getStakeAddress(wallet: string = null) {
@@ -229,7 +228,6 @@ export default class WalletService {
             this.blockfrostUrl = keys?.blockfrostUrl;
             this.projectId = keys?.projectId;
             const envNetworkId = keys?.network_id;
-            console.log({ envNetworkId, networkId });
             let network;
             switch (envNetworkId) {
                 case "0":
@@ -258,7 +256,7 @@ export default class WalletService {
             lucid = lucid.selectWallet(api);
             this.lucid = lucid;
             this.poolId = keys.poolId;
-            this.api = api;        
+            this.api = api;
         } catch (e) {
             throw e;
         }

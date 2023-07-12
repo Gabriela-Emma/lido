@@ -125,10 +125,10 @@ Route::group(
             // exports
             Route::get('/export/proposals', [CatalystProposalsController::class, 'exportProposals']);
 
-            Route::post('/bookmarks/items', [CatalystMyBookmarksController::class, 'createItem']);
+            Route::post('/bookmarks/items', [CatalystMyBookmarksController::class, 'createItem'])->name('bookmarkItem.create');
             Route::get('/export/bookmarked-proposals', [CatalystMyBookmarksController::class, 'exportBookmarks']);
-            Route::delete('/bookmark-collection', [CatalystMyBookmarksController::class, 'deleteCollection']);
-            Route::delete('/bookmark-item/{bookmarkItem:id}', [CatalystMyBookmarksController::class, 'deleteItem']);
+            Route::delete('/bookmark-collection', [CatalystMyBookmarksController::class, 'deleteCollection'])->name('bookmarkCollection.delete');
+            Route::delete('/bookmark-item/{bookmarkItem:id}', [CatalystMyBookmarksController::class, 'deleteItem'])->name('bookmarkItem.delete');
             Route::middleware(['auth.catalyst'])->prefix('/my')->group(function () {
             });
             Route::get('/cardano-treasury', App\Http\Livewire\Catalyst\CardanoTreasuryComponent::class)
