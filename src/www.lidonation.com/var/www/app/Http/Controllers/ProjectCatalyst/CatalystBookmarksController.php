@@ -95,6 +95,18 @@ class CatalystBookmarksController extends Controller
         ]);
     }
 
+    public function editDraftBallot(Request $request, DraftBallot $draftBallot)
+    {
+        return Inertia::render('EditDraftBallot')->with([
+            'draftBallot' => (new DraftBallotResource($draftBallot))->toArray($request),
+            'crumbs' => [
+                ['label' => 'Proposals', 'link' => route('catalystExplorer.proposals')],
+                ['label' => 'Bookmarks', 'link' => route('catalystExplorer.bookmarks')],
+                ['label' => $draftBallot->title, 'link' => $draftBallot->link],
+            ],
+        ]);
+    }
+
     public function index(Request $request)
     {
         return Inertia::render('Bookmarks')->with([

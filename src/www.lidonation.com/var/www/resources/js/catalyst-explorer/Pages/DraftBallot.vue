@@ -9,7 +9,7 @@
                     <template #default="{ item, index }">
                     <div class="px-3 py-8 bg-white">
                         <div>
-                            <small class="text-xs text-slate-500">Challenge</small>
+                            <small class="px-4 text-xs text-slate-500">Challenge</small>
                             <h1 class="px-4">{{ item.title }}</h1>
                             <span>{{ item.excerpt }}</span>
                         </div>

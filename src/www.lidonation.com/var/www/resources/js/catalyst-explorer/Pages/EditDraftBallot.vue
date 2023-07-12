@@ -5,46 +5,60 @@
     <main class="flex flex-col gap-2 py-8 bg-primary-20">
         <div class="container">
             <section>
-                <masonry-wall :items="draftBallot.groups" :ssr-columns="1" :column-width="600" :gap="16" :max-columns="2">
-                    <template #default="{ item, index }">
-                    <div class="px-3 py-8 bg-white">
-                        <div>
-                            <small class="px-4 text-xs text-slate-500">Challenge</small>
-                            <h1 class="px-4">{{ item.title }}</h1>
-                            <span>{{ item.excerpt }}</span>
-                        </div>
-                        <div>
-                            <ul role="list" class="divide-y divide-gray-200">
-                                <li v-for="proposal in item.items" :key="proposal.id">
-                                    <div class="block hover:bg-gray-50">
-                                        <div class="flex items-center px-4 py-4 sm:px-5">
-                                            <div class="flex-1 min-w-0 sm:flex sm:items-center sm:justify-between">
-                                                <div class="truncate">
-                                                    <div class="flex flex-col text-lg">
-                                                        <h3 class="text-xl font-medium truncate xl:text-2xl">
-                                                            {{ proposal.title }}
-                                                        </h3>
-                                                    </div>
-                                                    <div class="mt-1">
-                                                        <div class="flex flex-row items-center gap-5 text-sm text-slate-500">
-                                                            <div class="flex items-center gap-1">
-                                                                <div>{{ $t("Budget") }}</div>
-                                                                <div class="font-semibold text-slate-700">
-                                                                    {{ $filters.currency(proposal?.amount_requested) }}
-                                                                </div>
-                                                            </div>
+                <section v-for="group in draftBallot.groups" class="py-16 mb-8 bg-white border-t rounded-sm shadow-md">
+                    <ul role="list" class="divide-y divide-gray-200">
+                        <li v-for="item in group.items" :key="item.id">
+                            <div class="block hover:bg-gray-50">
+                                <div class="flex items-center px-4 py-4 sm:px-6">
+                                    <div class="flex-1 min-w-0 sm:flex sm:items-center sm:justify-between">
+                                        <div class="truncate">
+                                            <div class="flex flex-col text-lg">
+                                                <h3 class="text-xl font-medium truncate xl:text-2xl">
+                                                    {{ item.title }}
+                                                </h3>
+                                                <div class="flex flex-row">
+                                                    <p v-if="item?.content" class="mr-3 italic">
+                                                        {{item?.content}}
+                                                    </p>
+                                                </div>
+
+                                            </div>
+                                            <div class="mt-1">
+                                                <div class="flex flex-row items-center gap-5 text-sm text-slate-500">
+                                                    <div class="flex items-center gap-1">
+                                                        <div>{{ $t("Budget") }}</div>
+                                                        <div class="font-semibold text-slate-700">
+                                                            {{ $filters.currency(item?.model?.amount_requested) }}
                                                         </div>
                                                     </div>
+                                                    <div class="flex items-center gap-1">
+                                                        <div>{{ $t("Fund") }}</div>
+                                                        <div class="font-semibold text-slate-700">
+                                                            {{ item?.model?.fund_name }}
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex items-center gap-1">
+                                                        <div>{{ $t("Challenge") }}</div>
+                                                        <div class="font-semibold text-slate-700">
+                                                            {{ item?.model?.challenge_name }}
+                                                        </div>
+                                                    </div>
+
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    </template>
-                </masonry-wall>
+                                    <div class="flex justify-end flex-shrink-0 gap-2 ml-5">
+                                        <TrashIcon @click.prevent="removeItem(item.id)" class="mr-0.5 h-5 w-5 "
+                                        type="button"
+                                        :class="[canDelete===true?'hover:text-teal-600 hover:cursor-pointer':'cursor-not-allowed']" aria-hidden="true"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+
+                </section>
             </section>
         </div>
     </main>
