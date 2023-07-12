@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Earn;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -37,8 +38,18 @@ class EarnController extends Controller
     }
 
     public function awardNft(){
+        $user = User::find(Auth::id());
+        $topicId = $user->learning_attempts->first()->learning_topic_id;
+        $topicNft = $user->nfts()->where([
+            ['model_id', $topicId],
+            ['model_type', 'App\Models\LearningTopic']
+        ])->first();
+
         return Inertia::modal('NftAwarded')
-                ->baseRoute('earn.learn');
+            ->with([
+                'nft' => $topicNft,
+            ])
+            ->baseURL(url()->previous());
     }
 
     /**

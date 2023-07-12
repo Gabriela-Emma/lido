@@ -136,6 +136,7 @@ Route::group(
             Route::get('/', [EarnController::class, 'index'])->name('home');
             Route::get('/wallet/add', [EarnController::class, 'addWallet'])->name('wallet.add');
             Route::get('/duplicate-account', [EarnController::class, 'duplicateAccount'])->name('learn.duplicate');
+            Route::get('/nft-awarded', [EarnController::class, 'awardNft'])->name('learn.nft.awarded');
 
             Route::get('/ccv4', CcvComponent::class)->name('ccv4');
             Route::get('/learn', [LearnController::class, 'index'])->name('learn');

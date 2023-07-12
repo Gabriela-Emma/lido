@@ -70,8 +70,8 @@ watch(showRef, () => {
                                 <div
                                     class="relative flex items-center bg-white shadow-2xl wfull">
                                     <button type="button"
-                                            class="absolute text-gray-400 top-4 right-4 hover:text-gray-500 sm:top-8 sm:right-6 md:top-6 md:right-6 lg:top-8 lg:right-8"
-                                            @click="open = false">
+                                            class="absolute top-4 right-4 text-gray-400 hover:text-gray-500 sm:top-8 sm:right-6 md:top-6 md:right-6 lg:top-8 lg:right-8"
+                                            @click="show = false">
                                         <span class="sr-only">{{ $t('Close') }}</span>
                                         <XMarkIcon class="w-6 h-6" aria-hidden="true"/>
                                     </button>
