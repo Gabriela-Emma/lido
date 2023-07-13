@@ -510,7 +510,7 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
                 'id' => $this->fund?->parent?->id,
                 'amount' => $this->fund?->parent?->amount ? intval($this->fund?->parent?->amount) : null,
                 'label' => $this->fund?->parent?->label,
-                'status' => $this->fund?->parent->status,
+                'status' => $this->fund?->parent?->status,
             ],
             'challenge' => [
                 'id' =>  $this->fund?->id,
