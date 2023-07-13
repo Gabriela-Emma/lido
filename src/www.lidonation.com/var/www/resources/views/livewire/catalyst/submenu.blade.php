@@ -111,7 +111,7 @@
                         </a>
                     </li>
                     <li class="flow-root menu-item"  x-data="bookmarksMenuLink">
-                        <a href="{{localizeRoute('projectCatalyst.bookmarks')}}"
+                        <a href="{{localizeRoute('catalystExplorer.bookmarks')}}"
                            class="inline-flex items-center menu-link group">
                                 <span class="relative z-0 inline-flex rounded-md shadow-sm" x-cloak>
                                     <button type="button"
@@ -132,10 +132,6 @@
                                               d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/>
                                         </svg>
                                         <span class="hidden md:inline-block">Bookmarks</span>
-                                    </button>
-                                    <button
-                                        type="button"
-                                        class="relative inline-flex items-center px-2 py-1 -ml-px text-sm font-medium text-white bg-white bg-pink-700 border border-pink-300 rounded-r-sm group-hover:bg-pink-600 focus:z-10 focus:outline-none">
                                     </button>
                                 </span>
                         </a>
@@ -170,8 +166,7 @@
                     class="relative"
                 >
                     <div class="flex flex-row items-center gap-2" x-data="bookmarksMenuLink">
-                        <a href="{{localizeRoute('projectCatalyst.bookmarks')}}"
-                           onclick='Livewire.emit("openModal", "catalyst.catalyst-voter-tool-bookmarks-component")'
+                        <a href="{{localizeRoute('catalystExplorer.bookmarks')}}"
                            class="inline-flex items-center menu-link group">
                                     <span class="relative z-0 inline-flex rounded-md shadow-sm" x-cloak>
                                     <button type="button"
@@ -190,10 +185,6 @@
                                               d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/>
                                         </svg>
                                         <span class="hidden lg:inline-block">Bookmarks</span>
-                                    </button>
-                                    <button
-                                        type="button"
-                                        class="relative inline-flex items-center px-2 py-1 -ml-px text-sm font-medium text-white bg-white bg-pink-700 border border-pink-300 rounded-r-sm group-hover:bg-pink-600 focus:z-10 focus:outline-none">
                                     </button>
                                     </span>
                         </a>
