@@ -18,7 +18,7 @@ enum CatalystExplorerQueryParams: string
 
     const MIN_BUDGET = '1';
 
-    const MAX_BUDGET = '2000000';
+    const MAX_BUDGET = '4000000';
 
     const PAGE = 'p';
 
