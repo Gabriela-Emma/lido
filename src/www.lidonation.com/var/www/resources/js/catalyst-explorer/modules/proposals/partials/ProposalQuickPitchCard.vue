@@ -12,7 +12,7 @@
                     <!-- <vue-plyr v-if="quickpitchProvider === 'youtube'">
                         <div :data-plyr-provider="quickpitchProvider" :data-plyr-embed-id="proposal.quickpitch"></div>
                     </vue-plyr> -->
-                    <div :data-plyr-provider="quickpitchProvider" :data-plyr-embed-id="proposal.quickpitch"></div>
+                    <vue-plyr :data-plyr-provider="quickpitchProvider" :data-plyr-embed-id="proposal.quickpitch"></vue-plyr>
                 </div>
         </transition>
     </div>
