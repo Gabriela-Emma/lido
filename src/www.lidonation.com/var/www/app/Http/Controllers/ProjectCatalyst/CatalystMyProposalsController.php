@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\ProjectCatalyst;
 
 use App\Http\Controllers\Controller;
+use App\Scopes\OrderByDateScope;
 use App\Models\Proposal;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -46,14 +47,13 @@ class CatalystMyProposalsController extends Controller
 
         $catalystProfiles = $user->catalyst_users?->pluck('id');
 
-        // $query = Proposal::whereIn('user_id', $catalystProfiles)
-        //     ->when(
-        //         $this->fundedProposalsFilter,
-        //         fn ($query) => $query->whereNotNull('funded_at')
-        //     );
-        $query = Proposal::whereIn('user_id', $catalystProfiles);
-        $paginator = $query->paginate($this->perPage, ['*'], 'p')->setPath('/');
+        $query = Proposal::select('proposals.*')
+        ->join('funds', 'proposals.fund_id', '=', 'funds.id')
+        ->whereIn('proposals.user_id', $catalystProfiles)
+        ->orderBy('funds.launched_at', 'DESC')
+        ->orderBy('proposals.funded_at', 'DESC');
 
+        $paginator = $query->paginate($this->perPage, ['*'], 'p')->setPath('/');
 
         $query->whereNotNull('funded_at');
         $totalDistributed = intval($query->sum('amount_received'));

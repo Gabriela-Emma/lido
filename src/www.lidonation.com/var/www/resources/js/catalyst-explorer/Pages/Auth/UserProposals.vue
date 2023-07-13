@@ -99,20 +99,21 @@
                                     </thead>
                                     <tbody class="bg-white divide-y divide-slate-200 text-slate-900">
                                     <tr v-for="proposal in proposals?.data" :class="{
-                                            'text-slate-500': proposal.funding_status !== 'funded',
-                                            'font-medium': proposal.funding_status === 'funded'
+                                            'text-slate-500': proposal.funding_status !== 'funded' && proposal.fund.status !== 'governance',
+                                            'text-teal-800 font-semibold': proposal.fund.status == 'governance',
+                                            'font-bold': proposal.funding_status === 'funded'
                                         }">
                                         <td class="w-full py-4 pl-4 pr-3 text-sm max-w-0 sm:w-auto sm:max-w-none sm:pl-6">
                                             {{ proposal.title }}
                                             <dl class="font-normal lg:hidden">
                                                 <dt class="sr-only">{{ $t("Distributed") }}</dt>
                                                 <dd class="mt-1 truncate text-slate-700">
-                                                    {{ $filters.currency(proposal.amount_received) }}
+                                                    {{ $filters.currency(proposal.amount_received, proposal.currency) }}
                                                 </dd>
                                                 <dt class="sr-only sm:hidden">{{ $t("Remaining") }}</dt>
                                                 <dd class="mt-1 truncate text-slate-500 sm:hidden">
                                                     {{
-                                                        $filters.currency(proposal.amount_requested - proposal.amount_received)
+                                                        $filters.currency(proposal.amount_requested - proposal.amount_received, proposal.currency)
                                                     }}
                                                 </dd>
                                             </dl>
@@ -122,21 +123,21 @@
                                         <td class="hidden px-3 py-4 text-sm sm:table-cell">
                                             <span v-if="proposal.funding_status === 'funded'">
                                             {{
-                                                $filters.currency(proposal.amount_requested - proposal.amount_received)
+                                                $filters.currency(proposal.amount_requested - proposal.amount_received, proposal.currency)
                                             }}
                                             </span>
-                                            <span v-else>{{ $t("Not funded") }}</span>
+                                            <span v-else>{{ proposal.fund.status !== 'governance' ? $t("Not funded") : $t("-") }}</span>
                                         </td>
 
                                         <td class="hidden px-3 py-4 text-sm lg:table-cell">
                                             <span v-if="proposal.funding_status === 'funded'">
-                                                {{ $filters.currency(proposal.amount_received) }}
+                                                {{ $filters.currency(proposal.amount_received, proposal.currency) }}
                                             </span>
-                                            <span v-else>{{ $t("Not funded") }}</span>
+                                            <span v-else>{{ proposal.fund.status !== 'governance' ? $t("Not funded") : $t("-") }}</span>
                                         </td>
 
                                         <td class="px-3 py-4 text-sm">
-                                            {{ $filters.currency(proposal.amount_requested) }}
+                                            {{ $filters.currency(proposal.amount_requested, proposal.currency) }}
                                         </td>
                                         <td class="py-4 pl-3 pr-4 text-sm text-right sm:pr-6">
                                             <Link

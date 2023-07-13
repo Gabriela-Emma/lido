@@ -555,7 +555,7 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
     protected static function booted(): void
     {
         parent::booted();
-        static::addGlobalScope(new OrderByDateScope);
+        // static::addGlobalScope(new OrderByDateScope);
     }
 
     public function commentableName(): string

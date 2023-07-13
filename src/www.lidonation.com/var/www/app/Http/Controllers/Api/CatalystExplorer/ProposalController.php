@@ -65,12 +65,15 @@ class ProposalController extends Controller
         $qp = $request->input('quickpitch');
 
         // get video id from youtube url
-        if (Str::contains($qp, '?v=')) {
-            $qp = Str::after($qp, '?v=');
-        } elseif(Str::contains($qp, 'youtu.be/')) {
-            $qp = Str::after($qp, 'youtu.be/');
+        if (Str::contains($qp, ['youtube', '?v='])) {
+
+            if (Str::contains($qp, '?v=')) {
+                $qp = Str::after($qp, '?v=');
+            } elseif(Str::contains($qp, 'youtu.be/')) {
+                $qp = Str::after($qp, 'youtu.be/');
+            }
+            $qp = 'https://youtu.be/' . $qp;
         }
-        $qp = 'https://youtu.be/' . $qp;
         $proposal->saveMeta('quickpitch', $qp);
         $proposal->save();
 

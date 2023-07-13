@@ -4,13 +4,13 @@
             :profileQuickView="profileQuickView"
             @close="profileQuickView = null" />
 
-        <ProposalSummaryCard v-if="!quickpitch"
+        <ProposalSummaryCard v-if="!quickpitching"
             @profileQuickView="handleProfileQuickView($event)"
-            @quickpitch="quickpitch = true" :proposal="props.proposal" />
+            @quickpitch="quickpitching = true" :proposal="props.proposal" />
 
         <ProposalQuickPitchCard v-else
             @profileQuickView="handleProfileQuickView($event)"
-            @summary="quickpitch = false" :proposal="props.proposal" />
+            @summary="quickpitching = false" :proposal="props.proposal" />
     </div>
 </template>
 
@@ -37,16 +37,16 @@ interface Author {
 const props = withDefaults(
     defineProps<{
         proposal: Proposal,
-        quickpitch?: boolean,
+        quickpitching?: boolean,
     }>(),
     {
-        quickpitch: false,
+        quickpitching: false,
         proposal: () => {
             return {} as Proposal;
         },
     },
 );
-let quickpitch = ref(props.quickpitch);
+let quickpitching = ref(props.quickpitching);
 
 let isBookmarked:Ref<boolean> = ref()
 
