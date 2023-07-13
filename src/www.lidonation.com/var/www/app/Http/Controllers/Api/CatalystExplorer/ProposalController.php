@@ -68,7 +68,7 @@ class ProposalController extends Controller
         if (Str::contains($qp, ['youtube', '?v='])) {
 
             if (Str::contains($qp, '?v=')) {
-                $qp = Str::after($qp, '?v=');
+                $qp = Str::before(Str::after($qp, '?v='), '&');
             } elseif(Str::contains($qp, 'youtu.be/')) {
                 $qp = Str::after($qp, 'youtu.be/');
             }
