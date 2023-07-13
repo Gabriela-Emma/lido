@@ -216,3 +216,5 @@ php\040artisan\040Proposal::runCustomIndex
 php\040artisan\040Proposal::runCustomIndex()
 Proposal::runCustomIndex();
 exit
+Proposal::runCustomIndex();
+exit

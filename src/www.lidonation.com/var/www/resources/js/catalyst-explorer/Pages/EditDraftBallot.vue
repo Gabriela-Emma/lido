@@ -4,25 +4,23 @@
 
     <main class="flex flex-col gap-2 py-8 bg-primary-20">
         <div class="container">
-            <section>
-                <masonry-wall :items="draftBallot.groups" :ssr-columns="1" :column-width="600" :gap="16" :max-columns="2">
-                    <template #default="{ item, index }">
-                    <div class="px-3 py-8 bg-white">
-                        <div>
-                            <small class="px-4 text-xs text-slate-500">Challenge</small>
-                            <h1 class="px-4">{{ item.title }}</h1>
-                            <span>{{ item.excerpt }}</span>
-                        </div>
-                        <div>
+            <section class="">
+                <div v-for="group in draftBallot.groups" class="py-8 mb-8 bg-white border-t rounded-sm shadow-md">
+                    <div class="px-4">
+                        <h2>{{ group.title }}</h2>
+                    </div>
+
+                    <div class="lg:grid lg:grid-cols-7">
+                        <div class="col-span-4">
                             <ul role="list" class="divide-y divide-gray-200">
-                                <li v-for="proposal in item.items" :key="proposal.id">
+                                <li v-for="item in group.items" :key="item.id">
                                     <div class="block hover:bg-gray-50">
-                                        <div class="flex items-center px-4 py-4 sm:px-5">
+                                        <div class="flex items-center px-4 py-4 sm:px-6">
                                             <div class="flex-1 min-w-0 sm:flex sm:items-center sm:justify-between">
                                                 <div class="truncate">
                                                     <div class="flex flex-col text-lg">
                                                         <h3 class="text-xl font-medium truncate xl:text-2xl">
-                                                            {{ proposal.title }}
+                                                            {{ item.title }}
                                                         </h3>
                                                     </div>
                                                     <div class="mt-1">
@@ -30,21 +28,29 @@
                                                             <div class="flex items-center gap-1">
                                                                 <div>{{ $t("Budget") }}</div>
                                                                 <div class="font-semibold text-slate-700">
-                                                                    {{ $filters.currency(proposal?.amount_requested) }}
+                                                                    {{ $filters.currency(item?.amount_requested, item.currency) }}
                                                                 </div>
                                                             </div>
+                                                            <div class="flex items-center gap-1">
+                                                                <TrashIcon @click.prevent="removeItem(item.id)" aria-hidden="true"
+                                                                class="mr-0.5 h-5 w-5 hover:text-teal-600 hover:cursor-pointer" />
+                                                            </div>
+
                                                         </div>
                                                     </div>
                                                 </div>
+                                            </div>
+                                            <div class="flex justify-end flex-shrink-0 gap-2 ml-5">
+
                                             </div>
                                         </div>
                                     </div>
                                 </li>
                             </ul>
                         </div>
+                        <div class="col-span-3 hideen lg:block"></div>
                     </div>
-                    </template>
-                </masonry-wall>
+                </div>
             </section>
         </div>
     </main>

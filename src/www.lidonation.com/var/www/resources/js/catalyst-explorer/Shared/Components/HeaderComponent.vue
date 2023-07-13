@@ -34,8 +34,8 @@
                                 </Link>
                             </li>
                             <li>
-                                <Link class="flex items-center gap-1 font-bold text-teal-600 hover:text-red-600"
-                                    href="/api/catalyst-explorer/logout" method="POST" as="button">
+                                <Link @onSuccess="logout()" class="flex items-center gap-1 font-bold text-teal-600 hover:text-red-600"
+                                    :href="route('catalystExplorerApi.logout')" method="post" as="button">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                         stroke="currentColor" class="relative w-4 h-4">
                                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -49,6 +49,7 @@
 
                     <div class="xl:ml-auto" v-else>
                         <Link :href="$utils.localizeRoute('catalyst-explorer/auth/login')"
+                            @onSuccess="login($event)"
                             class="inline-flex items-center justify-center gap-1 px-3 py-2 font-medium border rounded-sm border-slate-800 xl:text-xl 3xl:text-2xl text-slate-800 hover:bg-slate-200 focus:outline-none focus:ring-0 focus:ring-offset-0">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                 stroke="currentColor" class="w-5 h-5">
@@ -70,6 +71,7 @@ import {Link} from '@inertiajs/vue3';
 import ConnectWallet from '../../../global/Shared/Components/ConnectWallet.vue';
 import { storeToRefs } from 'pinia';
 import { useUserStore } from '../../../global/Shared/store/user-store';
+import route from 'ziggy-js';
 
 const $utils: any = inject('$utils');
 const userStore = useUserStore();
@@ -81,4 +83,13 @@ withDefaults(
         titleName1: String,
         subTitle: String
     }>(), {});
+
+function logout() {
+   userStore.logout();
+}
+
+function login(event) {
+    console.log(event);
+//    userStore.logout();
+}
 </script>

@@ -351,7 +351,7 @@ Route::prefix('catalyst-explorer')->as('catalystExplorerApi.')
 
         Route::post('/react/report/{catalystReport:id}', [CatalystExplorer\ReportController::class, 'createReaction']);
 
-        Route::post('/logout', [CatalystExplorer\UserController::class, 'logout']);
+        Route::post('/logout', [CatalystExplorer\UserController::class, 'logout'])->name('logout');
 
         Route::group([
             'prefix' => '/reports/comments',
