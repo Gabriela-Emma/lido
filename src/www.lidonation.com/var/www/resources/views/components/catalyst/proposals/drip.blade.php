@@ -70,7 +70,7 @@
                         </sub>
                     </div>
 
-                    @if($proposal->fund?->status == 'governance')
+                    {{-- @if($proposal->fund?->status == 'governance')
                     <div class="inline-block ml-2" x-data="bookmarkButton" x-cloak>
                         <button type="button"
                                 onclick='Livewire.emit("openModal", "catalyst.proposal-quick-view-component", {{ json_encode(["proposalId" => $proposal->id]) }})'
@@ -86,7 +86,7 @@
                             </svg>
                         </button>
                     </div>
-                    @endif
+                    @endif --}}
                 </div>
             </header>
 
