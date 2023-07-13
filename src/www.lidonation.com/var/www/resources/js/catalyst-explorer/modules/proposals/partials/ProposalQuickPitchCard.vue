@@ -8,9 +8,12 @@
                 leave-active-class="transition duration-150 ease-in"
                 leave-from-class="translate-y-0 opacity-100"
                 leave-to-class="translate-y-1 opacity-0">
-            <vue-plyr>
-                <div :data-plyr-provider="quickpitchProvider" :data-plyr-embed-id="proposal.quickpitch"></div>
-            </vue-plyr>
+                <div>
+                    <!-- <vue-plyr v-if="quickpitchProvider === 'youtube'">
+                        <div :data-plyr-provider="quickpitchProvider" :data-plyr-embed-id="proposal.quickpitch"></div>
+                    </vue-plyr> -->
+                    <div :data-plyr-provider="quickpitchProvider" :data-plyr-embed-id="proposal.quickpitch"></div>
+                </div>
         </transition>
     </div>
 
