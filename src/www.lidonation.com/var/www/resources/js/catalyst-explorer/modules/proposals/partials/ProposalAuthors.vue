@@ -45,7 +45,7 @@ const emit = defineEmits<{
 }>();
 
 const authors: ComputedRef<Author[]> = computed(() => {
-    return props.proposal.users?.reverse().map((user) => {
+    return props.proposal.users.map((user) => {
         return {
             ...user,
             profile_photo_url: user.media?.length > 0 ? user.media[0]?.original_url : user.profile_photo_url

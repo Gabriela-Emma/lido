@@ -24,6 +24,8 @@ class CatalystProposalsController extends Controller
 {
     protected null|string|Stringable $search = null;
 
+    protected null|string|Stringable $quickpitches = null;
+
     protected null|string|Stringable $fundingStatus = null;
 
     protected null|string|Stringable $projectStatus = null;
@@ -190,8 +192,8 @@ class CatalystProposalsController extends Controller
                 'currentPage' => $this->currentPage,
                 'funded' => $this->fundedProposalsFilter || $this->fundingStatus === 'funded',
                 'fundingStatus' => match ($this->fundingStatus) {
-                    'over_budget' => 'o',
-                    'not_approved' => 'n',
+                    'over_budget' => CatalystExplorerQueryParams::OVER_BUDGET,
+                    'not_approved' => CatalystExplorerQueryParams::NOT_APPROVED,
                     'funded' => 'f',
                     'paid' => 'p',
                     default => null
@@ -247,10 +249,11 @@ class CatalystProposalsController extends Controller
 
         $this->budgets = $request->collect(CatalystExplorerQueryParams::BUDGETS);
         $this->search = $request->input(CatalystExplorerQueryParams::SEARCH, null);
+        $this->quickpitches = $request->has(CatalystExplorerQueryParams::QUICKPITCHES);
         $this->limit = $request->input(CatalystExplorerQueryParams::PER_PAGE, 24);
         $this->fundingStatus = match ($request->input('f', null)) {
-            'o' => 'over_budget',
-            'n' => 'not_approved',
+            CatalystExplorerQueryParams::OVER_BUDGET => 'over_budget',
+            CatalystExplorerQueryParams::NOT_APPROVED => 'not_approved',
             'f' => 'funded',
             'p' => 'paid',
             default => null
@@ -385,6 +388,10 @@ class CatalystProposalsController extends Controller
 
         if ((bool) $this->proposalCohort) {
             $_options[] = "{$this->proposalCohort} = 1";
+        }
+
+        if ((bool) $this->quickpitches) {
+            $_options[] = "quickpitch IS NOT NULL";
         }
 
         // filter by fund
