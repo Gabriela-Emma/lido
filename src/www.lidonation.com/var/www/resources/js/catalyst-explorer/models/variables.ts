@@ -7,7 +7,7 @@ export enum VARIABLES {
     FUNDING_STATUS = 'f',
     GROUPS = 'g',
     MIN_BUDGET = 1,
-    MAX_BUDGET = 2000000,
+    MAX_BUDGET = 4000000,
     PAGE = 'p',
     PER_PAGE = 'l',
     PEOPLE = 'pp',

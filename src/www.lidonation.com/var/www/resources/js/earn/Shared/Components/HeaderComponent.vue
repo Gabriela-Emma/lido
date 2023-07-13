@@ -30,8 +30,7 @@
                         </Link>
                     </li>
                     <li>
-                        <Link class="flex items-center gap-1 font-bold text-teal-600 hover:text-red-600"
-                              href="/api/catalyst-explorer/logout" method="POST" as="button">
+                        <Link @onClick="logout" type="button" class="flex items-center gap-1 font-bold text-teal-600 hover:text-red-600" as="button">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                  stroke="currentColor" class="relative w-4 h-4">
                                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -45,6 +44,7 @@
 
             <div class="xl:ml-auto" v-else>
                 <Link :href="$utils.localizeRoute('catalyst-explorer/auth/login')"
+                 @onSuccess="login($event)" as="button" type="button"
                       class="inline-flex items-center justify-center gap-1 px-3 py-2 font-medium border rounded-sm border-slate-800 xl:text-xl 3xl:text-2xl text-slate-800 hover:bg-slate-200 focus:outline-none focus:ring-0 focus:ring-offset-0">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                          stroke="currentColor" class="w-5 h-5">
@@ -60,9 +60,7 @@
 
 <script lang="ts" setup>
 import {computed, inject} from 'vue'
-import {Link} from '@inertiajs/vue3';
-import {usePage} from '@inertiajs/vue3';
-import User from "../../../global/Shared/Models/user";
+import {Link, router} from '@inertiajs/vue3';
 import { storeToRefs } from 'pinia';
 import { useUserStore } from '../../../global/Shared/store/user-store';
 
@@ -77,4 +75,13 @@ withDefaults(
 
 const userStore = useUserStore();
 const {user$} = storeToRefs(userStore);
+
+function logout() {
+   userStore.logout();
+}
+
+function login(event) {
+    console.log(event);
+//    userStore.logout();
+}
 </script>

@@ -261,14 +261,11 @@ function openIdeascaleLinks() {
 }
 
 function createDraftBallot() {
-    axios.post(route('catalystExplorer.bookmark.createBallot', {bookmarkCollection: collectionHash.value}))
-        .then((res) => {
-            console.log(res);
-        })
-        .catch((error) => {
-            if (error.response && error.response.status === 403) {
-                console.error(error);
-            }
-        });
+    router.post(
+        route(
+            'catalystExplorer.bookmark.createBallot',
+            {bookmarkCollection: collectionHash.value}
+        )
+    );
 }
 </script>

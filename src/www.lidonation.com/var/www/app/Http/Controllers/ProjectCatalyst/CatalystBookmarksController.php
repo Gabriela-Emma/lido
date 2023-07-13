@@ -122,6 +122,10 @@ class CatalystBookmarksController extends Controller
         //@todo validate against policy with gate to make sure only collection owner can do this
         $bookmarkCollection->type = DraftBallot::class;
         $bookmarkCollection->save();
-        return to_route('catalystExplorer.draftBallot.view', $bookmarkCollection->hash);
+        $db = DraftBallot::find($bookmarkCollection->id);
+        return to_route(
+            'catalystExplorer.draftBallot.edit',
+            $db->hash
+        );
     }
 }

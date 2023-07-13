@@ -4,61 +4,53 @@
 
     <main class="flex flex-col gap-2 py-8 bg-primary-20">
         <div class="container">
-            <section>
-                <section v-for="group in draftBallot.groups" class="py-16 mb-8 bg-white border-t rounded-sm shadow-md">
-                    <ul role="list" class="divide-y divide-gray-200">
-                        <li v-for="item in group.items" :key="item.id">
-                            <div class="block hover:bg-gray-50">
-                                <div class="flex items-center px-4 py-4 sm:px-6">
-                                    <div class="flex-1 min-w-0 sm:flex sm:items-center sm:justify-between">
-                                        <div class="truncate">
-                                            <div class="flex flex-col text-lg">
-                                                <h3 class="text-xl font-medium truncate xl:text-2xl">
-                                                    {{ item.title }}
-                                                </h3>
-                                                <div class="flex flex-row">
-                                                    <p v-if="item?.content" class="mr-3 italic">
-                                                        {{item?.content}}
-                                                    </p>
-                                                </div>
+            <section class="">
+                <div v-for="group in draftBallot.groups" class="py-8 mb-8 bg-white border-t rounded-sm shadow-md">
+                    <div class="px-4">
+                        <h2>{{ group.title }}</h2>
+                    </div>
 
+                    <div class="lg:grid lg:grid-cols-7">
+                        <div class="col-span-4">
+                            <ul role="list" class="divide-y divide-gray-200">
+                                <li v-for="item in group.items" :key="item.id">
+                                    <div class="block hover:bg-gray-50">
+                                        <div class="flex items-center px-4 py-4 sm:px-6">
+                                            <div class="flex-1 min-w-0 sm:flex sm:items-center sm:justify-between">
+                                                <div class="truncate">
+                                                    <div class="flex flex-col text-lg">
+                                                        <h3 class="text-xl font-medium truncate xl:text-2xl">
+                                                            {{ item.title }}
+                                                        </h3>
+                                                    </div>
+                                                    <div class="mt-1">
+                                                        <div class="flex flex-row items-center gap-5 text-sm text-slate-500">
+                                                            <div class="flex items-center gap-1">
+                                                                <div>{{ $t("Budget") }}</div>
+                                                                <div class="font-semibold text-slate-700">
+                                                                    {{ $filters.currency(item?.amount_requested, item.currency) }}
+                                                                </div>
+                                                            </div>
+                                                            <div class="flex items-center gap-1">
+                                                                <TrashIcon @click.prevent="removeItem(item.id)" aria-hidden="true"
+                                                                class="mr-0.5 h-5 w-5 hover:text-teal-600 hover:cursor-pointer" />
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div class="mt-1">
-                                                <div class="flex flex-row items-center gap-5 text-sm text-slate-500">
-                                                    <div class="flex items-center gap-1">
-                                                        <div>{{ $t("Budget") }}</div>
-                                                        <div class="font-semibold text-slate-700">
-                                                            {{ $filters.currency(item?.model?.amount_requested) }}
-                                                        </div>
-                                                    </div>
-                                                    <div class="flex items-center gap-1">
-                                                        <div>{{ $t("Fund") }}</div>
-                                                        <div class="font-semibold text-slate-700">
-                                                            {{ item?.model?.fund_name }}
-                                                        </div>
-                                                    </div>
-                                                    <div class="flex items-center gap-1">
-                                                        <div>{{ $t("Challenge") }}</div>
-                                                        <div class="font-semibold text-slate-700">
-                                                            {{ item?.model?.challenge_name }}
-                                                        </div>
-                                                    </div>
+                                            <div class="flex justify-end flex-shrink-0 gap-2 ml-5">
 
-                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="flex justify-end flex-shrink-0 gap-2 ml-5">
-                                        <TrashIcon @click.prevent="removeItem(item.id)" class="mr-0.5 h-5 w-5 "
-                                        type="button"
-                                        :class="[canDelete===true?'hover:text-teal-600 hover:cursor-pointer':'cursor-not-allowed']" aria-hidden="true"/>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-
-                </section>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-span-3 hideen lg:block"></div>
+                    </div>
+                </div>
             </section>
         </div>
     </main>
