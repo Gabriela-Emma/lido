@@ -77,5 +77,6 @@ interface Author {
     media: {original_url: string}[]
 }
 
-const quickpitchProvider = computed(() =>isNaN( parseInt(props.proposal?.quickpitch)) ? "youtube" : "vimeo" );
+const quickPitchId = parseInt(props.proposal?.quickpitch);
+const quickpitchProvider = computed(() => isNaN(quickPitchId) || quickPitchId === 0 ? "youtube" : "vimeo" );
 </script>
