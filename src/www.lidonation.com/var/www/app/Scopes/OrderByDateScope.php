@@ -15,6 +15,7 @@ class OrderByDateScope implements Scope
      */
     public function apply(Builder $builder, Model $model)
     {
-        $builder->orderBy('created_at', 'DESC');
+        $table = $model->getTable();
+        $builder->orderBy("{$table}.created_at", 'DESC');
     }
 }

@@ -77,5 +77,5 @@ interface Author {
     media: {original_url: string}[]
 }
 
-const quickpitchProvider = computed(() => Number.isInteger(props.proposal?.quickpitch) ? "vimeo" : "youtube" );
+const quickpitchProvider = computed(() =>isNaN( parseInt(props.proposal?.quickpitch)) ? "youtube" : "vimeo" );
 </script>
