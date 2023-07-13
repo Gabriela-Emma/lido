@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Enums\RoleEnum;
+use App\Models\Nft;
 use App\Models\Withdrawal;
 use Exception;
 use Illuminate\Bus\Queueable;
@@ -13,6 +14,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class ProcessPendingWithdrawalsJob implements ShouldQueue
 {
@@ -38,6 +40,7 @@ class ProcessPendingWithdrawalsJob implements ShouldQueue
     {
         $msg = 'Lido Rewards Withdrawal';
         $payments = collect([]);
+        $nfts = collect([]);
         
         // get all pending withdrawals or bail
         $withdrawals = Withdrawal::validated()
@@ -51,9 +54,40 @@ class ProcessPendingWithdrawalsJob implements ShouldQueue
         }
 
         foreach ($withdrawals as $withdrawal) {
-            $assets = $withdrawal->rewards->groupBy('asset')
+            $assetTypes = ['lovelace', 'ft', 'nft'];
+            $assets = $withdrawal->rewards->whereIn('asset_type', $assetTypes)
+                ->groupBy('asset')
                 ->map(fn ($group) => $group->sum('amount'))
                 ->toArray();
+            $nftRewards = $withdrawal->rewards->whereNotIn('asset_type', $assetTypes);
+
+            foreach ($nftRewards as $nftReward) {
+                $nft = Nft::where('user_id', $nftReward->user_id)
+                        ->where('policy', $nftReward->asset_type)
+                        ->first();
+
+                $metadata = array_merge($nft->metadata?->toArray() ?? [], [
+                    'name' => $nft->name,
+                    'image' => $nft->storage_link,
+                    'factoid' => breakLongText($nft->description, 44, 44, ' '),
+                    'homepage' => 'lidonation.com',
+                    'artist' => $nft->artist->name,
+                    'files' => [
+                        [
+                            'src' => $nft->storage_link,
+                            'name' => $nft->name,
+                            'mediaType' => 'image/jpg',
+                        ],
+                    ],
+                ]);
+
+                $nfts->push([
+                    'key' => Str::remove(' ', $nft->name),
+                    'owner' => $nft->owner_address,
+                    'qty' => 1,
+                    'metadata' => $metadata,
+                ]);
+            }
 
             if (! isset($assets['lovelace']) && $withdrawal->txs?->isEmpty() && ! $withdrawal->user->hasRole(RoleEnum::delegator()->value)) {
                 Log::error('Missing Min UTXO');
@@ -77,7 +111,7 @@ class ProcessPendingWithdrawalsJob implements ShouldQueue
 
         // send them to lucid
         $seed = file_get_contents('/data/phuffycoin/wallets/mint/seed.txt');
-        $data = compact('payments', 'msg', 'seed');
+        $data = compact('payments', 'msg', 'seed', 'nfts');
 
         $res = Http::post(
             config('cardano.lucidEndpoint').'/rewards/withdraw',
