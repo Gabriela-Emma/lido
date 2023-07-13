@@ -20,11 +20,17 @@ enum CatalystExplorerQueryParams: string
 
     const MAX_BUDGET = '4000000';
 
+    const NOT_APPROVED = 'n';
+
+    const OVER_BUDGET = 'o';
+
     const PAGE = 'p';
 
     const PER_PAGE = 'l';
 
     const PEOPLE = 'pp';
+
+    const QUICKPITCHES = 'qp';
 
     const STATUS = 'ss';
 

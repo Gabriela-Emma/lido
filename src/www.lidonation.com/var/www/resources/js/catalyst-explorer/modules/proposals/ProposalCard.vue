@@ -23,7 +23,10 @@ import { Ref } from "@vue/reactivity";
 import ProposalSummaryCard from "./partials/ProposalSummaryCard.vue";
 import ProposalQuickPitchCard from "./partials/ProposalQuickPitchCard.vue";
 import ProposalUserQuickView from "./partials/ProposalUserQuickView.vue";
+import { useProposalsStore } from "../../stores/proposals-store";
 
+const proposalsStore = useProposalsStore();
+let {viewType} = storeToRefs(proposalsStore);
 
 interface Author {
     id: number;
@@ -55,6 +58,10 @@ const {models: bookmarkCollectionsModels$} = storeToRefs(bookmarksStore);
 
 watch([bookmarkCollectionsModels$], (newValue, oldValue) => {
     isBookmarked.value =  bookmarkCollectionsModels$.value?.some(model => model.id === props.proposal.id);
+});
+
+watch([viewType], (newValue, oldValue) => {
+    quickpitching.value = viewType.value === 'quickpitch';
 });
 
 let profileQuickView = ref(null);

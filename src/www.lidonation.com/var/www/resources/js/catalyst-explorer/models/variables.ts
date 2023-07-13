@@ -11,6 +11,7 @@ export enum VARIABLES {
     PAGE = 'p',
     PER_PAGE = 'l',
     PEOPLE = 'pp',
+    QUICKPITCHES = 'qp',
     STATUS = 'ss',
     TRACKER_ID_MONTHLY_REPORT = 'HSH9YZDM',
     TRACKER_ID_PA = 'GQ56QFBJ',
