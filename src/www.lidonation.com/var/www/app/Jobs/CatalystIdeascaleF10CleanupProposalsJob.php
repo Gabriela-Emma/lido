@@ -60,7 +60,7 @@ class CatalystIdeascaleF10CleanupProposalsJob implements ShouldQueue
 
         if ($proposalsToDelete->isNotEmpty()) {
             $proposalsToDelete->each(
-                fn ($proposal) => $proposal->forceDelete()
+                fn ($proposal) => $proposal->delete()
             );
         }
     }
