@@ -6,7 +6,7 @@
         <div class="container">
             <section class="">
                 <div v-for="group in draftBallot.groups" class="py-8 mb-8 bg-white border-t rounded-sm shadow-md">
-                    <div class="px-4">
+                    <div class="px-5">
                         <h2>{{ group.title }}</h2>
                     </div>
 

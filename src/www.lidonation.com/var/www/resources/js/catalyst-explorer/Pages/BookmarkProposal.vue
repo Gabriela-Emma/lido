@@ -254,7 +254,7 @@
 
                                         <div v-else>
                                             <img
-                                                src="https://storage.googleapis.com/www.lidonation.com/8651/conversions/VvemcGIMNQfjogVsxCVKDe4_po5VTjV_wFLGrKU-BaI-preview.jpg"
+                                                src="https://www.lidonation.com/storage/8651/conversions/VvemcGIMNQfjogVsxCVKDe4_po5VTjV_wFLGrKU-BaI-preview.jpg"
                                                 alt="" class="aspect-[6/5] w-full rounded-sm object-cover">
 
                                         </div>
