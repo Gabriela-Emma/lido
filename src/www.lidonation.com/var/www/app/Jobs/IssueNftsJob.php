@@ -26,7 +26,7 @@ class IssueNftsJob implements ShouldQueue
      *
      * @return void
      */
-    public function __construct( $topic, $learningLesson)
+    public function __construct(LearningTopic $topic, LearningLesson $learningLesson)
     {
         $this->topic = $topic;
         $this->learningLesson = $learningLesson;
