@@ -8,7 +8,7 @@
 
     <link rel="stylesheet" href="{{ asset(mix('css/catalyst-explorer.css')) }}">
 
-    <script src="https://player.vimeo.com/api/player.js"></script>
+    {{-- <script src="https://player.vimeo.com/api/player.js"></script> --}}
 
     @env('production')
         <!-- Cloudflare Web Analytics -->
