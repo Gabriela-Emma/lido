@@ -60,7 +60,6 @@ createInertiaApp({
             .use(timeago)
             .use(pinia)
             .use(MasonryWall)
-            .use(Embed)
             .use(i18n).use(VuePlyr, {
                 plyr: {}
             });
