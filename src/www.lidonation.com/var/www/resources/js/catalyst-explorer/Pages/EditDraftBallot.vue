@@ -15,7 +15,7 @@
                             <ul role="list" class="divide-y divide-gray-200">
                                 <li class="ml-4" v-for="item in group.items" :key="item.id">
                                     <div class="flex justify-start gap-0 hover:bg-gray-50">
-                                        <div class="flex flex-col flex-none w-16 gap-2 px-2 py-4">
+                                        <div class="flex flex-col flex-none w-16 gap-2 px-2 py-4 bg-slate-200">
                                             <div class="flex gap-2 flex-nowrap">
                                                 <div class="flex-1 w-1/2">
                                                     <HandThumbUpIcon aria-hidden="true" class="w-6 h-6 text-gray-500 hover:text-teal-600 hover:cursor-pointer" />
