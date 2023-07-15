@@ -532,6 +532,10 @@ function getQueryData() {
         data[VARIABLES.FUNDED_PROPOSALS] = 1;
     }
 
+    if (filtersRef.value?.opensource) {
+        data[VARIABLES.OPENSOURCE_PROPOSALS] = 1;
+    }
+
     if (filtersRef.value?.funds) {
         data[VARIABLES.FUNDS] = Array.from(filtersRef.value?.funds);
     }

@@ -79,6 +79,7 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
         'ratings',
         'repos',
         'tags',
+        'categories',
         'users',
     ];
 
@@ -108,6 +109,7 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
         'amount_requested' => 'integer',
         'amount_received' => 'integer',
         'funding_updated_at' => 'date:Y-m-d',
+        'opensource' => 'boolean',
     ];
 
     public static function getFilterableAttributes(): array
@@ -118,6 +120,7 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
             'currency',
             'has_quick_pitch',
             'quickpitch',
+            'quickpitch_length',
             'impact_proposal',
             'woman_proposal',
             'ideafest_proposal',
@@ -127,11 +130,14 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
             'groups',
             'amount_requested',
             'amount_received',
+            'project_length',
+            'opensource',
             'paid',
             'fund.id',
             'type',
             'users',
             'tags',
+            'categories',
             'funding_status',
             'status',
         ];
@@ -152,8 +158,7 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
             'social_excerpt',
             'users',
             'tags',
-            //            'users.name',
-            //            'users.email'
+            'categories'
         ];
     }
 
@@ -163,6 +168,8 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
             'title',
             'amount_requested',
             'amount_received',
+            'project_length',
+            'quickpitch_length',
             'ca_rating',
             'created_at',
             'funded_at',
@@ -493,6 +500,7 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
 
         return array_merge($array, [
             'funded' => (bool) $this->funded_at ? 1 : 0,
+            'opensource' => (bool) $this->opensource ? 1 : 0,
             'has_quick_pitch' => (bool) $this->quick_pitch ? 1 : 0,
             'quickpitch' => $this->quick_pitch_id ?? null,
             'completed' => $this->status === 'complete' ? 1 : 0,

@@ -4,6 +4,7 @@ export enum VARIABLES {
     COHORT = 'co',
     FUNDS = 'fs',
     FUNDED_PROPOSALS = 'fp',
+    OPENSOURCE_PROPOSALS = 'op',
     FUNDING_STATUS = 'f',
     GROUPS = 'g',
     MIN_BUDGET = 1,

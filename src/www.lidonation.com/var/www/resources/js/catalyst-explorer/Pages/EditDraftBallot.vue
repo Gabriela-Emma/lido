@@ -127,11 +127,11 @@ const removeCollection = () => {
     }
 }
 
-const removeItem = (id:number) => {
-    if(onLocal.value && inLastTenMins.value){
+function removeItem (id: number) {
+    if (onLocal.value && inLastTenMins.value || user$.value?.id){
         axios.delete(route('catalystExplorer.bookmarkItem.delete', {bookmarkItem: id}))
-        .then((res) =>{
-            bookmarksStore.deleteItem(id,collectionHash.value)
+        .then((res) => {
+            bookmarksStore.deleteItem( id, collectionHash.value)
             router.get(route('catalystExplorer.bookmark', {bookmarkCollection: collectionHash.value}))
         })
         .catch((error) => {

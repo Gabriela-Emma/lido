@@ -18,6 +18,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\BelongsToMany;
+use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\HasMany;
@@ -139,6 +140,8 @@ class Proposals extends Resource
                     'proposal' => 'Proposal',
                     'challenge' => 'Challenge',
                 ])->required(),
+
+            Boolean::make(__('Opensource'), 'opensource')->hideFromIndex()->filterable(),
 
             BelongsTo::make(__('Author'), 'author', CatalystUsers::class)
                 ->searchable(),
