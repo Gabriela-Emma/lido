@@ -13,11 +13,11 @@ class CatalystVote extends Model
 
     public function __invoke()
     {
-        return $this->content;
+        return $this->vote; // multiply by power
     }
 
     public function __toString()
     {
-        return $this->content;
+        return $this->vote;
     }
 }
