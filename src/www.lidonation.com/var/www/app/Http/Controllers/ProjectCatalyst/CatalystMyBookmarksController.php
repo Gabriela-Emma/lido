@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\BookmarkCollectionResource;
 use App\Models\BookmarkCollection;
 use App\Models\BookmarkItem;
+use App\Models\DraftBallot;
 use App\Models\Proposal;
 use App\Services\ExportModelService;
 use Illuminate\Http\Request;
@@ -23,17 +24,18 @@ class CatalystMyBookmarksController extends Controller
         DB::beginTransaction();
         try {
             $modelTable = $request->get('model_type');
+
             $data = new Fluent($request->validate([
                 'model_id' => "required|exists:{$modelTable},id",
                 'parent_id' => "nullable|bail|hashed_exists:{$modelTable},id",
                 'content' => 'nullable|bail|string',
                 'link' => 'nullable|bail|active_url',
-                'collection.hash' => 'nullable|bail|hashed_exists:bookmark_collections,id',
+                'collection.hash' => 'nullable|bail',
                 'collection.title' => 'required_without:collection.hash|min:5',
             ]));
 
             // if collection doesn't exist, create one
-            $collection = BookmarkCollection::byHash($data->collection['hash'] ?? null);
+            $collection = BookmarkCollection::byHash($data->collection['hash'] ?? null) ?? DraftBallot::byHash($data->collection['hash'] ?? null);
 
             if (! $collection instanceof BookmarkCollection) {
                 $collection = new BookmarkCollection;

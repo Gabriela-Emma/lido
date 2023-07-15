@@ -23,6 +23,8 @@ use App\Http\Controllers\ProjectCatalyst\CatalystMyBookmarksController;
 use App\Http\Controllers\ProjectCatalyst\CatalystMyDashboardController;
 use App\Http\Controllers\ProjectCatalyst\CatalystMyProposalsController;
 use App\Http\Controllers\ProjectCatalyst\CatalystUserProfilesController;
+use App\Models\DraftBallot;
+use Illuminate\Http\Request;
 
 // Project Catalyst
 
@@ -149,6 +151,8 @@ Route::group(
             Route::middleware(['auth.catalyst'])->prefix('/my')->group(function () {
                 Route::post('/bookmarks/{bookmarkCollection:id}/create-ballot', [CatalystBookmarksController::class, 'createDraftBallot'])
                 ->name('bookmark.createBallot');
+
+
                 Route::get('/draft-ballots/{draftBallot:id}/edit', [CatalystBookmarksController::class, 'editDraftBallot'])
                 ->name('draftBallot.edit');
 
