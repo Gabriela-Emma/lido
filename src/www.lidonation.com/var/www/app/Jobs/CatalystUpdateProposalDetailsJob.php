@@ -426,10 +426,14 @@ class CatalystUpdateProposalDetailsJob implements ShouldQueue
     protected function getFieldByTitle($fieldSections, string $title)
     {
 
-        $targetField = array_filter($fieldSections, function ($obj) use ($title) {
-            return $obj->title === $title;
-        });
+        $targetField = array_filter(
+            $fieldSections,
+             fn ($obj) =>  $obj->title === $title
+            );
 
+        if (!$targetField) {
+            return new Fluent([]);
+        }
 
         $targetField = reset($targetField);
         $targetField = json_decode(json_encode($targetField), true);
