@@ -127,10 +127,10 @@ class CatalystUpdateProposalDetailsJob implements ShouldQueue
             $isOpensource = $this->getFieldByTitle(
                 $data->fieldSections,
                 "[GENERAL] Will your project’s output/s be fully open source?"
-            )->ideaFieldValues[0]['value'];
+            );
 
-            if (isset($isOpensource)) {
-                $this->proposal->opensource = $isOpensource == 'Yes' ? true : false;
+            if (isset($isOpensource) && isset($isOpensource->ideaFieldValues[0]) && isset($isOpensource->ideaFieldValues[0]['value']) ) {
+                $this->proposal->opensource = $isOpensource->ideaFieldValues[0]['value'] == 'Yes' ? true : false;
             }
 
             $this->proposal->saveMeta('project_length', $proposalMeta?->project_length, $this->proposal);
