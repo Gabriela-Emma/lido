@@ -131,6 +131,7 @@
       --set application.track="$track" \
       --set GOOGLE_CLOUD_KEY_FILE="$GOOGLE_CLOUD_KEY_FILE" \
       --set certmanager.server="$cert_server" \
+      --set services.queue.replicaCount="$AUTO_DEVOPS_QUEUE_REPLICAS_COUNT" \
       --set services.ncdb.ingress.host="$NCDB_WEB_HOST" \
       --set services.ncdb.redisUrl="redis://:${REDIS_PASSWORD}@redis-master:6379/4" \
       --set services.web.certificate.host="$AUTO_DEVOPS_WEB_HOST" \
