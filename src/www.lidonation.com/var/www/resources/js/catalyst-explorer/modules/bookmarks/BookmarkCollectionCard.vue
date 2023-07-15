@@ -3,7 +3,13 @@
        :class="[textColor$]"
        :style="{backgroundColor: collection?.color}"
        class="relative flex flex-col justify-center object-cover w-full h-56 shadow-md hover:shadow-xl rounded-l-xl rounded-r-xs">
-        <div class="absolute flex justify-end w-full top-3 right-3">
+        <div class="absolute flex justify-end w-full gap-2 top-3 right-3">
+            <Link as="button" type="button" :href="route('catalystExplorer.draftBallot.edit', {draftBallot: collection?.hash})"
+                    :class="[textColor$, borderColor$]"
+                    class="inline-flex items-center gap-x-0.5 rounded-sm border py-1 px-1.5 hover:text-slate-400 text-xs font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-600">
+                {{ $t("Edit") }}
+                <PencilIcon class="-mr-0.5 h-3 w-3" aria-hidden="true"/>
+            </Link>
             <button type="button"
                     :class="[textColor$, borderColor$]"
                     class="inline-flex items-center gap-x-0.5 rounded-sm border py-1 px-1.5 hover:text-slate-400 text-xs font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-600">
@@ -39,11 +45,12 @@
 
 <script lang="ts" setup>
 import {computed, inject} from "vue";
-import {usePage} from "@inertiajs/vue3";
-import {LinkIcon} from '@heroicons/vue/20/solid';
+import {Link, usePage} from "@inertiajs/vue3";
+import {LinkIcon, PencilIcon} from '@heroicons/vue/20/solid';
 
 import User from "../../../global/Shared/Models/user";
 import BookmarkCollection from "../../models/bookmark-collection";
+import route from "ziggy-js";
 
 
 const props = withDefaults(

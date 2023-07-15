@@ -13,21 +13,23 @@
                     <div class="lg:grid lg:grid-cols-7">
                         <div class="col-span-4">
                             <ul role="list" class="divide-y divide-gray-200">
-                                <li v-for="item in group.items" :key="item.id">
-                                    <div class="flex gap-2 hover:bg-gray-50">
-                                        <div class="flex flex-wrap items-center justify-center gap-2 px-2 py-4 w-80">
-                                            <div class="w-1/2 flex-0">
-                                                <HandThumbUpIcon aria-hidden="true" class="w-5 h-5 text-gray-400" />
-                                            </div>
-                                            <div class="w-1/2 flex-0">
-                                                <HandThumbDownIcon aria-hidden="true" class="w-5 h-5 text-gray-400" />
+                                <li class="ml-4" v-for="item in group.items" :key="item.id">
+                                    <div class="flex justify-start gap-0 hover:bg-gray-50">
+                                        <div class="flex flex-col flex-none w-16 gap-2 px-2 py-4">
+                                            <div class="flex gap-2 flex-nowrap">
+                                                <div class="flex-1 w-1/2">
+                                                    <HandThumbUpIcon aria-hidden="true" class="w-6 h-6 text-gray-500 hover:text-teal-600 hover:cursor-pointer" />
+                                                </div>
+                                                <div class="flex-1 w-1/2">
+                                                    <HandThumbDownIcon aria-hidden="true" class="w-6 h-6 text-gray-500 hover:text-teal-600 hover:cursor-pointer" />
+                                                </div>
                                             </div>
                                             <div class="flex items-center gap-1">
                                                 <TrashIcon @click.prevent="removeItem(item.id)" aria-hidden="true"
-                                                class="mr-0.5 h-5 w-5 hover:text-teal-600 hover:cursor-pointer" />
+                                                class="w-5 h-5 text-gray-500 hover:text-teal-600 hover:cursor-pointer" />
                                             </div>
                                         </div>
-                                        <div class="flex items-center px-4 py-4 sm:px-6">
+                                        <div class="flex items-center flex-1 px-4 py-4 sm:px-6">
                                             <div class="flex-1 min-w-0 sm:flex sm:items-center sm:justify-between">
                                                 <div class="truncate">
                                                     <div class="flex flex-col text-md">
