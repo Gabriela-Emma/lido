@@ -238,3 +238,5 @@ exit
 Proposal::runCustomIndex();
 Proposal::runCustomIndex();
 exit
+Proposal::runCustomIndex();
+exit

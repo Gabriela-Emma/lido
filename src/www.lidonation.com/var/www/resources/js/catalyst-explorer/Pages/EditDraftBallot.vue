@@ -12,7 +12,7 @@
 
                     <div class="lg:grid lg:grid-cols-7">
                         <div class="col-span-4">
-                            <ul role="list" class="divide-y divide-gray-200">
+                            <ul role="list" class="overflow-hidden divide-y divide-gray-200">
                                 <li class="ml-4" v-for="item in group.items" :key="item.id">
                                     <div class="flex justify-start gap-0 px-4 py-4 hover:bg-gray-50">
                                         <div class="flex flex-col flex-none w-16 gap-2 px-1 py-2 bg-slate-100">
