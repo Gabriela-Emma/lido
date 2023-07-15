@@ -26,7 +26,7 @@ class BookmarkItemResource extends JsonResource
             'content' => $this->content,
             'link' => $this->link,
             'created_at' => $this->created_at,
-            'model' => (new $modelResource($this->model))->toArray($request),
+            'model' => class_exists($modelResource) ? (new $modelResource($this->model))->toArray($request) : $this->model,
         ];
     }
 }
