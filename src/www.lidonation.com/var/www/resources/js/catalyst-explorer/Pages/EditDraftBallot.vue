@@ -14,14 +14,26 @@
                         <div class="col-span-4">
                             <ul role="list" class="divide-y divide-gray-200">
                                 <li v-for="item in group.items" :key="item.id">
-                                    <div class="block hover:bg-gray-50">
+                                    <div class="flex gap-2 hover:bg-gray-50">
+                                        <div class="flex flex-wrap items-center justify-center gap-2 px-2 py-4 w-80">
+                                            <div class="w-1/2 flex-0">
+                                                <HandThumbUpIcon aria-hidden="true" class="w-5 h-5 text-gray-400" />
+                                            </div>
+                                            <div class="w-1/2 flex-0">
+                                                <HandThumbDownIcon aria-hidden="true" class="w-5 h-5 text-gray-400" />
+                                            </div>
+                                            <div class="flex items-center gap-1">
+                                                <TrashIcon @click.prevent="removeItem(item.id)" aria-hidden="true"
+                                                class="mr-0.5 h-5 w-5 hover:text-teal-600 hover:cursor-pointer" />
+                                            </div>
+                                        </div>
                                         <div class="flex items-center px-4 py-4 sm:px-6">
                                             <div class="flex-1 min-w-0 sm:flex sm:items-center sm:justify-between">
                                                 <div class="truncate">
-                                                    <div class="flex flex-col text-lg">
-                                                        <h3 class="text-xl font-medium truncate xl:text-2xl">
+                                                    <div class="flex flex-col text-md">
+                                                        <h4 class="text-lg font-medium truncate xl:text-xl">
                                                             {{ item.title }}
-                                                        </h3>
+                                                        </h4>
                                                     </div>
                                                     <div class="mt-1">
                                                         <div class="flex flex-row items-center gap-5 text-sm text-slate-500">
@@ -31,11 +43,6 @@
                                                                     {{ $filters.currency(item?.amount_requested, item.currency) }}
                                                                 </div>
                                                             </div>
-                                                            <div class="flex items-center gap-1">
-                                                                <TrashIcon @click.prevent="removeItem(item.id)" aria-hidden="true"
-                                                                class="mr-0.5 h-5 w-5 hover:text-teal-600 hover:cursor-pointer" />
-                                                            </div>
-
                                                         </div>
                                                     </div>
                                                 </div>
@@ -60,7 +67,7 @@
 import {Link, router, usePage} from '@inertiajs/vue3';
 import BookmarkCollection from "../models/bookmark-collection";
 import DraftBallot from '../models/draft-ballot';
-import {ChevronRightIcon, ArrowUturnLeftIcon, ArrowDownTrayIcon, TrashIcon, BookOpenIcon, ArchiveBoxArrowDownIcon} from '@heroicons/vue/20/solid';
+import {ChevronRightIcon, ArrowUturnLeftIcon, ArrowDownTrayIcon, TrashIcon, BookOpenIcon, HandThumbUpIcon, HandThumbDownIcon} from '@heroicons/vue/20/solid';
 import {computed, inject, Ref, ref, watch} from "vue";
 import axios from 'axios';
 import {useBookmarksStore} from "../stores/bookmarks-store";

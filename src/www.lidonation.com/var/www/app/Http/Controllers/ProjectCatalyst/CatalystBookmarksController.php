@@ -30,7 +30,7 @@ class CatalystBookmarksController extends Controller
         ]));
 
         // if collection doesn't exist, create one
-        $collection = BookmarkCollection::byHash($data->collection['hash'] ?? null);
+        $collection = BookmarkCollection::byHash($data->collection['hash']) ?? DraftBallot::byHash($data->collection['hash']) ?? null;
 
         if (! $collection instanceof BookmarkCollection) {
             $collection = new BookmarkCollection;
@@ -58,6 +58,10 @@ class CatalystBookmarksController extends Controller
 
         $collection->refresh();
         $collection->load(['items']);
+
+        if ($collection instanceof DraftBallot) {
+            return (new DraftBallotResource($collection))->toArray($request);
+        }
 
         return (new BookmarkCollectionResource($collection))->toArray($request);
     }

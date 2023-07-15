@@ -27,7 +27,7 @@
 
                             <div class="flex-1 bg-teal-500">
                                 <div class="flex flex-col w-full lg:flex-row lg:justify-between">
-                                    <div class="flex-1 w-full p-4 text-white lg:w-1/2">
+                                    <div class="flex-1 w-full p-4 text-white lg:w-1/2 min-w-1/2">
                                         <div v-if="!bookmarked$">
                                             <div v-if="!creatingAnonymousBookmarks">
                                                 <h3 class="text-xl font-bold text-center text-slate-100 xl:text-2xl sm:tracking-tight">

@@ -223,3 +223,6 @@ exit
 Proposal::runCustomIndex();
 exit
 Proposal::runCustomIndex();
+BookmarkCollection::byHash('y08p97o54mv')
+DraftBallot::byHash('y08p97o54mv');
+DraftBallot::byHash('y08p97o54mv');
