@@ -123,6 +123,16 @@ class CatalystUpdateProposalDetailsJob implements ShouldQueue
             $proposalMeta = $this->getFund10ProposalMetas($data->fieldSections);
             $this->proposal->amount_requested = $proposalMeta?->amount_requested;
 
+            // opensource status
+            $isOpensource = $this->getFieldByTitle(
+                $data->fieldSections,
+                "[GENERAL] Will your project’s output/s be fully open source?"
+            )->ideaFieldValues[0]['value'];
+
+            if (isset($isOpensource)) {
+                $this->proposal->opensource = $isOpensource == 'Yes' ? true : false;
+            }
+
             $this->proposal->saveMeta('project_length', $proposalMeta?->project_length, $this->proposal);
         }
         if ($this->proposal->fund?->parent_id == 61) {
@@ -204,16 +214,7 @@ class CatalystUpdateProposalDetailsJob implements ShouldQueue
             ], false);
         }
 
-        // opensource status
-        $isOpensource = $this->getFieldByTitle(
-            $data->fieldSections,
-            "[GENERAL] Will your project’s output/s be fully open source?"
-        )->ideaFieldValues[0]['value'];
-        if(isset($isOpensource)){
-            $this->proposal->opensource = $isOpensource == 'Yes' ? true : false; 
-            $this->proposal->save();
-        }
-        
+
         //save proposal category
         if (!$this->proposal->categories?->count() ?? null) {
             $category = $this->getFieldByTitle(
@@ -232,7 +233,7 @@ class CatalystUpdateProposalDetailsJob implements ShouldQueue
             $this->proposal?->categories()->syncWithPivotValues($category->pluck('id'), [
                 'model_type' => Proposal::class,
             ], false);
-            
+
             Proposal::withoutSyncingToSearch(fn () => $this->proposal->save());
         }
     }
