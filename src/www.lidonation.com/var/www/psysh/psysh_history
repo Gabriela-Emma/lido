@@ -234,3 +234,7 @@ exit
 Proposal::find('9466');
 $p\040=\040Proposal::find('9466');
 $p->categories
+exit
+Proposal::runCustomIndex();
+Proposal::runCustomIndex();
+exit

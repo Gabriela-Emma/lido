@@ -109,6 +109,7 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
         'amount_requested' => 'integer',
         'amount_received' => 'integer',
         'funding_updated_at' => 'date:Y-m-d',
+        'opensource' => 'boolean',
     ];
 
     public static function getFilterableAttributes(): array
@@ -499,6 +500,7 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
 
         return array_merge($array, [
             'funded' => (bool) $this->funded_at ? 1 : 0,
+            'opensource' => (bool) $this->opensource ? 1 : 0,
             'has_quick_pitch' => (bool) $this->quick_pitch ? 1 : 0,
             'quickpitch' => $this->quick_pitch_id ?? null,
             'completed' => $this->status === 'complete' ? 1 : 0,

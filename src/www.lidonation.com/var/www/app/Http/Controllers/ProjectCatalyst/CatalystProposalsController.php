@@ -48,6 +48,8 @@ class CatalystProposalsController extends Controller
 
     protected ?bool $fundedProposalsFilter = false;
 
+    protected ?bool $opensourceProposalsFilter = false;
+
     protected Builder $searchBuilder;
 
     public Collection $fundsFilter;
@@ -55,6 +57,8 @@ class CatalystProposalsController extends Controller
     public Collection $challengesFilter;
 
     public Collection $tagsFilter;
+
+    public Collection $categoriesFilter;
 
     public Collection $peopleFilter;
 
@@ -191,6 +195,7 @@ class CatalystProposalsController extends Controller
             'filters' => [
                 'currentPage' => $this->currentPage,
                 'funded' => $this->fundedProposalsFilter || $this->fundingStatus === 'funded',
+                'opensource' => $this->opensourceProposalsFilter,
                 'fundingStatus' => match ($this->fundingStatus) {
                     'over_budget' => CatalystExplorerQueryParams::OVER_BUDGET,
                     'not_approved' => CatalystExplorerQueryParams::NOT_APPROVED,
@@ -222,6 +227,7 @@ class CatalystProposalsController extends Controller
                 'funds' => $this->fundsFilter->toArray(),
                 'challenges' => $this->challengesFilter->toArray(),
                 'tags' => $this->tagsFilter->toArray(),
+                'categories' => $this->categoriesFilter->toArray(),
                 'people' => $this->peopleFilter->toArray(),
                 'groups' => $this->groupsFilter->toArray(),
             ],
@@ -279,9 +285,11 @@ class CatalystProposalsController extends Controller
             default => null
         };
         $this->fundedProposalsFilter = $request->input(CatalystExplorerQueryParams::FUNDED_PROPOSALS, false);
+        $this->opensourceProposalsFilter = $request->input(CatalystExplorerQueryParams::OPENSOURCE_PROPOSALS, false);
         $this->fundsFilter = $request->collect(CatalystExplorerQueryParams::FUNDS)->map(fn ($n) => intval($n));
         $this->challengesFilter = $request->collect(CatalystExplorerQueryParams::CHALLENGES)->map(fn ($n) => intval($n));
         $this->tagsFilter = $request->collect(CatalystExplorerQueryParams::TAGS)->map(fn ($n) => intval($n));
+        $this->categoriesFilter = $request->collect(CatalystExplorerQueryParams::CATEGORIES)->map(fn ($n) => intval($n));
         $this->peopleFilter = $request->collect(CatalystExplorerQueryParams::PEOPLE)->map(fn ($n) => intval($n));
         $this->groupsFilter = $request->collect(CatalystExplorerQueryParams::GROUPS)->map(fn ($n) => intval($n));
         $this->currentPage = $request->input(CatalystExplorerQueryParams::PAGE, 1);
@@ -314,8 +322,10 @@ class CatalystProposalsController extends Controller
                     'ideascale_link',
                     'yes_votes_count',
                     'no_votes_count',
+                    'opensource',
                     'paid',
                     'problem',
+                    'project_length',
                     'quickpitch',
                     'solution',
                     'status',
@@ -386,6 +396,10 @@ class CatalystProposalsController extends Controller
             $_options[] = 'funded = 1';
         }
 
+        if ((bool) $this->opensourceProposalsFilter) {
+            $_options[] = 'opensource = 1';
+        }
+
         if ((bool) $this->proposalCohort) {
             $_options[] = "{$this->proposalCohort} = 1";
         }
@@ -407,6 +421,10 @@ class CatalystProposalsController extends Controller
         // filter by tags
         if ($this->tagsFilter->isNotEmpty()) {
             $_options[] = 'tags.id IN '.$this->tagsFilter->toJson();
+        }
+
+        if ($this->categoriesFilter->isNotEmpty()) {
+            $_options[] = 'categories.id IN '.$this->categoriesFilter->toJson();
         }
 
         if ($this->peopleFilter->isNotEmpty()) {

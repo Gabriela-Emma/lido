@@ -14,6 +14,8 @@ enum CatalystExplorerQueryParams: string
 
     const FUNDED_PROPOSALS = 'fp';
 
+    const OPENSOURCE_PROPOSALS = 'op';
+
     const GROUPS = 'g';
 
     const MIN_BUDGET = '1';
@@ -51,4 +53,6 @@ enum CatalystExplorerQueryParams: string
     const SORTS = 'st';
 
     const TAGS = 'ts';
+
+    const CATEGORIES = 'cts';
 }
