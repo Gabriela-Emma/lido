@@ -18,7 +18,6 @@ import {contrastColor} from "./lib/utils/contrastColor";
 let messages = require('../../storage/app/snippets.json');
 const axios = require('axios');
 import MasonryWall from '@yeger/vue-masonry-wall';
-import Embed from 'v-video-embed';
 
 
 //cache snippets to disk

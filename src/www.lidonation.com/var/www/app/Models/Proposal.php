@@ -79,6 +79,7 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
         'ratings',
         'repos',
         'tags',
+        'categories',
         'users',
     ];
 
@@ -118,6 +119,7 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
             'currency',
             'has_quick_pitch',
             'quickpitch',
+            'quickpitch_length',
             'impact_proposal',
             'woman_proposal',
             'ideafest_proposal',
@@ -127,11 +129,14 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
             'groups',
             'amount_requested',
             'amount_received',
+            'project_length',
+            'opensource',
             'paid',
             'fund.id',
             'type',
             'users',
             'tags',
+            'categories',
             'funding_status',
             'status',
         ];
@@ -152,8 +157,7 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
             'social_excerpt',
             'users',
             'tags',
-            //            'users.name',
-            //            'users.email'
+            'categories'
         ];
     }
 
@@ -163,6 +167,8 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
             'title',
             'amount_requested',
             'amount_received',
+            'project_length',
+            'quickpitch_length',
             'ca_rating',
             'created_at',
             'funded_at',
