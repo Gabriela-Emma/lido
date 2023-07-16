@@ -23,7 +23,7 @@
                                         <div class="flex flex-col flex-none w-16 gap-2 px-1 py-2 rounded-sm" :class="{
                                             'bg-teal-light-100/50': item.model.vote?.vote === VOTEACTIONS.UPVOTE,
                                             'bg-red-100/80': item.model.vote?.vote === VOTEACTIONS.DOWNVOTE,
-                                            'bg-slate-100': !item.model.vote?.vote
+                                            'bg-slate-100': !item.model.vote
                                         }">
                                             <div class="flex gap-1 flex-nowrap">
                                                 <div class="flex-1 w-1/2" @click="vote(VOTEACTIONS.UPVOTE, item.model)">
@@ -88,6 +88,7 @@ import Proposal from '../models/proposal';
 import { useUserStore } from '../../global/Shared/store/user-store';
 import route from 'ziggy-js';
 import { VOTEACTIONS } from '../models/vote-actions';
+import { debounce } from 'lodash';
 
 const userStore = useUserStore();
 const {user$} = storeToRefs(userStore);
@@ -122,9 +123,9 @@ watch([onLocal,inLastTenMins], () => {
     canDelete.value = (onLocal.value && inLastTenMins.value) || user$.value?.id === props.draftBallot.user_id;
 });
 
-watch([draftGroups], (newValue, oldValue) => {
+watch([draftGroups], debounce((newValue, oldValue) => {
     console.log({newValue})
-}, { deep: true })
+}, 600), { deep: true })
 
 const removeCollection = () => {
     if(onLocal.value && inLastTenMins.value){
@@ -163,7 +164,7 @@ function vote(vote: VOTEACTIONS, proposal: Proposal) {
             {vote},
             {
                 preserveScroll: true,
-                preserveState: true
+                preserveState: false
             }
         );
     } else {
@@ -172,7 +173,7 @@ function vote(vote: VOTEACTIONS, proposal: Proposal) {
             {vote, proposal: proposal.id},
             {
                 preserveScroll: true,
-                preserveState: true
+                preserveState: false
             }
         );
     }

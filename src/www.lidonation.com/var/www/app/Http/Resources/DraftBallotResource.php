@@ -32,7 +32,6 @@ class DraftBallotResource extends JsonResource
                     ];
                 })
             ]
-            // ['items' => (ProposalResource::collection($proposals[$fund->id]))->toArray($request) ]
         )));
 
         return [
