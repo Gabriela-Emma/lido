@@ -2,6 +2,7 @@ import BookmarkItem from "./bookmark-item";
 import Fund from "./fund";
 
 export interface DraftBallotGroup<T> {
+    id: number;
     title: string;
     excerpt: string;
     rationale: string;
