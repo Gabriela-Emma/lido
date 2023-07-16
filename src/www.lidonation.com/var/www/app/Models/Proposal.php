@@ -14,7 +14,6 @@ use App\Models\Traits\HasMetaData;
 use App\Models\Traits\HasRepos;
 use App\Models\Traits\HasTaxonomies;
 use App\Models\Traits\HasTranslations;
-use App\Scopes\OrderByDateScope;
 use App\Traits\SearchableLocale;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\UrlGenerator;

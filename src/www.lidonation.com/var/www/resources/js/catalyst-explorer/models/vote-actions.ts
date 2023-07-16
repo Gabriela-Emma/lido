@@ -1,4 +1,4 @@
 export enum VOTEACTIONS {
-    THUMBSUP = 1,
-    THUMBDOWN = 0,
+    UPVOTE = 1,
+    DOWNVOTE = 0,
 }

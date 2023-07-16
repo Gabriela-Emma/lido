@@ -43,6 +43,7 @@ class ProposalResource extends JsonResource
             'experience' => $this->experience,
             'tags' => $this->tags,
             'currency_symbol' => $this->currency_symbol,
+            'vote' => $this->vote,
         ];
     }
 

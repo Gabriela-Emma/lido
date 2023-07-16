@@ -15,13 +15,19 @@
                             <ul role="list" class="overflow-hidden divide-y divide-gray-200">
                                 <li class="ml-4" v-for="item in group.items" :key="item.id">
                                     <div class="flex justify-start gap-0 px-4 py-4 hover:bg-gray-50">
-                                        <div class="flex flex-col flex-none w-16 gap-2 px-1 py-2 bg-slate-100">
+                                        <div class="flex flex-col flex-none w-16 gap-2 px-1 py-2 bg-slate-100" :class="{
+                                            'bg-teal-light-100/50': item.vote?.vote === VOTEACTIONS.UPVOTE,
+                                            'bg-red-100/80': item.vote?.vote === VOTEACTIONS.DOWNVOTE
+                                        }">
                                             <div class="flex gap-2 flex-nowrap">
-                                                <div class="flex-1 w-1/2" @click="vote(0, item)">
-                                                    <HandThumbUpIcon aria-hidden="true" class="w-6 h-6 text-gray-500 hover:text-teal-600 hover:cursor-pointer" />
+                                                <div class="flex-1 w-1/2" @click="vote(VOTEACTIONS.UPVOTE, item)">
+                                                    <HandThumbUpIcon :class="[item.vote?.vote === VOTEACTIONS.UPVOTE ? 'text-teal-700' : 'text-gray-500']"
+                                                    aria-hidden="true" class="w-6 h-6 text-gray-500 hover:text-yellow-700 hover:cursor-pointer" />
                                                 </div>
-                                                <div class="flex-1 w-1/2" @click="vote(1, item)">
-                                                    <HandThumbDownIcon aria-hidden="true" class="w-6 h-6 text-gray-500 hover:text-teal-600 hover:cursor-pointer" />
+                                                <div class="flex-1 w-1/2" @click="vote(VOTEACTIONS.DOWNVOTE, item)">
+                                                    <HandThumbDownIcon aria-hidden="true"
+                                                    :class="[item.vote?.vote === VOTEACTIONS.DOWNVOTE ? 'text-pink-800' : 'text-gray-500']"
+                                                    class="w-6 h-6 hover:text-yellow-700 hover:cursor-pointer" />
                                                 </div>
                                             </div>
                                             <div class="flex items-center gap-1">
@@ -144,13 +150,19 @@ function vote(vote: VOTEACTIONS, proposal: Proposal) {
         router.patch(
             route('catalystExplorer.votes.store'),
             {vote, proposal: proposal.id},
-            {}
+            {
+                preserveScroll: true,
+                preserveState: true
+            }
         );
     } else {
         router.post(
             route('catalystExplorer.votes.store'),
             {vote, proposal: proposal.id},
-            {}
+            {
+                preserveScroll: true,
+                preserveState: true
+            }
         );
     }
 
