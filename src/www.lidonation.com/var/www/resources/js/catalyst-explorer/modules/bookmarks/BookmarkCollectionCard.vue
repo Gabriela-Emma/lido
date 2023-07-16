@@ -48,14 +48,14 @@ import {computed, inject} from "vue";
 import {Link, usePage} from "@inertiajs/vue3";
 import {LinkIcon, PencilIcon} from '@heroicons/vue/20/solid';
 
-import User from "../../../global/Shared/Models/user";
 import BookmarkCollection from "../../models/bookmark-collection";
 import route from "ziggy-js";
+import Proposal from "../../models/proposal";
 
 
 const props = withDefaults(
     defineProps<{
-        collection?: BookmarkCollection
+        collection?: BookmarkCollection<Proposal>
     }>(),
     {},
 );

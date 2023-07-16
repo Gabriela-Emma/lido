@@ -295,10 +295,10 @@ const props = withDefaults(
 const userStore = useUserStore();
 const {user$} = storeToRefs(userStore);
 const bookmarksStore = useBookmarksStore();
-const collections$ = ref<BookmarkCollection[]>([]);
+const collections$ = ref<BookmarkCollection<Proposal>[]>([]);
 
 const {collections$: storeCollections$} = storeToRefs(bookmarksStore);
-collections$.value = [...storeCollections$.value].map(((col: BookmarkCollection) => ({
+collections$.value = [...storeCollections$.value].map(((col: BookmarkCollection<Proposal>) => ({
     ...col,
     disabled: col.items?.some((item) => item.model?.id === props.proposal.id)
 })));
@@ -308,9 +308,8 @@ let errors = ref()
 let bookmarkProposalContent$ = ref(null)
 let creating = false;
 let bookmarked$ = ref(false);
-let collection$ = ref<BookmarkCollection>(null);
+let collection$ = ref<BookmarkCollection<Proposal>>(null);
 
-// collection$.value = collections$.value[0] as BookmarkCollection;
 
 ////
 // events & watchers
@@ -319,7 +318,7 @@ const emit = defineEmits<{
     (e: 'update:modelValue', challenge: Challenge): void
 }>();
 
-watch(storeCollections$, (newCollections: BookmarkCollection[], oldCollections) => {
+watch(storeCollections$, (newCollections: BookmarkCollection<Proposal>[], oldCollections) => {
     collections$.value = [...newCollections];
 });
 
@@ -338,8 +337,8 @@ async function addToCollection(option) {
         model_id: props.proposal?.id,
         model_type: 'proposals',
         content: bookmarkProposalContent$.value,
-        collection: {hash: option} as BookmarkCollection
-    } as BookmarkItem;
+        collection: {hash: option} as BookmarkCollection<Proposal>
+    } as BookmarkItem<Proposal>;
 
     await bookmarkProposal(item);
 }
@@ -351,7 +350,7 @@ async function addToNewCollection(title) {
     // create new collection
     const collection = {
         title
-    } as BookmarkCollection;
+    } as BookmarkCollection<Proposal>;
 
     // create bookmarkItem
     const item = {
@@ -359,12 +358,12 @@ async function addToNewCollection(title) {
         model_type: 'proposals',
         content: bookmarkProposalContent$.value,
         collection
-    } as BookmarkItem;
+    } as BookmarkItem<Proposal>;
 
     await bookmarkProposal(item);
 }
 
-async function bookmarkProposal(item: BookmarkItem) {
+async function bookmarkProposal(item: BookmarkItem<Proposal>) {
     // get response
     try {
         const res = await axios.post(`${usePage().props.base_url}/catalyst-explorer/bookmarks/items`, item);

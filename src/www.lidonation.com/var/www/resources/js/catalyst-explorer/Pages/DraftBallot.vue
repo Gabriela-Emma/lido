@@ -52,7 +52,6 @@
 
 <script lang="ts" setup>
 import {Link, router, usePage} from '@inertiajs/vue3';
-import BookmarkCollection from "../models/bookmark-collection";
 import DraftBallot from '../models/draft-ballot';
 import {ChevronRightIcon, ArrowUturnLeftIcon, ArrowDownTrayIcon, TrashIcon, BookOpenIcon, ArchiveBoxArrowDownIcon} from '@heroicons/vue/20/solid';
 import {computed, inject, Ref, ref, watch} from "vue";
@@ -72,7 +71,7 @@ const $utils: any = inject('$utils');
 
 const props = withDefaults(
     defineProps<{
-        draftBallot: DraftBallot
+        draftBallot: DraftBallot<Proposal>
     }>(), {});
 
 const onLocal:Ref<boolean> = ref(false);

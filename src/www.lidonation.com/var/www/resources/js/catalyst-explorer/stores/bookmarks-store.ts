@@ -4,12 +4,13 @@ import {computed, onMounted, Ref, ref} from "vue";
 import {useStorage} from '@vueuse/core';
 import BookmarkCollection from "../models/bookmark-collection";
 import {BookmarkItemModel} from "../models/bookmark-item-model";
+import Proposal from "../models/proposal";
 
 export const useBookmarksStore = defineStore('bookmarks', () => {
     let localCollections = useStorage('bookmark-collections', {}, localStorage, {mergeDefaults: true});
-    let collections = ref<BookmarkCollection[]>([]);
+    let collections = ref<BookmarkCollection<Proposal>[]>([]);
 
-    async function saveCollection(collection: BookmarkCollection) {
+    async function saveCollection(collection: BookmarkCollection<Proposal>) {
         localCollections.value = {
             ...localCollections.value,
             [collection.hash]: {
@@ -37,7 +38,7 @@ export const useBookmarksStore = defineStore('bookmarks', () => {
       };
         loadCollections().then();
     }
-      
+
 
     async function loadCollections() {
         if (Object.entries(localCollections.value)?.length == 0) {
@@ -52,7 +53,7 @@ export const useBookmarksStore = defineStore('bookmarks', () => {
         }
     }
 
-    let collectionsArray = computed<BookmarkCollection[]>(() => Object.values(collections.value))
+    let collectionsArray = computed<BookmarkCollection<Proposal>[]>(() => Object.values(collections.value))
 
     let bookmarkedModels = computed<BookmarkItemModel[]>(() => {
         const models = collectionsArray.value.flatMap((collection) => collection?.items?.map((item) => item?.model));
