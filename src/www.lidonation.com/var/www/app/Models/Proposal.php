@@ -558,6 +558,13 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
         ];
     }
 
+    public function vote()
+    {
+        return $this->hasOne(CatalystVote::class, 'model_id')
+        ->where('model_type', '=', static::class)
+        ->where('user_id', '=', auth()?->user()?->id);
+    }
+
     /**
      * The "booted" method of the model.
      */

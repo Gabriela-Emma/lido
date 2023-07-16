@@ -21,6 +21,7 @@ export default interface Proposal {
     quickpitch?: string;
     website: string;
     yes_votes_count: number;
+    vote: number;
 
     // relationships
     challenge?: Fund;

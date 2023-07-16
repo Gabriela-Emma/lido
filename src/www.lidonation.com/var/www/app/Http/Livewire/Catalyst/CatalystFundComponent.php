@@ -87,7 +87,6 @@ class CatalystFundComponent extends Component
             ->whereIn('fund_id', $this->fund?->fundChallenges->pluck('id'))
             ->count();
 
-
         $this->totalProposalsCount = Proposal::where('type', $type)
             ->whereIn('fund_id', $this->fund?->fundChallenges->pluck('id'))
             ->count();
@@ -100,7 +99,6 @@ class CatalystFundComponent extends Component
         $this->totalAmountRequested = Proposal::where('type', $type)
             ->whereIn('fund_id', $this->fund?->fundChallenges->pluck('id'))
             ->sum('amount_requested');
-
 
         $this->totalAmountAwarded = Proposal::where('type', $type)
             ->whereNotNull('funded_at')

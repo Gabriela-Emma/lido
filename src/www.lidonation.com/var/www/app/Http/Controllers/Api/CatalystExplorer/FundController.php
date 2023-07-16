@@ -66,12 +66,12 @@ class FundController extends Controller
                 'message' => 'query parameter \'per_page\' should not exceed 60'], 400);
         }
 
-        Fund::withoutGlobalScopes();
         $funds = Fund::orderByDesc('launched_at')
             ->funds()
             ->filter(request(['search']));
 
-        if ($funds->get()->isEmpty()) {
+        $collection = FundResource::collection($funds->paginate($per_page));
+        if ($collection->isEmpty() ) {
             return response([
                 'status_code' => 404,
                 'message' => 'no proposal found',

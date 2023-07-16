@@ -17,10 +17,10 @@
                                     <div class="flex justify-start gap-0 px-4 py-4 hover:bg-gray-50">
                                         <div class="flex flex-col flex-none w-16 gap-2 px-1 py-2 bg-slate-100">
                                             <div class="flex gap-2 flex-nowrap">
-                                                <div class="flex-1 w-1/2">
+                                                <div class="flex-1 w-1/2" @click="vote(0, item)">
                                                     <HandThumbUpIcon aria-hidden="true" class="w-6 h-6 text-gray-500 hover:text-teal-600 hover:cursor-pointer" />
                                                 </div>
-                                                <div class="flex-1 w-1/2">
+                                                <div class="flex-1 w-1/2" @click="vote(1, item)">
                                                     <HandThumbDownIcon aria-hidden="true" class="w-6 h-6 text-gray-500 hover:text-teal-600 hover:cursor-pointer" />
                                                 </div>
                                             </div>
@@ -49,9 +49,6 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="flex justify-end flex-shrink-0 gap-2 ml-5">
-
-                                            </div>
                                         </div>
                                     </div>
                                 </li>
@@ -79,6 +76,7 @@ import { BookmarkItemModel } from '../models/bookmark-item-model';
 import Proposal from '../models/proposal';
 import { useUserStore } from '../../global/Shared/store/user-store';
 import route from 'ziggy-js';
+import { VOTEACTIONS } from '../models/vote-actions';
 
 const userStore = useUserStore();
 const {user$} = storeToRefs(userStore);
@@ -107,9 +105,9 @@ watch([storeCollections$], (newValue, oldValue) => {
 // if from last 10mins
 inLastTenMins.value = (moment().diff(moment(createdAt.value),'minutes')) < 10;
 
-let canDelete:Ref<boolean> =  ref();
+let canDelete: Ref<boolean> =  ref();
 watch([onLocal,inLastTenMins],()=> {
-    canDelete.value = onLocal.value && inLastTenMins.value;
+    canDelete.value = (onLocal.value && inLastTenMins.value) || user$.value?.id === props.draftBallot.user_id;
 })
 
 const removeCollection = () => {
@@ -128,7 +126,7 @@ const removeCollection = () => {
 }
 
 function removeItem (id: number) {
-    if (onLocal.value && inLastTenMins.value || user$.value?.id){
+    if (canDelete) {
         axios.delete(route('catalystExplorer.bookmarkItem.delete', {bookmarkItem: id}))
         .then((res) => {
             bookmarksStore.deleteItem( id, collectionHash.value)
@@ -141,16 +139,30 @@ function removeItem (id: number) {
         });
     }
 }
+function vote(vote: VOTEACTIONS, proposal: Proposal) {
+    if (proposal.vote){
+        router.patch(
+            route('catalystExplorer.votes.store'),
+            {vote, proposal: proposal.id},
+            {}
+        );
+    } else {
+        router.post(
+            route('catalystExplorer.votes.store'),
+            {vote, proposal: proposal.id},
+            {}
+        );
+    }
 
-function createDraftBallot() {
-    axios.post(route('catalystExplorer.bookmark.createBallot', {bookmarkCollection: collectionHash.value}))
-        .then((res) => {
-            console.log(res);
-        })
-        .catch((error) => {
-            if (error.response && error.response.status === 403) {
-                console.error(error);
-            }
-        });
+
+    // .then((res) => {
+    //     router.get(route('catalystExplorer.proposal', {proposal: id}))
+    // })
+    // .catch((error) => {
+    //     if (error.response && error.response.status === 403) {
+    //         console.error(error);
+    //     }
+    // });
+
 }
 </script>
