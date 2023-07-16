@@ -17,12 +17,22 @@ class DraftBallotResource extends JsonResource
      */
     public function toArray($request): array|\JsonSerializable|Arrayable
     {
-        $proposals = Proposal::with(['vote'])->whereIn('id', $this->items()->get('model_id')
-        ->pluck('model_id')->toArray())->get()->groupBy('fund_id');
+        $proposals = Proposal::with(['vote'])
+            ->whereIn(
+                'id',
+                 $this->items()->get('model_id')->pluck('model_id')->toArray()
+            )->get()->groupBy('fund_id');
 
         $groups = Fund::whereIn('id', $proposals->keys()->toArray())->get()->map(fn($fund) => ( array_merge(
             (new FundResource($fund))->toArray($request),
-            ['items' => (ProposalResource::collection($proposals[$fund->id]))->toArray($request) ]
+            [
+                'items' => (ProposalResource::collection($proposals[$fund->id]))->map(function($resource){
+                    return [
+                        'model' => $resource->toArray(request())
+                    ];
+                })
+            ]
+            // ['items' => (ProposalResource::collection($proposals[$fund->id]))->toArray($request) ]
         )));
 
         return [

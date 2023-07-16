@@ -150,7 +150,7 @@ const $utils: any = inject('$utils');
 
 const props = withDefaults(
     defineProps<{
-        bookmarkCollection: BookmarkCollection
+        bookmarkCollection: BookmarkCollection<Proposal>
     }>(), {});
 const textColor$ = computed<string>(() =>
     $utils?.contrastColor(props.bookmarkCollection?.color) === 'light' ? 'text-white' : 'text-black'
