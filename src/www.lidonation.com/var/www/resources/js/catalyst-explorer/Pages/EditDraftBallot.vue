@@ -148,8 +148,8 @@ function removeItem (id: number) {
 function vote(vote: VOTEACTIONS, proposal: Proposal) {
     if (proposal.vote){
         router.patch(
-            route('catalystExplorer.votes.store'),
-            {vote, proposal: proposal.id},
+            route('catalystExplorer.votes.update', {vote: proposal.vote.id}),
+            {vote},
             {
                 preserveScroll: true,
                 preserveState: true

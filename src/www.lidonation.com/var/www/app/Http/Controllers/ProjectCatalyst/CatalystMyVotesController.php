@@ -46,13 +46,22 @@ class CatalystMyVotesController extends Controller
         redirect()->back();
     }
 
-    public function update()
+    public function update(Request $request, CatalystVote $vote)
     {
+        // TODO: check if user is allowed to edit this vote
+        $data = $request->validate([
+            'vote' => 'required|in:0,1,2',
+        ]);
+        $vote->content = $data['content'] ?? '';
+        $vote->vote = $data['vote'];
 
+        $vote->save();
+        redirect()->back();
     }
 
-    public function destroy()
+    public function destroy(Request $request, CatalystVote $vote)
     {
-
+        // TODO: check if user is allowed to edit this vote
+        $vote->delete();
     }
 }
