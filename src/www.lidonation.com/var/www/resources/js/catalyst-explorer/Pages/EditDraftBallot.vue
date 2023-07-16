@@ -7,7 +7,12 @@
             <section class="">
                 <div v-for="group in draftBallot.groups" class="py-8 mb-8 bg-white border-t rounded-sm shadow-md">
                     <div class="px-5">
-                        <h2>{{ group.title }}</h2>
+                        <h2 class="mb-2">{{ group.title }}</h2>
+                        <div class="relative border rounded-md border-slate-200 bg-slate-50">
+                            <small class="absolute bg-slate-50 rounded-sm -top-2 border border-slate-200 left-3 px-1 py-0.5 text-sm z-10">Rationale for this group</small>
+                            <textarea rows="4" name="rationale" id="rationale"
+                            class="block w-full py-1.5 text-gray-900 pt-4 custom-input border-0 border-transparent round-sm bg-slate-50 ring-0 placeholder:text-gray-400 focus:ring-2 transition-all focus:ring-inset focus:ring-teal-600 sm:text-sm sm:leading-6 mt-0" />
+                        </div>
                     </div>
 
                     <div class="lg:grid lg:grid-cols-7">
@@ -19,7 +24,7 @@
                                             'bg-teal-light-100/50': item.vote?.vote === VOTEACTIONS.UPVOTE,
                                             'bg-red-100/80': item.vote?.vote === VOTEACTIONS.DOWNVOTE
                                         }">
-                                            <div class="flex gap-2 flex-nowrap">
+                                            <div class="flex gap-1 flex-nowrap">
                                                 <div class="flex-1 w-1/2" @click="vote(VOTEACTIONS.UPVOTE, item)">
                                                     <HandThumbUpIcon :class="[item.vote?.vote === VOTEACTIONS.UPVOTE ? 'text-teal-700' : 'text-gray-500']"
                                                     aria-hidden="true" class="w-6 h-6 text-gray-500 hover:text-yellow-700 hover:cursor-pointer" />
