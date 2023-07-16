@@ -22,6 +22,7 @@ use App\Http\Controllers\ProjectCatalyst\CatalystAssessmentsController;
 use App\Http\Controllers\ProjectCatalyst\CatalystMyBookmarksController;
 use App\Http\Controllers\ProjectCatalyst\CatalystMyDashboardController;
 use App\Http\Controllers\ProjectCatalyst\CatalystMyProposalsController;
+use App\Http\Controllers\ProjectCatalyst\CatalystMyVotesController;
 use App\Http\Controllers\ProjectCatalyst\CatalystUserProfilesController;
 use App\Models\DraftBallot;
 use Illuminate\Http\Request;
@@ -53,9 +54,6 @@ Route::group(
 
             Route::get('/funds/{fund}/', CatalystFundComponent::class)
                 ->name('fund');
-
-            Route::get('/funds', App\Http\Livewire\Catalyst\CatalystFundsComponent::class)
-                ->name('funds');
 
             Route::get('/challenges/{fund}/', fn () => view('challenge'))
                 ->name('challenge');
@@ -174,7 +172,6 @@ Route::group(
                 Route::get('/groups/{catalystGroup:id}/proposals', [CatalystMyGroupsController::class, 'proposals']);
 
                 Route::get('/groups/create/{catalystUser:id}', [CatalystMyGroupsController::class, 'create']);
-                // Route::get('/groups/{catalystGroup:id}', [CatalystMyGroupsController::class, 'manage']);
                 Route::delete('/groups/{catalystGroup:id}/proposals/{proposal:id}', [CatalystMyGroupsController::class, 'removeProposal']);
                 Route::put('/groups/{catalystGroup:id}/proposals', [CatalystMyGroupsController::class, 'addProposal']);
 
@@ -191,6 +188,21 @@ Route::group(
                 Route::get('/groups/{catalystGroup:id}/sum/awarded', [CatalystMyGroupsController::class, 'metricTotalAwardedFunds']);
                 Route::get('/groups/{catalystGroup:id}/sum/received', [CatalystMyGroupsController::class, 'metricTotalReceivedFunds']);
                 Route::get('/groups/{catalystGroup:id}/sum/remaining', [CatalystMyGroupsController::class, 'metricTotalFundsRemaining']);
+
+
+                // Votes
+                Route::prefix('/votes')->as('votes.')->group(function () {
+                    // Views
+                    Route::get('/', [CatalystMyVotesController::class, 'index'])->name('index');
+                    Route::get('/{vote}', [CatalystMyVotesController::class, 'view'])->name('view');
+
+                    // CRUDs
+                    Route::post('/store', [CatalystMyVotesController::class, 'store'])->name('store');
+                    Route::patch('/{vote}/update', [CatalystMyVotesController::class, 'update'])
+                        ->name('update');
+                    Route::delete('/{vote}/delete', [CatalystMyVotesController::class, 'destroy'])->name('destroy');
+
+                });
             });
         });
     }

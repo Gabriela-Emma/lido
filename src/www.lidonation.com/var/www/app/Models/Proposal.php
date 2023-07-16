@@ -14,7 +14,6 @@ use App\Models\Traits\HasMetaData;
 use App\Models\Traits\HasRepos;
 use App\Models\Traits\HasTaxonomies;
 use App\Models\Traits\HasTranslations;
-use App\Scopes\OrderByDateScope;
 use App\Traits\SearchableLocale;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\UrlGenerator;
@@ -556,6 +555,13 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
             'quickPitch' => $this->quick_pitch,
             'quickPitchId' => $this->quick_pitch_id,
         ];
+    }
+
+    public function vote()
+    {
+        return $this->hasOne(CatalystVote::class, 'model_id')
+        ->where('model_type', '=', static::class)
+        ->where('user_id', '=', auth()?->user()?->id);
     }
 
     /**

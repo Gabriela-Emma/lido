@@ -17,7 +17,6 @@ class BookmarkItemResource extends JsonResource
     public function toArray($request): array|\JsonSerializable|Arrayable
     {
         $modelResource = 'App\\Http\\Resources\\'.Str::studly(Str::singular(class_basename($this->model))).'Resource';
-
         return [
             'id' => $this->id,
             'bookmark_collection_id' => $this->bookmark_collection_id,

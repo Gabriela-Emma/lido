@@ -240,3 +240,7 @@ Proposal::runCustomIndex();
 exit
 Proposal::runCustomIndex();
 exit
+Proposal::wheredNotNull('deleted_at')->count();
+Proposal::wheredNotNull('deleted_at')->count();
+Proposal::whereNotNull('deleted_at')->count();
+Proposal::whereNull('fund_id')->count();
