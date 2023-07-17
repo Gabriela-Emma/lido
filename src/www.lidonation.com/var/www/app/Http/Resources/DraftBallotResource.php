@@ -42,9 +42,7 @@ class DraftBallotResource extends JsonResource
                 })
             ]
         )));
-// dd(
-//     $groups
-// );
+
         return [
             'hash' => $this->hash,
             'title' => $this->title,

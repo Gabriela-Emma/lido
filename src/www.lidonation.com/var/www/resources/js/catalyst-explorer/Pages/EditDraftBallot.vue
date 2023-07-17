@@ -127,9 +127,10 @@ watch([onLocal,inLastTenMins], () => {
 watch(draftGroups, debounce((newValue, oldValue) => {
     const rationaleGroup = newValue.find((group) => {
         const oldMathingGroup = props.draftBallot.groups.find((oldGroup) => oldGroup.id === group.id);
-        return group.rationale !== oldMathingGroup?.rationale;
+        return group.rationale.content !== oldMathingGroup?.rationale.content;
     });
-    saveRationale(rationaleGroup, props.draftBallot);
+    console.log(rationaleGroup);
+    // saveRationale(rationaleGroup, props.draftBallot);
 }, 700), { deep: true })
 
 const removeCollection = () => {
