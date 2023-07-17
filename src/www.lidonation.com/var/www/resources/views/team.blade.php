@@ -106,7 +106,7 @@
                                 </div>
                             </div>
                         </li>
-                        <li class="sm:py-8">
+                        {{-- <li class="sm:py-8">
                             <div class="space-y-4 sm:grid sm:grid-cols-3 sm:items-start sm:gap-6 sm:space-y-0">
                                 <div class="aspect-w-3 aspect-h-3 sm:aspect-w-3 sm:aspect-h-4">
                                     <img class="object-cover rounded-lg shadow-lg" src="https://storage.googleapis.com/www.lidonation.com/592/benjamin-headpick.jpeg" alt="">
@@ -141,11 +141,11 @@
 {{--                                                    </svg>--}}
 {{--                                                </a>--}}
 {{--                                            </li>--}}
-                                        </ul>
+                                        {{-- </ul>
                                     </div>
                                 </div>
-                            </div>
-                        </li>
+                            </div> --}}
+                        {{-- </li> --}}
 {{--                        <li class="sm:py-8">--}}
 {{--                            <div class="space-y-4 sm:grid sm:grid-cols-3 sm:items-start sm:gap-6 sm:space-y-0">--}}
 {{--                                <div class="aspect-w-3 aspect-h-3 sm:aspect-w-3 sm:aspect-h-4">--}}
