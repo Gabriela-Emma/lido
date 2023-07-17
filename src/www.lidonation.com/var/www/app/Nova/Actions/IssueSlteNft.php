@@ -2,13 +2,15 @@
 
 namespace App\Nova\Actions;
 
+use App\Models\Nft;
 use App\Jobs\IssueNftsJob;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Support\Collection;
 use Laravel\Nova\Actions\Action;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Nova\Fields\ActionFields;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class IssueSlteNft extends Action
@@ -25,7 +27,19 @@ class IssueSlteNft extends Action
     public function handle(ActionFields $fields, Collection $models)
     {
         $models->each(function ($model) {
-            IssueNftsJob::dispatch($model->topic, $model->learningLesson);
+            $learningTopic = $model->topic;
+            $users = Auth::user();
+
+            foreach ($users as $user) {
+                $topicNft = $user->nfts()->where([
+                    'model_id' => $learningTopic->id,
+                    'model_type' => LearningTopic::class
+                ])->first();
+
+                if (!$topicNft instanceof Nft) {
+                    IssueNftsJob::dispatchSync($learningTopic, $user);
+                }
+            }
         });
     }
 

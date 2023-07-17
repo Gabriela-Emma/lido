@@ -80,10 +80,10 @@ class LearningAnswerResponseController extends Controller
             'model_id' => $learningTopic->id,
             'model_type' => LearningTopic::class
         ])->first();
-        
+
         if($topicCompleted && !$topicNft instanceof Nft){
             IssueNftsJob::dispatch($learningTopic, $learningLesson);
-            return back()->withInput();
+            //return redirect()->route('earn.learn.nft.awarded');
         }
 
         //issue normal reward

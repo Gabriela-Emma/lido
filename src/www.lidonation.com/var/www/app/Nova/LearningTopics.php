@@ -11,6 +11,7 @@ use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use App\Models\LearningTopic;
+use App\Nova\Actions\IssueSlteNft;
 
 class LearningTopics extends Resource
 {
@@ -125,6 +126,11 @@ class LearningTopics extends Resource
      */
     public function actions(NovaRequest $request)
     {
-        return [];
+        return array_merge(
+            static::getGlobalActions(),
+            [
+                (new IssueSlteNft),
+            ]
+        );
     }
 }
