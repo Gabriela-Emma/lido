@@ -75,11 +75,11 @@
 </template>
 
 <script lang="ts" setup>
-import {Link, router, usePage} from '@inertiajs/vue3';
+import {router, usePage} from '@inertiajs/vue3';
 import DraftBallot from '../models/draft-ballot';
 import {DraftBallotGroup} from '../models/draft-ballot';
-import {ChevronRightIcon, ArrowUturnLeftIcon, ArrowDownTrayIcon, TrashIcon, BookOpenIcon, HandThumbUpIcon, HandThumbDownIcon} from '@heroicons/vue/20/solid';
-import {computed, inject, Ref, ref, watch} from "vue";
+import {ChevronRightIcon, ArrowUturnLeftIcon, ArrowDownTrayIcon, TrashIcon, HandThumbUpIcon, HandThumbDownIcon} from '@heroicons/vue/20/solid';
+import {inject, Ref, ref, watch} from "vue";
 import axios from 'axios';
 import {useBookmarksStore} from "../stores/bookmarks-store";
 import { storeToRefs } from 'pinia';
@@ -129,8 +129,7 @@ watch(draftGroups, debounce((newValue, oldValue) => {
         const oldMathingGroup = props.draftBallot.groups.find((oldGroup) => oldGroup.id === group.id);
         return group.rationale.content !== oldMathingGroup?.rationale.content;
     });
-    console.log(rationaleGroup);
-    // saveRationale(rationaleGroup, props.draftBallot);
+    saveRationale(rationaleGroup, props.draftBallot);
 }, 700), { deep: true })
 
 const removeCollection = () => {
@@ -187,13 +186,17 @@ function vote(vote: VOTEACTIONS, proposal: Proposal) {
 
 function saveRationale(group: DraftBallotGroup<Proposal>, draftBallot: DraftBallot<Proposal>) {
     router.post(
-            route('catalystExplorer.draftBallot.storeRationale', {draftBallot: draftBallot.hash}),
-            {rationale: group.rationale?.content, group_id: group.id, title: group.title},
-            {
-                preserveScroll: true,
-                preserveState: false
+        route('catalystExplorer.draftBallot.storeRationale', {draftBallot: draftBallot.hash}),
+        {rationale: group?.rationale?.content, group_id: group?.id, title: group?.title},
+        {
+            preserveScroll: true,
+            preserveState: true,
+            replace: true,
+            onSuccess: (component) => {
+                draftGroups.value = [...cloneDeep(props.draftBallot.groups)];
             }
-        );
+        }
+    );
 }
 
 </script>

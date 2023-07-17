@@ -147,7 +147,7 @@ class CatalystBookmarksController extends Controller
         $rationale = $bookmarkCollection->rationales()
         ->whereRelation('metas', 'key', '=', 'group_id')
         ->whereRelation('metas', 'content', '=', $data['group_id'])->first();
-        // dd($rationale->toArray());
+
         if (!$rationale instanceof Discussion) {
             $rationale = new Discussion;
             $rationale->user_id = Auth::id();
