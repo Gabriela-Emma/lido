@@ -1,8 +1,8 @@
 <template>
 <div>
     <div class="px-5">
-        <div class="flex gap-3 mb-3">
-            <h2 class="text-sm lg:text-xl">{{ groupRef.title }}</h2>
+        <div class="flex gap-3 mb-4">
+            <h2 class="text-sm md:text-md lg:text-2xl">{{ groupRef.title }}</h2>
             <div class="flex items-center gap-1.5">
                 <div>
                     <span class="mr-1">Pot: </span>
@@ -19,14 +19,14 @@
         </div>
         <div class="relative border rounded-md border-slate-200 bg-slate-50">
             <small class="absolute bg-slate-50 rounded-sm -top-2 border border-slate-200 left-3 px-1 py-0.5 text-sm z-10">Rationale for this group</small>
-            <textarea rows="4" name="rationale" id="rationale" v-model="rationale"
+            <textarea rows="5" name="rationale" id="rationale" v-model="rationale"
             class="block w-full py-1.5 text-gray-900 pt-4 custom-input border-0 border-transparent round-sm bg-slate-50 ring-0 placeholder:text-gray-400 focus:ring-2 transition-all focus:ring-inset focus:ring-teal-600 sm:text-sm sm:leading-6 mt-0" />
         </div>
     </div>
 
     <div class="lg:grid lg:grid-cols-7">
         <div class="col-span-4">
-            <ul role="list" class="mt-3 overflow-auto divide-y divide-gray-200 max-h-72">
+            <ul role="list" class="mt-8 overflow-auto border border-l-0 border-gray-200 divide-y divide-gray-200 max-h-[33rem]">
                 <li class="ml-4" v-for="item in groupRef.items" :key="item?.model?.id">
                     <div class="flex justify-start gap-0 px-4 py-4 hover:bg-gray-50">
                         <div class="flex flex-col flex-none w-16 gap-2 px-1 py-2 rounded-sm" :class="{
@@ -52,9 +52,9 @@
                         </div>
                         <div class="flex items-center flex-1 sm:px-6">
                             <div class="flex-1 min-w-0 sm:flex sm:items-center sm:justify-between">
-                                <div class="truncate">
+                                <div class="">
                                     <div class="flex flex-col text-md">
-                                        <h4 class="text-lg font-medium truncate xl:text-xl">
+                                        <h4 class="font-semibold text-md xl:text-lg">
                                             {{ item?.model?.title }}
                                         </h4>
                                     </div>
