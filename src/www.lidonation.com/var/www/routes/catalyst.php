@@ -154,6 +154,9 @@ Route::group(
                 Route::get('/draft-ballots/{draftBallot:id}/edit', [CatalystBookmarksController::class, 'editDraftBallot'])
                 ->name('draftBallot.edit');
 
+                Route::post('/draft-ballots/{draftBallot:id}/rationale', [CatalystBookmarksController::class, 'storeDraftBallotRationale'])
+                ->name('draftBallot.storeRationale');
+
                 Route::get('/dashboard', [CatalystMyDashboardController::class, 'index'])
                     ->name('myDashboard');
 

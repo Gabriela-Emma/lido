@@ -10,7 +10,7 @@
                         <h2 class="mb-2">{{ group.title }}</h2>
                         <div class="relative border rounded-md border-slate-200 bg-slate-50">
                             <small class="absolute bg-slate-50 rounded-sm -top-2 border border-slate-200 left-3 px-1 py-0.5 text-sm z-10">Rationale for this group</small>
-                            <textarea rows="4" name="rationale" id="rationale" v-model="group.rationale"
+                            <textarea rows="4" name="rationale" id="rationale" v-model="group.rationale.content"
                             class="block w-full py-1.5 text-gray-900 pt-4 custom-input border-0 border-transparent round-sm bg-slate-50 ring-0 placeholder:text-gray-400 focus:ring-2 transition-all focus:ring-inset focus:ring-teal-600 sm:text-sm sm:leading-6 mt-0" />
                         </div>
                     </div>
@@ -125,14 +125,11 @@ watch([onLocal,inLastTenMins], () => {
 
 // find the first group that has a rationale that is different from the original
 watch(draftGroups, debounce((newValue, oldValue) => {
-    const rationale = newValue.find((group) => {
+    const rationaleGroup = newValue.find((group) => {
         const oldMathingGroup = props.draftBallot.groups.find((oldGroup) => oldGroup.id === group.id);
         return group.rationale !== oldMathingGroup?.rationale;
     });
-    // save rationalet and update state
-    // save as a Discussion on the backend
-    // user meta data to attach to the fund_id (challenge id)
-    // when assembling group, add the discussion to the group if fund_id match exists
+    saveRationale(rationaleGroup, props.draftBallot);
 }, 700), { deep: true })
 
 const removeCollection = () => {
@@ -187,8 +184,15 @@ function vote(vote: VOTEACTIONS, proposal: Proposal) {
     }
 }
 
-function saveRationale() {
-
+function saveRationale(group: DraftBallotGroup<Proposal>, draftBallot: DraftBallot<Proposal>) {
+    router.post(
+            route('catalystExplorer.draftBallot.storeRationale', {draftBallot: draftBallot.hash}),
+            {rationale: group.rationale?.content, group_id: group.id, title: group.title},
+            {
+                preserveScroll: true,
+                preserveState: false
+            }
+        );
 }
 
 </script>
