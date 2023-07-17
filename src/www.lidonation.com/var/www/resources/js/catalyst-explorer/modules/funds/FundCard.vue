@@ -18,7 +18,7 @@
                     <div class="flex flex-row items-start justify-between w-full gap-2">
                         <div class="flex flex-col justify-center">
                             <span class="text-lg font-semibold text-gray-600">
-                                {{fund.currency_symbol}} {{fund.amount}}
+                                {{ $filters.currency(fund.amount, fund?.currency) }}
                             </span>
                             <span class="text-xs text-gray-500"> {{ $t("Total") }} <br />{{ $t("Awarded") }}</span>
                         </div>

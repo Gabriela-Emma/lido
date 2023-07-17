@@ -6,10 +6,11 @@ export function currency(value, currency: string = 'USD', locale: string = 'en-U
     }
     switch (currency) {
         case 'ADA':
-            return shortNumber(value, 2) + ' ₳';
+            return shortNumber(value, maximumFractionDigits, locale) + ' ₳';
         default:
             const formatter = new Intl.NumberFormat(locale, {
                 style: 'currency',
+                notation: 'compact',
                 currency,
                 maximumFractionDigits
             });
