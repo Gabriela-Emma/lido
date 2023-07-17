@@ -60,30 +60,17 @@
                                             }}
                                         </div>
                                     </div>
-                                    <!-- <div>
-                                        <label for="profile"
-                                               class="block text-sm font-medium text-slate-700">Upload a profile photo</label>
-                                        <input type="file"
-                                               @change="uploadProfile"
-                                               id="profile"
-                                               name="profile"
-                                               class="block w-full px-3 py-2 mt-1 bg-teal-600 border rounded-sm shadow-sm border-slate-300 focus:border-teal-500 focus:outline-none focus:ring-teal-500 sm:text-sm">
-                                    </div> -->
-                                    <div class="bg-white rounded-lg extraOutline w-max bg-whtie">
-                                        <div class="relative p-5 border-4 border-dotted rounded-lg file_upload border-slate-300" >
-                                            <svg class="w-12 mx-auto mb-4 text-teal-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" /></svg>
-                                            <div class="flex flex-col mx-auto text-center input_field w-max">
-                                                <label>
-                                                    <input @change="uploadProfile" name="profile" id="profile" class="hidden text-sm cursor-pointer w-36" type="file"/>
-                                                    <div class="p-1 px-3 font-semibold text-white bg-teal-600 border border-gray-300 rounded cursor-pointer text hover:bg-teal-800">{{ $t("Upload a profile photo") }}</div>
-                                                </label>
-                                                <div v-if="profile_name.length > 0">
-                                                    <p v-text="profile_name"></p>
-                                                </div>
-                                            </div>
+                                    <div class="flex flex-col items-start justify-between p-5 rounded-sm file_upload border-slate-300" >
+                                        <img :src="photoPreview ?? user$?.profile_photo_url" class="object-cover mb-4 border rounded-full h-30 w-30" />
+                                        <label for="dropzone-file">
+                                            <div 
+                                            class="inline-flex items-center justify-center px-3 mr-3 text-xs font-medium text-gray-900 border border-gray-200 rounded-sm bg-slate-200 h-9 focus:outline-none hover:bg-gray-100 ">
+                                         {{ user$?.profile_photo_url ? 'Change photo': 'Add photo' }}
                                         </div>
+                                            
+                                            <input id="dropzone-file" type="file" accept="image/png, image/jpeg" @change="uploadProfile" class="hidden" />
+                                        </label>
                                     </div>
-
                                 </div>
                             </div>
 
@@ -356,11 +343,13 @@ let submit = (event, form) => {
 }
 
 let profile_name = ref('');
+let photoPreview = ref(null)
 
 function uploadProfile (event){
     userForm.profile = event.target.files[0];
     profile_name.value = userForm.profile.name
-    console.log(profile_name);
+    photoPreview.value =  URL.createObjectURL(userForm.profile)
+    console.log(profile_name.value);
     console.log(userForm);
 }
 
