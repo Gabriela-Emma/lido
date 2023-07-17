@@ -88,7 +88,7 @@ import Proposal from '../models/proposal';
 import { useUserStore } from '../../global/Shared/store/user-store';
 import route from 'ziggy-js';
 import { VOTEACTIONS } from '../models/vote-actions';
-import { debounce } from 'lodash';
+import { cloneDeep, debounce } from 'lodash';
 
 const userStore = useUserStore();
 const {user$} = storeToRefs(userStore);
@@ -100,7 +100,7 @@ const props = withDefaults(
         draftBallot: DraftBallot<Proposal>
     }>(), {});
 
-let draftGroups: Ref<DraftBallotGroup<Proposal>[]> = ref(props.draftBallot.groups);
+let draftGroups: Ref<DraftBallotGroup<Proposal>[]> = ref([...cloneDeep(props.draftBallot.groups)]);
 const onLocal:Ref<boolean> = ref(false);
 const inLastTenMins:Ref<boolean>= ref(false);
 const collectionHash = ref(props.draftBallot.hash);
@@ -123,9 +123,17 @@ watch([onLocal,inLastTenMins], () => {
     canDelete.value = (onLocal.value && inLastTenMins.value) || user$.value?.id === props.draftBallot.user_id;
 });
 
-watch([draftGroups], debounce((newValue, oldValue) => {
-    console.log({newValue})
-}, 600), { deep: true })
+// find the first group that has a rationale that is different from the original
+watch(draftGroups, debounce((newValue, oldValue) => {
+    const rationale = newValue.find((group) => {
+        const oldMathingGroup = props.draftBallot.groups.find((oldGroup) => oldGroup.id === group.id);
+        return group.rationale !== oldMathingGroup?.rationale;
+    });
+    // save rationalet and update state
+    // save as a Discussion on the backend
+    // user meta data to attach to the fund_id (challenge id)
+    // when assembling group, add the discussion to the group if fund_id match exists
+}, 700), { deep: true })
 
 const removeCollection = () => {
     if(onLocal.value && inLastTenMins.value){

@@ -86,6 +86,7 @@ interface Author {
     media: {original_url: string}[]
 }
 
-const quickPitchId = parseInt(props.proposal?.quickpitch);
-const quickpitchProvider = computed(() => isNaN(quickPitchId) || quickPitchId === 0 ? "youtube" : "vimeo" );
+const regex: RegExp = /[a-zA-Z]/g;
+const quickPitchId = props.proposal?.quickpitch;
+const quickpitchProvider = computed(() => quickPitchId.match(regex) ? "youtube" : "vimeo" );
 </script>
