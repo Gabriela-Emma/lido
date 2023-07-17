@@ -67,7 +67,8 @@ const props = withDefaults(
 let search = ref('');
 let searchResults: Ref<Proposal[]> = ref([]);
 let canDelete: Ref<boolean> =  ref();
-let draftGroups: Ref<DraftBallotGroup<Proposal>[]> = ref([...cloneDeep(props.draftBallot.groups)]);
+let draftBallot$ = ref(props.draftBallot);
+let draftGroups: Ref<DraftBallotGroup<Proposal>[]> = ref([...cloneDeep(draftBallot$.value.groups)]);
 const onLocal:Ref<boolean> = ref(false);
 const inLastTenMins:Ref<boolean>= ref(false);
 const collectionHash = ref(props.draftBallot.hash);
@@ -135,7 +136,7 @@ async function bookmarkProposal(proposal: Proposal) {
 
         await axios.post(route('catalystExplorer.bookmarkItem.create'), item);
         router.reload({onSuccess: (component) => {
-            draftGroups.value = component.props.draftGroups['groups'];
+            draftBallot$.value = cloneDeep(component.props.draftBallot) as DraftBallot<Proposal>;
         }});
     } catch (e) {
         console.log(e);
