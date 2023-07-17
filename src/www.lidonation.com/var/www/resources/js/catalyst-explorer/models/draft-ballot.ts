@@ -1,11 +1,17 @@
 import BookmarkItem from "./bookmark-item";
 import Fund from "./fund";
 
+export interface DraftBallotRationale {
+    'title': string;
+    'content': string;
+    'status': string;
+}
+
 export interface DraftBallotGroup<T> {
     id: number;
     title: string;
     excerpt: string;
-    rationale: string;
+    rationale: DraftBallotRationale;
     items: BookmarkItem<T>[];
 }
 

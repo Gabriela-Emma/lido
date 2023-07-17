@@ -55,7 +55,6 @@ export const useBookmarksStore = defineStore('bookmarks', () => {
         return models.filter((model, index, self) => self.findIndex((m) => m.id === model.id) === index);
     });
 
-
     onMounted(loadCollections);
 
     return {
