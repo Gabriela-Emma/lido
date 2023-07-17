@@ -33,21 +33,16 @@ export const useBookmarksStore = defineStore('bookmarks', () => {
        let collection = localCollections.value[collectionHash];
        collection.items = collection.items.filter((item) => item.id != itemId)
        localCollections.value = {
-        ...localCollections.value,
-        [collectionHash]: collection,
-      };
+            ...localCollections.value,
+            [collectionHash]: collection,
+        };
         loadCollections().then();
     }
 
-
     async function loadCollections() {
-        if (Object.entries(localCollections.value)?.length == 0) {
-            return;
-        }
-
         try {
             const response = await axios.get(`/catalyst-explorer/my/bookmarks`, {params: {hashes: Object.keys(localCollections.value)}});
-            collections.value = response.data;
+            collections.value = [...response.data, ...collections.value];
         } catch (e: AxiosError | any) {
             console.log({e});
         }
@@ -59,6 +54,7 @@ export const useBookmarksStore = defineStore('bookmarks', () => {
         const models = collectionsArray.value.flatMap((collection) => collection?.items?.map((item) => item?.model));
         return models.filter((model, index, self) => self.findIndex((m) => m.id === model.id) === index);
     });
+
 
     onMounted(loadCollections);
 

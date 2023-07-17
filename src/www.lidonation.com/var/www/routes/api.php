@@ -358,6 +358,8 @@ Route::prefix('catalyst-explorer')->as('catalystExplorerApi.')
         ], function () {
             Route::post('/{catalystReport:id}', [CatalystExplorer\ReportController::class, 'createComment']);
         });
+
+
     });
 
 Route::prefix('earn')->as('earnApi.')->group(function () {
