@@ -14,33 +14,6 @@
                 </div>
             </div>
         </section>
-
-        <!-- <section id="catalystVoting" class="text-white bg-gradient-to-br from-teal-800 via-teal-600 to-accent-900">
-            <div class="container"> -->
-                <!-- <x-catalyst.ballot-quick-pitches :proposals="$quickPitches" /> -->
-            <!-- </div>
-        </section> -->
-        <!-- <section class="relative border rounded-sm bg-slate-50">
-            <div class="px-3 py-3 mx-auto max-w-7xl sm:px-6 lg:px-8">
-                <div class="pr-16 sm:px-16 sm:text-center">
-                    <p class="font-medium text-slate-400">
-                        <span>
-                            Are you a proposer? Link your
-                        </span>
-                        <span class="block sm:ml-2 sm:inline-block">
-                          <a href="{{#}}"
-                             target="_blank"
-                             class="flex flex-row items-center gap-2 font-semibold underline">
-                            <span>quickpitch</span>
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-4 h-4">
-                              <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
-                            </svg>
-                          </a>
-                        </span>
-                    </p>
-                </div>
-            </div>
-        </section> -->
     </div>
 </template>
 

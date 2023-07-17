@@ -1,8 +1,21 @@
 import BookmarkItem from "./bookmark-item";
 import Fund from "./fund";
 
+export interface DraftBallotRationale {
+    'title': string;
+    'content': string;
+    'status': string;
+}
 
-export default interface DraftBallot {
+export interface DraftBallotGroup<T> {
+    id: number;
+    title: string;
+    excerpt: string;
+    rationale: DraftBallotRationale;
+    items: BookmarkItem<T>[];
+}
+
+export default interface DraftBallot<T> {
     hash?: string;
     title: string;
     user_id:number;
@@ -14,9 +27,5 @@ export default interface DraftBallot {
     items_count?: number;
     created_at: string;
 
-    groups?: {
-        title: string,
-        excerpt: string,
-        items: BookmarkItem[]
-    };
+    groups?: DraftBallotGroup<T>[];
 }

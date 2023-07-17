@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Models\CatalystUser;
+use App\Models\Category;
 use App\Models\Link;
 use App\Models\Proposal;
 use App\Models\Tag;
@@ -122,6 +123,16 @@ class CatalystUpdateProposalDetailsJob implements ShouldQueue
             $proposalMeta = $this->getFund10ProposalMetas($data->fieldSections);
             $this->proposal->amount_requested = $proposalMeta?->amount_requested;
 
+            // opensource status
+            $isOpensource = $this->getFieldByTitle(
+                $data->fieldSections,
+                "[GENERAL] Will your project’s output/s be fully open source?"
+            );
+
+            if (isset($isOpensource) && isset($isOpensource->ideaFieldValues[0]) && isset($isOpensource->ideaFieldValues[0]['value']) ) {
+                $this->proposal->opensource = $isOpensource->ideaFieldValues[0]['value'] == 'Yes' ? true : false;
+            }
+
             $this->proposal->saveMeta('project_length', $proposalMeta?->project_length, $this->proposal);
         }
         if ($this->proposal->fund?->parent_id == 61) {
@@ -201,6 +212,29 @@ class CatalystUpdateProposalDetailsJob implements ShouldQueue
             $this->proposal?->tags()->syncWithPivotValues($tags->pluck('id'), [
                 'model_type' => Proposal::class,
             ], false);
+        }
+
+
+        //save proposal category
+        if (!$this->proposal->categories?->count() ?? null) {
+            $category = $this->getFieldByTitle(
+                $data->fieldSections,
+                "[METADATA] Category of proposal"
+            )->ideaFieldValues[0]['value'];
+
+            $category = Category::updateOrCreate(
+                [
+                    'slug' => Str::slug($category),
+                ],
+                [
+                    'title' => ucfirst($category),
+                ],
+            );
+            $this->proposal?->categories()->syncWithPivotValues($category->pluck('id'), [
+                'model_type' => Proposal::class,
+            ], false);
+
+            Proposal::withoutSyncingToSearch(fn () => $this->proposal->save());
         }
     }
 
@@ -387,5 +421,22 @@ class CatalystUpdateProposalDetailsJob implements ShouldQueue
         }
 
         return collect([]);
+    }
+
+    protected function getFieldByTitle($fieldSections, string $title)
+    {
+
+        $targetField = array_filter(
+            $fieldSections,
+             fn ($obj) =>  $obj->title === $title
+            );
+
+        if (!$targetField) {
+            return new Fluent([]);
+        }
+
+        $targetField = reset($targetField);
+        $targetField = json_decode(json_encode($targetField), true);
+        return new Fluent($targetField);
     }
 }

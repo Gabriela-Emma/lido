@@ -14,7 +14,6 @@ use App\Models\Traits\HasMetaData;
 use App\Models\Traits\HasRepos;
 use App\Models\Traits\HasTaxonomies;
 use App\Models\Traits\HasTranslations;
-use App\Scopes\OrderByDateScope;
 use App\Traits\SearchableLocale;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\UrlGenerator;
@@ -79,6 +78,7 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
         'ratings',
         'repos',
         'tags',
+        'categories',
         'users',
     ];
 
@@ -108,6 +108,7 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
         'amount_requested' => 'integer',
         'amount_received' => 'integer',
         'funding_updated_at' => 'date:Y-m-d',
+        'opensource' => 'boolean',
     ];
 
     public static function getFilterableAttributes(): array
@@ -117,6 +118,8 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
             'completed',
             'currency',
             'has_quick_pitch',
+            'quickpitch',
+            'quickpitch_length',
             'impact_proposal',
             'woman_proposal',
             'ideafest_proposal',
@@ -126,11 +129,14 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
             'groups',
             'amount_requested',
             'amount_received',
+            'project_length',
+            'opensource',
             'paid',
             'fund.id',
             'type',
             'users',
             'tags',
+            'categories',
             'funding_status',
             'status',
         ];
@@ -151,8 +157,7 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
             'social_excerpt',
             'users',
             'tags',
-            //            'users.name',
-            //            'users.email'
+            'categories'
         ];
     }
 
@@ -162,6 +167,8 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
             'title',
             'amount_requested',
             'amount_received',
+            'project_length',
+            'quickpitch_length',
             'ca_rating',
             'created_at',
             'funded_at',
@@ -492,6 +499,7 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
 
         return array_merge($array, [
             'funded' => (bool) $this->funded_at ? 1 : 0,
+            'opensource' => (bool) $this->opensource ? 1 : 0,
             'has_quick_pitch' => (bool) $this->quick_pitch ? 1 : 0,
             'quickpitch' => $this->quick_pitch_id ?? null,
             'completed' => $this->status === 'complete' ? 1 : 0,
@@ -547,6 +555,13 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
             'quickPitch' => $this->quick_pitch,
             'quickPitchId' => $this->quick_pitch_id,
         ];
+    }
+
+    public function vote()
+    {
+        return $this->hasOne(CatalystVote::class, 'model_id')
+        ->where('model_type', '=', static::class)
+        ->where('user_id', '=', auth()?->user()?->id);
     }
 
     /**

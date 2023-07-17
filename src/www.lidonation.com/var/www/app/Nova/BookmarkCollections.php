@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use App\Models\BookmarkCollection;
+use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Color;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\HasMany;
@@ -66,6 +67,9 @@ class BookmarkCollections extends Resource
             Text::make('status')->sortable(),
             DateTime::make('Created At')->sortable(),
             DateTime::make('Updated At')->sortable(),
+
+            BelongsTo::make('User', 'user', User::class)->searchable()->sortable(),
+
             Markdown::make(__('Content'), 'content')->sortable(),
 
             HasMany::make('Items', 'items', BookmarkItems::class),

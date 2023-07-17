@@ -119,11 +119,13 @@
         "three": "^0.146.0",
         "tippy.js": "^6.3.7",
         "typescript-memoize": "^1.1.0",
+        "v-video-embed": "^1.0.8",
         "vue": "^3.2.36",
         "vue-chartjs": "^5.2.0",
         "vue-i18n": "^9.2.2",
         "vue-plyr": "^7.0.0",
         "vue-timeago3": "^2.3.0",
+        "vue-vimeo-player": "^1.1.2",
         "vue3-easy-data-table": "^1.5.32"
     }
 }

@@ -1,5 +1,5 @@
 <template>
-<div class="relative flex flex-col w-full h-full gap-4 px-4 quick-pitch-wrapper">
+<div class="relative flex flex-col w-full h-full gap-4 p-4 quick-pitch-wrapper">
     <div class="relative">
         <transition
                 enter-active-class="transition duration-200 ease-out"
@@ -8,9 +8,18 @@
                 leave-active-class="transition duration-150 ease-in"
                 leave-from-class="translate-y-0 opacity-100"
                 leave-to-class="translate-y-1 opacity-0">
-            <vue-plyr>
-                <div :data-plyr-provider="quickpitchProvider" :data-plyr-embed-id="proposal.quickpitch"></div>
-            </vue-plyr>
+                <div class="embed-wrapper">
+                    <vue-plyr v-if="quickpitchProvider === 'youtube'">
+                        <div :data-plyr-provider="quickpitchProvider" :data-plyr-embed-id="proposal.quickpitch"></div>
+                    </vue-plyr>
+                    <vue-plyr v-if="quickpitchProvider === 'vimeo'">
+                        <div class="plyr__video-embed">
+                            <iframe :src="`https://player.vimeo.com/video/${proposal.quickpitch}?h=f2c5cf1159&title=0&byline=0&portrait=0`"
+                            style="position:absolute;top:0;left:0;width:100%;height:100%;" frameborder="0"
+                            allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                    </vue-plyr>
+                </div>
         </transition>
     </div>
 
@@ -77,5 +86,7 @@ interface Author {
     media: {original_url: string}[]
 }
 
-const quickpitchProvider = computed(() =>isNaN( parseInt(props.proposal?.quickpitch)) ? "youtube" : "vimeo" );
+const regex: RegExp = /[a-zA-Z]/g;
+const quickPitchId = props.proposal?.quickpitch;
+const quickpitchProvider = computed(() => quickPitchId.match(regex) ? "youtube" : "vimeo" );
 </script>

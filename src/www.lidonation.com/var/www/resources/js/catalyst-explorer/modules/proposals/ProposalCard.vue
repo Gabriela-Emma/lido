@@ -4,13 +4,15 @@
             :profileQuickView="profileQuickView"
             @close="profileQuickView = null" />
 
-        <ProposalSummaryCard v-if="!quickpitching"
+        <ProposalQuickPitchCard v-if="quickpitching && !!proposal.quickpitch"
+            @profileQuickView="handleProfileQuickView($event)"
+            @summary="quickpitching = false" :proposal="props.proposal" />
+
+        <ProposalSummaryCard v-else
             @profileQuickView="handleProfileQuickView($event)"
             @quickpitch="quickpitching = true" :proposal="props.proposal" />
 
-        <ProposalQuickPitchCard v-else
-            @profileQuickView="handleProfileQuickView($event)"
-            @summary="quickpitching = false" :proposal="props.proposal" />
+
     </div>
 </template>
 
@@ -23,7 +25,10 @@ import { Ref } from "@vue/reactivity";
 import ProposalSummaryCard from "./partials/ProposalSummaryCard.vue";
 import ProposalQuickPitchCard from "./partials/ProposalQuickPitchCard.vue";
 import ProposalUserQuickView from "./partials/ProposalUserQuickView.vue";
+import { useProposalsStore } from "../../stores/proposals-store";
 
+const proposalsStore = useProposalsStore();
+let {viewType} = storeToRefs(proposalsStore);
 
 interface Author {
     id: number;
@@ -55,6 +60,10 @@ const {models: bookmarkCollectionsModels$} = storeToRefs(bookmarksStore);
 
 watch([bookmarkCollectionsModels$], (newValue, oldValue) => {
     isBookmarked.value =  bookmarkCollectionsModels$.value?.some(model => model.id === props.proposal.id);
+});
+
+watch([viewType], (newValue, oldValue) => {
+    quickpitching.value = viewType.value === 'quickpitch';
 });
 
 let profileQuickView = ref(null);

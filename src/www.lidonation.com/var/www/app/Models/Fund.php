@@ -193,7 +193,8 @@ class Fund extends Model implements HasMedia, IHasMetaData
 
     public function proposals(): HasMany
     {
-        return $this->hasMany(Proposal::class, 'fund_id');
+        return $this->hasMany(Proposal::class, 'fund_id')
+        ->where('type', 'proposal');
     }
 
     public function parent_proposals(): HasManyThrough

@@ -34,9 +34,12 @@
         <section class="relative w-full py-8">
             <!-- Sorts and controls -->
             <div :class="{ 'lg:pr-16 opacity-10 lg:opacity-100': showFilters, 'container': !showFilters }"
-                 class="flex w-full items-center justify-end space-x-0.5 mb-3 gap-2">
-                 <button @click="openIdeascaleLinks" v-if="props.proposals.total <= 35" class="bg-white rounded-md px-2 py-2.5 text-gray-400 flex-wrap hover:text-yellow-500">Open Ideascale Links</button>
-                 <div class="flex flex-col text-center text-pink-500" v-if="filtering || search">
+                class="flex w-full items-center justify-end space-x-0.5 mb-3 gap-2">
+
+                <ProposalViewTypes class="mr-4"></ProposalViewTypes>
+
+                <button @click="openIdeascaleLinks" v-if="props.proposals.total <= 35" class="bg-white rounded-sm px-2 py-2.5 text-gray-400 flex-wrap hover:text-yellow-500">Open Ideascale Links</button>
+                <div class="flex flex-col text-center text-pink-500" v-if="filtering || search">
                     <span>
                         <div class="text-xs w-[140px] lg:text-base">
                             <Multiselect
@@ -94,6 +97,7 @@
                     />
                 </div>
             </div>
+
 
             <div :class="{ 'gap-5': showFilters }"
                  class="relative flex flex-row w-full">
@@ -173,14 +177,12 @@
                                         </span>
                                     </div>
 
-
                                     <div class="w-full h-[1px] md:h-full md:w-[1px] bg-slate-100 relative"
                                          v-if="(metricCountApproved || metricCountCompleted) && metricSumApproved">
                                         <b class="absolute hidden px-2 py-1 text-xs text-center text-yellow-500 rounded-full md:inline-block -top-6 -left-10 w-28 bg-slate-800">
                                             {{ $t('Search metrics') }}
                                         </b>
                                     </div>
-
 
                                     <div class="flex flex-col text-center" v-if="metricSumBudget" key="sumBudget">
                                          <span class="font-semibold">
@@ -235,13 +237,10 @@
             </div>
         </section>
     </div>
-
-
 </template>
 
 <script lang="ts" setup>
 import Multiselect from '@vueform/multiselect';
-import {proposalsStore} from "../stores/proposals-store";
 import {computed, ref, watch} from "vue";
 import Proposal from "../models/proposal";
 import Proposals from "../modules/proposals/Proposals.vue";
@@ -255,6 +254,9 @@ import Pagination from "../Shared/Components/Pagination.vue";
 import axios from 'axios';
 import { usePeopleStore } from '../stores/people-store';
 import { storeToRefs } from 'pinia';
+
+import ProposalViewTypes from '../modules/proposals/partials/ProposalViewTypes.vue';
+import { useProposalsStore } from '../stores/proposals-store';
 
 /// props and class properties
 const props = withDefaults(
@@ -339,7 +341,6 @@ let metricSumDistributed = ref<number>(null);
 let metricSumCompleted = ref<number>(null);
 let metricSumBudget = ref<number>(null);
 
-
 // metrics Sum
 let metricSumAdaApproved = ref<number>(null);
 let metricSumAdaDistributed = ref<number>(null);
@@ -362,6 +363,9 @@ const peopleStore = usePeopleStore();
 peopleStore.loadPeople(props?.filters?.people);
 const {selectedPeople} = storeToRefs(peopleStore);
 
+const proposalsStore = useProposalsStore();
+let {viewType} = storeToRefs(proposalsStore);
+let quickpitchingRef = ref<boolean>(false);
 
 watch([search, filtersRef, selectedSortRef], () => {
     currPageRef.value = null;
@@ -369,12 +373,16 @@ watch([search, filtersRef, selectedSortRef], () => {
     searchRender.value = Math.random();
 }, {deep: true});
 
-watch([currPageRef, perPageRef], () => {
+watch([currPageRef, perPageRef, quickpitchingRef], () => {
     query();
 });
 
 watch([selectedPeople], () => {
     filtersRef.value.people = [...filtersRef.value.people, ...selectedPeople.value]
+});
+
+watch([viewType], () => {
+    quickpitchingRef.value = viewType.value === 'quickpitch';
 });
 
 watch(selectedDownloadFormat, () => {
@@ -389,10 +397,6 @@ getMetrics();
 // initializers
 ////
 // filters
-
-// proposals
-const proposals = proposalsStore();
-
 function getFiltering() {
     if (props.filters.cohort) {
         return true;
@@ -516,12 +520,20 @@ function getQueryData() {
     if (perPageRef.value) {
         data[VARIABLES.PER_PAGE] = perPageRef.value;
     }
+    if ( quickpitchingRef.value ) {
+        data[VARIABLES.QUICKPITCHES] = '';
+    }
+
     if (search.value?.length > 0) {
         data[VARIABLES.SEARCH] = search.value;
     }
 
     if (filtersRef.value?.funded) {
         data[VARIABLES.FUNDED_PROPOSALS] = 1;
+    }
+
+    if (filtersRef.value?.opensource) {
+        data[VARIABLES.OPENSOURCE_PROPOSALS] = 1;
     }
 
     if (filtersRef.value?.funds) {

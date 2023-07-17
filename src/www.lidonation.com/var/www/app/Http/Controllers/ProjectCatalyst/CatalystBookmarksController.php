@@ -7,9 +7,11 @@ use App\Http\Resources\BookmarkCollectionResource;
 use App\Http\Resources\DraftBallotResource;
 use App\Models\BookmarkCollection;
 use App\Models\BookmarkItem;
+use App\Models\Discussion;
 use App\Models\DraftBallot;
 use App\Models\Proposal;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Fluent;
 use Inertia\Inertia;
 
@@ -30,7 +32,7 @@ class CatalystBookmarksController extends Controller
         ]));
 
         // if collection doesn't exist, create one
-        $collection = BookmarkCollection::byHash($data->collection['hash'] ?? null);
+        $collection = BookmarkCollection::byHash($data->collection['hash']) ?? DraftBallot::byHash($data->collection['hash']) ?? null;
 
         if (! $collection instanceof BookmarkCollection) {
             $collection = new BookmarkCollection;
@@ -58,6 +60,10 @@ class CatalystBookmarksController extends Controller
 
         $collection->refresh();
         $collection->load(['items']);
+
+        if ($collection instanceof DraftBallot) {
+            return (new DraftBallotResource($collection))->toArray($request);
+        }
 
         return (new BookmarkCollectionResource($collection))->toArray($request);
     }
@@ -127,5 +133,32 @@ class CatalystBookmarksController extends Controller
             'catalystExplorer.draftBallot.edit',
             $db->hash
         );
+    }
+
+    public function storeDraftBallotRationale(Request $request, BookmarkCollection $bookmarkCollection)
+    {
+        $data = $request->validate([
+            'rationale' => 'required|string',
+            'group_id' => 'required|int',
+            'title' => 'nullable'
+        ]);
+
+        // user meta data to attach to the fund_id (challenge id)
+        $rationale = $bookmarkCollection->rationales()
+        ->whereRelation('metas', 'key', '=', 'group_id')
+        ->whereRelation('metas', 'content', '=', $data['group_id'])->first();
+        // dd($rationale->toArray());
+        if (!$rationale instanceof Discussion) {
+            $rationale = new Discussion;
+            $rationale->user_id = Auth::id();
+            $rationale->model_type = BookmarkCollection::class;
+            $rationale->model_id = $bookmarkCollection->id;
+            $rationale->status = 'published';
+        }
+        $rationale->title = $data['title'];
+        $rationale->content = $data['rationale'];
+        $rationale->save();
+        $rationale->saveMeta('group_id', $data['group_id'], $rationale);
+        return redirect()->back();
     }
 }
