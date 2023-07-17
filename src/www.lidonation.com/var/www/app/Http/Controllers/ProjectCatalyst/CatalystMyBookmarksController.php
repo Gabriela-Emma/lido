@@ -11,6 +11,7 @@ use App\Models\DraftBallot;
 use App\Models\Proposal;
 use App\Services\ExportModelService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Fluent;
 use Inertia\Inertia;
@@ -91,14 +92,16 @@ class CatalystMyBookmarksController extends Controller
 
     public function index(Request $request)
     {
-        $collections = [];
+        $collections = BookmarkCollection::where('user_id', Auth::id());
+
+
         $hashes = $request->get('hashes', false);
+
         if ($hashes) {
-            $collections = BookmarkCollection::whereHashIn($hashes);
-            $collections = (BookmarkCollectionResource::collection($collections))->toArray($request);
+            $collections = $collections->whereHashIn($hashes);
         }
 
-        return $collections;
+        return (BookmarkCollectionResource::collection($collections->get()))->toArray($request);
     }
 
     public function deleteCollection(Request $request)
