@@ -4,8 +4,8 @@
 
     <main class="flex flex-col gap-2 py-8 bg-primary-20">
         <div class="container">
-            <section class="mb-4 overflow-visible bg-white border-t rounded-sm shadow-sm">
-                <div class="relative overflow-visible">
+            <section class="sticky z-20 mb-4 overflow-visible bg-white border-t rounded-sm shadow-md top-20">
+                <div class="relative z-20 overflow-visible">
                     <div class="flex items-center w-full h-10 lg:h-16">
                         <Search
                             :search="search"
