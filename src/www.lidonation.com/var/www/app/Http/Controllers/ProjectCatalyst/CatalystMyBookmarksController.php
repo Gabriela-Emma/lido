@@ -94,7 +94,6 @@ class CatalystMyBookmarksController extends Controller
     {
         $collections = BookmarkCollection::where('user_id', Auth::id())->whereNotNull('user_id');
 
-
         $hashes = $request->get('hashes', false);
 
         if ($hashes) {
@@ -121,7 +120,6 @@ class CatalystMyBookmarksController extends Controller
 
     public function exportBookmarks(Request $request)
     {
-
         $collection = BookmarkCollection::byHash($request->hash);
         $itemsArr = $collection->items()->pluck('id');
 
