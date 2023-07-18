@@ -216,6 +216,14 @@ class CatalystUpdateProposalDetailsJob implements ShouldQueue
 
 
         //save proposal category
+        // clean previous categories
+        $existingCategoryIDs = $this->proposal->categories()->pluck('id');
+        $this->proposal->categories()->detach($existingCategoryIDs);
+        // Delete the categories
+        foreach ($existingCategoryIDs as $categoryId) {
+            $category = Category::find($categoryId);
+            $category->delete();
+        }
         if (!$this->proposal->categories?->count() ?? null) {
             $category = $this->getFieldByTitle(
                 $data->fieldSections,
