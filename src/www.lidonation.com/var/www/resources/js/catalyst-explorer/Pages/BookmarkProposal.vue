@@ -3,7 +3,7 @@
         <div class="relative flex flex-col w-full bg-teal-900 rounded-sm overflow-clip">
             <div class="pt-12 xl:pt-16">
                 <div class="px-4 mx-auto max-w-8xl sm:px-6 lg:px-8">
-                    <div class="text-center">
+                    <div class="flex flex-wrap items-start text-center">
                         <h2 class="flex items-center justify-center gap-1 text-lg tracking-tight text-slate-300 sm:text-xl sm:tracking-tight lg:text-2xl lg:tracking-tight">
                             <span>
                                 {{ $t('Bookmark') }}
@@ -213,7 +213,7 @@ import {defineEmits, ref, watch} from "vue";
 import Modal from '../Shared/Components/Modal.vue';
 import Challenge from "../models/challenge";
 import Proposal from "../models/proposal";
-import {router, usePage} from "@inertiajs/vue3";
+import {usePage} from "@inertiajs/vue3";
 import Login from "./Auth/Login.vue";
 import {useBookmarksStore} from "../stores/bookmarks-store";
 import Multiselect from '@vueform/multiselect';
@@ -226,7 +226,6 @@ import { CheckIcon } from '@heroicons/vue/20/solid'
 import { useUserStore } from "../../global/Shared/store/user-store";
 import route from "ziggy-js";
 import { Link } from '@inertiajs/vue3';
-import LoginForm from "../../global/Shared/Components/LoginForm.vue";
 
 const props = withDefaults(
     defineProps<{
@@ -309,12 +308,9 @@ async function bookmarkProposal(item: BookmarkItem<Proposal>) {
     try {
         const res = await axios.post(`${usePage().props.base_url}/catalyst-explorer/bookmarks/items`, item);
 
-        // fire of store event to save collection to localStorage
-        bookmarksStore.saveCollection(res.data?.data);
-
         // update ui
         bookmarked$.value = true;
-        collection$.value = {...res.data.data};
+        collection$.value = {...res.data};
     } catch (e) {
         errors.value = {...e?.response?.data?.errors || {message: e?.response?.data?.message}};
         console.log(e);

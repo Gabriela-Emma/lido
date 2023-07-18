@@ -2,7 +2,6 @@ import {defineStore} from "pinia";
 import axios, {AxiosError} from "axios";
 import {computed, onMounted, Ref, ref} from "vue";
 import BookmarkCollection from "../models/bookmark-collection";
-import {BookmarkItemModel} from "../models/bookmark-item-model";
 import Proposal from "../models/proposal";
 import DraftBallot from "../models/draft-ballot";
 import { cloneDeep } from "lodash";
@@ -12,19 +11,6 @@ export const useBookmarksStore = defineStore('bookmarks', () => {
     let collections = ref<BookmarkCollection<Proposal>[]>([]);
     let draftBallot = ref<DraftBallot<Proposal>>(null);
     let draftBallots = ref<DraftBallot<Proposal>[]>([]);
-
-    async function saveCollection(collection: BookmarkCollection<Proposal>) {
-        const collections = {
-            [collection.hash]: {
-                hash: collection.hash,
-                items: collection.items.map((item) => ({
-                    id: item.id,
-                    model: {id: item.model?.id}
-                }))
-            }
-        };
-        loadCollections().then();
-    }
 
     async function deleteCollection(collectionHash: string) {
         loadCollections().then();
@@ -106,7 +92,6 @@ export const useBookmarksStore = defineStore('bookmarks', () => {
     return {
         bookmarkProposal,
         loadCollections,
-        saveCollection,
         deleteCollection,
         loadDraftBallot,
         loadDraftBallots,

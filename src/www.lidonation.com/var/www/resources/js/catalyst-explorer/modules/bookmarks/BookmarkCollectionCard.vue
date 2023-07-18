@@ -44,7 +44,6 @@ import BookmarkCollection from "../../models/bookmark-collection";
 import route from "ziggy-js";
 import Proposal from "../../models/proposal";
 
-
 const props = withDefaults(
     defineProps<{
         collection?: BookmarkCollection<Proposal>
