@@ -355,8 +355,6 @@ function uploadProfile (event){
     userForm.profile = event.target.files[0];
     profile_name.value = userForm.profile.name
     photoPreview.value =  URL.createObjectURL(userForm.profile)
-    console.log(profile_name.value);
-    console.log(userForm);
 }
 
 </script>
