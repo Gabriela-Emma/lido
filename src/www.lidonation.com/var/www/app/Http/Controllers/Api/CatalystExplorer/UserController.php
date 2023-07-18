@@ -110,11 +110,13 @@ class UserController extends Controller implements UpdatesUserProfileInformation
         $user->discord = $validated->discord;
         $user->telegram = $validated->telegram;
         if ($request->profile) {
-            if (isset($user->hero->original_url)) {
+            if (isset($user->profile_photo_url)) {
                 $user->updateProfilePhoto($request->profile);
+            }else{
+                $user->addMediaFromRequest('profile')->toMediaCollection('hero');
+                $user->save();
             }
-            $user->addMediaFromRequest('profile')->toMediaCollection('hero');
-            $user->save();
+         
         }
 
         $user->save();

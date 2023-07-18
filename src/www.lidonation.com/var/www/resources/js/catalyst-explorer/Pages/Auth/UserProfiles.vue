@@ -60,15 +60,21 @@
                                             }}
                                         </div>
                                     </div>
-                                    <div class="flex flex-col items-start justify-between p-5 rounded-sm file_upload border-slate-300" >
-                                        <img :src="photoPreview ?? user$?.profile_photo_url" class="object-cover mb-4 border rounded-full h-30 w-30" />
-                                        <label for="dropzone-file">
-                                            <div 
-                                            class="inline-flex items-center justify-center px-3 mr-3 text-xs font-medium text-gray-900 border border-gray-200 rounded-sm bg-slate-200 h-9 focus:outline-none hover:bg-gray-100 ">
-                                         {{ user$?.profile_photo_url ? 'Change photo': 'Add photo' }}
-                                        </div>
-                                            
-                                            <input id="dropzone-file" type="file" accept="image/png, image/jpeg" @change="uploadProfile" class="hidden" />
+                                    <div class="flex flex-col items-start justify-between w-48 p-2 rounded-sm border-slate-300" >
+                                        <span class="block py-2 text-sm font-medium text-slate-700">
+                                            {{$t("Your Photo")}}
+                                        </span>
+                                        <span class="relative flex justify-center w-full ">
+                                            <img :src="photoPreview ?? user$?.profile_photo_url" class="w-40 h-40 mb-4 border rounded-full object-fit contain" />
+                                        </span>
+                                        <label for="dropzone-file" class="flex justify-center w-full">
+                                            <div type="submit"
+                                                    class="inline-flex justify-center px-4 py-2 text-sm font-medium text-white bg-teal-600 border border-transparent rounded-sm shadow-sm hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
+                                                {{ user$?.profile_photo_url ? 'Change photo' : 'Add photo' }}
+                                            </div>
+                                            <div>
+                                                <input id="dropzone-file" type="file" accept="image/png, image/jpeg" @change="uploadProfile" class="hidden" />
+                                            </div>
                                         </label>
                                     </div>
                                 </div>
