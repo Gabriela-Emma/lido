@@ -65,12 +65,12 @@
                                             {{$t("Your Photo")}}
                                         </span>
                                         <span class="relative flex justify-center w-full ">
-                                            <img :src="photoPreview ?? user$?.profile_photo_url" class="w-40 h-40 mb-4 border rounded-full object-fit contain" />
+                                            <img :src="photoPreview ?? userForm?.profile_photo_url" class="w-40 h-40 mb-4 border rounded-full object-fit contain" />
                                         </span>
                                         <label for="dropzone-file" class="flex justify-center w-full">
                                             <div type="submit"
                                                     class="inline-flex justify-center px-4 py-2 text-sm font-medium text-white bg-teal-600 border border-transparent rounded-sm shadow-sm hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
-                                                {{ user$?.profile_photo_url ? 'Change photo' : 'Add photo' }}
+                                                {{ userForm?.profile_photo_url ? 'Change photo' : 'Add photo' }}
                                             </div>
                                             <div>
                                                 <input id="dropzone-file" type="file" accept="image/png, image/jpeg" @change="uploadProfile" class="hidden" />
@@ -324,6 +324,7 @@ const userStore = useUserStore();
 const {user$} = storeToRefs(userStore);
 
 let userForm = useForm({...user$.value, profile: null});
+console.log(userForm.profile_photo_url);
 
 const props = withDefaults(
     defineProps<{
