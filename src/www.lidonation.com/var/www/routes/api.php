@@ -339,7 +339,7 @@ Route::prefix('catalyst-explorer')->as('catalystExplorerApi.')
         Route::patch('proposal/repo', [CatalystExplorer\RepoController::class, 'updateRepo']);
 
         Route::prefix('proposals')->as('proposals.')->group(function () {
-            Route::post('/login', [CatalystExplorer\UserController::class, 'login']);
+            Route::post('/login', [CatalystExplorer\UserController::class, 'login'])->name('login');
 
             Route::prefix('/{proposal:id}')->group(function () {
                 Route::post('/repo', [CatalystExplorer\RepoController::class, 'store'])
