@@ -350,6 +350,9 @@ Route::prefix('catalyst-explorer')->as('catalystExplorerApi.')
             });
         });
 
+        Route::get('/my/draft-ballots', [CatalystBookmarksController::class, 'draftBallotIndex'])
+                ->name('draftBallots');
+
         Route::get('/my/draft-ballots/{draftBallot:id}', [CatalystBookmarksController::class, 'getDraftBallot'])
                 ->name('draftBallot');
 

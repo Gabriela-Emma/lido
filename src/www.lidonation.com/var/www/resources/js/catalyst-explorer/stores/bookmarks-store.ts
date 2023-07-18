@@ -13,6 +13,7 @@ export const useBookmarksStore = defineStore('bookmarks', () => {
     let localCollections = useStorage('bookmark-collections', {}, localStorage, {mergeDefaults: true});
     let collections = ref<BookmarkCollection<Proposal>[]>([]);
     let draftBallot = ref<DraftBallot<Proposal>>(null);
+    let draftBallots = ref<DraftBallot<Proposal>[]>([]);
 
     async function saveCollection(collection: BookmarkCollection<Proposal>) {
         localCollections.value = {
@@ -41,6 +42,15 @@ export const useBookmarksStore = defineStore('bookmarks', () => {
             [collectionHash]: collection,
         };
         loadCollections().then();
+    }
+
+    async function loadDraftBallots() {
+        try {
+            const response = await axios.get(route('catalystExplorerApi.draftBallots'));
+            draftBallots.value = response?.data?.data;
+        } catch (e: AxiosError | any) {
+            console.log({e});
+        }
     }
 
     async function loadDraftBallot(ballot?: DraftBallot<Proposal>) {
@@ -96,7 +106,7 @@ export const useBookmarksStore = defineStore('bookmarks', () => {
         return models.filter((model, index, self) => self.findIndex((m) => m.id === model.id) === index);
     });
 
-    onMounted(loadCollections);
+    // onMounted();
 
     return {
         bookmarkProposal,
@@ -104,6 +114,8 @@ export const useBookmarksStore = defineStore('bookmarks', () => {
         saveCollection,
         deleteCollection,
         loadDraftBallot,
+        loadDraftBallots,
+        draftBallots$: draftBallots,
         deleteItem,
         models: bookmarkedModels,
         collections$: collectionsArray,

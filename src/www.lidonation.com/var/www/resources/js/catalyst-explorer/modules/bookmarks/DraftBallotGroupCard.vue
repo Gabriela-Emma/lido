@@ -3,12 +3,16 @@
     <div class="px-5">
         <div class="flex gap-3 mb-4">
             <h2 class="text-sm md:text-md lg:text-2xl">{{ group.title }}</h2>
-            <div class="flex items-center gap-1.5">
+            <div class="flex items-center divide-x space-x-3 divide-gray-200 gap-1.5">
                 <div>
+                    <span class="mr-1">Items: </span>
+                    <span>{{ group.items.length }}</span>
+                </div>
+                <div class="ml-2">
                     <span class="mr-1">Pot: </span>
                     <span>{{ group.amount }}</span>
                 </div>
-                <div class="flex items-center font-bold lg:text-lg" :class="{
+                <div class="flex items-center ml-2 font-bold lg:text-lg" :class="{
                     'text-teal-600': allotedBudget <= group.amount,
                     'text-red-600': allotedBudget > group.amount
                 }">
@@ -183,7 +187,6 @@ function vote(vote: VOTEACTIONS, proposal: Proposal) {
                 replace: true,
                 onSuccess: async (component) => {
                     await bookmarksStore.loadDraftBallot();
-                    chartData.value = getChart();
                 }
             }
         );
@@ -195,12 +198,13 @@ function vote(vote: VOTEACTIONS, proposal: Proposal) {
                 preserveScroll: true,
                 preserveState: true,
                 replace: true,
-                onSuccess: (component) => {
-                    bookmarksStore.loadDraftBallot();
+                onSuccess: async (component) => {
+                    await bookmarksStore.loadDraftBallot();
                 }
             }
         );
     }
+    chartData.value = getChart();
 }
 
 function getChart()
@@ -209,7 +213,10 @@ function getChart()
         labels: ['Allotted', 'Pot Balance'],
         datasets: [
             {
-                backgroundColor: ['#1d7898', '#d6d3d1'],
+                backgroundColor: [
+                    '#1d7898',
+                    (props.group?.amount - allotedBudget.value) > 0 ? '#d6d3d1' : '#e66795'
+                ],
                 data: [
                     allotedBudget.value,
                     (props.group?.amount - allotedBudget.value)

@@ -106,6 +106,16 @@ class CatalystBookmarksController extends Controller
         return  (new DraftBallotResource($draftBallot))->toArray($request);
     }
 
+    public function draftBallotIndex()
+    {
+        return DraftBallotResource::collection(
+            DraftBallot::where('user_id', Auth::id())
+            ->orderBy('created_at', 'desc')
+            ->paginate(24)
+        );
+
+    }
+
     public function editDraftBallot(Request $request, DraftBallot $draftBallot)
     {
         return Inertia::render('EditDraftBallot')->with([
@@ -128,7 +138,23 @@ class CatalystBookmarksController extends Controller
         ]);
     }
 
-    public function createDraftBallot(Request $request, BookmarkCollection $bookmarkCollection)
+    public function createDraftBallot(Request $request)
+    {
+        //@todo validate against policy with gate to make sure only collection owner can do this
+        $db = new DraftBallot;
+        $db->user_id = Auth::id();
+        $db->title = auth()?->user()->name . ' Draft Ballot';
+        $db->visibility = 'unlisted';
+        $db->status = 'published';
+        $db->color = '#'.str_pad(dechex(mt_rand(0, 0xFFFFFF)), 6, '0', STR_PAD_LEFT);
+        $db->save();
+        return to_route(
+            'catalystExplorer.draftBallot.edit',
+            $db->hash
+        );
+    }
+
+    public function createDraftBallotFromCollection(Request $request, BookmarkCollection $bookmarkCollection)
     {
         //@todo validate against policy with gate to make sure only collection owner can do this
         $bookmarkCollection->type = DraftBallot::class;
