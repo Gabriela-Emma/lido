@@ -40,6 +40,7 @@ class CatalystBookmarksController extends Controller
             $collection->content = $data->collection['content'] ?? null;
             $collection->visibility = 'unlisted';
             $collection->status = 'published';
+            $collection->user_id = Auth::id();
             $collection->color = '#'.str_pad(dechex(mt_rand(0, 0xFFFFFF)), 6, '0', STR_PAD_LEFT);
             $collection->save();
         }
