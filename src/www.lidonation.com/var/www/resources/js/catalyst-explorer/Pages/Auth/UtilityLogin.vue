@@ -93,10 +93,12 @@ import Modal from '../../Shared/Components/Modal.vue';
 import { useForm, usePage } from '@inertiajs/vue3';
 import { Errors, ErrorBag } from '@inertiajs/core';
 import ModalProps from '../../models/props';
+import { useUserStore } from '../../../global/Shared/store/user-store';
 
 const pageProps: { [x: string]: unknown; errors: Errors & ErrorBag; } = usePage().props;
 const modalProps = pageProps as unknown as { modal: ModalProps };
 
+const userStore = useUserStore();
 
 let form = useForm({
     password: '',
@@ -107,7 +109,11 @@ let form = useForm({
 
 let submit = () =>
 {
-    form.post('/api/catalyst-explorer/login');
+    form.post('/api/catalyst-explorer/login', {
+        onSuccess: () => {
+            userStore.setUser()
+        }
+    });
 }
 
 
