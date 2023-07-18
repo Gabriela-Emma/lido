@@ -2,7 +2,12 @@
     <header-component titleName0="catalyst" titleName1="Voter Tool" subTitle=""/>
     <main class="flex flex-col gap-2 py-8 bg-primary-20">
         <div class="container">
-            <section class="space-y-6">
+            <section class="flex justify-center py-8" v-if="!user$?.id">
+                <Link class="text-teal-800" :href="route('catalystExplorer.login')">
+                    Login or Create an Account to Create Draft Ballots
+                </Link>
+            </section>
+            <section class="space-y-6" v-if="user$?.id">
                 <h2 class="text-lg lg:text-xl xl:text-3xl">
                     My Draft Ballots
                 </h2>
@@ -25,8 +30,11 @@ import { useBookmarksStore } from '../stores/bookmarks-store';
 import DraftBallotCard from '../modules/bookmarks/DraftBallotCard.vue';
 import route  from 'ziggy-js';
 import { Link } from '@inertiajs/vue3';
+import { useUserStore } from '../../global/Shared/store/user-store';
 
 const bookmarksStore = useBookmarksStore();
 const {draftBallots$} = storeToRefs(bookmarksStore);
 bookmarksStore.loadDraftBallots();
+const userStore = useUserStore();
+const {user$} = storeToRefs(userStore);
 </script>

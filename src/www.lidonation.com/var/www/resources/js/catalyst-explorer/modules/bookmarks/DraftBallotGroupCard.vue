@@ -214,8 +214,8 @@ function getChart()
         datasets: [
             {
                 backgroundColor: [
-                    '#1d7898',
-                    (props.group?.amount - allotedBudget.value) > 0 ? '#d6d3d1' : '#e66795'
+                    (props.group?.amount - allotedBudget.value) > 0 ? '#1d7898' : '#e66795',
+                    '#d6d3d1'
                 ],
                 data: [
                     allotedBudget.value,
