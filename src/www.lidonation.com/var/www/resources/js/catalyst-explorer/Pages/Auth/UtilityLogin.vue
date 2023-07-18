@@ -3,17 +3,16 @@
         <div class="relative flex flex-col w-full bg-teal-900 rounded-sm overflow-clip">
             <div class="pb-16 mt-8 bg-teal-700 sm:mt-12 sm:pb-20 lg:pb-28">
                 <div class="relative">
-                    <div class="absolute inset-0 bg-teal-900 h-1/2">
-                        <img
-                            src="https://www.lidonation.com/storage/8651/conversions/VvemcGIMNQfjogVsxCVKDe4_po5VTjV_wFLGrKU-BaI-preview.jpg"
-                            alt="" class="aspect-[6/5] w-full rounded-sm object-cover">
-                    </div>
+                    <div class="absolute inset-0 bg-teal-900 h-1/2"></div>
                     <div class="relative px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
                         <div class="max-w-lg mx-auto overflow-hidden rounded-sm shadow-lg lg:max-w-none lg:flex">
 
                             <div class="flex-1 bg-teal-500">
                                 <div class="flex justify-between w-full">
                                     <div class="w-1/2 p-4 text-white" >
+                                        <img
+                                        src="https://www.lidonation.com/storage/8651/conversions/VvemcGIMNQfjogVsxCVKDe4_po5VTjV_wFLGrKU-BaI-preview.jpg"
+                                        alt="" class="aspect-[6/5] w-full rounded-sm object-cover">
                                     </div>
                                     <div class="ml-auto bg-teal-600">
                                         <div class="bg-slate-100 login-form-wrapper">
@@ -94,7 +93,7 @@
 
 <script lang="ts" setup>
 import Modal from '../../Shared/Components/Modal.vue';
-import { useForm, usePage } from '@inertiajs/vue3';
+import { useForm, usePage, Link } from '@inertiajs/vue3';
 import { Errors, ErrorBag } from '@inertiajs/core';
 import ModalProps from '../../models/props';
 import { useUserStore } from '../../../global/Shared/store/user-store';
@@ -114,9 +113,10 @@ let form = useForm({
 
 let submit = () =>
 {
-    form.post(route('catalystExploerApi.login'), {
+    form.post('/api/catalyst-explorer/login', {
         onSuccess: () => {
-            userStore.setUser()
+            userStore.setUser();
+            window.location.reload();
         }
     });
 }
