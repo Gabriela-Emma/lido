@@ -2,32 +2,32 @@
 <div>
     <div class="px-5">
         <div class="flex gap-3 mb-4">
-            <h2 class="text-sm md:text-md lg:text-2xl">{{ groupRef.title }}</h2>
+            <h2 class="text-sm md:text-md lg:text-2xl">{{ group.title }}</h2>
             <div class="flex items-center gap-1.5">
                 <div>
                     <span class="mr-1">Pot: </span>
-                    <span>{{ groupRef.amount }}</span>
+                    <span>{{ group.amount }}</span>
                 </div>
                 <div class="flex items-center font-bold lg:text-lg" :class="{
-                    'text-teal-600': allotedBudget <= groupRef.amount,
-                    'text-red-600': allotedBudget > groupRef.amount
+                    'text-teal-600': allotedBudget <= group.amount,
+                    'text-red-600': allotedBudget > group.amount
                 }">
                     <span class="mr-1">Available Allotment: </span>
-                    <span>{{ groupRef.amount - allotedBudget }}</span>
+                    <span>{{ group.amount - allotedBudget }}</span>
                 </div>
             </div>
         </div>
         <div class="relative border rounded-md border-slate-200 bg-slate-50">
             <small class="absolute bg-slate-50 rounded-sm -top-2 border border-slate-200 left-3 px-1 py-0.5 text-sm z-10">Rationale for this group</small>
-            <textarea rows="5" name="rationale" id="rationale" v-model="rationale"
+            <textarea rows="8" name="rationale" id="rationale" v-model="rationale"
             class="block w-full py-1.5 text-gray-900 pt-4 custom-input border-0 border-transparent round-sm bg-slate-50 ring-0 placeholder:text-gray-400 focus:ring-2 transition-all focus:ring-inset focus:ring-teal-600 sm:text-sm sm:leading-6 mt-0" />
         </div>
     </div>
 
     <div class="lg:grid lg:grid-cols-7">
         <div class="col-span-4">
-            <ul role="list" class="mt-8 overflow-auto border border-l-0 border-gray-200 divide-y divide-gray-200 max-h-[33rem]">
-                <li class="ml-4" v-for="item in groupRef.items" :key="item?.model?.id">
+            <ul role="list" class="mt-8 py-3 overflow-auto border border-l-0 border-gray-200 divide-y divide-gray-200 max-h-[33rem]">
+                <li class="ml-4" v-for="item in group.items" :key="item?.model?.id">
                     <div class="flex justify-start gap-0 px-4 py-4 hover:bg-gray-50">
                         <div class="flex flex-col flex-none w-16 gap-2 px-1 py-2 rounded-sm" :class="{
                             'bg-teal-light-100/50': item.model.vote?.vote === VOTEACTIONS.UPVOTE,
@@ -46,7 +46,7 @@
                                 </div>
                             </div>
                             <div class="flex items-center gap-1">
-                                <TrashIcon @click.prevent="removeItem(item?.model?.id)" aria-hidden="true"
+                                <TrashIcon @click.prevent="removeItem(item?.id)" aria-hidden="true"
                                 class="w-5 h-5 text-gray-500 hover:text-teal-600 hover:cursor-pointer" />
                             </div>
                         </div>
@@ -76,7 +76,7 @@
             </ul>
         </div>
         <div class="col-span-3 hideen lg:block">
-            <div class="flex flex-col px-10 py-5">
+            <div class="flex flex-col justify-center h-full px-10 py-5">
                 <Pie :data="chartData" :options="options" />
             </div>
         </div>
@@ -104,22 +104,21 @@ import { computed } from 'vue';
 
 const props = defineProps<{
     group: DraftBallotGroup<Proposal>
-    draftBallot: DraftBallot<Proposal>
 }>();
 
 const bookmarksStore = useBookmarksStore();
 const userStore = useUserStore();
 const {user$} = storeToRefs(userStore);
+const {collections$: storeCollections$, draftBallot$} = storeToRefs(bookmarksStore);
 
 const onLocal:Ref<boolean> = ref(false);
 const inLastTenMins:Ref<boolean>= ref(false);
-const collectionHash = ref(props.draftBallot.hash);
+const collectionHash = ref(draftBallot$.value?.hash);
 
 let rationale = ref(props.group?.rationale?.content);
-let groupRef = ref(props.group);
 let canDelete: Ref<boolean> =  ref();
 let allotedBudget = computed(() => {
-    return groupRef.value?.items?.filter(
+    return props.group?.items?.filter(
         (item) => item.model?.vote?.vote === VOTEACTIONS.UPVOTE
     ).reduce((acc, item) => ( acc + item.model.amount_requested), 0);
 });
@@ -140,7 +139,7 @@ const options: ChartOptions = {
 };
 
 watch([onLocal,inLastTenMins], () => {
-    canDelete.value = (onLocal.value && inLastTenMins.value) || user$.value?.id === props.draftBallot.user_id;
+    canDelete.value = (onLocal.value && inLastTenMins.value) || user$.value?.id === draftBallot$.value?.user_id;
 });
 
 watch(rationale, debounce(() => saveRationale(), 700));
@@ -149,8 +148,8 @@ function removeItem (id: number) {
     if (canDelete) {
         axios.delete(route('catalystExplorer.bookmarkItem.delete', {bookmarkItem: id}))
         .then((res) => {
-            bookmarksStore.deleteItem( id, collectionHash.value)
-            router.get(route('catalystExplorer.bookmark', {bookmarkCollection: collectionHash.value}))
+            bookmarksStore.deleteItem( id, collectionHash.value);
+            bookmarksStore.loadDraftBallot();
         })
         .catch((error) => {
             if (error.response && error.response.status === 403) {
@@ -162,7 +161,7 @@ function removeItem (id: number) {
 
 function saveRationale() {
     router.post(
-        route('catalystExplorer.draftBallot.storeRationale', {draftBallot: props.draftBallot.hash}),
+        route('catalystExplorer.draftBallot.storeRationale', {draftBallot: draftBallot$.value?.hash}),
         {rationale: rationale.value, group_id: props.group?.id, title: props.group?.title},
         {
             preserveScroll: true,
@@ -182,11 +181,8 @@ function vote(vote: VOTEACTIONS, proposal: Proposal) {
                 preserveScroll: true,
                 preserveState: true,
                 replace: true,
-                onSuccess: (component) => {
-                    const group = component.props.draftBallot['groups'].find(
-                        (group: DraftBallotGroup<Proposal>) => group.id === props.group.id
-                    );
-                    groupRef.value = cloneDeep(group);
+                onSuccess: async (component) => {
+                    await bookmarksStore.loadDraftBallot();
                     chartData.value = getChart();
                 }
             }
@@ -200,11 +196,7 @@ function vote(vote: VOTEACTIONS, proposal: Proposal) {
                 preserveState: true,
                 replace: true,
                 onSuccess: (component) => {
-                    const group = component.props.draftBallot['groups'].find(
-                        (group: DraftBallotGroup<Proposal>) => group.id === props.group.id
-                    );
-                    groupRef.value = cloneDeep(group);
-                    chartData.value = getChart();
+                    bookmarksStore.loadDraftBallot();
                 }
             }
         );
@@ -217,10 +209,10 @@ function getChart()
         labels: ['Allotted', 'Pot Balance'],
         datasets: [
             {
-                backgroundColor: ['#54bbeb', '#d6d3d1'],
+                backgroundColor: ['#1d7898', '#d6d3d1'],
                 data: [
                     allotedBudget.value,
-                    (groupRef.value?.amount - allotedBudget.value)
+                    (props.group?.amount - allotedBudget.value)
                 ]
             }
         ]

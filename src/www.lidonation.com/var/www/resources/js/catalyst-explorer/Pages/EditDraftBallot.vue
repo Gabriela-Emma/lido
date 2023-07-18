@@ -1,10 +1,10 @@
 <template>
-    <header-component titleName0="Draft Ballot" :titleName1="draftBallot?.title"
-                      :subTitle="`Created ${$filters.timeAgo(draftBallot.created_at)}. Has ${draftBallot?.items_count} item${draftBallot?.items_count > 1 ? 's' : ''}.`"/>
+    <header-component titleName0="Draft Ballot" :titleName1="draftBallot$?.title"
+                      :subTitle="`Created ${$filters.timeAgo(draftBallot$.created_at)}. Has ${draftBallot$?.items_count} item${draftBallot$?.items_count > 1 ? 's' : ''}.`"/>
 
     <main class="flex flex-col gap-2 py-8 bg-primary-20">
         <div class="container">
-            <section class="sticky z-20 mb-4 overflow-visible bg-white border-t rounded-sm shadow-md top-20">
+            <section class="sticky z-20 mb-4 overflow-visible bg-white border-t rounded-sm shadow-md top-9">
                 <div class="relative z-20 overflow-visible">
                     <div class="flex items-center w-full h-10 lg:h-16">
                         <Search
@@ -34,18 +34,16 @@
             </section>
 
             <section class="">
-                <DraftBallotGroupCard v-for="group in draftGroups" :key="group.id" :group="group" :draftBallot="draftBallot" class="py-8 mb-8 bg-white border-t rounded-sm shadow-sm" />
+                <DraftBallotGroupCard v-for="group in draftBallot$.groups" :key="group.id" :group="group" class="py-8 mb-8 bg-white border-t rounded-sm shadow-sm" />
             </section>
         </div>
     </main>
 </template>
 
 <script lang="ts" setup>
-import {router, usePage} from '@inertiajs/vue3';
 import DraftBallot from '../models/draft-ballot';
 import DraftBallotGroupCard from '../modules/bookmarks/DraftBallotGroupCard.vue';
 import Search from '../../earn/Shared/Components/Search.vue';
-import {DraftBallotGroup} from '../models/draft-ballot';
 import {Ref, ref, watch} from "vue";
 import axios from 'axios';
 import {useBookmarksStore} from "../stores/bookmarks-store";
@@ -53,7 +51,6 @@ import { storeToRefs } from 'pinia';
 import moment from "moment-timezone";
 import Proposal from '../models/proposal';
 import { useUserStore } from '../../global/Shared/store/user-store';
-import { cloneDeep } from 'lodash';
 import route from 'ziggy-js';
 
 const userStore = useUserStore();
@@ -64,19 +61,20 @@ const props = withDefaults(
         draftBallot: DraftBallot<Proposal>
     }>(), {});
 
-let search = ref('');
-let searchResults: Ref<Proposal[]> = ref([]);
-let canDelete: Ref<boolean> =  ref();
-let draftBallot$ = ref(props.draftBallot);
-let draftGroups: Ref<DraftBallotGroup<Proposal>[]> = ref([...cloneDeep(draftBallot$.value.groups)]);
-const onLocal:Ref<boolean> = ref(false);
-const inLastTenMins:Ref<boolean>= ref(false);
-const collectionHash = ref(props.draftBallot.hash);
-const createdAt = ref(props.draftBallot.created_at);
 
 // check if collection is on local
 const bookmarksStore = useBookmarksStore();
-const {collections$: storeCollections$} = storeToRefs(bookmarksStore);
+const {collections$: storeCollections$, draftBallot$} = storeToRefs(bookmarksStore);
+bookmarksStore.loadDraftBallot(props.draftBallot);
+
+let search = ref('');
+let searchResults: Ref<Proposal[]> = ref([]);
+let canDelete: Ref<boolean> =  ref();
+const onLocal:Ref<boolean> = ref(false);
+const inLastTenMins:Ref<boolean>= ref(false);
+const collectionHash = ref(draftBallot$.value?.hash);
+const createdAt = ref(draftBallot$.value?.created_at);
+
 
 watch([storeCollections$], (newValue, oldValue) => {
     onLocal.value =  storeCollections$.value?.some(collection => collection.hash === collectionHash.value);
@@ -93,23 +91,8 @@ watch (search, () => {
 // if from last 10mins
 inLastTenMins.value = (moment().diff(moment(createdAt.value),'minutes')) < 10;
 watch([onLocal,inLastTenMins], () => {
-    canDelete.value = (onLocal.value && inLastTenMins.value) || user$.value?.id === props.draftBallot.user_id;
+    canDelete.value = (onLocal.value && inLastTenMins.value) || user$.value?.id === draftBallot$.value?.user_id;
 });
-
-const removeCollection = () => {
-    if(onLocal.value && inLastTenMins.value){
-        axios.delete(`${usePage().props.base_url}/catalyst-explorer/bookmark-collection?hash=${collectionHash.value}`)
-        .then((res) =>{
-            bookmarksStore.deleteCollection(collectionHash.value)
-            router.get(`${usePage().props.base_url}/catalyst-explorer/bookmarks`)
-        })
-        .catch((error) => {
-            if (error.response && error.response.status === 403) {
-                console.error(error);
-            }
-        });
-    }
-}
 
 function searchProposals()
 {
@@ -127,20 +110,7 @@ function searchProposals()
 }
 
 async function bookmarkProposal(proposal: Proposal) {
-    try {
-        const item = {
-            model_id: proposal?.id,
-            model_type: 'proposals',
-            collection: {hash: props.draftBallot.hash}
-        };
-
-        await axios.post(route('catalystExplorer.bookmarkItem.create'), item);
-        router.reload({onSuccess: (component) => {
-            draftBallot$.value = cloneDeep(component.props.draftBallot) as DraftBallot<Proposal>;
-        }});
-    } catch (e) {
-        console.log(e);
-    }
+    bookmarksStore.bookmarkProposal(proposal);
 }
 
 </script>

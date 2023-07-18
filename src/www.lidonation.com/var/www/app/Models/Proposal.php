@@ -373,16 +373,20 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
 
     public function scopeFilter($query, array $filters)
     {
-        $query->when($filters['search'] ?? false, fn (Builder $query, $search) => $query->where('title', 'ILIKE', '%'.$search.'%')
+        $query->when(
+            $filters['search'] ?? false, fn (Builder $query, $search) => $query->where('title', 'ILIKE', '%'.$search.'%')
         );
 
-        $query->when($filters['user_id'] ?? false, fn (Builder $query, $user_id) => $query->where('user_id', $user_id)
+        $query->when(
+            $filters['user_id'] ?? false, fn (Builder $query, $user_id) => $query->where('user_id', $user_id)
         );
 
-        $query->when($filters['challenge_id'] ?? false, fn (Builder $query, $fund_id) => $query->where('fund_id', $fund_id)
+        $query->when(
+            $filters['challenge_id'] ?? false, fn (Builder $query, $fund_id) => $query->where('fund_id', $fund_id)
         );
 
-        $query->when($filters['fund_id'] ?? false, fn (Builder $query, $fund_id) => $query->whereRelation('fund.parent', 'id', '=', $fund_id)
+        $query->when(
+            $filters['fund_id'] ?? false, fn (Builder $query, $fund_id) => $query->whereRelation('fund.parent', 'id', '=', $fund_id)
         );
     }
 

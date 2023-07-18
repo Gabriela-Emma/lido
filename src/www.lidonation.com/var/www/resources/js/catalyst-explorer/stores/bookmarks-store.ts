@@ -5,10 +5,14 @@ import {useStorage} from '@vueuse/core';
 import BookmarkCollection from "../models/bookmark-collection";
 import {BookmarkItemModel} from "../models/bookmark-item-model";
 import Proposal from "../models/proposal";
+import DraftBallot from "../models/draft-ballot";
+import { cloneDeep } from "lodash";
+import route from "ziggy-js";
 
 export const useBookmarksStore = defineStore('bookmarks', () => {
     let localCollections = useStorage('bookmark-collections', {}, localStorage, {mergeDefaults: true});
     let collections = ref<BookmarkCollection<Proposal>[]>([]);
+    let draftBallot = ref<DraftBallot<Proposal>>(null);
 
     async function saveCollection(collection: BookmarkCollection<Proposal>) {
         localCollections.value = {
@@ -39,12 +43,49 @@ export const useBookmarksStore = defineStore('bookmarks', () => {
         loadCollections().then();
     }
 
+    async function loadDraftBallot(ballot?: DraftBallot<Proposal>) {
+        //@todo if no ballot provided load from server based on url
+        if (ballot) {
+            draftBallot.value = cloneDeep(ballot);
+            return;
+        }
+
+        const segments = (window.location.href).split('/');
+        const hash = segments[segments.indexOf('draft-ballots') + 1] || null;
+        if (hash) {
+            try {
+                const response = await axios.get(route('catalystExplorerApi.draftBallot', {draftBallot: hash}));
+                draftBallot.value = response.data;
+            } catch (e: AxiosError | any) {
+                console.log({e});
+            }
+        }
+    }
+
     async function loadCollections() {
         try {
             const response = await axios.get(`/catalyst-explorer/my/bookmarks`, {params: {hashes: Object.keys(localCollections.value)}});
-            collections.value = [...response.data, ...collections.value];
+            collections.value = [...response.data];
         } catch (e: AxiosError | any) {
             console.log({e});
+        }
+    }
+
+    async function bookmarkProposal(proposal: Proposal) {
+        try {
+            const item = {
+                model_id: proposal?.id,
+                model_type: 'proposals',
+                collection: {hash: draftBallot.value?.hash},
+            };
+
+            const res = await axios.post(route('catalystExplorer.bookmarkItem.create'), item);
+            if (res.status == 200) {
+                loadDraftBallot().then();
+            }
+
+        } catch (e) {
+            console.log(e);
         }
     }
 
@@ -58,11 +99,14 @@ export const useBookmarksStore = defineStore('bookmarks', () => {
     onMounted(loadCollections);
 
     return {
+        bookmarkProposal,
         loadCollections,
         saveCollection,
         deleteCollection,
+        loadDraftBallot,
         deleteItem,
         models: bookmarkedModels,
         collections$: collectionsArray,
+        draftBallot$: draftBallot,
     };
 });
