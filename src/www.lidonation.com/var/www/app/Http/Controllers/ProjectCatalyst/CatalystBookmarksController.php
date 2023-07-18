@@ -119,6 +119,9 @@ class CatalystBookmarksController extends Controller
 
     public function editDraftBallot(Request $request, DraftBallot $draftBallot)
     {
+        if ($draftBallot->user_id !== Auth::id()) {
+            abort(403);
+        }
         return Inertia::render('EditDraftBallot')->with([
             'draftBallot' => (new DraftBallotResource($draftBallot))->toArray($request),
             'crumbs' => [
