@@ -26,7 +26,7 @@
                         <div class="max-w-lg rounded-sm shadow-lg mx-aut56o lg:max-w-none lg:flex">
                             <div class="flex-1 bg-teal-500">
                                 <div class="flex flex-col w-full lg:flex-row lg:justify-between">
-                                    <div class="flex-1 w-full p-4 text-white lg:w-1/2 min-w-1/2">
+                                    <div class="flex-1 w-full p-4 text-white lg:w-1/2 min-w-1/2" v-if="user$?.id">
                                         <div v-if="!bookmarked$">
                                             <div class="flex flex-col justify-center gap-4">
                                                 <div
@@ -172,11 +172,24 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="flex flex-col h-full bg-teal-800" v-else>
+                                        <img
+                                            src="https://www.lidonation.com/storage/8651/conversions/VvemcGIMNQfjogVsxCVKDe4_po5VTjV_wFLGrKU-BaI-preview.jpg"
+                                            alt="" class="aspect-[6/5] w-full rounded-sm object-cover">
+                                    </div>
 
                                     <div
                                         class="flex flex-col items-center justify-center h-full p-4 bg-teal-600 lg:ml-auto">
 
-                                        <Login v-if="!user$?.id" :embedded="true" :showLogo="false" />
+                                        <!-- <Login v-if="!user$?.id" :embedded="true" :showLogo="false" /> -->
+                                        <div class="text-slate-800" v-if="!user$?.id">
+                                            <LoginForm
+                                                :embedded="true"
+                                                :showLogo="false"
+                                                :showDivider="false"
+                                                :showWalletBtn="false"
+                                                @success="router.reload()" />
+                                        </div>
 
                                         <div v-else>
                                             <img
@@ -200,7 +213,7 @@ import {defineEmits, ref, watch} from "vue";
 import Modal from '../Shared/Components/Modal.vue';
 import Challenge from "../models/challenge";
 import Proposal from "../models/proposal";
-import {usePage} from "@inertiajs/vue3";
+import {router, usePage} from "@inertiajs/vue3";
 import Login from "./Auth/Login.vue";
 import {useBookmarksStore} from "../stores/bookmarks-store";
 import Multiselect from '@vueform/multiselect';
@@ -213,6 +226,7 @@ import { CheckIcon } from '@heroicons/vue/20/solid'
 import { useUserStore } from "../../global/Shared/store/user-store";
 import route from "ziggy-js";
 import { Link } from '@inertiajs/vue3';
+import LoginForm from "../../global/Shared/Components/LoginForm.vue";
 
 const props = withDefaults(
     defineProps<{

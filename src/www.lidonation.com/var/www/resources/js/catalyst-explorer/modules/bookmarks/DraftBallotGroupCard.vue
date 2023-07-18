@@ -81,7 +81,7 @@
         </div>
         <div class="col-span-3 hideen lg:block">
             <div class="flex flex-col justify-center h-full px-10 py-5">
-                <Pie :data="chartData" :options="options" />
+                <Pie ref="pieChart" :data="chartData" :options="options" />
             </div>
         </div>
     </div>
@@ -95,16 +95,13 @@ import {TrashIcon, HandThumbUpIcon, HandThumbDownIcon} from '@heroicons/vue/20/s
 import Proposal from '../../models/proposal';
 import { VOTEACTIONS } from '../../models/vote-actions';
 import route from 'ziggy-js';
-import { watch } from 'vue';
+import { watch, ref, Ref, computed } from 'vue';
 import { debounce, cloneDeep } from 'lodash';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, ChartOptions } from 'chart.js'
 import { Pie } from 'vue-chartjs'
 import { useBookmarksStore } from '../../stores/bookmarks-store';
 import { storeToRefs } from 'pinia';
-import { ref } from 'vue';
-import { Ref } from 'vue';
 import { useUserStore } from '../../../global/Shared/store/user-store';
-import { computed } from 'vue';
 
 const props = defineProps<{
     group: DraftBallotGroup<Proposal>
@@ -118,6 +115,7 @@ const {collections$: storeCollections$, draftBallot$} = storeToRefs(bookmarksSto
 const onLocal:Ref<boolean> = ref(false);
 const inLastTenMins:Ref<boolean>= ref(false);
 const collectionHash = ref(draftBallot$.value?.hash);
+const pieChart = ref(null);
 
 let rationale = ref(props.group?.rationale?.content);
 let canDelete: Ref<boolean> =  ref();
@@ -187,6 +185,8 @@ function vote(vote: VOTEACTIONS, proposal: Proposal) {
                 replace: true,
                 onSuccess: async (component) => {
                     await bookmarksStore.loadDraftBallot();
+                    chartData.value = cloneDeep(getChart());
+                    pieChart.value?.chart.update('active');
                 }
             }
         );
@@ -200,22 +200,27 @@ function vote(vote: VOTEACTIONS, proposal: Proposal) {
                 replace: true,
                 onSuccess: async (component) => {
                     await bookmarksStore.loadDraftBallot();
+                    chartData.value = cloneDeep(getChart());
+                    pieChart.value?.chart.update('active');
                 }
             }
         );
     }
-    chartData.value = getChart();
+
 }
 
 function getChart()
 {
     return {
-        labels: ['Allotted', 'Pot Balance'],
+        labels: [
+            'Allotted',
+            (props.group?.amount - allotedBudget.value) > 0 ? 'Pot Balance' : 'Over Budget By'
+        ],
         datasets: [
             {
                 backgroundColor: [
-                    (props.group?.amount - allotedBudget.value) > 0 ? '#1d7898' : '#e66795',
-                    '#d6d3d1'
+                    (props.group?.amount - allotedBudget.value) > 0 ? '#1d7898' : '#cd4e7c',
+                    (props.group?.amount - allotedBudget.value) > 0 ? '#d6d3d1' : '#9f3c60',
                 ],
                 data: [
                     allotedBudget.value,

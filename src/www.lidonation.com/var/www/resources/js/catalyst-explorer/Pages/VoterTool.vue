@@ -2,7 +2,7 @@
     <header-component titleName0="catalyst" titleName1="Voter Tool" subTitle=""/>
     <main class="flex flex-col gap-2 py-8 bg-primary-20">
         <div class="container">
-            <section class="flex flex-col items-center justify-center py-8" v-if="!user$?.id">
+            <section class="flex flex-col items-center justify-center gap-4 py-8" v-if="!user$?.id">
                 <p class="text-teal-800">
                     Login or Create an Account to Create Draft Ballots
                 </p>

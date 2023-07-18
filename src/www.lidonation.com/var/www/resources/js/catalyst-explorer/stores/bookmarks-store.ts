@@ -1,7 +1,6 @@
 import {defineStore} from "pinia";
 import axios, {AxiosError} from "axios";
 import {computed, onMounted, Ref, ref} from "vue";
-import {useStorage} from '@vueuse/core';
 import BookmarkCollection from "../models/bookmark-collection";
 import {BookmarkItemModel} from "../models/bookmark-item-model";
 import Proposal from "../models/proposal";
@@ -24,7 +23,6 @@ export const useBookmarksStore = defineStore('bookmarks', () => {
                 }))
             }
         };
-        console.log('collections::', collections);
         loadCollections().then();
     }
 
@@ -93,10 +91,15 @@ export const useBookmarksStore = defineStore('bookmarks', () => {
 
     let collectionsArray = computed<BookmarkCollection<Proposal>[]>(() => Object.values(collections.value))
 
-    let bookmarkedModels = computed<BookmarkItemModel[]>(() => {
-        const models = collectionsArray.value.flatMap((collection) => collection?.items?.map((item) => item?.model));
-        return models.filter((model, index, self) => self.findIndex((m) => m.id === model.id) === index);
+    let bookmarkedModels = computed<number[]>(() => {
+        return [...collectionsArray.value.flatMap((collection) => collection?.items?.map((item) => item?.model_id))]
     });
+
+    // let bookmarkedModels = computed<BookmarkItemModel[]>(() => {
+        // return collectionsArray.value.flatMap((collection) => collection?.items?.map((item) => item?.model_id));
+        // console.log({models});
+        // return models.filter((model, index, self) => self.findIndex((m) => m.id === model.id) === index);
+    // });
 
     // onMounted();
 
@@ -109,7 +112,7 @@ export const useBookmarksStore = defineStore('bookmarks', () => {
         loadDraftBallots,
         draftBallots$: draftBallots,
         deleteItem,
-        models: bookmarkedModels,
+        modelIds$: bookmarkedModels,
         collections$: collectionsArray,
         draftBallot$: draftBallot,
     };

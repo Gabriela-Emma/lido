@@ -257,6 +257,7 @@ import { storeToRefs } from 'pinia';
 
 import ProposalViewTypes from '../modules/proposals/partials/ProposalViewTypes.vue';
 import { useProposalsStore } from '../stores/proposals-store';
+import { useBookmarksStore } from '../stores/bookmarks-store';
 
 /// props and class properties
 const props = withDefaults(
@@ -366,6 +367,9 @@ const {selectedPeople} = storeToRefs(peopleStore);
 const proposalsStore = useProposalsStore();
 let {viewType} = storeToRefs(proposalsStore);
 let quickpitchingRef = ref<boolean>(false);
+
+const bookmarksStore = useBookmarksStore();
+bookmarksStore.loadCollections();
 
 watch([search, filtersRef, selectedSortRef], () => {
     currPageRef.value = null;
