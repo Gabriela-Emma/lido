@@ -220,7 +220,7 @@ function getChart()
                 backgroundColor: ['#54bbeb', '#d6d3d1'],
                 data: [
                     allotedBudget.value,
-                    groupRef.value?.amount
+                    (groupRef.value?.amount - allotedBudget.value)
                 ]
             }
         ]
