@@ -3,8 +3,12 @@
 namespace App\Nova\Actions;
 
 use App\Models\Nft;
+use App\Models\User;
 use App\Jobs\IssueNftsJob;
+use Illuminate\Http\Request;
 use Illuminate\Bus\Queueable;
+use App\Models\LearningLesson;
+use App\Models\LearningTopic;
 use Laravel\Nova\Actions\Action;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
@@ -26,21 +30,32 @@ class IssueSlteNft extends Action
      */
     public function handle(ActionFields $fields, Collection $models)
     {
-        $models->each(function ($model) {
-            $learningTopic = $model->topic;
-            $users = Auth::user();
+        foreach ($models as $model) {
+            if ($model instanceof User) {
+                $topicIds = LearningTopic::pluck('id');
+                $userNftIds = $model->nfts()->where('model_type', LearningTopic::class)->pluck('model_id');
+                $unIssuedTopicNftIds = $topicIds->diff($userNftIds)->all();
+                foreach ($unIssuedTopicNftIds as $topicId) {
+                    $learningTopic = LearningTopic::find($topicId);
+                    $topicCompleted = $model->completedTopics->contains($topicId);
+                    $learningLesson = $learningTopic->learningLessons?->first();
 
-            foreach ($users as $user) {
-                $topicNft = $user->nfts()->where([
-                    'model_id' => $learningTopic->id,
-                    'model_type' => LearningTopic::class
-                ])->first();
 
-                if (!$topicNft instanceof Nft) {
-                    IssueNftsJob::dispatchSync($learningTopic, $user);
+                    if ($topicCompleted) {
+                        IssueNftsJob::dispatchSync($learningTopic, $learningLesson);
+                    } else {
+                        Action::danger('Failed to issue NFT for User ');
+
+                        continue;
+                    }
                 }
             }
-        });
+
+            if ($model instanceof LearningTopic) {
+
+
+            }
+        }
     }
 
     /**
