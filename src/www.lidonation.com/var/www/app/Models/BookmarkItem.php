@@ -25,5 +25,15 @@ class BookmarkItem extends Model
     public function collection(): BelongsTo
     {
         return $this->belongsTo(BookmarkCollection::class, 'bookmark_collection_id');
+
+        Withdrawal::withCount('rewards')
+        ->whereHas('rewards', fn($q) => $q->where('asset_type', 'ft'))
+        ->where('status', 'pending')->get()
+        ->filter(fn($w) => $w->rewards_count < 5)
+        ->each(function($w){
+            Reward::where('withdrawal_id', $w->id)->each(function($r){
+                $r->withdrawal_id = null; $r->status = 'issued'; $r->save();
+            });
+        });
     }
 }
