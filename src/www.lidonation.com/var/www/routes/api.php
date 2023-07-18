@@ -11,6 +11,7 @@ use App\Http\Controllers\Earn\LearnController;
 use App\Http\Controllers\Earn\LearningLessonController;
 use App\Http\Controllers\GenerateMnemonicPhraseController;
 use App\Http\Controllers\GlobalSearchController;
+use App\Http\Controllers\ProjectCatalyst\CatalystBookmarksController;
 use App\Http\Controllers\ProjectCatalyst\CatalystProposalsController;
 use App\Http\Controllers\PromoController;
 use App\Http\Controllers\QuestionResponseController;
@@ -348,6 +349,9 @@ Route::prefix('catalyst-explorer')->as('catalystExplorerApi.')
                 ->name('storeQuickpitch');
             });
         });
+
+        Route::get('/my/draft-ballots/{draftBallot:id}', [CatalystBookmarksController::class, 'getDraftBallot'])
+                ->name('draftBallot');
 
         Route::post('/react/report/{catalystReport:id}', [CatalystExplorer\ReportController::class, 'createReaction']);
 
