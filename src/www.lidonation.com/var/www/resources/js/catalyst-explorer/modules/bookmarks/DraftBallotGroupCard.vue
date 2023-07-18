@@ -3,7 +3,7 @@
     <div class="px-5">
         <div class="flex flex-wrap gap-3 mb-4">
             <h2 class="text-sm md:text-md lg:text-2xl">{{ group.title }}</h2>
-            <div class="flex items-center divide-x space-x-3 divide-gray-200 gap-1.5">
+            <div class="flex items-center divide-x space-x-3 divide-gray-200 gap-1.5 text-xs lg:text-base">
                 <div>
                     <span class="mr-1">Items: </span>
                     <span>{{ group.items.length }}</span>
