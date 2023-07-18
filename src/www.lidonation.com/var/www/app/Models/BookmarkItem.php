@@ -12,9 +12,14 @@ class BookmarkItem extends Model
 {
     use HasModel, HasFactory, SoftDeletes;
 
+    // public function title(): Attribute
+    // {
+    //     return Attribute::make(get: fn ($value) => $value ?? $this->model?->title);
+    // }
+
     public function title(): Attribute
     {
-        return Attribute::make(get: fn ($value) => $value ?? $this->model?->title);
+        return Attribute::make(set: fn ($value) => $value ?? $this->model?->title);
     }
 
     public function collection(): BelongsTo

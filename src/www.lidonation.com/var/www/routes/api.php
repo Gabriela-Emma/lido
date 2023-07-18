@@ -306,7 +306,7 @@ Route::prefix('catalyst-explorer')->as('catalystExplorerApi.')
             Route::get('/{catalystReport:id}', [CatalystExplorer\ReportController::class, 'listComments']);
         });
 
-        Route::post('/login', [CatalystExplorer\UserController::class, 'login']);
+        Route::post('/login', [CatalystExplorer\UserController::class, 'login'])->name('login');
 
         Route::post('/register', [CatalystExplorer\UserController::class, 'create']);
 

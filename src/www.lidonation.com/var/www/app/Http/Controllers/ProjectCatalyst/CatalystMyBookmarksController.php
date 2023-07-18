@@ -92,7 +92,7 @@ class CatalystMyBookmarksController extends Controller
 
     public function index(Request $request)
     {
-        $collections = BookmarkCollection::where('user_id', Auth::id())->whereNotNull('user_id');
+        $collections = BookmarkCollection::where('user_id', Auth::id())->whereNotNull('user_id')->with(['items']);
 
         $hashes = $request->get('hashes', false);
 
@@ -100,7 +100,9 @@ class CatalystMyBookmarksController extends Controller
             $collections = $collections->whereHashIn($hashes);
         }
 
-        return (BookmarkCollectionResource::collection($collections->get()))->toArray($request);
+        return $collections->get(['id', 'title', 'items.id'])->toArray();
+
+        // return (BookmarkCollectionResource::collection($collections->get()))->toArray($request);
     }
 
     public function deleteCollection(Request $request)

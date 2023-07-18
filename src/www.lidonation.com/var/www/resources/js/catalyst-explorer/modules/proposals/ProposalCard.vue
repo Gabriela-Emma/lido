@@ -11,8 +11,6 @@
         <ProposalSummaryCard v-else
             @profileQuickView="handleProfileQuickView($event)"
             @quickpitch="quickpitching = true" :proposal="props.proposal" />
-
-
     </div>
 </template>
 
@@ -53,14 +51,8 @@ const props = withDefaults(
 );
 let quickpitching = ref(props.quickpitching);
 
-let isBookmarked:Ref<boolean> = ref()
-
 const bookmarksStore = useBookmarksStore();
-const {models: bookmarkCollectionsModels$} = storeToRefs(bookmarksStore);
-
-watch([bookmarkCollectionsModels$], (newValue, oldValue) => {
-    isBookmarked.value =  bookmarkCollectionsModels$.value?.some(model => model.id === props.proposal.id);
-});
+const {modelIds$} = storeToRefs(bookmarksStore);
 
 watch([viewType], (newValue, oldValue) => {
     quickpitching.value = viewType.value === 'quickpitch';

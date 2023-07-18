@@ -51,7 +51,7 @@ class BookmarkItems extends Resource
         return [
             ID::make()->sortable(),
             Text::make("Title")->sortable(),
-            BelongsTo::make('Bookmark', 'collection', BookmarkCollections::class),
+            BelongsTo::make('Bookmark', 'collection', BookmarkCollections::class)->searchable(),
             Markdown::make('Content'),
             Text::make('Link')->sortable(),
             DateTime::make('Created At')->sortable(),
