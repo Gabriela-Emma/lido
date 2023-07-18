@@ -185,8 +185,10 @@ function vote(vote: VOTEACTIONS, proposal: Proposal) {
                 replace: true,
                 onSuccess: async (component) => {
                     await bookmarksStore.loadDraftBallot();
-                    chartData.value = cloneDeep(getChart());
-                    pieChart.value?.chart.update('active');
+                    setTimeout(() => {
+                        chartData.value = cloneDeep(getChart());
+                        pieChart.value?.chart.update('active');
+                    }, 100);
                 }
             }
         );
@@ -200,8 +202,10 @@ function vote(vote: VOTEACTIONS, proposal: Proposal) {
                 replace: true,
                 onSuccess: async (component) => {
                     await bookmarksStore.loadDraftBallot();
-                    chartData.value = cloneDeep(getChart());
-                    pieChart.value?.chart.update('active');
+                    setTimeout(() => {
+                        chartData.value = cloneDeep(getChart());
+                        pieChart.value?.chart.update('active');
+                    }, 100);
                 }
             }
         );
