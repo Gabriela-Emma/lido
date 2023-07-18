@@ -6,32 +6,40 @@
         <div class="container">
             <section>
                 <masonry-wall :items="draftBallot.groups" :ssr-columns="1" :column-width="600" :gap="16" :max-columns="2">
-                    <template #default="{ item, index }">
+                    <template #default="{ item : group, index }">
                     <div class="px-3 py-8 bg-white">
                         <div>
                             <small class="px-4 text-xs text-slate-500">Challenge</small>
-                            <h1 class="px-4">{{ item.title }}</h1>
-                            <span>{{ item.excerpt }}</span>
+                            <h1 class="px-4">{{ group.title }}</h1>
+                            <span>{{ group.excerpt }}</span>
                         </div>
                         <div>
                             <ul role="list" class="divide-y divide-gray-200">
-                                <li v-for="proposal in item.items" :key="proposal.id">
+                                <li v-for="item in group.items" :key="item.model.id">
                                     <div class="block hover:bg-gray-50">
-                                        <div class="flex items-center px-4 py-4 sm:px-5">
-                                            <div class="flex-1 min-w-0 sm:flex sm:items-center sm:justify-between">
-                                                <div class="truncate">
-                                                    <div class="flex flex-col text-lg">
-                                                        <h3 class="text-xl font-medium truncate xl:text-2xl">
-                                                            {{ proposal.title }}
-                                                        </h3>
-                                                    </div>
-                                                    <div class="mt-1">
-                                                        <div class="flex flex-row items-center gap-5 text-sm text-slate-500">
-                                                            <div class="flex items-center gap-1">
-                                                                <div>{{ $t("Budget") }}</div>
-                                                                <div class="font-semibold text-slate-700">
-                                                                    {{ $filters.currency(proposal?.amount_requested) }}
-                                                                </div>
+                                        <div class="flex items-center gap-3 px-4 py-4 sm:px-5">
+                                            <div>
+                                                <div class="flex-1" v-if="item.model.vote?.vote === VOTEACTIONS.UPVOTE">
+                                                    <HandThumbUpIcon aria-hidden="true"
+                                                    class="w-10 h-10 text-teal-700" />
+                                                </div>
+                                                <div class="flex-1" v-if="item?.model?.vote?.vote === VOTEACTIONS.DOWNVOTE">
+                                                    <HandThumbDownIcon aria-hidden="true"
+                                                    class="w-10 h-10 text-pink-800" />
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div class="flex flex-col text-lg">
+                                                    <h4 class="text-lg font-medium xl:text-xl">
+                                                        {{ item.model?.title }}
+                                                    </h4>
+                                                </div>
+                                                <div class="mt-1">
+                                                    <div class="flex flex-row items-center gap-5 text-sm text-slate-500">
+                                                        <div class="flex items-center gap-1">
+                                                            <div>{{ $t("Budget") }}</div>
+                                                            <div class="font-semibold text-slate-700">
+                                                                {{ $filters.currency(item.model?.amount_requested) }}
                                                             </div>
                                                         </div>
                                                     </div>
@@ -53,7 +61,7 @@
 <script lang="ts" setup>
 import {Link, router, usePage} from '@inertiajs/vue3';
 import DraftBallot from '../models/draft-ballot';
-import {ChevronRightIcon, ArrowUturnLeftIcon, ArrowDownTrayIcon, TrashIcon, BookOpenIcon, ArchiveBoxArrowDownIcon} from '@heroicons/vue/20/solid';
+import {HandThumbUpIcon, HandThumbDownIcon} from '@heroicons/vue/20/solid';
 import {computed, inject, Ref, ref, watch} from "vue";
 import axios from 'axios';
 import {useBookmarksStore} from "../stores/bookmarks-store";
@@ -63,6 +71,7 @@ import { BookmarkItemModel } from '../models/bookmark-item-model';
 import Proposal from '../models/proposal';
 import { useUserStore } from '../../global/Shared/store/user-store';
 import route from 'ziggy-js';
+import { VOTEACTIONS } from '../models/vote-actions';
 
 const userStore = useUserStore();
 const {user$} = storeToRefs(userStore);

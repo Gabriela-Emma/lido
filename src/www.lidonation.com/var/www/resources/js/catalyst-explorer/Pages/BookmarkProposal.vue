@@ -295,8 +295,8 @@ const props = withDefaults(
 const userStore = useUserStore();
 const {user$} = storeToRefs(userStore);
 const bookmarksStore = useBookmarksStore();
+bookmarksStore.loadCollections();
 const collections$ = ref<BookmarkCollection<Proposal>[]>([]);
-
 const {collections$: storeCollections$} = storeToRefs(bookmarksStore);
 collections$.value = [...storeCollections$.value].map(((col: BookmarkCollection<Proposal>) => ({
     ...col,
