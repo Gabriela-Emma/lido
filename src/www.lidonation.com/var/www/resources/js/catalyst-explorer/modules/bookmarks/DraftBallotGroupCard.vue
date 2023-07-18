@@ -90,7 +90,7 @@
 <script lang="ts" setup>
 import axios from 'axios';
 import { router } from '@inertiajs/vue3';
-import DraftBallot, { DraftBallotGroup } from '../../models/draft-ballot';
+import { DraftBallotGroup } from '../../models/draft-ballot';
 import {TrashIcon, HandThumbUpIcon, HandThumbDownIcon} from '@heroicons/vue/20/solid';
 import Proposal from '../../models/proposal';
 import { VOTEACTIONS } from '../../models/vote-actions';

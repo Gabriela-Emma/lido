@@ -68,7 +68,8 @@ class CatalystMyBookmarksController extends Controller
             $collection->refresh();
             $collection->load(['items']);
 
-            return new BookmarkCollectionResource($collection);
+            return $collection->toArray();
+            // return new BookmarkCollectionResource($collection);
         } catch (\Exception $e) {
             DB::rollback();
             throw new \Exception('There was an Error');
@@ -102,8 +103,6 @@ class CatalystMyBookmarksController extends Controller
         }
 
         return $collections->get(['id', 'title', 'items.id'])->toArray();
-
-        // return (BookmarkCollectionResource::collection($collections->get()))->toArray($request);
     }
 
     public function deleteCollection(Request $request)
