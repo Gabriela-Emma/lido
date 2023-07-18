@@ -181,15 +181,15 @@
                                     <div
                                         class="flex flex-col items-center justify-center h-full p-4 bg-teal-600 lg:ml-auto">
 
-                                        <!-- <Login v-if="!user$?.id" :embedded="true" :showLogo="false" /> -->
-                                        <div class="text-slate-800" v-if="!user$?.id">
+                                        <Login v-if="!user$?.id" :embedded="true" :showLogo="false" />
+                                        <!-- <div class="text-slate-800" v-if="!user$?.id">
                                             <LoginForm
                                                 :embedded="true"
                                                 :showLogo="false"
                                                 :showDivider="false"
                                                 :showWalletBtn="false"
                                                 @success="router.reload()" />
-                                        </div>
+                                        </div> -->
 
                                         <div v-else>
                                             <img
