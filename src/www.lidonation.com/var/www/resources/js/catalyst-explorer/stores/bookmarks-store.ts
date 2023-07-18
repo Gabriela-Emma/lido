@@ -10,14 +10,12 @@ import { cloneDeep } from "lodash";
 import route from "ziggy-js";
 
 export const useBookmarksStore = defineStore('bookmarks', () => {
-    let localCollections = useStorage('bookmark-collections', {}, localStorage, {mergeDefaults: true});
     let collections = ref<BookmarkCollection<Proposal>[]>([]);
     let draftBallot = ref<DraftBallot<Proposal>>(null);
     let draftBallots = ref<DraftBallot<Proposal>[]>([]);
 
     async function saveCollection(collection: BookmarkCollection<Proposal>) {
-        localCollections.value = {
-            ...localCollections.value,
+        const collections = {
             [collection.hash]: {
                 hash: collection.hash,
                 items: collection.items.map((item) => ({
@@ -26,21 +24,15 @@ export const useBookmarksStore = defineStore('bookmarks', () => {
                 }))
             }
         };
+        console.log('collections::', collections);
         loadCollections().then();
     }
 
     async function deleteCollection(collectionHash: string) {
-        delete localCollections.value[collectionHash];
         loadCollections().then();
     }
 
     async function deleteItem(itemId: number, collectionHash: string) {
-       let collection = localCollections.value[collectionHash];
-       collection.items = collection.items.filter((item) => item.id != itemId)
-       localCollections.value = {
-            ...localCollections.value,
-            [collectionHash]: collection,
-        };
         loadCollections().then();
     }
 
@@ -74,7 +66,7 @@ export const useBookmarksStore = defineStore('bookmarks', () => {
 
     async function loadCollections() {
         try {
-            const response = await axios.get(`/catalyst-explorer/my/bookmarks`, {params: {hashes: Object.keys(localCollections.value)}});
+            const response = await axios.get(route('catalystExplorer.myBookmarks'));
             collections.value = [...response.data];
         } catch (e: AxiosError | any) {
             console.log({e});

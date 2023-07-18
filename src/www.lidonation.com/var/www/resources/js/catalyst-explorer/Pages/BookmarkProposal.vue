@@ -24,90 +24,11 @@
                     <div class="absolute inset-0 bg-teal-900 h-1/2"></div>
                     <div class="relative px-4 mx-auto max-w-8xl sm:px-6 lg:px-8">
                         <div class="max-w-lg rounded-sm shadow-lg mx-aut56o lg:max-w-none lg:flex">
-
                             <div class="flex-1 bg-teal-500">
                                 <div class="flex flex-col w-full lg:flex-row lg:justify-between">
                                     <div class="flex-1 w-full p-4 text-white lg:w-1/2 min-w-1/2">
                                         <div v-if="!bookmarked$">
-                                            <div v-if="!creatingAnonymousBookmarks">
-                                                <h3 class="text-xl font-bold text-center text-slate-100 xl:text-2xl sm:tracking-tight">
-                                                    {{ $t("You're not logged in") }}.
-                                                </h3>
-
-                                                <h4 class="mb-2 font-semibold text-center">{{ $t('Log in to') }}:</h4>
-
-                                                <ul role="list"
-                                                    class="my-4 space-y-5 lg:space-y-0 lg:grid lg:grid-cols-2 lg:gap-x-8 lg:gap-y-5">
-                                                    <li class="flex items-start lg:col-span-1">
-                                                        <div class="relative flex-shrink-0 w-5 h-5">
-                                                            <svg xmlns="http://www.w3.org/2000/svg"
-                                                                 class="absolute w-5 h-5"
-                                                                 fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                                                                 stroke-width="2">
-                                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                                      d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
-                                                            </svg>
-                                                        </div>
-                                                        <p class="ml-3 text-sm text-slate-200">
-                                                            {{
-                                                                $t('Create and Manage multiple bookmarks from your portal')
-                                                            }}
-                                                        </p>
-                                                    </li>
-                                                    <li class="flex items-start lg:col-span-1">
-                                                        <div class="relative flex-shrink-0 w-5 h-5">
-                                                            <svg xmlns="http://www.w3.org/2000/svg"
-                                                                 class="absolute w-5 h-5"
-                                                                 fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                                                                 stroke-width="2">
-                                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                                      d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
-                                                            </svg>
-                                                        </div>
-                                                        <p class="ml-3 text-sm text-slate-200">
-                                                            {{
-                                                                $t('Name and share bookmark on lidonation bookmark page')
-                                                            }}.
-                                                        </p>
-                                                    </li>
-                                                    <li class="flex items-start lg:col-span-1">
-                                                        <div class="relative flex-shrink-0 w-5 h-5">
-                                                            <svg xmlns="http://www.w3.org/2000/svg"
-                                                                 class="absolute w-5 h-5"
-                                                                 fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                                                                 stroke-width="2">
-                                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                                      d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
-                                                            </svg>
-                                                        </div>
-                                                        <p class="ml-3 text-sm text-slate-200">
-                                                            {{ $t('Leave or respond to comments on bookmarks') }}
-                                                        </p>
-                                                    </li>
-                                                    <li class="flex items-start lg:col-span-1">
-                                                        <div class="relative flex-shrink-0 w-5 h-5">
-                                                            <svg xmlns="http://www.w3.org/2000/svg"
-                                                                 class="absolute w-5 h-5"
-                                                                 fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                                                                 stroke-width="2">
-                                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                                      d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
-                                                            </svg>
-                                                        </div>
-                                                        <p class="ml-3 text-sm text-slate-200">
-                                                            {{ $t('Create private bookmarks') }}
-                                                        </p>
-                                                    </li>
-                                                </ul>
-
-                                                <div class="flex justify-center mt-5">
-                                                    <button type="button" @click="creatingAnonymousBookmarks = true"
-                                                            class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-sm shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
-                                                        {{ $t('Continue Anonymously') }}
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            <div class="flex flex-col justify-center gap-4" v-else>
+                                            <div class="flex flex-col justify-center gap-4">
                                                 <div
                                                     class="relative flex flex-col w-full gap-4 border rounded-sm border-slate-300 text-slate-800">
                                                     <div
@@ -195,7 +116,12 @@
                                             <div class="relative flex flex-col items-center isolate">
                                                 <a :href="collection$?.link" :style="{backgroundColor: collection$?.color}"
                                                     class="relative flex flex-col justify-center object-cover h-56 p-3 shadow-md w-72 lg:max-w-xs hover:shadow-xl rounded-l-xl rounded-r-xs">
-                                                    <div class="absolute flex justify-end w-full top-1 right-1">
+                                                    <div class="absolute flex justify-end w-full gap-2 top-1 right-1">
+                                                        <Link as="button" :href="route('catalystExplorer.draftBallot.edit', {draftBallot: collection$?.hash})"
+                                                                class="inline-flex items-center gap-x-0.5 rounded-sm border py-1 px-1.5 bg-slate-600 hover:text-slate-400 text-xs font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-600">
+                                                            {{ $t("Edit") }}
+                                                            <PencilIcon class="-mr-0.5 h-3 w-3" aria-hidden="true"/>
+                                                        </Link>
                                                         <button type="button"
                                                            class="inline-flex items-center gap-x-0.5 rounded-sm bg-slate-600 py-1 px-1.5 hover:text-white text-xs font-semibold text-white shadow-sm hover:bg-slate-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-600">
                                                             {{  $t("View") }}
@@ -285,6 +211,8 @@ import axios from "axios";
 import {XCircleIcon, ArrowTopRightOnSquareIcon} from '@heroicons/vue/20/solid';
 import { CheckIcon } from '@heroicons/vue/20/solid'
 import { useUserStore } from "../../global/Shared/store/user-store";
+import route from "ziggy-js";
+import { Link } from '@inertiajs/vue3';
 
 const props = withDefaults(
     defineProps<{
@@ -303,7 +231,6 @@ collections$.value = [...storeCollections$.value].map(((col: BookmarkCollection<
     disabled: col.items?.some((item) => item.model?.id === props.proposal.id)
 })));
 
-let creatingAnonymousBookmarks = ref(true);
 let errors = ref()
 let bookmarkProposalContent$ = ref(null)
 let creating = false;
