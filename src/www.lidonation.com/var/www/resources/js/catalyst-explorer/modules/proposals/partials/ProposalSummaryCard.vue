@@ -52,12 +52,12 @@
                     <div v-else v-html="$filters.markdown('**Problem:** ' + proposal.problem)"></div>
                 </div>
                 <div class="flex flex-row flex-wrap items-center gap-2 mb-2">
-                    <div v-if="proposal.challenge.label" class="inline gap-1">
+                    <div v-if="proposal.challenge?.label" class="inline gap-1">
                         <strong>{{  $t("Challenge") }}: </strong>
-                        {{ proposal.challenge.label }}
+                        {{ proposal.challenge?.label }}
                     </div>
-                    <div v-if="proposal.fund.label" class="inline gap-1">
-                        <strong>{{ proposal.fund.label }}</strong>
+                    <div v-if="proposal.fund?.label" class="inline gap-1">
+                        <strong>{{ proposal.fund?.label }}</strong>
                     </div>
 
                     <div class="flex items-center border rounded-sm border-slate-600">
