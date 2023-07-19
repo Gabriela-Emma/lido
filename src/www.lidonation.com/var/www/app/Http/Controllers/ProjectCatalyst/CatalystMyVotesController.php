@@ -52,10 +52,16 @@ class CatalystMyVotesController extends Controller
         $data = $request->validate([
             'vote' => 'required|in:0,1,2',
         ]);
-        $vote->content = $data['content'] ?? '';
-        $vote->vote = $data['vote'];
 
-        $vote->save();
+        // Check if the new vote is the same as the existing vote
+        if($data['vote'] == $vote->vote){
+            $vote->delete();
+        } else{
+            $vote->content = $data['content'] ?? '';
+            $vote->vote = $data['vote'];
+    
+            $vote->save();
+        }
         redirect()->back();
     }
 
