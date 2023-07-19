@@ -254,3 +254,4 @@ App\134Jobs\134CatalystIdeascaleF10CleanupProposalsJob::dispatchSync(113)
 exit
 Proposal::withTrashed()->restore();
 exit
+Proposal::withTrashed()->whereNull('title->sw')->where('fund_id',\040119)->forceDelete();
