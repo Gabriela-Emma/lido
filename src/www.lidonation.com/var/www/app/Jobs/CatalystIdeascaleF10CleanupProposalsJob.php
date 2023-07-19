@@ -49,19 +49,21 @@ class CatalystIdeascaleF10CleanupProposalsJob implements ShouldQueue
         //     $this->getActiveProposals($settingService, $ideascaleId, $token),
         //     $this->getArchiveProposals($settingService, $ideascaleId, $token)
         // );
-        $ideascaleProposls = $this->getArchiveProposals($token);
+        $ideascaleProposls = $this->getActiveProposals($token);
+        // $ideascaleProposls = $this->getActiveProposals($settingService, $this->challenge?->meta_data?->ideascale_id, $token);
+        dump(count($ideascaleProposls));
         if ($ideascaleProposls && !empty($ideascaleProposls)) {
             $proposalsToDelete = Proposal::with('metas')->where('fund_id', $this->challenge->id)->whereHas(
                 'metas',
-                fn ($q) => $q->whereIn('content', $ideascaleProposls)->where('key', 'ideascale_id')
+                fn ($q) => $q->whereNotIn('content', $ideascaleProposls)->where('key', 'ideascale_id')
             )->get();
 
 
-            if ($proposalsToDelete->isNotEmpty()) {
-                $proposalsToDelete->each(
-                    fn ($proposal) => $proposal->delete()
-                );
-            }
+            // if ($proposalsToDelete->isNotEmpty()) {
+            //     $proposalsToDelete->each(
+            //         fn ($proposal) => $proposal->delete()
+            //     );
+            // }
         }
     }
 
@@ -92,9 +94,10 @@ class CatalystIdeascaleF10CleanupProposalsJob implements ShouldQueue
         )->pluck('id')->toArray();
     }
 
-    protected function getActiveProposals(SettingService $settingService, $ideascaleId, $token)
+    protected function getActiveProposals($token)
     {
-        $url = Str::replace('{$ideascaleId}', $ideascaleId, $settingService->getSettings()?->catalyst_f10_ideascale_sync_link);
+        // $url = Str::replace('{$ideascaleId}', $ideascaleId, $settingService->getSettings()?->catalyst_f10_ideascale_sync_link);
+        $url = $this->challenge->meta_data?->ideascale_sync_link;
         $response = Http::withToken($token)
             ->post(
                 $url,
