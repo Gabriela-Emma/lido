@@ -1,7 +1,7 @@
 import {Controller, Get, HttpException, HttpStatus, Post, Req} from '@nestjs/common';
 import {Blockfrost, Lucid, MintingPolicy, PolicyId, Unit, fromText, toText} from "lucid-cardano";
 import {Request} from "express";
-import lucidInstance from '@lido/utils/lucidInstance';
+import lucidInstance from '@lido/utils/lucidInstance.js';
 
 @Controller('lido-minute')
 export class LidoMinuteController {

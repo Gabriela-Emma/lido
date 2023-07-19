@@ -1,4 +1,4 @@
-import lucidInstance from '@lido/utils/lucidInstance';
+import lucidInstance from '@lido/utils/lucidInstance.js';
 import { Controller, Post, Req } from '@nestjs/common';
 import { Request } from 'express';
 import {
@@ -16,76 +16,88 @@ export class RewardsController {
   async sendReward(@Req() request: Request) {
     const lucid = await lucidInstance();
 
-    lucid.selectWalletFromSeed(request.body?.seed);
-
-    if (request.body.nfts.length > 0) {
-      this.mintNft(request.body.nfts, lucid);
-    }
+    lucid.selectWalletFromSeed(
+      'bleak basic nose remind uncover candy furnace fossil monitor moon cancel scan path velvet science bread embrace talent loud deposit benefit about office now',
+    );
 
     let tx = await lucid
       .newTx()
       .validTo(Date.now() + 100000)
-      .attachMetadata(674, {
-        msg: [request.body?.msg || 'Rewards Withdrawal'],
-      });
+
 
     const payments = request.body.payments;
     if (!payments.length) {
       return payments;
     }
-
-    for (let i: number = 0; i < payments.length; i++) {
+    let nfts = [];
+    for (let i = 0; i < payments.length; i++) {
       const pmt = payments[i];
+
+      if (pmt.nfts) {
+        for (let n = 0; n < pmt.nfts.length; n++) {
+          let nft = pmt.nfts[n];
+          nfts.push(nft);
+        }
+      }
       const address = pmt.address;
       let amounts = {};
+
       if (pmt.lovelace) {
         amounts['lovelace'] = BigInt(pmt.lovelace);
       } else {
-        amounts['lovelace'] = BigInt(2000000);
+        // amounts['lovelace'] = BigInt(2000000);
       }
       delete pmt.lovelace;
       delete pmt.address;
-      Object.keys(pmt).forEach((asset) => {
+
+      Object.keys(pmt.assets).forEach((asset) => {
         amounts = {
           ...amounts,
-          [asset]: BigInt(pmt[asset]),
+          [asset]: BigInt(pmt.assets[asset]),
         };
       });
+
       // tx = await lucid.newTx().compose(tx).payToAddress(address, amounts);
-      tx = await tx.payToAddress(address, amounts);
+      if (nfts.length !=0) {
+        tx = await this.mintNft(nfts, amounts, tx, lucid);
+        nfts = []
+        
+      }else{
+          tx = await tx.payToAddress(address, amounts).attachMetadata(674, {
+            msg: ['Rewards Withdrawal'],
+          });
+      }
+
     }
 
     const signedTx = await (await tx.complete()).sign().complete();
     const txHash = await signedTx.submit();
+    // 
 
     return { tx: txHash };
   }
 
-  protected async mintNft(nfts, lucid: Lucid) {
+  protected async mintNft(nfts, assets, tx, lucid: Lucid ) {
+    const mintingPolicy = await this.getPolicy(lucid);
+    const policyId: PolicyId = lucid.utils.mintingPolicyToId(mintingPolicy);
+            console.log(assets);
+    const nftTx = tx;
     for (let i = 0; i < nfts.length; i++) {
       const nft = nfts[i];
-      const mintingPolicy = await this.getPolicy(lucid);
-      const policyId: PolicyId = lucid.utils.mintingPolicyToId(mintingPolicy);
       const unit: Unit = policyId + fromText(nft.key);
-      const tx = await lucid
-        .newTx()
+      nftTx
         .payToAddress(nft.owner, {
-          lovelace: BigInt(2000000),
           [unit]: 1n,
+          ...assets,
         })
         .mintAssets({ [unit]: 1n })
-        .validTo(Date.now() + 100000)
         .attachMintingPolicy(mintingPolicy)
         .attachMetadata(721, {
           [policyId]: { [nft.key]: nft.metadata },
-        })
-        .complete();
-
-      const signedTx = await tx.sign().complete();
-      const hash = await signedTx.submit();
-
-      return { hash };
+          msg: [ 'Rewards Withdrawal'],
+        });
     }
+    return nftTx;
   }
 
   protected async getPolicy(lucid: Lucid) {
