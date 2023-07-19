@@ -16,7 +16,7 @@
             <div class="flex gap-2">
                 <span>Pot</span>
                 <span>
-                    {{ $filters.currency(proposal.challenge.amount, proposal.currency) }}
+                    {{ $filters.currency(proposal.challenge?.amount, proposal?.currency) }}
                 </span>
             </div>
         </div>
