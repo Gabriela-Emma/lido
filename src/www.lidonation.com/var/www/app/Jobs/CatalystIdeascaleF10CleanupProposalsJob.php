@@ -50,8 +50,6 @@ class CatalystIdeascaleF10CleanupProposalsJob implements ShouldQueue
         //     $this->getArchiveProposals($settingService, $ideascaleId, $token)
         // );
         $ideascaleProposls = $this->getActiveProposals($token);
-        // $ideascaleProposls = $this->getActiveProposals($settingService, $this->challenge?->meta_data?->ideascale_id, $token);
-        dump(count($ideascaleProposls));
         if ($ideascaleProposls && !empty($ideascaleProposls)) {
             $proposalsToDelete = Proposal::with('metas')->where('fund_id', $this->challenge->id)->whereHas(
                 'metas',
@@ -59,11 +57,11 @@ class CatalystIdeascaleF10CleanupProposalsJob implements ShouldQueue
             )->get();
 
 
-            // if ($proposalsToDelete->isNotEmpty()) {
-            //     $proposalsToDelete->each(
-            //         fn ($proposal) => $proposal->delete()
-            //     );
-            // }
+            if ($proposalsToDelete->isNotEmpty()) {
+                $proposalsToDelete->each(
+                    fn ($proposal) => $proposal->delete()
+                );
+            }
         }
     }
 
