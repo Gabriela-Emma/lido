@@ -39,23 +39,20 @@ class CatalystIdeascaleF10CleanupProposalsJob implements ShouldQueue
             $this->challenge = Fund::find($this->challenge);
         }
 
-        $ideascaleId = $this->challenge->meta_data->ideascale_id;
-
         $authResponse = Http::get('https://cardano.ideascale.com/a/community/api/get-token');
         if (! $authResponse->successful()) {
             return;
         }
 
         $token = $authResponse->body();
-        $ideascaleProposls = array_merge(
-            $this->getActiveProposals($settingService, $ideascaleId, $token),
-            $this->getArchiveProposals($settingService, $ideascaleId, $token)
-        );
-
+        // $ideascaleProposls = array_merge(
+        //     $this->getActiveProposals($settingService, $ideascaleId, $token),
+        //     $this->getArchiveProposals($settingService, $ideascaleId, $token)
+        // );
+        $ideascaleProposls = $this->getArchiveProposals($token);
         $proposalsToDelete = Proposal::with('metas')->where('fund_id', $this->challenge->id)->whereHas(
             'metas',
-            fn ($q) => $q->whereNotIn('content', $ideascaleProposls)
-                ->where('key', 'ideascale_id')
+            fn ($q) => $q->whereIn('content', $ideascaleProposls)->where('key', 'ideascale_id')
         )->get();
 
         if ($proposalsToDelete->isNotEmpty()) {
@@ -65,9 +62,9 @@ class CatalystIdeascaleF10CleanupProposalsJob implements ShouldQueue
         }
     }
 
-    protected function getArchiveProposals(SettingService $settingService, $ideascaleId, $token)
+    protected function getArchiveProposals($token)
     {
-        $url = Str::replace('{$ideascaleId}', $ideascaleId, $settingService->getSettings()?->catalyst_f10_ideascale_archive_link);
+        $url = $this->challenge->meta_data?->ideascale_archive_link;
         $response = Http::withToken($token)
             ->post(
                 $url,

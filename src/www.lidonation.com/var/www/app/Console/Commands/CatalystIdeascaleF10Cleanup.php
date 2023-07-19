@@ -5,7 +5,6 @@ namespace App\Console\Commands;
 use App\Jobs\CatalystIdeascaleF10CleanupProposalsJob;
 use App\Models\Fund;
 use Illuminate\Console\Command;
-use Illuminate\Support\Carbon;
 use Symfony\Component\Console\Input\InputArgument;
 
 class CatalystIdeascaleF10Cleanup extends Command
