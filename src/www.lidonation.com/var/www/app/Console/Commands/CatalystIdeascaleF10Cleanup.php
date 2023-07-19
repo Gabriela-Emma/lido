@@ -39,7 +39,7 @@ class CatalystIdeascaleF10Cleanup extends Command
             ->whereHas('metas', function ($query) {
                 $query->where('key', 'ideascale_id');
             })->get()->each(function ($challenge) {
-                dispatch_sync(new CatalystIdeascaleF10CleanupProposalsJob($challenge));
+                dispatch(new CatalystIdeascaleF10CleanupProposalsJob($challenge));
             });
     }
 
