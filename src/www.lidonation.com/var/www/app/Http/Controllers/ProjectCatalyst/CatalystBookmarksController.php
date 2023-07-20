@@ -12,6 +12,7 @@ use App\Models\DraftBallot;
 use App\Models\Proposal;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Fluent;
 use Inertia\Inertia;
 
@@ -103,6 +104,10 @@ class CatalystBookmarksController extends Controller
 
     public function editDraftBallot(Request $request, DraftBallot $draftBallot)
     {
+        if (! Gate::allows('update', $draftBallot)) {
+            return redirect()->route('catalystExplorer.login');
+        }
+ 
         return Inertia::render('EditDraftBallot')->with([
             'draftBallot' => (new DraftBallotResource($draftBallot))->toArray($request),
             'crumbs' => [

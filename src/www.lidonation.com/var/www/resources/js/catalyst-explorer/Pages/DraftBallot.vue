@@ -5,32 +5,41 @@
     <main class="flex flex-col gap-2 py-8 bg-primary-20">
         <div class="container">
             <section>
+                <div v-if="userOwnDraftBallot" 
+                    class="flex gap-2 justify-center mb-4">
+                    <a type="button" 
+                        :href="$utils.localizeRoute(`catalyst-explorer/my/draft-ballots/${props.draftBallot.hash}/edit`)"
+                        class="inline-flex items-center rounded-sm border border-transparent bg-teal-700 px-4 py-2 text-white font-medium shadow-sm hover:bg-white hover:text-slate-700">
+                        Edit Draft
+                    </a>
+                </div>
                 <masonry-wall :items="draftBallot.groups" :ssr-columns="1" :column-width="600" :gap="16" :max-columns="2">
                     <template #default="{ item, index }">
-                    <div class="px-3 py-8 bg-white">
-                        <div>
-                            <small class="px-4 text-xs text-slate-500">Challenge</small>
-                            <h1 class="px-4">{{ item.title }}</h1>
-                            <span>{{ item.excerpt }}</span>
-                        </div>
-                        <div>
-                            <ul role="list" class="divide-y divide-gray-200">
-                                <li v-for="proposal in item.items" :key="proposal.id">
-                                    <div class="block hover:bg-gray-50">
-                                        <div class="flex items-center px-4 py-4 sm:px-5">
-                                            <div class="flex-1 min-w-0 sm:flex sm:items-center sm:justify-between">
-                                                <div class="truncate">
-                                                    <div class="flex flex-col text-lg">
-                                                        <h3 class="text-xl font-medium truncate xl:text-2xl">
-                                                            {{ proposal.title }}
-                                                        </h3>
-                                                    </div>
-                                                    <div class="mt-1">
-                                                        <div class="flex flex-row items-center gap-5 text-sm text-slate-500">
-                                                            <div class="flex items-center gap-1">
-                                                                <div>{{ $t("Budget") }}</div>
-                                                                <div class="font-semibold text-slate-700">
-                                                                    {{ $filters.currency(proposal?.amount_requested) }}
+                        <div class="px-3 py-8 bg-white">
+                            <div>
+                                <small class="px-4 text-xs text-slate-500">Challenge</small>
+                                <h1 class="px-4">{{ item.title }}</h1>
+                                <span>{{ item.excerpt }}</span>
+                            </div>
+                            <div>
+                                <ul role="list" class="divide-y divide-gray-200">
+                                    <li v-for="proposal in item.items" :key="proposal.id">
+                                        <div class="block hover:bg-gray-50">
+                                            <div class="flex items-center px-4 py-4 sm:px-5">
+                                                <div class="flex-1 min-w-0 sm:flex sm:items-center sm:justify-between">
+                                                    <div class="truncate">
+                                                        <div class="flex flex-col text-lg">
+                                                            <h3 class="text-xl font-medium truncate xl:text-2xl">
+                                                                {{ proposal.title }}
+                                                            </h3>
+                                                        </div>
+                                                        <div class="mt-1">
+                                                            <div class="flex flex-row items-center gap-5 text-sm text-slate-500">
+                                                                <div class="flex items-center gap-1">
+                                                                    <div>{{ $t("Budget") }}</div>
+                                                                    <div class="font-semibold text-slate-700">
+                                                                        {{ $filters.currency(proposal?.amount_requested) }}
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -38,11 +47,10 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </li>
-                            </ul>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
-                    </div>
                     </template>
                 </masonry-wall>
             </section>
@@ -83,6 +91,9 @@ let remove = ref(false)
 // check if collection is on local
 const bookmarksStore = useBookmarksStore();
 const {collections$: storeCollections$} = storeToRefs(bookmarksStore);
+
+// check if user owns ballot
+let userOwnDraftBallot = computed(() => user$.value?.id == props.draftBallot.user_id);
 
 watch([storeCollections$], (newValue, oldValue) => {
     onLocal.value =  storeCollections$.value?.some(collection => collection.hash === collectionHash.value);
