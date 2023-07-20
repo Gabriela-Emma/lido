@@ -27,6 +27,6 @@ export default interface DraftBallot<T> {
     link?: string;
     items_count?: number;
     created_at: string;
-
+    updated_at: string;
     groups?: DraftBallotGroup<T>[];
 }
