@@ -21,11 +21,12 @@ import {storeToRefs} from "pinia";
 import BookmarkCollectionCard from "../modules/bookmarks/BookmarkCollectionCard.vue";
 import Proposal from "../models/proposal";
 
-const props = withDefaults(
+withDefaults(
     defineProps<{
         bookmarkCollections?: BookmarkCollection<Proposal>[]
     }>(), {});
 
 const bookmarksStore = useBookmarksStore();
 const {collections$} = storeToRefs(bookmarksStore);
+bookmarksStore.loadCollections();
 </script>
