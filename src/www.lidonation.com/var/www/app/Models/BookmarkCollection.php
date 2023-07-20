@@ -15,7 +15,10 @@ class BookmarkCollection extends Model
 {
     use HasAuthor, HasChildren, HasHashIds, HashIdModel, SoftDeletes;
 
-    protected $with = ['items', 'rationales.metas'];
+    protected $with = [
+        // 'items',
+        // 'rationales.metas'
+    ];
 
     protected $hidden = ['id'];
 

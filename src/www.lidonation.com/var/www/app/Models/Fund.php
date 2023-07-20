@@ -55,6 +55,7 @@ class Fund extends Model implements HasMedia, IHasMetaData
         'launched_at' => 'datetime:Y-m-d',
         'awarded_at' => 'datetime:Y-m-d',
         'assessment_started_at' => 'datetime:Y-m-d',
+        'amount' => 'integer',
     ];
 
     public function currency(): Attribute

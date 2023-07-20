@@ -36,7 +36,7 @@
                 </li>
                 <li class="flow-root menu-item">
                     <a class="px-1 py-3 text-white menu-link whitespace-nowrap {{ request()->routeIs('catalystExplorer.voter-tool') ? 'text-yellow-500' : '' }} hover:text-yellow-500"
-                       href="{{localizeRoute('catalystExplorer.voter-tool')}}">
+                       href="{{localizeRoute('catalystExplorer.voterTool')}}">
                         Voter Tool
                     </a>
                 </li>

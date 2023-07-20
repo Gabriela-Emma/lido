@@ -44,6 +44,7 @@ class CatalystMyBookmarksController extends Controller
                 $collection->content = $data->collection['content'] ?? null;
                 $collection->visibility = 'unlisted';
                 $collection->status = 'published';
+                $collection->user_id = Auth::id();
                 $collection->color = '#'.str_pad(dechex(mt_rand(0, 0xFFFFFF)), 6, '0', STR_PAD_LEFT);
                 $collection->save();
             }
@@ -67,7 +68,8 @@ class CatalystMyBookmarksController extends Controller
             $collection->refresh();
             $collection->load(['items']);
 
-            return new BookmarkCollectionResource($collection);
+            return $collection->toArray();
+            // return new BookmarkCollectionResource($collection);
         } catch (\Exception $e) {
             DB::rollback();
             throw new \Exception('There was an Error');
@@ -92,7 +94,7 @@ class CatalystMyBookmarksController extends Controller
 
     public function index(Request $request)
     {
-        $collections = BookmarkCollection::where('user_id', Auth::id())->whereNotNull('user_id');
+        $collections = BookmarkCollection::where('user_id', Auth::id())->whereNotNull('user_id')->with(['items']);
 
         $hashes = $request->get('hashes', false);
 
@@ -100,7 +102,7 @@ class CatalystMyBookmarksController extends Controller
             $collections = $collections->whereHashIn($hashes);
         }
 
-        return (BookmarkCollectionResource::collection($collections->get()))->toArray($request);
+        return $collections->get(['id', 'title', 'items.id'])->toArray();
     }
 
     public function deleteCollection(Request $request)

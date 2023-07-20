@@ -46,7 +46,8 @@ class CatalystIdeascaleF10SyncJob implements ShouldQueue
             return;
         }
 
-        $url = Str::replace('{$ideascaleId}', $ideascaleId, $settingService->getSettings()?->catalyst_f10_ideascale_sync_link);
+        $url = Str::replace('{$ideascaleId}', $ideascaleId, $settingService->getSettings()?->
+    );
         $response = Http::withToken($authResponse->body())
             ->post(
                 $url,

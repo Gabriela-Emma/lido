@@ -1,68 +1,104 @@
 import {defineStore} from "pinia";
 import axios, {AxiosError} from "axios";
 import {computed, onMounted, Ref, ref} from "vue";
-import {useStorage} from '@vueuse/core';
 import BookmarkCollection from "../models/bookmark-collection";
-import {BookmarkItemModel} from "../models/bookmark-item-model";
 import Proposal from "../models/proposal";
+import DraftBallot from "../models/draft-ballot";
+import { cloneDeep } from "lodash";
+import route from "ziggy-js";
 
 export const useBookmarksStore = defineStore('bookmarks', () => {
-    let localCollections = useStorage('bookmark-collections', {}, localStorage, {mergeDefaults: true});
     let collections = ref<BookmarkCollection<Proposal>[]>([]);
-
-    async function saveCollection(collection: BookmarkCollection<Proposal>) {
-        localCollections.value = {
-            ...localCollections.value,
-            [collection.hash]: {
-                hash: collection.hash,
-                items: collection.items.map((item) => ({
-                    id: item.id,
-                    model: {id: item.model?.id}
-                }))
-            }
-        };
-        loadCollections().then();
-    }
+    let draftBallot = ref<DraftBallot<Proposal>>(null);
+    let draftBallots = ref<DraftBallot<Proposal>[]>([]);
 
     async function deleteCollection(collectionHash: string) {
-        delete localCollections.value[collectionHash];
         loadCollections().then();
     }
 
     async function deleteItem(itemId: number, collectionHash: string) {
-       let collection = localCollections.value[collectionHash];
-       collection.items = collection.items.filter((item) => item.id != itemId)
-       localCollections.value = {
-            ...localCollections.value,
-            [collectionHash]: collection,
-        };
         loadCollections().then();
     }
 
-    async function loadCollections() {
+    async function loadDraftBallots() {
         try {
-            const response = await axios.get(`/catalyst-explorer/my/bookmarks`, {params: {hashes: Object.keys(localCollections.value)}});
-            collections.value = [...response.data, ...collections.value];
+            const response = await axios.get(route('catalystExplorerApi.draftBallots'));
+            draftBallots.value = response?.data?.data;
         } catch (e: AxiosError | any) {
             console.log({e});
         }
     }
 
+    async function loadDraftBallot(ballot?: DraftBallot<Proposal>) {
+        //@todo if no ballot provided load from server based on url
+        if (ballot) {
+            draftBallot.value = cloneDeep(ballot);
+            return;
+        }
+
+        const segments = (window.location.href).split('/');
+        const hash = segments[segments.indexOf('draft-ballots') + 1] || null;
+        if (hash) {
+            try {
+                const response = await axios.get(route('catalystExplorerApi.draftBallot', {draftBallot: hash}));
+                draftBallot.value = response.data;
+            } catch (e: AxiosError | any) {
+                console.log({e});
+            }
+        }
+    }
+
+    async function loadCollections() {
+        try {
+            const response = await axios.get(route('catalystExplorer.myBookmarks'));
+            collections.value = [...response.data];
+        } catch (e: AxiosError | any) {
+            console.log({e});
+        }
+    }
+
+    async function bookmarkProposal(proposal: Proposal) {
+        try {
+            const item = {
+                model_id: proposal?.id,
+                model_type: 'proposals',
+                collection: {hash: draftBallot.value?.hash},
+            };
+
+            const res = await axios.post(route('catalystExplorer.bookmarkItem.create'), item);
+            if (res.status == 200) {
+                loadDraftBallot().then();
+            }
+
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
     let collectionsArray = computed<BookmarkCollection<Proposal>[]>(() => Object.values(collections.value))
 
-    let bookmarkedModels = computed<BookmarkItemModel[]>(() => {
-        const models = collectionsArray.value.flatMap((collection) => collection?.items?.map((item) => item?.model));
-        return models.filter((model, index, self) => self.findIndex((m) => m.id === model.id) === index);
+    let bookmarkedModels = computed<number[]>(() => {
+        return [...collectionsArray.value.flatMap((collection) => collection?.items?.map((item) => item?.model_id))]
     });
 
-    onMounted(loadCollections);
+    // let bookmarkedModels = computed<BookmarkItemModel[]>(() => {
+        // return collectionsArray.value.flatMap((collection) => collection?.items?.map((item) => item?.model_id));
+        // console.log({models});
+        // return models.filter((model, index, self) => self.findIndex((m) => m.id === model.id) === index);
+    // });
+
+    // onMounted();
 
     return {
+        bookmarkProposal,
         loadCollections,
-        saveCollection,
         deleteCollection,
+        loadDraftBallot,
+        loadDraftBallots,
+        draftBallots$: draftBallots,
         deleteItem,
-        models: bookmarkedModels,
+        modelIds$: bookmarkedModels,
         collections$: collectionsArray,
+        draftBallot$: draftBallot,
     };
 });

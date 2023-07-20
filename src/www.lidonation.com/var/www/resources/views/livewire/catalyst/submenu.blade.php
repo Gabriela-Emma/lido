@@ -106,7 +106,7 @@
 
                     <li class="flow-root menu-item">
                         <a class="px-1 py-3 text-white menu-link whitespace-nowrap {{ request()->routeIs('catalystExplorer.voter-tool') ? 'text-yellow-500' : '' }} hover:text-yellow-500"
-                           href="{{localizeRoute('projectCatalyst.voterTool')}}">
+                           href="{{localizeRoute('catalystExplorer.voterTool')}}">
                             {{ $snippets->tool }}
                         </a>
                     </li>
@@ -224,7 +224,7 @@
                                 {{ $snippets->charts }}
                             </a>
 
-                            <a class="p-3 text-gray-500 menu-link block font-medium {{ request()->routeIs('projectCatalyst.funds') ? 'text-teal-600' : '' }} hover:text-yellow-500"
+                            <a class="p-3 text-gray-500 menu-link block font-medium {{ request()->routeIs('catalystExplorer.funds') ? 'text-teal-600' : '' }} hover:text-yellow-500"
                                href="{{localizeRoute('catalystExplorer.funds')}}">
                                 {{ $snippets->funds }}
                             </a>
@@ -233,7 +233,7 @@
                                href="{{localizeRoute('catalystExplorer.proposals')}}">
                                 {{ $snippets->projects }}
                             </a>
-                            <a class="px-1 py-3 text-white menu-link {{ request()->routeIs('projectCatalyst.assessments') ? 'text-yellow-500' : '' }} hover:text-yellow-500"
+                            <a class="px-1 py-3 text-white menu-link {{ request()->routeIs('catalystExplorer.assessments') ? 'text-yellow-500' : '' }} hover:text-yellow-500"
                                 href="{{localizeRoute('catalystExplorer.assessments')}}">
                                 {{ $snippets->funds }}
                              </a>
@@ -243,18 +243,18 @@
                                 {{ $snippets->api }}
                             </a>
 
-                            <a class="p-3 text-gray-500 menu-link block font-medium {{ request()->routeIs('projectCatalyst.users') ? 'text-teal-600' : '' }} hover:text-yellow-500"
+                            <a class="p-3 text-gray-500 menu-link block font-medium {{ request()->routeIs('catalystExplorer.people') ? 'text-teal-600' : '' }} hover:text-yellow-500"
                                href="{{localizeRoute('catalystExplorer.people')}}">
                                 {{ $snippets->people }}
                             </a>
 
-                            <a class="p-3 text-gray-500 menu-link block font-medium {{ request()->routeIs('projectCatalyst.groups') ? 'text-teal-600' : '' }} hover:text-yellow-500"
+                            <a class="p-3 text-gray-500 menu-link block font-medium {{ request()->routeIs('catalystExplorer.groups') ? 'text-teal-600' : '' }} hover:text-yellow-500"
                                href="{{localizeRoute('catalystExplorer.groups')}}">
                                 {{ $snippets->groups }}
                             </a>
 
-                            <a class="p-3 text-gray-500 menu-link block font-medium whitespace-nowrap {{ request()->routeIs('projectCatalyst.voterTool') ? 'text-teal-600' : '' }} hover:text-yellow-500"
-                               href="{{localizeRoute('catalystExplorer.voter-tool')}}">
+                            <a class="p-3 text-gray-500 menu-link block font-medium whitespace-nowrap {{ request()->routeIs('catalystExplorer.voterTool') ? 'text-teal-600' : '' }} hover:text-yellow-500"
+                               href="{{localizeRoute('catalystExplorer.voterTool')}}">
                                 Voter Tool
                             </a>
                         </div>

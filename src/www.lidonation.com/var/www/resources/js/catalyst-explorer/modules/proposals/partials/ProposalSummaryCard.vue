@@ -52,12 +52,12 @@
                     <div v-else v-html="$filters.markdown('**Problem:** ' + proposal.problem)"></div>
                 </div>
                 <div class="flex flex-row flex-wrap items-center gap-2 mb-2">
-                    <div v-if="proposal.challenge.label" class="inline gap-1">
+                    <div v-if="proposal.challenge?.label" class="inline gap-1">
                         <strong>{{  $t("Challenge") }}: </strong>
-                        {{ proposal.challenge.label }}
+                        {{ proposal.challenge?.label }}
                     </div>
-                    <div v-if="proposal.fund.label" class="inline gap-1">
-                        <strong>{{ proposal.fund.label }}</strong>
+                    <div v-if="proposal.fund?.label" class="inline gap-1">
+                        <strong>{{ proposal.fund?.label }}</strong>
                     </div>
 
                     <div class="flex items-center border rounded-sm border-slate-600">
@@ -192,12 +192,11 @@
 <script lang="ts" setup>
 import Proposal from "../../../models/proposal";
 import Rating from 'primevue/rating';
-import {inject, ref, watch} from "vue";
+import {inject, computed, watch} from "vue";
 import {BookmarkIcon} from "@heroicons/vue/20/solid";
 import { Link } from '@inertiajs/vue3';
 import { useBookmarksStore } from "../../../stores/bookmarks-store";
 import { storeToRefs } from "pinia";
-import { Ref } from "@vue/reactivity";
 import ProposalFundingStatus from "./ProposalFundingStatus.vue"
 import ProposalProjectStatus from "./ProposalProjectStatus.vue"
 import ProposalBudget from "./ProposalBudget.vue";
@@ -229,13 +228,8 @@ const props = withDefaults(
     },
 );
 
-
-let isBookmarked:Ref<boolean> = ref()
-
 const bookmarksStore = useBookmarksStore();
-const {models: bookmarkCollectionsModels$} = storeToRefs(bookmarksStore);
+const {modelIds$} = storeToRefs(bookmarksStore);
 
-watch([bookmarkCollectionsModels$], (newValue, oldValue) => {
-    isBookmarked.value =  bookmarkCollectionsModels$.value?.some(model => model.id === props.proposal.id);
-});
+let isBookmarked  = computed<boolean>(() => modelIds$.value?.some(modelId => modelId == props.proposal.id));
 </script>

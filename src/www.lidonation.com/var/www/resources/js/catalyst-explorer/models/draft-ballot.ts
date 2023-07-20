@@ -9,6 +9,7 @@ export interface DraftBallotRationale {
 
 export interface DraftBallotGroup<T> {
     id: number;
+    amount: number;
     title: string;
     excerpt: string;
     rationale: DraftBallotRationale;

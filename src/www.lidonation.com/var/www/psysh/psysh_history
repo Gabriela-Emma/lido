@@ -244,3 +244,14 @@ Proposal::wheredNotNull('deleted_at')->count();
 Proposal::wheredNotNull('deleted_at')->count();
 Proposal::whereNotNull('deleted_at')->count();
 Proposal::whereNull('fund_id')->count();
+exit
+Proposal::whereNull('fund_id')->count();
+exit
+App\134Jobs\134CatalystIdeascaleF10CleanupProposalsJob::dispatchSync()
+App\134Jobs\134CatalystIdeascaleF10CleanupProposalsJob::dispatchSync(113)
+exit
+App\134Jobs\134CatalystIdeascaleF10CleanupProposalsJob::dispatchSync(113)
+exit
+Proposal::withTrashed()->restore();
+exit
+Proposal::withTrashed()->whereNull('title->sw')->where('fund_id',\040119)->forceDelete();

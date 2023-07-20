@@ -23,14 +23,6 @@
             </h2>
         </div>
         <div class="absolute flex justify-end w-full gap-2 px-3 divide-x divide-slate-800 bottom-3" v-if="collection?.items_count > 0">
-<!--            <div-->
-<!--                class="inline-flex items-center items-center rounded-sm py-0.5 pl-2.5 pr-1 text-sm font-medium text-black">-->
-<!--                {{ $t("Items") }}-->
-<!--                <span-->
-<!--                    class="ml-0.5 inline-flex flex-shrink-0 items-center justify-center rounded-full text-black font-bold focus:outline-none">-->
-<!--                    {{ collection?.items_count }}-->
-<!--                </span>-->
-<!--            </div>-->
             <div
                 class="inline-flex items-center items-center rounded-sm py-0.5 pl-2.5 pr-1 text-sm font-medium">
                 {{ $t("Items") }}
@@ -45,13 +37,12 @@
 
 <script lang="ts" setup>
 import {computed, inject} from "vue";
-import {Link, usePage} from "@inertiajs/vue3";
+import {Link} from "@inertiajs/vue3";
 import {LinkIcon, PencilIcon} from '@heroicons/vue/20/solid';
 
 import BookmarkCollection from "../../models/bookmark-collection";
 import route from "ziggy-js";
 import Proposal from "../../models/proposal";
-
 
 const props = withDefaults(
     defineProps<{

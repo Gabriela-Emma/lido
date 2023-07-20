@@ -4,7 +4,7 @@
         <div class="container">
             <div class="lg:grid lg:grid-cols-12 lg:gap-x-5">
                 <aside class="px-2 py-6 sm:px-6 lg:col-span-3 xl:col-span-2 lg:py-0 lg:px-0">
-                    <UserNav  crumbs="[]"/>
+                    <UserNav  :crumbs="[]"/>
                 </aside>
 
                 <section class="space-y-6 sm:px-6 lg:col-span-9 xl:col-span-10">
@@ -25,7 +25,7 @@
                         </div>
                         <div class="flex justify-end w-full gap-2" v-if="collection?.items_count > 0">
                             <div
-                                class="inline-flex items-center items-center rounded-sm py-0.5 pl-2.5 pr-1 text-sm font-medium text-black border border-black">
+                                class="inline-flex items-center rounded-sm py-0.5 pl-2.5 pr-1 text-sm font-medium text-black border border-black">
                                 {{ $t("Items") }}
                                 <span
                                     class="ml-0.5 inline-flex flex-shrink-0 items-center justify-center rounded-full text-black font-bold focus:outline-none">
@@ -48,11 +48,10 @@ import BookmarkCollection from "../../models/bookmark-collection";
 import UserNav from "./UserNav.vue";
 import Proposal from '../../models/proposal';
 
-const props = withDefaults(
+withDefaults(
     defineProps<{
         bookmarkCollections: BookmarkCollection<Proposal>[]
     }>(), {});
-
 
 const bookmarksStore = useBookmarksStore();
 const {collections$} = storeToRefs(bookmarksStore);
