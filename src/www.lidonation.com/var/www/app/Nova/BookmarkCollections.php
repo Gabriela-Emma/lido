@@ -62,6 +62,9 @@ class BookmarkCollections extends Resource
                 )
                 ->required()
                 ->rules('max:255'),
+            Text::make('View Ballot', function () {
+                return '<a style="color: #578ae4" href="'.$this->link.'" target="_blank">View</a>';
+            })->asHtml()->hideWhenCreating()->hideWhenUpdating(),
             Color::make('Color'),
             Text::make('visibility')->sortable(),
             Text::make('status')->sortable(),

@@ -19,7 +19,7 @@ class BookmarkItem extends Model
 
     public function title(): Attribute
     {
-        return Attribute::make(set: fn ($value) => $value ?? $this->model?->title);
+        return Attribute::make(set: fn ($value) => $this->model?->title);
     }
 
     public function collection(): BelongsTo
