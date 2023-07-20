@@ -19,18 +19,16 @@
                       class="text-sm text-slate-200 h-full border-primary-200 border-opacity-50 p-0.5 capitalize">
                 </span>
                 <span>
-                    <!-- <span v-text="myWallet.balance"></span> -->
-                    <!-- <span class="text-slate-100" aria-hidden="true">₳</span> -->
                 </span>
             </span>
 
-            <span class="flex gap-2 tracking-wide items-center" v-show="!walletData?.handle">
-                <span>Connect Your Wallet</span>
+            <span class="flex items-center gap-2 tracking-wide" v-show="!walletData?.handle">
+                <span class="text-sm">Connect Your Wallet</span>
                 <span class="text-slate-100" aria-hidden="true">&darr;</span>
             </span>
         </button>
 
-        <div v-if="unsupportedNetwork" class="text-xs text-red-600 p-1 text-center">
+        <div v-if="unsupportedNetwork" class="p-1 text-xs text-center text-red-600">
             <span class="underline">{{ unsupportedNetworkRes }} try again!</span>
         </div>
 
