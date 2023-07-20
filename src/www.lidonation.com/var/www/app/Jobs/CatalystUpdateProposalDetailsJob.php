@@ -450,7 +450,7 @@ class CatalystUpdateProposalDetailsJob implements ShouldQueue
 
         $targetField = array_filter(
             $fieldSections,
-             fn ($obj) =>  $obj->title === $title
+             fn ($obj) =>  strtolower($obj->title) === strtolower($title)
             );
 
         if (!$targetField) {
