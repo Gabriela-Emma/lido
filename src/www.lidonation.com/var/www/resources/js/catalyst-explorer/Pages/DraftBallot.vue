@@ -5,11 +5,11 @@
     <main class="flex flex-col gap-2 py-8 bg-primary-20">
         <div class="container">
             <section>
-                <div v-if="userOwnDraftBallot" 
-                    class="flex gap-2 justify-center mb-4">
-                    <a type="button" 
+                <div v-if="userOwnDraftBallot"
+                    class="flex justify-center gap-2 mb-4">
+                    <a type="button"
                         :href="$utils.localizeRoute(`catalyst-explorer/my/draft-ballots/${props.draftBallot.hash}/edit`)"
-                        class="inline-flex items-center rounded-sm border border-transparent bg-teal-700 px-4 py-2 text-white font-medium shadow-sm hover:bg-white hover:text-slate-700">
+                        class="inline-flex items-center px-4 py-2 font-medium text-white bg-teal-700 border border-transparent rounded-sm shadow-sm hover:bg-white hover:text-slate-700">
                         Edit Draft
                     </a>
                 </div>
@@ -54,10 +54,11 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </li>
-                                </ul>
-                            </div>
+                                    </div>
+                                </li>
+                            </ul>
                         </div>
+                    </div>
                     </template>
                 </masonry-wall>
             </section>
@@ -74,7 +75,6 @@ import axios from 'axios';
 import {useBookmarksStore} from "../stores/bookmarks-store";
 import { storeToRefs } from 'pinia';
 import moment from "moment-timezone";
-import { BookmarkItemModel } from '../models/bookmark-item-model';
 import Proposal from '../models/proposal';
 import { useUserStore } from '../../global/Shared/store/user-store';
 import route from 'ziggy-js';
