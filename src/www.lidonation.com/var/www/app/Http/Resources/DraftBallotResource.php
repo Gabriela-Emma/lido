@@ -51,6 +51,7 @@ class DraftBallotResource extends JsonResource
         )));
 
         return [
+            'user_id' => $this->user_id,
             'hash' => $this->hash,
             'title' => $this->title,
             'content' => $this->content,

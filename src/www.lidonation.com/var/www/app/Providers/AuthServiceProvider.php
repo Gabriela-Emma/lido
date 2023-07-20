@@ -10,6 +10,7 @@ use App\Models\CatalystUser;
 use App\Models\Comment;
 use App\Models\Definition;
 use App\Models\Discussion;
+use App\Models\DraftBallot;
 use App\Models\Event;
 use App\Models\Post;
 use App\Models\Proposal;
@@ -21,6 +22,7 @@ use App\Policies\CatalystUserPolicy;
 use App\Policies\CommentPolicy;
 use App\Policies\DefinitionPolicy;
 use App\Policies\DiscussionPolicy;
+use App\Policies\DraftBallotPolicy;
 use App\Policies\EventPolicy;
 use App\Policies\LegacyCommentPolicy;
 use App\Policies\MediaPolicy;
@@ -60,6 +62,7 @@ class AuthServiceProvider extends ServiceProvider
         Team::class => TeamPolicy::class,
         BookmarkCollection::class => BookmarkCollectionPolicy::class,
         Withdrawal::class => WithdrawalPolicy::class,
+        DraftBallot::class => DraftBallotPolicy::class,
 
         //        LanguageLine::class => LanguageLinePolicy::class,
         //        \Spatie\TranslationLoader\LanguageLine::class => LanguageLinePolicy::class,

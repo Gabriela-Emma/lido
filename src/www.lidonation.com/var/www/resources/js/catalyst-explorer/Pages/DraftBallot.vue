@@ -5,6 +5,14 @@
     <main class="flex flex-col gap-2 py-8 bg-primary-20">
         <div class="container">
             <section>
+                <div v-if="userOwnDraftBallot" 
+                    class="flex gap-2 justify-center mb-4">
+                    <a type="button" 
+                        :href="$utils.localizeRoute(`catalyst-explorer/my/draft-ballots/${props.draftBallot.hash}/edit`)"
+                        class="inline-flex items-center rounded-sm border border-transparent bg-teal-700 px-4 py-2 text-white font-medium shadow-sm hover:bg-white hover:text-slate-700">
+                        Edit Draft
+                    </a>
+                </div>
                 <masonry-wall :items="draftBallot.groups" :ssr-columns="1" :column-width="600" :gap="16" :max-columns="2">
                     <template #default="{ item : group, index }">
                     <div class="px-3 py-8 bg-white">
@@ -46,11 +54,10 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </li>
-                            </ul>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
-                    </div>
                     </template>
                 </masonry-wall>
             </section>
@@ -92,6 +99,9 @@ let remove = ref(false)
 // check if collection is on local
 const bookmarksStore = useBookmarksStore();
 const {collections$: storeCollections$} = storeToRefs(bookmarksStore);
+
+// check if user owns ballot
+let userOwnDraftBallot = computed(() => user$.value?.id == props.draftBallot.user_id);
 
 watch([storeCollections$], (newValue, oldValue) => {
     onLocal.value =  storeCollections$.value?.some(collection => collection.hash === collectionHash.value);
