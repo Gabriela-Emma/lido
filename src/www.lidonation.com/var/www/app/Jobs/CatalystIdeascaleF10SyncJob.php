@@ -33,21 +33,19 @@ class CatalystIdeascaleF10SyncJob implements ShouldQueue
      *
      * @throws FileCannotBeAdded
      */
-    public function handle(SettingService $settingService): void
+    public function handle(): void
     {
         if (! $this->challenge instanceof Fund) {
             $this->challenge = Fund::find($this->challenge);
         }
 
-        $ideascaleId = $this->challenge->meta_data->ideascale_id;
+        $url = $this->challenge->meta_data?->ideascale_sync_link;
 
         $authResponse = Http::get('https://cardano.ideascale.com/a/community/api/get-token');
         if (! $authResponse->successful()) {
             return;
         }
 
-        $url = Str::replace('{$ideascaleId}', $ideascaleId, $settingService->getSettings()?->
-    );
         $response = Http::withToken($authResponse->body())
             ->post(
                 $url,

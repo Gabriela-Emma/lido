@@ -11,6 +11,7 @@ use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -25,6 +26,17 @@ trait People
      *     summary="Get all people",
      *     description="Returns all people",
      *     operationId="people",
+     *
+     *     @OA\Parameter(
+     *         name="ideascale_username",
+     *         in="query",
+     *         description="<p>Filters content by ideascale username<p>",
+     *         required=false,
+     *
+     *         @OA\Schema(
+     *             type="string"
+     *         ),
+     *     ),
      *
      *     @OA\Response(
      *         response=200,
@@ -72,10 +84,18 @@ trait People
                 'message' => 'query parameter \'per_page\' should not exceed 60'], 400);
         }
 
-        $proposals = CatalystUser::query()
-            ->filter(request(['search', 'ids']));
+        if (request()->has('search')) {
+            $people = CatalystUser::search(request('search'))->query(
+                fn (Builder $query) => $query->filter(request(['ids']))
+            );
 
-        return PeopleResource::collection($proposals->paginate($per_page)->onEachSide(0));
+        } else {
+            $people = CatalystUser::query()
+                ->orderByDesc('id')
+                ->filter(request(['ids', 'ideascale_username']));
+        }
+
+        return PeopleResource::collection($people->paginate($per_page)->onEachSide(0));
     }
 
     public function claim(Request $request)
