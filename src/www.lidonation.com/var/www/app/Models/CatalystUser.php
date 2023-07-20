@@ -165,6 +165,10 @@ class CatalystUser extends User implements HasMedia, CanComment
             $filters['ids'] ?? false,
             fn (Builder $query, $ids) => $query->whereIn('id', is_array($ids) ? $ids : explode(',', $ids))
         );
+
+        $query->when(
+            $filters['ideascale_username'] ?? false, fn (Builder $query, $username) => $query->where('username', $username)
+        );
     }
 
     /**
