@@ -38,15 +38,15 @@
                         {{ $t("Open All items") }}
                     </button>
 
-                    <!-- <button @click="createDraftBallot"
-                            type="button"
+                    <button @click="createDraftBallot"
+                            type="button" v-if="user$?.id === bookmarkCollection?.user_id"
                             :disabled="!user$?.id"
                             :title="!user$?.id ? $t('You must be logged in to create a draft ballot') : 'Convert to draft ballot'"
                             :class="[textColor$, borderColor$, user$?.id ? 'hover:text-teal-light-400' : 'cursor-not-allowed']"
                             class="inline-flex items-center gap-x-0.5 rounded-sm border py-1 px-1.5 text-xs bg-black font-semibold text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-600">
                         <ArchiveBoxArrowDownIcon class="mr-0.5 h-3 w-3" aria-hidden="true"/>
                         {{ $t("Create Draft Ballot") }}
-                    </button> -->
+                    </button>
                     <button @click="remove = !remove"
                             type="button"
                             :disabled="canDelete===false"
@@ -112,17 +112,10 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="flex-shrink-0 mt-4 sm:mt-0 sm:ml-5">
-                                            <!--                                                <div class="flex -space-x-1 overflow-hidden">-->
-                                            <!--                                                    <img v-for="applicant in item.applicants" :key="applicant.email" class="inline-block w-6 h-6 rounded-full ring-2 ring-white" :src="applicant.imageUrl" :alt="applicant.name" />-->
-                                            <!--                                                </div>-->
-                                        </div>
                                     </div>
                                     <div class="flex justify-end flex-shrink-0 gap-2 ml-5">
-                                        <TrashIcon @click.prevent="removeItem(item.id)" class="mr-0.5 h-5 w-5 "
-                                        type="button"
+                                        <TrashIcon @click.prevent="removeItem(item.id)" class="mr-0.5 h-5 w-5"
                                         :class="[canDelete===true?'hover:text-teal-600 hover:cursor-pointer':'cursor-not-allowed']" aria-hidden="true"/>
-<!--                                        <ChevronRightIcon class="w-5 h-5 text-gray-400" aria-hidden="true"/>-->
                                     </div>
                                 </div>
                             </div>
@@ -131,8 +124,6 @@
                 </div>
             </section>
         </div>
-
-
     </main>
 </template>
 
@@ -148,17 +139,16 @@ import moment from "moment-timezone";
 import { BookmarkItemModel } from '../models/bookmark-item-model';
 import Proposal from '../models/proposal';
 import { useUserStore } from '../../global/Shared/store/user-store';
+import route from 'ziggy-js';
 
 const userStore = useUserStore();
 const {user$} = storeToRefs(userStore);
-
-console.log({user$});
 
 const $utils: any = inject('$utils');
 
 const props = withDefaults(
     defineProps<{
-        bookmarkCollection: BookmarkCollection
+        bookmarkCollection: BookmarkCollection<Proposal>
     }>(), {});
 const textColor$ = computed<string>(() =>
     $utils?.contrastColor(props.bookmarkCollection?.color) === 'light' ? 'text-white' : 'text-black'
@@ -204,9 +194,9 @@ watch([storeCollections$], (newValue, oldValue) => {
 // if from last 10mins
 inLastTenMins.value = (moment().diff(moment(createdAt.value),'minutes')) < 10;
 
-let canDelete:Ref<boolean> =  ref();
+let canDelete: Ref<boolean> =  ref();
 watch([onLocal,inLastTenMins],()=> {
-    canDelete.value = onLocal.value && inLastTenMins.value;
+    canDelete.value = (onLocal.value && inLastTenMins.value) || user$.value?.id === props.bookmarkCollection.user_id;
 })
 
 const removeCollection = () => {
@@ -224,12 +214,12 @@ const removeCollection = () => {
     }
 }
 
-const removeItem = (id:number) =>{
-    if(onLocal.value && inLastTenMins.value){
-        axios.delete(`${usePage().props.base_url}/catalyst-explorer/bookmark-item/${id}`)
+const removeItem = (id:number) => {
+    if(canDelete.value){
+        axios.delete(route('catalystExplorer.bookmarkItem.delete', {bookmarkItem: id}))
         .then((res) =>{
             bookmarksStore.deleteItem(id,collectionHash.value)
-            router.get(`${usePage().props.base_url}/catalyst-explorer/bookmarks/${collectionHash.value}`)
+            router.get(route('catalystExplorer.bookmark', {bookmarkCollection: collectionHash.value}))
         })
         .catch((error) => {
             if (error.response && error.response.status === 403) {
@@ -262,6 +252,11 @@ function openIdeascaleLinks() {
 }
 
 function createDraftBallot() {
-    //
+    router.post(
+        route(
+            'catalystExplorer.bookmark.createBallot',
+            {bookmarkCollection: collectionHash.value}
+        )
+    );
 }
 </script>

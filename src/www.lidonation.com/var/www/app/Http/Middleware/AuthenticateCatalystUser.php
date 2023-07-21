@@ -11,7 +11,7 @@ class AuthenticateCatalystUser extends Authenticate
      *
      * @param  Request  $request
      */
-    protected function redirectTo($request): ?string
+    protected function redirectTo($request)
     {
         if (! $request->expectsJson()) {
             return route('catalystExplorer.login');

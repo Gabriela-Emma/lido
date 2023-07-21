@@ -15,7 +15,10 @@ class BookmarkCollection extends Model
 {
     use HasAuthor, HasChildren, HasHashIds, HashIdModel, SoftDeletes;
 
-    protected $with = ['items'];
+    protected $with = [
+        // 'items',
+        // 'rationales.metas'
+    ];
 
     protected $hidden = ['id'];
 
@@ -25,6 +28,8 @@ class BookmarkCollection extends Model
 
     protected $fillable = ['title', 'content', 'type'];
 
+    protected $urlGroup = 'catalyst-explorer/bookmarks';
+
     public function bookmarkCollectionId(): Attribute
     {
         return Attribute::make(
@@ -32,13 +37,13 @@ class BookmarkCollection extends Model
         );
     }
 
-    public function getUrlGroup(): string
-    {
-        return 'catalyst-explorer/bookmarks';
-    }
-
     public function items(): HasMany
     {
         return $this->hasMany(BookmarkItem::class);
+    }
+
+    public function rationales()
+    {
+        return $this->hasMany(Discussion::class, 'model_id')->where('model_type', BookmarkCollection::class);
     }
 }

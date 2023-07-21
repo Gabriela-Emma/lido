@@ -42,6 +42,16 @@ return [
             'length' => 11,
             'alphabet' => 'abcdefghijklmnopqrstuvwxyz0123456789',
         ],
+        \App\Models\DraftBallot::class => [
+            'salt' => \App\Models\BookmarkCollection::class.env('APP_KEY'),
+            'length' => 11,
+            'alphabet' => 'abcdefghijklmnopqrstuvwxyz0123456789',
+        ],
+        \App\Models\CatalystVote::class => [
+            'salt' => \App\Models\CatalystVote::class.env('APP_KEY'),
+            'length' => 11,
+            'alphabet' => 'abcdefghijklmnopqrstuvwxy0123456789',
+        ],
         \App\Models\LearningLesson::class => [
             'salt' => \App\Models\LearningLesson::class.env('APP_KEY'),
             'length' => 11,

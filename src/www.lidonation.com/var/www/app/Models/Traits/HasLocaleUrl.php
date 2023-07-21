@@ -19,7 +19,7 @@ trait HasLocaleUrl
         );
     }
 
-    protected function getUrlGroup(): string
+    public function getUrlGroup(): string
     {
         return $this->urlGroup;
     }

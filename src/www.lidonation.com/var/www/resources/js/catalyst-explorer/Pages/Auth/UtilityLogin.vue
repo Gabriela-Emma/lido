@@ -10,11 +10,14 @@
                             <div class="flex-1 bg-teal-500">
                                 <div class="flex justify-between w-full">
                                     <div class="w-1/2 p-4 text-white" >
+                                        <img
+                                        src="https://www.lidonation.com/storage/8651/conversions/VvemcGIMNQfjogVsxCVKDe4_po5VTjV_wFLGrKU-BaI-preview.jpg"
+                                        alt="" class="aspect-[6/5] w-full rounded-sm object-cover">
                                     </div>
                                     <div class="ml-auto bg-teal-600">
                                         <div class="bg-slate-100 login-form-wrapper">
                                             <form>
-                                                <div class="p-6 bg-white rounded shadow-sm  w-96">
+                                                <div class="p-6 bg-white rounded shadow-sm w-96">
 
                                                     <div>
                                                         <div class="flex justify-start mb-2 ">
@@ -90,13 +93,16 @@
 
 <script lang="ts" setup>
 import Modal from '../../Shared/Components/Modal.vue';
-import { useForm, usePage } from '@inertiajs/vue3';
+import { useForm, usePage, Link } from '@inertiajs/vue3';
 import { Errors, ErrorBag } from '@inertiajs/core';
 import ModalProps from '../../models/props';
+import { useUserStore } from '../../../global/Shared/store/user-store';
+import route from 'ziggy-js';
 
 const pageProps: { [x: string]: unknown; errors: Errors & ErrorBag; } = usePage().props;
 const modalProps = pageProps as unknown as { modal: ModalProps };
 
+const userStore = useUserStore();
 
 let form = useForm({
     password: '',
@@ -107,7 +113,12 @@ let form = useForm({
 
 let submit = () =>
 {
-    form.post('/api/catalyst-explorer/login');
+    form.post('/api/catalyst-explorer/login', {
+        onSuccess: () => {
+            userStore.setUser();
+            window.location.reload();
+        }
+    });
 }
 
 

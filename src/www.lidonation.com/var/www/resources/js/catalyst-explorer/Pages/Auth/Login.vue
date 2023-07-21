@@ -6,14 +6,15 @@
                    :embedded="embedded"
                    @setForm="getForm($event)"
                    @submit="submit"
-                   @go-to-register="router.get(`${usePage().props.base_url}/en/catalyst-explorer/register`)"
+                   @go-to-register="router.get(route('catalystExplorer.register'))"
                    />
     </div>
 </template>
 
 <script lang="ts" setup>
-import {router, useForm, usePage} from "@inertiajs/vue3";
+import {router, useForm} from "@inertiajs/vue3";
 import LoginForm from "../../../global/Shared/Components/LoginForm.vue";
+import route from "ziggy-js";
 
 withDefaults(
     defineProps<{
@@ -29,9 +30,9 @@ let getForm = (loginForm) => {
 }
 
 let submit = () => {
-    form.post(`${usePage().props.base_url}/api/catalyst-explorer/login`, {
+    form.post(route('catalystExplorerApi.login'), {
         onSuccess: () => {
-            router.get(`${usePage().props.base_url}/catalyst-explorer/my/dashboard`)
+            window.location.reload();
         }
     });
 }

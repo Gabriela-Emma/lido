@@ -2,23 +2,24 @@
 
 namespace App\Jobs;
 
-use App\Models\CatalystUser;
-use App\Models\Link;
-use App\Models\Proposal;
 use App\Models\Tag;
+use App\Models\Link;
+use App\Models\Category;
+use App\Models\Proposal;
+use Illuminate\Support\Str;
+use App\Models\CatalystUser;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Fluent;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Fluent;
-use Illuminate\Support\Str;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Queue\InteractsWithQueue;
 use League\HTMLToMarkdown\HtmlConverter;
-use Spatie\MediaLibrary\MediaCollections\Exceptions\FileCannotBeAdded;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Bus\Dispatchable;
 use Spatie\MediaLibrary\MediaCollections\Exceptions\UnreachableUrl;
+use Spatie\MediaLibrary\MediaCollections\Exceptions\FileCannotBeAdded;
 
 class CatalystUpdateProposalDetailsJob implements ShouldQueue
 {
@@ -122,6 +123,16 @@ class CatalystUpdateProposalDetailsJob implements ShouldQueue
             $proposalMeta = $this->getFund10ProposalMetas($data->fieldSections);
             $this->proposal->amount_requested = $proposalMeta?->amount_requested;
 
+            // opensource status
+            $isOpensource = $this->getFieldByTitle(
+                $data->fieldSections,
+                "[GENERAL] Will your project’s output/s be fully open source?"
+            );
+
+            if (isset($isOpensource) && isset($isOpensource->ideaFieldValues[0]) && isset($isOpensource->ideaFieldValues[0]['value']) ) {
+                $this->proposal->opensource = $isOpensource->ideaFieldValues[0]['value'] == 'Yes' ? true : false;
+            }
+
             $this->proposal->saveMeta('project_length', $proposalMeta?->project_length, $this->proposal);
         }
         if ($this->proposal->fund?->parent_id == 61) {
@@ -201,6 +212,51 @@ class CatalystUpdateProposalDetailsJob implements ShouldQueue
             $this->proposal?->tags()->syncWithPivotValues($tags->pluck('id'), [
                 'model_type' => Proposal::class,
             ], false);
+        }
+
+
+        //save proposal category
+        // clean previous categories
+        $existingCategoryIDs = $this->proposal->categories()->pluck('id');
+        $this->proposal->categories()->detach($existingCategoryIDs);
+        // Delete the categories
+        foreach ($existingCategoryIDs as $categoryId) {
+            $category = Category::find($categoryId);
+            $category->delete();
+        }
+        if (!$this->proposal->categories?->count() ?? null) {
+            $category = $this->getFieldByTitle(
+                $data->fieldSections,
+                "[METADATA] Category of proposal"
+            )->ideaFieldValues[0]['value'];
+
+            $existingCat = Category::where('title', $category)->first();
+
+            if($existingCat instanceOf Category ){
+                
+                $this->proposal?->categories()->syncWithPivotValues($existingCat->pluck('id'), [
+                    'model_type' => Proposal::class,
+                ], false);
+
+                Proposal::withoutSyncingToSearch(fn () => $this->proposal->save());
+            }else{
+                
+                $category = Category::updateOrCreate(
+                    [
+                        'slug' => Str::slug($category),
+                    ],
+                    [
+                        'title' => ucfirst($category),
+                    ],
+                );
+                $this->proposal?->categories()->syncWithPivotValues($category->pluck('id'), [
+                    'model_type' => Proposal::class,
+                ], false);
+
+                Proposal::withoutSyncingToSearch(fn () => $this->proposal->save());
+            }
+
+
         }
     }
 
@@ -387,5 +443,22 @@ class CatalystUpdateProposalDetailsJob implements ShouldQueue
         }
 
         return collect([]);
+    }
+
+    protected function getFieldByTitle($fieldSections, string $title)
+    {
+
+        $targetField = array_filter(
+            $fieldSections,
+             fn ($obj) =>  strtolower($obj->title) === strtolower($title)
+            );
+
+        if (!$targetField) {
+            return new Fluent([]);
+        }
+
+        $targetField = reset($targetField);
+        $targetField = json_decode(json_encode($targetField), true);
+        return new Fluent($targetField);
     }
 }

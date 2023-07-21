@@ -165,7 +165,7 @@
         </div>
 
         <div class="flex justify-center mt-6">
-            <a href="https://cardano.ideascale.com/c/profile/3125446/" target="_blank" type="button" @click="goneToIdeascale = true"
+            <a href="https://cardano.ideascale.com/c/profile/178404/" target="_blank" type="button" @click="goneToIdeascale = true"
                     class="inline-flex items-center px-4 py-3 text-base font-medium text-teal-600 bg-white border border-transparent rounded-sm shadow-xs xl:text-xl hover:bg-slate-200 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2">
                 Go to Ideascale
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 ml-2 ">

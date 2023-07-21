@@ -1,14 +1,14 @@
 <template>
-    <div class="sticky top-0 z-30 border-b border-teal-400 md:border-teal-light-300 bg-teal-600 page-nav">
+    <div class="sticky top-0 z-30 bg-teal-600 border-b border-teal-400 md:border-teal-light-300 page-nav">
         <div class='container relative'>
-            <div class="flex flex-row justify-between flex-nowrap gap-4">
+            <div class="flex flex-row justify-between gap-4 flex-nowrap">
                 <nav class="flex max-w-[70%] overflow-x-auto" aria-label="Breadcrumb">
                     <ol role="list" class="flex space-x-0">
                         <li class="flex">
                             <div class="flex items-center">
                                 <Link href="/en/catalyst-explorer/dashboard"
-                                    class="text-white flex flex-row items-center hover:text-yellow-400">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
+                                    class="flex flex-row items-center text-white hover:text-yellow-400">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 20 20"
                                             fill="currentColor">
                                         <path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z"/>
                                         <path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"/>
@@ -29,7 +29,7 @@
                                         <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z"/>
                                     </svg>
                                         <Link :href=crumb.link
-                                           class="ml-2 text-xs inline-block font-medium text-white hover:text-yellow-400 whitespace-nowrap">
+                                           class="inline-block ml-2 text-xs font-medium text-white hover:text-yellow-400 whitespace-nowrap">
                                             {{$t(crumb.label)}}
                                         </Link>
                                 </div>
@@ -39,7 +39,7 @@
                                          xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                                         <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z"/>
                                     </svg>
-                                        <span class="ml-2 text-xs font-medium inline-block text-teal-light-100 whitespace-nowrap">
+                                        <span class="inline-block ml-2 text-xs font-medium text-teal-light-100 whitespace-nowrap">
                                             {{$t(crumb.label)}}
                                         </span>
                                 </div>
@@ -49,7 +49,7 @@
 
                 <nav class="relative hidden xl:inline-flex">
                     <ul
-                        class="flex flex-row items-center justify-end gap-2 py-2 text-xs md:text-sm flex-nowrap overflow-x-auto h-full">
+                        class="flex flex-row items-center justify-end h-full gap-2 py-2 overflow-x-auto text-xs md:text-sm flex-nowrap">
                         <li class="flow-root menu-item">
                             <Link
                                 class="px-1 py-3 text-white menu-link hover:text-yellow-500"
@@ -117,20 +117,20 @@
                             </Link>
                         </li>
 
-                        <li class="flow-root menu-item">
+                        <!-- <li class="flow-root menu-item">
                             <Link
                                 class="px-1 py-3 text-white menu-link hover:text-yellow-500"
                                 :class="{ 'text-yellow-500': $page.component.startsWith('Bookmark') }"
                                 :href="$utils.localizeRoute('catalyst-explorer/bookmarks')">
                                 {{ $t('Bookmarks') }}
                             </Link>
-                        </li>
+                        </li> -->
 
                         <li class="flow-root menu-item">
                             <a
                                 class="px-1 py-3 text-white menu-link hover:text-yellow-500"
                                 :class="{ 'text-yellow-500': $page.component.startsWith('VoterTool') }"
-                                :href="$utils.localizeRoute('project-catalyst/voter-tool')">
+                                :href="$utils.localizeRoute('catalyst-explorer/voter-tool')">
                             {{ $t('Voter Tool') }}
                             </a>
                         </li>
@@ -170,7 +170,7 @@
                         ref="target"
                         class="flex flex-col absolute right-0 mr-3.5 w-36 bg-white rounded-sm shadow-md overflow-hidden">
                         <ul
-                            class="flex flex-col items-start divide-y divide-teal-300  justify-end gap-2 py-2 text-xs md:text-sm flex-nowrap overflow-x-auto">
+                            class="flex flex-col items-start justify-end gap-2 py-2 overflow-x-auto text-xs divide-y divide-teal-300 md:text-sm flex-nowrap">
                             <li class="flow-root menu-item p-1.5 w-full items-center">
                                 <Link
                                     class="px-1 py-3 text-teal-600 menu-link hover:text-yellow-500"

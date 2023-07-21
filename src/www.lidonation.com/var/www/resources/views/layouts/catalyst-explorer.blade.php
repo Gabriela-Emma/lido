@@ -8,6 +8,8 @@
 
     <link rel="stylesheet" href="{{ asset(mix('css/catalyst-explorer.css')) }}">
 
+    {{-- <script src="https://player.vimeo.com/api/player.js"></script> --}}
+
     @env('production')
         <!-- Cloudflare Web Analytics -->
         <script defer src='//static.cloudflareinsights.com/beacon.min.js'

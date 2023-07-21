@@ -51,7 +51,7 @@ class BookmarkItems extends Resource
         return [
             ID::make()->sortable(),
             Text::make("Title")->sortable(),
-            BelongsTo::make('Bookmark', 'collection', BookmarkCollections::class),
+            BelongsTo::make('Bookmark', 'collection', BookmarkCollections::class)->searchable(),
             Markdown::make('Content'),
             Text::make('Link')->sortable(),
             DateTime::make('Created At')->sortable(),
@@ -59,6 +59,22 @@ class BookmarkItems extends Resource
                 Proposals::class
             ])->searchable(),
         ];
+
+        $prevKey = null;
+        $holding = collect([]);
+        \App\Models\Translation::whereIn(
+            'key',
+            fn ( $query ) => $query->select('key')->from('translations')->groupBy('key')->havingRaw('count(*) > 1')
+        )->where('lang', 'fr')->orderBy('key')
+        ->get()->each(
+            function ($i) use (&$prevKey) {
+                if ($i->key == $prevKey) {
+                    $holding[] = $i;
+                }
+                $prevKey=$i->key;
+            });
+            dump($prevKey);
+            dd($holding->toArray());
     }
 
     /**

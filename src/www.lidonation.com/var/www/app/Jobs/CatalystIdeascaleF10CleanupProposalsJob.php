@@ -11,6 +11,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Spatie\MediaLibrary\MediaCollections\Exceptions\FileCannotBeAdded;
 
@@ -39,35 +40,35 @@ class CatalystIdeascaleF10CleanupProposalsJob implements ShouldQueue
             $this->challenge = Fund::find($this->challenge);
         }
 
-        $ideascaleId = $this->challenge->meta_data->ideascale_id;
-
         $authResponse = Http::get('https://cardano.ideascale.com/a/community/api/get-token');
         if (! $authResponse->successful()) {
             return;
         }
 
         $token = $authResponse->body();
-        $ideascaleProposls = array_merge(
-            $this->getActiveProposals($settingService, $ideascaleId, $token),
-            $this->getArchiveProposals($settingService, $ideascaleId, $token)
-        );
+        // $ideascaleProposls = array_merge(
+        //     $this->getActiveProposals($settingService, $ideascaleId, $token),
+        //     $this->getArchiveProposals($settingService, $ideascaleId, $token)
+        // );
+        $ideascaleProposls = $this->getActiveProposals($token);
+        if ($ideascaleProposls && !empty($ideascaleProposls)) {
+            $proposalsToDelete = Proposal::with('metas')->where('fund_id', $this->challenge->id)->whereHas(
+                'metas',
+                fn ($q) => $q->whereNotIn('content', $ideascaleProposls)->where('key', 'ideascale_id')
+            )->get();
 
-        $proposalsToDelete = Proposal::with('metas')->where('fund_id', $this->challenge->id)->whereHas(
-            'metas',
-            fn ($q) => $q->whereNotIn('content', $ideascaleProposls)
-                ->where('key', 'ideascale_id')
-        )->get();
-
-        if ($proposalsToDelete->isNotEmpty()) {
-            $proposalsToDelete->each(
-                fn ($proposal) => $proposal->forceDelete()
-            );
+            Log::info('Deleting ' . $proposalsToDelete->count('id') . 'proposals for fund ' . $this->challenge->id);
+            if ($proposalsToDelete->isNotEmpty()) {
+                $proposalsToDelete->each(
+                    fn ($proposal) => $proposal->delete()
+                );
+            }
         }
     }
 
-    protected function getArchiveProposals(SettingService $settingService, $ideascaleId, $token)
+    protected function getArchiveProposals($token)
     {
-        $url = Str::replace('{$ideascaleId}', $ideascaleId, $settingService->getSettings()?->catalyst_f10_ideascale_archive_link);
+        $url = $this->challenge->meta_data?->ideascale_archive_link;
         $response = Http::withToken($token)
             ->post(
                 $url,
@@ -92,9 +93,10 @@ class CatalystIdeascaleF10CleanupProposalsJob implements ShouldQueue
         )->pluck('id')->toArray();
     }
 
-    protected function getActiveProposals(SettingService $settingService, $ideascaleId, $token)
+    protected function getActiveProposals($token)
     {
-        $url = Str::replace('{$ideascaleId}', $ideascaleId, $settingService->getSettings()?->catalyst_f10_ideascale_sync_link);
+        // $url = Str::replace('{$ideascaleId}', $ideascaleId, $settingService->getSettings()?->catalyst_f10_ideascale_sync_link);
+        $url = $this->challenge->meta_data?->ideascale_sync_link;
         $response = Http::withToken($token)
             ->post(
                 $url,

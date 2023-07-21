@@ -4,13 +4,13 @@
             :profileQuickView="profileQuickView"
             @close="profileQuickView = null" />
 
-        <ProposalSummaryCard v-if="!quickpitch"
+        <ProposalQuickPitchCard v-if="quickpitching && !!proposal.quickpitch"
             @profileQuickView="handleProfileQuickView($event)"
-            @quickpitch="quickpitch = true" :proposal="props.proposal" />
+            @summary="quickpitching = false" :proposal="props.proposal" />
 
-        <ProposalQuickPitchCard v-else
+        <ProposalSummaryCard v-else
             @profileQuickView="handleProfileQuickView($event)"
-            @summary="quickpitch = false" :proposal="props.proposal" />
+            @quickpitch="quickpitching = true" :proposal="props.proposal" />
     </div>
 </template>
 
@@ -23,7 +23,10 @@ import { Ref } from "@vue/reactivity";
 import ProposalSummaryCard from "./partials/ProposalSummaryCard.vue";
 import ProposalQuickPitchCard from "./partials/ProposalQuickPitchCard.vue";
 import ProposalUserQuickView from "./partials/ProposalUserQuickView.vue";
+import { useProposalsStore } from "../../stores/proposals-store";
 
+const proposalsStore = useProposalsStore();
+let {viewType} = storeToRefs(proposalsStore);
 
 interface Author {
     id: number;
@@ -37,24 +40,22 @@ interface Author {
 const props = withDefaults(
     defineProps<{
         proposal: Proposal,
-        quickpitch?: boolean,
+        quickpitching?: boolean,
     }>(),
     {
-        quickpitch: false,
+        quickpitching: false,
         proposal: () => {
             return {} as Proposal;
         },
     },
 );
-let quickpitch = ref(props.quickpitch);
-
-let isBookmarked:Ref<boolean> = ref()
+let quickpitching = ref(props.quickpitching);
 
 const bookmarksStore = useBookmarksStore();
-const {models: bookmarkCollectionsModels$} = storeToRefs(bookmarksStore);
+const {modelIds$} = storeToRefs(bookmarksStore);
 
-watch([bookmarkCollectionsModels$], (newValue, oldValue) => {
-    isBookmarked.value =  bookmarkCollectionsModels$.value?.some(model => model.id === props.proposal.id);
+watch([viewType], (newValue, oldValue) => {
+    quickpitching.value = viewType.value === 'quickpitch';
 });
 
 let profileQuickView = ref(null);

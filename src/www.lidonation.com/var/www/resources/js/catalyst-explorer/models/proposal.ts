@@ -1,10 +1,12 @@
 import Repo from "./repo";
 import Fund from "./fund";
+import Vote from "./vote";
 
 export default interface Proposal {
     amount_received: number;
     amount_requested:number;
     ca_rating: number;
+    challenge_name?: string;
     currency: string;
     funding_status: string;
     fund_name?: string;
@@ -21,6 +23,7 @@ export default interface Proposal {
     quickpitch?: string;
     website: string;
     yes_votes_count: number;
+    vote: Vote;
 
     // relationships
     challenge?: Fund;

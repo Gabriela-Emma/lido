@@ -82,7 +82,7 @@ class LearningAnswerResponseController extends Controller
         ])->first();
 
         if($topicCompleted && !$topicNft instanceof Nft){
-            IssueNftsJob::dispatch($learningTopic, $learningLesson);
+            $this->issueNft($learningTopic, $learningLesson);
             return redirect()->route('earn.learn.nft.awarded');
         }
 

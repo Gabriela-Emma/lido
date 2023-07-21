@@ -11,6 +11,7 @@ use App\Http\Controllers\Earn\LearnController;
 use App\Http\Controllers\Earn\LearningLessonController;
 use App\Http\Controllers\GenerateMnemonicPhraseController;
 use App\Http\Controllers\GlobalSearchController;
+use App\Http\Controllers\ProjectCatalyst\CatalystBookmarksController;
 use App\Http\Controllers\ProjectCatalyst\CatalystProposalsController;
 use App\Http\Controllers\PromoController;
 use App\Http\Controllers\QuestionResponseController;
@@ -283,7 +284,7 @@ Route::prefix('catalyst-explorer')->as('catalystExplorerApi.')
         Route::get('/challenges', [CatalystExplorer\ChallengeController::class, 'challenges'])->name('challenges');
         Route::get('/challenges/{challenge_id}', [CatalystExplorer\ChallengeController::class, 'challenge'])->name('challenge');
 
-        Route::get('/proposals', [CatalystExplorer\ProposalController::class, 'proposals']);
+        Route::get('/proposals', [CatalystExplorer\ProposalController::class, 'proposals'])->name('proposals');
         Route::get('/proposals/{proposal_id}', [CatalystExplorer\ProposalController::class, 'proposal']);
 
         Route::post('/people/claim', [CatalystExplorer\ProfileController::class, 'claim']);
@@ -305,7 +306,7 @@ Route::prefix('catalyst-explorer')->as('catalystExplorerApi.')
             Route::get('/{catalystReport:id}', [CatalystExplorer\ReportController::class, 'listComments']);
         });
 
-        Route::post('/login', [CatalystExplorer\UserController::class, 'login']);
+        Route::post('/login', [CatalystExplorer\UserController::class, 'login'])->name('login');
 
         Route::post('/register', [CatalystExplorer\UserController::class, 'create']);
 
@@ -338,7 +339,7 @@ Route::prefix('catalyst-explorer')->as('catalystExplorerApi.')
         Route::patch('proposal/repo', [CatalystExplorer\RepoController::class, 'updateRepo']);
 
         Route::prefix('proposals')->as('proposals.')->group(function () {
-            Route::post('/login', [CatalystExplorer\UserController::class, 'login']);
+            Route::post('/login', [CatalystExplorer\UserController::class, 'login'])->name('login');
 
             Route::prefix('/{proposal:id}')->group(function () {
                 Route::post('/repo', [CatalystExplorer\RepoController::class, 'store'])
@@ -349,15 +350,23 @@ Route::prefix('catalyst-explorer')->as('catalystExplorerApi.')
             });
         });
 
+        Route::get('/my/draft-ballots', [CatalystBookmarksController::class, 'draftBallotIndex'])
+                ->name('draftBallots');
+
+        Route::get('/my/draft-ballots/{draftBallot:id}', [CatalystBookmarksController::class, 'getDraftBallot'])
+                ->name('draftBallot');
+
         Route::post('/react/report/{catalystReport:id}', [CatalystExplorer\ReportController::class, 'createReaction']);
 
-        Route::post('/logout', [CatalystExplorer\UserController::class, 'logout']);
+        Route::post('/logout', [CatalystExplorer\UserController::class, 'logout'])->name('logout');
 
         Route::group([
             'prefix' => '/reports/comments',
         ], function () {
             Route::post('/{catalystReport:id}', [CatalystExplorer\ReportController::class, 'createComment']);
         });
+
+
     });
 
 Route::prefix('earn')->as('earnApi.')->group(function () {

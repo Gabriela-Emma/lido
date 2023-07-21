@@ -55,6 +55,7 @@ class Fund extends Model implements HasMedia, IHasMetaData
         'launched_at' => 'datetime:Y-m-d',
         'awarded_at' => 'datetime:Y-m-d',
         'assessment_started_at' => 'datetime:Y-m-d',
+        'amount' => 'integer',
     ];
 
     public function currency(): Attribute
@@ -193,7 +194,8 @@ class Fund extends Model implements HasMedia, IHasMetaData
 
     public function proposals(): HasMany
     {
-        return $this->hasMany(Proposal::class, 'fund_id');
+        return $this->hasMany(Proposal::class, 'fund_id')
+        ->where('type', 'proposal');
     }
 
     public function parent_proposals(): HasManyThrough

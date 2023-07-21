@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use App\Models\BookmarkCollection;
+use App\Models\CatalystVote;
+use App\Models\DraftBallot;
 use App\Models\LearningLesson;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
@@ -35,6 +37,14 @@ class RouteServiceProvider extends ServiceProvider
 
         Route::bind('bookmarkCollection', function ($value, $route) {
             return $this->getModel(BookmarkCollection::class, $value);
+        });
+
+        Route::bind('draftBallot', function ($value, $route) {
+            return $this->getModel(DraftBallot::class, $value);
+        });
+
+        Route::bind('catalystVote', function ($value, $route) {
+            return $this->getModel(CatalystVote::class, $value);
         });
 
         Route::bind('learningLesson', function ($value, $route) {

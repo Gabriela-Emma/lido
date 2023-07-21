@@ -180,7 +180,7 @@ return [
     'environments' => [
         'production' => [
             'supervisor-1' => [
-                'maxProcesses' => 16,
+                'maxProcesses' => 24,
                 'balanceMaxShift' => 1,
                 'balanceCooldown' => 3,
                 'timeout' => 1260,
@@ -190,7 +190,7 @@ return [
 
         'local' => [
             'supervisor-1' => [
-                'maxProcesses' => 4,
+                'maxProcesses' => 5,
             ],
         ],
     ],

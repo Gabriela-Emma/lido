@@ -1,4 +1,4 @@
-<div class="relative z-10 flex inline-flex h-full gap-4 top-8" x-data="{
+<div class="relative z-10 inline-flex h-full gap-4 top-8" x-data="{
     showAll: true,
     onlyMine: false,
     groupRelated: false,
@@ -78,49 +78,49 @@
     </div>
 
     <div class="relative flex flex-row items-center gap-2 p-2 border">
-        <div class="text-sm text-gray-700 absolute -top-2 bg-gray-50 px-1.5 mb-2 rounded-sm text-xs">
+        <div class="absolute -top-2 px-1.5 mb-2 rounded-sm text-xs">
             Filters
         </div>
         <div class="relative z-0 inline-flex rounded-sm p-0.5">
             <button type="button"
                     @click="toggleFilter(null)"
-                    :class="{'bg-primary-600 text-white': filter === null}"
+                    :class="{'bg-primary-600 text-white': filter === null, 'bg-gray-50 text-gray-700': filter !== null}"
                     class="relative inline-flex items-center px-4 py-1 -ml-px text-xs font-medium text-gray-700 bg-white border border-gray-300 rounded-r-sm hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-primary-500 focus:border-primary-500">
                 All
             </button>
             <button type="button"
                     @click="toggleFilter('snippets')"
-                    :class="{'bg-primary-600 text-white': filter === 'snippets'}"
+                    :class="{'bg-primary-600 text-white': filter === 'snippets', 'bg-gray-50 text-gray-700': filter !== 'snippets'}"
                     class="relative inline-flex items-center px-4 py-1 -ml-px text-xs font-medium text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-primary-500 focus:border-primary-500">
                 Snippets
             </button>
             <button type="button"
                     @click="toggleFilter('insights')"
-                    :class="{'bg-primary-600 text-white': filter === 'insights'}"
+                    :class="{'bg-primary-600 text-white': filter === 'insights', 'bg-gray-50 text-gray-700': filter !== 'insights'}"
                     class="relative inline-flex items-center px-4 py-1 -ml-px text-xs font-medium text-gray-700 bg-white border border-gray-300 rounded-l-sm hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-primary-500 focus:border-primary-500">
                 Insights
             </button>
             <button type="button"
                     @click="toggleFilter('news')"
-                    :class="{'bg-primary-600 text-white': filter === 'news'}"
+                    :class="{'bg-primary-600 text-white': filter === 'news', 'bg-gray-50 text-gray-700': filter !== 'news'}"
                     class="relative inline-flex items-center px-4 py-1 -ml-px text-xs font-medium text-gray-700 bg-white border border-gray-300 rounded-l-sm hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-primary-500 focus:border-primary-500">
                 News
             </button>
             <button type="button"
                     @click="toggleFilter('reviews')"
-                    :class="{'bg-primary-600 text-white': filter === 'reviews'}"
+                    :class="{'bg-primary-600 text-white': filter === 'reviews', 'bg-gray-50 text-gray-700': filter !== 'reviews'}"
                     class="relative inline-flex items-center px-4 py-1 -ml-px text-xs font-medium text-gray-700 bg-white border border-gray-300 rounded-l-sm hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-primary-500 focus:border-primary-500">
                 Reviews
             </button>
             <button type="button"
                     @click="toggleFilter('onboarding')"
-                    :class="{'bg-primary-600 text-white': filter === 'onboarding'}"
+                    :class="{'bg-primary-600 text-white': filter === 'onboarding', 'bg-gray-50 text-gray-700': filter !== 'onboarding'}"
                     class="relative inline-flex items-center px-4 py-1 -ml-px text-xs font-medium text-gray-700 bg-white border border-gray-300 rounded-l-sm hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-primary-500 focus:border-primary-500">
                 Onboarding Content
             </button>
             <button type="button"
                     @click="toggleFilter('proposal')"
-                    :class="{'bg-primary-600 text-white': filter === 'proposal'}"
+                    :class="{'bg-primary-600 text-white': filter === 'proposal', 'bg-gray-50 text-gray-700': filter !== 'proposal'}"
                     class="relative inline-flex items-center px-4 py-1 -ml-px text-xs font-medium text-gray-700 bg-white border border-gray-300 rounded-l-sm hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-primary-500 focus:border-primary-500">
                 Proposals
             </button>

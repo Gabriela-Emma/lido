@@ -106,12 +106,12 @@
 
                     <li class="flow-root menu-item">
                         <a class="px-1 py-3 text-white menu-link whitespace-nowrap {{ request()->routeIs('catalystExplorer.voter-tool') ? 'text-yellow-500' : '' }} hover:text-yellow-500"
-                           href="{{localizeRoute('projectCatalyst.voterTool')}}">
+                           href="{{localizeRoute('catalystExplorer.voterTool')}}">
                             {{ $snippets->tool }}
                         </a>
                     </li>
                     <li class="flow-root menu-item"  x-data="bookmarksMenuLink">
-                        <a href="{{localizeRoute('projectCatalyst.bookmarks')}}"
+                        <a href="{{localizeRoute('catalystExplorer.bookmarks')}}"
                            class="inline-flex items-center menu-link group">
                                 <span class="relative z-0 inline-flex rounded-md shadow-sm" x-cloak>
                                     <button type="button"
@@ -132,10 +132,6 @@
                                               d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/>
                                         </svg>
                                         <span class="hidden md:inline-block">Bookmarks</span>
-                                    </button>
-                                    <button
-                                        type="button"
-                                        class="relative inline-flex items-center px-2 py-1 -ml-px text-sm font-medium text-white bg-white bg-pink-700 border border-pink-300 rounded-r-sm group-hover:bg-pink-600 focus:z-10 focus:outline-none">
                                     </button>
                                 </span>
                         </a>
@@ -170,8 +166,7 @@
                     class="relative"
                 >
                     <div class="flex flex-row items-center gap-2" x-data="bookmarksMenuLink">
-                        <a href="{{localizeRoute('projectCatalyst.bookmarks')}}"
-                           onclick='Livewire.emit("openModal", "catalyst.catalyst-voter-tool-bookmarks-component")'
+                        <a href="{{localizeRoute('catalystExplorer.bookmarks')}}"
                            class="inline-flex items-center menu-link group">
                                     <span class="relative z-0 inline-flex rounded-md shadow-sm" x-cloak>
                                     <button type="button"
@@ -190,10 +185,6 @@
                                               d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/>
                                         </svg>
                                         <span class="hidden lg:inline-block">Bookmarks</span>
-                                    </button>
-                                    <button
-                                        type="button"
-                                        class="relative inline-flex items-center px-2 py-1 -ml-px text-sm font-medium text-white bg-white bg-pink-700 border border-pink-300 rounded-r-sm group-hover:bg-pink-600 focus:z-10 focus:outline-none">
                                     </button>
                                     </span>
                         </a>
@@ -233,7 +224,7 @@
                                 {{ $snippets->charts }}
                             </a>
 
-                            <a class="p-3 text-gray-500 menu-link block font-medium {{ request()->routeIs('projectCatalyst.funds') ? 'text-teal-600' : '' }} hover:text-yellow-500"
+                            <a class="p-3 text-gray-500 menu-link block font-medium {{ request()->routeIs('catalystExplorer.funds') ? 'text-teal-600' : '' }} hover:text-yellow-500"
                                href="{{localizeRoute('catalystExplorer.funds')}}">
                                 {{ $snippets->funds }}
                             </a>
@@ -242,7 +233,7 @@
                                href="{{localizeRoute('catalystExplorer.proposals')}}">
                                 {{ $snippets->projects }}
                             </a>
-                            <a class="px-1 py-3 text-white menu-link {{ request()->routeIs('projectCatalyst.assessments') ? 'text-yellow-500' : '' }} hover:text-yellow-500"
+                            <a class="px-1 py-3 text-white menu-link {{ request()->routeIs('catalystExplorer.assessments') ? 'text-yellow-500' : '' }} hover:text-yellow-500"
                                 href="{{localizeRoute('catalystExplorer.assessments')}}">
                                 {{ $snippets->funds }}
                              </a>
@@ -252,18 +243,18 @@
                                 {{ $snippets->api }}
                             </a>
 
-                            <a class="p-3 text-gray-500 menu-link block font-medium {{ request()->routeIs('projectCatalyst.users') ? 'text-teal-600' : '' }} hover:text-yellow-500"
+                            <a class="p-3 text-gray-500 menu-link block font-medium {{ request()->routeIs('catalystExplorer.people') ? 'text-teal-600' : '' }} hover:text-yellow-500"
                                href="{{localizeRoute('catalystExplorer.people')}}">
                                 {{ $snippets->people }}
                             </a>
 
-                            <a class="p-3 text-gray-500 menu-link block font-medium {{ request()->routeIs('projectCatalyst.groups') ? 'text-teal-600' : '' }} hover:text-yellow-500"
+                            <a class="p-3 text-gray-500 menu-link block font-medium {{ request()->routeIs('catalystExplorer.groups') ? 'text-teal-600' : '' }} hover:text-yellow-500"
                                href="{{localizeRoute('catalystExplorer.groups')}}">
                                 {{ $snippets->groups }}
                             </a>
 
-                            <a class="p-3 text-gray-500 menu-link block font-medium whitespace-nowrap {{ request()->routeIs('projectCatalyst.voterTool') ? 'text-teal-600' : '' }} hover:text-yellow-500"
-                               href="{{localizeRoute('catalystExplorer.voter-tool')}}">
+                            <a class="p-3 text-gray-500 menu-link block font-medium whitespace-nowrap {{ request()->routeIs('catalystExplorer.voterTool') ? 'text-teal-600' : '' }} hover:text-yellow-500"
+                               href="{{localizeRoute('catalystExplorer.voterTool')}}">
                                 Voter Tool
                             </a>
                         </div>

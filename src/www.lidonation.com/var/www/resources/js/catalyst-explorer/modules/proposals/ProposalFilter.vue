@@ -92,6 +92,27 @@
                         }" />
                 </li>
 
+                <li class="p-4 ">
+                    <p class="mb-3 text-slate-400">{{ $t("Opensource") }}</p>
+                    <Toggle
+                        onLabel="Opensource Proposals"
+                        offLabel="All Proposals"
+                        v-model="filters.opensource"
+                        :classes="{
+                          container: 'inline-block rounded-xl outline-none focus:ring focus:ring-teal-500 focus:ring-opacity-30 w-full',
+                          toggle: 'flex w-full h-8 rounded-xl relative cursor-pointer transition items-center box-content border-2 text-xs leading-none',
+                          toggleOn: 'bg-teal-500 border-teal-500 justify-start text-white',
+                          toggleOff: 'bg-slate-200 border-slate-200 justify-end text-slate-700',
+                          handle: 'inline-block bg-white w-8 h-8 top-0 rounded-xl absolute transition-all',
+                          handleOn: 'left-full transform -translate-x-full',
+                          handleOff: 'left-0',
+                          handleOnDisabled: 'bg-slate-100 left-full transform -translate-x-full',
+                          handleOffDisabled: 'bg-slate-100 left-0',
+                          label: 'text-center w-auto px-2 border-box whitespace-nowrap select-none',
+                        }"
+                    />
+                </li>
+
                 <li class="p-4 bg-stone-100">
                     <span class="block text-lg font-medium xl:text-xl">
                         {{ $t("Community Filters") }}
@@ -109,6 +130,7 @@
                             qp: 'Quick Pitches',
                         }" />
                 </li>
+
             </ul>
         </div>
     </div>
@@ -206,6 +228,7 @@ watch(filters, (newValue, oldValue) => {
 function clearFilters() {
     filters.value.currentPage = 1;
     filters.value.funded = false;
+    filters.value.opensource = false;
     filters.value.fundingStatus = null;
     filters.value.projectStatus = null;
     filters.value.cohort = null;

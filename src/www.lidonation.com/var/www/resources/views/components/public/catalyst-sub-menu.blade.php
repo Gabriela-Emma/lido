@@ -36,12 +36,12 @@
                 </li>
                 <li class="flow-root menu-item">
                     <a class="px-1 py-3 text-white menu-link whitespace-nowrap {{ request()->routeIs('catalystExplorer.voter-tool') ? 'text-yellow-500' : '' }} hover:text-yellow-500"
-                       href="{{localizeRoute('catalystExplorer.voter-tool')}}">
+                       href="{{localizeRoute('catalystExplorer.voterTool')}}">
                         Voter Tool
                     </a>
                 </li>
-                <li class="flow-root menu-item" x-data="bookmarksMenuLink">
-                    <a href="{{localizeRoute('projectCatalyst.bookmarks')}}"
+                <li class="flow-root menu-item">
+                    <a href="{{localizeRoute('catalystExplorer.bookmarks')}}"
                         class="inline-flex items-center menu-link group">
                         <span class="relative z-0 inline-flex rounded-md shadow-sm" x-cloak>
                         <button type="button"
@@ -60,10 +60,7 @@
                             </svg>
                             <span class="hidden md:inline-block">Bookmarks</span>
                         </button>
-                        <button
-                            type="button"
-                            class="relative inline-flex items-center px-2 py-1 -ml-px text-sm font-medium text-white bg-white bg-pink-700 border border-pink-300 rounded-r-sm group-hover:bg-pink-600 focus:z-10 focus:outline-none">
-                        </button>
+
                         </span>
                     </a>
                 </li>
