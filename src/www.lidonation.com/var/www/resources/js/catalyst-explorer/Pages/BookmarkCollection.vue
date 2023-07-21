@@ -39,7 +39,7 @@
                     </button>
 
                     <button @click="createDraftBallot"
-                            type="button"
+                            type="button" v-if="user$?.id === bookmarkCollection?.user_id"
                             :disabled="!user$?.id"
                             :title="!user$?.id ? $t('You must be logged in to create a draft ballot') : 'Convert to draft ballot'"
                             :class="[textColor$, borderColor$, user$?.id ? 'hover:text-teal-light-400' : 'cursor-not-allowed']"
