@@ -384,6 +384,17 @@
                 "summary": "Get all people",
                 "description": "Returns all people",
                 "operationId": "people",
+                "parameters": [
+                    {
+                        "name": "ideascale_username",
+                        "in": "query",
+                        "description": "<p>Filters content by ideascale username<p>",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "successful",
@@ -572,9 +583,17 @@
                         "type": "integer",
                         "example": "90"
                     },
+                    "challenge_name": {
+                        "type": "string",
+                        "example": "F9: DAOs <3 Cardano"
+                    },
                     "fund_id": {
                         "type": "integer",
                         "example": "97"
+                    },
+                    "fund_name": {
+                        "type": "string",
+                        "example": "Fund 9"
                     },
                     "title": {
                         "type": "string",
@@ -725,7 +744,7 @@
                     },
                     "path": {
                         "type": "string",
-                        "example": "http://localhost:8880/api/catalyst-explorer/proposals"
+                        "example": "/api/catalyst-explorer/proposals"
                     },
                     "per_page": {
                         "type": "integer",
@@ -752,7 +771,7 @@
                 "properties": {
                     "url": {
                         "type": "string",
-                        "example": "http://localhost:8880/api/catalyst-explorer/proposals?page=1"
+                        "example": "/api/catalyst-explorer/proposals?page=1"
                     },
                     "label": {
                         "type": "string",
@@ -797,7 +816,7 @@
                     },
                     "link": {
                         "type": "string",
-                        "example": "http://localhost:8880/en/project-catalyst/funds/fund-2"
+                        "example": "/en/catalyst-explorer/funds/fund-2"
                     },
                     "thumbnail_url": {
                         "type": "null",
@@ -820,11 +839,11 @@
                 "properties": {
                     "first": {
                         "type": "string",
-                        "example": "http://localhost:8880/api/catalyst-explorer/funds?page=1"
+                        "example": "/api/catalyst-explorer/funds?page=1"
                     },
                     "last": {
                         "type": "string",
-                        "example": "http://localhost:8880/api/catalyst-explorer/funds?page=1"
+                        "example": "/api/catalyst-explorer/funds?page=1"
                     },
                     "prev": {
                         "type": "string",
@@ -832,7 +851,7 @@
                     },
                     "next": {
                         "type": "string",
-                        "example": "http://localhost:8880/api/catalyst-explorer/funds?page=2"
+                        "example": "/api/catalyst-explorer/funds?page=2"
                     }
                 },
                 "type": "object"
@@ -856,7 +875,7 @@
                     },
                     "path": {
                         "type": "string",
-                        "example": "http://localhost:8880/api/catalyst-explorer/funds"
+                        "example": "/api/catalyst-explorer/funds"
                     },
                     "per_page": {
                         "type": "integer",
@@ -883,7 +902,7 @@
                 "properties": {
                     "url": {
                         "type": "string",
-                        "example": "http://localhost:8880/api/catalyst-explorer/funds?page=1"
+                        "example": "/api/catalyst-explorer/funds?page=1"
                     },
                     "label": {
                         "type": "string",
@@ -923,11 +942,11 @@
                 "properties": {
                     "first": {
                         "type": "string",
-                        "example": "http://localhost:8880/api/catalyst-explorer/tags?page=1"
+                        "example": "/api/catalyst-explorer/tags?page=1"
                     },
                     "last": {
                         "type": "string",
-                        "example": "http://localhost:8880/api/catalyst-explorer/tags?page=1"
+                        "example": "/api/catalyst-explorer/tags?page=1"
                     },
                     "prev": {
                         "type": "string",
@@ -935,7 +954,7 @@
                     },
                     "next": {
                         "type": "string",
-                        "example": "http://localhost:8880/api/catalyst-explorer/tags?page=2"
+                        "example": "/api/catalyst-explorer/tags?page=2"
                     }
                 },
                 "type": "object"
@@ -959,7 +978,7 @@
                     },
                     "path": {
                         "type": "string",
-                        "example": "http://localhost:8880/api/catalyst-explorer/tags"
+                        "example": "/api/catalyst-explorer/tags"
                     },
                     "per_page": {
                         "type": "integer",
@@ -986,7 +1005,7 @@
                 "properties": {
                     "url": {
                         "type": "string",
-                        "example": "http://localhost:8880/api/catalyst-explorer/tags?page=1"
+                        "example": "/api/catalyst-explorer/tags?page=1"
                     },
                     "label": {
                         "type": "string",
@@ -1038,11 +1057,11 @@
                 "properties": {
                     "first": {
                         "type": "string",
-                        "example": "http://localhost:8880/api/catalyst-explorer/challenges?page=1"
+                        "example": "/api/catalyst-explorer/challenges?page=1"
                     },
                     "last": {
                         "type": "string",
-                        "example": "http://localhost:8880/api/catalyst-explorer/challenges?page=1"
+                        "example": "/api/catalyst-explorer/challenges?page=1"
                     },
                     "prev": {
                         "type": "string",
@@ -1050,7 +1069,7 @@
                     },
                     "next": {
                         "type": "string",
-                        "example": "http://localhost:8880/api/catalyst-explorer/challenges?page=2"
+                        "example": "/api/catalyst-explorer/challenges?page=2"
                     }
                 },
                 "type": "object"
@@ -1074,7 +1093,7 @@
                     },
                     "path": {
                         "type": "string",
-                        "example": "http://localhost:8880/api/catalyst-explorer/challenges"
+                        "example": "/api/catalyst-explorer/challenges"
                     },
                     "per_page": {
                         "type": "integer",
@@ -1101,7 +1120,7 @@
                 "properties": {
                     "url": {
                         "type": "string",
-                        "example": "http://localhost:8880/api/catalyst-explorer/challenges?page=1"
+                        "example": "/api/catalyst-explorer/challenges?page=1"
                     },
                     "label": {
                         "type": "string",
@@ -1161,11 +1180,11 @@
                 "properties": {
                     "first": {
                         "type": "string",
-                        "example": "http://localhost:8880/api/catalyst-explorer/groups?page=1"
+                        "example": "/api/catalyst-explorer/groups?page=1"
                     },
                     "last": {
                         "type": "string",
-                        "example": "http://localhost:8880/api/catalyst-explorer/groups?page=3"
+                        "example": "/api/catalyst-explorer/groups?page=3"
                     },
                     "prev": {
                         "type": "string",
@@ -1173,7 +1192,7 @@
                     },
                     "next": {
                         "type": "string",
-                        "example": "http://localhost:8880/api/catalyst-explorer/groups?page=2"
+                        "example": "/api/catalyst-explorer/groups?page=2"
                     }
                 },
                 "type": "object"
@@ -1197,7 +1216,7 @@
                     },
                     "path": {
                         "type": "string",
-                        "example": "http://localhost:8880/api/catalyst-explorer/groups"
+                        "example": "/api/catalyst-explorer/groups"
                     },
                     "per_page": {
                         "type": "integer",
@@ -1224,7 +1243,7 @@
                 "properties": {
                     "url": {
                         "type": "string",
-                        "example": "http://localhost:8880/api/catalyst-explorer/groups?page=1"
+                        "example": "/api/catalyst-explorer/groups?page=1"
                     },
                     "label": {
                         "type": "string",
@@ -1257,7 +1276,7 @@
                     },
                     "link": {
                         "type": "string",
-                        "example": "http://localhost:8880/en/project-catalyst/users/23"
+                        "example": "/en/project-catalyst/users/23"
                     },
                     "ideascale_link": {
                         "type": "string",
@@ -1288,11 +1307,11 @@
                 "properties": {
                     "first": {
                         "type": "string",
-                        "example": "http://localhost:8880/api/catalyst-explorer/people?page=1"
+                        "example": "/api/catalyst-explorer/people?page=1"
                     },
                     "last": {
                         "type": "string",
-                        "example": "http://localhost:8880/api/catalyst-explorer/people?page=23"
+                        "example": "/api/catalyst-explorer/people?page=23"
                     },
                     "prev": {
                         "type": "string",
@@ -1300,7 +1319,7 @@
                     },
                     "next": {
                         "type": "string",
-                        "example": "http://localhost:8880/api/catalyst-explorer/people?page=2"
+                        "example": "/api/catalyst-explorer/people?page=2"
                     }
                 },
                 "type": "object"
@@ -1324,7 +1343,7 @@
                     },
                     "path": {
                         "type": "string",
-                        "example": "http://localhost:8880/api/catalyst-explorer/people"
+                        "example": "/api/catalyst-explorer/people"
                     },
                     "per_page": {
                         "type": "integer",
@@ -1351,7 +1370,7 @@
                 "properties": {
                     "url": {
                         "type": "string",
-                        "example": "http://localhost:8880/api/catalyst-explorer/people?page=1"
+                        "example": "/api/catalyst-explorer/people?page=1"
                     },
                     "label": {
                         "type": "string",

@@ -61,6 +61,7 @@ class DraftBallotResource extends JsonResource
             'visibility' => $this->visibility,
             'items_count' => $this->items_count,
             'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
             'groups' => $groups,
         ];
     }
