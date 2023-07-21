@@ -17,6 +17,9 @@
                     <div class="flex flex-col md:flex-row md:gap-2 md:items-center">
                         <h2 class="text-sm md:text-2xl xl:text-3xl">My Lido Rewards</h2>
                     </div>
+                    <div>
+                        <ConnectWallet />
+                    </div>
                 </div>
                 <div class="relative">
                     <section class="p-6 border-t border-teal-300">
