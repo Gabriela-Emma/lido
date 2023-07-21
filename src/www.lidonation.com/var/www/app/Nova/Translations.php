@@ -157,7 +157,7 @@ class Translations extends Resource
                     (new GetModels)()->combine(
                         (new GetModels)()->toArray()
                     )->toArray()
-                )->filtrable(),
+                )->filterable(),
             //            BelongsTo::make(__('Source'), 'source', [User::class])
             //                ->searchable(),
             Text::make(__('Source Id'), 'source_id')->filterable()->sortable(),
