@@ -218,7 +218,7 @@ function getChart()
     return {
         labels: [
             'Allotted',
-            (props.group?.amount - allotedBudget.value) > 0 ? 'Pot Balance' : 'Over Budget By'
+            (props.group?.amount - allotedBudget.value) > 0 ? 'Pot Balance Left' : 'Over Budget By'
         ],
         datasets: [
             {
