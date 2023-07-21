@@ -27,7 +27,7 @@ class LearningTopic extends Model
         HasTranslations,
         HasTimestamps,
         SoftDeletes;
-        
+
 
     protected $casts = [
         //        'lessons' => DataCollection::class.':'.LearningTopicData::class,
@@ -85,14 +85,6 @@ class LearningTopic extends Model
             }
         );
     }
-
-    // @todo implement after laravel 10
-    // public function nftTemplate(): HasOne
-    // {
-    //     return $this->nfts()->one()->ofMany()->where(
-    //         'metadata->topic_id',$this->id
-    //     );
-    // }
 
     public function nftTemplate(): Attribute
     {
