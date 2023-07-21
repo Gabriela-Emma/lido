@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Earn;
 
+use App\Jobs\IssueNftsJob;
 use App\Models\Nft;
 use App\Models\User;
 use App\Models\Reward;
@@ -79,7 +80,7 @@ class LearningAnswerResponseController extends Controller
             'model_id' => $learningTopic->id,
             'model_type' => LearningTopic::class
         ])->first();
-        
+
         if($topicCompleted && !$topicNft instanceof Nft){
             $this->issueNft($learningTopic, $learningLesson);
             return redirect()->route('earn.learn.nft.awarded');
@@ -134,43 +135,6 @@ class LearningAnswerResponseController extends Controller
             $reward->save();
         }
 
-
-    }
-
-    public function issueNft(LearningTopic $topic, LearningLesson $learningLesson)
-    {
-        $user = Auth::user();
-        $nftTemplate = $topic->nftTemplate;
-
-        if(!$nftTemplate instanceOf Nft){
-            return null;
-        }
-
-        $userNft = new Nft;
-        $originalAttributes = $nftTemplate->getAttributes();
-        unset($originalAttributes['id'], $originalAttributes['txs_count']);
-        $metadata = json_decode($originalAttributes['metadata'], true);
-        unset($metadata['topic_id']);
-        $originalAttributes['metadata'] = json_encode($metadata);
-        $userNft->setRawAttributes($originalAttributes);
-        $userNft-> user_id = Auth::id();
-        $userNft->model_type = LearningTopic::class;
-        $userNft->model_id = $topic->id;
-        $userNft->name = $nftTemplate->name.$topic->nfts->count();
-        $userNft->save();
-
-        // issue nft reward 
-        $reward = new Reward;
-        $reward->user_id = Auth::id();
-        $reward->model_id = $learningLesson->id;
-        $reward->model_type = LearningLesson::class;
-        $reward->asset = $userNft->name ;
-        $reward->asset_type = $nftTemplate->policy;
-        $reward->amount = 1;
-        $reward->status = 'issued';
-        $reward->stake_address = $user->wallet_stake_address;
-        $reward->setTranslation('memo', 'en', $learningLesson->title);
-        $reward->save();
 
     }
 
