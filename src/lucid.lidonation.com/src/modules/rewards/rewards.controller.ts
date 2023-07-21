@@ -20,15 +20,15 @@ export class RewardsController {
       'bleak basic nose remind uncover candy furnace fossil monitor moon cancel scan path velvet science bread embrace talent loud deposit benefit about office now',
     );
 
-    let tx = await lucid
-      .newTx()
-      .validTo(Date.now() + 100000)
-
-
     const payments = request.body.payments;
     if (!payments.length) {
       return payments;
     }
+  
+    let tx = await lucid
+      .newTx()
+      .validTo(Date.now() + 100000)
+
     let nfts = [];
     for (let i = 0; i < payments.length; i++) {
       const pmt = payments[i];
@@ -42,11 +42,11 @@ export class RewardsController {
       const address = pmt.address;
       let amounts = {};
 
-      if (pmt.lovelace) {
-        amounts['lovelace'] = BigInt(pmt.lovelace);
-      } else {
-        // amounts['lovelace'] = BigInt(2000000);
-      }
+      // if (pmt.lovelace) {
+      //   amounts['lovelace'] = BigInt(pmt.lovelace);
+      // } else {
+      //   amounts['lovelace'] = BigInt(2000000);
+      // }
       delete pmt.lovelace;
       delete pmt.address;
 
@@ -58,43 +58,45 @@ export class RewardsController {
       });
 
       // tx = await lucid.newTx().compose(tx).payToAddress(address, amounts);
-      if (nfts.length !=0) {
-        tx = await this.mintNft(nfts, amounts, tx, lucid);
-        nfts = []
-        
-      }else{
-          tx = await tx.payToAddress(address, amounts).attachMetadata(674, {
-            msg: ['Rewards Withdrawal'],
-          });
+      if (nfts.length != 0) {
+        tx = await this.mintNft(nfts, amounts, tx, lucid, address);
+        nfts = [];
+
+      } else {
+        tx = await tx.payToAddress(address, amounts).attachMetadata(674, {
+          msg: ['Rewards Withdrawal'],
+        });
       }
 
     }
 
     const signedTx = await (await tx.complete()).sign().complete();
     const txHash = await signedTx.submit();
-    // 
 
     return { tx: txHash };
   }
 
-  protected async mintNft(nfts, assets, tx, lucid: Lucid ) {
+  protected async mintNft(nfts, amounts , tx, lucid: Lucid, address) {
     const mintingPolicy = await this.getPolicy(lucid);
     const policyId: PolicyId = lucid.utils.mintingPolicyToId(mintingPolicy);
-            console.log(assets);
-    const nftTx = tx;
+    let nftTx = tx;
+    
+    if (Object.keys(amounts).length) {
+      nftTx = tx.payToAddress(address, { ...amounts });
+    }
+
     for (let i = 0; i < nfts.length; i++) {
       const nft = nfts[i];
       const unit: Unit = policyId + fromText(nft.key);
       nftTx
-        .payToAddress(nft.owner, {
+        .payToAddress(address, {
           [unit]: 1n,
-          ...assets,
         })
         .mintAssets({ [unit]: 1n })
         .attachMintingPolicy(mintingPolicy)
         .attachMetadata(721, {
           [policyId]: { [nft.key]: nft.metadata },
-          msg: [ 'Rewards Withdrawal'],
+          msg: ['Rewards Withdrawal'],
         });
     }
     return nftTx;
