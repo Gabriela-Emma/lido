@@ -64,13 +64,13 @@ class Translations extends Resource
 
         return [
             ID::make(__('ID'), 'id')->sortable(),
-            Text::make(__('Group'))->sortable(),
-            Text::make(__('Key'))->sortable(),
+            Text::make(__('Group'))->sortable()->filterable(),
+            Text::make(__('Key'))->sortable()->filterable(),
             BelongsTo::make(__('Author'), 'author', User::class)
-                ->searchable(),
+                ->searchable()->filterable(),
 
             Select::make(__('Lang'), 'lang')
-                ->sortable()
+                ->sortable()->filterable()
                 ->options(
                     collect(config('laravellocalization.supportedLocales'))
                         ->map(fn ($loc) => $loc['name'])),
@@ -81,7 +81,7 @@ class Translations extends Resource
                 'pending' => 'Pending',
                 'ready' => 'Ready',
                 'scheduled' => 'Scheduled',
-            ])->sortable(),
+            ])->sortable()->filterable(),
 
             Date::make(__('Created At'))->hideWhenUpdating(),
             Date::make(__('Published At'))->hideWhenUpdating(),
@@ -157,12 +157,12 @@ class Translations extends Resource
                     (new GetModels)()->combine(
                         (new GetModels)()->toArray()
                     )->toArray()
-                ),
+                )->filtrable(),
             //            BelongsTo::make(__('Source'), 'source', [User::class])
             //                ->searchable(),
-            Text::make(__('Source Id'), 'source_id'),
-            Text::make(__('Source Field'), 'source_field'),
-            Select::make(__('Source Lang'), 'source_lang')
+            Text::make(__('Source Id'), 'source_id')->filterable()->sortable(),
+            Text::make(__('Source Field'), 'source_field')->filterable()->sortable(),
+            Select::make(__('Source Lang'), 'source_lang')->filterable()
                 ->options(
                     collect(config('laravellocalization.supportedLocales'))
                         ->map(fn ($loc) => $loc['name'])),
