@@ -70,10 +70,10 @@ class TranslationObserver
         }
     }
 
-    public function deleting(Translation $post)
-    {
-        if ($post->forceDeleting) {
-            $post->metas()->delete();
-        }
-    }
+    // public function deleting(Translation $post)
+    // {
+    //     if ($post->forceDeleting) {
+    //         $post->metas()->delete();
+    //     }
+    // }
 }
