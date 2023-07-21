@@ -9,15 +9,15 @@
     },
     toggleOnlyMine() {
         this.onlyMine = !this.onlyMine;
-        Livewire.emit('toggleOnlyMine');
+        Livewire.emit('toggleOnlyMine', !this.onlyMine);
     },
     toggleGroupRelated() {
         this.groupRelated = !this.groupRelated;
-        Livewire.emit('toggleGroupRelated');
+        Livewire.emit('toggleGroupRelated', !this.groupRelated);
     },
     toggleMissing() {
         this.showAll = !this.showAll;
-        Livewire.emit('toggleMissing');
+        Livewire.emit('toggleMissing', !this.showAll);
     }}">
     <div class="flex flex-col justify-center p-2 space-y-2 border rounded-sm">
         <div class="flex items-center">
@@ -85,43 +85,43 @@
             <button type="button"
                     @click="toggleFilter(null)"
                     :class="{'bg-primary-600 text-white': filter === null, 'bg-gray-50 text-gray-700': filter !== null}"
-                    class="relative inline-flex items-center px-4 py-1 -ml-px text-xs font-medium text-gray-700 bg-white border border-gray-300 rounded-r-sm hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-primary-500 focus:border-primary-500">
+                    class="relative inline-flex items-center px-4 py-1 -ml-px text-xs font-medium text-gray-700 border border-gray-300 rounded-r-sm hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-primary-500 focus:border-primary-500">
                 All
             </button>
             <button type="button"
                     @click="toggleFilter('snippets')"
                     :class="{'bg-primary-600 text-white': filter === 'snippets', 'bg-gray-50 text-gray-700': filter !== 'snippets'}"
-                    class="relative inline-flex items-center px-4 py-1 -ml-px text-xs font-medium text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-primary-500 focus:border-primary-500">
+                    class="relative inline-flex items-center px-4 py-1 -ml-px text-xs font-medium text-gray-700 border border-gray-300 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-primary-500 focus:border-primary-500">
                 Snippets
             </button>
             <button type="button"
                     @click="toggleFilter('insights')"
                     :class="{'bg-primary-600 text-white': filter === 'insights', 'bg-gray-50 text-gray-700': filter !== 'insights'}"
-                    class="relative inline-flex items-center px-4 py-1 -ml-px text-xs font-medium text-gray-700 bg-white border border-gray-300 rounded-l-sm hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-primary-500 focus:border-primary-500">
+                    class="relative inline-flex items-center px-4 py-1 -ml-px text-xs font-medium text-gray-700 border border-gray-300 rounded-l-sm hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-primary-500 focus:border-primary-500">
                 Insights
             </button>
             <button type="button"
                     @click="toggleFilter('news')"
                     :class="{'bg-primary-600 text-white': filter === 'news', 'bg-gray-50 text-gray-700': filter !== 'news'}"
-                    class="relative inline-flex items-center px-4 py-1 -ml-px text-xs font-medium text-gray-700 bg-white border border-gray-300 rounded-l-sm hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-primary-500 focus:border-primary-500">
+                    class="relative inline-flex items-center px-4 py-1 -ml-px text-xs font-medium text-gray-700 border border-gray-300 rounded-l-sm hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-primary-500 focus:border-primary-500">
                 News
             </button>
             <button type="button"
                     @click="toggleFilter('reviews')"
                     :class="{'bg-primary-600 text-white': filter === 'reviews', 'bg-gray-50 text-gray-700': filter !== 'reviews'}"
-                    class="relative inline-flex items-center px-4 py-1 -ml-px text-xs font-medium text-gray-700 bg-white border border-gray-300 rounded-l-sm hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-primary-500 focus:border-primary-500">
+                    class="relative inline-flex items-center px-4 py-1 -ml-px text-xs font-medium text-gray-700 border border-gray-300 rounded-l-sm hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-primary-500 focus:border-primary-500">
                 Reviews
             </button>
             <button type="button"
                     @click="toggleFilter('onboarding')"
                     :class="{'bg-primary-600 text-white': filter === 'onboarding', 'bg-gray-50 text-gray-700': filter !== 'onboarding'}"
-                    class="relative inline-flex items-center px-4 py-1 -ml-px text-xs font-medium text-gray-700 bg-white border border-gray-300 rounded-l-sm hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-primary-500 focus:border-primary-500">
+                    class="relative inline-flex items-center px-4 py-1 -ml-px text-xs font-medium text-gray-700 border border-gray-300 rounded-l-sm hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-primary-500 focus:border-primary-500">
                 Onboarding Content
             </button>
             <button type="button"
                     @click="toggleFilter('proposal')"
                     :class="{'bg-primary-600 text-white': filter === 'proposal', 'bg-gray-50 text-gray-700': filter !== 'proposal'}"
-                    class="relative inline-flex items-center px-4 py-1 -ml-px text-xs font-medium text-gray-700 bg-white border border-gray-300 rounded-l-sm hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-primary-500 focus:border-primary-500">
+                    class="relative inline-flex items-center px-4 py-1 -ml-px text-xs font-medium text-gray-700 border border-gray-300 rounded-l-sm hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-primary-500 focus:border-primary-500">
                 Proposals
             </button>
         </div>
