@@ -506,6 +506,7 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
             'opensource' => (bool) $this->opensource ? 1 : 0,
             'has_quick_pitch' => (bool) $this->quick_pitch ? 1 : 0,
             'quickpitch' => $this->quick_pitch_id ?? null,
+            'quickpitch_length' => $this->meta_data->quickpitch_length ?? null,
             'completed' => $this->status === 'complete' ? 1 : 0,
             'over_budget' => $this->status === 'over_budget' ? 1 : 0,
             'currency' => $this->currency,
