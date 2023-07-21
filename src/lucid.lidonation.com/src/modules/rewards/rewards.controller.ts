@@ -42,12 +42,13 @@ export class RewardsController {
       const address = pmt.address;
       let amounts = {};
 
-      // if (pmt.lovelace) {
-      //   amounts['lovelace'] = BigInt(pmt.lovelace);
-      // } else {
-      //   amounts['lovelace'] = BigInt(2000000);
-      // }
-      delete pmt.lovelace;
+
+      if (pmt.asset?.['lovelace']) {
+        amounts['lovelace'] = BigInt(pmt.asset['lovelace']);
+      } else {
+        amounts['lovelace'] = BigInt(2000000);
+      }
+      delete pmt.asset?.['lovelace'];
       delete pmt.address;
 
       Object.keys(pmt.assets).forEach((asset) => {
@@ -82,7 +83,7 @@ export class RewardsController {
     let nftTx = tx;
     
     if (Object.keys(amounts).length) {
-      nftTx = tx.payToAddress(address, { ...amounts });
+      nftTx = tx.payToAddress(address, amounts);
     }
 
     for (let i = 0; i < nfts.length; i++) {
