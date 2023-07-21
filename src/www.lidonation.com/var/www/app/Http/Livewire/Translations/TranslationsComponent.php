@@ -61,7 +61,7 @@ class TranslationsComponent extends LivewireDatatable
             }
         }
 
-        if ($this->filter) {//
+        if ($this->filter) {
             switch ($this->filter) {
                 case 'news':
                     $this->query->sourceType(News::class);
