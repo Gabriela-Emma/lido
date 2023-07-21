@@ -11,6 +11,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Spatie\MediaLibrary\MediaCollections\Exceptions\FileCannotBeAdded;
 
@@ -56,7 +57,7 @@ class CatalystIdeascaleF10CleanupProposalsJob implements ShouldQueue
                 fn ($q) => $q->whereNotIn('content', $ideascaleProposls)->where('key', 'ideascale_id')
             )->get();
 
-
+            Log::info('Deleting ' . $proposalsToDelete->count('id') . 'proposals for fund ' . $this->challenge->id);
             if ($proposalsToDelete->isNotEmpty()) {
                 $proposalsToDelete->each(
                     fn ($proposal) => $proposal->delete()
