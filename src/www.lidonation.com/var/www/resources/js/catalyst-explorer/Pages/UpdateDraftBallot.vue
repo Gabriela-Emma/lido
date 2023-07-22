@@ -1,6 +1,6 @@
 <template>
     <Modal>
-        <form class="z-40 flex flex-col w-full h-full p-4 overflow-y-auto" @submit="submit">
+        <form class="z-40 flex flex-col w-full h-full p-4 overflow-y-auto" @submit.prevent="submit">
             <div>
                 <span class="text-sm md:text-md lg:text-2xl">
                     Edit {{ draftBallot.title }}
@@ -53,21 +53,14 @@ const props = defineProps<{
     draftBallot: DraftBallot<Proposal>
 }>();
 
+let editForm = useForm({ ...props.draftBallot })
 let { close } = useModal();
-const bookmarksStore = useBookmarksStore();
-
-
-let editForm = useForm({
-    title: '',
-    content: '',
-    color: ''
-})
-
 
 let submit = () => {
-    bookmarksStore.updateDraftBallot(editForm, props.draftBallot)
-    close()
-    // router.get(route('catalystExplorer.draftBallot.edit',
-    //     { draftBallot: props.draftBallot.hash }))
+    editForm.patch(route('catalystExplorer.draftBallot.update', { draftBallot: props.draftBallot.hash }),
+    {
+        preserveState:false,
+    }
+    )
 };
 </script>

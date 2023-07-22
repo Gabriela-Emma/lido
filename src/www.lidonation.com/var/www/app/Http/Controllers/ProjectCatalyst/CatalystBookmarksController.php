@@ -167,7 +167,7 @@ class CatalystBookmarksController extends Controller
         );
     }
 
-    public function updateDraftBallot(DraftBallot $draftBallot)
+    public function updateDraftBallot(DraftBallot $draftBallot, Request $request)
     {
         $draftBallot->title = request('title');
         $draftBallot->color = request('color');

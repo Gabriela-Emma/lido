@@ -48,12 +48,6 @@ export const useBookmarksStore = defineStore('bookmarks', () => {
         }
     }
 
-    async function updateDraftBallot(form, draftBallot?: DraftBallot<Proposal>) {
-        axios.patch(route('catalystExplorer.draftBallot.update', { draftBallot: draftBallot.hash }),
-            form
-        )
-    }
-
     async function loadCollections() {
         try {
             const response = await axios.get(route('catalystExplorer.myBookmarks'));
@@ -101,7 +95,6 @@ export const useBookmarksStore = defineStore('bookmarks', () => {
         deleteCollection,
         loadDraftBallot,
         loadDraftBallots,
-        updateDraftBallot,
         draftBallots$: draftBallots,
         deleteItem,
         modelIds$: bookmarkedModels,
