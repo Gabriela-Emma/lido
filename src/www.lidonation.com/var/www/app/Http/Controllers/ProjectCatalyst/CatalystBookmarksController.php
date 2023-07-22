@@ -35,14 +35,14 @@ class CatalystBookmarksController extends Controller
         // if collection doesn't exist, create one
         $collection = BookmarkCollection::byHash($data->collection['hash']) ?? DraftBallot::byHash($data->collection['hash']) ?? null;
 
-        if (! $collection instanceof BookmarkCollection) {
+        if (!$collection instanceof BookmarkCollection) {
             $collection = new BookmarkCollection;
             $collection->title = $data->collection['title'] ?? null;
             $collection->content = $data->collection['content'] ?? null;
             $collection->visibility = 'unlisted';
             $collection->status = 'published';
             $collection->user_id = Auth::id();
-            $collection->color = '#'.str_pad(dechex(mt_rand(0, 0xFFFFFF)), 6, '0', STR_PAD_LEFT);
+            $collection->color = '#' . str_pad(dechex(mt_rand(0, 0xFFFFFF)), 6, '0', STR_PAD_LEFT);
             $collection->save();
         }
 
@@ -70,10 +70,6 @@ class CatalystBookmarksController extends Controller
         return (new BookmarkCollectionResource($collection))->toArray($request);
     }
 
-    public function createCollection()
-    {
-    }
-
     public function view(Request $request, BookmarkCollection $bookmarkCollection)
     {
 
@@ -82,7 +78,7 @@ class CatalystBookmarksController extends Controller
         }
         return Inertia::render('BookmarkCollection')->with([
             'bookmarkCollection' => (new BookmarkCollectionResource($bookmarkCollection))
-            ->toArray($request),
+                ->toArray($request),
             'crumbs' => [
                 ['label' => 'Proposals', 'link' => route('catalystExplorer.proposals')],
                 ['label' => 'Bookmarks', 'link' => route('catalystExplorer.bookmarks')],
@@ -103,35 +99,34 @@ class CatalystBookmarksController extends Controller
         ]);
     }
 
-    public function viewEditDraftBallot(DraftBallot $draftBallot)
+    public function viewUpdateDraftBallot(DraftBallot $draftBallot)
     {
-        return Inertia::modal('DraftBallotEdit')
-        ->with([
-            'draftBallot' => $draftBallot,
-        ])
+        return Inertia::modal('UpdateDraftBallot')
+            ->with([
+                'draftBallot' => $draftBallot,
+            ])
             ->baseRoute('catalystExplorer.draftBallot.edit', [
-            'draftBallot' => $draftBallot->hash,
-        ]);
+                'draftBallot' => $draftBallot->hash,
+            ]);
     }
 
     public function getDraftBallot(Request $request, DraftBallot $draftBallot)
     {
-        return  (new DraftBallotResource($draftBallot))->toArray($request);
+        return (new DraftBallotResource($draftBallot))->toArray($request);
     }
 
     public function draftBallotIndex()
     {
         return DraftBallotResource::collection(
             DraftBallot::where('user_id', Auth::id())
-            ->orderBy('created_at', 'desc')
-            ->paginate(24)
+                ->orderBy('created_at', 'desc')
+                ->paginate(24)
         );
-
     }
 
     public function editDraftBallot(Request $request, DraftBallot $draftBallot)
     {
-        if (! Gate::allows('update', $draftBallot)) {
+        if (!Gate::allows('update', $draftBallot)) {
             abort(403);
             // return redirect()->route('catalystExplorer.login');
         }
@@ -164,12 +159,24 @@ class CatalystBookmarksController extends Controller
         $db->title = auth()?->user()->name . ' Draft Ballot';
         $db->visibility = 'unlisted';
         $db->status = 'published';
-        $db->color = '#'.str_pad(dechex(mt_rand(0, 0xFFFFFF)), 6, '0', STR_PAD_LEFT);
+        $db->color = '#' . str_pad(dechex(mt_rand(0, 0xFFFFFF)), 6, '0', STR_PAD_LEFT);
         $db->save();
         return to_route(
             'catalystExplorer.draftBallot.edit',
             $db->hash
         );
+    }
+
+    public function updateDraftBallot(DraftBallot $draftBallot)
+    {
+        $draftBallot->title = request('title');
+        $draftBallot->color = request('color');
+        $draftBallot->content = request('content');
+        $draftBallot->save();
+        return to_route(
+            'catalystExplorer.draftBallot.edit',
+            $draftBallot->hash
+        );   
     }
 
     public function createDraftBallotFromCollection(Request $request, BookmarkCollection $bookmarkCollection)
@@ -194,8 +201,8 @@ class CatalystBookmarksController extends Controller
 
         // user meta data to attach to the fund_id (challenge id)
         $rationale = $bookmarkCollection->rationales()
-        ->whereRelation('metas', 'key', '=', 'group_id')
-        ->whereRelation('metas', 'content', '=', $data['group_id'])->first();
+            ->whereRelation('metas', 'key', '=', 'group_id')
+            ->whereRelation('metas', 'content', '=', $data['group_id'])->first();
 
         if (!$rationale instanceof Discussion) {
             $rationale = new Discussion;

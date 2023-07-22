@@ -132,8 +132,8 @@ Route::group(
 
             Route::get('/draft-ballots/{draftBallot:id}', [CatalystBookmarksController::class, 'viewDraftBallot'])
                 ->name('draftBallot.view');
-            Route::get('/draft-ballot/{draftBallot:id}/edit', [CatalystBookmarksController::class, 'viewEditDraftBallot'])
-            ->name('draftBallotEdit');
+            Route::get('/draft-ballot/{draftBallot:id}/update', [CatalystBookmarksController::class, 'viewUpdateDraftBallot'])
+            ->name('draftBallotupdate.view');
 
             // exports
             Route::get('/export/proposals', [CatalystProposalsController::class, 'exportProposals']);
@@ -157,6 +157,9 @@ Route::group(
 
                 Route::get('/draft-ballots/{draftBallot:id}/edit', [CatalystBookmarksController::class, 'editDraftBallot'])
                 ->name('draftBallot.edit');
+
+                Route::patch('/draft-ballot/{draftBallot:id}/update', [CatalystBookmarksController::class, 'updateDraftBallot'])
+                ->name('draftBallot.update');
 
                 Route::post('/draft-ballots/{draftBallot:id}/rationale', [CatalystBookmarksController::class, 'storeDraftBallotRationale'])
                 ->name('draftBallot.storeRationale');
