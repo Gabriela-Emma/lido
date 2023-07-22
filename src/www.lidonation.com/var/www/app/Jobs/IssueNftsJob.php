@@ -7,6 +7,7 @@ use App\Models\Reward;
 use App\Models\LearningTopic;
 use Illuminate\Bus\Queueable;
 use App\Models\LearningLesson;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -18,19 +19,16 @@ class IssueNftsJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public $learningLesson;
-
-    public $topic;
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(LearningTopic $topic, LearningLesson $learningLesson)
-    {
-        $this->topic = $topic;
-        $this->learningLesson = $learningLesson;
-    }
+    public function __construct(
+        public LearningTopic $topic,
+        public LearningLesson $learningLesson,
+        public User $user
+        ) {}
 
     /**
      * Execute the job.
@@ -39,8 +37,6 @@ class IssueNftsJob implements ShouldQueue
      */
     public function handle()
     {
-
-        $user = Auth::user();
         $nftTemplate = $this->topic->nftTemplate;
 
         if (!$nftTemplate instanceof Nft) {
@@ -69,7 +65,7 @@ class IssueNftsJob implements ShouldQueue
         $reward->asset_type = $nftTemplate->policy;
         $reward->amount = 1;
         $reward->status = 'issued';
-        $reward->stake_address = $user->wallet_stake_address;
+        $reward->stake_address = $this->user->wallet_stake_address;
         $reward->setTranslation('memo', 'en', $this->learningLesson->title);
         $reward->save();
     }
