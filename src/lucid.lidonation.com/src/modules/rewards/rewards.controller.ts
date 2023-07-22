@@ -17,7 +17,7 @@ export class RewardsController {
     const lucid = await lucidInstance();
 
     lucid.selectWalletFromSeed(
-      'bleak basic nose remind uncover candy furnace fossil monitor moon cancel scan path velvet science bread embrace talent loud deposit benefit about office now',
+      request?.body?.seed
     );
 
     const payments = request.body.payments;
