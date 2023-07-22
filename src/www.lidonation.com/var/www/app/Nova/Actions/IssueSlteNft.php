@@ -2,16 +2,12 @@
 
 namespace App\Nova\Actions;
 
-use App\Models\Nft;
 use App\Models\User;
 use App\Jobs\IssueNftsJob;
-use Illuminate\Http\Request;
 use Illuminate\Bus\Queueable;
-use App\Models\LearningLesson;
 use App\Models\LearningTopic;
 use Laravel\Nova\Actions\Action;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Auth;
 use Laravel\Nova\Fields\ActionFields;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -42,16 +38,15 @@ class IssueSlteNft extends Action
 
 
                     if ($topicCompleted) {
-                        IssueNftsJob::dispatch($learningTopic, $learningLesson);
+                        IssueNftsJob::dispatch($learningTopic, $learningLesson, $model);
                     } else {
                         Action::danger('Failed to issue NFT for User ');
 
                         continue;
                     }
                 }
-            }
-
-            if ($model instanceof LearningTopic) {
+            } else if ($model instanceof LearningTopic) {
+                //@todo implement
             }
         }
     }
