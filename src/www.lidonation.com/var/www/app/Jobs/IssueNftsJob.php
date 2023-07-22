@@ -50,7 +50,7 @@ class IssueNftsJob implements ShouldQueue
         unset($metadata['topic_id']);
         $originalAttributes['metadata'] = json_encode($metadata);
         $userNft->setRawAttributes($originalAttributes);
-        $userNft->user_id = Auth::id();
+        $userNft->user_id = $this->user->id;
         $userNft->model_type = LearningTopic::class;
         $userNft->model_id = $this->topic->id;
         $userNft->name = $nftTemplate->name . $this->topic->nfts->count();
@@ -58,7 +58,7 @@ class IssueNftsJob implements ShouldQueue
 
         // issue nft reward
         $reward = new Reward;
-        $reward->user_id = Auth::id();
+        $reward->user_id = $this->user->id;
         $reward->model_id = $this->learningLesson->id;
         $reward->model_type = LearningLesson::class;
         $reward->asset = $userNft->name;
