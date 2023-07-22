@@ -89,9 +89,10 @@ class LearningTopic extends Model
     public function nftTemplate(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->nfts()->where(
-            'metadata->topic_id',$this->id
-        )->first()
+            get: fn () => $this->nfts()
+                ->whereRelation('metas', 'key', 'topic_id')
+                ->whereRelation('metas', 'content', $this->id)
+                ->first()
         );
     }
 
