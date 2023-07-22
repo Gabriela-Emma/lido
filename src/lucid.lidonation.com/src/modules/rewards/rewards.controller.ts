@@ -96,8 +96,7 @@ export class RewardsController {
         .mintAssets({ [unit]: 1n })
         .attachMintingPolicy(mintingPolicy)
         .attachMetadata(721, {
-          [policyId]: { [nft.key]: nft.metadata },
-          msg: ['Rewards Withdrawal'],
+          [policyId]: { [nft.key]: nft.metadata }
         });
     }
     return nftTx;
