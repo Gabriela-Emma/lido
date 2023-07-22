@@ -42,7 +42,7 @@ class IssueSlteNft extends Action
 
 
                     if ($topicCompleted) {
-                        IssueNftsJob::dispatchSync($learningTopic, $learningLesson);
+                        IssueNftsJob::dispatch($learningTopic, $learningLesson);
                     } else {
                         Action::danger('Failed to issue NFT for User ');
 
@@ -52,8 +52,6 @@ class IssueSlteNft extends Action
             }
 
             if ($model instanceof LearningTopic) {
-
-
             }
         }
     }
