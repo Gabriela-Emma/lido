@@ -76,10 +76,6 @@ class CatalystMyBookmarksController extends Controller
         }
     }
 
-    public function createCollection()
-    {
-    }
-
     public function view(Request $request, BookmarkCollection $bookmarkCollection)
     {
         return Inertia::render('BookmarkCollection')->with([
