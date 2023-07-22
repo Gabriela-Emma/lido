@@ -74,6 +74,17 @@ class Votes extends Resource
             Text::make(__('Memo'), 'memo'),
             BelongsToMany::make(__('Wallets'), 'wallets', Wallets::class),
         ];
+
+        Withdrawal::pending()
+        ->with('rewards')
+        ->get()->filter( fn($w) => $w->rewards->count() < 6)
+        ->each(function($w) {
+            $w->rewards->each(function($r){
+                $r->status = 'issued';
+                $r->withdrawal_id=null;
+                $r->save();
+            } );
+        });
     }
 
     /**
