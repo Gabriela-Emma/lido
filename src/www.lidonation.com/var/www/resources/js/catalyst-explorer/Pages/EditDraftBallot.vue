@@ -4,8 +4,8 @@
 
     <main class="flex flex-col gap-2 py-8 bg-primary-20">
         <div class="container">
-            <section class="sticky z-20 mb-4 overflow-visible bg-white border-t rounded-sm shadow-md top-9">
-                <div class="relative z-20 overflow-visible">
+            <section class="sticky mb-4 overflow-visible bg-white border-t rounded-sm shadow-md top-9">
+                <div class="relative overflow-visible">
                     <div class="flex items-center w-full h-10 lg:h-16">
                         <Search :search="search" @search="(term) => search = term" />
                     </div>
@@ -39,7 +39,7 @@
                             Share
                         </button>
                     </a>
-                    <Link :href="route('catalystExplorer.draftBallotEdit', { draftBallot: draftBallot?.hash })"
+                    <Link :href="route('catalystExplorer.draftBallotupdate.view', { draftBallot: draftBallot?.hash })"
                         class="bg-white rounded-sm px-3 py-2.5 text-gray-400 flex-wrap hover:text-yellow-500">
                         Edit
                     </Link>
