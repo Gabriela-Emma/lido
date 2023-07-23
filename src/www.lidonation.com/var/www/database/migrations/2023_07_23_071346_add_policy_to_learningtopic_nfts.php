@@ -28,7 +28,7 @@ return new class extends Migration
 
     public function getPolicy()
     {
-        // $seed = file_get_contents('/data/phuffycoin/wallets/mint/seed.txt');
+        $seed = file_get_contents('/data/phuffycoin/wallets/mint/seed.txt');
         $res = Http::get(
             config('cardano.lucidEndpoint') . '/cardano/policy',
             compact('seed')
