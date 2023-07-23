@@ -1,7 +1,7 @@
 import lucidInstance from "./lucidInstance.js";
 
 
-async function getEpoch(date:string) {
+async function getEpoch(date) {
     const unixTime = new Date(date).getTime();
     const lucid = await lucidInstance();
     const floor = Math.floor;

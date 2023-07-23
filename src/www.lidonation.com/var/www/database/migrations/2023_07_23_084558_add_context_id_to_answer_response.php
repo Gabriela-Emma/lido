@@ -4,8 +4,6 @@ use App\Models\EveryEpoch;
 use App\Models\AnswerResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration
@@ -38,14 +36,13 @@ return new class extends Migration
     {
         $date = $created_at;
         try {
-           return Http::post(
+            return Http::get(
                 config('cardano.lucidEndpoint') . '/cardano/epoch',
                 compact('date')
             )->throw();
         } catch (\Throwable $th) {
             return null;
         }
-
     }
     /**
      * Reverse the migrations.

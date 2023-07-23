@@ -24,14 +24,16 @@ export class RewardsController {
     if (!payments.length) {
       return payments;
     }
-  
+
     let tx = await lucid
       .newTx()
       .validTo(Date.now() + 100000)
 
     let nfts = [];
+    let nftMetadata = {};
+    let policy;
     for (let i = 0; i < payments.length; i++) {
-      const pmt = payments[i];
+      let pmt = payments[i];
 
       if (pmt.nfts) {
         for (let n = 0; n < pmt.nfts.length; n++) {
@@ -58,9 +60,11 @@ export class RewardsController {
         };
       });
 
-      // tx = await lucid.newTx().compose(tx).payToAddress(address, amounts);
       if (nfts.length != 0) {
         tx = await this.mintNft(nfts, amounts, tx, lucid, address);
+        let metadata = Object.assign({}, ...nfts.map((nft) => ({ [nft.key]: nft.metadata })));
+        nftMetadata = { ...nftMetadata ,...metadata}
+        policy = lucid.utils.mintingPolicyToId(await this.getPolicy(lucid));
         nfts = [];
 
       } else {
@@ -71,23 +75,32 @@ export class RewardsController {
 
     }
 
+    if (Object.keys(nftMetadata).length > 0) { 
+      const signedTx = await (await tx.attachMetadata(
+        721, {[policy]: { ...nftMetadata }}
+      ).complete()).sign().complete();
+
+      const txHash = await signedTx.submit();
+      return { tx: txHash };
+    }
+    
     const signedTx = await (await tx.complete()).sign().complete();
     const txHash = await signedTx.submit();
 
     return { tx: txHash };
   }
 
-  protected async mintNft(nfts, amounts , tx, lucid: Lucid, address) {
+  async mintNft(nfts, amounts, tx, lucid: Lucid, address) {
     const mintingPolicy = await this.getPolicy(lucid);
     const policyId: PolicyId = lucid.utils.mintingPolicyToId(mintingPolicy);
     let nftTx = tx;
-    
+
     if (Object.keys(amounts).length) {
       nftTx = tx.payToAddress(address, amounts);
     }
 
     for (let i = 0; i < nfts.length; i++) {
-      const nft = nfts[i];
+      let nft = nfts[i];
       const unit: Unit = policyId + fromText(nft.key);
       nftTx
         .payToAddress(address, {
@@ -95,10 +108,8 @@ export class RewardsController {
         })
         .mintAssets({ [unit]: 1n })
         .attachMintingPolicy(mintingPolicy)
-        .attachMetadata(721, {
-          [policyId]: { [nft.key]: nft.metadata }
-        });
     }
+
     return nftTx;
   }
 
