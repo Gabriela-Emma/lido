@@ -1,6 +1,8 @@
 import {Controller, Get, Param, Post, Req} from "@nestjs/common";
 import {Request} from "express";
 import {getEpoch} from "../../utils/unix2epoch.js"
+import mintingPolicy from '@lido/utils/mintingPolicy.js';
+import lucidInstance from "@lido/utils/lucidInstance.js";
 @Controller('cardano')
 export class CardanoController {
   @Post('mint')
@@ -13,5 +15,12 @@ export class CardanoController {
 
   @Get('epoch')
   async epoch(@Req() request: Request) {
-    return await getEpoch(request?.body?.date) }
+    return await getEpoch(request.query.date) }
+
+  @Get('policy')
+  async name(@Req() request: Request) {
+    const lucid = await lucidInstance()
+    const policy = await mintingPolicy(request?.query?.seed)
+    return lucid.utils.mintingPolicyToId(policy)
+  }
 }
