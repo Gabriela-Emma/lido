@@ -77,8 +77,6 @@ class ProposalController extends Controller
         $proposal->saveMeta('quickpitch', $qp);
         $proposal->save();
 
-        return response([
-            'message' => 'Quickpitch updated',
-        ], Response::HTTP_OK);
+        return $proposal->metas()->where('key','quickpitch')->pluck('content');
     }
 }
