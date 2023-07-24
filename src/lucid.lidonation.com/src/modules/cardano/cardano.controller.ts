@@ -23,7 +23,7 @@ export class CardanoController {
   @Post('policy')
   async name(@Req() request: Request) {
     const lucid = await lucidInstance()
-    const policy = await mintingPolicy(request?.query?.seed)
+    const policy = await mintingPolicy(request?.body?.seed)
     return lucid.utils.mintingPolicyToId(policy)
   }
 }
