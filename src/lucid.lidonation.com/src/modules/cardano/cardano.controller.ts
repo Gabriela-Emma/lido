@@ -15,7 +15,10 @@ export class CardanoController {
 
   @Get('epoch')
   async epoch(@Req() request: Request) {
-    return await getEpoch(request.query.date) }
+
+    return await getEpoch(request.query.date) 
+
+  }
 
   @Get('policy')
   async name(@Req() request: Request) {
