@@ -42,7 +42,7 @@ return new class extends Migration
             throw new Exception("Seed file is empty: $seedFile");
         }
 
-        $res = Http::get(config('cardano.lucidEndpoint') . '/cardano/policy', compact('seed'))->throw();
+        $res = Http::post(config('cardano.lucidEndpoint') . '/cardano/policy', compact('seed'))->throw();
 
         return $res;
     }
