@@ -16,35 +16,35 @@ return new class extends Migration
      */
     public function up()
     {
-        $epochresponses = AnswerResponse::where('context_type', EveryEpoch::class)->cursor();
+        // $epochresponses = AnswerResponse::where('context_type', EveryEpoch::class)->cursor();
 
-        foreach ($epochresponses as $response) {
-            $date = Carbon::parse($response->created_at)->toDateTimeString();
-            $epochNumber = $this->convertToEpoch($date);
+        // foreach ($epochresponses as $response) {
+        //     $date = Carbon::parse($response->created_at)->toDateTimeString();
+        //     $epochNumber = $this->convertToEpoch($date);
 
-            $everyEpoch = EveryEpoch::where('epoch', $epochNumber)->first();
+        //     $everyEpoch = EveryEpoch::where('epoch', $epochNumber)->first();
 
-            if ($everyEpoch instanceof EveryEpoch) {
-                DB::table('answer_responses')
-                    ->where('id', $response->id)
-                    ->update([
-                        'context_id' => $everyEpoch->id,
-                    ]);
-            }
-        }
+        //     if ($everyEpoch instanceof EveryEpoch) {
+        //         DB::table('answer_responses')
+        //             ->where('id', $response->id)
+        //             ->update([
+        //                 'context_id' => $everyEpoch->id,
+        //             ]);
+        //     }
+        // }
     }
 
 
     public function convertToEpoch($date)
     {
-        try {
-            return Http::get(
-                config('cardano.lucidEndpoint') . '/cardano/epoch',
-                compact('date')
-            )->throw()->body() ;
-        } catch (\Throwable $th) {
-            return null;
-        }
+        // try {
+        //     return Http::get(
+        //         config('cardano.lucidEndpoint') . '/cardano/epoch',
+        //         compact('date')
+        //     )->throw()->body() ;
+        // } catch (\Throwable $th) {
+        //     return null;
+        // }
     }
     /**
      * Reverse the migrations.
