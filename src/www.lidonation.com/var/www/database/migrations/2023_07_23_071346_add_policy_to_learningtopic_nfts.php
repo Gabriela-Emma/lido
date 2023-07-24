@@ -16,25 +16,35 @@ return new class extends Migration
      */
     public function up()
     {
-        $policy = $this->getPolicy();
-        Nft::where('model_type', LearningTopic::class)->each(
-            function ($nft) use ($policy) {
+        try {
+            $policy = $this->getPolicy();
+
+            Nft::where('model_type', LearningTopic::class)->each(function ($nft) use ($policy) {
                 $nft->policy = $policy;
                 $nft->save();
-            }
-        );
+            });
+        } catch (Exception $e) {
+            echo "Error occurred: " . $e->getMessage();
+        }
     }
-
 
     public function getPolicy()
     {
-        $seed = file_get_contents('/data/phuffycoin/wallets/mint/seed.txt');
-        $res = Http::get(
-            config('cardano.lucidEndpoint') . '/cardano/policy',
-            compact('seed')
-        )->throw();
+        $seedFile = '/data/phuffycoin/wallets/mint/seed.txt';
 
-        return  $res;
+        if (!file_exists($seedFile)) {
+            throw new Exception("Seed file not found: $seedFile");
+        }
+
+        $seed = file_get_contents($seedFile);
+
+        if (empty($seed)) {
+            throw new Exception("Seed file is empty: $seedFile");
+        }
+
+        $res = Http::get(config('cardano.lucidEndpoint') . '/cardano/policy', compact('seed'))->throw();
+
+        return $res;
     }
 
     /**
@@ -44,8 +54,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('learningtopic_nfts', function (Blueprint $table) {
-            //
-        });
+        // Implement down migration logic if necessary.
     }
 };
