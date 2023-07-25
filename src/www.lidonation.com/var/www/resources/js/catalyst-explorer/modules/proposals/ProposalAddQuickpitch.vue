@@ -99,11 +99,13 @@ watch( () => form.quickpitch,  debounce(validateVideo, 500));
 let submit = () => {
     axios.post(route('catalystExplorerApi.proposals.storeQuickpitch', {proposal: props.proposal?.id}), form)
         .then((response) => {
-            success.value = response.data;
+            form.quickpitch = response.data
+            success.value = 'Quickpitch updated';
             setTimeout(() => {
                 success.value = null;
                 errorMessage.value = '';
             }, 5000);
+
             errorMessage.value = '';
         })
         .catch((error) => {
