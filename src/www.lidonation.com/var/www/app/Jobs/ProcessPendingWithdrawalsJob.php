@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Models\Nft;
+use App\Models\Tx;
 use App\Models\Withdrawal;
 use Exception;
 use Illuminate\Bus\Batchable;
@@ -68,12 +69,38 @@ class ProcessPendingWithdrawalsJob implements ShouldQueue
                 foreach ($this->processWithdrawals as $withdrawal) {
                     $withdrawal->status = 'paid';
                     $withdrawal->save();
-
-                    //@todo  move this work into an Observer class pretty please
-                    $withdrawal->rewards->each(function ($reward) {
+                    
+                    $withdrawal->rewards->each(function ($reward) use($tx, $withdrawal) {
                         $reward->status = 'paid';
                         $reward->save();
+
+                        if ($reward->model_type == Nft::class) {
+                            $nft = Nft::where('user_id', $reward->user_id)
+                                    ->where('policy', $reward->asset_type)
+                                    ->first();
+                            
+                            $nft->status = 'minted';
+                            $nft->owner_address = $withdrawal->wallet_address;
+                            $nft->save();
+
+                            //save transaction details
+                            $newTx = new Tx();
+                            $newTx->user_id = $nft->user_id;
+                            $newTx->model_id = $nft->id;
+                            $newTx->model_type = $nft::class;
+                            $newTx->policy = $nft->policy;
+                            $newTx->hash = $tx;
+                            $newTx->address = $nft->owner_address;
+                            $newTx->status = 'minted';
+                            $newTx->quantity = $nft->qty;
+                            $newTx->metadata = $nft->metadata;
+                            $newTx->minted_at = now();
+                            $newTx->save();
+                            
+
+                        }
                     });
+                    
                     $withdrawal->saveMeta('withdrawal_tx', $tx, $withdrawal);
                 }
             }
@@ -134,7 +161,7 @@ class ProcessPendingWithdrawalsJob implements ShouldQueue
         $nftsCount = 0;
         foreach ($withdrawals as $withdrawal) {
             $nftsArr = [];
-            $assetTypes = ['lovelace', 'ft', 'nft'];
+            $assetTypes = ['lovelace', 'ft', 'nft', 'ada'];
             $assets = $withdrawal->rewards->whereIn('asset_type', $assetTypes)
                 ->groupBy('asset')
                 ->map(fn ($group) => $group->sum('amount'))
@@ -150,9 +177,9 @@ class ProcessPendingWithdrawalsJob implements ShouldQueue
                     $metadata = array_merge($nft?->metadata?->toArray() ?? [], [
                         'name' => $nft?->name,
                         'image' => $nft?->storage_link,
-                        'factoid' => breakLongText($nft?->description, 44, 44, ' '),
                         'homepage' => 'lidonation.com',
                         'artist' => $nft?->artist->name,
+                        'description' => $nft?->description,
                         'files' => [
                             [
                                 'src' => $nft?->storage_link,
