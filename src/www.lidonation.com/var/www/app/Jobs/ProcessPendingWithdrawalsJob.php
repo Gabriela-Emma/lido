@@ -30,15 +30,16 @@ class ProcessPendingWithdrawalsJob implements ShouldQueue
     {
         if (!$payments) {
             $jobs = $this->getBatchPaymentsArr();
-
-            Bus::batch([
-               function () use($jobs) {
-                   collect($jobs)->each(function($job) {
-                        dispatch(new self($job['payments'], $job['msg'], $job['processWithdrawals']))->delay(now()->addSeconds(10));
-                    });   
-               },
-            ])->dispatch();
             
+            if (!!$jobs) {
+                Bus::batch([
+                    function () use($jobs) {
+                        collect($jobs)->each(function($job) {
+                             dispatch(new self($job['payments'], $job['msg'], $job['processWithdrawals']))->delay(now()->addSeconds(10));
+                         });   
+                    },
+                 ])->dispatch();
+            }
         }
     }
 
@@ -84,6 +85,11 @@ class ProcessPendingWithdrawalsJob implements ShouldQueue
     {
         // query pending withdrawals and destructure to needed payment format
         $withdrawals = $this->getWithdrawals();
+
+        if (! $withdrawals) {
+            return;
+        }
+
         [$allPayments, $msg, $hasNfts] = $this->getPayments($withdrawals);
 
         // process withdrawals in batches based on nft awaiability
