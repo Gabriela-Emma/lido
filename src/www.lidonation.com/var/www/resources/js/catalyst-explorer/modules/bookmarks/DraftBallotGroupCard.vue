@@ -58,9 +58,9 @@
                             <div class="flex-1 min-w-0 sm:flex sm:items-center sm:justify-between">
                                 <div class="">
                                     <div class="flex flex-col text-md">
-                                        <h4 class="text-sm font-medium xl:font-semibold xl:text-lg">
+                                        <a :href="item?.model?.link" target="_blank" class="text-sm font-medium xl:font-semibold xl:text-lg text-slate-700">
                                             {{ item?.model?.title }}
-                                        </h4>
+                                        </a>
                                     </div>
                                     <div class="mt-1">
                                         <div class="flex flex-row items-center gap-5 text-sm text-slate-500">
