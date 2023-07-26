@@ -322,11 +322,11 @@ const props = withDefaults(
                 value: 'no_votes_count:desc',
             },
             {
-                label: 'Ranking: High to Low',
+                label: 'Community Ranking: High to Low',
                 value: 'ranking_total:desc',
             },
             {
-                label: 'Ranking: Low to High',
+                label: 'Community Ranking: Low to High',
                 value: 'ranking_total:asc',
             }
         ]
