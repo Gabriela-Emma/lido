@@ -105,8 +105,8 @@
                     </div>
                 </div>
 
-                <div class="flex justify-end flex-1 w-full -ml-px">
-                    <div
+                <div class="relative w-full -ml-px">
+                    <!-- <div
                         class="flex items-center justify-center flex-1 py-2 -mr-px text-sm font-medium text-gray-700 border border-transparent rounded-bl-sm hover:text-gray-500">
                         <div class="flex items-center gap-1">
                             <div class="text-sm font-semibold">
@@ -133,6 +133,27 @@
                             </div>
                             <div class="text-xs text-slate-400">
                                 ({{ proposal.ratings_count }})
+                            </div>
+                        </div>
+                    </div> -->
+                    <div class="absolute top-0 left-0 w-full h-full"
+                        :class="{'z-30': !user$}"
+                        @click="loginUser()">
+                    </div>
+                    <div class="absolute top-0 left-0 flex justify-center items-center flex-row flex-nowrap w-full h-full gap-2 px-1 py-2 rounded-sm" :class="{
+                        'z-30': user$,
+                        'bg-teal-light-100/50': rank?.rank === RANKACTIONS.THUMBSUP,
+                        'bg-red-100/80': rank?.rank === RANKACTIONS.THUMBSDOWN,
+                        'bg-slate-100': !rank}">
+                        <div class="flex gap-1 flex-nowrap">
+                            <div class="flex-1 w-1/2" @click="rankProposal(RANKACTIONS.THUMBSUP, props.proposal)">
+                                <HandThumbUpIcon :class="[rank?.rank === RANKACTIONS.THUMBSUP ? 'text-teal-700' : 'text-gray-500']"
+                                aria-hidden="true" class="w-6 h-6 text-gray-500 hover:text-yellow-700 hover:cursor-pointer" />
+                            </div>
+                            <div class="flex-1 w-1/2" @click="rankProposal(RANKACTIONS.THUMBSDOWN, props.proposal)">
+                                <HandThumbDownIcon aria-hidden="true"
+                                :class="[rank?.rank === RANKACTIONS.THUMBSDOWN ? 'text-pink-800' : 'text-gray-500']"
+                                class="w-6 h-6 hover:text-yellow-700 hover:cursor-pointer" />
                             </div>
                         </div>
                     </div>
@@ -190,17 +211,23 @@
     </div>
 </template>
 <script lang="ts" setup>
-import Proposal from "../../../models/proposal";
-import Rating from 'primevue/rating';
 import {inject, computed, watch} from "vue";
-import {BookmarkIcon} from "@heroicons/vue/20/solid";
+import { router} from '@inertiajs/vue3';
+import route from 'ziggy-js';
+import Rating from 'primevue/rating';
 import { Link } from '@inertiajs/vue3';
-import { useBookmarksStore } from "../../../stores/bookmarks-store";
+import {BookmarkIcon, HandThumbUpIcon, HandThumbDownIcon} from "@heroicons/vue/20/solid";
 import { storeToRefs } from "pinia";
+import Proposal from "../../../models/proposal";
+import { RANKACTIONS } from '../../../models/rank-actions';
 import ProposalFundingStatus from "./ProposalFundingStatus.vue"
 import ProposalProjectStatus from "./ProposalProjectStatus.vue"
 import ProposalBudget from "./ProposalBudget.vue";
 import ProposalAuthors from "./ProposalAuthors.vue";
+
+import { useBookmarksStore } from "../../../stores/bookmarks-store";
+import {useProposalsRankingStore} from "../../../stores/proposals-ranking-store";
+import { useUserStore } from "../../../../global/Shared/store/user-store";
 
 interface Author {
     id: number;
@@ -228,8 +255,54 @@ const props = withDefaults(
     },
 );
 
+const userStore = useUserStore();
+userStore.setUser();
+const {user$} = storeToRefs(userStore);
+
+const proposalsRanking = useProposalsRankingStore();
+let {ranks} = storeToRefs(proposalsRanking);
+let rank = computed(() => {
+        let filteredRanks = ranks.value.filter(r => r.model_id === props.proposal.id);
+        return filteredRanks[0];
+    });
+
 const bookmarksStore = useBookmarksStore();
 const {modelIds$} = storeToRefs(bookmarksStore);
 
 let isBookmarked  = computed<boolean>(() => modelIds$.value?.some(modelId => modelId == props.proposal.id));
+
+function loginUser() {
+    router.get(route('catalystExplorer.login.utility'));
+}
+
+function rankProposal(rankValue: RANKACTIONS, proposal: Proposal) {
+    if (rank?.value?.model_id == proposal.id){
+        router.patch(
+            route('catalystExplorer.ranks.update', {rank: rank.value.id}),
+            {rankValue},
+            {
+                preserveScroll: true,
+                preserveState: true,
+                replace: true,
+                onSuccess: async (component) => {
+                    await proposalsRanking.loadRankings(user$.value.id);
+                }
+            }
+        );
+    } else {
+        router.post(
+            route('catalystExplorer.ranks.store'),
+            {rankValue, proposal: proposal.id},
+            {
+                preserveScroll: true,
+                preserveState: true,
+                replace: true,
+                onSuccess: async (component) => {
+                    await proposalsRanking.loadRankings(user$.value.id);
+                }
+            }
+        );
+    }
+
+}
 </script>

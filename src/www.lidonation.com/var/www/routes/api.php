@@ -12,6 +12,7 @@ use App\Http\Controllers\Earn\LearningLessonController;
 use App\Http\Controllers\GenerateMnemonicPhraseController;
 use App\Http\Controllers\GlobalSearchController;
 use App\Http\Controllers\ProjectCatalyst\CatalystBookmarksController;
+use App\Http\Controllers\ProjectCatalyst\CatalystMyRankingController;
 use App\Http\Controllers\ProjectCatalyst\CatalystProposalsController;
 use App\Http\Controllers\PromoController;
 use App\Http\Controllers\QuestionResponseController;
@@ -286,6 +287,8 @@ Route::prefix('catalyst-explorer')->as('catalystExplorerApi.')
 
         Route::get('/proposals', [CatalystExplorer\ProposalController::class, 'proposals'])->name('proposals');
         Route::get('/proposals/{proposal_id}', [CatalystExplorer\ProposalController::class, 'proposal']);
+
+        Route::get('/proposals-ranks', [CatalystMyRankingController::class, 'ranks'])->name('proposals.ranks');
 
         Route::post('/people/claim', [CatalystExplorer\ProfileController::class, 'claim']);
 

@@ -23,6 +23,7 @@ export default interface Proposal {
     quickpitch?: string;
     website: string;
     yes_votes_count: number;
+    ranking_total: number;
     vote: Vote;
 
     // relationships

@@ -331,6 +331,7 @@ class CatalystProposalsController extends Controller
                     'status',
                     'website',
                     'type',
+                    'ranking_total',
                     'users.id',
                     'users.name',
                     'users.username',
