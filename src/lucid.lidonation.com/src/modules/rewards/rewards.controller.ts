@@ -38,7 +38,10 @@ export class RewardsController {
       if (pmt.nfts) {
         for (let n = 0; n < pmt.nfts.length; n++) {
           let nft = pmt.nfts[n];
-          nfts.push(nft);
+          if (nft?.key.length > 0){
+            nfts.push(nft);
+          }
+          
         }
       }
       const address = pmt.address;
@@ -62,7 +65,7 @@ export class RewardsController {
 
       if (nfts.length != 0) {
         tx = await this.mintNft(nfts, amounts, tx, lucid, address);
-        let metadata = Object.assign({}, ...nfts.map((nft) => ({ [nft.key]: nft.metadata })));
+        let metadata = Object.assign({}, ...nfts.map((nft) => ({ [nft?.key]: nft?.metadata })));
         nftMetadata = { ...nftMetadata ,...metadata}
         policy = lucid.utils.mintingPolicyToId(await this.getPolicy(lucid));
         nfts = [];
