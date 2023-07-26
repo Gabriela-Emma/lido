@@ -258,6 +258,9 @@ import { storeToRefs } from 'pinia';
 import ProposalViewTypes from '../modules/proposals/partials/ProposalViewTypes.vue';
 import { useProposalsStore } from '../stores/proposals-store';
 import { useBookmarksStore } from '../stores/bookmarks-store';
+import {useProposalsRankingStore} from '../stores/proposals-ranking-store';
+import { useUserStore } from '../../global/Shared/store/user-store';
+
 
 /// props and class properties
 const props = withDefaults(
@@ -317,6 +320,14 @@ const props = withDefaults(
             {
                 label: 'No Votes: High to Low',
                 value: 'no_votes_count:desc',
+            },
+            {
+                label: 'Ranking: High to Low',
+                value: 'ranking_total:desc',
+            },
+            {
+                label: 'Ranking: Low to High',
+                value: 'ranking_total:asc',
             }
         ]
     });
@@ -360,9 +371,16 @@ const filtering = computed(() => {
 
 let showFilters = ref(getFiltering() || true);
 
+const userStore = useUserStore();
+userStore.setUser();
+const {user$} = storeToRefs(userStore);
+
 const peopleStore = usePeopleStore();
 peopleStore.loadPeople(props?.filters?.people);
 const {selectedPeople} = storeToRefs(peopleStore);
+
+const proposalsRanking = useProposalsRankingStore();
+proposalsRanking.loadRankings(user$.value?.id);
 
 const proposalsStore = useProposalsStore();
 let {viewType} = storeToRefs(proposalsStore);

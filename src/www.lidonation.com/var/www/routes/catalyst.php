@@ -23,6 +23,7 @@ use App\Http\Controllers\ProjectCatalyst\CatalystMyBookmarksController;
 use App\Http\Controllers\ProjectCatalyst\CatalystMyDashboardController;
 use App\Http\Controllers\ProjectCatalyst\CatalystMyProposalsController;
 use App\Http\Controllers\ProjectCatalyst\CatalystMyVotesController;
+use App\Http\Controllers\ProjectCatalyst\CatalystMyRankingController;
 use App\Http\Controllers\ProjectCatalyst\CatalystUserProfilesController;
 use App\Models\DraftBallot;
 use Illuminate\Http\Request;
@@ -74,7 +75,8 @@ Route::group(
             Route::get('/login', fn () => Inertia::render('Auth/Login'))
                 ->name('login');
 
-            Route::get('/auth/login', [UserController::class, 'utilityLogin']);
+            Route::get('/auth/login', [UserController::class, 'utilityLogin'])
+                ->name('login.utility');
 
             Route::get('/register', fn () => Inertia::render('Auth/Register'))
                 ->name('register');
@@ -211,6 +213,20 @@ Route::group(
                     Route::patch('/{vote}/update', [CatalystMyVotesController::class, 'update'])
                         ->name('update');
                     Route::delete('/{vote}/delete', [CatalystMyVotesController::class, 'destroy'])->name('destroy');
+
+                });
+
+                // Ranks
+                Route::prefix('/ranks')->as('ranks.')->group(function () {
+                    // Views
+                    Route::get('/', [CatalystMyRankingController::class, 'index'])->name('index');
+                    Route::get('/{rank}', [CatalystMyRankingController::class, 'view'])->name('view');
+
+                    // CRUDs
+                    Route::post('/store', [CatalystMyRankingController::class, 'store'])->name('store');
+                    Route::patch('/{rank}/update', [CatalystMyRankingController::class, 'update'])
+                        ->name('update');
+                    Route::delete('/{rank}/delete', [CatalystMyRankingController::class, 'destroy'])->name('destroy');
 
                 });
             });
