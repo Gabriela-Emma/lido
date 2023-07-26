@@ -114,11 +114,11 @@
                     :class="{'z-5': user$}">
                         <div class="flex gap-1 flex-nowrap">
                             <div class="flex-1 w-1/2" @click="rankProposal(RANKACTIONS.THUMBSUP, props.proposal)">
-                                <HandThumbUpIcon :class="[rank?.rank === RANKACTIONS.THUMBSUP ? 'text-teal-700' : 'text-gray-500']"
+                                <ChevronUpIcon :class="[rank?.rank === RANKACTIONS.THUMBSUP ? 'text-teal-700' : 'text-gray-500']"
                                 aria-hidden="true" class="w-6 h-6 text-gray-500 hover:text-yellow-700 hover:cursor-pointer" />
                             </div>
                             <div class="flex-1 w-1/2" @click="rankProposal(RANKACTIONS.THUMBSDOWN, props.proposal)">
-                                <HandThumbDownIcon aria-hidden="true"
+                                <ChevronDownIcon aria-hidden="true"
                                 :class="[rank?.rank === RANKACTIONS.THUMBSDOWN ? 'text-pink-800' : 'text-gray-500']"
                                 class="w-6 h-6 hover:text-yellow-700 hover:cursor-pointer" />
                             </div>
@@ -183,7 +183,7 @@ import { router} from '@inertiajs/vue3';
 import route from 'ziggy-js';
 import Rating from 'primevue/rating';
 import { Link } from '@inertiajs/vue3';
-import {BookmarkIcon, HandThumbUpIcon, HandThumbDownIcon} from "@heroicons/vue/20/solid";
+import {BookmarkIcon, HandThumbUpIcon, HandThumbDownIcon, ChevronUpIcon, ChevronDownIcon} from "@heroicons/vue/20/solid";
 import { storeToRefs } from "pinia";
 import Proposal from "../../../models/proposal";
 import { RANKACTIONS } from '../../../models/rank-actions';
