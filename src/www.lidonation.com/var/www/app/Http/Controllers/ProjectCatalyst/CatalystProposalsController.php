@@ -349,7 +349,28 @@ class CatalystProposalsController extends Controller
                 if ((bool) $this->sortBy && (bool) $this->sortOrder) {
                     $options['sort'] = ["$this->sortBy:$this->sortOrder"];
                 } else {
-                    $options['sort'] = ['amount_received:desc'];
+                    $options['sort'] = [collect([
+                        'amount_requested:asc',
+                        'amount_received:asc',
+                        'amount_requested:desc',
+                        'amount_received:desc',
+                        'ca_rating:asc',
+                        'created_at:asc',
+                        'ca_rating:desc',
+                        'created_at:desc',
+                        'funded_at:asc',
+                        'funded_at:desc',
+                        'no_votes_count:desc',
+                        'no_votes_count:asc',
+                        'project_length:asc',
+                        'project_length:desc',
+                        'quickpitch_length:asc',
+                        'quickpitch_length:desc',
+                        'ranking_total:desc',
+                        'ranking_total:asc',
+                        'yes_votes_count:asc',
+                        'yes_votes_count:desc',
+                    ])->random()];
                 }
 
                 $options['offset'] = (($this->currentPage ?? 1) - 1) * $this->limit;
