@@ -36,7 +36,7 @@ class ProcessPendingWithdrawalsJob implements ShouldQueue
                 Bus::batch([
                     function () use($jobs) {
                         collect($jobs)->each(function($job) {
-                             dispatch(new self($job['payments'], $job['msg'], $job['processWithdrawals']))->delay(now()->addSeconds(10));
+                             dispatch(new self($job['payments'], $job['msg'], $job['processWithdrawals']))->delay(now()->addminutes(3));
                          });   
                     },
                  ])->dispatch();
@@ -150,8 +150,8 @@ class ProcessPendingWithdrawalsJob implements ShouldQueue
 
             return;
         }
-
         return $withdrawals;
+
     }
 
     protected function getPayments($withdrawals)
