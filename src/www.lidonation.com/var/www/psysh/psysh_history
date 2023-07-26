@@ -276,3 +276,5 @@ $holding\040=\040collect([]);
 foreach\040($proposals\040as\040$proposal)\040{\012if\040("{$proposal->key}.{$proposal->lang}"\040==\040"{$prevKey}")\040{\012$holding[]\040=\040$proposal;\012}\012$prevKey="{$proposal->key}.{$proposal->lang}";\012}
 $holding->each(function\040($item)\040{\012$item->delete();\012});
 exit
+Proposal::runCustomIndex();
+exit
