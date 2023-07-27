@@ -44,7 +44,6 @@ return new class extends Migration
                             'model_id' => $lesson->id,
                             'user_id' => $user->id
                         ])->first();
-                        // dd($lessonReward instanceof Reward);
                         if (!$lessonReward instanceof Reward) {
                             $this->issueNft($user, $lesson);
                         }
