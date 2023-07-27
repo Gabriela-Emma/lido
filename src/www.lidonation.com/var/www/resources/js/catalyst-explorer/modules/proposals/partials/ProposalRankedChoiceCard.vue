@@ -1,5 +1,5 @@
 <template>
-<div class="flex flex-row gap-2 py-1">
+<div class="flex flex-row w-full gap-2 py-1">
     <div class="relative flex flex-col items-center w-12 gap-1 px-1 py-1 h-30" :class="{'hover:cursor-pointer hover:bg-teal-10': !user$}">
         <div class="absolute top-0 left-0 w-full h-full"
             :class="{'z-5': !user$}" @click="loginUser()">
@@ -8,7 +8,7 @@
         :class="{'z-5': user$}">
             <div class="text-center" @click="rankProposal(RANKACTIONS.THUMBSUP, props.proposal)">
                 <ChevronUpIcon :class="[rank?.rank === RANKACTIONS.THUMBSUP ? 'text-teal-700' : 'text-gray-500']"
-                    aria-hidden="true" class="w-10 h-6 text-gray-500 hover:text-yellow-700 hover:cursor-pointer" />
+                    aria-hidden="true" class="w-10 h-8 text-gray-500 hover:text-yellow-700 hover:cursor-pointer" />
             </div>
             <div class="text-lg text-center">
                 {{ proposal.ranking_total ?? 0 }}
@@ -16,14 +16,14 @@
             <div class="text-center" @click="rankProposal(RANKACTIONS.THUMBSDOWN, props.proposal)">
                 <ChevronDownIcon aria-hidden="true"
                     :class="[rank?.rank === RANKACTIONS.THUMBSDOWN ? 'text-pink-800' : 'text-gray-500']"
-                    class="w-10 h-6 hover:text-yellow-700 hover:cursor-pointer" />
+                    class="w-10 h-8 hover:text-yellow-700 hover:cursor-pointer" />
             </div>
         </div>
     </div>
 
-    <div class="flex flex-col gap-1">
-        <div>
-            <h2>
+    <div class="flex flex-col w-full gap-1 pr-4">
+        <div class="w-full">
+            <h2 class="w-full">
                 <span>
                     <a class="font-medium text-gray-800 text-md"
                         target="_blank"
@@ -32,8 +32,39 @@
                     </a>
                 </span>
             </h2>
+            <div class="w-full space-y-3 text-sm">
+                <div class="text-base font-normal drip-content">
+                    <div v-if="proposal.solution"
+                         v-html="$filters.markdown('**Solution:** ' + proposal.solution)"></div>
+                    <div v-else v-html="$filters.markdown('**Problem:** ' + proposal.problem)"></div>
+                </div>
+                <div class="flex flex-row flex-wrap items-center gap-2 mb-2">
+                    <div v-if="proposal.challenge?.label" class="inline gap-1">
+                        <strong>{{  $t("Challenge") }}: </strong>
+                        {{ proposal.challenge?.label }}
+                    </div>
+                    <div v-if="proposal.fund?.label" class="inline gap-1">
+                        <strong>{{ proposal.fund?.label }}</strong>
+                    </div>
+
+                    <div class="flex items-center border rounded-sm border-slate-600">
+                        <div class="py-0.5 px-1 text-xs">Funding Status</div>
+                        <div class="inline-flex py-0.5 pr-0.5">
+                            <ProposalFundingStatus :proposal="proposal" />
+                        </div>
+                    </div>
+
+                    <div class="flex items-center border rounded-sm border-slate-600" v-if="proposal.fund?.status !== 'governance'">
+                        <div class="px-1 py-0.5 text-xs">Project Status</div>
+                        <div class="inline-flex py-0.5 pr-0.5">
+                            <ProposalProjectStatus :proposal="proposal" />
+                        </div>
+                    </div>
+
+                </div>
+            </div>
         </div>
-        <div class="">
+        <div class="relative w-full mt-2">
             <ProposalBudget v-if="proposal" :proposal="proposal" />
         </div>
 
@@ -67,6 +98,8 @@ import { RANKACTIONS } from "../../../models/rank-actions";
 import { router } from "@inertiajs/vue3";
 import route from "ziggy-js";
 import { useUserStore } from "../../../../global/Shared/store/user-store";
+import ProposalFundingStatus from "./ProposalFundingStatus.vue";
+import ProposalProjectStatus from "./ProposalProjectStatus.vue";
 
 const $utils: any = inject('$utils');
 

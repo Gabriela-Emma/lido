@@ -610,11 +610,7 @@ function getQueryData() {
 
     if (!!selectedSortRef.value && selectedSortRef.value.length > 3) {
         data[VARIABLES.SORTS] = selectedSortRef.value;
-    } else if(!!rankedViewingRef.value) {
-        data[VARIABLES.SORTS] = 'ranking_total:desc';
     }
-
-    console.log({data});
 
     if (!!filtersRef.value.budgets) {
         if (filtersRef.value.budgets[0] > VARIABLES.MIN_BUDGET || filtersRef.value.budgets[1] < VARIABLES.MAX_BUDGET) {
