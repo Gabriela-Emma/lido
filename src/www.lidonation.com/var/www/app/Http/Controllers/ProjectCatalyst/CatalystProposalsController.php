@@ -252,11 +252,20 @@ class CatalystProposalsController extends Controller
 
     protected function setFilters(Request $request)
     {
-        $sort = collect(
-            explode(
-                ':', $request->input(CatalystExplorerQueryParams::SORTS, '')
-            )
-        )->filter();
+        $this->limit = $request->input(CatalystExplorerQueryParams::PER_PAGE, 24);
+        $this->ranked = $request->has(CatalystExplorerQueryParams::RANKED_VIEW);
+        if ($this->ranked) {
+            $sort = collect(['ranking_total', 'desc']);
+            if ($this->limit == 24) {
+                $this->limit = 36;
+            }
+        } else {
+            $sort = collect(
+                explode(
+                    ':', $request->input(CatalystExplorerQueryParams::SORTS, '')
+                )
+            )->filter();
+        }
         if ($sort->isEmpty()) {
             $sort = collect(explode(':', collect([
                 'amount_requested:asc',
@@ -283,12 +292,10 @@ class CatalystProposalsController extends Controller
         }
         $this->sortBy = $sort->first();
         $this->sortOrder = $sort->last();
-
         $this->budgets = $request->collect(CatalystExplorerQueryParams::BUDGETS);
         $this->search = $request->input(CatalystExplorerQueryParams::SEARCH, null);
         $this->quickpitches = $request->has(CatalystExplorerQueryParams::QUICKPITCHES);
-        $this->ranked = $request->has(CatalystExplorerQueryParams::RANKED_VIEW);
-        $this->limit = $request->input(CatalystExplorerQueryParams::PER_PAGE, 24);
+
         $this->fundingStatus = match ($request->input('f', null)) {
             CatalystExplorerQueryParams::OVER_BUDGET => 'over_budget',
             CatalystExplorerQueryParams::NOT_APPROVED => 'not_approved',
