@@ -4,7 +4,7 @@
             :profileQuickView="profileQuickView"
             @close="profileQuickView = null" />
 
-        <ProposalQuickPitchCard v-if="quickpitching && !!proposal.quickpitch"
+        <ProposalQuickPitchCard v-if="(quickpitching || viewType=='quickpitch') && !!proposal.quickpitch"
             @profileQuickView="handleProfileQuickView($event)"
             @summary="quickpitching = false" :proposal="props.proposal" />
 
