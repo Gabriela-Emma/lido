@@ -2,6 +2,7 @@
 
 namespace App\Http\View\Composers;
 
+use App\Models\Fund;
 use App\Models\Proposal;
 use App\Repositories\FundRepository;
 use Illuminate\View\View;
@@ -26,7 +27,12 @@ class CatalystChallengeComposer
             request()
                 ->route('fund')
         );
-        $proposals = $fund->proposals()->with(['discussions.ratings'])->orderBy('title->en', 'desc')->paginate(24);
+
+        if ($fund instanceof Fund ) {
+            abort(404);
+        }
+
+        $proposals = $fund?->proposals()->with(['discussions.ratings'])->orderBy('title->en', 'desc')->paginate(24);
 
         $title = $fund->label;
 
@@ -53,7 +59,7 @@ class CatalystChallengeComposer
             ->where('fund_id', $fund->id)
             ->sum('amount_requested');
 
-  
+
         $view->with(compact(
             'proposals',
             'title',
