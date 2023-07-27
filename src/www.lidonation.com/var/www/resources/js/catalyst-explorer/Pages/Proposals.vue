@@ -407,6 +407,12 @@ watch([currPageRef, perPageRef, quickpitchingRef, rankedViewingRef], () => {
     query();
 });
 
+watch([rankedViewingRef], () => {
+    if (!selectedSortRef.value.includes('ranking_total')) {
+        selectedSortRef.value = 'ranking_total:desc';
+    }
+}, {deep: true});
+
 watch([selectedPeople], () => {
     filtersRef.value.people = [...filtersRef.value.people, ...selectedPeople.value]
 });

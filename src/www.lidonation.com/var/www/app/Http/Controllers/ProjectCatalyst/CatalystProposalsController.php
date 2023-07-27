@@ -12,6 +12,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Fluent;
 use Illuminate\Support\Stringable;
+use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Inertia\Response;
 use JetBrains\PhpStorm\ArrayShape;
@@ -254,7 +255,11 @@ class CatalystProposalsController extends Controller
     {
         $this->limit = $request->input(CatalystExplorerQueryParams::PER_PAGE, 24);
         $this->ranked = $request->has(CatalystExplorerQueryParams::RANKED_VIEW);
-        if ($this->ranked) {
+        if (
+            $this->ranked &&
+            !Str::of($request->input(CatalystExplorerQueryParams::SORTS))
+            ->contains('ranking_total')
+        ) {
             $sort = collect(['ranking_total', 'desc']);
             if ($this->limit == 24) {
                 $this->limit = 36;
