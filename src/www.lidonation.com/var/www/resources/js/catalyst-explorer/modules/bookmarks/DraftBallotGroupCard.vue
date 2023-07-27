@@ -69,6 +69,7 @@
                                                 <div class="font-semibold text-slate-700">
                                                     {{ $filters.currency(item?.model?.amount_requested, item?.model?.currency) }}
                                                 </div>
+                                                <ProposalAuthors :proposal="item.model" @profileQuickView="handleProfileQuickView($event)"/>
                                             </div>
                                         </div>
                                     </div>
@@ -78,6 +79,11 @@
                     </div>
                 </li>
             </ul>
+            <div class="relative">
+                <ProposalUserQuickView v-if="profileQuickView"
+                    :profileQuickView="profileQuickView"
+                    @close="profileQuickView = null" />
+            </div>
         </div>
         <div class="col-span-3 hideen lg:block">
             <div class="flex flex-col justify-center h-full px-10 py-5">
@@ -102,6 +108,8 @@ import { Pie } from 'vue-chartjs'
 import { useBookmarksStore } from '../../stores/bookmarks-store';
 import { storeToRefs } from 'pinia';
 import { useUserStore } from '../../../global/Shared/store/user-store';
+import ProposalAuthors from '../proposals/partials/ProposalAuthors.vue';
+import ProposalUserQuickView from '../proposals/partials/ProposalUserQuickView.vue';
 
 const props = defineProps<{
     group: DraftBallotGroup<Proposal>
@@ -124,6 +132,12 @@ let allotedBudget = computed(() => {
         (item) => item.model?.vote?.vote === VOTEACTIONS.UPVOTE
     ).reduce((acc, item) => ( acc + item.model.amount_requested), 0);
 });
+
+let profileQuickView = ref(null);
+
+let handleProfileQuickView  = (user: Author) => {
+    profileQuickView.value = user;
+}
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 const chartData = ref(getChart());
@@ -233,5 +247,14 @@ function getChart()
             }
         ]
     }
+}
+
+interface Author {
+    id: number;
+    name: string;
+    username: string;
+    profile_photo_url: string;
+    ideascale_id: number;
+    media: {original_url: string}[]
 }
 </script>
