@@ -526,7 +526,7 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
             'woman_proposal' => $this->is_woman_proposal ? 1 : 0,
             'ideafest_proposal' => $this->is_ideafest_proposal ? 1 : 0,
             'project_length' => $this->meta_data->project_length ?? null,
-            'ranking_total' => $this->ranking_total,
+            'ranking_total' => $this->ranking_total ?? 0,
             'fund' => [
                 'id' => $this->fund?->parent?->id,
                 'amount' => $this->fund?->parent?->amount ? intval($this->fund?->parent?->amount) : null,
