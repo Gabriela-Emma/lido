@@ -13,6 +13,7 @@ export enum VARIABLES {
     PER_PAGE = 'l',
     PEOPLE = 'pp',
     QUICKPITCHES = 'qp',
+    RANKED_VIEW = 'rv',
     STATUS = 'ss',
     TRACKER_ID_MONTHLY_REPORT = 'HSH9YZDM',
     TRACKER_ID_PA = 'GQ56QFBJ',

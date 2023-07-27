@@ -254,13 +254,11 @@ import Pagination from "../Shared/Components/Pagination.vue";
 import axios from 'axios';
 import { usePeopleStore } from '../stores/people-store';
 import { storeToRefs } from 'pinia';
-
 import ProposalViewTypes from '../modules/proposals/partials/ProposalViewTypes.vue';
 import { useProposalsStore } from '../stores/proposals-store';
 import { useBookmarksStore } from '../stores/bookmarks-store';
 import {useProposalsRankingStore} from '../stores/proposals-ranking-store';
 import { useUserStore } from '../../global/Shared/store/user-store';
-
 
 /// props and class properties
 const props = withDefaults(
@@ -290,20 +288,28 @@ const props = withDefaults(
                 value: 'amount_requested:asc',
             },
             {
+                label: 'Community Ranking: High to Low',
+                value: 'ranking_total:desc',
+            },
+            {
+                label: 'Community Ranking: Low to High',
+                value: 'ranking_total:asc',
+            },
+            {
                 label: 'Payments Received: High to Low',
                 value: 'amount_received:desc',
             },
             {
+                label: 'Project Length: High to Low',
+                value: 'project_length:desc',
+            },
+            {
+                label: 'Project Length: Low to High',
+                value: 'project_length:asc',
+            },
+            {
                 label: 'Payments Received: Low to High',
                 value: 'amount_received:asc',
-            },
-            {
-                label: 'Rating: High to Low',
-                value: 'ca_rating:desc',
-            },
-            {
-                label: 'Rating: Low to High',
-                value: 'ca_rating:asc',
             },
             {
                 label: 'Yes Votes: High to Low',
@@ -322,13 +328,13 @@ const props = withDefaults(
                 value: 'no_votes_count:desc',
             },
             {
-                label: 'Community Ranking: High to Low',
-                value: 'ranking_total:desc',
+                label: 'Rating: High to Low',
+                value: 'ca_rating:desc',
             },
             {
-                label: 'Community Ranking: Low to High',
-                value: 'ranking_total:asc',
-            }
+                label: 'Rating: Low to High',
+                value: 'ca_rating:asc',
+            },
         ]
     });
 let search = ref(props.search);
@@ -386,6 +392,8 @@ const proposalsStore = useProposalsStore();
 let {viewType} = storeToRefs(proposalsStore);
 let quickpitchingRef = ref<boolean>(false);
 
+let rankedViewingRef = ref<boolean>(false);
+
 const bookmarksStore = useBookmarksStore();
 bookmarksStore.loadCollections();
 
@@ -395,7 +403,7 @@ watch([search, filtersRef, selectedSortRef], () => {
     searchRender.value = Math.random();
 }, {deep: true});
 
-watch([currPageRef, perPageRef, quickpitchingRef], () => {
+watch([currPageRef, perPageRef, quickpitchingRef, rankedViewingRef], () => {
     query();
 });
 
@@ -405,6 +413,7 @@ watch([selectedPeople], () => {
 
 watch([viewType], () => {
     quickpitchingRef.value = viewType.value === 'quickpitch';
+    rankedViewingRef.value = viewType.value === 'ranked';
 });
 
 watch(selectedDownloadFormat, () => {
@@ -542,6 +551,11 @@ function getQueryData() {
     if (perPageRef.value) {
         data[VARIABLES.PER_PAGE] = perPageRef.value;
     }
+
+    if ( rankedViewingRef.value ) {
+        data[VARIABLES.RANKED_VIEW] = '';
+    }
+
     if ( quickpitchingRef.value ) {
         data[VARIABLES.QUICKPITCHES] = '';
     }
@@ -596,7 +610,11 @@ function getQueryData() {
 
     if (!!selectedSortRef.value && selectedSortRef.value.length > 3) {
         data[VARIABLES.SORTS] = selectedSortRef.value;
+    } else if(!!rankedViewingRef.value) {
+        data[VARIABLES.SORTS] = 'ranking_total:desc';
     }
+
+    console.log({data});
 
     if (!!filtersRef.value.budgets) {
         if (filtersRef.value.budgets[0] > VARIABLES.MIN_BUDGET || filtersRef.value.budgets[1] < VARIABLES.MAX_BUDGET) {

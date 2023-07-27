@@ -24,6 +24,8 @@ class CatalystProposalsController extends Controller
 {
     protected null|string|Stringable $search = null;
 
+    protected null|string|Stringable $ranked = null;
+
     protected null|string|Stringable $quickpitches = null;
 
     protected null|string|Stringable $fundingStatus = null;
@@ -214,7 +216,7 @@ class CatalystProposalsController extends Controller
                     'impact_proposal' => 'im',
                     'woman_proposal' => 'wo',
                     'ideafest_proposal' => 'id',
-                    'has_quick_pitch' => 'qp',
+                    'has_quick_pitch' => CatalystExplorerQueryParams::QUICKPITCHES,
                     default => null
                 },
                 'type' => match ($this->proposalType) {
@@ -285,6 +287,7 @@ class CatalystProposalsController extends Controller
         $this->budgets = $request->collect(CatalystExplorerQueryParams::BUDGETS);
         $this->search = $request->input(CatalystExplorerQueryParams::SEARCH, null);
         $this->quickpitches = $request->has(CatalystExplorerQueryParams::QUICKPITCHES);
+        $this->ranked = $request->has(CatalystExplorerQueryParams::RANKED_VIEW);
         $this->limit = $request->input(CatalystExplorerQueryParams::PER_PAGE, 24);
         $this->fundingStatus = match ($request->input('f', null)) {
             CatalystExplorerQueryParams::OVER_BUDGET => 'over_budget',
@@ -304,7 +307,7 @@ class CatalystProposalsController extends Controller
             'im' => 'impact_proposal',
             'wo' => 'woman_proposal',
             'id' => 'ideafest_proposal',
-            'qp' => 'has_quick_pitch',
+            CatalystExplorerQueryParams::QUICKPITCHES => 'has_quick_pitch',
             default => null
         };
         $this->proposalType = match ($request->input(CatalystExplorerQueryParams::TYPE, CatalystExplorerQueryParams::PAGE)) {

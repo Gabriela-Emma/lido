@@ -183,7 +183,7 @@ import { router} from '@inertiajs/vue3';
 import route from 'ziggy-js';
 import Rating from 'primevue/rating';
 import { Link } from '@inertiajs/vue3';
-import {BookmarkIcon, HandThumbUpIcon, HandThumbDownIcon, ChevronUpIcon, ChevronDownIcon} from "@heroicons/vue/20/solid";
+import {BookmarkIcon, ChevronUpIcon, ChevronDownIcon} from "@heroicons/vue/20/solid";
 import { storeToRefs } from "pinia";
 import Proposal from "../../../models/proposal";
 import { RANKACTIONS } from '../../../models/rank-actions';
@@ -229,9 +229,9 @@ const {user$} = storeToRefs(userStore);
 const proposalsRanking = useProposalsRankingStore();
 let {ranks} = storeToRefs(proposalsRanking);
 let rank = computed(() => {
-        let filteredRanks = ranks.value.filter(r => r.model_id === props.proposal.id);
-        return filteredRanks[0];
-    });
+    let filteredRanks = ranks.value.filter(r => r.model_id === props.proposal.id);
+    return filteredRanks[0];
+});
 
 const bookmarksStore = useBookmarksStore();
 const {modelIds$} = storeToRefs(bookmarksStore);
