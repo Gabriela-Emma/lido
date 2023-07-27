@@ -1,4 +1,4 @@
-FROM registry.lidonation.com/lidonation/lidonation/ubuntu-ghc-cabal-libsodium-cardano:8.1.1
+FROM registry.lidonation.com/lidonation/lidonation/ubuntu-ghc-cabal-libsodium-cardano:8.1.2
 SHELL ["/bin/bash", "-c"]
 
 EXPOSE 8080
