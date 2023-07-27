@@ -29,7 +29,7 @@
     </div>
 
     <div class="lg:grid lg:grid-cols-7">
-        <div class="col-span-4">
+        <div class="col-span-4 relative">
             <ul role="list" class="mt-8 py-3 overflow-auto border border-l-0 border-gray-200 divide-y divide-gray-200 max-h-[33rem]">
                 <li class="ml-4" v-for="item in group.items" :key="item?.model?.id">
                     <div class="flex justify-start gap-1 px-4 py-4 lg:gap-0 hover:bg-gray-50">
@@ -64,12 +64,12 @@
                                     </div>
                                     <div class="mt-1">
                                         <div class="flex flex-row items-center gap-5 text-sm text-slate-500">
-                                            <div class="flex items-center gap-1">
+                                            <div class="flex items-center gap-2">
                                                 <div>{{ $t("Budget") }}</div>
                                                 <div class="font-semibold text-slate-700">
                                                     {{ $filters.currency(item?.model?.amount_requested, item?.model?.currency) }}
                                                 </div>
-                                                <ProposalAuthors :proposal="item.model" @profileQuickView="handleProfileQuickView($event)"/>
+                                                <ProposalAuthors :proposal="item.model" @profileQuickView="handleProfileQuickView($event)" :resize="true"/>
                                             </div>
                                         </div>
                                     </div>
@@ -79,10 +79,11 @@
                     </div>
                 </li>
             </ul>
-            <div class="relative">
+            <div>
                 <ProposalUserQuickView v-if="profileQuickView"
                     :profileQuickView="profileQuickView"
-                    @close="profileQuickView = null" />
+                    @close="profileQuickView = null" 
+                />
             </div>
         </div>
         <div class="col-span-3 hideen lg:block">
