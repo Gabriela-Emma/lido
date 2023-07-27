@@ -58,7 +58,6 @@ return new class extends Migration
 
     public function issueNft($user, $lesson,)
     {
-        // dd($user);
         // get first rule
         $reward = new Reward;
         $reward->user_id = $user->id;
