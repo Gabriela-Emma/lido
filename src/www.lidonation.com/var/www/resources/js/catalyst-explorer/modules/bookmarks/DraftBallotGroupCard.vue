@@ -29,7 +29,7 @@
     </div>
 
     <div class="lg:grid lg:grid-cols-7">
-        <div class="col-span-4 relative">
+        <div class="col-span-4">
             <ul role="list" class="mt-8 py-3 overflow-auto border border-l-0 border-gray-200 divide-y divide-gray-200 max-h-[33rem]">
                 <li class="ml-4" v-for="item in group.items" :key="item?.model?.id">
                     <div class="flex justify-start gap-1 px-4 py-4 lg:gap-0 hover:bg-gray-50">
@@ -56,7 +56,7 @@
                         </div>
                         <div class="flex items-center flex-1 sm:px-6">
                             <div class="flex-1 min-w-0 sm:flex sm:items-center sm:justify-between">
-                                <div class="">
+                                <div class="relative">
                                     <div class="flex flex-col text-md">
                                         <a :href="item?.model?.link" target="_blank" class="text-sm font-medium xl:font-semibold xl:text-lg text-slate-700">
                                             {{ item?.model?.title }}
@@ -73,18 +73,18 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="absolute w-80 h-96">
+                                        <ProposalUserQuickView v-if="profileQuickView"
+                                            :profileQuickView="profileQuickView"
+                                            @close="profileQuickView = null" 
+                                        />
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </li>
             </ul>
-            <div>
-                <ProposalUserQuickView v-if="profileQuickView"
-                    :profileQuickView="profileQuickView"
-                    @close="profileQuickView = null" 
-                />
-            </div>
         </div>
         <div class="col-span-3 hideen lg:block">
             <div class="flex flex-col justify-center h-full px-10 py-5">
