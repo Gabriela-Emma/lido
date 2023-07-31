@@ -15,12 +15,15 @@ export class CardanoController {
 
   @Get('epoch')
   async epoch(@Req() request: Request) {
-    return await getEpoch(request.query.date) }
 
-  @Get('policy')
+    return await getEpoch(request.query.date) 
+
+  }
+
+  @Post('policy')
   async name(@Req() request: Request) {
     const lucid = await lucidInstance()
-    const policy = await mintingPolicy(request?.query?.seed)
+    const policy = await mintingPolicy(request?.body?.seed)
     return lucid.utils.mintingPolicyToId(policy)
   }
 }

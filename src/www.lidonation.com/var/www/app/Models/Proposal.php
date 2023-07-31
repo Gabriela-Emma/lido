@@ -155,6 +155,7 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
             'definition_of_success',
             'comment_prompt',
             'social_excerpt',
+            'ranking_total',
             'users',
             'tags',
             'categories'
@@ -174,6 +175,7 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
             'funded_at',
             'no_votes_count',
             'yes_votes_count',
+            'ranking_total',
         ];
     }
 
@@ -481,6 +483,11 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
         return $this->hasMany(ProposalRating::class, 'proposal_id');
     }
 
+    public function ranks()
+    {
+        return $this->hasMany(CatalystRank::class, 'model_id', 'id');
+    }
+
     public function toSitemapTag(): Url|string|array
     {
         return route('proposal', $this);
@@ -519,6 +526,7 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
             'woman_proposal' => $this->is_woman_proposal ? 1 : 0,
             'ideafest_proposal' => $this->is_ideafest_proposal ? 1 : 0,
             'project_length' => $this->meta_data->project_length ?? null,
+            'ranking_total' => $this->ranking_total ?? 0,
             'fund' => [
                 'id' => $this->fund?->parent?->id,
                 'amount' => $this->fund?->parent?->amount ? intval($this->fund?->parent?->amount) : null,

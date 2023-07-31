@@ -105,40 +105,28 @@
                     </div>
                 </div>
 
-                <div class="flex justify-end flex-1 w-full -ml-px">
-                    <div
-                        class="flex items-center justify-center flex-1 py-2 -mr-px text-sm font-medium text-gray-700 border border-transparent rounded-bl-sm hover:text-gray-500">
-                        <div class="flex items-center gap-1">
-                            <div class="text-sm font-semibold">
-                                {{ $filters.shortNumber(proposal.ca_rating)?.toFixed(2) }}
+                <div class="relative w-full -ml-px" :class="{'hover:cursor-pointer hover:bg-teal-10': !user$}">
+                    <div class="absolute top-0 left-0 w-full h-full"
+                        :class="{'z-5': !user$}"
+                        @click="loginUser()">
+                    </div>
+                    <div class="absolute top-0 left-0 flex flex-row items-center justify-center w-full h-full gap-2 px-1 py-2 rounded-sm flex-nowrap"
+                    :class="{'z-5': user$}">
+                        <div class="flex items-center gap-1 flex-nowrap">
+                            <span class="pr-1 text-xs text-slate-400">Rank</span>
+                            <div class="flex-1 w-1/2" @click="rankProposal(RANKACTIONS.THUMBSUP, props.proposal)">
+                                <ChevronUpIcon :class="[rank?.rank === RANKACTIONS.THUMBSUP ? 'text-teal-light-500' : 'text-gray-400']"
+                                aria-hidden="true" class="w-10 h-10 text-gray-400 hover:text-yellow-700 hover:cursor-pointer" />
                             </div>
-                            <div>
-                                <Rating :modelValue="proposal.ca_rating" :stars="5" :readonly="true" :cancel="false">
-                                    <template #onicon>
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-                                             class="w-4 h-4 text-teal-500">
-                                            <path
-                                                d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z"/>
-                                        </svg>
-                                    </template>
-                                    <template #officon>
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                             stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                  d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"/>
-                                        </svg>
-
-                                    </template>
-                                </Rating>
-                            </div>
-                            <div class="text-xs text-slate-400">
-                                ({{ proposal.ratings_count }})
+                            <div class="flex-1 w-1/2" @click="rankProposal(RANKACTIONS.THUMBSDOWN, props.proposal)">
+                                <ChevronDownIcon aria-hidden="true"
+                                :class="[rank?.rank === RANKACTIONS.THUMBSDOWN ? 'text-pink-700' : 'text-gray-400']"
+                                class="w-10 h-10 hover:text-yellow-700 hover:cursor-pointer" />
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
 
             <div class="grid grid-cols-2 -mt-px text-xs divide-x xl:text-sm 2xl:text-md">
                 <div class="flex items-center justify-start flex-1 gap-2 p-2">
@@ -190,17 +178,23 @@
     </div>
 </template>
 <script lang="ts" setup>
-import Proposal from "../../../models/proposal";
-import Rating from 'primevue/rating';
 import {inject, computed, watch} from "vue";
-import {BookmarkIcon} from "@heroicons/vue/20/solid";
+import { router} from '@inertiajs/vue3';
+import route from 'ziggy-js';
+import Rating from 'primevue/rating';
 import { Link } from '@inertiajs/vue3';
-import { useBookmarksStore } from "../../../stores/bookmarks-store";
+import {BookmarkIcon, ChevronUpIcon, ChevronDownIcon} from "@heroicons/vue/20/solid";
 import { storeToRefs } from "pinia";
+import Proposal from "../../../models/proposal";
+import { RANKACTIONS } from '../../../models/rank-actions';
 import ProposalFundingStatus from "./ProposalFundingStatus.vue"
 import ProposalProjectStatus from "./ProposalProjectStatus.vue"
 import ProposalBudget from "./ProposalBudget.vue";
 import ProposalAuthors from "./ProposalAuthors.vue";
+
+import { useBookmarksStore } from "../../../stores/bookmarks-store";
+import {useProposalsRankingStore} from "../../../stores/proposals-ranking-store";
+import { useUserStore } from "../../../../global/Shared/store/user-store";
 
 interface Author {
     id: number;
@@ -228,8 +222,54 @@ const props = withDefaults(
     },
 );
 
+const userStore = useUserStore();
+userStore.setUser();
+const {user$} = storeToRefs(userStore);
+
+const proposalsRanking = useProposalsRankingStore();
+let {ranks} = storeToRefs(proposalsRanking);
+let rank = computed(() => {
+    let filteredRanks = ranks.value.filter(r => r.model_id === props.proposal.id);
+    return filteredRanks[0];
+});
+
 const bookmarksStore = useBookmarksStore();
 const {modelIds$} = storeToRefs(bookmarksStore);
 
 let isBookmarked  = computed<boolean>(() => modelIds$.value?.some(modelId => modelId == props.proposal.id));
+
+function loginUser() {
+    router.get(route('catalystExplorer.login.utility'));
+}
+
+function rankProposal(rankValue: RANKACTIONS, proposal: Proposal) {
+    if (rank?.value?.model_id == proposal.id){
+        router.patch(
+            route('catalystExplorer.ranks.update', {rank: rank.value.id}),
+            {rankValue},
+            {
+                preserveScroll: true,
+                preserveState: true,
+                replace: true,
+                onSuccess: async (component) => {
+                    await proposalsRanking.loadRankings(user$.value.id);
+                }
+            }
+        );
+    } else {
+        router.post(
+            route('catalystExplorer.ranks.store'),
+            {rankValue, proposal: proposal.id},
+            {
+                preserveScroll: true,
+                preserveState: true,
+                replace: true,
+                onSuccess: async (component) => {
+                    await proposalsRanking.loadRankings(user$.value.id);
+                }
+            }
+        );
+    }
+
+}
 </script>

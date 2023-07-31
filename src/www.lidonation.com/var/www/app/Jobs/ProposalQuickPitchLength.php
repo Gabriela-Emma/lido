@@ -40,13 +40,17 @@ class ProposalQuickPitchLength implements ShouldQueue
 
         $videoUrl = $this->proposal->quick_pitch;
 
-        // Check if it's a YouTube or Vimeo URL
-        if (strpos($videoUrl, 'youtube.com') !== false || strpos($videoUrl, 'youtu.be') !== false) {
+        $youtubeId = $this->youtubeId($videoUrl);
+        $vimeoId = $this->vimeoId($videoUrl);
+
+        $youtubePattern = '/^[a-zA-Z0-9_-]{11}$/';
+        if (preg_match($youtubePattern, $youtubeId)) {
             $videoDuration = $this->getYoutubeVideoDuration($videoUrl);
-        } elseif (strpos($videoUrl, 'vimeo.com') !== false) {
+        }
+
+        $vimeoPattern = '/^\d+$/';
+        if (preg_match($vimeoPattern, $vimeoId)) {
             $videoDuration = $this->getVimeoVideoDuration($videoUrl);
-        } else {
-            $videoDuration = null;
         }
 
         $this->proposal->saveMeta('quickpitch_length', $videoDuration, $this->proposal, true);
@@ -60,17 +64,15 @@ class ProposalQuickPitchLength implements ShouldQueue
      */
     private function getYoutubeVideoDuration(string $url)
     {
-        // Extract the video ID from the URL
-        parse_str(parse_url($url, PHP_URL_QUERY), $query);
-        $videoId = $query['v'] ?? null;
+        $id = $this->youtubeId($url);
 
-        if (!$videoId) {
+        if (!$id) {
             return null;
         }
 
         // Make an API request to get video information from YouTube
         $response = Http::get("https://www.googleapis.com/youtube/v3/videos", [
-            'id' => $videoId,
+            'id' => $id,
             'part' => 'contentDetails',
             'key' => env('YOUTUBE_API_KEY'),
         ]);
@@ -96,16 +98,34 @@ class ProposalQuickPitchLength implements ShouldQueue
      */
     private function getVimeoVideoDuration(string $url)
     {
-        $videoId = substr(parse_url($url, PHP_URL_PATH), 1);
+        $id = $this->vimeoId($url);
 
-        if (!$videoId) {
+        if (!$id) {
             return null;
         }
 
-        $response = Http::get("https://vimeo.com/api/oembed.json?url=https://vimeo.com/{$videoId}");
+        $response = Http::get("https://vimeo.com/api/oembed.json?url=https://vimeo.com/{$id}");
 
         $videoDuration = json_decode($response->body())->duration;
 
         return $videoDuration;
+    }
+
+    private function youtubeId(string $url)
+    {
+        $videoId = null;
+        if (strpos($url, 'youtu.be/') !== false) {
+            $videoId = substr($url, strrpos($url, '/') + 1);
+        } elseif (strpos($url, 'youtube.com/watch?v=') !== false) {
+            parse_str(parse_url($url, PHP_URL_QUERY), $query);
+            $videoId = $query['v'] ?? null;
+        }
+        return $videoId;
+    }
+
+    private function vimeoId(string $url)
+    {
+        $videoId = substr(parse_url($url, PHP_URL_PATH), 1);
+        return $videoId;
     }
 }

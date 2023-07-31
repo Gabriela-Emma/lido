@@ -1,16 +1,20 @@
 <template>
 <div class="relative z-0 flex flex-row-reverse mt-auto -space-x-1">
     <div class="mr-auto" v-for="(author, index) in authors">
-        <button class="w-10 h-10 rounded-full" @click="emit('profileQuickView', author)">
+        <button class="rounded-full" @click="emit('profileQuickView', author)"
+        :class="[`w-${size}`, `h-${size}`]"
+        >
             <img
                 v-if="index === 0"
-                class="h-10 w-10 relative -left-2 z-{{index}} inline-block h-10 w-10 rounded-full ring-2 ring-white"
+                class="relative inline-block w-10 h-10 rounded-full -left-2 ring-2 ring-white"
                 :src="author.profile_photo_url"
-                :alt="`${author.name} gravatar`"/>
+                :alt="`${author.name} gravatar`"
+                :class="[`w-${size}`, `h-${size}`, `z-${index}`]" />
             <img v-else
-                    class="h-10 w-10 relative z-{{index}} inline-block h-10 w-10 rounded-full ring-2 ring-white"
-                    :src="author.profile_photo_url"
-                    :alt="`${author.name} gravatar`"/>
+                class="relative z-{{index}} inline-block rounded-full ring-2 ring-white"
+                :src="author.profile_photo_url"
+                :alt="`${author.name} gravatar`"
+                :class="[`w-${size}`, `h-${size}`, `z-${index}`]" />
         </button>
     </div>
 </div>
@@ -30,12 +34,14 @@ interface Author {
 
 const props = withDefaults(
     defineProps<{
-        proposal: Proposal
+        proposal: Proposal,
+        size: number,
     }>(),
     {
         proposal: () => {
             return {} as Proposal;
         },
+        size: 10,
     },
 );
 
@@ -45,7 +51,7 @@ const emit = defineEmits<{
 }>();
 
 const authors: ComputedRef<Author[]> = computed(() => {
-    return props.proposal.users.map((user) => {
+    return props.proposal?.users?.map((user) => {
         return {
             ...user,
             profile_photo_url: user.media?.length > 0 ? user.media[0]?.original_url : user.profile_photo_url

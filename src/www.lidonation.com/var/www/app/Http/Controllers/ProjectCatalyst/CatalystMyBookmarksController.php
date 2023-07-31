@@ -13,6 +13,7 @@ use App\Services\ExportModelService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Fluent;
 use Inertia\Inertia;
 
@@ -72,7 +73,8 @@ class CatalystMyBookmarksController extends Controller
             // return new BookmarkCollectionResource($collection);
         } catch (\Exception $e) {
             DB::rollback();
-            throw new \Exception('There was an Error');
+            Log::error($e->getMessage());
+            throw new \Exception('Error creating bookmark');
         }
     }
 

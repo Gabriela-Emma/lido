@@ -12,6 +12,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Fluent;
 use Illuminate\Support\Stringable;
+use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Inertia\Response;
 use JetBrains\PhpStorm\ArrayShape;
@@ -23,6 +24,8 @@ use PhpOffice\PhpSpreadsheet\Exception;
 class CatalystProposalsController extends Controller
 {
     protected null|string|Stringable $search = null;
+
+    protected null|string|Stringable $ranked = null;
 
     protected null|string|Stringable $quickpitches = null;
 
@@ -214,7 +217,7 @@ class CatalystProposalsController extends Controller
                     'impact_proposal' => 'im',
                     'woman_proposal' => 'wo',
                     'ideafest_proposal' => 'id',
-                    'has_quick_pitch' => 'qp',
+                    'has_quick_pitch' => CatalystExplorerQueryParams::QUICKPITCHES,
                     default => null
                 },
                 'type' => match ($this->proposalType) {
@@ -238,6 +241,7 @@ class CatalystProposalsController extends Controller
                 ],
             ],
         ];
+
         if ($this->currentPage > 1) {
             $props['currPage'] = $this->currentPage;
         }
@@ -249,14 +253,54 @@ class CatalystProposalsController extends Controller
 
     protected function setFilters(Request $request)
     {
-        $sort = collect(explode(':', $request->input(CatalystExplorerQueryParams::SORTS, '')));
+        $this->limit = $request->input(CatalystExplorerQueryParams::PER_PAGE, 24);
+        $this->ranked = $request->has(CatalystExplorerQueryParams::RANKED_VIEW);
+        if (
+            $this->ranked &&
+            !Str::of($request->input(CatalystExplorerQueryParams::SORTS))
+            ->contains('ranking_total')
+        ) {
+            $sort = collect(['ranking_total', 'desc']);
+            if ($this->limit == 24) {
+                $this->limit = 36;
+            }
+        } else {
+            $sort = collect(
+                explode(
+                    ':', $request->input(CatalystExplorerQueryParams::SORTS, '')
+                )
+            )->filter();
+        }
+        if ($sort->isEmpty()) {
+            $sort = collect(explode(':', collect([
+                'amount_requested:asc',
+                'amount_received:asc',
+                'amount_requested:desc',
+                'amount_received:desc',
+                'ca_rating:asc',
+                'created_at:asc',
+                'ca_rating:desc',
+                'created_at:desc',
+                'funded_at:asc',
+                'funded_at:desc',
+                'no_votes_count:desc',
+                'no_votes_count:asc',
+                'project_length:asc',
+                'project_length:desc',
+                'quickpitch_length:asc',
+                'quickpitch_length:desc',
+                'ranking_total:desc',
+                'ranking_total:asc',
+                'yes_votes_count:asc',
+                'yes_votes_count:desc',
+            ])->random()));
+        }
         $this->sortBy = $sort->first();
         $this->sortOrder = $sort->last();
-
         $this->budgets = $request->collect(CatalystExplorerQueryParams::BUDGETS);
         $this->search = $request->input(CatalystExplorerQueryParams::SEARCH, null);
         $this->quickpitches = $request->has(CatalystExplorerQueryParams::QUICKPITCHES);
-        $this->limit = $request->input(CatalystExplorerQueryParams::PER_PAGE, 24);
+
         $this->fundingStatus = match ($request->input('f', null)) {
             CatalystExplorerQueryParams::OVER_BUDGET => 'over_budget',
             CatalystExplorerQueryParams::NOT_APPROVED => 'not_approved',
@@ -275,7 +319,7 @@ class CatalystProposalsController extends Controller
             'im' => 'impact_proposal',
             'wo' => 'woman_proposal',
             'id' => 'ideafest_proposal',
-            'qp' => 'has_quick_pitch',
+            CatalystExplorerQueryParams::QUICKPITCHES => 'has_quick_pitch',
             default => null
         };
         $this->proposalType = match ($request->input(CatalystExplorerQueryParams::TYPE, CatalystExplorerQueryParams::PAGE)) {
@@ -331,6 +375,7 @@ class CatalystProposalsController extends Controller
                     'status',
                     'website',
                     'type',
+                    'ranking_total',
                     'users.id',
                     'users.name',
                     'users.username',
@@ -347,8 +392,6 @@ class CatalystProposalsController extends Controller
                 ];
                 if ((bool) $this->sortBy && (bool) $this->sortOrder) {
                     $options['sort'] = ["$this->sortBy:$this->sortOrder"];
-                } else {
-                    $options['sort'] = ['amount_received:desc'];
                 }
 
                 $options['offset'] = (($this->currentPage ?? 1) - 1) * $this->limit;

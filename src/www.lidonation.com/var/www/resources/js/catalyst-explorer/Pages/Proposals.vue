@@ -254,10 +254,11 @@ import Pagination from "../Shared/Components/Pagination.vue";
 import axios from 'axios';
 import { usePeopleStore } from '../stores/people-store';
 import { storeToRefs } from 'pinia';
-
 import ProposalViewTypes from '../modules/proposals/partials/ProposalViewTypes.vue';
 import { useProposalsStore } from '../stores/proposals-store';
 import { useBookmarksStore } from '../stores/bookmarks-store';
+import {useProposalsRankingStore} from '../stores/proposals-ranking-store';
+import { useUserStore } from '../../global/Shared/store/user-store';
 
 /// props and class properties
 const props = withDefaults(
@@ -287,20 +288,28 @@ const props = withDefaults(
                 value: 'amount_requested:asc',
             },
             {
+                label: 'Community Ranking: High to Low',
+                value: 'ranking_total:desc',
+            },
+            {
+                label: 'Community Ranking: Low to High',
+                value: 'ranking_total:asc',
+            },
+            {
                 label: 'Payments Received: High to Low',
                 value: 'amount_received:desc',
             },
             {
+                label: 'Project Length: High to Low',
+                value: 'project_length:desc',
+            },
+            {
+                label: 'Project Length: Low to High',
+                value: 'project_length:asc',
+            },
+            {
                 label: 'Payments Received: Low to High',
                 value: 'amount_received:asc',
-            },
-            {
-                label: 'Rating: High to Low',
-                value: 'ca_rating:desc',
-            },
-            {
-                label: 'Rating: Low to High',
-                value: 'ca_rating:asc',
             },
             {
                 label: 'Yes Votes: High to Low',
@@ -317,7 +326,15 @@ const props = withDefaults(
             {
                 label: 'No Votes: High to Low',
                 value: 'no_votes_count:desc',
-            }
+            },
+            {
+                label: 'Rating: High to Low',
+                value: 'ca_rating:desc',
+            },
+            {
+                label: 'Rating: Low to High',
+                value: 'ca_rating:asc',
+            },
         ]
     });
 let search = ref(props.search);
@@ -360,13 +377,22 @@ const filtering = computed(() => {
 
 let showFilters = ref(getFiltering() || true);
 
+const userStore = useUserStore();
+userStore.setUser();
+const {user$} = storeToRefs(userStore);
+
 const peopleStore = usePeopleStore();
 peopleStore.loadPeople(props?.filters?.people);
 const {selectedPeople} = storeToRefs(peopleStore);
 
+const proposalsRanking = useProposalsRankingStore();
+proposalsRanking.loadRankings(user$.value?.id);
+
 const proposalsStore = useProposalsStore();
 let {viewType} = storeToRefs(proposalsStore);
 let quickpitchingRef = ref<boolean>(false);
+
+let rankedViewingRef = ref<boolean>(false);
 
 const bookmarksStore = useBookmarksStore();
 bookmarksStore.loadCollections();
@@ -377,9 +403,15 @@ watch([search, filtersRef, selectedSortRef], () => {
     searchRender.value = Math.random();
 }, {deep: true});
 
-watch([currPageRef, perPageRef, quickpitchingRef], () => {
+watch([currPageRef, perPageRef, quickpitchingRef, rankedViewingRef], () => {
     query();
 });
+
+watch([rankedViewingRef], () => {
+    if (!selectedSortRef.value.includes('ranking_total')) {
+        selectedSortRef.value = 'ranking_total:desc';
+    }
+}, {deep: true});
 
 watch([selectedPeople], () => {
     filtersRef.value.people = [...filtersRef.value.people, ...selectedPeople.value]
@@ -387,6 +419,7 @@ watch([selectedPeople], () => {
 
 watch([viewType], () => {
     quickpitchingRef.value = viewType.value === 'quickpitch';
+    rankedViewingRef.value = viewType.value === 'ranked';
 });
 
 watch(selectedDownloadFormat, () => {
@@ -524,6 +557,11 @@ function getQueryData() {
     if (perPageRef.value) {
         data[VARIABLES.PER_PAGE] = perPageRef.value;
     }
+
+    if ( rankedViewingRef.value ) {
+        data[VARIABLES.RANKED_VIEW] = '';
+    }
+
     if ( quickpitchingRef.value ) {
         data[VARIABLES.QUICKPITCHES] = '';
     }

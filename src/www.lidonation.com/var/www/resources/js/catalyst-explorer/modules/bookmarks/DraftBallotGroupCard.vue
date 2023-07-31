@@ -93,6 +93,7 @@
                                                             item?.model?.currency) }}
                                                     </div>
                                                 </div>
+                                                <ProposalAuthors :proposal="item.model" @profileQuickView="handleProfileQuickView($event)" :size="5" />
                                             </div>
                                         </div>
                                     </div>
@@ -125,6 +126,8 @@ import { Pie } from 'vue-chartjs'
 import { useBookmarksStore } from '../../stores/bookmarks-store';
 import { storeToRefs } from 'pinia';
 import { useUserStore } from '../../../global/Shared/store/user-store';
+import ProposalAuthors from '../proposals/partials/ProposalAuthors.vue';
+import ProposalUserQuickView from '../proposals/partials/ProposalUserQuickView.vue';
 
 const props = defineProps<{
     group: DraftBallotGroup<Proposal>
@@ -149,6 +152,12 @@ let allotedBudget = computed(() => {
         (item) => item.model?.vote?.vote === VOTEACTIONS.UPVOTE
     ).reduce((acc, item) => (acc + item.model.amount_requested), 0);
 });
+
+let profileQuickView = ref(null);
+
+let handleProfileQuickView  = (user: Author) => {
+    profileQuickView.value = user;
+}
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 const chartData = ref(getChart());
@@ -278,5 +287,14 @@ function getChart() {
             }
         ]
     }
+}
+
+interface Author {
+    id: number;
+    name: string;
+    username: string;
+    profile_photo_url: string;
+    ideascale_id: number;
+    media: {original_url: string}[]
 }
 </script>

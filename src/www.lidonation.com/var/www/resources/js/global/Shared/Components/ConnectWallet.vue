@@ -5,7 +5,7 @@
             :aria-expanded="open"
             type="button"
             :class="[{'rounded-sm': !open},backgroundColor]"
-            class="px-2 py-1.5 rounded-sm rounded-tl-sm rounded-tr-sm inline-flex justify-between gap-2  text-white menu-link font-semibold relative">
+            class="px-3 py-2 rounded-sm inline-flex justify-between items-center gap-2  text-white menu-link font-medium xl:text-xl 3xl:text-2xl relative">
             <span
                 v-show="walletLoading"
                 class="flex items-center justify-center w-4 p-1 bg-white rounded-full bg-opacity-90">
@@ -14,16 +14,17 @@
                     viewBox="0 0 24 24"></svg>
             </span>
 
-            <span class="flex items-center gap-2 tracking-wide" v-show="walletData?.handle">
+            <!-- <span class="flex items-center gap-2 tracking-wide" v-show="walletData?.handle">
                 <span v-text="(walletData?.handle) + ' connected'"
                       class="text-sm text-slate-200 h-full border-primary-200 border-opacity-50 p-0.5 capitalize">
                 </span>
                 <span>
                 </span>
-            </span>
+            </span> -->
 
-            <span class="flex items-center gap-2 tracking-wide" v-show="!walletData?.handle">
-                <span class="text-sm">Connect Your Wallet</span>
+            <span class="flex items-center gap-2 tracking-wide">
+                <span class="text-sm" v-show="!wallet?.address">Connect Your Wallet</span>
+                <span class="text-sm" v-show="wallet?.address">{{wallet?.name.charAt(0).toUpperCase() + wallet?.name.slice(1)}} Connected</span>
                 <span class="text-slate-100" aria-hidden="true">&darr;</span>
             </span>
         </button>
