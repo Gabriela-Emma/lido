@@ -117,11 +117,9 @@ class CatalystBookmarksController extends Controller
 
     public function draftBallotIndex()
     {
-        return DraftBallotResource::collection(
-            DraftBallot::where('user_id', Auth::id())
-                ->orderBy('created_at', 'desc')
-                ->paginate(24)
-        );
+        return DraftBallot::where('user_id', Auth::id())
+            ->orderBy('created_at', 'desc')
+            ->paginate(24);
     }
 
     public function editDraftBallot(Request $request, DraftBallot $draftBallot)
@@ -173,10 +171,11 @@ class CatalystBookmarksController extends Controller
         $draftBallot->color = request('color');
         $draftBallot->content = request('content');
         $draftBallot->save();
+
         return to_route(
             'catalystExplorer.draftBallot.edit',
             $draftBallot->hash
-        );   
+        );
     }
 
     public function createDraftBallotFromCollection(Request $request, BookmarkCollection $bookmarkCollection)
@@ -185,6 +184,7 @@ class CatalystBookmarksController extends Controller
         $bookmarkCollection->type = DraftBallot::class;
         $bookmarkCollection->save();
         $db = DraftBallot::find($bookmarkCollection->id);
+
         return to_route(
             'catalystExplorer.draftBallot.edit',
             $db->hash
