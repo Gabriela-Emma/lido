@@ -2,21 +2,19 @@
 <div class="relative z-0 flex flex-row-reverse mt-auto -space-x-1">
     <div class="mr-auto" v-for="(author, index) in authors">
         <button class="rounded-full" @click="emit('profileQuickView', author)"
-        :class="[resize ? 'w-7 h-7': 'w-10 h-10']"
+        :class="[`w-${size} h-${size}`]"
         >
             <img
                 v-if="index === 0"
                 class="w-10 h-10 relative -left-2 z-{{index}} inline-block rounded-full ring-2 ring-white"
                 :src="author.profile_photo_url"
                 :alt="`${author.name} gravatar`"
-                :class="[resize ? 'w-7 h-7': 'w-10 h-10']"
-                />
+                :class="[`w-${size} h-${size}`]" />
             <img v-else
-                    class="relative z-{{index}} inline-block rounded-full ring-2 ring-white"
-                    :src="author.profile_photo_url"
-                    :alt="`${author.name} gravatar`"
-                    :class="[resize ? 'w-7 h-7': 'w-10 h-10']"
-                    />
+                class="relative z-{{index}} inline-block rounded-full ring-2 ring-white"
+                :src="author.profile_photo_url"
+                :alt="`${author.name} gravatar`"
+                :class="[`w-${size} h-${size}`]" />
         </button>
     </div>
 </div>
@@ -37,13 +35,13 @@ interface Author {
 const props = withDefaults(
     defineProps<{
         proposal: Proposal,
-        resize: boolean,
+        size: number,
     }>(),
     {
         proposal: () => {
             return {} as Proposal;
         },
-        resize: false,
+        resize: 10,
     },
 );
 

@@ -29,8 +29,14 @@
     </div>
 
     <div class="lg:grid lg:grid-cols-7">
-        <div class="col-span-4">
-            <ul role="list" class="mt-8 py-3 overflow-visible border border-l-0 border-gray-200 divide-y divide-gray-200 max-h-[33rem]">
+        <div class="relative col-span-4 overflow-x-visible">
+            <div v-if="profileQuickView" class="absolute overflow-auto shadow-md w-96 h-[29rem] xl:right-3 xl:top-12">
+                <ProposalUserQuickView
+                    :profileQuickView="profileQuickView"
+                    @close="profileQuickView = null"
+                />
+            </div>
+            <ul role="list" class="mt-8 py-3 overflow-y-auto overflow-x-visible border border-l-0 border-gray-200 divide-y divide-gray-200 max-h-[33rem]">
                 <li class="ml-4" v-for="item in group.items" :key="item?.model?.id">
                     <div class="flex justify-start gap-1 px-4 py-4 lg:gap-0 hover:bg-gray-50">
                         <div class="flex flex-col flex-none w-16 gap-2 px-1 py-2 rounded-sm" :class="{
@@ -65,19 +71,15 @@
                                     <div class="mt-1">
                                         <div class="flex flex-row items-center gap-5 text-sm text-slate-500">
                                             <div class="flex items-center gap-2">
-                                                <div>{{ $t("Budget") }}</div>
-                                                <div class="font-semibold text-slate-700">
-                                                    {{ $filters.currency(item?.model?.amount_requested, item?.model?.currency) }}
+                                                <div>
+                                                    <div>{{ $t("Budget") }}</div>
+                                                    <div class="font-semibold text-slate-700">
+                                                        {{ $filters.currency(item?.model?.amount_requested, item?.model?.currency) }}
+                                                    </div>
                                                 </div>
-                                                <ProposalAuthors :proposal="item.model" @profileQuickView="handleProfileQuickView($event)" :resize="true"/>
+                                                <ProposalAuthors :proposal="item.model" @profileQuickView="handleProfileQuickView($event)" :size="5" />
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="absolute w-80 h-96 overflow-auto">
-                                        <ProposalUserQuickView v-if="profileQuickView"
-                                            :profileQuickView="profileQuickView"
-                                            @close="profileQuickView = null" 
-                                        />
                                     </div>
                                 </div>
                             </div>
