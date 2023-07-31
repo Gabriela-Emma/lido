@@ -30,7 +30,7 @@
 
     <div class="lg:grid lg:grid-cols-7">
         <div class="col-span-4">
-            <ul role="list" class="mt-8 py-3 overflow-auto border border-l-0 border-gray-200 divide-y divide-gray-200 max-h-[33rem]">
+            <ul role="list" class="mt-8 py-3 overflow-visible border border-l-0 border-gray-200 divide-y divide-gray-200 max-h-[33rem]">
                 <li class="ml-4" v-for="item in group.items" :key="item?.model?.id">
                     <div class="flex justify-start gap-1 px-4 py-4 lg:gap-0 hover:bg-gray-50">
                         <div class="flex flex-col flex-none w-16 gap-2 px-1 py-2 rounded-sm" :class="{
@@ -73,7 +73,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="absolute w-80 h-96">
+                                    <div class="absolute w-80 h-96 overflow-auto">
                                         <ProposalUserQuickView v-if="profileQuickView"
                                             :profileQuickView="profileQuickView"
                                             @close="profileQuickView = null" 
