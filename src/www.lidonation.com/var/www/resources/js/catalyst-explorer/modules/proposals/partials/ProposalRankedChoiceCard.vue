@@ -7,15 +7,15 @@
         <div class="absolute top-0 left-0 flex flex-col items-center justify-center w-full h-full gap-1 rounded-r-sm"
         :class="{'z-5': user$}">
             <div class="text-center" @click="rankProposal(RANKACTIONS.THUMBSUP, props.proposal)">
-                <ChevronUpIcon :class="[rank?.rank === RANKACTIONS.THUMBSUP ? 'text-teal-700' : 'text-gray-500']"
-                    aria-hidden="true" class="w-10 h-8 text-gray-500 hover:text-yellow-700 hover:cursor-pointer" />
+                <ChevronUpIcon :class="[rank?.rank === RANKACTIONS.THUMBSUP ? 'text-teal-light-500' : 'text-gray-400']"
+                    aria-hidden="true" class="w-10 h-8 text-gray-400 hover:text-yellow-700 hover:cursor-pointer" />
             </div>
             <div class="text-lg text-center">
                 {{ proposal.ranking_total ?? 0 }}
             </div>
             <div class="text-center" @click="rankProposal(RANKACTIONS.THUMBSDOWN, props.proposal)">
                 <ChevronDownIcon aria-hidden="true"
-                    :class="[rank?.rank === RANKACTIONS.THUMBSDOWN ? 'text-pink-800' : 'text-gray-500']"
+                    :class="[rank?.rank === RANKACTIONS.THUMBSDOWN ? 'text-pink-700' : 'text-gray-400']"
                     class="w-10 h-8 hover:text-yellow-700 hover:cursor-pointer" />
             </div>
         </div>

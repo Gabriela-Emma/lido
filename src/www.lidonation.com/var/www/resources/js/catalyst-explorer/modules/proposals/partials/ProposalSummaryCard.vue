@@ -115,12 +115,12 @@
                         <div class="flex items-center gap-1 flex-nowrap">
                             <span class="pr-1 text-xs text-slate-400">Rank</span>
                             <div class="flex-1 w-1/2" @click="rankProposal(RANKACTIONS.THUMBSUP, props.proposal)">
-                                <ChevronUpIcon :class="[rank?.rank === RANKACTIONS.THUMBSUP ? 'text-teal-700' : 'text-gray-500']"
-                                aria-hidden="true" class="w-10 h-10 text-gray-500 hover:text-yellow-700 hover:cursor-pointer" />
+                                <ChevronUpIcon :class="[rank?.rank === RANKACTIONS.THUMBSUP ? 'text-teal-light-500' : 'text-gray-400']"
+                                aria-hidden="true" class="w-10 h-10 text-gray-400 hover:text-yellow-700 hover:cursor-pointer" />
                             </div>
                             <div class="flex-1 w-1/2" @click="rankProposal(RANKACTIONS.THUMBSDOWN, props.proposal)">
                                 <ChevronDownIcon aria-hidden="true"
-                                :class="[rank?.rank === RANKACTIONS.THUMBSDOWN ? 'text-pink-800' : 'text-gray-500']"
+                                :class="[rank?.rank === RANKACTIONS.THUMBSDOWN ? 'text-pink-700' : 'text-gray-400']"
                                 class="w-10 h-10 hover:text-yellow-700 hover:cursor-pointer" />
                             </div>
                         </div>
