@@ -78,7 +78,9 @@
                                         <div class="truncate">
                                             <div class="flex flex-col text-lg">
                                                 <h3 class="text-xl font-medium truncate xl:text-2xl">
-                                                    {{ item.title }}
+                                                    <a :href="item?.model?.link" target="_blank" class="text-sm font-medium xl:font-semibold xl:text-lg text-slate-700">
+                                                        {{ item.title || item.model?.title }}
+                                                    </a>
                                                 </h3>
                                                 <div class="flex flex-row">
                                                     <p v-if="item?.content" class="mr-3 italic">
