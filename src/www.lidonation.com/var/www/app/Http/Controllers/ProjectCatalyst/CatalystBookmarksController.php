@@ -76,6 +76,8 @@ class CatalystBookmarksController extends Controller
         if ($bookmarkCollection instanceof DraftBallot) {
             return to_route('catalystExplorer.draftBallot.view', $bookmarkCollection->hash);
         }
+        $bookmarkCollection->load(['items.model']);
+
         return Inertia::render('BookmarkCollection')->with([
             'bookmarkCollection' => (new BookmarkCollectionResource($bookmarkCollection))
                 ->toArray($request),
