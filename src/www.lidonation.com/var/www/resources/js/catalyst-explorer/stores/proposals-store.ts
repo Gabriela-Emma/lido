@@ -3,6 +3,7 @@ import {defineStore} from "pinia";
 import {Ref, onMounted, ref} from "vue";
 import Proposal from "../models/proposal";
 import ProposalFilters from "../models/proposall-filters";
+import { VARIABLES } from "../models/variables";
 
 export const useProposalsStore = defineStore('proposals', () => {
     let filters: Ref<ProposalFilters> = ref();
@@ -12,8 +13,10 @@ export const useProposalsStore = defineStore('proposals', () => {
     function setViewType(type?: string) {
         if (!type) {
             const urlParams = new URLSearchParams(window.location.search);
-            if ( urlParams.has('qp') ) {
+            if ( urlParams.has(VARIABLES.QUICKPITCHES) ) {
                 viewType.value = 'quickpitch';
+            } else if ( urlParams.has(VARIABLES.RANKED_VIEW) ) {
+                viewType.value = 'ranked';
             } else {
                 viewType.value = 'card';
             }

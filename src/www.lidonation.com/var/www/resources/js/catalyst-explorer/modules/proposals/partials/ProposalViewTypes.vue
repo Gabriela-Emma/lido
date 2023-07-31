@@ -7,11 +7,18 @@
         <RectangleGroupIcon class="w-6 h-6"/>
     </div>
 
+    <div @click="proposalsStore.setViewType('ranked')" class="px-3 py-2 bg-white border-b-4 rounded-sm" :class="{
+        'border-teal-600 text-teal-600' : viewType === 'ranked',
+        'text-gray-400 border-white hover:cursor-pointer hover:text-teal-600 hover:border-teal-600': viewType !== 'ranked',
+    }">
+        <QueueListIcon class="w-6 h-6"/>
+    </div>
+
     <div @click="proposalsStore.setViewType('quickpitch')" class="px-3 py-2 bg-white border-b-4 rounded-sm" :class="{
         'border-teal-600 text-teal-600' : viewType === 'quickpitch',
         'text-gray-400 border-white hover:cursor-pointer hover:text-teal-600 hover:border-teal-600': viewType !== 'quickpitch',
     }">
-        <VideoCameraIcon class="w-6 h-6"/>
+        <VideoCameraIcon class="w-6 h-6" />
     </div>
 </div>
 </template>
@@ -19,6 +26,7 @@
 import { RectangleGroupIcon, VideoCameraIcon } from '@heroicons/vue/24/outline';
 import {useProposalsStore} from "../../../stores/proposals-store";
 import { storeToRefs } from 'pinia';
+import { QueueListIcon } from '@heroicons/vue/20/solid';
 
 const proposalsStore = useProposalsStore();
 let {viewType} = storeToRefs(proposalsStore);

@@ -34,6 +34,8 @@ enum CatalystExplorerQueryParams: string
 
     const QUICKPITCHES = 'qp';
 
+    const RANKED_VIEW = 'rv';
+
     const STATUS = 'ss';
 
     const TRACKER_ID_MONTHLY_REPORT = 'HSH9YZDM';

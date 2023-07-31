@@ -4,9 +4,13 @@
             :profileQuickView="profileQuickView"
             @close="profileQuickView = null" />
 
-        <ProposalQuickPitchCard v-if="quickpitching && !!proposal.quickpitch"
+        <ProposalQuickPitchCard v-if="(quickpitching || (viewType=='quickpitch' && showWithStore)) && !!proposal.quickpitch"
             @profileQuickView="handleProfileQuickView($event)"
-            @summary="quickpitching = false" :proposal="props.proposal" />
+            @summary="changeCardMode" :proposal="props.proposal" />
+
+        <ProposalRankedChoiceCard v-else-if="viewType=='ranked'"
+            @profileQuickView="handleProfileQuickView($event)"
+            :proposal="props.proposal" />
 
         <ProposalSummaryCard v-else
             @profileQuickView="handleProfileQuickView($event)"
@@ -24,6 +28,7 @@ import ProposalSummaryCard from "./partials/ProposalSummaryCard.vue";
 import ProposalQuickPitchCard from "./partials/ProposalQuickPitchCard.vue";
 import ProposalUserQuickView from "./partials/ProposalUserQuickView.vue";
 import { useProposalsStore } from "../../stores/proposals-store";
+import ProposalRankedChoiceCard from "./partials/ProposalRankedChoiceCard.vue";
 
 const proposalsStore = useProposalsStore();
 let {viewType} = storeToRefs(proposalsStore);
@@ -50,12 +55,20 @@ const props = withDefaults(
     },
 );
 let quickpitching = ref(props.quickpitching);
+let showWithStore = ref(true);
+let changeCardMode = () => {
+    quickpitching.value = false;
+    showWithStore.value = false;
+
+}
 
 const bookmarksStore = useBookmarksStore();
 const {modelIds$} = storeToRefs(bookmarksStore);
 
 watch([viewType], (newValue, oldValue) => {
     quickpitching.value = viewType.value === 'quickpitch';
+    viewType.value === 'quickpitch' ? showWithStore.value = true : showWithStore.value = false;
+
 });
 
 let profileQuickView = ref(null);
