@@ -10,8 +10,8 @@
                         <span>{{ group.items.length }}</span>
                     </div>
 
-                    <div class="flex gap-1 divide-x space-x-3 flex-row bg-gray-100">
-                        <div class="flex flex-rowflex-1 w-1/2">
+                    <div class="flex gap-1 space-x-3 flex-row">
+                        <div class="flex flex-row flex-1 w-1/2">
                             <span class="mr-1">total: </span>
                             <span>{{ totalLikes + totalUnlikes }}</span>
                         </div>
@@ -48,9 +48,14 @@
         </div>
 
         <div class="lg:grid lg:grid-cols-7">
-            <div class="col-span-4">
-                <ul role="list"
-                    class="mt-8 py-3 overflow-auto border border-l-0 border-gray-200 divide-y divide-gray-200 max-h-[33rem]">
+            <div class="relative col-span-4 overflow-x-visible">
+            <div v-if="profileQuickView" class="absolute overflow-auto shadow-md w-96 h-[29rem] xl:right-3 xl:top-12">
+                <ProposalUserQuickView
+                    :profileQuickView="profileQuickView"
+                    @close="profileQuickView = null"
+                />
+            </div>
+            <ul role="list" class="mt-8 py-3 overflow-y-auto overflow-x-visible border border-l-0 border-gray-200 divide-y divide-gray-200 max-h-[33rem]">
                     <li class="ml-4" v-for="item in group.items" :key="item?.model?.id">
                         <div class="flex justify-start gap-1 px-4 py-4 lg:gap-0 hover:bg-gray-50">
                             <div class="flex flex-col flex-none w-16 gap-2 px-1 py-2 rounded-sm" :class="{
@@ -78,7 +83,7 @@
                             </div>
                             <div class="flex items-center flex-1 sm:px-6">
                                 <div class="flex-1 min-w-0 sm:flex sm:items-center sm:justify-between">
-                                    <div class="">
+                                    <div class="relative">
                                         <div class="flex flex-col text-md">
                                             <h4 class="text-sm font-medium xl:font-semibold xl:text-lg">
                                                 {{ item?.model?.title }}
@@ -86,7 +91,7 @@
                                         </div>
                                         <div class="mt-1">
                                             <div class="flex flex-row items-center gap-5 text-sm text-slate-500">
-                                                <div class="flex items-center gap-1">
+                                                <div class="flex items-center gap-2">
                                                     <div>{{ $t("Budget") }}</div>
                                                     <div class="font-semibold text-slate-700">
                                                         {{ $filters.currency(item?.model?.amount_requested,
