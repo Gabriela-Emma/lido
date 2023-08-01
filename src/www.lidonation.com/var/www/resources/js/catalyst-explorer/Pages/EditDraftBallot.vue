@@ -14,7 +14,8 @@
                         <div class="relative z-20 overflow-auto divide-y divide-gray-200 max-h-96">
                             <div v-for="proposal in searchResults" @click="bookmarkProposal(proposal)"
                                 class="flex justify-between items-center py-2 hover:bg-primary-20 hover:cursor-pointer hover:text-teal-800"
-                                :class="[isProposalAdded(proposal) ? 'text-slate-500 cursor-not-allowed': '']"
+                                :class="[isProposalAdded(proposal) ? 'text-slate-500 line-through': '']"
+                                :disabled="isProposalAdded(proposal)"
                                 >
                                 <div>
                                     <h4 class="px-3">{{ proposal.title }}</h4>
@@ -30,7 +31,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <span class="mr-4 text-slate-400" v-if="isProposalAdded(proposal)">Added</span>
+                                <span class="mr-4 text-slate-400 text-md font-bold" v-if="isProposalAdded(proposal)">Added</span>
                             </div>
                         </div>
                     </div>
@@ -92,7 +93,6 @@ const inLastTenMins: Ref<boolean> = ref(false);
 const collectionHash = ref(draftBallot$.value?.hash);
 const createdAt = ref(draftBallot$.value?.created_at);
 let ballotIds = ref([]);
-// let addedProposal = ref(false);
 
 
 watch([storeCollections$], (newValue, oldValue) => {
@@ -130,14 +130,11 @@ function searchProposals()
 
 async function bookmarkProposal(proposal: Proposal) {
     bookmarksStore.bookmarkProposal(proposal);
-    isProposalAdded(proposal);
-    // addedProposal.value = true;
+    addProposalToDraftBallot(proposal);
 }
 
 const proposalIdsFromDraftBallot = () => {
-//   const proposalIds = []
   const groups = props.draftBallot.groups || []
-
   groups.forEach((group) => {
     const items = group.items || []
     items.forEach((item) => {
@@ -147,9 +144,11 @@ const proposalIdsFromDraftBallot = () => {
       }
     })
   })
-
-//   return proposalIds
 }
+
+const addProposalToDraftBallot = (proposal) => {
+    ballotIds.value.push(proposal.id);
+    };
 
 const isProposalAdded = (proposal: Proposal) => {
   proposalIdsFromDraftBallot()
