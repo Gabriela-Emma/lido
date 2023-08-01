@@ -6,16 +6,9 @@ import Rank from "../models/rank";
 export const useProposalsRankingStore = defineStore('proposals-ranking', () => {
     let ranks = ref<Rank[]>([]);
 
-    async function loadRankings(userId: number) {
+    async function loadRankings() {
         try {
-            const {data} = await window.axios.get(
-                `/api/catalyst-explorer/proposals-ranks`,
-                {
-                    params: {
-                        user_id: userId
-                    }
-                }
-            );
+            const {data} = await window.axios.get(`/api/catalyst-explorer/proposals-ranks`);
             ranks.value = data;
         } catch (e: AxiosError | any) {
             console.log({e});

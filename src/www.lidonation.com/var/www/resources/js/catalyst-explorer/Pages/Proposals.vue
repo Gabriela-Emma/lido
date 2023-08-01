@@ -386,7 +386,7 @@ peopleStore.loadPeople(props?.filters?.people);
 const {selectedPeople} = storeToRefs(peopleStore);
 
 const proposalsRanking = useProposalsRankingStore();
-proposalsRanking.loadRankings(user$.value?.id);
+proposalsRanking.loadRankings();
 
 const proposalsStore = useProposalsStore();
 let {viewType} = storeToRefs(proposalsStore);
