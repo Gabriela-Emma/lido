@@ -2,7 +2,7 @@
     <header-component titleName0="Draft Ballot" :titleName1="draftBallot$?.title"
         :subTitle="`Created ${$filters.timeAgo(draftBallot$.created_at)}. Has ${draftBallot$?.items_count} item${draftBallot$?.items_count > 1 ? 's' : ''}.`">
 
-        <div class="flex gap-1 divide-x space-x-3 flex-row bg-gray-50">
+        <div class="flex gap-1 space-x-3 flex-row bg-gray-50">
             <div class="flex flex-rowflex-1 w-1/2">
                 <span class="mr-1">total: </span>
                 <span>{{ totalAllUpvotes + totalAllDownvotes }}</span>
