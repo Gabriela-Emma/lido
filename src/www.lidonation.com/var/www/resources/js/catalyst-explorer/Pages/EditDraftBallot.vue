@@ -13,8 +13,8 @@
                         v-if="searchResults && searchResults?.length > 0">
                         <div class="relative z-20 overflow-auto divide-y divide-gray-200 max-h-96">
                             <div v-for="proposal in searchResults" @click="bookmarkProposal(proposal)"
-                                class="flex justify-between items-center py-2 hover:bg-primary-20 hover:cursor-pointer hover:text-teal-800"
-                                :class="[isProposalAdded(proposal) ? 'text-slate-500 line-through': '']"
+                                class="flex justify-between items-center py-2 hover:bg-primary-20 hover:text-teal-800"
+                                :class="[isProposalAdded(proposal) ? 'text-slate-500 line-through cursor-not-allowed': 'hover:cursor-pointer']"
                                 :disabled="isProposalAdded(proposal)"
                                 >
                                 <div>
