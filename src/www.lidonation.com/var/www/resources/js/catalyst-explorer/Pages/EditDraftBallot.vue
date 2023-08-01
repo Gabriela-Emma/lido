@@ -29,19 +29,25 @@
                         v-if="searchResults && searchResults?.length > 0">
                         <div class="relative z-20 overflow-auto divide-y divide-gray-200 max-h-96">
                             <div v-for="proposal in searchResults" @click="bookmarkProposal(proposal)"
-                                class="py-2 hover:bg-primary-20 hover:cursor-pointer hover:text-teal-800">
-                                <h4 class="px-3">{{ proposal.title }}</h4>
+                                class="flex justify-between items-center py-2 hover:bg-primary-20 hover:text-teal-800"
+                                :class="[isProposalAdded(proposal) ? 'text-slate-500 line-through cursor-not-allowed': 'hover:cursor-pointer']"
+                                :disabled="isProposalAdded(proposal)"
+                                >
+                                <div>
+                                    <h4 class="px-3">{{ proposal.title }}</h4>
 
-                                <div class="flex gap-1 px-3 py-1">
-                                    <div>
-                                        <span>Budget: </span>
-                                        <span>{{ proposal.amount_requested }}</span>
-                                    </div>
-                                    <div>
-                                        <span>Challenge: </span>
-                                        <span>{{ proposal.challenge_name }}</span>
+                                    <div class="flex gap-1 px-3 py-1">
+                                        <div>
+                                            <span>Budget: </span>
+                                            <span>{{ proposal.amount_requested }}</span>
+                                        </div>
+                                        <div>
+                                            <span>Challenge: </span>
+                                            <span>{{ proposal.challenge_name }}</span>
+                                        </div>
                                     </div>
                                 </div>
+                                <span class="mr-4 text-slate-400 text-md font-bold" v-if="isProposalAdded(proposal)">Added</span>
                             </div>
                         </div>
                     </div>
@@ -105,6 +111,7 @@ const onLocal: Ref<boolean> = ref(false);
 const inLastTenMins: Ref<boolean> = ref(false);
 const collectionHash = ref(draftBallot$.value?.hash);
 const createdAt = ref(draftBallot$.value?.created_at);
+let ballotIds = ref([]);
 
 
 watch([storeCollections$], (newValue, oldValue) => {
@@ -141,6 +148,29 @@ function searchProposals() {
 
 async function bookmarkProposal(proposal: Proposal) {
     bookmarksStore.bookmarkProposal(proposal);
+    addProposalToDraftBallot(proposal);
+}
+
+const proposalIdsFromDraftBallot = () => {
+  const groups = props.draftBallot.groups || []
+  groups.forEach((group) => {
+    const items = group.items || []
+    items.forEach((item) => {
+      const id = item.model.id
+      if (id) {
+        ballotIds.value.push(id)
+      }
+    })
+  })
+}
+
+const addProposalToDraftBallot = (proposal) => {
+    ballotIds.value.push(proposal.id);
+    };
+
+const isProposalAdded = (proposal: Proposal) => {
+  proposalIdsFromDraftBallot()
+  return ballotIds.value.includes(proposal.id)
 }
 
 
