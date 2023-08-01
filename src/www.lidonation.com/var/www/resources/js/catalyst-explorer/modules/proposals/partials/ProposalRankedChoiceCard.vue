@@ -157,7 +157,7 @@ function rankProposal(rankValue: RANKACTIONS, proposal: Proposal) {
                 preserveState: true,
                 replace: true,
                 onSuccess: async (component) => {
-                    await proposalsRanking.loadRankings(user$.value.id);
+                    await proposalsRanking.loadRankings();
                 }
             }
         );
@@ -170,7 +170,7 @@ function rankProposal(rankValue: RANKACTIONS, proposal: Proposal) {
                 preserveState: true,
                 replace: true,
                 onSuccess: async (component) => {
-                    await proposalsRanking.loadRankings(user$.value.id);
+                    await proposalsRanking.loadRankings();
                 }
             }
         );
