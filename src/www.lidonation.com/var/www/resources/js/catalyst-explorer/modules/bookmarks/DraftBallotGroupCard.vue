@@ -10,17 +10,17 @@
                         <span>{{ group.items.length }}</span>
                     </div>
 
-                    <div class="flex gap-1 space-x-3 flex-row">
+                    <div class="flex flex-row gap-1 space-x-3">
                         <div class="flex flex-row flex-1 w-1/2">
                             <span class="mr-1">total: </span>
                             <span>{{ totalLikes + totalUnlikes }}</span>
                         </div>
                         <div class="flex flex-row flex-1 w-1/2">
-                            <HandThumbUpIcon aria-hidden="true" class="w-7 h-7 text-gray-500 mr-1" />
+                            <HandThumbUpIcon aria-hidden="true" class="mr-1 text-gray-500 w-7 h-7" />
                             <span>{{ totalLikes }}</span>
                         </div>
                         <div class="flex flex-row flex-1 w-1/2">
-                            <HandThumbDownIcon aria-hidden="true" class="w-7 h-7 text-gray-500 mr-1" />
+                            <HandThumbDownIcon aria-hidden="true" class="mr-1 text-gray-500 w-7 h-7" />
                             <span> {{ totalUnlikes }}</span>
                         </div>
                     </div>
@@ -40,7 +40,7 @@
             </div>
             <div class="relative border rounded-md border-slate-200 bg-slate-50">
                 <small
-                    class="absolute bg-slate-50 rounded-sm -top-2 border border-slate-200 left-3 px-1 py-0.5 text-sm z-10">Rationale
+                    class="absolute bg-slate-50 rounded-sm -top-2 border border-slate-200 left-3 px-1 py-0.5 text-sm">Rationale
                     for this group</small>
                 <textarea rows="8" name="rationale" id="rationale" v-model="rationale"
                     class="block w-full py-1.5 text-gray-900 pt-4 custom-input border-0 border-transparent round-sm bg-slate-50 ring-0 placeholder:text-gray-400 focus:ring-2 transition-all focus:ring-inset focus:ring-teal-600 sm:text-sm sm:leading-6 mt-0" />
