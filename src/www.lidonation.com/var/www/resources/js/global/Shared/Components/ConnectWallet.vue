@@ -5,9 +5,9 @@
             :aria-expanded="open"
             type="button"
             :class="[{'rounded-sm': !open},backgroundColor]"
-            class="px-3 py-2 rounded-sm inline-flex justify-between items-center gap-2  text-white menu-link font-medium xl:text-xl 3xl:text-2xl relative">
+            class="relative inline-flex items-center justify-between gap-2 px-3 py-2 font-medium text-white rounded-sm menu-link xl:text-xl 3xl:text-2xl">
             <span
-                v-show="walletLoading"
+                v-show="walletLoading && walletName"
                 class="flex items-center justify-center w-4 p-1 bg-white rounded-full bg-opacity-90">
                 <svg
                     class="relative w-3 h-3 border-t-2 border-b-2 rounded-full animate-spin border-primary-600"
@@ -97,14 +97,14 @@ let {walletName} = storeToRefs(walletStore);
 let unsupportedNetwork = ref(false);
 let unsupportedNetworkRes = ref(null);
 
-async function enableWallet(walletName: string) {
+async function enableWallet(wallet_name: string) {
     walletLoading.value = true;
     unsupportedNetwork.value = false;
     let walletData = {
-        name: walletName
+        name: wallet_name
     } as Wallet;
     try {
-        let connectRes = await walletService.connectWallet(walletName)
+        let connectRes = await walletService.connectWallet(wallet_name)
         if(connectRes){
             unsupportedNetwork.value = true;
             unsupportedNetworkRes.value = connectRes;
@@ -121,6 +121,8 @@ async function enableWallet(walletName: string) {
         emit('walletUpdated', walletData);
     } catch (e) {
         console.error(e);
+        wallet.value = null;
+        walletName.value = null;
     }
 }
 

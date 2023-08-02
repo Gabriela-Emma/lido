@@ -1,22 +1,6 @@
 <template>
     <header-component titleName0="Draft Ballot" :titleName1="draftBallot$?.title"
-        :subTitle="`Created ${$filters.timeAgo(draftBallot$.created_at)}. Has ${draftBallot$?.items_count} item${draftBallot$?.items_count > 1 ? 's' : ''}.`">
-
-        <div class="flex gap-1 space-x-3 flex-row bg-gray-50">
-            <div class="flex flex-rowflex-1 w-1/2">
-                <span class="mr-1">total: </span>
-                <span>{{ totalAllUpvotes + totalAllDownvotes }}</span>
-            </div>
-            <div class="flex flex-row flex-1 w-1/2">
-                <HandThumbUpIcon aria-hidden="true" class="w-8 h-8 text-gray-500 mr-1" />
-                <span>{{ totalAllUpvotes }}</span>
-            </div>
-            <div class="flex flex-row flex-1 w-1/2">
-                <HandThumbDownIcon aria-hidden="true" class="w-8 h-8 text-gray-500 mr-1" />
-                <span> {{ totalAllDownvotes }}</span>
-            </div>
-        </div>
-    </header-component>
+        :subTitle="`Created ${$filters.timeAgo(draftBallot$.created_at)}. Has ${draftBallot$?.items_count} item${draftBallot$?.items_count > 1 ? 's' : ''}.`" />
 
     <main class="flex flex-col gap-2 py-8 bg-primary-20">
         <div class="container">
@@ -29,25 +13,19 @@
                         v-if="searchResults && searchResults?.length > 0">
                         <div class="relative z-20 overflow-auto divide-y divide-gray-200 max-h-96">
                             <div v-for="proposal in searchResults" @click="bookmarkProposal(proposal)"
-                                class="flex justify-between items-center py-2 hover:bg-primary-20 hover:text-teal-800"
-                                :class="[isProposalAdded(proposal) ? 'text-slate-500 line-through cursor-not-allowed': 'hover:cursor-pointer']"
-                                :disabled="isProposalAdded(proposal)"
-                                >
-                                <div>
-                                    <h4 class="px-3">{{ proposal.title }}</h4>
+                                class="py-2 hover:bg-primary-20 hover:cursor-pointer hover:text-teal-800">
+                                <h4 class="px-3">{{ proposal.title }}</h4>
 
-                                    <div class="flex gap-1 px-3 py-1">
-                                        <div>
-                                            <span>Budget: </span>
-                                            <span>{{ proposal.amount_requested }}</span>
-                                        </div>
-                                        <div>
-                                            <span>Challenge: </span>
-                                            <span>{{ proposal.challenge_name }}</span>
-                                        </div>
+                                <div class="flex gap-1 px-3 py-1">
+                                    <div>
+                                        <span>Budget: </span>
+                                        <span>{{ proposal.amount_requested }}</span>
+                                    </div>
+                                    <div>
+                                        <span>Challenge: </span>
+                                        <span>{{ proposal.challenge_name }}</span>
                                     </div>
                                 </div>
-                                <span class="mr-4 text-slate-400 text-md font-bold" v-if="isProposalAdded(proposal)">Added</span>
                             </div>
                         </div>
                     </div>
@@ -57,13 +35,13 @@
             <section class="">
                 <div class="flex w-full items-center justify-end space-x-0.5 mb-3 gap-2">
                     <a :href="draftBallot?.link" target="_blank">
-                        <button class="bg-white rounded-sm px-3 py-2.5 text-gray-400 flex-wrap hover:text-yellow-500">
+                        <button  class="bg-white rounded-sm px-3 py-2.5 text-gray-400 flex-wrap hover:text-yellow-500">
                             Share
                         </button>
                     </a>
                     <Link :href="route('catalystExplorer.draftBallotupdate.view', { draftBallot: draftBallot?.hash })"
                         class="bg-white rounded-sm px-3 py-2.5 text-gray-400 flex-wrap hover:text-yellow-500">
-                    Edit
+                        Edit
                     </Link>
                 </div>
                 <DraftBallotGroupCard v-for="group in draftBallot$.groups" :key="group.id" :group="group"
@@ -77,7 +55,7 @@
 import DraftBallot from '../models/draft-ballot';
 import DraftBallotGroupCard from '../modules/bookmarks/DraftBallotGroupCard.vue';
 import Search from '../../earn/Shared/Components/Search.vue';
-import { Ref, computed, ref, watch } from "vue";
+import { Ref, ref, watch } from "vue";
 import axios from 'axios';
 import { useBookmarksStore } from "../stores/bookmarks-store";
 import { storeToRefs } from 'pinia';
@@ -86,9 +64,6 @@ import Proposal from '../models/proposal';
 import { useUserStore } from '../../global/Shared/store/user-store';
 import route from 'ziggy-js';
 import { Link } from '@inertiajs/vue3';
-import { VOTEACTIONS } from '../models/vote-actions';
-import { HandThumbUpIcon, HandThumbDownIcon } from '@heroicons/vue/20/solid';
-
 
 const userStore = useUserStore();
 const { user$ } = storeToRefs(userStore);
@@ -111,7 +86,6 @@ const onLocal: Ref<boolean> = ref(false);
 const inLastTenMins: Ref<boolean> = ref(false);
 const collectionHash = ref(draftBallot$.value?.hash);
 const createdAt = ref(draftBallot$.value?.created_at);
-let ballotIds = ref([]);
 
 
 watch([storeCollections$], (newValue, oldValue) => {
@@ -132,7 +106,8 @@ watch([onLocal, inLastTenMins], () => {
     canDelete.value = (onLocal.value && inLastTenMins.value) || user$.value?.id === draftBallot$.value?.user_id;
 });
 
-function searchProposals() {
+function searchProposals()
+{
     const params = {
         search: search.value,
         fund_id: 113,
@@ -148,46 +123,6 @@ function searchProposals() {
 
 async function bookmarkProposal(proposal: Proposal) {
     bookmarksStore.bookmarkProposal(proposal);
-    addProposalToDraftBallot(proposal);
 }
-
-const proposalIdsFromDraftBallot = () => {
-  const groups = props.draftBallot.groups || []
-  groups.forEach((group) => {
-    const items = group.items || []
-    items.forEach((item) => {
-      const id = item.model.id
-      if (id) {
-        ballotIds.value.push(id)
-      }
-    })
-  })
-}
-
-const addProposalToDraftBallot = (proposal) => {
-    ballotIds.value.push(proposal.id);
-    };
-
-const isProposalAdded = (proposal: Proposal) => {
-  proposalIdsFromDraftBallot()
-  return ballotIds.value.includes(proposal.id)
-}
-
-
-const totalAllUpvotes = computed(() => {
-    return draftBallot$.value.groups?.reduce((acc, group) => {
-        return acc + group.items?.reduce((acc, item) => {
-            return acc + (item.model?.vote?.vote === VOTEACTIONS.UPVOTE ? 1 : 0);
-        }, 0) || 0;
-    }, 0) || 0;
-});
-
-const totalAllDownvotes = computed(() => {
-    return draftBallot$.value.groups?.reduce((acc, group) => {
-        return acc + group.items?.reduce((acc, item) => {
-            return acc + (item.model?.vote?.vote === VOTEACTIONS.DOWNVOTE ? 1 : 0);
-        }, 0) || 0;
-    }, 0) || 0;
-});
 
 </script>
