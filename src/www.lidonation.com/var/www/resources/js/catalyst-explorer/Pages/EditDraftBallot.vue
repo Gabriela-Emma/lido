@@ -4,14 +4,14 @@
 
     <main class="flex flex-col gap-2 py-8 bg-primary-20">
         <div class="container">
-            <section class="sticky mb-4 overflow-visible bg-white border-t rounded-sm shadow-md top-9">
+            <section class="sticky z-30 mb-4 overflow-visible bg-white border-t rounded-sm shadow-md top-9">
                 <div class="relative overflow-visible">
                     <div class="flex items-center w-full h-10 lg:h-16">
                         <Search :search="search" @search="(term) => search = term" />
                     </div>
-                    <div class="absolute left-0 z-20 w-full bg-white shadow-lg top-12"
+                    <div class="absolute left-0 z-30 w-full bg-white shadow-lg top-12"
                         v-if="searchResults && searchResults?.length > 0">
-                        <div class="relative z-20 overflow-auto divide-y divide-gray-200 max-h-96">
+                        <div class="relative z-30 overflow-auto divide-y divide-gray-200 max-h-96">
                             <div v-for="proposal in searchResults" @click="bookmarkProposal(proposal)"
                                 class="py-2 hover:bg-primary-20 hover:cursor-pointer hover:text-teal-800">
                                 <h4 class="px-3">{{ proposal.title }}</h4>
