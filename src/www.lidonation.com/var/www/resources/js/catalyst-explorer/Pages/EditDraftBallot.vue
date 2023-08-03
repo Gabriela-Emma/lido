@@ -4,15 +4,14 @@
 
     <main class="flex flex-col gap-2 py-8 bg-primary-20">
         <div class="container">
-            <section class="sticky mb-4 overflow-visible bg-white border-t rounded-sm shadow-md top-9"
-                :class="{ 'z-30': searchResults && searchResults?.length > 0 }">
+            <section class="sticky mb-4 overflow-visible bg-white border-t rounded-sm shadow-md top-9 z-5">
                 <div class="relative overflow-visible">
                     <div class="flex items-center w-full h-10 lg:h-16">
                         <Search :search="search" @search="(term) => search = term" />
                     </div>
-                    <div class="absolute left-0 z-30 w-full bg-white shadow-lg top-12"
+                    <div class="absolute left-0 w-full bg-white shadow-lg top-12" ref="target"
                         v-if="searchResults && searchResults?.length > 0">
-                        <div class="relative z-30 overflow-auto divide-y divide-gray-200 max-h-96">
+                        <div class="relative overflow-auto divide-y divide-gray-200 max-h-96">
                             <div v-for="(proposal,index) in searchResults" @click="bookmarkProposal(proposal, index)"
                                 class="py-2 hover:bg-primary-20 " 
                                 :class="{'text-slate-500 cursor-not-allowed': proposal.disabled,
@@ -77,6 +76,7 @@ import { useUserStore } from '../../global/Shared/store/user-store';
 import route from 'ziggy-js';
 import { Link } from '@inertiajs/vue3';
 import { CheckIcon } from '@heroicons/vue/20/solid'
+import { onClickOutside } from '@vueuse/core';
 
 const userStore = useUserStore();
 const { user$ } = storeToRefs(userStore);
@@ -147,4 +147,8 @@ async function bookmarkProposal(proposal: Proposal, index) {
     }
 
 }
+
+
+const target = ref(null);
+onClickOutside(target, (event) => searchResults.value = []);
 </script>

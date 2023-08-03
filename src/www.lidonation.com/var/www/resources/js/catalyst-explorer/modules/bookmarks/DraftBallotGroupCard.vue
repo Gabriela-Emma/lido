@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="relative">
         <div class="px-5">
             <div class="flex flex-wrap gap-3 mb-4">
 
@@ -34,7 +34,7 @@
                         'text-red-600': allotedBudget > group.amount
                     }">
                         <span class="mr-1">Available Allotment: </span>
-                        <span>{{ group.amount - allotedBudget }}</span>
+                        <span>{{ $filters.currency(group.amount - allotedBudget) }}</span>
                     </div>
                 </div>
             </div>
