@@ -42,4 +42,8 @@ export default interface Proposal {
         ideascale_id: number;
         media: {original_url: string}[]
     }[];
+
+    // for ui
+    disabled: boolean;
+    selected:boolean
 }

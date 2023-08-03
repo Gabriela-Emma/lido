@@ -135,7 +135,7 @@ Route::group(
             Route::get('/draft-ballots/{draftBallot:id}', [CatalystBookmarksController::class, 'viewDraftBallot'])
                 ->name('draftBallot.view');
             Route::get('/draft-ballot/{draftBallot:id}/update', [CatalystBookmarksController::class, 'viewUpdateDraftBallot'])
-            ->name('draftBallotupdate.view');
+            ->name('draftBallotUpdate.view');
 
             // exports
             Route::get('/export/proposals', [CatalystProposalsController::class, 'exportProposals']);
