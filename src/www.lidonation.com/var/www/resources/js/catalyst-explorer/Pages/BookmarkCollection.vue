@@ -95,7 +95,7 @@
                                                     <div class="flex items-center gap-1">
                                                         <div>{{ $t("Budget") }}</div>
                                                         <div class="font-semibold text-slate-700">
-                                                            {{ $filters.currency(item?.model?.amount_requested) }}
+                                                            {{ $filters.currency(item?.model?.amount_requested, item?.model?.currency) }}
                                                         </div>
                                                     </div>
                                                     <div class="flex items-center gap-1">
