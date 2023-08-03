@@ -126,7 +126,7 @@ watch([onLocal, inLastTenMins], () => {
 function searchProposals() {
     const params = {
         search: search.value,
-        fund_id: 97,
+        fund_id: 113,
     }
     axios.get(
         route('catalystExplorerApi.proposals', params)
