@@ -96,8 +96,7 @@ class UserController extends Controller implements UpdatesUserProfileInformation
             'discord' => 'nullable|bail|min:2',
             'telegram' => 'nullable|bail|min:2',
             'bio' => 'nullable|min:10',
-            'profile' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-
+            'profile' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
         ]));
 
         // prevent changing email to a different user's email
@@ -116,7 +115,6 @@ class UserController extends Controller implements UpdatesUserProfileInformation
                 $user->addMediaFromRequest('profile')->toMediaCollection('hero');
                 $user->save();
             }
-         
         }
 
         $user->save();
@@ -126,6 +124,12 @@ class UserController extends Controller implements UpdatesUserProfileInformation
 
     public function utilityLogin()
     {
-        return Inertia::modal('Auth/UtilityLogin')->baseUrl(previous_route_url());
+        // ->with([
+        //     'nft' => $topicNft,
+        // ])
+        return Inertia::modal('Auth/UtilityLogin')
+        ->baseUrl(
+            previous_route_url()
+        );
     }
 }

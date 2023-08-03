@@ -108,15 +108,14 @@ let form = useForm({
     password: '',
     email: '',
     remember: false,
-    baseURL:modalProps.modal.baseURL
+    baseURL: modalProps.modal.baseURL
 })
 
 let submit = () =>
 {
-    form.post('/api/catalyst-explorer/login', {
+    form.post(route('catalystExplorerApi.login'), {
         onSuccess: () => {
             userStore.setUser();
-            window.location.reload();
         }
     });
 }
