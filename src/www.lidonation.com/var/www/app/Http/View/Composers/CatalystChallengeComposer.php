@@ -28,7 +28,8 @@ class CatalystChallengeComposer
                 ->route('fund')
         );
 
-        if ($fund instanceof Fund ) {
+
+        if (!$fund instanceof Fund ) {
             abort(404);
         }
 
