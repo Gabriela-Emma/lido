@@ -14,6 +14,7 @@ export interface DraftBallotGroup<T> {
     excerpt: string;
     rationale: DraftBallotRationale;
     items: BookmarkItem<T>[];
+    fund?: Fund;
 }
 
 export default interface DraftBallot<T> {

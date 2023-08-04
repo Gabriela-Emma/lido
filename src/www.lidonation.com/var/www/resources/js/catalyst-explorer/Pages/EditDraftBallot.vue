@@ -13,9 +13,9 @@
                         v-if="searchResults && searchResults?.length > 0">
                         <div class="relative overflow-auto divide-y divide-gray-200 max-h-96">
                             <div v-for="(proposal,index) in searchResults" @click="bookmarkProposal(proposal, index)"
-                                class="py-2 hover:bg-primary-20 " 
+                                class="py-2 hover:bg-primary-20 "
                                 :class="{'text-slate-500 cursor-not-allowed': proposal.disabled,
-                                            'text-teal-800':proposal.selected, 
+                                            'text-teal-800':proposal.selected,
                                             'hover:cursor-pointer hover:text-teal-800': !proposal.disabled}">
                                 <div class="flex w-full ">
                                     <div class="ml-3">
@@ -44,7 +44,7 @@
             </section>
 
             <section class="">
-                <div class="flex w-full items-center justify-end space-x-0.5 mb-3 gap-2">
+                <div class="flex w-full items-center justify-start space-x-0.5 mb-3 gap-2 text-base">
                     <a :href="draftBallot?.link" target="_blank">
                         <button class="bg-white rounded-sm px-3 py-2.5 text-gray-400 flex-wrap hover:text-yellow-500">
                             Share
