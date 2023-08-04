@@ -4,7 +4,7 @@
             <div class="flex flex-wrap gap-3 mb-4">
 
                 <h2 class="text-sm md:text-md lg:text-2xl">{{ group.title }}</h2>
-                <div class="flex items-center divide-x space-x-3 divide-gray-200 gap-1.5 text-xs lg:text-base">
+                <div class="flex items-center divide-x space-x-3 gap-1.5 text-xs lg:text-base">
                     <div>
                         <span class="mr-1">Items: </span>
                         <span>{{ group.items.length }}</span>
@@ -16,25 +16,25 @@
                             <span>{{ totalLikes + totalUnlikes }}</span>
                         </div>
                         <div class="flex flex-row flex-1 w-1/2">
-                            <HandThumbUpIcon aria-hidden="true" class="mr-1 text-gray-500 w-7 h-7" />
+                            <HandThumbUpIcon aria-hidden="true" class="w-5 h-5 mr-1 text-gray-500" />
                             <span>{{ totalLikes }}</span>
                         </div>
                         <div class="flex flex-row flex-1 w-1/2">
-                            <HandThumbDownIcon aria-hidden="true" class="mr-1 text-gray-500 w-7 h-7" />
+                            <HandThumbDownIcon aria-hidden="true" class="w-5 h-5 mr-1 text-gray-500" />
                             <span> {{ totalUnlikes }}</span>
                         </div>
                     </div>
 
                     <div class="ml-2">
                         <span class="mr-1">Pot: </span>
-                        <span>{{ group.amount }}</span>
+                        <span>{{ $filters.currency(group.amount, group.fund?.currency, 'en-US', 4) }}</span>
                     </div>
                     <div class="flex items-center ml-2 font-bold lg:text-lg" :class="{
                         'text-teal-600': allotedBudget <= group.amount,
                         'text-red-600': allotedBudget > group.amount
                     }">
                         <span class="mr-1">Available Allotment: </span>
-                        <span>{{ $filters.currency(group.amount - allotedBudget) }}</span>
+                        <span>{{ $filters.currency(group.amount - allotedBudget, group.fund?.currency, 'en-US', 4) }}</span>
                     </div>
                 </div>
             </div>
@@ -86,7 +86,9 @@
                                     <div class="relative">
                                         <div class="flex flex-col text-md">
                                             <h4 class="text-sm font-medium xl:font-semibold xl:text-lg">
-                                                {{ item?.model?.title }}
+                                                <a :href="item?.model?.link" target="_blank" class="text-sm font-medium xl:font-semibold xl:text-lg text-slate-700">
+                                                    {{ item?.model?.title }}
+                                                </a>
                                             </h4>
                                         </div>
                                         <div class="mt-1">
@@ -185,8 +187,6 @@ watch([onLocal, inLastTenMins], () => {
 
 watch(rationale, debounce(() => saveRationale(), 700));
 
-
-
 function removeItem(id: number) {
     if (canDelete) {
         axios.delete(route('catalystExplorer.bookmarkItem.delete', { bookmarkItem: id }))
@@ -225,7 +225,6 @@ const totalUnlikes = computed(() => {
         return acc + (item.model?.vote?.vote === VOTEACTIONS.DOWNVOTE ? 1 : 0);
     }, 0) || 0;
 });
-
 
 function vote(vote: VOTEACTIONS, proposal: Proposal) {
     if (proposal.vote) {

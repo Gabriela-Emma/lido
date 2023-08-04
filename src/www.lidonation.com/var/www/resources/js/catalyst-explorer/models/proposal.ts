@@ -12,6 +12,7 @@ export default interface Proposal {
     fund_name?: string;
     id: number;
     ideascale_link: string;
+    link: string;
     no_votes_count: number;
     problem: string;
     ratings_count: number;
