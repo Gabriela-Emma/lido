@@ -31,13 +31,13 @@ class ProcessPendingWithdrawalsJob implements ShouldQueue
     {
         if (!$payments) {
             $jobs = $this->getBatchPaymentsArr();
-            
+
             if (!!$jobs) {
                 Bus::batch([
                     function () use($jobs) {
                         collect($jobs)->each(function($job) {
                              dispatch(new self($job['payments'], $job['msg'], $job['processWithdrawals']))->delay(now()->addminutes(3));
-                         });   
+                         });
                     },
                  ])->dispatch();
             }
@@ -58,7 +58,7 @@ class ProcessPendingWithdrawalsJob implements ShouldQueue
             $msg = $this->msg;
             $seed = file_get_contents('/data/phuffycoin/wallets/mint/seed.txt');
             $data = compact('payments', 'msg', 'seed');
-            
+
             $res = Http::post(
                 config('cardano.lucidEndpoint').'/rewards/withdraw',
                 $data
@@ -69,7 +69,7 @@ class ProcessPendingWithdrawalsJob implements ShouldQueue
                 foreach ($this->processWithdrawals as $withdrawal) {
                     $withdrawal->status = 'paid';
                     $withdrawal->save();
-                    
+
                     $withdrawal->rewards->each(function ($reward) use($tx, $withdrawal) {
                         $reward->status = 'paid';
                         $reward->save();
@@ -78,7 +78,7 @@ class ProcessPendingWithdrawalsJob implements ShouldQueue
                             $nft = Nft::where('user_id', $reward->user_id)
                                     ->where('policy', $reward->asset_type)
                                     ->first();
-                            
+
                             $nft->status = 'minted';
                             $nft->owner_address = $withdrawal->wallet_address;
                             $nft->save();
@@ -96,16 +96,16 @@ class ProcessPendingWithdrawalsJob implements ShouldQueue
                             $newTx->metadata = $nft->metadata;
                             $newTx->minted_at = now();
                             $newTx->save();
-                            
+
 
                         }
                     });
-                    
+
                     $withdrawal->saveMeta('withdrawal_tx', $tx, $withdrawal);
                 }
             }
         }
-        
+
     }
 
     protected function getBatchPaymentsArr()
@@ -128,15 +128,15 @@ class ProcessPendingWithdrawalsJob implements ShouldQueue
             $lastPayment = $i * $paymentsLimit;
             $payments = $allPayments->slice($lastPayment - $paymentsLimit, $paymentsLimit);
             $processWithdrawals = $withdrawals->slice($lastPayment - $paymentsLimit, $paymentsLimit);
-            
-            
+
+
             array_push($jobs, ['payments'=> $payments, 'msg'=>$msg, 'processWithdrawals'=>$processWithdrawals]);
         }
-        
+
        return $jobs;
     }
 
-    
+
 
     protected function getWithdrawals()
     {
@@ -173,13 +173,13 @@ class ProcessPendingWithdrawalsJob implements ShouldQueue
                     $nft = Nft::where('user_id', $nftReward->user_id)
                             ->where('policy', $nftReward->asset_type)
                             ->first();
-    
+
                     $metadata = array_merge($nft?->metadata?->toArray() ?? [], [
                         'name' => $nft?->name,
                         'image' => $nft?->storage_link,
                         'homepage' => 'lidonation.com',
                         'artist' => $nft?->artist->name,
-                        'description' => $nft?->description,
+                        'description' => breakLongText($nft?->description, 44, 44, ' '),
                         'files' => [
                             [
                                 'src' => $nft?->storage_link,
@@ -188,7 +188,7 @@ class ProcessPendingWithdrawalsJob implements ShouldQueue
                             ],
                         ],
                     ]);
-    
+
                     $nftsArr[] = [
                         'key' => Str::remove(' ', $nft?->name),
                         'owner' => $nft?->owner_address,
@@ -197,7 +197,7 @@ class ProcessPendingWithdrawalsJob implements ShouldQueue
                     ];
                     $nftsCount += 1;
                 }
-            } 
+            }
 
             // if (! isset($assets['lovelace']) && $withdrawal->txs?->isEmpty() && ! $withdrawal->user->hasRole(RoleEnum::delegator()->value)) {
             //     Log::error('Missing Min UTXO');
@@ -215,7 +215,7 @@ class ProcessPendingWithdrawalsJob implements ShouldQueue
                     }
                 }
             }
-            
+
             $withdrawalNfts = count($nftsArr) != 0 ? $nftsArr : null;
             $payments->push([
                 'address' => $withdrawal->wallet_address,
