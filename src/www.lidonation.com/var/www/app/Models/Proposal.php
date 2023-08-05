@@ -320,7 +320,7 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
     public function getVideosAttribute()
     {
         return $this->metas
-            ->filter(fn ($m) => Str::contains($m->key, ['quick_pitch', 'youtube', 'video', '.mp4', 'vimeo']))
+            ->filter(fn ($m) => Str::contains($m->key, ['quick_pitch', 'quickpitch', 'youtube', 'video', '.mp4', 'vimeo']))
             ->map(function ($m) {
                 $m->content = Str::replace('youtu.be/', 'youtube.com/watch?v=', $m->content);
                 if (Str::contains($m->content, 'youtube')) {
