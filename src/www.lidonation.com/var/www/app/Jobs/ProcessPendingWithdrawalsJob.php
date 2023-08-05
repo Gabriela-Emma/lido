@@ -179,7 +179,7 @@ class ProcessPendingWithdrawalsJob implements ShouldQueue
                         'image' => $nft?->storage_link,
                         'homepage' => 'lidonation.com',
                         'artist' => $nft?->artist->name,
-                        'description' => breakLongText($nft?->description, 44, 44, ' '),
+                        'description' => breakLongText($nft?->description, 32, 32, ' '),
                         'files' => [
                             [
                                 'src' => $nft?->storage_link,
