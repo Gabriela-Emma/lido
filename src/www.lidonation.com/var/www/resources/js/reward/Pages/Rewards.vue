@@ -310,7 +310,7 @@ let withdrawalRewards = async () => {
         const processResponse = (await axios.post(route('rewardsApi.withdrawals.process'), {address: myWallet?.value?.address}));
         setTimeout(async () => {
             working.value = false;
-
+            // @ts-ignore
             if (adaReward.value < BigInt(2000000)) {
                 const walletService = new WalletService();
                 await walletService.connectWallet(myWallet?.value?.name);

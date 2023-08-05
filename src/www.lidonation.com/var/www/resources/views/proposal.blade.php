@@ -122,7 +122,7 @@
                     @endif
 
                     @if($proposal->videos->isNotEmpty() || $proposal->media->isNotEmpty())
-                        <div class="mb-2 bg-teal-800 primary-slide">
+                        <div class="mb-2 bg-teal-900 primary-slide">
                             <div class="splide round-sm" id="proposal-primary-slide" role="group">
                                 <div class="splide__track">
                                     <ul class="splide__list">
@@ -153,7 +153,6 @@
                                         @if($proposal->media->isNotEmpty())
                                             @foreach($proposal->media as $media)
                                                 <li class="splide__slide">
-
                                                     <img class="fluid" src="{{$proposal->hero_url}}"
                                                          alt="{{$media?->name}}"/>
                                                 </li>
