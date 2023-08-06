@@ -3,25 +3,28 @@
         class="sticky left-0 z-30 w-full bg-yellow-500 border-t border-yellow-600 -bottom-32 text-slate-800 drop-shadow-2xl">
         <div class="container relative py-4 overflow-visible">
             <div class="flex items-center gap-2">
-                <div>
-                    <button type="button" class="hover:text-white" @click="toggle">
-                        <svg v-if="!playing" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-                            class="w-20 h-20">
-                            <path fill-rule="evenodd"
-                                d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm14.024-.983a1.125 1.125 0 010 1.966l-5.603 3.113A1.125 1.125 0 019 15.113V8.887c0-.857.921-1.4 1.671-.983l5.603 3.113z"
-                                clip-rule="evenodd" />
+                <div class="flex flex-row">
+                    <button type="button" class="hover:text-white" @click="changeCurrentlyPlaying('previous')" >
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24" fill="currentColor" class="w-20 h-20 hover:fill-white fill-slate-700">
+                            <path
+                                d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10c5.515 0 10-4.486 10-10S17.515 2 12 2zm4 14-6-4v4H8V8h2v4l6-4v8z" />
                         </svg>
-                        <svg v-if="!!playing" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-                            class="w-20 h-20">
-                            <path fill-rule="evenodd"
-                                d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zM9 8.25a.75.75 0 00-.75.75v6c0 .414.336.75.75.75h.75a.75.75 0 00.75-.75V9a.75.75 0 00-.75-.75H9zm5.25 0a.75.75 0 00-.75.75v6c0 .414.336.75.75.75H15a.75.75 0 00.75-.75V9a.75.75 0 00-.75-.75h-.75z"
-                                clip-rule="evenodd" />
+                    </button>
+                    <button type="button" class="hover:text-white" @click="toggle">
+                        <PlayCircleIcon v-if="!playing" class="w-20 h-20 text-slate-700" aria-hidden="true" />
+                        <PauseCircleIcon v-if="!!playing" class="w-20 h-20 text-slate-700" aria-hidden="true" />
+                    </button>
+                    <button type="button" class="hover:text-white" @click="changeCurrentlyPlaying('next')">
+                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"
+                            id="mdi-skip-next-circle" fill="currentColor" class="w-20 h-20 fill-slate-700 hover:fill-white" viewBox="0 0 24 24">
+                            <path
+                                d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M8,8L13,12L8,16M14,8H16V16H14" />
                         </svg>
                     </button>
                 </div>
                 <div class="flex-1">
                     <div class="font-medium">
-                        EP1: 'd' Parameter
+                        {{currentlyPlaying.title}}
                     </div>
                     <div class="flex items-center gap-4">
                         <div>
@@ -56,8 +59,7 @@
                             <label for="scrubber"
                                 class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-slate-600">Player
                                 Scrubber</label>
-                            <input id="scrubber" type="range" min="0" :max="duration" v-model="currentTime" @change="scrub"
-                                class="w-48 h-2 text-yellow-500 rounded-lg appearance-none cursor-pointer bg-slate-200 dark:bg-slate-700">
+                            <input id="scrubber" type="range" min="0" :max="duration" v-model="currentTime" @change="scrub">
                         </div>
                         <div class="inline-flex items-center gap-1 text-sm text-slate-800">
                             <div><span>{{ currentTimeFormatted }}</span></div>
@@ -69,13 +71,12 @@
                                 class="inline-flex items-center hover:cursor-pointer hover:text-yellow-500 rounded-md bg-slate-800 px-1.5 py-0.5 text-xs font-medium text-slate-100">1x</span>
                         </div>
                         <div class="inline-flex items-center hover:cursor-pointer hover:text-slate-200">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6" @click="mute">
-                                <path
-                                    d="M13.5 4.06c0-1.336-1.616-2.005-2.56-1.06l-4.5 4.5H4.508c-1.141 0-2.318.664-2.66 1.905A9.76 9.76 0 001.5 12c0 .898.121 1.768.35 2.595.341 1.24 1.518 1.905 2.659 1.905h1.93l4.5 4.5c.945.945 2.561.276 2.561-1.06V4.06zM18.584 5.106a.75.75 0 011.06 0c3.808 3.807 3.808 9.98 0 13.788a.75.75 0 11-1.06-1.06 8.25 8.25 0 000-11.668.75.75 0 010-1.06z" />
-                                <path
-                                    d="M15.932 7.757a.75.75 0 011.061 0 6 6 0 010 8.486.75.75 0 01-1.06-1.061 4.5 4.5 0 000-6.364.75.75 0 010-1.06z" />
-                            </svg>
-                                <input id="volume-slider" type="range" min="0" :max="1" step="0.01"  v-model="volume" @change="changeVolume">
+                            <button type="button" class="hover:text-white" @click="mute">
+                                <SpeakerWaveIcon v-if="!muted" class="w-6 h-6" aria-hidden="true" />
+                                <SpeakerXMarkIcon v-if="!!muted" class="w-6 h-6" aria-hidden="true" />
+                            </button>
+                            <input id="volume-slider" type="range" min="0" :max="1" step="0.01" v-model="volume"
+                                @change="changeVolume">
                         </div>
                     </div>
                 </div>
@@ -93,18 +94,18 @@
                 'bottom-0 md:-bottom-60': 1,
                 '-bottom-60': !1,
             }">
-                <div class="hidden p-2 bg-yellow-500 border-t border-l border-r border-yellow-600 rounded-t-sm w-80">
+                <div class="p-2 bg-yellow-500 border-t border-l border-r border-yellow-600 rounded-t-sm w-80">
                     <div class="embed-wrapper">
                         <div>
                             <div class="plyr__video-embed" id="player">
-                                <iframe v-if="1"
-                                    src="https://www.youtube.com/embed/bTqVqk7FSmY?origin=https://plyr.io&amp;iv_load_policy=3&amp;modestbranding=1&amp;playsinline=1&amp;showinfo=0&amp;rel=0&amp;enablejsapi=1"
+                                <iframe v-if="currentlyPlaying.provider=='youtube'"
+                                    :src="currentlyPlaying.link"
                                     allowfullscreen allowtransparency allow="autoplay">
                                 </iframe>
-                                <iframe v-if="0"
-                                    src="https://player.vimeo.com/video/76979871?loop=false&amp;byline=false&amp;portrait=false&amp;title=false&amp;speed=true&amp;transparent=0&amp;gesture=media"
-                                    allowfullscreen allowtransparency allow="autoplay">
-                                </iframe>
+                                <iframe v-if="currentlyPlaying.provider == 'vimeo'"
+                                 :src="currentlyPlaying.link"
+                                style="position:absolute;top:0;left:0;width:100%;height:100%;" frameborder="0"
+                                allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
                             </div>
                         </div>
                     </div>
@@ -115,40 +116,97 @@
 </template>
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue';
+import { SpeakerXMarkIcon, SpeakerWaveIcon, PlayCircleIcon, PauseCircleIcon, } from '@heroicons/vue/24/solid';
 import Plyr from 'plyr';
+
+onMounted(() => createPlayer(currentlyPlaying.value));
 const playing = ref(false);
 const player = ref(null);
 let currentTime = ref(0);
 let duration = ref(0);
 let volume = ref(10);
+let muted = ref(false);
 
+
+let Playlist = [
+    // {
+    //     "title":'proposal1',
+    //     "provider":'vimeo',
+    //     "link":"https://vimeo.com/576882227",
+    //     "playId":'576882227'
+    // },
+       {
+        "title": 'proposal2',
+        "provider": 'youtube',
+        "link": "https://www.youtube.com/watch?v=mMRxVLBUtHY&start=37072",
+        "playId": 'bTqVqk7FSmY'
+    },
+       {
+        "title": 'proposal3',
+        "provider": 'vimeo',
+        "link": "https://vimeo.com/587825954",
+        "playId": '76979871'
+    },
+       {
+        "title": 'proposal4',
+        "provider": 'youtube',
+        "link": "https://www.youtube.com/watch?v=rMo9ExWv0mo",
+        "playId": 'rMo9ExWv0mo'
+    },
+]
+
+let currentlyPlayingIndex = ref(0)
+let currentlyPlaying = computed(() => Playlist[currentlyPlayingIndex.value])
+let changeCurrentlyPlaying = (direction) => {   
+    if (direction == 'next') {
+        currentlyPlayingIndex.value = currentlyPlayingIndex.value + 1;
+        if (currentlyPlayingIndex.value >= Playlist.length) {
+            currentlyPlayingIndex.value = 0;
+        }
+    } else {
+        currentlyPlayingIndex.value = currentlyPlayingIndex.value - 1;
+        if (currentlyPlayingIndex.value < 0) {
+            currentlyPlayingIndex.value = Playlist.length - 1;
+        }
+    }
+    createPlayer(currentlyPlaying.value);
+    console.log(currentlyPlayingIndex.value);
+    
+}
+
+const regex: RegExp = /[a-zA-Z]/g;
+const quickPitchId = currentlyPlaying.value.link;
+const quickpitchProvider = computed(() => quickPitchId.match(regex) ? "youtube" : "vimeo");
 
 
 const formatTime = (time) => new Date(time * 1000).toISOString().substr(14, 5);
 const currentTimeFormatted = computed(() => formatTime(currentTime.value));
 const durationFormatted = computed(() => formatTime(duration.value));
 let changeVolume = () => {
-    player.volume = volume.value / 10;
+    player.value.volume = volume.value;
 }
 let scrub = (event) => {
-    player.currentTime = event.target.value;
+    player.value.currentTime = currentTime.value;
 }
-onMounted(() => {
+
+let createPlayer = (currentVideo) => {
     player.value = new Plyr('#player', {
         controls: [],
         volume: 1,
         muted: false,
         clickToPlay: false,
-        autoplay: true,
-        youtube: {
-            rel: 0,
-            autoplay: 1,
-            enablejsapi: true,
-            showinfo: false,
-            playsinline: true,
-            modestbranding: true
-        }
+        autoplay: false,
     });
+
+    player.value.source = {
+        type: 'video',
+        sources: [
+            {
+                src: currentVideo.link,
+                provider: currentVideo.provider,
+            },
+        ],
+    };
     player.value.on('timeupdate', (event) => {
         const instance = event.detail.plyr;
         currentTime.value = instance.currentTime;
@@ -156,8 +214,7 @@ onMounted(() => {
     });
     player.value.on('volumechange', (event) => {
         const instance = event.detail.plyr;
-        volume.value = instance.volume * 10;
-        console.log(volume.value);
+        volume.value = instance.volume;
     });
     player.value.on('play', () => {
         playing.value = true;
@@ -165,7 +222,11 @@ onMounted(() => {
     player.value.on('pause', () => {
         playing.value = false;
     });
-});
+
+    
+}
+
+
 let forward = () => {
     player.value.forward(10)
 }
@@ -180,8 +241,16 @@ function toggle() {
     }
 }
 
+let previousVolume = ref(null);
 function mute() {
-    
-    
+    if (player.value.volume) {
+        previousVolume.value = volume.value
+        player.value.volume = 0
+        muted.value = true
+    } else {
+        player.value.volume = previousVolume.value
+        muted.value = false
+    }
+
 }
 </script>
