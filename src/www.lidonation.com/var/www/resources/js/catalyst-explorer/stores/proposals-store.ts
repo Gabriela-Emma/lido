@@ -18,11 +18,17 @@ export const useProposalsStore = defineStore('proposals', () => {
             } else if ( urlParams.has(VARIABLES.RANKED_VIEW) ) {
                 viewType.value = 'ranked';
             } else {
-                viewType.value = 'card';
+                viewType.value = getRandomElementFromArray(viewTypes);
             }
             return;
         }
         viewType.value = type;
+    }
+
+    const viewTypes = ['card', 'quickpitch', 'ranked'];
+
+    function getRandomElementFromArray(array) {
+    return array[Math.floor(Math.random() * array.length)];
     }
 
     async function search(f: ProposalFilters) {
