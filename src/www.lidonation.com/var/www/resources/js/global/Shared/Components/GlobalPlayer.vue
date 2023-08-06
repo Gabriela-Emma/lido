@@ -4,8 +4,9 @@
         <div class="container relative py-4 overflow-visible">
             <div class="flex items-center gap-2">
                 <div class="flex flex-row">
-                    <button type="button" class="hover:text-white" @click="changeCurrentlyPlaying('previous')" >
-                        <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24" fill="currentColor" class="w-20 h-20 hover:fill-white fill-slate-700">
+                    <button type="button" class="hover:text-white" @click="changeCurrentlyPlaying('previous')">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"
+                            fill="currentColor" class="w-20 h-20 hover:fill-white fill-slate-700">
                             <path
                                 d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10c5.515 0 10-4.486 10-10S17.515 2 12 2zm4 14-6-4v4H8V8h2v4l6-4v8z" />
                         </svg>
@@ -16,7 +17,8 @@
                     </button>
                     <button type="button" class="hover:text-white" @click="changeCurrentlyPlaying('next')">
                         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"
-                            id="mdi-skip-next-circle" fill="currentColor" class="w-20 h-20 fill-slate-700 hover:fill-white" viewBox="0 0 24 24">
+                            id="mdi-skip-next-circle" fill="currentColor" class="w-20 h-20 fill-slate-700 hover:fill-white"
+                            viewBox="0 0 24 24">
                             <path
                                 d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M8,8L13,12L8,16M14,8H16V16H14" />
                         </svg>
@@ -24,7 +26,7 @@
                 </div>
                 <div class="flex-1">
                     <div class="font-medium">
-                        {{currentlyPlaying.title}}
+                        {{ currentlyPlaying.title }}
                     </div>
                     <div class="flex items-center gap-4">
                         <div>
@@ -98,14 +100,12 @@
                     <div class="embed-wrapper">
                         <div>
                             <div class="plyr__video-embed" id="player">
-                                <iframe v-if="currentlyPlaying.provider=='youtube'"
-                                    :src="currentlyPlaying.link"
+                                <iframe v-if="currentlyPlaying.provider == 'youtube'" :src="currentlyPlaying.link"
                                     allowfullscreen allowtransparency allow="autoplay">
                                 </iframe>
-                                <iframe v-if="currentlyPlaying.provider == 'vimeo'"
-                                 :src="currentlyPlaying.link"
-                                style="position:absolute;top:0;left:0;width:100%;height:100%;" frameborder="0"
-                                allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+                                <iframe v-if="currentlyPlaying.provider == 'vimeo'" :src="currentlyPlaying.link"
+                                    style="position:absolute;top:0;left:0;width:100%;height:100%;" frameborder="0"
+                                    allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
                             </div>
                         </div>
                     </div>
@@ -119,7 +119,18 @@ import { computed, onMounted, ref } from 'vue';
 import { SpeakerXMarkIcon, SpeakerWaveIcon, PlayCircleIcon, PauseCircleIcon, } from '@heroicons/vue/24/solid';
 import Plyr from 'plyr';
 
-onMounted(() => createPlayer(currentlyPlaying.value));
+onMounted(() => {
+    createPlayer()
+    player.value.source = {
+        type: 'video',
+        sources: [
+            {
+                src: currentlyPlaying.value.link,
+                provider: currentlyPlaying.value.provider,
+            },
+        ],
+    };
+});
 const playing = ref(false);
 const player = ref(null);
 let currentTime = ref(0);
@@ -135,19 +146,19 @@ let Playlist = [
     //     "link":"https://vimeo.com/576882227",
     //     "playId":'576882227'
     // },
-       {
+    {
         "title": 'proposal2',
         "provider": 'youtube',
         "link": "https://www.youtube.com/watch?v=mMRxVLBUtHY&start=37072",
         "playId": 'bTqVqk7FSmY'
     },
-       {
+    {
         "title": 'proposal3',
         "provider": 'vimeo',
         "link": "https://vimeo.com/587825954",
         "playId": '76979871'
     },
-       {
+    {
         "title": 'proposal4',
         "provider": 'youtube',
         "link": "https://www.youtube.com/watch?v=rMo9ExWv0mo",
@@ -157,7 +168,7 @@ let Playlist = [
 
 let currentlyPlayingIndex = ref(0)
 let currentlyPlaying = computed(() => Playlist[currentlyPlayingIndex.value])
-let changeCurrentlyPlaying = (direction) => {   
+let changeCurrentlyPlaying = (direction) => {
     if (direction == 'next') {
         currentlyPlayingIndex.value = currentlyPlayingIndex.value + 1;
         if (currentlyPlayingIndex.value >= Playlist.length) {
@@ -169,9 +180,17 @@ let changeCurrentlyPlaying = (direction) => {
             currentlyPlayingIndex.value = Playlist.length - 1;
         }
     }
-    createPlayer(currentlyPlaying.value);
+    player.value.source = {
+        type: 'video',
+        sources: [
+            {
+                src: currentlyPlaying.value.link,
+                provider: currentlyPlaying.value.provider,
+            },
+        ],
+    };
     console.log(currentlyPlayingIndex.value);
-    
+
 }
 
 const regex: RegExp = /[a-zA-Z]/g;
@@ -189,7 +208,7 @@ let scrub = (event) => {
     player.value.currentTime = currentTime.value;
 }
 
-let createPlayer = (currentVideo) => {
+let createPlayer = () => {
     player.value = new Plyr('#player', {
         controls: [],
         volume: 1,
@@ -198,15 +217,6 @@ let createPlayer = (currentVideo) => {
         autoplay: false,
     });
 
-    player.value.source = {
-        type: 'video',
-        sources: [
-            {
-                src: currentVideo.link,
-                provider: currentVideo.provider,
-            },
-        ],
-    };
     player.value.on('timeupdate', (event) => {
         const instance = event.detail.plyr;
         currentTime.value = instance.currentTime;
@@ -223,7 +233,7 @@ let createPlayer = (currentVideo) => {
         playing.value = false;
     });
 
-    
+
 }
 
 
