@@ -286,7 +286,10 @@ class DelegatorsComponent extends Component
                 //from image meta establish protocol and the uri
                 switch (gettype($imageMeta)) {
                     case 'string': //eg "https://cardano.org/favicon-32x32.png"  OR "ipfs://QmbQDvKJeo2NgGcGdnUiUFibTzuKNK5Uij7jzmK8ZccmWp"
-                        [$imageProtocol, $imageUri] = explode('://', $imageMeta);
+                        $parts = explode('://', $imageMeta);
+                        if (count($parts) > 1) {
+                            [$imageProtocol, $imageUri] = explode('://', $imageMeta);
+                        }
                         break;
                     case 'array': //eg ["ipfs://", "QmbQDvKJeo2NgGcGdnUiUFibTzuKNK5Uij7jzmK8ZccmWp"]
                         [$protocol, $uri] = $imageMeta;
