@@ -223,13 +223,6 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
         return false;
     }
 
-    public function quickpitch(): Attribute
-    {
-        return Attribute::make(
-            get: fn ($value) => $this->meta_data?->quick_pitch ?? null,
-        );
-    }
-
     public function currency(): Attribute
     {
         return Attribute::make(
@@ -304,17 +297,12 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
     public function quickPitchId(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->meta_data?->quickpitch ? collect(
+            get: fn () => $this->quickpitch ? collect(
                     explode(
                         '/',
-                         $this->meta_data?->quickpitch)
+                         $this->quickpitch)
                 )?->last() : null
         );
-    }
-
-    public function getQuickPitchAttribute()
-    {
-        return $this->meta_data?->quick_pitch;
     }
 
     public function getVideosAttribute()
@@ -511,9 +499,9 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
         return array_merge($array, [
             'funded' => (bool) $this->funded_at ? 1 : 0,
             'opensource' => (bool) $this->opensource ? 1 : 0,
-            'has_quick_pitch' => (bool) $this->quick_pitch ? 1 : 0,
+            'has_quick_pitch' => (bool) $this->quickpitch ? 1 : 0,
             'quickpitch' => $this->quick_pitch_id ?? null,
-            'quickpitch_length' => $this->meta_data->quickpitch_length ?? null,
+            'quickpitch_length' => $this->quickpitch_length ?? null,
             'completed' => $this->status === 'complete' ? 1 : 0,
             'over_budget' => $this->status === 'over_budget' ? 1 : 0,
             'currency' => $this->currency,
@@ -565,7 +553,7 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
         return [
             'id' => $this->id,
             'title' => $this->title,
-            'quickPitch' => $this->quick_pitch,
+            'quickPitch' => $this->quickpitch,
             'quickPitchId' => $this->quick_pitch_id,
         ];
     }
