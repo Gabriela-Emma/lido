@@ -10,6 +10,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class ProposalQuickPitchLength implements ShouldQueue
 {
@@ -34,11 +35,11 @@ class ProposalQuickPitchLength implements ShouldQueue
      */
     public function handle()
     {
-        if (!$this->proposal->quick_pitch) {
+        if (!$this->proposal->quickpitch) {
             return;
         }
 
-        $videoUrl = $this->proposal->quick_pitch;
+        $videoUrl = $this->proposal->quickpitch;
 
         $youtubeId = $this->youtubeId($videoUrl);
         $vimeoId = $this->vimeoId($videoUrl);
@@ -53,7 +54,13 @@ class ProposalQuickPitchLength implements ShouldQueue
             $videoDuration = $this->getVimeoVideoDuration($videoUrl);
         }
 
-        $this->proposal->saveMeta('quickpitch_length', $videoDuration, $this->proposal, true);
+        if ($videoDuration !== null) {
+            $this->proposal->quickpitch_length = $videoDuration;
+            $this->proposal->save();
+            Log::info('ProposalQuickPitchLength job success for Proposal ID: ' . $this->proposal->id);
+        } else {
+            return;
+        }
     }
 
     /**
@@ -77,14 +84,19 @@ class ProposalQuickPitchLength implements ShouldQueue
             'key' => env('YOUTUBE_API_KEY'),
         ]);
 
-        $videoDuration = json_decode($response->body())->items[0]->contentDetails->duration;
 
-        if (preg_match('/PT((\d+)H)?((\d+)M)?((\d+)S)?/', $videoDuration, $matches)) {
-            $hours = isset($matches[2]) ? (int) $matches[2] : 0;
-            $minutes = isset($matches[4]) ? (int) $matches[4] : 0;
-            $seconds = isset($matches[6]) ? (int) $matches[6] : 0;
+        $responseData = json_decode($response->body());
 
-            return $hours * 3600 + $minutes * 60 + $seconds;
+        if (isset($responseData->items) && !empty($responseData->items)) {
+            $videoDuration = $responseData->items[0]->contentDetails->duration;
+
+            if (preg_match('/PT((\d+)H)?((\d+)M)?((\d+)S)?/', $videoDuration, $matches)) {
+                $hours = isset($matches[2]) ? (int) $matches[2] : 0;
+                $minutes = isset($matches[4]) ? (int) $matches[4] : 0;
+                $seconds = isset($matches[6]) ? (int) $matches[6] : 0;
+
+                return $hours * 3600 + $minutes * 60 + $seconds;
+            }
         }
 
         return null;
