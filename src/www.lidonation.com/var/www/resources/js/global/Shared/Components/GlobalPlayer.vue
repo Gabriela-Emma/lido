@@ -1,6 +1,14 @@
 <template>
     <section v-if="show"
         class="sticky left-0 z-30 w-full bg-yellow-500 border-t border-yellow-600 -bottom-32 text-slate-800 drop-shadow-2xl">
+        <div class="flex justify-end">
+            <button class="flex items-center hover:text-white">
+                <span>Stop Playing</span>
+                <StopCircleIcon @click="playStore.clearStore()" class="w-8 h-8 text-slate-700 text-bold"
+                    aria-hidden="true" />
+            </button>
+        </div>
+
         <div class="container relative py-4 overflow-visible">
             <div class="flex items-center gap-2">
                 <div class="flex flex-row">
@@ -12,7 +20,8 @@
                                 d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10c5.515 0 10-4.486 10-10S17.515 2 12 2zm4 14-6-4v4H8V8h2v4l6-4v8z" />
                         </svg>
                     </button>
-                    <button type="button" class="hover:text-white" @click.prevent="playStore.toggle()" :disabled="changingSource">
+                    <button type="button" class="hover:text-white" @click.prevent="playStore.toggle()"
+                        :disabled="changingSource">
                         <PlayCircleIcon v-if="!playing" class="w-20 h-20 text-slate-700" aria-hidden="true" />
                         <PauseCircleIcon v-if="!!playing" class="w-20 h-20 text-slate-700" aria-hidden="true" />
                     </button>
@@ -63,8 +72,7 @@
                             <label for="scrubber"
                                 class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-slate-600">Player
                                 Scrubber</label>
-                            <input id="scrubber" type="range" min="0" :max="duration" v-model="currentTime"
-                                @change="playStore.scrub()">
+                            <input id="scrubber" type="range" min="0" :max="duration" @change="playStore.scrub()">
                         </div>
                         <div class="inline-flex items-center gap-1 text-sm text-slate-800">
                             <div><span>{{ currentTimeFormatted }}</span></div>
@@ -102,8 +110,17 @@
                 <div class="p-2 bg-yellow-500 border-t border-l border-r border-yellow-600 rounded-t-sm w-80">
                     <div class="embed-wrapper">
                         <div>
-                            <vue-plyr ref="player" v-if="currentlyPlaying.provider === 'youtube'">
-                                <div :data-plyr-provider="currentlyPlaying.provider" :data-plyr-embed-id="currentlyPlaying.playId">
+                            <vue-plyr v-if="currentlyPlaying.provider === 'youtube'" ref="plyr" id="#player">
+                                <div id="player" :data-plyr-provider="currentlyPlaying.provider"
+                                    :data-plyr-embed-id="currentlyPlaying.link">
+                                </div>
+                            </vue-plyr>
+                            <vue-plyr v-if="currentlyPlaying.provider === 'vimeo'" ref="plyr">
+                                <div class="plyr__video-embed" id="#player">
+                                    <iframe
+                                        :src="`https://player.vimeo.com/video/${currentlyPlaying.playId}?h=f2c5cf1159&title=0&byline=0&portrait=0`"
+                                        style="position:absolute;top:0;left:0;width:100%;height:100%;" frameborder="0"
+                                        allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
                                 </div>
                             </vue-plyr>
                         </div>
@@ -117,25 +134,22 @@
 import { SpeakerXMarkIcon, SpeakerWaveIcon, PlayCircleIcon, PauseCircleIcon, } from '@heroicons/vue/24/solid';
 import { usePlayStore } from '../store/play-store';
 import { storeToRefs } from 'pinia';
-import { ref } from 'vue';
-
-
+import { ref, computed, onMounted } from 'vue';
+import { XMarkIcon, StopCircleIcon } from '@heroicons/vue/20/solid';
 
 
 const playStore = usePlayStore();
 let { show } = storeToRefs(playStore);
 let { playing } = storeToRefs(playStore);
 let { currentlyPlaying } = storeToRefs(playStore);
+// let {currentTime} = storeToRefs(playStore);
 let { muted } = storeToRefs(playStore);
-let { volume } = storeToRefs(playStore);
 let { duration } = storeToRefs(playStore);
-let { currentTime } = storeToRefs(playStore);
+let { playerInstance } = storeToRefs(playStore);
+let { volume } = storeToRefs(playStore);
 let { durationFormatted } = storeToRefs(playStore);
 let { currentTimeFormatted } = storeToRefs(playStore);
 let { changingSource } = storeToRefs(playStore);
-let {plyr:player} = storeToRefs(playStore);
-
-console.log(player);
-
+let { plyr: plyr } = storeToRefs(playStore);
 
 </script>
