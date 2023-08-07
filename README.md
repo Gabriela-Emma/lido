@@ -91,7 +91,12 @@ php artisan migrate
 ```
 
 ### build search engine
+ssh into api container. Make sure you have two terminal sessions running the api container
 ```bash
+## terminal 1: listen for queued jobs
+php artisan queue:listen
+
+## terminal 2: run the following commands to build the search engine
 php artisan db:seed --class=SearchIndexSeeder
 php artisan scout:import 'App\Models\Proposal'
 php artisan scout:import 'App\Models\CatalystUser'
