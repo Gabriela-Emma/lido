@@ -1,21 +1,23 @@
 <template>
-    <section
+    <section v-if="show"
         class="sticky left-0 z-30 w-full bg-yellow-500 border-t border-yellow-600 -bottom-32 text-slate-800 drop-shadow-2xl">
         <div class="container relative py-4 overflow-visible">
             <div class="flex items-center gap-2">
                 <div class="flex flex-row">
-                    <button type="button" class="hover:text-white" @click="changeCurrentlyPlaying('previous')">
+                    <button type="button" class="hover:text-white" :disabled="changingSource"
+                        @click.prevent="playStore.changeCurrentlyPlaying('previous')">
                         <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"
                             fill="currentColor" class="w-20 h-20 hover:fill-white fill-slate-700">
                             <path
                                 d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10c5.515 0 10-4.486 10-10S17.515 2 12 2zm4 14-6-4v4H8V8h2v4l6-4v8z" />
                         </svg>
                     </button>
-                    <button type="button" class="hover:text-white" @click="toggle">
+                    <button type="button" class="hover:text-white" @click.prevent="playStore.toggle()" :disabled="changingSource">
                         <PlayCircleIcon v-if="!playing" class="w-20 h-20 text-slate-700" aria-hidden="true" />
                         <PauseCircleIcon v-if="!!playing" class="w-20 h-20 text-slate-700" aria-hidden="true" />
                     </button>
-                    <button type="button" class="hover:text-white" @click="changeCurrentlyPlaying('next')">
+                    <button type="button" class="hover:text-white"
+                        @click.prevent="playStore.changeCurrentlyPlaying('next')">
                         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"
                             id="mdi-skip-next-circle" fill="currentColor" class="w-20 h-20 fill-slate-700 hover:fill-white"
                             viewBox="0 0 24 24">
@@ -30,7 +32,7 @@
                     </div>
                     <div class="flex items-center gap-4">
                         <div>
-                            <button type="button" class="" @click="rewind">
+                            <button type="button" class="" @click.prevent="playStore.rewind()">
                                 <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke-width="1.5"
                                     stroke-linecap="round" stroke-linejoin="round"
                                     class="w-6 h-6 stroke-slate-800 group-hover:stroke-slate-400">
@@ -43,7 +45,7 @@
                                     </path>
                                 </svg>
                             </button>
-                            <button type="button" class="" @click="forward">
+                            <button type="button" class="" @click="playStore.forward()">
                                 <svg aria-hidden="true" viewBox="0 0 24 24" fill="none"
                                     class="w-6 h-6 stroke-slate-800 group-hover:stroke-slate-400">
                                     <path
@@ -61,7 +63,8 @@
                             <label for="scrubber"
                                 class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-slate-600">Player
                                 Scrubber</label>
-                            <input id="scrubber" type="range" min="0" :max="duration" v-model="currentTime" @change="scrub">
+                            <input id="scrubber" type="range" min="0" :max="duration" v-model="currentTime"
+                                @change="playStore.scrub()">
                         </div>
                         <div class="inline-flex items-center gap-1 text-sm text-slate-800">
                             <div><span>{{ currentTimeFormatted }}</span></div>
@@ -73,12 +76,12 @@
                                 class="inline-flex items-center hover:cursor-pointer hover:text-yellow-500 rounded-md bg-slate-800 px-1.5 py-0.5 text-xs font-medium text-slate-100">1x</span>
                         </div>
                         <div class="inline-flex items-center hover:cursor-pointer hover:text-slate-200">
-                            <button type="button" class="hover:text-white" @click="mute">
+                            <button type="button" class="hover:text-white" @click="playStore.mute()">
                                 <SpeakerWaveIcon v-if="!muted" class="w-6 h-6" aria-hidden="true" />
                                 <SpeakerXMarkIcon v-if="!!muted" class="w-6 h-6" aria-hidden="true" />
                             </button>
                             <input id="volume-slider" type="range" min="0" :max="1" step="0.01" v-model="volume"
-                                @change="changeVolume">
+                                @change="playStore.changeVolume()">
                         </div>
                     </div>
                 </div>
@@ -99,14 +102,10 @@
                 <div class="p-2 bg-yellow-500 border-t border-l border-r border-yellow-600 rounded-t-sm w-80">
                     <div class="embed-wrapper">
                         <div>
-                            <div class="plyr__video-embed" id="player">
-                                <iframe v-if="currentlyPlaying.provider == 'youtube'" :src="currentlyPlaying.link"
-                                    allowfullscreen allowtransparency allow="autoplay">
-                                </iframe>
-                                <iframe v-if="currentlyPlaying.provider == 'vimeo'" :src="currentlyPlaying.link"
-                                    style="position:absolute;top:0;left:0;width:100%;height:100%;" frameborder="0"
-                                    allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
-                            </div>
+                            <vue-plyr ref="player" v-if="currentlyPlaying.provider === 'youtube'">
+                                <div :data-plyr-provider="currentlyPlaying.provider" :data-plyr-embed-id="currentlyPlaying.playId">
+                                </div>
+                            </vue-plyr>
                         </div>
                     </div>
                 </div>
@@ -115,152 +114,28 @@
     </section>
 </template>
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue';
 import { SpeakerXMarkIcon, SpeakerWaveIcon, PlayCircleIcon, PauseCircleIcon, } from '@heroicons/vue/24/solid';
-import Plyr from 'plyr';
-
-onMounted(() => {
-    createPlayer()
-    player.value.source = {
-        type: 'video',
-        sources: [
-            {
-                src: currentlyPlaying.value.link,
-                provider: currentlyPlaying.value.provider,
-            },
-        ],
-    };
-});
-const playing = ref(false);
-const player = ref(null);
-let currentTime = ref(0);
-let duration = ref(0);
-let volume = ref(10);
-let muted = ref(false);
+import { usePlayStore } from '../store/play-store';
+import { storeToRefs } from 'pinia';
+import { ref } from 'vue';
 
 
-let Playlist = [
-    // {
-    //     "title":'proposal1',
-    //     "provider":'vimeo',
-    //     "link":"https://vimeo.com/576882227",
-    //     "playId":'576882227'
-    // },
-    {
-        "title": 'proposal2',
-        "provider": 'youtube',
-        "link": "https://www.youtube.com/watch?v=mMRxVLBUtHY&start=37072",
-        "playId": 'bTqVqk7FSmY'
-    },
-    {
-        "title": 'proposal3',
-        "provider": 'vimeo',
-        "link": "https://vimeo.com/587825954",
-        "playId": '76979871'
-    },
-    {
-        "title": 'proposal4',
-        "provider": 'youtube',
-        "link": "https://www.youtube.com/watch?v=rMo9ExWv0mo",
-        "playId": 'rMo9ExWv0mo'
-    },
-]
-
-let currentlyPlayingIndex = ref(0)
-let currentlyPlaying = computed(() => Playlist[currentlyPlayingIndex.value])
-let changeCurrentlyPlaying = (direction) => {
-    if (direction == 'next') {
-        currentlyPlayingIndex.value = currentlyPlayingIndex.value + 1;
-        if (currentlyPlayingIndex.value >= Playlist.length) {
-            currentlyPlayingIndex.value = 0;
-        }
-    } else {
-        currentlyPlayingIndex.value = currentlyPlayingIndex.value - 1;
-        if (currentlyPlayingIndex.value < 0) {
-            currentlyPlayingIndex.value = Playlist.length - 1;
-        }
-    }
-    player.value.source = {
-        type: 'video',
-        sources: [
-            {
-                src: currentlyPlaying.value.link,
-                provider: currentlyPlaying.value.provider,
-            },
-        ],
-    };
-    console.log(currentlyPlayingIndex.value);
-
-}
-
-const regex: RegExp = /[a-zA-Z]/g;
-const quickPitchId = currentlyPlaying.value.link;
-const quickpitchProvider = computed(() => quickPitchId.match(regex) ? "youtube" : "vimeo");
 
 
-const formatTime = (time) => new Date(time * 1000).toISOString().substr(14, 5);
-const currentTimeFormatted = computed(() => formatTime(currentTime.value));
-const durationFormatted = computed(() => formatTime(duration.value));
-let changeVolume = () => {
-    player.value.volume = volume.value;
-}
-let scrub = (event) => {
-    player.value.currentTime = currentTime.value;
-}
+const playStore = usePlayStore();
+let { show } = storeToRefs(playStore);
+let { playing } = storeToRefs(playStore);
+let { currentlyPlaying } = storeToRefs(playStore);
+let { muted } = storeToRefs(playStore);
+let { volume } = storeToRefs(playStore);
+let { duration } = storeToRefs(playStore);
+let { currentTime } = storeToRefs(playStore);
+let { durationFormatted } = storeToRefs(playStore);
+let { currentTimeFormatted } = storeToRefs(playStore);
+let { changingSource } = storeToRefs(playStore);
+let {plyr:player} = storeToRefs(playStore);
 
-let createPlayer = () => {
-    player.value = new Plyr('#player', {
-        controls: [],
-        volume: 1,
-        muted: false,
-        clickToPlay: false,
-        autoplay: false,
-    });
-
-    player.value.on('timeupdate', (event) => {
-        const instance = event.detail.plyr;
-        currentTime.value = instance.currentTime;
-        duration.value = instance.duration;
-    });
-    player.value.on('volumechange', (event) => {
-        const instance = event.detail.plyr;
-        volume.value = instance.volume;
-    });
-    player.value.on('play', () => {
-        playing.value = true;
-    });
-    player.value.on('pause', () => {
-        playing.value = false;
-    });
+console.log(player);
 
 
-}
-
-
-let forward = () => {
-    player.value.forward(10)
-}
-let rewind = () => {
-    player.value.rewind(10)
-}
-function toggle() {
-    if (playing.value) {
-        player.value.pause();
-    } else {
-        player.value.play();
-    }
-}
-
-let previousVolume = ref(null);
-function mute() {
-    if (player.value.volume) {
-        previousVolume.value = volume.value
-        player.value.volume = 0
-        muted.value = true
-    } else {
-        player.value.volume = previousVolume.value
-        muted.value = false
-    }
-
-}
 </script>
