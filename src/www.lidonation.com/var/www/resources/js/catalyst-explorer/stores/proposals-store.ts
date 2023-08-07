@@ -17,6 +17,8 @@ export const useProposalsStore = defineStore('proposals', () => {
                 viewType.value = 'quickpitch';
             } else if ( urlParams.has(VARIABLES.RANKED_VIEW) ) {
                 viewType.value = 'ranked';
+            } else if( urlParams.has(VARIABLES.CARD_VIEW) ) {
+                viewType.value = 'card';
             } else {
                 viewType.value = getRandomElementFromArray(viewTypes);
             }
