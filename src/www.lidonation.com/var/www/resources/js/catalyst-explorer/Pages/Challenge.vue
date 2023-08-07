@@ -1,11 +1,12 @@
 <template>
     <div>
-        <header-component
-            titleName0="catalyst"
-            titleName1="Challenge"
-            subTitle="Browse through the proposals of a specific challenge."
-        />
         <header class="text-white bg-teal-600">
+            <header-component
+                titleName0="catalyst"
+                titleName1="Challenge"
+                subTitle="Browse through the proposals of a specific challenge."
+                color="teal-600"
+            />
             <div class="container">
                 <section
                     class="overflow-visible relative z-0 py-10 min-h-[28rem]"
@@ -15,8 +16,8 @@
                     >
                         <img
                             class="w-10 h-10 rounded-sm lg:w-16 lg:h-16"
-                            v-bind:src="fund.thumbnail_url ?? fund.gravatar"
-                            alt="{{fund.label}} gravatar"
+                            :src="fund.hero_url"
+                            :alt="fund.label"
                         />
 
                         <span class="font-semibold">
@@ -217,7 +218,9 @@
         <section
             class="container py-10 overflow-visible bg-white bg-left-bottom bg-repeat-y bg-contain bg-opacity-90 bg-blend-color-burn lg:py-20 bg-pool-bw-light"
         >
-            <div class="grid grid-cols-1 gap-3 mx-auto md:grid-cols-2 xl:grid-cols-3 3xl:grid-cols-4 max-w-7xl 2xl:max-w-full">
+            <div
+                class="grid grid-cols-1 gap-3 mx-auto md:grid-cols-2 xl:grid-cols-3 3xl:grid-cols-4 max-w-7xl 2xl:max-w-full"
+            >
                 <template v-for="proposal in proposals.data">
                     <ProposalCard
                         v-if="proposal?.id"
@@ -226,16 +229,34 @@
                     ></ProposalCard>
                 </template>
             </div>
+            <div
+                class="flex my-16 gap-16 xl:gap-24 justify-between items-start w-full"
+            >
+                <div class="flex-1">
+                    <Pagination
+                        :links="props.proposals.links"
+                        :per-page="props.perPage"
+                        :total="props.proposals?.total"
+                        :from="props.proposals?.from"
+                        :to="props.proposals?.to"
+                        @perPageUpdated="(payload) => (perPageRef = payload)"
+                        @paginated="(payload) => (currPageRef = payload)"
+                    />
+                </div>
+            </div>
         </section>
     </div>
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { marked } from "marked";
 import { computed } from "vue";
 import Proposal from "../models/proposal";
 import ProposalCard from "../modules/proposals/ProposalCard.vue";
+import Pagination from "../Shared/Components/Pagination.vue";
+import {router} from "@inertiajs/vue3";
+import {VARIABLES} from "../models/variables";
 
 const props = withDefaults(
     defineProps<{
@@ -244,13 +265,15 @@ const props = withDefaults(
         completedProposalsCount: number;
         totalAmountRequested: string;
         totalAmountAwarded: string;
+        currPage?: number,
+        perPage?: number,
         proposals: {
-            links: [],
-            total: number,
-            to: number,
-            from: number,
-            data: Proposal[]
-        }
+            links: [];
+            total: number;
+            to: number;
+            from: number;
+            data: Proposal[];
+        };
     }>(),
     {}
 );
@@ -264,4 +287,28 @@ function expandContent() {
 const fundContent = computed(() => {
     return marked(props.fund.content);
 });
+
+let currPageRef = ref<number>(props.currPage);
+let perPageRef = ref<number>(props.perPage);
+
+watch([currPageRef, perPageRef], () => {
+    query();
+});
+
+function query() {
+    const data = {};
+    if (currPageRef.value) {
+        data[VARIABLES.PAGE] = currPageRef.value;
+    }
+    if (perPageRef.value) {
+        data[VARIABLES.PER_PAGE] = perPageRef.value;
+    }
+
+    router.get(
+        `/catalyst-explorer/challenge/${props.fund.slug}`,
+        data,
+        {preserveState: true}
+    );
+}
+
 </script>

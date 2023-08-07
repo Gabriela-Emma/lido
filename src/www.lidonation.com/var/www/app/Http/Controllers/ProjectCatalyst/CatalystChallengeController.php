@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\ProjectCatalyst;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\FundResource;
 use App\Models\Fund;
 use App\Models\Proposal;
 use Inertia\Inertia;
@@ -17,12 +18,19 @@ class CatalystChallengeController extends Controller
 
     public function index(Request $request, $slug)
     {
+        $this->perPage = $request->input('l', 24);
 
+        $this->currentPage = $request->input('p', 1);
+        
         $fund = Fund::where('slug', $slug)->first();
+
+        // dd(new FundResource($fund));
 
         $props = [
             'fund' => $fund,
             'proposals' => $this->query($fund),
+            'currPage' => $this->currentPage,
+            'perPage' => $this->perPage,
             'fundedProposalsCount' => $this->fundedProposals($fund),
             'completedProposalsCount' => $this->completedProposals($fund),
             'totalAmountRequested' => $this->totalAmountRequested($fund),
