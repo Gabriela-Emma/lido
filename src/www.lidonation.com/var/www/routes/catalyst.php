@@ -19,6 +19,7 @@ use App\Http\Controllers\ProjectCatalyst\CatalystBookmarksController;
 use App\Http\Controllers\ProjectCatalyst\CatalystProposalsController;
 use App\Http\Controllers\ProjectCatalyst\CatalystVoterToolController;
 use App\Http\Controllers\ProjectCatalyst\CatalystAssessmentsController;
+use App\Http\Controllers\ProjectCatalyst\CatalystChallengeController;
 use App\Http\Controllers\ProjectCatalyst\CatalystMyBookmarksController;
 use App\Http\Controllers\ProjectCatalyst\CatalystMyDashboardController;
 use App\Http\Controllers\ProjectCatalyst\CatalystMyProposalsController;
@@ -98,6 +99,9 @@ Route::group(
 
             Route::get('/challenges/{fund}/', fn () => view('challenge'))
                 ->name('challenge');
+
+            Route::get('/challenge/{slug}', [CatalystChallengeController::class, 'index'])
+                ->name('challenge1');
 
             Route::get('/proposals', [CatalystProposalsController::class, 'index'])
                 ->name('proposals');
