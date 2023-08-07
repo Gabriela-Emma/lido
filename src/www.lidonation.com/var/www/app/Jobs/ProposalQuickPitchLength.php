@@ -80,7 +80,7 @@ class ProposalQuickPitchLength implements ShouldQueue
         $response = Http::get("https://www.googleapis.com/youtube/v3/videos", [
             'id' => $id,
             'part' => 'contentDetails',
-            'key' => env('YOUTUBE_API_KEY'),
+            'key' => config('services.youtube.api_key'),
         ]);
 
 
