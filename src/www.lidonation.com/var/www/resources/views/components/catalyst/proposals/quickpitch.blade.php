@@ -3,12 +3,12 @@
 ])
 <div class="quick-pitch-wrapper">
     <div
-        class="quick-pitch-video w-full"
+        class="w-full quick-pitch-video"
         id="quick-pitch-{{$proposal->id}}"
         x-ref="quickPitch"
         data-plyr-provider="youtube"
         data-plyr-embed-id="{{$proposal->quick_pitch_id}}"></div>
-    <div class="flex flex-col w-full justify-between gap-2 px-5 quick-pitch-text">
+    <div class="flex flex-col justify-between w-full gap-2 px-5 quick-pitch-text">
         <div>
             <h2>
                 <a class="font-medium text-gray-800"
@@ -17,7 +17,7 @@
                 </a>
             </h2>
         </div>
-        <div class="flex flex-row gap-3 flex-wrap items-center justify-between w-full mb-4">
+        <div class="flex flex-row flex-wrap items-center justify-between w-full gap-3 mb-4">
             <div class="font-semibold">
                 <span class="text-lg 2xl:text-xl">
                     {{ $proposal->formatted_amount_requested }}
@@ -26,7 +26,7 @@
                     Requested
                 </sub>
             </div>
-            <div class="flex flex-row items-center justify-between flex-nowrap gap-2" x-data="voterTool">
+            <div class="flex flex-row items-center justify-between gap-2 flex-nowrap" x-data="voterTool">
                 <div
                     @click="up( {
                         id: {{$proposal->id}},
@@ -79,10 +79,10 @@
     <div class='absolute right-0 -bottom-1 details-toggle-wrapper'>
         <button type="button"
                 @click="closeQuickPitch()"
-                class="inline-flex items-center px-5 py-3 border border-transparent shadow-sm shadow-inner text-sm leading-4 font-medium rounded-sm rounded-tl-[6rem] rounded-bl-[3rem] rounded-tr-[12rem] text-slate-600 bg-slate-200 hover:bg-slate-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-400">
+                class="inline-flex items-center px-5 py-3 border border-transparent shadow-inner text-sm leading-4 font-medium rounded-sm rounded-tl-[6rem] rounded-bl-[3rem] rounded-tr-[12rem] text-slate-600 bg-slate-200 hover:bg-slate-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-400">
             Details
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                 stroke="currentColor" class="w-3s h-3 ml-2">
+                 stroke="currentColor" class="h-3 ml-2 w-3s">
                 <path stroke-linecap="round" stroke-linejoin="round"
                       d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5"/>
             </svg>
