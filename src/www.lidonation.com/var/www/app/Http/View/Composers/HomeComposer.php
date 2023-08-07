@@ -53,7 +53,7 @@ class HomeComposer
                 'newToLibrary' => $newToLibrary->sortByDesc('published_at'),
                 'latestLidoMinute' => $latestLidoMinute,
                 'quickPitches' => Proposal::whereRelation('fund', 'parent_id', 113)
-                    ->where('quickpitch_length', '<', 215)
+                    ->where('quickpitch_length', '<', 200)
                     ->inRandomOrder()
                     ->limit(8)
                     ->get(),
