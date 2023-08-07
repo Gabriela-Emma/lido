@@ -12,99 +12,99 @@
     <section>
         <div class="relative py-8 overflow-hidden bg-yellow-500">
             <div class="pt-16 pb-80 sm:pb-40 sm:pt-24 lg:pb-48 lg:pt-40">
-            <div class="relative px-4 mx-auto max-w-7xl sm:static sm:px-6 lg:px-8">
-                <div class="sm:max-w-md">
-                    <h1 class="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
-                        Project Catalyst Fund10 is Live!
-                    </h1>
-                    <p class="mt-4 text-xl text-gray-700">
-                        Voting for Fund 10 kicks off on <span class="font-bold">August 31st</span>. There are lots of great proposals to checkout! Here are some quickpitches to get you started.
-                    </p>
-                </div>
-                <div>
-                    <div class="mt-10">
-                        <!-- Decorative image grid -->
-                        <div aria-hidden="true" class="z-0 lg:absolute lg:inset-y-0 lg:mx-auto lg:w-full lg:max-w-7xl">
-                            <div class="absolute transform sm:left-1/2 sm:top-0 sm:translate-x-8 lg:left-1/3 lg:top-1/2 lg:-translate-y-1/2 lg:translate-x-8">
-                                <div class="flex items-center space-x-6 lg:space-x-8">
-                                <div class="grid flex-shrink-0 grid-cols-1 gap-y-6 lg:gap-y-8">
-                                    @foreach($quickPitches->take(2) as $quickpitch)
-                                    <div class="w-64 h-48 p-1 overflow-hidden rounded-sm bg-slate-900" x-data="quickpitch">
-                                        <div
-                                            class="w-full rounded-md quick-pitch-video"
-                                            id="quick-pitch-{{$quickpitch->id}}"
-                                            x-ref="quickPitch"
-                                            data-plyr-provider="youtube"
-                                            data-plyr-embed-id="{{$quickpitch->quick_pitch_id}}"></div>
+                <div class="container relative px-4 sm:static sm:px-6 lg:px-8">
+                    <div class="bg-yellow-500 sm:max-w-md">
+                        <h1 class="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
+                            Project Catalyst Fund10 is Live!
+                        </h1>
+                        <p class="mt-4 text-xl text-gray-700">
+                            Voting for Fund 10 kicks off on <span class="font-bold">August 31st</span>. There are lots of great proposals to checkout! Here are some quickpitches to get you started.
+                        </p>
+                    </div>
+                    <div>
+                        <div class="mt-10">
+                            <!-- Decorative image grid -->
+                            <div aria-hidden="true" class="z-0 lg:absolute lg:inset-y-0 lg:mx-auto lg:w-full lg:max-w-7xl">
+                                <div class="absolute transform sm:left-1/2 sm:top-0 sm:translate-x-8 lg:left-1/2 lg:top-1/2 lg:-translate-y-1/2 lg:translate-x-8">
+                                    <div class="flex items-center space-x-6 lg:space-x-8">
+                                    <div class="grid flex-shrink-0 grid-cols-1 gap-y-6 lg:gap-y-8">
+                                        @foreach($quickPitches->take(2) as $quickpitch)
+                                        <div class="w-64 h-48 p-1 overflow-hidden rounded-sm bg-slate-900" x-data="quickpitch">
+                                            <div
+                                                class="w-full rounded-md quick-pitch-video"
+                                                id="quick-pitch-{{$quickpitch->id}}"
+                                                x-ref="quickPitch"
+                                                data-plyr-provider="youtube"
+                                                data-plyr-embed-id="{{$quickpitch->quick_pitch_id}}"></div>
 
-                                            <a href="{{$quickpitch->link}}" class="block p-2 text-base text-yellow-600 hover:text-yellow-800">
-                                                <div class="text-xs text-slate-200">View Proposal</div>
-                                                {{$quickpitch->title}}}
-                                            </a>
+                                                <a href="{{$quickpitch->link}}" class="block p-2 text-base text-yellow-600 hover:text-yellow-800">
+                                                    <div class="text-xs text-slate-200">View Proposal</div>
+                                                    {{$quickpitch->title}}}
+                                                </a>
+                                        </div>
+                                        @endforeach
                                     </div>
-                                    @endforeach
-                                </div>
-                                <div class="grid flex-shrink-0 grid-cols-1 gap-y-6 lg:gap-y-8">
-                                    @foreach($quickPitches->skip(2)->take(3) as $quickpitch)
-                                        @if($loop->iteration == 2)
-                                            <div class="p-1 mx-auto overflow-hidden rounded-sm h-52 w-72 bg-slate-900" x-data="quickpitch">
-                                                <div
-                                                    class="w-full quick-pitch-video"
-                                                    id="quick-pitch-{{$quickpitch->id}}"
-                                                    x-ref="quickPitch"
-                                                    data-plyr-provider="youtube"
-                                                    data-plyr-embed-id="{{$quickpitch->quick_pitch_id}}"></div>
+                                    <div class="grid flex-shrink-0 grid-cols-1 gap-y-6 lg:gap-y-8">
+                                        @foreach($quickPitches->skip(2)->take(3) as $quickpitch)
+                                            @if($loop->iteration == 2)
+                                                <div class="p-1 mx-auto overflow-hidden rounded-sm h-52 w-72 bg-slate-900" x-data="quickpitch">
+                                                    <div
+                                                        class="w-full quick-pitch-video"
+                                                        id="quick-pitch-{{$quickpitch->id}}"
+                                                        x-ref="quickPitch"
+                                                        data-plyr-provider="youtube"
+                                                        data-plyr-embed-id="{{$quickpitch->quick_pitch_id}}"></div>
 
-                                                    <a href="{{$quickpitch->link}}" class="block p-2 text-base text-yellow-600 hover:text-yellow-800">
-                                                        <div class="text-xs text-slate-200">View Proposal</div>
-                                                        {{$quickpitch->title}}}
-                                                    </a>
-                                            </div>
-                                        @else
-                                            <div class="w-64 h-48 p-1 mx-auto overflow-hidden rounded-sm bg-slate-900" x-data="quickpitch">
-                                                <div
-                                                    class="w-full quick-pitch-video"
-                                                    id="quick-pitch-{{$quickpitch->id}}"
-                                                    x-ref="quickPitch"
-                                                    data-plyr-provider="youtube"
-                                                    data-plyr-embed-id="{{$quickpitch->quick_pitch_id}}"></div>
+                                                        <a href="{{$quickpitch->link}}" class="block p-2 text-base text-yellow-600 hover:text-yellow-800">
+                                                            <div class="text-xs text-slate-200">View Proposal</div>
+                                                            {{$quickpitch->title}}}
+                                                        </a>
+                                                </div>
+                                            @else
+                                                <div class="w-64 h-48 p-1 mx-auto overflow-hidden rounded-sm bg-slate-900" x-data="quickpitch">
+                                                    <div
+                                                        class="w-full quick-pitch-video"
+                                                        id="quick-pitch-{{$quickpitch->id}}"
+                                                        x-ref="quickPitch"
+                                                        data-plyr-provider="youtube"
+                                                        data-plyr-embed-id="{{$quickpitch->quick_pitch_id}}"></div>
 
-                                                    <a href="{{$quickpitch->link}}" class="block p-2 text-base text-yellow-600 hover:text-yellow-800">
-                                                        <div class="text-xs text-slate-200">View Proposal</div>
-                                                        {{$quickpitch->title}}}
-                                                    </a>
-                                            </div>
-                                        @endif
-                                    @endforeach
-                                </div>
-                                <div class="grid flex-shrink-0 grid-cols-1 gap-y-6 lg:gap-y-8">
-                                    @foreach($quickPitches->skip(5)->take(2) as $quickpitch)
-                                    <div class="w-64 h-48 p-1 overflow-hidden rounded-sm bg-slate-900" x-data="quickpitch">
-                                        <div
-                                            class="w-full quick-pitch-video"
-                                            id="quick-pitch-{{$quickpitch->id}}"
-                                            x-ref="quickPitch"
-                                            data-plyr-provider="youtube"
-                                            data-plyr-embed-id="{{$quickpitch->quick_pitch_id}}"></div>
-
-                                            <a href="{{$quickpitch->link}}" class="block p-2 text-base text-yellow-600 hover:text-yellow-800">
-                                                <div class="text-xs text-slate-200">View Proposal</div>
-                                                {{$quickpitch->title}}}
-                                            </a>
+                                                        <a href="{{$quickpitch->link}}" class="block p-2 text-base text-yellow-600 hover:text-yellow-800">
+                                                            <div class="text-xs text-slate-200">View Proposal</div>
+                                                            {{$quickpitch->title}}}
+                                                        </a>
+                                                </div>
+                                            @endif
+                                        @endforeach
                                     </div>
-                                    @endforeach
-                                </div>
+                                    <div class="grid flex-shrink-0 grid-cols-1 gap-y-6 lg:gap-y-8">
+                                        @foreach($quickPitches->skip(5)->take(2) as $quickpitch)
+                                        <div class="w-64 h-48 p-1 overflow-hidden rounded-sm bg-slate-900" x-data="quickpitch">
+                                            <div
+                                                class="w-full quick-pitch-video"
+                                                id="quick-pitch-{{$quickpitch->id}}"
+                                                x-ref="quickPitch"
+                                                data-plyr-provider="youtube"
+                                                data-plyr-embed-id="{{$quickpitch->quick_pitch_id}}"></div>
+
+                                                <a href="{{$quickpitch->link}}" class="block p-2 text-base text-yellow-600 hover:text-yellow-800">
+                                                    <div class="text-xs text-slate-200">View Proposal</div>
+                                                    {{$quickpitch->title}}}
+                                                </a>
+                                        </div>
+                                        @endforeach
+                                    </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <a href="https://www.lidonation.com/en/catalyst-explorer/proposals?l=24&qp=&fs[]=113&t=p&st=ranking_total%3Adesc"
-                         class="relative z-20 inline-block px-8 py-3 font-medium text-center text-yellow-500 bg-black border border-transparent rounded-sm hover:text-white">
-                            View more quickpitches
-                        </a>
+                            <a href="https://www.lidonation.com/en/catalyst-explorer/proposals?l=24&qp=&fs[]=113&t=p&st=ranking_total%3Adesc"
+                            class="relative z-20 inline-block px-8 py-3 font-medium text-center text-yellow-500 bg-black border border-transparent rounded-sm hover:text-white">
+                                View more quickpitches
+                            </a>
+                        </div>
                     </div>
                 </div>
-            </div>
             </div>
         </div>
     </section>
