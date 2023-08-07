@@ -394,6 +394,8 @@ let quickpitchingRef = ref<boolean>(false);
 
 let rankedViewingRef = ref<boolean>(false);
 
+let cardViewingRef = ref<boolean>(false);
+
 const bookmarksStore = useBookmarksStore();
 bookmarksStore.loadCollections();
 
@@ -420,6 +422,7 @@ watch([selectedPeople], () => {
 watch([viewType], () => {
     quickpitchingRef.value = viewType.value === 'quickpitch';
     rankedViewingRef.value = viewType.value === 'ranked';
+    cardViewingRef.value = viewType.value === 'card';
 });
 
 watch(selectedDownloadFormat, () => {
@@ -564,6 +567,10 @@ function getQueryData() {
 
     if ( quickpitchingRef.value ) {
         data[VARIABLES.QUICKPITCHES] = '';
+    }
+
+    if ( cardViewingRef.value ) {
+        data[VARIABLES.CARD_VIEW] = '';
     }
 
     if (search.value?.length > 0) {

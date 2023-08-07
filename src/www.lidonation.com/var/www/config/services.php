@@ -88,4 +88,8 @@ return [
             'subscribers' => env('MAILCHIMP_LIST_SUBSCRIBERS'),
         ],
     ],
+
+    'youtube' => [
+        'api_key' => env('YOUTUBE_API_KEY'),
+    ],
 ];
