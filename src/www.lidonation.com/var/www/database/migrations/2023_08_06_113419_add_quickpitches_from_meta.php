@@ -28,6 +28,10 @@ return new class extends Migration
                 ProposalQuickPitchLength::dispatchSync($proposal);
             }
         }
+        // $proposals = Proposal::whereNotNull('quickpitch')->cursor();
+        // foreach ($proposals as $proposal) {
+        //     ProposalQuickPitchLength::dispatchSync($proposal);
+        // }
     }
 
     /**

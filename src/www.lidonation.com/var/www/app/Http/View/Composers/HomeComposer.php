@@ -52,7 +52,9 @@ class HomeComposer
                 'insights' => $insights,
                 'newToLibrary' => $newToLibrary->sortByDesc('published_at'),
                 'latestLidoMinute' => $latestLidoMinute,
-                'quickPitches' => Proposal::whereRelation('metas', 'key', '=', 'quick_pitch')->whereRelation('fund.parent', 'id', '=', 97)
+                'quickPitches' => Proposal::whereRelation('metas', 'key', '=', 'quick_pitch')
+                    ->whereRelation('fund', 'parent_id', '=', 113)
+                    ->where('quickpitch_length', '<', 215)
                     ->inRandomOrder()
                     ->limit(8)
                     ->get(),
