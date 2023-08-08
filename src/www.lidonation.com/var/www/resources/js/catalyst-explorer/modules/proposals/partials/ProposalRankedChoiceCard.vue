@@ -5,13 +5,16 @@
             :class="{'z-5': !user$}" @click="loginUser()">
         </div>
         <div class="absolute top-0 left-0 flex flex-col items-center justify-center w-full h-full gap-1 rounded-r-sm"
-        :class="{'z-5': user$}">
+            :class="{'z-5': user$,
+                'bg-teal-light-100/50': ranking_total > 0,
+                'bg-red-100/80': ranking_total < 0,
+                'bg-slate-100': ranking_total == 0}">
             <div class="text-center" @click="rankProposal(RANKACTIONS.THUMBSUP, props.proposal)">
                 <ChevronUpIcon :class="[rank?.rank === RANKACTIONS.THUMBSUP ? 'text-teal-light-500' : 'text-gray-400']"
                     aria-hidden="true" class="w-10 h-8 text-gray-400 hover:text-yellow-700 hover:cursor-pointer" />
             </div>
             <div class="text-lg text-center">
-                {{ proposal.ranking_total ?? 0 }}
+                {{ ranking_total ?? 0 }}
             </div>
             <div class="text-center" @click="rankProposal(RANKACTIONS.THUMBSDOWN, props.proposal)">
                 <ChevronDownIcon aria-hidden="true"
@@ -132,6 +135,7 @@ const regex: RegExp = /[a-zA-Z]/g;
 const quickPitchId = props.proposal?.quickpitch;
 const quickpitchProvider = computed(() => quickPitchId.match(regex) ? "youtube" : "vimeo" );
 
+let ranking_total = ref(props.proposal.ranking_total);
 const proposalsRanking = useProposalsRankingStore();
 let {ranks} = storeToRefs(proposalsRanking);
 let rank = computed(() => {
@@ -147,34 +151,27 @@ function loginUser() {
     router.get(route('catalystExplorer.login.utility'));
 }
 
-function rankProposal(rankValue: RANKACTIONS, proposal: Proposal) {
-    if (rank?.value?.model_id == proposal.id){
-        router.patch(
-            route('catalystExplorer.ranks.update', {rank: rank.value.id}),
-            {rankValue},
-            {
-                preserveScroll: true,
-                preserveState: true,
-                replace: true,
-                onSuccess: async (component) => {
-                    await proposalsRanking.loadRankings();
-                }
-            }
-        );
-    } else {
-        router.post(
-            route('catalystExplorer.ranks.store'),
-            {rankValue, proposal: proposal.id},
-            {
-                preserveScroll: true,
-                preserveState: true,
-                replace: true,
-                onSuccess: async (component) => {
-                    await proposalsRanking.loadRankings();
-                }
-            }
-        );
-    }
+async function rankProposal(rankValue: RANKACTIONS, proposal: Proposal) {
+    // update ranking_total
+    updateRankingTotal(rankValue)
 
+    // store rankChoice
+    await proposalsRanking.updateSaveRanking(rankValue, proposal, rank.value);
+
+}
+
+function updateRankingTotal(rankValue: number) {
+    if(!!rank.value && rank.value.rank !== 0) {
+        let change;
+        if (rank.value.rank == 1) {
+            change = (rankValue == 1) ? -1 : -2;
+        } else if (rank.value.rank == -1) {
+            change = (rankValue == -1) ? 1 : 2;
+        }
+
+        ranking_total.value = ranking_total.value + change;
+    } else {
+        ranking_total.value = ranking_total.value + rankValue;
+    }
 }
 </script>
