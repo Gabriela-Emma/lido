@@ -15,7 +15,6 @@ use App\Http\View\Composers\GlobalComposer;
 use App\Http\View\Composers\GovernanceMarathonComposer;
 use App\Http\View\Composers\HomeComposer;
 use App\Http\View\Composers\InsightsComposer;
-use App\Http\View\Composers\LibraryComposer;
 use App\Http\View\Composers\LidoMinuteComposer;
 use App\Http\View\Composers\LidoMinuteNftComposer;
 use App\Http\View\Composers\MeetupComposer;
@@ -57,7 +56,6 @@ class ViewServiceProvider extends ServiceProvider
     public function boot()
     {
         View::composer('*', GlobalComposer::class);
-        View::composer(['library'], LibraryComposer::class);
 
         //        View::composer(['includes.footer'], function(\Illuminate\View\View $view){
         //            $view->with([]);
