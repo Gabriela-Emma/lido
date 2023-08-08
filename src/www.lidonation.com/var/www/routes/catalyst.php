@@ -97,11 +97,11 @@ Route::group(
             Route::get('/funds/{fund}/', CatalystFundComponent::class)
                 ->name('fund');
 
-            Route::get('/challenges/{fund}/', fn () => view('challenge'))
-                ->name('challenge');
+            // Route::get('/challenges/{fund}/', fn () => view('challenge'))
+            //     ->name('challenge');
 
-            Route::get('/challenge/{slug}', [CatalystChallengeController::class, 'index'])
-                ->name('challenge1');
+            Route::get('/challenges/{slug}', [CatalystChallengeController::class, 'index'])
+                ->name('challenge');
 
             Route::get('/proposals', [CatalystProposalsController::class, 'index'])
                 ->name('proposals');

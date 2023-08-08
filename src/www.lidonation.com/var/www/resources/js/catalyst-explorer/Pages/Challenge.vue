@@ -16,18 +16,18 @@
                     >
                         <img
                             class="w-10 h-10 rounded-sm lg:w-16 lg:h-16"
-                            :src="fund.hero_url"
-                            :alt="fund.label"
+                            v-bind:src="fund.data.thumbnail_url ?? fund.data.gravatar"
+                            :alt="fund.data.label"
                         />
 
                         <span class="font-semibold">
-                            {{ fund.label }}
+                            {{ fund.data.label }}
                         </span>
                     </h1>
 
                     <div class="my-4 summary">
                         <div class="max-w-4xl font-semibold">
-                            {{ fund.excerpt }}
+                            {{ fund.data.excerpt }}
                         </div>
                     </div>
 
@@ -69,7 +69,7 @@
                                     class="flex text-xl font-semibold flex-nowrap xl:text-3xl"
                                 >
                                     <span class="font-semibold">
-                                        {{ fund.proposals_count ?? "-" }}
+                                        {{ fund.data.proposals_count ?? "-" }}
                                     </span>
                                 </div>
                                 <div
@@ -140,8 +140,8 @@
                                     <span class="font-semibold">
                                         {{
                                             $filters.currency(
-                                                fund.amount,
-                                                fund?.currency
+                                                fund.data.amount,
+                                                fund?.data.currency
                                             )
                                         }}
                                     </span>
@@ -169,7 +169,7 @@
                                         {{
                                             $filters.currency(
                                                 parseInt(totalAmountRequested),
-                                                fund?.currency
+                                                fund?.data.currency
                                             )
                                         }}
                                     </span>
@@ -197,7 +197,7 @@
                                         {{
                                             $filters.currency(
                                                 parseInt(totalAmountAwarded),
-                                                fund?.currency
+                                                fund?.data.currency
                                             )
                                         }}
                                     </span>
@@ -257,10 +257,13 @@ import ProposalCard from "../modules/proposals/ProposalCard.vue";
 import Pagination from "../Shared/Components/Pagination.vue";
 import {router} from "@inertiajs/vue3";
 import {VARIABLES} from "../models/variables";
+import Fund from "../models/fund";
 
 const props = withDefaults(
     defineProps<{
-        fund: any;
+        fund: {
+            data: Fund;
+        };
         fundedProposalsCount: number;
         completedProposalsCount: number;
         totalAmountRequested: string;
@@ -285,7 +288,7 @@ function expandContent() {
 }
 
 const fundContent = computed(() => {
-    return marked(props.fund.content);
+    return marked(props.fund.data.content);
 });
 
 let currPageRef = ref<number>(props.currPage);
@@ -305,9 +308,9 @@ function query() {
     }
 
     router.get(
-        `/catalyst-explorer/challenge/${props.fund.slug}`,
+        `/catalyst-explorer/challenge/${props.fund.data.slug}`,
         data,
-        {preserveState: true}
+        {preserveState: true, preserveScroll: true}
     );
 }
 
