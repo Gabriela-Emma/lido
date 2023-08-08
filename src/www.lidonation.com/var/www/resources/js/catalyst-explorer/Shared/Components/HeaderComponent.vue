@@ -1,16 +1,20 @@
 <template>
-    <header class="container">
+    <header class="container"
+        :class="[`bg-${color}`]"
+    >
         <div class="flex flex-wrap items-center justify-between gap-4 py-6">
             <div class="flex items-center gap-4">
-                <div class="w-40 lg:w-32">
+                <div class="w-40 lg:w-32 rounded-sm">
                     <img alt="catalyst explorer logo" :src="$utils.assetUrl('img/catalyst-explorer-logo.jpg')" />
                 </div>
                 <div>
-                    <h1 class="text-2xl font-semibold lg:text-3xl 2xl:text-4xl text-slate-700">
-                        {{ $t(titleName0) }} <span class="text-teal-600"> {{ $t(titleName1) }}</span>
+                    <h1 class="text-2xl font-semibold lg:text-3xl 2xl:text-4xl text-slate-900">
+                        {{ $t(titleName0) }} <span :class="{'text-white': color === 'teal-600', 'text-teal-600': color === 'white'}"> {{ $t(titleName1) }}</span>
                     </h1>
                     <div class="flex flex-row">
-                        <p class="text-slate-600 mr-3">
+                        <p class="mr-3"
+                        :class="{'text-white': color === 'teal-600', 'text-slate-600': color === 'white'}"
+                        >
                             {{ $t(subTitle) }}
                         </p>
                         <slot />
@@ -23,11 +27,13 @@
                 </div>
                 <div>
                     <div class="flex flex-col gap-1 xl:ml-auto" v-if="!!user$">
-                        <p>{{ $t('Welcome back') }}, <strong>{{ user$?.name }}</strong></p>
+                        <p>{{ $t('Welcome back') }}, <strong :class="{'text-slate-900': color === 'teal-600'}">{{ user$?.name }}</strong></p>
                         <ul class="flex items-center justify-end gap-4">
                             <li>
                                 <Link class="flex items-center gap-1"
-                                    :href="$utils.localizeRoute('catalyst-explorer/my/dashboard')">
+                                    :href="$utils.localizeRoute('catalyst-explorer/my/dashboard')"
+                                    :class="{'text-white': color === 'teal-600', 'text-teal-600': color === 'white'}"
+                                    >
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                     stroke="currentColor" class="w-4 h-4">
                                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -38,7 +44,9 @@
                             </li>
                             <li>
                                 <button @click.prevent="logout()"
-                                    class="flex items-center gap-1 font-bold text-teal-600 hover:text-red-600" as="button">
+                                    class="flex items-center gap-1 font-bold text-teal-600 hover:text-red-600" as="button"
+                                    :class="{'text-white': color === 'teal-600', 'text-slate-600': color === 'white'}"
+                                    >
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                         stroke-width="1.5" stroke="currentColor" class="relative w-4 h-4">
                                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -83,8 +91,11 @@ withDefaults(
     defineProps<{
         titleName0: String,
         titleName1: String,
-        subTitle: String
-    }>(), {});
+        subTitle: String,
+        color: string,
+    }>(), {
+        color: 'white'
+    });
 
 function logout() {
     userStore.logout();
