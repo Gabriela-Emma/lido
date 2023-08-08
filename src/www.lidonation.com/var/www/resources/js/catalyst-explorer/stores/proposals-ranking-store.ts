@@ -2,6 +2,8 @@ import { AxiosError } from "axios";
 import {defineStore} from "pinia";
 import {ref} from "vue";
 import Rank from "../models/rank";
+import Proposal from "../models/proposal";
+import route from "ziggy-js";
 
 export const useProposalsRankingStore = defineStore('proposals-ranking', () => {
     let ranks = ref<Rank[]>([]);
@@ -15,8 +17,20 @@ export const useProposalsRankingStore = defineStore('proposals-ranking', () => {
         }
     }
 
+    async function updateSaveRanking(rankValue: number, proposal: Proposal, rank?: Rank) {
+        if (rank?.model_id == proposal.id){
+            await window.axios.patch(route('catalystExplorer.ranks.update', {rank: rank.id}), {'rankValue': rankValue,})
+                .then(async () => await loadRankings());
+    
+        } else {
+            await window.axios.post(route('catalystExplorer.ranks.store'), {'rankValue': rankValue, 'proposal': proposal.id})
+                .then(async () => await loadRankings());
+        }
+    }
+
     return {
         loadRankings,
+        updateSaveRanking,
         ranks,
     };
 });
