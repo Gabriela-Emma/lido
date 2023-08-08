@@ -1,33 +1,76 @@
 import { defineStore } from "pinia";
 import Plyr from "plyr";
 import { computed, onMounted, ref, Ref } from "vue";
+import Proposal from "../../../catalyst-explorer/models/proposal";
+import Playlist from "../Models/playlist";
+import { useStorage } from "@vueuse/core";
 
 
 export const usePlayStore = defineStore('play-store', () => {
 
+    let playList: Ref<Playlist[]> = useStorage('playList', [], localStorage, { mergeDefaults: true });
+    let showPlayer: Ref<Boolean> = useStorage('showPlayer', false, localStorage, { mergeDefaults: true });
+    let playerInstance = useStorage('playerInstance', {} as Plyr, localStorage, { mergeDefaults: true });
 
-    let playList = ref([
-        {
-            "title": 'proposal3',
-            "provider": 'youtube',
-            "link": "https://www.youtube.com/watch?v=QR33X9hs054/",
-            "playId": 'QR33X9hs054'
-        },
-        {
-            "title": 'proposal2',
-            "provider": 'youtube',
-            "link": "https://www.youtube.com/watch?v=mMRxVLBUtHY&start=37072",
-            "playId": 'bTqVqk7FSmY'
-        },
-        {
-            "title": 'proposal4',
-            "provider": 'vimeo',
-            "link": "https://www.youtube.com/watch?v=mMRxVLBUtHY&start=37072",
-            "playId": '576882227'
-        },
+    function startPlaying(proposals: Proposal[]) {
+        console.log('wtf');
+        
+        if (!proposals.length) { return };
+        console.log('wtf');
+        if (!showPlayer.value) {
+            playList.value = [
+                {
+                    "title": 'proposal3',
+                    "provider": 'youtube',
+                    "quickpitch": "QR33X9hs054",
+                },
+                {
+                    "title": 'proposal2',
+                    "provider": 'youtube',
+                    "quickpitch": "mMRxVLBUtHY",
+                },
+                {
+                    "title": 'proposal4',
+                    "provider": 'youtube',
+                    "quickpitch": "mMRxVLBUtHY",
+                },
 
 
-    ]);
+            ];
+
+            createPlayer()
+            console.log({ p: playList.value });
+            showPlayer.value = true;
+            // setTimeout(() => {
+            //     playerInstance.value.source = {
+            //         type: 'video',
+            //         sources: [
+            //             {
+            //                 src: playList.value[0].quickpitch,
+            //                 provider: playList.value[0].provider,
+            //             },
+            //         ],
+            //     };
+            // }, 200);
+
+            // alert('tyty')
+        } else {
+            // makePlaylist(proposals);
+        }
+    }
+
+    async function makePlaylist(proposals: Proposal[]) {
+        const regex = /[a-zA-Z]/g;
+
+        playList.value = proposals
+            .filter((item) => item.quickpitch)
+            .map((item) => {
+                const { title, quickpitch } = item;
+                const provider = quickpitch?.match(regex) ? "youtube" : "vimeo";
+                return { title, quickpitch, provider };
+            });
+        console.log(playList.value);
+    }
 
     const plyr = ref(null)
     let show = ref(true);
@@ -42,7 +85,7 @@ export const usePlayStore = defineStore('play-store', () => {
     let changingSource = ref(false);
     let waiting = ref(false);
 
-    let playerInstance = ref(null)
+    // let playerInstance = ref(null)
 
     async function createPlayer() {
 
@@ -66,7 +109,7 @@ export const usePlayStore = defineStore('play-store', () => {
             type: 'video',
             sources: [
                 {
-                    src: playList.value[currentlyPlayingIndex.value].link,
+                    src: playList.value[currentlyPlayingIndex.value].quickpitch,
                     provider: playList.value[currentlyPlayingIndex.value].provider,
                 },
             ],
@@ -100,7 +143,7 @@ export const usePlayStore = defineStore('play-store', () => {
         console.log(playerInstance.value);
 
         waiting.value = true
-        await createPlayer()
+        createPlayer()
         setTimeout(() => {
             toggle();
         }, 1000);
@@ -164,7 +207,8 @@ export const usePlayStore = defineStore('play-store', () => {
         previousVolume.value = null;
         changingSource.value = false;
         waiting.value = false;
-        playerInstance = null
+        playerInstance = null;
+        playList.value = null;
     }
 
 
@@ -175,7 +219,7 @@ export const usePlayStore = defineStore('play-store', () => {
     onMounted(async () => {
         playerInstance.value = plyr.value.player;
         console.log(playerInstance.value);
-        await createPlayer()
+        createPlayer()
 
     });
 
@@ -200,6 +244,6 @@ export const usePlayStore = defineStore('play-store', () => {
         playerInstance,
         plyr:plyr,
         clearStore,
-        // currentTime
+        startPlaying
     }
 });

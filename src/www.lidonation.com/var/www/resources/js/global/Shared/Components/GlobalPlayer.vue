@@ -37,7 +37,7 @@
                 </div>
                 <div class="flex-1">
                     <div class="font-medium">
-                        {{ currentlyPlaying.title }}
+                        {{ currentlyPlaying?.title }}
                     </div>
                     <div class="flex items-center gap-4">
                         <div>
