@@ -27,7 +27,7 @@ class CatalystChallengeController extends Controller
 
         $this->currentPage = $request->input('p', 1);
 
-        
+
         $fund = Fund::where('slug', $slug)->first();
 
         $props = [
@@ -41,7 +41,7 @@ class CatalystChallengeController extends Controller
             'totalAmountAwarded' => $this->totalAmountAwarded($fund),
             'crumbs' => [
                 ['link' => '/catalyst-explorer/funds', 'label' => 'Funds'],
-                ['link' => "/catalyst-explorer/funds/{$fund->parent->slug}", 'label' => $fund->parent->label],
+                ['link' => $fund->parent->link, 'label' => $fund->parent->label, 'external' => true],
                 ['label' => $fund->title]
             ],
         ];

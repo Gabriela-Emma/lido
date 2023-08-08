@@ -5,10 +5,7 @@
             :class="{'z-5': !user$}" @click="loginUser()">
         </div>
         <div class="absolute top-0 left-0 flex flex-col items-center justify-center w-full h-full gap-1 rounded-r-sm"
-            :class="{'z-5': user$,
-                'bg-teal-light-100/50': ranking_total > 0,
-                'bg-red-100/80': ranking_total < 0,
-                'bg-slate-100': ranking_total == 0}">
+            :class="{'z-5': user$}">
             <div class="text-center" @click="rankProposal(RANKACTIONS.THUMBSUP, props.proposal)">
                 <ChevronUpIcon :class="[rank?.rank === RANKACTIONS.THUMBSUP ? 'text-teal-light-500' : 'text-gray-400']"
                     aria-hidden="true" class="w-10 h-8 text-gray-400 hover:text-yellow-700 hover:cursor-pointer" />
