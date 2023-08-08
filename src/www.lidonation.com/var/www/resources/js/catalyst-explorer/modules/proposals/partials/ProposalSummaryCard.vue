@@ -111,13 +111,10 @@
                         @click="loginUser()">
                     </div>
                     <div class="absolute top-0 left-0 flex flex-row items-center justify-center w-full h-full gap-2 px-1 py-2 rounded-sm flex-nowrap"
-                    :class="{'z-5': user$,
-                            'bg-teal-light-100/50': ranking_total > 0,
-                            'bg-red-100/80': ranking_total < 0,
-                            'bg-slate-100': ranking_total == 0}">
+                    :class="{'z-5': user$}">
                         <div class="flex items-center gap-1 flex-nowrap">
                             <span>
-                                Rank 
+                                Rank
                                 <span>({{ ranking_total }})</span>
                             </span>
                             <div class="flex-1 w-1/2" @click.prevent="rankProposal(RANKACTIONS.THUMBSUP, props.proposal)">
