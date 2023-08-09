@@ -8,16 +8,16 @@ const blockfrostRequest = async ({
     let blockfrostApiKey = process.env.NETWORK === '0' ? 'preview2QfIR5epKjaFmh54Id75yXAM7yStk3vc' : 'preview2QfIR5epKjaFmh54Id75yXAM7yStk3vc';
 
     try {
-        // return await (
-        //     await fetch(`${networkEndpoint}${endpoint}`, {
-        //         headers: {
-        //             project_id: blockfrostApiKey,
-        //             ...headers,
-        //         },
-        //         method,
-        //         body,
-        //     })
-        // ).json();
+        return await (
+            await fetch(`${networkEndpoint}${endpoint}`, {
+                headers: {
+                    project_id: blockfrostApiKey,
+                    ...headers,
+                },
+                method,
+                body,
+            })
+        ).json();
     } catch (error) {
         return error;
     }
