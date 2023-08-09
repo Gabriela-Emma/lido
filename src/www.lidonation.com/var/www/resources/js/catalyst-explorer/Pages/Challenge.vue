@@ -2,8 +2,8 @@
     <div>
         <header class="text-white bg-teal-600">
             <header-component
-                titleName0="catalyst"
-                titleName1="Challenge"
+                :titleName0="fund.data.label"
+                titleName1=" "
                 subTitle="Browse through the proposals of a specific challenge."
                 color="teal-600"
             />
@@ -13,17 +13,7 @@
                 >
                     <h1
                         class="flex flex-row flex-wrap items-end gap-2 mb-6 text-3xl font-bold 2xl:text-5xl decorate"
-                    >
-                        <img
-                            class="w-10 h-10 rounded-sm lg:w-16 lg:h-16"
-                            v-bind:src="fund.data.thumbnail_url ?? fund.data.gravatar"
-                            :alt="fund.data.label"
-                        />
-
-                        <span class="font-semibold">
-                            {{ fund.data.label }}
-                        </span>
-                    </h1>
+                    ></h1>
 
                     <div class="my-4 summary">
                         <div class="max-w-4xl font-semibold">
@@ -222,11 +212,12 @@
                 class="grid grid-cols-1 gap-3 mx-auto md:grid-cols-2 xl:grid-cols-3 3xl:grid-cols-4 max-w-7xl 2xl:max-w-full"
             >
                 <template v-for="proposal in proposals.data">
-                    <ProposalCard
+                    <ProposalSummaryCard
                         v-if="proposal?.id"
                         :key="proposal.id"
+                        @profileQuickView="handleProfileQuickView($event)"
                         :proposal="proposal"
-                    ></ProposalCard>
+                    />
                 </template>
             </div>
             <div
@@ -253,11 +244,11 @@ import { ref, watch } from "vue";
 import { marked } from "marked";
 import { computed } from "vue";
 import Proposal from "../models/proposal";
-import ProposalCard from "../modules/proposals/ProposalCard.vue";
 import Pagination from "../Shared/Components/Pagination.vue";
-import {router} from "@inertiajs/vue3";
-import {VARIABLES} from "../models/variables";
+import { router } from "@inertiajs/vue3";
+import { VARIABLES } from "../models/variables";
 import Fund from "../models/fund";
+import ProposalSummaryCard from "../modules/proposals/partials/ProposalSummaryCard.vue";
 
 const props = withDefaults(
     defineProps<{
@@ -268,8 +259,8 @@ const props = withDefaults(
         completedProposalsCount: number;
         totalAmountRequested: string;
         totalAmountAwarded: string;
-        currPage?: number,
-        perPage?: number,
+        currPage?: number;
+        perPage?: number;
         proposals: {
             links: [];
             total: number;
@@ -307,11 +298,13 @@ function query() {
         data[VARIABLES.PER_PAGE] = perPageRef.value;
     }
 
-    router.get(
-        `/catalyst-explorer/challenge/${props.fund.data.slug}`,
-        data,
-        {preserveState: true, preserveScroll: true}
-    );
+    router.get(`/catalyst-explorer/challenges/${props.fund.data.slug}`, data, {
+        preserveState: true,
+        preserveScroll: true,
+    });
 }
 
+let handleProfileQuickView  = (user) => {
+    window.location.href = `/catalyst-proposals/users/${user.id}`;
+}
 </script>
