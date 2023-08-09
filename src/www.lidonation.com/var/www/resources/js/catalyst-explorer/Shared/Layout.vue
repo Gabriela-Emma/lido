@@ -1,6 +1,11 @@
 <template>
     <Nav :crumbs=crumbs />
-    <GlobalPlayer />
+    <div class="sticky">
+        <transition>
+            <GlobalPlayer />
+        </transition>
+    </div>
+
     <section class="">
         <slot></slot>
         <Modal />

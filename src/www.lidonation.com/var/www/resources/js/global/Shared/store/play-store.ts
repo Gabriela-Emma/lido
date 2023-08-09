@@ -10,13 +10,21 @@ export const usePlayStore = defineStore('play-store', () => {
 
     let playList: Ref<Playlist[]> = useStorage('playList', [], localStorage, { mergeDefaults: true });
     let showPlayer: Ref<Boolean> = useStorage('showPlayer', false, localStorage, { mergeDefaults: true });
-    let playerInstance = useStorage('playerInstance', {} as Plyr, localStorage, { mergeDefaults: true });
+    let playerInstance:any = useStorage('playerInstance', {}, localStorage, { mergeDefaults: true });
+    const playing = ref(false);
+    let currentTime = ref(0);
+    let duration = ref(0);
+    let volume = ref(10);
+    let muted = ref(false);
+    let currentlyPlayingIndex = ref(0);
+    let previousVolume = ref(null);
+    let changingSource = ref(false);
+    let waiting = ref(false);
 
     function startPlaying(proposals: Proposal[]) {
-        console.log('wtf');
         
         if (!proposals.length) { return };
-        console.log('wtf');
+        waiting.value = true;
         if (!showPlayer.value) {
             playList.value = [
                 {
@@ -27,33 +35,19 @@ export const usePlayStore = defineStore('play-store', () => {
                 {
                     "title": 'proposal2',
                     "provider": 'youtube',
-                    "quickpitch": "mMRxVLBUtHY",
+                    "quickpitch": "KfeHatAOgvY",
                 },
                 {
                     "title": 'proposal4',
                     "provider": 'youtube',
-                    "quickpitch": "mMRxVLBUtHY",
+                    "quickpitch": "KfeHatAOgvY",
                 },
-
-
             ];
-
-            createPlayer()
-            console.log({ p: playList.value });
             showPlayer.value = true;
-            // setTimeout(() => {
-            //     playerInstance.value.source = {
-            //         type: 'video',
-            //         sources: [
-            //             {
-            //                 src: playList.value[0].quickpitch,
-            //                 provider: playList.value[0].provider,
-            //             },
-            //         ],
-            //     };
-            // }, 200);
+            setTimeout(() => {
+                createPlayer();
+            }, 4000);
 
-            // alert('tyty')
         } else {
             // makePlaylist(proposals);
         }
@@ -72,22 +66,21 @@ export const usePlayStore = defineStore('play-store', () => {
         console.log(playList.value);
     }
 
-    const plyr = ref(null)
-    let show = ref(true);
-    const playing = ref(false);
-    // const player = ref(null);
-    let currentTime = ref(0);
-    let duration = ref(0);
-    let volume = ref(10);
-    let muted = ref(false);
-    let currentlyPlayingIndex = ref(0);
-    let previousVolume = ref(null);
-    let changingSource = ref(false);
-    let waiting = ref(false);
-
-    // let playerInstance = ref(null)
-
     async function createPlayer() {
+        while (!Object.keys(playerInstance.value).length) {
+            waiting.value = true; 
+        }
+        waiting.value = false; 
+
+        playerInstance.value.source = {
+            type: 'video',
+            sources: [
+                {
+                    src: playList.value[currentlyPlayingIndex.value].quickpitch,
+                    provider: playList.value[currentlyPlayingIndex.value].provider,
+                },
+            ],
+        };
 
         playerInstance.value.on('timeupdate', (event) => {
             const instance = event.detail.plyr;
@@ -99,31 +92,27 @@ export const usePlayStore = defineStore('play-store', () => {
             volume.value = instance.volume;
         });
         playerInstance.value.on('play', (event) => {
-            console.log(event.detail.plyr?.source);
             playing.value = true;
         });
         playerInstance.value.on('pause', () => {
             playing.value = false;
         });
-        playerInstance.value.source = {
-            type: 'video',
-            sources: [
-                {
-                    src: playList.value[currentlyPlayingIndex.value].quickpitch,
-                    provider: playList.value[currentlyPlayingIndex.value].provider,
-                },
-            ],
-        };
+
+
+        setTimeout(() => {
+            playerInstance.value.play();
+        }, 3000);
+
     }
     async function changeCurrentlyPlaying(direction) {
-        console.log(playerInstance.value);
+
         if (changingSource.value) {
             return;
         }
 
         changingSource.value = true;
-        let currentPlayer = plyr.value.player
-
+        waiting.value = true;
+        playerInstance.value.pause();
 
         if (direction == 'next') {
             currentlyPlayingIndex.value = currentlyPlayingIndex.value + 1;
@@ -136,20 +125,13 @@ export const usePlayStore = defineStore('play-store', () => {
                 currentlyPlayingIndex.value = playList.value.length - 1;
             }
         }
-        toggle()
         changingSource.value = false;
-        console.log('change');
-        playerInstance.value = plyr.value.player
-        console.log(playerInstance.value);
-
-        waiting.value = true
         createPlayer()
         setTimeout(() => {
-            toggle();
-        }, 1000);
+            playerInstance.value.play();
+        }, 3000);
 
         waiting.value = false
-        console.log('gone');
 
     }
 
@@ -175,8 +157,6 @@ export const usePlayStore = defineStore('play-store', () => {
     }
 
     function toggle() {
-        console.log(playerInstance.value);
-
         if (playing.value) {
             playerInstance.value.pause();
         } else {
@@ -197,7 +177,8 @@ export const usePlayStore = defineStore('play-store', () => {
         muted.value = playerInstance.value.muted
     }
     function clearStore(){
-        show.value = false;
+        if (!playList.value.length && !showPlayer.value )return;
+        showPlayer.value = false;
         playing.value = false;
         currentTime.value = 0;
         duration.value = 0;
@@ -208,23 +189,26 @@ export const usePlayStore = defineStore('play-store', () => {
         changingSource.value = false;
         waiting.value = false;
         playerInstance = null;
-        playList.value = null;
+        playList.value = [];
+        playerInstance.value = {} as Plyr;
+        clearStore()
     }
 
+    function setPlayer(player){
+        console.log(player.player);
+        
+        playerInstance.value = player.player;
+    }
 
     let currentlyPlaying = computed(() => playList.value[currentlyPlayingIndex.value])
     const currentTimeFormatted = computed(() => formatTime(currentTime.value));
     const durationFormatted = computed(() => formatTime(duration.value));
 
     onMounted(async () => {
-        playerInstance.value = plyr.value.player;
         console.log(playerInstance.value);
-        createPlayer()
-
     });
 
     return {
-        // currentTime,
         currentTimeFormatted,
         durationFormatted,
         toggle,
@@ -239,11 +223,12 @@ export const usePlayStore = defineStore('play-store', () => {
         muted,
         duration,
         playing,
-        show,
+        showPlayer,
         changingSource,
-        playerInstance,
-        plyr:plyr,
+        setPlayer,
         clearStore,
-        startPlaying
+        startPlaying,
+        currentTime,
+        waiting
     }
 });
