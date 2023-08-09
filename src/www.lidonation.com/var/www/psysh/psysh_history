@@ -281,3 +281,14 @@ exit
 https://youtu.be/tB3leDdzh74$proposals\040=\040Proposal::whereNotNull('quickpitch')->cursor();
 $proposals\040=\040Proposal::whereNotNull('quickpitch')->cursor();
 $proposals\040=\040Proposal::whereNotNull('quickpitch')->cursor();
+Proposal::find(316)
+Proposal::find(316)->quickPitch
+Proposal::find(316)->quickpitch
+Proposal::find(316)->quick_pitch
+Proposal::find(316)->meta_data?->quick_pitch
+Proposal::find(316)->meta_data?->quickPitchId
+Proposal::find(316)->meta_data?->quickPitchId
+Proposal::find(316)->meta_data?->quickPitchId
+Proposal::find(316)->meta_data?->quickPitchId
+Proposal::find(316)->quickPitchId
+Proposal::find(643)->quickPitchId
