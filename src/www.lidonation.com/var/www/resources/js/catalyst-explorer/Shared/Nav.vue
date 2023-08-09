@@ -28,7 +28,11 @@
                                          xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                                         <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z"/>
                                     </svg>
-                                        <Link :href=crumb.link
+                                        <a  :href="crumb.link" v-if="crumb.external === true"
+                                            class="inline-block ml-2 text-xs font-medium text-white hover:text-yellow-400 whitespace-nowrap">
+                                            {{$t(crumb.label)}}
+                                        </a>
+                                        <Link :href="crumb.link" v-else
                                            class="inline-block ml-2 text-xs font-medium text-white hover:text-yellow-400 whitespace-nowrap">
                                             {{$t(crumb.label)}}
                                         </Link>

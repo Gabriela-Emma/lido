@@ -278,6 +278,9 @@ $holding->each(function\040($item)\040{\012$item->delete();\012});
 exit
 Proposal::runCustomIndex();
 exit
+https://youtu.be/tB3leDdzh74$proposals\040=\040Proposal::whereNotNull('quickpitch')->cursor();
+$proposals\040=\040Proposal::whereNotNull('quickpitch')->cursor();
+$proposals\040=\040Proposal::whereNotNull('quickpitch')->cursor();
 Proposal::find(316)
 Proposal::find(316)->quickPitch
 Proposal::find(316)->quickpitch

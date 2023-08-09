@@ -7,6 +7,7 @@ use App\Jobs\CardanoStatsJob;
 use App\Jobs\LidoStatsJob;
 use App\Jobs\ProcessPendingWithdrawalsJob;
 use App\Jobs\RefreshLidoTwitterToken;
+use App\Jobs\SyncCatatalystVotersJob;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -32,6 +33,10 @@ class Kernel extends ConsoleKernel
         $schedule->job(new LidoStatsJob)->everyFifteenMinutes();
         $schedule->job(new CardanoStatsJob)->everyTwoHours();
         $schedule->job(new RefreshLidoTwitterToken)->everyThirtyMinutes();
+
+        if (app()->environment('production')) {
+            $schedule->job(new SyncCatatalystVotersJob)->daily();
+        }
 
         $schedule->command('ln:sitemap:generate')->weekly();
 

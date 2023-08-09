@@ -89,110 +89,6 @@
                                 </div>
                             @endif
 
-
-
-                            {{-- <div class="flex flex-row justify-around gap-2 p-4 bg-slate-200" x-data="voterTool">
-                                <button type="button"
-                                        @click="bookmarkProposal( {
-                                            id: {{$proposal->id}},
-                                            title: @js($proposal->title),
-                                            type: @js($proposal->type),
-                                            amount: {{$proposal->amount_requested}},
-                                            ideascale_link: '{{$proposal->ideascale_link}}',
-                                            link: '{{$proposal->link}}',
-                                            fundId: {{$proposal->fund->id}},
-                                            fundTitle: @js($proposal->fund->label),
-                                            fundAmount: {{$proposal->fund?->amount}},
-                                            proposalsCount: {{$proposal->fund?->proposals_count}},
-                                            fundHero: '{{$proposal->fund?->thumbnail_url}}'
-                                        } )"
-                                        class="inline-flex items-center w-1/2 gap-1 p-1 text-xs font-medium text-gray-700 bg-white border rounded-sm shadow-sm xl:gap-2 xl:p-2 xl:text-sm 2xl:text-lg border-slate-300 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500">
-                                    <span x-show="!has({{$proposal->id}})">BookmarkItem&nbsp;&nbsp;&nbsp;</span>
-                                    <span class="" x-show="has({{$proposal->id}})">Bookmarked</span>
-                                    <svg x-show="has({{$proposal->id}})"
-                                         class="w-4 h-4 mr-2 -ml-1 text-pink-600 2xl:w-5 2xl:h-5"
-                                         xmlns="http://www.w3.org/2000/svg"
-                                         viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                        <path x-show="proposalsStore.length > 0"
-                                              d="M5 4a2 2 0 012-2h6a2 2 0 012 2v14l-5-2.5L5 18V4z"/>
-                                    </svg>
-                                    <svg x-show="!has({{$proposal->id}})" xmlns="http://www.w3.org/2000/svg"
-                                         class="w-5 h-5 mr-2 -ml-1 text-pink-600"
-                                         fill="none" viewBox="0 0 24 24"
-                                         stroke="currentColor" stroke-width="2">
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                              d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/>
-                                    </svg>
-                                </button>
-                                @if($proposal->fund?->status == 'governance')
-                                    <button type="button"
-                                            @click="up( {
-                                                id: {{$proposal->id}},
-                                                title: @js($proposal->title),
-                                                type: @js($proposal->type),
-                                                amount: {{$proposal->amount_requested}},
-                                                ideascale_link: '{{$proposal->ideascale_link}}',
-                                                link: '{{$proposal->link}}',
-                                                fundId: {{$proposal->fund->id}},
-                                                fundTitle: @js($proposal->fund->label),
-                                                fundAmount: {{$proposal->fund?->amount}},
-                                                proposalsCount: {{$proposal->fund?->proposals_count}},
-                                                fundHero: '{{$proposal->fund?->thumbnail_url}}',
-                                                labels: [@js($proposal->fund?->parent?->label) + ' Picklist']
-                                            } )"
-                                            class="inline-flex items-center gap-1 p-1 text-xs font-medium text-gray-700 bg-white border rounded-sm shadow-sm xl:gap-2 xl:p-2 xl:text-sm 2xl:text-lg border-slate-300 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500">
-                                        <span x-show="!has({{$proposal->id}}, 'upvote')">Upvote</span>
-                                        <span x-show="has({{$proposal->id}}, 'upvote')">Remove</span>
-                                        <svg x-show="has({{$proposal->id}}, 'upvote')"
-                                             xmlns="http://www.w3.org/2000/svg"
-                                             class="w-4 h-4 text-teal-700  2xl:w-5 2xl:h-5" viewBox="0 0 20 20"
-                                             fill="currentColor">
-                                            <path
-                                                d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z"/>
-                                        </svg>
-                                        <svg x-show="!has({{$proposal->id}}, 'upvote')"
-                                             xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 2xl:w-6 2xl:h-6"
-                                             fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                  d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"/>
-                                        </svg>
-                                    </button>
-                                    <button type="button"
-                                            @click="down( {
-                                            id: {{$proposal->id}},
-                                            title: @js($proposal->title),
-                                            type: @js($proposal->type),
-                                            amount: {{$proposal->amount_requested}},
-                                            ideascale_link: '{{$proposal->ideascale_link}}',
-                                            link: '{{$proposal->link}}',
-                                            fundId: {{$proposal->fund->id}},
-                                            fundTitle: @js($proposal->fund->label),
-                                            fundAmount: {{$proposal->fund?->amount}},
-                                            proposalsCount: {{$proposal->fund?->proposals_count}},
-                                            fundHero: '{{$proposal->fund?->thumbnail_url}}',
-                                            labels: [@js($proposal->fund?->parent?->label) + ' Picklist']
-                                        })"
-                                            class="inline-flex items-center gap-1 p-1 py-2 text-xs font-medium text-gray-700 bg-white border rounded-sm shadow-sm xl:gap-2 xl:p-2 xl:text-sm 2xl:text-lg border-slate-300 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500">
-                                        <span x-show="!has({{$proposal->id}}, 'downvote')">Downvote</span>
-                                        <span x-show="has({{$proposal->id}}, 'downvote')">Remove</span>
-
-                                        <svg x-show="has({{$proposal->id}}, 'downvote')"
-                                             xmlns="http://www.w3.org/2000/svg"
-                                             class="w-4 h-4 2xl:w-5 2xl:h-5 text-black-700" viewBox="0 0 20 20"
-                                             fill="currentColor">
-                                            <path
-                                                d="M18 9.5a1.5 1.5 0 11-3 0v-6a1.5 1.5 0 013 0v6zM14 9.667v-5.43a2 2 0 00-1.105-1.79l-.05-.025A4 4 0 0011.055 2H5.64a2 2 0 00-1.962 1.608l-1.2 6A2 2 0 004.44 12H8v4a2 2 0 002 2 1 1 0 001-1v-.667a4 4 0 01.8-2.4l1.4-1.866a4 4 0 00.8-2.4z"/>
-                                        </svg>
-                                        <svg x-show="!has({{$proposal->id}}, 'downvote')"
-                                             xmlns="http://www.w3.org/2000/svg" class="w-4 h-4  2xl:w-6 2xl:h-6"
-                                             fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                  d="M10 14H5.236a2 2 0 01-1.789-2.894l3.5-7A2 2 0 018.736 3h4.018a2 2 0 01.485.06l3.76.94m-7 10v5a2 2 0 002 2h.096c.5 0 .905-.405.905-.904 0-.715.211-1.413.608-2.008L17 13V4m-7 10h2m5-10h2a2 2 0 012 2v6a2 2 0 01-2 2h-2.5"/>
-                                        </svg>
-                                    </button>
-                                @endif
-                            </div> --}}
-
                             <div>
                                 <a href="{{localizeRoute('catalystExplorer.proposals')}}" type="button"
                                    class="flex items-center w-full px-6 py-3 text-2xl font-medium text-gray-700 bg-white border rounded-sm border-slate-300 hover:bg-primary-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
@@ -220,57 +116,13 @@
                                         This proposal was approved and funded by the Cardano Community via Project
                                         <strong>{{$proposal->fund?->title}}</strong> Catalyst funding round.
                                     </h4>
-
-{{--                                    <div>--}}
-{{--                                        <nav class="hidden sm:flex" aria-label="Breadcrumb">--}}
-{{--                                            <ol role="list" class="flex items-center space-x-4">--}}
-{{--                                                <li>--}}
-{{--                                                    <div class="flex">--}}
-{{--                                                        <a href="#"--}}
-{{--                                                           class="text-sm font-medium text-gray-400 hover:text-gray-200">Jobs</a>--}}
-{{--                                                    </div>--}}
-{{--                                                </li>--}}
-{{--                                                <li>--}}
-{{--                                                    <div class="flex items-center">--}}
-{{--                                                        <svg class="flex-shrink-0 w-5 h-5 text-gray-500" viewBox="0 0 20 20"--}}
-{{--                                                             fill="currentColor" aria-hidden="true">--}}
-{{--                                                            <path fill-rule="evenodd"--}}
-{{--                                                                  d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z"--}}
-{{--                                                                  clip-rule="evenodd"/>--}}
-{{--                                                        </svg>--}}
-{{--                                                        <a href="#"--}}
-{{--                                                           class="ml-4 text-sm font-medium text-gray-400 hover:text-gray-200">Engineering</a>--}}
-{{--                                                    </div>--}}
-{{--                                                </li>--}}
-{{--                                                <li>--}}
-{{--                                                    <div class="flex items-center">--}}
-{{--                                                        <svg class="flex-shrink-0 w-5 h-5 text-gray-500" viewBox="0 0 20 20"--}}
-{{--                                                             fill="currentColor" aria-hidden="true">--}}
-{{--                                                            <path fill-rule="evenodd"--}}
-{{--                                                                  d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z"--}}
-{{--                                                                  clip-rule="evenodd"/>--}}
-{{--                                                        </svg>--}}
-{{--                                                        <a href="#" aria-current="page"--}}
-{{--                                                           class="ml-4 text-sm font-medium text-gray-400 hover:text-gray-200">Back--}}
-{{--                                                            End Developer</a>--}}
-{{--                                                    </div>--}}
-{{--                                                </li>--}}
-{{--                                            </ol>--}}
-{{--                                        </nav>--}}
-{{--                                    </div>--}}
                                 </div>
-{{--                                <div class="flex flex-shrink-0 mt-4 md:mt-0 md:ml-4">--}}
-{{--                                    <button type="button"--}}
-{{--                                            class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-gray-600 border border-transparent rounded-md shadow-sm hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-800">--}}
-{{--                                        Edit--}}
-{{--                                    </button>--}}
-{{--                                </div>--}}
                             </div>
                         </div>
                     @endif
 
                     @if($proposal->videos->isNotEmpty() || $proposal->media->isNotEmpty())
-                        <div class="mb-2 bg-teal-800 primary-slide">
+                        <div class="mb-2 bg-teal-900 primary-slide">
                             <div class="splide round-sm" id="proposal-primary-slide" role="group">
                                 <div class="splide__track">
                                     <ul class="splide__list">
@@ -301,7 +153,6 @@
                                         @if($proposal->media->isNotEmpty())
                                             @foreach($proposal->media as $media)
                                                 <li class="splide__slide">
-
                                                     <img class="fluid" src="{{$proposal->hero_url}}"
                                                          alt="{{$media?->name}}"/>
                                                 </li>

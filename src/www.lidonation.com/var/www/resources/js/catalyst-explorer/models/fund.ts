@@ -16,4 +16,7 @@ export default interface Fund {
     thumbnail_url:string;
     parent?: Fund;
     challenges?: Challenge[];
+    slug: string;
+    content: string;
+    excerpt: string;
 }

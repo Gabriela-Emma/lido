@@ -14,6 +14,7 @@ export enum VARIABLES {
     PEOPLE = 'pp',
     QUICKPITCHES = 'qp',
     RANKED_VIEW = 'rv',
+    CARD_VIEW = 'cv',
     STATUS = 'ss',
     TRACKER_ID_MONTHLY_REPORT = 'HSH9YZDM',
     TRACKER_ID_PA = 'GQ56QFBJ',

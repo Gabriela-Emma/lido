@@ -29,6 +29,10 @@ class FundResource extends JsonResource
             'link' => $this->link,
             'thumbnail_url' => $this->thumbnail_url,
             'gravatar' => $this->gravatar,
+            'slug' => $this->slug,
+            'content' => $this->content,
+            'excerpt' => $this->excerpt,
+            'label' => $this->label,
 
         ];
     }

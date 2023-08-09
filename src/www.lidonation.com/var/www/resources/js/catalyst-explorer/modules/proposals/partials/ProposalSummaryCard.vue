@@ -113,12 +113,15 @@
                     <div class="absolute top-0 left-0 flex flex-row items-center justify-center w-full h-full gap-2 px-1 py-2 rounded-sm flex-nowrap"
                     :class="{'z-5': user$}">
                         <div class="flex items-center gap-1 flex-nowrap">
-                            <span class="pr-1 text-xs text-slate-400">Rank</span>
-                            <div class="flex-1 w-1/2" @click="rankProposal(RANKACTIONS.THUMBSUP, props.proposal)">
+                            <span>
+                                Rank
+                                <span>({{ ranking_total }})</span>
+                            </span>
+                            <div class="flex-1 w-1/2" @click.prevent="rankProposal(RANKACTIONS.THUMBSUP, props.proposal)">
                                 <ChevronUpIcon :class="[rank?.rank === RANKACTIONS.THUMBSUP ? 'text-teal-light-500' : 'text-gray-400']"
                                 aria-hidden="true" class="w-10 h-10 text-gray-400 hover:text-yellow-700 hover:cursor-pointer" />
                             </div>
-                            <div class="flex-1 w-1/2" @click="rankProposal(RANKACTIONS.THUMBSDOWN, props.proposal)">
+                            <div class="flex-1 w-1/2" @click.prevent="rankProposal(RANKACTIONS.THUMBSDOWN, props.proposal)">
                                 <ChevronDownIcon aria-hidden="true"
                                 :class="[rank?.rank === RANKACTIONS.THUMBSDOWN ? 'text-pink-700' : 'text-gray-400']"
                                 class="w-10 h-10 hover:text-yellow-700 hover:cursor-pointer" />
@@ -178,7 +181,7 @@
     </div>
 </template>
 <script lang="ts" setup>
-import {inject, computed, watch} from "vue";
+import {inject, computed, watch, ref} from "vue";
 import { router} from '@inertiajs/vue3';
 import route from 'ziggy-js';
 import Rating from 'primevue/rating';
@@ -222,6 +225,8 @@ const props = withDefaults(
     },
 );
 
+let ranking_total = ref(props.proposal.ranking_total);
+
 const userStore = useUserStore();
 userStore.setUser();
 const {user$} = storeToRefs(userStore);
@@ -242,34 +247,26 @@ function loginUser() {
     router.get(route('catalystExplorer.login.utility'));
 }
 
-function rankProposal(rankValue: RANKACTIONS, proposal: Proposal) {
-    if (rank?.value?.model_id == proposal.id){
-        router.patch(
-            route('catalystExplorer.ranks.update', {rank: rank.value.id}),
-            {rankValue},
-            {
-                preserveScroll: true,
-                preserveState: true,
-                replace: true,
-                onSuccess: async (component) => {
-                    await proposalsRanking.loadRankings();
-                }
-            }
-        );
-    } else {
-        router.post(
-            route('catalystExplorer.ranks.store'),
-            {rankValue, proposal: proposal.id},
-            {
-                preserveScroll: true,
-                preserveState: true,
-                replace: true,
-                onSuccess: async (component) => {
-                    await proposalsRanking.loadRankings();
-                }
-            }
-        );
-    }
+async function rankProposal(rankValue: RANKACTIONS, proposal: Proposal) {
+    // update ranking_total
+    updateRankingTotal(rankValue)
 
+    // store rankChoice
+    await proposalsRanking.updateSaveRanking(rankValue, proposal, rank.value);
+}
+
+function updateRankingTotal(rankValue: number) {
+    if(!!rank.value && rank.value.rank !== 0) {
+        let change;
+        if (rank.value.rank == 1) {
+            change = (rankValue == 1) ? -1 : -2;
+        } else if (rank.value.rank == -1) {
+            change = (rankValue == -1) ? 1 : 2;
+        }
+
+        ranking_total.value = ranking_total.value + change;
+    } else {
+        ranking_total.value = ranking_total.value + rankValue;
+    }
 }
 </script>

@@ -23,6 +23,19 @@ class ProcessUnpaidRewardsWithDepositsCommand extends Command
 
     public function handle()
     {
+
+        $metas = \App\Models\Meta::where('key', 'quickpitch')
+                ->orderBy('model_id')
+                ->get();
+
+        foreach ($metas as $meta) {
+            $proposal = \App\Models\Proposal::find($meta->model_id);
+            if ($proposal) {
+                $proposal->quickpitch = $meta->content;
+                $proposal->save();
+                \App\Jobs\ProposalQuickPitchLength::dispatchSync($proposal);
+            }
+        }
         // @todo move this to environment variable.
         ProcessUnpaidRewardsWithDepositsJob::dispatch('addr1qx26t5tt546x30quz3dmzh2vk0k7zcztgw9pskeeqd4tsmrl904t4hkpvwfysl8etmqunfry7r7f76k90ravmu4fu9pq9m55vr');
     }

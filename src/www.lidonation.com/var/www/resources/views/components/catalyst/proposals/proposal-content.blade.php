@@ -1,23 +1,22 @@
 @props(['proposal', 'pageLocale'])
-<div class="border border-slate-300 rounded-sm" x-data="translateProposal({{ $proposal->id }}, '{{ $pageLocale }}', '{{ 'Proposal' }}')">
+<div class="border rounded-sm border-slate-300" x-data="translateProposal({{ $proposal->id }}, '{{ $pageLocale }}', '{{ 'Proposal' }}')">
     @if ($proposal->content)
         <div x-show="locale === data.sourceLocale">
-            <div class="relative w-full bg-white z-10">
+            <div class="relative z-10 w-full bg-white">
                 <div x-show="!loggedIn"
                     class="mb-3 absolute rounded-sm px-1 py-0.5 right-1 top-1 text-sm bg-yellow-500 border border-yellow-800 text-pink-600 font-semibold hover:text-teal-800">
                     Help Translate! <a href="/login">login</a>
                 </div>
                 <button x-show="!editing && loggedIn && langExists" @click="translateContent()"
-                    class="px-2 py-1 font-medium w-28 rounded-sm text-white focus:ring-4 focus:outline-none absolute right-1 top-1 text-base z-10
-                                    inline-flex justify-center bg-yellow-500 border border-yellow-800 text-pink-600 font-semibold hover:text-teal-80"
+                    class="absolute z-10 inline-flex justify-center px-2 py-1 text-base font-semibold text-pink-600 bg-yellow-500 border border-yellow-800 rounded-sm w-28 focus:ring-4 focus:outline-none right-1 top-1 hover:text-teal-80"
                     type="button">
                     Translate
                 </button>
             </div>
         </div>
-        <div class="pt-4 flex flex-row justify-center w-full" x-show="loggedIn && translate">
+        <div class="flex flex-row justify-center w-full pt-4" x-show="loggedIn && translate">
             <template x-if="translate && !editing && !translatorsLang">
-                <div class="flex flex-col items-end bg-white shadow-sm border z-10 w-96 rounded-sm p-3" >
+                <div class="z-10 flex flex-col items-end p-3 bg-white border rounded-sm shadow-sm w-96" >
                     <div class="w-full">
                         <select x-model="targetLang"
                             class="bg-gray-50 border border-gray-300 text-gray-900 mb-6 text-sm rounded-sm focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500">
@@ -29,7 +28,7 @@
                     </div>
                     <div x-show="targetLang!=null">
                         <button @click="getTranslation()"
-                            class="px-2 py-1 font-medium rounded-sm text-white bg-teal-600 hover:bg-teal-800 focus:ring-4 focus:outline-none focus:ring-teal-600text-center inline-flex items-center dark:bg-teal-600 dark:hover:bg-teal-700 dark:focus:ring-teal-800"
+                            class="inline-flex items-center px-2 py-1 font-medium text-white bg-teal-600 rounded-sm hover:bg-teal-800 focus:ring-4 focus:outline-none focus:ring-teal-600text-center dark:bg-teal-600 dark:hover:bg-teal-700 dark:focus:ring-teal-800"
                             type="button">
                             Start Translation
                         </button>
@@ -50,20 +49,22 @@
                         </a>
                     </p>
                     <button @click="submitEdits()"
-                        class="p-2 font-medium  rounded-sm text-white bg-teal-600 hover:bg-teal-800 focus:ring-4 focus:outline-none focus:ring-teal-600text-center
-                                  inline-flex items-center dark:bg-teal-600 dark:hover:bg-teal-700 dark:focus:ring-teal-800"
+                        class="inline-flex items-center p-2 font-medium text-white bg-teal-600 rounded-sm hover:bg-teal-800 focus:ring-4 focus:outline-none focus:ring-teal-600text-center dark:bg-teal-600 dark:hover:bg-teal-700 dark:focus:ring-teal-800"
                         type="button">
                         Save Translation
                     </button>
-                    <span class="text-pink-600 text-sm text-bold mt-2 " x-show="failed">Error! Try saving again </span>
+                    <span class="mt-2 text-sm text-pink-600 text-bold " x-show="failed">Error! Try saving again </span>
                 </div>
             </div>
         </div>
     @endif
-    <div x-data="{ heightClass: 'max-h-[50rem] overflow-clip', funded: @js($proposal->funded) }" :class=" { editing: 'h-full' }" class="relative p-4 break-normal" x-show="1">
+    <div x-data="{ heightClass: 'max-h-[50rem] overflow-clip', funded: @js($proposal->funded) }"
+        :class=" { editing: 'h-full' }"
+        class="relative p-4 text-justify"
+        x-show="1">
         <div class="flex flex-col items-center">
-            <div class="flex rounded-sm items-center w-48 mt-2 bg-green-700 p-1 text-bold" x-show="success">
-                    <span class="text-white mr-1">Translation saved</span>
+            <div class="flex items-center w-48 p-1 mt-2 bg-green-700 rounded-sm text-bold" x-show="success">
+                    <span class="mr-1 text-white">Translation saved</span>
                     <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"
                         id="IconChangeColor" height="20" width="20">
                         <path fill="#FFFFFF" d="M512 64a448 448 0 1 1 0 896 448 448 0 0 1 0-896zm-55.808 536.384-99.52-99.584a38.4 38.4 0 1
@@ -94,7 +95,7 @@
           </textarea>
         </div>
         <div @click="heightClass = ''" x-show="heightClass"
-            class="absolute w-full  p-4 text-center bg-white/95 hover:cursor-pointer group bottom-4">
+            class="absolute w-full p-4 text-center bg-white/95 hover:cursor-pointer group bottom-4">
             <span class="font-bold text-teal-600 group-hover:text-slate-600">
                 Expand
             </span>
