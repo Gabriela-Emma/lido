@@ -1,14 +1,16 @@
 <template>
-    <TransitionRoot :show="true" enter="transition-opacity duration-75" enter-from="opacity-0"
-        enter-to="opacity-100" leave="transition-opacity duration-150" leave-from="opacity-100" leave-to="opacity-0">
+    <TransitionRoot :show="showPlayer" enter="ease-out duration-700"
+        enter-from="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" enter-to="opacity-100 translate-y-0 sm:scale-100"
+        leave="ease-in duration-200" leave-from="opacity-100 translate-y-0 sm:scale-100"
+        leave-to="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
         <section v-if="showPlayer"
-            class="sticky top-0 z-30 w-full bg-yellow-500 border-t border-yellow-600 -bottom-32 text-slate-800 drop-shadow-2xl ">
+            class="top-0 z-30 w-full bg-yellow-500 border-t border-yellow-600 -bottom-32 text-slate-800 drop-shadow-2xl">
             <div class="flex justify-end">
                 <button
-                    class="flex flex-row items-center p-1 m-1 text-white bg-yellow-500 border-2 border-white rounded-sm hover:bg-white"
+                    class="flex flex-row items-center p-1 m-1 bg-yellow-500 rounded-sm text-slate-700 hover:text-white"
                     @click="playStore.clearStore()">
-                    <span>Stop Player</span>
-                    <StopCircleIcon class="w-8 h-8 ml-3 text-slate-700 text-bold" aria-hidden="true" />
+                    <span class="font-bold">Stop Player</span>
+                    <StopCircleIcon class="w-8 h-8 ml-1.5 text-slate-700 font-bold hover:text-white" aria-hidden="true" />
                 </button>
             </div>
 
@@ -54,7 +56,7 @@
                         </button>
                     </div>
                     <div class="flex-1">
-                        <div class="font-medium">
+                        <div class="font-bold">
                             {{ currentlyPlaying?.title }}
                         </div>
                         <div class="flex items-center gap-4">
@@ -156,7 +158,7 @@ import { SpeakerXMarkIcon, SpeakerWaveIcon, PlayCircleIcon, PauseCircleIcon, } f
 import { usePlayStore } from '../store/play-store';
 import { storeToRefs } from 'pinia';
 import { ref, watch } from 'vue';
-import {  StopCircleIcon } from '@heroicons/vue/20/solid';
+import { StopCircleIcon } from '@heroicons/vue/20/solid';
 import { TransitionRoot } from "@headlessui/vue";
 
 

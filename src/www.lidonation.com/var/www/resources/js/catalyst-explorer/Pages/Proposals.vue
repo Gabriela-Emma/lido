@@ -110,13 +110,21 @@
                                 @paginated="(payload) => currPageRef = payload" />
                         </div>
                     </div>
+
                     <div class="sticky bottom-8">
-                        <div class="sticky flex justify-center mb-6">
-                            <button v-if="viewType == 'quickpitch'" @click="playStore.startPlaying(props.proposals?.data)"
-                                class="p-1 m-1 text-sm text-center transform bg-yellow-500 rounded-full">
-                                <span>Play all {{ props.proposals?.data.length }} quickpitches</span> <span>
-                                    <PlayCircleIcon class="w-8 h-8 text-slate-700" aria-hidden="true" />
+                        <div class="sticky flex justify-center mb-6" v-if="viewType == 'quickpitch' &&  props.proposals?.data.length < 36">
+                            <button v-if="!showPlayer" @click="playStore.startPlaying(props.proposals?.data)"
+                                class="flex flex-row items-center p-2 m-1 text-center transform bg-yellow-500 rounded-full text-l hover:text-white">
+                                <span class="font-bold">Play all {{ props.proposals?.data.length }} quickpitches</span>
+                                <span>
+                                    <PlayCircleIcon class="w-8 h-8 ml-2 text-slate-700 hover:text-white"
+                                        aria-hidden="true" />
                                 </span>
+                            </button>
+                            <button v-else @click="playStore.clearStore()"
+                                class="flex flex-row items-center p-2 m-1 text-center transform bg-yellow-500 rounded-full text-l hover:text-white">
+                                <span class="font-bold">Stop Player</span>
+                                <StopCircleIcon class="w-8 h-8 ml-1.5 text-slate-700 hover:text-white" aria-hidden="true" />
                             </button>
                         </div>
                         <footer class="">
@@ -241,6 +249,7 @@ import { useBookmarksStore } from '../stores/bookmarks-store';
 import { useProposalsRankingStore } from '../stores/proposals-ranking-store';
 import { useUserStore } from '../../global/Shared/store/user-store';
 import { usePlayStore } from '../../global/Shared/store/play-store';
+import { PlayCircleIcon, StopCircleIcon } from '@heroicons/vue/20/solid';
 
 /// props and class properties
 const props = withDefaults(
@@ -652,6 +661,8 @@ function openIdeascaleLinks() {
 }
 
 const playStore = usePlayStore();
+let { showPlayer } = storeToRefs(playStore);
+
 </script>
 <style>
 .item {

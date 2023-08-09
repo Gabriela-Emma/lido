@@ -1,5 +1,5 @@
 <template>
-    <div class="sticky flex flex-col">
+    <div class="sticky top-0 z-30 flex flex-col">
         <Nav :crumbs=crumbs />
         <GlobalPlayer />
     </div>
