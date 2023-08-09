@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="bg-primary-20">
         <header class="text-white bg-teal-600">
             <header-component
                 :titleName0="fund.data.label"
@@ -206,7 +206,7 @@
             </div>
         </header>
         <section
-            class="container py-10 overflow-visible bg-white bg-left-bottom bg-repeat-y bg-contain bg-opacity-90 bg-blend-color-burn lg:py-20 bg-pool-bw-light"
+            class="container py-10 overflow-visible lg:py-20"
         >
             <div
                 class="grid grid-cols-1 gap-3 mx-auto md:grid-cols-2 xl:grid-cols-3 3xl:grid-cols-4 max-w-7xl 2xl:max-w-full"
@@ -217,6 +217,7 @@
                         :key="proposal.id"
                         @profileQuickView="handleProfileQuickView($event)"
                         :proposal="proposal"
+                        class="bg-white overflow-hidden border rounded-sm border-slate-100 proposal-drip"
                     />
                 </template>
             </div>
