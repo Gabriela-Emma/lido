@@ -212,11 +212,12 @@
                 class="grid grid-cols-1 gap-3 mx-auto md:grid-cols-2 xl:grid-cols-3 3xl:grid-cols-4 max-w-7xl 2xl:max-w-full"
             >
                 <template v-for="proposal in proposals.data">
-                    <ProposalCard
+                    <ProposalSummaryCard
                         v-if="proposal?.id"
                         :key="proposal.id"
+                        @profileQuickView="handleProfileQuickView($event)"
                         :proposal="proposal"
-                    ></ProposalCard>
+                    />
                 </template>
             </div>
             <div
@@ -243,7 +244,6 @@ import { ref, watch } from "vue";
 import { marked } from "marked";
 import { computed } from "vue";
 import Proposal from "../models/proposal";
-import ProposalCard from "../modules/proposals/ProposalCard.vue";
 import Pagination from "../Shared/Components/Pagination.vue";
 import { router } from "@inertiajs/vue3";
 import { VARIABLES } from "../models/variables";
@@ -302,5 +302,9 @@ function query() {
         preserveState: true,
         preserveScroll: true,
     });
+}
+
+let handleProfileQuickView  = (user) => {
+    window.location.href = `/catalyst-proposals/users/${user.id}`;
 }
 </script>
