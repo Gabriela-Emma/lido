@@ -1,5 +1,4 @@
 import { defineStore } from "pinia";
-import Plyr from "plyr";
 import { computed, onMounted, ref, Ref } from "vue";
 import Proposal from "../../../catalyst-explorer/models/proposal";
 import Playlist from "../Models/playlist";
@@ -9,24 +8,29 @@ import { useStorage } from "@vueuse/core";
 export const usePlayStore = defineStore('play-store', () => {
 
     let playList: Ref<Playlist[]> = useStorage('playList', [], localStorage, { mergeDefaults: true });
+    let currentlyPlayingIndex: Ref<number> = useStorage('currentlyPlaying', 0, localStorage, { mergeDefaults: true });
     let showPlayer: Ref<Boolean> = useStorage('showPlayer', false, localStorage, { mergeDefaults: true });
-    let playerInstance:any = useStorage('playerInstance', {}, localStorage, { mergeDefaults: true });
+    let playerInstance = ref(null);
     const playing = ref(false);
     let currentTime = ref(0);
     let duration = ref(0);
     let volume = ref(10);
     let muted = ref(false);
-    let currentlyPlayingIndex = ref(0);
     let previousVolume = ref(null);
     let changingSource = ref(false);
     let waiting = ref(false);
 
     function startPlaying(proposals: Proposal[]) {
-        
+
         if (!proposals.length) { return };
         waiting.value = true;
         if (!showPlayer.value) {
             playList.value = [
+                {
+                    "title": 'proposal4',
+                    "provider": 'youtube',
+                    "quickpitch": "9yEczAvrt2w",
+                },
                 {
                     "title": 'proposal3',
                     "provider": 'youtube',
@@ -36,16 +40,12 @@ export const usePlayStore = defineStore('play-store', () => {
                     "title": 'proposal2',
                     "provider": 'youtube',
                     "quickpitch": "KfeHatAOgvY",
-                },
-                {
-                    "title": 'proposal4',
-                    "provider": 'youtube',
-                    "quickpitch": "KfeHatAOgvY",
-                },
+                }
             ];
+            // makePlaylist(proposals);
             showPlayer.value = true;
             setTimeout(() => {
-                createPlayer();
+                playerInstance.value.play()
             }, 4000);
 
         } else {
@@ -63,14 +63,13 @@ export const usePlayStore = defineStore('play-store', () => {
                 const provider = quickpitch?.match(regex) ? "youtube" : "vimeo";
                 return { title, quickpitch, provider };
             });
-        console.log(playList.value);
     }
 
     async function createPlayer() {
         while (!Object.keys(playerInstance.value).length) {
-            waiting.value = true; 
+            waiting.value = true;
         }
-        waiting.value = false; 
+        waiting.value = false;
 
         playerInstance.value.source = {
             type: 'video',
@@ -101,7 +100,7 @@ export const usePlayStore = defineStore('play-store', () => {
 
         setTimeout(() => {
             playerInstance.value.play();
-        }, 3000);
+        }, 1000);
 
     }
     async function changeCurrentlyPlaying(direction) {
@@ -126,10 +125,10 @@ export const usePlayStore = defineStore('play-store', () => {
             }
         }
         changingSource.value = false;
-        createPlayer()
         setTimeout(() => {
+            createPlayer()
             playerInstance.value.play();
-        }, 3000);
+        }, 1000);
 
         waiting.value = false
 
@@ -137,8 +136,12 @@ export const usePlayStore = defineStore('play-store', () => {
 
 
     function formatTime(time) {
-        return new Date(time * 1000).toISOString().substr(14, 5);
+        const date = new Date(time * 1000);
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+        const seconds = String(date.getSeconds()).padStart(2, '0');
+        return `${minutes}:${seconds}`;
     }
+
 
     function changeVolume() {
         playerInstance.value.volume = volume.value;
@@ -176,8 +179,9 @@ export const usePlayStore = defineStore('play-store', () => {
         }
         muted.value = playerInstance.value.muted
     }
-    function clearStore(){
-        if (!playList.value.length && !showPlayer.value )return;
+
+    function clearStore() {
+        if (!playList.value.length && !showPlayer.value) return;
         showPlayer.value = false;
         playing.value = false;
         currentTime.value = 0;
@@ -188,16 +192,17 @@ export const usePlayStore = defineStore('play-store', () => {
         previousVolume.value = null;
         changingSource.value = false;
         waiting.value = false;
-        playerInstance = null;
         playList.value = [];
-        playerInstance.value = {} as Plyr;
-        clearStore()
+
     }
 
-    function setPlayer(player){
+
+    function setPlayer(player) {
         console.log(player.player);
-        
+        console.log('changed');
+
         playerInstance.value = player.player;
+        createPlayer();
     }
 
     let currentlyPlaying = computed(() => playList.value[currentlyPlayingIndex.value])
@@ -205,7 +210,10 @@ export const usePlayStore = defineStore('play-store', () => {
     const durationFormatted = computed(() => formatTime(duration.value));
 
     onMounted(async () => {
-        console.log(playerInstance.value);
+        if (showPlayer && playList.value.length) {
+            createPlayer();
+            playerInstance.value.play();
+        }
     });
 
     return {
@@ -229,6 +237,7 @@ export const usePlayStore = defineStore('play-store', () => {
         clearStore,
         startPlaying,
         currentTime,
-        waiting
+        waiting,
+        currentlyPlayingIndex,
     }
 });

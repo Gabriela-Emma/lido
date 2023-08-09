@@ -1,9 +1,7 @@
 <template>
-    <Nav :crumbs=crumbs />
-    <div class="sticky">
-        <transition>
-            <GlobalPlayer />
-        </transition>
+    <div class="sticky flex flex-col">
+        <Nav :crumbs=crumbs />
+        <GlobalPlayer />
     </div>
 
     <section class="">

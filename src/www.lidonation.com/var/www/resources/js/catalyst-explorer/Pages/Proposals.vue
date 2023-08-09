@@ -65,9 +65,9 @@
                                         value: 'xls',
                                     },
                                 ]" :classes="{
-                                    container: 'multiselect border-0 p-0.5 flex-wrap',
-                                    containerActive: 'shadow-none shadow-transparent box-shadow-none',
-                                }" />
+    container: 'multiselect border-0 p-0.5 flex-wrap',
+    containerActive: 'shadow-none shadow-transparent box-shadow-none',
+}" />
                         </div>
                     </span>
                 </div>
@@ -110,111 +110,111 @@
                                 @paginated="(payload) => currPageRef = payload" />
                         </div>
                     </div>
-
-                    <footer class="sticky bottom-8">
-                        <div class="flex justify-center">
-                            <div
-                                class="relative px-4 py-3 text-sm text-white rounded-full shadow-xl bg-slate-800 lg:text-md xl:text-lg">
-
-                                <TransitionGroup tag="div" name="fade"
-                                    class="inline-flex flex-wrap justify-center h-full gap-1 mx-auto space-x-2 divide-x-reverse md:flex-nowrap md:gap-2 divide-slate-100 md:space-x-4">
-                                    <div class="flex flex-col text-center" key="countTotal">
-                                        <button @click="playStore.startPlaying(props.proposals?.data)"
-                                            class="p-1 m-1 text-sm text-center transform bg-yellow-500 rounded-full">
-                                            Play quickpitches
-                                        </button>
-                                        <span class="font-semibold">
-                                            {{ $filters.number(props.proposals.total, 4) }}
-                                        </span>
-                                        <span class="text-xs">
-                                            {{ $t('Submitted') }}
-                                        </span>
-                                    </div>
-                                    <div class="flex flex-col text-center" v-if="metricCountApproved" key="countFunded">
-                                        <span class="font-semibold">
-                                            {{ $filters.number(metricCountApproved, 4) }}
-                                        </span>
-                                        <span class="text-xs">
-                                            {{ $t('Approved') }}
-                                        </span>
-                                    </div>
-                                    <div class="flex flex-col text-center" v-if="metricCountTotalPaid" key="countPaid">
-                                        <span class="font-semibold">
-                                            {{ $filters.number(metricCountTotalPaid, 4) }}
-                                        </span>
-                                        <span class="text-xs">
-                                            {{ $t('Fully Paid') }}
-                                        </span>
-                                    </div>
-                                    <div class="flex flex-col text-center text-pink-500" v-if="metricCountCompleted"
-                                        key="completed">
-                                        <span class="font-semibold">
-                                            {{ $filters.number(metricCountCompleted, 4) }}
-                                        </span>
-                                        <span class="text-xs">
-                                            {{ $t('Completed') }}
-                                        </span>
-                                    </div>
-
-                                    <div class="w-full h-[1px] md:h-full md:w-[1px] bg-slate-100 relative"
-                                        v-if="(metricCountApproved || metricCountCompleted) && metricSumApproved">
-                                        <b
-                                            class="absolute hidden px-2 py-1 text-xs text-center text-yellow-500 rounded-full md:inline-block -top-6 -left-10 w-28 bg-slate-800">
-                                            {{ $t('Search metrics') }}
-                                        </b>
-                                    </div>
-
-                                    <div class="flex flex-col text-center" v-if="metricSumBudget" key="sumBudget">
-                                        <span class="font-semibold">
-                                            ${{ $filters.shortNumber(metricSumBudget, 2) }}
-                                        </span>
-                                        <span class="text-xs">
-                                            $ {{ $t('Requested') }}
-                                        </span>
-                                    </div>
-                                    <div class="flex flex-col text-center" v-if="metricSumAdaBudget"
-                                        key="metricSumAdaBudget">
-                                        <span class="font-semibold">
-                                            ₳{{ $filters.shortNumber(metricSumAdaBudget, 2) }}
-                                        </span>
-                                        <span class="text-xs">
-                                            ₳ {{ $t('Requested') }}
-                                        </span>
-                                    </div>
-
-                                    <div class="flex flex-col text-center text-teal-light-500" v-if="metricSumApproved"
-                                        key="sumApproved">
-                                        <span class="font-semibold">
-                                            ${{ $filters.shortNumber(metricSumApproved, 2) }}
-                                        </span>
-                                        <span class="text-xs">
-                                            $ {{ $t('Awarded') }}
-                                        </span>
-                                    </div>
-                                    <div class="flex flex-col text-center text-teal-400" v-if="metricSumDistributed"
-                                        key="sumDistributed">
-                                        <span class="font-semibold">
-                                            ${{ $filters.shortNumber(metricSumDistributed, 2) }}
-                                        </span>
-                                        <span class="text-xs">
-                                            $ {{ $t('Distributed') }}
-                                        </span>
-                                    </div>
-                                    <div class="flex flex-col text-center text-pink-500" v-if="metricSumCompleted"
-                                        key="sumCompleted">
-                                        <span class="font-semibold">
-                                            ${{ $filters.shortNumber(metricSumCompleted, 2) }}
-                                        </span>
-                                        <span class="text-xs">
-                                            $ {{ $t('Completed') }}
-                                        </span>
-                                    </div>
-                                </TransitionGroup>
-                            </div>
+                    <div class="sticky bottom-8">
+                        <div class="sticky flex justify-center mb-6">
+                            <button v-if="viewType == 'quickpitch'" @click="playStore.startPlaying(props.proposals?.data)"
+                                class="p-1 m-1 text-sm text-center transform bg-yellow-500 rounded-full">
+                                <span>Play all {{ props.proposals?.data.length }} quickpitches</span> <span>
+                                    <PlayCircleIcon class="w-8 h-8 text-slate-700" aria-hidden="true" />
+                                </span>
+                            </button>
                         </div>
-                    </footer>
+                        <footer class="">
+                            <div class="flex justify-center">
+                                <div
+                                    class="relative px-4 py-3 text-sm text-white rounded-full shadow-xl bg-slate-800 lg:text-md xl:text-lg">
+                                    <TransitionGroup tag="div" name="fade"
+                                        class="inline-flex flex-wrap justify-center h-full gap-1 mx-auto space-x-2 divide-x-reverse md:flex-nowrap md:gap-2 divide-slate-100 md:space-x-4">
+                                        <div class="flex flex-col text-center" key="countTotal">
+                                            <span class="font-semibold">
+                                                {{ $filters.number(props.proposals.total, 4) }}
+                                            </span>
+                                            <span class="text-xs">
+                                                {{ $t('Submitted') }}
+                                            </span>
+                                        </div>
+                                        <div class="flex flex-col text-center" v-if="metricCountApproved" key="countFunded">
+                                            <span class="font-semibold">
+                                                {{ $filters.number(metricCountApproved, 4) }}
+                                            </span>
+                                            <span class="text-xs">
+                                                {{ $t('Approved') }}
+                                            </span>
+                                        </div>
+                                        <div class="flex flex-col text-center" v-if="metricCountTotalPaid" key="countPaid">
+                                            <span class="font-semibold">
+                                                {{ $filters.number(metricCountTotalPaid, 4) }}
+                                            </span>
+                                            <span class="text-xs">
+                                                {{ $t('Fully Paid') }}
+                                            </span>
+                                        </div>
+                                        <div class="flex flex-col text-center text-pink-500" v-if="metricCountCompleted"
+                                            key="completed">
+                                            <span class="font-semibold">
+                                                {{ $filters.number(metricCountCompleted, 4) }}
+                                            </span>
+                                            <span class="text-xs">
+                                                {{ $t('Completed') }}
+                                            </span>
+                                        </div>
+                                        <div class="w-full h-[1px] md:h-full md:w-[1px] bg-slate-100 relative"
+                                            v-if="(metricCountApproved || metricCountCompleted) && metricSumApproved">
+                                            <b
+                                                class="absolute hidden px-2 py-1 text-xs text-center text-yellow-500 rounded-full md:inline-block -top-6 -left-10 w-28 bg-slate-800">
+                                                {{ $t('Search metrics') }}
+                                            </b>
+                                        </div>
+                                        <div class="flex flex-col text-center" v-if="metricSumBudget" key="sumBudget">
+                                            <span class="font-semibold">
+                                                ${{ $filters.shortNumber(metricSumBudget, 2) }}
+                                            </span>
+                                            <span class="text-xs">
+                                                $ {{ $t('Requested') }}
+                                            </span>
+                                        </div>
+                                        <div class="flex flex-col text-center" v-if="metricSumAdaBudget"
+                                            key="metricSumAdaBudget">
+                                            <span class="font-semibold">
+                                                ₳{{ $filters.shortNumber(metricSumAdaBudget, 2) }}
+                                            </span>
+                                            <span class="text-xs">
+                                                ₳ {{ $t('Requested') }}
+                                            </span>
+                                        </div>
+                                        <div class="flex flex-col text-center text-teal-light-500" v-if="metricSumApproved"
+                                            key="sumApproved">
+                                            <span class="font-semibold">
+                                                ${{ $filters.shortNumber(metricSumApproved, 2) }}
+                                            </span>
+                                            <span class="text-xs">
+                                                $ {{ $t('Awarded') }}
+                                            </span>
+                                        </div>
+                                        <div class="flex flex-col text-center text-teal-400" v-if="metricSumDistributed"
+                                            key="sumDistributed">
+                                            <span class="font-semibold">
+                                                ${{ $filters.shortNumber(metricSumDistributed, 2) }}
+                                            </span>
+                                            <span class="text-xs">
+                                                $ {{ $t('Distributed') }}
+                                            </span>
+                                        </div>
+                                        <div class="flex flex-col text-center text-pink-500" v-if="metricSumCompleted"
+                                            key="sumCompleted">
+                                            <span class="font-semibold">
+                                                ${{ $filters.shortNumber(metricSumCompleted, 2) }}
+                                            </span>
+                                            <span class="text-xs">
+                                                $ {{ $t('Completed') }}
+                                            </span>
+                                        </div>
+                                    </TransitionGroup>
+                                </div>
+                            </div>
+                        </footer>
+                    </div>
                 </div>
-
             </div>
         </section>
     </div>
