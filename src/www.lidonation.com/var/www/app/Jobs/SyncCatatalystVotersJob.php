@@ -41,22 +41,35 @@ class SyncCatatalystVotersJob implements ShouldQueue
     public function __construct(protected $encodedTransactionDetails = null)
     {
         if (!$encodedTransactionDetails) {
-            $votersRegistrationTransactions = (new CardanoBlockfrostService)->get("/metadata/txs/labels/61284", null)->collect();
-            $votersRegistrationTransactions->each(function(Array $voterTransaction) {
-                $transaction = new Fluent([
-                    'tx_hash' => $voterTransaction['tx_hash'],
-                    "json_metadata" => new Fluent([
-                        "one" => $voterTransaction['json_metadata']['1'],
-                        "two" => $voterTransaction['json_metadata']['2'],
-                    ]),
-                ]);
+            $page = 1;
+            do {
+                $votersRegistrationTransactions = (new CardanoBlockfrostService)->get(
+                    "/metadata/txs/labels/61284",
+                    [
+                        'count' => 30,
+                        'page' => $page,
+                        'order' => 'desc'
+                    ])->collect();
                 
-                $voterSavedRegistration = CatalystRegistration::where('tx', $transaction?->tx_hash)->first();
+                $votersRegistrationTransactions->each(function(Array $voterTransaction) {
+                    $transaction = new Fluent([
+                        'tx_hash' => $voterTransaction['tx_hash'],
+                        "json_metadata" => new Fluent([
+                            "one" => $voterTransaction['json_metadata']['1'],
+                            "two" => $voterTransaction['json_metadata']['2'],
+                        ]),
+                    ]);
+                    
+                    $voterSavedRegistration = CatalystRegistration::where('tx', $transaction?->tx_hash)->first();
+    
+                    if (! $voterSavedRegistration instanceof CatalystRegistration) {
+                        dispatch(new self($transaction));
+                    }
+                });
 
-                if (! $voterSavedRegistration instanceof CatalystRegistration) {
-                    dispatch(new self($transaction));
-                }
-            });
+                $page++;
+                sleep(10);
+            } while ($votersRegistrationTransactions->isNotEmpty());
         }
     }
 
