@@ -1,19 +1,20 @@
 <template>
-    <TransitionRoot :show="showPlayer" enter="ease-out duration-700"
+    <TransitionRoot :show="true" enter="ease-out duration-700"
         enter-from="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" enter-to="opacity-100 translate-y-0 sm:scale-100"
         leave="ease-in duration-200" leave-from="opacity-100 translate-y-0 sm:scale-100"
         leave-to="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
-        <section v-if="showPlayer"
-            class="top-0 z-30 w-full bg-yellow-500 border-t border-yellow-600 -bottom-32 text-slate-800 drop-shadow-2xl">
-            <div class="flex justify-end">
-                <button
-                    class="flex flex-row items-center p-1 m-1 bg-yellow-500 rounded-sm text-slate-700 hover:text-white"
-                    @click="playStore.clearStore()">
-                    <span class="font-bold">Stop Player</span>
-                    <StopCircleIcon class="w-8 h-8 ml-1.5 text-slate-700 font-bold hover:text-white" aria-hidden="true" />
-                </button>
-            </div>
 
+        <section v-if="showPlayer"
+            class="flex flex-row items-center w-full bg-yellow-500 border-t border-yellow-600 -bottom-32 text-slate-800 drop-shadow-2xl ">
+            <div class="p-3 ">
+                <div class="embed-wrapper">
+                    <vue-plyr ref="plyr" id="#player">
+                        <div id="player" :data-plyr-provider="currentlyPlaying?.provider"
+                            :data-plyr-embed-id="currentlyPlaying?.quickpitch">
+                        </div>
+                    </vue-plyr>
+                </div>
+            </div>
             <div class="container relative py-4 overflow-visible">
                 <div class="flex items-center gap-2">
                     <div class="flex flex-row">
@@ -21,14 +22,14 @@
                             :class="{ 'cursor-not-allowed': waiting }"
                             @click.prevent="playStore.changeCurrentlyPlaying('previous')">
                             <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"
-                                fill="currentColor" class="w-20 h-20 hover:fill-white fill-slate-700">
+                                fill="currentColor" class="w-16 h-16 hover:fill-white fill-slate-700">
                                 <path
                                     d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10c5.515 0 10-4.486 10-10S17.515 2 12 2zm4 14-6-4v4H8V8h2v4l6-4v8z" />
                             </svg>
                         </button>
                         <div role="status" v-if="waiting">
                             <svg aria-hidden="true"
-                                class="inline w-20 h-20 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-yellow-400"
+                                class="inline w-16 h-16 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-yellow-400"
                                 viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path
                                     d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
@@ -39,17 +40,20 @@
                             </svg>
                         </div>
                         <button v-if="!waiting" type="button" class="hover:text-white" @click.prevent="playStore.toggle()">
-                            <PlayCircleIcon v-if="!playing" class="w-20 h-20 text-slate-700 hover:text-white"
+                            <PlayCircleIcon v-if="!playing" class="w-16 h-16 text-slate-700 hover:text-white"
                                 aria-hidden="true" />
-                            <PauseCircleIcon v-if="!!playing" class="w-20 h-20 text-slate-700 hover:text-white"
+                            <PauseCircleIcon v-if="!!playing" class="w-16 h-16 text-slate-700 hover:text-white"
                                 aria-hidden="true" />
+                        </button>
+                        <button class="hover:text-white" @click="playStore.clearStore()">
+                            <StopCircleIcon class="w-16 h-16 text-slate-700 hover:text-white" aria-hidden="true" />
                         </button>
                         <button type="button" class="hover:text-white" :disabled="waiting"
                             :class="{ 'cursor-not-allowed': waiting }"
                             @click.prevent="playStore.changeCurrentlyPlaying('next')">
                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"
                                 id="mdi-skip-next-circle" fill="currentColor"
-                                class="w-20 h-20 fill-slate-700 hover:fill-white" viewBox="0 0 24 24">
+                                class="w-16 h-16 fill-slate-700 hover:fill-white" viewBox="0 0 24 24">
                                 <path
                                     d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M8,8L13,12L8,16M14,8H16V16H14" />
                             </svg>
@@ -125,30 +129,6 @@
                         </div>
                     </div>
                 </div>
-                <div class="fixed bottom-0 right-0 hidden overflow-visible" :class="{
-                    'bottom-0 md:-bottom-60': 1,
-                    '-bottom-60': !1,
-                }">
-                    <div class="p-2 bg-yellow-500 border-t border-l border-r border-yellow-600 rounded-t-sm w-80">
-                        <div class="embed-wrapper">
-                            <div>
-                                <vue-plyr v-if="currentlyPlaying?.provider === 'youtube'" ref="plyr" id="#player">
-                                    <div id="player" :data-plyr-provider="currentlyPlaying?.provider"
-                                        :data-plyr-embed-id="currentlyPlaying?.quickpitch">
-                                    </div>
-                                </vue-plyr>
-                                <vue-plyr v-if="currentlyPlaying?.provider === 'vimeo'" ref="plyr" id="#player">
-                                    <div class="plyr__video-embed" id="player">
-                                        <iframe
-                                            :src="`https://player.vimeo.com/video/${currentlyPlaying?.quickpitch}?h=f2c5cf1159&title=0&byline=0&portrait=0`"
-                                            style="position:absolute;top:0;left:0;width:100%;height:100%;" frameborder="0"
-                                            allow="fullscreen; picture-in-picture" allowfullscreen></iframe>
-                                    </div>
-                                </vue-plyr>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </section>
     </TransitionRoot>
@@ -160,6 +140,7 @@ import { storeToRefs } from 'pinia';
 import { ref, watch } from 'vue';
 import { StopCircleIcon } from '@heroicons/vue/20/solid';
 import { TransitionRoot } from "@headlessui/vue";
+import Toggle from '@vueform/toggle/src/Toggle';
 
 
 let plyr = ref(null);
@@ -179,10 +160,15 @@ let { currentlyPlayingIndex } = storeToRefs(playStore);
 
 let { currentTimeFormatted } = storeToRefs(playStore);
 
-watch([plyr, currentlyPlayingIndex], () => {
+watch([plyr, currentlyPlayingIndex], async () => {
     if (plyr.value) {
-        playStore.setPlayer(plyr.value);
+        waiting.value = true;
+        await playStore.setPlayer(plyr.value);
+        playStore.toggle()
+        setTimeout(() => {
+            playStore.toggle()
+            waiting.value = false;
+        }, 3000);
     }
-
 })
 </script>
