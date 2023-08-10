@@ -13,6 +13,8 @@ use JetBrains\PhpStorm\ArrayShape;
 use Meilisearch\Endpoints\Indexes;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Fluent;
+use Illuminate\Support\Collection;
+use App\Enums\CatalystExplorerQueryParams;
 
 class CatalystChallengeController extends Controller
 {
@@ -20,12 +22,15 @@ class CatalystChallengeController extends Controller
     public int $perPage = 24;
     protected Builder $searchBuilder;
     public ?string $search = null;
+    public Collection $peopleFilter;
 
     public function index(Request $request, $slug)
     {
         $this->perPage = $request->input('l', 24);
 
         $this->currentPage = $request->input('p', 1);
+
+        $this->peopleFilter = $request->collect(CatalystExplorerQueryParams::PEOPLE)->map(fn ($n) => intval($n));
 
 
         $fund = Fund::where('slug', $slug)->first();
@@ -39,6 +44,9 @@ class CatalystChallengeController extends Controller
             'completedProposalsCount' => $this->completedProposals($fund),
             'totalAmountRequested' => $this->totalAmountRequested($fund),
             'totalAmountAwarded' => $this->totalAmountAwarded($fund),
+            'filters' => [
+                'people' => $this->peopleFilter->toArray(),
+            ],
             'crumbs' => [
                 ['link' => '/catalyst-explorer/funds', 'label' => 'Funds'],
                 ['link' => $fund->parent->link, 'label' => $fund->parent->label, 'external' => true],
@@ -155,7 +163,12 @@ class CatalystChallengeController extends Controller
     protected function getUserFilters($fund): array
     {
         $_options = [];
-        $_options[] = 'challenge.id = ' . $fund->id;
+        if($fund->id){
+            $_options[] = 'challenge.id = ' . $fund->id;
+        }
+        if ($this->peopleFilter->isNotEmpty()) {
+            $_options[] = 'users.id IN '.$this->peopleFilter->toJson();
+        }
         return $_options;
     }
 }

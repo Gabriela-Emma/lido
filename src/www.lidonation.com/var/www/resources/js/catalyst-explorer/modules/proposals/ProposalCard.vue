@@ -8,7 +8,7 @@
             @profileQuickView="handleProfileQuickView($event)"
             @summary="changeCardMode" :proposal="props.proposal" />
 
-        <ProposalRankedChoiceCard v-else-if="viewType=='ranked'"
+        <ProposalRankedChoiceCard v-else-if="viewType=='ranked' && showRankedCard"
             @profileQuickView="handleProfileQuickView($event)"
             :proposal="props.proposal" />
 
@@ -46,12 +46,14 @@ const props = withDefaults(
     defineProps<{
         proposal: Proposal,
         quickpitching?: boolean,
+        showRankedCard: boolean,
     }>(),
     {
         quickpitching: false,
         proposal: () => {
             return {} as Proposal;
         },
+        showRankedCard: true,
     },
 );
 let quickpitching = ref(props.quickpitching);
