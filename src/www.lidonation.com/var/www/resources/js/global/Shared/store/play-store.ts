@@ -6,7 +6,6 @@ import { useStorage } from "@vueuse/core";
 
 
 export const usePlayStore = defineStore('play-store', () => {
-
     let playList: Ref<Playlist[]> = useStorage('playList', [], localStorage, { mergeDefaults: true });
     let currentlyPlayingIndex: Ref<number> = useStorage('currentlyPlaying', 0, localStorage, { mergeDefaults: true });
     let showPlayer: Ref<boolean> = useStorage('showPlayer', false, localStorage, { mergeDefaults: true });
@@ -19,7 +18,6 @@ export const usePlayStore = defineStore('play-store', () => {
     let previousVolume = ref(null);
     let changingSource = ref(false);
     let waiting = ref(false);
-
 
     async function startPlaying(proposals: Proposal[]) {
         if (!proposals.length) { return };
@@ -46,7 +44,6 @@ export const usePlayStore = defineStore('play-store', () => {
     }
 
     async function createPlayer() {
-
         playerInstance.value.on('timeupdate', (event) => {
             const instance = event.detail.plyr;
             currentTime.value = instance.currentTime;

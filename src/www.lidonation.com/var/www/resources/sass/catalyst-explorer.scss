@@ -21,6 +21,27 @@
     --v-border-color: #CBD5E1;
 }
 
+.global-player {
+    .plyr__controls {
+        padding-top: 2px !important;
+        padding-bottom: 2px !important;
+
+        .plyr__controls__item {
+            &.plyr__time--current.plyr__time,
+            &.plyr__menu,
+            &.plyr__control,
+            &.plyr__progress__container {
+                display: none !important;
+            }
+
+            &.plyr__volume{
+                width: 100% !important;
+                max-width: 100% !important;
+            }
+        }
+    }
+}
+
 // primemg
 .p-hidden-accessible{
     @apply sr-only;
