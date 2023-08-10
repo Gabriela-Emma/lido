@@ -132,7 +132,6 @@ export const usePlayStore = defineStore('play-store', () => {
             playerInstance.value.pause();
         } else {
             playerInstance.value.play();
-            console.log('playing');
 
         }
         return
