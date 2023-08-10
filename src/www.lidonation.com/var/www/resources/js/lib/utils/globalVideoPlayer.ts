@@ -12,11 +12,12 @@ export function globalVideoPlayer() {
         init() {
             if (!this.player) {
                 this.player = new Plyr(this.$refs.globalVideo, {
-                    controls: [],
+                    controls: ['play', 'mute', 'volume', 'settings','fullscreen'],
                     volume: 1,
                     muted: false,
-                    clickToPlay: false,
+                    clickToPlay: true,
                     autoplay: true,
+                    displayDuration: false,
                     youtube: {
                         rel: 0,
                         autoplay: 1,
