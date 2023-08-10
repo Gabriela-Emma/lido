@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\CatalystExplorer;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ProposalResource;
+use App\Jobs\ProposalQuickPitchLength;
 use App\Models\Proposal;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\Foundation\Application;
@@ -76,6 +77,7 @@ class ProposalController extends Controller
         }
         $proposal->quickpitch = $qp;
         $proposal->save();
+        ProposalQuickPitchLength::dispatchSync($proposal);
 
         return $proposal->quickpitch;
     }
