@@ -4,8 +4,8 @@ const blockfrostRequest = async ({
     headers = {},
     method = 'GET'
 }) => {
-    let networkEndpoint = process.env.NETWORK === '0' ? 'https://cardano-preview.blockfrost.io/api/v0' : 'https://cardano-mainnet.blockfrost.io/api/v0' //process.env.BLOCKFROST_URL ? process.env.BLOCKFROST_URL : ''
-    let blockfrostApiKey = process.env.NETWORK === '0' ? 'preview2QfIR5epKjaFmh54Id75yXAM7yStk3vc' : 'preview2QfIR5epKjaFmh54Id75yXAM7yStk3vc';
+    let networkEndpoint = process.env.NETWORK === '0' ? process.env.PREVIEW_BLOCKFROST_URL : process.env.MAINNET_BLOCKFROST_URL;
+    let blockfrostApiKey = process.env.NETWORK === '0' ? process.env.PREVIEW_BLOCKFROST_API_KEY : process.env.MAINNET_BLOCKFROST_API_KEY;
 
     try {
         return await (
