@@ -49,13 +49,11 @@
 
         <div class="lg:grid lg:grid-cols-7">
             <div class="relative col-span-4 overflow-x-visible">
-            <div v-if="profileQuickView" class="absolute overflow-auto shadow-md w-96 h-[29rem] xl:right-3 xl:top-12">
-                <ProposalUserQuickView
-                    :profileQuickView="profileQuickView"
-                    @close="profileQuickView = null"
-                />
-            </div>
-            <ul role="list" class="mt-8 py-3 overflow-y-auto overflow-x-visible border border-l-0 border-gray-200 divide-y divide-gray-200 max-h-[33rem]">
+                <div v-if="profileQuickView" class="absolute overflow-auto shadow-md w-96 h-[29rem] xl:right-3 xl:top-12">
+                    <ProposalUserQuickView :profileQuickView="profileQuickView" @close="profileQuickView = null" />
+                </div>
+                <ul role="list"
+                    class="mt-8 py-3 overflow-y-auto overflow-x-visible border border-l-0 border-gray-200 divide-y divide-gray-200 max-h-[33rem]">
                     <li class="ml-4" v-for="item in group.items" :key="item?.model?.id">
                         <div class="flex justify-start gap-1 px-4 py-4 lg:gap-0 hover:bg-gray-50">
                             <div class="flex flex-col flex-none w-16 gap-2 px-1 py-2 rounded-sm" :class="{
@@ -63,7 +61,10 @@
                                 'bg-red-100/80': item.model.vote?.vote === VOTEACTIONS.DOWNVOTE,
                                 'bg-slate-100': !item.model.vote
                             }">
-                                <div class="flex gap-1 flex-nowrap">
+                                <HandThumbIcons :proposal="item.model" @new-reaction="updateChart($event,item?.model)"
+                                    @reaction-update="updateChart($event,item?.model)" />
+
+                                <!-- <div class="flex gap-1 flex-nowrap">
                                     <div class="flex-1 w-1/2" @click="vote(VOTEACTIONS.UPVOTE, item.model)">
                                         <HandThumbUpIcon
                                             :class="[item.model.vote?.vote === VOTEACTIONS.UPVOTE ? 'text-teal-700' : 'text-gray-500']"
@@ -75,7 +76,7 @@
                                             :class="[item?.model?.vote?.vote === VOTEACTIONS.DOWNVOTE ? 'text-pink-800' : 'text-gray-500']"
                                             class="w-6 h-6 hover:text-yellow-700 hover:cursor-pointer" />
                                     </div>
-                                </div>
+                                </div> -->
                                 <div class="flex items-center gap-1">
                                     <TrashIcon @click.prevent="removeItem(item?.id)" aria-hidden="true"
                                         class="w-5 h-5 text-gray-500 hover:text-teal-600 hover:cursor-pointer" />
@@ -86,7 +87,8 @@
                                     <div class="relative">
                                         <div class="flex flex-col text-md">
                                             <h4 class="text-sm font-medium xl:font-semibold xl:text-lg">
-                                                <a :href="item?.model?.link" target="_blank" class="text-sm font-medium xl:font-semibold xl:text-lg text-slate-700">
+                                                <a :href="item?.model?.link" target="_blank"
+                                                    class="text-sm font-medium xl:font-semibold xl:text-lg text-slate-700">
                                                     {{ item?.model?.title }}
                                                 </a>
                                             </h4>
@@ -100,7 +102,8 @@
                                                             item?.model?.currency) }}
                                                     </div>
                                                 </div>
-                                                <ProposalAuthors :proposal="item.model" @profileQuickView="handleProfileQuickView($event)" :size="5" />
+                                                <ProposalAuthors :proposal="item.model"
+                                                    @profileQuickView="handleProfileQuickView($event)" :size="5" />
                                             </div>
                                         </div>
                                     </div>
@@ -135,6 +138,7 @@ import { storeToRefs } from 'pinia';
 import { useUserStore } from '../../../global/Shared/store/user-store';
 import ProposalAuthors from '../proposals/partials/ProposalAuthors.vue';
 import ProposalUserQuickView from '../proposals/partials/ProposalUserQuickView.vue';
+import HandThumbIcons from '../proposals/partials/HandThumbIcons.vue';
 
 const props = defineProps<{
     group: DraftBallotGroup<Proposal>
@@ -162,7 +166,7 @@ let allotedBudget = computed(() => {
 
 let profileQuickView = ref(null);
 
-let handleProfileQuickView  = (user: Author) => {
+let handleProfileQuickView = (user: Author) => {
     profileQuickView.value = user;
 }
 
@@ -226,51 +230,7 @@ const totalUnlikes = computed(() => {
     }, 0) || 0;
 });
 
-function vote(vote: VOTEACTIONS, proposal: Proposal) {
-    if (proposal.vote) {
-        router.patch(
-            route('catalystExplorer.votes.update', { vote: proposal.vote.id }),
-            { vote },
-            {
-                preserveScroll: true,
-                preserveState: true,
-                replace: true,
-                onSuccess: async (component) => {
-                    await bookmarksStore.loadDraftBallot();
-                    if (vote === VOTEACTIONS.UPVOTE) {
-                        likes.value = likes.value === 1 ? 1 : 0;
-                        unlikes.value = 0;
-                    } else if (vote === VOTEACTIONS.DOWNVOTE) {
-                        unlikes.value = unlikes.value === 1 ? 1 : 0;
-                        likes.value = 0;
-                    }
-                    setTimeout(() => {
-                        chartData.value = cloneDeep(getChart());
-                        pieChart.value?.chart.update('active');
-                    }, 100);
-                }
-            }
-        );
-    } else {
-        router.post(
-            route('catalystExplorer.votes.store'),
-            { vote, proposal: proposal.id },
-            {
-                preserveScroll: true,
-                preserveState: true,
-                replace: true,
-                onSuccess: async (component) => {
-                    await bookmarksStore.loadDraftBallot();
-                    setTimeout(() => {
-                        chartData.value = cloneDeep(getChart());
-                        pieChart.value?.chart.update('active');
-                    }, 100);
-                }
-            }
-        );
-    }
 
-}
 
 function getChart() {
     return {
@@ -299,6 +259,33 @@ interface Author {
     username: string;
     profile_photo_url: string;
     ideascale_id: number;
-    media: {original_url: string}[]
+    media: { original_url: string }[]
+}
+
+let updateChart = async (vote, proposal) => {
+    if (proposal.vote) {
+
+        await bookmarksStore.loadDraftBallot();
+        if (vote === VOTEACTIONS.UPVOTE) {
+            likes.value = likes.value === 1 ? 1 : 0;
+            unlikes.value = 0;
+        } else if (vote === VOTEACTIONS.DOWNVOTE) {
+            unlikes.value = unlikes.value === 1 ? 1 : 0;
+            likes.value = 0;
+        }
+        setTimeout(() => {
+            chartData.value = cloneDeep(getChart());
+            pieChart.value?.chart.update('active');
+        }, 100);
+
+    } else {
+
+        await bookmarksStore.loadDraftBallot();
+        setTimeout(() => {
+            chartData.value = cloneDeep(getChart());
+            pieChart.value?.chart.update('active');
+        }, 100);
+
+    }
 }
 </script>
