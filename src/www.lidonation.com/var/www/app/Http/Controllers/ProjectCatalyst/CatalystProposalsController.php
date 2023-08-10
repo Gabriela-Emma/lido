@@ -246,8 +246,6 @@ class CatalystProposalsController extends Controller
             $props['currPage'] = $this->currentPage;
         }
 
-
-        // get filter(s) from request
         return Inertia::render('Proposals', $props);
     }
 

@@ -74,9 +74,9 @@ class ProposalController extends Controller
             }
             $qp = 'https://youtu.be/' . $qp;
         }
-        $proposal->saveMeta('quickpitch', $qp);
+        $proposal->quickpitch = $qp;
         $proposal->save();
 
-        return $proposal->metas()->where('key','quickpitch')->pluck('content');
+        return $proposal->quickpitch;
     }
 }
