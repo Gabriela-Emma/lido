@@ -16,7 +16,7 @@ return new class extends Migration
      */
     public function up()
     {
-        $metas = Meta::where('key', 'quick_pitch')
+        $metas = Meta::where('key', 'quickpitch')
                 ->orderBy('model_id')
                 ->get();
 

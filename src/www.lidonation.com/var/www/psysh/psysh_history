@@ -292,3 +292,7 @@ Proposal::find(316)->meta_data?->quickPitchId
 Proposal::find(316)->meta_data?->quickPitchId
 Proposal::find(316)->quickPitchId
 Proposal::find(643)->quickPitchId
+$metas\040=\040Meta::where('key',\040'quickpitch')
+$metas\040=\040Meta::where('key',\040'quickpitch')
+$metas\040=\040Meta::where('key',\040'quickpitch')
+exit
