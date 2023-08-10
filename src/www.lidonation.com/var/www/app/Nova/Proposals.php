@@ -110,6 +110,9 @@ class Proposals extends Resource
 
             Text::make(__('Website'), 'website')->hideFromIndex(),
             Text::make(__('Ideascale Link'), 'ideascale_link')->hideFromIndex(),
+            Text::make(__('Quickpitch'), 'quickpitch')->hideFromIndex(),
+            Text::make(__('Quickpitch Length'), 'quickpitch_length')->sortable(),
+
             //            Currency::make(__('Requested'), 'amount_requested')->sortable(),
             Number::make(__('Requested'), 'amount_requested')->sortable()->required(),
             Select::make(__('Currency'), 'currency')->options([
@@ -274,7 +277,7 @@ class Proposals extends Resource
     {
         return [
             Images::make(__('Hero'), 'hero')
-                ->enableExistingMedia(),
+                ->enableExistingMedia()->hideFromIndex(),
         ];
     }
 
@@ -328,8 +331,7 @@ class Proposals extends Resource
             Markdown::make(__('Experience'))->translatable()->nullable(),
             Markdown::make(__('Content'), 'content')->translatable()->required(),
             Markdown::make(__('Definition of Success'))->nullable(),
-            Text::make('Test', fn () => 'test'),
-            Text::make('Shortcode', fn () => ("[proposal id={$this->id}]")),
+            Text::make('Shortcode', fn () => ("[proposal id={$this->id}]"))->hideFromIndex(),
         ];
     }
 }
