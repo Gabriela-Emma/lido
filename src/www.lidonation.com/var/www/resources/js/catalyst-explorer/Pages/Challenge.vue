@@ -205,20 +205,17 @@
                 </section>
             </div>
         </header>
-        <section
-            class="container py-10 overflow-visible lg:py-20"
-        >
+        <section class="container py-10 overflow-visible lg:py-20">
             <div
                 class="grid grid-cols-1 gap-3 mx-auto md:grid-cols-2 xl:grid-cols-3 3xl:grid-cols-4 max-w-7xl 2xl:max-w-full"
             >
                 <template v-for="proposal in proposals.data">
-                    <ProposalSummaryCard
+                    <ProposalCard
                         v-if="proposal?.id"
                         :key="proposal.id"
-                        @profileQuickView="handleProfileQuickView($event)"
                         :proposal="proposal"
-                        class="bg-white overflow-hidden border rounded-sm border-slate-100 proposal-drip"
-                    />
+                        :showRankedCard=false
+                    ></ProposalCard>
                 </template>
             </div>
             <div
@@ -250,6 +247,10 @@ import { router } from "@inertiajs/vue3";
 import { VARIABLES } from "../models/variables";
 import Fund from "../models/fund";
 import ProposalSummaryCard from "../modules/proposals/partials/ProposalSummaryCard.vue";
+import ProposalCard from "../modules/proposals/ProposalCard.vue";
+import Filters from "../models/filters";
+import { usePeopleStore } from '../stores/people-store';
+import { storeToRefs } from 'pinia';
 
 const props = withDefaults(
     defineProps<{
@@ -262,6 +263,7 @@ const props = withDefaults(
         totalAmountAwarded: string;
         currPage?: number;
         perPage?: number;
+        filters?: Filters,
         proposals: {
             links: [];
             total: number;
@@ -285,9 +287,23 @@ const fundContent = computed(() => {
 
 let currPageRef = ref<number>(props.currPage);
 let perPageRef = ref<number>(props.perPage);
+let filtersRef = ref<Filters>(props.filters);
+
+const peopleStore = usePeopleStore();
+peopleStore.loadPeople(props?.filters?.people);
+const { selectedPeople } = storeToRefs(peopleStore);
 
 watch([currPageRef, perPageRef], () => {
     query();
+});
+
+watch([filtersRef], () => {
+    currPageRef.value = null;
+    query();
+}, { deep: true });
+
+watch([selectedPeople], () => {
+    filtersRef.value.people = [...filtersRef.value.people, ...selectedPeople.value]
 });
 
 function query() {
@@ -295,8 +311,13 @@ function query() {
     if (currPageRef.value) {
         data[VARIABLES.PAGE] = currPageRef.value;
     }
+
     if (perPageRef.value) {
         data[VARIABLES.PER_PAGE] = perPageRef.value;
+    }
+
+    if (filtersRef.value?.people) {
+        data[VARIABLES.PEOPLE] = Array.from(filtersRef.value?.people);
     }
 
     router.get(`/catalyst-explorer/challenges/${props.fund.data.slug}`, data, {
@@ -305,7 +326,4 @@ function query() {
     });
 }
 
-let handleProfileQuickView  = (user) => {
-    window.location.href = `/catalyst-proposals/users/${user.id}`;
-}
 </script>
