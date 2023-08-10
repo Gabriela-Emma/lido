@@ -25,24 +25,7 @@ export const usePlayStore = defineStore('play-store', () => {
         if (!proposals.length) { return };
         if (!showPlayer.value) {
             showPlayer.value = true;
-            playList.value = [
-                {
-                    "title": 'proposal4',
-                    "provider": 'youtube',
-                    "quickpitch": "9yEczAvrt2w",
-                },
-                {
-                    "title": 'proposal3',
-                    "provider": 'youtube',
-                    "quickpitch": "QR33X9hs054",
-                },
-                {
-                    "title": 'proposal2',
-                    "provider": 'youtube',
-                    "quickpitch": "KfeHatAOgvY",
-                }
-            ];
-            // await makePlaylist(proposals);
+            await makePlaylist(proposals);
             waiting.value = false;
             setTimeout(() => {
                 createPlayer();
@@ -78,6 +61,10 @@ export const usePlayStore = defineStore('play-store', () => {
         });
         playerInstance.value.on('pause', () => {
             playing.value = false;
+        });
+
+        playerInstance.value.on('ended', () => {
+            changeCurrentlyPlaying('next');
         });
 
         playerInstance.value.source = {

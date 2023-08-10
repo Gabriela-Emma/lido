@@ -7,18 +7,10 @@
         <section v-if="showPlayer"
             class="flex flex-row items-center w-full bg-yellow-500 border-t border-yellow-600 -bottom-32 text-slate-800 drop-shadow-2xl ">
             <div class="p-3 ">
-                <div class="embed-wrapper max-h-20">
-                    <vue-plyr v-if="currentlyPlaying?.provider === 'youtube'" ref="plyr" id="#player">
+                <div class="embed-wrapper">
+                    <vue-plyr ref="plyr" id="#player">
                         <div id="player" :data-plyr-provider="currentlyPlaying?.provider"
                             :data-plyr-embed-id="currentlyPlaying?.quickpitch">
-                        </div>
-                    </vue-plyr>
-                    <vue-plyr v-if="currentlyPlaying?.provider === 'vimeo'" ref="plyr" id="#player">
-                        <div class="plyr__video-embed" id="player">
-                            <iframe
-                                :src="`https://player.vimeo.com/video/${currentlyPlaying?.quickpitch}?h=f2c5cf1159&title=0&byline=0&portrait=0`"
-                                style="position:absolute;top:0;left:0;width:100%;height:100%;" frameborder="0"
-                                allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
                         </div>
                     </vue-plyr>
                 </div>
@@ -148,6 +140,7 @@ import { storeToRefs } from 'pinia';
 import { ref, watch } from 'vue';
 import { StopCircleIcon } from '@heroicons/vue/20/solid';
 import { TransitionRoot } from "@headlessui/vue";
+import Toggle from '@vueform/toggle/src/Toggle';
 
 
 let plyr = ref(null);
@@ -167,10 +160,15 @@ let { currentlyPlayingIndex } = storeToRefs(playStore);
 
 let { currentTimeFormatted } = storeToRefs(playStore);
 
-watch([plyr, currentlyPlayingIndex], () => {
+watch([plyr, currentlyPlayingIndex], async () => {
     if (plyr.value) {
-        playStore.setPlayer(plyr.value);
+        waiting.value = true;
+        await playStore.setPlayer(plyr.value);
+        playStore.toggle()
+        setTimeout(() => {
+            playStore.toggle()
+            waiting.value = false;
+        }, 3000);
     }
-
 })
 </script>
