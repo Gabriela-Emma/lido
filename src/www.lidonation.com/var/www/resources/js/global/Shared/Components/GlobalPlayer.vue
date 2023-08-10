@@ -18,7 +18,7 @@
                 </div>
 
                 <div class="relative py-2 overflow-visible">
-                    <div class="flex flex-row items-start justify-start gap-2">
+                    <div class="flex flex-row items-start justify-start gap-3">
                         <div class="flex flex-col gap-1">
                             <div class="flex flex-row">
                                 <button type="button" class="hover:text-white " :disabled="waiting"
@@ -122,7 +122,7 @@
                                 </div>
                             </div> -->
                         </div>
-                        <div class="flex-1 pt-2">
+                        <div class="flex-1 pt-1">
                             <div class="text-lg font-bold lg:text-xl">
                                 {{ currentlyPlaying?.title }}
                             </div>
