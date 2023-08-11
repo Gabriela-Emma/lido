@@ -44,9 +44,9 @@
                                 </div>
                                 <button v-if="!waiting" type="button" class="hover:text-white" @click.prevent="playStore.toggle()">
                                     <PlayCircleIcon v-if="!playing" class="w-12 h-12 text-slate-700 hover:text-white"
-                                        aria-hidden="true" />
-                                    <PauseCircleIcon v-if="!!playing" class="w-12 h-12 text-slate-700 hover:text-white"
-                                        aria-hidden="true" />
+                                        :aria-hidden="true" />
+                                    <PauseCircleIcon v-if="playing" class="w-12 h-12 text-slate-700 hover:text-white"
+                                        :aria-hidden="true" />
                                 </button>
                                 <button class="hover:text-white" @click="playStore.clearStore()">
                                     <StopCircleIcon class="w-12 h-12 text-slate-700 hover:text-white" aria-hidden="true" />
@@ -101,7 +101,7 @@
                                     <input id="scrubber" type="range" min="0" :max="duration" @change="playStore.scrub()"
                                         v-model="currentTime">
                                 </div> -->
-                                <div class="inline-flex items-center gap-0.5 text-sm text-slate-800">
+                                <div class="inline-flex items-center gap-0.5 text-sm text-slate-800 plyr__controls__item plyr__time--current plyr__time">
                                     <div><span>{{ currentTimeFormatted }}</span></div>
                                     <div class="text-slate-400">/</div>
                                     <div>{{ durationFormatted }}</div>
@@ -134,7 +134,7 @@
     </TransitionRoot>
 </template>
 <script setup lang="ts">
-import { SpeakerXMarkIcon, SpeakerWaveIcon, PlayCircleIcon, PauseCircleIcon, } from '@heroicons/vue/24/solid';
+import {  PlayCircleIcon, PauseCircleIcon, } from '@heroicons/vue/24/solid';
 import { usePlayStore } from '../store/play-store';
 import { storeToRefs } from 'pinia';
 import { ref, watch } from 'vue';
@@ -148,10 +148,6 @@ let { showPlayer } = storeToRefs(playStore);
 let { playing } = storeToRefs(playStore);
 let { currentlyPlaying } = storeToRefs(playStore);
 let { waiting } = storeToRefs(playStore);
-let { currentTime } = storeToRefs(playStore);
-let { muted } = storeToRefs(playStore);
-let { duration } = storeToRefs(playStore);
-let { volume } = storeToRefs(playStore);
 let { durationFormatted } = storeToRefs(playStore);
 let { currentlyPlayingIndex } = storeToRefs(playStore);
 
