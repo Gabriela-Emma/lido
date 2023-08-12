@@ -26,27 +26,7 @@ export const usePlayStore = defineStore('play-store', () => {
         if (!proposals.length) { return };
         if (!showPlayer.value) {
             showPlayer.value = true;
-            playList.value = [
-                {
-                    "title": 'proposal4',
-                    "provider": 'youtube',
-                    "quickpitch": "9yEczAvrt2w",
-                    "id": 1
-                },
-                {
-                    "title": 'proposal3',
-                    "provider": 'youtube',
-                    "quickpitch": "QR33X9hs054",
-                    "id": 2
-                },
-                {
-                    "title": 'proposal2',
-                    "provider": 'youtube',
-                    "quickpitch": "KfeHatAOgvY",
-                    "id": 3
-                }
-            ];
-            // await makePlaylist(proposals);
+            await makePlaylist(proposals);
             waiting.value = false;
             setTimeout(() => {
                 createPlayer();
@@ -85,10 +65,8 @@ export const usePlayStore = defineStore('play-store', () => {
         playerInstance.value.on('play', (event) => {
             const instance = event.detail.plyr;
             if (dontRestart.value) {
-                // playerInstance.value.forward(currentTimeSaved.value);
+                playerInstance.value.forward(currentTimeSaved.value);
                 instance.currentTime = currentTimeSaved.value;
-                console.log({ time: currentTime.value });
-                console.log({ str: dontRestart.value });
 
 
                 dontRestart.value = false;
@@ -109,12 +87,10 @@ export const usePlayStore = defineStore('play-store', () => {
 
         playerInstance.value.on('error', () => {
             changeCurrentlyPlaying('next');
-            console.log('errored');
         });
 
         playerInstance.value.on('stalled', () => {
             changeCurrentlyPlaying('next');
-            console.log('stalled');
         });
 
         playerInstance.value.on('playing', (event) => {
