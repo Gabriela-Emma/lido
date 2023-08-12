@@ -42,7 +42,8 @@
                                             fill="currentFill" />
                                     </svg>
                                 </div>
-                                <button v-if="!waiting" type="button" class="hover:text-white" @click.prevent="playStore.toggle()">
+                                <button v-if="!waiting" type="button" class="hover:text-white"
+                                    @click.prevent="playStore.toggle()">
                                     <PlayCircleIcon v-if="!playing" class="w-12 h-12 text-slate-700 hover:text-white"
                                         :aria-hidden="true" />
                                     <PauseCircleIcon v-if="playing" class="w-12 h-12 text-slate-700 hover:text-white"
@@ -54,8 +55,8 @@
                                 <button type="button" class="hover:text-white" :disabled="waiting"
                                     :class="{ 'cursor-not-allowed': waiting }"
                                     @click.prevent="playStore.changeCurrentlyPlaying('next')">
-                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"
-                                        id="mdi-skip-next-circle" fill="currentColor"
+                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                        version="1.1" id="mdi-skip-next-circle" fill="currentColor"
                                         class="w-12 h-12 fill-slate-700 hover:fill-white" viewBox="0 0 24 24">
                                         <path
                                             d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M8,8L13,12L8,16M14,8H16V16H14" />
@@ -101,7 +102,8 @@
                                     <input id="scrubber" type="range" min="0" :max="duration" @change="playStore.scrub()"
                                         v-model="currentTime">
                                 </div> -->
-                                <div class="inline-flex items-center gap-0.5 text-sm text-slate-800 plyr__controls__item plyr__time--current plyr__time">
+                                <div
+                                    class="inline-flex items-center gap-0.5 text-sm text-slate-800 plyr__controls__item plyr__time--current plyr__time">
                                     <div><span>{{ currentTimeFormatted }}</span></div>
                                     <div class="text-slate-400">/</div>
                                     <div>{{ durationFormatted }}</div>
@@ -134,7 +136,7 @@
     </TransitionRoot>
 </template>
 <script setup lang="ts">
-import {  PlayCircleIcon, PauseCircleIcon, } from '@heroicons/vue/24/solid';
+import { PlayCircleIcon, PauseCircleIcon, } from '@heroicons/vue/24/solid';
 import { usePlayStore } from '../store/play-store';
 import { storeToRefs } from 'pinia';
 import { ref, watch } from 'vue';
@@ -147,20 +149,26 @@ const playStore = usePlayStore();
 let { showPlayer } = storeToRefs(playStore);
 let { playing } = storeToRefs(playStore);
 let { currentlyPlaying } = storeToRefs(playStore);
+let { dontRestart } = storeToRefs(playStore);
 let { waiting } = storeToRefs(playStore);
 let { durationFormatted } = storeToRefs(playStore);
 let { currentlyPlayingIndex } = storeToRefs(playStore);
+let { playList } = storeToRefs(playStore);
+
 
 let { currentTimeFormatted } = storeToRefs(playStore);
 
-watch([plyr, currentlyPlayingIndex], async () => {
+watch([plyr, currentlyPlayingIndex, playList], async () => {
     if (plyr.value) {
         waiting.value = true;
         await playStore.setPlayer(plyr.value);
         playStore.toggle()
         setTimeout(() => {
-            playStore.toggle()
             waiting.value = false;
+            if (!dontRestart) {
+                playStore.toggle()
+
+            }
         }, 3000);
     }
 })
