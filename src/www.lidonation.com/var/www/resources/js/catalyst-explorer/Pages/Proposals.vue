@@ -112,7 +112,7 @@
                     </div>
 
                     <div class="sticky bottom-8">
-                        <div class="sticky flex justify-center mb-6" v-if=" props.proposals?.data.length < 36 && props.proposals?.data.length > 0 && viewType == 'quickpitch'">
+                        <div class="sticky flex justify-center mb-6" v-if="props.proposals?.data.length < 36 && props.proposals?.data.length > 0 && viewType == 'quickpitch'">
                             <button v-if="!showPlayer" @click="playStore.startPlaying(props.proposals?.data)"
                                 class="flex flex-row items-center p-2 m-1 text-center transform bg-yellow-500 rounded-full text-l hover:text-white">
                                 <span class="font-bold">Play all {{ props.proposals?.data.length }} quickpitches</span>
