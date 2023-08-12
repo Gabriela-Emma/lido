@@ -66,21 +66,16 @@ class CatalystMyRankingController extends Controller
             'rankValue' => 'required|in:0,1,-1',
         ]);
 
-        $rank = CatalystRank::withTrashed()
-            ->where('id', $rank)
+        $rank = CatalystRank::where('id', $rank)
             ->first();
 
         // Check if the new ranking is the same as the existing vote (if so delete else update rank)
         if($data['rankValue'] == $rank->rank){
             $rank->rank = 0;
-            $rank->save();
-            $rank->delete();
         } else{
-            ($rank->deleted_at != null) ? $rank->restore() : '';
             $rank->rank = $data['rankValue'];
-    
-            $rank->save();
         }
+        $rank->save();
         redirect()->back();
     }
 
