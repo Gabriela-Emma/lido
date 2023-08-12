@@ -266,7 +266,7 @@ function updateRankingTotal(rankValue: number) {
 
         ranking_total.value = ranking_total.value + change;
     } else {
-        ranking_total.value = ranking_total.value + rankValue;
+        ranking_total.value = props.proposal.ranking_total + rankValue;
     }
 }
 </script>
