@@ -65,9 +65,9 @@
                                         value: 'xls',
                                     },
                                 ]" :classes="{
-    container: 'multiselect border-0 p-0.5 flex-wrap',
-    containerActive: 'shadow-none shadow-transparent box-shadow-none',
-}" />
+                                    container: 'multiselect border-0 p-0.5 flex-wrap',
+                                    containerActive: 'shadow-none shadow-transparent box-shadow-none',
+                                }" />
                         </div>
                     </span>
                 </div>

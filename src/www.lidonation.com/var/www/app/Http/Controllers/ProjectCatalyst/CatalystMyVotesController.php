@@ -59,7 +59,7 @@ class CatalystMyVotesController extends Controller
         } else{
             $vote->content = $data['content'] ?? '';
             $vote->vote = $data['vote'];
-    
+
             $vote->save();
         }
         redirect()->back();
