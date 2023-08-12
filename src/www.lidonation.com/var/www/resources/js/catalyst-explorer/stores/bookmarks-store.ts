@@ -69,7 +69,6 @@ export const useBookmarksStore = defineStore('bookmarks', () => {
             if (res.status == 200) {
                 loadDraftBallot().then();
             }
-
         } catch (e) {
             console.log(e);
         }
