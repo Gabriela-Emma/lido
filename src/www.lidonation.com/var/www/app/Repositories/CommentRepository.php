@@ -24,7 +24,6 @@ class CommentRepository extends Repository
            }
 
            $comment = new Assessment;
-
            $comment->title = $data['title'] ?? null;
            $comment->content = $data['content'];
            $comment->model_type = $data['model_type'];
