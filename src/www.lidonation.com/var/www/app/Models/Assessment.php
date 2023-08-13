@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Interfaces\IHasMetaData;
 use App\Models\Traits\HasAuthor;
+use App\Models\Traits\HasFlags;
 use App\Models\Traits\HasGravatar;
 use App\Models\Traits\HasMetaData;
 use App\Scopes\OrderByDateScope;
@@ -25,6 +26,7 @@ class Assessment extends Model implements IHasMetaData
 {
     use SoftDeletes,
         HasAuthor,
+        HasFlags,
         HasRemovableGlobalScopes,
         HasMetaData,
         HasGravatar,
