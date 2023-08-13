@@ -69,8 +69,8 @@ class SyncF10ReviewsJob implements ShouldQueue
             $this->createAssessment(
                 'Feasibility',
                 'Is this project feasible based on the proposal submitted? Does the plan and associated budget and milestones look achievable? Does the team have the skills, experience, capability and capacity to complete the project successfully?',
-                $review->feasibility_rating_given,
                 $review->feasibility_note,
+                $review->feasibility_rating_given,
                 $metas,
                 $proposal,
                 $review
@@ -79,8 +79,8 @@ class SyncF10ReviewsJob implements ShouldQueue
             $this->createAssessment(
                 'Value for money',
                 'Is the funding amount requested for this project reasonable and does it provide good Value for Money to the Treasury?',
-                $review->auditability_rating_given,
                 $review->auditability_note,
+                $review->auditability_rating_given,
                 $metas,
                 $proposal,
                 $review
