@@ -150,7 +150,7 @@ class SyncF10ReviewsCommand extends Command
             });
         }
 
-        $assessment->load('flags');
+        return $assessment;
     }
 
     protected function createDiscussion(string $title, string $content, Proposal $proposal, string $status = 'published'): Discussion
