@@ -12,18 +12,11 @@ import {
 export class VotesController {
   @Post('decode-voter-transaction')
   async decodeVoterTxDetails(@Req() request: Request) {
-    const voterTx = request.body.voterTransaction;
-
-    // get transaction details from tx then extract voting_power and block_time
-    const transactionDetails = await this.getTransactionDetails(voterTx.tx_hash);
-    const votingPower = transactionDetails.data
-      .output_amount
-      .filter(amount => amount.unit == 'lovelace')[0]
-      .quantity;
-    const blockTime = transactionDetails.data
-      .block_time;
-
+    
     // 
+    const voterTx = request.body.voterTransaction;
+    
+    // fetch voter keys from meta one
     const voterKeys = await this.getVoterPublicKeys(voterTx.json_metadata.one);
 
     // get publicKey and reward address from CIP-36 json_metadata["2"]
@@ -36,12 +29,10 @@ export class VotesController {
       .to_bech32(undefined);
 
     let result = {
-      tx: voterTx.tx_hash,
+      // tx: voterTx.tx_hash,
       stake_pub: rewardAddress,
       stake_key: publicKey.to_bech32(),
-      voting_power: votingPower / 1000000,
-      created_at: transactionDetails.data.block_time,
-      voter_pub: voterKeys,
+      voter_delegations: voterKeys,
     }
 
     return { data: result };
@@ -69,7 +60,7 @@ export class VotesController {
       votersPublicKeys.push([publicKey, weight]);
     }
 
-    return JSON.stringify(votersPublicKeys).slice(2, -2);
+    return JSON.stringify(votersPublicKeys);
   }
 
   protected async getPublicKey(two: string): Promise<PublicKey> {
@@ -79,15 +70,6 @@ export class VotesController {
       fromHex(hexTwo)
     );
   };
-
-  protected async getTransactionDetails(txHash: string): Promise<any> {
-    const txDetails = await bf({
-      endpoint: `/txs/${txHash}`,
-      method: 'GET'
-    });
-
-    return { data: txDetails };
-  }
 
   protected async CBORByteArrayToHexString(byte: string): Promise<string> {
     return (byte.slice(0, 2) == '0x')
