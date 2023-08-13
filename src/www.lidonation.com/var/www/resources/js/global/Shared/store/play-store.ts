@@ -9,7 +9,7 @@ export const usePlayStore = defineStore('play-store', () => {
     let playList: Ref<Playlist[]> = useStorage('playList', [], localStorage, { mergeDefaults: true });
     let currentlyPlayingIndex: Ref<number> = useStorage('currentlyPlaying', 0, localStorage, { mergeDefaults: true });
     let showPlayer: Ref<boolean> = useStorage('showPlayer', false, localStorage, { mergeDefaults: true });
-    let currentTimeSaved: Ref<number> = useStorage('currentTimeSaved', 0, localStorage, { mergeDefaults: true });
+    let currentTimeSaved = ref(null);
     let playerInstance = ref(null);
     let currentTime = ref(null);
     let playing = ref(false);
@@ -30,7 +30,7 @@ export const usePlayStore = defineStore('play-store', () => {
             waiting.value = false;
             setTimeout(() => {
                 createPlayer();
-            }, 1000);
+            }, 1500);
         }
     }
 
@@ -46,11 +46,7 @@ export const usePlayStore = defineStore('play-store', () => {
     }
 
     async function createPlayer() {
-        playerInstance.value.on('ready', (event) => {
-            const instance = event.detail.plyr;
-            playing.value = instance.playing;
-            duration.value = instance.duration;
-        });
+
 
         playerInstance.value.on('timeupdate', (event) => {
             const instance = event.detail.plyr;
@@ -64,13 +60,7 @@ export const usePlayStore = defineStore('play-store', () => {
 
         playerInstance.value.on('play', (event) => {
             const instance = event.detail.plyr;
-            if (dontRestart.value) {
-                playerInstance.value.forward(currentTimeSaved.value);
-                instance.currentTime = currentTimeSaved.value;
 
-
-                dontRestart.value = false;
-            }
             playing.value = true;
         });
 
@@ -95,6 +85,21 @@ export const usePlayStore = defineStore('play-store', () => {
 
         playerInstance.value.on('playing', (event) => {
             playing.value = true;
+
+        });
+
+        playerInstance.value.on('ready', (event) => {
+            const instance = event.detail.plyr;
+            playing.value = instance.playing
+            duration.value = instance.duration;
+            if (dontRestart.value) {
+                playerInstance.value.forward(currentTimeSaved.value);
+                instance.currentTime = currentTimeSaved.value;
+                dontRestart.value = false;
+            }else{
+                playerInstance.value.play();
+            }
+
 
         });
 
@@ -132,9 +137,7 @@ export const usePlayStore = defineStore('play-store', () => {
         changingSource.value = false;
         setTimeout(() => {
             createPlayer()
-            playerInstance.value.play()
-
-        }, 1000);
+        }, 1500);
         waiting.value = false
     }
 

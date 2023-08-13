@@ -6,10 +6,10 @@
                 'bg-slate-50 text-teal-700 hover:text-teal-700 hover:bg-white': $page.component.endsWith('Dashboard'),
                 'text-slate-900 hover:text-slate-900 hover:bg-slate-50': !$page.component.endsWith('Dashboard'),
               }"
-              class="group rounded-sm px-3 py-2 flex items-center text-sm font-medium">
+              class="flex items-center px-3 py-2 text-sm font-medium rounded-sm group">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                  stroke="currentColor"
-                 class="text-teal-500 group-hover:text-teal-500 flex-shrink-0 -ml-1 mr-3 h-6 w-6">
+                 class="flex-shrink-0 w-6 h-6 mr-3 -ml-1 text-teal-500 group-hover:text-teal-500">
                 <path stroke-linecap="round" stroke-linejoin="round"
                       d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"/>
             </svg>
@@ -20,8 +20,8 @@
                 'bg-slate-50 text-teal-700 hover:text-teal-700 hover:bg-white': $page.component.endsWith('Profiles'),
                 'text-slate-900 hover:text-slate-900 hover:bg-slate-50': !$page.component.endsWith('Profiles'),
               }"
-              class="group rounded-sm px-3 py-2 flex items-center text-sm font-medium">
-            <svg class="text-teal-500 group-hover:text-teal-500 flex-shrink-0 -ml-1 mr-3 h-6 w-6"
+              class="flex items-center px-3 py-2 text-sm font-medium rounded-sm group">
+            <svg class="flex-shrink-0 w-6 h-6 mr-3 -ml-1 text-teal-500 group-hover:text-teal-500"
                  xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                  stroke="currentColor" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -35,9 +35,9 @@
                 'bg-slate-50 text-teal-700 hover:text-teal-700 hover:bg-white': $page.component.endsWith('UserProposals'),
                 'text-slate-900 hover:text-slate-900 hover:bg-slate-50': !$page.component.endsWith('UserProposals'),
               }"
-              class="group rounded-sm px-3 py-2 flex items-center text-sm font-medium">
+              class="flex items-center px-3 py-2 text-sm font-medium rounded-sm group">
             <!-- Heroicon name: outline/squares-plus -->
-            <svg class="text-slate-400 group-hover:text-slate-500 flex-shrink-0 -ml-1 mr-3 h-6 w-6"
+            <svg class="flex-shrink-0 w-6 h-6 mr-3 -ml-1 text-slate-400 group-hover:text-slate-500"
                  xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                  stroke="currentColor" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -46,14 +46,25 @@
             <span class="truncate">{{ $t("Proposals") }}</span>
         </Link>
 
+
+        <!-- <Link :href="$utils.localizeRoute('catalyst-explorer/my/reviews')"
+              :class="{
+                'bg-slate-50 text-teal-700 hover:text-teal-700 hover:bg-white': $page.component.endsWith('UserCommunityReviews'),
+                'text-slate-900 hover:text-slate-900 hover:bg-slate-50': !$page.component.endsWith('UserCommunityReviews'),
+              }"
+              class="flex items-center px-3 py-2 text-sm font-medium rounded-sm group">
+            <ChatBubbleBottomCenterIcon class="flex-shrink-0 w-6 h-6 mr-3 -ml-1 text-slate-400 group-hover:text-slate-500" />
+            <span class="truncate">{{ $t("My Community Reviews") }}</span>
+        </Link> -->
+
         <Link :href="$utils.localizeRoute('catalyst-explorer/my/groups')"
               :class="{
                 'bg-slate-50 text-teal-700 hover:text-teal-700 hover:bg-white': $page.component.endsWith('UserGroups'),
                 'text-slate-900 hover:text-slate-900 hover:bg-slate-50': !$page.component.endsWith('UserGroups'),
               }"
-              class="group rounded-sm px-3 py-2 flex items-center text-sm font-medium">
+              class="flex items-center px-3 py-2 text-sm font-medium rounded-sm group">
             <!-- Heroicon name: outline/user-group -->
-            <svg class="text-slate-400 group-hover:text-slate-500 flex-shrink-0 -ml-1 mr-3 h-6 w-6"
+            <svg class="flex-shrink-0 w-6 h-6 mr-3 -ml-1 text-slate-400 group-hover:text-slate-500"
                  xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                  stroke="currentColor" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -65,6 +76,7 @@
 </template>
 
 <script lang="ts" setup>
+import { ChatBubbleBottomCenterIcon } from '@heroicons/vue/20/solid';
 import {Link} from '@inertiajs/vue3';
 import {computed, inject} from "vue";
 

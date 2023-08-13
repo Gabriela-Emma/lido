@@ -165,11 +165,7 @@ watch([plyr, currentlyPlayingIndex, playList], async () => {
         playStore.toggle()
         setTimeout(() => {
             waiting.value = false;
-            if (!dontRestart) {
-                playStore.toggle()
-
-            }
-        }, 3000);
+        }, 2000);
     }
 })
 </script>
