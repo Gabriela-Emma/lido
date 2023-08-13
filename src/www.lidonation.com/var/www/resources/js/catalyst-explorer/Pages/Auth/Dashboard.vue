@@ -79,14 +79,14 @@ const actions = [
         iconForeground: 'text-purple-700',
         iconBackground: 'bg-purple-50',
     },
-    // {
-    //     title: 'My Community Reviews',
-    //     excerpt: 'Manage all your community reviews from all your proposals in one place.',
-    //     href: 'catalyst-explorer/my/reviews',
-    //     icon: ChatBubbleBottomCenterIcon,
-    //     iconForeground: 'text-rose-700',
-    //     iconBackground: 'bg-rose-50',
-    // },
+    {
+        title: 'My Community Reviews',
+        excerpt: 'Manage all your community reviews from all your proposals in one place.',
+        href: 'catalyst-explorer/my/reviews',
+        icon: ChatBubbleBottomCenterIcon,
+        iconForeground: 'text-rose-700',
+        iconBackground: 'bg-rose-50',
+    },
     // {
     //     title: 'Schedule a one-on-one',
     //     href: '#',

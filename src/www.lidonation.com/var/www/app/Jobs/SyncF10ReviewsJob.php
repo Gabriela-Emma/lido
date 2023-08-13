@@ -34,7 +34,8 @@ class SyncF10ReviewsJob implements ShouldQueue
     public function handle(): void
     {
         $this->reviews->each(function($review) {
-            $proposal = Proposal::with('fund')->whereRelation('metas', 'content', $review->proposal_id)
+            $proposal = Proposal::with('fund')
+            ->whereRelation('metas', 'content', $review->proposal_id)
             ->whereRelation('metas', 'key', 'ideascale_id')
             ->first();
 
@@ -87,11 +88,9 @@ class SyncF10ReviewsJob implements ShouldQueue
         });
     }
 
-    protected function createAssessment($discussionTitle, $discussionContent, $assessmentRationale, $assessmentRating, array $metas, Proposal $proposal, $review): ?Assessment
+    protected function createAssessment($discussionTitle, $discussionContent, $assessmentRationale, $assessmentRating, array $metas, Proposal $proposal, $review)
     {
-        $existingComment = Assessment::whereRelation('metas', 'content', $review->row_id)
-        ->whereRelation('metas', 'key', 'catalyst_record_id')
-        ->first();
+        $existingComment = Assessment::where('content', $assessmentRationale)->first();
 
         if ($existingComment instanceof Assessment) {
             $existingComment->saveMeta('moderated', $review->ranking, $existingComment);
@@ -137,8 +136,6 @@ class SyncF10ReviewsJob implements ShouldQueue
                 $flag->save();
             });
         }
-
-        return $assessment;
     }
 
     protected function createDiscussion(string $title, string $content, Proposal $proposal, string $status = 'published'): Discussion
