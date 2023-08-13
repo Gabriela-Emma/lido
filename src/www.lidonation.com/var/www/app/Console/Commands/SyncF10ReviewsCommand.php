@@ -151,7 +151,6 @@ class SyncF10ReviewsCommand extends Command
         }
 
         $assessment->load('flags');
-        dd($assessment->toArray());
     }
 
     protected function createDiscussion(string $title, string $content, Proposal $proposal, string $status = 'published'): Discussion

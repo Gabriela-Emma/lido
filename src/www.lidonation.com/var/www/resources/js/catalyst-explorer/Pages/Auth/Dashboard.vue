@@ -59,6 +59,7 @@ import {
     UsersIcon,
 } from '@heroicons/vue/24/outline';
 import {inject} from "vue";
+import { ChatBubbleBottomCenterIcon } from '@heroicons/vue/20/solid';
 const $utils: any = inject('$utils');
 
 const actions = [
@@ -78,6 +79,14 @@ const actions = [
         iconForeground: 'text-purple-700',
         iconBackground: 'bg-purple-50',
     },
+    // {
+    //     title: 'My Community Reviews',
+    //     excerpt: 'Manage all your community reviews from all your proposals in one place.',
+    //     href: 'catalyst-explorer/my/reviews',
+    //     icon: ChatBubbleBottomCenterIcon,
+    //     iconForeground: 'text-rose-700',
+    //     iconBackground: 'bg-rose-50',
+    // },
     // {
     //     title: 'Schedule a one-on-one',
     //     href: '#',
@@ -100,14 +109,6 @@ const actions = [
     //     iconForeground: 'text-rose-700',
     //     iconBackground: 'bg-rose-50',
     // },
-    {
-        title: 'Coming soon',
-        excerpt: 'more coming soon. send us your feedback if you have any!',
-        href: 'catalyst-explorer/my/groups',
-        icon: AcademicCapIcon,
-        iconForeground: 'text-indigo-700',
-        iconBackground: 'bg-indigo-50',
-    },
 ]
 
 </script>

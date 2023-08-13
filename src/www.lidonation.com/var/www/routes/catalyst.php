@@ -21,6 +21,7 @@ use App\Http\Controllers\ProjectCatalyst\CatalystVoterToolController;
 use App\Http\Controllers\ProjectCatalyst\CatalystAssessmentsController;
 use App\Http\Controllers\ProjectCatalyst\CatalystChallengeController;
 use App\Http\Controllers\ProjectCatalyst\CatalystMyBookmarksController;
+use App\Http\Controllers\ProjectCatalyst\CatalystMyCommunityReviewsController;
 use App\Http\Controllers\ProjectCatalyst\CatalystMyDashboardController;
 use App\Http\Controllers\ProjectCatalyst\CatalystMyProposalsController;
 use App\Http\Controllers\ProjectCatalyst\CatalystMyVotesController;
@@ -180,9 +181,11 @@ Route::group(
 
                 Route::get('/proposals', [CatalystMyProposalsController::class, 'index'])
                     ->name('myProposals');
-
                 Route::get('/proposals/{proposal:id}', [CatalystMyProposalsController::class, 'manage'])
                     ->name('myProposal');
+
+                Route::get('/reviews', [CatalystMyCommunityReviewsController::class, 'index'])
+                    ->name('myCommunityReviews');
 
                 Route::post('/groups/{catalystGroup:id}', [CatalystGroupsController::class, 'update']);
                 Route::get('/groups/{catalystGroup:id}/proposals', [CatalystMyGroupsController::class, 'proposals']);

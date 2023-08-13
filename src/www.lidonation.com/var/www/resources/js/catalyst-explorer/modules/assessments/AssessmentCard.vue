@@ -80,9 +80,7 @@
 </template>
 
 <script lang="ts" setup>
-import {computed, inject, Ref, ref} from "vue";
-import {usePage} from "@inertiajs/vue3";
-import User from "../../../global/Shared/Models/user";
+import {inject, ref} from "vue";
 import Assessment from "../../models/assessment";
 import Rating from 'primevue/rating';
 import {Bar} from 'vue-chartjs';
