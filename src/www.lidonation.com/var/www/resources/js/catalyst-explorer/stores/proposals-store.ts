@@ -27,7 +27,7 @@ export const useProposalsStore = defineStore('proposals', () => {
         viewType.value = type;
     }
 
-    const viewTypes = ['card', 'quickpitch', 'ranked'];
+    const viewTypes = ['card', 'ranked'];
 
     function getRandomElementFromArray(array) {
     return array[Math.floor(Math.random() * array.length)];

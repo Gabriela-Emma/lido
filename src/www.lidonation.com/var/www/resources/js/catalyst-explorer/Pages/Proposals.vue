@@ -334,6 +334,10 @@ let perPageRef = ref<number>(props.perPage);
 let preparingDownload = ref<boolean>(false);
 let selectedDownloadFormat = ref<string>(null);
 
+let viewPlayer = computed(
+    () => props.proposals?.data.length < 36 && props.proposals?.data.length > 0 && viewType.value == 'quickpitch'
+)
+
 // metrics count
 let metricCountApproved = ref<number>(null);
 let metricCountTotalPaid = ref<number>(null);
@@ -350,7 +354,7 @@ let metricSumAdaApproved = ref<number>(null);
 let metricSumAdaDistributed = ref<number>(null);
 let metricSumAdaCompleted = ref<number>(null);
 let metricSumAdaBudget = ref<number>(null);
-let viewPlayer = computed(() => props.proposals?.data.length < 36 && props.proposals?.data.length > 0 && viewType.value == 'quickpitch')
+
 ////
 // computed properties
 ////
@@ -363,9 +367,11 @@ const filtering = computed(() => {
 
 let showFilters = ref(getFiltering() || true);
 
+const playStore = usePlayStore();
+let { showPlayer } = storeToRefs(playStore);
+
 const userStore = useUserStore();
 userStore.setUser();
-const { user$ } = storeToRefs(userStore);
 
 const peopleStore = usePeopleStore();
 peopleStore.loadPeople(props?.filters?.people);
@@ -376,10 +382,9 @@ proposalsRanking.loadRankings();
 
 const proposalsStore = useProposalsStore();
 let { viewType } = storeToRefs(proposalsStore);
+
 let quickpitchingRef = ref<boolean>(false);
-
 let rankedViewingRef = ref<boolean>(false);
-
 let cardViewingRef = ref<boolean>(false);
 
 const bookmarksStore = useBookmarksStore();
@@ -547,15 +552,15 @@ function getQueryData() {
         data[VARIABLES.PER_PAGE] = perPageRef.value;
     }
 
-    if (rankedViewingRef.value) {
+    if (!!rankedViewingRef.value) {
         data[VARIABLES.RANKED_VIEW] = '';
     }
 
-    if (quickpitchingRef.value) {
+    if (!!quickpitchingRef.value) {
         data[VARIABLES.QUICKPITCHES] = '';
     }
 
-    if ( cardViewingRef.value ) {
+    if ( !!cardViewingRef.value ) {
         data[VARIABLES.CARD_VIEW] = '';
     }
 
@@ -661,10 +666,6 @@ function openIdeascaleLinks() {
 
     openNextTab();
 }
-
-const playStore = usePlayStore();
-let { showPlayer } = storeToRefs(playStore);
-
 </script>
 <style>
 .item {

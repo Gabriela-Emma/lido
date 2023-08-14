@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\ProjectCatalyst;
 
+use App\DataTransferObjects\ProposalRatingData;
 use App\Http\Controllers\Controller;
 use App\Models\Assessment;
-use App\Scopes\OrderByDateScope;
-use App\Models\Proposal;
+use App\Models\ProposalRating;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -16,15 +16,13 @@ class CatalystMyCommunityReviewsController extends Controller
 
     protected int $currentPage;
 
-    protected ?bool $fundedProposalsFilter;
-
     public function manage(Assessment $assessment)
     {
-        return Inertia::modal('Auth/UserCommunityReview')
+        return Inertia::modal('Auth/UserCommunityReviews')
             ->with([
                 'proposal' => $assessment,
             ])
-            ->baseRoute('catalystExplorer.myCommunityReviews');
+            ->baseRoute('catalystExplorer.myCommunityReview');
     }
 
     /**
@@ -34,11 +32,10 @@ class CatalystMyCommunityReviewsController extends Controller
      */
     public function index(Request $request)
     {
-        $this->fundedProposalsFilter = $request->input('fp', false);
         $this->currentPage = $request->input('p', 1);
         $this->perPage = $request->input('l', 24);
 
-        return Inertia::render('Auth/UserCommunityReview', $this->data());
+        return Inertia::render('Auth/UserCommunityReviews', $this->data());
     }
 
     protected function data()
@@ -47,25 +44,32 @@ class CatalystMyCommunityReviewsController extends Controller
         $user?->load('catalyst_users');
 
         $catalystProfiles = $user->catalyst_users?->pluck('id');
+        $ratings = ProposalRating::with('metas')
+            ->whereHas('proposal', function ($query) use ($catalystProfiles) {
+            $query
+                ->withoutGlobalScopes()
+                ->whereRelation('fund', 'parent_id', 113)
+                ->whereIn('proposals.user_id', $catalystProfiles);
+        });
 
-        $query = Proposal::select('proposals.*')
-        ->join('funds', 'proposals.fund_id', '=', 'funds.id')
-        ->whereIn('proposals.user_id', $catalystProfiles)
-        ->orderBy('funds.launched_at', 'DESC')
-        ->orderBy('proposals.funded_at', 'DESC');
 
-        $paginator = $query->paginate($this->perPage, ['*'], 'p')->setPath('/');
 
-        $query->whereNotNull('funded_at');
-        $totalDistributed = intval($query->sum('amount_received'));
-        $budgetSummary = intval($query->sum('amount_requested'));
+        // $reviews = Assessment::whereHas('discussion', function ($query) use ($catalystProfiles) {
+        //     $query->whereHas('proposal', function ($discssionQuery) use ($catalystProfiles) {
+        //         $discssionQuery
+        //         ->withoutGlobalScopes()
+        //         ->whereRelation('fund', 'parent_id', 113)
+        //         ->whereIn('proposals.user_id', $catalystProfiles);
+        //     });
+        // });
 
-        $totalRemaining = ($budgetSummary - $totalDistributed);
-
+        $paginator = $ratings->paginate($this->perPage, ['*'], 'p')->setPath('/')->onEachSide(1);
 
         return [
-            'filters' => ['funded' => $this->fundedProposalsFilter],
-            'proposals' => $paginator->onEachSide(1)->toArray(),
+            'filters' => [
+
+            ],
+            'reviews' => ProposalRatingData::collection($paginator),
             'crumbs' => [
                 ['label' => 'Profile'],
             ],

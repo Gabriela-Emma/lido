@@ -107,7 +107,6 @@ class SyncF10ReviewsJob implements ShouldQueue
         );
         $discussion->save();
 
-
         $data = [
             'content' => $assessmentRationale,
             'model_id' => $discussion->id,
@@ -115,7 +114,7 @@ class SyncF10ReviewsJob implements ShouldQueue
             'status' => 'published',
             'rating' => [
                 'rating' => $assessmentRating,
-                'status' => 'published',
+                'status' => 'published'
             ],
             'meta' => $metas,
         ];

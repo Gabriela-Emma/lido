@@ -44,6 +44,7 @@ class BookmarkCollection extends Model
 
     public function rationales()
     {
-        return $this->hasMany(Discussion::class, 'model_id')->where('model_type', BookmarkCollection::class);
+        return $this->hasMany(Discussion::class, 'model_id')
+        ->where('model_type', BookmarkCollection::class);
     }
 }
