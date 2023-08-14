@@ -59,8 +59,8 @@
 </template>
 
 <script lang="ts" setup>
-import {computed, inject} from 'vue'
-import {Link, router} from '@inertiajs/vue3';
+import {inject} from 'vue'
+import {Link} from '@inertiajs/vue3';
 import { storeToRefs } from 'pinia';
 import { useUserStore } from '../../../global/Shared/store/user-store';
 

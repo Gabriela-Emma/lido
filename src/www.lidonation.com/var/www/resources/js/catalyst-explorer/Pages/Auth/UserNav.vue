@@ -47,7 +47,7 @@
         </Link>
 
 
-        <!-- <Link :href="$utils.localizeRoute('catalyst-explorer/my/reviews')"
+        <Link :href="$utils.localizeRoute('catalyst-explorer/my/reviews')"
               :class="{
                 'bg-slate-50 text-teal-700 hover:text-teal-700 hover:bg-white': $page.component.endsWith('UserCommunityReviews'),
                 'text-slate-900 hover:text-slate-900 hover:bg-slate-50': !$page.component.endsWith('UserCommunityReviews'),
@@ -55,7 +55,7 @@
               class="flex items-center px-3 py-2 text-sm font-medium rounded-sm group">
             <ChatBubbleBottomCenterIcon class="flex-shrink-0 w-6 h-6 mr-3 -ml-1 text-slate-400 group-hover:text-slate-500" />
             <span class="truncate">{{ $t("My Community Reviews") }}</span>
-        </Link> -->
+        </Link>
 
         <Link :href="$utils.localizeRoute('catalyst-explorer/my/groups')"
               :class="{

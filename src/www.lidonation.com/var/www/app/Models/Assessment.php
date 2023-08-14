@@ -53,7 +53,6 @@ class Assessment extends Model implements IHasMetaData
     protected $appends = [
         'name',
         'email',
-        'gravatar',
         //        'children' // cannot eager load children and parent, causes an infinite loop
     ];
 
@@ -162,6 +161,11 @@ class Assessment extends Model implements IHasMetaData
         $children = $this->metas?->where('key', 'child_id')->pluck('content');
 
         return Attribute::make(get: fn () => $children->isEmpty() ? null : self::fund($children));
+    }
+
+    public function discussion(): BelongsTo
+    {
+        return $this->belongsTo(Discussion::class, 'model_id');
     }
 
     public function parent(): BelongsTo

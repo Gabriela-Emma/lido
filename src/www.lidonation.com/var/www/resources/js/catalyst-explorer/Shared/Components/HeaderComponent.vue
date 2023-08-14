@@ -4,7 +4,7 @@
     >
         <div class="flex flex-wrap items-center justify-between gap-4 py-6">
             <div class="flex items-center gap-4">
-                <div class="w-40 lg:w-32 rounded-sm">
+                <div class="w-40 rounded-sm lg:w-32">
                     <img alt="catalyst explorer logo" :src="$utils.assetUrl('img/catalyst-explorer-logo.jpg')" />
                 </div>
                 <div>
@@ -92,7 +92,7 @@ withDefaults(
         titleName0: String,
         titleName1: String,
         subTitle: String,
-        color: string,
+        color?: string,
     }>(), {
         color: 'white'
     });

@@ -296,3 +296,7 @@ $metas\040=\040Meta::where('key',\040'quickpitch')
 $metas\040=\040Meta::where('key',\040'quickpitch')
 $metas\040=\040Meta::where('key',\040'quickpitch')
 exit
+Category::whereHas('review')->orWhereHas('news')->orWhereHas('insight')->count();
+Category::whereHas('reviews')->orWhereHas('news')->orWhereHas('insights')->count();
+Category::orWhereHas('reviews')->orWhereHas('news')->orWhereHas('insights')->count();
+Category::query()->count();
