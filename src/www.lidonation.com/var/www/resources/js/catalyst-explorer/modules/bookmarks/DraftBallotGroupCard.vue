@@ -56,32 +56,15 @@
                     class="mt-8 py-3 overflow-y-auto overflow-x-visible border border-l-0 border-gray-200 divide-y divide-gray-200 max-h-[33rem]">
                     <li class="ml-4" v-for="item in group.items" :key="item?.model?.id">
                         <div class="flex justify-start gap-1 px-4 py-4 lg:gap-0 hover:bg-gray-50">
-                            <div class="flex flex-col flex-none w-16 gap-2 px-1 py-2 rounded-sm" :class="{
-                                'bg-teal-light-100/50': item.model.vote?.vote === VOTEACTIONS.UPVOTE,
-                                'bg-red-100/80': item.model.vote?.vote === VOTEACTIONS.DOWNVOTE,
-                                'bg-slate-100': !item.model.vote
-                            }">
-                                <HandThumbIcons :proposal="item.model" @new-reaction="updateChart($event,item?.model)"
-                                    @reaction-update="updateChart($event,item?.model)" />
 
-                                <!-- <div class="flex gap-1 flex-nowrap">
-                                    <div class="flex-1 w-1/2" @click="vote(VOTEACTIONS.UPVOTE, item.model)">
-                                        <HandThumbUpIcon
-                                            :class="[item.model.vote?.vote === VOTEACTIONS.UPVOTE ? 'text-teal-700' : 'text-gray-500']"
-                                            aria-hidden="true"
-                                            class="w-6 h-6 text-gray-500 hover:text-yellow-700 hover:cursor-pointer" />
-                                    </div>
-                                    <div class="flex-1 w-1/2" @click="vote(VOTEACTIONS.DOWNVOTE, item.model)">
-                                        <HandThumbDownIcon aria-hidden="true"
-                                            :class="[item?.model?.vote?.vote === VOTEACTIONS.DOWNVOTE ? 'text-pink-800' : 'text-gray-500']"
-                                            class="w-6 h-6 hover:text-yellow-700 hover:cursor-pointer" />
-                                    </div>
-                                </div> -->
+                            <HandThumbIcons :proposal="item.model" @new-reaction="updateChart($event, item?.model)"
+                                @reaction-update="updateChart($event, item?.model)" :key="updateIcons">
                                 <div class="flex items-center gap-1">
                                     <TrashIcon @click.prevent="removeItem(item?.id)" aria-hidden="true"
                                         class="w-5 h-5 text-gray-500 hover:text-teal-600 hover:cursor-pointer" />
                                 </div>
-                            </div>
+                            </HandThumbIcons>
+
                             <div class="flex items-center flex-1 sm:px-6">
                                 <div class="flex-1 min-w-0 sm:flex sm:items-center sm:justify-between">
                                     <div class="relative">
@@ -155,6 +138,7 @@ const onLocal: Ref<boolean> = ref(false);
 const inLastTenMins: Ref<boolean> = ref(false);
 const collectionHash = ref(draftBallot$.value?.hash);
 const pieChart = ref(null);
+let updateIcons = ref(0);
 
 let rationale = ref(props.group?.rationale?.content);
 let canDelete: Ref<boolean> = ref();
@@ -264,7 +248,7 @@ interface Author {
 
 let updateChart = async (vote, proposal) => {
     if (proposal.vote) {
-
+        updateIcons.value = updateIcons.value + 1
         await bookmarksStore.loadDraftBallot();
         if (vote === VOTEACTIONS.UPVOTE) {
             likes.value = likes.value === 1 ? 1 : 0;
@@ -279,7 +263,7 @@ let updateChart = async (vote, proposal) => {
         }, 100);
 
     } else {
-
+        updateIcons.value = updateIcons.value + 1
         await bookmarksStore.loadDraftBallot();
         setTimeout(() => {
             chartData.value = cloneDeep(getChart());

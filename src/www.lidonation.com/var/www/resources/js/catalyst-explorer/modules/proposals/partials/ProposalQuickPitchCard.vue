@@ -28,10 +28,8 @@
                 </a>
             </span>
         </h2>
-
-        <HandThumbIcons :proposal="item?.model" @new-reaction="updateChart($event,item?.model)"
-                                    @reaction-update="updateChart($event,item?.model)" />
-
+        <HandThumbIcons :proposal="proposal" @new-reaction.prevent="updateChart($event,proposal)"
+                                    @reaction-update="updateChart($event,proposal)" :key="updateIcons"/>
         <div class="mb-4">
             <ProposalBudget v-if="proposal" :proposal="proposal" />
         </div>
@@ -51,7 +49,7 @@
 
         </div>
 
-        <ProposalAuthors :proposal="proposal" :size='5' @profileQuickView="emit('profileQuickView', $event)" />
+        <ProposalAuthors :proposal="proposal" @profileQuickView="emit('profileQuickView', $event)" />
 
         <div class='absolute right-0 -bottom-1 details-toggle-wrapper'>
             <button type="button" @click="emit('summary')"
@@ -70,6 +68,7 @@
 import { computed, inject, ref } from "vue";
 import Proposal from "../../../models/proposal";
 import ProposalBudget from "./ProposalBudget.vue";
+import { router } from '@inertiajs/vue3';
 import ProposalAuthors from "./ProposalAuthors.vue";
 import { useBookmarksStore } from "../../../stores/bookmarks-store";
 import { storeToRefs } from "pinia";
@@ -79,6 +78,7 @@ import HandThumbIcons from "./HandThumbIcons.vue";
 import { VOTEACTIONS } from "../../../models/vote-actions";
 import { DraftBallotGroup } from "../../../models/draft-ballot";
 import { cloneDeep } from "lodash";
+import { defaultDocument } from "@vueuse/core";
 
 const $utils: any = inject('$utils');
 const bookmarksStore = useBookmarksStore();
@@ -91,7 +91,6 @@ const props = withDefaults(
     defineProps<{
         proposal: Proposal
         group: DraftBallotGroup<Proposal>
-            item:any
     }>(),
     {
         proposal: () => {
@@ -137,7 +136,9 @@ function getChart() {
                 ]
             }
         ]
+
     }
+
 }
 
 
@@ -145,30 +146,11 @@ function getChart() {
 const regex: RegExp = /[a-zA-Z]/g;
 const quickPitchId = props.proposal?.quickpitch;
 const quickpitchProvider = computed(() => quickPitchId.match(regex) ? "youtube" : "vimeo");
+
+
+let updateIcons = ref(0);
 let updateChart = async (vote, proposal) => {
-    if (proposal.vote) {
-
-        await bookmarksStore.loadDraftBallot();
-        if (vote === VOTEACTIONS.UPVOTE) {
-            likes.value = likes.value === 1 ? 1 : 0;
-            unlikes.value = 0;
-        } else if (vote === VOTEACTIONS.DOWNVOTE) {
-            unlikes.value = unlikes.value === 1 ? 1 : 0;
-            likes.value = 0;
-        }
-        setTimeout(() => {
-            chartData.value = cloneDeep(getChart());
-            pieChart.value?.chart.update('active');
-        }, 100);
-
-    } else {
-
-        await bookmarksStore.loadDraftBallot();                 
-        setTimeout(() => {
-            chartData.value = cloneDeep(getChart());
-            pieChart.value?.chart.update('active');
-        }, 100);
-
+    updateIcons.value = updateIcons.value
+    
     }
-}
 </script>

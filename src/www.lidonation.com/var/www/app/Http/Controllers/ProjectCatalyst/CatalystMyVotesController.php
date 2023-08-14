@@ -13,8 +13,10 @@ use Inertia\Response;
 class CatalystMyVotesController extends Controller
 {
     // views
-    public function index()
+    public function index(Proposal $proposal)
     {
+        
+       return $proposal->vote?->first();
 
     }
 
