@@ -59,7 +59,13 @@
                                             {{ review.rationale }}
                                         </td>
 
-                                        <td class="hidden px-3 py-4 text-sm lg:table-cell">
+                                        <td class="hidden px-3 py-4 text-sm sm:table-cell">
+                                            <a :href="review?.proposal?.link">
+                                                {{ review.proposal?.title }}
+                                            </a>
+                                        </td>
+
+                                        <td class="hidden px-3 py-4 text-sm lg:table-cell min-w-35">
                                             <div class="flex flex-col justify-center w-full gap-4 text-center">
                                                 <div class="flex flex-col gap-1">
                                                     <span class="font-medium">Id</span>
@@ -76,11 +82,6 @@
                                             </div>
                                         </td>
 
-                                        <td class="hidden px-3 py-4 text-sm sm:table-cell">
-                                            <a :href="review?.proposal?.link">
-                                                {{ review.proposal?.title }}
-                                            </a>
-                                        </td>
 
                                         <!-- <td class="px-3 py-4 text-sm">
                                             15th
