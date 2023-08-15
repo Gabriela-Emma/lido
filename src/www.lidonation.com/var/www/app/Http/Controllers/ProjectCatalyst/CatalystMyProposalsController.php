@@ -61,7 +61,6 @@ class CatalystMyProposalsController extends Controller
 
         $totalRemaining = ($budgetSummary - $totalDistributed);
 
-
         return [
             'filters' => ['funded' => $this->fundedProposalsFilter],
             'proposals' => $paginator->onEachSide(1)->toArray(),
