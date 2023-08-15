@@ -45,7 +45,7 @@ class CatalystMyCommunityReviewsController extends Controller
 
         $catalystProfiles = $user->catalyst_users?->pluck('id');
         $ratings = ProposalRating::with('metas')
-            ->whereHas('proposal', function ($query) use ($catalystProfiles) {
+        ->whereHas('proposal', function ($query) use ($catalystProfiles) {
             $query
                 ->withoutGlobalScopes()
                 ->whereRelation('fund', 'parent_id', 113)
@@ -63,7 +63,10 @@ class CatalystMyCommunityReviewsController extends Controller
         //     });
         // });
 
-        $paginator = $ratings->paginate($this->perPage, ['*'], 'p')->setPath('/')->onEachSide(1);
+        $paginator = $ratings->paginate($this->perPage, ['*'], 'p')
+        ->through(fn($m) => $m->setAppends(['meta_data']))
+        ->setPath('/')
+        ->onEachSide(1);
 
         return [
             'filters' => [

@@ -15,7 +15,7 @@ class ProposalRating extends Model
 
     protected $with = [];
 
-    protected $appends = ['meta_data'];
+    protected $appends = [];
 
     public int|DateTime|null $cacheFor = 3600;
 
