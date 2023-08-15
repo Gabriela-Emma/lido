@@ -19,6 +19,19 @@ export type AssetMetaData = {
 logo: string | null;
 ticker: string | null;
 };
+export type CommentData = {
+id: number | null;
+title: string | null;
+text: string;
+status?: string | null;
+};
+export type CommunityReviewData = {
+id: number | null;
+title: string | null;
+content: string;
+status?: string | null;
+comments: Array<App.DataTransferObjects.CommentData> | null;
+};
 export type LearnerData = {
 name: string | null;
 active_pool_id: string | null;
@@ -104,12 +117,27 @@ uri: string | null;
 feature_url: string | null;
 content: string | null;
 };
+export type ProposalData = {
+id: number | null;
+title: string | null;
+link: string;
+status?: string | null;
+};
+export type ProposalRatingData = {
+id: number | null;
+rationale: string;
+rating: string;
+meta_data: any;
+proposal: App.DataTransferObjects.ProposalData;
+community_review: App.DataTransferObjects.CommunityReviewData;
+status?: string | null;
+};
 export type QuizData = {
 id: number | null;
 title: string;
 content: string;
 status?: string | null;
-questions: Array<App.DataTransferObjects.QuizQuestionData> | null;
+comments: Array<App.DataTransferObjects.CommentData> | null;
 };
 export type QuizQuestionAnswerData = {
 id: number | null;

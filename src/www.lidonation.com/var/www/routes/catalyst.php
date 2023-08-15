@@ -186,6 +186,8 @@ Route::group(
 
                 Route::get('/reviews', [CatalystMyCommunityReviewsController::class, 'index'])
                     ->name('myCommunityReviews');
+                Route::post('/reviews/{assessment}', [CatalystMyCommunityReviewsController::class, 'replyToReview'])
+                    ->name('replyToMyCommunityReview');
 
                 Route::post('/groups/{catalystGroup:id}', [CatalystGroupsController::class, 'update']);
                 Route::get('/groups/{catalystGroup:id}/proposals', [CatalystMyGroupsController::class, 'proposals']);

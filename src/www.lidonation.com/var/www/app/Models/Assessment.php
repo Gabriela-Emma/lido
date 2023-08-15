@@ -20,24 +20,26 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Str;
+use Spatie\Comments\Models\Concerns\HasComments;
 use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
 class Assessment extends Model implements IHasMetaData
 {
-    use SoftDeletes,
-        HasAuthor,
+    use HasAuthor,
+        HasComments,
         HasFlags,
+        HasFactory,
+        HasGravatar,
+        HasRelationships,
         HasRemovableGlobalScopes,
         HasMetaData,
-        HasGravatar,
         HasTimestamps,
         SearchableLocale,
-        HasFactory,
-        HasRelationships;
+        SoftDeletes;
 
     protected $table = 'legacy_comments';
 
-    protected $with = ['metas', 'parent'];
+    protected $with = ['metas', 'parent', 'comments'];
 
     protected $guarded = ['user_id', 'created_at'];
 
@@ -55,6 +57,24 @@ class Assessment extends Model implements IHasMetaData
         'email',
         //        'children' // cannot eager load children and parent, causes an infinite loop
     ];
+
+     /*
+     * This string will be used in notifications on what a new comment
+     * was made.
+     */
+    public function commentableName(): string
+    {
+        return $this->proposal?->title;
+    }
+
+    /*
+     * This URL will be used in notifications to let the user know
+     * where the comment itself can be read.
+     */
+    public function commentUrl(): string
+    {
+        return $this->proposal?->link;
+    }
 
     public function getShortJsonAttribute()
     {

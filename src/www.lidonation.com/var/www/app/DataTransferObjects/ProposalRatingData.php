@@ -23,6 +23,8 @@ class ProposalRatingData extends Data
 
         public ProposalData $proposal,
 
+        public CommunityReviewData $community_review,
+
         #[TypeScriptOptional]
         public ?string $status
     ) {

@@ -224,7 +224,7 @@
                             <h2 class="mb-8 text-4xl decorate dark">
                                 {{ $snippets->communityAdvisorReviews }}
                             </h2>
-                            <div class="">
+                            <div class="proposal-discussions-wrapper">
                                 <x-public.discussions :model="$proposal" :editable="false"></x-public.discussions>
                             </div>
                         @endif

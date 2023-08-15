@@ -42,20 +42,4 @@ trait HasRatings
             ->map(fn ($disc) => $disc->ratings)
             ->collapse()->avg('rating');
     }
-
-//    public function ratings(): HasMany
-//    {
-//        return $this->hasMany(Rating::class, 'model_id')
-//            ->where('model_type', static::class);
-//    }
-//
-//    public function getCommunityRatingsAttribute()
-//    {
-//        return $this->ratings->whereNotIn('user_id', [$this->user_id]);
-//    }
-//
-//    public function getCommunityReviewsAttribute()
-//    {
-//        return $this->comments->whereNotIn('user_id', [$this->user_id]);
-//    }
 }

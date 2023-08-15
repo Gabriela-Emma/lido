@@ -1,4 +1,4 @@
-@props(['model', 'editable' => true, 'expanded' => false])
+@props(['model', 'editable' => true, 'expanded' => true])
 <div class="antialiased">
     <div class="">
         @foreach($model->discussions as $discussion)

@@ -29,6 +29,11 @@ class ProposalRating extends Model
         'created_at' => 'datetime:Y-m-d',
     ];
 
+    public function community_review(): BelongsTo
+    {
+        return $this->belongsTo(Assessment::class, 'assessment_id');
+    }
+
     public function proposal(): BelongsTo
     {
         return $this->belongsTo(Proposal::class, 'proposal_id');
