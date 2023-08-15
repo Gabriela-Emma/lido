@@ -19,7 +19,7 @@
 
                             <div
                                 class="py-4 mt-8 -mx-4 ring-1 ring-black ring-opacity-5 sm:-mx-6 md:mx-0 md:rounded-sm">
-                                <table class="min-w-full divide-y divide-slate-300">
+                                <table class="min-w-full overflow-x-auto divide-y divide-slate-300">
                                     <thead class="bg-slate-50">
                                     <tr>
                                         <th scope="col"
@@ -60,12 +60,12 @@
                                         </td>
 
                                         <td class="hidden px-3 py-4 text-sm sm:table-cell">
-                                            <a :href="review?.proposal?.link">
+                                            <a target="_blank" :href="review?.proposal?.link">
                                                 {{ review.proposal?.title }}
                                             </a>
                                         </td>
 
-                                        <td class="hidden px-3 py-4 text-sm lg:table-cell min-w-35">
+                                        <td class="hidden px-3 py-4 text-sm lg:table-cell min-w-15">
                                             <div class="flex flex-col justify-center w-full gap-4 text-center">
                                                 <div class="flex flex-col gap-1">
                                                     <span class="font-medium">Id</span>
