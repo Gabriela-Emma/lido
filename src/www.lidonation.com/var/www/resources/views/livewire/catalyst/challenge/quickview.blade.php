@@ -229,7 +229,7 @@
 
                                 <div x-show="expanded" x-collapse class="relative">
                                     <div class="relative">
-                                        <x-public.discussions :model="$proposal" :editable="false" :expanded="true"></x-public.discussions>
+                                        <x-public.discussions :model="$proposal" :editable="false" :expanded="false"></x-public.discussions>
                                     </div>
                                 </div>
                             </div>
