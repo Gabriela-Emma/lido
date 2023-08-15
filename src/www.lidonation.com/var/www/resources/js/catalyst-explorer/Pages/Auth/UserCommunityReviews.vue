@@ -18,7 +18,7 @@
                             </div>
 
                             <div
-                                class="mt-8 -mx-4 overflow-hidden ring-1 ring-black ring-opacity-5 sm:-mx-6 md:mx-0 md:rounded-sm">
+                                class="py-4 mt-8 -mx-4 ring-1 ring-black ring-opacity-5 sm:-mx-6 md:mx-0 md:rounded-sm">
                                 <table class="min-w-full divide-y divide-slate-300">
                                     <thead class="bg-slate-50">
                                     <tr>
