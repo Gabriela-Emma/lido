@@ -17,6 +17,8 @@ class ProposalData extends Data
 
         public ?string $title,
 
+        public string $link,
+
         #[TypeScriptOptional]
         public ?string $status
     ) {

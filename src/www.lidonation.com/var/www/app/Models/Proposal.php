@@ -65,6 +65,10 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
 
     protected string $urlGroup = 'proposals';
 
+    protected $appends = [
+        'link'
+    ];
+
     /**
      * The relationships that should always be loaded.
      *

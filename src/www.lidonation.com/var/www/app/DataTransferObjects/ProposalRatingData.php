@@ -21,6 +21,8 @@ class ProposalRatingData extends Data
 
         public $meta_data,
 
+        public ProposalData $proposal,
+
         #[TypeScriptOptional]
         public ?string $status
     ) {
