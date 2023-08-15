@@ -77,7 +77,9 @@
                                         </td>
 
                                         <td class="hidden px-3 py-4 text-sm sm:table-cell">
-                                            {{ review.proposal?.title }}
+                                            <a :href="review?.proposal?.link">
+                                                {{ review.proposal?.title }}
+                                            </a>
                                         </td>
 
                                         <!-- <td class="px-3 py-4 text-sm">
