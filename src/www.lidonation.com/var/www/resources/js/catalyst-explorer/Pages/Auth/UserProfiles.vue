@@ -324,7 +324,6 @@ const userStore = useUserStore();
 const {user$} = storeToRefs(userStore);
 
 let userForm = useForm({...user$.value, profile: null});
-console.log(userForm.profile_photo_url);
 
 const props = withDefaults(
     defineProps<{
@@ -344,9 +343,9 @@ let forms = ref(
 
 let submit = (event, form) => {
     form.post(`${usePage().props.base_url}/catalyst-explorer/my/profiles/${form.id}`,
-        {
-            preserveScroll: false
-        });
+    {
+        preserveScroll: false
+    });
 }
 
 let profile_name = ref('');

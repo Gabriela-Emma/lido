@@ -5,7 +5,9 @@ namespace App\Http\Controllers\ProjectCatalyst;
 use App\DataTransferObjects\ProposalRatingData;
 use App\Http\Controllers\Controller;
 use App\Models\Assessment;
+use App\Models\Discussion;
 use App\Models\ProposalRating;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -44,7 +46,8 @@ class CatalystMyCommunityReviewsController extends Controller
         $user?->load('catalyst_users');
 
         $catalystProfiles = $user->catalyst_users?->pluck('id');
-        $ratings = ProposalRating::with(['metas', 'proposal'])
+        $ratings = ProposalRating::with(['metas', 'proposal', 'community_review.comments'])
+        ->orderBy('id')
         ->whereHas('proposal', function ($query) use ($catalystProfiles) {
             $query
                 ->withoutGlobalScopes()
@@ -81,10 +84,28 @@ class CatalystMyCommunityReviewsController extends Controller
             'filters' => [
 
             ],
-            'reviews' => ProposalRatingData::collection($paginator),
+            'proposalRatings' => ProposalRatingData::collection($paginator),
             'crumbs' => [
                 ['label' => 'Profile'],
             ],
         ];
+    }
+
+    public function replyToReview( Request $request, Assessment $assessment)
+    {
+        $request->validate([
+            'reply' => 'required|string',
+        ]);
+
+        $assessment->comments()->create([
+            'commentator_id' => auth()->id(),
+            'commentator_type' => User::class,
+            'approved_at' => now(),
+            // 'parent_id' => $request->input('parent_id'),
+            'original_text' => $request->input('reply'),
+            // 'model_type' => Discussion::class,
+        ]);
+
+        return to_route('catalystExplorer.myCommunityReviews');
     }
 }
