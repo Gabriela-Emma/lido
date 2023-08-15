@@ -12,7 +12,7 @@ use Inertia\Response;
 
 class CatalystMyCommunityReviewsController extends Controller
 {
-    protected int $perPage = 36;
+    protected int $perPage = 24;
 
     protected int $currentPage;
 
