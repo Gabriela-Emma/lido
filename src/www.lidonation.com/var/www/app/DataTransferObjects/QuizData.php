@@ -26,7 +26,7 @@ class QuizData extends Data implements Wireable
         public ?string $status,
 
         #[DataCollectionOf(CommentData::class)]
-        public ?DataCollection $comments
+        public ?DataCollection $questions
     ) {
     }
 }
