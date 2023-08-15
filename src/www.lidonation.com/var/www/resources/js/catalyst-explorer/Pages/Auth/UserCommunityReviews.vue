@@ -31,6 +31,10 @@
                                             {{ $t("Rationale") }}
                                         </th>
                                         <th scope="col"
+                                            class="hidden px-3 py-3.5 text-left text-sm font-semibold text-slate-900 sm:table-cell">
+                                            {{ $t("Proposal") }}
+                                        </th>
+                                        <th scope="col"
                                             class="hidden px-3 py-3.5 text-left text-sm font-semibold text-slate-900 lg:table-cell">
                                             {{ $t("Assessor") }}
                                         </th>
@@ -70,6 +74,10 @@
                                                     </span>
                                                 </div>
                                             </div>
+                                        </td>
+
+                                        <td class="hidden px-3 py-4 text-sm sm:table-cell">
+                                            {{ review.proposal?.title }}
                                         </td>
 
                                         <!-- <td class="px-3 py-4 text-sm">

@@ -44,7 +44,7 @@ class CatalystMyCommunityReviewsController extends Controller
         $user?->load('catalyst_users');
 
         $catalystProfiles = $user->catalyst_users?->pluck('id');
-        $ratings = ProposalRating::with('metas')
+        $ratings = ProposalRating::with(['metas', 'proposal'])
         ->whereHas('proposal', function ($query) use ($catalystProfiles) {
             $query
                 ->withoutGlobalScopes()
@@ -67,6 +67,15 @@ class CatalystMyCommunityReviewsController extends Controller
         ->through(fn($m) => $m->setAppends(['meta_data']))
         ->setPath('/')
         ->onEachSide(1);
+
+        // dd(ProposalRatingData::collection($paginator)->toArray());
+
+        // dd(
+        //     ProposalRatingData::collection($paginator)->through(fn ($rating) => [
+        //         'id' => $rating->id,
+        //         'rating' => $rating->rating,
+        //     ])
+        // );
 
         return [
             'filters' => [
