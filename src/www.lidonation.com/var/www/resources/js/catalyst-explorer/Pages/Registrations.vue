@@ -23,27 +23,35 @@
                     <div class="" v-if="search && registrations.data.length > 0">
                         <div class="sm:flex sm:items-center">
                             <div class="sm:flex-auto">
-                                <h1 class="text-base font-semibold leading-6 text-gray-900">
+                                <h1 class="text-lg font-semibold leading-6 text-gray-900">
                                     My Registrations
                                 </h1>
-                                <p class="block mt-2 text-sm text-gray-700">
+                                <p class="block mt-2 text-gray-700">
                                     Here are the onchain transactions of registrations for the stake address <span class="font-bold">{{ search }}</span>
                                 </p>
-                                <div class="p-2 text-white bg-teal-600 text-md">
-                                    <p>
-                                        All this tool does is show your historical registrations, not validate your.
-                                        If you have your qr code you can use this iog tool validate your registrations:
-                                        <a href="https://verify.testnet.projectcatalyst.io/" target="_blank" class="text-teal-500">
+                                <div class="max-w-xl p-2 mt-2 text-white bg-teal-600 rounded-sm text-md">
+                                    <p class="block mt-2 text-gray-700">
+                                        This tool shows your historical registrations only. It does not validate your registration.
+                                        If you have your qr code you can use this IO tool to validate your registrations:
+                                        <a href="https://verify.testnet.projectcatalyst.io/" target="_blank"
+                                        class="text-yellow-500 hover:text-black">
                                             https://verify.testnet.projectcatalyst.io/
+                                        </a>
+                                    </p>
+                                    <p class="block mt-2 text-gray-700">
+                                        To learn how to registration as a voter, please visit:
+                                        <a href="https://docs.projectcatalyst.io/catalyst-basics/how-to-register-as-a-voter"
+                                            target="_blank" class="text-yellow-500 hover:text-black">
+                                            https://docs.projectcatalyst.io/catalyst-basics/how-to-register-as-a-voter
                                         </a>
                                     </p>
                                 </div>
                             </div>
                         </div>
                         <div class="flow-root mt-8">
-                            <div class="-my-2 overflow-x-auto sm:-mx-6">
+                            <div class="-my-2 overflow-x-auto">
                                 <div class="inline-block min-w-full py-2 align-middle">
-                                <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg">
+                                <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-sm">
                                     <table class="min-w-full divide-y divide-gray-300">
                                         <thead class="bg-gray-50">
                                             <tr>

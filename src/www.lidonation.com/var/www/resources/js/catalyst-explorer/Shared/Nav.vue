@@ -1,5 +1,5 @@
 <template>
-    <div class="top-0 z-30 bg-teal-600 border-b border-teal-400  md:border-teal-light-300 page-nav">
+    <div class="top-0 z-30 bg-teal-600 border-b border-teal-400 md:border-teal-light-300 page-nav">
         <div class='container relative'>
             <div class="flex flex-row justify-between gap-4 flex-nowrap">
                 <nav class="flex max-w-[70%] overflow-x-auto" aria-label="Breadcrumb">
@@ -108,8 +108,8 @@
                         </li>
                         <li class="flow-root menu-item">
                             <a class="px-1 py-3 text-white menu-link hover:text-yellow-500"
-                               href="/catalyst-explorer/api">
-                                {{ $t('Api') }}
+                               href="/catalyst-explorer/registrations">
+                                {{ $t('Registrations') }}
                             </a>
                         </li>
                         <li class="flow-root menu-item">
