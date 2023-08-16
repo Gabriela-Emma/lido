@@ -21,14 +21,16 @@
                         </p>
                     </div>
                     <div class="" v-if="search && registrations.data.length > 0">
-                        <div class="sm:flex sm:items-center">
+                        <div class="flex items-center gap-4 p-4 rounded-sm bg-white/90">
                             <div class="sm:flex-auto">
-                                <h1 class="text-lg font-semibold leading-6 text-gray-900">
-                                    My Registrations
-                                </h1>
-                                <p class="block mt-2 text-gray-700">
-                                    Here are the onchain transactions of registrations for the stake address <span class="font-bold">{{ search }}</span>
-                                </p>
+                                <div class="max-w-2xl">
+                                    <h1 class="text-lg font-semibold leading-6 text-gray-900">
+                                        My Registrations
+                                    </h1>
+                                    <p class="block mt-2 text-gray-700">
+                                        Here are the onchain transactions of registrations for the stake address <span class="font-bold">{{ search }}</span>
+                                    </p>
+                                </div>
                                 <div class="max-w-xl p-3 mt-2 text-white bg-teal-600 rounded-sm text-md">
                                     <p class="block mt-2 text-white">
                                         This tool shows your historical registrations only. It does not validate your registration.
