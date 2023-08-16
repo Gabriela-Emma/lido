@@ -28,7 +28,7 @@
         <div class="container">
             <section class="relative grid grid-cols-9 gap-6">
                 <div class="col-span-9 lg:col-span-3">
-                    <div class="lg:sticky lg:top-12">
+                    <div class="lg:sticky lg:top-16">
                         <div class="flex flex-col gap-6">
                             <div class="rounded-sm bg-gradient-to-br from-teal-800 via-teal-600 to-accent-900">
                                 <x-catalyst.proposals.social-card :proposal="$proposal" :embedded="true"/>
@@ -200,6 +200,10 @@
                 </section>
 
                 <section class="py-12 mt-8 border shadow-sm bg-gray-50 border-slate-200">
+                    <h2 class="my-2 text-center text-teal-800 2xl:text-5xl">
+                        Comments
+                    </h2>
+
                     <div class="max-w-6xl px-6 xl:mx-auto">
                         <livewire:comments :showNotificationOptions="Auth::check()"
                                             :hideNotificationOptions="!Auth::check()" :hideAvatars="false"
