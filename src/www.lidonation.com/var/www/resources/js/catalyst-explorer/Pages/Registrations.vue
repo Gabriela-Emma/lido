@@ -29,8 +29,8 @@
                                 <p class="block mt-2 text-gray-700">
                                     Here are the onchain transactions of registrations for the stake address <span class="font-bold">{{ search }}</span>
                                 </p>
-                                <div class="max-w-xl p-2 mt-2 text-white bg-teal-600 rounded-sm text-md">
-                                    <p class="block mt-2 text-gray-700">
+                                <div class="max-w-xl p-3 mt-2 text-white bg-teal-600 rounded-sm text-md">
+                                    <p class="block mt-2 text-white">
                                         This tool shows your historical registrations only. It does not validate your registration.
                                         If you have your qr code you can use this IO tool to validate your registrations:
                                         <a href="https://verify.testnet.projectcatalyst.io/" target="_blank"
@@ -38,7 +38,7 @@
                                             https://verify.testnet.projectcatalyst.io/
                                         </a>
                                     </p>
-                                    <p class="block mt-2 text-gray-700">
+                                    <p class="block mt-2 text-white">
                                         To learn how to registration as a voter, please visit:
                                         <a href="https://docs.projectcatalyst.io/catalyst-basics/how-to-register-as-a-voter"
                                             target="_blank" class="text-yellow-500 hover:text-black">
@@ -61,7 +61,13 @@
                                         </thead>
                                         <tbody class="bg-white divide-y divide-gray-200">
                                             <tr v-for="registration in registrations.data" :key="registration.tx">
-                                                <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 whitespace-nowrap sm:pl-6">{{ registration.created_at }}</td>
+                                                <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 whitespace-nowrap sm:pl-6">
+                                                    {{
+                                                        new Date(
+                                                            registration.created_at
+                                                        ).toLocaleDateString('en-us', { weekday:"long", year:"numeric", month:"short", day:"numeric"})
+                                                    }}
+                                                </td>
                                                 <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 whitespace-nowrap sm:pl-6">
                                                     <a class="inline-flex text-base font-medium text-teal-800 hover:text-yellow-500"
                                                     target="_blank" :href="`https://cexplorer.io/tx/${registration.tx}/metadata#data`">
