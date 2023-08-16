@@ -38,6 +38,7 @@
                     @endif
                 </div>
             </div>
+
             <div class="2xl:h[80px]">
                 <div class="flex flex-row flex-no-wrap mb-2">
                     @if($proposal->amount_received > 0.00)
@@ -73,10 +74,30 @@
                     @endif
                 </div>
 
+                @if($proposal->discussions)
+                    <div class="p-2 mt-8 mb-4 bg-teal-800/50">
+                        <b class="text-sm text-slate-300">
+                            Community Review Results ({{$proposal->discussions->first()->community_reviews?->count()}} reviewers)
+                        </b>
+                        <div class="flex flex-col gap-2">
+                            @foreach($proposal->discussions as $discussion)
+                                <div class="flex justify-between gap-2 flex-nowrap">
+                                    <div>
+                                        {{$discussion->title}}
+                                    </div>
+                                    <div>
+                                        <x-public.stars theme='text-white' :amount="$discussion->rating" :size="8"/>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                @endif
+
                 @if($proposal->solution)
                     <div
                         class="my-3 text-white bg-teal-700rounded-sm">
-                        <b class=text-sm>
+                        <b class="text-sm text-slate-300">
                             {{ $snippets->solution}}
                         </b>
                         <x-markdown>{{$proposal->solution}}</x-markdown>
@@ -84,7 +105,7 @@
                 @endif
 
                 <div>
-                    <b class="text-sm">Problem:</b>
+                    <b class="text-sm text-slate-300">Problem:</b>
                     <x-markdown>{{$proposal->problem}}</x-markdown>
                 </div>
 
