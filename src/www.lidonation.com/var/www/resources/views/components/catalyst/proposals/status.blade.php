@@ -1,8 +1,9 @@
 @props([
     'proposal',
-    'embedded' => false
+    'embedded' => false,
+    'showPercentage' => true
 ])
-<div class="space-x-1 italic">
+<div class="inline-flex {{$showPercentage ? 'space-x-1' : ''}} italic">
     @if($proposal->status == 'complete')
         <span
             class="inline-block px-1.5 py-0.5 font-semibold text-white text-xs rounded-sm bg-pink-400">completed</span>
@@ -26,6 +27,8 @@
     </span>
     @endif
 
+    @if($showPercentage)
     <span>{{$proposal->funded_at ? 'Awarded' : 'Requested'}} {{round((float)($proposal->amount_requested / $proposal->fund->amount) * 100, 3 ) . '%'}} of the
     fund.</span>
+    @endif
 </div>
