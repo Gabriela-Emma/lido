@@ -86,7 +86,7 @@
     </div>
 
     <div class="px-4 divide-y divide-primary-200">
-        <div class="flex flex-row items-center justify-start gap-1 py-1 border-t border-primary-200">
+        {{-- <div class="flex flex-row items-center justify-start gap-1 py-1 border-t border-primary-200">
             <div class="text-sm font-medium text-gray-300">
                 {{$snippets->communityAdvisorReviews}}:
             </div>
@@ -96,7 +96,7 @@
                     wire:key="{{$proposal->id}}"
                     :modelType="\App\Models\Proposal::class"/>
             </a>
-        </div>
+        </div> --}}
         <div
             class="flex grid flex-row items-center justify-start grid-cols-2 py-2 space-x-2 text-sm">
             <div class="flex flex-row gap-2">

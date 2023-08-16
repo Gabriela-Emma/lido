@@ -19,11 +19,19 @@ export type AssetMetaData = {
 logo: string | null;
 ticker: string | null;
 };
+export type CatalystRegistrationData = {
+id: number | null;
+tx: string | null;
+voting_power: string | null;
+stake_pub: string | null;
+created_at?: string | null;
+};
 export type CommentData = {
 id: number | null;
 title: string | null;
 text: string;
 status?: string | null;
+createdAt?: any;
 };
 export type CommunityReviewData = {
 id: number | null;
@@ -137,7 +145,7 @@ id: number | null;
 title: string;
 content: string;
 status?: string | null;
-comments: Array<App.DataTransferObjects.CommentData> | null;
+questions: Array<App.DataTransferObjects.QuizQuestionData> | null;
 };
 export type QuizQuestionAnswerData = {
 id: number | null;
