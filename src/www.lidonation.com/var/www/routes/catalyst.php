@@ -26,6 +26,7 @@ use App\Http\Controllers\ProjectCatalyst\CatalystMyDashboardController;
 use App\Http\Controllers\ProjectCatalyst\CatalystMyProposalsController;
 use App\Http\Controllers\ProjectCatalyst\CatalystMyVotesController;
 use App\Http\Controllers\ProjectCatalyst\CatalystMyRankingController;
+use App\Http\Controllers\ProjectCatalyst\CatalystRegistrationsController;
 use App\Http\Controllers\ProjectCatalyst\CatalystUserProfilesController;
 use App\Models\DraftBallot;
 use Illuminate\Http\Request;
@@ -88,6 +89,9 @@ Route::group(
 
             Route::get('/charts', fn () => Inertia::render('Charts'))
                 ->name('charts');
+
+            Route::get('/registrations', [CatalystRegistrationsController::class, 'index'])
+                ->name('registrations');
 
             Route::get('/assessments', [CatalystAssessmentsController::class, 'index'])
                 ->name('assessments');

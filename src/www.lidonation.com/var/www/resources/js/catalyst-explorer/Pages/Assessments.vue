@@ -14,7 +14,7 @@
 
         <section class="py-8">
             <div class="container">
-                <div class="mt-6 columns-1 sm:columns-2 xl:columns-3 gap-4 monthly-reports">
+                <div class="gap-4 mt-6 columns-1 sm:columns-2 xl:columns-3 monthly-reports">
                     <div v-for="assessment in props.assessments?.data">
                         <AssessmentCard :assessment="assessment"/>
                     </div>
@@ -41,6 +41,7 @@ import {VARIABLES} from "../models/variables";
 import AssessmentCard from "../modules/assessments/AssessmentCard.vue";
 import Assessment from "../models/assessment";
 import Pagination from "../Shared/Components/Pagination.vue";
+import route from "ziggy-js";
 
 const props = withDefaults(
     defineProps<{
@@ -81,7 +82,7 @@ function query() {
     }
 
     router.get(
-        "/catalyst-explorer/assessments",
+        route('catalystExplorer.assessments'),
         data,
         {preserveState: true, preserveScroll: true}
     );
