@@ -5,17 +5,23 @@
 <div class="flex flex-col col-span-1 text-white">
     <div class="flex items-center justify-between w-full p-4 space-x-4">
         <div class="">
+            @if($proposal->amount_requested &&  $proposal->fund->amount)
+                <div class="flex w-full">
+                    <x-catalyst.proposals.status :showPercentage="false" :proposal="$proposal" />
+                </div>
+            @endif
+
             <div class="flex flex-row flex-no-wrap justify-between gap-4">
-                <h2 class="font-semibold max-w-[80%]">
+                <h2 class="font-semibold max-w-[80%] inline-flex flex-wrap">
                     @if(!$embedded)
-                        <a class=""
+                        <a class="inline-flex"
                            href="{{url('proposals/' . $proposal->slug)}}">
                             <span class="text-white">
                                 {{$proposal->title}}
                             </span>
                         </a>
                     @else
-                        <span class="text-white">
+                        <span class="inline-flex text-white">
                             {{$proposal->title}}
                         </span>
                     @endif
@@ -67,20 +73,31 @@
                     @endif
                 </div>
 
+                @if($proposal->solution)
+                    <div
+                        class="my-3 text-white bg-teal-700rounded-sm">
+                        <b class=text-sm>
+                            {{ $snippets->solution}}
+                        </b>
+                        <x-markdown>{{$proposal->solution}}</x-markdown>
+                    </div>
+                @endif
+
                 <div>
-                    <b class="text-sm">Problem:</b> <x-markdown>{{$proposal->problem}}</x-markdown>
+                    <b class="text-sm">Problem:</b>
+                    <x-markdown>{{$proposal->problem}}</x-markdown>
                 </div>
 
-                <div class="flex flex-col gap-2 my-4 text-sm">
+
+
+                {{-- <div class="flex flex-col gap-2 my-4 text-sm">
                     <div>
                         <span class="font-bold text-gray-300">
                             {{$snippets->challenge }}: </span>
                         <span>{{ $proposal->fund->label }}</span>
                     </div>
-                    @if($proposal->amount_requested &&  $proposal->fund->amount)
-                        <x-catalyst.proposals.status :proposal="$proposal" />
-                    @endif
-                </div>
+
+                </div> --}}
             </div>
         </div>
     </div>
@@ -97,8 +114,9 @@
                     :modelType="\App\Models\Proposal::class"/>
             </a>
         </div> --}}
+        @if($proposal->yes_votes_count_formatted)
         <div
-            class="flex grid flex-row items-center justify-start grid-cols-2 py-2 space-x-2 text-sm">
+            class="grid items-center justify-start grid-cols-2 py-2 space-x-2 text-sm">
             <div class="flex flex-row gap-2">
                 <div class="font-medium text-gray-300">
                     Yes Votes:
@@ -116,6 +134,7 @@
                 </div>
             </div>
         </div>
+        @endif
         @if($proposal->meta_data?->unique_wallets)
             <div
                 class="flex flex-row items-center justify-start py-2 text-sm">

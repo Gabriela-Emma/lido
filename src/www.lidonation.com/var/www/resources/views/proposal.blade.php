@@ -28,30 +28,20 @@
         <div class="container">
             <section class="relative grid grid-cols-9 gap-6">
                 <div class="col-span-9 lg:col-span-3">
-                    <div class="lg:sticky lg:top-10">
+                    <div class="lg:sticky lg:top-12">
                         <div class="flex flex-col gap-6">
                             <div class="rounded-sm bg-gradient-to-br from-teal-800 via-teal-600 to-accent-900">
                                 <x-catalyst.proposals.social-card :proposal="$proposal" :embedded="true"/>
                             </div>
 
-                            @if($proposal->solution)
-                                <div
-                                    class="p-4 font-semibold text-white bg-teal-700 border rounded-sm border-slate-300">
-                                    <h2>
-                                        {{ $snippets->solution}}
-                                    </h2>
-                                    <x-markdown>{{$proposal->solution}}</x-markdown>
-                                </div>
-                            @endif
-
                             @if($proposal->users)
-                                <div class="p-4 border rounded-sm border-slate-300">
+                                <div class="p-4 mb-6 border rounded-sm border-slate-300">
                                     <h2 class="mb-6">
                                         {{ $snippets->team}}
                                     </h2>
                                     <div>
                                         @if($proposal->users->isNotEmpty())
-                                            <ul class="grid grid-cols-4 gap-4 mx-auto sm:grid-cols-3">
+                                            <ul class="flex gap-4">
                                                 @foreach($proposal->users as $catalystUser)
                                                     <li wire:key="{{$catalystUser->id}}">
                                                         <div class="flex flex-col items-center gap-4">
@@ -65,7 +55,7 @@
                                                                 <div class="text-sm font-medium text-center lg:text-xs">
                                                                     <h3 class="">
                                                                         <a class="block font-bold text-teal-600"
-                                                                           href="{{$catalystUser->link}}">
+                                                                            href="{{$catalystUser->link}}">
                                                                             {{$catalystUser->name}}
                                                                         </a>
                                                                     </h3>
@@ -80,30 +70,14 @@
                                 </div>
                             @endif
 
-                            @if($proposal->experience)
+                            {{-- @if($proposal->experience)
                                 <div class="p-4 border rounded-sm border-slate-300">
                                     <h2>
                                         {{ $snippets->experience}}
                                     </h2>
                                     <x-markdown>{{$proposal->experience}}</x-markdown>
                                 </div>
-                            @endif
-
-                            <div>
-                                <a href="{{localizeRoute('catalystExplorer.proposals')}}" type="button"
-                                   class="flex items-center w-full px-6 py-3 text-2xl font-medium text-gray-700 bg-white border rounded-sm border-slate-300 hover:bg-primary-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
-                                    <span class="mr-3">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none"
-                                             viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                  d="M7 16l-4-4m0 0l4-4m-4 4h18"/>
-                                        </svg>
-                                    </span>
-                                    <span class="tracking-wider uppercase">
-                                        {{ $snippets->allProposals}}
-                                    </span>
-                                </a>
-                            </div>
+                            @endif --}}
                         </div>
                     </div>
                 </div>
@@ -209,27 +183,29 @@
                     @if($proposal->content)
                         <x-catalyst.proposals.proposal-content :proposal="$proposal" :pageLocale="(app()->getLocale())"  />
                     @endif
-
-                    <section class="py-12 mt-8 border shadow-sm bg-gray-50 border-slate-200">
-                        <div class="max-w-6xl px-6 xl:mx-auto">
-                            <livewire:comments :showNotificationOptions="Auth::check()"
-                                               :hideNotificationOptions="!Auth::check()" :hideAvatars="false"
-                                               :noReplies="false" :model="$proposal"/>
-                        </div>
-                    </section>
-
-                    <!-- Discussions -->
-                    <section class="relative mt-10" id="discussions">
-                        @if($proposal->discussions->isNotEmpty())
-                            <h2 class="mb-8 text-4xl decorate dark">
-                                {{ $snippets->communityAdvisorReviews }}
-                            </h2>
-                            <div class="proposal-discussions-wrapper">
-                                <x-public.discussions :model="$proposal" :editable="false"></x-public.discussions>
-                            </div>
-                        @endif
-                    </section>
                 </div>
+            </section>
+
+            <section>
+                <!-- Discussions -->
+                <section class="relative mt-10" id="discussions">
+                    @if($proposal->discussions->isNotEmpty())
+                        <h2 class="mb-8 text-4xl decorate dark">
+                            {{ $snippets->communityAdvisorReviews }}
+                        </h2>
+                        <div class="proposal-discussions-wrapper">
+                            <x-public.discussions :model="$proposal" :editable="false"></x-public.discussions>
+                        </div>
+                    @endif
+                </section>
+
+                <section class="py-12 mt-8 border shadow-sm bg-gray-50 border-slate-200">
+                    <div class="max-w-6xl px-6 xl:mx-auto">
+                        <livewire:comments :showNotificationOptions="Auth::check()"
+                                            :hideNotificationOptions="!Auth::check()" :hideAvatars="false"
+                                            :noReplies="false" :model="$proposal"/>
+                    </div>
+                </section>
             </section>
 
             @if($proposal->commits?->isNotEmpty())

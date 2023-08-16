@@ -8,6 +8,7 @@
                     <div class="flex items-center w-full h-10 lg:h-16">
                         <Search
                             :search="search"
+                            placeholder="Paste in your stake address"
                             @search="(term) => search=term"></Search>
                     </div>
                 </div>
