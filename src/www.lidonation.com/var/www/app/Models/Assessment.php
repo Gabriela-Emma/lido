@@ -64,7 +64,7 @@ class Assessment extends Model implements IHasMetaData
      */
     public function commentableName(): string
     {
-        return $this->proposal?->title;
+        return $this->model?->proposal?->title ?? '';
     }
 
     /*
@@ -73,7 +73,7 @@ class Assessment extends Model implements IHasMetaData
      */
     public function commentUrl(): string
     {
-        return $this->proposal?->link;
+        return $this->model?->proposal?->link ?? '';
     }
 
     public function getShortJsonAttribute()

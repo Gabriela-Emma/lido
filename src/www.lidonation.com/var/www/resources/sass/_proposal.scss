@@ -22,6 +22,14 @@ body.proposal .drip {
     }
 }
 
+body.proposal #related-proposals {
+    .proposal-drips {
+        .proposal-drip img {
+            display: none !important;
+        }
+    }
+}
+
 .catalyst-proposals-research-wrapper {
     .proposal-filters {
         .fund-filter, .challenge-filter {

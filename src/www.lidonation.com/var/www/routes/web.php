@@ -250,7 +250,15 @@ Route::group(
 
         // proposals
         Route::get('/proposals/{proposal}/', function (Proposal $proposal) {
-            return view('proposal', compact('proposal'));
+            // related proposal in fund
+            $relatedProposalsQuery = Proposal::whereRelation('fund', 'parent_id', $proposal->fund?->parent_id)
+            ->whereHas('users', fn($q) => $q->whereIn('id', $proposal->users->pluck('id')) )
+            ->where('id', '!=', $proposal->id);
+
+            $relatedProposals = $relatedProposalsQuery->limit(6)->get();
+
+            // other proposals form same category
+            return view('proposal', compact('proposal', 'relatedProposals' ));
         })->name('proposal');
 
         // Archive News
