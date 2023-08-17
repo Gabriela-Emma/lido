@@ -302,3 +302,4 @@ Category::orWhereHas('reviews')->orWhereHas('news')->orWhereHas('insights')->cou
 Category::query()->count();
 Assessment::find(157719)->comments
 ProposalRating::count();
+exit
