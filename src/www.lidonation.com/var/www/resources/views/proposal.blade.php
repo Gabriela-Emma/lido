@@ -214,7 +214,7 @@
                 <h2 class="mb-8 text-4xl decorate dark">
                     Other proposals from this team in {{$proposal?->fund?->parent?->title}}
                 </h2>
-                <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 proposal-drips">
+                <div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3 3xl:grid-cols-4 proposal-drips">
                     @foreach ($relatedProposals as $relatedProposal)
                     <div class="w-full rounded-sm bg-gradient-to-br from-teal-800 via-teal-600 to-accent-900 proposal-drip">
                         <x-catalyst.proposals.social-card :proposal="$relatedProposal" :embedded="false" />
