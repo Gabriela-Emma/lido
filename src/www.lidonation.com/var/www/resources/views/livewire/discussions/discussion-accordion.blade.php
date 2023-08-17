@@ -62,8 +62,10 @@
     </div>
 
     <div class="p-6" x-show="showCategory" wire:key="{{$discussion->id}}">
-        <div>
-            <x-markdown>{{$discussion?->content}}</x-markdown>
+        <div class="text-lg">
+            <x-markdown>
+                {{$discussion?->content}}
+            </x-markdown>
         </div>
 
         @if($editable)
