@@ -209,7 +209,7 @@
                 </section>
             </section>
 
-            @if($relatedProposals)
+            @if($relatedProposals?->count() > 0)
             <section class="relative mt-16" id="related-proposals">
                 <h2 class="mb-8 text-4xl decorate dark">
                     Other proposals from this team in {{$proposal?->fund?->parent?->title}}
