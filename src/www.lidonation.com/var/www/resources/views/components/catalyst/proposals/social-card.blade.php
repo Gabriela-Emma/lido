@@ -74,19 +74,19 @@
                     @endif
                 </div>
 
-                @if($proposal->discussions)
+                @if($proposal->discussions?->isNotEmpty())
                     <div class="p-2 mt-8 mb-4 bg-teal-800/50">
                         <b class="text-sm text-slate-300">
-                            Community Review Results ({{$proposal->discussions->first()->community_reviews?->count()}} reviewers)
+                            Community Review Results ({{$proposal->discussions->first()?->community_reviews?->count()}} reviewers)
                         </b>
                         <div class="flex flex-col gap-2">
                             @foreach($proposal->discussions as $discussion)
-                                <div class="flex justify-between gap-2 flex-nowrap">
+                                <div class="flex items-center justify-between gap-2 flex-nowrap">
                                     <div>
                                         {{$discussion->title}}
                                     </div>
                                     <div>
-                                        <x-public.stars theme='text-white' :amount="$discussion->rating" :size="8"/>
+                                        <x-public.stars theme='text-white' :amount="$discussion->rating" :size="5"/>
                                     </div>
                                 </div>
                             @endforeach
