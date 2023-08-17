@@ -15,6 +15,9 @@
                                 <div class="">
                                     <h2 class="leading-6 text-slate-900">{{ $t("My Community Reviews") }}</h2>
                                 </div>
+                                <div class="w-1/4">
+                                    <FundPicker v-model="filters.funds" class="border border-1 border-slate-300"/>
+                                </div>
                             </div>
 
                             <div
@@ -171,6 +174,7 @@ import Pagination from "../../Shared/Components/Pagination.vue";
 import { ArrowUturnLeftIcon } from "@heroicons/vue/20/solid";
 import { Ref } from "vue";
 import route from "ziggy-js";
+import FundPicker from "../../modules/funds/FundPicker.vue";
 import ProposalRatingData = App.DataTransferObjects.ProposalRatingData;
 
 
@@ -198,6 +202,7 @@ const props = withDefaults(
 let filtersRef = ref(props.filters);
 let currPageRef = ref<number>(props.currPage);
 let perPageRef = ref<number>(props.perPage);
+let filters = ref<Filters>(props.filters);
 
 let respondingTo: Ref<ProposalRatingData | null> = ref(null);
 let respondingToResponse = ref(null);
@@ -222,6 +227,9 @@ function query()
     }
     if (!filtersRef.value?.funded) {
         data[VARIABLES.FUNDED_PROPOSALS] = 0;
+    }
+    if (filtersRef.value?.funds) {
+        data[VARIABLES.FUNDS] = Array.from(filtersRef.value?.funds);
     }
 
     router.get(

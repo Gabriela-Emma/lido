@@ -10,13 +10,17 @@ use App\Models\ProposalRating;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use App\Enums\CatalystExplorerQueryParams;
 use Inertia\Response;
+use Illuminate\Support\Collection;
 
 class CatalystMyCommunityReviewsController extends Controller
 {
     protected int $perPage = 24;
 
     protected int $currentPage;
+
+    public Collection $fundsFilter;
 
     public function manage(Assessment $assessment)
     {
@@ -36,6 +40,8 @@ class CatalystMyCommunityReviewsController extends Controller
     {
         $this->currentPage = $request->input('p', 1);
         $this->perPage = $request->input('l', 24);
+        $this->fundsFilter = $request->collect(CatalystExplorerQueryParams::FUNDS)->map(fn ($n) => intval($n));
+
 
         return Inertia::render('Auth/UserCommunityReviews', $this->data());
     }
@@ -44,14 +50,19 @@ class CatalystMyCommunityReviewsController extends Controller
     {
         $user = auth()->user();
         $user?->load('catalyst_users');
+        $fundsFilterArray = $this->fundsFilter->toArray();
 
         $catalystProfiles = $user->catalyst_users?->pluck('id');
         $ratings = ProposalRating::with(['metas', 'proposal', 'community_review.comments'])
         ->orderBy('id')
-        ->whereHas('proposal', function ($query) use ($catalystProfiles) {
+        ->whereHas('proposal', function ($query) use ($catalystProfiles, $fundsFilterArray) {
             $query
                 ->withoutGlobalScopes()
-                ->whereRelation('fund', 'parent_id', 113)
+                ->where(function ($q) use ($fundsFilterArray) {
+                    foreach ($fundsFilterArray as $fundId) {
+                        $q->orWhereRelation('fund', 'parent_id', $fundId);
+                    }
+                })
                 ->whereIn('proposals.user_id', $catalystProfiles);
         });
 
@@ -82,7 +93,7 @@ class CatalystMyCommunityReviewsController extends Controller
 
         return [
             'filters' => [
-
+                'funds' => $this->fundsFilter->toArray(),
             ],
             'proposalRatings' => ProposalRatingData::collection($paginator),
             'crumbs' => [
