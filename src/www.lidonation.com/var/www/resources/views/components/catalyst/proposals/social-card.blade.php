@@ -14,7 +14,7 @@
             <div class="flex flex-row flex-no-wrap justify-between gap-4">
                 <h2 class="font-semibold max-w-[80%] inline-flex flex-wrap">
                     @if(!$embedded)
-                        <a class="inline-flex"
+                        <a class="inline-flex hover:text-black"
                            href="{{url('proposals/' . $proposal->slug)}}">
                             <span class="text-white">
                                 {{$proposal->title}}

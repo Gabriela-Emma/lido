@@ -551,9 +551,6 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
         return $query->with(['users', 'tags', 'groups']);
     }
 
-    /**
-     * The roles that belong to the user.
-     */
     public function users(): BelongsToMany
     {
         return $this->belongsToMany(CatalystUser::class, 'catalyst_user_has_proposal', 'proposal_id', 'catalyst_user_id');

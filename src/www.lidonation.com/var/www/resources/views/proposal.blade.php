@@ -209,6 +209,21 @@
                 </section>
             </section>
 
+            @if($relatedProposals)
+            <section class="relative mt-16" id="related-proposals">
+                <h2 class="mb-8 text-4xl decorate dark">
+                    Other proposals from this team in {{$proposal?->fund?->parent?->title}}
+                </h2>
+                <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 proposal-drips">
+                    @foreach ($relatedProposals as $relatedProposal)
+                    <div class="w-full rounded-sm bg-gradient-to-br from-teal-800 via-teal-600 to-accent-900 proposal-drip">
+                        <x-catalyst.proposals.social-card :proposal="$relatedProposal" :embedded="false" />
+                    </div>
+                    @endforeach
+                </div>
+            </section>
+            @endif
+
             @if($proposal->commits?->isNotEmpty())
                 <section class="px-4 py-8 mt-8 xl:py-16 bg-slate-100 round-sm">
                     <h2 class="my-2 text-center text-teal-800 2xl:text-5xl">
@@ -222,6 +237,7 @@
                     </div>
                 </section>
             @endif
+
             @if($proposal->funded && $proposal->monthly_reports)
                 <section class="px-4 py-8 mt-8 xl:py-16 bg-slate-100 round-sm">
                     <h2 class="my-2 text-center text-teal-800 2xl:text-5xl">
