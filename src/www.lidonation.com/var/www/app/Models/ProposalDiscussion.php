@@ -12,8 +12,7 @@ class ProposalDiscussion extends Discussion
     {
         return $this->hasMany(Assessment::class, 'model_id')
             ->where('model_type', Discussion::class)
-            ->whereNull('parent_id')
-            ->limit(16);
+            ->whereNull('parent_id');
     }
 
     public function ratings(): HasMany
