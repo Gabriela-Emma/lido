@@ -4,14 +4,14 @@
 ])
 <div class="flex flex-col col-span-1 text-white">
     <div class="flex items-center justify-between w-full p-4 space-x-4">
-        <div class="">
+        <div class="w-full">
             @if($proposal->amount_requested &&  $proposal->fund->amount)
                 <div class="flex w-full">
                     <x-catalyst.proposals.status :showPercentage="false" :proposal="$proposal" />
                 </div>
             @endif
 
-            <div class="flex flex-row flex-no-wrap justify-between gap-4">
+            <div class="flex flex-row flex-no-wrap justify-between w-full gap-4">
                 <h2 class="font-semibold max-w-[80%] inline-flex flex-wrap">
                     @if(!$embedded)
                         <a class="inline-flex hover:text-black"
@@ -75,7 +75,7 @@
                 </div>
 
                 @if($proposal->discussions?->isNotEmpty())
-                    <div class="p-2 mt-8 mb-4 bg-teal-800/50">
+                    <div class="w-full p-2 mt-8 mb-4 bg-teal-800/50">
                         <b class="text-sm text-slate-300">
                             Community Review Results ({{$proposal->discussions->first()?->community_reviews?->count()}} reviewers)
                         </b>
