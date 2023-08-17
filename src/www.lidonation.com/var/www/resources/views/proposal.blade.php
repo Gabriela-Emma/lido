@@ -41,7 +41,7 @@
                                     </h2>
                                     <div>
                                         @if($proposal->users->isNotEmpty())
-                                            <ul class="flex gap-4">
+                                            <ul class="flex flex-wrap justify-start gap-5">
                                                 @foreach($proposal->users as $catalystUser)
                                                     <li wire:key="{{$catalystUser->id}}">
                                                         <div class="flex flex-col items-center gap-4">
@@ -51,15 +51,11 @@
                                                                     src="{{$catalystUser->thumbnail_url ?? $catalystUser->bio_pic?->getUrl('thumbnail') ?? $catalystUser->gravatar}}"
                                                                     alt="{{$catalystUser->name}} bio pic">
                                                             </a>
-                                                            <div class="space-y-2">
-                                                                <div class="text-sm font-medium text-center lg:text-xs">
-                                                                    <h3 class="">
-                                                                        <a class="block font-bold text-teal-600"
-                                                                            href="{{$catalystUser->link}}">
-                                                                            {{$catalystUser->name}}
-                                                                        </a>
-                                                                    </h3>
-                                                                </div>
+                                                            <div class="max-w-[8rem] text-sm font-medium text-center lg:text-xs">
+                                                                <a class="block font-bold text-teal-600"
+                                                                    href="{{$catalystUser->link}}">
+                                                                    {{$catalystUser->name}}
+                                                                </a>
                                                             </div>
                                                         </div>
                                                     </li>
@@ -192,6 +188,7 @@
                     @if($proposal->discussions->isNotEmpty())
                         <h2 class="mb-8 text-4xl decorate dark">
                             {{ $snippets->communityAdvisorReviews }}
+                            ({{$proposal->discussions?->first()?->community_reviews?->count()}})
                         </h2>
                         <div class="proposal-discussions-wrapper">
                             <x-public.discussions :model="$proposal" :editable="false"></x-public.discussions>

@@ -58,7 +58,7 @@
             </div>
         </div>
     @endif
-    <div x-data="{ heightClass: 'max-h-[50rem] overflow-clip', funded: @js($proposal->funded) }"
+    <div x-data="{ heightClass: 'max-h-[60rem] overflow-clip', funded: @js($proposal->funded) }"
         :class=" { editing: 'h-full' }"
         class="relative p-4 text-justify"
         x-show="1">

@@ -1,7 +1,7 @@
 <div class="leading-relaxed"
      x-data="{writeComment(){this.showCommentForm = true; this.showCategory = true;}, showCategory: @js($expanded), showCommentForm: false, acknowledgedRole: false}">
     <div
-        class="p-6 hover:cursor-pointer group flex flex-row flex-wrap items-center justify-around gap-4 sticky top-10 z-20 relative {{$background}}"
+        class="p-6 hover:cursor-pointer group flex flex-row flex-wrap items-center justify-around gap-4 sticky top-10 z-20 {{$background}}"
         @click.self="showCategory=!showCategory">
         <div class="mr-auto text-gray-600 group-hover:text-teal-600 min-w-2/5">
             <h2 class="md:text-2xl xl:text-3xl 2xl:text-4xl">
@@ -136,12 +136,12 @@
 
         @if($discussion->community_reviews?->count() > 0)
             <div class="mt-6">
-                <h3 class="mb-4 space-x-1 decorate dark">
+                {{-- <h3 class="mb-4 space-x-1 decorate dark">
                     <span class="capitalize">
                         {{$snippets->communityReviews}}
                     </span>
                     <span>({{$discussion->community_reviews->count()}})</span>
-                </h3>
+                </h3> --}}
 
                 <livewire:discussions.reviews-component :editable="false" :discussion="$discussion" :reviews="$discussion->community_reviews" />
 
