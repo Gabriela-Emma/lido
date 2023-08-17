@@ -196,7 +196,7 @@
                     @endif
                 </section>
 
-                <section class="py-12 mt-4 mt-8 border shadow-sm bg-gray-50 border-slate-200">
+                <section class="py-12 mt-8 border shadow-sm bg-gray-50 border-slate-200">
                     <h2 class="my-2 text-center text-teal-800 2xl:text-5xl">
                         Comments
                     </h2>
