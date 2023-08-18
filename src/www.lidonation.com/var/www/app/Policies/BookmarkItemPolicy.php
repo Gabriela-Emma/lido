@@ -51,6 +51,6 @@ class BookmarkItemPolicy extends AppPolicy
      */
     public function delete(User $user, BookmarkItem $bookmarkItem): bool
     {
-        return $user->hasAnyPermission([PermissionEnum::delete_catalyst_groups()->value]) || $this->canDeleteAny($user);
+        return $user->hasAnyPermission([PermissionEnum::delete_catalyst_groups()->value]) || $this->canDeleteAny($user) || $bookmarkItem->collection->user_id === $user->id;
     }
 }
