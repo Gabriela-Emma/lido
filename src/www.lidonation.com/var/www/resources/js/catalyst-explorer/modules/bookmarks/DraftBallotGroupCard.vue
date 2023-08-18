@@ -191,8 +191,10 @@ function removeItem(id: number) {
     if (canDelete) {
         axios.delete(route('catalystExplorer.bookmarkItem.delete', { bookmarkItem: id }))
             .then((res) => {
-                bookmarksStore.deleteItem(id, collectionHash.value);
-                bookmarksStore.loadDraftBallot();
+                if(res.status === 200){
+                    bookmarksStore.deleteItem(id, collectionHash.value);
+                    bookmarksStore.loadDraftBallot();
+                }
             })
             .catch((error) => {
                 if (error.response && error.response.status === 403) {
