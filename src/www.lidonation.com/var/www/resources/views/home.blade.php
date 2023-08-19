@@ -39,7 +39,7 @@
 
                                                 <a href="{{$quickpitch->link}}" class="block p-2 text-base text-yellow-600 hover:text-yellow-800">
                                                     <div class="text-xs text-slate-200">View Proposal</div>
-                                                    {{$quickpitch->title}}}
+                                                    {{$quickpitch->title}}
                                                 </a>
                                         </div>
                                         @endforeach
@@ -57,7 +57,7 @@
 
                                                         <a href="{{$quickpitch->link}}" class="block p-2 text-base text-yellow-600 hover:text-yellow-800">
                                                             <div class="text-xs text-slate-200">View Proposal</div>
-                                                            {{$quickpitch->title}}}
+                                                            {{$quickpitch->title}}
                                                         </a>
                                                 </div>
                                             @else
@@ -71,7 +71,7 @@
 
                                                         <a href="{{$quickpitch->link}}" class="block p-2 text-base text-yellow-600 hover:text-yellow-800">
                                                             <div class="text-xs text-slate-200">View Proposal</div>
-                                                            {{$quickpitch->title}}}
+                                                            {{$quickpitch->title}}
                                                         </a>
                                                 </div>
                                             @endif
@@ -89,7 +89,7 @@
 
                                                 <a href="{{$quickpitch->link}}" class="block p-2 text-base text-yellow-600 hover:text-yellow-800">
                                                     <div class="text-xs text-slate-200">View Proposal</div>
-                                                    {{$quickpitch->title}}}
+                                                    {{$quickpitch->title}}
                                                 </a>
                                         </div>
                                         @endforeach
@@ -411,7 +411,7 @@
                                 <img
                                     class="object-cover object-top w-full bg-teal-600 rounded-sm responsive h-28 filter hover:contrast-200"
                                     src="{{$pages?->pool?->hero?->getUrl('thumbnail')}}"
-                                    alt="{{$pages?->pool?->hero->name}}"/>
+                                    alt="{{$pages?->pool?->hero?->name}}"/>
                             </a>
                         </div>
                         <h3 class="mb-4 text-2xl">
@@ -439,7 +439,7 @@
                                 <img
                                     class="object-cover object-top w-full bg-teal-600 rounded-sm responsive h-28 filter hover:contrast-200"
                                     src="//www.lidonation.com/storage/317/lido-finantial-details-kenny-eliason-unsplash.jpg"
-                                    alt="{{$pages?->pool?->hero->name}}"/>
+                                    alt="{{$pages?->pool?->hero?->name}}"/>
                             </a>
 
                         </div>
@@ -456,7 +456,7 @@
                                 <img
                                     class="object-cover object-top w-full bg-teal-600 rounded-sm responsive h-28 filter hover:contrast-200"
                                     src="//www.lidonation.com/storage/318/lidonation-idea-junior-ferreira-unsplash.jpg"
-                                    alt="{{$pages?->pool?->hero->name}}"/>
+                                    alt="{{$pages?->pool?->hero?->name}}"/>
                             </a>
                         </div>
                         <h3 class="mb-4 text-2xl">
