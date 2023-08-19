@@ -80,7 +80,7 @@
                                     <TrashIcon @click.prevent="removeItem(item?.id)" aria-hidden="true"
                                         class="w-5 h-5 text-gray-500 hover:text-teal-600 hover:cursor-pointer" />
                                     <svg aria-hidden="true"
-                                        class="inline w-5 h-5 text-gray-200 animate-spin dark:text-gray-600 fill-red-600"
+                                        class="inline w-5 h-5 text-slate-600 animate-spin fill-red-700"
                                         viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg"
                                         v-if="deletingItem && item.id === deletingId">
                                         <path
