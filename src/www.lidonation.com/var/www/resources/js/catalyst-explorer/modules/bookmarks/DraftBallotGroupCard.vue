@@ -209,8 +209,6 @@ function removeItem(id: number) {
                 if(res.status === 200){
                     bookmarksStore.deleteItem(id, collectionHash.value);
                     bookmarksStore.loadDraftBallot();
-                    deletingItem.value = false;
-                    deletingId.value = null;
                 }
             })
             .catch((error) => {
