@@ -47,11 +47,16 @@ class CatalystMyProposalsController extends Controller
 
         $catalystProfiles = $user->catalyst_users?->pluck('id');
 
+
         $query = Proposal::select('proposals.*')
         ->join('funds', 'proposals.fund_id', '=', 'funds.id')
         ->whereIn('proposals.user_id', $catalystProfiles)
         ->orderBy('funds.launched_at', 'DESC')
         ->orderBy('proposals.funded_at', 'DESC');
+
+        // dd($catalystProfiles);
+        // dump($query->getBindings());
+        // dd($query->get());
 
         $paginator = $query->paginate($this->perPage, ['*'], 'p')->setPath('/');
 
