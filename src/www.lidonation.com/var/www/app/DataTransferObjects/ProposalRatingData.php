@@ -15,15 +15,15 @@ class ProposalRatingData extends Data
     public function __construct(
         public ?int $id,
 
-        public string $rationale,
+        public ?string $rationale,
 
-        public string $rating,
+        public ?string $rating,
 
         public $meta_data,
 
-        public ProposalData $proposal,
+        public ?ProposalData $proposal,
 
-        public CommunityReviewData $community_review,
+        public ?CommunityReviewData $community_review,
 
         #[TypeScriptOptional]
         public ?string $status
