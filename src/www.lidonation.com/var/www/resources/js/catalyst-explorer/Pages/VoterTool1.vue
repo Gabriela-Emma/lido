@@ -218,16 +218,29 @@
         </section>
 
         <section class="container">
+            <Proposals :proposals="props.proposals?.data"></Proposals>
+
+            <div class="flex items-start justify-between w-full gap-16 my-16 xl:gap-24">
+                <div class="flex-1">
+                    <Pagination :links="props.proposals.links" :per-page="props.perPage" :total="props.proposals?.total"
+                        :from="props.proposals?.from" :to="props.proposals?.to"
+                        @perPageUpdated="(payload) => perPageRef = payload"
+                        @paginated="(payload) => currPageRef = payload" />
+                </div>
+            </div>
+        </section>
+
+        <section class="container">
             <h2 class="mt-6 text-4xl">
                 Challenges in {{ fund.label }}
             </h2>
             <p>The community was asked to provide solutions to these challenges</p>
 
             <div class="container grid grid-cols-1 gap-3 mt-5 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3 lg:gap-6">
-                <div v-for="challenge in challenges" class="relative flex flex-col overflow-hidden bg-white border border-gray-200 rounded-lg group">
+                <div v-for="challenge in challenges"
+                    class="relative flex flex-col overflow-hidden bg-white border border-gray-200 rounded-lg group">
                     <div class="bg-gray-200 aspect-w-2 aspect-h-2 group-hover:opacity-75 sm:aspect-none sm:h-60">
-                        <img :alt="challenge.title"
-                            class="object-cover object-center w-full h-full sm:w-full sm:h-full">
+                        <img :alt="challenge.title" class="object-cover object-center w-full h-full sm:w-full sm:h-full">
                     </div>
                     <div class="flex flex-col flex-1 p-4 space-y-2">
                         <h3 class="text-xl font-medium text-gray-900">
@@ -236,12 +249,13 @@
                                 {{ challenge.title }}
                             </a>
                         </h3>
-                        <p class="text-sm text-gray-500">{{ '$challenge -> excerpt' }}</p>
+                        <p class="text-sm text-gray-500">{{ challenge.excerpt }}</p>
                         <div class="flex flex-col justify-end flex-1">
                             <p class="text-base italic text-gray-700">{{ challenge.proposals_count }}
                                 proposals</p>
                             <p class="text-lg font-medium text-gray-900">
-                                Budget: <span class="font-bold">{{ $filters.currency(challenge.amount, fund.currency) }}</span>
+                                Budget: <span class="font-bold">{{ $filters.currency(challenge.amount, fund.currency)
+                                }}</span>
                             </p>
                         </div>
                     </div>
@@ -255,7 +269,12 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue';
 import Search from '../Shared/Components/Search.vue';
+import Proposal from '../models/proposal';
+import Proposals from '../modules/proposals/Proposals.vue';
+import Pagination from '../Shared/Components/Pagination.vue';
+
 const props = withDefaults(
     defineProps<{
         search?: string,
@@ -263,10 +282,21 @@ const props = withDefaults(
         perPage?: number,
         locale: string,
         challenges,
-        fund
+        fund,
+        proposals: {
+            links: [],
+            total: number,
+            to: number,
+            from: number,
+            data: Proposal[]
+        };
     }>(), {});
 
-let search, searchRender
+let searchRender = ref(0);
+let currPageRef = ref<number>(props.currPage);
+let perPageRef = ref<number>(props.perPage);
+
+let search;
 
 let isSelected = (t) => {
     return t
