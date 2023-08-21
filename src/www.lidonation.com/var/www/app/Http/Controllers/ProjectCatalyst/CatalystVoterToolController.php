@@ -45,16 +45,16 @@ class CatalystVoterToolController extends Controller
 
     public function index(Request $request)
     {
-        
+        // dd($request);      
         $this->search = $request->input('s', null);
         $this->perPage = $request->input('l', 24);
         $this->currentPage = $request->input('p', 1);
-        $this->searchGroup = 'largeProposals';
+        $this->searchGroup = $request->input('f', null);
 
         return Inertia::render('VoterTool1', [
             'search' => $this->search,
             'currentPage' =>  $this->currentPage,
-            'perPage' => $this->perPage,
+            'perPage' => $this->limit,
             'challenges' =>$this->challenges,
             'proposals' => $this->query(),
             'fund' => $this->fund,
@@ -66,6 +66,9 @@ class CatalystVoterToolController extends Controller
 
     protected function query()
     {
+        if (!$this->searchGroup) {
+            return;
+        }
         $_options = $this->getUserFilters();
 
         $this->searchBuilder = Proposal::search(
@@ -140,6 +143,8 @@ class CatalystVoterToolController extends Controller
     #[ArrayShape(['filters' => 'array'])]
     function getUserFilters() 
     {
+        if(!$this->searchGroup){return;}
+
         if ($this->searchGroup == 'oneTimers' || $this->searchGroup == 'firstTimers') {
             $_options = [
                 'filters' => [],

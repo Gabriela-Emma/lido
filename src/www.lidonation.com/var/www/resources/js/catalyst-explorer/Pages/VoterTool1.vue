@@ -1,7 +1,7 @@
 <template>
     <header-component titleName0="catalyst" titleName1="Voter Tool"
         subTitle="All Votes must be submitted in the official Catalyst Voting App. This is a research & planning tool only!" />
-        
+
     <div class="flex flex-col gap-2 bg-primary-20">
         <section class="container py-8">
             <div class="flex flex-col ">
@@ -9,46 +9,28 @@
                     <Search :search="search" :key="searchRender" @search="(term) => search = term"></Search>
                 </div>
                 <div>
-                    <div class="text-left 2x:w-3/5 search-groups-wrapper" role="radiogroup"
-                        >
-                        <label :id="$id('radio-group-label')" role="none" class="hidden">Proposal Groups: <span
-                                x-text="value"></span></label>
-
-                        <div class="flex flex-row flex-wrap gap-2 mt-2 search-groups">                        
-                            <div role="radio"
-                                class="flex cursor-pointer border rounded-sm shadow p-4 w-full lg:w-[initial]">
-                                <!-- Checked Indicator -->
-                                <span :class="{ 'bg-teal-600': isSelected($options) }"
-                                    class="inline-flex items-center justify-center w-4 h-4 mt-1 border-2 border-white rounded-full ring-1 ring-black"
-                                    aria-hidden="true"></span>
-
-                                <span class="ml-3 text-gray-600">
-                                    <!-- Primary Label -->
-                                    <p :id="$id('radio-option-label')">All Stars</p>
-
-                                    <span :id="$id('radio-option-description')" class="mt-2 text-sm">
-                                        Scored a perfect 5/5 PA Rating
-                                    </span>
-                                </span>
-                            </div>
+                    <div class="text-left 2x:w-3/5 search-groups-wrapper" role="radiogroup">
+                        <div class="flex flex-row flex-wrap gap-2 mt-2 search-groups">
+                            <VoterToolFilters @filter="(filter) => filterRef = filter" />
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section class="container" v-if="props.proposals?.data.length">
-            <Proposals :proposals="props.proposals?.data"></Proposals>
-
-            <div class="flex items-start justify-between w-full gap-16 my-16 xl:gap-24">
-                <div class="flex-1">
-                    <Pagination :links="props.proposals.links" :per-page="props.perPage" :total="props.proposals?.total"
-                        :from="props.proposals?.from" :to="props.proposals?.to"
-                        @perPageUpdated="(payload) => perPageRef = payload"
-                        @paginated="(payload) => currPageRef = payload" />
+        <TransitionChild appear :show="!!props.proposals?.data.length" enter="ease-out duration-700">
+            <section class="container" v-if="!!props.proposals?.data.length">
+                <Proposals :proposals="props.proposals?.data"></Proposals>
+                <div class="flex items-start justify-between w-full gap-16 my-16 xl:gap-24">
+                    <div class="flex-1">
+                        <Pagination :links="props.proposals?.links" :per-page="props.perPage"
+                            :total="props.proposals?.total" :from="props.proposals?.from" :to="props.proposals?.to"
+                            @perPageUpdated="(payload) => perPageRef = payload"
+                            @paginated="(payload) => currPageRef = payload" />
+                    </div>
                 </div>
-            </div>
-        </section>
+            </section>
+        </TransitionChild>
 
         <section class="container">
             <h2 class="mt-6 text-4xl">
@@ -57,7 +39,7 @@
             <p>The community was asked to provide solutions to these challenges</p>
 
             <div class="grid grid-cols-1 gap-3 mt-5 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3 lg:gap-6">
-                <ChallengeCard v-for="challenge in challenges" :challenge="challenge" :fund="fund"/>
+                <ChallengeCard v-for="challenge in challenges" :challenge="challenge" :fund="fund" />
             </div>
         </section>
     </div>
@@ -76,6 +58,7 @@ import { VARIABLES } from '../models/variables';
 import { router } from '@inertiajs/vue3';
 import Fund from '../models/fund';
 import ChallengeCard from "../modules/voterTool/ChallengeCard.vue"
+import VoterToolFilters from '../modules/voterTool/VoterToolFilters.vue'
 
 const props = withDefaults(
     defineProps<{
@@ -83,9 +66,9 @@ const props = withDefaults(
         currPage?: number,
         perPage?: number,
         locale: string,
-        challenges:Fund[],
-        fund:Fund,
-        proposals: {
+        challenges: Fund[],
+        fund: Fund,
+        proposals?: {
             links: [],
             total: number,
             to: number,
@@ -99,9 +82,10 @@ let searchRender = ref(0);
 let search = ref(props.search);
 let currPageRef = ref<number>(props.currPage);
 let perPageRef = ref<number>(props.perPage);
+let filterRef = ref(null);
 
 // Watch the search value for changes and trigger the query function
-watch([search], () => {
+watch([search, filterRef], () => {
     currPageRef.value = null;
     query();
 }, { deep: true });
@@ -121,6 +105,9 @@ function query() {
     }
     if (search.value?.length > 0) {
         data[VARIABLES.SEARCH] = search.value;
+    }
+    if (filterRef.value) {
+        data['f'] = filterRef.value;
     }
 
     router.get(
