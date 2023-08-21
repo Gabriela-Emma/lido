@@ -1,200 +1,20 @@
 <template>
     <header-component titleName0="catalyst" titleName1="Voter Tool"
         subTitle="All Votes must be submitted in the official Catalyst Voting App. This is a research & planning tool only!" />
+        
     <div class="flex flex-col gap-2 bg-primary-20">
-        <section class="py-8">
-            <div class="container flex flex-col">
+        <section class="container py-8">
+            <div class="flex flex-col ">
                 <div class="flex items-center w-full h-10 lg:h-16">
                     <Search :search="search" :key="searchRender" @search="(term) => search = term"></Search>
                 </div>
                 <div>
                     <div class="text-left 2x:w-3/5 search-groups-wrapper" role="radiogroup"
-                        :aria-labelledby="$id('radio-group-label')" x-id="['radio-group-label']">
-                        <!-- Radio Group Label -->
+                        >
                         <label :id="$id('radio-group-label')" role="none" class="hidden">Proposal Groups: <span
                                 x-text="value"></span></label>
 
-                        <div class="flex flex-row flex-wrap gap-2 mt-2 search-groups">
-                            <!--QuickPitch Proposals Option -->
-                            <a href="{{localizeRoute('projectCatalyst.voterTool', null, ['group' => 'quickPitchProposals'])}}"
-                                role="radio" class="flex cursor-pointer border rounded-sm shadow p-4 w-full lg:w-[initial]">
-                                <!-- Checked Indicator -->
-                                <span :class="{ 'bg-teal-600': isSelected($options) }"
-                                    class="inline-flex items-center justify-center w-4 h-4 mt-1 border-2 border-white rounded-full ring-1 ring-black"
-                                    aria-hidden="true"></span>
-
-                                <span class="ml-3 text-gray-600">
-                                    <!-- Primary Label -->
-                                    <p :id="$id('radio-option-label')">Quick Pitches</p>
-
-                                    <span :id="$id('radio-option-description')" class="mt-2 text-sm">
-                                        Proposals with Quick Pitches.
-                                    </span>
-                                </span>
-                            </a>
-
-                            <!--Impact Proposals Option -->
-                            <div role="radio"
-                                class="flex cursor-pointer border rounded-sm shadow p-4 w-full lg:w-[initial]">
-                                <!-- Checked Indicator -->
-                                <span :class="{ 'bg-teal-600': isSelected($options) }"
-                                    class="inline-flex items-center justify-center w-4 h-4 mt-1 border-2 border-white rounded-full ring-1 ring-black"
-                                    aria-hidden="true"></span>
-
-                                <span class="ml-3 text-gray-600">
-                                    <!-- Primary Label -->
-                                    <p :id="$id('radio-option-label')">Impact Proposals</p>
-
-                                    <span :id="$id('radio-option-description')" class="mt-2 text-sm">
-                                        Self reported as having social & environmental impact
-                                    </span>
-                                </span>
-                            </div>
-
-                            <!--Ideafest Proposals Option -->
-                            <div role="radio"
-                                class="flex cursor-pointer border rounded-sm shadow p-4 w-full lg:w-[initial]">
-                                <!-- Checked Indicator -->
-                                <span :class="{ 'bg-teal-600': isSelected($options) }"
-                                    class="inline-flex items-center justify-center w-4 h-4 mt-1 border-2 border-white rounded-full ring-1 ring-black"
-                                    aria-hidden="true"></span>
-
-                                <span class="ml-3 text-gray-600">
-                                    <!-- Primary Label -->
-                                    <p :id="$id('radio-option-label')">Ideafest Proposals</p>
-
-                                    <span :id="$id('radio-option-description')" class="mt-2 text-sm">
-                                        Projects presented at Ideafest!
-                                    </span>
-                                </span>
-                            </div>
-
-
-                            <!--Cardano Catalyst Women Proposals Option -->
-                            <div role="radio"
-                                class="flex cursor-pointer border rounded-sm shadow p-4 w-full lg:w-[initial]">
-                                <!-- Checked Indicator -->
-                                <span :class="{ 'bg-teal-600': isSelected($options) }"
-                                    class="inline-flex items-center justify-center w-4 h-4 mt-1 border-2 border-white rounded-full ring-1 ring-black"
-                                    aria-hidden="true"></span>
-
-                                <span class="ml-3 text-gray-600">
-                                    <!-- Primary Label -->
-                                    <p :id="$id('radio-option-label')">Women Proposals</p>
-
-                                    <span :id="$id('radio-option-description')" class="mt-2 text-sm">
-                                        Proposals By Women
-                                    </span>
-                                </span>
-                            </div>
-
-                            <!--Small Proposals Option -->
-                            <div role="radio"
-                                class="flex cursor-pointer border rounded-sm shadow p-4 w-full lg:w-[initial]">
-                                <!-- Checked Indicator -->
-                                <span :class="{ 'bg-teal-600': isSelected($options) }"
-                                    class="inline-flex items-center justify-center w-4 h-4 mt-1 border-2 border-white rounded-full ring-1 ring-black"
-                                    aria-hidden="true"></span>
-
-                                <span class="ml-3 text-gray-600">
-                                    <!-- Primary Label -->
-                                    <p :id="$id('radio-option-label')">Small Proposals</p>
-
-                                    <span :id="$id('radio-option-description')" class="mt-2 text-sm">
-                                        {{ 'Proposals with budgets <= 10K' }} </span>
-                                    </span>
-                            </div>
-
-                            <!--Large Proposals Option -->
-                            <div role="radio"
-                                class="flex cursor-pointer border rounded-sm shadow p-4 w-full lg:w-[initial]">
-                                <!-- Checked Indicator -->
-                                <span :class="{ 'bg-teal-600': isSelected($options) }"
-                                    class="inline-flex items-center justify-center w-4 h-4 mt-1 border-2 border-white rounded-full ring-1 ring-black"
-                                    aria-hidden="true"></span>
-
-                                <span class="ml-3 text-gray-600">
-                                    <!-- Primary Label -->
-                                    <p :id="$id('radio-option-label')">Large Proposals</p>
-
-                                    <span :id="$id('radio-option-description')" class="mt-2 text-sm">
-                                        Proposals with budgets >= 25K
-                                    </span>
-                                </span>
-                            </div>
-
-                            <!--100K Proposals Option -->
-                            <div role="radio"
-                                class="flex cursor-pointer border rounded-sm shadow p-4 w-full lg:w-[initial]">
-                                <!-- Checked Indicator -->
-                                <span :class="{ 'bg-teal-600': isSelected($options) }"
-                                    class="inline-flex items-center justify-center w-4 h-4 mt-1 border-2 border-white rounded-full ring-1 ring-black"
-                                    aria-hidden="true"></span>
-
-                                <span class="ml-3 text-gray-600">
-                                    <!-- Primary Label -->
-                                    <p :id="$id('radio-option-label')"> >= 100K Proposals</p>
-
-                                    <span :id="$id('radio-option-description')" class="mt-2 text-sm">
-                                        Proposals with budgets >= 100K
-                                    </span>
-                                </span>
-                            </div>
-
-                            <!-- Option -->
-                            <div role="radio"
-                                class="flex cursor-pointer border rounded-sm shadow p-4 w-full lg:w-[initial]">
-                                <!-- Checked Indicator -->
-                                <span :class="{ 'bg-teal-600': isSelected($options) }"
-                                    class="inline-flex items-center justify-center w-4 h-4 mt-1 border-2 border-white rounded-full ring-1 ring-black"
-                                    aria-hidden="true"></span>
-
-                                <span class="ml-3 text-gray-600">
-                                    <!-- Primary Label -->
-                                    <p :id="$id('radio-option-label')">First Timers</p>
-
-                                    <span :id="$id('radio-option-description')" class="mt-2 text-sm">
-                                        Proposals from first time members!
-                                    </span>
-                                </span>
-                            </div>
-
-                            <!-- One Timers Option -->
-                            <div role="radio"
-                                class="flex cursor-pointer border rounded-sm shadow p-4 w-full lg:w-[initial]">
-                                <!-- Checked Indicator -->
-                                <span :class="{ 'bg-teal-600': isSelected($options) }"
-                                    class="inline-flex items-center justify-center w-4 h-4 mt-1 border-2 border-white rounded-full ring-1 ring-black"
-                                    aria-hidden="true"></span>
-
-                                <span class="ml-3 text-gray-600">
-                                    <!-- Primary Label -->
-                                    <p :id="$id('radio-option-label')">One Timers</p>
-
-                                    <span :id="$id('radio-option-description')" class="mt-2 text-sm">
-                                        Members with only 1 proposal
-                                    </span>
-                                </span>
-                            </div>
-
-                            <!-- Completed Proposals Option -->
-                            <div role="radio"
-                                class="flex cursor-pointer border rounded-sm shadow p-4 w-full lg:w-[initial]">
-                                <!-- Checked Indicator -->
-                                <span :class="{ 'bg-teal-600': isSelected($options) }"
-                                    class="inline-flex items-center justify-center w-4 h-4 mt-1 border-2 border-white rounded-full ring-1 ring-black"
-                                    aria-hidden="true"></span>
-
-                                <span class="ml-3 text-gray-600">
-                                    <!-- Primary Label -->
-                                    <p :id="$id('radio-option-label')">Completed Proposers</p>
-
-                                    <span :id="$id('radio-option-description')" class="mt-2 text-sm">
-                                        Teams that have completed at least 1 proposal
-                                    </span>
-                                </span>
-                            </div>
-
+                        <div class="flex flex-row flex-wrap gap-2 mt-2 search-groups">                        
                             <div role="radio"
                                 class="flex cursor-pointer border rounded-sm shadow p-4 w-full lg:w-[initial]">
                                 <!-- Checked Indicator -->
@@ -217,7 +37,7 @@
             </div>
         </section>
 
-        <section class="container">
+        <section class="container" v-if="props.proposals?.data.length">
             <Proposals :proposals="props.proposals?.data"></Proposals>
 
             <div class="flex items-start justify-between w-full gap-16 my-16 xl:gap-24">
@@ -236,30 +56,8 @@
             </h2>
             <p>The community was asked to provide solutions to these challenges</p>
 
-            <div class="container grid grid-cols-1 gap-3 mt-5 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3 lg:gap-6">
-                <div v-for="challenge in challenges"
-                    class="relative flex flex-col overflow-hidden bg-white border border-gray-200 rounded-lg group">
-                    <div class="bg-gray-200 aspect-w-2 aspect-h-2 group-hover:opacity-75 sm:aspect-none sm:h-60">
-                        <img :alt="challenge.title" class="object-cover object-center w-full h-full sm:w-full sm:h-full">
-                    </div>
-                    <div class="flex flex-col flex-1 p-4 space-y-2">
-                        <h3 class="text-xl font-medium text-gray-900">
-                            <a :href="challenge.link">
-                                <span aria-hidden="true" class="absolute inset-0"></span>
-                                {{ challenge.title }}
-                            </a>
-                        </h3>
-                        <p class="text-sm text-gray-500">{{ challenge.excerpt }}</p>
-                        <div class="flex flex-col justify-end flex-1">
-                            <p class="text-base italic text-gray-700">{{ challenge.proposals_count }}
-                                proposals</p>
-                            <p class="text-lg font-medium text-gray-900">
-                                Budget: <span class="font-bold">{{ $filters.currency(challenge.amount, fund.currency)
-                                }}</span>
-                            </p>
-                        </div>
-                    </div>
-                </div>
+            <div class="grid grid-cols-1 gap-3 mt-5 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3 lg:gap-6">
+                <ChallengeCard v-for="challenge in challenges" :challenge="challenge" :fund="fund"/>
             </div>
         </section>
     </div>
@@ -269,11 +67,15 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import Search from '../Shared/Components/Search.vue';
 import Proposal from '../models/proposal';
 import Proposals from '../modules/proposals/Proposals.vue';
 import Pagination from '../Shared/Components/Pagination.vue';
+import { VARIABLES } from '../models/variables';
+import { router } from '@inertiajs/vue3';
+import Fund from '../models/fund';
+import ChallengeCard from "../modules/voterTool/ChallengeCard.vue"
 
 const props = withDefaults(
     defineProps<{
@@ -281,8 +83,8 @@ const props = withDefaults(
         currPage?: number,
         perPage?: number,
         locale: string,
-        challenges,
-        fund,
+        challenges:Fund[],
+        fund:Fund,
         proposals: {
             links: [],
             total: number,
@@ -293,11 +95,47 @@ const props = withDefaults(
     }>(), {});
 
 let searchRender = ref(0);
+
+let search = ref(props.search);
 let currPageRef = ref<number>(props.currPage);
 let perPageRef = ref<number>(props.perPage);
 
-let search;
+// Watch the search value for changes and trigger the query function
+watch([search], () => {
+    currPageRef.value = null;
+    query();
+}, { deep: true });
 
+watch([currPageRef, perPageRef], () => {
+    query();
+});
+
+// Function to update the data with the new search and selectedsort value
+function query() {
+    const data = {};
+    if (currPageRef.value) {
+        data[VARIABLES.PAGE] = currPageRef.value;
+    }
+    if (perPageRef.value) {
+        data[VARIABLES.PER_PAGE] = perPageRef.value;
+    }
+    if (search.value?.length > 0) {
+        data[VARIABLES.SEARCH] = search.value;
+    }
+
+    router.get(
+        "/catalyst-explorer/voter-tool",
+        data,
+        { preserveState: true, preserveScroll: !currPageRef.value }
+    );
+
+    //@ts-ignore
+    if (typeof window?.fathom !== 'undefined') {
+        // @ts-ignore
+        window?.fathom?.trackGoal(VARIABLES.TRACKER_ID_GROUPS, 0);
+    }
+
+}
 let isSelected = (t) => {
     return t
 }

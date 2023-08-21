@@ -6,6 +6,7 @@ use Inertia\Inertia;
 use Inertia\Response;
 use App\Models\Proposal;
 use Illuminate\Support\Fluent;
+use Illuminate\Http\Request;
 use Meilisearch\Endpoints\Indexes;
 use App\Http\Controllers\Controller;
 use App\Repositories\FundRepository;
@@ -27,6 +28,8 @@ class CatalystVoterToolController extends Controller
     protected int $limit = 24;
 
     public  $searchGroup = null;
+
+    public $perPage;
     /**
      * Display a listing of the resource.
      *
@@ -40,12 +43,18 @@ class CatalystVoterToolController extends Controller
     }
 
 
-    public function index()
+    public function index(Request $request)
     {
-
-        $this->searchGroup = 'woman_proposal';
+        
+        $this->search = $request->input('s', null);
+        $this->perPage = $request->input('l', 24);
+        $this->currentPage = $request->input('p', 1);
+        $this->searchGroup = 'largeProposals';
 
         return Inertia::render('VoterTool1', [
+            'search' => $this->search,
+            'currentPage' =>  $this->currentPage,
+            'perPage' => $this->perPage,
             'challenges' =>$this->challenges,
             'proposals' => $this->query(),
             'fund' => $this->fund,
@@ -119,7 +128,7 @@ class CatalystVoterToolController extends Controller
             $response->hits,
             $response->estimatedTotalHits,
             $response->limit,
-            // $this->currentPage,
+            $this->currentPage,
             [
                 'pageName' => 'p',
             ]
@@ -144,9 +153,9 @@ class CatalystVoterToolController extends Controller
             }
         }
 
-        $_options = [
-            'filters' => ["fund.id = {$this->fund?->id}"],
-        ];
+        // $_options = [
+        //     'filters' => ["fund.id = {$this->fund?->id}"],
+        // ];
 
         if ($this->searchGroup == 'allStars') {
             $_options['filters'][] = 'ca_rating = 5';

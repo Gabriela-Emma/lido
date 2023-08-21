@@ -2,7 +2,7 @@ import { AxiosError } from "axios";
 import {defineStore} from "pinia";
 import {Ref, onMounted, ref} from "vue";
 import Proposal from "../models/proposal";
-import ProposalFilters from "../models/proposall-filters";
+import ProposalFilters from "../models/proposal-filters";
 import { VARIABLES } from "../models/variables";
 
 export const useProposalsStore = defineStore('proposals', () => {
