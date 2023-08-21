@@ -1,8 +1,8 @@
 <template>
-    <a  :style="{ backgroundColor: draftBallot?.color }"
+    <a :style="{ backgroundColor: draftBallot?.color }"
         class="relative flex flex-col justify-center object-cover w-full h-56 text-white shadow-md hover:shadow-xl rounded-l-xl rounded-r-xs">
         <div class="absolute flex justify-end w-full gap-2 top-3 right-3">
-            <button @click="download" type="button"
+            <button @click="download()" type="button"
                 class="inline-flex items-center gap-x-0.5 rounded-sm border py-1 px-1.5 bg-black text-white hover:text-slate-400 text-xs font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-800">
                 {{ $t("Download") }}
             </button>
@@ -52,7 +52,7 @@ import Filters from "../../models/filters";
 const props = withDefaults(
     defineProps<{
         draftBallot?: DraftBallot<Proposal>
-        locale?:string
+        locale?: string
         currPage?: number,
         perPage?: number,
         filters?: Filters,
@@ -61,25 +61,19 @@ const props = withDefaults(
     {},
 );
 let preparingDownload = ref<boolean>(false);
+let proposalIds = props.draftBallot.items.map((item) => {
+    return item.model.id
+})
 
-function getQueryData() {
-    const data = {};
-
-
-    return data;
-}
-
-
-function download(format) {
+function download() {
     preparingDownload.value = true;
-    let data = getQueryData();
-    if (format) {
-        data['d'] = true;
-        data['d_t'] = format;
-    }
+    let data = {}
+    data['proposals'] = proposalIds;
+    data['d'] = true;
+    data['d_t'] = 'csv';
 
-    const fileName =  'proposals.csv';
-    const res = axios.get(`/${props.locale}/catalyst-explorer/export/proposals`, {
+    const fileName = 'proposals.csv';
+    const res = axios.get(`/en/catalyst-explorer/download/proposals`, {
         responseType: 'blob',
         params: data,
     });
