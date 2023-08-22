@@ -256,7 +256,7 @@ class CatalystProposalsController extends Controller
         if (
             $this->ranked &&
             !Str::of($request->input(CatalystExplorerQueryParams::SORTS))
-            ->contains('ranking_total')
+                ->contains('ranking_total')
         ) {
             $sort = collect(['ranking_total', 'desc']);
             if ($this->limit == 24) {
@@ -265,7 +265,8 @@ class CatalystProposalsController extends Controller
         } else {
             $sort = collect(
                 explode(
-                    ':', $request->input(CatalystExplorerQueryParams::SORTS, '')
+                    ':',
+                    $request->input(CatalystExplorerQueryParams::SORTS, '')
                 )
             )->filter();
         }
@@ -340,11 +341,11 @@ class CatalystProposalsController extends Controller
     protected function query($returnBuilder = false, $attrs = null, $filters = [])
     {
         $_options = [
-            'filters' => array_merge([
-            ], $this->getUserFilters(), $filters),
+            'filters' => array_merge([], $this->getUserFilters(), $filters),
         ];
 
-        $this->searchBuilder = Proposal::search($this->search,
+        $this->searchBuilder = Proposal::search(
+            $this->search,
             function (Indexes $index, $query, $options) use ($_options, $attrs) {
                 if (count($_options['filters']) > 0) {
                     $options['filter'] = implode(' AND ', $_options['filters']);
@@ -396,7 +397,8 @@ class CatalystProposalsController extends Controller
                 $options['limit'] = $this->limit;
 
                 return $index->search($query, $options);
-            });
+            }
+        );
 
         if ($returnBuilder) {
             return $this->searchBuilder;
@@ -451,29 +453,29 @@ class CatalystProposalsController extends Controller
 
         // filter by fund
         if ($this->fundsFilter->isNotEmpty()) {
-            $_options[] = '('.$this->fundsFilter->map(fn ($f) => "fund.id = {$f}")->implode(' OR ').')';
+            $_options[] = '(' . $this->fundsFilter->map(fn ($f) => "fund.id = {$f}")->implode(' OR ') . ')';
         }
 
         // filter by challenge
         if ($this->challengesFilter->isNotEmpty()) {
-            $_options[] = '('.$this->challengesFilter->map(fn ($c) => "challenge.id = {$c}")->implode(' OR ').')';
+            $_options[] = '(' . $this->challengesFilter->map(fn ($c) => "challenge.id = {$c}")->implode(' OR ') . ')';
         }
 
         // filter by tags
         if ($this->tagsFilter->isNotEmpty()) {
-            $_options[] = 'tags.id IN '.$this->tagsFilter->toJson();
+            $_options[] = 'tags.id IN ' . $this->tagsFilter->toJson();
         }
 
         if ($this->categoriesFilter->isNotEmpty()) {
-            $_options[] = 'categories.id IN '.$this->categoriesFilter->toJson();
+            $_options[] = 'categories.id IN ' . $this->categoriesFilter->toJson();
         }
 
         if ($this->peopleFilter->isNotEmpty()) {
-            $_options[] = 'users.id IN '.$this->peopleFilter->toJson();
+            $_options[] = 'users.id IN ' . $this->peopleFilter->toJson();
         }
 
         if ($this->groupsFilter->isNotEmpty()) {
-            $_options[] = 'groups.id IN '.$this->groupsFilter->toJson();
+            $_options[] = 'groups.id IN ' . $this->groupsFilter->toJson();
         }
 
         // filter by budget range
@@ -509,5 +511,14 @@ class CatalystProposalsController extends Controller
         } else {
             return (new ExportModelService)->export(new ProposalExport($idsArr, app()->getLocale()), "proposals.{$this->downloadType}");
         }
+    }
+    protected function downloadProposals(Request $request)
+    {
+        $this->download = $request->input('d', false);
+        $this->downloadType = $request->input('d_t', null);
+        if(!isset($request->proposals)){
+            return;
+        }
+        return (new ExportModelService)->export(new ProposalExport($request->proposals, app()->getLocale()), "proposals.{$this->downloadType}");
     }
 }

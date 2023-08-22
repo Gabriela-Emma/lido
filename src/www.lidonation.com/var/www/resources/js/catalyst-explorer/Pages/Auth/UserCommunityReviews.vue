@@ -81,9 +81,36 @@
                                                     <div class="flex flex-col gap-3 p-4 ml-8 divide-y-2 rounded-sm bg-slate-100 divide-slate-300"
                                                         v-if="rating.community_review?.comments?.length > 0">
                                                         <h2>Responses</h2>
-                                                        <div class="py-2"
-                                                            v-for="comment in rating.community_review.comments"
-                                                            v-html="comment.text"></div>
+                                                        <div v-for="comment in rating.community_review.comments" class="flex justify-between items-center">
+                                                            <div class="flex flex-col">
+                                                                <div class="py-2"   
+                                                                    v-html="comment.text">
+                                                                </div>
+                                                                <div v-if="editing && comment.id === editingId">
+                                                                    <textarea v-model="editedResponse"
+                                                                        class="w-full h-24 p-2 border border-gray-300 rounded-md">
+                                                                    </textarea>
+                                                                    <div class="flex gap-2">
+                                                                        <button type="button" @click="editingId = null"
+                                                                        class="inline-flex items-center gap-x-1.5 rounded-sm bg-gray-300 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-300">
+                                                                            <span>Cancel</span>
+                                                                        </button>
+                                                                        <button type="button" @click="submitResponseEdit(comment.id, rating.community_review.id)"
+                                                                        class="inline-flex items-center gap-x-1.5 rounded-sm bg-teal-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-teal-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600">
+                                                                            <span>Submit</span>
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="flex items-center gap-3" v-if="comment.id !== editingId">
+                                                                    <button @click="editResponse(comment.text, comment.id)">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                                                                        </svg>
+                                                                    </button>
+                                                                    <TrashIcon @click="deleteResponse(comment.id, rating.community_review.id)" aria-hidden="true" class="w-5 h-5 text-black hover:text-red-600 hover:cursor-pointer" />
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
 
@@ -171,7 +198,7 @@ import Filters from "../../models/filters";
 import { VARIABLES } from "../../models/variables";
 import {watch, ref} from "vue";
 import Pagination from "../../Shared/Components/Pagination.vue";
-import { ArrowUturnLeftIcon } from "@heroicons/vue/20/solid";
+import { ArrowUturnLeftIcon, TrashIcon } from "@heroicons/vue/20/solid";
 import { Ref } from "vue";
 import route from "ziggy-js";
 import FundPicker from "../../modules/funds/FundPicker.vue";
@@ -206,6 +233,9 @@ let filters = ref<Filters>(props.filters);
 
 let respondingTo: Ref<ProposalRatingData | null> = ref(null);
 let respondingToResponse = ref(null);
+let editedResponse = ref(null);
+let editing = ref(false);
+let editingId = ref(null);
 
 watch([filtersRef], () => {
    query();
@@ -254,6 +284,49 @@ async function respondToReview()
         onSuccess: () => {
             respondingTo.value = null;
             respondingToResponse.value = null;
+        }
+    });
+}
+
+function deleteResponse(responseId: number, reviewId: number){
+    const response = useForm({
+        resId: responseId,
+    });
+
+    response.delete(route(
+        'catalystExplorer.destroyResponseToMyCommunityReview',
+        {assessment: reviewId}
+    ),
+    {
+        preserveScroll: true,
+    });
+}
+
+function editResponse(resContent: string, responseId: number){
+    editing.value = true;
+    editingId.value = responseId;
+
+    const parser = new DOMParser();
+    const parsedHtml = parser.parseFromString(resContent, 'text/html');
+    const extractedText = parsedHtml.body.textContent;
+
+    editedResponse.value = extractedText;
+}
+
+function submitResponseEdit(responseId: number, reviewId: number){
+    const response = useForm({
+        reply: editedResponse.value,
+        resId: responseId,
+    });
+
+    response.patch(route(
+        'catalystExplorer.editResponseToMyCommunityReview',
+        {assessment: reviewId}
+    ),
+    {
+        preserveScroll: true,
+        onSuccess: () => {
+            editingId.value = null;
         }
     });
 }
