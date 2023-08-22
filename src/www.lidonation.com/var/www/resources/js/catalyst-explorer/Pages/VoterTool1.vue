@@ -8,12 +8,13 @@
                 <div class="flex items-center w-full h-10 lg:h-16">
                     <Search :search="search" :key="searchRender" @search="(term) => search = term"></Search>
                 </div>
-                <div>
-                    <div class="text-left 2x:w-3/5 search-groups-wrapper" role="radiogroup">
-                        <div class="flex flex-row flex-wrap gap-2 mt-2 search-groups">
-                            <VoterToolFilters @filter="(filter) => filterRef = filter" />
-                        </div>
+                <div class="my-6">
+                    <div class="flex-1">
+                        <Pagination :links="props.filters?.links" :per-page="props.perPage" :total="props.filters?.total"
+                            :from="props.filters?.from" :to="props.filters?.to"
+                            @paginated="(payload) => currFilterGroupRef = payload" :custom="true"/>
                     </div>
+                    <VoterToolFilters @filter="(filter) => filterRef = filter" :filterGroups="props.filters?.data" />
                 </div>
             </div>
         </section>
@@ -59,15 +60,25 @@ import { router } from '@inertiajs/vue3';
 import Fund from '../models/fund';
 import ChallengeCard from "../modules/voterTool/ChallengeCard.vue"
 import VoterToolFilters from '../modules/voterTool/VoterToolFilters.vue'
+import FilterGroups from '../models/filter-groups';
 
 const props = withDefaults(
     defineProps<{
         search?: string,
         currPage?: number,
+        currFilterGroup?: number,
+        filterPerPage?: number,
         perPage?: number,
         locale: string,
         challenges: Fund[],
         fund: Fund,
+        filters: {
+            links: [],
+            total: number,
+            to: number,
+            from: number,
+            data: FilterGroups[]
+        }
         proposals?: {
             links: [],
             total: number,
@@ -81,6 +92,8 @@ let searchRender = ref(0);
 
 let search = ref(props.search);
 let currPageRef = ref<number>(props.currPage);
+let currFilterGroupRef = ref<number>(props.currFilterGroup);
+let filterPerPageRef = ref<number>(props.filterPerPage);
 let perPageRef = ref<number>(props.perPage);
 let filterRef = ref(null);
 
@@ -91,6 +104,10 @@ watch([search, filterRef], () => {
 }, { deep: true });
 
 watch([currPageRef, perPageRef], () => {
+    query();
+});
+
+watch([currFilterGroupRef, filterPerPageRef], () => {
     query();
 });
 
@@ -107,7 +124,15 @@ function query() {
         data[VARIABLES.SEARCH] = search.value;
     }
     if (filterRef.value) {
-        data['f'] = filterRef.value;
+        data[VARIABLES.FILTER_GROUP] = filterRef.value;
+    }
+
+    if (currFilterGroupRef.value) {
+        data[VARIABLES.CURRENT_FILTER_GROUPS] = currFilterGroupRef.value;
+    }
+
+    if (filterPerPageRef.value) {
+        data[VARIABLES.FILTER_GROUPS_PER_PAGE] = filterPerPageRef.value;
     }
 
     router.get(

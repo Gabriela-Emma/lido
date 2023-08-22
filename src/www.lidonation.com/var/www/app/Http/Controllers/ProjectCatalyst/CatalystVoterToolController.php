@@ -5,13 +5,15 @@ namespace App\Http\Controllers\ProjectCatalyst;
 use Inertia\Inertia;
 use Inertia\Response;
 use App\Models\Proposal;
-use Illuminate\Support\Fluent;
 use Illuminate\Http\Request;
+use Illuminate\Support\Fluent;
 use Meilisearch\Endpoints\Indexes;
 use App\Http\Controllers\Controller;
 use App\Repositories\FundRepository;
+use App\Enums\CatalystExplorerQueryParams;
 use Illuminate\Pagination\LengthAwarePaginator;
 use phpDocumentor\Reflection\PseudoTypes\ArrayShape;
+use PhpOffice\PhpSpreadsheet\Calculation\LookupRef\Offset;
 
 class CatalystVoterToolController extends Controller
 {
@@ -23,7 +25,11 @@ class CatalystVoterToolController extends Controller
 
     public $searchBuilder;
 
-    protected int $currentPage;
+    protected $currentPage;
+
+    protected  $currentFilterGroup;
+
+    protected $filterGroupLimit;
 
     protected int $limit = 24;
 
@@ -45,11 +51,12 @@ class CatalystVoterToolController extends Controller
 
     public function index(Request $request)
     {
-        // dd($request);      
-        $this->search = $request->input('s', null);
-        $this->perPage = $request->input('l', 24);
+        $this->search = $request->input(CatalystExplorerQueryParams::SEARCH, null);
+        $this->limit = $request->input(CatalystExplorerQueryParams::PER_PAGE, 24);
         $this->currentPage = $request->input('p', 1);
-        $this->searchGroup = $request->input('f', null);
+        $this->searchGroup = $request->input('fg', null);
+        $this->currentFilterGroup = $request->input('fgs', 1);
+        $this->filterGroupLimit = $request->input('pfgs', 6);
 
         return Inertia::render('VoterTool1', [
             'search' => $this->search,
@@ -61,6 +68,8 @@ class CatalystVoterToolController extends Controller
             'crumbs' => [
                 ['label' => 'Voter Tool'],
             ],
+            'filters' => $this->getFilters(),
+            'filterPerPage' => intval($this->filterGroupLimit)
         ]);
     }
 
@@ -89,6 +98,7 @@ class CatalystVoterToolController extends Controller
                     'title',
                     'funding_status',
                     'groups.id',
+                    'link',
                     'ideascale_link',
                     'yes_votes_count',
                     'no_votes_count',
@@ -150,7 +160,7 @@ class CatalystVoterToolController extends Controller
                 'filters' => [],
             ];
             if ($this->searchGroup == 'firstTimers') {
-                $_options['filters'] = "first_timer = true AND proposals.fund = {$this->fund?->id}";
+                $_options['filters'][] = "first_timer = true AND proposals.fund = {$this->fund?->id}";
             }
 
             if ($this->searchGroup == 'oneTimers') {
@@ -190,10 +200,76 @@ class CatalystVoterToolController extends Controller
             $_options['filters'][] = 'ideafest_proposal = true';
         }
 
-        if ($this->searchGroup == 'woman_proposal') {
+        if ($this->searchGroup == 'womanProposals') {
             $_options['filters'][] = 'woman_proposal = 1';
         }
         return $_options;
+    }
+
+    public function getFilters()
+    {
+
+        $filters =   collect([
+                    [
+                        "title" => "Quick Pitches",
+                        "description" => "Proposals with Quick Pitches.",
+                        "param" => "quickPitchProposals"
+                    ],
+                    [
+                        "title" => "Ideafest Proposals",
+                        "description" => "Projects presented at Ideafest!",
+                        "param" => "ideafestProposals"
+                    ],
+                    [
+                        "title"=>  "Women Proposals",
+                        "description"=>  "Proposals By Women.",
+                        "param"=>  "womanProposals"
+                    ],
+                    [
+                        "title"=>  "First Timers",
+                        "description"=>  "Proposals from first time members!",
+                        "param"=>  "firstTimers"
+                    ],
+                    [
+                        "title"=>  "One timers",
+                        "description"=>  "Members with only 1 proposal",
+                        "param"=>  "oneTimers"
+                    ],
+                    [
+                        "title"=>  "Completed Proposers",
+                        "description"=>  "Teams that have completed at least 1 proposal",
+                        "param"=>  "completedProposers"
+                    ],
+                    [
+                        "title"=>  "Small Cap",
+                        "description"=>  "Proposals with budgets <= 10K",
+                        "param"=>  "smallProposals"
+                    ],
+                    [
+                        "title"=>  "Medium Cap",
+                        "description"=>  "Proposals with budgets between 75K & 250K",
+                        "param"=>  "smallProposals"
+                    ],
+                    [
+                        "title"=>  "Large Cap",
+                        "description"=>  "Proposals with budgets >= 250K",
+                        "param"=>  "100KProposals"
+                    ],
+                ]);
+        $offset = (($this->currentFilterGroup ?? 1) - 1) * $this->filterGroupLimit;
+        $slicedFilters = $filters->slice($offset);
+
+        $pagination = new LengthAwarePaginator(
+            $slicedFilters->take($this->filterGroupLimit),
+            $filters->count(),
+            $this->filterGroupLimit,
+            $this->currentFilterGroup,
+            [
+                'pageName' => 'fg',
+            ]
+        );
+        
+        return $pagination->onEachSide(1)->toArray();
     }
 
 

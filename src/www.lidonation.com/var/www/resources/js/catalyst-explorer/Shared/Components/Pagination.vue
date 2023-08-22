@@ -1,7 +1,7 @@
 <template>
-    <nav class="flex flex-col items-center justify-between w-full gap-16 px-4 border-t-2 xl:flex-row sm:px-0">
-        <div class="flex items-center justify-between flex-1 w-full xl:w-auto">
-            <div class="relative flex flex-col gap-2 mt-3 w-28 top-3">
+    <nav class="flex flex-col w-full gap-16 xl:flex-row sm:px-0" :class="{ 'px-4 border-t-2 items-center justify-between ': !custom,'justify-end items-end':custom }">
+        <div class="flex flex-1 w-full xl:w-auto"  :class="[custom ? 'justify-end' : 'justify-between items-center ' ]">
+            <div class="relative flex flex-col gap-2 mt-3 w-28 top-3" v-if="!custom">
                 <Multiselect
                     placeholder="Per Page"
                     v-model="perPageRef"
@@ -15,7 +15,7 @@
                 <p class="text-sm text-slate-400">{{ $t('Per Page') }}</p>
             </div>
 
-            <div class="flex gap-8 -mt-9">
+            <div class="flex " :class="{ 'gap-8 -mt-9 ': !custom }" >
                 <div class="flex" v-if="prev">
                     <a href="#" v-if="prev?.url" @click.prevent="paginate(prev.page)"
                        class="inline-flex items-center pt-10 pr-1 text-sm font-medium border-t-2 border-transparent text-slate-500 hover:border-yellow-500 hover:text-yellow-500">
@@ -100,7 +100,11 @@ const props = withDefaults(
         to?: number,
         total?: number,
         links?: PaginationLink[],
-    }>(), {perPage: 24});
+        custom?:boolean
+    }>(), {
+        perPage: 24,
+        custom:false
+    });
 let perPageRef = ref(props.perPage);
 
 const emit = defineEmits<{

@@ -120,7 +120,7 @@ class CatalystVoterToolComponent extends Component
         }
 
         $_options = [
-            'filters' => ["fund = {$this->fund?->id}"],
+            'filters' => ["fund.id = {$this->fund?->id}"],
         ];
 
         if ($this->searchGroup == 'allStars') {
