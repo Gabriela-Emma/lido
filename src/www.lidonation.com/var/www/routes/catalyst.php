@@ -148,6 +148,7 @@ Route::group(
 
             // exports
             Route::get('/export/proposals', [CatalystProposalsController::class, 'exportProposals']);
+            Route::get('/download/proposals', [CatalystProposalsController::class, 'downloadProposals']);
 
             // Bookmarks
             Route::post('/bookmarks/items', [CatalystMyBookmarksController::class, 'createItem'])->name('bookmarkItem.create');
