@@ -1,5 +1,5 @@
 <template>
-    <a :style="{ backgroundColor: draftBallot?.color }"
+    <a :href="draftBallot?.link" :style="{ backgroundColor: draftBallot?.color }"
         class="relative flex flex-col justify-center object-cover w-full h-56 text-white shadow-md hover:shadow-xl rounded-l-xl rounded-r-xs">
         <div class="absolute flex justify-end w-full gap-2 top-3 right-3">
             <button @click="download()" type="button"
@@ -52,11 +52,6 @@ import Filters from "../../models/filters";
 const props = withDefaults(
     defineProps<{
         draftBallot?: DraftBallot<Proposal>
-        locale?: string
-        currPage?: number,
-        perPage?: number,
-        filters?: Filters,
-        search?: string,
     }>(),
     {},
 );
