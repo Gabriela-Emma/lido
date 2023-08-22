@@ -193,6 +193,10 @@ Route::group(
                     ->name('myCommunityReviews');
                 Route::post('/reviews/{assessment}', [CatalystMyCommunityReviewsController::class, 'replyToReview'])
                     ->name('replyToMyCommunityReview');
+                Route::delete('/reviews/{assessment}', [CatalystMyCommunityReviewsController::class, 'destroyResponse'])
+                    ->name('destroyResponseToMyCommunityReview');
+                Route::patch('/reviews/{assessment}', [CatalystMyCommunityReviewsController::class, 'editResponse'])
+                    ->name('editResponseToMyCommunityReview');
 
                 Route::post('/groups/{catalystGroup:id}', [CatalystGroupsController::class, 'update']);
                 Route::get('/groups/{catalystGroup:id}/proposals', [CatalystMyGroupsController::class, 'proposals']);
