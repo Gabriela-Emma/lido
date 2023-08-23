@@ -24,7 +24,7 @@ return new class extends Migration
                     'id' => $id,
                     'user_id' => 1,
                     'name' => $snippet->heading,
-                    'content' => json_encode(['en' => $snippet->text_en, 'es' => '', 'sw' => $snippet->text_sw, 'fr' => '', 'zh' => '', 'ja' => '']),
+                    'content' => json_encode(['en' => $snippet?->text_en ?? '', 'es' => '', 'sw' => $snippet?->text_sw ?? '', 'fr' => '', 'zh' => '', 'ja' => '']),
                     'context' => 'global',
                     'type' => 'App\Models\Snippet',
                     'order' => 0,

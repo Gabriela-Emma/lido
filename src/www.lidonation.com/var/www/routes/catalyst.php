@@ -148,6 +148,7 @@ Route::group(
 
             // exports
             Route::get('/export/proposals', [CatalystProposalsController::class, 'exportProposals']);
+            Route::get('/download/proposals', [CatalystProposalsController::class, 'downloadProposals']);
 
             // Bookmarks
             Route::post('/bookmarks/items', [CatalystMyBookmarksController::class, 'createItem'])->name('bookmarkItem.create');
@@ -195,6 +196,10 @@ Route::group(
                     ->name('myCommunityReviews');
                 Route::post('/reviews/{assessment}', [CatalystMyCommunityReviewsController::class, 'replyToReview'])
                     ->name('replyToMyCommunityReview');
+                Route::delete('/reviews/{assessment}', [CatalystMyCommunityReviewsController::class, 'destroyResponse'])
+                    ->name('destroyResponseToMyCommunityReview');
+                Route::patch('/reviews/{assessment}', [CatalystMyCommunityReviewsController::class, 'editResponse'])
+                    ->name('editResponseToMyCommunityReview');
 
                 Route::post('/groups/{catalystGroup:id}', [CatalystGroupsController::class, 'update']);
                 Route::get('/groups/{catalystGroup:id}/proposals', [CatalystMyGroupsController::class, 'proposals']);

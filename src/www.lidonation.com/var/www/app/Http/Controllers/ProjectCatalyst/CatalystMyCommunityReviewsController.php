@@ -119,4 +119,32 @@ class CatalystMyCommunityReviewsController extends Controller
 
         return to_route('catalystExplorer.myCommunityReviews');
     }
+
+    public function destroyResponse(Assessment $assessment, Request $request)
+    {
+        $id = $request->resId;
+        $comment = $assessment->comments()->find($id);
+        
+        if ($comment) {
+            $comment->delete();
+        }
+
+        return to_route('catalystExplorer.myCommunityReviews');
+    }
+
+    public function editResponse(Assessment $assessment, Request $request){
+        $id = $request->resId;
+
+        $comment = $assessment->comments()->find($id);
+
+        $request->validate([
+            'reply' => 'required|string',
+        ]);
+
+        $comment->original_text = $request->input('reply');
+
+        $comment->save();
+
+        return to_route('catalystExplorer.myCommunityReviews');
+    }
 }

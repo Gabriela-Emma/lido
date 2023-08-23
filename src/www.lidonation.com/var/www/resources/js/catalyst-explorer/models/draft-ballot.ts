@@ -1,5 +1,6 @@
 import BookmarkItem from "./bookmark-item";
 import Fund from "./fund";
+import Proposal from "./proposal";
 
 export interface DraftBallotRationale {
     'title': string;
@@ -30,4 +31,5 @@ export default interface DraftBallot<T> {
     created_at: string;
     updated_at: string;
     groups?: DraftBallotGroup<T>[];
+    items:BookmarkItem<T>[];
 }
