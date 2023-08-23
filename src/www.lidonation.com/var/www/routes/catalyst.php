@@ -178,6 +178,9 @@ Route::group(
                 Route::get('/dashboard', [CatalystMyDashboardController::class, 'index'])
                     ->name('myDashboard');
 
+                Route::get('/draft-ballots', fn () => Inertia::render('Auth/MyDraftBallots'))
+                ->name('myDraftBallots');
+
                 Route::get('/profiles', [CatalystUserProfilesController::class, 'index'])
                     ->name('myProfiles');
 

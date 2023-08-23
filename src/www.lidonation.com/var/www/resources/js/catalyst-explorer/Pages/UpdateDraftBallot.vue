@@ -1,8 +1,8 @@
 <template>
     <Modal>
-        <form class="z-40 flex flex-col w-full h-full p-4 overflow-y-auto" @submit.prevent="submit">
+        <form class="z-40 flex flex-col p-4 overflow-y-auto md:w-full md:h-full" @submit.prevent="submit">
             <div>
-                <span class="text-sm md:text-md lg:text-2xl">
+                <span class="text-sm lg:text-2xl">
                     Edit {{ draftBallot.title }}
                 </span>
             </div>

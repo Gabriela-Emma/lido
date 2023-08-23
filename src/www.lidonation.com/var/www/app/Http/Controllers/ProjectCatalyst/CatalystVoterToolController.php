@@ -70,6 +70,7 @@ class CatalystVoterToolController extends Controller
             ],
             'filters' => $this->getGroupFilters(),
             'filterPerPage' => intval($this->filterGroupLimit),
+            'currentFilter' => $this->searchGroup,
         ]);
     }
 
@@ -78,7 +79,7 @@ class CatalystVoterToolController extends Controller
         if (!$this->search && !$this->searchGroup) {
             return null;
         }
-        $_options = $this->getUserFilters();
+        $_options = $this->getUserFilters($this->searchGroup);
 
         $this->searchBuilder = Proposal::search(
             $this->search,
@@ -150,60 +151,57 @@ class CatalystVoterToolController extends Controller
     }
 
     #[ArrayShape(['filters' => 'array'])]
-    function getUserFilters()
+    function getUserFilters($param)
     {
         $_options = [
             'filters' => [],
         ];
 
-        if ($this->searchGroup == 'oneTimers' || $this->searchGroup == 'firstTimers') {
-
-            if ($this->searchGroup == 'firstTimers') {
-                $_options['filters'][] = "first_timer = true AND proposals.fund = {$this->fund?->id}";
-            }
-
-            if ($this->searchGroup == 'oneTimers') {
-                $_options['filters'][] = "proposals_count = 1 AND proposals.fund = {$this->fund?->id}";
-            }
-        }
-
         $_options = [
             'filters' => ["fund.id = {$this->fund?->id}"],
         ];
 
-        if ($this->searchGroup == 'allStars') {
+        if ($param == 'firstTimers' ) {
+            $_options['filters'][] = "first_timer = true AND proposals.fund = {$this->fund?->id}";
+        }
+
+        if ($param== 'oneTimers') {
+            $_options['filters'][] = "proposals_count = 1 AND proposals.fund = {$this->fund?->id}";
+        }
+
+        if ( $param == 'allStars') {
             $_options['filters'][] = 'ca_rating = 5';
         }
 
-        if ($this->searchGroup == 'smallProposals') {
+        if ( $param == 'smallProposals') {
             $_options['filters'][] = 'amount_requested <= 75000';
         }
 
-        if ($this->searchGroup == 'LargeProposals') {
+        if ($param == 'LargeProposals') {
             $_options['filters'][] = 'amount_requested >= 250000';
         }
 
-        if ($this->searchGroup == 'mediumProposals') {
+        if ($param == 'mediumProposals') {
             $_options['filters'][] = 'amount_requested >= 75000 AND amount_requested <= 250000 ';
         }
 
-        if ($this->searchGroup == 'impactProposals') {
+        if ($param == 'impactProposals') {
             $_options['filters'][] = 'impact_proposal = true';
         }
 
-        if ($this->searchGroup == 'quickPitchProposals') {
+        if ($param == 'quickPitchProposals') {
             $_options['filters'][] = 'quickpitch IS NOT NULL';
         }
 
-        if ($this->searchGroup == 'ideafestProposals') {
+        if ($param == 'ideafestProposals') {
             $_options['filters'][] = 'ideafest_proposal = true';
         }
 
-        if ($this->searchGroup == 'womanProposals') {
+        if ($param == 'womanProposals') {
             $_options['filters'][] = 'woman_proposal = 1';
         }
 
-        if ($this->searchGroup == 'opensource') {
+        if ( $param == 'opensource') {
             $_options['filters'][] = 'opensource = 1';
         }
         return $_options;
@@ -211,52 +209,62 @@ class CatalystVoterToolController extends Controller
 
     public function getGroupFilters()
     {
+        $this->getProposalCount('smallProposals');
 
         $filters =   collect([
             [
                 "title" => "Quick Pitches",
                 "description" => "Proposals with Quick Pitches.",
-                "param" => "quickPitchProposals"
+                "param" => "quickPitchProposals",
+                "count" => $this->getProposalCount('quickPitchProposals')
             ],
             [
                 "title" => "Ideafest Proposals",
                 "description" => "Projects presented at Ideafest!",
-                "param" => "ideafestProposals"
+                "param" => "ideafestProposals",
+                "count" => $this->getProposalCount('ideafestProposals')
             ],
             [
                 "title" =>  "Women Proposals",
                 "description" =>  "Proposals By Women.",
-                "param" =>  "womanProposals"
+                "param" =>  "womanProposals",
+                "count" => $this->getProposalCount('womanProposals')
             ],
             [
                 "title" =>  "First Timers",
                 "description" =>  "Proposals from first time members!",
-                "param" =>  "firstTimers"
+                "param" =>  "firstTimers",
+                "count" => $this->getProposalCount('firstTimers')
             ],
             [
                 "title" =>  "Opensource",
                 "description" =>  "Opensource projects",
-                "param" =>  "opensource"
+                "param" =>  "opensource",
+                "count" => $this->getProposalCount('opensource')
             ],
             [
                 "title" =>  "One timers",
                 "description" =>  "Members with only 1 proposal",
-                "param" =>  "oneTimers"
+                "param" =>  "oneTimers",
+                "count" => $this->getProposalCount('oneTimers')
             ],
             [
                 "title" =>  "Small Cap",
-                "description" =>  "Proposals with budgets <= 75K",
-                "param" =>  "smallProposals"
+                "description" =>  "Proposals with budgets below 75K",
+                "param" =>  "smallProposals",
+                "count" => $this->getProposalCount('smallProposals')
             ],
             [
                 "title" =>  "Medium Cap",
                 "description" =>  "Proposals with budgets between 75K & 250K",
-                "param" =>  "mediumProposals"
+                "param" =>  "mediumProposals",
+                "count" => $this->getProposalCount('mediumProposals')
             ],
             [
                 "title" =>  "Large Cap",
-                "description" =>  "Proposals with budgets >= 250K",
-                "param" =>  "250KProposals"
+                "description" =>  "Proposals with budgets over 250K",
+                "param" =>  "250KProposals",
+                "count" => $this->getProposalCount('250KProposals')
             ],
 
         ]);
@@ -274,5 +282,20 @@ class CatalystVoterToolController extends Controller
         );
 
         return $pagination->onEachSide(1)->toArray();
+    }
+
+    public function getProposalCount($param)
+    {
+        $option_ = $this->getUserFilters($param);
+        $proposals = Proposal::search(
+            '',
+            function (Indexes $index, $query, $options) use ($option_) {
+                if (count($option_['filters']) > 0) {
+                    $options['filter'] = implode(' AND ', $option_['filters']);
+                }
+                return $index->search($query, $options);
+            }
+        )->raw();
+        return $proposals['estimatedTotalHits'];
     }
 }

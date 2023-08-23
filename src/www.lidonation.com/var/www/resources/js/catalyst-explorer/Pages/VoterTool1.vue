@@ -14,7 +14,8 @@
                             :from="props.filters?.from" :to="props.filters?.to"
                             @paginated="(payload) => currFilterGroupRef = payload" :custom="true" />
                     </div>
-                    <VoterToolFilters @filter="(filter) => filterRef = filter" :filterGroups="props.filters?.data" />
+                    <VoterToolFilters @filter="(filter) => filterRef = filter" :filterGroups="props.filters?.data"
+                        :_filter="currentFilter" />
                 </div>
             </div>
         </section>
@@ -33,13 +34,13 @@
             </section>
         </TransitionChild>
 
-        <section class="container">
+        <section class="container mb-16">
             <h2 class="mt-6 text-4xl">
                 Challenges in {{ fund.label }}
             </h2>
             <p>The community was asked to provide solutions to these challenges</p>
 
-            <div class="grid grid-cols-1 gap-3 mt-5 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3 lg:gap-6">
+            <div class="grid grid-cols-1 gap-3 mt-5 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3 lg:gap-6 ">
                 <ChallengeCard v-for="challenge in challenges" :challenge="challenge" :fund="fund" />
             </div>
         </section>
@@ -66,6 +67,7 @@ const props = withDefaults(
         currFilterGroup?: number,
         filterPerPage?: number,
         perPage?: number,
+        currentFilter?: string,
         locale: string,
         challenges: Fund[],
         fund: Fund,
@@ -87,27 +89,29 @@ const props = withDefaults(
 });
 
 let searchRender = ref(0);
-
 let search = ref(props.search);
 let currPageRef = ref<number>(props.currPage);
 let currFilterGroupRef = ref<number>(props.currFilterGroup);
 let filterPerPageRef = ref<number>(props.filterPerPage);
 let perPageRef = ref<number>(props.perPage);
-let filterRef = ref(null);
+let filterRef = ref(props.currentFilter);
+let screenSize = parseInt(localStorage.getItem('screenSize')) ?? null;
 
-if (window.innerWidth <= 640) {
-    filterPerPageRef.value = 2;
-    perPageRef.value = null;
-    query();
-} else if (window.innerWidth <= 1024 && window.innerWidth > 640) {
-    filterPerPageRef.value = 3;
-    perPageRef.value = null;
-    query();
-} else {
-    filterPerPageRef.value = 7;
-    perPageRef.value = null;
-    query();
+
+if (!screenSize) {
+    localStorage.setItem('screenSize', window.innerWidth.toString())
+    if (window.innerWidth <= 640) {
+        filterPerPageRef.value = 2;
+        query();
+    } else if (window.innerWidth <= 1024 && window.innerWidth > 640) {
+        filterPerPageRef.value = 3;
+        query();
+    } else {
+        filterPerPageRef.value = 7;
+        query();
+    }
 }
+
 
 // Watch the search value for changes and trigger the query function
 watch([search, filterRef], () => {
@@ -159,12 +163,5 @@ function query() {
         window?.fathom?.trackGoal(VARIABLES.TRACKER_ID_GROUPS, 0);
     }
 
-}
-let isSelected = (t) => {
-    return t
-}
-
-let $id = (t) => {
-    return t
 }
 </script>
