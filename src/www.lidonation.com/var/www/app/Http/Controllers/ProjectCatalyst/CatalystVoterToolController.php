@@ -230,24 +230,24 @@ class CatalystVoterToolController extends Controller
                 "param" =>  "womanProposals",
                 "count" => $this->getProposalCount('womanProposals')
             ],
-            [
-                "title" =>  "First Timers",
-                "description" =>  "Proposals from first time members!",
-                "param" =>  "firstTimers",
-                "count" => $this->getProposalCount('firstTimers')
-            ],
+            // [
+            //     "title" =>  "First Timers",
+            //     "description" =>  "Proposals from first time members!",
+            //     "param" =>  "firstTimers",
+            //     "count" => $this->getProposalCount('firstTimers')
+            // ],
             [
                 "title" =>  "Opensource",
                 "description" =>  "Opensource projects",
                 "param" =>  "opensource",
                 "count" => $this->getProposalCount('opensource')
             ],
-            [
-                "title" =>  "One timers",
-                "description" =>  "Members with only 1 proposal",
-                "param" =>  "oneTimers",
-                "count" => $this->getProposalCount('oneTimers')
-            ],
+            // [
+            //     "title" =>  "One timers",
+            //     "description" =>  "Members with only 1 proposal",
+            //     "param" =>  "oneTimers",
+            //     "count" => $this->getProposalCount('oneTimers')
+            // ],
             [
                 "title" =>  "Small Cap",
                 "description" =>  "Proposals with budgets below 75K",

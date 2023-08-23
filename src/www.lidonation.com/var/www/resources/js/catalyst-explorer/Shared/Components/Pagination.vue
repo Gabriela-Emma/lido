@@ -83,7 +83,7 @@
         </div>
 
         <div class="text-xs text-slate-400 lg:text-sm">
-            {{ $t('Showing') }} {{ $filters.shortNumber(from, 2) }} {{ $t('of') }} {{ $filters.shortNumber(to, 2) }} {{ $t('of') }} {{ $filters.shortNumber(total, 2) }}
+            {{ $t('Showing') }} {{ $filters.shortNumber(from, 2) }} {{ $t('to') }} {{ $filters.shortNumber(to, 2) }} {{ $t('of') }} {{ $filters.shortNumber(total, 2) }}
         </div>
     </nav>
 </template>

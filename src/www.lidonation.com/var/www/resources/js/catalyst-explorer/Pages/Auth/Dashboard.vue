@@ -100,8 +100,8 @@ const actions = [
         excerpt: 'Manage and track all your draft-ballots.',
         href: 'catalyst-explorer/my/draft-ballots',
         icon: PencilSquareIcon,
-        iconForeground: 'text-rose-700',
-        iconBackground: 'bg-rose-50',
+        iconForeground: 'text-indigo-700',
+        iconBackground: 'bg-indigo-50',
     },
 ]
 
