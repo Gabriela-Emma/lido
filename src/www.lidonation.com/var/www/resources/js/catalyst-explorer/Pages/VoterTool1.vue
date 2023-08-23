@@ -2,7 +2,7 @@
     <header-component titleName0="catalyst" titleName1="Voter Tool"
         subTitle="All Votes must be submitted in the official Catalyst Voting App. This is a research & planning tool only!" />
 
-    <div class="flex flex-col gap-2 bg-primary-20">
+    <main class="flex flex-col gap-2 bg-primary-20 bottom-8">
         <section class="container py-8">
             <div class="flex flex-col ">
                 <div class="flex items-center w-full h-10 lg:h-16">
@@ -12,7 +12,7 @@
                     <div class="flex-1">
                         <Pagination :links="props.filters?.links" :per-page="props.perPage" :total="props.filters?.total"
                             :from="props.filters?.from" :to="props.filters?.to"
-                            @paginated="(payload) => currFilterGroupRef = payload" :custom="true"/>
+                            @paginated="(payload) => currFilterGroupRef = payload" :custom="true" />
                     </div>
                     <VoterToolFilters @filter="(filter) => filterRef = filter" :filterGroups="props.filters?.data" />
                 </div>
@@ -43,14 +43,11 @@
                 <ChallengeCard v-for="challenge in challenges" :challenge="challenge" :fund="fund" />
             </div>
         </section>
-    </div>
-    <main class="container relative z-20 catalyst-proposals-research-wrapper">
-
     </main>
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { ref, watch, computed } from 'vue';
 import Search from '../Shared/Components/Search.vue';
 import Proposal from '../models/proposal';
 import Proposals from '../modules/proposals/Proposals.vue';
@@ -86,7 +83,8 @@ const props = withDefaults(
             from: number,
             data: Proposal[]
         };
-    }>(), {});
+    }>(), {
+});
 
 let searchRender = ref(0);
 
@@ -96,6 +94,20 @@ let currFilterGroupRef = ref<number>(props.currFilterGroup);
 let filterPerPageRef = ref<number>(props.filterPerPage);
 let perPageRef = ref<number>(props.perPage);
 let filterRef = ref(null);
+
+if (window.innerWidth <= 640) {
+    filterPerPageRef.value = 2;
+    perPageRef.value = null;
+    query();
+} else if (window.innerWidth <= 1024 && window.innerWidth > 640) {
+    filterPerPageRef.value = 3;
+    perPageRef.value = null;
+    query();
+} else {
+    filterPerPageRef.value = 7;
+    perPageRef.value = null;
+    query();
+}
 
 // Watch the search value for changes and trigger the query function
 watch([search, filterRef], () => {

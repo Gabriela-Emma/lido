@@ -1,11 +1,11 @@
 <template>
     <div class="relative flex flex-col overflow-hidden bg-white border border-gray-200 rounded-lg group">
         <div class="bg-gray-200 aspect-w-2 aspect-h-2 group-hover:opacity-75 sm:aspect-none sm:h-60">
-            <img :alt="challenge.title" class="object-cover object-center w-full h-full sm:w-full sm:h-full">
+            <img :alt="challenge.title" :src="challenge.thumbnail_url ?? challenge.hero_url" class="object-cover object-center w-full h-full sm:w-full sm:h-full">
         </div>
         <div class="flex flex-col flex-1 p-4 space-y-2">
             <h3 class="text-xl font-medium text-gray-900">
-                <a :href="challenge.link">
+                <a :href="challenge.link " target="_blank" rel="noreferrer">
                     <span aria-hidden="true" class="absolute inset-0"></span>
                     {{ challenge.title }}
                 </a>

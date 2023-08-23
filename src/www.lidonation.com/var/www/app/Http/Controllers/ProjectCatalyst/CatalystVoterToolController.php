@@ -62,21 +62,21 @@ class CatalystVoterToolController extends Controller
             'search' => $this->search,
             'currentPage' =>  $this->currentPage,
             'perPage' => $this->limit,
-            'challenges' =>$this->challenges,
+            'challenges' => $this->challenges,
             'proposals' => $this->query(),
             'fund' => $this->fund,
             'crumbs' => [
                 ['label' => 'Voter Tool'],
             ],
-            'filters' => $this->getFilters(),
-            'filterPerPage' => intval($this->filterGroupLimit)
+            'filters' => $this->getGroupFilters(),
+            'filterPerPage' => intval($this->filterGroupLimit),
         ]);
     }
 
     protected function query()
     {
-        if (!$this->searchGroup) {
-            return;
+        if (!$this->search && !$this->searchGroup) {
+            return null;
         }
         $_options = $this->getUserFilters();
 
@@ -98,7 +98,6 @@ class CatalystVoterToolController extends Controller
                     'title',
                     'funding_status',
                     'groups.id',
-                    'link',
                     'ideascale_link',
                     'yes_votes_count',
                     'no_votes_count',
@@ -151,14 +150,14 @@ class CatalystVoterToolController extends Controller
     }
 
     #[ArrayShape(['filters' => 'array'])]
-    function getUserFilters() 
+    function getUserFilters()
     {
-        if(!$this->searchGroup){return;}
+        $_options = [
+            'filters' => [],
+        ];
 
         if ($this->searchGroup == 'oneTimers' || $this->searchGroup == 'firstTimers') {
-            $_options = [
-                'filters' => [],
-            ];
+
             if ($this->searchGroup == 'firstTimers') {
                 $_options['filters'][] = "first_timer = true AND proposals.fund = {$this->fund?->id}";
             }
@@ -168,24 +167,24 @@ class CatalystVoterToolController extends Controller
             }
         }
 
-        // $_options = [
-        //     'filters' => ["fund.id = {$this->fund?->id}"],
-        // ];
+        $_options = [
+            'filters' => ["fund.id = {$this->fund?->id}"],
+        ];
 
         if ($this->searchGroup == 'allStars') {
             $_options['filters'][] = 'ca_rating = 5';
         }
 
         if ($this->searchGroup == 'smallProposals') {
-            $_options['filters'][] = 'amount_requested <= 10000';
+            $_options['filters'][] = 'amount_requested <= 75000';
         }
 
-        if ($this->searchGroup == '100KProposals') {
-            $_options['filters'][] = 'amount_requested >= 100000';
+        if ($this->searchGroup == 'LargeProposals') {
+            $_options['filters'][] = 'amount_requested >= 250000';
         }
 
-        if ($this->searchGroup == 'largeProposals') {
-            $_options['filters'][] = 'amount_requested > 25000';
+        if ($this->searchGroup == 'mediumProposals') {
+            $_options['filters'][] = 'amount_requested >= 75000 AND amount_requested <= 250000 ';
         }
 
         if ($this->searchGroup == 'impactProposals') {
@@ -203,59 +202,64 @@ class CatalystVoterToolController extends Controller
         if ($this->searchGroup == 'womanProposals') {
             $_options['filters'][] = 'woman_proposal = 1';
         }
+
+        if ($this->searchGroup == 'opensource') {
+            $_options['filters'][] = 'opensource = 1';
+        }
         return $_options;
     }
 
-    public function getFilters()
+    public function getGroupFilters()
     {
 
         $filters =   collect([
-                    [
-                        "title" => "Quick Pitches",
-                        "description" => "Proposals with Quick Pitches.",
-                        "param" => "quickPitchProposals"
-                    ],
-                    [
-                        "title" => "Ideafest Proposals",
-                        "description" => "Projects presented at Ideafest!",
-                        "param" => "ideafestProposals"
-                    ],
-                    [
-                        "title"=>  "Women Proposals",
-                        "description"=>  "Proposals By Women.",
-                        "param"=>  "womanProposals"
-                    ],
-                    [
-                        "title"=>  "First Timers",
-                        "description"=>  "Proposals from first time members!",
-                        "param"=>  "firstTimers"
-                    ],
-                    [
-                        "title"=>  "One timers",
-                        "description"=>  "Members with only 1 proposal",
-                        "param"=>  "oneTimers"
-                    ],
-                    [
-                        "title"=>  "Completed Proposers",
-                        "description"=>  "Teams that have completed at least 1 proposal",
-                        "param"=>  "completedProposers"
-                    ],
-                    [
-                        "title"=>  "Small Cap",
-                        "description"=>  "Proposals with budgets <= 10K",
-                        "param"=>  "smallProposals"
-                    ],
-                    [
-                        "title"=>  "Medium Cap",
-                        "description"=>  "Proposals with budgets between 75K & 250K",
-                        "param"=>  "smallProposals"
-                    ],
-                    [
-                        "title"=>  "Large Cap",
-                        "description"=>  "Proposals with budgets >= 250K",
-                        "param"=>  "100KProposals"
-                    ],
-                ]);
+            [
+                "title" => "Quick Pitches",
+                "description" => "Proposals with Quick Pitches.",
+                "param" => "quickPitchProposals"
+            ],
+            [
+                "title" => "Ideafest Proposals",
+                "description" => "Projects presented at Ideafest!",
+                "param" => "ideafestProposals"
+            ],
+            [
+                "title" =>  "Women Proposals",
+                "description" =>  "Proposals By Women.",
+                "param" =>  "womanProposals"
+            ],
+            [
+                "title" =>  "First Timers",
+                "description" =>  "Proposals from first time members!",
+                "param" =>  "firstTimers"
+            ],
+            [
+                "title" =>  "Opensource",
+                "description" =>  "Opensource projects",
+                "param" =>  "opensource"
+            ],
+            [
+                "title" =>  "One timers",
+                "description" =>  "Members with only 1 proposal",
+                "param" =>  "oneTimers"
+            ],
+            [
+                "title" =>  "Small Cap",
+                "description" =>  "Proposals with budgets <= 75K",
+                "param" =>  "smallProposals"
+            ],
+            [
+                "title" =>  "Medium Cap",
+                "description" =>  "Proposals with budgets between 75K & 250K",
+                "param" =>  "mediumProposals"
+            ],
+            [
+                "title" =>  "Large Cap",
+                "description" =>  "Proposals with budgets >= 250K",
+                "param" =>  "250KProposals"
+            ],
+
+        ]);
         $offset = (($this->currentFilterGroup ?? 1) - 1) * $this->filterGroupLimit;
         $slicedFilters = $filters->slice($offset);
 
@@ -268,9 +272,7 @@ class CatalystVoterToolController extends Controller
                 'pageName' => 'fg',
             ]
         );
-        
+
         return $pagination->onEachSide(1)->toArray();
     }
-
-
 }
