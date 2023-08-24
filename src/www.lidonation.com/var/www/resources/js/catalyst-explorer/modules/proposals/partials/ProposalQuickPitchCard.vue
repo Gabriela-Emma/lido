@@ -28,12 +28,6 @@
                 </a>
             </span>
         </h2>
-        <HandThumbIcons :proposal="proposal" @new-reaction.prevent="updateChart($event,proposal)"
-                                    @reaction-update="updateChart($event,proposal)" :key="updateIcons"/>
-        <div class="mb-4">
-            <ProposalBudget v-if="proposal" :proposal="proposal" />
-        </div>
-
         <div>
             <Link preserve-state preserve-scroll
                 :href="$utils.localizeRoute(`catalyst-explorer/proposals/${proposal.id}/bookmark`)" as="button" :class="{
@@ -41,12 +35,18 @@
                     'bg-slate-600 hover:bg-teal-600 focus:ring-teal-300': !isBookmarked
                 }"
                 class="inline-flex items-center rounded-md border border-transparent group p-0.5 text-sm font-medium leading-4 text-white shadow-sm focus:outline-none focus:ring-2  focus:ring-offset-2">
-            <BookmarkIcon class="w-4 h-4 " :class="{
-                'hover:text-slate-400': isBookmarked,
-                'group-hover:text-teal-900': !isBookmarked
-            }" aria-hidden="true" />
+                <BookmarkIcon class="w-4 h-4 " :class="{
+                    'hover:text-slate-400': isBookmarked,
+                    'group-hover:text-teal-900': !isBookmarked
+                }" aria-hidden="true" />
             </Link>
 
+            <!-- <HandThumbIcons :proposal="proposal" @new-reaction.prevent="updateChart($event,proposal)"
+                                    @reaction-update="updateChart($event,proposal)" :key="updateIcons"/> -->
+        </div>
+
+        <div class="mb-4">
+            <ProposalBudget v-if="proposal" :proposal="proposal" />
         </div>
 
         <ProposalAuthors :proposal="proposal" @profileQuickView="emit('profileQuickView', $event)" />
@@ -151,6 +151,6 @@ const quickpitchProvider = computed(() => quickPitchId.match(regex) ? "youtube" 
 let updateIcons = ref(0);
 let updateChart = async (vote, proposal) => {
     updateIcons.value = updateIcons.value
-    
+
     }
 </script>
