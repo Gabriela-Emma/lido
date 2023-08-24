@@ -177,6 +177,7 @@
                 <div class="p-6 mt-6 bg-opacity-95 rounded-sm bg-teal-light-500 text-blue-dark-500">
                     <x-catalyst.users.profile-metrics
                         :catalystUser="$catalystGroup"
+                        :discussionData="$discussionData"
                         :allTimeCaAverage="$allTimeCaAverage"
                         :allTimeCaRatingCount="$allTimeCaRatingCount"
                         :allTimeCaAverageGroups="$allTimeCaAverageGroups"
@@ -186,7 +187,8 @@
                         :allTimeAwardedPerRound="$allTimeAwardedPerRound"
                         :allTimeReceivedPerRound="$allTimeReceivedPerRound"
                         :allTimeProposedPerRound="$allTimeProposedPerRound"
-                        :allTimeCompletedPerRound="$allTimeCompletedPerRound"></x-catalyst.users.profile-metrics>
+                        :allTimeCompletedPerRound="$allTimeCompletedPerRound">
+                    </x-catalyst.users.profile-metrics>
                 </div>
             </section>
         </div>

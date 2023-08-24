@@ -137,7 +137,7 @@ class CatalystVoterToolController extends Controller
                 $options['limit'] = $this->limit;
 
                 return $index->search($query, $options);
-                
+
             }
         );
 
@@ -158,7 +158,7 @@ class CatalystVoterToolController extends Controller
         );
 
         $this->proposals = $pagination->onEachSide(1)->toArray();
-        
+
     }
 
     #[ArrayShape(['filters' => 'array'])]
@@ -188,12 +188,12 @@ class CatalystVoterToolController extends Controller
                 }
             );
 
-            dd($this->searchBuilder->raw());
+            // dd($this->searchBuilder->raw());
             $this->searchBuilder = $this->searchBuilder->paginate(18);
             // $this->searchBuilder = $this->searchBuilder->raw()->items()->paginate($this->perPage, ['*'], 'p')->setPath('/');
 
-             dd($this->searchBuilder);
-            dd(collect($this->searchBuilder->items())->map(fn ($u) => $u->proposals)->collapse()->unique('id'));
+            //  dd($this->searchBuilder);
+            // dd(collect($this->searchBuilder->items())->map(fn ($u) => $u->proposals)->collapse()->unique('id'));
             $this->proposals = collect($this->searchBuilder->items())->map(fn ($u) => $u->proposals)->collapse()->unique('id');
             // $this->searchArgs['count'] = $this->groupSearchPaginator->total();
 
@@ -330,11 +330,11 @@ class CatalystVoterToolController extends Controller
         }else {
             $option_ = $this->getUserFilters($param);
         }
-        
+
         $proposals = Proposal::search(
             '',
             function (Indexes $index, $query, $options) use ($option_) {
-                if (count($option_['filters']) > 0) {
+                if (isset($option_['filters']) && count($option_['filters']) > 0) {
                     $options['filter'] = implode(' AND ', $option_['filters']);
                 }
                 return $index->search($query, $options);
