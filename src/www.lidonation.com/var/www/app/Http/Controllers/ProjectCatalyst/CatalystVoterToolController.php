@@ -60,6 +60,8 @@ class CatalystVoterToolController extends Controller
         $this->searchGroup = $request->input('fg', null);
         $this->currentFilterGroup = $request->input('fgs', 1);
         $this->filterGroupLimit = $request->input('pfgs', 6);
+        $this->query();
+        // dd($this->proposals);
 
         return Inertia::render('VoterTool', [
             'search' => $this->search,
@@ -139,6 +141,10 @@ class CatalystVoterToolController extends Controller
             }
         );
 
+        if($this->searchGroup == 'oneTimers' || $this->searchGroup == 'firstTimers'){
+            return;
+        }
+
         $response = new Fluent($this->searchBuilder->raw());
 
         $pagination = new LengthAwarePaginator(
@@ -152,53 +158,59 @@ class CatalystVoterToolController extends Controller
         );
 
         $this->proposals = $pagination->onEachSide(1)->toArray();
-        return;
+        
     }
 
     #[ArrayShape(['filters' => 'array'])]
-    function getUserFilters($param)
+    function getUserFilters($param ,$inHouse=false)
     {
-        $_options = [
-            'filters' => [],
-        ];
 
-        // if ($param == 'oneTimers' || $param == 'firstTimers') {
-        //     $user_options = [
-        //         'filters' => [],
-        //     ];
-        //     if ($param == 'firstTimers') {
-        //         $user_options['filters'] = "first_timer = true AND proposals.fund = {$this->fund?->id}";
-        //     }
+        if (($param == 'oneTimers' || $param == 'firstTimers')) {
+            $user_options = [
+                'filters' => [],
+            ];
 
-        //     if ($param == 'oneTimers') {
-        //         $user_options['filters'][] = "proposals_count = 1 AND proposals.fund = {$this->fund?->id}";
-        //     }
+            if ($param == 'firstTimers') {
+                $user_options['filters'] = "first_timer = true AND current_fund_proposals IS NOT NULL";
+            }
 
-        //     $this->searchBuilder = CatalystUser::search(
-        //         null,
-        //         function (Indexes $index, $query, $options) use ($user_options) {
-        //             $options['filter'] = $user_options['filters'];
-        //             $options['attributesToRetrieve'] = ['id', 'proposals.id'];
+            if ($param == 'oneTimers') {
+                $user_options['filters'][] = "proposals_count = 1 AND current_fund_proposals IS NOT NULL";
+            }
 
-        //             return $index->search($query, $options);
-        //         }
-        //     );
-        //     // dd($this->searchBuilder);
+            $this->searchBuilder = CatalystUser::search(
+                null,
+                function (Indexes $index, $query, $options) use ($user_options) {
+                    $options['filter'] = $user_options['filters'];
+                    $options['attributesToRetrieve'] = ['id', 'proposals_count'];
 
-        //     return;
-        // }
+                    return $index->search($query, $options);
+                }
+            );
 
-        if ($param == 'firstTimers') {
-            $_options['filters'][] = "first_timer = true AND proposals.fund = {$this->fund?->id}";
-        }
+            dd($this->searchBuilder->raw());
+            $this->searchBuilder = $this->searchBuilder->paginate(18);
+            // $this->searchBuilder = $this->searchBuilder->raw()->items()->paginate($this->perPage, ['*'], 'p')->setPath('/');
 
-        if ($param == 'oneTimers') {
-            $_options['filters'][] = "proposals_count = 1 AND proposals.fund = {$this->fund?->id}";
+             dd($this->searchBuilder);
+            dd(collect($this->searchBuilder->items())->map(fn ($u) => $u->proposals)->collapse()->unique('id'));
+            $this->proposals = collect($this->searchBuilder->items())->map(fn ($u) => $u->proposals)->collapse()->unique('id');
+            // $this->searchArgs['count'] = $this->groupSearchPaginator->total();
+
+            return;
         }
 
         $_options = [
             'filters' => ["fund.id = {$this->fund?->id}"],
         ];
+
+        if ($param == 'oneTimers') {
+            $user_options['filters'][] = "proposals.fund = {$this->fund?->id}";
+        }
+
+        if ($param == 'firstTimers') {
+            $user_options['filters'] = " proposals.fund = {$this->fund?->id}";
+        }
 
         if ( $param == 'below75k') {
             $_options['filters'][] = 'amount_requested <= 75000';
@@ -279,7 +291,7 @@ class CatalystVoterToolController extends Controller
                 "title" =>  "Small Cap",
                 "description" =>  "Proposals with budgets below 75K",
                 "param" =>  "below75k",
-                "count" => $this->getProposalCount('smallProposals')
+                "count" => $this->getProposalCount('below75k')
             ],
             [
                 "title" =>  "Medium Cap",
@@ -313,7 +325,12 @@ class CatalystVoterToolController extends Controller
 
     public function getProposalCount($param)
     {
-        $option_ = $this->getUserFilters($param);
+        if($param == 'oneTimers' || $param == 'firstTimers'){
+            $option_ = $this->getUserFilters($param);
+        }else {
+            $option_ = $this->getUserFilters($param);
+        }
+        
         $proposals = Proposal::search(
             '',
             function (Indexes $index, $query, $options) use ($option_) {
@@ -324,5 +341,9 @@ class CatalystVoterToolController extends Controller
             }
         )->raw();
         return $proposals['estimatedTotalHits'];
+    }
+
+    public function setProposal(){
+
     }
 }
