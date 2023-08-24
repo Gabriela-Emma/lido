@@ -35,6 +35,10 @@ class CatalystProposerMetricsComponent extends Component
 
     protected $allTimeCompletedPerRound;
 
+    protected $allDiscussions;
+
+    public $discussionData;
+
     public function toggleOwnMetrics(CatalystUserRepository $catalystUserRepository, FundRepository $fundRepository, CatalystUser $catalystUser)
     {
         $this->ownMetrics = ! $this->ownMetrics;
@@ -84,7 +88,9 @@ class CatalystProposerMetricsComponent extends Component
             ->map(
                 fn ($p) => $p->discussions
             )->collapse();
-
+        
+        $this->allDiscussions = $discussions;
+        $this->discussionsRatings();
         // combined ratings across all CA reviews
         $ratings = $discussions->map(fn ($disc) => $disc->ratings)->collapse();
         $this->allTimeCaRatingCount = $ratings->count();
@@ -185,5 +191,37 @@ class CatalystProposerMetricsComponent extends Component
                 fn ($ps) => $ps->countBy(fn ($p) => $p->status)
             )->map(fn ($g) => $g->get('complete') ?? 0)->values(),
         ]);
+    }
+
+    protected function discussionsRatings()
+    {
+        $discussionRatings = [];
+
+        foreach ($this->allDiscussions as $discussion) {
+            $title = $discussion['title'];
+            $rating = $discussion->rating;
+
+            if (!isset($discussionRatings[$title])) {
+                $discussionRatings[$title] = [
+                    'totalRating' => 0,
+                    'totalCount' => 0,
+                    'title' => $title,
+                ];
+            }
+
+            if ($rating !== null) {
+                $discussionRatings[$title]['totalRating'] += $rating;
+                $discussionRatings[$title]['totalCount']++;
+            }
+        }
+
+        foreach ($discussionRatings as $title => $data) {
+            if ($data['totalCount'] > 0) {
+                $averageRating = $data['totalRating'] / $data['totalCount'];
+                $discussionRatings[$title]['averageRating'] = $averageRating;
+            }
+        }
+
+        $this->discussionData = $discussionRatings;
     }
 }
