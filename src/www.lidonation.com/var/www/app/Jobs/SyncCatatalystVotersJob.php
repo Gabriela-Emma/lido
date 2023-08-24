@@ -88,7 +88,6 @@ class SyncCatatalystVotersJob implements ShouldQueue
             if ($res->successful()) {
                 $votersDetails = new Fluent($res->json()['data']);
 
-                $controlled_amount = $this->getAccountAmount($votersDetails->stake_pub);
                 $transaction_time = $this->getTransactionTime($voterTransaction->tx_hash);
                 
                 //save voter registration details
@@ -96,7 +95,6 @@ class SyncCatatalystVotersJob implements ShouldQueue
                 $catalystRegistration->tx = $voterTransaction->tx_hash;
                 $catalystRegistration->stake_pub = $votersDetails->stake_pub;
                 $catalystRegistration->stake_key = $votersDetails->stake_key;
-                $catalystRegistration->voting_power = $controlled_amount;
                 $catalystRegistration->created_at = $transaction_time;
                 $catalystRegistration->save();
                 
@@ -110,15 +108,6 @@ class SyncCatatalystVotersJob implements ShouldQueue
                 });
             }
         }
-    }
-
-    protected function getAccountAmount(string $stakeAddress)
-    {
-        $accountDetails = app(CardanoBlockfrostService::class)
-            ->get("accounts/{$stakeAddress}", null)
-            ->object();
-
-        return $accountDetails->controlled_amount / 1000000;
     }
 
     protected function getTransactionTime(string $txHash)
