@@ -126,6 +126,8 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
             'quickpitch_length',
             'impact_proposal',
             'woman_proposal',
+            'proposals_count',
+            'first_timer',
             'ideafest_proposal',
             'ca_rating',
             'over_budget',
