@@ -35,14 +35,15 @@ createInertiaApp({
     },
     setup({el, App, props, plugin}) {
         const pinia = createPinia();
-        watch(
-            pinia.state,
-            (state) => {
-                // persist the whole state to the local storage whenever it changes
-                sessionStorage.setItem('piniaState', JSON.stringify(state))
-            },
-            {deep: true}
-        );
+        // exchausts available memory on draft ballots page
+        // watch(
+        //     pinia.state,
+        //     (state) => {
+        //         // persist the whole state to the local storage whenever it changes
+        //         sessionStorage.setItem('piniaState', JSON.stringify(state))
+        //     },
+        //     {deep: true}
+        // );
 
         const i18n = createI18n({
             locale: <string>props.initialPage.props.locale,

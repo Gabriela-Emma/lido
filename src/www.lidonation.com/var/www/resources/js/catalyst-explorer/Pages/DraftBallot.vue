@@ -22,7 +22,7 @@
                             </div>
                             <div>
                                 <ul role="list" class="divide-y divide-gray-200">
-                                    <li v-for="item in group.items" :key="item.model.id">
+                                    <li v-for="item in group.items" :key="item.model?.id">
                                         <div class="block hover:bg-gray-50">
                                             <div class="flex items-center gap-3 px-4 py-4 sm:px-5">
                                                 <div>

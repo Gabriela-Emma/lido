@@ -18,7 +18,10 @@
                     </Link>
                 </div>
             </section>
-            <section class="space-y-6" v-if="user$?.id">
+            <section class="p-16 text-center align-middle" v-if="!draftBallots$ || draftBallots$?.length == 0">
+                <ProgressSpinner />
+            </section>
+            <section class="space-y-6" v-if="user$?.id && draftBallots$?.length > 0">
                 <h2 class="text-lg lg:text-xl xl:text-3xl">
                     My Draft Ballots
                 </h2>
@@ -39,6 +42,7 @@
 import { storeToRefs } from 'pinia';
 import { useBookmarksStore } from '../stores/bookmarks-store';
 import DraftBallotCard from '../modules/bookmarks/DraftBallotCard.vue';
+import ProgressSpinner from '../Shared/Components/ProgressSpinner.vue';
 import route  from 'ziggy-js';
 import {inject} from 'vue'
 import { Link } from '@inertiajs/vue3';
