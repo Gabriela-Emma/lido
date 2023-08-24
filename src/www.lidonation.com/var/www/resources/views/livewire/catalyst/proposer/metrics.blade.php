@@ -3,25 +3,25 @@
         wire:loading.class.remove="hidden" wire:loading.delay.shortest.class="absolute" wire:target="toggleOwnMetrics"
         class="sticky left-0 z-10 flex items-center justify-center hidden w-full h-0 p-0 overflow-visible top-1/2">
         <div
-            class="flex items-center justify-center w-24 h-24 xl:w-40 xl:h-40 p-3 bg-white rounded-full lg:h-32 lg:w-32 bg-opacity-80">
+            class="flex items-center justify-center w-24 h-24 p-3 bg-white rounded-full xl:w-40 xl:h-40 lg:h-32 lg:w-32 bg-opacity-80">
             <svg
                 class="relative w-8 h-8 border-t-2 border-b-2 rounded-full lg:w-16 lg:h-16 animate-spin border-primary-600"
                 viewBox="0 0 24 24"></svg>
         </div>
     </div>
 
-    <div class="flex flex-row justify-end right-0top-0p-4 text-yellow-400 font-semibold">
+    <div class="flex flex-row justify-end font-semibold text-yellow-400 right-0top-0p-4">
         <div class="flex items-center" x-data="{ownMetrics: @entangle('ownMetrics')}">
             <button type="button"
                     :class="{'bg-teal-800': ownMetrics, 'bg-gray-200': !ownMetrics}"
                     wire:click="toggleOwnMetrics({{ $catalystUser->id }})"
-                    class="bg-gray-200 relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+                    class="relative inline-flex flex-shrink-0 h-6 transition-colors duration-200 ease-in-out bg-gray-200 border-2 border-transparent rounded-full cursor-pointer w-11 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
                     role="switch"
                     aria-checked="false"
                     aria-labelledby="annual-billing-label">
                         <span aria-hidden="true"
                               :class="{'translate-x-5': ownMetrics, 'translate-x-0': !ownMetrics}"
-                              class="translate-x-0 pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200"></span>
+                              class="inline-block w-5 h-5 transition duration-200 ease-in-out transform translate-x-0 bg-white rounded-full shadow pointer-events-none ring-0"></span>
             </button>
             <span class="ml-3 text-sm">
                 @if($ownMetrics)
@@ -34,63 +34,39 @@
     </div>
 
     <div class="user-summary">
-        <div class="grid grid-cols-6 gap-8 md:gap-16 lg:gap-4 combined-ratings">
-            <div class="col-span-6 md:col-span-3 lg:col-span-2">
-                <div class="flex flex-row gap-4 justify-between">
-                    @if($discussionData)
-                        <div class="flex flex-col">
-                            <h3 class="mb-4 text-sm capitalize">
-                                Combined CA Review Across Funds
-                            </h3>
-                            <div class="w-full p-2 mt-8 mb-4 bg-teal-800/50">
-                                <b class="text-sm text-slate-300">
-                                    Community Review Results ({{reset($discussionData)['totalCount'] ?? 0 }} reviewers)
-                                </b>
-                                <div class="flex flex-col gap-2">
-                                    @foreach($discussionData as $discussion)
-                                        <div class="flex items-center justify-between gap-2 flex-nowrap">
-                                            <div>
-                                                {{$discussion['title']}}
-                                            </div>
-                                            <div>
-                                                <x-public.stars theme='text-white' :amount="$discussion['totalRating']" :size="5"/>
-                                            </div>
-                                        </div>
-                                    @endforeach
-                                </div>
-                            </div>
-                        </div>
-                    @endif
+        <div>
+            <h3 class="mb-4 text-sm capitalize">
+                Community Reviews across funding rounds
+            </h3>
+        </div>
 
-                    <div class="flex flex-col justify-between all-time-combine-reviews">
-                        <h3 class="mb-4 text-sm text-right capitalize">
-                            Total PA Reviews across funds
-                        </h3>
-                        <div class="text-sm text-right">
-                            <div class="rating-count">
-                            <span class="text-4xl font-semibold xl:text-5xl leading-2">
-                                {{$this->getMetric('allTimeCaRatingCount')}}
-                            </span>
-                            </div>
-                            <div>
-                            <span class="text-sm font-semibold capitalize">
-                                {{ $snippets->totalReviews }}
-                            </span>
-                            </div>
-                        </div>
+        <div class="flex w-full gap-8 gridgrid-cols-6 md:gap-16 lg:gap-4 combined-ratings">
+            @if($discussionData)
+            <div class="flex flex-col justify-center px-16 all-time-combine-reviews">
+                <div class="text-sm text-right">
+                    <div class="rating-count">
+                        <span class="text-4xl font-semibold lg:text-5xl xl:text-6xl 2xl:text-7xl leading-2">
+                            {{$this->getMetric('allTimeCaRatingCount')}}
+                        </span>
+                    </div>
+                    <div>
+                        <span class="text-sm font-semibold capitalize">
+                            {{ $snippets->totalReviews }}
+                        </span>
                     </div>
                 </div>
             </div>
+            @endif
 
             @if($this->getMetric('allTimeCaAverageGroups'))
-                <div class="col-span-6 pt-1 md:col-span-3 lg:col-span-4 chart stacked-bar lg:pl-8 lg:mt-9">
-                    <div class="w-full text-sm">
+            <div class="flex flex-1 pt-1 md:col-span-3lg:col-span-4 chart stacked-bar lg:pl-8 lg:mt-9">
+                <div class="w-full text-sm">
                         @foreach($this->getMetric('allTimeCaAverageGroups') as $key => $data)
                             <div class="mb-3">
-                                <div class="flex flex-row gap-3 justify-between items-end">
+                                <div class="flex flex-row items-end justify-between gap-3">
                                     <div class="grid flex-1 h-6 bg-teal-300 rounded-sm grid-cols-100">
                                         <div
-                                            class="h-6 bg-teal-800 rounded-sm p-1 text-xs text-teal-light-500 font-semibold"
+                                            class="h-6 p-1 text-xs font-semibold bg-teal-800 rounded-sm text-teal-light-500"
                                             style="grid-column: span {{$data['percent']}} / span {{$data['percent']}}">{{$key}}</div>
                                     </div>
                                     <div class="w-16 text-right">
@@ -105,23 +81,23 @@
         </div>
     </div>
 
-    <div class="proposal-summary mt-8">
-        <div class="flex flex-row gap-4 justify-between flex-wrap">
-            <div class="all-time-combined-rating overflow-hidden">
+    <div class="mt-8 proposal-summary">
+        <div class="flex flex-row flex-wrap justify-between gap-4">
+            <div class="overflow-hidden all-time-combined-rating">
                 <h3 class="mb-1 text-sm capitalize">
                     Proposals Across Fund Rounds
                 </h3>
-                <div class="flex flex-row overflow-x-scroll md:flex-wrap p-1 justify-start categories">
+                <div class="flex flex-row justify-start p-1 overflow-x-scroll md:flex-wrap categories">
                     <div
                         class="border border-gray-300 -mt-px -ml-px inline-flex flex-col gap-6 justify-between border-opacity-50 p-4 min-w-15 md:min-w-[13rem] xl:min-w-[initial]">
                         <div
-                            class="flex flex-row gap-2 justify-between items-center flex-no-wrap md:justify-start text-yellow-500">
-                            <div class="flex flex-wrap flex-nowrap font-semibold text-xl xl:text-3xl">
+                            class="flex flex-row flex-no-wrap items-center justify-between gap-2 text-yellow-500 md:justify-start">
+                            <div class="flex flex-wrap text-xl font-semibold flex-nowrap xl:text-3xl">
                             <span class="font-semibold">
                                 {{$this->getMetric('allTimeCompletedPerRound')?->data->sum()}}
                             </span>
                             </div>
-                            <div class="flex flex-wrap flex-nowrap gap-1 font-normal leading-2 text-base">
+                            <div class="flex flex-wrap gap-1 text-base font-normal flex-nowrap leading-2">
                             <span>
                                 Completed
                             </span>
@@ -129,7 +105,7 @@
                         </div>
                         <div class="flex w-full min-w-full overflow-hidden">
                             @if( $this->getMetric('allTimeCompletedPerRound')?->data->count() > 1 )
-                                <div class="w-full xl:w-48 relative" wire:ignore>
+                                <div class="relative w-full xl:w-48" wire:ignore>
                                     <x-catalyst.users.chart-per-fund
                                         chartName="allTimeCompletedPerRound"
                                         :modelId="$catalystUser->id"
@@ -140,8 +116,8 @@
                                 <div class="inline-flex min-w-[11rem]">
                                     <div class="relative z-0 inline-flex rounded-md shadow-sm">
                                         <div
-                                            class="relative inline-flex items-center text-xl italic gap-1 font-medium text-gray-200 rounded-l-sm focus:outline-none">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                                            class="relative inline-flex items-center gap-1 text-xl italic font-medium text-gray-200 rounded-l-sm focus:outline-none">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none"
                                                  viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                                 <path stroke-linecap="round" stroke-linejoin="round"
                                                       d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>
@@ -156,13 +132,13 @@
                     <div
                         class="border border-gray-300 -mt-px -ml-px inline-flex flex-col gap-6 justify-between border-opacity-50 p-4 min-w-15 md:min-w-[13rem] xl:min-w-[initial]">
                         <div
-                            class="flex flex-row gap-5 justify-between items-center flex-no-wrap md:justify-start text-blue-dark-500">
-                            <div class="flex flex-wrap flex-nowrap font-semibold text-xl xl:text-3xl">
+                            class="flex flex-row flex-no-wrap items-center justify-between gap-5 md:justify-start text-blue-dark-500">
+                            <div class="flex flex-wrap text-xl font-semibold flex-nowrap xl:text-3xl">
                             <span class="font-semibold">
                                 {{$this->getMetric('allTimeFundedPerRound')?->data->sum()}}
                             </span>
                             </div>
-                            <div class="flex flex-wrap flex-nowrap gap-1 font-normal leading-2 text-base">
+                            <div class="flex flex-wrap gap-1 text-base font-normal flex-nowrap leading-2">
                             <span>
                                 Approved
                             </span>
@@ -170,7 +146,7 @@
                         </div>
                         <div class="flex w-full min-w-full overflow-hidden">
                             @if( $this->getMetric('allTimeFundedPerRound')?->data->count() > 1 )
-                                <div class="w-full xl:w-48 relative" wire:ignore>
+                                <div class="relative w-full xl:w-48" wire:ignore>
                                     <x-catalyst.users.chart-per-fund
                                         chartName="allTimeFundedPerRound"
                                         :modelId="$catalystUser->id"
@@ -181,8 +157,8 @@
                                 <div class="inline-flex min-w-[11rem]">
                                     <div class="relative z-0 inline-flex rounded-md shadow-sm">
                                         <div
-                                            class="relative inline-flex items-center text-xl italic gap-1 font-medium text-gray-200 rounded-l-sm focus:outline-none">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                                            class="relative inline-flex items-center gap-1 text-xl italic font-medium text-gray-200 rounded-l-sm focus:outline-none">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none"
                                                  viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                                 <path stroke-linecap="round" stroke-linejoin="round"
                                                       d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>
@@ -197,13 +173,13 @@
                     <div
                         class="border border-gray-300 -mt-px -ml-px inline-flex flex-col gap-6 justify-between border-opacity-50 p-4 min-w-15 md:min-w-[13rem] xl:min-w-[initial]">
                         <div
-                            class="flex flex-row gap-5 justify-between items-center flex-no-wrap md:justify-start">
-                            <div class="flex flex-wrap flex-nowrap font-semibold text-xl">
-                            <span class="font-semibold text-blue-dark-500 text-xl xl:text-3xl">
+                            class="flex flex-row flex-no-wrap items-center justify-between gap-5 md:justify-start">
+                            <div class="flex flex-wrap text-xl font-semibold flex-nowrap">
+                            <span class="text-xl font-semibold text-blue-dark-500 xl:text-3xl">
                                 {{$this->getMetric('allTimeProposedPerRound')?->data?->sum() ?? '-'}}
                             </span>
                             </div>
-                            <div class="flex flex-wrap flex-nowrap gap-1 font-normal leading-2 text-base">
+                            <div class="flex flex-wrap gap-1 text-base font-normal flex-nowrap leading-2">
                             <span>
                                 Proposed
                             </span>
@@ -211,7 +187,7 @@
                         </div>
                         <div class="flex w-full min-w-full overflow-hidden">
                             @if( $this->getMetric('allTimeProposedPerRound')?->data->count() > 1 )
-                                <div class="w-full xl:w-48 relative" wire:ignore>
+                                <div class="relative w-full xl:w-48" wire:ignore>
                                     <x-catalyst.users.chart-per-fund
                                         chartName="allTimeProposedPerRound"
                                         :modelId="$catalystUser->id"
@@ -222,8 +198,8 @@
                                 <div class="inline-flex min-w-[11rem]">
                                     <div class="relative z-0 inline-flex rounded-md shadow-sm">
                                         <div
-                                            class="relative inline-flex items-center text-xl italic gap-1 font-medium text-gray-200 rounded-l-sm focus:outline-none">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                                            class="relative inline-flex items-center gap-1 text-xl italic font-medium text-gray-200 rounded-l-sm focus:outline-none">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none"
                                                  viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                                 <path stroke-linecap="round" stroke-linejoin="round"
                                                       d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>
@@ -237,13 +213,13 @@
                     </div>
                     <div
                         class="border border-gray-300 -mt-px -ml-px inline-flex flex-col gap-6 justify-between border-opacity-50 p-4 min-w-15 md:min-w-[13rem] xl:min-w-[initial]">
-                        <div class="flex flex-row gap-4 justify-between items-center flex-no-wrap md:justify-start">
+                        <div class="flex flex-row flex-no-wrap items-center justify-between gap-4 md:justify-start">
                             <div class="flex flex-wrap font-semibold leading-2">
-                            <span class="text-xl xl:text-3xl font-semibold leading-2 text-blue-dark-500">
+                            <span class="text-xl font-semibold xl:text-3xl leading-2 text-blue-dark-500">
                                 ${{ humanNumber($this->getMetric('allTimeFundingPerRound')?->data->sum()) }}
                             </span>
                             </div>
-                            <div class="flex flex-wrap flex-nowrap gap-1 font-normal leading-2 text-sm">
+                            <div class="flex flex-wrap gap-1 text-sm font-normal flex-nowrap leading-2">
                             <span>
                                 Requested
                             </span>
@@ -251,7 +227,7 @@
                         </div>
                         <div class="w-full min-w-full overflow-hidden">
                             @if( $this->getMetric('allTimeFundingPerRound')?->data->count() > 1 )
-                                <div class="w-full xl:w-48 relative" wire:ignore>
+                                <div class="relative w-full xl:w-48" wire:ignore>
                                     <x-catalyst.users.chart-per-fund
                                         dataType="currency"
                                         chartName="allTimeFundingPerRound"
@@ -263,8 +239,8 @@
                                 <div class="inline-flex min-w-[10rem]">
                                     <div class="relative z-0 inline-flex rounded-md shadow-sm">
                                         <div
-                                            class="relative inline-flex items-center text-xl italic gap-1 font-medium text-gray-200 rounded-l-sm focus:outline-none">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                                            class="relative inline-flex items-center gap-1 text-xl italic font-medium text-gray-200 rounded-l-sm focus:outline-none">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none"
                                                  viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                                 <path stroke-linecap="round" stroke-linejoin="round"
                                                       d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>
@@ -279,13 +255,13 @@
                     <div
                         class="border border-gray-300 -mt-px -ml-px inline-flex flex-col gap-6 justify-between border-opacity-50 p-4 min-w-15 md:min-w-[13rem] xl:min-w-[initial]">
                         <div
-                            class="flex flex-row gap-5 justify-between items-center flex-no-wrap md:justify-start  text-blue-dark-500">
-                            <div class="flex flex-wrap flex-nowrap font-semibold leading-2">
-                            <span class="text-xl xl:text-3xl font-semibold leading-2">
+                            class="flex flex-row flex-no-wrap items-center justify-between gap-5 md:justify-start text-blue-dark-500">
+                            <div class="flex flex-wrap font-semibold flex-nowrap leading-2">
+                            <span class="text-xl font-semibold xl:text-3xl leading-2">
                                 ${{ humanNumber($this->getMetric('allTimeAwardedPerRound')?->data->sum()) }}
                             </span>
                             </div>
-                            <div class="flex flex-wrap flex-nowrap gap-1 font-normal leading-2 text-sm">
+                            <div class="flex flex-wrap gap-1 text-sm font-normal flex-nowrap leading-2">
                             <span>
                                 Awarded
                             </span>
@@ -293,7 +269,7 @@
                         </div>
                         <div class="w-full min-w-full overflow-hidden">
                             @if( $this->getMetric('allTimeAwardedPerRound')?->data->count() > 1 )
-                                <div class="w-full xl:w-48 relative" wire:ignore>
+                                <div class="relative w-full xl:w-48" wire:ignore>
                                     <x-catalyst.users.chart-per-fund
                                         dataType="currency"
                                         chartName="allTimeAwardedPerRound"
@@ -305,8 +281,8 @@
                                 <div class="inline-flex min-w-[10rem]">
                                     <div class="relative z-0 inline-flex rounded-md shadow-sm">
                                         <div
-                                            class="relative inline-flex items-center text-xl italic gap-1 font-medium text-gray-200 rounded-l-sm focus:outline-none">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                                            class="relative inline-flex items-center gap-1 text-xl italic font-medium text-gray-200 rounded-l-sm focus:outline-none">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none"
                                                  viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                                 <path stroke-linecap="round" stroke-linejoin="round"
                                                       d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>
@@ -321,13 +297,13 @@
                     <div
                         class="border border-gray-300 -mt-px -ml-px inline-flex flex-col gap-6 justify-between border-opacity-50 p-4 min-w-15 md:min-w-[13rem] xl:min-w-[initial]">
                         <div
-                            class="flex flex-row gap-5 justify-between items-center flex-no-wrap md:justify-start text-blue-dark-500">
-                            <div class="flex flex-wrap flex-nowrap font-semibold leading-2">
-                                <span class="text-xl xl:text-3xl font-semibold leading-2">
+                            class="flex flex-row flex-no-wrap items-center justify-between gap-5 md:justify-start text-blue-dark-500">
+                            <div class="flex flex-wrap font-semibold flex-nowrap leading-2">
+                                <span class="text-xl font-semibold xl:text-3xl leading-2">
                                     ${{humanNumber($this->getMetric('allTimeReceivedPerRound')?->data?->sum())}}
                                 </span>
                             </div>
-                            <div class="flex flex-wrap flex-nowrap gap-1 font-normal leading-2 text-sm">
+                            <div class="flex flex-wrap gap-1 text-sm font-normal flex-nowrap leading-2">
                                 <span>
                                     Received
                                 </span>
@@ -335,7 +311,7 @@
                         </div>
                         <div class="w-full min-w-full overflow-hidden">
                             @if( $this->getMetric('allTimeReceivedPerRound')?->data->count() > 1 )
-                                <div class="w-full xl:w-48 relative" wire:ignore>
+                                <div class="relative w-full xl:w-48" wire:ignore>
                                     <x-catalyst.users.chart-per-fund
                                         dataType="currency"
                                         chartName="allTimeReceivedPerRound"
@@ -347,8 +323,8 @@
                                 <div class="inline-flex min-w-[10rem]">
                                     <div class="relative z-0 inline-flex rounded-md shadow-sm">
                                         <div
-                                            class="relative inline-flex items-center text-xl italic gap-1 font-medium text-gray-200 rounded-l-sm focus:outline-none">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                                            class="relative inline-flex items-center gap-1 text-xl italic font-medium text-gray-200 rounded-l-sm focus:outline-none">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none"
                                                  viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                                 <path stroke-linecap="round" stroke-linejoin="round"
                                                       d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>
@@ -364,7 +340,7 @@
             </div>
 
             {{--        <div class="flex flex-col justify-between all-time-combine-reviews">--}}
-            {{--            <h3 class="mb-1 text-sm md:text-right capitalize">--}}
+            {{--            <h3 class="mb-1 text-sm capitalize md:text-right">--}}
             {{--                Funding Across Funds--}}
             {{--            </h3>--}}
             {{--            <div class="flex flex-row flex-wrap justify-center md:gap-0 categories">--}}
@@ -373,7 +349,7 @@
             {{--        </div>--}}
         </div>
         @if($catalystUser->proposals?->sortByDesc('funded_at')->first()?->funding_updated_at)
-            <div class="flex flex-row justify-end text-white font-bold text-xs mt-4 italic text-yellow-400">
+            <div class="flex flex-row justify-end mt-4 text-xs italic font-bold text-white text-yellow-400">
                 <p>
                     Funding data last updated
                     <x-carbon :date="$catalystUser->proposals->sortByDesc('funded_at')->first()->funding_updated_at" human/>
