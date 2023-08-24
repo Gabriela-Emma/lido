@@ -39,6 +39,10 @@ class CatalystGroupComposer
 
     private ?Collection $proposalChallenges;
 
+    private $allDiscussions;
+
+    private $discussionData;
+
     /**
      * Create a new profile composer.
      */
@@ -57,6 +61,8 @@ class CatalystGroupComposer
             ->map(
                 fn ($p) => $p->discussions
             )->collapse();
+        $this->allDiscussions = $discussions;
+        $this->discussionsRatings();
 
         // combined ratings across all CA reviews
         $ratings = $discussions->map(fn ($disc) => $disc->ratings)->collapse();
@@ -174,6 +180,7 @@ class CatalystGroupComposer
                 'proposalChallenges' => $this->proposalChallenges,
 
                 'wordCloudSet' => $this->wordCloudSet,
+                'discussionData' => $this->discussionData,
             ]
         );
     }
@@ -206,5 +213,37 @@ class CatalystGroupComposer
 
             return collect($query);
         });
+    }
+
+    protected function discussionsRatings()
+    {
+        $discussionRatings = [];
+
+        foreach ($this->allDiscussions as $discussion) {
+            $title = $discussion['title'];
+            $rating = $discussion->rating;
+
+            if (!isset($discussionRatings[$title])) {
+                $discussionRatings[$title] = [
+                    'totalRating' => 0,
+                    'totalCount' => 0,
+                    'title' => $title,
+                ];
+            }
+
+            if ($rating !== null) {
+                $discussionRatings[$title]['totalRating'] += $rating;
+                $discussionRatings[$title]['totalCount']++;
+            }
+        }
+
+        foreach ($discussionRatings as $title => $data) {
+            if ($data['totalCount'] > 0) {
+                $averageRating = $data['totalRating'] / $data['totalCount'];
+                $discussionRatings[$title]['averageRating'] = $averageRating;
+            }
+        }
+
+        $this->discussionData = $discussionRatings;
     }
 }

@@ -37,29 +37,30 @@
         <div class="grid grid-cols-6 gap-8 md:gap-16 lg:gap-4 combined-ratings">
             <div class="col-span-6 md:col-span-3 lg:col-span-2">
                 <div class="flex flex-row gap-4 justify-between">
-                    <div class="all-time-combined-rating">
-                        <h3 class="mb-4 text-sm capitalize">
-                            Combined CA Review Across Funds
-                        </h3>
-                        <div class="">
-                            <div class="flex flex-col items-start">
-                                <span class="hidden md:w-6 md:h-6"></span>
-                                <x-public.stars :amount="round($this->getMetric('allTimeCaAverage'))" theme="text-yellow-600" :size="6" ></x-public.stars>
-                                <div class="mt-2 rating-average">
-                                    <span
-                                        class="inline-block text-3xl font-semibold xl:text-5xl leading-2">
-                                       {{humanNumber($this->getMetric('allTimeCaAverage'))}} / 5
-                                    </span>
-                                </div>
-                                <div>
-                                <span
-                                    class="inline-block text-sm font-semibold capitalize xl:text-md">
-                                    {{ $snippets->averageRating }}
-                                </span>
+                    @if($discussionData)
+                        <div class="flex flex-col">
+                            <h3 class="mb-4 text-sm capitalize">
+                                Combined CA Review Across Funds
+                            </h3>
+                            <div class="w-full p-2 mt-8 mb-4 bg-teal-800/50">
+                                <b class="text-sm text-slate-300">
+                                    Community Review Results ({{reset($discussionData)['totalCount'] ?? 0 }} reviewers)
+                                </b>
+                                <div class="flex flex-col gap-2">
+                                    @foreach($discussionData as $discussion)
+                                        <div class="flex items-center justify-between gap-2 flex-nowrap">
+                                            <div>
+                                                {{$discussion['title']}}
+                                            </div>
+                                            <div>
+                                                <x-public.stars theme='text-white' :amount="$discussion['totalRating']" :size="5"/>
+                                            </div>
+                                        </div>
+                                    @endforeach
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    @endif
 
                     <div class="flex flex-col justify-between all-time-combine-reviews">
                         <h3 class="mb-4 text-sm text-right capitalize">
