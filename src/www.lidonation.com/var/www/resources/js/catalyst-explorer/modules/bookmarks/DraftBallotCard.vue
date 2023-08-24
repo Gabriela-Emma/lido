@@ -57,7 +57,7 @@ const props = withDefaults(
 );
 let preparingDownload = ref<boolean>(false);
 let proposalIds = props.draftBallot.items.map((item) => {
-    return item.model.id
+    return item.model?.id
 })
 
 function download() {

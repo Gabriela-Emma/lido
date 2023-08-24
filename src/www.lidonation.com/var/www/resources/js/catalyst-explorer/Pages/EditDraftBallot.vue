@@ -100,7 +100,7 @@ const inLastTenMins: Ref<boolean> = ref(false);
 const collectionHash = ref(draftBallot$.value?.hash);
 const createdAt = ref(draftBallot$.value?.created_at);
 let proposalsInDraft = props.draftBallot.groups.reduce((acc, obj) => {
-    let modelIds = obj.items.map(item => item.model.id);
+    let modelIds = obj.items.map(item => item.model?.id);
     return acc.concat(modelIds);
 }, []);
 

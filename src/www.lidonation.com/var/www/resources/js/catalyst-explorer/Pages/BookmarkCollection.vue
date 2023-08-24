@@ -242,8 +242,8 @@ function openIdeascaleLinks() {
   function openNextTab() {
     if (index < items.length) {
       const item = items[index];
-      if (isProposal(item.model) && item.model.ideascale_link && item.model.ideascale_link.trim() !== "") {
-        window.open(item.model.ideascale_link, "_blank");
+      if (isProposal(item.model) && item.model?.ideascale_link && item.model?.ideascale_link.trim() !== "") {
+        window.open(item.model?.ideascale_link, "_blank");
       }
       index++;
       setTimeout(openNextTab, 300);
