@@ -223,7 +223,7 @@ Route::group(
                 // Votes
                 Route::prefix('/votes')->as('votes.')->group(function () {
                     // Views
-                    Route::get('/', [CatalystMyVotesController::class, 'index'])->name('index');
+                    Route::get('proposal/{proposal:id}', [CatalystMyVotesController::class, 'index'])->name('index');
                     Route::get('/{vote}', [CatalystMyVotesController::class, 'view'])->name('view');
 
                     // CRUDs
