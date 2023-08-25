@@ -84,7 +84,15 @@ class CatalystVoterToolController extends Controller
         if (!$this->search && !$this->searchGroup) {
             return null;
         }
-        $_options = $this->getUserFilters($this->searchGroup);
+
+        $filters = $this->getUserFilters($this->searchGroup);
+        if(isset($filters['filters'])){
+            $_options = $filters;
+        }else{
+            $_options['filters'][]  = 'id IN' . json_encode($filters->values()->toArray());
+        }
+            
+            // dd($_options);
 
         $this->searchBuilder = Proposal::search(
             $this->search,
@@ -94,7 +102,6 @@ class CatalystVoterToolController extends Controller
                 }
 
                 $options['attributesToRetrieve'] =  [
-                    'id',
                     'amount_requested',
                     'amount_received',
                     'currency',
@@ -162,55 +169,16 @@ class CatalystVoterToolController extends Controller
     }
 
     #[ArrayShape(['filters' => 'array'])]
-    function getUserFilters($param ,$inHouse=false)
+    function getUserFilters($param ,$inHouse=null)
     {
 
         if (($param == 'oneTimers' || $param == 'firstTimers')) {
-            $user_options = [
-                'filters' => [],
-            ];
-
-            if ($param == 'firstTimers') {
-                $user_options['filters'] = "first_timer = true AND current_fund_proposals IS NOT NULL";
-            }
-
-            if ($param == 'oneTimers') {
-                $user_options['filters'][] = "proposals_count = 1 AND current_fund_proposals IS NOT NULL";
-            }
-
-            $this->searchBuilder = CatalystUser::search(
-                null,
-                function (Indexes $index, $query, $options) use ($user_options) {
-                    $options['filter'] = $user_options['filters'];
-                    $options['attributesToRetrieve'] = ['id', 'proposals_count'];
-
-                    return $index->search($query, $options);
-                }
-            );
-
-            // dd($this->searchBuilder->raw());
-            $this->searchBuilder = $this->searchBuilder->paginate(18);
-            // $this->searchBuilder = $this->searchBuilder->raw()->items()->paginate($this->perPage, ['*'], 'p')->setPath('/');
-
-            //  dd($this->searchBuilder);
-            // dd(collect($this->searchBuilder->items())->map(fn ($u) => $u->proposals)->collapse()->unique('id'));
-            $this->proposals = collect($this->searchBuilder->items())->map(fn ($u) => $u->proposals)->collapse()->unique('id');
-            // $this->searchArgs['count'] = $this->groupSearchPaginator->total();
-
-            return;
+            return $this->specialFilters($param, $inHouse);
         }
 
         $_options = [
             'filters' => ["fund.id = {$this->fund?->id}"],
         ];
-
-        if ($param == 'oneTimers') {
-            $user_options['filters'][] = "proposals.fund = {$this->fund?->id}";
-        }
-
-        if ($param == 'firstTimers') {
-            $user_options['filters'] = " proposals.fund = {$this->fund?->id}";
-        }
 
         if ( $param == 'below75k') {
             $_options['filters'][] = 'amount_requested <= 75000';
@@ -243,8 +211,66 @@ class CatalystVoterToolController extends Controller
         if ( $param == 'opensource') {
             $_options['filters'][] = 'opensource = 1';
         }
+
         return $_options;
     }
+
+
+    public function specialFilters($param, $inHouse)
+    {
+        $user_options = [
+            'filters' => [],
+        ];
+
+        if ($param == 'firstTimers') {
+            $user_options['filters'][] = "first_timer = true AND  proposals.fund.id = 97";
+        }
+
+        if ($param == 'oneTimers') {
+            $user_options['filters'][] = "proposals_count = 1 AND proposals.fund.id = 97";
+        }
+
+
+        if ($this->searchGroup == 'previousCompleted') {
+            $user_options['filters'][] = "proposals_completed > 0 ";
+        }
+
+        $this->searchBuilder = CatalystUser::search(
+            null,
+            function (Indexes $index, $query, $options) use ($user_options) {
+                $options['filter'] = $user_options['filters'];
+                $options['attributesToRetrieve'] = ['id', 'proposals'];
+
+                return $index->search($query, $options);
+            }
+        );
+
+        $this->searchBuilder = $this->searchBuilder->paginate($this->perPage)->setPath('/');
+        
+
+        $proposals = collect($this->searchBuilder->items())->map(fn ($u) => $u->proposals->map(fn ($p) => $p->id))->collapse()->unique();
+        if ($inHouse) {
+            return count($proposals);
+        }
+
+        return $proposals;
+
+
+        // $pagination = new LengthAwarePaginator(
+        //     $proposals,
+        //     count($proposals),
+        //     $this->limit,
+        //     $this->currentPage,
+        //     [
+        //         'pageName' => 'p'
+        //     ]
+        // );
+
+        // $this->proposals = $pagination->onEachSide(1)->toArray();
+
+        // return;
+    }
+
 
     public function getGroupFilters()
     {
@@ -326,7 +352,7 @@ class CatalystVoterToolController extends Controller
     public function getProposalCount($param)
     {
         if($param == 'oneTimers' || $param == 'firstTimers'){
-            $option_ = $this->getUserFilters($param);
+            return $this->getUserFilters($param,true);
         }else {
             $option_ = $this->getUserFilters($param);
         }

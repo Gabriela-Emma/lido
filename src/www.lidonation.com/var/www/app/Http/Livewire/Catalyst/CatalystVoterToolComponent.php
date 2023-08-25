@@ -106,6 +106,7 @@ class CatalystVoterToolComponent extends Component
                 $user_options['filters'][] = "proposals_count = 1 AND proposals.fund = {$this->fund?->id}";
             }
 
+
             $this->searchBuilder = CatalystUser::search(null,
                 function (Indexes $index, $query, $options) use ($user_options) {
                     $options['filter'] = $user_options['filters'];
@@ -113,7 +114,6 @@ class CatalystVoterToolComponent extends Component
 
                     return $index->search($query, $options);
                 });
-            dd($this->searchBuilder->raw());
             $this->searchArgs['filters'] = $user_options['filters'];
             $this->setQueryResults();
 
@@ -169,7 +169,6 @@ class CatalystVoterToolComponent extends Component
     {
         if ($this->searchGroup == 'oneTimers' || $this->searchGroup == 'firstTimers') {
             $this->groupSearchPaginator = $this->searchBuilder->paginate(18);
-            dd($this->groupSearchPaginator);
             $this->proposals = collect($this->groupSearchPaginator->items())->map(fn ($u) => $u->proposals)->collapse()->unique('id');
             $this->searchArgs['count'] = $this->groupSearchPaginator->total();
 

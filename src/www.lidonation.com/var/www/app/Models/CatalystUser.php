@@ -71,7 +71,7 @@ class CatalystUser extends User implements HasMedia, CanComment
             'bio',
             'email',
             'proposals',
-            'current_fund_proposals'
+        
             //            'proposals.content'
         ];
     }
@@ -96,7 +96,7 @@ class CatalystUser extends User implements HasMedia, CanComment
             'proposals.impact_proposal',
             'proposals.fund',
             'proposals.fund_status',
-            'current_fund_proposals'
+        
         ];
     }
 
@@ -106,7 +106,6 @@ class CatalystUser extends User implements HasMedia, CanComment
             'name',
             'proposals_count',
             'proposals_completed',
-            'current_fund_proposals'
         ];
     }
 
@@ -141,15 +140,6 @@ class CatalystUser extends User implements HasMedia, CanComment
         return $this->username;
     }
 
-    public function currentFundProposals(): Attribute
-    {
-        return Attribute::make(
-            get: function () {
-                $currentFund = app(FundRepository::class)->funds('inGovernance')->first();
-               return $this->proposals->filter(fn ($p) => $p->fund->parent->id == $currentFund->id)->count() ?? null;
-            }
-        );
-    }
 
     public function displayName(): Attribute
     {
@@ -276,7 +266,6 @@ class CatalystUser extends User implements HasMedia, CanComment
                     )
                 ) === 1
             ),
-            'current_fund_proposals' => $this->current_fund_proposals,
         ]);
     }
 

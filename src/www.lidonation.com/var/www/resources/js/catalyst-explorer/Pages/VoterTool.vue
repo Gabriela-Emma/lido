@@ -20,9 +20,8 @@
             </div>
         </section>
 
-        <TransitionChild appear :show="!!props.proposals?.data.length" enter="ease-out duration-700">
-            <section class="container" v-if="!!props.proposals?.data.length">
-                <Proposals :proposals="props.proposals?.data"></Proposals>
+            <section class="container" v-if="!!props.proposals?.data">
+                <Proposals :proposals="(props.proposals?.data)"></Proposals>
                 <div class="flex items-start justify-between w-full gap-16 my-16 xl:gap-24">
                     <div class="flex-1">
                         <Pagination :links="props.proposals?.links" :per-page="props.perPage"
@@ -32,7 +31,6 @@
                     </div>
                 </div>
             </section>
-        </TransitionChild>
 
         <section class="container mb-16">
             <h2 class="mt-6 text-4xl">
