@@ -80,12 +80,12 @@ myExit() {
 usage() {
   cat <<-EOF
 		Usage: $(basename "$0") [-o] [-a] [-b <branch name>] [-v]
-		CNTools - The Cardano SPOs best friend
+		Koios CNTools - The Cardano SPOs best friend
 		
 		-o    Activate offline mode - run CNTools in offline mode without node access, a limited set of functions available
 		-a    Enable advanced/developer features like metadata transactions, multi-asset management etc (not needed for SPO usage)
 		-u    Skip script update check overriding UPDATE_CHECK value in env
-		-b    Run CNTools and look for updates on alternate branch instead of master of guild repository (only for testing/development purposes)
+		-b    Run CNTools and look for updates on alternate branch instead of master (only for testing/development purposes)
 		-v    Print CNTools version
 		
 		EOF
@@ -143,7 +143,7 @@ if [[ ${CNTOOLS_MODE} = "CONNECTED" ]]; then
 
     # Check availability of checkUpdate function
     if [[ ! $(command -v checkUpdate) ]]; then
-      myExit 1 "\nCould not find checkUpdate function in env, make sure you're using official guild docos for installation!"
+      myExit 1 "\nCould not find checkUpdate function in env, make sure you're using official docos for installation!"
     fi
 
     # check for env update
@@ -185,7 +185,7 @@ if [[ ${CNTOOLS_MODE} = "CONNECTED" ]]; then
           echo -e "~ CNTools - What's New ~\n\n" "$(sed -n "/\[${CNTOOLS_MAJOR_VERSION}\.${CNTOOLS_MINOR_VERSION}\.${CNTOOLS_PATCH_VERSION}\]/,/\[$((CNTOOLS_MAJOR_VERSION-1))\.[0-9]\.[0-9]\]/p" "${TMP_DIR}"/cntools-changelog.md | head -n -2)" | less -X
         else
           # print release notes from current until previously installed version
-          [[ $(cat "${PARENT}/cntools-changelog.md") =~ \[([[:digit:]])\.([[:digit:]])\.([[:digit:]])\] ]]
+          [[ $(cat "${PARENT}/cntools-changelog.md") =~ \[([[:digit:]]+)\.([[:digit:]]+)\.([[:digit:]]+)\] ]]
           cat <(echo -e "~ CNTools - What's New ~\n") <(awk "1;/\[${BASH_REMATCH[1]}\.${BASH_REMATCH[2]}\.${BASH_REMATCH[3]}\]/{exit}" "${TMP_DIR}"/cntools-changelog.md | head -n -2 | tail -n +7) <(echo -e "\n [Press 'q' to quit and proceed to CNTools main menu]\n") | less -X
         fi
         cp "${TMP_DIR}"/cntools-changelog.md "${PARENT}/cntools-changelog.md"
@@ -282,12 +282,12 @@ function main {
     clear
     println DEBUG "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
     if [[ ${CNTOOLS_MODE} = "CONNECTED" ]]; then
-      println "$(printf " >> CNTools v%s - %s - ${FG_GREEN}%s${NC} << %$((84-23-${#CNTOOLS_VERSION}-${#NETWORK_NAME}-${#CNTOOLS_MODE}))s" "${CNTOOLS_VERSION}" "${NETWORK_NAME}" "${CNTOOLS_MODE}" "A Guild Operators collaboration")"
+      println "$(printf " >> Koios CNTools v%s - %s - ${FG_GREEN}%s${NC} <<" "${CNTOOLS_VERSION}" "${NETWORK_NAME}" "${CNTOOLS_MODE}")"
     else
-      println "$(printf " >> CNTools v%s - %s - ${FG_LBLUE}%s${NC} << %$((84-23-${#CNTOOLS_VERSION}-${#NETWORK_NAME}-${#CNTOOLS_MODE}))s" "${CNTOOLS_VERSION}" "${NETWORK_NAME}" "${CNTOOLS_MODE}" "A Guild Operators collaboration")"
+      println "$(printf " >> Koios CNTools v%s - %s - ${FG_LBLUE}%s${NC} <<" "${CNTOOLS_VERSION}" "${NETWORK_NAME}" "${CNTOOLS_MODE}")"
     fi
     println DEBUG "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-    println OFF " Main Menu    Telegram Announcement / Support channel: ${FG_YELLOW}t.me/guild_operators_official${NC}\n"\
+    println OFF " Main Menu    Telegram Announcement / Support channel: ${FG_YELLOW}t.me/CardanoKoios/9759${NC}\n"\
 			" ) Wallet      - create, show, remove and protect wallets"\
 			" ) Funds       - send, withdraw and delegate"\
 			" ) Pool        - pool creation and management"\
