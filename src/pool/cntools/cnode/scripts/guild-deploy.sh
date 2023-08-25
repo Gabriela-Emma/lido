@@ -176,7 +176,8 @@ updateWithCustomConfig() {
       return
     fi
   fi
-  [[ -f ${file} ]] && cp -f ${file} "${file}_bkp$(date +%s)"
+  [[ ! -d ./archive ]] && mkdir archive
+  [[ -f ${file} ]] && cp -f ${file} ./archive/"${file}_bkp$(date +%s)"
   mv -f ${file}.tmp ${file}
   [[ "${file}" == *.sh ]] && chmod 755 ${file}
 }
@@ -208,9 +209,16 @@ os_dependencies() {
       #AmazonLinux2
       pkg_list="${pkg_list} libusb ncurses-compat-libs pkgconfig srm"
     elif [[ "${VERSION_ID}" =~ "8" ]] || [[ "${VERSION_ID}" =~ "9" ]]; then
-      #RHEL/CentOS/RockyLinux8
+      #RHEL/CentOS/RockyLinux 8/9
       pkg_opts="${pkg_opts} --allowerasing"
-      pkg_list="${pkg_list} --enablerepo=devel,crb libusbx ncurses-compat-libs pkgconf-pkg-config"
+      if [[ "${DISTRO}" =~ Rocky ]]; then
+        #RockyLinux 8/9
+        pkg_list="${pkg_list} --enablerepo=devel,crb libusbx ncurses-compat-libs pkgconf-pkg-config"
+      elif [[ "${DISTRO}" =~ "Red Hat" ]] || [[ "${VERSION_ID}" =~ "8" ]]; then
+        pkg_list="${pkg_list} --enablerepo=codeready-builder-for-rhel-8-x86_64-rpms libusbx ncurses-compat-libs pkgconf-pkg-config"
+      elif [[ "${DISTRO}" =~ "Red Hat" ]] || [[ "${VERSION_ID}" =~ "9" ]]; then
+        pkg_list="${pkg_list} --enablerepo=codeready-builder-for-rhel-9-x86_64-rpms libusbx ncurses-compat-libs pkgconf-pkg-config"
+      fi
     elif [[ "${DISTRO}" =~ Fedora ]]; then
       #Fedora
       pkg_opts="${pkg_opts} --allowerasing"
@@ -248,7 +256,7 @@ build_dependencies() {
   echo -e "\nInstalling Haskell build/compiler dependencies (if missing)..."
   export BOOTSTRAP_HASKELL_NO_UPGRADE=1
   export BOOTSTRAP_HASKELL_GHC_VERSION=8.10.7
-  export BOOTSTRAP_HASKELL_CABAL_VERSION=3.6.2.0
+  export BOOTSTRAP_HASKELL_CABAL_VERSION=3.10.1.0
   if ! command -v ghcup &>/dev/null; then
     echo -e "\nInstalling ghcup (The Haskell Toolchain installer) .."
     BOOTSTRAP_HASKELL_NONINTERACTIVE=1
@@ -322,7 +330,7 @@ download_cnodebins() {
   pushd "${HOME}"/tmp >/dev/null || err_exit
   echo -e "\n  Downloading Cardano Node archive created from IO CI builds.."
   rm -f cardano-node cardano-address
-  curl -m 200 -sfL https://github.com/input-output-hk/cardano-node/releases/download/8.1.1/cardano-node-8.1.1-linux.tar.gz -o cnode.tar.gz || err_exit " Could not download cardano-node's latest release archive from IO CI builds at update-cardano-mainnet.iohk.io!"
+  curl -m 200 -sfL https://github.com/input-output-hk/cardano-node/releases/download/8.1.2/cardano-node-8.1.2-linux.tar.gz -o cnode.tar.gz || err_exit " Could not download cardano-node's latest release archive from IO CI builds at update-cardano-mainnet.iohk.io!"
   tar zxf cnode.tar.gz ./cardano-node ./cardano-cli ./cardano-submit-api ./bech32 &>/dev/null
   rm -f cnode.tar.gz
   [[ -f cardano-node ]] || err_exit " cardano-node archive downloaded but binary (cardano-node) not found after extracting package!"
@@ -492,7 +500,7 @@ setup_folder() {
     echo -e "\nexport ${CNODE_VNAME}_HOME=${CNODE_HOME}" >> "${HOME}"/.bashrc
   fi
   
-  $sudo mkdir -p "${CNODE_HOME}"/files "${CNODE_HOME}"/db "${CNODE_HOME}"/guild-db "${CNODE_HOME}"/logs "${CNODE_HOME}"/scripts "${CNODE_HOME}"/sockets "${CNODE_HOME}"/priv
+  $sudo mkdir -p "${CNODE_HOME}"/files "${CNODE_HOME}"/db "${CNODE_HOME}"/guild-db "${CNODE_HOME}"/logs "${CNODE_HOME}"/scripts "${CNODE_HOME}"/scripts/archive "${CNODE_HOME}"/sockets "${CNODE_HOME}"/priv
   $sudo chown -R "$U_ID":"$G_ID" "${CNODE_HOME}" 2>/dev/null
 }
 
