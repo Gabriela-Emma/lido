@@ -1118,7 +1118,7 @@ postgres-cdbsync-test:
   environment:
     name: preview
 
-deploy-kupo:
+deploy-kupo-preview:
   <<: *deploy_kupo
   stage: preview
   needs: []
@@ -1221,6 +1221,24 @@ postgres-cdbsync-prod:
     - postgres-cdbsync-test
   environment:
     name: mainnet
+
+deploy-kupo-mainnet:
+  <<: *deploy_kupo
+  stage: mainnet
+  needs:
+    - deploy-kupo-preview
+  environment:
+    name: mainnet
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main" && (
+            ($DEPLOY_CARDANO_KUPO == "True" || $DEPLOY_CARDANO_KUPO == "true")
+          )'
+      when: manual
+    - if: '$CI_COMMIT_BRANCH != "main" && (
+            ($DEPLOY_CARDANO_KUPO == "True" || $DEPLOY_CARDANO_KUPO == "true")
+          )'
+      when: manual
+
 
 postgres-web-prod:
   <<: *deploy_postgres_web

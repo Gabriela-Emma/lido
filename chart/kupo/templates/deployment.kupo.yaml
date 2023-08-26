@@ -44,7 +44,7 @@ spec:
               mkdir -p /config &&
               cat /tmp/config/config.kupo.json > /config/config.json
           volumeMounts:
-           - name: node-ipc
+            - name: node-ipc
               mountPath: /ipc
               readOnly: false
             - name: "{{ $.Chart.Name }}-cardano-kupo-pv"
