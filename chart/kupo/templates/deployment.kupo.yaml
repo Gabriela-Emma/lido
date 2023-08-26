@@ -1,0 +1,114 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{ $.Chart.Name }}-kupo"
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: "{{ $.Chart.Name }}"
+    service: "{{ $.Chart.Name }}-kupo"
+spec:
+  selector:
+    matchLabels:
+      app: "{{ $.Chart.Name }}"
+      service: "{{ $.Chart.Name }}-kupo"
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: "{{ $.Chart.Name }}"
+        service: "{{ $.Chart.Name }}-kupo"
+    spec:
+      imagePullSecrets:
+        - name: {{ .Values.image.pullSecret }}
+      volumes:
+        - name: node-ipc
+          emptyDir: {}
+        - name: node-configurations
+          configMap:
+            name: "lidolovelace-cardano-configurations-configmap"
+        - name: "{{ $.Chart.Name }}-cardano-kupo-pv"
+          persistentVolumeClaim:
+            claimName: "{{ .Values.namespace }}-data-kupo-pvc"
+      initContainers:
+        - name: setup
+          image: busybox
+          command: ["/bin/sh"]
+          args:
+            - -c
+            - >-
+              mkdir -p /config &&
+              cat /tmp/config/config.kupo.json > /config/config.json
+          volumeMounts:
+           - name: node-ipc
+              mountPath: /ipc
+              readOnly: false
+            - name: "{{ $.Chart.Name }}-cardano-kupo-pv"
+              mountPath: /config
+              readOnly: false
+            - name: "{{ $.Chart.Name }}-cardano-kupo-pv"
+              mountPath: /db
+              readOnly: false
+      containers:
+      - name: app
+        image: "{{ .Values.services.kupo.image.repository }}:{{ .Values.services.kupo.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        args: [
+            "--host", "0.0.0.0",
+            "--node-socket", "/ipc/node.socket",
+            "--node-config", "/config/config.json",
+            "--workdir /db"
+        ]
+        resources:
+          limits:
+            memory: 8192Mi
+            cpu: 4
+          requests:
+            cpu: 800m
+            memory: 512Mi
+        envFrom:
+          - configMapRef:
+              name: "lidolovelace-cardano-configmap"
+        env:
+          - name: LOGGER_MIN_SEVERITY
+            value: info
+          - name: CARDANO_NODE_CONFIG_PATH
+            value: "/config/config.json"
+        ports:
+          - name: kupo
+            containerPort: 1442
+            protocol: TCP
+        volumeMounts:
+          - name: "{{ $.Chart.Name }}-cardano-kupo-pv"
+            mountPath: /config
+            subPath: config
+            readOnly: false
+          - name: "{{ $.Chart.Name }}-cardano-kupo-pv"
+            mountPath: /db
+            subPath: db
+            readOnly: false
+          - name: node-ipc
+            mountPath: /ipc
+            readOnly: false
+      - name: ipc
+        image: alpine/socat:1.7.4.4
+        env:
+        - name: CARDANO_NODE_SOCKET_TCP_HOST
+          value: "lidolovelace-cardano-relay-1-service"
+        - name: CARDANO_NODE_SOCKET_TCP_PORT
+          value: "30111"
+        - name: SOCAT_TIMEOUT
+          value: "3600"
+        command: [
+            "sh",
+            "-c",
+            "socat UNIX-LISTEN:/ipc/node.socket,fork TCP:${CARDANO_NODE_SOCKET_TCP_HOST}:${CARDANO_NODE_SOCKET_TCP_PORT},ignoreeof"
+        ]
+        volumeMounts:
+        - mountPath: /ipc
+          name: node-ipc
+          readOnly: false

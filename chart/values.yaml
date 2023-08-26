@@ -48,6 +48,13 @@ services:
   kibana:
     name: kibana
     version: 7.9.3
+  kupo:
+    image:
+      repository: registry.lidonation.com/lidonation/lidonation/kupo
+      tag: latest
+    persistence:
+      size: 200Gi
+      storageClass: longhorn
   redis:
     secret:
       REDIS_PASSWORD:

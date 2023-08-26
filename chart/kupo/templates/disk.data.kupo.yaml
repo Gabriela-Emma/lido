@@ -1,0 +1,12 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: "{{ .Values.namespace }}-data-kupo-pvc"
+  namespace: {{ .Values.namespace }}
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: {{ .Values.services.kupo.persistence.storageClass }}
+  resources:
+    requests:
+      storage: {{ .Values.services.kupo.persistence.size }}
