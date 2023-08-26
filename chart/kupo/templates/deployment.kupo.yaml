@@ -41,7 +41,7 @@ spec:
           args:
             - -c
             - >-
-              mkdir -p /config && ls /tmp &&
+              mkdir -p /config && ls /tmp/config/ &&
               cat /tmp/config/config.json > /config/config.json
           volumeMounts:
             - name: node-ipc
@@ -52,6 +52,7 @@ spec:
               readOnly: false
             - name: node-configurations
               mountPath: /tmp/config
+              subPath: config
               readOnly: true
       containers:
       - name: app
