@@ -169,8 +169,7 @@ class CatalystVoterToolController extends Controller
     #[ArrayShape(['filters' => 'array'])]
     function getUserFilters($param, $inHouse = null)
     {
-
-        if (($param == 'oneTimers' || $param == 'firstTimers' || $param == 'completerProposals')) {
+        if (($param == 'oneTimers' || $param == 'firstTimers' || $param == 'completedProposals')) {
             return $this->specialFilters($param, $inHouse);
         }
 
@@ -232,8 +231,7 @@ class CatalystVoterToolController extends Controller
             $user_options['filters'][] = "proposals_count = 1 AND proposals.fund.id = {$this->fund?->id}";
         }
 
-
-        if ($param == 'completerProposals') {
+        if ($param == 'completedProposals') {
             $user_options['filters'][] = "proposals_completed > 0 AND proposals.fund.id = {$this->fund?->id}";
         }
 
@@ -279,21 +277,9 @@ class CatalystVoterToolController extends Controller
                 "count" => $this->getProposalCount('quickPitchProposals')
             ],
             [
-                "title" => "Ideafest Proposals",
-                "description" => "Projects presented at Ideafest!",
-                "param" => "ideafestProposals",
-                "count" => $this->getProposalCount('ideafestProposals')
-            ],
-            [
-                "title" =>  "Women Proposals",
-                "description" =>  "Proposals By Women.",
-                "param" =>  "womanProposals",
-                "count" => $this->getProposalCount('womanProposals')
-            ],
-            [
-                "title" =>  "Completer Proposals",
-                "description" =>  "From proposers with completed Proposals",
-                "param" =>  "completerProposals",
+                "title" =>  "Completed Proposals",
+                "description" =>  "From teams with completed Proposals",
+                "param" =>  "completedProposals",
                 "count" => $this->getProposalCount('over250K')
             ],
             [
@@ -301,6 +287,18 @@ class CatalystVoterToolController extends Controller
                 "description" =>  "Opensource projects",
                 "param" =>  "opensource",
                 "count" => $this->getProposalCount('opensource')
+            ],
+            [
+                "title" => "Ideafest Proposals",
+                "description" => "Projects presented at Ideafest!",
+                "param" => "ideafestProposals",
+                "count" => $this->getProposalCount('ideafestProposals')
+            ],
+            [
+                "title" =>  "Impact Proposals",
+                "description" =>  "Proposals with Impact",
+                "param" =>  "impactProposals",
+                "count" => $this->getProposalCount('impactProposals')
             ],
             [
                 "title" =>  "First Timers",
@@ -332,8 +330,12 @@ class CatalystVoterToolController extends Controller
                 "param" =>  "over250K",
                 "count" => $this->getProposalCount('over250K')
             ],
-
-
+            [
+                "title" =>  "Women Proposals",
+                "description" =>  "Proposals By Women.",
+                "param" =>  "womanProposals",
+                "count" => $this->getProposalCount('womanProposals')
+            ]
         ]);
         $offset = (($this->currentFilterGroup ?? 1) - 1) * $this->filterGroupLimit;
         $slicedFilters = $filters->slice($offset);
