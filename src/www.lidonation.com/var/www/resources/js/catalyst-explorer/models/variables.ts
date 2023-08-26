@@ -25,4 +25,7 @@ export enum VARIABLES {
     SEARCH = 's',
     SORTS = 'st',
     TAGS = 'ts',
+    FILTER_GROUP = 'fg',
+    CURRENT_FILTER_GROUPS = 'fgs',
+    FILTER_GROUPS_PER_PAGE = 'pfgs'
 }

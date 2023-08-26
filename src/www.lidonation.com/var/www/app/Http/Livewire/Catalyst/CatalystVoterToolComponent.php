@@ -106,10 +106,11 @@ class CatalystVoterToolComponent extends Component
                 $user_options['filters'][] = "proposals_count = 1 AND proposals.fund = {$this->fund?->id}";
             }
 
+
             $this->searchBuilder = CatalystUser::search(null,
                 function (Indexes $index, $query, $options) use ($user_options) {
                     $options['filter'] = $user_options['filters'];
-                    $options['attributesToRetrieve'] = ['id', 'proposals.id'];
+                    $options['attributesToRetrieve'] = ['id', 'proposals'];
 
                     return $index->search($query, $options);
                 });
@@ -120,7 +121,7 @@ class CatalystVoterToolComponent extends Component
         }
 
         $_options = [
-            'filters' => ["fund = {$this->fund?->id}"],
+            'filters' => ["fund.id = {$this->fund?->id}"],
         ];
 
         if ($this->searchGroup == 'allStars') {

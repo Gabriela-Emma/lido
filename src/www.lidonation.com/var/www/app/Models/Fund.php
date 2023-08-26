@@ -46,6 +46,8 @@ class Fund extends Model implements HasMedia, IHasMetaData
 
     protected $with = ['media', 'parent'];
 
+    protected $appends = ['link','hero_url', 'thumbnail_url'];
+
     //    protected string $urlGroup = 'project-catalyst/challenges';
     
     protected $casts = [
