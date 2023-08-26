@@ -400,12 +400,9 @@
       --set-file configurationFiles.mainnetShelleyGenesis=./src/pool/config/build/mainnet-shelley-genesis.json \
       --set-file configurationFiles.mainnetAlonzoGenesis=./src/pool/config/build/mainnet-alonzo-genesis.json \
       --set-file configurationFiles.mainnetAlonzoGenesis=./src/pool/config/build/mainnet-conway-genesis.json \
-      --set image.tag="$CI_APPLICATION_TAG" \
-      --set image.pullSecret="$secret_name" \
       --set namespace=${KUBE_NAMESPACE} \
       --namespace="$KUBE_NAMESPACE" \
-      --create-namespace \
-      --version="$APP_VERSION"
+      --create-namespace
   }
 
 
@@ -1013,13 +1010,13 @@ cnode:
       docker push "$CI_APPLICATION_REPOSITORY/cardano:latest"
   rules:
     - if: '$CI_COMMIT_BRANCH == "main" &&
-              ($DEPLOY_CARDANO_SERVICES == "True" || $DEPLOY_CARDANO_SERVICES == "true")
-              || ($DEPLOY_CARDANO_RELAYS == "True" || $DEPLOY_CARDANO_RELAYS == "true")
-              || ($DEPLOY_CARDANO_PRODUCER == "True" || $DEPLOY_CARDANO_PRODUCER == "true")'
+              ($DEPLOY_CARDANO_SERVICES == "True")
+              || ($DEPLOY_CARDANO_RELAYS == "True")
+              || ($DEPLOY_CARDANO_PRODUCER == "True")'
     - if: '$CI_COMMIT_BRANCH != "main" &&
-              ($DEPLOY_CARDANO_SERVICES == "True" || $DEPLOY_CARDANO_SERVICES == "true")         
-            || ($DEPLOY_CARDANO_RELAYS == "True" || $DEPLOY_CARDANO_RELAYS == "true")
-            || ($DEPLOY_CARDANO_PRODUCER == "True" || $DEPLOY_CARDANO_PRODUCER == "true")'
+              ($DEPLOY_CARDANO_SERVICES == "True")         
+            || ($DEPLOY_CARDANO_RELAYS == "True")
+            || ($DEPLOY_CARDANO_PRODUCER == "True")'
 
 cncli:
   stage: build
@@ -1040,10 +1037,8 @@ cncli:
       docker push "$CI_APPLICATION_REPOSITORY/cncli:$CI_APPLICATION_TAG"
       docker push "$CI_APPLICATION_REPOSITORY/cncli:latest"
   rules:
-    - if: '$CI_COMMIT_BRANCH == "main" &&
-              ($DEPLOY_CARDANO_CNCLI == "True" || $DEPLOY_CARDANO_CNCLI == "true")'
-    - if: '$CI_COMMIT_BRANCH != "main" &&
-              ($DEPLOY_CARDANO_CNCLI == "True" || $DEPLOY_CARDANO_CNCLI == "true")'
+    - if: '$CI_COMMIT_BRANCH == "main" && $DEPLOY_CARDANO_CNCLI == "True"'
+    - if: '$CI_COMMIT_BRANCH != "main" && $DEPLOY_CARDANO_CNCLI == "True"'
 
 cdbsync:
   stage: build
@@ -1076,9 +1071,9 @@ cdbsync:
       docker push "$CI_APPLICATION_REPOSITORY/cardano-db-sync:latest-main"
   rules:
     - if: '$CI_COMMIT_BRANCH == "main" &&
-              ($DEPLOY_CARDANO_DBSYNC == "True" || $DEPLOY_CARDANO_DBSYNC == "true")'
+              ($DEPLOY_CARDANO_DBSYNC == "True")'
     - if: '$CI_COMMIT_BRANCH != "main" &&
-              ($DEPLOY_CARDANO_DBSYNC == "True" || $DEPLOY_CARDANO_DBSYNC == "true")'
+              ($DEPLOY_CARDANO_DBSYNC == "True")'
 
 
 ############ Test Jobs ###########
@@ -1221,7 +1216,6 @@ deploy-kupo-mainnet:
     name: mainnet
   rules:
     - if: '$CI_COMMIT_BRANCH == "main" && $DEPLOY_CARDANO_KUPO == "True"'
-      when: manual
     - if: '$CI_COMMIT_BRANCH != "main" && $DEPLOY_CARDANO_KUPO == "True"'
       when: manual
 

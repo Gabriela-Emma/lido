@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: "{{ $.Chart.Name }}-kupo"
+  name: "{{ $.Chart.Name }}-cardano-kupo"
   namespace: {{ .Values.namespace }}
   labels:
     app: "{{ $.Chart.Name }}"
-    service: "{{ $.Chart.Name }}-kupo"
+    service: "{{ $.Chart.Name }}-cardano-kupo"
 spec:
   selector:
     matchLabels:
       app: "{{ $.Chart.Name }}"
-      service: "{{ $.Chart.Name }}-kupo"
+      service: "{{ $.Chart.Name }}-cardano-kupo"
   replicas: 1
   strategy:
     type: RollingUpdate
@@ -21,7 +21,7 @@ spec:
     metadata:
       labels:
         app: "{{ $.Chart.Name }}"
-        service: "{{ $.Chart.Name }}-kupo"
+        service: "{{ $.Chart.Name }}-cardano-kupo"
     spec:
       imagePullSecrets:
         - name: {{ .Values.image.pullSecret }}

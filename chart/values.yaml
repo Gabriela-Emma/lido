@@ -50,8 +50,8 @@ services:
     version: 7.9.3
   kupo:
     image:
-      repository: registry.lidonation.com/lidonation/lidonation/kupo
-      tag: latest
+      repository: cardanosolutions/kupo
+      tag: v2.6.0
     persistence:
       size: 200Gi
       storageClass: longhorn
