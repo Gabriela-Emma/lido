@@ -1125,13 +1125,9 @@ deploy-kupo-preview:
   environment:
     name: preview
   rules:
-    - if: '$CI_COMMIT_BRANCH == "main" && (
-            ($DEPLOY_CARDANO_KUPO == "True" || $DEPLOY_CARDANO_KUPO == "true")
-          )'
+    - if: '$CI_COMMIT_BRANCH == "main" && $DEPLOY_CARDANO_KUPO == "True"'
       when: manual
-    - if: '$CI_COMMIT_BRANCH != "main" && (
-            ($DEPLOY_CARDANO_KUPO == "True" || $DEPLOY_CARDANO_KUPO == "true")
-          )'
+    - if: '$CI_COMMIT_BRANCH != "main" && $DEPLOY_CARDANO_KUPO == "True"'
       when: manual
 
 postgres-web-test:
