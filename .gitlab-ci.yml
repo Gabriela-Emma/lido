@@ -944,10 +944,8 @@ web:
       docker push "$CI_APPLICATION_REPOSITORY/www.lidonation.com:latest"
       echo ""
   rules:
-    - if: '$CI_COMMIT_BRANCH == "main" &&
-              ($DEPLOY_WEBSITE == "True" || $DEPLOY_WEBSITE == "true")'
-    - if: '$CI_COMMIT_BRANCH != "main" &&
-              ($DEPLOY_WEBSITE == "True" || $DEPLOY_WEBSITE == "true")'
+    - if: '$CI_COMMIT_BRANCH == "main" && $DEPLOY_WEBSITE == "True"'
+    - if: '$CI_COMMIT_BRANCH != "main" && $DEPLOY_WEBSITE == "True"'
       when: manual
 
 lucid:
@@ -971,10 +969,8 @@ lucid:
       docker push "$CI_APPLICATION_REPOSITORY/lucid.lidonation.com:latest"
       echo ""
   rules:
-    - if: '$CI_COMMIT_BRANCH == "main" &&
-              ($DEPLOY_LUCID == "True" || $DEPLOY_LUCID == "true")'
-    - if: '$CI_COMMIT_BRANCH != "main" &&
-              ($DEPLOY_LUCID == "True" || $DEPLOY_LUCID == "true")'
+    - if: '$CI_COMMIT_BRANCH == "main" && $DEPLOY_LUCID == "True"'
+    - if: '$CI_COMMIT_BRANCH != "main" && $DEPLOY_LUCID == "True"'
 
 cnode_submit_api:
   stage: build
@@ -1126,7 +1122,6 @@ deploy-kupo-preview:
     name: preview
   rules:
     - if: '$CI_COMMIT_BRANCH == "main" && $DEPLOY_CARDANO_KUPO == "True"'
-      when: manual
     - if: '$CI_COMMIT_BRANCH != "main" && $DEPLOY_CARDANO_KUPO == "True"'
       when: manual
 
