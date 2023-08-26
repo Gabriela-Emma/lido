@@ -41,8 +41,8 @@ spec:
           args:
             - -c
             - >-
-              mkdir -p /config &&
-              cat /tmp/config/config.kupo.json > /config/config.json
+              mkdir -p /config && ls /tmp &&
+              cat /tmp/config/config.json > /config/config.json
           volumeMounts:
             - name: node-ipc
               mountPath: /ipc
