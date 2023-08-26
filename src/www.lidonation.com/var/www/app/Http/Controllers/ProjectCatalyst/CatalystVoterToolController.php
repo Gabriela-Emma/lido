@@ -12,13 +12,13 @@ use Meilisearch\Endpoints\Indexes;
 use App\Http\Controllers\Controller;
 use App\Repositories\FundRepository;
 use App\Enums\CatalystExplorerQueryParams;
+use App\Models\Fund;
 use Illuminate\Pagination\LengthAwarePaginator;
 use phpDocumentor\Reflection\PseudoTypes\ArrayShape;
-use PhpOffice\PhpSpreadsheet\Calculation\LookupRef\Offset;
 
 class CatalystVoterToolController extends Controller
 {
-    public $fund;
+    public Fund $fund;
 
     public $challenges;
 
@@ -41,6 +41,7 @@ class CatalystVoterToolController extends Controller
     public $proposals;
 
     public $challengeFilter;
+
     /**
      * Display a listing of the resource.
      *
@@ -49,8 +50,10 @@ class CatalystVoterToolController extends Controller
 
     public function __construct()
     {
-        $this->fund = app(FundRepository::class)->funds('inGovernance')->first();
-        $this->challenges = app(FundRepository::class)->fundChallenges($this->fund);
+        $this->fund = app(FundRepository::class)
+        ->funds('inGovernance')->first();
+        $this->challenges = app(FundRepository::class)
+        ->fundChallenges($this->fund);
     }
 
 
@@ -61,7 +64,7 @@ class CatalystVoterToolController extends Controller
         $this->currentPage = $request->input('p', 1);
         $this->searchGroup = $request->input('fg', null);
         $this->currentFilterGroup = $request->input('fgs', 1);
-        $this->filterGroupLimit = $request->input('pfgs', 6);
+        $this->filterGroupLimit = $request->input('pfgs', 4);
         $this->challengeFilter = $request->input(CatalystExplorerQueryParams::CHALLENGES, null);
         $this->query();
 
@@ -94,8 +97,6 @@ class CatalystVoterToolController extends Controller
         } else {
             $_options['filters'][]  = 'id IN' . json_encode($filters->values()->toArray());
         }
-
-        // dd($_options);
 
         $this->searchBuilder = Proposal::search(
             $this->search,
@@ -142,7 +143,6 @@ class CatalystVoterToolController extends Controller
                     'challenge.label',
                     'challenge.amount',
                 ];
-
 
                 $options['offset'] = (($this->currentPage ?? 1) - 1) * $this->limit;
                 $options['limit'] = $this->limit;

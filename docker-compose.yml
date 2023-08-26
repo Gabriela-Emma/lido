@@ -27,7 +27,7 @@ services:
   ## Databases
   lidolovelace-search-service:
     container_name: meili
-    image: getmeili/meilisearch:v1.3.1
+    image: getmeili/meilisearch:v1.3.2
     ports:
       - "7700:7700"
     environment:
