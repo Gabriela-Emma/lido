@@ -2,28 +2,29 @@
 
 namespace App\Models;
 
-use App\Models\Traits\HasGravatar;
-use App\Models\Traits\HasHero;
-use App\Models\Traits\HasLocaleUrl;
-use App\Models\Traits\HasMetaData;
-use App\Traits\SearchableLocale;
 use DateTime;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasManyThrough;
-use Illuminate\Support\Facades\Artisan;
 use JetBrains\PhpStorm\Pure;
-use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
+use App\Models\Traits\HasHero;
+use App\Traits\SearchableLocale;
+use Spatie\MediaLibrary\HasMedia;
+use App\Models\Traits\HasGravatar;
+use App\Models\Traits\HasMetaData;
+use App\Models\Traits\HasLocaleUrl;
+use App\Repositories\FundRepository;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Database\Eloquent\Builder;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Staudenmeir\EloquentHasManyDeep\HasRelationships;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Spatie\Comments\Models\Concerns\InteractsWithComments;
 use Spatie\Comments\Models\Concerns\Interfaces\CanComment;
-use Spatie\MediaLibrary\HasMedia;
-use Spatie\MediaLibrary\InteractsWithMedia;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
-use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 use Staudenmeir\EloquentJsonRelations\HasJsonRelationships;
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 /**
  * to index run php artisan ln:index 'App\Models\CatalystUser' ln__catalyst_users
@@ -70,6 +71,7 @@ class CatalystUser extends User implements HasMedia, CanComment
             'bio',
             'email',
             'proposals',
+
             //            'proposals.content'
         ];
     }
@@ -94,6 +96,7 @@ class CatalystUser extends User implements HasMedia, CanComment
             'proposals.impact_proposal',
             'proposals.fund',
             'proposals.fund_status',
+
         ];
     }
 
@@ -137,6 +140,7 @@ class CatalystUser extends User implements HasMedia, CanComment
         return $this->username;
     }
 
+
     public function displayName(): Attribute
     {
         return Attribute::make(get: fn () => $this->name ?? $this->claimed_by_user?->name);
@@ -157,8 +161,8 @@ class CatalystUser extends User implements HasMedia, CanComment
         $query->when(
             $filters['search'] ?? false,
             fn (Builder $query, $search) => $query
-                ->where('username', 'ILIKE', '%'.$search.'%')
-                ->orWhere('name', 'ILIKE', '%'.$search.'%')
+                ->where('username', 'ILIKE', '%' . $search . '%')
+                ->orWhere('name', 'ILIKE', '%' . $search . '%')
         );
 
         $query->when(
@@ -167,7 +171,8 @@ class CatalystUser extends User implements HasMedia, CanComment
         );
 
         $query->when(
-            $filters['ideascale_username'] ?? false, fn (Builder $query, $username) => $query->where('username', $username)
+            $filters['ideascale_username'] ?? false,
+            fn (Builder $query, $username) => $query->where('username', $username)
         );
     }
 
@@ -255,12 +260,7 @@ class CatalystUser extends User implements HasMedia, CanComment
         return array_merge($array, [
             'proposals' => $proposals,
             'proposals_completed' => $proposals->filter(fn ($p) => $p['status'] === 'complete')?->count() ?? 0,
-            'first_timer' => (
-                count(
-                    array_unique(
-                        $proposals?->pluck('fund_id')->toArray()
-                    )
-                ) === 1
+            'first_timer' => ($proposals?->map(fn ($p) => $p->fund->parent_id)->unique()->count() === 1
             ),
         ]);
     }
@@ -268,7 +268,7 @@ class CatalystUser extends User implements HasMedia, CanComment
     #[Pure]
     public function getGravatarEmailField(): string
     {
-        if (! empty($this->email)) {
+        if (!empty($this->email)) {
             return 'email';
         }
 
@@ -281,7 +281,7 @@ class CatalystUser extends User implements HasMedia, CanComment
             ->width(768)
             ->height(512)
             ->withResponsiveImages()
-//            ->crop(Manipulations::CROP_TOP, 768, 512)
+            //            ->crop(Manipulations::CROP_TOP, 768, 512)
             ->performOnCollections('hero');
     }
 }

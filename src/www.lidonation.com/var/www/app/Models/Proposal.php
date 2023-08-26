@@ -118,6 +118,7 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
     public static function getFilterableAttributes(): array
     {
         return [
+            'id',
             'funded',
             'completed',
             'currency',
@@ -149,6 +150,7 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
     public static function getSearchableAttributes(): array
     {
         return [
+            'id',
             'title',
             'website',
             'excerpt',
