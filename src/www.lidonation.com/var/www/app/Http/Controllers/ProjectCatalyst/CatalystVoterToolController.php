@@ -39,6 +39,8 @@ class CatalystVoterToolController extends Controller
     public $perPage;
 
     public $proposals;
+
+    public $challengeFilter;
     /**
      * Display a listing of the resource.
      *
@@ -60,14 +62,15 @@ class CatalystVoterToolController extends Controller
         $this->searchGroup = $request->input('fg', null);
         $this->currentFilterGroup = $request->input('fgs', 1);
         $this->filterGroupLimit = $request->input('pfgs', 6);
+        $this->challengeFilter = $request->input(CatalystExplorerQueryParams::CHALLENGES, null);
         $this->query();
-        // dd($this->proposals);
 
         return Inertia::render('VoterTool', [
             'search' => $this->search,
             'currentPage' =>  $this->currentPage,
             'perPage' => $this->limit,
             'challenges' => $this->challenges,
+            'challengeFilter' => $this->challengeFilter,
             'proposals' => $this->proposals,
             'fund' => $this->fund,
             'crumbs' => [
@@ -81,18 +84,18 @@ class CatalystVoterToolController extends Controller
 
     protected function query()
     {
-        if (!$this->search && !$this->searchGroup) {
+        if (!$this->search && !$this->searchGroup && !$this->challengeFilter) {
             return null;
         }
 
         $filters = $this->getUserFilters($this->searchGroup);
-        if(isset($filters['filters'])){
+        if (isset($filters['filters'])) {
             $_options = $filters;
-        }else{
+        } else {
             $_options['filters'][]  = 'id IN' . json_encode($filters->values()->toArray());
         }
-            
-            // dd($_options);
+
+        // dd($_options);
 
         $this->searchBuilder = Proposal::search(
             $this->search,
@@ -102,6 +105,7 @@ class CatalystVoterToolController extends Controller
                 }
 
                 $options['attributesToRetrieve'] =  [
+                    'id',
                     'amount_requested',
                     'amount_received',
                     'currency',
@@ -144,13 +148,8 @@ class CatalystVoterToolController extends Controller
                 $options['limit'] = $this->limit;
 
                 return $index->search($query, $options);
-
             }
         );
-
-        if($this->searchGroup == 'oneTimers' || $this->searchGroup == 'firstTimers'){
-            return;
-        }
 
         $response = new Fluent($this->searchBuilder->raw());
 
@@ -165,14 +164,13 @@ class CatalystVoterToolController extends Controller
         );
 
         $this->proposals = $pagination->onEachSide(1)->toArray();
-
     }
 
     #[ArrayShape(['filters' => 'array'])]
-    function getUserFilters($param ,$inHouse=null)
+    function getUserFilters($param, $inHouse = null)
     {
 
-        if (($param == 'oneTimers' || $param == 'firstTimers')) {
+        if (($param == 'oneTimers' || $param == 'firstTimers' || $param == 'completerProposals')) {
             return $this->specialFilters($param, $inHouse);
         }
 
@@ -180,7 +178,7 @@ class CatalystVoterToolController extends Controller
             'filters' => ["fund.id = {$this->fund?->id}"],
         ];
 
-        if ( $param == 'below75k') {
+        if ($param == 'below75k') {
             $_options['filters'][] = 'amount_requested <= 75000';
         }
 
@@ -208,8 +206,12 @@ class CatalystVoterToolController extends Controller
             $_options['filters'][] = 'woman_proposal = 1';
         }
 
-        if ( $param == 'opensource') {
+        if ($param == 'opensource') {
             $_options['filters'][] = 'opensource = 1';
+        }
+
+        if ($this->challengeFilter) {
+            $_options['filters'][] = "challenge.id = {$this->challengeFilter}";
         }
 
         return $_options;
@@ -231,44 +233,37 @@ class CatalystVoterToolController extends Controller
         }
 
 
-        if ($this->searchGroup == 'previousCompleted') {
-            $user_options['filters'][] = "proposals_completed > 0 ";
+        if ($param == 'completerProposals') {
+            $user_options['filters'][] = "proposals_completed > 0 AND proposals.fund.id = 97";
         }
 
-        $this->searchBuilder = CatalystUser::search(
-            null,
-            function (Indexes $index, $query, $options) use ($user_options) {
-                $options['filter'] = $user_options['filters'];
-                $options['attributesToRetrieve'] = ['id', 'proposals'];
+        $results = [];
+        $offset = 0;
+        $batchSize = 100;
 
-                return $index->search($query, $options);
-            }
-        );
+        do {
+            $currentBatch = CatalystUser::search(
+                null,
+                function (Indexes $index, $query, $options) use ($user_options, $offset, $batchSize) {
+                    $options['filter'] = $user_options['filters'];
+                    $options['attributesToRetrieve'] = ['id', 'proposals'];
+                    $options['limit'] = $batchSize;
+                    $options['offset'] = $offset;
 
-        $this->searchBuilder = $this->searchBuilder->paginate($this->perPage)->setPath('/');
-        
+                    return $index->search($query, $options);
+                }
+            )->raw()['hits'];
 
-        $proposals = collect($this->searchBuilder->items())->map(fn ($u) => $u->proposals->map(fn ($p) => $p->id))->collapse()->unique();
+            $results = array_merge($results, $currentBatch);
+            $offset += $batchSize;
+        } while (count($currentBatch) == $batchSize);
+
+        $proposals = collect($results)->map(fn($u) => $u['proposals'][0]['id'])->unique();
         if ($inHouse) {
             return count($proposals);
         }
 
         return $proposals;
-
-
-        // $pagination = new LengthAwarePaginator(
-        //     $proposals,
-        //     count($proposals),
-        //     $this->limit,
-        //     $this->currentPage,
-        //     [
-        //         'pageName' => 'p'
-        //     ]
-        // );
-
-        // $this->proposals = $pagination->onEachSide(1)->toArray();
-
-        // return;
     }
 
 
@@ -296,16 +291,22 @@ class CatalystVoterToolController extends Controller
                 "count" => $this->getProposalCount('womanProposals')
             ],
             [
-                "title" =>  "First Timers",
-                "description" =>  "Proposals from first time members!",
-                "param" =>  "firstTimers",
-                "count" => $this->getProposalCount('firstTimers')
+                "title" =>  "Completer Proposals",
+                "description" =>  "From proposers with completed Proposals",
+                "param" =>  "completerProposals",
+                "count" => $this->getProposalCount('over250K')
             ],
             [
                 "title" =>  "Opensource",
                 "description" =>  "Opensource projects",
                 "param" =>  "opensource",
                 "count" => $this->getProposalCount('opensource')
+            ],
+            [
+                "title" =>  "First Timers",
+                "description" =>  "Proposals from first time members!",
+                "param" =>  "firstTimers",
+                "count" => $this->getProposalCount('firstTimers')
             ],
             [
                 "title" =>  "One timers",
@@ -332,6 +333,7 @@ class CatalystVoterToolController extends Controller
                 "count" => $this->getProposalCount('over250K')
             ],
 
+
         ]);
         $offset = (($this->currentFilterGroup ?? 1) - 1) * $this->filterGroupLimit;
         $slicedFilters = $filters->slice($offset);
@@ -351,14 +353,14 @@ class CatalystVoterToolController extends Controller
 
     public function getProposalCount($param)
     {
-        if($param == 'oneTimers' || $param == 'firstTimers'){
-            return $this->getUserFilters($param,true);
-        }else {
+        if ($param == 'oneTimers' || $param == 'firstTimers') {
+            return $this->getUserFilters($param, true);
+        } else {
             $option_ = $this->getUserFilters($param);
         }
 
         $proposals = Proposal::search(
-            '',
+            null,
             function (Indexes $index, $query, $options) use ($option_) {
                 if (isset($option_['filters']) && count($option_['filters']) > 0) {
                     $options['filter'] = implode(' AND ', $option_['filters']);
@@ -369,7 +371,7 @@ class CatalystVoterToolController extends Controller
         return $proposals['estimatedTotalHits'];
     }
 
-    public function setProposal(){
-
+    public function setProposal()
+    {
     }
 }

@@ -5,7 +5,7 @@
         </div>
         <div class="flex flex-col flex-1 p-4 space-y-2">
             <h3 class="text-xl font-medium text-gray-900">
-                <a :href="challenge.link " target="_blank" rel="noreferrer">
+                <a @click="emit('challenge',challenge.id)" target="_blank" rel="noreferrer">
                     <span aria-hidden="true" class="absolute inset-0"></span>
                     {{ challenge.title }}
                 </a>
@@ -29,6 +29,10 @@ import Fund from "../../models/fund"
 const props = defineProps<{
     challenge: Fund
     fund: Fund
+}>()
+
+const emit = defineEmits<{
+    (event: 'challenge', id: number): void
 }>()
 
 </script>

@@ -20,17 +20,17 @@
             </div>
         </section>
 
-            <section class="container" v-if="!!props.proposals?.data">
-                <Proposals :proposals="(props.proposals?.data)"></Proposals>
-                <div class="flex items-start justify-between w-full gap-16 my-16 xl:gap-24">
-                    <div class="flex-1">
-                        <Pagination :links="props.proposals?.links" :per-page="props.perPage"
-                            :total="props.proposals?.total" :from="props.proposals?.from" :to="props.proposals?.to"
-                            @perPageUpdated="(payload) => perPageRef = payload"
-                            @paginated="(payload) => currPageRef = payload" />
-                    </div>
+        <section class="container" v-if="!!props.proposals?.data.length">
+            <Proposals :proposals="props.proposals?.data"></Proposals>
+            <div class="flex items-start justify-between w-full gap-16 my-16 xl:gap-24">
+                <div class="flex-1">
+                    <Pagination :links="props.proposals?.links" :per-page="props.perPage" :total="props.proposals?.total"
+                        :from="props.proposals?.from" :to="props.proposals?.to"
+                        @perPageUpdated="(payload) => perPageRef = payload"
+                        @paginated="(payload) => currPageRef = payload" />
                 </div>
-            </section>
+            </div>
+        </section>
 
         <section class="container mb-16">
             <h2 class="mt-6 text-4xl">
@@ -39,7 +39,7 @@
             <p>The community was asked to provide solutions to these challenges</p>
 
             <div class="grid grid-cols-1 gap-3 mt-5 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3 lg:gap-6 ">
-                <ChallengeCard v-for="challenge in challenges" :challenge="challenge" :fund="fund" />
+                <ChallengeCard v-for="challenge in challenges" :challenge="challenge" :fund="fund" @challenge="($e) => challengeFilterRef = $e"/>
             </div>
         </section>
     </main>
@@ -66,6 +66,7 @@ const props = withDefaults(
         filterPerPage?: number,
         perPage?: number,
         currentFilter?: string,
+        challengeFilter?: number,
         locale: string,
         challenges: Fund[],
         fund: Fund,
@@ -91,6 +92,7 @@ let search = ref(props.search);
 let currPageRef = ref<number>(props.currPage);
 let currFilterGroupRef = ref<number>(props.currFilterGroup);
 let filterPerPageRef = ref<number>(props.filterPerPage);
+let challengeFilterRef = ref<number>(props.challengeFilter);
 let perPageRef = ref<number>(props.perPage);
 let filterRef = ref(props.currentFilter);
 let screenSize = parseInt(localStorage.getItem('screenSize')) ?? null;
@@ -113,7 +115,6 @@ if (!screenSize) {
 
 // Watch the search value for changes and trigger the query function
 watch([search, filterRef], () => {
-    currPageRef.value = null;
     query();
 }, { deep: true });
 
@@ -122,6 +123,12 @@ watch([currPageRef, perPageRef], () => {
 });
 
 watch([currFilterGroupRef, filterPerPageRef], () => {
+    query();
+});
+
+watch([challengeFilterRef], () => {
+    filterRef.value = null;
+    search.value = null;
     query();
 });
 
@@ -147,6 +154,10 @@ function query() {
 
     if (filterPerPageRef.value) {
         data[VARIABLES.FILTER_GROUPS_PER_PAGE] = filterPerPageRef.value;
+    }
+
+    if (challengeFilterRef.value) {
+        data[VARIABLES.CHALLENGES] = challengeFilterRef.value;
     }
 
     router.get(

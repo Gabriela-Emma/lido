@@ -71,7 +71,7 @@ class CatalystUser extends User implements HasMedia, CanComment
             'bio',
             'email',
             'proposals',
-        
+
             //            'proposals.content'
         ];
     }
@@ -96,7 +96,7 @@ class CatalystUser extends User implements HasMedia, CanComment
             'proposals.impact_proposal',
             'proposals.fund',
             'proposals.fund_status',
-        
+
         ];
     }
 
@@ -260,11 +260,7 @@ class CatalystUser extends User implements HasMedia, CanComment
         return array_merge($array, [
             'proposals' => $proposals,
             'proposals_completed' => $proposals->filter(fn ($p) => $p['status'] === 'complete')?->count() ?? 0,
-            'first_timer' => (count(
-                    array_unique(
-                        $proposals?->pluck('fund_id')->toArray()
-                    )
-                ) === 1
+            'first_timer' => ($proposals?->map(fn ($p) => $p->fund->parent_id)->unique()->count() === 1
             ),
         ]);
     }
