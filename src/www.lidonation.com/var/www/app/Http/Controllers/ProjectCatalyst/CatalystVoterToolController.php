@@ -225,16 +225,16 @@ class CatalystVoterToolController extends Controller
         ];
 
         if ($param == 'firstTimers') {
-            $user_options['filters'][] = "first_timer = true AND  proposals.fund.id = 97";
+            $user_options['filters'][] = "first_timer = true AND  proposals.fund.id = {$this->fund?->id}";
         }
 
         if ($param == 'oneTimers') {
-            $user_options['filters'][] = "proposals_count = 1 AND proposals.fund.id = 97";
+            $user_options['filters'][] = "proposals_count = 1 AND proposals.fund.id = {$this->fund?->id}";
         }
 
 
         if ($param == 'completerProposals') {
-            $user_options['filters'][] = "proposals_completed > 0 AND proposals.fund.id = 97";
+            $user_options['filters'][] = "proposals_completed > 0 AND proposals.fund.id = {$this->fund?->id}";
         }
 
         $results = [];
