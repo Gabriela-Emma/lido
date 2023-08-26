@@ -1225,13 +1225,9 @@ deploy-kupo-mainnet:
   environment:
     name: mainnet
   rules:
-    - if: '$CI_COMMIT_BRANCH == "main" && (
-          ($DEPLOY_CARDANO_KUPO == "True" || $DEPLOY_CARDANO_KUPO == "true")
-        )'
+    - if: '$CI_COMMIT_BRANCH == "main" && $DEPLOY_CARDANO_KUPO == "True"'
       when: manual
-    - if: '$CI_COMMIT_BRANCH != "main" && (
-          ($DEPLOY_CARDANO_KUPO == "True" || $DEPLOY_CARDANO_KUPO == "true")
-        )'
+    - if: '$CI_COMMIT_BRANCH != "main" && $DEPLOY_CARDANO_KUPO == "True"'
       when: manual
 
 postgres-web-prod:
@@ -1277,7 +1273,7 @@ production:
     name: mainnet
   rules:
     - if: '$CI_COMMIT_BRANCH == "main" && (
-              ($DEPLOY_WEBSITE == "True" || $DEPLOY_WEBSITE == "true")
-              || ($DEPLOY_LUCID == "True" || $DEPLOY_LUCID == "true")
+              ($DEPLOY_WEBSITE == "True")
+              || ($DEPLOY_LUCID == "True")
           )'
       when: manual
