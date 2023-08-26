@@ -382,6 +382,32 @@
       --version="$APP_VERSION"
   }
 
+  function deploy_kupo() {
+    DEPLOYMENT_NAME="$AUTO_DEVOPS_APP_PREFIX-cardano-kupo.$CI_ENVIRONMENT_SLUG"
+
+    helm upgrade "$DEPLOYMENT_NAME" ./chart/kupo \
+      --wait \
+      --install \
+      --atomic \
+      -f ./chart/values.yaml \
+      --timeout 300s \
+      --set-file configurationFiles.topology.relay=./src/pool/config/$CARDANO_NETWORK/topology.relay.json \
+      --set-file configurationFiles.topology.producer=./src/pool/config/$CARDANO_NETWORK/topology.producer.json \
+      --set-file configurationFiles.testnetByronGenesis=./src/pool/config/build/preview-byron-genesis.json \
+      --set-file configurationFiles.testnetShelleyGenesis=./src/pool/config/build/preview-shelley-genesis.json \
+      --set-file configurationFiles.testnetShelleyGenesis=./src/pool/config/build/preview-conway-genesis.json \
+      --set-file configurationFiles.testnetAlonzoGenesis=./src/pool/config/build/preview-alonzo-genesis.json \
+      --set-file configurationFiles.mainnetShelleyGenesis=./src/pool/config/build/mainnet-shelley-genesis.json \
+      --set-file configurationFiles.mainnetAlonzoGenesis=./src/pool/config/build/mainnet-alonzo-genesis.json \
+      --set-file configurationFiles.mainnetAlonzoGenesis=./src/pool/config/build/mainnet-conway-genesis.json \
+      --set image.tag="$CI_APPLICATION_TAG" \
+      --set image.pullSecret="$secret_name" \
+      --set namespace=${KUBE_NAMESPACE} \
+      --namespace="$KUBE_NAMESPACE" \
+      --create-namespace \
+      --version="$APP_VERSION"
+  }
+
 
   function deploy_lucid() {
     DEPLOYMENT_NAME="$AUTO_DEVOPS_APP_PREFIX-lucid.$CI_ENVIRONMENT_SLUG"
@@ -590,6 +616,9 @@
     if [[ "$DEPLOY_CARDANO_CNCLI" == 'True' || "$DEPLOY_CARDANO_CNCLI" == 'true' ]]; then
       deploy_cncli
     fi
+    if [[ "$DEPLOY_CARDANO_KUPO" == 'True' || "$DEPLOY_CARDANO_KUPO" == 'true' ]]; then
+      deploy_kupo
+    fi
     if [[ "$DEPLOY_CARDANO_CNCLI" == 'True' || "$DEPLOY_CARDANO_CNCLI" == 'true' ]]; then
       deploy_tx_cncli
     fi
@@ -650,6 +679,9 @@ variables:
   DEPLOY_CARDANO_CNCLI:
     value: 'False'
     description: 'Install cncli services.'
+  DEPLOY_CARDANO_KUPO:
+    value: 'False'
+    description: 'Install kupo services.'
   DEPLOY_CARDANO_DBSYNC:
     value: 'False'
     description: 'Install cardano dbsync services (ogmios, hasura, postgres, grapql)'
