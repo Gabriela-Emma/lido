@@ -50,9 +50,9 @@ spec:
             - name: "{{ $.Chart.Name }}-cardano-kupo-pv"
               mountPath: /config
               readOnly: false
-            - name: "{{ $.Chart.Name }}-cardano-kupo-pv"
-              mountPath: /db
-              readOnly: false
+            - name: node-configurations
+              mountPath: /tmp/config
+              readOnly: true
       containers:
       - name: app
         image: "{{ .Values.services.kupo.image.repository }}:{{ .Values.services.kupo.image.tag }}"
