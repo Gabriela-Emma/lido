@@ -382,6 +382,29 @@
       --version="$APP_VERSION"
   }
 
+  function deploy_kupo() {
+    DEPLOYMENT_NAME="$AUTO_DEVOPS_APP_PREFIX-cardano-kupo.$CI_ENVIRONMENT_SLUG"
+
+    helm upgrade "$DEPLOYMENT_NAME" ./chart/kupo \
+      --wait \
+      --install \
+      --atomic \
+      -f ./chart/values.yaml \
+      --timeout 300s \
+      --set-file configurationFiles.topology.relay=./src/pool/config/$CARDANO_NETWORK/topology.relay.json \
+      --set-file configurationFiles.topology.producer=./src/pool/config/$CARDANO_NETWORK/topology.producer.json \
+      --set-file configurationFiles.testnetByronGenesis=./src/pool/config/build/preview-byron-genesis.json \
+      --set-file configurationFiles.testnetShelleyGenesis=./src/pool/config/build/preview-shelley-genesis.json \
+      --set-file configurationFiles.testnetShelleyGenesis=./src/pool/config/build/preview-conway-genesis.json \
+      --set-file configurationFiles.testnetAlonzoGenesis=./src/pool/config/build/preview-alonzo-genesis.json \
+      --set-file configurationFiles.mainnetShelleyGenesis=./src/pool/config/build/mainnet-shelley-genesis.json \
+      --set-file configurationFiles.mainnetAlonzoGenesis=./src/pool/config/build/mainnet-alonzo-genesis.json \
+      --set-file configurationFiles.mainnetAlonzoGenesis=./src/pool/config/build/mainnet-conway-genesis.json \
+      --set namespace=${KUBE_NAMESPACE} \
+      --namespace="$KUBE_NAMESPACE" \
+      --create-namespace
+  }
+
 
   function deploy_lucid() {
     DEPLOYMENT_NAME="$AUTO_DEVOPS_APP_PREFIX-lucid.$CI_ENVIRONMENT_SLUG"
@@ -590,6 +613,9 @@
     if [[ "$DEPLOY_CARDANO_CNCLI" == 'True' || "$DEPLOY_CARDANO_CNCLI" == 'true' ]]; then
       deploy_cncli
     fi
+    if [[ "$DEPLOY_CARDANO_KUPO" == 'True' || "$DEPLOY_CARDANO_KUPO" == 'true' ]]; then
+      deploy_kupo
+    fi
     if [[ "$DEPLOY_CARDANO_CNCLI" == 'True' || "$DEPLOY_CARDANO_CNCLI" == 'true' ]]; then
       deploy_tx_cncli
     fi
@@ -650,6 +676,9 @@ variables:
   DEPLOY_CARDANO_CNCLI:
     value: 'False'
     description: 'Install cncli services.'
+  DEPLOY_CARDANO_KUPO:
+    value: 'False'
+    description: 'Install kupo services.'
   DEPLOY_CARDANO_DBSYNC:
     value: 'False'
     description: 'Install cardano dbsync services (ogmios, hasura, postgres, grapql)'
@@ -702,6 +731,13 @@ workflow:
   image: alpine:3.16.1
   retry: 0
   cache: { }
+
+.deploy_kupo: &deploy_kupo
+  <<: *deploy_template
+  script:
+    - *setup
+    - deploy_kupo
+  rules: *infra_rules
 
 .deploy_postgres_cdbsync: &deploy_postgres_cdbsync
   <<: *deploy_template
@@ -905,10 +941,8 @@ web:
       docker push "$CI_APPLICATION_REPOSITORY/www.lidonation.com:latest"
       echo ""
   rules:
-    - if: '$CI_COMMIT_BRANCH == "main" &&
-              ($DEPLOY_WEBSITE == "True" || $DEPLOY_WEBSITE == "true")'
-    - if: '$CI_COMMIT_BRANCH != "main" &&
-              ($DEPLOY_WEBSITE == "True" || $DEPLOY_WEBSITE == "true")'
+    - if: '$CI_COMMIT_BRANCH == "main" && $DEPLOY_WEBSITE == "True"'
+    - if: '$CI_COMMIT_BRANCH != "main" && $DEPLOY_WEBSITE == "True"'
       when: manual
 
 lucid:
@@ -932,10 +966,8 @@ lucid:
       docker push "$CI_APPLICATION_REPOSITORY/lucid.lidonation.com:latest"
       echo ""
   rules:
-    - if: '$CI_COMMIT_BRANCH == "main" &&
-              ($DEPLOY_LUCID == "True" || $DEPLOY_LUCID == "true")'
-    - if: '$CI_COMMIT_BRANCH != "main" &&
-              ($DEPLOY_LUCID == "True" || $DEPLOY_LUCID == "true")'
+    - if: '$CI_COMMIT_BRANCH == "main" && $DEPLOY_LUCID == "True"'
+    - if: '$CI_COMMIT_BRANCH != "main" && $DEPLOY_LUCID == "True"'
 
 cnode_submit_api:
   stage: build
@@ -978,13 +1010,13 @@ cnode:
       docker push "$CI_APPLICATION_REPOSITORY/cardano:latest"
   rules:
     - if: '$CI_COMMIT_BRANCH == "main" &&
-              ($DEPLOY_CARDANO_SERVICES == "True" || $DEPLOY_CARDANO_SERVICES == "true")
-              || ($DEPLOY_CARDANO_RELAYS == "True" || $DEPLOY_CARDANO_RELAYS == "true")
-              || ($DEPLOY_CARDANO_PRODUCER == "True" || $DEPLOY_CARDANO_PRODUCER == "true")'
+              ($DEPLOY_CARDANO_SERVICES == "True")
+              || ($DEPLOY_CARDANO_RELAYS == "True")
+              || ($DEPLOY_CARDANO_PRODUCER == "True")'
     - if: '$CI_COMMIT_BRANCH != "main" &&
-              ($DEPLOY_CARDANO_SERVICES == "True" || $DEPLOY_CARDANO_SERVICES == "true")         
-            || ($DEPLOY_CARDANO_RELAYS == "True" || $DEPLOY_CARDANO_RELAYS == "true")
-            || ($DEPLOY_CARDANO_PRODUCER == "True" || $DEPLOY_CARDANO_PRODUCER == "true")'
+              ($DEPLOY_CARDANO_SERVICES == "True")         
+            || ($DEPLOY_CARDANO_RELAYS == "True")
+            || ($DEPLOY_CARDANO_PRODUCER == "True")'
 
 cncli:
   stage: build
@@ -1005,10 +1037,8 @@ cncli:
       docker push "$CI_APPLICATION_REPOSITORY/cncli:$CI_APPLICATION_TAG"
       docker push "$CI_APPLICATION_REPOSITORY/cncli:latest"
   rules:
-    - if: '$CI_COMMIT_BRANCH == "main" &&
-              ($DEPLOY_CARDANO_CNCLI == "True" || $DEPLOY_CARDANO_CNCLI == "true")'
-    - if: '$CI_COMMIT_BRANCH != "main" &&
-              ($DEPLOY_CARDANO_CNCLI == "True" || $DEPLOY_CARDANO_CNCLI == "true")'
+    - if: '$CI_COMMIT_BRANCH == "main" && $DEPLOY_CARDANO_CNCLI == "True"'
+    - if: '$CI_COMMIT_BRANCH != "main" && $DEPLOY_CARDANO_CNCLI == "True"'
 
 cdbsync:
   stage: build
@@ -1041,9 +1071,9 @@ cdbsync:
       docker push "$CI_APPLICATION_REPOSITORY/cardano-db-sync:latest-main"
   rules:
     - if: '$CI_COMMIT_BRANCH == "main" &&
-              ($DEPLOY_CARDANO_DBSYNC == "True" || $DEPLOY_CARDANO_DBSYNC == "true")'
+              ($DEPLOY_CARDANO_DBSYNC == "True")'
     - if: '$CI_COMMIT_BRANCH != "main" &&
-              ($DEPLOY_CARDANO_DBSYNC == "True" || $DEPLOY_CARDANO_DBSYNC == "true")'
+              ($DEPLOY_CARDANO_DBSYNC == "True")'
 
 
 ############ Test Jobs ###########
@@ -1065,7 +1095,6 @@ cdbsync:
 
 ########## Deploy to test env Jobs #########
 ############################################
-
 redis-test:
   <<: *deploy_redis
   stage: preview
@@ -1079,6 +1108,17 @@ postgres-cdbsync-test:
   needs: []
   environment:
     name: preview
+
+deploy-kupo-preview:
+  <<: *deploy_kupo
+  stage: preview
+  needs: []
+  environment:
+    name: preview
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main" && $DEPLOY_CARDANO_KUPO == "True"'
+    - if: '$CI_COMMIT_BRANCH != "main" && $DEPLOY_CARDANO_KUPO == "True"'
+      when: manual
 
 postgres-web-test:
   <<: *deploy_postgres_web
@@ -1151,7 +1191,6 @@ preview:
 
 ########## Deploy to prod env Jobs #########
 ############################################
-
 redis-prod:
   <<: *deploy_redis
   stage: mainnet
@@ -1167,6 +1206,18 @@ postgres-cdbsync-prod:
     - postgres-cdbsync-test
   environment:
     name: mainnet
+
+deploy-kupo-mainnet:
+  <<: *deploy_kupo
+  stage: mainnet
+  needs:
+    - deploy-kupo-preview
+  environment:
+    name: mainnet
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main" && $DEPLOY_CARDANO_KUPO == "True"'
+    - if: '$CI_COMMIT_BRANCH != "main" && $DEPLOY_CARDANO_KUPO == "True"'
+      when: manual
 
 postgres-web-prod:
   <<: *deploy_postgres_web
@@ -1189,12 +1240,12 @@ mainnet:
     name: mainnet
   rules:
     - if: '$CI_COMMIT_BRANCH == "main" && (
-              ($DEPLOY_CARDANO_CONFIGS == "True" || $DEPLOY_CARDANO_CONFIGS == "true")
-              || ($DEPLOY_CARDANO_SERVICES == "True" || $DEPLOY_CARDANO_SERVICES == "true")
-              || ($DEPLOY_CARDANO_RELAYS == "True" || $DEPLOY_CARDANO_RELAYS == "true")
-              || ($DEPLOY_CARDANO_PRODUCER == "True" || $DEPLOY_CARDANO_PRODUCER == "true")
-              || ($DEPLOY_CARDANO_DBSYNC == "True" || $DEPLOY_CARDANO_DBSYNC == "true")
-              || ($DEPLOY_CARDANO_TX_SUBMIT == "True" || $DEPLOY_CARDANO_TX_SUBMIT == "true")
+              ($DEPLOY_CARDANO_CONFIGS == "True")
+              || ($DEPLOY_CARDANO_SERVICES == "True")
+              || ($DEPLOY_CARDANO_RELAYS == "True")
+              || ($DEPLOY_CARDANO_PRODUCER == "True")
+              || ($DEPLOY_CARDANO_DBSYNC == "True")
+              || ($DEPLOY_CARDANO_TX_SUBMIT == "True")
               )'
       when: manual
 
@@ -1211,7 +1262,7 @@ production:
     name: mainnet
   rules:
     - if: '$CI_COMMIT_BRANCH == "main" && (
-              ($DEPLOY_WEBSITE == "True" || $DEPLOY_WEBSITE == "true")
-              || ($DEPLOY_LUCID == "True" || $DEPLOY_LUCID == "true")
+              ($DEPLOY_WEBSITE == "True")
+              || ($DEPLOY_LUCID == "True")
           )'
       when: manual

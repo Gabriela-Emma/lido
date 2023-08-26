@@ -22,6 +22,7 @@
 
         <section class="container" v-if="!!props.proposals?.data.length">
             <Proposals :proposals="props.proposals?.data"></Proposals>
+
             <div class="flex items-start justify-between w-full gap-16 my-16 xl:gap-24">
                 <div class="flex-1">
                     <Pagination :links="props.proposals?.links" :per-page="props.perPage" :total="props.proposals?.total"
@@ -46,7 +47,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, computed } from 'vue';
+import { ref, watch } from 'vue';
 import Search from '../Shared/Components/Search.vue';
 import Proposal from '../models/proposal';
 import Proposals from '../modules/proposals/Proposals.vue';

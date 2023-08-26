@@ -15,7 +15,7 @@
                             My Draft Ballots
                         </h2>
                         <div
-                            class="grid grid-cols-1 gap-6 lg:col-span-9 xl:col-span-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 3xl:grid-cols-5">
+                            class="grid grid-cols-1 gap-6 lg:col-span-9 xl:col-span-10 sm:grid-cols-2 lg:grid-cols-3 3xl:grid-cols-4">
                             <DraftBallotCard v-for="ballot in draftBallots$" :draftBallot="ballot" />
                             <div
                                 class="relative flex flex-col items-center justify-center object-cover w-full h-56 text-black border-2 border-teal-800 border-dashed item rounded-l-xl rounded-r-xs">

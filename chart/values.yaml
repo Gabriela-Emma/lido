@@ -48,6 +48,13 @@ services:
   kibana:
     name: kibana
     version: 7.9.3
+  kupo:
+    image:
+      repository: cardanosolutions/kupo
+      tag: v2.6.0
+    persistence:
+      size: 200Gi
+      storageClass: longhorn
   redis:
     secret:
       REDIS_PASSWORD:
