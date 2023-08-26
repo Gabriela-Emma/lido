@@ -1205,7 +1205,6 @@ preview:
 
 ########## Deploy to prod env Jobs #########
 ############################################
-
 redis-prod:
   <<: *deploy_redis
   stage: mainnet
@@ -1231,14 +1230,13 @@ deploy-kupo-mainnet:
     name: mainnet
   rules:
     - if: '$CI_COMMIT_BRANCH == "main" && (
-            ($DEPLOY_CARDANO_KUPO == "True" || $DEPLOY_CARDANO_KUPO == "true")
-          )'
+          ($DEPLOY_CARDANO_KUPO == "True" || $DEPLOY_CARDANO_KUPO == "true")
+        )'
       when: manual
     - if: '$CI_COMMIT_BRANCH != "main" && (
-            ($DEPLOY_CARDANO_KUPO == "True" || $DEPLOY_CARDANO_KUPO == "true")
-          )'
+          ($DEPLOY_CARDANO_KUPO == "True" || $DEPLOY_CARDANO_KUPO == "true")
+        )'
       when: manual
-
 
 postgres-web-prod:
   <<: *deploy_postgres_web
@@ -1261,12 +1259,12 @@ mainnet:
     name: mainnet
   rules:
     - if: '$CI_COMMIT_BRANCH == "main" && (
-              ($DEPLOY_CARDANO_CONFIGS == "True" || $DEPLOY_CARDANO_CONFIGS == "true")
-              || ($DEPLOY_CARDANO_SERVICES == "True" || $DEPLOY_CARDANO_SERVICES == "true")
-              || ($DEPLOY_CARDANO_RELAYS == "True" || $DEPLOY_CARDANO_RELAYS == "true")
-              || ($DEPLOY_CARDANO_PRODUCER == "True" || $DEPLOY_CARDANO_PRODUCER == "true")
-              || ($DEPLOY_CARDANO_DBSYNC == "True" || $DEPLOY_CARDANO_DBSYNC == "true")
-              || ($DEPLOY_CARDANO_TX_SUBMIT == "True" || $DEPLOY_CARDANO_TX_SUBMIT == "true")
+              ($DEPLOY_CARDANO_CONFIGS == "True")
+              || ($DEPLOY_CARDANO_SERVICES == "True")
+              || ($DEPLOY_CARDANO_RELAYS == "True")
+              || ($DEPLOY_CARDANO_PRODUCER == "True")
+              || ($DEPLOY_CARDANO_DBSYNC == "True")
+              || ($DEPLOY_CARDANO_TX_SUBMIT == "True")
               )'
       when: manual
 
