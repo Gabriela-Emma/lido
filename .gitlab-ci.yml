@@ -735,6 +735,13 @@ workflow:
   retry: 0
   cache: { }
 
+.deploy_kupo: &deploy_kupo
+  <<: *deploy_template
+  script:
+    - *setup
+    - deploy_kupo
+  rules: *infra_rules
+
 .deploy_postgres_cdbsync: &deploy_postgres_cdbsync
   <<: *deploy_template
   script:
@@ -1097,7 +1104,6 @@ cdbsync:
 
 ########## Deploy to test env Jobs #########
 ############################################
-
 redis-test:
   <<: *deploy_redis
   stage: preview
@@ -1111,6 +1117,22 @@ postgres-cdbsync-test:
   needs: []
   environment:
     name: preview
+
+deploy-kupo:
+  <<: *deploy_kupo
+  stage: preview
+  needs: []
+  environment:
+    name: preview
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main" && (
+            ($DEPLOY_CARDANO_KUPO == "True" || $DEPLOY_CARDANO_KUPO == "true")
+          )'
+      when: manual
+    - if: '$CI_COMMIT_BRANCH != "main" && (
+            ($DEPLOY_CARDANO_KUPO == "True" || $DEPLOY_CARDANO_KUPO == "true")
+          )'
+      when: manual
 
 postgres-web-test:
   <<: *deploy_postgres_web
