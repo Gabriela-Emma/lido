@@ -10,7 +10,6 @@ use Spatie\MediaLibrary\HasMedia;
 use App\Models\Traits\HasGravatar;
 use App\Models\Traits\HasMetaData;
 use App\Models\Traits\HasLocaleUrl;
-use App\Repositories\FundRepository;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Database\Eloquent\Builder;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -70,9 +69,7 @@ class CatalystUser extends User implements HasMedia, CanComment
             'username',
             'bio',
             'email',
-            'proposals',
-
-            //            'proposals.content'
+            'proposals'
         ];
     }
 
@@ -128,7 +125,6 @@ class CatalystUser extends User implements HasMedia, CanComment
         }
 
         return null;
-        //        return $this->proposals?->first()?->experience;
     }
 
     public function getNameAttribute($value)
@@ -260,7 +256,7 @@ class CatalystUser extends User implements HasMedia, CanComment
         return array_merge($array, [
             'proposals' => $proposals,
             'proposals_completed' => $proposals->filter(fn ($p) => $p['status'] === 'complete')?->count() ?? 0,
-            'first_timer' => ($proposals?->map(fn ($p) => $p->fund->parent_id)->unique()->count() === 1
+            'first_timer' => ($proposals?->map(fn ($p) => $p['fund']['id'])->unique()->count() === 1
             ),
         ]);
     }
