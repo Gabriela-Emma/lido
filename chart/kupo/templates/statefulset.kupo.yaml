@@ -64,7 +64,7 @@ spec:
             - name: CARDANO_NODE_SOCKET_TCP_HOST
               value: "lidolovelace-cardano-relay-1-service"
             - name: CARDANO_NODE_SOCKET_TCP_PORT
-              value: "{{ .Values.services.cardano.config.NODE_PORT }}"
+              value: "30111"
             - name: SOCAT_TIMEOUT
               value: "3600"
           ports:
