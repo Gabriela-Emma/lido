@@ -45,7 +45,7 @@ spec:
               "--node-socket", "/ipc/node.socket",
               "--node-config", "/tmp/config/config.json",
               "--workdir", "/db",
-              "--since origin",
+              "--since", "origin",
               "--match", "*/*",
           ]
           resources:
@@ -61,8 +61,12 @@ spec:
           env:
             - name: LOGGER_MIN_SEVERITY
               value: info
-            - name: CARDANO_NODE_CONFIG_PATH
-              value: "/config/config.json"
+            - name: CARDANO_NODE_SOCKET_TCP_HOST
+              value: "lidolovelace-cardano-relay-1-service"
+            - name: CARDANO_NODE_SOCKET_TCP_PORT
+              value: {{ .Values.services.cardano.config.NODE_PORT }}  
+            - name: SOCAT_TIMEOUT
+              value: "3600"
           ports:
             - name: kupo
               containerPort: 1442
@@ -105,7 +109,7 @@ spec:
           command: [
             "sh",
             "-c",
-            "socat TCP-LISTEN:${PORT},fork UNIX-CLIENT:/ipc/node.socket,ignoreeof"
+            "socat UNIX-LISTEN:/ipc/node.socket,fork TCP:${CARDANO_NODE_SOCKET_TCP_HOST}:${CARDANO_NODE_SOCKET_TCP_PORT},ignoreeof"
           ]
           volumeMounts:
             - name: node-ipc
