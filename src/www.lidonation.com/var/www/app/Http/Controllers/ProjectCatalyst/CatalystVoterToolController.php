@@ -259,14 +259,11 @@ class CatalystVoterToolController extends Controller
             $offset += $batchSize;
         } while (count($currentBatch) == $batchSize);
 
-        // dd($results);
-
         $proposals = collect($results)->map(fn ($u) => $u['proposals'][0]['id'])->unique();
 
         if ($inHouse) {
             return count($proposals);
         }
-
 
         if (count($proposals)) {
             return $proposals;
