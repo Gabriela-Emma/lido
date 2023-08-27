@@ -61,12 +61,6 @@ spec:
           env:
             - name: LOGGER_MIN_SEVERITY
               value: info
-            - name: CARDANO_NODE_SOCKET_TCP_HOST
-              value: "lidolovelace-cardano-relay-1-service"
-            - name: CARDANO_NODE_SOCKET_TCP_PORT
-              value: "30111"
-            - name: SOCAT_TIMEOUT
-              value: "3600"
           ports:
             - name: kupo
               containerPort: 1442
@@ -104,8 +98,12 @@ spec:
         - name: ipc
           image: alpine/socat:1.7.4.4
           env:
-            - name: PORT
-              value: "30112"
+            - name: CARDANO_NODE_SOCKET_TCP_HOST
+              value: "lidolovelace-cardano-relay-1-service"
+            - name: CARDANO_NODE_SOCKET_TCP_PORT
+              value: "30111"
+            - name: SOCAT_TIMEOUT
+              value: "3600"
           command: [
             "sh",
             "-c",
