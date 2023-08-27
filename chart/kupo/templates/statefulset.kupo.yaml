@@ -87,6 +87,10 @@ spec:
             - mountPath: /ipc
               name: node-ipc
             - name: "{{ $.Chart.Name }}-1-pv"
+              mountPath: /config
+              subPath: config
+              readOnly: false
+            - name: "{{ $.Chart.Name }}-1-pv"
               mountPath: /db
               subPath: db
               readOnly: false
