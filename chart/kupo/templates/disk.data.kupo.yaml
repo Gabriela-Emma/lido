@@ -1,7 +1,7 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: "{{ .Values.namespace }}-data-kupo-pvc"
+  name: "{{ .Values.namespace }}-data-cardano-kupo-pvc"
   namespace: {{ .Values.namespace }}
 spec:
   accessModes:
