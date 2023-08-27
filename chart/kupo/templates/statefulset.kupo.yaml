@@ -21,12 +21,29 @@ spec:
       labels:
         app: "{{ $.Chart.Name }}"
         chart: "{{ $.Chart.Name }}-{{ $.Chart.Version }}"
-        role: relay
+        role: data
         network: {{ .Values.services.cardano.config.CARDANO_NETWORK }}
         release: {{ .Release.Name }}
         service: "kupo"
     spec:      
       serviceAccountName: ""
+      initContainers:
+        - name: setup
+          image: busybox
+          command: [ "/bin/sh" ]
+          args:
+            - -c
+            - >-
+              mkdir -p /config &&
+              cat /tmp/config/config.json > /config/config.json
+          volumeMounts:
+             - name: node-configurations
+              mountPath: /tmp/config
+              readOnly: true
+            - name: "{{ $.Chart.Name }}-1-pv"
+              mountPath: /config
+              subPath: config
+              readOnly: false
       volumes:
         - name: node-ipc
           emptyDir: {}
@@ -69,9 +86,6 @@ spec:
           volumeMounts:
             - mountPath: /ipc
               name: node-ipc
-            - name: node-configurations
-              mountPath: /config
-              readOnly: true
             - name: "{{ $.Chart.Name }}-1-pv"
               mountPath: /db
               subPath: db
@@ -84,8 +98,9 @@ spec:
           volumeMounts:
             - mountPath: /ipc
               name: node-ipc
-            - name: node-configurations
+            - name: "{{ $.Chart.Name }}-1-pv"
               mountPath: /config
+              subPath: config
               readOnly: true
             - name: "{{ $.Chart.Name }}-1-pv"
               mountPath: /db
