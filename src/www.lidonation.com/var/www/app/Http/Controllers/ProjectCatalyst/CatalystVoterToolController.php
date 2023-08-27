@@ -51,9 +51,9 @@ class CatalystVoterToolController extends Controller
     public function __construct()
     {
         $this->fund = app(FundRepository::class)
-        ->funds('inGovernance')->first();
+            ->funds('inGovernance')->first();
         $this->challenges = app(FundRepository::class)
-        ->fundChallenges($this->fund);
+            ->fundChallenges($this->fund);
     }
 
 
@@ -95,6 +95,9 @@ class CatalystVoterToolController extends Controller
         if (isset($filters['filters'])) {
             $_options = $filters;
         } else {
+            if ($filters == null) {
+                return;
+            }
             $_options['filters'][]  = 'id IN' . json_encode($filters->values()->toArray());
         }
 
@@ -256,12 +259,20 @@ class CatalystVoterToolController extends Controller
             $offset += $batchSize;
         } while (count($currentBatch) == $batchSize);
 
-        $proposals = collect($results)->map(fn($u) => $u['proposals'][0]['id'])->unique();
+        // dd($results);
+
+        $proposals = collect($results)->map(fn ($u) => $u['proposals'][0]['id'])->unique();
+
         if ($inHouse) {
             return count($proposals);
         }
 
-        return $proposals;
+
+        if (count($proposals)) {
+            return $proposals;
+        } else {
+            return null;
+        }
     }
 
 
@@ -280,7 +291,7 @@ class CatalystVoterToolController extends Controller
                 "title" =>  "Completed Proposals",
                 "description" =>  "From teams with completed Proposals",
                 "param" =>  "completedProposals",
-                "count" => $this->getProposalCount('over250K')
+                "count" => $this->getProposalCount('completedProposals')
             ],
             [
                 "title" =>  "Opensource",
@@ -355,7 +366,7 @@ class CatalystVoterToolController extends Controller
 
     public function getProposalCount($param)
     {
-        if ($param == 'oneTimers' || $param == 'firstTimers') {
+        if ($param == 'oneTimers' || $param == 'firstTimers' || $param == 'completedProposals') {
             return $this->getUserFilters($param, true);
         } else {
             $option_ = $this->getUserFilters($param);
