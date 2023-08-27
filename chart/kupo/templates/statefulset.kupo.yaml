@@ -27,23 +27,6 @@ spec:
         service: "kupo"
     spec:      
       serviceAccountName: ""
-      initContainers:
-        - name: setup
-          image: busybox
-          command: [ "/bin/sh" ]
-          args:
-            - -c
-            - >-
-              mkdir -p /config &&
-              cat /tmp/config/config.json > /config/config.json
-          volumeMounts:
-            - name: node-configurations
-              mountPath: /tmp/config
-              readOnly: true
-            - name: "{{ $.Chart.Name }}-1-pv"
-              mountPath: /config
-              subPath: config
-              readOnly: false
       volumes:
         - name: node-ipc
           emptyDir: {}
@@ -60,7 +43,7 @@ spec:
           args: [
               "--host", "0.0.0.0",
               "--node-socket", "/ipc/node.socket",
-              "--node-config", "/config/config.json",
+              "--node-config", "/tmp/onfig/config.json",
               "--workdir", "/db",
               "--match", "*/*",
           ]
@@ -86,6 +69,9 @@ spec:
           volumeMounts:
             - mountPath: /ipc
               name: node-ipc
+            - name: node-configurations
+              mountPath: /tmp/config
+              readOnly: true
             - name: "{{ $.Chart.Name }}-1-pv"
               mountPath: /config
               subPath: config
@@ -105,7 +91,7 @@ spec:
             - name: "{{ $.Chart.Name }}-1-pv"
               mountPath: /config
               subPath: config
-              readOnly: true
+              readOnly: false
             - name: "{{ $.Chart.Name }}-1-pv"
               mountPath: /db
               subPath: db
