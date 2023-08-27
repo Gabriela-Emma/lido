@@ -45,6 +45,7 @@ spec:
               "--node-socket", "/ipc/node.socket",
               "--node-config", "/tmp/config/config.json",
               "--workdir", "/db",
+              "--since origin",
               "--match", "*/*",
           ]
           resources:
