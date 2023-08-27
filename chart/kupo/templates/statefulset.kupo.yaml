@@ -71,6 +71,7 @@ spec:
               name: node-ipc
             - name: node-configurations
               mountPath: /config
+              readOnly: true
             - name: "{{ $.Chart.Name }}-1-pv"
               mountPath: /db
               subPath: db
@@ -81,8 +82,14 @@ spec:
             - sleep
             - "2592000"
           volumeMounts:
+            - mountPath: /ipc
+              name: node-ipc
+            - name: node-configurations
+              mountPath: /config
+              readOnly: true
             - name: "{{ $.Chart.Name }}-1-pv"
-              mountPath: /data
+              mountPath: /db
+              subPath: db
               readOnly: false
         - name: ipc
           image: alpine/socat:1.7.4.4
