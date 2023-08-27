@@ -37,7 +37,7 @@ spec:
               mkdir -p /config &&
               cat /tmp/config/config.json > /config/config.json
           volumeMounts:
-             - name: node-configurations
+            - name: node-configurations
               mountPath: /tmp/config
               readOnly: true
             - name: "{{ $.Chart.Name }}-1-pv"
