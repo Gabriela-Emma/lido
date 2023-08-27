@@ -71,7 +71,7 @@ spec:
               name: node-ipc
             - name: node-configurations
               mountPath: /tmp/config
-            - name: "{{ $.Chart.Name }}-cardano-kupo-pv"
+            - name: "{{ $.Chart.Name }}-pv"
               mountPath: /db
               subPath: db
               readOnly: false
