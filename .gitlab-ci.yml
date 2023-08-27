@@ -391,6 +391,7 @@
       --atomic \
       -f ./chart/values.yaml \
       --timeout 300s \
+      --set services.cardano.config.NODE_PORT="$CARDANO_NODE_PORT" \
       --set-file configurationFiles.topology.relay=./src/pool/config/$CARDANO_NETWORK/topology.relay.json \
       --set-file configurationFiles.topology.producer=./src/pool/config/$CARDANO_NETWORK/topology.producer.json \
       --set-file configurationFiles.testnetByronGenesis=./src/pool/config/build/preview-byron-genesis.json \
