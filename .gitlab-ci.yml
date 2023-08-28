@@ -579,31 +579,31 @@
       deploy_relays
       deploy_producer
     fi  
-    if [[ "$DEPLOY_CARDANO_RELAYS" == 'True' || "$DEPLOY_CARDANO_RELAYS" == 'true' ]]; then
+    if [[ "$DEPLOY_CARDANO_RELAYS" == 'True' ]]; then
       deploy_relays
     fi
-    if [[ "$DEPLOY_CARDANO_PRODUCER" == 'True' || "$DEPLOY_CARDANO_PRODUCER" == 'true' ]]; then
+    if [[ "$DEPLOY_CARDANO_PRODUCER" == 'True' ]]; then
       deploy_producer
     fi
-    if [[ "$DEPLOY_CARDANO_CONFIGS" == 'True' || "$DEPLOY_CARDANO_CONFIGS" == 'true' ]]; then
+    if [[ "$DEPLOY_CARDANO_CONFIGS" == 'True' ]]; then
       deploy_cardano_configs
     fi
-    if [[ "$DEPLOY_CARDANO_TX_SUBMIT" == 'True' || "$DEPLOY_CARDANO_TX_SUBMIT" == 'true' ]]; then
+    if [[ "$DEPLOY_CARDANO_TX_SUBMIT" == 'True' ]]; then
       deploy_tx_sumit_api
     fi
-    if [[ "$DEPLOY_CARDANO_OGMIOS" == 'True' || "$DEPLOY_CARDANO_OGMIOS" == 'true' ]]; then
+    if [[ "$DEPLOY_CARDANO_OGMIOS" == 'True' ]]; then
       deploy_ogmios
     fi
-    if [[ "$DEPLOY_CARDANO_KUPO" == 'True' || "$DEPLOY_CARDANO_KUPO" == 'true' ]]; then
+    if [[ "$DEPLOY_CARDANO_KUPO" == 'True' ]]; then
       deploy_kupo
     fi
-    if [[ "$DEPLOY_CARDANO_DBSYNC" == 'True' || "$DEPLOY_CARDANO_DBSYNC" == 'true' ]]; then
+    if [[ "$DEPLOY_CARDANO_DBSYNC" == 'True' ]]; then
       deploy_dbsync
     fi
-    if [[ "$DEPLOY_WEBSITE" == 'True' || "$DEPLOY_WEBSITE" == 'true' ]]; then
+    if [[ "$DEPLOY_WEBSITE" == 'True' ]]; then
       deploy_web_services
     fi
-    if [[ "$DEPLOY_LUCID" == 'True' || "$DEPLOY_LUCID" == 'true' ]]; then
+    if [[ "$DEPLOY_LUCID" == 'True' ]]; then
       deploy_lucid
     fi
   }
