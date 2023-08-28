@@ -345,7 +345,6 @@
          --set services.dbsync.db.persistence.size="$DBSYNC_STORAGE_SIZE" \
          --set services.redis.secret.REDIS_PASSWORD="$REDIS_PASSWORD" \
          --set-file configurationFiles.config=./src/pool/config/$CARDANO_NETWORK/config.json \
-         --set-file configurationFiles.ogmiosConfig=./src/pool/config/$CARDANO_NETWORK/config.ogmios.json \
          --set-file configurationFiles.dbSyncConfig=./src/pool/config/$CARDANO_NETWORK/dbsync-config.json \
          --set-file configurationFiles.topology=./src/pool/config/$CARDANO_NETWORK/topology.relay.json \
          --set image.tag="$CI_APPLICATION_TAG-$CARDANO_NETWORK" \
@@ -574,7 +573,7 @@
   }
 
   function deploy_services() {
-    if [[ "$DEPLOY_CARDANO_SERVICES" == 'True' || "$DEPLOY_CARDANO_SERVICES" == 'true' ]]; then
+    if [[ "$DEPLOY_CARDANO_SERVICES" == 'True' ]]; then
       deploy_cardano_configs
       deploy_relays
       deploy_producer
