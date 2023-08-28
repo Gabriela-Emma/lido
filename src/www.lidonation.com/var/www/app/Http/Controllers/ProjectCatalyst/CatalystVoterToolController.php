@@ -235,7 +235,7 @@ class CatalystVoterToolController extends Controller
         }
 
         if ($param == 'completedProposals') {
-            $user_options['filters'][] = "proposals_completed > 0 AND proposals.fund.id = {$this->fund?->id}";
+            $user_options['filters'][] = "proposals_completed != 0";
         }
 
         $results = [];
@@ -259,7 +259,10 @@ class CatalystVoterToolController extends Controller
             $offset += $batchSize;
         } while (count($currentBatch) == $batchSize);
 
-        $proposals = collect($results)->map(fn ($u) => $u['proposals'][0]['id'])->unique();
+        $proposals = collect($results)
+        ->flatMap(fn ($u) => $u['proposals'])->filter(fn($p) => $p['fund']['id'] != 1)
+        ->all();
+        dd($proposals);
 
         if ($inHouse) {
             return count($proposals);

@@ -48,7 +48,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { computed, onMounted, ref, watch, onBeforeUnmount } from 'vue';
 import Search from '../Shared/Components/Search.vue';
 import Proposal from '../models/proposal';
 import Proposals from '../modules/proposals/Proposals.vue';
@@ -88,6 +88,7 @@ const props = withDefaults(
             data: Proposal[]
         };
     }>(), {
+    filterPerPage: 4
 });
 
 let searchRender = ref(0);
@@ -99,19 +100,22 @@ let challengeFilterRef = ref<number>(props.challengeFilter);
 let perPageRef = ref<number>(props.perPage);
 let filterRef = ref(props.currentFilter);
 const proposalStore = useProposalsStore();
-proposalStore.viewType = 'card';
+proposalStore.setViewType('card');
 
-if (window.innerWidth <= 640) {
-    filterPerPageRef.value = 2;
-    query();
-} else if (window.innerWidth <= 1024 && window.innerWidth > 640) {
-    filterPerPageRef.value = 3;
-    query();
-} else {
-    filterPerPageRef.value = 4;
-    query();
+
+let handleResize = () => {
+    proposalStore.viewType = 'card';
+    if (window.innerWidth <= 640) {
+        filterPerPageRef.value = 2;
+        query();
+    } else if (window.innerWidth <= 1024 && window.innerWidth > 640) {
+        filterPerPageRef.value = 3;
+        query();
+    } else {
+        filterPerPageRef.value = 4;
+        query();
+    }
 }
-
 
 // Watch the search value for changes and trigger the query function
 watch([search, filterRef], () => {
@@ -172,6 +176,14 @@ function query() {
         // @ts-ignore
         window?.fathom?.trackGoal(VARIABLES.TRACKER_ID_GROUPS, 0);
     }
-
 }
+
+onMounted(() => {
+    window.addEventListener('resize', handleResize);
+    handleResize();
+})
+
+onBeforeUnmount(() => {
+    window.removeEventListener('resize', handleResize);
+})
 </script>
