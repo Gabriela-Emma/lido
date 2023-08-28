@@ -345,7 +345,6 @@
          --set services.dbsync.db.persistence.size="$DBSYNC_STORAGE_SIZE" \
          --set services.redis.secret.REDIS_PASSWORD="$REDIS_PASSWORD" \
          --set-file configurationFiles.config=./src/pool/config/$CARDANO_NETWORK/config.json \
-         --set-file configurationFiles.ogmiosConfig=./src/pool/config/$CARDANO_NETWORK/config.ogmios.json \
          --set-file configurationFiles.dbSyncConfig=./src/pool/config/$CARDANO_NETWORK/dbsync-config.json \
          --set-file configurationFiles.topology=./src/pool/config/$CARDANO_NETWORK/topology.relay.json \
          --set image.tag="$CI_APPLICATION_TAG-$CARDANO_NETWORK" \
@@ -574,39 +573,36 @@
   }
 
   function deploy_services() {
-    if [[ "$DEPLOY_CARDANO_SERVICES" == 'True' || "$DEPLOY_CARDANO_SERVICES" == 'true' ]]; then
+    if [[ "$DEPLOY_CARDANO_SERVICES" == 'True' ]]; then
       deploy_cardano_configs
       deploy_relays
       deploy_producer
     fi  
-    if [[ "$DEPLOY_CARDANO_RELAYS" == 'True' || "$DEPLOY_CARDANO_RELAYS" == 'true' ]]; then
+    if [[ "$DEPLOY_CARDANO_RELAYS" == 'True' ]]; then
       deploy_relays
     fi
-    if [[ "$DEPLOY_CARDANO_PRODUCER" == 'True' || "$DEPLOY_CARDANO_PRODUCER" == 'true' ]]; then
+    if [[ "$DEPLOY_CARDANO_PRODUCER" == 'True' ]]; then
       deploy_producer
     fi
-    if [[ "$DEPLOY_CARDANO_CONFIGS" == 'True' || "$DEPLOY_CARDANO_CONFIGS" == 'true' ]]; then
+    if [[ "$DEPLOY_CARDANO_CONFIGS" == 'True' ]]; then
       deploy_cardano_configs
     fi
-    if [[ "$DEPLOY_CARDANO_TX_SUBMIT" == 'True' || "$DEPLOY_CARDANO_TX_SUBMIT" == 'true' ]]; then
+    if [[ "$DEPLOY_CARDANO_TX_SUBMIT" == 'True' ]]; then
       deploy_tx_sumit_api
     fi
-    if [[ "$DEPLOY_CARDANO_OGMIOS" == 'True' || "$DEPLOY_CARDANO_OGMIOS" == 'true' ]]; then
+    if [[ "$DEPLOY_CARDANO_OGMIOS" == 'True' ]]; then
       deploy_ogmios
     fi
-    if [[ "$DEPLOY_CARDANO_KUPO" == 'True' || "$DEPLOY_CARDANO_KUPO" == 'true' ]]; then
+    if [[ "$DEPLOY_CARDANO_KUPO" == 'True' ]]; then
       deploy_kupo
     fi
-    if [[ "$DEPLOY_CARDANO_CNCLI" == 'True' || "$DEPLOY_CARDANO_CNCLI" == 'true' ]]; then
-      deploy_tx_cncli
-    fi
-    if [[ "$DEPLOY_CARDANO_DBSYNC" == 'True' || "$DEPLOY_CARDANO_DBSYNC" == 'true' ]]; then
+    if [[ "$DEPLOY_CARDANO_DBSYNC" == 'True' ]]; then
       deploy_dbsync
     fi
-    if [[ "$DEPLOY_WEBSITE" == 'True' || "$DEPLOY_WEBSITE" == 'true' ]]; then
+    if [[ "$DEPLOY_WEBSITE" == 'True' ]]; then
       deploy_web_services
     fi
-    if [[ "$DEPLOY_LUCID" == 'True' || "$DEPLOY_LUCID" == 'true' ]]; then
+    if [[ "$DEPLOY_LUCID" == 'True' ]]; then
       deploy_lucid
     fi
   }
@@ -1006,25 +1002,6 @@ cnode:
             || ($DEPLOY_CARDANO_RELAYS == "True")
             || ($DEPLOY_CARDANO_PRODUCER == "True")'
 
-ogmios:
-  stage: build
-  image: docker:20.10.12-git
-  retry: 1
-  cache: {}
-  script:
-    - *auto_devops_custom
-    - |
-      docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
-      docker build --network host -f cncli.Dockerfile \
-      -t "$CI_APPLICATION_REPOSITORY/cncli:$CI_APPLICATION_TAG" \
-      -t "$CI_APPLICATION_REPOSITORY/cncli:latest" \
-      .
-      docker push "$CI_APPLICATION_REPOSITORY/cncli:$CI_APPLICATION_TAG"
-      docker push "$CI_APPLICATION_REPOSITORY/cncli:latest"
-  rules:
-    - if: '$CI_COMMIT_BRANCH == "main" && $DEPLOY_CARDANO_CNCLI == "True"'
-    - if: '$CI_COMMIT_BRANCH != "main" && $DEPLOY_CARDANO_CNCLI == "True"'
-
 cdbsync:
   stage: build
   image: docker:24.0.2-git
@@ -1059,23 +1036,6 @@ cdbsync:
               ($DEPLOY_CARDANO_DBSYNC == "True")'
     - if: '$CI_COMMIT_BRANCH != "main" &&
               ($DEPLOY_CARDANO_DBSYNC == "True")'
-
-
-############ Test Jobs ###########
-##################################
-
-#test_phpunit:
-#  stage: test
-#  image: registry.lidonation.com/lidonation/lidonation/www.lidonation.com:latest
-#  retry: 1
-#  script:
-#    - |
-#      cd ./src/www.lidonation.com/var/www
-#      cp .env.example .env
-#      php artisan key:generate
-#      php artisan test
-#  rules:
-#    - when: on_success
 
 
 ########## Deploy to test env Jobs #########
@@ -1183,7 +1143,6 @@ preview:
               || ($DEPLOY_LUCID == "True" || $DEPLOY_LUCID == "true")
               )'
       when: manual
-
 
 ########## Deploy to prod env Jobs #########
 ############################################
