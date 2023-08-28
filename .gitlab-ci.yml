@@ -1061,23 +1061,6 @@ cdbsync:
               ($DEPLOY_CARDANO_DBSYNC == "True")'
 
 
-############ Test Jobs ###########
-##################################
-
-#test_phpunit:
-#  stage: test
-#  image: registry.lidonation.com/lidonation/lidonation/www.lidonation.com:latest
-#  retry: 1
-#  script:
-#    - |
-#      cd ./src/www.lidonation.com/var/www
-#      cp .env.example .env
-#      php artisan key:generate
-#      php artisan test
-#  rules:
-#    - when: on_success
-
-
 ########## Deploy to test env Jobs #########
 ############################################
 redis-test:
