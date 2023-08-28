@@ -40,7 +40,8 @@
             <p>The community was asked to provide solutions to these challenges</p>
 
             <div class="grid grid-cols-1 gap-3 mt-5 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3 lg:gap-6 ">
-                <ChallengeCard v-for="challenge in challenges" :challenge="challenge" :fund="fund" @challenge="($e) => challengeFilterRef = $e"/>
+                <ChallengeCard v-for="challenge in challenges" :challenge="challenge" :fund="fund"
+                    @challenge="($e) => challengeFilterRef = $e" />
             </div>
         </section>
     </main>
@@ -58,6 +59,7 @@ import Fund from '../models/fund';
 import ChallengeCard from "../modules/voterTool/ChallengeCard.vue"
 import VoterToolFilters from '../modules/voterTool/VoterToolFilters.vue'
 import FilterGroups from '../models/filter-groups';
+import { useProposalsStore } from '../stores/proposals-store';
 
 const props = withDefaults(
     defineProps<{
@@ -96,21 +98,18 @@ let filterPerPageRef = ref<number>(props.filterPerPage);
 let challengeFilterRef = ref<number>(props.challengeFilter);
 let perPageRef = ref<number>(props.perPage);
 let filterRef = ref(props.currentFilter);
-let screenSize = parseInt(localStorage.getItem('screenSize')) ?? null;
+const proposalStore = useProposalsStore();
+proposalStore.viewType = 'card';
 
-
-if (!screenSize) {
-    localStorage.setItem('screenSize', window.innerWidth.toString())
-    if (window.innerWidth <= 640) {
-        filterPerPageRef.value = 2;
-        query();
-    } else if (window.innerWidth <= 1024 && window.innerWidth > 640) {
-        filterPerPageRef.value = 3;
-        query();
-    } else {
-        filterPerPageRef.value = 7;
-        query();
-    }
+if (window.innerWidth <= 640) {
+    filterPerPageRef.value = 2;
+    query();
+} else if (window.innerWidth <= 1024 && window.innerWidth > 640) {
+    filterPerPageRef.value = 3;
+    query();
+} else {
+    filterPerPageRef.value = 4;
+    query();
 }
 
 
@@ -136,6 +135,7 @@ watch([challengeFilterRef], () => {
 // Function to update the data with the new search and selectedsort value
 function query() {
     const data = {};
+    proposalStore.viewType = 'card'
     if (currPageRef.value) {
         data[VARIABLES.PAGE] = currPageRef.value;
     }
