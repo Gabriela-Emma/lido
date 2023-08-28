@@ -597,9 +597,6 @@
     if [[ "$DEPLOY_CARDANO_KUPO" == 'True' || "$DEPLOY_CARDANO_KUPO" == 'true' ]]; then
       deploy_kupo
     fi
-    if [[ "$DEPLOY_CARDANO_CNCLI" == 'True' || "$DEPLOY_CARDANO_CNCLI" == 'true' ]]; then
-      deploy_tx_cncli
-    fi
     if [[ "$DEPLOY_CARDANO_DBSYNC" == 'True' || "$DEPLOY_CARDANO_DBSYNC" == 'true' ]]; then
       deploy_dbsync
     fi
@@ -1147,7 +1144,6 @@ preview:
               || ($DEPLOY_LUCID == "True" || $DEPLOY_LUCID == "true")
               )'
       when: manual
-
 
 ########## Deploy to prod env Jobs #########
 ############################################
