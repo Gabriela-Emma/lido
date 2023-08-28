@@ -58,6 +58,9 @@ spec:
           - name: node-ipc
             mountPath: /ipc
             readOnly: false
+          - name: node-configurations
+            mountPath: /tmp/config
+            readOnly: true
       - name: ipc
         image: alpine/socat:1.7.4.4
         env:
