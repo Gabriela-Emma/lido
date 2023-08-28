@@ -356,32 +356,6 @@
          --version="$APP_VERSION"
   }
 
-  function deploy_cncli() {
-    DEPLOYMENT_NAME="$AUTO_DEVOPS_APP_PREFIX-cardano-cncli.$CI_ENVIRONMENT_SLUG"
-
-    helm upgrade "$DEPLOYMENT_NAME" ./chart/cncli \
-      --wait \
-      --install \
-      --atomic \
-      -f ./chart/values.yaml \
-      --timeout 300s \
-      --set-file configurationFiles.topology.relay=./src/pool/config/$CARDANO_NETWORK/topology.relay.json \
-      --set-file configurationFiles.topology.producer=./src/pool/config/$CARDANO_NETWORK/topology.producer.json \
-      --set-file configurationFiles.testnetByronGenesis=./src/pool/config/build/preview-byron-genesis.json \
-      --set-file configurationFiles.testnetShelleyGenesis=./src/pool/config/build/preview-shelley-genesis.json \
-      --set-file configurationFiles.testnetShelleyGenesis=./src/pool/config/build/preview-conway-genesis.json \
-      --set-file configurationFiles.testnetAlonzoGenesis=./src/pool/config/build/preview-alonzo-genesis.json \
-      --set-file configurationFiles.mainnetShelleyGenesis=./src/pool/config/build/mainnet-shelley-genesis.json \
-      --set-file configurationFiles.mainnetAlonzoGenesis=./src/pool/config/build/mainnet-alonzo-genesis.json \
-      --set-file configurationFiles.mainnetAlonzoGenesis=./src/pool/config/build/mainnet-conway-genesis.json \
-      --set image.tag="$CI_APPLICATION_TAG" \
-      --set image.pullSecret="$secret_name" \
-      --set namespace=${KUBE_NAMESPACE} \
-      --namespace="$KUBE_NAMESPACE" \
-      --create-namespace \
-      --version="$APP_VERSION"
-  }
-
   function deploy_kupo() {
     DEPLOYMENT_NAME="$AUTO_DEVOPS_APP_PREFIX-cardano-kupo.$CI_ENVIRONMENT_SLUG"
 
@@ -392,15 +366,21 @@
       -f ./chart/values.yaml \
       --timeout 300s \
       --set services.cardano.config.NODE_PORT="$CARDANO_NODE_PORT" \
-      --set-file configurationFiles.topology.relay=./src/pool/config/$CARDANO_NETWORK/topology.relay.json \
-      --set-file configurationFiles.topology.producer=./src/pool/config/$CARDANO_NETWORK/topology.producer.json \
-      --set-file configurationFiles.testnetByronGenesis=./src/pool/config/build/preview-byron-genesis.json \
-      --set-file configurationFiles.testnetShelleyGenesis=./src/pool/config/build/preview-shelley-genesis.json \
-      --set-file configurationFiles.testnetShelleyGenesis=./src/pool/config/build/preview-conway-genesis.json \
-      --set-file configurationFiles.testnetAlonzoGenesis=./src/pool/config/build/preview-alonzo-genesis.json \
-      --set-file configurationFiles.mainnetShelleyGenesis=./src/pool/config/build/mainnet-shelley-genesis.json \
-      --set-file configurationFiles.mainnetAlonzoGenesis=./src/pool/config/build/mainnet-alonzo-genesis.json \
-      --set-file configurationFiles.mainnetAlonzoGenesis=./src/pool/config/build/mainnet-conway-genesis.json \
+      --set namespace=${KUBE_NAMESPACE} \
+      --namespace="$KUBE_NAMESPACE" \
+      --create-namespace
+  }
+
+  function deploy_ogmios() {
+    DEPLOYMENT_NAME="$AUTO_DEVOPS_APP_PREFIX-cardano-ogmios.$CI_ENVIRONMENT_SLUG"
+
+    helm upgrade "$DEPLOYMENT_NAME" ./chart/ogmios \
+      --wait \
+      --install \
+      --atomic \
+      -f ./chart/values.yaml \
+      --timeout 300s \
+      --set services.cardano.config.NODE_PORT="$CARDANO_NODE_PORT" \
       --set namespace=${KUBE_NAMESPACE} \
       --namespace="$KUBE_NAMESPACE" \
       --create-namespace
@@ -611,8 +591,8 @@
     if [[ "$DEPLOY_CARDANO_TX_SUBMIT" == 'True' || "$DEPLOY_CARDANO_TX_SUBMIT" == 'true' ]]; then
       deploy_tx_sumit_api
     fi
-    if [[ "$DEPLOY_CARDANO_CNCLI" == 'True' || "$DEPLOY_CARDANO_CNCLI" == 'true' ]]; then
-      deploy_cncli
+    if [[ "$DEPLOY_CARDANO_OGMIOS" == 'True' || "$DEPLOY_CARDANO_OGMIOS" == 'true' ]]; then
+      deploy_ogmios
     fi
     if [[ "$DEPLOY_CARDANO_KUPO" == 'True' || "$DEPLOY_CARDANO_KUPO" == 'true' ]]; then
       deploy_kupo
@@ -674,9 +654,9 @@ variables:
   DEPLOY_CARDANO_TX_SUBMIT:
     value: 'False'
     description: 'Install tx submit api.'
-  DEPLOY_CARDANO_CNCLI:
+  DEPLOY_CARDANO_OGMIOS:
     value: 'False'
-    description: 'Install cncli services.'
+    description: 'Install ogmios services.'
   DEPLOY_CARDANO_KUPO:
     value: 'False'
     description: 'Install kupo services.'
@@ -738,6 +718,13 @@ workflow:
   script:
     - *setup
     - deploy_kupo
+  rules: *infra_rules
+  
+.deploy_ogmios: &deploy_ogmios
+  <<: *deploy_template
+  script:
+    - *setup
+    - deploy_ogmios
   rules: *infra_rules
 
 .deploy_postgres_cdbsync: &deploy_postgres_cdbsync
@@ -1019,14 +1006,11 @@ cnode:
             || ($DEPLOY_CARDANO_RELAYS == "True")
             || ($DEPLOY_CARDANO_PRODUCER == "True")'
 
-cncli:
+ogmios:
   stage: build
   image: docker:20.10.12-git
   retry: 1
   cache: {}
-  needs:
-    - job: cnode_base
-      optional: true
   script:
     - *auto_devops_custom
     - |
@@ -1119,6 +1103,17 @@ deploy-kupo-preview:
   rules:
     - if: '$CI_COMMIT_BRANCH == "main" && $DEPLOY_CARDANO_KUPO == "True"'
     - if: '$CI_COMMIT_BRANCH != "main" && $DEPLOY_CARDANO_KUPO == "True"'
+      when: manual
+
+deploy-ogmios-preview:
+  <<: *deploy_ogmios
+  stage: preview
+  needs: []
+  environment:
+    name: preview
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main" && $DEPLOY_CARDANO_OGMIOS == "True"'
+    - if: '$CI_COMMIT_BRANCH != "main" && $DEPLOY_CARDANO_OGMIOS == "True"'
       when: manual
 
 postgres-web-test:
@@ -1218,6 +1213,18 @@ deploy-kupo-mainnet:
   rules:
     - if: '$CI_COMMIT_BRANCH == "main" && $DEPLOY_CARDANO_KUPO == "True"'
     - if: '$CI_COMMIT_BRANCH != "main" && $DEPLOY_CARDANO_KUPO == "True"'
+      when: manual
+
+deploy-ogmios-mainnet:
+  <<: *deploy_ogmios
+  stage: mainnet
+  needs:
+    - deploy-ogmios-preview
+  environment:
+    name: mainnet
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main" && $DEPLOY_CARDANO_OGMIOS == "True"'
+    - if: '$CI_COMMIT_BRANCH != "main" && $DEPLOY_CARDANO_OGMIOS == "True"'
       when: manual
 
 postgres-web-prod:

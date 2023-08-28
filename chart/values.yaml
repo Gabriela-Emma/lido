@@ -55,6 +55,10 @@ services:
     persistence:
       size: 200Gi
       storageClass: longhorn
+  ogmios:
+    image:
+      repository: cardanosolutions/ogmios
+      tag: v6.0.0
   redis:
     secret:
       REDIS_PASSWORD:
