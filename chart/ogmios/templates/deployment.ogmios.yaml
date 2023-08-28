@@ -68,6 +68,18 @@ spec:
           - name: node-configurations
             mountPath: /tmp/config
             readOnly: true
+      - name: sidecar
+        image: busybox:1.28
+        args:
+          - sleep
+          - "2592000"
+        volumeMounts:
+          - mountPath: /ipc
+            name: node-ipc
+          - name: "{{ $.Chart.Name }}-1-pv"
+            mountPath: /config
+            subPath: config
+            readOnly: false
       - name: ipc
         image: alpine/socat:1.7.4.4
         env:
