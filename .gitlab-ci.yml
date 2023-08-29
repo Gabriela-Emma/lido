@@ -125,98 +125,6 @@
     else
       export ANNOTATIONS='traefik-redirect-http-to-https@kubernetescrd\,traefik-default-headers@kubernetescrd'
     fi
-
-    helm template "$DEPLOYMENT_NAME" ./chart/lidonation.com \
-      -f ./chart/values.yaml \
-      --set application.track="$track" \
-      --set GOOGLE_CLOUD_KEY_FILE="$GOOGLE_CLOUD_KEY_FILE" \
-      --set certmanager.server="$cert_server" \
-      --set services.queue.replicaCount="$AUTO_DEVOPS_QUEUE_REPLICAS_COUNT" \
-      --set services.ncdb.ingress.host="$NCDB_WEB_HOST" \
-      --set services.ncdb.redisUrl="redis://:${REDIS_PASSWORD}@redis-master:6379/4" \
-      --set services.web.certificate.host="$AUTO_DEVOPS_WEB_HOST" \
-      --set services.web.ingress.host="$AUTO_DEVOPS_WEB_HOST" \
-      --set services.web.ingress.hosts[0]="$AUTO_DEVOPS_WEB_DOMAIN" \
-      --set services.web.ingress.hosts[1]="$AUTO_DEVOPS_DOMAIN" \
-      --set services.web.ingress.tls[0].secretName="lidonation-com-tls" \
-      --set services.web.ingress.tls[0].hosts[0]="$AUTO_DEVOPS_WEB_DOMAIN" \
-      --set services.web.ingress.tls[0].hosts[1]="$AUTO_DEVOPS_DOMAIN" \
-      --set services.web.replicaCount="$replicas" \
-      --set services.web.ingress.annotations."traefik\.ingress\.kubernetes\.io\/router\.middlewares"="$ANNOTATIONS" \
-      --set services.web.service.url="$AUTO_DEVOPS_WEB_HOST" \
-      --set services.web.secret.app_key="$APP_KEY" \
-      --set services.web.config.ANALYTICS_ID="$ANALYTICS_ID" \
-      --set services.web.config.APP_URL="$AUTO_DEVOPS_WEB_HOST" \
-      --set services.web.config.BLOCKFROST_PROJECT_ID="$BLOCKFROST_PROJECT_ID" \
-      --set services.web.config.BLOCKFROST_BASE_URL="$BLOCKFROST_BASE_URL" \
-      --set services.web.config.CLOUDFLARE_TOKEN="$CLOUDFLARE_TOKEN" \
-      --set services.web.config.CARDANO_MINT_PAYMENT_ADDRESS="$CARDANO_MINT_PAYMENT_ADDRESS" \
-      --set services.web.config.CARDANO_PHUFFY_TREASURER_ADDRESS="$CARDANO_PHUFFY_TREASURER_ADDRESS" \
-      --set services.web.config.CARDANO_PHUFFY_GOVERNOR_ADDRESS="$CARDANO_PHUFFY_GOVERNOR_ADDRESS" \
-      --set services.web.config.CARDANO_PHUFFY_ESCROW_ADDRESS="$CARDANO_PHUFFY_ESCROW_ADDRESS" \
-      --set services.web.config.CARDANO_MINT_POLICY_ID="$CARDANO_MINT_POLICY_ID" \
-      --set services.web.config.CARDANO_NETWORK_ID="$CARDANO_NETWORK_ID" \
-      --set services.web.config.CARDANO_LIDO_DELEGATE_POLICY_ID="$CARDANO_LIDO_DELEGATE_POLICY_ID" \
-      --set services.web.config.CARDANO_PHUFFY_VOTER_POLICY_ID="$CARDANO_PHUFFY_VOTER_POLICY_ID" \
-      --set services.web.config.CARDANO_POOL_HASH="$CARDANO_POOL_HASH" \
-      --set services.web.config.CARDANO_NETWORK_ARGUMENT="$CARDANO_NETWORK_ARGUMENT" \
-      --set services.web.config.CARDANO_NETWORK="$CARDANO_NETWORK" \
-      --set services.web.config.CARDANO_PHUFFY_CAUSE_PAYMENT_ADDRESS="$CARDANO_PHUFFY_CAUSE_PAYMENT_ADDRESS" \
-      --set services.web.config.CARDANO_PHUFFY_COIN_POLICY_ID="$CARDANO_PHUFFY_COIN_POLICY_ID" \
-      --set services.web.config.CARDANO_BLOCK_EXPLORER="$CARDANO_BLOCK_EXPLORER" \
-      --set services.web.config.COIN_MARKET_CAP_API_KEY="$COIN_MARKET_CAP_API_KEY" \
-      --set services.web.config.CATALYST_REPORTING_SPREADSHEET_ID="$CATALYST_REPORTING_SPREADSHEET_ID" \
-      --set services.web.config.FACEBOOK_APP_ID="$FACEBOOK_APP_ID" \
-      --set services.web.config.GOOGLE_CLIENT_ID="$GOOGLE_CLIENT_ID" \
-      --set services.web.config.GOOGLE_CLIENT_SECRET="$GOOGLE_CLIENT_SECRET" \
-      --set services.web.config.KUBERNETES_NAMESPACE="$KUBE_NAMESPACE" \
-      --set services.web.config.MAILCHIMP_APIKEY="$MAILCHIMP_APIKEY" \
-      --set services.web.config.MAILGUN_SECRET="$MAILGUN_SECRET" \
-      --set services.web.config.MAILCHIMP_LIST_ID="$MAILCHIMP_LIST_ID" \
-      --set services.web.config.POSTGRESQL_WEB_USER="$POSTGRESQL_WEB_USER" \
-      --set services.web.config.ZOOM_DEFAULT_MEETING_USER="$ZOOM_DEFAULT_MEETING_USER" \
-      --set services.web.secret.zoom_api_key="$ZOOM_CLIENT_KEY" \
-      --set services.web.secret.zoom_api_secret="$ZOOM_CLIENT_SECRET" \
-      --set services.web.secret.RECAPTCHA_V3_SECRET_KEY="$RECAPTCHA_V3_SECRET_KEY" \
-      --set services.web.secret.RECAPTCHA_V3_SITE_KEY="$RECAPTCHA_V3_SITE_KEY" \
-      --set services.web.secret.MAIL_USERNAME="$MAIL_USERNAME" \
-      --set services.web.secret.MAIL_PASSWORD="$MAIL_PASSWORD" \
-      --set services.web.secret.DEEPL_AUTH_KEY="$DEEPL_AUTH_KEY" \
-      --set services.web.secret.INSPECTOR_INGESTION_KEY="$INSPECTOR_INGESTION_KEY" \
-      --set services.web.secret.MEILISEARCH_KEY="$MEILISEARCH_KEY" \
-      --set services.web.secret.STRIPE_SK="$STRIPE_SK" \
-      --set services.web.secret.STRIPE_PK="$STRIPE_PK" \
-      --set services.web.secret.TWITTER_CONSUMER_SECRET="$TWITTER_CONSUMER_SECRET" \
-      --set services.web.secret.TWITTER_CONSUMER_KEY="$TWITTER_CONSUMER_KEY" \
-      --set services.web.secret.TWITTER_ACCESS_TOKEN_SECRET="$TWITTER_ACCESS_TOKEN_SECRET" \
-      --set services.web.secret.TWITTER_ACCESS_TOKEN="$TWITTER_ACCESS_TOKEN" \
-      --set services.web.secret.TWITTER_BEARER_TOKEN="$TWITTER_BEARER_TOKEN" \
-      --set services.web.secret.TWITTER_OAUTH_CLIENT_ID="$TWITTER_OAUTH_CLIENT_ID" \
-      --set services.web.secret.TWITTER_OAUTH_CLIENT_SECRET="$TWITTER_OAUTH_CLIENT_SECRET" \
-      --set services.web.secret.TWITTER_OAUTH_CALLBACK_URL="$TWITTER_OAUTH_CALLBACK_URL" \
-      --set services.web_db.secret.POSTGRESQL_PASSWORD="$POSTGRESQL_WEB_PASSWORD" \
-      --set services.web_db.secret.POSTGRESQL_POSTGRES_PASSWORD="$POSTGRESQL_WEB_POSTGRES_PASSWORD" \
-      --set services.dbsync.db.secret.POSTGRESQL_PASSWORD="$POSTGRESQL_DB_SYNC_PASSWORD" \
-      --set services.dbsync.db.secret.POSTGRESQL_POSTGRES_PASSWORD="$POSTGRESQL_DB_SYNC_POSTGRES_PASSWORD" \
-      --set services.redis.secret.REDIS_PASSWORD="$REDIS_PASSWORD" \
-      --set services.cardano.replicaCount="$replicas" \
-      --set services.cardano.image.repository="$CI_APPLICATION_REPOSITORY/cardano" \
-      --set services.cardano.config.METADATA_URL="$METADATA_URL" \
-      --set services.cardano.config.NETWORK_ARGUMENT="$CARDANO_NETWORK_ARGUMENT" \
-      --set services.cardano.config.CARDANO_NETWORK="$CARDANO_NETWORK" \
-      --set services.cardano.config.NODE_PORT="$CARDANO_NODE_PORT" \
-      --set services.cardano.config.RELAY2_PORT="$RELAY2_PORT" \
-      --set services.cardano.config.POOL_ID="$POOL_ID" \
-      --set services.cardano.config.STAKE_ADDR="$STAKE_ADDR" \
-      --set services.cardano.config.PAYMENT_ADDR="$PAYMENT_ADDR" \
-      --set services.elasticsearch.realm.user="$ES_ADMIN_USER" \
-      --set image.tag="$CI_APPLICATION_TAG" \
-      --set image.pullSecret="$secret_name" \
-      --set namespace=${KUBE_NAMESPACE} \
-      --namespace="$KUBE_NAMESPACE" \
-      --version="$APP_VERSION"
-
-
     
     helm upgrade "$DEPLOYMENT_NAME" ./chart/lidonation.com \
       --wait \
@@ -343,7 +251,6 @@
          --set services.dbsync.graphql.ingress.host="$DBSYNC_GRAPHQL_HOST" \
          --set services.dbsync.hasura.ingress.host="$DBSYNC_HASURA_HOST" \
          --set services.dbsync.db.persistence.size="$DBSYNC_STORAGE_SIZE" \
-         --set services.redis.secret.REDIS_PASSWORD="$REDIS_PASSWORD" \
          --set-file configurationFiles.config=./src/pool/config/$CARDANO_NETWORK/config.json \
          --set-file configurationFiles.dbSyncConfig=./src/pool/config/$CARDANO_NETWORK/dbsync-config.json \
          --set-file configurationFiles.topology=./src/pool/config/$CARDANO_NETWORK/topology.relay.json \
@@ -385,7 +292,6 @@
       --create-namespace
   }
 
-
   function deploy_lucid() {
     DEPLOYMENT_NAME="$AUTO_DEVOPS_APP_PREFIX-lucid.$CI_ENVIRONMENT_SLUG"
 
@@ -419,10 +325,6 @@
       --set postgresqlPostgresPassword="$POSTGRESQL_DB_SYNC_POSTGRES_PASSWORD" \
       --set postgresqlPassword="$POSTGRESQL_DB_SYNC_PASSWORD" \
       --set postgresqlDatabase="$POSTGRESQL_DB_SYNC_DB" \
-      --set services.dbsync.db.secret.POSTGRESQL_DB="$POSTGRESQL_DB_SYNC_DB" \
-      --set services.dbsync.db.secret.POSTGRESQL_PASSWORD="$POSTGRESQL_DB_SYNC_PASSWORD" \
-      --set services.dbsync.db.secret.POSTGRESQL_POSTGRES_PASSWORD="$POSTGRESQL_DB_SYNC_POSTGRES_PASSWORD" \
-      --set services.redis.secret.REDIS_PASSWORD="$REDIS_PASSWORD" \
       --set services.cardano.replicaCount="$replicas" \
       --set services.cardano.image.repository="$CI_APPLICATION_REPOSITORY/cardano" \
       --set services.cardano.config.AUTO_TOPOLOGY="$AUTO_TOPOLOGY" \
@@ -437,7 +339,6 @@
       --set services.cardano.config.PAYMENT_ADDR="$PAYMENT_ADDR" \
       --set services.cardano.config.KUBERNETES_NAMESPACE="$KUBE_NAMESPACE" \
       --set services.cardano.persistence.size="$CARDANO_NODE_STORAGE_SIZE" \
-      --set services.elasticsearch.realm.user="$ES_ADMIN_USER" \
       --set services.submitApi.image.repository="$CI_APPLICATION_REPOSITORY/cardano-submit-tx-api" \
       --set services.submitApi.networkArg="$CARDANO_NETWORK_ARGUMENT" \
       --set services.submitApi.ingress.host="$SUBMIT_API_HOST" \
@@ -451,7 +352,6 @@
       --version="$APP_VERSION"
   }
 
-  
   function deploy_cardano_configs() {
     DEPLOYMENT_NAME="$AUTO_DEVOPS_APP_PREFIX-cardano-configs.$CI_ENVIRONMENT_SLUG"
       
@@ -928,6 +828,28 @@ web:
     - if: '$CI_COMMIT_BRANCH == "main" && $DEPLOY_WEBSITE == "True"'
     - if: '$CI_COMMIT_BRANCH != "main" && $DEPLOY_WEBSITE == "True"'
       when: manual
+
+fortuna:
+  stage: .pre
+  image: docker:24.0.2-git
+  retry: 1
+  cache: { }
+  script:
+    - *auto_devops_custom
+    - |
+      docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
+      echo "Building fortuna Dockerfile..."
+      docker build --network host  \
+        -f ./src/fortuna.lidonation.com/Dockerfile -t "$CI_APPLICATION_REPOSITORY/fortuna.lidonation.com:$CI_APPLICATION_TAG" \
+        -t "$CI_APPLICATION_REPOSITORY/fortuna.lidonation.com:latest" ./src/fortuna.lidonation.com/.
+
+      echo "Pushing web to GitLab Container Registry..."
+      docker push "$CI_APPLICATION_REPOSITORY/fortuna.lidonation.com:$CI_APPLICATION_TAG"
+      docker push "$CI_APPLICATION_REPOSITORY/fortuna.lidonation.com:latest"
+      echo ""
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main" && $DEPLOY_FORTUNA == "True"'
+    - if: '$CI_COMMIT_BRANCH != "main" && $DEPLOY_FORTUNA == "True"'
 
 lucid:
   stage: .pre
