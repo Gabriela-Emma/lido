@@ -1,5 +1,5 @@
 <template>
-    <header-component titleName0="catalyst" titleName1="Projects" 
+    <header-component titleName0="catalyst" titleName1="by the Numbers"
         subTitle="View projects charts and filter results based on funds"/>
     <section class="flex flex-col gap-2 bg-primary-20">
         <section class="relative w-full px-8">
