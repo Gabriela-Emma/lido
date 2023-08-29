@@ -14,12 +14,9 @@ class CatalystVoter extends Model
 
     protected $appends = ['registrations'];
 
-    public function registrations(): Attribute
+    public function registrations()
     {
-        return Attribute::make(
-            get: fn () => CatalystRegistration::where('stake_pub', $this->stake_pub)
-                ->where('stake_key', $this->stake_key)
-                ->get()
-        );
+        return CatalystRegistration::where('stake_pub', $this->stake_pub)
+                ->where('stake_key', $this->stake_key);
     }
 }
