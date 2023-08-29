@@ -851,8 +851,8 @@ fortuna:
       docker push "$CI_APPLICATION_REPOSITORY/fortuna.lidonation.com:latest"
       echo ""
   rules:
-    - if: '$CI_COMMIT_BRANCH == "main" && $DEPLOY_FORTUNA == "True"'
-    - if: '$CI_COMMIT_BRANCH != "main" && $DEPLOY_FORTUNA == "True"'
+    - if: '$CI_COMMIT_BRANCH == "main" && $DEPLOY_CARDANO_FORTUNA == "True"'
+    - if: '$CI_COMMIT_BRANCH != "main" && $DEPLOY_CARDANO_FORTUNA == "True"'
 
 lucid:
   stage: .pre
