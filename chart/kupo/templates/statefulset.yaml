@@ -50,11 +50,11 @@ spec:
           ]
           resources:
             limits:
-              memory: 8192Mi
+              memory: 16384Mi
               cpu: 4
             requests:
               cpu: 800m
-              memory: 512Mi
+              memory: 2048Mi
           envFrom:
             - configMapRef:
                 name: "lidolovelace-cardano-configmap"
