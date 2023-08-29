@@ -559,6 +559,9 @@ variables:
   DEPLOY_CARDANO_DBSYNC:
     value: 'False'
     description: 'Install cardano dbsync services (ogmios, hasura, postgres, grapql)'
+  DEPLOY_CARDANO_FORTUNA:
+    value: 'False'
+    description: 'Install fortuna services.'
   CARDANO_DB_SYNC_BASE_IMAGE_VER:
     value: ''
     description: 'New tag for base image. Format V[N]'
