@@ -80,8 +80,8 @@
                         </a>
                     </li>
                     <li class="flow-root menu-item">
-                        <a class="px-1 py-3 text-white menu-link {{ request()->routeIs('projectCatalyst.dashboard') ? 'text-yellow-500' : '' }} hover:text-yellow-500"
-                           href="{{localizeRoute('projectCatalyst.dashboard')}}">
+                        <a class="px-1 py-3 text-white menu-link {{ request()->routeIs('catalystExplorer.charts') ? 'text-yellow-500' : '' }} hover:text-yellow-500"
+                           href="{{localizeRoute('catalystExplorer.charts')}}">
                             {{ $snippets->charts }}
                         </a>
                     </li>

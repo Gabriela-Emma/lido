@@ -190,7 +190,7 @@ return [
                     new Illuminate\Support\Fluent([
                         'title' => 'Charts',
                         'route_type' => 'route_name',
-                        'route' => 'projectCatalyst.dashboard',
+                        'route' => 'catalystExplorer.charts',
                     ]),
                     new Illuminate\Support\Fluent([
                         'title' => 'Monthly Reports',
