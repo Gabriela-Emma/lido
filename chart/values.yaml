@@ -45,6 +45,9 @@ services:
     storage:
       size: 10Gi
       storageClass: longhorn
+  fortuna:
+    secret:
+      FORTUNA_SEED:
   kibana:
     name: kibana
     version: 7.9.3
