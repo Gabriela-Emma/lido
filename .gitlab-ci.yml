@@ -246,8 +246,6 @@
          --set services.dbsync.db.secret.POSTGRESQL_DB="$POSTGRESQL_DB_SYNC_DB" \
          --set services.dbsync.db.secret.POSTGRESQL_PASSWORD="$POSTGRESQL_DB_SYNC_PASSWORD" \
          --set services.dbsync.db.secret.POSTGRESQL_POSTGRES_PASSWORD="$POSTGRESQL_DB_SYNC_POSTGRES_PASSWORD" \
-         --set services.dbsync.graphql.image.tag="$DBSYNC_GRAPHQL_IMAGE_TAG" \
-         --set services.dbsync.ogmios.image.tag="$DBSYNC_OGMIOS_IMAGE_TAG" \
          --set services.dbsync.graphql.ingress.host="$DBSYNC_GRAPHQL_HOST" \
          --set services.dbsync.hasura.ingress.host="$DBSYNC_HASURA_HOST" \
          --set services.dbsync.db.persistence.size="$DBSYNC_STORAGE_SIZE" \
