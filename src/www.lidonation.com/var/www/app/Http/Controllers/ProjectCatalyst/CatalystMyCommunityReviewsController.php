@@ -117,7 +117,7 @@ class CatalystMyCommunityReviewsController extends Controller
             // 'model_type' => Discussion::class,
         ]);
 
-        return to_route('catalystExplorer.myCommunityReviews');
+        return redirect()->back();
     }
 
     public function destroyResponse(Assessment $assessment, Request $request)
