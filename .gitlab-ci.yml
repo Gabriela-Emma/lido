@@ -950,12 +950,12 @@ cdbsync:
       
       docker build --network host -f cardano.dbSync.Dockerfile \
       --build-arg NETWORK_CONFIG="./src/pool/config/main/dbsync-config.json" \
-      --build-arg CARDANO_NETWORK="main" \
-      -t "$CI_APPLICATION_REPOSITORY/cardano-db-sync:$CI_APPLICATION_TAG-main" \
-      -t "$CI_APPLICATION_REPOSITORY/cardano-db-sync:latest-main" \
+      --build-arg CARDANO_NETWORK="mainnet" \
+      -t "$CI_APPLICATION_REPOSITORY/cardano-db-sync:$CI_APPLICATION_TAG-mainnet" \
+      -t "$CI_APPLICATION_REPOSITORY/cardano-db-sync:latest-mainnet" \
       .
-      docker push "$CI_APPLICATION_REPOSITORY/cardano-db-sync:$CI_APPLICATION_TAG-main"
-      docker push "$CI_APPLICATION_REPOSITORY/cardano-db-sync:latest-main"
+      docker push "$CI_APPLICATION_REPOSITORY/cardano-db-sync:$CI_APPLICATION_TAG-mainnet"
+      docker push "$CI_APPLICATION_REPOSITORY/cardano-db-sync:latest-mainnet"
   rules:
     - if: '$CI_COMMIT_BRANCH == "main" &&
               ($DEPLOY_CARDANO_DBSYNC == "True")'
