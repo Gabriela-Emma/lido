@@ -24,25 +24,25 @@ class CatalystChartsController extends Controller
     public Proposal|null $largestFundedProposalObject;
 
     public int|null $fundedOver75KCount;
-    
+
     public int|null $membersAwardedFundingCount;
-    
+
     public int|null $completedProposalsCount;
-    
+
     public int|null $fullyDisbursedProposalsCount;
 
     public $adaPowerRanges;
-    
+
     public function index(Request $request)
     {
         $this->setFilters($request);
 
         $this->setFund();
-        
+
         $this->setProposalsStats();
 
         $this->setSnapshotStats();
-        
+
         $props = [
             'adaPowerRanges' => $this->adaPowerRanges,
             'largestFundedProposalObject' => $this->largestFundedProposalObject,
@@ -54,15 +54,15 @@ class CatalystChartsController extends Controller
                 'fund' => $this->fundFilter,
                 ]
             ];
-            
+
             return Inertia::render('Charts', $props);
     }
-        
+
     protected function setFilters(Request $request)
     {
         $this->fundFilter = $request->input(CatalystExplorerQueryParams::FUNDS, null);
     }
-    
+
     protected function setFund()
     {
         $this->fund = !is_null($this->fundFilter)
@@ -74,7 +74,7 @@ class CatalystChartsController extends Controller
     {
         $fundIds = $this->fund?->fundChallenges()->pluck('id')
             ?? Proposal::query()->pluck('fund_id')->unique();
-        
+
         $proposalIds = !is_null($this->fund)
             ? Proposal::whereIn('fund_id', $this->fund->fundChallenges()->pluck('id'))->pluck('id')
             : Proposal::query()->pluck('id');
@@ -84,26 +84,26 @@ class CatalystChartsController extends Controller
             ->whereNotNull('funded_at')
             ->orderByDesc('amount_requested')
             ->first();
-            
+
         $this->fundedOver75KCount = Proposal::whereIn('id', $proposalIds)
             ->where('proposals.type', 'proposal')
             ->whereNotNull('funded_at')
             ->where('amount_requested', '>=', 75000)
             ->count();
-            
+
         $this->membersAwardedFundingCount = CatalystUser::whereHas('proposals',
             function ($q) use($fundIds) {
                 return $q->whereNotNull('funded_at')
                     ->whereIn('fund_id', $fundIds->toArray());
             })
             ->count();
-        
+
         $this->fullyDisbursedProposalsCount = Proposal::whereIn('id', $proposalIds)
             ->where('proposals.type', 'proposal')
             ->whereNotNull('funded_at')
             ->whereColumn('amount_requested', '=', 'amount_received')
             ->count();
-        
+
         $this->completedProposalsCount = Proposal::whereIn('id', $proposalIds)
             ->where('proposals.type', 'proposal')
             ->where('status', 'complete')
@@ -153,8 +153,13 @@ class CatalystChartsController extends Controller
                 WHEN voting_power > 1200000000000 THEN '> 15M'
                 WHEN voting_power > 2000000000000 THEN '> 20M'
                 END as range,  COUNT(*) as wallets, SUM(voting_power) as ada"
-            )->whereIn('catalyst_snapshot_id', $snapshotIds)->groupByRaw(1);
-        $adaPowerRangesCollection = $agg->get()->map(fn ($row) => [$row->range => [$row->wallets, $row->ada]])->collapse();
+            )->whereIn('catalyst_snapshot_id', $snapshotIds)
+            ->groupByRaw(1);
+
+        $adaPowerRangesCollection = $agg->get()
+        ->map(fn ($row) => [$row->range => [$row->wallets, $row->ada]])
+        ->collapse();
+
         // convert the collection to an associative array whose structure is fully representative of our front-end needs
         $adaPowerRangesFormattedArray = [];
         foreach ($adaPowerRangesCollection as $range => $value) {
@@ -167,6 +172,6 @@ class CatalystChartsController extends Controller
         // convert then order the array to collection and assing to the objects $adaPowerRanges property
         $this->adaPowerRanges = collect($adaPowerRangesFormattedArray)->sortBy(function ($value, $key) {
             return $value['2'];
-        });  
+        });
     }
 }
