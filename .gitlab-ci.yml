@@ -56,13 +56,11 @@
         --namespace="$KUBE_NAMESPACE" \
         --create-namespace \
         -f ./chart/values.postgresql.yaml \
-        --set global.postgresql.auth.postgresPassword="$POSTGRESQL_DBSYNC_POSTGRES_PASSWORD" \
-        --set global.postgresql.auth.database="$POSTGRESQL_DBSYNC_DB" \
-        --set global.postgresql.auth.password="$POSTGRESQL_DBSYNC_PASSWORD" \
-        --set global.pgpool.adminUsername="$POSTGRESQL_DBSYNC_PGPOOL_ADMIN_USERNAME" \
-        --set global.pgpool.adminPassword="$POSTGRESQL_DBSYNC_PGPOOL_ADMIN_PASSWORD" \
-        --set global.postgresql.repmgrPassword="$POSTGRESQL_DBSYNC_PGPOOL_ADMIN_PASSWORD" \
-        --set pgpool.replicaCount="$PGPOOL_REPLICAS" \
+        --set auth.postgresPassword="$POSTGRESQL_DBSYNC_POSTGRES_PASSWORD" \
+        --set auth.database="$POSTGRESQL_DBSYNC_DB" \
+        --set auth.password="$POSTGRESQL_DBSYNC_PASSWORD" \
+        --set auth.replicationPassword="$POSTGRESQL_DBSYNC_PGPOOL_ADMIN_PASSWORD" \
+        --set readReplicas.replicaCount="$PGPOOL_REPLICAS" \
         --set services.dbsync.hasura.replicaCount="$HASURA_REPLICAS" \
         --set services.dbsync.db.secret.POSTGRESQL_PASSWORD="$POSTGRESQL_DBSYNC_PASSWORD" \
         --set services.dbsync.db.secret.POSTGRESQL_POSTGRES_PASSWORD="$POSTGRESQL_DBSYNC_POSTGRES_PASSWORD" \
