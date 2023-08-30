@@ -68,6 +68,9 @@
                                             }"
                                         />
                                 </div>
+                                <div class="w-1/4">
+                                    <FundPicker v-model="filters.funds" class="border border-1 border-slate-300"/>
+                                </div>
                             </div>
 
                             <div
@@ -179,6 +182,7 @@ import Filters from "../../models/filters";
 import { VARIABLES } from "../../models/variables";
 import {watch, ref, inject} from "vue";
 import Pagination from "../../Shared/Components/Pagination.vue";
+import FundPicker from "../../modules/funds/FundPicker.vue";
 
 const $utils: any = inject('$utils');
 const props = withDefaults(
@@ -203,6 +207,7 @@ const props = withDefaults(
 let filtersRef = ref(props.filters);
 let currPageRef = ref<number>(props.currPage);
 let perPageRef = ref<number>(props.perPage);
+let filters = ref<Filters>(props.filters);
 
 watch([filtersRef], () => {
    query();
@@ -224,6 +229,9 @@ function query()
     }
     if (!filtersRef.value?.funded) {
         data[VARIABLES.FUNDED_PROPOSALS] = 0;
+    }
+    if (filtersRef.value?.funds) {
+        data[VARIABLES.FUNDS] = Array.from(filtersRef.value?.funds);
     }
 
     router.get(

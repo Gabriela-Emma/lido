@@ -8,6 +8,8 @@ use App\Models\Proposal;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
+use Illuminate\Support\Collection;
+use App\Enums\CatalystExplorerQueryParams;
 
 class CatalystMyProposalsController extends Controller
 {
@@ -16,6 +18,8 @@ class CatalystMyProposalsController extends Controller
     protected int $currentPage;
 
     protected ?bool $fundedProposalsFilter;
+
+    public Collection $fundsFilter;
 
     public function manage(Proposal $proposal)
     {
@@ -36,6 +40,7 @@ class CatalystMyProposalsController extends Controller
         $this->fundedProposalsFilter = $request->input('fp', false);
         $this->currentPage = $request->input('p', 1);
         $this->perPage = $request->input('l', 24);
+        $this->fundsFilter = $request->collect(CatalystExplorerQueryParams::FUNDS)->map(fn ($n) => intval($n));
 
         return Inertia::render('Auth/UserProposals', $this->data());
     }
@@ -44,6 +49,7 @@ class CatalystMyProposalsController extends Controller
     {
         $user = auth()->user();
         $user?->load('catalyst_users');
+        $fundsFilterArray = $this->fundsFilter->toArray();
 
         $catalystProfiles = $user->catalyst_users?->pluck('id');
 
@@ -51,12 +57,13 @@ class CatalystMyProposalsController extends Controller
         $query = Proposal::select('proposals.*')
         ->join('funds', 'proposals.fund_id', '=', 'funds.id')
         ->whereIn('proposals.user_id', $catalystProfiles)
+        ->whereHas('fund', function ($query) use ($fundsFilterArray) {
+            if (!empty($fundsFilterArray)) {
+                $query->whereIn('funds.parent_id', $fundsFilterArray);
+            }
+        })
         ->orderBy('funds.launched_at', 'DESC')
         ->orderBy('proposals.funded_at', 'DESC');
-
-        // dd($catalystProfiles);
-        // dump($query->getBindings());
-        // dd($query->get());
 
         $paginator = $query->paginate($this->perPage, ['*'], 'p')->setPath('/');
 
@@ -67,7 +74,10 @@ class CatalystMyProposalsController extends Controller
         $totalRemaining = ($budgetSummary - $totalDistributed);
 
         return [
-            'filters' => ['funded' => $this->fundedProposalsFilter],
+            'filters' => [
+                'funded' => $this->fundedProposalsFilter,
+                'funds' => $this->fundsFilter->toArray(),
+            ],
             'proposals' => $paginator->onEachSide(1)->toArray(),
             'totalDistributed' => $totalDistributed,
             'budgetSummary' => $budgetSummary,
