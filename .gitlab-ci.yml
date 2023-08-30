@@ -226,7 +226,7 @@
 
        echo "install $DEPLOYMENT_NAME via helm with cert manger $cert_server and $replicas replicas in $KUBE_NAMESPACE"       
 
-      if [ "${CI_ENVIRONMENT_NAME}" != "main" ]; then
+      if [ "${CI_ENVIRONMENT_NAME}" != "mainnet" ]; then
         export RESTORE_SNAPSHOT="$RESTORE_SNAPSHOT_TESTNET"
       fi
       if [ "${CI_ENVIRONMENT_NAME}" == "mainnet" ]; then
@@ -949,7 +949,7 @@ cdbsync:
       docker push "$CI_APPLICATION_REPOSITORY/cardano-db-sync:latest-preview"
       
       docker build --network host -f cardano.dbSync.Dockerfile \
-      --build-arg NETWORK_CONFIG="./src/pool/config/main/dbsync-config.json" \
+      --build-arg NETWORK_CONFIG="./src/pool/config/mainnet/dbsync-config.json" \
       --build-arg CARDANO_NETWORK="mainnet" \
       -t "$CI_APPLICATION_REPOSITORY/cardano-db-sync:$CI_APPLICATION_TAG-mainnet" \
       -t "$CI_APPLICATION_REPOSITORY/cardano-db-sync:latest-mainnet" \
