@@ -281,6 +281,7 @@ async function respondToReview()
     ),
     {
         preserveScroll: true,
+        preserveState: true,
         onSuccess: () => {
             respondingTo.value = null;
             respondingToResponse.value = null;
