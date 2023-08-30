@@ -2,7 +2,6 @@
 
 namespace App\Nova;
 
-use App\Enums\CatalystCurrencyEnum;
 use App\Models\CatalystSnapshot;
 use App\Models\Fund;
 use App\Nova\Actions\AddMetaData;
@@ -11,22 +10,18 @@ use App\Nova\Actions\AttachLink;
 use App\Nova\Actions\AttachTag;
 use App\Nova\Actions\EditMetaData;
 use App\Nova\Actions\PublishModel;
+use App\Nova\Actions\SyncSnapshotVotingPowers;
 use App\Scopes\PublishedScope;
 use Ebess\AdvancedNovaMediaLibrary\Fields\Images;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-use Laravel\Nova\Fields\BelongsTo;
-use Laravel\Nova\Fields\BelongsToMany;
-use Laravel\Nova\Fields\Color;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Markdown;
+use Laravel\Nova\Fields\MorphTo;
 use Laravel\Nova\Fields\Number;
-use Laravel\Nova\Fields\Select;
-use Laravel\Nova\Fields\Slug;
-use Laravel\Nova\Fields\Stack;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
@@ -80,78 +75,22 @@ class CatalystSnapshots extends Resource
     {
         return [
             ID::make(__('ID'), 'id')->sortable(),
-            Text::make(__('Title'))
-                ->sortable()
+
+            Text::make(__('Epoch'))->sortable(),
+
+            Number::make('Order')
                 ->required(),
-            Text::make(__('Slug'))->sortable(),
 
-            Text::make(__('Type'))->sortable(),
-            //            Text::make(__('Manager')),
-            Text::make(__('Meta Title'), 'meta_title')
-                ->hideFromIndex(),
-
-            Text::make(__('Label'), 'label')
-                ->resolveUsing(fn () => $this->getRawOriginal('label')),
-
-            Stack::make('Details', [
-                Text::make(__('Title'), 'title'),
-                Slug::make(__('Summary'), 'summary'),
-            ])->readonly(),
-            Select::make(__('Status'), 'status')->options([
-                'draft' => 'Draft',
-                'pending' => 'Pending',
-                'submit' => 'Submit',
-                'refine' => 'Finalize',
-                'assess' => 'Assess',
-                'qa' => 'Assess QA',
-                'governance' => 'Governance',
-                'in_progress' => 'In Progress',
-                'completed' => 'Completed',
-            ])->default(fn () => 'pending')->sortable(),
-            Select::make(__('Currency'), 'currency')->options([
-                CatalystCurrencyEnum::USD => CatalystCurrencyEnum::USD,
-                CatalystCurrencyEnum::ADA => CatalystCurrencyEnum::ADA,
-            ])->default(fn () => CatalystCurrencyEnum::USD)->sortable(),
-
-            DateTime::make('Launched At')
+            DateTime::make('Snapshot At')
                 ->sortable(),
 
-            Number::make('Amount')
-                ->required(),
+            MorphTo::make(__('Type'), 'model')
+            ->types([
+                Funds::class
+            ])->searchable()
+            ->filterable(),
 
-            // DateTime::make('Awarded At')
-            //     ->sortable()
-            //     ->displayUsing(fn ($value) => (!!$value ? Carbon::make($value)?->format('F d, Y') : '') ),
-
-            //            Currency::make(__('Amount'), 'amount')
-            //                ->currency('USD')
-            //                ->min(1)
-            //                ->sortable(),
             HasMany::make('Metadata', 'metas', Metas::class),
-
-            BelongsTo::make(__('Parent'), 'parent', Funds::class)
-                ->sortable()
-                ->nullable()
-                ->searchable()
-                ->hideFromIndex(),
-            Color::make(__('Color'))->nullable(),
-            new Panel('Media', self::mediaFields()),
-            new Panel('Content', self::contentFields()),
-            new Panel('Meta', $this->metaDataFields()),
-            BelongsToMany::make(__('Categories'), 'categories')
-                ->hideFromIndex()
-                ->searchable()->fields(function () {
-                    return [
-                        Text::make(__('Model'), 'model_type')
-                            ->default(function (NovaRequest $request) {
-                                return $request->model()::class;
-                            }),
-                    ];
-                }),
-            HasMany::make('Comments', 'comments', Rationales::class),
-            HasMany::make('Fund Challenges', 'fundChallenges', Funds::class),
-            HasMany::make('Sibling Challenges', 'siblingFundChallenges', Funds::class),
-            HasMany::make('Proposals', 'proposals', Proposals::class),
 
         ];
     }
@@ -194,15 +133,16 @@ class CatalystSnapshots extends Resource
     public function actions(Request $request)
     {
         return array_merge(
-            static::getGlobalActions(),
             [
+                (new SyncSnapshotVotingPowers),
                 (new AddMetaData),
                 (new EditMetaData(Fund::class)),
                 (new PublishModel),
                 (new AttachTag),
                 (new AttachCategory),
                 (new AttachLink),
-            ]
+            ],
+            static::getGlobalActions(),
         );
     }
 

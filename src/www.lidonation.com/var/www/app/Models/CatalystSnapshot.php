@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use App\Models\Traits\HasMetaData;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class CatalystSnapshot extends Model
 {
-    use HasFactory;
+    use HasFactory, HasMetaData;
 
     public $timestamps = false;
 
