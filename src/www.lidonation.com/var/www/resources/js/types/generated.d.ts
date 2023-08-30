@@ -133,11 +133,11 @@ status?: string | null;
 };
 export type ProposalRatingData = {
 id: number | null;
-rationale: string;
-rating: string;
+rationale: string | null;
+rating: string | null;
 meta_data: any;
-proposal: App.DataTransferObjects.ProposalData;
-community_review: App.DataTransferObjects.CommunityReviewData;
+proposal: App.DataTransferObjects.ProposalData | null;
+community_review: App.DataTransferObjects.CommunityReviewData | null;
 status?: string | null;
 };
 export type QuizData = {

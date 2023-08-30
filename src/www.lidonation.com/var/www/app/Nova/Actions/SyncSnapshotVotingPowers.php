@@ -5,15 +5,17 @@ namespace App\Nova\Actions;
 use App\Jobs\SyncCatalystVotingPowersJob;
 use App\Models\CatalystRegistration;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Collection;
 use Laravel\Nova\Actions\Action;
 use Laravel\Nova\Fields\ActionFields;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
-class SyncSnapshotVotingPowers extends Action
+class SyncSnapshotVotingPowers extends Action implements ShouldQueue
 {
-    use InteractsWithQueue, Queueable;
+    use InteractsWithQueue, Queueable, SerializesModels;
 
     /**
      * The displayable name of the action.
