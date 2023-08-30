@@ -56,17 +56,15 @@
         --namespace="$KUBE_NAMESPACE" \
         --create-namespace \
         -f ./chart/values.postgresql.yaml \
-        --set global.postgresql.auth.postgresPassword="$POSTGRESQL_DBSYNC_POSTGRES_PASSWORD" \
-        --set global.postgresql.auth.database="$POSTGRESQL_DBSYNC_DB" \
-        --set global.postgresql.auth.password="$POSTGRESQL_DBSYNC_PASSWORD" \
-        --set global.pgpool.adminUsername="$POSTGRESQL_DBSYNC_PGPOOL_ADMIN_USERNAME" \
-        --set global.pgpool.adminPassword="$POSTGRESQL_DBSYNC_PGPOOL_ADMIN_PASSWORD" \
-        --set global.postgresql.repmgrPassword="$POSTGRESQL_DBSYNC_PGPOOL_ADMIN_PASSWORD" \
-        --set pgpool.replicaCount="$PGPOOL_REPLICAS" \
+        --set auth.postgresPassword="$POSTGRESQL_DBSYNC_POSTGRES_PASSWORD" \
+        --set auth.database="$POSTGRESQL_DBSYNC_DB" \
+        --set auth.password="$POSTGRESQL_DBSYNC_PASSWORD" \
+        --set auth.replicationPassword="$POSTGRESQL_DBSYNC_PGPOOL_ADMIN_PASSWORD" \
+        --set readReplicas.replicaCount="$PGPOOL_REPLICAS" \
         --set services.dbsync.hasura.replicaCount="$HASURA_REPLICAS" \
         --set services.dbsync.db.secret.POSTGRESQL_PASSWORD="$POSTGRESQL_DBSYNC_PASSWORD" \
         --set services.dbsync.db.secret.POSTGRESQL_POSTGRES_PASSWORD="$POSTGRESQL_DBSYNC_POSTGRES_PASSWORD" \
-        --set persistence.size="$DBSYNC_POSTGRES_STORAGE_SIZE" \
+        --set primary.persistence.size="$DBSYNC_POSTGRES_STORAGE_SIZE" \
         --set primary.resources.limits.memory="$PRIMARY_MAX_MEM" \
         --set readReplicas.persistence.size="$DBSYNC_POSTGRES_STORAGE_SIZE" \
         --set readReplicas.replicaCount="$POSTGRES_READ_REPLICAS" \
@@ -199,7 +197,7 @@
       --set services.web.secret.TWITTER_OAUTH_CALLBACK_URL="$TWITTER_OAUTH_CALLBACK_URL" \
       --set services.web_db.secret.POSTGRESQL_PASSWORD="$POSTGRESQL_WEB_PASSWORD" \
       --set services.web_db.secret.POSTGRESQL_POSTGRES_PASSWORD="$POSTGRESQL_WEB_POSTGRES_PASSWORD" \
-      --set services.dbsync.db.secret.POSTGRESQL_PASSWORD="$POSTGRESQL_DB_SYNC_PASSWORD" \
+      --set services.dbsync.db.secret.POSTGRESQL_PASSWORD="$POSTGRESQL_DBSYNC_PASSWORD" \
       --set services.dbsync.db.secret.POSTGRESQL_POSTGRES_PASSWORD="$POSTGRESQL_DBSYNC_POSTGRES_PASSWORD" \
       --set services.redis.secret.REDIS_PASSWORD="$REDIS_PASSWORD" \
       --set services.cardano.replicaCount="$replicas" \
@@ -243,7 +241,6 @@
          --set postgresqlDatabase="$POSTGRESQL_DBSYNC_DB" \
          --set services.cardano.config.CARDANO_NETWORK="$CARDANO_NETWORK" \
          --set services.dbsync.restore_snapshot="$RESTORE_SNAPSHOT" \
-         --set services.dbsync.db.secret.POSTGRESQL_DB="$POSTGRESQL_DBSYNC_DB" \
          --set services.dbsync.db.secret.POSTGRESQL_PASSWORD="$POSTGRESQL_DBSYNC_PASSWORD" \
          --set services.dbsync.db.secret.POSTGRESQL_POSTGRES_PASSWORD="$POSTGRESQL_DBSYNC_POSTGRES_PASSWORD" \
          --set services.dbsync.graphql.ingress.host="$DBSYNC_GRAPHQL_HOST" \
@@ -320,9 +317,9 @@
       --timeout 300s \
       --set application.track="$track" \
       --set certmanager.server="$cert_server" \
-      --set postgresqlPostgresPassword="$POSTGRESQL_DB_SYNC_POSTGRES_PASSWORD" \
-      --set postgresqlPassword="$POSTGRESQL_DB_SYNC_PASSWORD" \
-      --set postgresqlDatabase="$POSTGRESQL_DB_SYNC_DB" \
+      --set postgresqlPostgresPassword="$POSTGRESQL_DBSYNC_POSTGRES_PASSWORD" \
+      --set postgresqlPassword="$POSTGRESQL_DBSYNC_PASSWORD" \
+      --set postgresqlDatabase="$POSTGRESQL_DBSYNC_DB" \
       --set services.cardano.replicaCount="$replicas" \
       --set services.cardano.image.repository="$CI_APPLICATION_REPOSITORY/cardano" \
       --set services.cardano.config.AUTO_TOPOLOGY="$AUTO_TOPOLOGY" \
@@ -403,12 +400,12 @@
        -f ./chart/values.yaml \
        --set application.track="$track" \
        --set certmanager.server="$cert_server" \
-       --set postgresqlPostgresPassword="$POSTGRESQL_DB_SYNC_POSTGRES_PASSWORD" \
-       --set postgresqlPassword="$POSTGRESQL_DB_SYNC_PASSWORD" \
-       --set postgresqlDatabase="$POSTGRESQL_DB_SYNC_DB" \
-       --set services.dbsync.db.secret.POSTGRESQL_DB="$POSTGRESQL_DB_SYNC_DB" \
-       --set services.dbsync.db.secret.POSTGRESQL_PASSWORD="$POSTGRESQL_DB_SYNC_PASSWORD" \
-       --set services.dbsync.db.secret.POSTGRESQL_POSTGRES_PASSWORD="$POSTGRESQL_DB_SYNC_POSTGRES_PASSWORD" \
+       --set postgresqlPostgresPassword="$POSTGRESQL_DBSYNC_POSTGRES_PASSWORD" \
+       --set postgresqlPassword="$POSTGRESQL_DBSYNC_PASSWORD" \
+       --set postgresqlDatabase="$POSTGRESQL_DBSYNC_DB" \
+       --set services.dbsync.db.secret.POSTGRESQL_DB="$POSTGRESQL_DBSYNC_DB" \
+       --set services.dbsync.db.secret.POSTGRESQL_PASSWORD="$POSTGRESQL_DBSYNC_PASSWORD" \
+       --set services.dbsync.db.secret.POSTGRESQL_POSTGRES_PASSWORD="$POSTGRESQL_DBSYNC_POSTGRES_PASSWORD" \
        --set services.redis.secret.REDIS_PASSWORD="$REDIS_PASSWORD" \
        --set services.cardano.replicaCount="$replicas" \
        --set services.cardano.image.repository="$CI_APPLICATION_REPOSITORY/cardano" \
@@ -441,12 +438,12 @@
        -f ./chart/values.yaml \
        --set application.track="$track" \
        --set certmanager.server="$cert_server" \
-       --set postgresqlPostgresPassword="$POSTGRESQL_DB_SYNC_POSTGRES_PASSWORD" \
-       --set postgresqlPassword="$POSTGRESQL_DB_SYNC_PASSWORD" \
-       --set postgresqlDatabase="$POSTGRESQL_DB_SYNC_DB" \
-       --set services.dbsync.db.secret.POSTGRESQL_DB="$POSTGRESQL_DB_SYNC_DB" \
-       --set services.dbsync.db.secret.POSTGRESQL_PASSWORD="$POSTGRESQL_DB_SYNC_PASSWORD" \
-       --set services.dbsync.db.secret.POSTGRESQL_POSTGRES_PASSWORD="$POSTGRESQL_DB_SYNC_POSTGRES_PASSWORD" \
+       --set postgresqlPostgresPassword="$POSTGRESQL_DBSYNC_POSTGRES_PASSWORD" \
+       --set postgresqlPassword="$POSTGRESQL_DBSYNC_PASSWORD" \
+       --set postgresqlDatabase="$POSTGRESQL_DBSYNC_DB" \
+       --set services.dbsync.db.secret.POSTGRESQL_DB="$POSTGRESQL_DBSYNC_DB" \
+       --set services.dbsync.db.secret.POSTGRESQL_PASSWORD="$POSTGRESQL_DBSYNC_PASSWORD" \
+       --set services.dbsync.db.secret.POSTGRESQL_POSTGRES_PASSWORD="$POSTGRESQL_DBSYNC_POSTGRES_PASSWORD" \
        --set services.redis.secret.REDIS_PASSWORD="$REDIS_PASSWORD" \
        --set services.cardano.replicaCount="$replicas" \
        --set services.cardano.image.repository="$CI_APPLICATION_REPOSITORY/cardano" \

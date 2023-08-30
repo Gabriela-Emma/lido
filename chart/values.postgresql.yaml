@@ -23,7 +23,7 @@ global:
     ##
     auth:
       postgresPassword: ""
-      username: "cexplorer"
+      username: "llovelace"
       password: ""
       database: "cexplorer"
       existingSecret: ""
@@ -87,7 +87,7 @@ diagnosticMode:
 image:
   registry: docker.io
   repository: bitnami/postgresql
-  tag: 15.2.0-debian-11-r13
+  tag: 15.4.0-debian-11-r15
   ## Specify a imagePullPolicy
   ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
   ## ref: https://kubernetes.io/docs/user-guide/images/#pre-pulling-images
@@ -118,13 +118,13 @@ auth:
   postgresPassword: ""
   ## @param auth.username Name for a custom user to create
   ##
-  username: "cexplorer"
+  username: "llovelace"
   ## @param auth.password Password for the custom user to create
   ##
   password: ""
   ## @param auth.database Name for a custom database to create
   ##
-  database: ""
+  database: "cexplorer"
   ## @param auth.replicationUsername Name of the replication user
   ##
   replicationUsername: repl_user
@@ -140,7 +140,7 @@ auth:
   ## picked from this secret in this case.
   ## The value is evaluated as a template.
   ##
-  existingSecret: ""
+  #existingSecret: ""
   ## @param auth.usePasswordFiles Mount credentials as a files instead of using an environment variable
   ##
   usePasswordFiles: false
@@ -159,7 +159,7 @@ replication:
   numSynchronousReplicas: 0
   ## @param replication.applicationName Cluster application name. Useful for advanced replication settings
   ##
-  applicationName: my_application
+  applicationName: catalyst
 ## @param containerPorts.postgresql PostgreSQL container port
 ##
 containerPorts:
@@ -681,6 +681,25 @@ readReplicas:
   ##   - name: FOO
   ##     value: "bar"
   ##
+  extendedConfiguration: |-
+    max_connections=400    
+    max_locks_per_transaction = 256
+    shared_buffers = 12GB
+    effective_cache_size = 36GB
+    maintenance_work_mem = 2GB
+    checkpoint_completion_target = 0.9
+    checkpoint_timeout = 1h
+    synchronous_commit = off
+    wal_buffers = 16MB
+    default_statistics_target = 500
+    random_page_cost = 1.1
+    effective_io_concurrency = 500
+    work_mem = 1024GB
+    min_wal_size = 1GB
+    max_wal_size = 2GB
+    max_parallel_workers_per_gather = 4
+    max_parallel_maintenance_workers = 4
+
   extraEnvVars: []
   ## @param readReplicas.extraEnvVarsCM Name of existing ConfigMap containing extra env vars for PostgreSQL read only nodes
   ##
