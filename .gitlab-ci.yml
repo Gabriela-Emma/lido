@@ -49,7 +49,7 @@
     fi
 
     echo "install postgres for dbsync"
-    helm upgrade --install \                
+    helm upgrade --install \
         --namespace="$KUBE_NAMESPACE" \
         --create-namespace \
         -f ./chart/values.postgresql.yaml \
