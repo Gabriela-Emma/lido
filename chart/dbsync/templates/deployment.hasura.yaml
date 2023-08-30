@@ -53,7 +53,7 @@ spec:
               name: "lidolovelace-cardano-configmap"
         env:
           - name: OGMIOS_HOST
-            value: "lidolovelace-dbsync-ogmios-service"
+            value: "lidolovelace-cardano-ogmios-service"
           - name: POSTGRES_HOST
             value: "lidolovelace-dbsync-db-postgresql"
           - name: POSTGRES_USER_FILE
