@@ -1,4 +1,4 @@
-FROM inputoutput/cardano-db-sync:13.1.0.2
+FROM inputoutput/cardano-db-sync:13.1.1.3
 ARG CARDANO_NETWORK
 ARG NETWORK_CONFIG
 RUN mkdir -p /config
