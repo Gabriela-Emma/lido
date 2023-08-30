@@ -23,7 +23,7 @@ global:
     ##
     auth:
       postgresPassword: ""
-      username: "cexplorer"
+      username: "llovelace"
       password: ""
       database: "cexplorer"
       existingSecret: ""
@@ -118,7 +118,7 @@ auth:
   postgresPassword: ""
   ## @param auth.username Name for a custom user to create
   ##
-  username: "cexplorer"
+  username: "llovelace"
   ## @param auth.password Password for the custom user to create
   ##
   password: ""
@@ -140,7 +140,7 @@ auth:
   ## picked from this secret in this case.
   ## The value is evaluated as a template.
   ##
-  existingSecret: ""
+  #existingSecret: ""
   ## @param auth.usePasswordFiles Mount credentials as a files instead of using an environment variable
   ##
   usePasswordFiles: false
