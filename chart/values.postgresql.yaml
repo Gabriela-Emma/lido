@@ -118,7 +118,7 @@ auth:
   postgresPassword: ""
   ## @param auth.username Name for a custom user to create
   ##
-  username: ""
+  username: "cexplorer"
   ## @param auth.password Password for the custom user to create
   ##
   password: ""
