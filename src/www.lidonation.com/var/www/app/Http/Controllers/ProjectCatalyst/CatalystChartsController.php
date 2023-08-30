@@ -153,7 +153,7 @@ class CatalystChartsController extends Controller
                 WHEN voting_power > 1200000000000 THEN '> 15M'
                 WHEN voting_power > 2000000000000 THEN '> 20M'
                 END as range,  COUNT(*) as wallets, SUM(voting_power) as ada"
-            )->whereIn('catalyst_snapshot_id', [5])
+            )->whereIn('catalyst_snapshot_id', $snapshotIds)
             ->groupByRaw(1);
 
         $adaPowerRangesCollection = $agg->get()
