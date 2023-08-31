@@ -13,7 +13,7 @@
                         <ProgressSpinner />
                     </section>
 
-                    <section class="p-6" v-if="user$?.id && draftBallots$?.length > 0">
+                    <section class="p-6">
                         <h2 class="mb-2 text-lg lg:text-xl xl:text-3xl">
                             My Draft Ballots
                         </h2>
