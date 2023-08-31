@@ -73,8 +73,7 @@ class CatalystVoterToolController extends Controller
             'currentPage' =>  $this->currentPage,
             'perPage' => $this->limit,
             'challenges' => $this->challenges,
-            'challengeFilter' => $this->challengeFilter,
-            'currFilterGroup'=> $this->currentFilterGroup,
+            'challengeFilter' => intval($this->challengeFilter),
             'proposals' => $this->proposals,
             'fund' => $this->fund,
             'crumbs' => [

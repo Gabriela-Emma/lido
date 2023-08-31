@@ -1,5 +1,5 @@
 <template>
-    <div class="relative flex flex-col overflow-hidden bg-white border border-gray-200 rounded-lg group">
+    <div class="relative flex flex-col overflow-hidden bg-white border border-gray-200 rounded-lg group hover:cursor-pointer">
         <div class="bg-gray-200 aspect-w-2 aspect-h-2 group-hover:opacity-75 sm:aspect-none sm:h-60">
             <img :alt="challenge.title" :src="challenge.thumbnail_url ?? challenge.hero_url" class="object-cover object-center w-full h-full sm:w-full sm:h-full">
         </div>
