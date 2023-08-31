@@ -133,7 +133,7 @@ watch([challengeFilterRef], () => {
 });
 
 // Function to update the data with the new search and selectedsort value
-function query() {
+async function query() {
     const data = {};
     proposalStore.viewType = 'card'
     if (currPageRef.value) {
