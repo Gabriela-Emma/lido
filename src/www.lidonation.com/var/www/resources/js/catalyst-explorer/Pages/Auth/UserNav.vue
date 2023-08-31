@@ -69,13 +69,23 @@
     <!-- Heroicon name: outline/user-group -->
     <PencilSquareIcon class="flex-shrink-0 w-6 h-6 mr-3 -ml-1 text-slate-400 group-hover:text-slate-500"
       aria-hidden="true" />
-    <span class="truncate">{{ $t("DraftBallots") }}</span>
+    <span class="truncate">{{ $t("Draft Ballots") }}</span>
+    </Link>
+
+    <Link :href="$utils.localizeRoute('catalyst-explorer/my/bookmarks')" :class="{
+      'bg-slate-50 text-teal-700 hover:text-teal-700 hover:bg-white': $page.component.endsWith('Bookmarks'),
+      'text-slate-900 hover:text-slate-900 hover:bg-slate-50': !$page.component.endsWith('Bookmarks'),
+    }" class="flex items-center px-3 py-2 text-sm font-medium rounded-sm group">
+    <!-- Heroicon name: outline/user-group -->
+    <BookmarkSquareIcon class="flex-shrink-0 w-6 h-6 mr-3 -ml-1 text-slate-400 group-hover:text-slate-500"
+      aria-hidden="true" />
+    <span class="truncate">{{ $t("Bookmarks") }}</span>
     </Link>
   </nav>
 </template>
 
 <script lang="ts" setup>
-import { ChatBubbleBottomCenterIcon, PencilSquareIcon } from '@heroicons/vue/20/solid';
+import { BookmarkSquareIcon, ChatBubbleBottomCenterIcon, PencilSquareIcon } from '@heroicons/vue/20/solid';
 import { Link } from '@inertiajs/vue3';
 import { computed, inject } from "vue";
 

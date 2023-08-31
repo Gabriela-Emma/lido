@@ -2,7 +2,7 @@
     <a :href="collection?.link"
        :class="[textColor$]"
        :style="{backgroundColor: collection?.color}"
-       class="relative flex flex-col justify-center object-cover w-full h-56 shadow-md hover:shadow-xl rounded-l-xl rounded-r-xs">
+       class="relative flex flex-col justify-center object-cover w-full h-full shadow-md hover:shadow-xl rounded-l-xl rounded-r-xs">
         <div class="absolute flex justify-end w-full gap-2 top-3 right-3">
             <Link as="button" type="button" :href="route('catalystExplorer.draftBallot.edit', {draftBallot: collection?.hash})"
                     :class="[textColor$, borderColor$]"
