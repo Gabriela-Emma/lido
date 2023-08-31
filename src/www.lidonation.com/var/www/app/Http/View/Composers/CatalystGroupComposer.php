@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Http\View\Composers;
-
 use App\Repositories\CatalystGroupRepository;
 use App\Repositories\FundRepository;
 use Illuminate\Support\Collection;
@@ -10,39 +8,23 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Fluent;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
-
 class CatalystGroupComposer
 {
     private $catalystGroup;
-
     private $groupProposals;
-
     private $allTimeCaAverage;
-
     private $allTimeCaRatingCount;
-
     private $allTimeCaAverageGroups;
-
     private Fluent $allTimeFundingPerRound;
-
     private Fluent $allTimeCompletedPerRound;
-
     private Fluent $allTimeFundedPerRound;
-
     private Fluent $allTimeAwardedPerRound;
-
     private Fluent $allTimeReceivedPerRound;
-
     private Fluent $allTimeProposedPerRound;
-
     private ?Collection $wordCloudSet;
-
     private ?Collection $proposalChallenges;
-
     private $allDiscussions;
-
     private $discussionData;
-
     /**
      * Create a new profile composer.
      */
@@ -52,23 +34,24 @@ class CatalystGroupComposer
     ) {
         $this->catalystGroup = $this->catalystGroupRepository->get(request()->route('catalystGroup'));
         $this->groupProposals = $this->catalystGroup->proposals()->paginate(
-            $perPage = 16, $columns = ['*'], $pageName = 'proposals'
+            $perPage = 16,
+            $columns = ['*'],
+            $pageName = 'proposals'
         );
         $this->setTagCloud();
-
-        // @todo This should be an injecktable operation
+        // 
+// @Todo
+//  This should be an injecktable operation
         $discussions = $this->catalystGroup?->proposals
             ->map(
                 fn ($p) => $p->discussions
             )->collapse();
         $this->allDiscussions = $discussions;
         $this->discussionsRatings();
-
         // combined ratings across all CA reviews
         $ratings = $discussions->map(fn ($disc) => $disc->ratings)->collapse();
         $this->allTimeCaRatingCount = $ratings->count();
         $this->allTimeCaAverage = $ratings->avg('rating');
-
         // combined ratings by discussion
         $groups = $ratings->map(fn ($v) => ([
             'rating' => $v->rating,
@@ -81,7 +64,6 @@ class CatalystGroupComposer
                 ]
             );
         $this->allTimeCaAverageGroups = $groups;
-
         $proposalGroups = $this->fundRepository->funds('funds')->map(
             fn ($fund) => new Fluent([
                 'fund' => $fund,
@@ -90,10 +72,24 @@ class CatalystGroupComposer
                 ),
             ])
         )->reverse();
-
         $labels = $proposalGroups->pluck('fund.title');
         $proposals = $proposalGroups->pluck('proposals');
-
+        $usdProposal = $proposalGroups->map(function ($item) {
+            if ($item->fund->currency == 'ADA') {
+                $item->proposals = $item->proposals->map(function ($p) {
+                    return [];
+                });
+            }
+            return $item;
+        })->pluck('proposals');
+        $adaProposal =  $proposalGroups->map(function ($item) {
+            if ($item->fund->currency == 'USD') {
+                $item->proposals = $item->proposals->map(function ($p) {
+                    return [];
+                });
+            }
+            return $item;
+        })->pluck('proposals');
         $this->proposalChallenges = $this->catalystGroup->proposals
             ->map(fn ($p) => new Fluent([
                 'proposal' => $p,
@@ -104,13 +100,11 @@ class CatalystGroupComposer
                 'challenge' => $cg?->first()?->proposal?->fund,
                 'proposals_count' => $cg?->pluck('proposal')->count(),
             ]))->sortByDesc('proposals_count');
-
         // ## Proposed
         $this->allTimeProposedPerRound = new Fluent([
             'labels' => $labels,
             'data' => $proposals->map(fn ($ps) => $ps->count()),
         ]);
-
         // ## Funded
         $this->allTimeFundedPerRound = new Fluent([
             'labels' => $labels,
@@ -119,11 +113,9 @@ class CatalystGroupComposer
             )->map(function ($g) {
                 $complete = $g->get('complete') ?? 0;
                 $funded = $g->get('funded') ?? 0;
-
                 return $complete + $funded;
             })->values(),
         ]);
-
         // ## Completed
         $this->allTimeCompletedPerRound = new Fluent([
             'labels' => $labels,
@@ -131,32 +123,37 @@ class CatalystGroupComposer
                 fn ($ps) => $ps->countBy(fn ($p) => $p->status)
             )->map(fn ($g) => $g->get('complete') ?? 0)->values(),
         ]);
-
         // $$ Requested
         $this->allTimeFundingPerRound = new Fluent([
             'labels' => $labels,
-            'data' => $proposals->map(
-                fn ($ps) => $ps->sum('amount_requested')
+            'dataUsd' => $usdProposal->map(
+                fn ($ps) => $ps?->sum('amount_requested')
+            )->values(),
+            'dataAda' => $adaProposal->map(
+                fn ($ps) => $ps?->sum('amount_requested')
             )->values(),
         ]);
-
         // $$ Awarded
         $this->allTimeAwardedPerRound = new Fluent([
             'labels' => $labels,
-            'data' => $proposals->map(
-                fn ($ps) => $ps->filter(fn ($p) => $p->funded)->sum('amount_requested')
+            'dataUsd' => $usdProposal->map(
+                fn ($ps) => $ps?->filter(fn ($p) => (new Fluent($p))?->funded)->sum('amount_requested')
+            )->values(),
+            'dataAda' => $adaProposal->map(
+                fn ($ps) => $ps?->filter(fn ($p) => (new Fluent($p))?->funded)->sum('amount_requested')
             )->values(),
         ]);
-
         //  $$ Received
         $this->allTimeReceivedPerRound = new Fluent([
             'labels' => $labels,
-            'data' => $proposals->map(
-                fn ($ps) => $ps->sum('amount_received')
+            'dataUsd' => $usdProposal->map(
+                fn ($ps) => $ps?->sum('amount_received')
+            )->values(),
+            'dataAda' => $adaProposal->map(
+                fn ($ps) => $ps?->sum('amount_received')
             )->values(),
         ]);
     }
-
     /**
      * Bind data to the view.
      */
@@ -169,26 +166,23 @@ class CatalystGroupComposer
                 'allTimeCaAverage' => $this->allTimeCaAverage,
                 'allTimeCaRatingCount' => $this->allTimeCaRatingCount,
                 'allTimeCaAverageGroups' => $this->allTimeCaAverageGroups,
-
                 'allTimeFundedPerRound' => $this->allTimeFundedPerRound,
                 'allTimeFundingPerRound' => $this->allTimeFundingPerRound,
                 'allTimeAwardedPerRound' => $this->allTimeAwardedPerRound,
                 'allTimeReceivedPerRound' => $this->allTimeReceivedPerRound,
                 'allTimeProposedPerRound' => $this->allTimeProposedPerRound,
                 'allTimeCompletedPerRound' => $this->allTimeCompletedPerRound,
-
                 'proposalChallenges' => $this->proposalChallenges,
-
                 'wordCloudSet' => $this->wordCloudSet,
                 'discussionData' => $this->discussionData,
             ]
         );
     }
-
     protected function setTagCloud()
     {
         $this->wordCloudSet = Cache::remember("{$this->catalystGroup->slug}DetailsWordCloud", HOUR_IN_SECONDS, function () {
-            $query = DB::select(<<<EOT
+            $query = DB::select(
+                <<<EOT
         select w.word, SUM(w.num_occurrences) as occurrences
         FROM
             (
@@ -210,19 +204,15 @@ class CatalystGroupComposer
           ) w group by word ORDER BY occurrences DESC LIMIT 100;
         EOT
             );
-
             return collect($query);
         });
     }
-
     protected function discussionsRatings()
     {
         $discussionRatings = [];
-
         foreach ($this->allDiscussions as $discussion) {
             $title = $discussion['title'];
             $rating = $discussion->rating;
-
             if (!isset($discussionRatings[$title])) {
                 $discussionRatings[$title] = [
                     'totalRating' => 0,
@@ -230,20 +220,17 @@ class CatalystGroupComposer
                     'title' => $title,
                 ];
             }
-
             if ($rating !== null) {
                 $discussionRatings[$title]['totalRating'] += $rating;
                 $discussionRatings[$title]['totalCount']++;
             }
         }
-
         foreach ($discussionRatings as $title => $data) {
             if ($data['totalCount'] > 0) {
                 $averageRating = $data['totalRating'] / $data['totalCount'];
                 $discussionRatings[$title]['averageRating'] = $averageRating;
             }
         }
-
         $this->discussionData = $discussionRatings;
     }
 }
