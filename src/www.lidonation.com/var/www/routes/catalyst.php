@@ -152,7 +152,8 @@ Route::group(
 
             // exports
             Route::get('/export/proposals', [CatalystProposalsController::class, 'exportProposals']);
-            Route::get('/download/proposals', [CatalystProposalsController::class, 'downloadProposals']);
+            Route::get('/download/proposals', [CatalystProposalsController::class, 'downloadProposals'])
+            ->name('download.proposals');
 
             // Bookmarks
             Route::post('/bookmarks/items', [CatalystMyBookmarksController::class, 'createItem'])->name('bookmarkItem.create');
@@ -165,7 +166,8 @@ Route::group(
                 ->name('cardano-treasury');
 
             Route::middleware(['auth.catalyst'])->prefix('/my')->group(function () {
-                Route::get('/bookmarks', [CatalystMyBookmarksController::class, 'index'])->name('myBookmarks');
+                Route::get('/bookmarks', [CatalystMyBookmarksController::class, 'index'])
+                ->name('myBookmarks');
                 Route::post('/bookmarks/{bookmarkCollection:id}/create-ballot', [CatalystBookmarksController::class, 'createDraftBallotFromCollection'])
                 ->name('bookmark.createBallot');
                 Route::post('/draft-ballots', [CatalystBookmarksController::class, 'createDraftBallot'])

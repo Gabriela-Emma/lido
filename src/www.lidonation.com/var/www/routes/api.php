@@ -12,6 +12,7 @@ use App\Http\Controllers\Earn\LearningLessonController;
 use App\Http\Controllers\GenerateMnemonicPhraseController;
 use App\Http\Controllers\GlobalSearchController;
 use App\Http\Controllers\ProjectCatalyst\CatalystBookmarksController;
+use App\Http\Controllers\ProjectCatalyst\CatalystMyBookmarksController;
 use App\Http\Controllers\ProjectCatalyst\CatalystMyRankingController;
 use App\Http\Controllers\ProjectCatalyst\CatalystProposalsController;
 use App\Http\Controllers\PromoController;
@@ -329,7 +330,7 @@ Route::prefix('catalyst-explorer')->as('catalystExplorerApi.')
 // Catalyst Explorer Private API
 Route::prefix('catalyst-explorer')->as('catalystExplorerApi.')
     ->middleware([
-        'auth:sanctum',
+        // 'auth:sanctum',
     ])
     ->group(function () {
         Route::post('/profiles/{catalystProfile:id}/follow', [CatalystExplorer\ProfileController::class, 'follow']);
@@ -351,6 +352,13 @@ Route::prefix('catalyst-explorer')->as('catalystExplorerApi.')
                 Route::post('/quickpitch', [ProposalController::class, 'storeQuickpitch'])
                 ->name('storeQuickpitch');
             });
+        });
+
+        Route::prefix('/my')->group(function () {
+
+            Route::get('/bookmarks', [CatalystMyBookmarksController::class, 'index'])
+                ->name('myBookmarks');
+
         });
 
         Route::get('/my/draft-ballots', [CatalystBookmarksController::class, 'draftBallotIndex'])

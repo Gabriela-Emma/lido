@@ -516,9 +516,17 @@ class CatalystProposalsController extends Controller
     {
         $this->download = $request->input('d', false);
         $this->downloadType = $request->input('d_t', null);
-        if(!isset($request->proposals)){
+        if (!isset($request->ballot)){
             return;
         }
-        return (new ExportModelService)->export(new ProposalExport($request->proposals, app()->getLocale()), "proposals.{$this->downloadType}");
+
+
+        return (new ExportModelService)
+        ->export(
+            new ProposalExport(
+                $request->proposals,
+                app()->getLocale()),
+                "proposals.{$this->downloadType}"
+        );
     }
 }
