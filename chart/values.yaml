@@ -22,29 +22,6 @@ labels:
 DEPLOY_INFRA: False
 
 services:
-  elasticsearch:
-    version: 7.9.3
-    replicas: 1
-    allow_mmap: true
-    realm:
-      fuffyUser:
-      user:
-      # [required]
-      passwordSha256:
-      # [required]
-      config: {
-        ES_JAVA_OPTS: '-Xms512m -Xmx512m',
-      }
-    resources:
-      requests:
-        memory: 1Gi
-        cpu: 100
-      limits:
-        memory: 4Gi
-        cpu: 1
-    storage:
-      size: 10Gi
-      storageClass: longhorn
   fortuna:
     secret:
       FORTUNA_SEED:
@@ -84,6 +61,7 @@ services:
     replicaCount: 2
   dbsync:
     tier: "t2"
+    dbHost: lidolovelace-dbsync-db-postgresql
     restore_snapshot: ''
     persistence:
       size: 360Gi
