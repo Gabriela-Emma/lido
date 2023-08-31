@@ -223,9 +223,11 @@
 
       if [ "${CI_ENVIRONMENT_NAME}" != "mainnet" ]; then
         export RESTORE_SNAPSHOT="$RESTORE_SNAPSHOT_TESTNET"
+        export DBSYNC_DB_HOST="lidolovelace-dbsync-db-postgresql"
       fi
       if [ "${CI_ENVIRONMENT_NAME}" == "mainnet" ]; then
         export RESTORE_SNAPSHOT="$RESTORE_SNAPSHOT_MAINNET"
+        export DBSYNC_DB_HOST="lidolovelace-dbsync-db-postgresql-primary"
       fi
 
        helm upgrade "$DEPLOYMENT_NAME" ./chart/dbsync \
@@ -234,6 +236,7 @@
          --set application.track="$track" \
          --set certmanager.server="$cert_server" \
          --set postgresqlPassword="$POSTGRESQL_DBSYNC_PASSWORD" \
+         --set services.dbsync.dbHost="$DBSYNC_DB_HOST" \
          --set postgresqlPostgresPassword="$POSTGRESQL_DBSYNC_POSTGRES_PASSWORD" \
          --set postgresqlDatabase="$POSTGRESQL_DBSYNC_DB" \
          --set services.cardano.config.CARDANO_NETWORK="$CARDANO_NETWORK" \

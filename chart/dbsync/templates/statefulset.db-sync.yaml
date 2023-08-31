@@ -70,7 +70,7 @@ spec:
               memory: 65536Mi
           env:
             - name: POSTGRES_HOST
-              value: "lidolovelace-dbsync-db-postgresql"
+              value: {{ .Values.services.dbsync.dbHost }}
             - name: POSTGRES_PORT
               value: "5432"
             - name: EXTENDED
