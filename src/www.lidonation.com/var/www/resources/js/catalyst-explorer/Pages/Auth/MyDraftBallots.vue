@@ -7,10 +7,7 @@
                     <UserNav />
                 </aside>
                 <div class="flex flex-col p-6 space-y-6 bg-white sm:px-6 lg:col-span-9 xl:col-span-10 lg:px-0">
-                    <section class="p-16 text-center align-middle" v-if="!draftBallots$ || draftBallots$?.length == 0">
-                        <ProgressSpinner />
-                    </section>
-                    <section class="p-6" v-if="user$?.id && draftBallots$?.length > 0">
+                    <section class="relative p-6">
                         <h2 class="text-lg lg:text-xl xl:text-3xl">
                             My Draft Ballots
                         </h2>
