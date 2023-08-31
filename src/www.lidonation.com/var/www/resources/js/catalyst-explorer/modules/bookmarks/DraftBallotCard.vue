@@ -1,6 +1,6 @@
 <template>
     <a :href="draftBallot?.link" :style="{ backgroundColor: draftBallot?.color }"
-        class="relative flex flex-col justify-center object-cover w-full h-56 text-white shadow-md hover:shadow-xl rounded-l-xl rounded-r-xs">
+        class="relative flex flex-col justify-center object-cover w-full h-full text-white shadow-md hover:shadow-xl rounded-l-xl rounded-r-xs">
         <div class="absolute flex justify-end w-full gap-2 top-3 right-3">
             <button @click="download()" type="button"
                 class="inline-flex items-center gap-x-0.5 rounded-sm border py-1 px-1.5 bg-black text-white hover:text-slate-400 text-xs font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-800">
@@ -38,16 +38,13 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, inject, ref } from "vue";
+import { ref } from "vue";
 import { Link } from "@inertiajs/vue3";
 import { LinkIcon, PencilIcon } from '@heroicons/vue/20/solid';
 import route from "ziggy-js";
 import Proposal from "../../models/proposal";
 import DraftBallot from "../../models/draft-ballot";
 import axios from "axios";
-import { VARIABLES } from "../../models/variables";
-import Filters from "../../models/filters";
-
 
 const props = withDefaults(
     defineProps<{
@@ -56,19 +53,17 @@ const props = withDefaults(
     {},
 );
 let preparingDownload = ref<boolean>(false);
-let proposalIds = props.draftBallot.items.map((item) => {
-    return item.model?.id
-})
 
 function download() {
     preparingDownload.value = true;
-    let data = {}
-    data['proposals'] = proposalIds;
-    data['d'] = true;
-    data['d_t'] = 'csv';
+    let data = {
+        ballot: props.draftBallot?.hash,
+        d: true,
+        d_t: 'csv'
+    }
 
     const fileName = 'proposals.csv';
-    const res = axios.get(`/en/catalyst-explorer/download/proposals`, {
+    const res = axios.get(route('catalystExplorer.download.proposals'), {
         responseType: 'blob',
         params: data,
     });

@@ -42,6 +42,12 @@ class BookmarkCollection extends Model
         return $this->hasMany(BookmarkItem::class);
     }
 
+    public function proposals()
+    {
+        return $this->hasMany(BookmarkItem::class)
+        ->where('model_type', Proposal::class);
+    }
+
     public function rationales()
     {
         return $this->hasMany(Discussion::class, 'model_id')

@@ -317,3 +317,8 @@ $u->assignRole('super_admin');
 \134Spatie\134Permission\134Models\134Role::create(['name'\040=>\040'super_admin'])
 $u->assignRole('super_admin');
 exit
+$p\040=\040Proposal::find(1139);
+$p->book_items
+$p->bookmark_items
+$p\040=\040Proposal::find(1139);
+$p->bookmark_items
