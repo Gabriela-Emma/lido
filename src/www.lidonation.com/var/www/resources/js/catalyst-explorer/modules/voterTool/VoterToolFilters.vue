@@ -61,7 +61,6 @@ let getCounts = async () => {
                     updatedFilter.count = responseData[key];
                 }
             });
-            console.log({ jj: filters.value });
             
             return updatedFilter;
         });
@@ -79,7 +78,7 @@ watch(
         filters.value = newFilterGroups; 
         getCounts();
     },
-    { deep: true, immediate: true }
+
 );
 
 

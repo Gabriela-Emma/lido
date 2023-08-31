@@ -48,7 +48,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import Search from '../Shared/Components/Search.vue';
 import Proposal from '../models/proposal';
 import Proposals from '../modules/proposals/Proposals.vue';
@@ -101,19 +101,21 @@ let filterRef = ref(props.currentFilter);
 const proposalStore = useProposalsStore();
 proposalStore.viewType = 'card';
 
-if (window.innerWidth <= 640) {
-    filterPerPageRef.value = 2;
-    query();
-} else if (window.innerWidth <= 1024 && window.innerWidth > 640) {
-    filterPerPageRef.value = 3;
-    query();
-} else {
-    filterPerPageRef.value = 4;
-    query();
+let handleResize = () => {
+    proposalStore.viewType = 'card';
+    if (window.innerWidth <= 640) {
+        filterPerPageRef.value = 2;
+        query();
+    } else if (window.innerWidth <= 1024 && window.innerWidth > 640) {
+        filterPerPageRef.value = 3;
+        query();
+    } else {
+        filterPerPageRef.value = 4;
+        query();
+    }
 }
 
 
-// Watch the search value for changes and trigger the query function
 watch([search, filterRef], () => {
     query();
 }, { deep: true });
@@ -132,7 +134,6 @@ watch([challengeFilterRef], () => {
     query();
 });
 
-// Function to update the data with the new search and selectedsort value
 async function query() {
     const data = {};
     proposalStore.viewType = 'card'
@@ -164,7 +165,7 @@ async function query() {
     router.get(
         "/catalyst-explorer/voter-tool",
         data,
-        { preserveState: true, preserveScroll: !currPageRef.value }
+        { preserveState: true, preserveScroll: !!challengeFilterRef.value }
     );
 
     //@ts-ignore
@@ -174,4 +175,13 @@ async function query() {
     }
 
 }
+
+onMounted(() => {
+    window.addEventListener('resize', handleResize);
+    handleResize();
+});
+
+onBeforeUnmount(() => {
+    window.removeEventListener('resize', handleResize);
+});
 </script>
