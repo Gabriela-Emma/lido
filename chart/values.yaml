@@ -219,7 +219,7 @@ services:
 
       POSTGRESQL_DB_SYNC_DB_HOST: lidolovelace-dbsync-db-postgresql,
       POSTGRESQL_DB_SYNC_DB: cexplorer,
-      POSTGRESQL_DB_SYNC_USER: postgres,
+      POSTGRESQL_DB_SYNC_USER: llovelace,
       POSTGRESQL_WEB_DB_HOST: lidolovelace-web-db-postgresql,
       POSTGRESQL_WEB_DB: lidoweb,
       POSTGRESQL_WEB_USER: llovelace,
