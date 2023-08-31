@@ -5,6 +5,7 @@ namespace App\Http\Controllers\ProjectCatalyst;
 use App\Enums\CatalystExplorerQueryParams;
 use App\Exports\ProposalExport;
 use App\Http\Controllers\Controller;
+use App\Models\DraftBallot;
 use App\Models\Proposal;
 use App\Services\ExportModelService;
 use Illuminate\Http\Request;
@@ -520,11 +521,18 @@ class CatalystProposalsController extends Controller
             return;
         }
 
+        $ballot = DraftBallot::byHash($request->ballot);
+
+        if (!$ballot instanceof DraftBallot) {
+            return;
+        }
+        $proposalIds = $ballot->proposals()->get(['model_id'])
+        ->pluck('model_id')->values();
 
         return (new ExportModelService)
         ->export(
             new ProposalExport(
-                $request->proposals,
+                $proposalIds,
                 app()->getLocale()),
                 "proposals.{$this->downloadType}"
         );
