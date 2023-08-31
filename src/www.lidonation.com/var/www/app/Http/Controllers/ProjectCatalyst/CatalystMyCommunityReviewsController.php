@@ -129,7 +129,7 @@ class CatalystMyCommunityReviewsController extends Controller
             $comment->delete();
         }
 
-        return to_route('catalystExplorer.myCommunityReviews');
+        return redirect()->back();
     }
 
     public function editResponse(Assessment $assessment, Request $request){
@@ -145,6 +145,6 @@ class CatalystMyCommunityReviewsController extends Controller
 
         $comment->save();
 
-        return to_route('catalystExplorer.myCommunityReviews');
+        return redirect()->back();
     }
 }
