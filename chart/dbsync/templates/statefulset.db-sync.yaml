@@ -125,6 +125,13 @@ spec:
               readOnly: false
         - name: ipc
           image: alpine/socat:1.7.4.4
+          resources:
+            requests:
+              cpu: 500m
+              memory: 1024Mi
+            limits:
+              cpu: 2000m
+              memory: 8192Mi
           env:
           - name: CARDANO_NODE_SOCKET_TCP_HOST
             value: "lidolovelace-cardano-relay-1-service"
