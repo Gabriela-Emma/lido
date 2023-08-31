@@ -92,7 +92,7 @@ class CatalystMyBookmarksController extends Controller
 
     public function index(Request $request)
     {
-        $collections = BookmarkCollection::where('user_id', 2 )->whereNotNull('user_id')
+        $collections = BookmarkCollection::where('user_id', Auth::id() )->whereNotNull('user_id')
         ->with(['items']);
 
         $hashes = $request->get('hashes', false);
