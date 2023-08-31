@@ -10,6 +10,7 @@
                 </div>
                 <div class="my-6">
                     <div class="flex-1">
+
                         <Pagination :links="props.filters?.links" :per-page="props.perPage" :total="props.filters?.total"
                             :from="props.filters?.from" :to="props.filters?.to"
                             @paginated="(payload) => currFilterGroupRef = payload" :custom="true" />
@@ -21,6 +22,13 @@
         </section>
 
         <section class="container" v-if="!!props.proposals?.data.length">
+            <div class="justify-items-end">
+                <h2>Viewing Proposals in {{ currentChallenge.label }}</h2>
+                <button type="button" @click="resetFilters"
+                class="flex items-center justify-center mb-6 gap-2 px-2 py-2 text-sm font-medium text-white border border-transparent rounded-sm shadow-sm md:gap-3 bg-teal-600 md:px-3 md:text-lg 2xl:text-xl hover:bg-labs-black hover:text-white focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 ml-auto">
+                    Reset Filters
+                </button>
+            </div>
             <Proposals :proposals="props.proposals?.data"></Proposals>
 
             <div class="flex items-start justify-between w-full gap-16 my-16 xl:gap-24">
@@ -48,7 +56,7 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, ref, watch } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import Search from '../Shared/Components/Search.vue';
 import Proposal from '../models/proposal';
 import Proposals from '../modules/proposals/Proposals.vue';
@@ -64,6 +72,7 @@ import { useProposalsStore } from '../stores/proposals-store';
 const props = withDefaults(
     defineProps<{
         search?: string,
+        proposal: Proposal
         currPage?: number,
         currFilterGroup?: number,
         filterPerPage?: number,
@@ -89,6 +98,10 @@ const props = withDefaults(
         };
     }>(), {
 });
+
+const currentChallenge = computed(() => {
+  return props.challenges.find(challenge => challenge.id === props.challengeFilter);
+})
 
 let searchRender = ref(0);
 let search = ref(props.search);
@@ -174,6 +187,15 @@ async function query() {
         window?.fathom?.trackGoal(VARIABLES.TRACKER_ID_GROUPS, 0);
     }
 
+}
+function resetFilters() {
+  search.value = '';
+  filterRef.value = null;
+  currPageRef.value = null;
+  perPageRef.value = props.perPage;
+  currFilterGroupRef.value = null;
+  challengeFilterRef.value = null;
+  query();
 }
 
 onMounted(() => {
