@@ -102,7 +102,7 @@ const props = withDefaults(
 });
 
 const currentChallenge = computed(() => {
-  return props.challenges.find(challenge => challenge.id === props.challengeFilter);
+  return props?.challenges.find(challenge => challenge?.id === props?.challengeFilter);
 })
 
 let searchRender = ref(0);
