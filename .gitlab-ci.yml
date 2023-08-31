@@ -26,10 +26,12 @@
     export secret_name=''
   fi
 
-  # db_host="127.0.0.1"
-  # if [ -n "$AUTO_DEVOPS_DB_HOST" ]; then
-  #     db_host=$AUTO_DEVOPS_DB_HOST
-  # fi
+  if [ "${CI_ENVIRONMENT_NAME}" != "mainnet" ]; then
+    export DBSYNC_DB_HOST="lidolovelace-dbsync-db-postgresql"
+  fi
+  if [ "${CI_ENVIRONMENT_NAME}" == "mainnet" ]; then
+    export DBSYNC_DB_HOST="lidolovelace-dbsync-db-postgresql-primary"
+  fi
 
   function deploy_postgres_cdbsync() {
     helm repo add bitnami https://charts.bitnami.com/bitnami
@@ -145,6 +147,7 @@
       --set services.web.secret.app_key="$APP_KEY" \
       --set services.web.config.ANALYTICS_ID="$ANALYTICS_ID" \
       --set services.web.config.APP_URL="$APP_URL" \
+      --set services.web.config.POSTGRESQL_DB_SYNC_DB_HOST="$DBSYNC_DB_HOST" \
       --set services.web.config.BLOCKFROST_PROJECT_ID="$BLOCKFROST_PROJECT_ID" \
       --set services.web.config.BLOCKFROST_BASE_URL="$BLOCKFROST_BASE_URL" \
       --set services.web.config.CLOUDFLARE_TOKEN="$CLOUDFLARE_TOKEN" \
@@ -223,11 +226,9 @@
 
       if [ "${CI_ENVIRONMENT_NAME}" != "mainnet" ]; then
         export RESTORE_SNAPSHOT="$RESTORE_SNAPSHOT_TESTNET"
-        export DBSYNC_DB_HOST="lidolovelace-dbsync-db-postgresql"
       fi
       if [ "${CI_ENVIRONMENT_NAME}" == "mainnet" ]; then
         export RESTORE_SNAPSHOT="$RESTORE_SNAPSHOT_MAINNET"
-        export DBSYNC_DB_HOST="lidolovelace-dbsync-db-postgresql-primary"
       fi
 
        helm upgrade "$DEPLOYMENT_NAME" ./chart/dbsync \
