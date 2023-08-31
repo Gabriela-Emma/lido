@@ -50,9 +50,6 @@
 
     echo "install postgres for dbsync"
     helm upgrade --install \
-        --timeout 600s \
-        --wait \
-        --atomic \
         --namespace="$KUBE_NAMESPACE" \
         --create-namespace \
         -f ./chart/values.postgresql.yaml \
