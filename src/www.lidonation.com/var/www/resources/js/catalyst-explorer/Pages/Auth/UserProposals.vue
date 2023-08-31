@@ -49,7 +49,7 @@
                                     <h2 class="leading-6 text-slate-900">{{ $t("My Proposals") }}</h2>
                                 </div>
 
-                                <div class="flex gap-6">
+                                <div class="flex items-center gap-4">
                                     <div class="">
                                         <Toggle
                                                 onLabel="Funded proposals "
