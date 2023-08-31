@@ -54,7 +54,7 @@ export const useBookmarksStore = defineStore('bookmarks', () => {
 
     async function loadCollections() {
         try {
-            const response = await axios.get(route('catalystExplorer.myBookmarks'));
+            const response = await axios.get(route('catalystExplorerApi.myBookmarks'));
             collections.value = [...response.data];
         } catch (e: AxiosError | any) {
             console.log({e});
