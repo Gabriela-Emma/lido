@@ -79,7 +79,7 @@ spec:
               name: "lidolovelace-cardano-configmap"
         env:
           - name: POSTGRES_HOST
-            value: "lidolovelace-dbsync-db-postgresql"
+            value: {{ .Values.services.dbsync.dbHost }}
           - name: METADATA_SERVER_URI
             value: "https://tokens.cardano.org"
           - name: HASURA_URI

@@ -56,7 +56,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import Search from '../Shared/Components/Search.vue';
 import Proposal from '../models/proposal';
 import Proposals from '../modules/proposals/Proposals.vue';
@@ -114,19 +114,21 @@ let filterRef = ref(props.currentFilter);
 const proposalStore = useProposalsStore();
 proposalStore.viewType = 'card';
 
-if (window.innerWidth <= 640) {
-    filterPerPageRef.value = 2;
-    query();
-} else if (window.innerWidth <= 1024 && window.innerWidth > 640) {
-    filterPerPageRef.value = 3;
-    query();
-} else {
-    filterPerPageRef.value = 4;
-    query();
+let handleResize = () => {
+    proposalStore.viewType = 'card';
+    if (window.innerWidth <= 640) {
+        filterPerPageRef.value = 2;
+        query();
+    } else if (window.innerWidth <= 1024 && window.innerWidth > 640) {
+        filterPerPageRef.value = 3;
+        query();
+    } else {
+        filterPerPageRef.value = 4;
+        query();
+    }
 }
 
 
-// Watch the search value for changes and trigger the query function
 watch([search, filterRef], () => {
     query();
 }, { deep: true });
@@ -145,8 +147,7 @@ watch([challengeFilterRef], () => {
     query();
 });
 
-// Function to update the data with the new search and selectedsort value
-function query() {
+async function query() {
     const data = {};
     proposalStore.viewType = 'card'
     if (currPageRef.value) {
@@ -177,7 +178,7 @@ function query() {
     router.get(
         "/catalyst-explorer/voter-tool",
         data,
-        { preserveState: true, preserveScroll: !currPageRef.value }
+        { preserveState: true, preserveScroll: !!challengeFilterRef.value }
     );
 
     //@ts-ignore
@@ -196,4 +197,13 @@ function resetFilters() {
   challengeFilterRef.value = null;
   query();
 }
+
+onMounted(() => {
+    window.addEventListener('resize', handleResize);
+    handleResize();
+});
+
+onBeforeUnmount(() => {
+    window.removeEventListener('resize', handleResize);
+});
 </script>
