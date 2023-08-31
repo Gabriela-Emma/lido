@@ -30,7 +30,7 @@
     export DBSYNC_DB_HOST="lidolovelace-dbsync-db-postgresql"
   fi
   if [ "${CI_ENVIRONMENT_NAME}" == "mainnet" ]; then
-    export DBSYNC_DB_HOST="lidolovelace-dbsync-db-postgresql-primary"
+    export DBSYNC_DB_HOST="lidolovelace-dbsync-db-postgresql"
   fi
 
   function deploy_postgres_cdbsync() {
@@ -38,7 +38,7 @@
     helm repo update
     if [ "${CI_ENVIRONMENT_NAME}" == "mainnet" ]; then
       export PRIMARY_MAX_MEM="32768Mi"
-      export REPLICATION="replication"
+      export REPLICATION="standalone"
       export HASURA_REPLICAS="3"
       export PGPOOL_REPLICAS="2"
       export POSTGRES_READ_REPLICAS="2"

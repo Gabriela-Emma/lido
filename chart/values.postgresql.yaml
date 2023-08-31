@@ -289,22 +289,22 @@ primary:
   ## ref: https://github.com/bitnami/bitnami-docker-postgresql#allow-settings-to-be-loaded-from-files-other-than-the-default-postgresqlconf
   ##
   extendedConfiguration: |-
-    max_connections=400    
+    max_connections=600
     max_locks_per_transaction = 256
-    shared_buffers = 12GB
+    shared_buffers = 16GB
     effective_cache_size = 36GB
-    maintenance_work_mem = 2GB
+    maintenance_work_mem = 4GB
     checkpoint_completion_target = 0.9
     checkpoint_timeout = 1h
     synchronous_commit = off
-    wal_buffers = 16MB
+    wal_buffers = 32MB
     default_statistics_target = 500
     random_page_cost = 1.1
-    effective_io_concurrency = 500
+    effective_io_concurrency = 800
     work_mem = 1024GB
-    min_wal_size = 1GB
-    max_wal_size = 2GB
-    max_parallel_workers_per_gather = 4
+    min_wal_size = 2GB
+    max_wal_size = 3GB
+    max_parallel_workers_per_gather = 5
     max_parallel_maintenance_workers = 4
 
 
@@ -439,7 +439,7 @@ primary:
   ##
   resources:
     limits:
-      memory: 32768Mi
+      memory: 49152Mi
       cpu: 12
     requests:
       memory: 16384Mi
@@ -682,22 +682,22 @@ readReplicas:
   ##     value: "bar"
   ##
   extendedConfiguration: |-
-    max_connections=400    
+    max_connections=600
     max_locks_per_transaction = 256
-    shared_buffers = 12GB
+    shared_buffers = 16GB
     effective_cache_size = 36GB
-    maintenance_work_mem = 2GB
+    maintenance_work_mem = 4GB
     checkpoint_completion_target = 0.9
     checkpoint_timeout = 1h
     synchronous_commit = off
-    wal_buffers = 16MB
+    wal_buffers = 32MB
     default_statistics_target = 500
     random_page_cost = 1.1
-    effective_io_concurrency = 500
+    effective_io_concurrency = 800
     work_mem = 1024GB
-    min_wal_size = 1GB
-    max_wal_size = 2GB
-    max_parallel_workers_per_gather = 4
+    min_wal_size = 2GB
+    max_wal_size = 3GB
+    max_parallel_workers_per_gather = 5
     max_parallel_maintenance_workers = 4
 
   extraEnvVars: []
@@ -778,10 +778,10 @@ readReplicas:
   resources:
     limits:
       memory: 12288Mi
-      cpu: 8m
+      cpu: 8
     requests:
       memory: 6144Mi
-      cpu: 1m
+      cpu: 1
   ## Pod Security Context
   ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
   ## @param readReplicas.podSecurityContext.enabled Enable security context

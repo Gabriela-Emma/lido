@@ -24,7 +24,7 @@
     "db:forward:web:test": "kubectl port-forward lidolovelace-web-db-postgresql-0 5533:5432 -n lidolovelace-test",
     "db:forward:web:main": "kubectl port-forward lidolovelace-web-db-postgresql-0 5435:5432 -n lidolovelace",
     "db:forward:db:test": "kubectl port-forward lidolovelace-dbsync-db-postgresql-0 5432:5432 -n lidolovelace-test",
-    "db:forward:db:main": "kubectl port-forward lidolovelace-dbsync-db-postgresql-primary-0 5433:5432 -n lidolovelace",
+    "db:forward:db:main": "kubectl port-forward lidolovelace-dbsync-db-postgresql-0 5433:5432 -n lidolovelace",
     "image:build:cardano": "docker build --build-arg BUILD_ENVIRONMENT=local -f cardano.Dockerfile -t registry.lidonation.com/lidonation/lidonation/cardano .",
     "image:build:cncli": "docker build --build-arg BUILD_ENVIRONMENT=local -f cncli.Dockerfile -t registry.lidonation.com/lidonation/lidonation/cncli .",
     "image:build:cardano-db-sync": "docker build --build-arg VERSION=11.0.4 -f cardano.dbSync.Dockerfile -t registry.lidonation.com/lidonation/lidonation/cardano-db-sync .",
