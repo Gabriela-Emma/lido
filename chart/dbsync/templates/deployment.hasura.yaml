@@ -55,7 +55,7 @@ spec:
           - name: OGMIOS_HOST
             value: "lidolovelace-cardano-ogmios-service"
           - name: POSTGRES_HOST
-            value: "lidolovelace-dbsync-db-postgresql"
+            value: {{ .Values.services.dbsync.dbHost }}
           - name: POSTGRES_USER_FILE
             value: "/tmp/secrets/postgres_user"
           - name: POSTGRES_PASSWORD_FILE
