@@ -54,7 +54,7 @@ let getCounts = async () => {
         const res = await axios.get(route('catalystExplorer.voterTool.counts'), { params: params.value });
         const responseData = res.data;
 
-        filters.value = filters.value.map((filter) => {
+        filters.value = Object.values(filters.value).map((filter) => {
             let updatedFilter = { ...filter };
             Object.keys(responseData).forEach((key) => {
                 if (key === filter.param) {
@@ -76,7 +76,7 @@ let getCounts = async () => {
 watch(
     () => props.filterGroups,
     (newFilterGroups, oldFilterGroups) => {
-        filters.value = [...newFilterGroups]; 
+        filters.value = newFilterGroups; 
         getCounts();
     },
     { deep: true, immediate: true }
