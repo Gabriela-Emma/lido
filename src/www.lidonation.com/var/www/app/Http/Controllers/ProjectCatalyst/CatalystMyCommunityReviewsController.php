@@ -78,7 +78,7 @@ class CatalystMyCommunityReviewsController extends Controller
         //     });
         // });
 
-        $paginator = $ratings->fastPaginate($this->perPage, ['*'], 'p')
+        $paginator = $ratings->paginate($this->perPage, ['*'], 'p')
         ->through(fn($m) => $m->setAppends(['meta_data']))
         ->setPath('/')
         ->onEachSide(1);
@@ -91,7 +91,6 @@ class CatalystMyCommunityReviewsController extends Controller
         //         'rating' => $rating->rating,
         //     ])
         // );
-         dd($paginator);
         return [
             'filters' => [
                 'funds' => $this->fundsFilter->toArray(),
