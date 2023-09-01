@@ -303,13 +303,13 @@ primary:
     default_statistics_target = 500
     random_page_cost = 1.1
     effective_io_concurrency = 400
-    work_mem = 2048MB
+    work_mem = 1024MB
     min_wal_size = 1GB
     max_wal_size = 4GB
     max_parallel_workers_per_gather = 8
     max_parallel_workers = 8
     max_parallel_maintenance_workers = 4
-    max_worker_processes = 10
+    max_worker_processes = 12
 
 
   ## @param primary.existingExtendedConfigmap Name of an existing ConfigMap with PostgreSQL Primary extended configuration
