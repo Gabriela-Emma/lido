@@ -298,12 +298,12 @@ primary:
     checkpoint_completion_target = 0.9
     checkpoint_timeout = 1h
     synchronous_commit = off
-    wal_buffers = 64MB
+    wal_buffers = 32MB
     jit = off
     default_statistics_target = 500
     random_page_cost = 1.1
     effective_io_concurrency = 400
-    work_mem = 1024MB
+    work_mem = 24MB
     min_wal_size = 1GB
     max_wal_size = 4GB
     max_parallel_workers_per_gather = 8
