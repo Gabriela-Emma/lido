@@ -78,7 +78,7 @@ class CatalystMyCommunityReviewsController extends Controller
         //     });
         // });
 
-        $paginator = $ratings->fastPaginate($this->perPage, ['*'], 'p')->items()
+        $paginator = $ratings->fastPaginate($this->perPage, ['*'], 'p')
         ->through(fn($m) => $m->setAppends(['meta_data']))
         ->setPath('/')
         ->onEachSide(1);
