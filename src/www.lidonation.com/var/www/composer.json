@@ -27,6 +27,7 @@
         "guzzlehttp/guzzle": "^7.3",
         "guzzlehttp/psr7": "^2.4",
         "halaxa/json-machine": "^1.1",
+        "hammerstone/fast-paginate": "*",
         "http-interop/http-factory-guzzle": "^1.2",
         "inertiajs/inertia-laravel": "^0.6.3",
         "inspector-apm/inspector-laravel": "^4.7",

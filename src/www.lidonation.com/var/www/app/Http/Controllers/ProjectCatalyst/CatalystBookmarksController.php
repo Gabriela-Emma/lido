@@ -121,7 +121,7 @@ class CatalystBookmarksController extends Controller
     {
         return DraftBallot::where('user_id', Auth::id())
             ->orderBy('created_at', 'desc')
-            ->paginate(24);
+            ->fastPaginate(24);
     }
 
     public function editDraftBallot(Request $request, DraftBallot $draftBallot)

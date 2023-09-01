@@ -58,7 +58,7 @@ class CatalystReportsController extends Controller
                     ->orWhere('name', 'iLIKE', "%{$this->search}%"));
             //            $this->dispatchBrowserEvent('analytics-event-fired', ['code' => 'HSH9YZDM']);
         }
-        $paginator = $query->paginate($this->perPage, $this->currentPage, 'p');
+        $paginator = $query->fastPaginate($this->perPage, $this->currentPage, 'p');
 
         return $paginator->toArray();
     }

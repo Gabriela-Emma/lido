@@ -13,6 +13,7 @@ use Inertia\Inertia;
 use App\Enums\CatalystExplorerQueryParams;
 use Inertia\Response;
 use Illuminate\Support\Collection;
+use Illuminate\Pagination\LengthAwarePaginator ;
 
 class CatalystMyCommunityReviewsController extends Controller
 {
@@ -77,7 +78,7 @@ class CatalystMyCommunityReviewsController extends Controller
         //     });
         // });
 
-        $paginator = $ratings->paginate($this->perPage, ['*'], 'p')
+        $paginator = $ratings->fastPaginate($this->perPage, ['*'], 'p')->items()
         ->through(fn($m) => $m->setAppends(['meta_data']))
         ->setPath('/')
         ->onEachSide(1);
@@ -90,7 +91,7 @@ class CatalystMyCommunityReviewsController extends Controller
         //         'rating' => $rating->rating,
         //     ])
         // );
-
+         dd($paginator);
         return [
             'filters' => [
                 'funds' => $this->fundsFilter->toArray(),
@@ -124,7 +125,7 @@ class CatalystMyCommunityReviewsController extends Controller
     {
         $id = $request->resId;
         $comment = $assessment->comments()->find($id);
-        
+
         if ($comment) {
             $comment->delete();
         }

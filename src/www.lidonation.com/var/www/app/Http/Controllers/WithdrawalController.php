@@ -32,7 +32,7 @@ class WithdrawalController extends Controller
                     ->orderByDesc('created_at')
                     ->withCount('rewards')
                     ->with(['rewards', 'txs'])
-                    ->paginate(10)
+                    ->fastPaginate(10)
             ),
             'crumbs' => [
                 ['label' => 'Rewards'],

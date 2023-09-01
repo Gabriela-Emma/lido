@@ -25,7 +25,7 @@ class CatalystUserProfilesController extends Controller
         $query = CatalystUser::with('claimed_by_user')
             ->whereRelation('claimed_by_user', 'id', $user->id);
 
-        $paginator = $query->paginate($this->perPage, ['*'], 'p')->setPath('/');
+        $paginator = $query->fastPaginate($this->perPage, ['*'], 'p')->setPath('/');
 
         return Inertia::render('Auth/UserProfiles', [
             'profiles' => $paginator->onEachSide(1)->toArray(),

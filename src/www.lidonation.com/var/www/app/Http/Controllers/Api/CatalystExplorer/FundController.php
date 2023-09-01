@@ -70,14 +70,14 @@ class FundController extends Controller
             ->funds()
             ->filter(request(['search']));
 
-        $collection = FundResource::collection($funds->paginate($per_page));
+        $collection = FundResource::collection($funds->fastPaginate($per_page));
         if ($collection->isEmpty() ) {
             return response([
                 'status_code' => 404,
                 'message' => 'no proposal found',
             ], Response::HTTP_NOT_FOUND);
         } else {
-            return FundResource::collection($funds->paginate($per_page));
+            return FundResource::collection($funds->fastPaginate($per_page));
         }
     }
 
