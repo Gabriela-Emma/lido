@@ -223,7 +223,6 @@ function query() {
 function getMetrics() {
     const params = getQueryData();
 
-   
     // get largest funded
     window.axios.get(`${usePage().props.base_url}/catalyst-explorer/charts/metrics/largestFundedProposalObject`, { params })
         .then((res) => largestFundedProposalObject.value = res?.data)
@@ -237,7 +236,7 @@ function getMetrics() {
             console.error(error);
         });
 
-    // count members awarded funding 
+    // count members awarded funding
     window.axios.get(`${usePage().props.base_url}/catalyst-explorer/charts/metrics/membersAwardedFundingCount`, { params })
         .then((res) => membersAwardedFundingCount.value = res?.data)
         .catch((error) => {
@@ -283,7 +282,7 @@ function getMetrics() {
                 }
             }, 1000*3);
 
-            
+
         })
         .catch((error) => {
             console.error(error);

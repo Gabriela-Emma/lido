@@ -6,12 +6,9 @@ use App\Enums\CatalystExplorerQueryParams;
 use App\Http\Controllers\Controller;
 use App\Models\CatalystSnapshot;
 use App\Models\CatalystUser;
-use App\Models\CatalystVotingPower;
 use App\Models\Fund;
 use App\Models\Proposal;
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Fluent;
 use Inertia\Inertia;
@@ -20,23 +17,23 @@ use Meilisearch\Endpoints\Indexes;
 
 class CatalystChartsController extends Controller
 {
-    
+
     public mixed $fund;
-    
+
     public mixed $largestFundedProposalObject;
-    
+
     public mixed $fundedOver75KCount;
-    
+
     public int|null $membersAwardedFundingCount;
-    
+
     public int|null $completedProposalsCount;
-    
+
     public int|null $fullyDisbursedProposalsCount;
-    
+
     public $adaPowerRanges;
-    
+
     public string $fundSlugFilter;
-    
+
     public int|null $fundFilter;
     public string|null $fundingStatus = null;
     public string|null $proposalStatus = null;
@@ -52,7 +49,7 @@ class CatalystChartsController extends Controller
         $this->sortBy = 'amount_requested';
         $this->sortOrder = 'desc';
         $res = $this->query(false, ['link', 'amount_requested'])->raw();
-        
+
         if (isset($res['hits'])) {
             return collect($res['hits'])->first();
         }
@@ -67,7 +64,7 @@ class CatalystChartsController extends Controller
         $this->sortBy = 'amount_requested';
         $this->sortOrder = 'desc';
         $res = $this->query(false, ['amount_requested'], ['type = proposal', 'amount_requested >= 75000'])->raw();
-        
+
         if (isset($res['hits'])) {
             return collect($res['hits'])->count();
         }
@@ -123,7 +120,7 @@ class CatalystChartsController extends Controller
         $this->setFilters($request);
         $this->fundedProposalsFilter = true;
         $res = $this->query(false, ['id'], ['type = proposal', 'status = complete'])->raw();
-        
+
         if (isset($res['hits'])) {
             return collect($res['hits'])
                         ->count();
@@ -146,10 +143,8 @@ class CatalystChartsController extends Controller
                     'key' => $key,
                     'count' => $power['0'],
                     'total' => $power['1']
-                ]); 
+                ]);
         }
-
-        // dd();
 
         return new Fluent($powersResults);
     }
@@ -157,14 +152,14 @@ class CatalystChartsController extends Controller
     public function index(Request $request)
     {
         $this->setFilters($request);
-        
-        
+
+
         $props = [
             'filters' => [
                 'fundId' => $this->fundFilter,
                 ]
             ];
-            
+
             return Inertia::render('Charts', $props);
     }
 
@@ -243,13 +238,13 @@ class CatalystChartsController extends Controller
         if ($returnBuilder) {
             return $searchBuilder;
         }
-        
+
         return new Fluent($searchBuilder->raw());
 
     }
 
     protected function setSnapshotStats()
-    {   
+    {
         $fundIds = $this->fund
             ? [$this->fund?->id]
             : CatalystSnapshot::query()->where('model_type', Fund::class)->pluck('model_id')->toArray();
@@ -290,7 +285,9 @@ class CatalystChartsController extends Controller
                 WHEN voting_power > 2000000000000 THEN '> 20M'
                 END as range,  COUNT(*) as wallets, SUM(voting_power) as ada"
             )->whereIn('catalyst_snapshot_id', $snapshotIds)->groupByRaw(1);
-        $adaPowerRangesCollection = $agg->get()->map(fn ($row) => [$row->range => [$row->wallets, $row->ada]])->collapse();
+
+            $adaPowerRangesCollection = $agg->get()->map(fn ($row) => [$row->range => [$row->wallets, $row->ada]])->collapse();
+
         // convert the collection to an associative array whose structure is fully representative of our front-end needs
         $adaPowerRangesFormattedArray = [];
         foreach ($adaPowerRangesCollection as $range => $value) {
@@ -300,10 +297,12 @@ class CatalystChartsController extends Controller
             $adaPowerRangesFormattedArray[$finalRange] = [$value['0'], round($value['1'] / 1000000, 2), $rangeArray['2']];
         }
 
+        dd($this->adaPowerRanges);
+
         // convert then order the array to collection and assing to the objects $adaPowerRanges property
         $this->adaPowerRanges = collect($adaPowerRangesFormattedArray)->sortBy(function ($value, $key) {
             return $value['2'];
-        });  
+        });
     }
 
     #[ArrayShape(['filters' => 'array'])]
@@ -334,5 +333,5 @@ class CatalystChartsController extends Controller
 
         return $_options;
     }
-    
+
 }
