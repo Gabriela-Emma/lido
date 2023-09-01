@@ -159,8 +159,9 @@ class CatalystChartsController extends Controller
             ->orderBy('snapshot_at', 'desc')
             ->get()->map(fn($cs) => $cs->model);
 
+
         $props = [
-            'funds' => FundResource::collection($funds),
+            'funds' => FundResource::collection($funds)->toArray($request),
             'filters' => [
                 'fundId' => $this->fundFilter,
             ]
