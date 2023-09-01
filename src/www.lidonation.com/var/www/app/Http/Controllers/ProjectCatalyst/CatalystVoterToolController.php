@@ -145,6 +145,10 @@ class CatalystVoterToolController extends Controller
                     'challenge.amount',
                 ];
 
+                if (count($_options['sort']) > 0) {
+                    $options['sort'] = $_options['sort'];
+                }
+
                 $options['offset'] = (($this->currentPage ?? 1) - 1) * $this->limit;
                 $options['limit'] = $this->limit;
 
@@ -172,6 +176,7 @@ class CatalystVoterToolController extends Controller
     {
         $_options = [
             'filters' => ["fund.id = {$this->fund?->id}"],
+            'sort' => ['ranking_total:desc'],
         ];
 
         if ($param == 'firstTimers') {
@@ -184,6 +189,7 @@ class CatalystVoterToolController extends Controller
 
         if ($param == 'completedProposals') {
             $_options['filters'][] = "users.proposals_completed > 0";
+            $_options['sort'][] = 'users.proposals_completed:asc';
         }
 
         if ($param == 'below75k') {

@@ -513,6 +513,7 @@ class CatalystProposalsController extends Controller
             return (new ExportModelService)->export(new ProposalExport($idsArr, app()->getLocale()), "proposals.{$this->downloadType}");
         }
     }
+
     protected function downloadProposals(Request $request)
     {
         $this->download = $request->input('d', false);

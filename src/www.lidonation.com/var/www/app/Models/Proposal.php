@@ -182,6 +182,7 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
             'no_votes_count',
             'yes_votes_count',
             'ranking_total',
+            'users.proposals_completed'
         ];
     }
 
