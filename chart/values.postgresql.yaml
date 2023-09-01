@@ -302,7 +302,7 @@ primary:
     default_statistics_target = 500
     random_page_cost = 1.1
     effective_io_concurrency = 400
-    work_mem = 2048GB
+    work_mem = 2048MB
     min_wal_size = 1GB
     max_wal_size = 4GB
     max_parallel_workers_per_gather = 8
