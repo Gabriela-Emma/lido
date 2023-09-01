@@ -96,7 +96,7 @@
                             <a
                                 class="px-1 py-3 text-white menu-link hover:text-yellow-500"
                                 :class="{ 'text-yellow-500': $page.component.startsWith('Charts') }"
-                                :href="$utils.localizeRoute('project-catalyst/dashboard')">
+                                :href="$utils.localizeRoute('catalyst-explorer/charts')">
                                 {{ $t('Charts') }}
                             </a>
                         </li>
