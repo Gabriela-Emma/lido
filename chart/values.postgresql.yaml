@@ -309,7 +309,6 @@ primary:
     max_parallel_workers = 8
     max_parallel_maintenance_workers = 4
     max_worker_processes = 10
-    max_fsm_pages = 262144
 
 
   ## @param primary.existingExtendedConfigmap Name of an existing ConfigMap with PostgreSQL Primary extended configuration
