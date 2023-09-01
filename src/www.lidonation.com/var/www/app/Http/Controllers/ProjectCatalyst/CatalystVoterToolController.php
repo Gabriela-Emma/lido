@@ -247,7 +247,7 @@ class CatalystVoterToolController extends Controller
                 null,
                 function (Indexes $index, $query, $options) use ($user_options, $offset, $batchSize) {
                     $options['filter'] = $user_options['filters'];
-                    $options['attributesToRetrieve'] = ['id', 'proposals', 'current_fund_proposals'];
+                    $options['attributesToRetrieve'] = ['id', 'proposals'];
                     $options['limit'] = $batchSize;
                     $options['offset'] = $offset;
 
@@ -258,9 +258,8 @@ class CatalystVoterToolController extends Controller
             $results = array_merge($results, $currentBatch);
             $offset += $batchSize;
         } while (count($currentBatch) == $batchSize);
-        dd($results);
-        $proposals = collect($results)->map(fn ($u) => $u['proposals'][0]['id'])->unique();
-        
+
+        $proposals = collect($results)->filter(fn ($u) => $u['proposals'][0]['fund']['id'] !== $this->fund?->id )->map(fn ($u) => $u['proposals'][0]['id']);
 
         if ($inHouse) {
             return count($proposals);
