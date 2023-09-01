@@ -190,8 +190,10 @@ let link = ref<string>('');
 
 // const {funds} = storeToRefs(useFundsStore());
 
+console.log({props});
+
 const fundsLabelValue = computed(() => {
-    return props?.funds.map((fund) => {
+    return props?.funds?.map((fund) => {
         return { 'label': fund.title, 'value': fund.id}
     })
 });
