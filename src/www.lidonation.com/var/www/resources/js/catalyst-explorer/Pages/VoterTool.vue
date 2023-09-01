@@ -99,7 +99,6 @@ const props = withDefaults(
             data: Proposal[]
         };
     }>(), {
-    filterPerPage: 4
 });
 
 const currentChallenge = computed(() => {
@@ -189,6 +188,7 @@ async function query() {
         // @ts-ignore
         window?.fathom?.trackGoal(VARIABLES.TRACKER_ID_GROUPS, 0);
     }
+    
 }
 function resetFilters() {
   search.value = '';

@@ -259,7 +259,7 @@ class CatalystVoterToolController extends Controller
             $offset += $batchSize;
         } while (count($currentBatch) == $batchSize);
 
-        $proposals = collect($results)->filter(fn ($u) => $u['proposals'][0]['fund']['id'] !== $this->fund?->id )->map(fn ($u) => $u['proposals'][0]['id']);
+        $proposals = collect($results)->filter(fn ($u) => $u['proposals'][0]['fund']['id'] == $this->fund?->id )->map(fn ($u) => $u['proposals'][0]['id']);
 
         if ($inHouse) {
             return count($proposals);
