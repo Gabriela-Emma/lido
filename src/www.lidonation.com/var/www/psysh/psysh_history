@@ -322,3 +322,15 @@ $p->book_items
 $p->bookmark_items
 $p\040=\040Proposal::find(1139);
 $p->bookmark_items
+exit
+Proposal::runCustomIndex();
+exit
+Proposal::runCustomIndex();
+exit
+$cu\040=\040CatalystUser::inRandomOrder()->first();
+$cu->first_timer
+$cu->proposals
+$cu->proposals->map(fn\040($p)\040=>\040$p->fund?->parent_id)->toArray();
+exit
+Proposal::runCustomIndex();
+exit
