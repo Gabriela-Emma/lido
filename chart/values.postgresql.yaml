@@ -289,8 +289,8 @@ primary:
   ## ref: https://github.com/bitnami/bitnami-docker-postgresql#allow-settings-to-be-loaded-from-files-other-than-the-default-postgresqlconf
   ##
   extendedConfiguration: |-
-    max_connections=1000
-    max_prepared_transactions=1000
+    max_connections=5000
+    max_prepared_transactions=5000
     max_locks_per_transaction = 256
     shared_buffers = 16GB
     effective_cache_size = 36GB
@@ -388,7 +388,7 @@ primary:
   ## @param primary.livenessProbe.successThreshold Success threshold for livenessProbe
   ##
   livenessProbe:
-    enabled: true
+    enabled: false
     initialDelaySeconds: 30
     periodSeconds: 10
     timeoutSeconds: 5
