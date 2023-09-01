@@ -337,5 +337,4 @@ exit
 $u\040=\040CatalystUser::inRandomOrder();
 $u\040=\040CatalystUser::inRandomOrder()->first();
 $u->profile_photo_url
-Proposal::runCustomIndex();
 exit

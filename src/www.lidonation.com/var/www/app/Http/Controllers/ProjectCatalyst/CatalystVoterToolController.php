@@ -5,7 +5,6 @@ namespace App\Http\Controllers\ProjectCatalyst;
 use Inertia\Inertia;
 use Inertia\Response;
 use App\Models\Proposal;
-use App\Models\CatalystUser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Fluent;
 use Meilisearch\Endpoints\Indexes;

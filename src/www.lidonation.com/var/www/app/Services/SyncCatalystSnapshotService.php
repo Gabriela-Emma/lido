@@ -24,15 +24,30 @@ class SyncCatalystSnapshotService
             if ($fund instanceof Fund) {
                 $snapshot_at = Carbon::parse($date->date);
                 $epoch = $this->dateToEpoch($snapshot_at);
+
                 
                 try {
-                    CatalystSnapshot::firstOrCreate([
-                        "model_id" => $fund->id,
-                        "model_type" => Fund::class,
-                        "epoch" => $epoch,
-                        "order" => $date->fund,
-                        "snapshot_at" => $snapshot_at,
-                    ]);
+                    $existingSnapshot = CatalystSnapshot::where('order', $date->fund)
+                        ->first();
+
+                    if ($existingSnapshot instanceof CatalystSnapshot) {
+                        
+                        $existingSnapshot->model_id = $fund->id;
+                        $existingSnapshot->model_type = Fund::class;
+                        $existingSnapshot->epoch = $epoch;
+                        $existingSnapshot->order = $date->fund;
+                        $existingSnapshot->snapshot_at = $snapshot_at;
+
+                        $existingSnapshot->save();
+                    } else {
+                        CatalystSnapshot::firstOrCreate([
+                            "model_id" => $fund->id,
+                            "model_type" => Fund::class,
+                            "epoch" => $epoch,
+                            "order" => $date->fund,
+                            "snapshot_at" => $snapshot_at,
+                        ]);
+                    }
                 } catch (\Throwable $th) {
                     continue;
                 }

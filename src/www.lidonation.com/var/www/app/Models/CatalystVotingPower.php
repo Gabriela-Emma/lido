@@ -12,7 +12,7 @@ class CatalystVotingPower extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'stake_pub',
+        'voter_id',
         'voting_power',
         'catalyst_snapshot_id',
     ];
