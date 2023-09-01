@@ -1,6 +1,6 @@
 import {defineStore} from "pinia";
 import axios, {AxiosError} from "axios";
-import {computed, onMounted, Ref, ref} from "vue";
+import {computed, ref} from "vue";
 import BookmarkCollection from "../models/bookmark-collection";
 import Proposal from "../models/proposal";
 import DraftBallot from "../models/draft-ballot";
@@ -11,6 +11,7 @@ export const useBookmarksStore = defineStore('bookmarks', () => {
     let collections = ref<BookmarkCollection<Proposal>[]>([]);
     let draftBallot = ref<DraftBallot<Proposal>>(null);
     let draftBallots = ref<DraftBallot<Proposal>[]>([]);
+    let loadingDraftBallots = ref<boolean>(false);
 
     async function deleteCollection(collectionHash: string) {
         loadCollections().then();
@@ -22,11 +23,14 @@ export const useBookmarksStore = defineStore('bookmarks', () => {
 
     async function loadDraftBallots() {
         try {
+            loadingDraftBallots.value = true;
             const response = await axios.get(route('catalystExplorerApi.draftBallots'));
             draftBallots.value = response?.data?.data;
         } catch (e: AxiosError | any) {
             console.log({e});
         }
+
+        loadingDraftBallots.value = false;
     }
 
     async function loadDraftBallot(ballot?: DraftBallot<Proposal>) {
@@ -50,7 +54,7 @@ export const useBookmarksStore = defineStore('bookmarks', () => {
 
     async function loadCollections() {
         try {
-            const response = await axios.get(route('catalystExplorer.myBookmarks'));
+            const response = await axios.get(route('catalystExplorerApi.myBookmarks'));
             collections.value = [...response.data];
         } catch (e: AxiosError | any) {
             console.log({e});
@@ -99,5 +103,7 @@ export const useBookmarksStore = defineStore('bookmarks', () => {
         modelIds$: bookmarkedModels,
         collections$: collectionsArray,
         draftBallot$: draftBallot,
+
+        loadingDraftBallots$: loadingDraftBallots,
     };
 });

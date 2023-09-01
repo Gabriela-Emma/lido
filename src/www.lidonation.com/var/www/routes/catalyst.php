@@ -136,6 +136,9 @@ Route::group(
             Route::get('/voter-tool', [CatalystVoterToolController::class, 'index'])
                 ->name('voterTool');
 
+            Route::get('/voter-tool/counts', [CatalystVoterToolController::class, 'setCounts'])
+            ->name('voterTool.counts');
+
             Route::get('/proposals/{proposal:id}/bookmark', [CatalystProposalsController::class, 'bookmark']);
             Route::get('/bookmarks', [CatalystBookmarksController::class, 'index'])->name('bookmarks');
 
@@ -149,7 +152,8 @@ Route::group(
 
             // exports
             Route::get('/export/proposals', [CatalystProposalsController::class, 'exportProposals']);
-            Route::get('/download/proposals', [CatalystProposalsController::class, 'downloadProposals']);
+            Route::get('/download/proposals', [CatalystProposalsController::class, 'downloadProposals'])
+            ->name('download.proposals');
 
             // Bookmarks
             Route::post('/bookmarks/items', [CatalystMyBookmarksController::class, 'createItem'])->name('bookmarkItem.create');
@@ -162,7 +166,6 @@ Route::group(
                 ->name('cardano-treasury');
 
             Route::middleware(['auth.catalyst'])->prefix('/my')->group(function () {
-                Route::get('/bookmarks', [CatalystMyBookmarksController::class, 'index'])->name('myBookmarks');
                 Route::post('/bookmarks/{bookmarkCollection:id}/create-ballot', [CatalystBookmarksController::class, 'createDraftBallotFromCollection'])
                 ->name('bookmark.createBallot');
                 Route::post('/draft-ballots', [CatalystBookmarksController::class, 'createDraftBallot'])
@@ -179,6 +182,9 @@ Route::group(
 
                 Route::get('/dashboard', [CatalystMyDashboardController::class, 'index'])
                     ->name('myDashboard');
+
+                Route::get('/bookmarks', [fn () => Inertia::render('Auth/MyBookmarks')])
+                    ->name('myBookmarks');
 
                 Route::get('/draft-ballots', fn () => Inertia::render('Auth/MyDraftBallots'))
                 ->name('myDraftBallots');

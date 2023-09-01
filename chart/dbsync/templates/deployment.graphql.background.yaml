@@ -79,13 +79,13 @@ spec:
               name: "lidolovelace-cardano-configmap"
         env:
           - name: POSTGRES_HOST
-            value: "lidolovelace-dbsync-db-postgresql"
+            value: {{ .Values.services.dbsync.dbHost }}
           - name: METADATA_SERVER_URI
             value: "https://tokens.cardano.org"
           - name: HASURA_URI
             value: "http://lidolovelace-dbsync-hasura-service.{{ .Values.namespace }}.svc.cluster.local:8080"
           - name: OGMIOS_HOST
-            value: "lidolovelace-dbsync-ogmios-service.{{ .Values.namespace }}.svc.cluster.local"
+            value: "lidolovelace-cardano-ogmios-service.{{ .Values.namespace }}.svc.cluster.local"
           - name: CACHE_ENABLED
             value: "true"
           - name: LOGGER_MIN_SEVERITY

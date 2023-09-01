@@ -73,7 +73,7 @@ class CatalystVoterToolController extends Controller
             'currentPage' =>  $this->currentPage,
             'perPage' => $this->limit,
             'challenges' => $this->challenges,
-            'challengeFilter' => $this->challengeFilter,
+            'challengeFilter' => intval($this->challengeFilter),
             'proposals' => $this->proposals,
             'fund' => $this->fund,
             'crumbs' => [
@@ -276,76 +276,74 @@ class CatalystVoterToolController extends Controller
 
     public function getGroupFilters()
     {
-        $this->getProposalCount('smallProposals');
-
         $filters =   collect([
             [
                 "title" => "Quick Pitches",
                 "description" => "Proposals with Quick Pitches.",
                 "param" => "quickPitchProposals",
-                "count" => $this->getProposalCount('quickPitchProposals')
+                "count" => null
             ],
             [
                 "title" =>  "Completed Proposals",
                 "description" =>  "From teams with completed Proposals",
                 "param" =>  "completedProposals",
-                "count" => $this->getProposalCount('completedProposals')
+                "count" => null
             ],
             [
                 "title" =>  "Opensource",
                 "description" =>  "Opensource projects",
                 "param" =>  "opensource",
-                "count" => $this->getProposalCount('opensource')
+                "count" => null
             ],
             [
                 "title" => "Ideafest Proposals",
                 "description" => "Projects presented at Ideafest!",
                 "param" => "ideafestProposals",
-                "count" => $this->getProposalCount('ideafestProposals')
+                "count" => null
             ],
             [
                 "title" =>  "Impact Proposals",
                 "description" =>  "Proposals with Impact",
                 "param" =>  "impactProposals",
-                "count" => $this->getProposalCount('impactProposals')
+                "count" => null
             ],
             [
                 "title" =>  "First Timers",
                 "description" =>  "Proposals from first time members!",
                 "param" =>  "firstTimers",
-                "count" => $this->getProposalCount('firstTimers')
+                "count" => null
             ],
             [
                 "title" =>  "One timers",
                 "description" =>  "Members with only 1 proposal",
                 "param" =>  "oneTimers",
-                "count" => $this->getProposalCount('oneTimers')
+                "count" => null
             ],
             [
                 "title" =>  "Small Cap",
                 "description" =>  "Proposals with budgets below 75K",
                 "param" =>  "below75k",
-                "count" => $this->getProposalCount('below75k')
+                "count" => null
             ],
             [
                 "title" =>  "Medium Cap",
                 "description" =>  "Proposals with budgets between 75K & 250K",
                 "param" =>  "mediumProposals",
-                "count" => $this->getProposalCount('mediumProposals')
+                "count" =>null
             ],
             [
                 "title" =>  "Large Cap",
                 "description" =>  "Proposals with budgets over 250K",
                 "param" =>  "over250K",
-                "count" => $this->getProposalCount('over250K')
+                "count" => null
             ],
             [
                 "title" =>  "Women Proposals",
                 "description" =>  "Proposals By Women.",
                 "param" =>  "womanProposals",
-                "count" => $this->getProposalCount('womanProposals')
-            ]
-        ]);
+                "count" => null
+            ]]
+        );
         $offset = (($this->currentFilterGroup ?? 1) - 1) * $this->filterGroupLimit;
         $slicedFilters = $filters->slice($offset);
 
@@ -382,7 +380,16 @@ class CatalystVoterToolController extends Controller
         return $proposals['estimatedTotalHits'];
     }
 
-    public function setProposal()
+    public function setCounts(Request $request)
     {
+        $params = $request->input();
+        $counts = collect([]);
+
+        foreach ($params as  $param) {
+            $count = $this->getProposalCount($param);
+            $counts->put($param, $count);
+        }
+
+        return $counts; 
     }
 }

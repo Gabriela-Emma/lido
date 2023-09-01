@@ -494,6 +494,12 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
         return route('proposal', $this);
     }
 
+    public function bookmark_items()
+    {
+        return $this->hasMany(BookmarkItem::class, 'model_id' )
+        ->where('bookmark_items.model_type', Proposal::class);
+    }
+
     /**
      * Get the value used to index the model.
      */

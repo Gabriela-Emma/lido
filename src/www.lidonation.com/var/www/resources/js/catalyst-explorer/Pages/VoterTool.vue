@@ -10,6 +10,7 @@
                 </div>
                 <div class="my-6">
                     <div class="flex-1">
+
                         <Pagination :links="props.filters?.links" :per-page="props.perPage" :total="props.filters?.total"
                             :from="props.filters?.from" :to="props.filters?.to"
                             @paginated="(payload) => currFilterGroupRef = payload" :custom="true" />
@@ -21,6 +22,15 @@
         </section>
 
         <section class="container" v-if="!!props.proposals?.data.length">
+            <div class="justify-items-end">
+                <h2 v-if="currentChallenge?.label">
+                    Viewing Proposals in {{ currentChallenge.label }}
+                </h2>
+                <button type="button" @click="resetFilters"
+                class="flex items-center justify-center gap-2 px-2 py-2 mb-6 ml-auto text-sm font-medium text-white bg-teal-600 border border-transparent rounded-sm shadow-sm md:gap-3 md:px-3 md:text-lg 2xl:text-xl hover:bg-labs-black hover:text-white focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
+                    Reset Filters
+                </button>
+            </div>
             <Proposals :proposals="props.proposals?.data"></Proposals>
 
             <div class="flex items-start justify-between w-full gap-16 my-16 xl:gap-24">
@@ -48,7 +58,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref, watch, onBeforeUnmount } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import Search from '../Shared/Components/Search.vue';
 import Proposal from '../models/proposal';
 import Proposals from '../modules/proposals/Proposals.vue';
@@ -64,6 +74,7 @@ import { useProposalsStore } from '../stores/proposals-store';
 const props = withDefaults(
     defineProps<{
         search?: string,
+        proposal: Proposal
         currPage?: number,
         currFilterGroup?: number,
         filterPerPage?: number,
@@ -91,6 +102,10 @@ const props = withDefaults(
     filterPerPage: 4
 });
 
+const currentChallenge = computed(() => {
+  return props?.challenges.find(challenge => challenge?.id === props?.challengeFilter);
+})
+
 let searchRender = ref(0);
 let search = ref(props.search);
 let currPageRef = ref<number>(props.currPage);
@@ -100,8 +115,7 @@ let challengeFilterRef = ref<number>(props.challengeFilter);
 let perPageRef = ref<number>(props.perPage);
 let filterRef = ref(props.currentFilter);
 const proposalStore = useProposalsStore();
-proposalStore.setViewType('card');
-
+proposalStore.viewType = 'card';
 
 let handleResize = () => {
     proposalStore.viewType = 'card';
@@ -117,7 +131,7 @@ let handleResize = () => {
     }
 }
 
-// Watch the search value for changes and trigger the query function
+
 watch([search, filterRef], () => {
     query();
 }, { deep: true });
@@ -136,8 +150,7 @@ watch([challengeFilterRef], () => {
     query();
 });
 
-// Function to update the data with the new search and selectedsort value
-function query() {
+async function query() {
     const data = {};
     proposalStore.viewType = 'card'
     if (currPageRef.value) {
@@ -168,7 +181,7 @@ function query() {
     router.get(
         "/catalyst-explorer/voter-tool",
         data,
-        { preserveState: true, preserveScroll: !currPageRef.value }
+        { preserveState: true, preserveScroll: !challengeFilterRef.value }
     );
 
     //@ts-ignore
@@ -177,13 +190,22 @@ function query() {
         window?.fathom?.trackGoal(VARIABLES.TRACKER_ID_GROUPS, 0);
     }
 }
+function resetFilters() {
+  search.value = '';
+  filterRef.value = null;
+  currPageRef.value = null;
+  perPageRef.value = props.perPage;
+  currFilterGroupRef.value = null;
+  challengeFilterRef.value = null;
+  query();
+}
 
 onMounted(() => {
     window.addEventListener('resize', handleResize);
     handleResize();
-})
+});
 
 onBeforeUnmount(() => {
     window.removeEventListener('resize', handleResize);
-})
+});
 </script>

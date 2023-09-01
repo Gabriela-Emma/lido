@@ -119,7 +119,7 @@ class CatalystBookmarksController extends Controller
 
     public function draftBallotIndex()
     {
-        return DraftBallot::where('user_id', Auth::id())->with(['items.model'])
+        return DraftBallot::where('user_id', Auth::id())
             ->orderBy('created_at', 'desc')
             ->paginate(24);
     }

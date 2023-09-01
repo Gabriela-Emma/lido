@@ -35,10 +35,10 @@ class Kernel extends ConsoleKernel
         $schedule->job(new CardanoStatsJob)->everyTwoHours();
         $schedule->job(new RefreshLidoTwitterToken)->everyThirtyMinutes();
 
-        if (app()->environment('production')) {
-            $schedule->job(new SyncCatatalystVotersJob)->daily();
-            $schedule->job(new SyncCatalystVotingPowersJob)->daily();
-        }
+        // if (app()->environment('production')) {
+        //     $schedule->job(new SyncCatatalystVotersJob)->daily();
+        //     $schedule->job(new SyncCatalystVotingPowersJob)->daily();
+        // }
 
         $schedule->command('ln:sitemap:generate')->weekly();
 

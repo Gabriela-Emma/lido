@@ -72,12 +72,16 @@ class CatalystChartsController extends Controller
 
     protected function setProposalsStats()
     {
-        $fundIds = $this->fund?->fundChallenges()->pluck('id')
-            ?? Proposal::query()->pluck('fund_id')->unique();
+        // $fundIds = $this->fund?->fundChallenges()->pluck('id')
+        //     ?? Proposal::query()->pluck('fund_id')->unique(); //@todo this line is bad
+        $fundIds = $this->fund?->fundChallenges()->pluck('id')?->toArray() ?? [];
 
+        // $proposalIds = !is_null($this->fund)
+        //     ? Proposal::whereIn('fund_id', $this->fund->fundChallenges()->pluck('id'))->pluck('id')
+        //     : Proposal::query()->pluck('id'); //@todo: this line is bad
         $proposalIds = !is_null($this->fund)
             ? Proposal::whereIn('fund_id', $this->fund->fundChallenges()->pluck('id'))->pluck('id')
-            : Proposal::query()->pluck('id');
+            : [];
 
         $this->largestFundedProposalObject = Proposal::whereIn('id', $proposalIds)
             ->where('proposals.type', 'proposal')
@@ -94,7 +98,7 @@ class CatalystChartsController extends Controller
         $this->membersAwardedFundingCount = CatalystUser::whereHas('proposals',
             function ($q) use($fundIds) {
                 return $q->whereNotNull('funded_at')
-                    ->whereIn('fund_id', $fundIds->toArray());
+                    ->whereIn('fund_id', $fundIds);
             })
             ->count();
 
@@ -108,14 +112,16 @@ class CatalystChartsController extends Controller
             ->where('proposals.type', 'proposal')
             ->where('status', 'complete')
             ->count();
-
     }
 
     protected function setSnapshotStats()
     {
         $fundIds = $this->fund
             ? [$this->fund?->id]
-            : CatalystSnapshot::query()->where('model_type', Fund::class)->pluck('model_id')->toArray();
+            : CatalystSnapshot::query()
+            ->where('model_type', Fund::class)
+            ->pluck('model_id')
+            ->toArray();
 
         $snapshotIds = CatalystSnapshot::with('votingPowers')
             ->whereIn('model_id', $fundIds)
@@ -164,9 +170,11 @@ class CatalystChartsController extends Controller
         $adaPowerRangesFormattedArray = [];
         foreach ($adaPowerRangesCollection as $range => $value) {
             $rangeArray = explode('-', $range);
-            $finalRange = $rangeArray[0].' - '.$rangeArray[1];
+            $finalRange = isset($rangeArray[1]) ? $rangeArray[0].' - '.$rangeArray[1] : $rangeArray[0];
 
-            $adaPowerRangesFormattedArray[$finalRange] = [$value['0'], round($value['1'] / 1000000, 2), $rangeArray['2']];
+            if ( is_array($rangeArray) && !empty($finalRange) && isset($rangeArray['2'])) {
+                $adaPowerRangesFormattedArray[$finalRange] = [$value['0'], round($value['1'] / 1000000, 2), $rangeArray['2']];
+            }
         }
 
         // convert then order the array to collection and assing to the objects $adaPowerRanges property

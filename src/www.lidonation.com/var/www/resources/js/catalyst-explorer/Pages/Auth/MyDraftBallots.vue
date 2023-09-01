@@ -6,21 +6,28 @@
                 <aside class="px-2 py-6 sm:px-6 lg:col-span-3 xl:col-span-2 lg:py-0 lg:px-0">
                     <UserNav />
                 </aside>
+
                 <div class="flex flex-col p-6 space-y-6 bg-white sm:px-6 lg:col-span-9 xl:col-span-10 lg:px-0">
-                    <section class="p-16 text-center align-middle" v-if="!draftBallots$ || draftBallots$?.length == 0">
+
+                    <section class="p-16 text-center align-middle" v-if="loadingDraftBallots$">
                         <ProgressSpinner />
                     </section>
-                    <section class="p-6" v-if="user$?.id && draftBallots$?.length > 0">
-                        <h2 class="text-lg lg:text-xl xl:text-3xl">
+
+                    <section class="p-6">
+                        <h2 class="mb-2 text-lg lg:text-xl xl:text-3xl">
                             My Draft Ballots
                         </h2>
+
                         <div
                             class="grid grid-cols-1 gap-6 lg:col-span-9 xl:col-span-10 sm:grid-cols-2 lg:grid-cols-3 3xl:grid-cols-4">
-                            <DraftBallotCard v-for="ballot in draftBallots$" :draftBallot="ballot" />
+                            <div class="relative h-72" v-for="ballot in draftBallots$">
+                                <DraftBallotCard :draftBallot="ballot" />
+                            </div>
+
                             <div
-                                class="relative flex flex-col items-center justify-center object-cover w-full h-56 text-black border-2 border-teal-800 border-dashed item rounded-l-xl rounded-r-xs">
+                                class="relative flex flex-col items-center justify-center object-cover w-full text-black border-2 border-teal-800 border-dashed h-72 item rounded-l-xl rounded-r-xs">
                                 <Link class="text-teal-800" method="post" :href="route('catalystExplorer.createBallot')">
-                                Create Draft Ballot
+                                    Create Draft Ballot
                                 </Link>
                             </div>
                         </div>
@@ -37,16 +44,15 @@ import { useBookmarksStore } from '../../stores/bookmarks-store';
 import DraftBallotCard from '../../modules/bookmarks/DraftBallotCard.vue';
 import ProgressSpinner from '../../Shared/Components/ProgressSpinner.vue';
 import route from 'ziggy-js';
-import { inject } from 'vue'
 import { Link } from '@inertiajs/vue3';
 import { useUserStore } from '../../../global/Shared/store/user-store';
 import UserNav from "./UserNav.vue";
 
 
 const bookmarksStore = useBookmarksStore();
-const { draftBallots$ } = storeToRefs(bookmarksStore);
+const { draftBallots$, loadingDraftBallots$ } = storeToRefs(bookmarksStore);
 bookmarksStore.loadDraftBallots();
+
 const userStore = useUserStore();
 const { user$ } = storeToRefs(userStore);
-const $utils: any = inject('$utils');
 </script>
