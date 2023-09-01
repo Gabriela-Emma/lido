@@ -22,12 +22,10 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, reactive, ref, watch } from "vue";
+import { computed, ref, watch } from "vue";
 import FilterGroups from "../../models/filter-groups"
 import axios from "axios";
 import route from "ziggy-js";
-import { Ref } from "vue";
-import { filter } from "lodash";
 
 const props = defineProps<{
     filterGroups: FilterGroups[];
@@ -37,7 +35,6 @@ const props = defineProps<{
 let filters = ref(props.filterGroups)
 let waiting = ref(false);
 
-
 const emit = defineEmits<{
     (e: 'filter', filter: string): void;
 }>();
@@ -45,8 +42,6 @@ const emit = defineEmits<{
 const params = computed(() => {
     return Object.values(filters.value).map((filter) => filter.param);
 });
-
-
 
 let getCounts = async () => {
     waiting.value = true;
@@ -61,7 +56,7 @@ let getCounts = async () => {
                     updatedFilter.count = responseData[key];
                 }
             });
-            
+
             return updatedFilter;
         });
 
@@ -75,7 +70,7 @@ let getCounts = async () => {
 watch(
     () => props.filterGroups,
     (newFilterGroups, oldFilterGroups) => {
-        filters.value = newFilterGroups; 
+        filters.value = newFilterGroups;
         getCounts();
     },
 
