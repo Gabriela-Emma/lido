@@ -43,25 +43,27 @@ class SyncCatatalystVotersJob implements ShouldQueue
                         'page' => $page,
                         'order' => 'desc'
                     ])->collect();
+                    
+                $votersRegistrationTransactions->each(function($voterTransaction) use($page) {
+                    if (is_array($voterTransaction)) {
+                        $transaction = new Fluent([
+                            'tx_hash' => $voterTransaction['tx_hash'],
+                            "json_metadata" => new Fluent([
+                                "one" => $voterTransaction['json_metadata']['1'],
+                                "two" => $voterTransaction['json_metadata']['2'],
+                            ]),
+                        ]);
 
-                $votersRegistrationTransactions->each(function($voterTransaction) {
-                    $transaction = new Fluent([
-                        'tx_hash' => $voterTransaction['tx_hash'],
-                        "json_metadata" => new Fluent([
-                            "one" => $voterTransaction['json_metadata']['1'],
-                            "two" => $voterTransaction['json_metadata']['2'],
-                        ]),
-                    ]);
-
-                    $voterSavedRegistration = CatalystRegistration::where('tx', $transaction?->tx_hash)->first();
-
-                    if (! $voterSavedRegistration instanceof CatalystRegistration) {
-                        dispatch(new self($transaction));
+                        $voterSavedRegistration = CatalystRegistration::where('tx', $transaction?->tx_hash)->first();
+                        
+                        if (! $voterSavedRegistration instanceof CatalystRegistration) {
+                            dispatch(new self($transaction));
+                        }
                     }
                 });
 
                 $page++;
-                sleep(2);
+                sleep(10);
             } while ($votersRegistrationTransactions->isNotEmpty());
         }
     }
@@ -72,22 +74,23 @@ class SyncCatatalystVotersJob implements ShouldQueue
      * @return void
      */
     public function handle()
-    {
+    {   
         if ($this->encodedTransactionDetails) {
             $voterTransaction = $this->encodedTransactionDetails;
-
-            // fetch voting_power and transaction time from transaction hash.
+            
+            // fetch voting_power and transaction time from transaction hash.          
             $res = Http::post(
                 config('cardano.lucidEndpoint').'/votes/decode-voter-transaction',
                 compact('voterTransaction')
-                )->throw();
+            )->throw();
 
+            
             // save voter details if $response is succeful
             if ($res->successful()) {
                 $votersDetails = new Fluent($res->json()['data']);
 
                 $transaction_time = $this->getTransactionTime($voterTransaction->tx_hash);
-
+                
                 //save voter registration details
                 $catalystRegistration = new CatalystRegistration();
                 $catalystRegistration->tx = $voterTransaction->tx_hash;
@@ -95,7 +98,7 @@ class SyncCatatalystVotersJob implements ShouldQueue
                 $catalystRegistration->stake_key = $votersDetails->stake_key;
                 $catalystRegistration->created_at = $transaction_time;
                 $catalystRegistration->save();
-
+                
                 $voterDelegations = collect(json_decode($votersDetails->voter_delegations, true));
                 $voterDelegations->each(function ($voterDelegation) use($catalystRegistration) {
                     $newDelegation = new Delegation();
@@ -113,7 +116,7 @@ class SyncCatatalystVotersJob implements ShouldQueue
         $transaction = app(CardanoBlockfrostService::class)
             ->get("txs/{$txHash}", null)
             ->object();
-
+    
         return $transaction->block_time;
     }
 }

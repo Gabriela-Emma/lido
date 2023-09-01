@@ -127,6 +127,14 @@ Route::group(
             Route::get('people/{catalystUser:id}/metrics/sum/F10primary-proposals', [CatalystProposerController::class, 'getF10PrimaryProposalCount']);
             Route::get('people/{catalystUser:id}/metrics/sum/F10-co-proposals', [CatalystProposerController::class, 'getF10CoProposalCount']);
 
+            //catalyst charts metrics
+            Route::get('/charts/metrics/adaPowerRanges', [CatalystChartsController::class, 'metricAdaPowerRanges']);
+            Route::get('/charts/metrics/largestFundedProposalObject', [CatalystChartsController::class, 'metricLargestFundedProposalObject']);
+            Route::get('/charts/metrics/fundedOver75KCount', [CatalystChartsController::class, 'metricFundedOver75KCount']);
+            Route::get('/charts/metrics/membersAwardedFundingCount', [CatalystChartsController::class, 'metricMembersAwardedFundingCount']);
+            Route::get('/charts/metrics/fullyDisbursedProposalsCount', [CatalystChartsController::class, 'metricFullyDisbursedProposalsCount']);
+            Route::get('/charts/metrics/completedProposalsCount', [CatalystChartsController::class, 'metricCompletedProposalsCount']);
+
             Route::get('/people', [CatalystPeopleController::class, 'index'])
                 ->name('people');
 
