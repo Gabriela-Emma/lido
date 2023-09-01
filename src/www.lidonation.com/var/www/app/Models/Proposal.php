@@ -83,7 +83,7 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
         'repos',
         'tags',
         'categories',
-        'users',
+        // 'users',
     ];
 
     protected $withCount = ['ratings'];
@@ -534,6 +534,18 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
             'ideafest_proposal' => $this->is_ideafest_proposal ? 1 : 0,
             'project_length' => $this->meta_data->project_length ?? null,
             'ranking_total' => $this->ranking_total ?? 0,
+            'users' => $this->users->map(function($u){
+                $proposals = $u->proposals?->map(fn ($p) => $p->toArray());
+                return  [
+                    'id' => $u->id,
+                    'ideascale_id' => $u->ideascale_id,
+                    'username' => $u->username,
+                    'name' => $u->name,
+                    'bio' => $u->bio,
+                    'proposals_completed' => $proposals->filter(fn ($p) => $p['status'] === 'complete')?->count() ?? 0,
+                    'first_timer' => ($proposals?->map(fn ($p) => $p['fund']['id'])->unique()->count() === 1),
+                ];
+            } ),
             'fund' => [
                 'id' => $this->fund?->parent?->id,
                 'amount' => $this->fund?->parent?->amount ? intval($this->fund?->parent?->amount) : null,

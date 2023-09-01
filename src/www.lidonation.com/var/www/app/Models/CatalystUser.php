@@ -113,7 +113,7 @@ class CatalystUser extends User implements HasMedia, CanComment
     public function getFirstTimerAttribute(): bool
     {
         return count(array_unique(
-            $this->proposals->map(fn ($p) => $p->toSearchableArray())->pluck('fund')->toArray()
+            $this->proposals->map(fn ($p) => $p->fund?->parent_id)->toArray()
         )) === 1;
     }
 
@@ -250,7 +250,7 @@ class CatalystUser extends User implements HasMedia, CanComment
     public function toSearchableArray(): array
     {
         $array = $this->toArray();
-        $proposals = $this->proposals->map(fn ($p) => $p->toSearchableArray());
+        $proposals = $this->proposals->map(fn ($p) => $p->toArray());
 
         return array_merge($array, [
             'proposals' => $proposals,
