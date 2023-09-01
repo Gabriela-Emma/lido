@@ -180,7 +180,7 @@ async function query() {
     router.get(
         "/catalyst-explorer/voter-tool",
         data,
-        { preserveState: true, preserveScroll: !!challengeFilterRef.value }
+        { preserveState: true, preserveScroll: !challengeFilterRef.value }
     );
 
     //@ts-ignore
