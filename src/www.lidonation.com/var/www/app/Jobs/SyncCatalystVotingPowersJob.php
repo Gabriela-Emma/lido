@@ -22,24 +22,27 @@ class SyncCatalystVotingPowersJob implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(protected $snapshot = null, protected $stakeAddress = null)
-    {
-        if (is_null($this->snapshot) && is_null($this->stakeAddress)) {
-            (new SyncCatalystSnapshotService)->syncCatalystSnapshot(); //sync Catalyst Snapshots
+    public function __construct(
+        protected int $snapshot,
+        protected string $voterId,
+        protected $votingPower
+    ) {
+        // if (is_null($this->snapshot) && is_null($this->stakeAddress)) {
+        //     (new SyncCatalystSnapshotService)->syncCatalystSnapshot(); //sync Catalyst Snapshots
 
-            $fundSnapshots = CatalystSnapshot::where('model_type', App\Model\Fund::class)
-                ->get();
+        //     $fundSnapshots = CatalystSnapshot::where('model_type', App\Model\Fund::class)
+        //         ->get();
 
-            foreach ($fundSnapshots as $snapshot) {
-                $registeredStakePub = CatalystRegistration::where('created_at', '<', $snapshot->snapshot_at)
-                    ->pluck('stake_pub')
-                    ->unique();
+        //     foreach ($fundSnapshots as $snapshot) {
+        //         $registeredStakePub = CatalystRegistration::where('created_at', '<', $snapshot->snapshot_at)
+        //             ->pluck('stake_pub')
+        //             ->unique();
 
-                foreach($registeredStakePub as $stakeAddress) {
-                    dispatch(new SyncCatalystVotingPowersJob($snapshot, $stakeAddress));
-                }
-            }
-        }
+        //         foreach($registeredStakePub as $stakeAddress) {
+        //             dispatch(new SyncCatalystVotingPowersJob($snapshot, $stakeAddress));
+        //         }
+        //     }
+        // }
     }
 
     /**
@@ -49,25 +52,31 @@ class SyncCatalystVotingPowersJob implements ShouldQueue
      */
     public function handle()
     {
-        if (!is_null($this->snapshot) && !is_null($this->stakeAddress)) {
-            $accountHistory = app(CardanoBlockfrostService::class)
-                ->get("accounts/stake1ux0tpffwmyv802r9m4zzxvpkthm86nr9jzjm5cpwcxg33qs49rnrc/history", null)
-                ->collect();
+        CatalystVotingPower::firstOrCreate([
+            "voter_id" => $this->voterId,
+            "voting_power" => $this->votingPower,
+            "catalyst_snapshot_id" => $this->snapshot
+        ]);
 
-            $accountEpochDetails = $accountHistory->filter(function($record) {
-                    if($record["active_epoch"] == $this->snapshot->epoch) {
-                            return $record;
-                    }
-                })
-                ->first();
+        // if (!is_null($this->snapshot) && !is_null($this->stakeAddress)) {
+        //     $accountHistory = app(CardanoBlockfrostService::class)
+        //         ->get("accounts/stake1ux0tpffwmyv802r9m4zzxvpkthm86nr9jzjm5cpwcxg33qs49rnrc/history", null)
+        //         ->collect();
 
-            if (!is_null($accountEpochDetails)) {
-                CatalystVotingPower::firstOrCreate([
-                    "stake_pub" => $this->stakeAddress,
-                    "voting_power" => $accountEpochDetails['amount'],
-                    "catalyst_snapshot_id" => $this->snapshot->id,
-                ]);
-            }
-        }
+        //     $accountEpochDetails = $accountHistory->filter(function($record) {
+        //             if($record["active_epoch"] == $this->snapshot->epoch) {
+        //                     return $record;
+        //             }
+        //         })
+        //         ->first();
+
+        //     if (!is_null($accountEpochDetails)) {
+        //         CatalystVotingPower::firstOrCreate([
+        //             "stake_pub" => $this->stakeAddress,
+        //             "voting_power" => $accountEpochDetails['amount'],
+        //             "catalyst_snapshot_id" => $this->snapshot->id,
+        //         ]);
+        //     }
+        // }
     }
 }
