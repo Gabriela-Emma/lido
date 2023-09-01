@@ -542,6 +542,7 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
                     'username' => $u->username,
                     'name' => $u->name,
                     'bio' => $u->bio,
+                    'profile_photo_url' => $u->profile_photo_url,
                     'proposals_completed' => $proposals->filter(fn ($p) => $p['status'] === 'complete')?->count() ?? 0,
                     'first_timer' => ($proposals?->map(fn ($p) => $p['fund']['id'])->unique()->count() === 1),
                 ];

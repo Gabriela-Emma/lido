@@ -334,3 +334,6 @@ $cu->proposals->map(fn\040($p)\040=>\040$p->fund?->parent_id)->toArray();
 exit
 Proposal::runCustomIndex();
 exit
+$u\040=\040CatalystUser::inRandomOrder();
+$u\040=\040CatalystUser::inRandomOrder()->first();
+$u->profile_photo_url
