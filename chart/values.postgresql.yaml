@@ -289,23 +289,27 @@ primary:
   ## ref: https://github.com/bitnami/bitnami-docker-postgresql#allow-settings-to-be-loaded-from-files-other-than-the-default-postgresqlconf
   ##
   extendedConfiguration: |-
-    max_connections=600
+    max_connections=5000
+    max_prepared_transactions=5000
     max_locks_per_transaction = 256
     shared_buffers = 16GB
     effective_cache_size = 36GB
-    maintenance_work_mem = 4GB
+    maintenance_work_mem = 2GB
     checkpoint_completion_target = 0.9
     checkpoint_timeout = 1h
     synchronous_commit = off
     wal_buffers = 32MB
+    jit = off
     default_statistics_target = 500
     random_page_cost = 1.1
-    effective_io_concurrency = 800
-    work_mem = 1024GB
-    min_wal_size = 2GB
-    max_wal_size = 3GB
-    max_parallel_workers_per_gather = 5
+    effective_io_concurrency = 400
+    work_mem = 24MB
+    min_wal_size = 1GB
+    max_wal_size = 4GB
+    max_parallel_workers_per_gather = 8
+    max_parallel_workers = 8
     max_parallel_maintenance_workers = 4
+    max_worker_processes = 12
 
 
   ## @param primary.existingExtendedConfigmap Name of an existing ConfigMap with PostgreSQL Primary extended configuration
@@ -385,7 +389,7 @@ primary:
   ## @param primary.livenessProbe.successThreshold Success threshold for livenessProbe
   ##
   livenessProbe:
-    enabled: true
+    enabled: false
     initialDelaySeconds: 30
     periodSeconds: 10
     timeoutSeconds: 5
@@ -399,7 +403,7 @@ primary:
   ## @param primary.readinessProbe.successThreshold Success threshold for readinessProbe
   ##
   readinessProbe:
-    enabled: true
+    enabled: false
     initialDelaySeconds: 5
     periodSeconds: 10
     timeoutSeconds: 5
@@ -439,7 +443,7 @@ primary:
   ##
   resources:
     limits:
-      memory: 49152Mi
+      memory: 65536Mi
       cpu: 12
     requests:
       memory: 16384Mi
@@ -681,24 +685,6 @@ readReplicas:
   ##   - name: FOO
   ##     value: "bar"
   ##
-  extendedConfiguration: |-
-    max_connections=600
-    max_locks_per_transaction = 256
-    shared_buffers = 16GB
-    effective_cache_size = 36GB
-    maintenance_work_mem = 4GB
-    checkpoint_completion_target = 0.9
-    checkpoint_timeout = 1h
-    synchronous_commit = off
-    wal_buffers = 32MB
-    default_statistics_target = 500
-    random_page_cost = 1.1
-    effective_io_concurrency = 800
-    work_mem = 1024GB
-    min_wal_size = 2GB
-    max_wal_size = 3GB
-    max_parallel_workers_per_gather = 5
-    max_parallel_maintenance_workers = 4
 
   extraEnvVars: []
   ## @param readReplicas.extraEnvVarsCM Name of existing ConfigMap containing extra env vars for PostgreSQL read only nodes

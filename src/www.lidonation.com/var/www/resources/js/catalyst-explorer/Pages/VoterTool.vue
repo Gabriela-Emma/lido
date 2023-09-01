@@ -188,7 +188,7 @@ async function query() {
         // @ts-ignore
         window?.fathom?.trackGoal(VARIABLES.TRACKER_ID_GROUPS, 0);
     }
-
+    
 }
 function resetFilters() {
   search.value = '';
