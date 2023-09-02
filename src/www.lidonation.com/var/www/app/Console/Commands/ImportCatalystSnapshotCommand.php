@@ -48,7 +48,7 @@ class ImportCatalystSnapshotCommand extends Command
             dispatch(new SyncCatalystVotingPowersJob(
                 snapshot: $snapshot->id,
                 voterId: $vp->address,
-                votingPower: $unit === 'lovelace' ? $vp->value : $vp->value * 1000000,
+                votingPower: $unit === 'lovelace' ? $vp->value : ($vp->value * 1000000),
             ));
         }
     }

@@ -340,3 +340,5 @@ $u->profile_photo_url
 exit
 CatalystVotingPower::where('catalyst_snapshot_id',\0402)->forceDelete();
 exit
+CatalystVotingPower::where('catalyst_snapshot_id',\0402)->forceDelete();
+exit
