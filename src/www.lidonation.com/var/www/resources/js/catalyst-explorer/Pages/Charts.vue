@@ -275,50 +275,46 @@ function getMetrics() {
                 countArr.push(power.count);
             });
 
-            setTimeout(() => {
-                chartData.value = {
-                    labels: keyArr,
-                    datasets: [
-                        {
-                            backgroundColor: [
-                                '#a3899d', // 450 - 1k
-                                '#917289', // 1k - 5k
-                                '#7e5a75', // 5K - 10k
-                                '#6c4262', // 10K - 25k
+            chartData.value = {
+                labels: keyArr,
+                datasets: [
+                    {
+                        backgroundColor: [
+                            '#a3899d', // 450 - 1k
+                            '#917289', // 1k - 5k
+                            '#7e5a75', // 5K - 10k
+                            '#6c4262', // 10K - 25k
 
-                                '#5a2b4e', // 25k - 50k
-                                '#48143b', // 50k - 75k
-                                '#39102f', // 75k - 100k
+                            '#5a2b4e', // 25k - 50k
+                            '#48143b', // 50k - 75k
+                            '#39102f', // 75k - 100k
 
-                                '#84c3da', // 100k - 250k
-                                '#66b5d1', // 250k - 500k
-                                '#50abcb', // 500k - 750k
-                                '#3aa0c4', //750k - 1M
+                            '#84c3da', // 100k - 250k
+                            '#66b5d1', // 250k - 500k
+                            '#50abcb', // 500k - 750k
+                            '#3aa0c4', //750k - 1M
 
-                                '#fce865', // 1M - 5M
-                                '#fcdf23', // 5M - 10M
-                                '#e2c609', // 10M - 15M
+                            '#fce865', // 1M - 5M
+                            '#fcdf23', // 5M - 10M
+                            '#e2c609', // 10M - 15M
 
-                                '#ff9319', // 15M - 21M
-                                '#ff8700', // 30M - 45M
-                                '#ff8700', // 30M-45M
+                            '#ff9319', // 15M - 21M
+                            '#ff8700', // 30M - 45M
+                            '#ff8700', // 30M-45M
 
-                                '#4bb92f', // 45M - 75M
-                                '#8d00ff', // 75M - 100M
+                            '#4bb92f', // 45M - 75M
+                            '#8d00ff', // 75M - 100M
 
-                                // '#E4578A' // 9M - 10M
-                            ],
-                            data: countArr,
-                        }
-                    ]
-                }
-                chartOptions.value = {
-                    responsive: true,
-                    maintainAspectRatio: false
-                }
-
-                console.log('chartData::', chartData.value);
-            }, 3000);
+                            // '#E4578A' // 9M - 10M
+                        ],
+                        data: countArr,
+                    }
+                ]
+            }
+            chartOptions.value = {
+                responsive: true,
+                maintainAspectRatio: false
+            }
         })
         .catch((error) => {
             console.error(error);
