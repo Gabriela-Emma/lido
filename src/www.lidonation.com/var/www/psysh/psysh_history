@@ -338,3 +338,5 @@ $u\040=\040CatalystUser::inRandomOrder();
 $u\040=\040CatalystUser::inRandomOrder()->first();
 $u->profile_photo_url
 exit
+CatalystVotingPower::where('catalyst_snapshot_id',\0402)->forceDelete();
+exit

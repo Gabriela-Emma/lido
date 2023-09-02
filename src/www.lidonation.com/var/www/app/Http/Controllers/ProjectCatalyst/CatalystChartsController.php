@@ -286,11 +286,11 @@ class CatalystChartsController extends Controller
                 END as range,  COUNT(*) as wallets, SUM(voting_power) as ada"
             )->whereIn('catalyst_snapshot_id', $snapshotIds)->groupByRaw(1);
 
+            echo($agg->toSql());
+
         $adaPowerRangesCollection = $agg->get()
         ->map(fn ($row) => [$row->range => [$row->wallets, $row->ada]])
         ->collapse();
-
-        // dump($adaPowerRangesCollection);
 
         // convert the collection to an associative array whose structure is fully representative of our front-end needs
         $adaPowerRangesFormattedArray = [];
@@ -305,7 +305,6 @@ class CatalystChartsController extends Controller
             ];
         }
 
-        // dd($adaPowerRangesFormattedArray);
 
         // convert then order the array to collection and assing to the objects $adaPowerRanges property
         $this->adaPowerRanges = collect($adaPowerRangesFormattedArray)

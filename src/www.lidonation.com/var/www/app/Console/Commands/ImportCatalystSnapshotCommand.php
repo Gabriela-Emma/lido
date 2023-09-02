@@ -17,7 +17,7 @@ class ImportCatalystSnapshotCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'ln:import-catalyst-snapshot-powers {snapshot} {file}';
+    protected $signature = 'ln:import-catalyst-snapshot-powers {snapshot} {file} {unit=lovelace}';
 
     /**
      * The console command description.
@@ -33,6 +33,7 @@ class ImportCatalystSnapshotCommand extends Command
     {
         $snapshot = $this->argument('snapshot');
         $file = $this->argument('file');
+        $unit = $this->argument('unit');
         $votingPowers = Items::fromFile($file);
 
         $snapshot = CatalystSnapshot::findOrFail($snapshot);
@@ -47,7 +48,7 @@ class ImportCatalystSnapshotCommand extends Command
             dispatch(new SyncCatalystVotingPowersJob(
                 snapshot: $snapshot->id,
                 voterId: $vp->address,
-                votingPower: $vp->value
+                votingPower: $unit === 'lovelace' ? $vp->value : $vp->value * 1000000,
             ));
         }
     }
