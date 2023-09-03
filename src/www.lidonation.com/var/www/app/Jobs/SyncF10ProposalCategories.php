@@ -8,6 +8,7 @@ use App\Models\Proposal;
 use Illuminate\Support\Str;
 use Illuminate\Bus\Queueable;
 use Illuminate\Support\Fluent;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -38,6 +39,12 @@ class SyncF10ProposalCategories implements ShouldQueue
         Proposal::whereRelation('fund.parent', 'id', 113)->each(
             function ($proposal) {
                 $data = $this->getIdeaScaleData($proposal);
+                if (!$data || !isset($data->fieldSections) || !is_array($data->fieldSections)) {
+                    Log::warning('Invalid data for proposal ' . $proposal->id);
+                    return;
+                }
+                // Remove existing relationships
+                $proposal->categories()->sync([]);
 
                 if (!$proposal->categories?->count() ?? null) {
                     $category = $this->getFieldByTitle(
@@ -48,14 +55,12 @@ class SyncF10ProposalCategories implements ShouldQueue
                     $existingCat = Category::where('title', $category)->first();
 
                     if ($existingCat instanceof Category) {
-
-                        $proposal?->categories()->syncWithPivotValues($existingCat->pluck('id'), [
+                        $proposal->categories()->syncWithoutDetaching([$existingCat->id], [
                             'model_type' => Proposal::class,
-                        ], false);
+                        ]);
 
                         Proposal::withoutSyncingToSearch(fn () => $proposal->save());
                     } else {
-
                         $category = Category::updateOrCreate(
                             [
                                 'slug' => Str::slug($category),
@@ -64,7 +69,8 @@ class SyncF10ProposalCategories implements ShouldQueue
                                 'title' => ucfirst($category),
                             ],
                         );
-                        $proposal?->categories()->syncWithPivotValues($category->pluck('id'), [
+
+                        $proposal->categories()->syncWithPivotValues([$category->id], [
                             'model_type' => Proposal::class,
                         ], false);
 
@@ -74,6 +80,8 @@ class SyncF10ProposalCategories implements ShouldQueue
             }
         );
     }
+
+
 
     public function getIdeaScaleData($proposal)
     {
