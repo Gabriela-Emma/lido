@@ -115,7 +115,7 @@
                                 <p>Pie chart of wallet balance</p>
                             </div>
                             <div class="flex items-center gap-2">
-                                <a target="_blank" :href="`${baseUrl}/storage/files/catalyst/catalyst-snapshot-f10-100826079.final.json.gz`"
+                                <a target="_blank" :href="`${baseUrl}/storage/files/catalyst/catalyst-snapshot-f10-100826079.final.json`"
                                 type="button" class="px-2 py-1 text-xs font-semibold text-gray-900 bg-white rounded-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
                                     Download raw snapshot
                                 </a>
