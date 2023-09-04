@@ -595,6 +595,12 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
         ->where('user_id', '=', auth()?->user()?->id);
     }
 
+    public function tally()
+    {
+        return $this->hasOne(CatalystTally::class, 'model_id')
+        ->where('model_type', '=', static::class);
+    }
+
     /**
      * The "booted" method of the model.
      */
