@@ -128,7 +128,7 @@
                     </div>
                 </div>
 
-                <div class="w-full col-span-1 p-3 overflow-y-scroll bg-white md:col-span-3 xl:col-span-2 xl:row-span-6 round-sm">
+                <div class="w-full col-span-1 p-3 overflow-x-visible overflow-y-scroll bg-white md:col-span-3 xl:col-span-2 xl:row-span-6 round-sm">
                     <div class="text-blue-dark-500">
                         <h2 class="mb-0 xl:text-3xl">
                             Wallet Voting Ada Power Breakdowns
@@ -158,6 +158,70 @@
                         </ul>
                     </div>
                 </div>
+
+                <div class="w-full col-span-1 p-3 overflow-y-visible bg-white md:col-span-3 xl:col-span-5 xl:row-span-12 round-sm">
+                    <div class="text-blue-dark-500">
+                        <h2 class="flex items-end gap-2 mb-0 xl:text-3xl">
+                            <span>Proposal Live Tally</span>
+                            <span class="text-xl font-bold text-teal-500">
+                                Last updated: 2023-09-04T11:00:59Z
+                            </span>
+                        </h2>
+                        <p>
+                            This shows how many times a proposal has been voted on.
+                            We won't know the yes or no vote until after the voting period ends.
+                        </p>
+                    </div>
+                    <div class="relative w-full my-8" v-if="tallies$">
+                        <div
+                            class="my-8 -mx-4 overflow-y-auto ring-1 ring-black ring-opacity-5 sm:-mx-6 md:mx-0 md:rounded-sm">
+                            <table class="min-w-full divide-y divide-slate-300">
+                                <thead class="bg-slate-50">
+                                <tr>
+                                    <th scope="col"
+                                        class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-slate-900 sm:pl-6">
+                                        {{ $t("Proposal") }}
+                                    </th>
+                                    <th scope="col"
+                                        class="hidden px-3 py-3.5 text-left text-sm font-semibold text-slate-900 sm:table-cell">
+                                        <div class="flex gap-0.5 items-center flex-nowrap hover:cursor-pointer w-10 justify-end text-right" @click="toggleOrder()">
+                                            <span class="flex gap-1 text-teal-600 align-middle flex-nowrap">
+                                                <span>
+                                                    <ChevronUpDownIcon class="w-4 h-4" />
+                                                </span>
+                                                <span>{{ order$ }}</span>
+                                            </span>
+                                            <span>{{ $t("Tally") }}</span>
+                                        </div>
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-slate-200 text-slate-900">
+                                <tr v-for="tally in tallies$?.data">
+                                    <td class="w-full py-4 pl-4 pr-3 text-sm max-w-0 sm:w-auto sm:max-w-none sm:pl-6">
+                                        {{ tally.hash }}
+                                    </td>
+                                    <td class="w-full py-4 pl-4 text-sm text-right max-w-0 sm:w-auto sm:max-w-none sm:pl-6">
+                                        {{ tally.tally }}
+                                    </td>
+                                </tr>
+
+                                </tbody>
+                            </table>
+                            <div class="flex justify-between w-full gap-16 my-16 xl:gap-24">
+                                <div class="flex-1 w-full px-6">
+                                    <Pagination :links="tallies$.links"
+                                        :per-page="perPage$"
+                                        :total="tallies$?.total"
+                                        :from="tallies$?.from"
+                                        :to="tallies$?.to"
+                                        @perPageUpdated="(payload) => (perPage$ = payload) && getTallies()"
+                                        @paginated="(payload) => (currPage$ = payload) && getTallies()"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -172,6 +236,10 @@ import { VARIABLES } from "../models/variables";
 import { computed } from 'vue';
 import Proposal from '../models/proposal'
 import Fund from '../models/fund';
+import axios from '../../lib/utils/axios';
+import route from 'ziggy-js';
+import Pagination from '../Shared/Components/Pagination.vue';
+import { ChevronUpDownIcon } from '@heroicons/vue/20/solid';
 
 const props = withDefaults(
     defineProps<{
@@ -196,6 +264,17 @@ let selectedFundRef = ref<number>(props.filters.fundId);
 let amount_requested = ref<number>(0);
 let link = ref<string>('');
 
+let tallies$ = ref<{
+    links: [],
+    total: number,
+    to: number,
+    from: number,
+    data: any[]
+}>(null);
+let currPage$ = ref<number>(1);
+let perPage$ = ref<number>(36);
+let order$ = ref<string>('asc');
+
 const fundsLabelValue = computed(() => {
     return props?.funds?.map((fund) => {
         return { 'label': fund.title, 'value': fund.id}
@@ -203,15 +282,19 @@ const fundsLabelValue = computed(() => {
 });
 
 getMetrics();
+getTallies();
 
 watch([selectedFundRef], () => {
     query();
 }, { deep: true });
 
-
 watch([largestFundedProposalObject], () => {
     amount_requested.value = largestFundedProposalObject.value.amount_requested;
     link.value = largestFundedProposalObject.value.link;
+});
+
+watch([currPage$, perPage$], () => {
+    fundedOver75KCount.value = fundedOver75KCount.value;
 });
 
 const chartData = ref<object>();
@@ -230,42 +313,42 @@ function getMetrics() {
     const params = getQueryData();
 
     // get largest funded
-    window.axios.get(`${usePage().props.base_url}/catalyst-explorer/charts/metrics/largestFundedProposalObject`, { params })
+    axios.get(`${usePage().props.base_url}/catalyst-explorer/charts/metrics/largestFundedProposalObject`, { params })
         .then((res) => largestFundedProposalObject.value = res?.data)
         .catch((error) => {
             console.error(error);
         });
 
     // proposals funded over 75k
-    window.axios.get(`${usePage().props.base_url}/catalyst-explorer/charts/metrics/fundedOver75KCount`, { params })
+    axios.get(`${usePage().props.base_url}/catalyst-explorer/charts/metrics/fundedOver75KCount`, { params })
         .then((res) => fundedOver75KCount.value = res?.data)
         .catch((error) => {
             console.error(error);
         });
 
     // count members awarded funding
-    window.axios.get(`${usePage().props.base_url}/catalyst-explorer/charts/metrics/membersAwardedFundingCount`, { params })
+    axios.get(`${usePage().props.base_url}/catalyst-explorer/charts/metrics/membersAwardedFundingCount`, { params })
         .then((res) => membersAwardedFundingCount.value = res?.data)
         .catch((error) => {
             console.error(error);
         });
 
     // count fully disbursed proposals
-    window.axios.get(`${usePage().props.base_url}/catalyst-explorer/charts/metrics/fullyDisbursedProposalsCount`, { params })
+    axios.get(`${usePage().props.base_url}/catalyst-explorer/charts/metrics/fullyDisbursedProposalsCount`, { params })
         .then((res) => fullyDisbursedProposalsCount.value = res?.data)
         .catch((error) => {
             console.error(error);
         });
 
      // count completed proposals
-     window.axios.get(`${usePage().props.base_url}/catalyst-explorer/charts/metrics/completedProposalsCount`, { params })
+     axios.get(`${usePage().props.base_url}/catalyst-explorer/charts/metrics/completedProposalsCount`, { params })
         .then((res) => completedProposalsCount.value = res?.data)
         .catch((error) => {
             console.error(error);
         });
 
     // fetch adaRanges
-    window.axios.get(`${usePage().props.base_url}/catalyst-explorer/charts/metrics/adaPowerRanges`, { params })
+    axios.get(`${usePage().props.base_url}/catalyst-explorer/charts/metrics/adaPowerRanges`, { params })
         .then((res) => {
             adaPowerRanges.value = res?.data;
 
@@ -330,6 +413,38 @@ function getQueryData() {
     }
 
     return data;
+}
+
+function toggleOrder()
+{
+    if (order$.value === 'asc') {
+        order$.value = 'desc';
+    } else {
+        order$.value = 'asc';
+    }
+
+    getTallies();
+}
+
+function getTallies() {
+    axios.get(
+        route('catalystExplorerApi.tallies'),
+        {
+            params: {
+                p: currPage$.value,
+                pp: perPage$.value,
+                o: order$.value
+            }
+        })
+        .then((res) => {
+            tallies$.value = res?.data;
+            perPage$.value = res?.data?.per_page;
+            currPage$.value = res?.data?.page;
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+
 }
 </script>
 
