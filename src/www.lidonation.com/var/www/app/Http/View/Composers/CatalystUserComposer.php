@@ -41,7 +41,7 @@ class CatalystUserComposer
     ) {
         $this->catalystUser = $this->catalystUserRepository->get(request()->route('catalystUser'));
         $this->userProposals = Proposal::whereHas('users', fn ($q) => $q->where('id', $this->catalystUser->id))
-            ->paginate(
+            ->fastPaginate(
                 $perPage = 18, $columns = ['*'], $pageName = 'proposals'
             );
 

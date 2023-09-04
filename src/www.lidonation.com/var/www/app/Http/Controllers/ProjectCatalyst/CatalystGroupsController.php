@@ -121,7 +121,7 @@ class CatalystGroupsController extends Controller
                 return $query->orderBy($sortParts[0], $sortParts[1]);
             });
 
-        $paginator = $query->paginate($this->perPage, ['*'], 'p')->setPath('/');
+        $paginator = $query->fastPaginate($this->perPage, ['*'], 'p')->setPath('/');
 
         $paginator->through(fn ($group) => [
             'id' => $group->id,

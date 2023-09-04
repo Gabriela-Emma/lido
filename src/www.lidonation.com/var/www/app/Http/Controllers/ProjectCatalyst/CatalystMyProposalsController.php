@@ -65,7 +65,7 @@ class CatalystMyProposalsController extends Controller
         ->orderBy('funds.launched_at', 'DESC')
         ->orderBy('proposals.funded_at', 'DESC');
 
-        $paginator = $query->paginate($this->perPage, ['*'], 'p')->setPath('/');
+        $paginator = $query->fastPaginate($this->perPage, ['*'], 'p')->setPath('/');
 
         $query->whereNotNull('funded_at');
         $totalDistributed = intval($query->sum('amount_received'));

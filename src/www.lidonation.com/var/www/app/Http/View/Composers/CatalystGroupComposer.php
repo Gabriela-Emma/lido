@@ -33,13 +33,13 @@ class CatalystGroupComposer
         protected FundRepository $fundRepository
     ) {
         $this->catalystGroup = $this->catalystGroupRepository->get(request()->route('catalystGroup'));
-        $this->groupProposals = $this->catalystGroup->proposals()->paginate(
+        $this->groupProposals = $this->catalystGroup->proposals()->fastPaginate(
             $perPage = 16,
             $columns = ['*'],
             $pageName = 'proposals'
         );
         $this->setTagCloud();
-        // 
+        //
 // @Todo
 //  This should be an injecktable operation
         $discussions = $this->catalystGroup?->proposals

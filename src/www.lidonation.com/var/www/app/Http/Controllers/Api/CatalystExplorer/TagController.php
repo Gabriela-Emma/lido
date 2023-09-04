@@ -73,7 +73,7 @@ class TagController extends Controller
                 'message' => 'No Tag found',
             ], Response::HTTP_NOT_FOUND);
         } else {
-            return TagResource::collection($tags->paginate($per_page));
+            return TagResource::collection($tags->fastPaginate($per_page));
         }
     }
 

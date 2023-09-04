@@ -60,7 +60,7 @@ class CatalystGroupsComponent extends Component
             if ($this->sortBy !== 'none' && $this->sortOrder !== 'none') {
                 $query->orderBy($this->sortBy, $this->sortOrder);
             }
-            $this->paginator = $query->paginate($this->perPage);
+            $this->paginator = $query->fastPaginate($this->perPage);
             $this->catalystGroups = $this->paginator->items();
             $this->catalystGroupsCount = $this->paginator->total();
 
@@ -84,7 +84,7 @@ class CatalystGroupsComponent extends Component
 
                 return $index->search($query, $options);
             });
-        $this->paginator = $this->searchBuilder->paginate($this->perPage);
+        $this->paginator = $this->searchBuilder->fastPaginate($this->perPage);
         $this->catalystGroups = $this->paginator->items();
 
         /////

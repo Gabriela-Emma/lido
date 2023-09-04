@@ -21,7 +21,7 @@ class ImportCatalystSnapshotCommand extends Command
 
     /**
      * The console command description.
-     *
+    *
      * @var string
      */
     protected $description = 'Import Catalyst Snaphot voting power from a file.';

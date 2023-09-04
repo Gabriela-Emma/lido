@@ -33,7 +33,7 @@ class CatalystChallengeComposer
             abort(404);
         }
 
-        $proposals = $fund?->proposals()->with(['discussions.ratings'])->orderBy('title->en', 'desc')->paginate(24);
+        $proposals = $fund?->proposals()->with(['discussions.ratings'])->orderBy('title->en', 'desc')->fastPaginate(24);
 
         $title = $fund->label;
 

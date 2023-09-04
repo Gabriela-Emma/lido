@@ -68,6 +68,6 @@ trait Group
         $groups = CatalystGroup::query()
             ->filter(request(['search', 'ids']));
 
-        return GroupResource::collection($groups->paginate($per_page)->onEachSide(0));
+        return GroupResource::collection($groups->fastPaginate($per_page)->onEachSide(0));
     }
 }

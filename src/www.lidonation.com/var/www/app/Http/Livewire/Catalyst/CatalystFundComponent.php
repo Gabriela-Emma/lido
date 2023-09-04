@@ -111,7 +111,7 @@ class CatalystFundComponent extends Component
                     'proposals as funded_proposals_count' => function ($query) use ($type) {
                         $query->whereNotNull('funded_at')->where('type', $type);
                     }, ],
-            )->orderBy('title', 'desc')->paginate($this->perPage);
+            )->orderBy('title', 'desc')->fastPaginate($this->perPage);
 
         $this->challenges = $this->paginator->items();
 

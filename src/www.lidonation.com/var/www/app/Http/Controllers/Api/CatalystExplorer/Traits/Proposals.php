@@ -151,6 +151,6 @@ trait Proposals
                 ->filter(request(['user_id', 'fund_id', 'challenge_id']));
         }
 
-        return ProposalResource::collection($proposals->paginate($per_page)->onEachSide(0));
+        return ProposalResource::collection($proposals->fastPaginate($per_page)->onEachSide(0));
     }
 }

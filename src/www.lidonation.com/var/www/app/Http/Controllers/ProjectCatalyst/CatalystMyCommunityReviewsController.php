@@ -13,6 +13,7 @@ use Inertia\Inertia;
 use App\Enums\CatalystExplorerQueryParams;
 use Inertia\Response;
 use Illuminate\Support\Collection;
+use Illuminate\Pagination\LengthAwarePaginator ;
 
 class CatalystMyCommunityReviewsController extends Controller
 {
@@ -90,7 +91,6 @@ class CatalystMyCommunityReviewsController extends Controller
         //         'rating' => $rating->rating,
         //     ])
         // );
-
         return [
             'filters' => [
                 'funds' => $this->fundsFilter->toArray(),
@@ -124,7 +124,7 @@ class CatalystMyCommunityReviewsController extends Controller
     {
         $id = $request->resId;
         $comment = $assessment->comments()->find($id);
-        
+
         if ($comment) {
             $comment->delete();
         }

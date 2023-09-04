@@ -502,7 +502,7 @@ class CatalystProposalsController extends Controller
         $this->download = $request->input('d', false);
         $this->downloadType = $request->input('d_t', null);
 
-        $proposals = $this->query(true, ['id'])->paginate($this->limit, 'p', $this->currentPage)->toArray()['data'];
+        $proposals = $this->query(true, ['id'])->fastPaginate($this->limit, 'p', $this->currentPage)->toArray()['data'];
         $idsArr = array_map(function ($proposal) {
             return $proposal['id'];
         }, $proposals);

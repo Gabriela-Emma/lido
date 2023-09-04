@@ -27,7 +27,7 @@ class NewsComposer
     {
         $view->with([
             'title' => 'Cardano and Blockchain news',
-            'news' => $this->posts->setModel(new News)->paginate(24),
+            'news' => $this->posts->setModel(new News)->fastPaginate(24),
         ]);
     }
 }

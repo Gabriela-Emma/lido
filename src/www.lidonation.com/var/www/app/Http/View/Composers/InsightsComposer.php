@@ -26,7 +26,7 @@ class InsightsComposer
     public function compose(View $view)
     {
         $view->with([
-            'insights' => $this->posts->setModel(new Insight)->paginate(24),
+            'insights' => $this->posts->setModel(new Insight)->fastPaginate(24),
             'title' => 'Cardano and Blockchain Insights',
         ]);
     }
