@@ -15,6 +15,7 @@ use App\Http\Controllers\ProjectCatalyst\CatalystBookmarksController;
 use App\Http\Controllers\ProjectCatalyst\CatalystMyBookmarksController;
 use App\Http\Controllers\ProjectCatalyst\CatalystMyRankingController;
 use App\Http\Controllers\ProjectCatalyst\CatalystProposalsController;
+use App\Http\Controllers\ProjectCatalyst\CatalystTalliesController;
 use App\Http\Controllers\PromoController;
 use App\Http\Controllers\QuestionResponseController;
 use App\Http\Controllers\RewardController;
@@ -341,6 +342,9 @@ Route::prefix('catalyst-explorer')->as('catalystExplorerApi.')
 
         Route::post('proposal/repo', [CatalystExplorer\RepoController::class, 'store']);
         Route::patch('proposal/repo', [CatalystExplorer\RepoController::class, 'updateRepo']);
+
+        Route::get('/tallies', [CatalystTalliesController::class, 'index'])
+            ->name('tallies');
 
         Route::prefix('proposals')->as('proposals.')->group(function () {
             Route::post('/login', [CatalystExplorer\UserController::class, 'login'])->name('login');
