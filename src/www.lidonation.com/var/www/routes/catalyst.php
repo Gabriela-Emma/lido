@@ -148,7 +148,8 @@ Route::group(
             ->name('voterTool.counts');
 
             Route::get('/proposals/{proposal:id}/bookmark', [CatalystProposalsController::class, 'bookmark']);
-            Route::get('/bookmarks', [CatalystBookmarksController::class, 'index'])->name('bookmarks');
+            Route::get('/bookmarks', [CatalystBookmarksController::class, 'index'])
+            ->name('bookmarks');
 
             Route::get('/bookmarks/{bookmarkCollection:id}', [CatalystBookmarksController::class, 'view'])
                 ->name('bookmark`');

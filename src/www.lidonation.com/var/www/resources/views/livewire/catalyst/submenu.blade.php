@@ -111,7 +111,7 @@
                         </a>
                     </li>
                     <li class="flow-root menu-item"  x-data="bookmarksMenuLink">
-                        <a href="{{localizeRoute('catalystExplorer.bookmarks')}}"
+                        <a href="{{localizeRoute('catalystExplorer.myBookmarks')}}"
                            class="inline-flex items-center menu-link group">
                                 <span class="relative z-0 inline-flex rounded-md shadow-sm" x-cloak>
                                     <button type="button"
@@ -216,11 +216,11 @@
                     >
                         <div class="divide-y divide-teal-300">
                             <a class="p-3 text-gray-500 menu-link block font-medium {{ request()->routeIs('projectCatalyst.reports') ? 'text-teal-600' : '' }} hover:text-yellow-500"
-                               href="{{localizeRoute('projectCatalyst.reports')}}">
-                                {{ $snippets->reports }}
+                               href="{{localizeRoute('catalystExplorer.myDashboard')}}">
+                                {{ $snippets->dashboard }}
                             </a>
                             <a class="p-3 text-gray-500 menu-link block font-medium {{ request()->routeIs('projectCatalyst.dashboard') ? 'text-teal-600' : '' }} hover:text-yellow-500"
-                               href="{{localizeRoute('projectCatalyst.dashboard')}}">
+                               href="{{localizeRoute('catalystExplorer.charts')}}">
                                 {{ $snippets->charts }}
                             </a>
 

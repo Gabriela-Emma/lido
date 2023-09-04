@@ -107,11 +107,19 @@
 
                 <div class="relative w-full col-span-1 row-span-6 p-3 bg-white md:col-span-3 round-sm">
                     <div class="relative flex flex-col justify-start h-full">
-                        <div class="text-teal-600">
-                            <h2 class="mb-0 xl:text-3xl">
-                                1 stake key 1 Vote Ranges
-                            </h2>
-                            <p>Pie chart of wallet balance</p>
+                        <div class="flex flex-wrap items-start justify-between">
+                            <div class="text-teal-600">
+                                <h2 class="mb-0 xl:text-3xl">
+                                    1 stake key 1 Vote Ranges
+                                </h2>
+                                <p>Pie chart of wallet balance</p>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <a target="_blank" :href="`${baseUrl}/files/catalyst/catalyst-snapshot-f10-100826079.final.json.gz`"
+                                type="button" class="px-2 py-1 text-xs font-semibold text-gray-900 bg-white rounded ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+                                    Download raw snapshot
+                                </a>
+                            </div>
                         </div>
 
                         <div class="my-auto" v-if="chartData" >
@@ -159,9 +167,7 @@
 import Multiselect from '@vueform/multiselect';
 import { router, usePage } from '@inertiajs/vue3';
 import { watch, ref } from 'vue';
-import {storeToRefs} from "pinia";
 import AdaPowerRangesPie from "../modules/charts/AdaPowerRangesPie.vue"
-import {useFundsStore} from "../stores/funds-store"
 import { VARIABLES } from "../models/variables";
 import { computed } from 'vue';
 import Proposal from '../models/proposal'
@@ -183,14 +189,12 @@ let membersAwardedFundingCount = ref<number>(null);
 let fullyDisbursedProposalsCount = ref<number>(null);
 let completedProposalsCount = ref<number>(null);
 
+const baseUrl = usePage().props.base_url;
+
 let selectedFundRef = ref<number>(props.filters.fundId);
 
 let amount_requested = ref<number>(0);
 let link = ref<string>('');
-
-// const {funds} = storeToRefs(useFundsStore());
-
-console.log({props});
 
 const fundsLabelValue = computed(() => {
     return props?.funds?.map((fund) => {
@@ -210,8 +214,6 @@ watch([largestFundedProposalObject], () => {
     link.value = largestFundedProposalObject.value.link;
 });
 
-const adaPowersLabels = ref([]);
-const adaPowersData = ref([])
 const chartData = ref<object>();
 const chartOptions = ref<object>();
 
