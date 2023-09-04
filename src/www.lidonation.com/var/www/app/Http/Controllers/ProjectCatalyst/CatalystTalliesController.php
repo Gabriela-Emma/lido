@@ -4,6 +4,7 @@ namespace App\Http\Controllers\ProjectCatalyst;
 
 use App\Http\Controllers\Controller;
 use App\Models\CatalystTally;
+use App\Models\Proposal;
 use Illuminate\Http\Request;
 
 class CatalystTalliesController extends Controller
@@ -14,7 +15,8 @@ class CatalystTalliesController extends Controller
         $order = $request->input('o', 'asc');
         $orderBy = $request->input('ob', 'tally');
 
-        return CatalystTally::orderBy($orderBy, $order)
+        return CatalystTally::setEagerLoads([])->with('model')
+        ->orderBy($orderBy, $order)
         ->fastPaginate($perPage, ['*'], 'page', $page);
     }
 }

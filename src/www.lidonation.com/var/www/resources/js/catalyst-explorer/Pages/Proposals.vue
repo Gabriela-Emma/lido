@@ -266,6 +266,14 @@ const props = withDefaults(
     }>(), {
     sorts: () => [
         {
+            label: 'Votes Cast: Low to High',
+            value: 'votes_cast:asc',
+        },
+        {
+            label: 'Votes Cast: High to Low',
+            value: 'votes_cast:desc',
+        },
+        {
             label: 'Budget: High to Low',
             value: 'amount_requested:desc',
         },

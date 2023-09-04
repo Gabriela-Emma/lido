@@ -179,36 +179,47 @@
                                 <thead class="bg-slate-50">
                                 <tr>
                                     <th scope="col"
-                                        class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-slate-900 sm:pl-6">
-                                        {{ $t("Proposal") }}
-                                    </th>
-                                    <th scope="col"
                                         class="hidden px-3 py-3.5 text-left text-sm font-semibold text-slate-900 sm:table-cell">
-                                        <div class="flex gap-0.5 items-center flex-nowrap hover:cursor-pointer w-10 justify-end text-right" @click="toggleOrder()">
-                                            <span class="flex gap-1 text-teal-600 align-middle flex-nowrap">
+                                        <div class="flex gap-0.5 items-center flex-nowrap hover:cursor-pointer w-16 justify-start text-left" @click="toggleOrder()">
+                                            <span>{{ $t("Tally") }}</span>
+                                            <span class="flex items-center gap-1 text-teal-600 flex-nowrap">
                                                 <span>
                                                     <ChevronUpDownIcon class="w-4 h-4" />
                                                 </span>
                                                 <span>{{ order$ }}</span>
                                             </span>
-                                            <span>{{ $t("Tally") }}</span>
                                         </div>
+                                    </th>
+                                    <th scope="col"
+                                        class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-slate-900 sm:pl-6">
+                                        {{ $t("Proposal") }}
+                                    </th>
+                                    <th scope="col"
+                                        class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-slate-900 sm:pl-6">
+                                        {{ $t("Budget") }}
                                     </th>
                                 </tr>
                                 </thead>
                                 <tbody class="bg-white divide-y divide-slate-200 text-slate-900">
                                 <tr v-for="tally in tallies$?.data">
-                                    <td class="w-full py-4 pl-4 pr-3 text-sm max-w-0 sm:w-auto sm:max-w-none sm:pl-6">
-                                        {{ tally.hash }}
-                                    </td>
-                                    <td class="w-full py-4 pl-4 text-sm text-right max-w-0 sm:w-auto sm:max-w-none sm:pl-6">
+                                    <td class="w-16 py-4 pl-4 text-sm text-left max-w-0 sm:w-auto sm:max-w-none sm:pl-6">
                                         {{ tally.tally }}
+                                    </td>
+
+                                    <td class="w-full py-4 pl-4 pr-3 text-sm max-w-0 sm:w-auto sm:max-w-none sm:pl-6">
+                                        <a target="_blank" :href="tally?.model?.link" >{{ tally?.model?.title }}</a>
+                                    </td>
+
+                                    <td class="w-full py-4 pl-4 pr-3 text-sm max-w-0 sm:w-auto sm:max-w-none sm:pl-6">
+                                        <span class="block">
+                                            {{$filters.currency(tally?.model?.amount_requested, tally?.model?.fund?.currency, 'en-US', 2)}}
+                                        </span>
                                     </td>
                                 </tr>
 
                                 </tbody>
                             </table>
-                            <div class="flex justify-between w-full gap-16 my-16 xl:gap-24">
+                            <div class="flex items-center justify-between w-full gap-16 my-16 xl:gap-24">
                                 <div class="flex-1 w-full px-6">
                                     <Pagination :links="tallies$.links"
                                         :per-page="perPage$"
