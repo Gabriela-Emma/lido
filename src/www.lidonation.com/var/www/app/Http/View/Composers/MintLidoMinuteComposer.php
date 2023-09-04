@@ -22,7 +22,7 @@ class MintLidoMinuteComposer
     public function __construct(protected AdaRepository $adaRepository)
     {
         $this->adaQuote = $this->adaRepository->quote();
-        $this->available = Podcast::whereDoesntHave('metas', fn ($q) => $q->where('key', '=', 'nft_soldout'))->paginate(6);
+        $this->available = Podcast::whereDoesntHave('metas', fn ($q) => $q->where('key', '=', 'nft_soldout'))->fastPaginate(6);
     }
 
     //  Proposal::whereRelation('metas', 'key', '=', 'quick_pitch')

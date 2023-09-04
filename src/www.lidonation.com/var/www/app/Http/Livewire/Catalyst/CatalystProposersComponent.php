@@ -67,7 +67,7 @@ class CatalystProposersComponent extends Component
 
                 return $index->search($query, $options);
             });
-        $this->paginator = $this->searchBuilder->paginate($this->perPage);
+        $this->paginator = $this->searchBuilder->fastPaginate($this->perPage);
         $this->catalystUsers = $this->paginator->items();
 
         /////

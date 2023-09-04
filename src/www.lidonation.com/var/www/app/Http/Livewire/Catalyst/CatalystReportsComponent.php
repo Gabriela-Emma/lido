@@ -46,7 +46,7 @@ class CatalystReportsComponent extends Component
             $this->perPage = 18;
             $this->dispatchBrowserEvent('analytics-event-fired', ['code' => 'HSH9YZDM']);
         }
-        $this->paginator = $query->paginate($this->perPage);
+        $this->paginator = $query->fastPaginate($this->perPage);
 
         $this->catalystReports = $this->paginator->items();
     }

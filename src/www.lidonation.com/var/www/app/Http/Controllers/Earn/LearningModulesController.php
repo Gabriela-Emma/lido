@@ -22,7 +22,7 @@ class LearningModulesController extends Controller
         $learningModules = LearningModule::withCount(['learningTopics'])->published();
 
         return Inertia::render('LearningModules', [
-            'modules' => LearningModuleData::collection($learningModules->paginate(12)->onEachSide(0)),
+            'modules' => LearningModuleData::collection($learningModules->fastPaginate(12)->onEachSide(0)),
             'crumbs' => [
                 ['name' => 'Learn & Earn', 'link' => route('earn.learn')],
                 ['name' => 'Learning Modules', 'link' => route('earn.learn.modules.index')],

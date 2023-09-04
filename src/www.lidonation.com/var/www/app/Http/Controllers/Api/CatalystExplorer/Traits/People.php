@@ -95,7 +95,7 @@ trait People
                 ->filter(request(['ids', 'ideascale_username']));
         }
 
-        return PeopleResource::collection($people->paginate($per_page)->onEachSide(0));
+        return PeopleResource::collection($people->fastPaginate($per_page)->onEachSide(0));
     }
 
     public function claim(Request $request)

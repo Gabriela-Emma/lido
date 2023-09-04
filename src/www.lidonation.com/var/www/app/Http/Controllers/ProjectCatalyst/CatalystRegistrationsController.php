@@ -52,7 +52,7 @@ class CatalystRegistrationsController extends Controller
     {
 
         $registrationBuilder = CatalystRegistration::where('stake_pub', $this->search);
-        $paginatedResults = $registrationBuilder->paginate($this->perPage, ['*'], 'p', $this->currentPage)
+        $paginatedResults = $registrationBuilder->fastPaginate($this->perPage, ['*'], 'p', $this->currentPage)
         ->setPath('/')->onEachSide(1);
 
         return $paginatedResults->toArray();

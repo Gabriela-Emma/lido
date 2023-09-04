@@ -83,7 +83,7 @@ class ChallengeController extends Controller
                 'message' => 'No challenge found',
             ], Response::HTTP_NOT_FOUND);
         } else {
-            return ChallengeResource::collection($funds->paginate($per_page));
+            return ChallengeResource::collection($funds->fastPaginate($per_page));
         }
     }
 
