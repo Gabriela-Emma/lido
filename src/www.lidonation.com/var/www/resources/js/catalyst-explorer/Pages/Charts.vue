@@ -172,6 +172,15 @@
                             We won't know the yes or no vote until after the voting period ends.
                         </p>
                     </div>
+
+                    <div class="py-4">
+                        <div class="h-16 my-4 border border-r-0 rounded-sm">
+                            <Search
+                                :search="search$"
+                                @search="(term) => search$=term"></Search>
+                        </div>
+                    </div>
+
                     <div class="relative w-full my-8" v-if="tallies$">
                         <div
                             class="my-8 -mx-4 overflow-y-auto ring-1 ring-black ring-opacity-5 sm:-mx-6 md:mx-0 md:rounded-sm">
@@ -195,7 +204,7 @@
                                         {{ $t("Proposal") }}
                                     </th>
                                     <th scope="col"
-                                        class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-slate-900 sm:pl-6">
+                                        class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold sm:w-20 text-slate-900 sm:pl-6">
                                         {{ $t("Budget") }}
                                     </th>
                                 </tr>
@@ -210,7 +219,7 @@
                                         <a target="_blank" :href="tally?.model?.link" >{{ tally?.model?.title }}</a>
                                     </td>
 
-                                    <td class="w-full py-4 pl-4 pr-3 text-sm max-w-0 sm:w-auto sm:max-w-none sm:pl-6">
+                                    <td class="w-full py-4 pl-4 pr-3 text-sm max-w-0 sm:w-20 sm:max-w-none sm:pl-6">
                                         <span class="block">
                                             {{$filters.currency(tally?.model?.amount_requested, tally?.model?.fund?.currency, 'en-US', 2)}}
                                         </span>
@@ -251,6 +260,7 @@ import axios from '../../lib/utils/axios';
 import route from 'ziggy-js';
 import Pagination from '../Shared/Components/Pagination.vue';
 import { ChevronUpDownIcon } from '@heroicons/vue/20/solid';
+import Search from '../Shared/Components/Search.vue';
 
 const props = withDefaults(
     defineProps<{
@@ -285,6 +295,7 @@ let tallies$ = ref<{
 let currPage$ = ref<number>(1);
 let perPage$ = ref<number>(36);
 let order$ = ref<string>('asc');
+let search$ = ref<string>(null);
 
 const fundsLabelValue = computed(() => {
     return props?.funds?.map((fund) => {
@@ -294,6 +305,10 @@ const fundsLabelValue = computed(() => {
 
 getMetrics();
 getTallies();
+
+watch([search$], () => {
+    getTallies();
+}, {deep: true});
 
 watch([selectedFundRef], () => {
     query();
@@ -444,7 +459,8 @@ function getTallies() {
             params: {
                 p: currPage$.value,
                 pp: perPage$.value,
-                o: order$.value
+                o: order$.value,
+                s: search$.value
             }
         })
         .then((res) => {
