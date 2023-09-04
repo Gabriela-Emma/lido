@@ -144,7 +144,7 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
             'categories',
             'funding_status',
             'status',
-            'vote_casts'
+            'votes_cast'
         ];
     }
 
@@ -184,7 +184,7 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
             'yes_votes_count',
             'ranking_total',
             'users.proposals_completed',
-            'vote_casts'
+            'votes_cast'
         ];
     }
 

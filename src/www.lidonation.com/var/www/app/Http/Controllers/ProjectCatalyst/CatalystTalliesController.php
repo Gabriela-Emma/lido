@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\CatalystTally;
 use App\Models\Proposal;
 use Illuminate\Http\Request;
+use Meilisearch\Endpoints\Indexes;
 
 class CatalystTalliesController extends Controller
 {
@@ -14,9 +15,26 @@ class CatalystTalliesController extends Controller
         $page = $request->input('p', 1);
         $order = $request->input('o', 'asc');
         $orderBy = $request->input('ob', 'tally');
+        $search = $request->input('s', null);
 
-        return CatalystTally::setEagerLoads([])->with('model')
-        ->orderBy($orderBy, $order)
-        ->fastPaginate($perPage, ['*'], 'page', $page);
+        $query = CatalystTally::setEagerLoads([])->with('model')
+        ->where('model_type', Proposal::class)
+        ->orderBy($orderBy, $order);
+
+        if ($search) {
+            $proposalsQuery = Proposal::search(
+                $search,
+                function (Indexes $index, $query, $options) {
+                    $options['filter'] = 'fund.id = 113';
+                    $options['attributesToRetrieve'] = ['id'];
+                    return $index->search($query, $options);
+                }
+            );
+
+            $proposalIds = collect($proposalsQuery->raw()['hits'])->pluck('id')->toArray();
+            $query->whereIn('model_id', $proposalIds);
+        }
+
+        return $query->fastPaginate($perPage, ['*'], 'page', $page);
     }
 }
