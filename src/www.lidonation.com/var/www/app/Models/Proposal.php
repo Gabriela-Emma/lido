@@ -144,6 +144,7 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
             'categories',
             'funding_status',
             'status',
+            'vote_casts'
         ];
     }
 
@@ -164,7 +165,7 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
             'ranking_total',
             'users',
             'tags',
-            'categories'
+            'categories',
         ];
     }
 
@@ -182,7 +183,8 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
             'no_votes_count',
             'yes_votes_count',
             'ranking_total',
-            'users.proposals_completed'
+            'users.proposals_completed',
+            'vote_casts'
         ];
     }
 
@@ -534,6 +536,7 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
             'woman_proposal' => $this->is_woman_proposal ? 1 : 0,
             'ideafest_proposal' => $this->is_ideafest_proposal ? 1 : 0,
             'project_length' => $this->meta_data->project_length ?? null,
+            'vote_casts' => $this->meta_data->vote_casts ?? null,
             'ranking_total' => $this->ranking_total ?? 0,
             'users' => $this->users->map(function($u){
                 $proposals = $u->proposals?->map(fn ($p) => $p->toArray());
