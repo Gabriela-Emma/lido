@@ -254,7 +254,6 @@ import {CheckCircleIcon} from "@heroicons/vue/20/solid";
 import { storeToRefs } from "pinia";
 import { useUserStore } from "../../../global/Shared/store/user-store";
 
-
 const $utils: any = inject('$utils');
 const props = withDefaults(
     defineProps<{

@@ -122,8 +122,8 @@
                             </div>
                         </div>
 
-                        <div class="my-auto" v-if="chartData" >
-                            <AdaPowerRangesPie :chartData="chartData" :options="chartOptions" />
+                        <div class="my-auto" v-if="chartData1Ada1Vote$" >
+                            <AdaPowerRangesPie :chartData="chartData1Ada1Vote$" :options="chartOptions" />
                         </div>
                     </div>
                 </div>
@@ -164,7 +164,7 @@
                         <h2 class="flex items-end gap-2 mb-0 xl:text-3xl">
                             <span>Proposal Live Tally</span>
                             <span class="text-xl font-bold text-teal-500">
-                                Last updated: 22023-09-05 14:01:00 PM UTC
+                                Last updated:  <timeago :datetime="tallyUpdatedAt" />
                             </span>
                         </h2>
                         <p>
@@ -183,7 +183,7 @@
 
                     <div class="relative w-full my-8" v-if="tallies$">
                         <div
-                            class="my-8 -mx-4 overflow-y-visible ring-1 ring-black ring-opacity-5 sm:-mx-6 md:mx-0 md:rounded-sm">
+                            class="pb-10 my-8 -mx-4 overflow-y-visible ring-1 ring-black ring-opacity-5 sm:-mx-6 md:mx-0 md:rounded-sm">
                             <table class="min-w-full divide-y divide-slate-300">
                                 <thead class="bg-slate-50">
                                 <tr>
@@ -242,6 +242,25 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="relative w-full col-span-1 row-span-6 p-3 bg-white md:col-span-3 round-sm">
+                    <div class="relative flex flex-col justify-start h-full">
+                        <div class="flex flex-wrap items-start justify-between">
+                            <div class="text-teal-600">
+                                <h2 class="mb-0 xl:text-3xl">
+                                    Vote Tallies
+                                </h2>
+                                <p>
+                                    Votes cast as of <timeago :datetime="tallyUpdatedAt" />
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- <div class="my-auto" v-if="chartDataVotesCastScatter$">
+                            <VoteTallyScatterChart :chartData="chartDataVotesCastScatter$" :options="chartOptions" />
+                        </div> -->
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -261,6 +280,7 @@ import route from 'ziggy-js';
 import Pagination from '../Shared/Components/Pagination.vue';
 import { ChevronUpDownIcon } from '@heroicons/vue/20/solid';
 import Search from '../Shared/Components/Search.vue';
+import VoteTallyScatterChart from '../modules/charts/VoteTallyScatterChart.vue';
 
 const props = withDefaults(
     defineProps<{
@@ -292,10 +312,12 @@ let tallies$ = ref<{
     from: number,
     data: any[]
 }>(null);
+
 let currPage$ = ref<number>(1);
 let perPage$ = ref<number>(36);
 let order$ = ref<string>('asc');
 let search$ = ref<string>(null);
+const tallyUpdatedAt = '2023-09-05T15:00:18Z';
 
 const fundsLabelValue = computed(() => {
     return props?.funds?.map((fund) => {
@@ -323,7 +345,8 @@ watch([currPage$, perPage$], () => {
     fundedOver75KCount.value = fundedOver75KCount.value;
 });
 
-const chartData = ref<object>();
+const chartDataVotesCastScatter$ = ref<object>();
+const chartData1Ada1Vote$ = ref<object>();
 const chartOptions = ref<object>();
 
 function query() {
@@ -386,7 +409,7 @@ function getMetrics() {
                 countArr.push(power.count);
             });
 
-            chartData.value = {
+            chartData1Ada1Vote$.value = {
                 labels: keyArr,
                 datasets: [
                     {
@@ -422,6 +445,36 @@ function getMetrics() {
                     }
                 ]
             }
+            chartDataVotesCastScatter$.value = {
+                datasets: [{
+                    label: 'Votes Cast',
+                    fill: false,
+                    borderColor: '#f87979',
+                    backgroundColor: '#f87979',
+                    data: [
+                        {
+                            x: 800,
+                            y: 4
+                        },
+                        {
+                            x: 700,
+                            y: 4
+                        },
+                        {
+                            x: 600,
+                            y: 0
+                        },
+                        {
+                            x: 600,
+                            y: 4
+                        },
+                        {
+                            x: 600,
+                            y: 4
+                        }
+                    ]
+                }]
+            };
             chartOptions.value = {
                 responsive: true,
                 maintainAspectRatio: false

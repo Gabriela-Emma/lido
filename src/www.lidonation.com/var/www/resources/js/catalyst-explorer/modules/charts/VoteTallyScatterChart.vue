@@ -5,21 +5,17 @@
 </template>
 
 <script lang="ts" setup>
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+import { Chart as ChartJS, Tooltip, Legend, LineElement, PointElement, LinearScale } from 'chart.js';
 import { Scatter } from 'vue-chartjs';
 
-ChartJS.register(ArcElement, Tooltip, Legend);
+ChartJS.register(LinearScale, PointElement, LineElement, Tooltip, Legend)
 
-defineProps<{
-    chartData: {
-        type: Object,
-        required: true
-    },
-    options: {
-        type: Object,
-        default: () => {}
-    }
-}>();
+withDefaults(
+    defineProps<{
+        chartData,
+        options
+    }>(),
+{});
 
 </script>
 
