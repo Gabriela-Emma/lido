@@ -243,7 +243,7 @@
                     </div>
                 </div>
 
-                <div class="relative w-full col-span-1 row-span-6 p-3 bg-white md:col-span-3 round-sm">
+                <!-- <div class="relative w-full col-span-1 row-span-6 p-3 bg-white md:col-span-3 round-sm">
                     <div class="relative flex flex-col justify-start h-full">
                         <div class="flex flex-wrap items-start justify-between">
                             <div class="text-teal-600">
@@ -256,11 +256,11 @@
                             </div>
                         </div>
 
-                        <!-- <div class="my-auto" v-if="chartDataVotesCastScatter$">
+                        <div class="my-auto" v-if="chartDataVotesCastScatter$">
                             <VoteTallyScatterChart :chartData="chartDataVotesCastScatter$" :options="chartOptions" />
-                        </div> -->
+                        </div>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
     </section>
