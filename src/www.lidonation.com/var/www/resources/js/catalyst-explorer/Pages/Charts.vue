@@ -281,6 +281,7 @@ import Pagination from '../Shared/Components/Pagination.vue';
 import { ChevronUpDownIcon } from '@heroicons/vue/20/solid';
 import Search from '../Shared/Components/Search.vue';
 
+
 const props = withDefaults(
     defineProps<{
         funds: Fund[],
