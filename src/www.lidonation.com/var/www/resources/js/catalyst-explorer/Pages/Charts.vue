@@ -188,7 +188,7 @@
                                 <thead class="bg-slate-50">
                                 <tr>
                                     <th scope="col"
-                                        class="hidden px-3 py-3.5 text-left text-sm font-semibold text-slate-900 sm:table-cell">
+                                        class="px-3 py-3.5 text-left text-sm font-semibold text-slate-900 sm:pl-4">
                                         <div class="flex gap-0.5 items-center flex-nowrap hover:cursor-pointer w-16 justify-start text-left" @click="toggleOrder()">
                                             <span>{{ $t("Tally") }}</span>
                                             <span class="flex items-center gap-1 text-teal-600 flex-nowrap">
@@ -317,7 +317,7 @@ let currPage$ = ref<number>(1);
 let perPage$ = ref<number>(36);
 let order$ = ref<string>('asc');
 let search$ = ref<string>(null);
-const tallyUpdatedAt = '2023-09-05T21:00:17Z';
+const tallyUpdatedAt = '2023-09-05T23:00:16';
 
 const fundsLabelValue = computed(() => {
     return props?.funds?.map((fund) => {
