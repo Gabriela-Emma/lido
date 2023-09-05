@@ -280,7 +280,6 @@ import route from 'ziggy-js';
 import Pagination from '../Shared/Components/Pagination.vue';
 import { ChevronUpDownIcon } from '@heroicons/vue/20/solid';
 import Search from '../Shared/Components/Search.vue';
-import VoteTallyScatterChart from '../modules/charts/VoteTallyScatterChart.vue';
 
 const props = withDefaults(
     defineProps<{
@@ -317,7 +316,7 @@ let currPage$ = ref<number>(1);
 let perPage$ = ref<number>(36);
 let order$ = ref<string>('asc');
 let search$ = ref<string>(null);
-const tallyUpdatedAt = '2023-09-05T16:00:59Z';
+const tallyUpdatedAt = '2023-09-05T18:00:10Z';
 
 const fundsLabelValue = computed(() => {
     return props?.funds?.map((fund) => {

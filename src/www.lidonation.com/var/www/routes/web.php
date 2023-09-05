@@ -90,6 +90,10 @@ Route::group(
             return view('subscribe');
         })->name('subscribe');
 
+        Route::get('/catalyst-explorer/checkin', function () {
+            return view('catalyst.checkin');
+        })->name('subscribe');
+
         Route::get('/mint/lido-minute', function () {
             return view('mint-lido-minute');
         })->name('mint-lido-minute')->middleware([]);
