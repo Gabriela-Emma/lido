@@ -164,7 +164,7 @@
                         <h2 class="flex items-end gap-2 mb-0 xl:text-3xl">
                             <span>Proposal Live Tally</span>
                             <span class="text-xl font-bold text-teal-500">
-                                Last updated: 2023-09-05 12:00:32 PM UTC
+                                Last updated: 22023-09-05 14:01:00 PM UTC
                             </span>
                         </h2>
                         <p>
@@ -183,7 +183,7 @@
 
                     <div class="relative w-full my-8" v-if="tallies$">
                         <div
-                            class="my-8 -mx-4 overflow-y-auto ring-1 ring-black ring-opacity-5 sm:-mx-6 md:mx-0 md:rounded-sm">
+                            class="my-8 -mx-4 overflow-y-visible ring-1 ring-black ring-opacity-5 sm:-mx-6 md:mx-0 md:rounded-sm">
                             <table class="min-w-full divide-y divide-slate-300">
                                 <thead class="bg-slate-50">
                                 <tr>
@@ -200,26 +200,26 @@
                                         </div>
                                     </th>
                                     <th scope="col"
-                                        class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-slate-900 sm:pl-6">
+                                        class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-slate-900 sm:pl-4">
                                         {{ $t("Proposal") }}
                                     </th>
                                     <th scope="col"
-                                        class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold sm:w-28 text-slate-900 sm:pl-6">
+                                        class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold sm:w-32 text-slate-900 sm:pl-4">
                                         {{ $t("Budget") }}
                                     </th>
                                 </tr>
                                 </thead>
                                 <tbody class="bg-white divide-y divide-slate-200 text-slate-900">
                                 <tr v-for="tally in tallies$?.data">
-                                    <td class="w-16 py-4 pl-4 text-sm text-left max-w-0 sm:w-auto sm:max-w-none sm:pl-6">
+                                    <td class="w-16 py-4 pl-4 text-sm text-left max-w-0 sm:w-auto sm:max-w-none sm:pl-4">
                                         {{ tally.tally }}
                                     </td>
 
-                                    <td class="w-full py-4 pl-4 pr-3 text-sm max-w-0 sm:w-auto sm:max-w-none sm:pl-6">
+                                    <td class="w-full py-4 pl-4 pr-3 text-sm max-w-0 sm:w-auto sm:max-w-none sm:pl-4">
                                         <a target="_blank" :href="tally?.model?.link" >{{ tally?.model?.title }}</a>
                                     </td>
 
-                                    <td class="w-full py-4 pl-4 pr-3 text-sm max-w-0 sm:w-28 sm:max-w-none sm:pl-6">
+                                    <td class="w-full py-4 pl-4 pr-3 text-sm max-w-0 sm:w-32 sm:max-w-none sm:pl-4">
                                         <span class="block">
                                             {{$filters.currency(tally?.model?.amount_requested, tally?.model?.fund?.currency, 'en-US', 2)}}
                                         </span>
