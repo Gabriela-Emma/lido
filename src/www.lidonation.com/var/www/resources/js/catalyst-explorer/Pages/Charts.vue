@@ -164,7 +164,7 @@
                         <h2 class="flex items-end gap-2 mb-0 xl:text-3xl">
                             <span>Proposal Live Tally</span>
                             <span class="text-xl font-bold text-teal-500">
-                                Last updated: 2023-09-04T17:00:07
+                                Last updated: 2023-09-04T23:00:14Z UTC
                             </span>
                         </h2>
                         <p>
