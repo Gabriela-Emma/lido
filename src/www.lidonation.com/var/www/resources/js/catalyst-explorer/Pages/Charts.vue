@@ -164,7 +164,7 @@
                         <h2 class="flex items-end gap-2 mb-0 xl:text-3xl">
                             <span>Proposal Live Tally</span>
                             <span class="text-xl font-bold text-teal-500">
-                                Last updated: 2023-09-04T17:00:07
+                                Last updated: 2023-09-04T23:00:14Z UTC
                             </span>
                         </h2>
                         <p>
@@ -204,7 +204,7 @@
                                         {{ $t("Proposal") }}
                                     </th>
                                     <th scope="col"
-                                        class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold sm:w-20 text-slate-900 sm:pl-6">
+                                        class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold sm:w-28 text-slate-900 sm:pl-6">
                                         {{ $t("Budget") }}
                                     </th>
                                 </tr>
@@ -219,7 +219,7 @@
                                         <a target="_blank" :href="tally?.model?.link" >{{ tally?.model?.title }}</a>
                                     </td>
 
-                                    <td class="w-full py-4 pl-4 pr-3 text-sm max-w-0 sm:w-24 sm:max-w-none sm:pl-6">
+                                    <td class="w-full py-4 pl-4 pr-3 text-sm max-w-0 sm:w-28 sm:max-w-none sm:pl-6">
                                         <span class="block">
                                             {{$filters.currency(tally?.model?.amount_requested, tally?.model?.fund?.currency, 'en-US', 2)}}
                                         </span>
