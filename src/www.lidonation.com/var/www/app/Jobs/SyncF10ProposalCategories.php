@@ -44,7 +44,8 @@ class SyncF10ProposalCategories implements ShouldQueue
                     return;
                 }
                 // Remove existing relationships
-                $proposal->categories()->sync([]);
+                $proposal->categories()->sync([]); 
+
 
                 if (!$proposal->categories?->count() ?? null) {
                     $category = $this->getFieldByTitle(
@@ -55,13 +56,13 @@ class SyncF10ProposalCategories implements ShouldQueue
                     $existingCat = Category::where('title', $category)->first();
 
                     if ($existingCat instanceof Category) {
-                        $proposal->categories()->syncWithoutDetaching([$existingCat->id], [
-                            'model_type' => Proposal::class,
+                        $proposal->categories()->syncWithoutDetaching([
+                            $existingCat->id => ['model_type' => Proposal::class]
                         ]);
 
                         Proposal::withoutSyncingToSearch(fn () => $proposal->save());
                     } else {
-                        $category = Category::updateOrCreate(
+                        $newCategory = Category::updateOrCreate(
                             [
                                 'slug' => Str::slug($category),
                             ],
@@ -70,9 +71,9 @@ class SyncF10ProposalCategories implements ShouldQueue
                             ],
                         );
 
-                        $proposal->categories()->syncWithPivotValues([$category->id], [
-                            'model_type' => Proposal::class,
-                        ], false);
+                        $proposal->categories()->syncWithoutDetaching([
+                            $newCategory->id => ['model_type' => Proposal::class]
+                        ]);
 
                         Proposal::withoutSyncingToSearch(fn () => $proposal->save());
                     }
