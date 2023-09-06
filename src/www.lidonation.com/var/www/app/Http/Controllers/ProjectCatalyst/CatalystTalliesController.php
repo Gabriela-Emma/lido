@@ -16,10 +16,18 @@ class CatalystTalliesController extends Controller
         $order = $request->input('o', 'asc');
         $orderBy = $request->input('ob', 'tally');
         $search = $request->input('s', null);
+        $challenges = collect($request->input('c', []));
 
         $query = CatalystTally::setEagerLoads([])->with('model')
         ->where('model_type', Proposal::class)
         ->orderBy($orderBy, $order);
+
+        if ($challenges->isNotEmpty()) {
+            $query->whereHas(
+                'model',
+                fn($q) => $q->whereIn('fund_id', $challenges->toArray() )
+            );
+        }
 
         if ($search) {
             $proposalsQuery = Proposal::search(

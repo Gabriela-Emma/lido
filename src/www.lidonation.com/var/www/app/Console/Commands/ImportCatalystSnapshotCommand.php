@@ -4,9 +4,7 @@ namespace App\Console\Commands;
 
 use App\Jobs\SyncCatalystVotingPowersJob;
 use App\Models\CatalystSnapshot;
-use App\Models\Fund;
 use Illuminate\Support\Fluent;
-use App\Services\SyncCatalystSnapshotService;
 use JsonMachine\Items;
 use Illuminate\Console\Command;
 

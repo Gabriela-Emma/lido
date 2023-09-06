@@ -223,7 +223,7 @@
                                     class="px-1 py-3 text-teal-600 menu-link hover:text-yellow-500"
                                     @click.stop="(toggle = false)"
                                     :class="{ 'text-yellow-500': $page.component.startsWith('Charts') }"
-                                    :href="$utils.localizeRoute('project-catalyst/dashboard')">
+                                    :href="$utils.localizeRoute('catalyst-explorer/charts')">
                                     {{ $t('Charts') }}
                                 </a>
                             </li>
@@ -266,7 +266,7 @@
                                     class="px-1 py-3 text-teal-600 menu-link hover:text-yellow-500"
                                     @click.stop="(toggle = false)"
                                     :class="{ 'text-yellow-500': $page.component.startsWith('VoterTool') }"
-                                    :href="$utils.localizeRoute('project-catalyst/voter-tool')">
+                                    :href="$utils.localizeRoute('catalyst-explorer/voter-tool')">
                                 {{ $t('Voter Tool') }}
                                 </a>
                             </li>
