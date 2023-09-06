@@ -359,3 +359,13 @@ SyncF10ProposalCategories::dispatchSync()
 SyncF10ProposalCategories::dispatchSync()
 use\040App\134Jobs\134SyncF10ProposalCategories
 SyncF10ProposalCategories::dispatchSync()
+floor(3.97)
+round(3.97)
+round(3.97,\0400)
+ceil(3.97)
+ceil(3.27)
+ceil(3.07)
+round(3.27)
+round(3.47)
+round(3.57)
+exit
