@@ -26,9 +26,9 @@
                             Catalyst Checkin issues you verifiable credentials on the Cardano blockchain for participating in Project Catalyst.
                         </p>
                         <div class="flex items-center mt-10 gap-x-6">
-                        <a href="#" class="rounded-sm bg-teal-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-yellow-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yello-600">
+                        {{-- <a href="#" class="rounded-sm bg-teal-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-yellow-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yello-600">
                             Documentation
-                        </a>
+                        </a> --}}
                         {{-- <a href="#" class="text-sm font-semibold leading-6">View on GitHub <span aria-hidden="true">→</span></a> --}}
                         </div>
                     </div>
