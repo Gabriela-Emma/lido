@@ -49,6 +49,7 @@
                                 </div>
                             </div> --}}
                             <div class="px-6 pt-6 pb-14">
+                                <p>Check back on 09-13-2023
                                 {{-- <img class="w-auto" src="{{ asset('img/townhall-2023-09-06.png')}}" /> --}}
                             </div>
                             </div>
