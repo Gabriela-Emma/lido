@@ -168,7 +168,8 @@
                             </span>
                         </h2>
                         <p>
-                            This shows how many times a proposal has been voted on.
+                            This shows how many wallets have expressed an opinion for a proposal.
+                            <!-- This shows how many times a proposal has been voted on. -->
                             We won't know the yes or no vote until after the voting period ends.
                         </p>
                     </div>
@@ -328,7 +329,7 @@ let currPage$ = ref<number>(1);
 let perPage$ = ref<number>(36);
 let order$ = ref<string>('asc');
 let search$ = ref<string>(null);
-const tallyUpdatedAt = '2023-09-06T11:00:44Z';
+const tallyUpdatedAt = '2023-09-06T14:00:53Z';
 
 const fundsLabelValue = computed(() => {
     return props?.funds?.map((fund) => {
