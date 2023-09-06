@@ -49,7 +49,6 @@
                                 </div>
                             </div> --}}
                             <div class="px-6 pt-6 pb-14">
-                                QR code will get rendered and embeded here
                                 <img {{ asset('img/townhall-2023-09-06.png')}} />
                             </div>
                             </div>
