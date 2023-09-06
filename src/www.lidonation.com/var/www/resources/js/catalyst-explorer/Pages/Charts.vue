@@ -175,9 +175,16 @@
 
                     <div class="py-4">
                         <div class="h-16 my-4 border border-r-0 rounded-sm">
-                            <Search
-                                :search="search$"
-                                @search="(term) => search$=term"></Search>
+                            <div class="flex flex-wrap w-full gap-2">
+                                <div class="flex flex-1 max-w-[24rem] border-r">
+                                    <ChallengePicker v-model="challengesRef" />
+                                </div>
+                                <div class="flex flex-1 w-full">
+                                    <Search
+                                        :search="search$"
+                                        @search="(term) => search$=term"></Search>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -280,11 +287,14 @@ import route from 'ziggy-js';
 import Pagination from '../Shared/Components/Pagination.vue';
 import { ChevronUpDownIcon } from '@heroicons/vue/20/solid';
 import Search from '../Shared/Components/Search.vue';
+import ChallengePicker from '../modules/funds/ChallengePicker.vue';
+import Challenge from '../models/challenge';
 
 
 const props = withDefaults(
     defineProps<{
         funds: Fund[],
+        challenges: Challenge[],
         filters?: {
             fundId: number,
         },
@@ -297,6 +307,7 @@ let fundedOver75KCount = ref<number>(null);
 let membersAwardedFundingCount = ref<number>(null);
 let fullyDisbursedProposalsCount = ref<number>(null);
 let completedProposalsCount = ref<number>(null);
+let challengesRef = ref<Challenge[]>(props.challenges);
 
 const baseUrl = usePage().props.base_url;
 
@@ -317,7 +328,7 @@ let currPage$ = ref<number>(1);
 let perPage$ = ref<number>(36);
 let order$ = ref<string>('asc');
 let search$ = ref<string>(null);
-const tallyUpdatedAt = '2023-09-06T05:01:00Z';
+const tallyUpdatedAt = '2023-09-06T06:00:28Z';
 
 const fundsLabelValue = computed(() => {
     return props?.funds?.map((fund) => {
@@ -329,6 +340,10 @@ getMetrics();
 getTallies();
 
 watch([search$], () => {
+    getTallies();
+}, {deep: true});
+
+watch([challengesRef], () => {
     getTallies();
 }, {deep: true});
 
@@ -506,6 +521,7 @@ function toggleOrder()
 }
 
 function getTallies() {
+    console.log('challenges::', challengesRef.value);
     axios.get(
         route('catalystExplorerApi.tallies'),
         {
@@ -513,7 +529,8 @@ function getTallies() {
                 p: currPage$.value,
                 pp: perPage$.value,
                 o: order$.value,
-                s: search$.value
+                s: search$.value,
+                c: challengesRef.value?.map((challenge) => (challenge.id || challenge))
             }
         })
         .then((res) => {
