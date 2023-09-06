@@ -60,6 +60,7 @@
             <!--                </div>-->
             <!--            </div>-->
         </div>
+        <div v-if="new Date(assessment.proposal.fund.launched_at) <= new Date(launchTimestamp)">
         <div class="p-2 bg-stone-100">
             <b class="block text-sm font-bold">
                 {{ $t('vPA Quality Assurance') }}
@@ -75,6 +76,7 @@
                 :options="chartOptions"
                 :data="chartData"
             />
+        </div>
         </div>
     </div>
 </template>
@@ -127,6 +129,9 @@ let chartData = ref({
         }
     ]
 });
+
+const launchTimestamp = '2023-06-01T00:00:00.000000Z';
+
 let chartOptions = ref({
     responsive: true,
     indexAxis: 'y',
