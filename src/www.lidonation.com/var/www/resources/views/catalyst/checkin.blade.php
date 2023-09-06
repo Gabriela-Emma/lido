@@ -49,7 +49,7 @@
                                 </div>
                             </div> --}}
                             <div class="px-6 pt-6 pb-14">
-                                <img class="w-auto" src="{{ asset('img/townhall-2023-09-06.png')}}" />
+                                {{-- <img class="w-auto" src="{{ asset('img/townhall-2023-09-06.png')}}" /> --}}
                             </div>
                             </div>
                         </div>
