@@ -15,7 +15,7 @@
                         <div class="mt-24 sm:mt-32 lg:mt-16">
                         <a href="#" class="inline-flex space-x-6">
                             <span class="px-3 py-1 text-sm font-semibold leading-6 text-yellow-600 rounded-full bg-teal-light-600/50 ring-1 ring-inset ring-indigo-600/10">
-                                New
+                                Cred Rewards coming soon
                             </span>
                         </a>
                         </div>
