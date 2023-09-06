@@ -34,13 +34,13 @@
                     </div>
                     </div>
                 </div>
-                <div class="mt-20 sm:mt-24 lg:mx-auto lg:max-w-2xl lg:mx-0lg:mt-0 lg:w-screen">
-                    <div class="absolute inset-y-0 right-1/2 -z-10 -mr-10 w-[200%] skew-x-[-30deg] bg-teal-800 shadow-xl shadow-indigo-600/10 ring-1 ring-indigo-50 lg:-mr-20 lg:-mr-36" aria-hidden="true"></div>
-                    <div class="shadow-lg lg:rounded-3xl">
-                    <div class="bg-teal-500 [clip-path:inset(0)] lg:[clip-path:inset(0_round_theme(borderRadius.3xl))]">
-                        <div class="absolute -inset-y-px left-1/2 -z-10 ml-10 w-[200%] skew-x-[-30deg] bg-indigo-100 opacity-20 ring-1 ring-inset ring-white lg:ml-20 lg:ml-36" aria-hidden="true"></div>
-                        <div class="relative px-6 pt-8 sm:pt-16 lg:pl-16 lg:pr-0">
-                        <div class="max-w-2xl mx-auto lg:mx-0 lg:max-w-none">
+                <div class="mt-20 sm:mt-24 xl:mx-auto xl:max-w-2xl lg:mx-0 lg:mt-0 lg:w-screen">
+                    <div class="absolute inset-y-0 right-1/2 -z-10 -mr-10 w-[200%] skew-x-[-30deg] bg-teal-800 shadow-xl shadow-indigo-600/10 ring-1 ring-indigo-50 xl:-mr-20 lg:-mr-36" aria-hidden="true"></div>
+                    <div class="shadow-lg xl:rounded-3xl">
+                    <div class="bg-teal-500 [clip-path:inset(0)] xl:[clip-path:inset(0_round_theme(borderRadius.3xl))]">
+                        <div class="absolute -inset-y-px left-1/2 -z-10 ml-10 w-[200%] skew-x-[-30deg] bg-indigo-100 opacity-20 ring-1 ring-inset ring-white xl:ml-20 lg:ml-36" aria-hidden="true"></div>
+                        <div class="relative px-6 pt-8 sm:pt-16 xl:pl-16 xl:pr-0">
+                        <div class="max-w-2xl mx-auto xl:mx-0 xl:max-w-none">
                             <div class="overflow-hidden bg-gray-900 rounded-tl-xl">
                             {{-- <div class="flex bg-gray-800/40 ring-1 ring-white/5">
                                 <div class="flex -mb-px text-sm font-medium leading-6">
@@ -53,7 +53,7 @@
                             </div>
                             </div>
                         </div>
-                        <div class="absolute inset-0 pointer-events-none ring-1 ring-inset ring-black/10 lg:rounded-3xl" aria-hidden="true"></div>
+                        <div class="absolute inset-0 pointer-events-none ring-1 ring-inset ring-black/10 xl:rounded-3xl" aria-hidden="true"></div>
                         </div>
                     </div>
                     </div>

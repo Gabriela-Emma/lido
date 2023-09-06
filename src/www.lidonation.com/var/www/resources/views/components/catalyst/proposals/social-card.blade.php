@@ -86,7 +86,13 @@
                                         {{$discussion->title}}
                                     </div>
                                     <div>
-                                        <x-public.stars theme='text-white' :amount="$discussion->rating" :size="5"/>
+                                        <?php $mataKey = match ($discussion->title) {
+                                             'Impact Alignment' => 'aligment_score',
+                                             'Feasibility' => 'feasibility_score',
+                                             'Value for money' => 'auditability_score',
+                                        } ?>
+                                        <x-public.stars theme='text-white' :size="5"
+                                        :amount="$proposal?->meta_data?->{$mataKey} ?? $discussion->rating" />
                                     </div>
                                 </div>
                             @endforeach
