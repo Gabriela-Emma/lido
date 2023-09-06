@@ -220,7 +220,7 @@
                                     </td>
 
                                     <td class="w-full py-4 pl-4 pr-3 text-sm max-w-0 sm:w-32 sm:max-w-none sm:pl-4">
-                                        <span class="block">
+                                        <span class="block">ó
                                             {{$filters.currency(tally?.model?.amount_requested, tally?.model?.fund?.currency, 'en-US', 2)}}
                                         </span>
                                     </td>
@@ -317,7 +317,7 @@ let currPage$ = ref<number>(1);
 let perPage$ = ref<number>(36);
 let order$ = ref<string>('asc');
 let search$ = ref<string>(null);
-const tallyUpdatedAt = '2023-09-05T23:00:16';
+const tallyUpdatedAt = '2023-09-06T00:00:16';
 
 const fundsLabelValue = computed(() => {
     return props?.funds?.map((fund) => {
