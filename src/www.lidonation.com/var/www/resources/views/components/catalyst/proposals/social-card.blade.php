@@ -90,6 +90,7 @@
                                              'Impact Alignment' => 'aligment_score',
                                              'Feasibility' => 'feasibility_score',
                                              'Value for money' => 'auditability_score',
+                                             default => null
                                         } ?>
                                         <x-public.stars theme='text-white' :size="5"
                                         :amount="$proposal?->meta_data?->{$mataKey} ?? $discussion->rating" />
