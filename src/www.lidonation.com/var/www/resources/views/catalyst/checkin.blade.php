@@ -15,7 +15,7 @@
                         <div class="mt-24 sm:mt-32 lg:mt-16">
                         <a href="#" class="inline-flex space-x-6">
                             <span class="px-3 py-1 text-sm font-semibold leading-6 text-yellow-600 rounded-full bg-teal-light-600/50 ring-1 ring-inset ring-indigo-600/10">
-                                New
+                                Cred Rewards coming soon
                             </span>
                         </a>
                         </div>
@@ -41,7 +41,7 @@
                         <div class="absolute -inset-y-px left-1/2 -z-10 ml-10 w-[200%] skew-x-[-30deg] bg-indigo-100 opacity-20 ring-1 ring-inset ring-white md:ml-20 lg:ml-36" aria-hidden="true"></div>
                         <div class="relative px-6 pt-8 sm:pt-16 md:pl-16 md:pr-0">
                         <div class="max-w-2xl mx-auto md:mx-0 md:max-w-none">
-                            <div class="w-screen overflow-hidden bg-gray-900 rounded-tl-xl">
+                            <div class="overflow-hidden bg-gray-900 rounded-tl-xl">
                             {{-- <div class="flex bg-gray-800/40 ring-1 ring-white/5">
                                 <div class="flex -mb-px text-sm font-medium leading-6">
                                 <div class="px-4 py-2 text-white border-b border-r border-b-white/20 border-r-white/10 bg-white/5">NotificationSetting.jsx</div>
@@ -49,7 +49,7 @@
                                 </div>
                             </div> --}}
                             <div class="px-6 pt-6 pb-14">
-                                <img {{ asset('img/townhall-2023-09-06.png')}} />
+                                <img class="w-auto" src="{{ asset('img/townhall-2023-09-06.png')}}" />
                             </div>
                             </div>
                         </div>
