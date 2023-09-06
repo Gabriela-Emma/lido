@@ -5,7 +5,7 @@
             <div class="{{$loop->odd ? 'bg-gray-100' : ''}}">
                 <livewire:discussions.discussion-component
                 :editable="$editable" :wire:key="$discussion->id"
-                :discussion="$discussion" :background="$loop->odd ? 'bg-gray-100' : 'bg-white'"
+                :discussion="$discussion" :model="$model" :background="$loop->odd ? 'bg-gray-100' : 'bg-white'"
                 :expanded="$expanded" />
             </div>
         @endforeach
