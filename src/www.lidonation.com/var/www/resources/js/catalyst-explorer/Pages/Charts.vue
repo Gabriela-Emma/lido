@@ -329,7 +329,7 @@ let currPage$ = ref<number>(1);
 let perPage$ = ref<number>(36);
 let order$ = ref<string>('asc');
 let search$ = ref<string>(null);
-const tallyUpdatedAt = '2023-09-06T19:00:24Z';
+const tallyUpdatedAt = '2023-09-06T21:00:36Z';
 
 const fundsLabelValue = computed(() => {
     return props?.funds?.map((fund) => {
