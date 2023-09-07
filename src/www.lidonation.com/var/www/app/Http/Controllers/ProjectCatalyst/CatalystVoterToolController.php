@@ -75,7 +75,7 @@ class CatalystVoterToolController extends Controller
         $this->currentFilterGroup = $request->input('fgs', 1);
         $this->filterGroupLimit = $request->input('pfgs', 4);
         $this->challengeFilter = $request->input(CatalystExplorerQueryParams::CHALLENGES, null);
-        $this->tagsFilter = $request->input(CatalystExplorerQueryParams::TAGS,null);
+        $this->tagsFilter = $request->input(CatalystExplorerQueryParams::TAGS, null);
         $this->categoriesFilter = $request->input(CatalystExplorerQueryParams::CATEGORIES, null);
         $this->query();
 
@@ -107,12 +107,11 @@ class CatalystVoterToolController extends Controller
         $filters = $this->getUserFilters($this->searchGroup);
         if (isset($filters['filters'])) {
             $_options = $filters;
-        } else {
+        } else 
             if ($filters == null) {
-                return;
-            }
-            $_options['filters'][]  = 'id IN' . json_encode($filters->values()->toArray());
+            return;
         }
+
 
         $this->searchBuilder = Proposal::search(
             $this->search,
@@ -244,11 +243,11 @@ class CatalystVoterToolController extends Controller
         }
 
         if ($this->tagsFilter) {
-            $_options[] = "challenge.id = {$this->tagsFilter}";
+            $_options[] = "tags.id = {$this->tagsFilter}";
         }
 
         if ($this->categoriesFilter) {
-            $_options[] = "challenge.id = {$this->categoriesFilter}";
+            $_options[] = "categories.id = {$this->categoriesFilter}";
         }
 
         return $_options;
@@ -377,13 +376,13 @@ class CatalystVoterToolController extends Controller
         if ($tax == 'Tag') {
             return
                 Tag::whereRelation('proposals.fund.parent', 'id', $this->fund->id)
-                    ->withCount(['proposals' => fn ($q) => $q->whereRelation('fund.parent', 'id', $this->fund->id)])
-                    ->fastPaginate($limit, ['*'], 'p')->setPath('/')->onEachSide(1)->toArray();
+                ->withCount(['proposals' => fn ($q) => $q->whereRelation('fund.parent', 'id', $this->fund->id)])
+                ->fastPaginate($limit, ['*'], 'p')->setPath('/')->onEachSide(1)->toArray();
         } else {
             return
                 Category::whereRelation('proposals.fund.parent', 'id', $this->fund->id)
-                    ->withCount(['proposals' => fn ($q) => $q->whereRelation('fund.parent', 'id', $this->fund->id)])
-                    ->fastPaginate($limit, ['*'], 'p')->setPath('/')->onEachSide(1)->toArray();
+                ->withCount(['proposals' => fn ($q) => $q->whereRelation('fund.parent', 'id', $this->fund->id)])
+                ->fastPaginate($limit, ['*'], 'p')->setPath('/')->onEachSide(1)->toArray();
         }
     }
 }
