@@ -59,12 +59,7 @@ return [
     | Measured in MB (MegaBytes). Using `0` or `null` disables the limit.
     |
     */
-
-<<<<<<< HEAD
-    'memory' => 512,
-=======
     'memory' => 2048,
->>>>>>> ed216c04cac558f90c330b34ceaa3450420fb774
 
     /*
     |--------------------------------------------------------------------------

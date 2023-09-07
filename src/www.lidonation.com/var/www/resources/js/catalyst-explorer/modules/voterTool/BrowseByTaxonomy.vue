@@ -53,6 +53,7 @@ const emit = defineEmits<{
 }>()
 
 let selected = ref(null);
+let loaded = ref(false);
 
 let emitData = (tax) => {
     selected.value = tax
@@ -81,8 +82,16 @@ const setTaxonomies = async () => {
     }
 
     data['tax'] = props.taxonomy
-    taxonomies.value = (await axios.get(route('catalystExplorer.voterTool.taxomomy'), { params: data })).data;
+    taxonomies.value = (
+        await axios.get(
+            route(
+                'catalystExplorer.voterTool.taxomomy'),
+                { params: data }
+            )
+    ).data;
+    loaded.value = true;
 };
+
 setTaxonomies();
 
 watch(currTagGroupRef, () => {
