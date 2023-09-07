@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers\ProjectCatalyst;
 
+use App\DataTransferObjects\TaxonomyData;
+use App\Models\Tag;
+use App\Models\Fund;
 use Inertia\Inertia;
 use Inertia\Response;
+use App\Models\Category;
 use App\Models\Proposal;
 use Illuminate\Http\Request;
 use Illuminate\Support\Fluent;
@@ -11,7 +15,7 @@ use Meilisearch\Endpoints\Indexes;
 use App\Http\Controllers\Controller;
 use App\Repositories\FundRepository;
 use App\Enums\CatalystExplorerQueryParams;
-use App\Models\Fund;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use phpDocumentor\Reflection\PseudoTypes\ArrayShape;
 
@@ -320,7 +324,6 @@ class CatalystVoterToolController extends Controller
     public function getProposalCount($param)
     {
         $option_ = $this->getUserFilters($param);
-
         $proposals = Proposal::search(
             null,
             function (Indexes $index, $query, $options) use ($option_) {
@@ -330,10 +333,11 @@ class CatalystVoterToolController extends Controller
                 return $index->search($query, $options);
             }
         )->raw();
+
         return $proposals['estimatedTotalHits'];
     }
 
-    public function setCounts(Request $request)
+    public function setCounts(Request $request): \Illuminate\Support\Collection
     {
         $params = $request->input();
         $counts = collect([]);
@@ -344,5 +348,22 @@ class CatalystVoterToolController extends Controller
         }
 
         return $counts;
+    }
+
+    public function setTaxonomy(Request $request): ?Collection
+    {
+        $tax = $request->input();
+
+        if ($tax == 'Tag'){
+            return Tag::whereRelation('proposals.fund','parent_id', $this->fund->id)
+            ->withCount(['proposals' => fn ($q) => $q->whereRelation('fund.parent', 'id', 113)])
+            ->get();
+        } else if ($tax == 'Category') {
+            return Category::whereRelation('proposals.fund', 'parent_id', $this->fund->id)
+            ->withCount(['proposals' => fn ($q) => $q->whereRelation('fund', 'parent_id', 113)])
+            ->get();
+        }
+
+        return null;
     }
 }
