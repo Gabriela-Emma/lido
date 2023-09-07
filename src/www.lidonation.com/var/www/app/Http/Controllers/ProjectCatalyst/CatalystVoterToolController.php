@@ -324,7 +324,6 @@ class CatalystVoterToolController extends Controller
     public function getProposalCount($param)
     {
         $option_ = $this->getUserFilters($param);
-
         $proposals = Proposal::search(
             null,
             function (Indexes $index, $query, $options) use ($option_) {
@@ -334,10 +333,11 @@ class CatalystVoterToolController extends Controller
                 return $index->search($query, $options);
             }
         )->raw();
+
         return $proposals['estimatedTotalHits'];
     }
 
-    public function setCounts(Request $request): Collection
+    public function setCounts(Request $request): \Illuminate\Support\Collection
     {
         $params = $request->input();
         $counts = collect([]);
@@ -350,16 +350,20 @@ class CatalystVoterToolController extends Controller
         return $counts;
     }
 
-    public function setTaxonomy(Request $request):Collection
+    public function setTaxonomy(Request $request): ?Collection
     {
-        
         $tax = $request->input();
-        dd(TaxonomyData::collection(Tag::whereRelation('proposals.fund.parent', 'id', $this->fund->id)->withCount(['proposals' => fn ($q) => $q->whereRelation('fund.parent', 'id', 113)])->get()));
 
-        if($tax == 'Tag'){
-            return Tag::whereRelation('proposals.fund.parent','id',$this->fund->id)->withCount(['proposals' => fn ($q) => $q->whereRelation('fund.parent', 'id', 113)])->get();
-        }else {
-            return Category::whereRelation('proposals.fund.parent', 'id', $this->fund->id)->withCount(['proposals' => fn ($q) => $q->whereRelation('fund.parent', 'id', 113)])->get();
+        if ($tax == 'Tag'){
+            return Tag::whereRelation('proposals.fund','parent_id', $this->fund->id)
+            ->withCount(['proposals' => fn ($q) => $q->whereRelation('fund.parent', 'id', 113)])
+            ->get();
+        } else if ($tax == 'Category') {
+            return Category::whereRelation('proposals.fund', 'parent_id', $this->fund->id)
+            ->withCount(['proposals' => fn ($q) => $q->whereRelation('fund', 'parent_id', 113)])
+            ->get();
         }
+
+        return null;
     }
 }

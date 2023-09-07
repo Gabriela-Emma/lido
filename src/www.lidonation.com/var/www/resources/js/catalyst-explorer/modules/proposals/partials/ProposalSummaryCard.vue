@@ -184,7 +184,6 @@
 import {inject, computed, watch, ref} from "vue";
 import { router} from '@inertiajs/vue3';
 import route from 'ziggy-js';
-import Rating from 'primevue/rating';
 import { Link } from '@inertiajs/vue3';
 import {BookmarkIcon, ChevronUpIcon, ChevronDownIcon} from "@heroicons/vue/20/solid";
 import { storeToRefs } from "pinia";
@@ -194,7 +193,6 @@ import ProposalFundingStatus from "./ProposalFundingStatus.vue"
 import ProposalProjectStatus from "./ProposalProjectStatus.vue"
 import ProposalBudget from "./ProposalBudget.vue";
 import ProposalAuthors from "./ProposalAuthors.vue";
-
 import { useBookmarksStore } from "../../../stores/bookmarks-store";
 import {useProposalsRankingStore} from "../../../stores/proposals-ranking-store";
 import { useUserStore } from "../../../../global/Shared/store/user-store";

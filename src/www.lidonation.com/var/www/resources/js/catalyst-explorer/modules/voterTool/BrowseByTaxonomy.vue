@@ -1,5 +1,5 @@
 <template>
-    <section class="relative py-16 bg-teal-600 ">
+    <section class="relative py-16 bg-teal-600" v-if="loaded && taxonomies.length > 0">
         <div class="container">
             <h2 class="mb-4 text-2xl font-extrabold xl:text-4xl 2xl:text-6xl text-slate-50">
                 Browse by {{ taxonomy }}
@@ -35,10 +35,16 @@ const props = defineProps<{
     taxonomy: string,
 }>()
 
-let taxonomies = ref(null);
+let taxonomies = ref([]);
+let loaded = ref(false);
 
 const setTaxonomies = async () => {
-    taxonomies.value = (await axios.get(route('catalystExplorer.voterTool.taxomomy'), { params: props.taxonomy })).data
+    taxonomies.value = (
+        await axios.get(
+            route('catalystExplorer.voterTool.taxomomy'), { params: props.taxonomy }
+        )
+    ).data;
+    loaded.value = true;
 };
 setTaxonomies();
 
