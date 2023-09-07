@@ -1,4 +1,4 @@
-<div class="flex"  x-data={show:false}>
+<div class="flex" x-data={show:false}>
     <div class="flex-1 px-4 py-2 leading-relaxed border rounded-sm sm:px-6 sm:py-4">
         <h2 class="flex flex-row items-center gap-2">
             <span>
