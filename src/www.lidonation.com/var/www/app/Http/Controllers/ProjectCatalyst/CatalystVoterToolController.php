@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\ProjectCatalyst;
 
-use App\DataTransferObjects\TaxonomyData;
 use App\Models\Tag;
 use App\Models\Fund;
 use Inertia\Inertia;
@@ -376,12 +375,12 @@ class CatalystVoterToolController extends Controller
         $tax = $request->input('tax');
         $limit = $request->input(CatalystExplorerQueryParams::PER_PAGE, 24);
         if ($tax == 'Tag') {
-            return 
+            return
                 Tag::whereRelation('proposals.fund.parent', 'id', $this->fund->id)
                     ->withCount(['proposals' => fn ($q) => $q->whereRelation('fund.parent', 'id', $this->fund->id)])
                     ->fastPaginate($limit, ['*'], 'p')->setPath('/')->onEachSide(1)->toArray();
         } else {
-            return 
+            return
                 Category::whereRelation('proposals.fund.parent', 'id', $this->fund->id)
                     ->withCount(['proposals' => fn ($q) => $q->whereRelation('fund.parent', 'id', $this->fund->id)])
                     ->fastPaginate($limit, ['*'], 'p')->setPath('/')->onEachSide(1)->toArray();
