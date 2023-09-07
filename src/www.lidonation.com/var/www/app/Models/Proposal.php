@@ -573,7 +573,7 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
      */
     protected function makeAllSearchableUsing($query): Builder
     {
-        return $query->with(['users', 'tags', 'groups']);
+        return $query->with(['users', 'tags', 'groups','categories']);
     }
 
     public function users(): BelongsToMany

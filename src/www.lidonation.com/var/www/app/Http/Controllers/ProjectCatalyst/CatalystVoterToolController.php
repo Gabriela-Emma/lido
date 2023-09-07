@@ -45,6 +45,14 @@ class CatalystVoterToolController extends Controller
 
     public $challengeFilter;
 
+    public $tagsFilter;
+
+    public $categoriesFilter;
+
+    public $taxonomy;
+
+
+
     /**
      * Display a listing of the resource.
      *
@@ -68,6 +76,9 @@ class CatalystVoterToolController extends Controller
         $this->currentFilterGroup = $request->input('fgs', 1);
         $this->filterGroupLimit = $request->input('pfgs', 4);
         $this->challengeFilter = $request->input(CatalystExplorerQueryParams::CHALLENGES, null);
+        $this->tagsFilter = $request->input(CatalystExplorerQueryParams::TAGS,null);
+        $this->categoriesFilter = $request->input(CatalystExplorerQueryParams::CATEGORIES, null);
+        dd($this->tagsFilter);
         $this->query();
 
         return Inertia::render('VoterTool', [
@@ -76,6 +87,8 @@ class CatalystVoterToolController extends Controller
             'perPage' => $this->limit,
             'challenges' => $this->challenges,
             'challengeFilter' => intval($this->challengeFilter),
+            'tagsFilter' => $this->tagsFilter,
+            'categoriesFilter' => $this->categoriesFilter,
             'proposals' => $this->proposals,
             'fund' => $this->fund,
             'crumbs' => [
@@ -232,78 +245,88 @@ class CatalystVoterToolController extends Controller
             $_options['filters'][] = "challenge.id = {$this->challengeFilter}";
         }
 
+        if ($this->tagsFilter) {
+            $_options[] = "challenge.id = {$this->tagsFilter}";
+        }
+
+        if ($this->categoriesFilter) {
+            $_options[] = "challenge.id = {$this->categoriesFilter}";
+        }
+
         return $_options;
     }
 
     public function getGroupFilters()
     {
-        $filters =   collect([
+        $filters =   collect(
             [
-                "title" => "Quick Pitches",
-                "description" => "Proposals with Quick Pitches.",
-                "param" => "quickPitchProposals",
-                "count" => null
-            ],
-            [
-                "title" =>  "Completed Proposals",
-                "description" =>  "From teams with completed Proposals",
-                "param" =>  "completedProposals",
-                "count" => null
-            ],
-            [
-                "title" =>  "Opensource",
-                "description" =>  "Opensource projects",
-                "param" =>  "opensource",
-                "count" => null
-            ],
-            [
-                "title" => "Ideafest Proposals",
-                "description" => "Projects presented at Ideafest!",
-                "param" => "ideafestProposals",
-                "count" => null
-            ],
-            [
-                "title" =>  "Impact Proposals",
-                "description" =>  "Proposals with Impact",
-                "param" =>  "impactProposals",
-                "count" => null
-            ],
-            [
-                "title" =>  "First Timers",
-                "description" =>  "Proposals from first time members!",
-                "param" =>  "firstTimers",
-                "count" => null
-            ],
-            [
-                "title" =>  "One timers",
-                "description" =>  "Members with only 1 proposal",
-                "param" =>  "oneTimers",
-                "count" => null
-            ],
-            [
-                "title" =>  "Small Cap",
-                "description" =>  "Proposals with budgets below 75K",
-                "param" =>  "below75k",
-                "count" => null
-            ],
-            [
-                "title" =>  "Medium Cap",
-                "description" =>  "Proposals with budgets between 75K & 250K",
-                "param" =>  "mediumProposals",
-                "count" =>null
-            ],
-            [
-                "title" =>  "Large Cap",
-                "description" =>  "Proposals with budgets over 250K",
-                "param" =>  "over250K",
-                "count" => null
-            ],
-            [
-                "title" =>  "Women Proposals",
-                "description" =>  "Proposals By Women.",
-                "param" =>  "womanProposals",
-                "count" => null
-            ]]
+                [
+                    "title" => "Quick Pitches",
+                    "description" => "Proposals with Quick Pitches.",
+                    "param" => "quickPitchProposals",
+                    "count" => null
+                ],
+                [
+                    "title" =>  "Completed Proposals",
+                    "description" =>  "From teams with completed Proposals",
+                    "param" =>  "completedProposals",
+                    "count" => null
+                ],
+                [
+                    "title" =>  "Opensource",
+                    "description" =>  "Opensource projects",
+                    "param" =>  "opensource",
+                    "count" => null
+                ],
+                [
+                    "title" => "Ideafest Proposals",
+                    "description" => "Projects presented at Ideafest!",
+                    "param" => "ideafestProposals",
+                    "count" => null
+                ],
+                [
+                    "title" =>  "Impact Proposals",
+                    "description" =>  "Proposals with Impact",
+                    "param" =>  "impactProposals",
+                    "count" => null
+                ],
+                [
+                    "title" =>  "First Timers",
+                    "description" =>  "Proposals from first time members!",
+                    "param" =>  "firstTimers",
+                    "count" => null
+                ],
+                [
+                    "title" =>  "One timers",
+                    "description" =>  "Members with only 1 proposal",
+                    "param" =>  "oneTimers",
+                    "count" => null
+                ],
+                [
+                    "title" =>  "Small Cap",
+                    "description" =>  "Proposals with budgets below 75K",
+                    "param" =>  "below75k",
+                    "count" => null
+                ],
+                [
+                    "title" =>  "Medium Cap",
+                    "description" =>  "Proposals with budgets between 75K & 250K",
+                    "param" =>  "mediumProposals",
+                    "count" => null
+                ],
+                [
+                    "title" =>  "Large Cap",
+                    "description" =>  "Proposals with budgets over 250K",
+                    "param" =>  "over250K",
+                    "count" => null
+                ],
+                [
+                    "title" =>  "Women Proposals",
+                    "description" =>  "Proposals By Women.",
+                    "param" =>  "womanProposals",
+                    "count" => null
+                ]
+            ]
         );
         $offset = (($this->currentFilterGroup ?? 1) - 1) * $this->filterGroupLimit;
         $slicedFilters = $filters->slice($offset);
@@ -337,7 +360,7 @@ class CatalystVoterToolController extends Controller
         return $proposals['estimatedTotalHits'];
     }
 
-    public function setCounts(Request $request): Collection
+    public function setCounts(Request $request)
     {
         $params = $request->input();
         $counts = collect([]);
@@ -346,20 +369,23 @@ class CatalystVoterToolController extends Controller
             $count = $this->getProposalCount($param);
             $counts->put($param, $count);
         }
-
         return $counts;
     }
 
-    public function setTaxonomy(Request $request):Collection
+    public function setTaxonomy(Request $request)
     {
-        
-        $tax = $request->input();
-        dd(TaxonomyData::collection(Tag::whereRelation('proposals.fund.parent', 'id', $this->fund->id)->withCount(['proposals' => fn ($q) => $q->whereRelation('fund.parent', 'id', 113)])->get()));
-
-        if($tax == 'Tag'){
-            return Tag::whereRelation('proposals.fund.parent','id',$this->fund->id)->withCount(['proposals' => fn ($q) => $q->whereRelation('fund.parent', 'id', 113)])->get();
-        }else {
-            return Category::whereRelation('proposals.fund.parent', 'id', $this->fund->id)->withCount(['proposals' => fn ($q) => $q->whereRelation('fund.parent', 'id', 113)])->get();
+        $tax = $request->input('tax');
+        $limit = $request->input(CatalystExplorerQueryParams::PER_PAGE, 24);
+        if ($tax == 'Tag') {
+            return 
+                Tag::whereRelation('proposals.fund.parent', 'id', $this->fund->id)
+                    ->withCount(['proposals' => fn ($q) => $q->whereRelation('fund.parent', 'id', $this->fund->id)])
+                    ->fastPaginate($limit, ['*'], 'p')->setPath('/')->onEachSide(1)->toArray();
+        } else {
+            return 
+                Category::whereRelation('proposals.fund.parent', 'id', $this->fund->id)
+                    ->withCount(['proposals' => fn ($q) => $q->whereRelation('fund.parent', 'id', $this->fund->id)])
+                    ->fastPaginate($limit, ['*'], 'p')->setPath('/')->onEachSide(1)->toArray();
         }
     }
 }

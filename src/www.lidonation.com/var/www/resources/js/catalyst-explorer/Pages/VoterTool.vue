@@ -44,12 +44,13 @@
         </section>
 
         <section class='container my-16'>
-            <BrowseByTaxonomy :taxonomy="'Category'" />
+            <BrowseByTaxonomy :taxonomy="'Category'" @taxonomy="(payload) => taxonomyRef = payload"
+                    @taxon="(payload) => categoriesFilterRef = payload"/>
         </section>
 
         <section class="container mb-16">
             <h2 class="mt-6 text-4xl">
-               Browse By Challenge in {{ fund.label }}
+                Browse By Challenge in {{ fund.label }}
             </h2>
             <p>The community was asked to provide solutions to these challenges</p>
 
@@ -60,7 +61,8 @@
         </section>
 
         <section class='container mb-16'>
-            <BrowseByTaxonomy :taxonomy="'Tag'" />
+            <BrowseByTaxonomy :taxonomy="'Tag'" @taxonomy="(payload) => taxonomyRef = payload"
+                @taxon="(payload) => tagsFilterRef = payload" />
         </section>
     </main>
 </template>
@@ -92,6 +94,8 @@ const props = withDefaults(
         challengeFilter?: number,
         locale: string,
         challenges: Fund[],
+        tagsFilter:number,
+        categoriesFilter:number,
         fund: Fund,
         filters: {
             links: [],
@@ -122,6 +126,9 @@ let filterPerPageRef = ref<number>(props.filterPerPage);
 let challengeFilterRef = ref<number>(props.challengeFilter);
 let perPageRef = ref<number>(props.perPage);
 let filterRef = ref(props.currentFilter);
+let taxonomyRef = ref<string>(null);
+let tagsFilterRef = ref<number>(props.tagsFilter);
+let categoriesFilterRef = ref<number>(props.categoriesFilter);
 const proposalStore = useProposalsStore();
 proposalStore.viewType = 'card';
 
@@ -149,6 +156,22 @@ watch([currPageRef, perPageRef], () => {
 });
 
 watch([currFilterGroupRef, filterPerPageRef], () => {
+    query();
+});
+
+watch(tagsFilterRef, () => {
+    filterRef.value = null;
+    search.value = null;
+    challengeFilterRef.value = null;
+    categoriesFilterRef.value = null;
+    query();
+});
+
+watch(categoriesFilterRef, () => {
+    filterRef.value = null;
+    search.value = null;
+    challengeFilterRef.value = null;
+    tagsFilterRef.value = null 
     query();
 });
 
@@ -186,6 +209,14 @@ async function query() {
         data[VARIABLES.CHALLENGES] = challengeFilterRef.value;
     }
 
+    if (taxonomyRef.value == 'Tag') {
+        data[VARIABLES.TAGS] = tagsFilterRef.value;
+    }
+
+    if (taxonomyRef.value == 'Category') {
+        data[VARIABLES.CATEGORY] = categoriesFilterRef.value;
+    }
+
     router.get(
         "/catalyst-explorer/voter-tool",
         data,
@@ -206,6 +237,9 @@ function resetFilters() {
     perPageRef.value = props.perPage;
     currFilterGroupRef.value = null;
     challengeFilterRef.value = null;
+    categoriesFilterRef.value = null
+    tagsFilterRef.value = null;
+    taxonomyRef.value = null;
     query();
 }
 

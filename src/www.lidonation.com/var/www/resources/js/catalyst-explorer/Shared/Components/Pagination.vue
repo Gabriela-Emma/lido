@@ -18,7 +18,7 @@
             <div class="flex " :class="{ 'gap-8 -mt-9 ': !custom }" >
                 <div class="flex" v-if="prev">
                     <a href="#" v-if="prev?.url" @click.prevent="paginate(prev.page)"
-                       class="inline-flex items-center pt-10 pr-1 text-sm font-medium border-t-2 border-transparent text-slate-500 hover:border-yellow-500 hover:text-yellow-500">
+                       class="inline-flex items-center pt-10 pr-1 text-sm font-medium border-t-2 border-transparent hover:border-yellow-500 hover:text-yellow-500" :class="[textColorWhite ? 'text-white' : 'text-slate-500 ']" >
                         <svg class="w-5 h-5 mr-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
                              fill="currentColor" aria-hidden="true">
                             <path fill-rule="evenodd"
@@ -28,7 +28,7 @@
                         {{ $t('Previous') }}
                     </a>
                     <span v-else
-                              class="inline-flex items-center pt-10 pr-1 text-sm font-medium border-t-2 border-transparent text-slate-400">
+                              class="inline-flex items-center pt-10 pr-1 text-sm font-medium border-t-2 border-transparent " :class="[textColorWhite ? 'text-white' : 'text-slate-500 ']">
                         <svg class="w-5 h-5 mr-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
                              fill="currentColor" aria-hidden="true">
                             <path fill-rule="evenodd"
@@ -42,14 +42,14 @@
                 <div class="hidden md:flex" v-if="pages">
                     <template v-for="link in pages">
                         <span
-                            class="inline-flex items-center px-4 pt-10 text-sm font-medium text-teal-600 border-t-2 border-transparent border-teal-500"
+                            class="inline-flex items-center px-4 pt-10 text-sm font-medium border-t-2 border-transparent border-teal-500" :class="[textColorWhite ? 'text-yellow-500' : 'text-teal-600 ']"
                             v-if="!!link.active">{{ link.label }}</span>
                                 <span href="#" v-else-if="link?.label === '...'"
-                                      class="inline-flex items-center px-4 pt-10 text-sm font-medium border-t-2 border-transparent text-slate-500">
+                                      class="inline-flex items-center px-4 pt-10 text-sm font-medium border-t-2 border-transparent " :class="[textColorWhite ? 'text-white' : 'text-slate-500 ']">
                             {{ link.label }}
                         </span>
-                        <a href="#" v-else @click.prevent="paginate(link.page)"
-                           class="inline-flex items-center px-4 pt-10 text-sm font-medium border-t-2 border-transparent text-slate-500 hover:border-yellow-500 hover:text-yellow-500">
+                        <a href="#" v-else @click.prevent="paginate(link.page)" :class="[textColorWhite ? 'text-white' : 'text-slate-500 ']"
+                           class="inline-flex items-center px-4 pt-10 text-sm font-medium border-t-2 border-transparent hover:border-yellow-500 hover:text-yellow-500">
                             {{ link.label }}
                         </a>
                     </template>
@@ -57,7 +57,7 @@
 
                 <div class="flex" v-if="next">
                     <a href="#" v-if="next?.url" @click.prevent="paginate(next.page)"
-                       class="inline-flex items-center pt-10 pl-1 text-sm font-medium border-t-2 border-transparent text-slate-500 hover:border-yellow-500 hover:text-yellow-500">
+                       class="inline-flex items-center pt-10 pl-1 text-sm font-medium border-t-2 border-transparent hover:border-yellow-500 hover:text-yellow-500" :class="[textColorWhite ? 'text-white' : 'text-slate-500 ']">
                         {{ $t('Next') }}
                         <!-- Heroicon name: mini/arrow-long-right -->
                         <svg class="w-5 h-5 ml-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
@@ -68,7 +68,7 @@
                         </svg>
                     </a>
                     <span v-else
-                          class="inline-flex items-center pt-10 pl-1 text-sm font-medium border-t-2 border-transparent text-slate-400">
+                          class="inline-flex items-center pt-10 pl-1 text-sm font-medium border-t-2 border-transparent " :class="[textColorWhite ? 'text-white' : 'text-slate-400 ']">
                         {{ $t('Next') }}
                                 <!-- Heroicon name: mini/arrow-long-right -->
                         <svg class="w-5 h-5 ml-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
@@ -82,14 +82,14 @@
             </div>
         </div>
 
-        <div class="text-xs text-slate-400 lg:text-sm">
+        <div class="text-xs lg:text-sm" :class="[textColorWhite ? 'text-white':'text-slate-400 ']">
             {{ $t('Showing') }} {{ $filters.shortNumber(from, 2) }} {{ $t('to') }} {{ $filters.shortNumber(to, 2) }} {{ $t('of') }} {{ $filters.shortNumber(total, 2) }}
         </div>
     </nav>
 </template>
 
 <script lang="ts" setup>
-import {defineEmits, computed, ref, watch, ComputedRef} from "vue";
+import { computed, ref, watch, ComputedRef} from "vue";
 import Multiselect from '@vueform/multiselect';
 import PaginationLink from "../../models/pagination-link";
 
@@ -101,9 +101,11 @@ const props = withDefaults(
         total?: number,
         links?: PaginationLink[],
         custom?:boolean
+        textColorWhite?:boolean
     }>(), {
         perPage: 24,
-        custom:false
+        custom:false,
+        textColor:false
     });
 let perPageRef = ref(props.perPage);
 
