@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers\ProjectCatalyst;
 
+use App\DataTransferObjects\TaxonomyData;
+use App\Models\Tag;
+use App\Models\Fund;
 use Inertia\Inertia;
 use Inertia\Response;
+use App\Models\Category;
 use App\Models\Proposal;
 use Illuminate\Http\Request;
 use Illuminate\Support\Fluent;
@@ -11,7 +15,7 @@ use Meilisearch\Endpoints\Indexes;
 use App\Http\Controllers\Controller;
 use App\Repositories\FundRepository;
 use App\Enums\CatalystExplorerQueryParams;
-use App\Models\Fund;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use phpDocumentor\Reflection\PseudoTypes\ArrayShape;
 
@@ -333,7 +337,7 @@ class CatalystVoterToolController extends Controller
         return $proposals['estimatedTotalHits'];
     }
 
-    public function setCounts(Request $request)
+    public function setCounts(Request $request): Collection
     {
         $params = $request->input();
         $counts = collect([]);
@@ -344,5 +348,18 @@ class CatalystVoterToolController extends Controller
         }
 
         return $counts;
+    }
+
+    public function setTaxonomy(Request $request):Collection
+    {
+        
+        $tax = $request->input();
+        dd(TaxonomyData::collection(Tag::whereRelation('proposals.fund.parent', 'id', $this->fund->id)->withCount(['proposals' => fn ($q) => $q->whereRelation('fund.parent', 'id', 113)])->get()));
+
+        if($tax == 'Tag'){
+            return Tag::whereRelation('proposals.fund.parent','id',$this->fund->id)->withCount(['proposals' => fn ($q) => $q->whereRelation('fund.parent', 'id', 113)])->get();
+        }else {
+            return Category::whereRelation('proposals.fund.parent', 'id', $this->fund->id)->withCount(['proposals' => fn ($q) => $q->whereRelation('fund.parent', 'id', 113)])->get();
+        }
     }
 }

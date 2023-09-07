@@ -27,7 +27,7 @@
                     Viewing Proposals in {{ currentChallenge.label }}
                 </h2>
                 <button type="button" @click="resetFilters"
-                class="flex items-center justify-center gap-2 px-2 py-2 mb-6 ml-auto text-sm font-medium text-white bg-teal-600 border border-transparent rounded-sm shadow-sm md:gap-3 md:px-3 md:text-lg 2xl:text-xl hover:bg-labs-black hover:text-white focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
+                    class="flex items-center justify-center gap-2 px-2 py-2 mb-6 ml-auto text-sm font-medium text-white bg-teal-600 border border-transparent rounded-sm shadow-sm md:gap-3 md:px-3 md:text-lg 2xl:text-xl hover:bg-labs-black hover:text-white focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
                     Reset Filters
                 </button>
             </div>
@@ -43,9 +43,13 @@
             </div>
         </section>
 
+        <section class='container my-16'>
+            <BrowseByTaxonomy :taxonomy="'Category'" />
+        </section>
+
         <section class="container mb-16">
             <h2 class="mt-6 text-4xl">
-                Challenges in {{ fund.label }}
+               Browse By Challenge in {{ fund.label }}
             </h2>
             <p>The community was asked to provide solutions to these challenges</p>
 
@@ -53,6 +57,10 @@
                 <ChallengeCard v-for="challenge in challenges" :challenge="challenge" :fund="fund"
                     @challenge="($e) => challengeFilterRef = $e" />
             </div>
+        </section>
+
+        <section class='container mb-16'>
+            <BrowseByTaxonomy :taxonomy="'Tag'" />
         </section>
     </main>
 </template>
@@ -70,6 +78,7 @@ import ChallengeCard from "../modules/voterTool/ChallengeCard.vue"
 import VoterToolFilters from '../modules/voterTool/VoterToolFilters.vue'
 import FilterGroups from '../models/filter-groups';
 import { useProposalsStore } from '../stores/proposals-store';
+import BrowseByTaxonomy from '../modules/voterTool/BrowseByTaxonomy.vue';
 
 const props = withDefaults(
     defineProps<{
@@ -102,7 +111,7 @@ const props = withDefaults(
 });
 
 const currentChallenge = computed(() => {
-  return props?.challenges.find(challenge => challenge?.id === props?.challengeFilter);
+    return props?.challenges.find(challenge => challenge?.id === props?.challengeFilter);
 })
 
 let searchRender = ref(0);
@@ -188,16 +197,16 @@ async function query() {
         // @ts-ignore
         window?.fathom?.trackGoal(VARIABLES.TRACKER_ID_GROUPS, 0);
     }
-    
+
 }
 function resetFilters() {
-  search.value = '';
-  filterRef.value = null;
-  currPageRef.value = null;
-  perPageRef.value = props.perPage;
-  currFilterGroupRef.value = null;
-  challengeFilterRef.value = null;
-  query();
+    search.value = '';
+    filterRef.value = null;
+    currPageRef.value = null;
+    perPageRef.value = props.perPage;
+    currFilterGroupRef.value = null;
+    challengeFilterRef.value = null;
+    query();
 }
 
 onMounted(() => {
