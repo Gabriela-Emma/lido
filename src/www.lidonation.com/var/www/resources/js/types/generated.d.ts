@@ -176,6 +176,12 @@ status: string | null;
 asset_details?: App.DataTransferObjects.AssetDetailsData | null;
 memo: string | null;
 };
+export type TaxonomyData = {
+id: number;
+title: string;
+slug: string;
+current_fund_proposals: number | null;
+};
 export type TxData = {
 id: number | null;
 policy: string | null;

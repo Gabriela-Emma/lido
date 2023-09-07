@@ -40,7 +40,7 @@ const emit = defineEmits<{
 }>();
 
 const params = computed(() => {
-    return Object.values(filters.value).map((filter) => filter.param);
+    return Object.values(filters.value).map((filter: FilterGroups) => filter.param);
 });
 
 let getCounts = async () => {
@@ -49,7 +49,7 @@ let getCounts = async () => {
         const res = await axios.get(route('catalystExplorer.voterTool.counts'), { params: params.value });
         const responseData = res.data;
 
-        filters.value = Object.values(filters.value).map((filter) => {
+        filters.value = Object.values(filters.value).map((filter: FilterGroups) => {
             let updatedFilter = { ...filter };
             Object.keys(responseData).forEach((key) => {
                 if (key === filter.param) {
@@ -75,9 +75,6 @@ watch(
     },
 
 );
-
-
 getCounts();
-
 
 </script>
