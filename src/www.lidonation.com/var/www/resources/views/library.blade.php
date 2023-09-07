@@ -97,7 +97,7 @@
 
     <section class="relative bg-gray-50">
         <div class="container px-4 py-12 mx-auto text-center sm:px-6 lg:px-8 lg:py-20">
-            <h2 class="mb-4 text-2xl font-extrabold xl:text-4xl 2xl:text-6xl text-teal-600">
+            <h2 class="mb-4 text-2xl font-extrabold text-teal-600 xl:text-4xl 2xl:text-6xl">
             {{$snippets->newToCardano}}
             </h2>
             <p>
@@ -196,11 +196,11 @@
                         <div
                             class="grid grid-cols-1 gap-8 lg:sticky lg:top-8 sm:grid-cols-2 lg:grid-initial lg:flex lg:flex-col">
                             <x-public.widgets.newsletter/>
-                            <a href="//meetup.com/lido-nation-cardano-pool-meetup/" target="_blank">
+                            {{-- <a href="//meetup.com/lido-nation-cardano-pool-meetup/" target="_blank"> --}}
 
-                            <x-public.widgets.meetup :meetups="$meetups" :dayOfWeek="$dayOfWeek"
-                                :hourOfDay="$hourOfDay"/>
-                            </a>
+                            {{-- <x-public.widgets.meetup :meetups="$meetups" :dayOfWeek="$dayOfWeek" --}}
+                                {{-- :hourOfDay="$hourOfDay"/> --}}
+                            {{-- </a> --}}
                         </div>
                     </div>
                 </div>
@@ -234,13 +234,13 @@
                                                 <a href="{{$post->link}}">
                                                     @if($loop->first)
                                                         <img
-                                                            class="object-cover w-full filter bg-teal-600 hover:contrast-200"
+                                                            class="object-cover w-full bg-teal-600 filter hover:contrast-200"
                                                             srcset="{{$post->hero?->getSrcset('large')}}"
                                                             src="{{$post->hero?->getUrl('large')}}"
                                                             alt="{{$post->hero?->name}}"/>
                                                     @else
                                                         <img
-                                                            class="object-cover w-full filter bg-teal-600 hover:contrast-200"
+                                                            class="object-cover w-full bg-teal-600 filter hover:contrast-200"
                                                             srcset="{{$post->hero?->getSrcset('thumbnail')}}"
                                                             src="{{$post->hero?->getUrl('thumbnail')}}"
                                                             alt="{{$post->hero?->name}}"/>

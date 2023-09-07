@@ -4,10 +4,13 @@ namespace App\Http\Controllers\Api\CatalystExplorer;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ProposalResource;
+use App\Jobs\ProposalQuickPitchLength;
 use App\Models\Proposal;
+use Illuminate\Http\Request;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use OpenApi\Annotations as OA;
+use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
 
 class ProposalController extends Controller
@@ -56,5 +59,26 @@ class ProposalController extends Controller
         }
 
         return new ProposalResource($proposal);
+    }
+
+    public function storeQuickpitch(Request $request, Proposal $proposal)
+    {
+        $qp = $request->input('quickpitch');
+
+        // get video id from youtube url
+        if (Str::contains($qp, ['youtube', '?v='])) {
+
+            if (Str::contains($qp, '?v=')) {
+                $qp = Str::before(Str::after($qp, '?v='), '&');
+            } elseif(Str::contains($qp, 'youtu.be/')) {
+                $qp = Str::after($qp, 'youtu.be/');
+            }
+            $qp = 'https://youtu.be/' . $qp;
+        }
+        $proposal->quickpitch = $qp;
+        $proposal->save();
+        ProposalQuickPitchLength::dispatchSync($proposal);
+
+        return $proposal->quickpitch;
     }
 }

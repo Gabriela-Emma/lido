@@ -1,7 +1,7 @@
 <div class="leading-relaxed"
      x-data="{writeComment(){this.showCommentForm = true; this.showCategory = true;}, showCategory: @js($expanded), showCommentForm: false, acknowledgedRole: false}">
     <div
-        class="p-6 hover:cursor-pointer group flex flex-row flex-wrap items-center justify-around gap-4 sticky top-10 z-20 relative {{$background}}"
+        class="p-6 hover:cursor-pointer group flex flex-row flex-wrap items-center justify-around gap-4 sticky top-10 z-20 {{$background}}"
         @click.self="showCategory=!showCategory">
         <div class="mr-auto text-gray-600 group-hover:text-teal-600 min-w-2/5">
             <h2 class="md:text-2xl xl:text-3xl 2xl:text-4xl">
@@ -15,14 +15,20 @@
             </h2>
         </div>
         <div  @click="showCategory=!showCategory"
-            class="flex relative -top-2 flex-row gap-x-3 items-center pr-3 mt-auto md:text-md md:leading-8 md:gap-x-8">
+            class="relative flex flex-row items-center pr-3 mt-auto -top-2 gap-x-3 md:text-md md:leading-8 md:gap-x-8">
             <span class="hidden md:w-6 md:h-6"></span>
             <div class="m-0">
                 <x-public.stars :amount="$discussion->rating" :size="6"/>
             </div>
-            <div class="flex flex-row flex-nowrap gap-1 text-xs font-semibold sm:text-sm 2x:text-base">
+            <div class="flex flex-row gap-1 text-xs font-semibold flex-nowrap sm:text-sm 2x:text-base">
+                <?php $mataKey = match ($discussion->title) {
+                    'Impact Alignment' => 'aligment_score',
+                    'Feasibility' => 'feasibility_score',
+                    'Value for money' => 'auditability_score',
+                    default => null
+               } ?>
                 <span>
-                    {{$discussion->rating}}
+                    {{round($model?->meta_data?->{$mataKey} ?? $discussion->rating, 2)}}
                 </span>
                 <span>/</span>
                 <span>5</span>
@@ -32,7 +38,7 @@
             </div>
         </div>
 
-        <div class="flex absolute top-0 right-2 flex-row items-center ml-auto space-x-2 h-full sm:relative"
+        <div class="absolute top-0 flex flex-row items-center h-full ml-auto space-x-2 right-2 sm:relative"
              @click="showCategory=!showCategory">
             <span>
                 <span class="hidden text-xs text-gray-600 sm:inline-block" x-show="!showCategory">
@@ -62,8 +68,10 @@
     </div>
 
     <div class="p-6" x-show="showCategory" wire:key="{{$discussion->id}}">
-        <div>
-            <x-markdown>{{$discussion?->content}}</x-markdown>
+        <div class="text-lg">
+            <x-markdown>
+                {{$discussion?->content}}
+            </x-markdown>
         </div>
 
         @if($editable)
@@ -74,7 +82,7 @@
 
             <div
                 x-show="!showCommentForm && !acknowledgedRole"
-                class="flex flex-row gap-2 justify-start items-center p-2 mx-auto max-w-xl font-semibold text-white rounded-md border hover:cursor-pointer bg-teal-600 hover:bg-primary-600"
+                class="flex flex-row items-center justify-start max-w-xl gap-2 p-2 mx-auto font-semibold text-white bg-teal-600 border rounded-md hover:cursor-pointer hover:bg-primary-600"
                 @click="showCommentForm=!showCommentForm">
                 <div>
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
@@ -105,7 +113,7 @@
 
                 <div class="mx-auto text-center">
                     <div
-                        class="inline-flex flex-row gap-2 justify-start items-center p-2 mx-auto mt-6 max-w-xl font-semibold bg-white rounded-md border hover:cursor-pointer text-teal-400 hover:bg-primary-600"
+                        class="inline-flex flex-row items-center justify-start max-w-xl gap-2 p-2 mx-auto mt-6 font-semibold text-teal-400 bg-white border rounded-md hover:cursor-pointer hover:bg-primary-600"
                         @click="acknowledgedRole=true">
                         <div>
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
@@ -136,12 +144,12 @@
 
         @if($discussion->community_reviews?->count() > 0)
             <div class="mt-6">
-                <h3 class="mb-4 space-x-1 decorate dark">
+                {{-- <h3 class="mb-4 space-x-1 decorate dark">
                     <span class="capitalize">
                         {{$snippets->communityReviews}}
                     </span>
                     <span>({{$discussion->community_reviews->count()}})</span>
-                </h3>
+                </h3> --}}
 
                 <livewire:discussions.reviews-component :editable="false" :discussion="$discussion" :reviews="$discussion->community_reviews" />
 

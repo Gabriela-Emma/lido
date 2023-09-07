@@ -2,6 +2,7 @@
 
 namespace App\Http\View\Composers;
 
+use App\Models\Fund;
 use App\Models\Proposal;
 use App\Repositories\FundRepository;
 use Illuminate\View\View;
@@ -26,32 +27,39 @@ class CatalystChallengeComposer
             request()
                 ->route('fund')
         );
-        $proposals = $fund->proposals()->with(['discussions.ratings'])->orderBy('title->en', 'desc')->paginate(24);
+
+
+        if (!$fund instanceof Fund ) {
+            abort(404);
+        }
+
+        $proposals = $fund?->proposals()->with(['discussions.ratings'])->orderBy('title->en', 'desc')->fastPaginate(24);
 
         $title = $fund->label;
 
-        $totalProposalsCount = Proposal::where('type', 'challenge')
+        $totalProposalsCount = Proposal::where('type', 'proposal')
             ->where('fund_id', $fund->id)
             ->count();
 
-        $fundedProposalsCount = Proposal::where('type', 'challenge')
+        $fundedProposalsCount = Proposal::where('type', 'proposal')
             ->whereNotNull('funded_at')
             ->where('fund_id', $fund->id)
             ->count();
 
-        $completedProposalsCount = Proposal::where(['status' => 'challenge'])
+        $completedProposalsCount = Proposal::where(['status' => 'proposal'])
             ->where('type', 'proposal')
             ->where('fund_id', $fund->id)
             ->count();
 
-        $totalAmountRequested = Proposal::where('type', 'challenge')
+        $totalAmountRequested = Proposal::where('type', 'proposal')
             ->where('fund_id', $fund->id)
             ->sum('amount_requested');
 
-        $totalAmountAwarded = Proposal::where('type', 'challenge')
+        $totalAmountAwarded = Proposal::where('type', 'proposal')
             ->whereNotNull('funded_at')
             ->where('fund_id', $fund->id)
             ->sum('amount_requested');
+
 
         $view->with(compact(
             'proposals',

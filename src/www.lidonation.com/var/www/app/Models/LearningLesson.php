@@ -22,6 +22,7 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 use Mtownsend\ReadTime\ReadTime;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\LaravelData\DataCollection;
 
 class LearningLesson extends Model
@@ -69,9 +70,17 @@ class LearningLesson extends Model
             get: fn () => LearningAttempt::where([
                 'learning_lesson_id' => $this->id,
                 'status' => LearningAttemptStatuses::COMPLETED,
-                'user_id' => auth()?->user()?->getAuthIdentifier(),
+                'user_id' => auth()?->user()?->getAuthIdentifier()
+            ])->whereRelation('response', [
+                'context_id' => $this->id,
+                'context_type' => LearningLesson::class,
             ])->count() > 0
         );
+    }
+
+    public function answers(): HasMany
+    {
+        return $this->hasMany(AnswerResponse::class, 'context_id', );
     }
 
     public function nextLesson(): Attribute

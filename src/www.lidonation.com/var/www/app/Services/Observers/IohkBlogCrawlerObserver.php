@@ -15,9 +15,8 @@ class IohkBlogCrawlerObserver extends CrawlObserver
 {
     protected $postsLinks;
 
-    public function __construct(protected $langLocale)
+    public function __construct(protected $lang)
     {
-        $this->lang = $langLocale;
     }
 
     /**
@@ -74,7 +73,7 @@ class IohkBlogCrawlerObserver extends CrawlObserver
         try {
             Log::info($this->postsLinks);
             CrawlIohkPostsJob::dispatch($this->postsLinks, $this->lang);
-        } catch (exception $e) {
+        } catch (\Exception $e) {
             Log::error($e);
         }
     }

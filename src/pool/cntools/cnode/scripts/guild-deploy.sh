@@ -176,7 +176,8 @@ updateWithCustomConfig() {
       return
     fi
   fi
-  [[ -f ${file} ]] && cp -f ${file} "${file}_bkp$(date +%s)"
+  [[ ! -d ./archive ]] && mkdir archive
+  [[ -f ${file} ]] && cp -f ${file} ./archive/"${file}_bkp$(date +%s)"
   mv -f ${file}.tmp ${file}
   [[ "${file}" == *.sh ]] && chmod 755 ${file}
 }
@@ -208,9 +209,16 @@ os_dependencies() {
       #AmazonLinux2
       pkg_list="${pkg_list} libusb ncurses-compat-libs pkgconfig srm"
     elif [[ "${VERSION_ID}" =~ "8" ]] || [[ "${VERSION_ID}" =~ "9" ]]; then
-      #RHEL/CentOS/RockyLinux8
+      #RHEL/CentOS/RockyLinux 8/9
       pkg_opts="${pkg_opts} --allowerasing"
-      pkg_list="${pkg_list} --enablerepo=devel,crb libusbx ncurses-compat-libs pkgconf-pkg-config"
+      if [[ "${DISTRO}" =~ Rocky ]]; then
+        #RockyLinux 8/9
+        pkg_list="${pkg_list} --enablerepo=devel,crb libusbx ncurses-compat-libs pkgconf-pkg-config"
+      elif [[ "${DISTRO}" =~ "Red Hat" ]] || [[ "${VERSION_ID}" =~ "8" ]]; then
+        pkg_list="${pkg_list} --enablerepo=codeready-builder-for-rhel-8-x86_64-rpms libusbx ncurses-compat-libs pkgconf-pkg-config"
+      elif [[ "${DISTRO}" =~ "Red Hat" ]] || [[ "${VERSION_ID}" =~ "9" ]]; then
+        pkg_list="${pkg_list} --enablerepo=codeready-builder-for-rhel-9-x86_64-rpms libusbx ncurses-compat-libs pkgconf-pkg-config"
+      fi
     elif [[ "${DISTRO}" =~ Fedora ]]; then
       #Fedora
       pkg_opts="${pkg_opts} --allowerasing"
@@ -248,7 +256,7 @@ build_dependencies() {
   echo -e "\nInstalling Haskell build/compiler dependencies (if missing)..."
   export BOOTSTRAP_HASKELL_NO_UPGRADE=1
   export BOOTSTRAP_HASKELL_GHC_VERSION=8.10.7
-  export BOOTSTRAP_HASKELL_CABAL_VERSION=3.6.2.0
+  export BOOTSTRAP_HASKELL_CABAL_VERSION=3.10.1.0
   if ! command -v ghcup &>/dev/null; then
     echo -e "\nInstalling ghcup (The Haskell Toolchain installer) .."
     BOOTSTRAP_HASKELL_NONINTERACTIVE=1
@@ -281,9 +289,10 @@ build_dependencies() {
   pushd "${HOME}"/git >/dev/null || err_exit
   [[ ! -d "./secp256k1" ]] && git clone https://github.com/bitcoin-core/secp256k1 &>/dev/null
   pushd secp256k1 >/dev/null || err_exit
+  git fetch >/dev/null 2>&1
   git checkout ac83be33 &>/dev/null
   ./autogen.sh > autogen.log > /tmp/secp256k1.log 2>&1
-  ./configure --prefix=/usr --enable-module-schnorrsig --enable-experimental > configure.log >> /tmp/secp256k1.log 2>&1
+  ./configure --enable-module-schnorrsig --enable-experimental > configure.log >> /tmp/secp256k1.log 2>&1
   make > make.log 2>&1 || err_exit " Could not complete \"make\" for libsecp256k1 package, please try to run it manually to diagnose!"
   make check >>make.log 2>&1
   $sudo make install > install.log 2>&1
@@ -291,6 +300,7 @@ build_dependencies() {
     echo -e "\nexport LD_LIBRARY_PATH=/usr/local/lib:\$LD_LIBRARY_PATH" >> "${HOME}"/.bashrc
     export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
   fi
+  echo -e "\nlibsecp256k1 installed to /usr/local/lib/"
 }
 
 # Build fork of libsodium
@@ -303,7 +313,8 @@ build_libsodium() {
   pushd "${HOME}"/git >/dev/null || err_exit
   [[ ! -d "./libsodium" ]] && git clone https://github.com/input-output-hk/libsodium &>/dev/null
   pushd libsodium >/dev/null || err_exit
-  git checkout 66f017f1 &>/dev/null
+  git fetch >/dev/null 2>&1
+  git checkout dbb48cc &>/dev/null
   ./autogen.sh > autogen.log > /tmp/libsodium.log 2>&1
   ./configure > configure.log >> /tmp/libsodium.log 2>&1
   make > make.log 2>&1 || err_exit  " Could not complete \"make\" for libsodium package, please try to run it manually to diagnose!"
@@ -319,9 +330,9 @@ download_cnodebins() {
   pushd "${HOME}"/tmp >/dev/null || err_exit
   echo -e "\n  Downloading Cardano Node archive created from IO CI builds.."
   rm -f cardano-node cardano-address
-  curl -m 200 -sfL https://update-cardano-mainnet.iohk.io/cardano-node-releases/cardano-node-1.35.7-linux.tar.gz -o cnode.tar.gz || err_exit " Could not download cardano-node's latest release archive from IO CI builds at update-cardano-mainnet.iohk.io!"
+  curl -m 200 -sfL https://github.com/input-output-hk/cardano-node/releases/download/8.1.2/cardano-node-8.1.2-linux.tar.gz -o cnode.tar.gz || err_exit " Could not download cardano-node's latest release archive from IO CI builds at update-cardano-mainnet.iohk.io!"
   tar zxf cnode.tar.gz ./cardano-node ./cardano-cli ./cardano-submit-api ./bech32 &>/dev/null
-  rm -f cnodebin.tar.gz
+  rm -f cnode.tar.gz
   [[ -f cardano-node ]] || err_exit " cardano-node archive downloaded but binary (cardano-node) not found after extracting package!"
   echo -e "\n  Downloading Github release package for Cardano Wallet"
   curl -m 200 -sfL https://github.com/input-output-hk/cardano-addresses/releases/download/3.12.0/cardano-addresses-3.12.0-linux64.tar.gz -o caddress.tar.gz || err_exit " Could not download cardano-wallet's latest release archive from IO github!"
@@ -330,7 +341,7 @@ download_cnodebins() {
   [[ -f cardano-address ]] || err_exit " cardano-address archive downloaded but binary (bin/cardano-address) not found after extracting package!"
   if [[ "${SKIP_DBSYNC_DOWNLOAD}" == "N" ]]; then
     echo -e "\n  Downloading Cardano DB Sync archive created from IO CI Builds.."
-    curl -m 200 -sfL https://update-cardano-mainnet.iohk.io/cardano-db-sync/cardano-db-sync-13.1.0.0-linux.tar.gz -o cnodedbsync.tar.gz || err_exit "  Could not download cardano-db-sync's latest release archive from IO CI builds at hydra.iohk.io!"
+    curl -m 200 -sfL https://update-cardano-mainnet.iohk.io/cardano-db-sync/cardano-db-sync-13.1.0.2-linux.tar.gz -o cnodedbsync.tar.gz || err_exit "  Could not download cardano-db-sync's latest release archive from IO CI builds at hydra.iohk.io!"
     tar zxf cnodedbsync.tar.gz ./cardano-db-sync &>/dev/null
     [[ -f cardano-db-sync ]] || err_exit " cardano-db-sync archive downloaded but binary (cardano-db-sync) not found after extracting package!"
     rm -f cnodedbsync.tar.gz
@@ -489,7 +500,7 @@ setup_folder() {
     echo -e "\nexport ${CNODE_VNAME}_HOME=${CNODE_HOME}" >> "${HOME}"/.bashrc
   fi
   
-  $sudo mkdir -p "${CNODE_HOME}"/files "${CNODE_HOME}"/db "${CNODE_HOME}"/guild-db "${CNODE_HOME}"/logs "${CNODE_HOME}"/scripts "${CNODE_HOME}"/sockets "${CNODE_HOME}"/priv
+  $sudo mkdir -p "${CNODE_HOME}"/files "${CNODE_HOME}"/db "${CNODE_HOME}"/guild-db "${CNODE_HOME}"/logs "${CNODE_HOME}"/scripts "${CNODE_HOME}"/scripts/archive "${CNODE_HOME}"/sockets "${CNODE_HOME}"/priv
   $sudo chown -R "$U_ID":"$G_ID" "${CNODE_HOME}" 2>/dev/null
 }
 
@@ -510,6 +521,7 @@ populate_cnode() {
     curl -sL -f -m ${CURL_TIMEOUT} -o byron-genesis.json.tmp ${URL_RAW}/files/byron-genesis-guild.json || err_exit "${err_msg} byron-genesis-guild.json"
     curl -sL -f -m ${CURL_TIMEOUT} -o shelley-genesis.json.tmp ${URL_RAW}/files/genesis-guild.json || err_exit "${err_msg} genesis-guild.json"
     curl -sL -f -m ${CURL_TIMEOUT} -o alonzo-genesis.json.tmp ${URL_RAW}/files/alonzo-genesis-guild.json || err_exit "${err_msg} alonzo-genesis-guild.json"
+    curl -sL -f -m ${CURL_TIMEOUT} -o conway-genesis.json.tmp ${URL_RAW}/files/conway-genesis-guild.json || err_exit "${err_msg} conway-genesis-guild.json"
     curl -sL -f -m ${CURL_TIMEOUT} -o topology.json.tmp ${URL_RAW}/files/topology-guild.json || err_exit "${err_msg} topology-guild.json"
     curl -sL -f -m ${CURL_TIMEOUT} -o config.json.tmp ${URL_RAW}/files/config-guild.json || err_exit "${err_msg} config-guild.json"
   elif [[ ${NETWORK} =~ ^(mainnet|preprod|preview)$ ]]; then
@@ -517,6 +529,7 @@ populate_cnode() {
     curl -sL -f -m ${CURL_TIMEOUT} -o byron-genesis.json.tmp "${NWCONFURL}/${NETWORK}/byron-genesis.json" || err_exit "${err_msg} byron-genesis.json"
     curl -sL -f -m ${CURL_TIMEOUT} -o shelley-genesis.json.tmp "${NWCONFURL}/${NETWORK}/shelley-genesis.json" || err_exit "${err_msg} shelley-genesis.json"
     curl -sL -f -m ${CURL_TIMEOUT} -o alonzo-genesis.json.tmp "${NWCONFURL}/${NETWORK}/alonzo-genesis.json" || err_exit "${err_msg} alonzo-genesis.json"
+    curl -sL -f -m ${CURL_TIMEOUT} -o conway-genesis.json.tmp "${NWCONFURL}/${NETWORK}/conway-genesis.json" || err_exit "${err_msg} conway-genesis.json"
     curl -sL -f -m ${CURL_TIMEOUT} -o topology.json.tmp "${NWCONFURL}/${NETWORK}/topology.json" || err_exit "${err_msg} topology.json"
     curl -sL -f -m ${CURL_TIMEOUT} -o config.json.tmp "${URL_RAW}/files/config-${NETWORK}.json" || err_exit "${err_msg} config-${NETWORK}.json"
   else
@@ -529,11 +542,21 @@ populate_cnode() {
     [[ -f dbsync.json ]] && cp -f dbsync.json "dbsync.json_bkp$(date +%s)"
   fi
   if [[ ${FORCE_OVERWRITE} = 'Y' || ! -f byron-genesis.json || ! -f shelley-genesis.json || ! -f alonzo-genesis.json || ! -f topology.json || ! -f config.json || ! -f dbsync.json ]]; then
-    mv -f byron-genesis.json.tmp byron-genesis.json && mv -f shelley-genesis.json.tmp shelley-genesis.json && mv -f alonzo-genesis.json.tmp alonzo-genesis.json
-    mv -f topology.json.tmp topology.json && mv -f config.json.tmp config.json && mv -f dbsync.json.tmp dbsync.json
+    mv -f byron-genesis.json.tmp byron-genesis.json
+    mv -f shelley-genesis.json.tmp shelley-genesis.json
+    mv -f alonzo-genesis.json.tmp alonzo-genesis.json
+    mv -f conway-genesis.json.tmp conway-genesis.json
+    mv -f topology.json.tmp topology.json
+    mv -f config.json.tmp config.json
+    mv -f dbsync.json.tmp dbsync.json
   else
-    rm -f byron-genesis.json.tmp && rm -f shelley-genesis.json.tmp && rm -f alonzo-genesis.json.tmp
-    rm -f topology.json.tmp && rm -f config.json.tmp && rm -f dbsync.json.tmp
+    rm -f byron-genesis.json.tmp
+    rm -f shelley-genesis.json.tmp
+    rm -f alonzo-genesis.json.tmp
+    rm -f conway-genesis.json.tmp
+    rm -f topology.json.tmp
+    rm -f config.json.tmp
+    rm -f dbsync.json.tmp
   fi
   
   pushd "${CNODE_HOME}"/scripts >/dev/null || err_exit
@@ -574,6 +597,7 @@ parse_args() {
     [[ "${S_ARGS}" =~ "o" ]] && INSTALL_OGMIOS="Y"
     [[ "${S_ARGS}" =~ "w" ]] && INSTALL_CWHCLI="Y"
     [[ "${S_ARGS}" =~ "x" ]] && INSTALL_CARDANO_SIGNER="Y"
+  else
     echo -e "\nNothing to do.."
   fi
   common_init

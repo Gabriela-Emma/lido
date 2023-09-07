@@ -39,6 +39,7 @@ class Reward extends Model
 
     protected $casts = [
         'amount' => 'integer',
+        'created_at' => 'datetime:Y-m-d H:i:s',
         // 'asset_details' => 'collection:' . AssetDetailsData::class,
         // 'asset_details.*.metadata' => AssetMetaData::class,
     ];

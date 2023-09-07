@@ -2,18 +2,21 @@
 
 namespace App\Http\Controllers\Earn;
 
-use App\Enums\LearningAttemptStatuses;
-use App\Http\Controllers\Controller;
+use App\Jobs\IssueNftsJob;
+use App\Models\Nft;
+use App\Models\User;
+use App\Models\Reward;
+use Illuminate\Http\Request;
+use App\Models\LearningTopic;
 use App\Models\AnswerResponse;
-use App\Models\LearningAttempt;
 use App\Models\LearningLesson;
 use App\Models\QuestionAnswer;
-use App\Models\Reward;
-use App\Models\User;
-use App\Repositories\AdaRepository;
-use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use App\Models\LearningAttempt;
+use App\Repositories\AdaRepository;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Enums\LearningAttemptStatuses;
 
 class LearningAnswerResponseController extends Controller
 {
@@ -30,18 +33,21 @@ class LearningAnswerResponseController extends Controller
 
     public function storeAnswer(Request $request)
     {
-         // get user previous response
-        // if user has previous response from today, return
-        $nextLessonAt =new Carbon( $request->user()->next_lesson_at);
-        $canAnswer = now()->tz('Africa/Nairobi')->diff(($nextLessonAt)->tz('Africa/Nairobi')->startOfDay(),false)->invert;
+        $ipAddress = $request->ip();
+        $user = Auth::user();
 
-        if (!$canAnswer) {
+        // get user previous response
+        // if user has previous response from today, return
+        $nextLessonAt = new Carbon($request->user()->next_lesson_at);
+        $canAnswer = now()->tz('Africa/Nairobi')->diff(($nextLessonAt)->tz('Africa/Nairobi')->startOfDay(), false)->invert;
+
+        if (! $canAnswer) {
             return response()->json(['error' => 'Answer submission is only allowed after the next lesson.'], 403);
 
         }
 
         $lastResponse = AnswerResponse::where('quiz_id', $request->input('quiz_id'))
-            ->where('user_id', auth()->user()->getAuthIdentifier())
+            ->where('user_id', $user->id)
             ->whereDate('created_at', '=', Carbon::now()->tz('Africa/Nairobi')->startOfDay())
             ->orderBy('created_at', 'desc')
             ->first();
@@ -50,31 +56,46 @@ class LearningAnswerResponseController extends Controller
             return null;
         }
 
+        $learningLesson = LearningLesson::byHash($request->input('learningLessonHash'));
+        $learningTopic = $learningLesson->topic;
+
         // save answer response
         $ans = new AnswerResponse;
-        $ans->user_id = Auth::id();
+        $ans->user_id = $user->id;
         $ans->question_id = $request->input('question_id');
         $ans->quiz_id = $request->input('quiz_id');
         $ans->question_answer_id = $request->input('question_answer_id');
         $ans->stake_address = $request->input('wallet_stake_address');
+        $ans->context_id = $learningLesson->id;
+        $ans->context_type = LearningLesson::class;
+
         $ans->save();
 
-        $learningLesson = LearningLesson::byHash($request->input('learningLessonHash'));
+        $ans->saveMeta('ip_address', $ipAddress, $ans, true);
         $this->recordLearningAttempt($ans, $learningLesson);
+
+        // issue nft if topic complete
+        $topicCompleted = $user->completedTopics->contains($learningTopic);
+        $topicNft = $user->nfts()->where([
+            'model_id' => $learningTopic->id,
+            'model_type' => LearningTopic::class
+        ])->first();
+
+        if ($topicCompleted && !$topicNft instanceof Nft) {
+            IssueNftsJob::dispatch($learningTopic, $learningLesson, Auth::user());
+        }
+
+        //issue normal reward
         $this->issueReward($request, $ans->question_answer_id, $learningLesson);
 
+        if ($topicCompleted && !$topicNft instanceof Nft){
+            return redirect()->route('earn.learn.nft.awarded');
+        }
         return back()->withInput();
     }
 
     protected function issueReward($request, $questionAnswerId, LearningLesson $learningLesson): void
     {
-        //fetch quote
-        $rewardAmount = -1;
-        $quote = $this->adaRepository->quote()?->price ?? null;
-        if ($quote) {
-            $rewardAmount = 1 / $quote;
-        }
-
         //find user and update wallet details in case of changes from the browser.
         $user = User::find(Auth::id());
         $user->wallet_address = $request->input('wallet_address') ?? $user->wallet_address;
@@ -93,18 +114,42 @@ class LearningAnswerResponseController extends Controller
 
         // if no reward and answer is correct issue reward.
         if ($rewardsCount < 1 && $answerCorrect == 'true') {
+            // get first rule
             $reward = new Reward;
             $reward->user_id = Auth::id();
-            $reward->asset = 'lovelace';
             $reward->model_id = $learningLesson->id;
             $reward->model_type = LearningLesson::class;
-            $reward->asset_type = 'ada';
-            $reward->amount = $rewardAmount > 0 ? number_format($rewardAmount, 6) * 1000000 : 1000000;
+
+             // get related giveaway
+            $giveaway = $learningLesson->topic->giveaway;
+            $rule = $giveaway->rules->first();
+            if ( ($rule?->subject ?? null) !== 'usd.amount' ) {
+                $reward->asset = explode('.',  $rule->subject)[0];
+                $reward->asset_type = 'ft';
+                $reward->amount = $rule->predicate;
+            } else {
+                $reward->asset = 'lovelace';
+                $reward->asset_type = 'ada';
+                $reward->amount = $this->usdInAda();
+            }
             $reward->status = 'issued';
             $reward->stake_address = $user->wallet_stake_address;
             $reward->setTranslation('memo', 'en', $learningLesson->title);
             $reward->save();
         }
+
+
+    }
+
+    protected function usdInAda()
+    {
+         //fetch quote
+         $rewardAmount = -1;
+         $quote = $this->adaRepository->quote()?->price ?? null;
+         if ($quote) {
+             $rewardAmount = 1 / $quote;
+         }
+         return $rewardAmount > 0 ? number_format($rewardAmount, 6) * 1000000 : 1000000;
     }
 
     protected function recordLearningAttempt(AnswerResponse $answerResponse, LearningLesson $learningLesson): void

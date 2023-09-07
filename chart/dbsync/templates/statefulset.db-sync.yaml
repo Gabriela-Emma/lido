@@ -63,14 +63,14 @@ spec:
           ]
           resources:
             requests:
-              cpu: 900m
+              cpu: 2
               memory: 8192Mi
             limits:
               cpu: 8000m
               memory: 65536Mi
           env:
             - name: POSTGRES_HOST
-              value: "lidolovelace-dbsync-db-postgresql"
+              value: {{ .Values.services.dbsync.dbHost }}
             - name: POSTGRES_PORT
               value: "5432"
             - name: EXTENDED
@@ -120,11 +120,22 @@ spec:
               subPath: cexplorer
               readOnly: false
             - name: "{{ $.Chart.Name }}-cardano-dbsync-pv"
+              mountPath: /tmp
+              subPath: tmp
+              readOnly: false
+            - name: "{{ $.Chart.Name }}-cardano-dbsync-pv"
               mountPath: /tmp/netconfig
               subPath: config
               readOnly: false
         - name: ipc
           image: alpine/socat:1.7.4.4
+          resources:
+            requests:
+              cpu: 500m
+              memory: 1024Mi
+            limits:
+              cpu: 2000m
+              memory: 8192Mi
           env:
           - name: CARDANO_NODE_SOCKET_TCP_HOST
             value: "lidolovelace-cardano-relay-1-service"
@@ -141,6 +152,20 @@ spec:
           - mountPath: /ipc
             name: node-ipc
             readOnly: false
+        - name: sidecar
+          image: alpine:3.17.2
+          args:
+            - sleep
+            - "2592000"
+          volumeMounts:
+            - name: "{{ $.Chart.Name }}-cardano-dbsync-pv"
+              mountPath: /var/lib/tmp
+              subPath: tmp
+              readOnly: false
+            - name: "{{ $.Chart.Name }}-cardano-dbsync-pv"
+              mountPath: /var/lib/cexplorer
+              subPath: cexplorer
+              readOnly: false
       imagePullSecrets:
         - name: {{ .Values.image.pullSecret }}
   persistentVolumeClaimRetentionPolicy:

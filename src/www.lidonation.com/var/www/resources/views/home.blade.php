@@ -8,6 +8,108 @@
         </div>
     </section>
 
+    @if($quickPitches && $quickPitches->count() > 0)
+    <section>
+        <div class="relative py-8 overflow-hidden bg-yellow-500">
+            <div class="pt-16 pb-80 sm:pb-40 sm:pt-24 lg:pb-48 lg:pt-40">
+                <div class="container relative px-4 sm:static sm:px-6 lg:px-8">
+                    <div class="bg-yellow-500 sm:max-w-md">
+                        <h1 class="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
+                            Project Catalyst Fund10 is Live!
+                        </h1>
+                        <p class="mt-4 text-xl text-gray-700">
+                            Voting for Fund 10 kicks off on <span class="font-bold">August 31st</span>. There are lots of great proposals to checkout! Here are some quickpitches to get you started.
+                        </p>
+                    </div>
+                    <div>
+                        <div class="mt-10">
+                            <!-- Decorative image grid -->
+                            <div aria-hidden="true" class="z-0 lg:absolute lg:inset-y-0 lg:mx-auto lg:w-full lg:max-w-7xl">
+                                <div class="absolute transform sm:left-1/2 sm:top-0 sm:translate-x-8 lg:left-1/2 lg:top-1/2 lg:-translate-y-1/2 lg:translate-x-8">
+                                    <div class="flex items-center space-x-6 lg:space-x-8">
+                                    <div class="grid flex-shrink-0 grid-cols-1 gap-y-6 lg:gap-y-8">
+                                        @foreach($quickPitches->take(2) as $quickpitch)
+                                        <div class="w-64 h-48 p-1 overflow-hidden rounded-sm bg-slate-900" x-data="quickpitch">
+                                            <div
+                                                class="w-full rounded-md quick-pitch-video"
+                                                id="quick-pitch-{{$quickpitch->id}}"
+                                                x-ref="quickPitch"
+                                                data-plyr-provider="youtube"
+                                                data-plyr-embed-id="{{$quickpitch->quick_pitch_id}}"></div>
+
+                                                <a href="{{$quickpitch->link}}" class="block p-2 text-base text-yellow-600 hover:text-yellow-800">
+                                                    <div class="text-xs text-slate-200">View Proposal</div>
+                                                    {{$quickpitch->title}}
+                                                </a>
+                                        </div>
+                                        @endforeach
+                                    </div>
+                                    <div class="grid flex-shrink-0 grid-cols-1 gap-y-6 lg:gap-y-8">
+                                        @foreach($quickPitches->skip(2)->take(3) as $quickpitch)
+                                            @if($loop->iteration == 2)
+                                                <div class="p-1 mx-auto overflow-hidden rounded-sm h-52 w-72 bg-slate-900" x-data="quickpitch">
+                                                    <div
+                                                        class="w-full quick-pitch-video"
+                                                        id="quick-pitch-{{$quickpitch->id}}"
+                                                        x-ref="quickPitch"
+                                                        data-plyr-provider="youtube"
+                                                        data-plyr-embed-id="{{$quickpitch->quick_pitch_id}}"></div>
+
+                                                        <a href="{{$quickpitch->link}}" class="block p-2 text-base text-yellow-600 hover:text-yellow-800">
+                                                            <div class="text-xs text-slate-200">View Proposal</div>
+                                                            {{$quickpitch->title}}
+                                                        </a>
+                                                </div>
+                                            @else
+                                                <div class="w-64 h-48 p-1 mx-auto overflow-hidden rounded-sm bg-slate-900" x-data="quickpitch">
+                                                    <div
+                                                        class="w-full quick-pitch-video"
+                                                        id="quick-pitch-{{$quickpitch->id}}"
+                                                        x-ref="quickPitch"
+                                                        data-plyr-provider="youtube"
+                                                        data-plyr-embed-id="{{$quickpitch->quick_pitch_id}}"></div>
+
+                                                        <a href="{{$quickpitch->link}}" class="block p-2 text-base text-yellow-600 hover:text-yellow-800">
+                                                            <div class="text-xs text-slate-200">View Proposal</div>
+                                                            {{$quickpitch->title}}
+                                                        </a>
+                                                </div>
+                                            @endif
+                                        @endforeach
+                                    </div>
+                                    <div class="grid flex-shrink-0 grid-cols-1 gap-y-6 lg:gap-y-8">
+                                        @foreach($quickPitches->skip(5)->take(2) as $quickpitch)
+                                        <div class="w-64 h-48 p-1 overflow-hidden rounded-sm bg-slate-900" x-data="quickpitch">
+                                            <div
+                                                class="w-full quick-pitch-video"
+                                                id="quick-pitch-{{$quickpitch->id}}"
+                                                x-ref="quickPitch"
+                                                data-plyr-provider="youtube"
+                                                data-plyr-embed-id="{{$quickpitch->quick_pitch_id}}"></div>
+
+                                                <a href="{{$quickpitch->link}}" class="block p-2 text-base text-yellow-600 hover:text-yellow-800">
+                                                    <div class="text-xs text-slate-200">View Proposal</div>
+                                                    {{$quickpitch->title}}
+                                                </a>
+                                        </div>
+                                        @endforeach
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <a href="https://www.lidonation.com/en/catalyst-explorer/proposals?l=24&qp=&fs[]=113&t=p&st=ranking_total%3Adesc"
+                            class="relative z-20 inline-block px-8 py-3 font-medium text-center text-yellow-500 bg-black border border-transparent rounded-sm hover:text-white">
+                                View more quickpitches
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    @endif
+
     @if($newToLibrary)
         <section class="relative py-16 bg-primary-10" id="new-to-library">
             <div class="container">
@@ -309,7 +411,7 @@
                                 <img
                                     class="object-cover object-top w-full bg-teal-600 rounded-sm responsive h-28 filter hover:contrast-200"
                                     src="{{$pages?->pool?->hero?->getUrl('thumbnail')}}"
-                                    alt="{{$pages?->pool?->hero->name}}"/>
+                                    alt="{{$pages?->pool?->hero?->name}}"/>
                             </a>
                         </div>
                         <h3 class="mb-4 text-2xl">
@@ -337,7 +439,7 @@
                                 <img
                                     class="object-cover object-top w-full bg-teal-600 rounded-sm responsive h-28 filter hover:contrast-200"
                                     src="//www.lidonation.com/storage/317/lido-finantial-details-kenny-eliason-unsplash.jpg"
-                                    alt="{{$pages?->pool?->hero->name}}"/>
+                                    alt="{{$pages?->pool?->hero?->name}}"/>
                             </a>
 
                         </div>
@@ -354,7 +456,7 @@
                                 <img
                                     class="object-cover object-top w-full bg-teal-600 rounded-sm responsive h-28 filter hover:contrast-200"
                                     src="//www.lidonation.com/storage/318/lidonation-idea-junior-ferreira-unsplash.jpg"
-                                    alt="{{$pages?->pool?->hero->name}}"/>
+                                    alt="{{$pages?->pool?->hero?->name}}"/>
                             </a>
                         </div>
                         <h3 class="mb-4 text-2xl">
@@ -542,7 +644,7 @@
                         <div
                             class="rounded-sm bg-gradient-to-br from-teal-800 via-teal-600 to-accent-900 min-w-[28rem] text-white relative">
                             <div class="absolute right-0 z-30 flex flex-row justify-end p-4 px-6 bg-transparent">
-                                <a href="{{localizeRoute('projectCatalyst.projects')}}" type="button"
+                                <a href="{{localizeRoute('catalystExplorer.proposals')}}" type="button"
                                    class="inline-flex items-center px-2 py-1 text-xs font-semibold text-white bg-teal-600 border border-white rounded-sm hover:text-white hover:bg-accent-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent-500">
                                     Explore Proposals
                                 </a>
@@ -734,8 +836,8 @@
 
                             <x-public.widgets.newsletter bg="bg-yellow-500" classes="text-yellow-900" layout="col"/>
 
-                            <x-public.widgets.meetup :meetups="$meetups" :dayOfWeek="$dayOfWeek"
-                                                     :hourOfDay="$hourOfDay"/>
+                            {{-- <x-public.widgets.meetup :meetups="$meetups" :dayOfWeek="$dayOfWeek"
+                                                     :hourOfDay="$hourOfDay"/> --}}
                         </div>
                     </div>
                 </div>

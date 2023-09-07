@@ -6,7 +6,7 @@
         </div>
 
         <div class="flex-1 px-4 leading-relaxed sm:px-6">
-            <div class="flex flex-row gap-1 items-center">
+            <div class="flex flex-row items-center gap-1">
                 <strong>{{$review->name}}</strong>
                 @if(!!$review?->rating?->rating)
                     <x-public.stars :amount="$review?->rating?->rating" :size="3"/>
@@ -21,6 +21,20 @@
 
             <x-markdown>{{$review->content}}</x-markdown>
 
+            @if($review?->comments?->isNotEmpty())
+            <div class="p-4 mt-5 ml-8 border border-teal-400 rounded-sm bg-teal-light-100">
+                <h3 class="pb-1 border-b border-teal-400">Team Response</h3>
+
+                <div class="divide-y divide-teal-400 rounded-sm">
+                    @foreach($review?->comments as $comment)
+                        <div class="py-2">
+                            {!! $comment->text !!}
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+            @endif
+
             @if($editable)
             <span @click="replying=!replying">
                 <span class="text-sm font-semibold text-teal-600 hover:text-yellow-500 hover:cursor-pointer"
@@ -30,14 +44,14 @@
 
             @if($review->children?->isNotEmpty())
                 <div class="flex items-center mt-4">
-                    <div class="py-16 pt-8 max-w-5xl">
+                    <div class="max-w-5xl py-16 pt-8">
                         <livewire:discussions.reviews-component :discussion="$discussion" :reviews="$review->children"/>
                     </div>
                 </div>
             @endif
 
             @if($review->assessment_review_assessor)
-            <div class="bg-primary-30 py-6 px-4 sm:px-6 sm:rounded-sm gap-10 lg:grid lg:grid-cols-12 mt-3">
+            <div class="gap-10 px-4 py-6 mt-3 bg-primary-30 sm:px-6 sm:rounded-sm lg:grid lg:grid-cols-12">
                 <div class="col-span-12 mb-4 md:mb-1">
                     <h2>Assessment Quality Assurance </h2>
                     <p class="text-sm">Assessment Quality Assurance is an offered role to veteran in the Cardano Project Catalyst Community.
@@ -149,19 +163,19 @@
                 </div>
 
                 <dl class="mt-8 divide-y divide-phuffy2-200 lg:mt-0 lg:col-span-5">
-                    <div class="pb-2 flex items-center text-xs md:text-sm justify-between">
+                    <div class="flex items-center justify-between pb-2 text-xs md:text-sm">
                         <dt class="text-gray-600">Assessor ID</dt>
                         <dd class="font-medium text-gray-900">
                             {{ $review?->assessment_review_assessor?->assessor?->assessor_id }}
                         </dd>
                     </div>
-                    <div class="py-2 flex items-center text-xs md:text-sm justify-between">
+                    <div class="flex items-center justify-between py-2 text-xs md:text-sm">
                         <dt class="text-gray-600">Total QA Ratings</dt>
                         <dd class="font-medium text-gray-900">
                             {{ $review?->total_qas ?? '-' }}
                         </dd>
                     </div>
-                    <div class="py-2 flex text-sm md:text-base items-center justify-between">
+                    <div class="flex items-center justify-between py-2 text-sm md:text-base">
                         <dt class="text-gray-600">QA Rating Outcome</dt>
                         <dd class="font-medium text-gray-900">
                             {{ $review?->meta_data->vpa_rating }}

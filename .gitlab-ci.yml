@@ -26,17 +26,19 @@
     export secret_name=''
   fi
 
-  # db_host="127.0.0.1"
-  # if [ -n "$AUTO_DEVOPS_DB_HOST" ]; then
-  #     db_host=$AUTO_DEVOPS_DB_HOST
-  # fi
+  if [ "${CI_ENVIRONMENT_NAME}" != "mainnet" ]; then
+    export DBSYNC_DB_HOST="lidolovelace-dbsync-db-postgresql"
+  fi
+  if [ "${CI_ENVIRONMENT_NAME}" == "mainnet" ]; then
+    export DBSYNC_DB_HOST="lidolovelace-dbsync-db-postgresql"
+  fi
 
   function deploy_postgres_cdbsync() {
     helm repo add bitnami https://charts.bitnami.com/bitnami
     helm repo update
     if [ "${CI_ENVIRONMENT_NAME}" == "mainnet" ]; then
       export PRIMARY_MAX_MEM="32768Mi"
-      export REPLICATION="replication"
+      export REPLICATION="standalone"
       export HASURA_REPLICAS="3"
       export PGPOOL_REPLICAS="2"
       export POSTGRES_READ_REPLICAS="2"
@@ -50,23 +52,18 @@
 
     echo "install postgres for dbsync"
     helm upgrade --install \
-        --timeout 600s \
-        --wait \
-        --atomic \
         --namespace="$KUBE_NAMESPACE" \
         --create-namespace \
         -f ./chart/values.postgresql.yaml \
-        --set global.postgresql.auth.postgresPassword="$POSTGRESQL_DB_SYNC_POSTGRES_PASSWORD" \
-        --set global.postgresql.auth.database="$POSTGRESQL_DB_SYNC_DB" \
-        --set global.postgresql.auth.password="$POSTGRESQL_DB_SYNC_PASSWORD" \
-        --set global.pgpool.adminUsername="$POSTGRESQL_DBSYNC_PGPOOL_ADMIN_USERNAME" \
-        --set global.pgpool.adminPassword="$POSTGRESQL_DBSYNC_PGPOOL_ADMIN_PASSWORD" \
-        --set global.postgresql.repmgrPassword="$POSTGRESQL_DBSYNC_PGPOOL_ADMIN_PASSWORD" \
-        --set pgpool.replicaCount="$PGPOOL_REPLICAS" \
+        --set auth.postgresPassword="$POSTGRESQL_DBSYNC_POSTGRES_PASSWORD" \
+        --set auth.database="$POSTGRESQL_DBSYNC_DB" \
+        --set auth.password="$POSTGRESQL_DBSYNC_PASSWORD" \
+        --set auth.replicationPassword="$POSTGRESQL_DBSYNC_PGPOOL_ADMIN_PASSWORD" \
+        --set readReplicas.replicaCount="$PGPOOL_REPLICAS" \
         --set services.dbsync.hasura.replicaCount="$HASURA_REPLICAS" \
-        --set services.dbsync.db.secret.POSTGRESQL_PASSWORD="$POSTGRESQL_DB_SYNC_PASSWORD" \
-        --set services.dbsync.db.secret.POSTGRESQL_POSTGRES_PASSWORD="$POSTGRESQL_DB_SYNC_POSTGRES_PASSWORD" \
-        --set persistence.size="$DBSYNC_POSTGRES_STORAGE_SIZE" \
+        --set services.dbsync.db.secret.POSTGRESQL_PASSWORD="$POSTGRESQL_DBSYNC_PASSWORD" \
+        --set services.dbsync.db.secret.POSTGRESQL_POSTGRES_PASSWORD="$POSTGRESQL_DBSYNC_POSTGRES_PASSWORD" \
+        --set primary.persistence.size="$DBSYNC_POSTGRES_STORAGE_SIZE" \
         --set primary.resources.limits.memory="$PRIMARY_MAX_MEM" \
         --set readReplicas.persistence.size="$DBSYNC_POSTGRES_STORAGE_SIZE" \
         --set readReplicas.replicaCount="$POSTGRES_READ_REPLICAS" \
@@ -125,97 +122,6 @@
     else
       export ANNOTATIONS='traefik-redirect-http-to-https@kubernetescrd\,traefik-default-headers@kubernetescrd'
     fi
-
-    helm template "$DEPLOYMENT_NAME" ./chart/lidonation.com \
-      -f ./chart/values.yaml \
-      --set application.track="$track" \
-      --set GOOGLE_CLOUD_KEY_FILE="$GOOGLE_CLOUD_KEY_FILE" \
-      --set certmanager.server="$cert_server" \
-      --set services.ncdb.ingress.host="$NCDB_WEB_HOST" \
-      --set services.ncdb.redisUrl="redis://:${REDIS_PASSWORD}@redis-master:6379/4" \
-      --set services.web.certificate.host="$AUTO_DEVOPS_WEB_HOST" \
-      --set services.web.ingress.host="$AUTO_DEVOPS_WEB_HOST" \
-      --set services.web.ingress.hosts[0]="$AUTO_DEVOPS_WEB_DOMAIN" \
-      --set services.web.ingress.hosts[1]="$AUTO_DEVOPS_DOMAIN" \
-      --set services.web.ingress.tls[0].secretName="lidonation-com-tls" \
-      --set services.web.ingress.tls[0].hosts[0]="$AUTO_DEVOPS_WEB_DOMAIN" \
-      --set services.web.ingress.tls[0].hosts[1]="$AUTO_DEVOPS_DOMAIN" \
-      --set services.web.replicaCount="$replicas" \
-      --set services.web.ingress.annotations."traefik\.ingress\.kubernetes\.io\/router\.middlewares"="$ANNOTATIONS" \
-      --set services.web.service.url="$AUTO_DEVOPS_WEB_HOST" \
-      --set services.web.secret.app_key="$APP_KEY" \
-      --set services.web.config.ANALYTICS_ID="$ANALYTICS_ID" \
-      --set services.web.config.APP_URL="$AUTO_DEVOPS_WEB_HOST" \
-      --set services.web.config.BLOCKFROST_PROJECT_ID="$BLOCKFROST_PROJECT_ID" \
-      --set services.web.config.BLOCKFROST_BASE_URL="$BLOCKFROST_BASE_URL" \
-      --set services.web.config.CLOUDFLARE_TOKEN="$CLOUDFLARE_TOKEN" \
-      --set services.web.config.CARDANO_MINT_PAYMENT_ADDRESS="$CARDANO_MINT_PAYMENT_ADDRESS" \
-      --set services.web.config.CARDANO_PHUFFY_TREASURER_ADDRESS="$CARDANO_PHUFFY_TREASURER_ADDRESS" \
-      --set services.web.config.CARDANO_PHUFFY_GOVERNOR_ADDRESS="$CARDANO_PHUFFY_GOVERNOR_ADDRESS" \
-      --set services.web.config.CARDANO_PHUFFY_ESCROW_ADDRESS="$CARDANO_PHUFFY_ESCROW_ADDRESS" \
-      --set services.web.config.CARDANO_MINT_POLICY_ID="$CARDANO_MINT_POLICY_ID" \
-      --set services.web.config.CARDANO_NETWORK_ID="$CARDANO_NETWORK_ID" \
-      --set services.web.config.CARDANO_LIDO_DELEGATE_POLICY_ID="$CARDANO_LIDO_DELEGATE_POLICY_ID" \
-      --set services.web.config.CARDANO_PHUFFY_VOTER_POLICY_ID="$CARDANO_PHUFFY_VOTER_POLICY_ID" \
-      --set services.web.config.CARDANO_POOL_HASH="$CARDANO_POOL_HASH" \
-      --set services.web.config.CARDANO_NETWORK_ARGUMENT="$CARDANO_NETWORK_ARGUMENT" \
-      --set services.web.config.CARDANO_NETWORK="$CARDANO_NETWORK" \
-      --set services.web.config.CARDANO_PHUFFY_CAUSE_PAYMENT_ADDRESS="$CARDANO_PHUFFY_CAUSE_PAYMENT_ADDRESS" \
-      --set services.web.config.CARDANO_PHUFFY_COIN_POLICY_ID="$CARDANO_PHUFFY_COIN_POLICY_ID" \
-      --set services.web.config.CARDANO_BLOCK_EXPLORER="$CARDANO_BLOCK_EXPLORER" \
-      --set services.web.config.COIN_MARKET_CAP_API_KEY="$COIN_MARKET_CAP_API_KEY" \
-      --set services.web.config.CATALYST_REPORTING_SPREADSHEET_ID="$CATALYST_REPORTING_SPREADSHEET_ID" \
-      --set services.web.config.FACEBOOK_APP_ID="$FACEBOOK_APP_ID" \
-      --set services.web.config.GOOGLE_CLIENT_ID="$GOOGLE_CLIENT_ID" \
-      --set services.web.config.GOOGLE_CLIENT_SECRET="$GOOGLE_CLIENT_SECRET" \
-      --set services.web.config.KUBERNETES_NAMESPACE="$KUBE_NAMESPACE" \
-      --set services.web.config.MAILCHIMP_APIKEY="$MAILCHIMP_APIKEY" \
-      --set services.web.config.MAILGUN_SECRET="$MAILGUN_SECRET" \
-      --set services.web.config.MAILCHIMP_LIST_ID="$MAILCHIMP_LIST_ID" \
-      --set services.web.config.POSTGRESQL_WEB_USER="$POSTGRESQL_WEB_USER" \
-      --set services.web.config.ZOOM_DEFAULT_MEETING_USER="$ZOOM_DEFAULT_MEETING_USER" \
-      --set services.web.secret.zoom_api_key="$ZOOM_CLIENT_KEY" \
-      --set services.web.secret.zoom_api_secret="$ZOOM_CLIENT_SECRET" \
-      --set services.web.secret.RECAPTCHA_V3_SECRET_KEY="$RECAPTCHA_V3_SECRET_KEY" \
-      --set services.web.secret.RECAPTCHA_V3_SITE_KEY="$RECAPTCHA_V3_SITE_KEY" \
-      --set services.web.secret.MAIL_USERNAME="$MAILTRAP_USERNAME" \
-      --set services.web.secret.MAIL_PASSWORD="$MAILTRAP_PASSWORD" \
-      --set services.web.secret.DEEPL_AUTH_KEY="$DEEPL_AUTH_KEY" \
-      --set services.web.secret.INSPECTOR_INGESTION_KEY="$INSPECTOR_INGESTION_KEY" \
-      --set services.web.secret.MEILISEARCH_KEY="$MEILISEARCH_KEY" \
-      --set services.web.secret.STRIPE_SK="$STRIPE_SK" \
-      --set services.web.secret.STRIPE_PK="$STRIPE_PK" \
-      --set services.web.secret.TWITTER_CONSUMER_SECRET="$TWITTER_CONSUMER_SECRET" \
-      --set services.web.secret.TWITTER_CONSUMER_KEY="$TWITTER_CONSUMER_KEY" \
-      --set services.web.secret.TWITTER_ACCESS_TOKEN_SECRET="$TWITTER_ACCESS_TOKEN_SECRET" \
-      --set services.web.secret.TWITTER_ACCESS_TOKEN="$TWITTER_ACCESS_TOKEN" \
-      --set services.web.secret.TWITTER_BEARER_TOKEN="$TWITTER_BEARER_TOKEN" \
-      --set services.web.secret.TWITTER_OAUTH_CLIENT_ID="$TWITTER_OAUTH_CLIENT_ID" \
-      --set services.web.secret.TWITTER_OAUTH_CLIENT_SECRET="$TWITTER_OAUTH_CLIENT_SECRET" \
-      --set services.web.secret.TWITTER_OAUTH_CALLBACK_URL="$TWITTER_OAUTH_CALLBACK_URL" \
-      --set services.web_db.secret.POSTGRESQL_PASSWORD="$POSTGRESQL_WEB_PASSWORD" \
-      --set services.web_db.secret.POSTGRESQL_POSTGRES_PASSWORD="$POSTGRESQL_WEB_POSTGRES_PASSWORD" \
-      --set services.dbsync.db.secret.POSTGRESQL_PASSWORD="$POSTGRESQL_DB_SYNC_PASSWORD" \
-      --set services.dbsync.db.secret.POSTGRESQL_POSTGRES_PASSWORD="$POSTGRESQL_DB_SYNC_POSTGRES_PASSWORD" \
-      --set services.redis.secret.REDIS_PASSWORD="$REDIS_PASSWORD" \
-      --set services.cardano.replicaCount="$replicas" \
-      --set services.cardano.image.repository="$CI_APPLICATION_REPOSITORY/cardano" \
-      --set services.cardano.config.METADATA_URL="$METADATA_URL" \
-      --set services.cardano.config.NETWORK_ARGUMENT="$CARDANO_NETWORK_ARGUMENT" \
-      --set services.cardano.config.CARDANO_NETWORK="$CARDANO_NETWORK" \
-      --set services.cardano.config.NODE_PORT="$CARDANO_NODE_PORT" \
-      --set services.cardano.config.RELAY2_PORT="$RELAY2_PORT" \
-      --set services.cardano.config.POOL_ID="$POOL_ID" \
-      --set services.cardano.config.STAKE_ADDR="$STAKE_ADDR" \
-      --set services.cardano.config.PAYMENT_ADDR="$PAYMENT_ADDR" \
-      --set services.elasticsearch.realm.user="$ES_ADMIN_USER" \
-      --set image.tag="$CI_APPLICATION_TAG" \
-      --set image.pullSecret="$secret_name" \
-      --set namespace=${KUBE_NAMESPACE} \
-      --namespace="$KUBE_NAMESPACE" \
-      --version="$APP_VERSION"
-
-
     
     helm upgrade "$DEPLOYMENT_NAME" ./chart/lidonation.com \
       --wait \
@@ -241,6 +147,7 @@
       --set services.web.secret.app_key="$APP_KEY" \
       --set services.web.config.ANALYTICS_ID="$ANALYTICS_ID" \
       --set services.web.config.APP_URL="$APP_URL" \
+      --set services.web.config.POSTGRESQL_DB_SYNC_DB_HOST="$DBSYNC_DB_HOST" \
       --set services.web.config.BLOCKFROST_PROJECT_ID="$BLOCKFROST_PROJECT_ID" \
       --set services.web.config.BLOCKFROST_BASE_URL="$BLOCKFROST_BASE_URL" \
       --set services.web.config.CLOUDFLARE_TOKEN="$CLOUDFLARE_TOKEN" \
@@ -273,8 +180,8 @@
       --set services.web.secret.zoom_api_secret="$ZOOM_CLIENT_SECRET" \
       --set services.web.secret.RECAPTCHA_V3_SECRET_KEY="$RECAPTCHA_V3_SECRET_KEY" \
       --set services.web.secret.RECAPTCHA_V3_SITE_KEY="$RECAPTCHA_V3_SITE_KEY" \
-      --set services.web.secret.MAIL_USERNAME="$MAILTRAP_USERNAME" \
-      --set services.web.secret.MAIL_PASSWORD="$MAILTRAP_PASSWORD" \
+      --set services.web.secret.MAIL_USERNAME="$MAIL_USERNAME" \
+      --set services.web.secret.MAIL_PASSWORD="$MAIL_PASSWORD" \
       --set services.web.secret.DEEPL_AUTH_KEY="$DEEPL_AUTH_KEY" \
       --set services.web.secret.INSPECTOR_INGESTION_KEY="$INSPECTOR_INGESTION_KEY" \
       --set services.web.secret.MEILISEARCH_KEY="$MEILISEARCH_KEY" \
@@ -290,8 +197,8 @@
       --set services.web.secret.TWITTER_OAUTH_CALLBACK_URL="$TWITTER_OAUTH_CALLBACK_URL" \
       --set services.web_db.secret.POSTGRESQL_PASSWORD="$POSTGRESQL_WEB_PASSWORD" \
       --set services.web_db.secret.POSTGRESQL_POSTGRES_PASSWORD="$POSTGRESQL_WEB_POSTGRES_PASSWORD" \
-      --set services.dbsync.db.secret.POSTGRESQL_PASSWORD="$POSTGRESQL_DB_SYNC_PASSWORD" \
-      --set services.dbsync.db.secret.POSTGRESQL_POSTGRES_PASSWORD="$POSTGRESQL_DB_SYNC_POSTGRES_PASSWORD" \
+      --set services.dbsync.db.secret.POSTGRESQL_PASSWORD="$POSTGRESQL_DBSYNC_PASSWORD" \
+      --set services.dbsync.db.secret.POSTGRESQL_POSTGRES_PASSWORD="$POSTGRESQL_DBSYNC_POSTGRES_PASSWORD" \
       --set services.redis.secret.REDIS_PASSWORD="$REDIS_PASSWORD" \
       --set services.cardano.replicaCount="$replicas" \
       --set services.cardano.image.repository="$CI_APPLICATION_REPOSITORY/cardano" \
@@ -317,7 +224,7 @@
 
        echo "install $DEPLOYMENT_NAME via helm with cert manger $cert_server and $replicas replicas in $KUBE_NAMESPACE"       
 
-      if [ "${CI_ENVIRONMENT_NAME}" != "main" ]; then
+      if [ "${CI_ENVIRONMENT_NAME}" != "mainnet" ]; then
         export RESTORE_SNAPSHOT="$RESTORE_SNAPSHOT_TESTNET"
       fi
       if [ "${CI_ENVIRONMENT_NAME}" == "mainnet" ]; then
@@ -329,22 +236,18 @@
          -f ./chart/values.yaml \
          --set application.track="$track" \
          --set certmanager.server="$cert_server" \
-         --set postgresqlPassword="$POSTGRESQL_DB_SYNC_PASSWORD" \
-         --set postgresqlPostgresPassword="$POSTGRESQL_DB_SYNC_POSTGRES_PASSWORD" \
-         --set postgresqlDatabase="$POSTGRESQL_DB_SYNC_DB" \
+         --set postgresqlPassword="$POSTGRESQL_DBSYNC_PASSWORD" \
+         --set services.dbsync.dbHost="$DBSYNC_DB_HOST" \
+         --set postgresqlPostgresPassword="$POSTGRESQL_DBSYNC_POSTGRES_PASSWORD" \
+         --set postgresqlDatabase="$POSTGRESQL_DBSYNC_DB" \
          --set services.cardano.config.CARDANO_NETWORK="$CARDANO_NETWORK" \
          --set services.dbsync.restore_snapshot="$RESTORE_SNAPSHOT" \
-         --set services.dbsync.db.secret.POSTGRESQL_DB="$POSTGRESQL_DB_SYNC_DB" \
-         --set services.dbsync.db.secret.POSTGRESQL_PASSWORD="$POSTGRESQL_DB_SYNC_PASSWORD" \
-         --set services.dbsync.db.secret.POSTGRESQL_POSTGRES_PASSWORD="$POSTGRESQL_DB_SYNC_POSTGRES_PASSWORD" \
-         --set services.dbsync.graphql.image.tag="$DBSYNC_GRAPHQL_IMAGE_TAG" \
-         --set services.dbsync.ogmios.image.tag="$DBSYNC_OGMIOS_IMAGE_TAG" \
+         --set services.dbsync.db.secret.POSTGRESQL_PASSWORD="$POSTGRESQL_DBSYNC_PASSWORD" \
+         --set services.dbsync.db.secret.POSTGRESQL_POSTGRES_PASSWORD="$POSTGRESQL_DBSYNC_POSTGRES_PASSWORD" \
          --set services.dbsync.graphql.ingress.host="$DBSYNC_GRAPHQL_HOST" \
          --set services.dbsync.hasura.ingress.host="$DBSYNC_HASURA_HOST" \
          --set services.dbsync.db.persistence.size="$DBSYNC_STORAGE_SIZE" \
-         --set services.redis.secret.REDIS_PASSWORD="$REDIS_PASSWORD" \
          --set-file configurationFiles.config=./src/pool/config/$CARDANO_NETWORK/config.json \
-         --set-file configurationFiles.ogmiosConfig=./src/pool/config/$CARDANO_NETWORK/config.ogmios.json \
          --set-file configurationFiles.dbSyncConfig=./src/pool/config/$CARDANO_NETWORK/dbsync-config.json \
          --set-file configurationFiles.topology=./src/pool/config/$CARDANO_NETWORK/topology.relay.json \
          --set image.tag="$CI_APPLICATION_TAG-$CARDANO_NETWORK" \
@@ -355,32 +258,35 @@
          --version="$APP_VERSION"
   }
 
-  function deploy_cncli() {
-    DEPLOYMENT_NAME="$AUTO_DEVOPS_APP_PREFIX-cardano-cncli.$CI_ENVIRONMENT_SLUG"
+  function deploy_kupo() {
+    DEPLOYMENT_NAME="$AUTO_DEVOPS_APP_PREFIX-cardano-kupo.$CI_ENVIRONMENT_SLUG"
 
-    helm upgrade "$DEPLOYMENT_NAME" ./chart/cncli \
+    helm upgrade "$DEPLOYMENT_NAME" ./chart/kupo \
       --wait \
       --install \
       --atomic \
       -f ./chart/values.yaml \
       --timeout 300s \
-      --set-file configurationFiles.topology.relay=./src/pool/config/$CARDANO_NETWORK/topology.relay.json \
-      --set-file configurationFiles.topology.producer=./src/pool/config/$CARDANO_NETWORK/topology.producer.json \
-      --set-file configurationFiles.testnetByronGenesis=./src/pool/config/build/preview-byron-genesis.json \
-      --set-file configurationFiles.testnetShelleyGenesis=./src/pool/config/build/preview-shelley-genesis.json \
-      --set-file configurationFiles.testnetShelleyGenesis=./src/pool/config/build/preview-conway-genesis.json \
-      --set-file configurationFiles.testnetAlonzoGenesis=./src/pool/config/build/preview-alonzo-genesis.json \
-      --set-file configurationFiles.mainnetShelleyGenesis=./src/pool/config/build/mainnet-shelley-genesis.json \
-      --set-file configurationFiles.mainnetAlonzoGenesis=./src/pool/config/build/mainnet-alonzo-genesis.json \
-      --set-file configurationFiles.mainnetAlonzoGenesis=./src/pool/config/build/mainnet-conway-genesis.json \
-      --set image.tag="$CI_APPLICATION_TAG" \
-      --set image.pullSecret="$secret_name" \
+      --set services.cardano.config.NODE_PORT="$CARDANO_NODE_PORT" \
       --set namespace=${KUBE_NAMESPACE} \
       --namespace="$KUBE_NAMESPACE" \
-      --create-namespace \
-      --version="$APP_VERSION"
+      --create-namespace
   }
 
+  function deploy_ogmios() {
+    DEPLOYMENT_NAME="$AUTO_DEVOPS_APP_PREFIX-cardano-ogmios.$CI_ENVIRONMENT_SLUG"
+
+    helm upgrade "$DEPLOYMENT_NAME" ./chart/ogmios \
+      --wait \
+      --install \
+      --atomic \
+      -f ./chart/values.yaml \
+      --timeout 300s \
+      --set services.cardano.config.NODE_PORT="$CARDANO_NODE_PORT" \
+      --set namespace=${KUBE_NAMESPACE} \
+      --namespace="$KUBE_NAMESPACE" \
+      --create-namespace
+  }
 
   function deploy_lucid() {
     DEPLOYMENT_NAME="$AUTO_DEVOPS_APP_PREFIX-lucid.$CI_ENVIRONMENT_SLUG"
@@ -412,13 +318,9 @@
       --timeout 300s \
       --set application.track="$track" \
       --set certmanager.server="$cert_server" \
-      --set postgresqlPostgresPassword="$POSTGRESQL_DB_SYNC_POSTGRES_PASSWORD" \
-      --set postgresqlPassword="$POSTGRESQL_DB_SYNC_PASSWORD" \
-      --set postgresqlDatabase="$POSTGRESQL_DB_SYNC_DB" \
-      --set services.dbsync.db.secret.POSTGRESQL_DB="$POSTGRESQL_DB_SYNC_DB" \
-      --set services.dbsync.db.secret.POSTGRESQL_PASSWORD="$POSTGRESQL_DB_SYNC_PASSWORD" \
-      --set services.dbsync.db.secret.POSTGRESQL_POSTGRES_PASSWORD="$POSTGRESQL_DB_SYNC_POSTGRES_PASSWORD" \
-      --set services.redis.secret.REDIS_PASSWORD="$REDIS_PASSWORD" \
+      --set postgresqlPostgresPassword="$POSTGRESQL_DBSYNC_POSTGRES_PASSWORD" \
+      --set postgresqlPassword="$POSTGRESQL_DBSYNC_PASSWORD" \
+      --set postgresqlDatabase="$POSTGRESQL_DBSYNC_DB" \
       --set services.cardano.replicaCount="$replicas" \
       --set services.cardano.image.repository="$CI_APPLICATION_REPOSITORY/cardano" \
       --set services.cardano.config.AUTO_TOPOLOGY="$AUTO_TOPOLOGY" \
@@ -433,11 +335,10 @@
       --set services.cardano.config.PAYMENT_ADDR="$PAYMENT_ADDR" \
       --set services.cardano.config.KUBERNETES_NAMESPACE="$KUBE_NAMESPACE" \
       --set services.cardano.persistence.size="$CARDANO_NODE_STORAGE_SIZE" \
-      --set services.elasticsearch.realm.user="$ES_ADMIN_USER" \
       --set services.submitApi.image.repository="$CI_APPLICATION_REPOSITORY/cardano-submit-tx-api" \
       --set services.submitApi.networkArg="$CARDANO_NETWORK_ARGUMENT" \
-      --set services.submitApi.ingress.host="$SUBMIT_API_HOSTS" \
-      --set-file configurationFiles.submitApiConfig=./src/pool/config/$CARDANO_NETWORK/submit-api-config.json \
+      --set services.submitApi.ingress.host="$SUBMIT_API_HOST" \
+      --set-file configurationFiles.submitApiConfig=./src/pool/config/$CARDANO_NETWORK/config.submittx.json \
       --set image.tag="$CI_APPLICATION_TAG" \
       --set image.pullSecret="$secret_name" \
       --set namespace=${KUBE_NAMESPACE} \
@@ -447,7 +348,6 @@
       --version="$APP_VERSION"
   }
 
-  
   function deploy_cardano_configs() {
     DEPLOYMENT_NAME="$AUTO_DEVOPS_APP_PREFIX-cardano-configs.$CI_ENVIRONMENT_SLUG"
       
@@ -472,8 +372,9 @@
       --set-file configurationFiles.config=./src/pool/config/$CARDANO_NETWORK/config.json \
       --set-file configurationFiles.configProducer=./src/pool/config/$CARDANO_NETWORK/config.producer.json \
       --set-file configurationFiles.configRelay2=./src/pool/config/$CARDANO_NETWORK/config.relay2.json \
+      --set-file configurationFiles.configTx=./src/pool/config/$CARDANO_NETWORK/config.tx.json \
       --set-file configurationFiles.dbSyncConfig=./src/pool/config/$CARDANO_NETWORK/dbsync-config.json \
-      --set-file configurationFiles.submitApiConfig=./src/pool/config/$CARDANO_NETWORK/submit-api-config.json \
+      --set-file configurationFiles.submitApiConfig=./src/pool/config/$CARDANO_NETWORK/config.submittx.json \
       --set-file configurationFiles.topology.producer=./src/pool/config/$CARDANO_NETWORK/topology.producer.json \
       --set-file configurationFiles.topology.relay=./src/pool/config/$CARDANO_NETWORK/topology.relay.json \
       --set-file configurationFiles.topology.relay2=./src/pool/config/$CARDANO_NETWORK/topology.relay2.json \
@@ -500,12 +401,12 @@
        -f ./chart/values.yaml \
        --set application.track="$track" \
        --set certmanager.server="$cert_server" \
-       --set postgresqlPostgresPassword="$POSTGRESQL_DB_SYNC_POSTGRES_PASSWORD" \
-       --set postgresqlPassword="$POSTGRESQL_DB_SYNC_PASSWORD" \
-       --set postgresqlDatabase="$POSTGRESQL_DB_SYNC_DB" \
-       --set services.dbsync.db.secret.POSTGRESQL_DB="$POSTGRESQL_DB_SYNC_DB" \
-       --set services.dbsync.db.secret.POSTGRESQL_PASSWORD="$POSTGRESQL_DB_SYNC_PASSWORD" \
-       --set services.dbsync.db.secret.POSTGRESQL_POSTGRES_PASSWORD="$POSTGRESQL_DB_SYNC_POSTGRES_PASSWORD" \
+       --set postgresqlPostgresPassword="$POSTGRESQL_DBSYNC_POSTGRES_PASSWORD" \
+       --set postgresqlPassword="$POSTGRESQL_DBSYNC_PASSWORD" \
+       --set postgresqlDatabase="$POSTGRESQL_DBSYNC_DB" \
+       --set services.dbsync.db.secret.POSTGRESQL_DB="$POSTGRESQL_DBSYNC_DB" \
+       --set services.dbsync.db.secret.POSTGRESQL_PASSWORD="$POSTGRESQL_DBSYNC_PASSWORD" \
+       --set services.dbsync.db.secret.POSTGRESQL_POSTGRES_PASSWORD="$POSTGRESQL_DBSYNC_POSTGRES_PASSWORD" \
        --set services.redis.secret.REDIS_PASSWORD="$REDIS_PASSWORD" \
        --set services.cardano.replicaCount="$replicas" \
        --set services.cardano.image.repository="$CI_APPLICATION_REPOSITORY/cardano" \
@@ -538,12 +439,12 @@
        -f ./chart/values.yaml \
        --set application.track="$track" \
        --set certmanager.server="$cert_server" \
-       --set postgresqlPostgresPassword="$POSTGRESQL_DB_SYNC_POSTGRES_PASSWORD" \
-       --set postgresqlPassword="$POSTGRESQL_DB_SYNC_PASSWORD" \
-       --set postgresqlDatabase="$POSTGRESQL_DB_SYNC_DB" \
-       --set services.dbsync.db.secret.POSTGRESQL_DB="$POSTGRESQL_DB_SYNC_DB" \
-       --set services.dbsync.db.secret.POSTGRESQL_PASSWORD="$POSTGRESQL_DB_SYNC_PASSWORD" \
-       --set services.dbsync.db.secret.POSTGRESQL_POSTGRES_PASSWORD="$POSTGRESQL_DB_SYNC_POSTGRES_PASSWORD" \
+       --set postgresqlPostgresPassword="$POSTGRESQL_DBSYNC_POSTGRES_PASSWORD" \
+       --set postgresqlPassword="$POSTGRESQL_DBSYNC_PASSWORD" \
+       --set postgresqlDatabase="$POSTGRESQL_DBSYNC_DB" \
+       --set services.dbsync.db.secret.POSTGRESQL_DB="$POSTGRESQL_DBSYNC_DB" \
+       --set services.dbsync.db.secret.POSTGRESQL_PASSWORD="$POSTGRESQL_DBSYNC_PASSWORD" \
+       --set services.dbsync.db.secret.POSTGRESQL_POSTGRES_PASSWORD="$POSTGRESQL_DBSYNC_POSTGRES_PASSWORD" \
        --set services.redis.secret.REDIS_PASSWORD="$REDIS_PASSWORD" \
        --set services.cardano.replicaCount="$replicas" \
        --set services.cardano.image.repository="$CI_APPLICATION_REPOSITORY/cardano" \
@@ -568,36 +469,36 @@
   }
 
   function deploy_services() {
-    if [[ "$DEPLOY_CARDANO_SERVICES" == 'True' || "$DEPLOY_CARDANO_SERVICES" == 'true' ]]; then
+    if [[ "$DEPLOY_CARDANO_SERVICES" == 'True' ]]; then
       deploy_cardano_configs
       deploy_relays
       deploy_producer
     fi  
-    if [[ "$DEPLOY_CARDANO_RELAYS" == 'True' || "$DEPLOY_CARDANO_RELAYS" == 'true' ]]; then
+    if [[ "$DEPLOY_CARDANO_RELAYS" == 'True' ]]; then
       deploy_relays
     fi
-    if [[ "$DEPLOY_CARDANO_PRODUCER" == 'True' || "$DEPLOY_CARDANO_PRODUCER" == 'true' ]]; then
+    if [[ "$DEPLOY_CARDANO_PRODUCER" == 'True' ]]; then
       deploy_producer
     fi
-    if [[ "$DEPLOY_CARDANO_CONFIGS" == 'True' || "$DEPLOY_CARDANO_CONFIGS" == 'true' ]]; then
+    if [[ "$DEPLOY_CARDANO_CONFIGS" == 'True' ]]; then
       deploy_cardano_configs
     fi
-    if [[ "$DEPLOY_CARDANO_TX_SUBMIT" == 'True' || "$DEPLOY_CARDANO_TX_SUBMIT" == 'true' ]]; then
+    if [[ "$DEPLOY_CARDANO_TX_SUBMIT" == 'True' ]]; then
       deploy_tx_sumit_api
     fi
-    if [[ "$DEPLOY_CARDANO_CNCLI" == 'True' || "$DEPLOY_CARDANO_CNCLI" == 'true' ]]; then
-      deploy_cncli
+    if [[ "$DEPLOY_CARDANO_OGMIOS" == 'True' ]]; then
+      deploy_ogmios
     fi
-    if [[ "$DEPLOY_CARDANO_CNCLI" == 'True' || "$DEPLOY_CARDANO_CNCLI" == 'true' ]]; then
-      deploy_tx_cncli
+    if [[ "$DEPLOY_CARDANO_KUPO" == 'True' ]]; then
+      deploy_kupo
     fi
-    if [[ "$DEPLOY_CARDANO_DBSYNC" == 'True' || "$DEPLOY_CARDANO_DBSYNC" == 'true' ]]; then
+    if [[ "$DEPLOY_CARDANO_DBSYNC" == 'True' ]]; then
       deploy_dbsync
     fi
-    if [[ "$DEPLOY_WEBSITE" == 'True' || "$DEPLOY_WEBSITE" == 'true' ]]; then
+    if [[ "$DEPLOY_WEBSITE" == 'True' ]]; then
       deploy_web_services
     fi
-    if [[ "$DEPLOY_LUCID" == 'True' || "$DEPLOY_LUCID" == 'true' ]]; then
+    if [[ "$DEPLOY_LUCID" == 'True' ]]; then
       deploy_lucid
     fi
   }
@@ -645,12 +546,18 @@ variables:
   DEPLOY_CARDANO_TX_SUBMIT:
     value: 'False'
     description: 'Install tx submit api.'
-  DEPLOY_CARDANO_CNCLI:
+  DEPLOY_CARDANO_OGMIOS:
     value: 'False'
-    description: 'Install cncli services.'
+    description: 'Install ogmios services.'
+  DEPLOY_CARDANO_KUPO:
+    value: 'False'
+    description: 'Install kupo services.'
   DEPLOY_CARDANO_DBSYNC:
     value: 'False'
     description: 'Install cardano dbsync services (ogmios, hasura, postgres, grapql)'
+  DEPLOY_CARDANO_FORTUNA:
+    value: 'False'
+    description: 'Install fortuna services.'
   CARDANO_DB_SYNC_BASE_IMAGE_VER:
     value: ''
     description: 'New tag for base image. Format V[N]'
@@ -700,6 +607,20 @@ workflow:
   image: alpine:3.16.1
   retry: 0
   cache: { }
+
+.deploy_kupo: &deploy_kupo
+  <<: *deploy_template
+  script:
+    - *setup
+    - deploy_kupo
+  rules: *infra_rules
+  
+.deploy_ogmios: &deploy_ogmios
+  <<: *deploy_template
+  script:
+    - *setup
+    - deploy_ogmios
+  rules: *infra_rules
 
 .deploy_postgres_cdbsync: &deploy_postgres_cdbsync
   <<: *deploy_template
@@ -903,22 +824,42 @@ web:
       docker push "$CI_APPLICATION_REPOSITORY/www.lidonation.com:latest"
       echo ""
   rules:
-    - if: '$CI_COMMIT_BRANCH == "main" &&
-              ($DEPLOY_WEBSITE == "True" || $DEPLOY_WEBSITE == "true")'
-    - if: '$CI_COMMIT_BRANCH != "main" &&
-              ($DEPLOY_WEBSITE == "True" || $DEPLOY_WEBSITE == "true")'
+    - if: '$CI_COMMIT_BRANCH == "main" && $DEPLOY_WEBSITE == "True"'
+    - if: '$CI_COMMIT_BRANCH != "main" && $DEPLOY_WEBSITE == "True"'
       when: manual
 
-lucid:
+fortuna:
   stage: .pre
   image: docker:24.0.2-git
-  services:
-    - docker:dind
   retry: 1
   cache: { }
   script:
     - *auto_devops_custom
     - |
+      docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
+      echo "Building fortuna Dockerfile..."
+      docker build --network host  \
+        -f ./src/fortuna.lidonation.com/Dockerfile -t "$CI_APPLICATION_REPOSITORY/fortuna.lidonation.com:$CI_APPLICATION_TAG" \
+        -t "$CI_APPLICATION_REPOSITORY/fortuna.lidonation.com:latest" ./src/fortuna.lidonation.com/.
+
+      echo "Pushing web to GitLab Container Registry..."
+      docker push "$CI_APPLICATION_REPOSITORY/fortuna.lidonation.com:$CI_APPLICATION_TAG"
+      docker push "$CI_APPLICATION_REPOSITORY/fortuna.lidonation.com:latest"
+      echo ""
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main" && $DEPLOY_CARDANO_FORTUNA == "True"'
+    - if: '$CI_COMMIT_BRANCH != "main" && $DEPLOY_CARDANO_FORTUNA == "True"'
+
+lucid:
+  stage: .pre
+  image: docker:24.0.2-git
+  retry: 1
+  cache: { }
+  script:
+    - *auto_devops_custom
+    - |
+      cp $LUCID_ENV ./src/lucid.lidonation.com/.env
+      cat ./src/lucid.lidonation.com/.env
       docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
       echo "Building lucid Dockerfile..."
       docker build --network host  \
@@ -930,16 +871,12 @@ lucid:
       docker push "$CI_APPLICATION_REPOSITORY/lucid.lidonation.com:latest"
       echo ""
   rules:
-    - if: '$CI_COMMIT_BRANCH == "main" &&
-              ($DEPLOY_LUCID == "True" || $DEPLOY_LUCID == "true")'
-    - if: '$CI_COMMIT_BRANCH != "main" &&
-              ($DEPLOY_LUCID == "True" || $DEPLOY_LUCID == "true")'
+    - if: '$CI_COMMIT_BRANCH == "main" && $DEPLOY_LUCID == "True"'
+    - if: '$CI_COMMIT_BRANCH != "main" && $DEPLOY_LUCID == "True"'
 
 cnode_submit_api:
   stage: build
   image: docker:24.0.2-git
-  services:
-    - docker:dind
   retry: 1
   cache: {}
   needs:
@@ -961,8 +898,6 @@ cnode_submit_api:
 cnode:
   stage: build
   image: docker:24.0.2-git
-  services:
-    - docker:dind
   retry: 1
   cache: {}
   needs:
@@ -980,45 +915,17 @@ cnode:
       docker push "$CI_APPLICATION_REPOSITORY/cardano:latest"
   rules:
     - if: '$CI_COMMIT_BRANCH == "main" &&
-              ($DEPLOY_CARDANO_SERVICES == "True" || $DEPLOY_CARDANO_SERVICES == "true")
-              || ($DEPLOY_CARDANO_RELAYS == "True" || $DEPLOY_CARDANO_RELAYS == "true")
-              || ($DEPLOY_CARDANO_PRODUCER == "True" || $DEPLOY_CARDANO_PRODUCER == "true")'
+              ($DEPLOY_CARDANO_SERVICES == "True")
+              || ($DEPLOY_CARDANO_RELAYS == "True")
+              || ($DEPLOY_CARDANO_PRODUCER == "True")'
     - if: '$CI_COMMIT_BRANCH != "main" &&
-              ($DEPLOY_CARDANO_SERVICES == "True" || $DEPLOY_CARDANO_SERVICES == "true")         
-            || ($DEPLOY_CARDANO_RELAYS == "True" || $DEPLOY_CARDANO_RELAYS == "true")
-            || ($DEPLOY_CARDANO_PRODUCER == "True" || $DEPLOY_CARDANO_PRODUCER == "true")'
-
-cncli:
-  stage: build
-  image: docker:20.10.12-git
-  services:
-    - docker:dind-20.10.12
-  retry: 1
-  cache: {}
-  needs:
-    - job: cnode_base
-      optional: true
-  script:
-    - *auto_devops_custom
-    - |
-      docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
-      docker build --network host -f cncli.Dockerfile \
-      -t "$CI_APPLICATION_REPOSITORY/cncli:$CI_APPLICATION_TAG" \
-      -t "$CI_APPLICATION_REPOSITORY/cncli:latest" \
-      .
-      docker push "$CI_APPLICATION_REPOSITORY/cncli:$CI_APPLICATION_TAG"
-      docker push "$CI_APPLICATION_REPOSITORY/cncli:latest"
-  rules:
-    - if: '$CI_COMMIT_BRANCH == "main" &&
-              ($DEPLOY_CARDANO_CNCLI == "True" || $DEPLOY_CARDANO_CNCLI == "true")'
-    - if: '$CI_COMMIT_BRANCH != "main" &&
-              ($DEPLOY_CARDANO_CNCLI == "True" || $DEPLOY_CARDANO_CNCLI == "true")'
+              ($DEPLOY_CARDANO_SERVICES == "True")         
+            || ($DEPLOY_CARDANO_RELAYS == "True")
+            || ($DEPLOY_CARDANO_PRODUCER == "True")'
 
 cdbsync:
   stage: build
   image: docker:24.0.2-git
-  services:
-    - docker:dind
   retry: 1
   cache: {}
   needs:
@@ -1038,40 +945,22 @@ cdbsync:
       docker push "$CI_APPLICATION_REPOSITORY/cardano-db-sync:latest-preview"
       
       docker build --network host -f cardano.dbSync.Dockerfile \
-      --build-arg NETWORK_CONFIG="./src/pool/config/main/dbsync-config.json" \
-      --build-arg CARDANO_NETWORK="main" \
-      -t "$CI_APPLICATION_REPOSITORY/cardano-db-sync:$CI_APPLICATION_TAG-main" \
-      -t "$CI_APPLICATION_REPOSITORY/cardano-db-sync:latest-main" \
+      --build-arg NETWORK_CONFIG="./src/pool/config/mainnet/dbsync-config.json" \
+      --build-arg CARDANO_NETWORK="mainnet" \
+      -t "$CI_APPLICATION_REPOSITORY/cardano-db-sync:$CI_APPLICATION_TAG-mainnet" \
+      -t "$CI_APPLICATION_REPOSITORY/cardano-db-sync:latest-mainnet" \
       .
-      docker push "$CI_APPLICATION_REPOSITORY/cardano-db-sync:$CI_APPLICATION_TAG-main"
-      docker push "$CI_APPLICATION_REPOSITORY/cardano-db-sync:latest-main"
+      docker push "$CI_APPLICATION_REPOSITORY/cardano-db-sync:$CI_APPLICATION_TAG-mainnet"
+      docker push "$CI_APPLICATION_REPOSITORY/cardano-db-sync:latest-mainnet"
   rules:
     - if: '$CI_COMMIT_BRANCH == "main" &&
-              ($DEPLOY_CARDANO_DBSYNC == "True" || $DEPLOY_CARDANO_DBSYNC == "true")'
+              ($DEPLOY_CARDANO_DBSYNC == "True")'
     - if: '$CI_COMMIT_BRANCH != "main" &&
-              ($DEPLOY_CARDANO_DBSYNC == "True" || $DEPLOY_CARDANO_DBSYNC == "true")'
-
-
-############ Test Jobs ###########
-##################################
-
-#test_phpunit:
-#  stage: test
-#  image: registry.lidonation.com/lidonation/lidonation/www.lidonation.com:latest
-#  retry: 1
-#  script:
-#    - |
-#      cd ./src/www.lidonation.com/var/www
-#      cp .env.example .env
-#      php artisan key:generate
-#      php artisan test
-#  rules:
-#    - when: on_success
+              ($DEPLOY_CARDANO_DBSYNC == "True")'
 
 
 ########## Deploy to test env Jobs #########
 ############################################
-
 redis-test:
   <<: *deploy_redis
   stage: preview
@@ -1085,6 +974,28 @@ postgres-cdbsync-test:
   needs: []
   environment:
     name: preview
+
+deploy-kupo-preview:
+  <<: *deploy_kupo
+  stage: preview
+  needs: []
+  environment:
+    name: preview
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main" && $DEPLOY_CARDANO_KUPO == "True"'
+    - if: '$CI_COMMIT_BRANCH != "main" && $DEPLOY_CARDANO_KUPO == "True"'
+      when: manual
+
+deploy-ogmios-preview:
+  <<: *deploy_ogmios
+  stage: preview
+  needs: []
+  environment:
+    name: preview
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main" && $DEPLOY_CARDANO_OGMIOS == "True"'
+    - if: '$CI_COMMIT_BRANCH != "main" && $DEPLOY_CARDANO_OGMIOS == "True"'
+      when: manual
 
 postgres-web-test:
   <<: *deploy_postgres_web
@@ -1154,10 +1065,8 @@ preview:
               )'
       when: manual
 
-
 ########## Deploy to prod env Jobs #########
 ############################################
-
 redis-prod:
   <<: *deploy_redis
   stage: mainnet
@@ -1173,6 +1082,30 @@ postgres-cdbsync-prod:
     - postgres-cdbsync-test
   environment:
     name: mainnet
+
+deploy-kupo-mainnet:
+  <<: *deploy_kupo
+  stage: mainnet
+  needs:
+    - deploy-kupo-preview
+  environment:
+    name: mainnet
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main" && $DEPLOY_CARDANO_KUPO == "True"'
+    - if: '$CI_COMMIT_BRANCH != "main" && $DEPLOY_CARDANO_KUPO == "True"'
+      when: manual
+
+deploy-ogmios-mainnet:
+  <<: *deploy_ogmios
+  stage: mainnet
+  needs:
+    - deploy-ogmios-preview
+  environment:
+    name: mainnet
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main" && $DEPLOY_CARDANO_OGMIOS == "True"'
+    - if: '$CI_COMMIT_BRANCH != "main" && $DEPLOY_CARDANO_OGMIOS == "True"'
+      when: manual
 
 postgres-web-prod:
   <<: *deploy_postgres_web
@@ -1195,12 +1128,12 @@ mainnet:
     name: mainnet
   rules:
     - if: '$CI_COMMIT_BRANCH == "main" && (
-              ($DEPLOY_CARDANO_CONFIGS == "True" || $DEPLOY_CARDANO_CONFIGS == "true")
-              || ($DEPLOY_CARDANO_SERVICES == "True" || $DEPLOY_CARDANO_SERVICES == "true")
-              || ($DEPLOY_CARDANO_RELAYS == "True" || $DEPLOY_CARDANO_RELAYS == "true")
-              || ($DEPLOY_CARDANO_PRODUCER == "True" || $DEPLOY_CARDANO_PRODUCER == "true")
-              || ($DEPLOY_CARDANO_DBSYNC == "True" || $DEPLOY_CARDANO_DBSYNC == "true")
-              || ($DEPLOY_CARDANO_TX_SUBMIT == "True" || $DEPLOY_CARDANO_TX_SUBMIT == "true")
+              ($DEPLOY_CARDANO_CONFIGS == "True")
+              || ($DEPLOY_CARDANO_SERVICES == "True")
+              || ($DEPLOY_CARDANO_RELAYS == "True")
+              || ($DEPLOY_CARDANO_PRODUCER == "True")
+              || ($DEPLOY_CARDANO_DBSYNC == "True")
+              || ($DEPLOY_CARDANO_TX_SUBMIT == "True")
               )'
       when: manual
 
@@ -1217,7 +1150,7 @@ production:
     name: mainnet
   rules:
     - if: '$CI_COMMIT_BRANCH == "main" && (
-              ($DEPLOY_WEBSITE == "True" || $DEPLOY_WEBSITE == "true")
-              || ($DEPLOY_LUCID == "True" || $DEPLOY_LUCID == "true")
+              ($DEPLOY_WEBSITE == "True")
+              || ($DEPLOY_LUCID == "True")
           )'
       when: manual

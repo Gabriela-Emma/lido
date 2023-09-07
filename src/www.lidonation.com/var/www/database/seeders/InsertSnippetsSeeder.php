@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class InsertSnippetsSeeder extends Seeder
 {
@@ -23,7 +22,7 @@ class InsertSnippetsSeeder extends Seeder
         ];
 
         foreach ($files as $file) {
-            $json = File::get(base_path('database/files/' . $file));
+            $json = File::get(base_path('database/files/'.$file));
             $data = json_decode($json);
 
             foreach ($data->snippets as $snippet) {

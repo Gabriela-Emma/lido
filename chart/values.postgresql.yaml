@@ -23,9 +23,9 @@ global:
     ##
     auth:
       postgresPassword: ""
-      username: ""
+      username: "llovelace"
       password: ""
-      database: ""
+      database: "cexplorer"
       existingSecret: ""
     ## @param global.postgresql.service.ports.postgresql PostgreSQL service port (overrides `service.ports.postgresql`)
     ##
@@ -87,7 +87,7 @@ diagnosticMode:
 image:
   registry: docker.io
   repository: bitnami/postgresql
-  tag: 15.2.0-debian-11-r13
+  tag: 15.4.0-debian-11-r15
   ## Specify a imagePullPolicy
   ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
   ## ref: https://kubernetes.io/docs/user-guide/images/#pre-pulling-images
@@ -118,13 +118,13 @@ auth:
   postgresPassword: ""
   ## @param auth.username Name for a custom user to create
   ##
-  username: ""
+  username: "llovelace"
   ## @param auth.password Password for the custom user to create
   ##
   password: ""
   ## @param auth.database Name for a custom database to create
   ##
-  database: ""
+  database: "cexplorer"
   ## @param auth.replicationUsername Name of the replication user
   ##
   replicationUsername: repl_user
@@ -140,7 +140,7 @@ auth:
   ## picked from this secret in this case.
   ## The value is evaluated as a template.
   ##
-  existingSecret: ""
+  #existingSecret: ""
   ## @param auth.usePasswordFiles Mount credentials as a files instead of using an environment variable
   ##
   usePasswordFiles: false
@@ -159,7 +159,7 @@ replication:
   numSynchronousReplicas: 0
   ## @param replication.applicationName Cluster application name. Useful for advanced replication settings
   ##
-  applicationName: my_application
+  applicationName: catalyst
 ## @param containerPorts.postgresql PostgreSQL container port
 ##
 containerPorts:
@@ -289,23 +289,27 @@ primary:
   ## ref: https://github.com/bitnami/bitnami-docker-postgresql#allow-settings-to-be-loaded-from-files-other-than-the-default-postgresqlconf
   ##
   extendedConfiguration: |-
-    max_connections=400    
+    max_connections=5000
+    max_prepared_transactions=5000
     max_locks_per_transaction = 256
-    shared_buffers = 12GB
+    shared_buffers = 16GB
     effective_cache_size = 36GB
     maintenance_work_mem = 2GB
     checkpoint_completion_target = 0.9
     checkpoint_timeout = 1h
     synchronous_commit = off
-    wal_buffers = 16MB
+    wal_buffers = 32MB
+    jit = off
     default_statistics_target = 500
     random_page_cost = 1.1
-    effective_io_concurrency = 500
-    work_mem = 1024GB
+    effective_io_concurrency = 400
+    work_mem = 24MB
     min_wal_size = 1GB
-    max_wal_size = 2GB
-    max_parallel_workers_per_gather = 4
+    max_wal_size = 4GB
+    max_parallel_workers_per_gather = 8
+    max_parallel_workers = 8
     max_parallel_maintenance_workers = 4
+    max_worker_processes = 12
 
 
   ## @param primary.existingExtendedConfigmap Name of an existing ConfigMap with PostgreSQL Primary extended configuration
@@ -385,7 +389,7 @@ primary:
   ## @param primary.livenessProbe.successThreshold Success threshold for livenessProbe
   ##
   livenessProbe:
-    enabled: true
+    enabled: false
     initialDelaySeconds: 30
     periodSeconds: 10
     timeoutSeconds: 5
@@ -399,7 +403,7 @@ primary:
   ## @param primary.readinessProbe.successThreshold Success threshold for readinessProbe
   ##
   readinessProbe:
-    enabled: true
+    enabled: false
     initialDelaySeconds: 5
     periodSeconds: 10
     timeoutSeconds: 5
@@ -439,7 +443,7 @@ primary:
   ##
   resources:
     limits:
-      memory: 32768Mi
+      memory: 65536Mi
       cpu: 12
     requests:
       memory: 16384Mi
@@ -681,6 +685,7 @@ readReplicas:
   ##   - name: FOO
   ##     value: "bar"
   ##
+
   extraEnvVars: []
   ## @param readReplicas.extraEnvVarsCM Name of existing ConfigMap containing extra env vars for PostgreSQL read only nodes
   ##
@@ -719,10 +724,10 @@ readReplicas:
   ##
   readinessProbe:
     enabled: true
-    initialDelaySeconds: 5
+    initialDelaySeconds: 10
     periodSeconds: 10
     timeoutSeconds: 5
-    failureThreshold: 6
+    failureThreshold: 10
     successThreshold: 1
   ## @param readReplicas.startupProbe.enabled Enable startupProbe on PostgreSQL read only containers
   ## @param readReplicas.startupProbe.initialDelaySeconds Initial delay seconds for startupProbe
@@ -759,10 +764,10 @@ readReplicas:
   resources:
     limits:
       memory: 12288Mi
-      cpu: 8m
+      cpu: 8
     requests:
       memory: 6144Mi
-      cpu: 1m
+      cpu: 1
   ## Pod Security Context
   ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
   ## @param readReplicas.podSecurityContext.enabled Enable security context

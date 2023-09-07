@@ -106,10 +106,11 @@ class CatalystVoterToolComponent extends Component
                 $user_options['filters'][] = "proposals_count = 1 AND proposals.fund = {$this->fund?->id}";
             }
 
+
             $this->searchBuilder = CatalystUser::search(null,
                 function (Indexes $index, $query, $options) use ($user_options) {
                     $options['filter'] = $user_options['filters'];
-                    $options['attributesToRetrieve'] = ['id', 'proposals.id'];
+                    $options['attributesToRetrieve'] = ['id', 'proposals'];
 
                     return $index->search($query, $options);
                 });
@@ -120,7 +121,7 @@ class CatalystVoterToolComponent extends Component
         }
 
         $_options = [
-            'filters' => ["fund = {$this->fund?->id}"],
+            'filters' => ["fund.id = {$this->fund?->id}"],
         ];
 
         if ($this->searchGroup == 'allStars') {
@@ -167,7 +168,7 @@ class CatalystVoterToolComponent extends Component
     protected function setQueryResults()
     {
         if ($this->searchGroup == 'oneTimers' || $this->searchGroup == 'firstTimers') {
-            $this->groupSearchPaginator = $this->searchBuilder->paginate(18);
+            $this->groupSearchPaginator = $this->searchBuilder->fastPaginate(18);
             $this->proposals = collect($this->groupSearchPaginator->items())->map(fn ($u) => $u->proposals)->collapse()->unique('id');
             $this->searchArgs['count'] = $this->groupSearchPaginator->total();
 
@@ -180,7 +181,7 @@ class CatalystVoterToolComponent extends Component
             || $this->searchGroup == 'smallProposals'
             || $this->searchGroup == '100KProposals'
             || $this->searchGroup == 'largeProposals') {
-            $this->groupSearchPaginator = $this->searchBuilder->paginate(18);
+            $this->groupSearchPaginator = $this->searchBuilder->fastPaginate(18);
             $this->searchArgs['count'] = $this->groupSearchPaginator->total();
             $this->proposals = $this->groupSearchPaginator->items();
         } elseif ($this->searchGroup == 'quickPitchProposals') {
@@ -191,7 +192,7 @@ class CatalystVoterToolComponent extends Component
             $orderClause = "{$this->orderBy} {$this->order}";
             $this->groupSearchPaginator = Proposal::whereRelation('metas', 'key', '=', 'quick_pitch')
                 ->whereRelation('fund.parent', 'id', '=', 97)
-                ->orderbyRaw($orderClause)->paginate(18);
+                ->orderbyRaw($orderClause)->fastPaginate(18);
             $this->searchArgs['count'] = $this->groupSearchPaginator->total();
             $this->proposals = $this->groupSearchPaginator->items();
         } elseif ($this->searchGroup == 'completedProposers') {
@@ -206,7 +207,7 @@ class CatalystVoterToolComponent extends Component
                 fn ($q) => $q->whereRelation('proposals', 'proposals.status', '=', 'complete')
             )->whereRelation('fund.parent', 'id', '=', 97)
                 ->orderbyRaw($orderClause)
-                ->paginate(18);
+                ->fastPaginate(18);
             $this->searchArgs['count'] = $this->groupSearchPaginator->total();
             $this->proposals = $this->groupSearchPaginator->items();
         } elseif ($this->searchGroup == 'womanProposals') {
@@ -216,11 +217,11 @@ class CatalystVoterToolComponent extends Component
             }
             $orderClause = "{$this->orderBy} {$this->order}";
             $this->groupSearchPaginator = Proposal::whereRelation('metas', 'key', '=', 'woman_proposal')
-                ->orderbyRaw($orderClause)->paginate(18);
+                ->orderbyRaw($orderClause)->fastPaginate(18);
             $this->searchArgs['count'] = $this->groupSearchPaginator->total();
             $this->proposals = $this->groupSearchPaginator->items();
         } else {
-            $this->paginator = $this->searchBuilder->paginate($this->perPage);
+            $this->paginator = $this->searchBuilder->fastPaginate($this->perPage);
             $this->searchArgs['count'] = $this->paginator->total();
             $this->proposals = $this->paginator->items();
         }

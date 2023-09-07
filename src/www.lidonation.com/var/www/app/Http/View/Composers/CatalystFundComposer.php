@@ -31,7 +31,7 @@ class CatalystFundComposer
                     'proposals as funded_proposals_count' => function ($query) {
                         $query->whereNotNull('funded_at')->where('type', 'proposal');
                     }, ],
-            )->orderBy('title', 'desc')->paginate(24);
+            )->orderBy('title', 'desc')->fastPaginate(24);
 
         $title = $fund->label;
         $view->with(compact('challenges', 'title', 'fund'));

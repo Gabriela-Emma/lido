@@ -20,6 +20,7 @@ mix.ts('resources/js/catalyst-explorer.ts', 'public/js')
     .ts('resources/js/rewards.ts', 'public/js')
     .ts('resources/js/lido-search.ts', 'public/js')
     .ts('resources/js/governance-marathon.ts', 'public/js')
+    .ts('resources/js/earn-ccv4.ts', 'public/js')
 
     .js('resources/js/partners.ts', 'public/js')
     .js('resources/js/app.js', 'public/js')
@@ -43,6 +44,7 @@ mix.ts('resources/js/catalyst-explorer.ts', 'public/js')
     .sass('resources/sass/governance-day.scss', 'public/css')
     .sass('resources/sass/app.scss', 'public/css')
     .sass('resources/sass/lido-search.scss', 'public/css')
+    .sass('resources/sass/earn-ccv4.scss', 'public/css')
 
     .options({
         postCss: [

@@ -21,7 +21,7 @@ class HandleInertiaRequests extends Middleware
             'catalyst-explorer' => 'layouts/catalyst-explorer',
             'earn' => 'layouts/earn',
             'rewards' => 'layouts/rewards',
-            's'=> 'layouts/lido-search',
+            's' => 'layouts/lido-search',
             default => 'layout/app'
         };
     }
@@ -44,10 +44,7 @@ class HandleInertiaRequests extends Middleware
     public function share(Request $request): array
     {
         $user = $request->user()
-            ?->only('id', 'name', 'email', 'bio', 'git', 'discord', 'linkedin', 'telegram', 'twitter');
-        //        dd(
-        //            $request->user()?->rewards()->where('model_type', LearningLesson::class)->sum('amount')
-        //        );
+            ?->only('id', 'name', 'email', 'bio', 'git', 'discord', 'linkedin', 'telegram', 'twitter','profile_photo_url');
         if ($user) {
             $user['roles'] = $request->user()?->getRoleNames();
         }

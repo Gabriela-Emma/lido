@@ -7,6 +7,8 @@ use App\Jobs\CardanoStatsJob;
 use App\Jobs\LidoStatsJob;
 use App\Jobs\ProcessPendingWithdrawalsJob;
 use App\Jobs\RefreshLidoTwitterToken;
+use App\Jobs\SyncCatalystVotingPowersJob;
+use App\Jobs\SyncCatatalystVotersJob;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -27,15 +29,22 @@ class Kernel extends ConsoleKernel
         $schedule->command('model:prune')->weekly();
         $schedule->command('sync:repo')->daily();
 
-        $schedule->job(new ProcessPendingWithdrawalsJob)->everyFiveMinutes();
+        // $schedule->job(new ProcessPendingWithdrawalsJob)->daily();
         $schedule->job(new CalculateDelegationEpochs)->daily();
         $schedule->job(new LidoStatsJob)->everyFifteenMinutes();
         $schedule->job(new CardanoStatsJob)->everyTwoHours();
         $schedule->job(new RefreshLidoTwitterToken)->everyThirtyMinutes();
 
+        // if (app()->environment('production')) {
+        //     $schedule->job(new SyncCatatalystVotersJob)->daily();
+        //     $schedule->job(new SyncCatalystVotingPowersJob)->daily();
+        // }
+
         $schedule->command('ln:sitemap:generate')->weekly();
 
         $schedule->command('media-library:delete-old-temporary-uploads')->daily();
+        // $schedule->command('ln:ca-sync-f10 113')->everyTwoHours();
+        // $schedule->command('ln:ca-cleanup-f10 113')->everyTwoHours();
 
         //crawler commands
         //        $schedule->command('ln:crawl-iohk-blog --lang=en')->daily()->at('05::00');

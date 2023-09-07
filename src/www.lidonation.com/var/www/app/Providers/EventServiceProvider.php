@@ -5,6 +5,8 @@ namespace App\Providers;
 use App\Models\AnswerResponse;
 use App\Models\Assessment;
 use App\Models\CatalystGroup;
+use App\Models\CatalystRank;
+use App\Models\CatalystUser;
 use App\Models\Category;
 use App\Models\Cause;
 use App\Models\Comment;
@@ -31,6 +33,8 @@ use App\Models\User;
 use App\Models\Wallet;
 use App\Observers\AnswerResponseObserver;
 use App\Observers\CatalystGroupObserver;
+use App\Observers\CatalystRankObserver;
+use App\Observers\CatalystUserObserver;
 use App\Observers\CategoryObserver;
 use App\Observers\CauseObserver;
 use App\Observers\CommentObserver;
@@ -50,29 +54,29 @@ use App\Observers\TranslationObserver;
 use App\Observers\TxObserver;
 use App\Observers\UserObserver;
 use App\Observers\WalletObserver;
-use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use Spatie\Comments\Notifications\PendingCommentNotification;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
+use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+use Spatie\Comments\Notifications\PendingCommentNotification;
 
 class EventServiceProvider extends ServiceProvider
 {
     /**
      * Register any events for your application.
      */
-
     protected $listen = [
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
     ];
-    
+
     public function boot(): void
     {
         AnswerResponse::observe(AnswerResponseObserver::class);
         Cause::observe(CauseObserver::class);
         Category::observe(CategoryObserver::class);
         CatalystGroup::observe(CatalystGroupObserver::class);
+        CatalystUser::observe(CatalystUserObserver::class);
         Comment::observe(CommentObserver::class);
         Assessment::observe(LegacyCommentObserver::class);
         Definition::observe(DefinitionObserver::class);
@@ -96,6 +100,7 @@ class EventServiceProvider extends ServiceProvider
         User::observe(UserObserver::class);
         Wallet::observe(WalletObserver::class);
         Rule::observe(RuleObserver::class);
+        CatalystRank::observe(CatalystRankObserver::class);
 
         PendingCommentNotification::sendTo(function (Comment $comment) {
             return User::role(['admin', 'super admin'])->get(); // select some users

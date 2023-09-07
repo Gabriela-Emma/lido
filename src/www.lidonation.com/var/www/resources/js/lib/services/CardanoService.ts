@@ -21,53 +21,63 @@ export default class CardanoService {
     }
 
     public async getStakeAccount(stakeAddress: string) {
-        if (typeof stakeAddress === 'undefined' || !stakeAddress) {
+        if (typeof stakeAddress === "undefined" || !stakeAddress) {
             return null;
         }
         return (await this.api.get(`/accounts/${stakeAddress}`))?.data;
     }
 
     public async getStakeRegistrations(stakeAddress: string) {
-        if (typeof stakeAddress === 'undefined' || !stakeAddress) {
+        if (typeof stakeAddress === "undefined" || !stakeAddress) {
             return null;
         }
-        return (await this.api.get(`/accounts/${stakeAddress}/registrations`))?.data;
+        return (await this.api.get(`/accounts/${stakeAddress}/registrations`))
+            ?.data;
     }
 
     public async getStakeHistory(stakeAddress: string) {
-        if (typeof stakeAddress === 'undefined' || !stakeAddress) {
+        if (typeof stakeAddress === "undefined" || !stakeAddress) {
             return null;
         }
         return (await this.api.get(`/accounts/${stakeAddress}/history`))?.data;
     }
 
     public async getStakeRewards(stakeAddress: string) {
-        if (typeof stakeAddress === 'undefined' || !stakeAddress) {
+        if (typeof stakeAddress === "undefined" || !stakeAddress) {
             return null;
         }
-        return (await this.api.get(`/accounts/${stakeAddress}/rewards`, {params: {order: 'desc'}}))?.data;
+        return (
+            await this.api.get(`/accounts/${stakeAddress}/rewards`, {
+                params: { order: "desc" },
+            })
+        )?.data;
     }
 
     public async getStakeAddress(walletAddress: string) {
-        if (typeof walletAddress === 'undefined' || !walletAddress) {
+        if (typeof walletAddress === "undefined" || !walletAddress) {
             return null;
         }
-        return (await this.api.get(`/addresses/${walletAddress}`))?.data.stake_address;
+        return (await this.api.get(`/addresses/${walletAddress}`))?.data
+            .stake_address;
     }
 
     public async getHandle(stakeAddress: string) {
         await this.init();
         if (stakeAddress) {
             try {
-                let asset = (await this.api.get(`/accounts/${stakeAddress}/addresses/assets`))?.data?.[0]?.unit
+                let asset = (
+                    await this.api.get(
+                        `/accounts/${stakeAddress}/addresses/assets`
+                    )
+                )?.data?.[0]?.unit;
                 if (!asset) {
                     return null;
                 }
-                return (await this.api.get(`/assets/${asset}`))?.data.onchain_metadata?.files?.[0]?.name;
+                return (await this.api.get(`/assets/${asset}`))?.data
+                    .onchain_metadata?.files?.[0]?.name;
             } catch (error) {
                 return null;
             }
-
         }
     }
 
@@ -87,17 +97,25 @@ export default class CardanoService {
             //     date: (new Date('08/08/2022 08:29:21 UTC')).toLocaleString()
             // }
         ];
-        const blocks = (await this.api.get(`/pools/${this.poolId}/blocks`, {params: {count: 21, order: 'desc'}}))?.data;
-        const mintedBlocks = await axios.all(blocks.map(async (block) => {
-            const res = await this.api.get(`/blocks/${block}`);
-            return {
-                date: (new Date(res.data.time * 1000)).toLocaleString(),
-                ...res.data
-            };
-        }));
+        const blocks = (
+            await this.api.get(`/pools/${this.poolId}/blocks`, {
+                params: { count: 21, order: "desc" },
+            })
+        )?.data;
+        const mintedBlocks = await axios.all(
+            blocks.map(async (block) => {
+                const res = await this.api.get(`/blocks/${block}`);
+                return {
+                    date: new Date(res.data.time * 1000).toLocaleString(),
+                    ...res.data,
+                };
+            })
+        );
         return [
-            ...(reject(upcomingBlocks, (b) => some(mintedBlocks, {slot: b.slot}))),
-            ...mintedBlocks
+            ...reject(upcomingBlocks, (b) =>
+                some(mintedBlocks, { slot: b.slot })
+            ),
+            ...mintedBlocks,
         ];
     }
 
@@ -113,7 +131,7 @@ export default class CardanoService {
 
     public async isLidoDelegate(stakeAddress: string) {
         await this.init();
-        if (typeof stakeAddress === 'undefined' || !stakeAddress) {
+        if (typeof stakeAddress === "undefined" || !stakeAddress) {
             return false;
         }
         const res = await this.getStakeAccount(stakeAddress);
@@ -131,7 +149,7 @@ export default class CardanoService {
         this.api = axios.create({
             baseURL: this.blockfrostUrl,
             timeout: 5000,
-            headers: {'project_id': keys?.projectId}
+            headers: { project_id: keys?.projectId },
         });
     }
 }

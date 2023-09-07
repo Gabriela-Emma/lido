@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Earn;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -26,6 +27,31 @@ class EarnController extends Controller
         }
     }
 
+    public function duplicateAccount()
+    {
+        if (previous_route_name_is('earn.learn.duplicate')) {
+            return to_route('earn.learn');
+        } else {
+            return Inertia::modal('DuplicateAccount')
+                ->baseRoute('earn.learn');
+        }
+    }
+
+    public function awardNft(){
+        $user = User::find(Auth::id());
+        $topicId = $user->learning_attempts->first()->learning_topic_id;
+        $topicNft = $user->nfts()->where([
+            ['model_id', $topicId],
+            ['model_type', 'App\Models\LearningTopic']
+        ])->first();
+
+        return Inertia::modal('NftAwarded')
+            ->with([
+                'nft' => $topicNft,
+            ])
+            ->baseURL(url()->previous());
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -37,6 +63,7 @@ class EarnController extends Controller
             'crumbs' => [
                 ['name' => 'Ways to Earn', 'link' => route('earn.home')],
             ],
+            'learnOpen' => config('app.slte.registration_open'),
         ]);
     }
 
@@ -52,10 +79,11 @@ class EarnController extends Controller
 
     public function storeWallet()
     {
-        $u  = Auth::user();
+        $u = Auth::user();
         $u->wallet_address = request('wallet_address');
         $u->wallet_stake_address = request('wallet_stake_address');
         $u->save();
+
         return true;
     }
 }

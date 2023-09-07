@@ -17,7 +17,7 @@ class NftSeeder extends Seeder
     public function run()
     {
         Nft::factory()
-            ->count(54)
+            ->count(5)
             ->state(new Sequence(
                 function ($sequence) {
                     $podcast = Podcast::all()->random();

@@ -33,7 +33,6 @@ class CatalystMyGroupsController extends Controller
 
     public function create(CatalystUser $catalystUser)
     {
-        // dd($catalystUser);
         return Inertia::modal('Auth/CreateGroup')
             ->with([
                 'owner' => $catalystUser,
@@ -83,7 +82,7 @@ class CatalystMyGroupsController extends Controller
 
         $proposals = $this->proposalsQuery($catalystGroup);
 
-        return $proposals->paginate($per_page, ['*'], 'p', $curr_page)->setPath('/')->onEachSide(0);
+        return $proposals->fastPaginate($per_page, ['*'], 'p', $curr_page)->setPath('/')->onEachSide(0);
     }
 
     public function removeProposal(CatalystGroup $catalystGroup, $proposalID)
@@ -106,7 +105,7 @@ class CatalystMyGroupsController extends Controller
     public function getMembers(Request $request, CatalystGroup $catalystGroup)
     {
         $members = CatalystUser::whereRelation('groups', 'id', $catalystGroup?->id)
-            ->paginate(8, ['*'], 'p')->setPath('/');
+            ->fastPaginate(8, ['*'], 'p')->setPath('/');
 
         return $members->through(fn ($user) => [
             'id' => $user->id,

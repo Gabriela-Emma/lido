@@ -32,6 +32,7 @@ class QuizAttemptsPerDay extends Trend
     {
         return [
             15 => __('15 Days'),
+            7 => __('7 Days'),
             30 => __('30 Days'),
             45 => __('45 Days'),
             60 => __('60 Days'),

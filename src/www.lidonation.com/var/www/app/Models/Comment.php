@@ -10,6 +10,12 @@ use Spatie\Comments\Notifications\PendingCommentNotification;
 
 class Comment extends \Spatie\Comments\Models\Comment
 {
+    protected $casts = [
+        'extra' => 'array',
+        'approved_at' => 'datetime',
+        'created_at' => 'datetime',
+    ];
+
     protected $with = [
         'commentator',
     ];

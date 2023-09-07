@@ -41,6 +41,7 @@ class WithdrawalData extends Data
 
         #[TypeScriptOptional]
         #[DataCollectionOf(RewardData::class)]
-        public ? DataCollection $rewards,
-    ) {}
+        public ?DataCollection $rewards,
+    ) {
+    }
 }

@@ -1,7 +1,7 @@
 <div class="sticky top-0 z-30 border-b border-teal-400 md:border-teal-300 md:bg-teal-light-500 bg-teal-light-500 page-nav">
     <div class='container relative'>
-        <nav class="w-full relative">
-            <ul class="flex flex-row items-center justify-end gap-2 py-2 text-xs md:text-sm flex-nowrap overflow-x-auto">
+        <nav class="relative w-full">
+            <ul class="flex flex-row items-center justify-end gap-2 py-2 overflow-x-auto text-xs md:text-sm flex-nowrap">
 
                 <li class="flow-root menu-item">
                     <a class="px-1 py-3 text-white menu-link {{ request()->routeIs('projectCatalyst.dashboard') ? 'text-yellow-500' : '' }} hover:text-yellow-500"
@@ -10,38 +10,38 @@
                     </a>
                 </li>
                 <li class="flow-root menu-item">
-                    <a class="px-1 py-3 text-white menu-link {{ request()->routeIs('projectCatalyst.funds') ? 'text-yellow-500' : '' }} hover:text-yellow-500"
+                    <a class="px-1 py-3 text-white menu-link {{ request()->routeIs('catalystExplorer.funds') ? 'text-yellow-500' : '' }} hover:text-yellow-500"
                        href="{{localizeRoute('catalystExplorer.funds')}}">
                         {{ $snippets->funds }}
                     </a>
                 </li>
                 <li class="flow-root menu-item">
-                    <a class="px-1 py-3 text-white menu-link {{ request()->routeIs('projectCatalyst.projects') ? 'text-yellow-500' : '' }} hover:text-yellow-500"
+                    <a class="px-1 py-3 text-white menu-link {{ request()->routeIs('catalystExplorer.proposals') ? 'text-yellow-500' : '' }} hover:text-yellow-500"
                     href="{{localizeRoute('catalystExplorer.proposals')}}">
                         {{ $snippets->projects }}
                     </a>
                 </li>
 
                 <li class="flow-root menu-item">
-                    <a class="px-1 py-3 text-white menu-link {{ request()->routeIs('projectCatalyst.users') ? 'text-yellow-500' : '' }} hover:text-yellow-500"
+                    <a class="px-1 py-3 text-white menu-link {{ request()->routeIs('catalystExplorer.people') ? 'text-yellow-500' : '' }} hover:text-yellow-500"
                         href="{{localizeRoute('catalystExplorer.people')}}">
                         {{ $snippets->people }}
                     </a>
                 </li>
                 <li class="flow-root menu-item">
-                    <a class="px-1 py-3 text-white menu-link {{ request()->routeIs('projectCatalyst.groups') ? 'text-yellow-500' : '' }} hover:text-yellow-500"
+                    <a class="px-1 py-3 text-white menu-link {{ request()->routeIs('catalystExplorer.groups') ? 'text-yellow-500' : '' }} hover:text-yellow-500"
                         href="{{localizeRoute('catalystExplorer.groups')}}">
                         {{ $snippets->groups }}
                     </a>
                 </li>
                 <li class="flow-root menu-item">
-                    <a class="px-1 py-3 text-white menu-link whitespace-nowrap {{ request()->routeIs('projectCatalyst.voterTool') ? 'text-yellow-500' : '' }} hover:text-yellow-500"
-                       href="{{localizeRoute('projectCatalyst.voterTool')}}">
+                    <a class="px-1 py-3 text-white menu-link whitespace-nowrap {{ request()->routeIs('catalystExplorer.voter-tool') ? 'text-yellow-500' : '' }} hover:text-yellow-500"
+                       href="{{localizeRoute('catalystExplorer.voterTool')}}">
                         Voter Tool
                     </a>
                 </li>
-                <li class="flow-root menu-item" x-data="bookmarksMenuLink">
-                    <a href="{{localizeRoute('projectCatalyst.bookmarks')}}"
+                <li class="flow-root menu-item">
+                    <a href="{{localizeRoute('catalystExplorer.bookmarks')}}"
                         class="inline-flex items-center menu-link group">
                         <span class="relative z-0 inline-flex rounded-md shadow-sm" x-cloak>
                         <button type="button"
@@ -60,11 +60,7 @@
                             </svg>
                             <span class="hidden md:inline-block">Bookmarks</span>
                         </button>
-                        <button
-                            type="button"
-                            class="relative inline-flex items-center px-2 py-1 -ml-px text-sm font-medium text-white bg-white bg-pink-700 border border-pink-300 rounded-r-sm group-hover:bg-pink-600 focus:z-10 focus:outline-none">
-                            <span class="min-w-[1.45rem]" x-text="getBookmarkCount()"></span>
-                        </button>
+
                         </span>
                     </a>
                 </li>

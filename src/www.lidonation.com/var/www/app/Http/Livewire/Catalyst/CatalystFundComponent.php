@@ -66,6 +66,7 @@ class CatalystFundComponent extends Component
         $this->fund = Fund::where('slug', '=', request()->route('fund'))
             ->with(['fundChallenges'])
             ->first();
+
         $type = match ($this->fund?->type) {
             'challenge_setting' => 'challenge',
             default => 'proposal'
@@ -86,24 +87,20 @@ class CatalystFundComponent extends Component
             ->whereIn('fund_id', $this->fund?->fundChallenges->pluck('id'))
             ->count();
 
-        $this->totalProposalsCount = DB::table('proposals')
-            ->where('type', $type)
+        $this->totalProposalsCount = Proposal::where('type', $type)
             ->whereIn('fund_id', $this->fund?->fundChallenges->pluck('id'))
             ->count();
 
-        $this->fundedProposalsCount = DB::table('proposals')
-            ->where('type', $type)
+        $this->fundedProposalsCount = Proposal::where('type', $type)
             ->whereNotNull('funded_at')
             ->whereIn('fund_id', $this->fund?->fundChallenges->pluck('id'))
             ->count();
 
-        $this->totalAmountRequested = DB::table('proposals')
-            ->where('type', $type)
+        $this->totalAmountRequested = Proposal::where('type', $type)
             ->whereIn('fund_id', $this->fund?->fundChallenges->pluck('id'))
             ->sum('amount_requested');
 
-        $this->totalAmountAwarded = DB::table('proposals')
-            ->where('type', $type)
+        $this->totalAmountAwarded = Proposal::where('type', $type)
             ->whereNotNull('funded_at')
             ->whereIn('fund_id', $this->fund?->fundChallenges->pluck('id'))
             ->sum('amount_requested');
@@ -114,7 +111,7 @@ class CatalystFundComponent extends Component
                     'proposals as funded_proposals_count' => function ($query) use ($type) {
                         $query->whereNotNull('funded_at')->where('type', $type);
                     }, ],
-            )->orderBy('title', 'desc')->paginate($this->perPage);
+            )->orderBy('title', 'desc')->fastPaginate($this->perPage);
 
         $this->challenges = $this->paginator->items();
 

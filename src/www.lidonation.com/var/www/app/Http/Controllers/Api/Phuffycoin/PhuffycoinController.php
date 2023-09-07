@@ -50,8 +50,8 @@ class PhuffycoinController extends Controller
 
         if ($mintTxsMinting->isEmpty()) {
             $depositTx = $mintTxs->first()?->meta_data?->deposit_tx;
-            $txDetail = $blockfrostService->get("txs/${depositTx}", null)->json();
-            $txUtxos = $blockfrostService->get("txs/${depositTx}/utxos", null)->object();
+            $txDetail = $blockfrostService->get("txs/{$depositTx}", null)->json();
+            $txUtxos = $blockfrostService->get("txs/{$depositTx}/utxos", null)->object();
 
             $depositAddress = collect($txUtxos->inputs ?? null)?->first()?->address;
             $txTime = isset($txDetail['block_time']) ? Carbon::parse($txDetail['block_time']) : null;
@@ -90,7 +90,7 @@ class PhuffycoinController extends Controller
             if ($mintTx->status === 'minting') {
                 $mintingTx = $mintTx->meta_data?->minting_tx;
                 if ($mintingTx) {
-                    $txUtxos = $blockfrostService->get("txs/${mintingTx}/utxos", null);
+                    $txUtxos = $blockfrostService->get("txs/{$mintingTx}/utxos", null);
                     if ($txUtxos->successful()) {
                         $mintTxs->each(function ($tx) {
                             $tx->status = 'minted';
@@ -161,7 +161,7 @@ class PhuffycoinController extends Controller
 
         $depositTx = $request->input('depositTx');
         $mintTxs = $request->input('mintTxs');
-        $txUtxos = $blockfrostService->get("txs/${depositTx}/utxos", null)->object();
+        $txUtxos = $blockfrostService->get("txs/{$depositTx}/utxos", null)->object();
         if (empty($mintTxs)) {
             return response('Invalidate mint data.', 400);
         }

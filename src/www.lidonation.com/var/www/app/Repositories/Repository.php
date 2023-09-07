@@ -64,7 +64,7 @@ class Repository implements RepositoryInterface
         $this->getModel()::withoutGlobalScopes([LimitScope::class]);
         $this->query = $this->getModel()::query();
 
-        return $this->getQuery()->paginate($perPage);
+        return $this->getQuery()->fastPaginate($perPage);
     }
 
     // create a new record in the database

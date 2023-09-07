@@ -5,32 +5,31 @@
             :aria-expanded="open"
             type="button"
             :class="[{'rounded-sm': !open},backgroundColor]"
-            class="px-2 py-1.5 rounded-sm rounded-tl-sm rounded-tr-sm inline-flex justify-between gap-2  text-white menu-link font-semibold relative">
+            class="relative inline-flex items-center justify-between gap-2 px-3 py-2 font-medium text-white rounded-sm menu-link xl:text-xl 3xl:text-2xl">
             <span
-                v-show="walletLoading"
+                v-show="walletLoading && walletName"
                 class="flex items-center justify-center w-4 p-1 bg-white rounded-full bg-opacity-90">
                 <svg
                     class="relative w-3 h-3 border-t-2 border-b-2 rounded-full animate-spin border-primary-600"
                     viewBox="0 0 24 24"></svg>
             </span>
 
-            <span class="flex items-center gap-2 tracking-wide" v-show="walletData?.handle">
+            <!-- <span class="flex items-center gap-2 tracking-wide" v-show="walletData?.handle">
                 <span v-text="(walletData?.handle) + ' connected'"
                       class="text-sm text-slate-200 h-full border-primary-200 border-opacity-50 p-0.5 capitalize">
                 </span>
                 <span>
-                    <!-- <span v-text="myWallet.balance"></span> -->
-                    <!-- <span class="text-slate-100" aria-hidden="true">₳</span> -->
                 </span>
-            </span>
+            </span> -->
 
-            <span class="flex gap-2 tracking-wide items-center" v-show="!walletData?.handle">
-                <span>Connect Your Wallet</span>
+            <span class="flex items-center gap-2 tracking-wide">
+                <span class="text-sm" v-show="!wallet?.address">Connect Your Wallet</span>
+                <span class="text-sm" v-show="wallet?.address">{{wallet?.name.charAt(0).toUpperCase() + wallet?.name.slice(1)}} Connected</span>
                 <span class="text-slate-100" aria-hidden="true">&darr;</span>
             </span>
         </button>
 
-        <div v-if="unsupportedNetwork" class="text-xs text-red-600 p-1 text-center">
+        <div v-if="unsupportedNetwork" class="p-1 text-xs text-center text-red-600">
             <span class="underline">{{ unsupportedNetworkRes }} try again!</span>
         </div>
 
@@ -98,14 +97,14 @@ let {walletName} = storeToRefs(walletStore);
 let unsupportedNetwork = ref(false);
 let unsupportedNetworkRes = ref(null);
 
-async function enableWallet(walletName: string) {
+async function enableWallet(wallet_name: string) {
     walletLoading.value = true;
     unsupportedNetwork.value = false;
     let walletData = {
-        name: walletName
+        name: wallet_name
     } as Wallet;
     try {
-        let connectRes = await walletService.connectWallet(walletName)
+        let connectRes = await walletService.connectWallet(wallet_name)
         if(connectRes){
             unsupportedNetwork.value = true;
             unsupportedNetworkRes.value = connectRes;
@@ -122,6 +121,8 @@ async function enableWallet(walletName: string) {
         emit('walletUpdated', walletData);
     } catch (e) {
         console.error(e);
+        wallet.value = null;
+        walletName.value = null;
     }
 }
 

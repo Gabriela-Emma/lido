@@ -16,7 +16,7 @@
         </div>
     @endif
 
-    <div class="flex flex-col w-auto gap-6 p-6 md:flex-row md:items-center md:justify-between z-0">
+    <div class="z-0 flex flex-col w-auto gap-6 p-6 md:flex-row md:items-center md:justify-between">
         <div class="flex-1">
             <!-- Header -->
             <header class="flex flex-col justify-center gap-y-1">
@@ -36,9 +36,9 @@
                         @endif
                     </span>
                     <span
-                        onclick='Livewire.emit("openModal", "catalyst.proposal-quick-view-component", {{ json_encode(["proposalId" => $proposal->id]) }})'
+                        {{-- onclick='Livewire.emit("openModal", "catalyst.proposal-quick-view-component", {{ json_encode(["proposalId" => $proposal->id]) }})'
                         x-tooltip.theme.teal="'Proposal Quick View'"
-                        class="font-semibold cursor-pointer text-gray-500 text-md hover:text-teal-600 ml-3 relative top-1 flex flex-row flex-nowrap gap-1 items-center">
+                        class="relative flex flex-row items-center gap-1 ml-3 font-semibold text-gray-500 cursor-pointer text-md hover:text-teal-600 top-1 flex-nowrap">
                         <span class="text-xs">Quickview</span>
 
                         <svg xmlns="http://www.w3.org/2000/svg" x-transition
@@ -48,10 +48,10 @@
                                 d="M3 4a1 1 0 011-1h4a1 1 0 010 2H6.414l2.293 2.293a1 1 0 01-1.414 1.414L5 6.414V8a1 1 0 01-2 0V4zm9 1a1 1 0 110-2h4a1 1 0 011 1v4a1 1 0 11-2 0V6.414l-2.293 2.293a1 1 0 11-1.414-1.414L13.586 5H12zm-9 7a1 1 0 112 0v1.586l2.293-2.293a1 1 0 011.414 1.414L6.414 15H8a1 1 0 110 2H4a1 1 0 01-1-1v-4zm13-1a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 110-2h1.586l-2.293-2.293a1 1 0 011.414-1.414L15 13.586V12a1 1 0 011-1z"
                                 clip-rule="evenodd"/>
                         </svg>
-                    </span>
+                    </span> --}}
                 </h2>
                 <div x-data="{ tooltip: 'Updated {{$proposal->funding_updated_at}}' }"
-                     class="flex flex-row flex-nowrap mb-2 text-white">
+                     class="flex flex-row mb-2 text-white flex-nowrap">
                     @if($proposal->amount_received > 0.00)
                         <div
                             x-tooltip.theme.accent="tooltip"
@@ -70,7 +70,7 @@
                         </sub>
                     </div>
 
-                    @if($proposal->fund?->status == 'governance')
+                    {{-- @if($proposal->fund?->status == 'governance')
                     <div class="inline-block ml-2" x-data="bookmarkButton" x-cloak>
                         <button type="button"
                                 onclick='Livewire.emit("openModal", "catalyst.proposal-quick-view-component", {{ json_encode(["proposalId" => $proposal->id]) }})'
@@ -86,7 +86,7 @@
                             </svg>
                         </button>
                     </div>
-                    @endif
+                    @endif --}}
                 </div>
             </header>
 

@@ -22,32 +22,26 @@ labels:
 DEPLOY_INFRA: False
 
 services:
-  elasticsearch:
-    version: 7.9.3
-    replicas: 1
-    allow_mmap: true
-    realm:
-      fuffyUser:
-      user:
-      # [required]
-      passwordSha256:
-      # [required]
-      config: {
-        ES_JAVA_OPTS: '-Xms512m -Xmx512m',
-      }
-    resources:
-      requests:
-        memory: 1Gi
-        cpu: 100
-      limits:
-        memory: 4Gi
-        cpu: 1
-    storage:
-      size: 10Gi
-      storageClass: longhorn
+  fortuna:
+    secret:
+      FORTUNA_SEED:
   kibana:
     name: kibana
     version: 7.9.3
+  kupo:
+    image:
+      repository: cardanosolutions/kupo
+      tag: v2.6.0
+    persistence:
+      size: 200Gi
+      storageClass: longhorn
+  ogmios:
+    image:
+      repository: cardanosolutions/ogmios
+      tag: v6.0.0
+    persistence:
+      size: 1Gi
+      storageClass: longhorn
   redis:
     secret:
       REDIS_PASSWORD:
@@ -67,6 +61,7 @@ services:
     replicaCount: 2
   dbsync:
     tier: "t2"
+    dbHost: lidolovelace-dbsync-db-postgresql
     restore_snapshot: ''
     persistence:
       size: 360Gi
@@ -224,7 +219,7 @@ services:
 
       POSTGRESQL_DB_SYNC_DB_HOST: lidolovelace-dbsync-db-postgresql,
       POSTGRESQL_DB_SYNC_DB: cexplorer,
-      POSTGRESQL_DB_SYNC_USER: postgres,
+      POSTGRESQL_DB_SYNC_USER: llovelace,
       POSTGRESQL_WEB_DB_HOST: lidolovelace-web-db-postgresql,
       POSTGRESQL_WEB_DB: lidoweb,
       POSTGRESQL_WEB_USER: llovelace,
@@ -234,11 +229,11 @@ services:
       LOG_CHANNEL: stack,
 
       MAIL_DRIVER: smtp,
-      MAIL_HOST: smtp.mailtrap.io,
-      MAIL_PORT: 2525,
+      MAIL_HOST: smtp.mailgun.org,
+      MAIL_PORT: 587,
 
-      MAIL_FROM_ADDRESS: 'team@lidonation.com',
-      MAIL_FROM_NAME: 'Lido Nation',
+      MAIL_FROM_ADDRESS: 'hello@lidonation.com',
+      MAIL_FROM_NAME: 'Lido Nation Foundation',
       MEDIA_DISK: 'public',
 
       MAILCHIMP_APIKEY: '',
@@ -250,7 +245,7 @@ services:
       PHP_OPCACHE_ENABLE: 1,
       PHP_OPCACHE_SAVE_COMMENTS: 1,
       PHP_OPCACHE_VALIDATE_TIMESTAMPS: 0,
-      PHP_MEMORY_LIMIT: 2048M,
+      PHP_MEMORY_LIMIT: 8192M,
       PHP_DISABLE_FUNCTIONS: "passthru,shell_exec,show_source,symlink,system",
 
       PUSHER_CLUSTER:  us2,

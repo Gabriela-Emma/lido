@@ -280,7 +280,7 @@
                             proposalsCount: {{$proposal->fund?->proposals_count}},
                             fundHero: '{{$proposal->fund?->thumbnail_url}}'
                         } )"
-                        class="inline-flex items-center gap-2 px-4 py-2 text-sm md:text-base 2xl:text-xl font-medium text-gray-700 bg-white border border-gray-300 rounded-sm shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent-500">
+                        class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-sm shadow-sm md:text-base 2xl:text-xl hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent-500">
                         <span x-show="!has({{$proposal->id}}, 'upvote')">Add to My Upvotes</span>
                         <span x-show="has({{$proposal->id}}, 'upvote')">Remove From My Upvotes</span>
                         <svg x-show="has({{$proposal->id}}, 'upvote')" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-accent-700" viewBox="0 0 20 20" fill="currentColor">
@@ -304,7 +304,7 @@
                             proposalsCount: {{$proposal->fund?->proposals_count}},
                             fundHero: '{{$proposal->fund?->thumbnail_url}}'
                         })"
-                        class="inline-flex items-center gap-2 px-4 py-2 text-sm md:text-base 2xl:text-xl font-medium text-gray-700 bg-white border border-gray-300 rounded-sm shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500">
+                        class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-sm shadow-sm md:text-base 2xl:text-xl hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500">
                         <span x-show="!has({{$proposal->id}}, 'downvote')">Add to My Downvotes</span>
                         <span x-show="has({{$proposal->id}}, 'downvote')">Remove From My Downvotes</span>
 

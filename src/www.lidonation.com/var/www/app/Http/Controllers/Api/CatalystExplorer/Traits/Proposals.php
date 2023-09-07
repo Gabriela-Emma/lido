@@ -6,6 +6,7 @@ use App\Http\Resources\ProposalResource;
 use App\Models\Proposal;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\ResponseFactory;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
 use OpenApi\Annotations as OA;
@@ -138,11 +139,18 @@ trait Proposals
                 'message' => 'query parameter \'per_page\' should not exceed 60'], 100);
         }
 
-        Proposal::withoutGlobalScopes();
-        $proposals = Proposal::query()
-            ->orderByDesc('id')
-            ->filter(request(['search', 'user_id', 'fund_id', 'challenge_id']));
+        Proposal::withoutGlobalScope(OrderByDateScope::class);
+        if (request()->has('search')) {
+            $proposals = Proposal::search(request('search'))->query(
+                fn (Builder $query) => $query->filter(request(['user_id', 'fund_id', 'challenge_id']))
+            );
 
-        return ProposalResource::collection($proposals->paginate($per_page)->onEachSide(0));
+        } else {
+            $proposals = Proposal::query()
+                ->orderByDesc('id')
+                ->filter(request(['user_id', 'fund_id', 'challenge_id']));
+        }
+
+        return ProposalResource::collection($proposals->fastPaginate($per_page)->onEachSide(0));
     }
 }

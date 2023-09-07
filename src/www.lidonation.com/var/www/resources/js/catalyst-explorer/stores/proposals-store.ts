@@ -1,31 +1,37 @@
 import { AxiosError } from "axios";
 import {defineStore} from "pinia";
-import {Ref, ref} from "vue";
-import Pagination from "../models/pagination";
+import {Ref, onMounted, ref} from "vue";
 import Proposal from "../models/proposal";
-import ProposalFilters from "../models/proposall-filters";
+import ProposalFilters from "../models/proposal-filters";
+import { VARIABLES } from "../models/variables";
 
-export const proposalsStore = defineStore('proposals', () => {
-    const pagination = ref({
-
-    } as Pagination);
-    const name = ref('Eduardo');
-    const filters = ref('Eduardo');
-
-    function search() {
-        console.log(window.axios);
-    }
-
-    return {
-        pagination,
-        name,
-        filters,
-        search
-    };
-});
-export const useProposalsStore = defineStore('proposal', () => {
+export const useProposalsStore = defineStore('proposals', () => {
     let filters: Ref<ProposalFilters> = ref();
     let proposals = ref<Proposal[]>([]);
+    let viewType = ref('card');
+
+    function setViewType(type?: string) {
+        if (!type) {
+            const urlParams = new URLSearchParams(window.location.search);
+            if ( urlParams.has(VARIABLES.QUICKPITCHES) ) {
+                viewType.value = 'quickpitch';
+            } else if ( urlParams.has(VARIABLES.RANKED_VIEW) ) {
+                viewType.value = 'ranked';
+            } else if( urlParams.has(VARIABLES.CARD_VIEW) ) {
+                viewType.value = 'card';
+            } else {
+                viewType.value = getRandomElementFromArray(viewTypes);
+            }
+            return;
+        }
+        viewType.value = type;
+    }
+
+    const viewTypes = ['card', 'ranked'];
+
+    function getRandomElementFromArray(array) {
+    return array[Math.floor(Math.random() * array.length)];
+    }
 
     async function search(f: ProposalFilters) {
         filters.value = f;
@@ -59,10 +65,14 @@ export const useProposalsStore = defineStore('proposal', () => {
         }
     }
 
+    onMounted(setViewType);
+
     return {
         search,
         loadProposals,
+        setViewType,
         filters,
+        viewType,
         proposals
     };
 });

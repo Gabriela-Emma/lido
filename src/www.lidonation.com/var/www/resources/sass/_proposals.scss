@@ -1,7 +1,15 @@
 body.proposal{
     article {
+        ul, ol {
+            @apply list-disc list-outside ml-5 flex flex-col gap-2;
+
+            ::marker {
+                @apply text-gray-600 m-0 inline;
+            }
+        }
+
         a, li {
-            @apply break-all;
+            @apply break-words;
         }
     }
 }
@@ -20,4 +28,11 @@ body.proposal #discussions {
 
 .proposal-drip {
     --plyr-badge-background: #FFF;
+}
+
+
+body.challenge{
+    .menu-item.global-search a > *{
+        @apply text-white border-white hover:text-black;
+    }
 }

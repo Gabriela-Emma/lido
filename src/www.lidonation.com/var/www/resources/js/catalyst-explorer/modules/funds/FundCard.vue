@@ -1,38 +1,38 @@
 <template>
-    <li class="py-8 px-6 bg-white text-center rounded-sm flex flex-row justify-center xl:px-8 xl:text-left">
-        <div class="space-y-6 flex flex-col justify-between w-full xl:space-y-10">
+    <li class="flex flex-row justify-center px-6 py-8 text-center bg-white rounded-sm xl:px-8 xl:text-left">
+        <div class="flex flex-col justify-between w-full space-y-6 xl:space-y-10">
             <a v-bind:href="fund.link"
-            class="w-32 h-32 lg:w-32 lg:h-32 xl:w-44 xl:h-44 rounded-full mx-auto shadow-inner shadow-md">
-                <img class="rounded-full w-full h-full"
+            class="w-32 h-32 mx-auto rounded-full shadow-inner lg:w-32 lg:h-32 xl:w-44 xl:h-44">
+                <img class="w-full h-full rounded-full"
                     v-bind:src="fund.thumbnail_url ?? fund.gravatar"
                     v-bind:alt="fund.title"/>
             </a>
-            <div class="space-y-2 w-full xl:flex xl:items-center xl:justify-between items-end">
-                <div class="font-medium text-lg leading-6 space-y-1 w-full">
+            <div class="items-end w-full space-y-2 xl:flex xl:items-center xl:justify-between">
+                <div class="w-full space-y-1 text-lg font-medium leading-6">
                     <h2 class="mb-2">
                         <a v-bind:href="fund.link"
                         class="text-gray-800 hover:text-teal-700">
                             {{fund.title}}
                         </a>
                     </h2>
-                    <div class="flex flex-row justify-between items-start gap-2 w-full">
-                        <div class="flex flex-col gap2 itemscenter justify-center">
-                            <span class="text-gray-600 font-semibold text-lg">
-                                {{fund.currency_symbol}} {{fund.amount}}
+                    <div class="flex flex-row items-start justify-between w-full gap-2">
+                        <div class="flex flex-col justify-center">
+                            <span class="text-lg font-semibold text-gray-600">
+                                {{ $filters.currency(fund.amount, fund?.currency) }}
                             </span>
-                            <span class="text-gray-500 text-xs"> {{ $t("Total") }} <br />{{ $t("Awarded") }}</span>
+                            <span class="text-xs text-gray-500"> {{ $t("Total") }} <br />{{ $t("Awarded") }}</span>
                         </div>
-                        <div class="flex flex-col gap2 itemscenter justify-center">
-                            <span class="text-gray-600 font-semibold text-lg">
+                        <div class="flex flex-col justify-center">
+                            <span class="text-lg font-semibold text-gray-600">
                                 {{fund.proposals_count}}
                             </span>
-                            <span class="text-gray-500 text-xs">{{ $t("Projects") }} <br />{{ $t("Funded") }}</span>
+                            <span class="text-xs text-gray-500">{{ $t("Projects") }} <br />{{ $t("Funded") }}</span>
                         </div>
-                        <div class="flex flex-col gap2 itemscenter justify-center">
-                            <span class="text-gray-600 font-semibold text-lg">
+                        <div class="flex flex-col justify-center">
+                            <span class="text-lg font-semibold text-gray-600">
                                 {{fund.launch_date}}
                             </span>
-                            <span class="text-gray-500 text-xs">{{ $t("Launched") }}</span>
+                            <span class="text-xs text-gray-500">{{ $t("Launched") }}</span>
                         </div>
                     </div>
                 </div>
@@ -43,7 +43,7 @@
 
 <script lang="ts" setup>
 import Fund from "../../models/fund";
-const props = withDefaults(
+withDefaults(
     defineProps<{
         fund: Fund
     }>(),

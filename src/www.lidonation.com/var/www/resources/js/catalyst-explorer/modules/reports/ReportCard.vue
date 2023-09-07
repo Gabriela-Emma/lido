@@ -1,17 +1,17 @@
 <template>
     <div
-        class="w-full bg-white rounded-sm relative flex flex-col justify-start bg-white shadow-sm mb-4 relative break-inside-avoid drip"
+        class="relative flex flex-col justify-start w-full mb-4 bg-white rounded-sm shadow-sm break-inside-avoid drip"
     >
-        <div class="p-5 break-long-words break-words ">
+        <div class="p-5 break-words break-long-words ">
             <div v-html="$filters.markdown(report.content)"></div>
         </div>
 
-        <div class="mt-16 divide-y divide-teal-300 specs p-5">
-            <div v-if="user" class="py-4 border-t border-teal-300">
-                <ul class="flex flex-row gap-3 justify-end items-center">
+        <div class="p-5 mt-16 divide-y divide-teal-300 specs">
+            <div v-if="user$" class="py-4 border-t border-teal-300">
+                <ul class="flex flex-row items-center justify-end gap-3">
                     <div v-for="(reaction, index) in Object.keys(reactionsCount)" :key="index">
                         <li
-                            class="border flex flex-row gap-1 border-slate-600 hover:border-green-500 p-1 rounded-sm text-xs cursor-pointer"
+                            class="flex flex-row gap-1 p-1 text-xs border rounded-sm cursor-pointer border-slate-600 hover:border-green-500"
                             @click.prevent="addReaction(reaction)"
                         >
                             <button
@@ -25,22 +25,22 @@
             </div>
 
             <div
-                class="flex flex-row gap-4 justify-between items-center py-4 spec-amount-received"
+                class="flex flex-row items-center justify-between gap-4 py-4 spec-amount-received"
             >
-                <div class="text-teal-800 opacity-50 text-sm">
+                <div class="text-sm text-teal-800 opacity-50">
                     {{ $t('Disbursed to Date') }}
                 </div>
-                <div class="text-teal-800 font-bold text-base">
+                <div class="text-base font-bold text-teal-800">
                     {{ $filters.currency(report.proposal.amount_received) }}
                 </div>
             </div>
 
             <div
-                class="flex flex-row gap-4 justify-between items-center py-4 spec-title"
+                class="flex flex-row items-center justify-between gap-4 py-4 spec-title"
             >
-                <div class="text-teal-800 opacity-50 text-sm">{{ $t('Proposal') }}</div>
+                <div class="text-sm text-teal-800 opacity-50">{{ $t('Proposal') }}</div>
                 <a
-                    class="text-teal-800 font-medium inline-flex text-base hover:text-yellow-500"
+                    class="inline-flex text-base font-medium text-teal-800 hover:text-yellow-500"
                     target="_blank"
                     :href="
                         $utils.localizeRoute(
@@ -52,26 +52,26 @@
                 </a>
             </div>
 
-            <div class="flex flex-row gap-4 justify-between items-center py-4">
-                <div class="text-teal-800 opacity-50 text-sm">Status{{ $t('') }}</div>
-                <div class="text-teal-800 font-medium text-base">
+            <div class="flex flex-row items-center justify-between gap-4 py-4">
+                <div class="text-sm text-teal-800 opacity-50">Status{{ $t('') }}</div>
+                <div class="text-base font-medium text-teal-800">
                     {{ report.project_status || "-" }}
                 </div>
             </div>
 
-            <div class="flex flex-row gap-4 justify-between items-center py-4">
-                <div class="text-teal-800 opacity-50 text-sm">
+            <div class="flex flex-row items-center justify-between gap-4 py-4">
+                <div class="text-sm text-teal-800 opacity-50">
                     {{ $t('Completion Target') }}
                 </div>
-                <div class="text-teal-800 font-medium text-base">
+                <div class="text-base font-medium text-teal-800">
                     {{ report.completion_target || "-" }}
                 </div>
             </div>
 
             <!--                        @if(report.attachments->isNotEmpty())-->
-            <!--                        <div class="flex flex-row gap-4 justify-between items-center py-4">-->
-            <!--                            <div class="text-teal-800 opacity-50 text-sm">Attachment(s)</div>-->
-            <!--                            <div class="text-teal-800 font-medium text-right text-base">-->
+            <!--                        <div class="flex flex-row items-center justify-between gap-4 py-4">-->
+            <!--                            <div class="text-sm text-teal-800 opacity-50">Attachment(s)</div>-->
+            <!--                            <div class="text-base font-medium text-right text-teal-800">-->
             <!--                                @foreach(report.attachments as $attachment)-->
             <!--                                <a target="_blank" class="font-medium hover:text-yellow-500 px-1 py-0.5 border border-teal-600 rounded-sm text-xs inline-flex flex-row flex-nowrap gap-2 hover:bg-teal-600" href="{{$attachment}}">-->
             <!--                                    <span class="inline-flex">Evidence {{$loop->iteration}}</span>-->
@@ -87,12 +87,12 @@
             <!--                        @endif-->
         </div>
 
-        <div class="w-full mx-auto bg-slate-100 px-4">
-            <div class="flex justify-between items-center py-4">
+        <div class="w-full px-4 mx-auto bg-slate-100">
+            <div class="flex items-center justify-between py-4">
                 <div
-                    class="text-teal-800 opacity-75 text-sm inline-flex gap-2 items-center h-full"
+                    class="inline-flex items-center h-full gap-2 text-sm text-teal-800 opacity-75"
                 >
-                    <span class="bold text-xl">{{ $t('Comments') }} </span>
+                    <span class="text-xl bold">{{ $t('Comments') }} </span>
                     <span>{{ report.comments_count }}</span>
                 </div>
 
@@ -111,12 +111,12 @@
                         <li
                             v-if="comment.text != ''"
                             :key="comment?.id"
-                            class="relative bg-white py-5 px-4 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 hover:bg-gray-50"
+                            class="relative px-4 py-5 bg-white focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 hover:bg-gray-50"
                         >
                             <div
-                                class="flex justify-between space-x-3 text-gray-600 font-medium text-sm"
+                                class="flex justify-between space-x-3 text-sm font-medium text-gray-600"
                             >
-                                <div class="min-w-0 flex-1">
+                                <div class="flex-1 min-w-0">
                                     <span
                                         class="absolute inset-0"
                                         aria-hidden="true"
@@ -132,7 +132,7 @@
                             </div>
                             <div class="mt-1">
                                 <p
-                                    class="text-md text-gray-700"
+                                    class="text-gray-700 text-md"
                                     v-html="comment.text"
                                 ></p>
                             </div>
@@ -140,14 +140,14 @@
                     </template>
                 </ul>
                 <div>
-                    <form class="" @submit.prevent="addComment" v-if="user">
+                    <form class="" @submit.prevent="addComment" v-if="user$">
                         <div v-if="!commentPosted">
                             <p class="pt-4">
                                 <span v-if="!comments?.length">
                                     {{ $t('Be the first to leave a comment') }}!
                                 </span>
                                 <span
-                                    class="text-xs font-bold relative top-1"
+                                    class="relative text-xs font-bold top-1"
                                     v-else
                                 >{{ $t('Leave a Comment') }}</span
                                 >
@@ -157,7 +157,7 @@
                             <!--                            <label for="name" class="block text-sm font-medium text-slate-600">Name </label>-->
                             <!--                            <div class="mt-1">-->
                             <!--                                <input v-model="commentForm.name" name="name" type="text" autocomplete="name" required-->
-                            <!--                                       class="block w-full appearance-none rounded-sm border border-slate-400 px-3 py-2 placeholder-slate-400 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-teal-500 sm:text-sm">-->
+                            <!--                                       class="block w-full px-3 py-2 border rounded-sm shadow-sm appearance-none border-slate-400 placeholder-slate-400 focus:border-teal-500 focus:outline-none focus:ring-teal-500 sm:text-sm">-->
                             <!--                            </div>-->
                             <!--                        </div>-->
 
@@ -166,7 +166,7 @@
                             <!--                            <div class="mt-1">-->
                             <!--                                <input v-model="commentForm.email" name="email" type="email" autocomplete="email"-->
                             <!--                                       required-->
-                            <!--                                       class="block w-full appearance-none rounded-sm border border-slate-400 px-3 py-2 placeholder-slate-400 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-teal-500 sm:text-sm">-->
+                            <!--                                       class="block w-full px-3 py-2 border rounded-sm shadow-sm appearance-none border-slate-400 placeholder-slate-400 focus:border-teal-500 focus:outline-none focus:ring-teal-500 sm:text-sm">-->
                             <!--                            </div>-->
                             <!--                        </div>-->
 
@@ -181,17 +181,17 @@
 
                             <button
                                 type="submit"
-                                class="text-white text-xs px-2 bg-teal-300 hover:bg-teal-800 ml-auto"
+                                class="px-2 ml-auto text-xs text-white bg-teal-300 hover:bg-teal-800"
                             >
                                 {{ $t('Post') }}
                             </button>
                         </div>
                         <div v-if="commentPosted">
-                            <div class="rounded-sm bg-teal-100 p-4">
+                            <div class="p-4 bg-teal-100 rounded-sm">
                                 <div class="flex">
                                     <div class="flex-shrink-0">
                                         <CheckCircleIcon
-                                            class="h-5 w-5 text-green-400"
+                                            class="w-5 h-5 text-green-400"
                                             aria-hidden="true"
                                         />
                                     </div>
@@ -202,14 +202,14 @@
                                             {{ $t('Successfully Submitted') }}
                                         </p>
                                     </div>
-                                    <div class="ml-auto pl-3">
+                                    <div class="pl-3 ml-auto">
                                         <div class="-mx-1.5 -my-1.5">
                                             <button
                                                 type="button"
                                                 class="inline-flex rounded-md bg-green-50 p-1.5 text-green-500 hover:bg-green-100 focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-offset-2 focus:ring-offset-green-50"
                                             >
                                                 <CheckCircleIcon
-                                                    class="h-5 w-5"
+                                                    class="w-5 h-5"
                                                 ></CheckCircleIcon>
                                             </button>
                                         </div>
@@ -220,10 +220,10 @@
                     </form>
                     <div
                         v-else
-                        class="space-y-2 bg-white/50 p-2 mt-2 text-center"
+                        class="p-2 mt-2 space-y-2 text-center bg-white/50"
                     >
                         <p>{{ $t('Login or Register to leave a comment') }}!</p>
-                        <div class="flex gap-3 justify-center items-center">
+                        <div class="flex items-center justify-center gap-3">
                             <Link
                                 :href="$utils.localizeRoute(`catalyst-explorer/auth/login`)"
                                 class="font-bold text-teal-600 hover:text-teal-500"
@@ -246,13 +246,13 @@
 
 <script lang="ts" setup>
 import {Link} from "@inertiajs/vue3";
-import {computed, Ref, ref, reactive, inject} from "vue";
+import {Ref, ref, reactive, inject} from "vue";
 import Report from "../../models/report";
 import Comment from "../../models/comment";
 import {useForm, usePage} from "@inertiajs/vue3";
-import User from "../../../global/Shared/Models/user";
 import {CheckCircleIcon} from "@heroicons/vue/20/solid";
-
+import { storeToRefs } from "pinia";
+import { useUserStore } from "../../../global/Shared/store/user-store";
 
 const $utils: any = inject('$utils');
 const props = withDefaults(
@@ -267,7 +267,8 @@ const props = withDefaults(
     }
 );
 
-const user = computed(() => usePage().props?.user as User);
+const userStore = useUserStore();
+const {user$} = storeToRefs(userStore);
 const baseUrl = usePage().props.base_url;
 let comments: Ref<Comment[]> = ref([]);
 let showComments = ref(false);

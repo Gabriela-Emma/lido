@@ -77,7 +77,7 @@
 
 
         <form v-else>
-            <div class=" bg-white shadow-sm  rounded  p-6 w-96">
+            <div class=" bg-white shadow-sm  rounded  p-6">
                 <div class=" flex-col  mb-4 border-b" v-if="slots?.logo">
                     <slot name="logo"></slot>
                 </div>
@@ -87,72 +87,74 @@
                             {{ $t("Register") }} </h1>
                     </div>
 
-                    <div class="mb-2">
-                        <label for="name" class="block text-sm font-medium text-slate-600">{{ $t("Name") }} </label>
-                        <div class="mt-1">
-                            <input v-model="name" v-text="form.errors.name" id="name" name="name" type="text"
-                                   autocomplete="name" required
-                                   class="block w-full appearance-none rounded-sm border border-slate-400 px-3 py-2 placeholder-slate-400 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-teal-500 sm:text-sm">
-                            <div v-if="form.errors.name" v-text="form.errors.name"
-                                 class="text-red-500 text-xs mt-1"></div>
+                    <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+                        <div class="mb-2">
+                            <label for="name" class="block text-sm font-medium text-slate-600">{{ $t("Name") }} </label>
+                            <div class="mt-1">
+                                <input v-model="name" v-text="form.errors.name" id="name" name="name" type="text"
+                                    autocomplete="name" required
+                                    class="block w-full appearance-none rounded-sm border border-slate-400 px-3 py-2 placeholder-slate-400 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-teal-500 sm:text-sm">
+                                <div v-if="form.errors.name" v-text="form.errors.name"
+                                    class="text-red-500 text-xs mt-1"></div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="mb-2">
-                        <label for="email" class="block text-sm font-medium text-slate-600">{{
-                                $t("Email address")
-                            }} </label>
-                        <div class="mt-1">
-                            <input v-model="email" id="email" name="email" type="email" autocomplete="email" required
-                                   class="block w-full appearance-none rounded-sm border border-slate-400 px-3 py-2 placeholder-slate-400 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-teal-500 sm:text-sm">
-                            <div v-if="form.errors.email" v-text="form.errors.email"
-                                 class="text-red-500 text-xs mt-1"></div>
+                        <div class="mb-2">
+                            <label for="email" class="block text-sm font-medium text-slate-600">{{
+                                    $t("Email address")
+                                }} </label>
+                            <div class="mt-1">
+                                <input v-model="email" id="email" name="email" type="email" autocomplete="email" required
+                                    class="block w-full appearance-none rounded-sm border border-slate-400 px-3 py-2 placeholder-slate-400 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-teal-500 sm:text-sm">
+                                <div v-if="form.errors.email" v-text="form.errors.email"
+                                    class="text-red-500 text-xs mt-1"></div>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="mb-2">
-                        <label for="password" class="block text-sm font-medium text-slate-600">{{
-                                $t("Password")
-                            }} </label>
-                        <div class="mt-1">
-                            <input v-model="form.password" name="password" type="password"
-                                   class="block w-full appearance-none rounded-sm border border-slate-400 px-3 py-2 placeholder-slate-400 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-teal-500 sm:text-sm">
-                            <div v-if="form.errors.password" v-text="form.errors.password"
-                                 class="text-red-500 text-xs mt-1"></div>
+                        <div class="mb-2">
+                            <label for="password" class="block text-sm font-medium text-slate-600">{{
+                                    $t("Password")
+                                }} </label>
+                            <div class="mt-1">
+                                <input v-model="form.password" name="password" type="password"
+                                    class="block w-full appearance-none rounded-sm border border-slate-400 px-3 py-2 placeholder-slate-400 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-teal-500 sm:text-sm">
+                                <div v-if="form.errors.password" v-text="form.errors.password"
+                                    class="text-red-500 text-xs mt-1"></div>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="mb-2">
-                        <label for="password_confirmation"
-                               class="block text-sm font-medium text-slate-600">{{ $t("Confirm Password") }} </label>
-                        <div class="mt-1">
-                            <input v-model="form.password_confirmation" name="password_confirmation" type="password"
-                                   class="block w-full appearance-none rounded-sm border border-slate-400 px-3 py-2 placeholder-slate-400 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-teal-500 sm:text-sm">
-                            <div v-if="form.errors.password_confirmation" v-text="form.errors.password_confirmation"
-                                 class="text-red-500 text-xs mt-1"></div>
+                        <div class="mb-2">
+                            <label for="password_confirmation"
+                                class="block text-sm font-medium text-slate-600">{{ $t("Confirm Password") }} </label>
+                            <div class="mt-1">
+                                <input v-model="form.password_confirmation" name="password_confirmation" type="password"
+                                    class="block w-full appearance-none rounded-sm border border-slate-400 px-3 py-2 placeholder-slate-400 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-teal-500 sm:text-sm">
+                                <div v-if="form.errors.password_confirmation" v-text="form.errors.password_confirmation"
+                                    class="text-red-500 text-xs mt-1"></div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="mb-2">
-                        <label for="twitter" class="block text-sm font-medium text-slate-600">{{
-                                $t("Twitter")
-                            }} </label>
-                        <div class="mt-1">
-                            <input v-model="twitter" id="twitter" name="twitter" type="twitter" autocomplete="twitter"
-                                   placeholder="optional"
-                                   class="block w-full appearance-none rounded-sm border border-slate-400 px-3 py-2 placeholder-slate-400 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-teal-500 sm:text-sm">
-                            <div v-if="form.errors.twitter" v-text="form.errors.twitter"
-                                 class="text-red-500 text-xs mt-1"></div>
+                        <div class="mb-2">
+                            <label for="twitter" class="block text-sm font-medium text-slate-600">{{
+                                    $t("Twitter")
+                                }} </label>
+                            <div class="mt-1">
+                                <input v-model="twitter" id="twitter" name="twitter" type="twitter" autocomplete="twitter"
+                                    placeholder="optional"
+                                    class="block w-full appearance-none rounded-sm border border-slate-400 px-3 py-2 placeholder-slate-400 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-teal-500 sm:text-sm">
+                                <div v-if="form.errors.twitter" v-text="form.errors.twitter"
+                                    class="text-red-500 text-xs mt-1"></div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="mb-2">
-                        <label for="telegram" class="block text-sm font-medium text-slate-600">{{
-                                $t("Telegram")
-                            }} </label>
-                        <div class="mt-1">
-                            <input v-model="telegram" id="telegram" name="telegram" type="telegram"
-                                   autocomplete="telegram" placeholder="optional"
-                                   class="block w-full appearance-none rounded-sm border border-slate-400 px-3 py-2 placeholder-slate-400 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-teal-500 sm:text-sm">
-                            <div v-if="form.errors.telegram" v-text="form.errors.telegram"
-                                 class="text-red-500 text-xs mt-1"></div>
+                        <div class="mb-2">
+                            <label for="telegram" class="block text-sm font-medium text-slate-600">{{
+                                    $t("Telegram")
+                                }} </label>
+                            <div class="mt-1">
+                                <input v-model="telegram" id="telegram" name="telegram" type="telegram"
+                                    autocomplete="telegram" placeholder="optional"
+                                    class="block w-full appearance-none rounded-sm border border-slate-400 px-3 py-2 placeholder-slate-400 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-teal-500 sm:text-sm">
+                                <div v-if="form.errors.telegram" v-text="form.errors.telegram"
+                                    class="text-red-500 text-xs mt-1"></div>
+                            </div>
                         </div>
                     </div>
 

@@ -56,7 +56,6 @@ class SaveRepo implements ShouldQueue
             $this->branchName,
         ])->getOutputAsString();
 
-        // dd($logOutput);
         // Explode by newline character to get each commit log line separately
         $logLines = explode("\n", $logOutput);
 

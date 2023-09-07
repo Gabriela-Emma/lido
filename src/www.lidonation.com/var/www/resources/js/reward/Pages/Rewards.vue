@@ -3,24 +3,27 @@
         class="bg-gradient-to-br from-teal-500 via-teal-600 to-accent-900 relative text-white lido-rewards-wrapper min-h-[92vh]">
         <div class="container relative h-full">
             <div v-show="working"
-                 class="left-0 top-0 flex items-start justify-center w-full h-full p-32 absolute bg-teal-600 bg-opacity-90 z-20">
+                 class="absolute top-0 left-0 z-20 flex items-start justify-center w-full h-full p-32 bg-teal-600 bg-opacity-90">
                 <div
                     class="flex items-center justify-center w-24 h-24 p-3 bg-white rounded-full lg:h-32 lg:w-32 bg-opacity-90">
                     <svg
-                        class="relative w-8 h-8 border-t-2 border-b-2 rounded-full lg:w-16 lg:h-16 animate-spin border-teal-600"
+                        class="relative w-8 h-8 border-t-2 border-b-2 border-teal-600 rounded-full lg:w-16 lg:h-16 animate-spin"
                         viewBox="0 0 24 24"></svg>
                 </div>
             </div>
 
-            <div class="pb-8 border border-teal-300 border-t-0 col-span-6 xl:col-span-7">
-                <div class="flex flex-row gap-3 justify-between p-5">
+            <div class="col-span-6 pb-8 border border-t-0 border-teal-300 xl:col-span-7">
+                <div class="flex flex-row justify-between gap-3 p-5">
                     <div class="flex flex-col md:flex-row md:gap-2 md:items-center">
                         <h2 class="text-sm md:text-2xl xl:text-3xl">My Lido Rewards</h2>
                     </div>
+                    <div>
+                        <ConnectWallet />
+                    </div>
                 </div>
                 <div class="relative">
-                    <section class="border-t border-teal-300 p-6">
-                        <div class="flex flex-col gap-4 items-center max-w-2xl mx-auto text-center">
+                    <section class="p-6 border-t border-teal-300">
+                        <div class="flex flex-col items-center max-w-2xl gap-4 mx-auto text-center">
                             <p>
                                 Lido Rewards are tips and prizes you earn around lidonation for completing
                                 challenges or contributing to the site, or delegating to the stake pool.
@@ -31,17 +34,17 @@
                             <p>Happy earning!</p>
                         </div>
                     </section>
-                    <section class="border-t border-teal-300 p-6 -my-1 ">
+                    <section class="p-6 -my-1 border-t border-teal-300 ">
                         <template v-if="user != null">
                             <template v-if="!!withdrawals?.length || withdrawalsProcessed">
                                 <div
-                                    class="absolute left-0 top-0 w-full h-full bg-teal-600 shadow-lg z-10 text-white">
+                                    class="absolute top-0 left-0 z-10 w-full h-full text-white bg-teal-600 shadow-lg">
                                     <div>
-                                        <div class="px-4 py-5 sm:px-6 relative" v-if="!withdrawalsProcessed">
+                                        <div class="relative px-4 py-5 sm:px-6" v-if="!withdrawalsProcessed">
                                             <h3 class="text-lg font-medium leading-6">
                                                 Process Rewards
                                             </h3>
-                                            <div class="mt-1 max-w-3xl text-sm">
+                                            <div class="max-w-3xl mt-1 text-sm">
                                                 <p  v-if="adaReward < BigInt(2000000)">
                                                     You are about to withdraw pending rewards.
                                                     You will need to send 2 ada, and all pending rewards will be bundled
@@ -55,12 +58,12 @@
                                             </div>
                                             <div v-if="rewards && !withdrawing" class="mt-2 text-center">
                                                 <span @click="withdrawalRewards"
-                                                      class="inline-flex items-center px-1 py-1 rounded-sm text-sm bg-accent-200 text-teal-900 hover:bg-accent-400 hover:cursor-pointer">
+                                                      class="inline-flex items-center px-1 py-1 text-sm text-teal-900 rounded-sm bg-accent-200 hover:bg-accent-400 hover:cursor-pointer">
                                                     Withdraw
                                                 </span>
                                             </div>
                                             <span
-                                                class="absolute right-0 top-0 p-2 bg-teal-700 hover:cursor-pointer"
+                                                class="absolute top-0 right-0 p-2 bg-teal-700 hover:cursor-pointer"
                                                 @click="withdrawals = []">
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                                                      viewBox="0 0 24 24"
@@ -72,7 +75,7 @@
                                             </span>
                                         </div>
 
-                                        <div class="border-t border-teal-200 px-4 py-5 sm:p-0">
+                                        <div class="px-4 py-5 border-t border-teal-200 sm:p-0">
                                             <div class="flex flex-col items-center gap-8 pt-8"
                                                  v-if="withdrawalsProcessed">
                                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
@@ -83,9 +86,9 @@
                                                           clip-rule="evenodd"/>
                                                 </svg>
 
-                                                <p class="my-2 max-w-2xl text-lg px-8">
+                                                <p class="max-w-2xl px-8 my-2 text-lg">
                                                     Your withdrawal will be posted to
-                                                    your wallet in about 5 to 10 minutes.
+                                                    your wallet in about 12 to 24 hours.
                                                 </p>
                                                <span> See <Link :href="route('rewards.withdrawals.index')">history and pending withdrawals</Link></span>
                                             </div>
@@ -102,12 +105,12 @@
                                                             </span>
                                                         </dt>
                                                         <dd class="mt-1 text-sm sm:col-span-2 sm:mt-0">
-                                                            <span class="font-semibold text-xl 2xl:text-2xl mr-3"
+                                                            <span class="mr-3 text-xl font-semibold 2xl:text-2xl"
                                                                   v-text="$filters.shortNumber((withdrawal.amount / (withdrawal.asset_details?.divisibility > 0 ? withdrawal?.asset_details?.divisibility : 1)).toFixed(2))"></span>
                                                             <template
                                                                 v-if="withdrawal?.asset_details?.metadata?.logo">
                                                                 <span
-                                                                    class="relative inline-flex items-center rounded-full 2xl:w-5 w-4 2xl:h-5 ml-2">
+                                                                    class="relative inline-flex items-center w-4 ml-2 rounded-full 2xl:w-5 2xl:h-5">
                                                                     <img class="inline-flex"
                                                                          :src="'data:image/png;base64,'+`${withdrawal?.asset_details?.metadata?.logo}`"
                                                                          :alt="`${withdrawal?.asset_details?.asset_name}`"/>
@@ -122,9 +125,9 @@
                                 </div>
                             </template>
 
-                            <div class="text-white bg-gray-900 bg-opacity-25 rounded-sm pb-2 relative">
-                                <div class="rounded-tl-sm rounded-tr-md bg-teal-900 shadow-sm">
-                                    <div class="flex justify-between items-center px-4">
+                            <div class="relative pb-2 text-white bg-gray-900 bg-opacity-25 rounded-sm">
+                                <div class="bg-teal-900 rounded-tl-sm shadow-sm rounded-tr-md">
+                                    <div class="flex items-center justify-between px-4">
                                         <h3 class="py-2 font-semibold">
                                             <span>
                                                 Rewards
@@ -134,7 +137,7 @@
                                             </span>
                                         </h3>
                                         <div class="flex flex-row gap-3">
-                                            <RewardNav class="flex gap-3 text-white text-xs"></RewardNav>
+                                            <RewardNav class="flex gap-3 text-xs text-white"></RewardNav>
                                             <button v-if="rewards[0]" @click="withdraw"
                                                   class="inline-flex items-center px-1 py-0.5 rounded text-xs bg-accent-200 text-teal-900 hover:bg-accent-400 hover:cursor-pointer">
                                                 Withdraw
@@ -161,7 +164,7 @@
                         <div class="flex justify-center" v-if="!rewards">
                             <div class="mt-2 flex flex-col gap-6 bg-white/[.92] py-5 px-8">
                                 <div v-show="walletError" v-text="walletError"
-                                     class="text-red-500 w-96 text-sm my-1"></div>
+                                     class="my-1 text-sm text-red-500 w-96"></div>
                                 <WalletLoginBtnVue role="reward"
                                                    redirect="rewards"
                                                    @walletError="handleWalletError($event)"
@@ -181,7 +184,7 @@
                                                @setForm="getForm($event)"
                                                @submit="submit($event)"/>
                                     <div v-show="errors.length>0" v-text="errors"
-                                         class="text-red-500 w-96 text-sm my-1"></div>
+                                         class="my-1 text-sm text-red-500 w-96"></div>
                                 </div>
                             </div>
                         </div>
@@ -307,7 +310,7 @@ let withdrawalRewards = async () => {
         const processResponse = (await axios.post(route('rewardsApi.withdrawals.process'), {address: myWallet?.value?.address}));
         setTimeout(async () => {
             working.value = false;
-
+            // @ts-ignore
             if (adaReward.value < BigInt(2000000)) {
                 const walletService = new WalletService();
                 await walletService.connectWallet(myWallet?.value?.name);

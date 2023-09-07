@@ -12,17 +12,16 @@ class WalletsStakedPercentage extends Partition
     /**
      * Calculate the value of the metric.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return mixed
      */
     public function calculate(NovaRequest $request)
     {
-        $learners = User::role('learner');
+        $learners = User::role('learner')->includeDuplicates(false);
 
         $totalWallets = $learners->whereRaw('Length(wallet_stake_address) > 5')
-                            ->count();
-        $delegatedWallets = $learners->whereRaw("Length(active_pool_id) > 5 " )
-                                ->count();
+            ->count();
+        $delegatedWallets = $learners->whereRaw('Length(active_pool_id) > 5 ')
+            ->count();
 
         return $this->result([
             'Delegated' => $delegatedWallets,

@@ -88,7 +88,7 @@ class LearningLessons extends Resource
                 'draft' => 'Draft',
             ])->sortable()
                 ->required(),
-            BelongsToMany::make(__('Learning Topics'), 'topics', LearningTopic::class)
+            BelongsToMany::make(__('Learning Topics'), 'topics', LearningTopics::class)
                 ->hideFromIndex()
                 ->searchable(),
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreQuestionResponseRequest;
 use App\Http\Requests\UpdateQuestionResponseRequest;
 use App\Models\AnswerResponse;
+use App\Models\EveryEpoch;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -64,12 +65,14 @@ class QuestionResponseController extends Controller
             return $answer;
         }
 
-        $answer = new AnswerResponse();
+        $answer = new AnswerResponse;
         $answer->quiz_id = $request->input('quiz');
         $answer->question_id = $request->input('question');
         $answer->question_answer_id = $request->input('answer');
         $answer->user_id = $user->id;
         $answer->stake_address = $user->wallet_stake_address;
+        $answer->context_type = EveryEpoch::class;
+        // $answer->context_id =  @todo complete this
         $answer->save();
 
         return $answer;

@@ -2,18 +2,20 @@
 
 namespace App\Nova;
 
-use App\Invokables\GetModels;
-use App\Models\Translation;
-use App\Nova\Actions\AttachTranslation;
-use App\Nova\Filters\Language;
-use Illuminate\Http\Request;
-use Laravel\Nova\Fields\BelongsTo;
-use Laravel\Nova\Fields\Date;
-use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\Markdown;
-use Laravel\Nova\Fields\Select;
-use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Panel;
+use App\Models\Translation;
+use Laravel\Nova\Fields\ID;
+use Illuminate\Http\Request;
+use App\Invokables\GetModels;
+use Laravel\Nova\Fields\Date;
+use Laravel\Nova\Fields\Text;
+use App\Nova\Filters\Language;
+use Laravel\Nova\Fields\Select;
+use App\Nova\Actions\AddMetaData;
+use Laravel\Nova\Fields\Markdown;
+use App\Nova\Actions\EditMetaData;
+use Laravel\Nova\Fields\BelongsTo;
+use App\Nova\Actions\AttachTranslation;
 
 class Translations extends Resource
 {
@@ -62,13 +64,13 @@ class Translations extends Resource
 
         return [
             ID::make(__('ID'), 'id')->sortable(),
-            Text::make(__('Group'))->sortable(),
-            Text::make(__('Key'))->sortable(),
+            Text::make(__('Group'))->sortable()->filterable(),
+            Text::make(__('Key'))->sortable()->filterable(),
             BelongsTo::make(__('Author'), 'author', User::class)
-                ->searchable(),
+                ->searchable()->filterable(),
 
             Select::make(__('Lang'), 'lang')
-                ->sortable()
+                ->sortable()->filterable()
                 ->options(
                     collect(config('laravellocalization.supportedLocales'))
                         ->map(fn ($loc) => $loc['name'])),
@@ -79,7 +81,7 @@ class Translations extends Resource
                 'pending' => 'Pending',
                 'ready' => 'Ready',
                 'scheduled' => 'Scheduled',
-            ])->sortable(),
+            ])->sortable()->filterable(),
 
             Date::make(__('Created At'))->hideWhenUpdating(),
             Date::make(__('Published At'))->hideWhenUpdating(),
@@ -133,6 +135,9 @@ class Translations extends Resource
             static::getGlobalActions(),
             [
                 (new AttachTranslation),
+                (new AddMetaData),
+                (new EditMetaData(\App\Models\Translation::class)),
+
             ]);
     }
 
@@ -152,12 +157,12 @@ class Translations extends Resource
                     (new GetModels)()->combine(
                         (new GetModels)()->toArray()
                     )->toArray()
-                ),
+                )->filterable(),
             //            BelongsTo::make(__('Source'), 'source', [User::class])
             //                ->searchable(),
-            Text::make(__('Source Id'), 'source_id'),
-            Text::make(__('Source Field'), 'source_field'),
-            Select::make(__('Source Lang'), 'source_lang')
+            Text::make(__('Source Id'), 'source_id')->filterable()->sortable(),
+            Text::make(__('Source Field'), 'source_field')->filterable()->sortable(),
+            Select::make(__('Source Lang'), 'source_lang')->filterable()
                 ->options(
                     collect(config('laravellocalization.supportedLocales'))
                         ->map(fn ($loc) => $loc['name'])),

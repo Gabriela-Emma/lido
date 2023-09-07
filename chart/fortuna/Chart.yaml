@@ -1,0 +1,4 @@
+name: lidolovelace-cardano-fotuna
+apiVersion: v1
+version: "0.0.1"
+description: 'fortuna miner'

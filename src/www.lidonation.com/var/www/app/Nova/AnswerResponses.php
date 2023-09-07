@@ -2,6 +2,7 @@
 
 namespace App\Nova;
 
+use App\Invokables\TruncateValue;
 use App\Models\AnswerResponse;
 use App\Models\Question;
 use App\Nova\Actions\AddMetaData;
@@ -12,6 +13,7 @@ use Illuminate\Http\Request;
 use JetBrains\PhpStorm\Pure;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Boolean;
+use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
@@ -79,17 +81,19 @@ class AnswerResponses extends Resource
 
             Boolean::make('Correct', fn () => $this->correct),
 
-            BelongsTo::make(__('Answer'), 'answer', QuestionAnswers::class)
-                ->searchable(),
+            Text::make(__('Stake Address'))
+                ->displayUsing(new TruncateValue($request))
+                ->sortable(),
+
+            Text::make('IP')
+                ->displayUsing(fn () => $this->meta_data?->ip_address)
+                ->filterable(
+                    fn ($request, $query, $value, $attribute) => $query->whereRelation('metas', 'content', '=', $value)
+                )->hideWhenUpdating()
+                ->hideWhenCreating(),
 
             BelongsTo::make(__('Author'), 'author', User::class)
                 ->searchable(),
-
-            Text::make(__('Stake Address')),
-
-            //            Text::make('Answer', function () {
-            //                return $this->answer?->content;
-            //            })->onlyOnIndex(),
 
             Select::make(__('Status'), 'status')
                 ->options([
@@ -100,11 +104,22 @@ class AnswerResponses extends Resource
                     'scheduled' => 'Scheduled',
                 ])->default('published')->sortable(),
 
+
+            // MorphTo::make('model')->types([
+            //    EveryEpochs::class,
+            //    LearningLessons::class,
+            // ])->searchable()->nullable(),
+
+            BelongsTo::make(__('Answer'), 'answer', QuestionAnswers::class)
+                ->searchable(),
+
             BelongsTo::make(__('Quiz'), 'quiz', Quizzes::class)
                 ->searchable(),
 
             BelongsTo::make(__('Question'), 'question', Questions::class)
                 ->searchable(),
+
+            HasMany::make('Metadata', 'metas', Metas::class),
         ];
     }
 
@@ -146,6 +161,7 @@ class AnswerResponses extends Resource
             [
                 (new AddMetaData),
                 (new EditMetaData(Question::class)),
-            ]);
+            ]
+        );
     }
 }

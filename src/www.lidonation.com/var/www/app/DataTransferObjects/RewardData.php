@@ -2,12 +2,10 @@
 
 namespace App\DataTransferObjects;
 
-use DateTime;
+use Carbon\CarbonImmutable;
 use Spatie\LaravelData\Attributes\WithCast;
-use Spatie\LaravelData\Attributes\WithTransformer;
 use Spatie\LaravelData\Casts\DateTimeInterfaceCast;
 use Spatie\LaravelData\Data;
-use Spatie\LaravelData\Transformers\DateTimeInterfaceTransformer;
 use Spatie\TypeScriptTransformer\Attributes\Optional as TypeScriptOptional;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
@@ -25,9 +23,8 @@ class RewardData extends Data
         public ?string $asset_type,
 
         #[TypeScriptOptional]
-        #[WithCast(DateTimeInterfaceCast::class)]
-        #[WithTransformer(DateTimeInterfaceTransformer::class)]
-        public ?DateTime $created_at,
+        #[WithCast(DateTimeInterfaceCast::class, type: CarbonImmutable::class)]
+        public ?CarbonImmutable $created_at,
 
         public ?string $status,
 

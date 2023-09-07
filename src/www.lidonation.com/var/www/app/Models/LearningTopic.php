@@ -2,28 +2,32 @@
 
 namespace App\Models;
 
-use App\DataTransferObjects\LearningTopicData;
-use App\Models\Traits\HasAuthor;
 use App\Models\Traits\HasHero;
-use App\Models\Traits\HasLocaleUrl;
-use App\Models\Traits\HasMetaData;
-use App\Models\Traits\HasTranslations;
+use App\Models\Traits\HasAuthor;
+use App\Models\Traits\MintsNfts;
 use App\Scopes\OrderByOrderScope;
+use App\Models\Traits\HasMetaData;
+use App\Models\Traits\HasGiveaways;
+use App\Models\Traits\HasLocaleUrl;
+use App\Models\Traits\HasTranslations;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Spatie\LaravelData\DataCollection;
 
 class LearningTopic extends Model
 {
     use HasAuthor,
+        HasGiveaways,
         HasHero,
         HasLocaleUrl,
         HasMetaData,
         HasTranslations,
         HasTimestamps,
         SoftDeletes;
+
 
     protected $casts = [
         //        'lessons' => DataCollection::class.':'.LearningTopicData::class,
@@ -80,6 +84,22 @@ class LearningTopic extends Model
                 return $incompleteLessons->isEmpty();
             }
         );
+    }
+
+    public function nftTemplate(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->nfts()
+                ->whereRelation('metas', 'key', 'topic_id')
+                ->whereRelation('metas', 'content', $this->id)
+                ->first()
+        );
+    }
+
+    public function nfts(): HasMany
+    {
+        return $this->hasMany(Nft::class, 'model_id')
+        ->where('model_type', static::class);
     }
 
     /**

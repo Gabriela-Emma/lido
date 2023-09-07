@@ -2,6 +2,7 @@
 
 namespace App\Nova;
 
+use App\Enums\CatalystCurrencyEnum;
 use App\Models\Proposal;
 use App\Nova\Actions\AddMetaData;
 use App\Nova\Actions\AttachCategory;
@@ -17,6 +18,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\BelongsToMany;
+use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\HasMany;
@@ -108,8 +110,15 @@ class Proposals extends Resource
 
             Text::make(__('Website'), 'website')->hideFromIndex(),
             Text::make(__('Ideascale Link'), 'ideascale_link')->hideFromIndex(),
+            Text::make(__('Quickpitch'), 'quickpitch')->hideFromIndex(),
+            Text::make(__('Quickpitch Length'), 'quickpitch_length')->sortable(),
+
             //            Currency::make(__('Requested'), 'amount_requested')->sortable(),
             Number::make(__('Requested'), 'amount_requested')->sortable()->required(),
+            Select::make(__('Currency'), 'currency')->options([
+                CatalystCurrencyEnum::USD => CatalystCurrencyEnum::USD,
+                CatalystCurrencyEnum::ADA => CatalystCurrencyEnum::ADA,
+            ])->default(fn () => CatalystCurrencyEnum::USD)->sortable(),
 
             Select::make(__('Project Status'), 'status')->options([
                 'pending' => 'Pending',
@@ -134,6 +143,8 @@ class Proposals extends Resource
                     'proposal' => 'Proposal',
                     'challenge' => 'Challenge',
                 ])->required(),
+
+            Boolean::make(__('Opensource'), 'opensource')->hideFromIndex()->filterable(),
 
             BelongsTo::make(__('Author'), 'author', CatalystUsers::class)
                 ->searchable(),
@@ -266,7 +277,7 @@ class Proposals extends Resource
     {
         return [
             Images::make(__('Hero'), 'hero')
-                ->enableExistingMedia(),
+                ->enableExistingMedia()->hideFromIndex(),
         ];
     }
 
@@ -320,8 +331,7 @@ class Proposals extends Resource
             Markdown::make(__('Experience'))->translatable()->nullable(),
             Markdown::make(__('Content'), 'content')->translatable()->required(),
             Markdown::make(__('Definition of Success'))->nullable(),
-            Text::make('Test', fn () => 'test'),
-            Text::make('Shortcode', fn () => ("[proposal id={$this->id}]")),
+            Text::make('Shortcode', fn () => ("[proposal id={$this->id}]"))->hideFromIndex(),
         ];
     }
 }

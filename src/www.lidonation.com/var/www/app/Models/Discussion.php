@@ -49,11 +49,6 @@ class Discussion extends Model implements Interfaces\IHasMetaData
         return $this->ratings->whereNotIn('user_id', [$this->user_id]);
     }
 
-    public function getCommunityReviewsAttribute()
-    {
-        return $this->comments->whereNotIn('user_id', [$this->user_id]);
-    }
-
     public function ratings(): HasMany
     {
         return $this->hasMany(Rating::class, 'model_id')
@@ -68,6 +63,12 @@ class Discussion extends Model implements Interfaces\IHasMetaData
     public function review(): BelongsTo
     {
         return $this->belongsTo(Review::class, 'model_id');
+    }
+
+
+    public function proposal(): BelongsTo
+    {
+        return $this->belongsTo(Proposal::class, 'model_id');
     }
 
     /**

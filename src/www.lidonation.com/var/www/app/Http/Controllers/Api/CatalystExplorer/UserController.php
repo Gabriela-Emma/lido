@@ -2,20 +2,19 @@
 
 namespace App\Http\Controllers\Api\CatalystExplorer;
 
-use App\Http\Controllers\Controller;
-use App\Models\User as modelUser;
-use Illuminate\Foundation\Auth\User;
+use Inertia\Inertia;
 use Illuminate\Http\Request;
+use Illuminate\Support\Fluent;
+use App\Models\User;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Fluent;
-use Inertia\Inertia;
+use Laravel\Fortify\Contracts\UpdatesUserProfileInformation;
 
-class UserController extends Controller
+class UserController extends Controller implements UpdatesUserProfileInformation
 {
     public function login(Request $request)
     {
-        // dd($request);
         $credentials = $request->validate([
             'email' => 'nullable|bail|required_unless:catalyst_explorer,null|email',
             'password' => 'nullable|bail|required_with:email|min:5',
@@ -75,7 +74,7 @@ class UserController extends Controller
 
         $user = User::where('email', $validated->email);
 
-        if (! $user instanceof User) {
+        if (!$user instanceof User) {
             $user = new User;
             $user->name = $validated->name;
             $user->email = $validated->email;
@@ -97,7 +96,7 @@ class UserController extends Controller
             'discord' => 'nullable|bail|min:2',
             'telegram' => 'nullable|bail|min:2',
             'bio' => 'nullable|min:10',
-            'profile' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'profile' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
         ]));
 
         // prevent changing email to a different user's email
@@ -109,10 +108,13 @@ class UserController extends Controller
         $user->linkedin = $validated->linkedin;
         $user->discord = $validated->discord;
         $user->telegram = $validated->telegram;
-        if ($request->hasFile('profile')) {
-            $appUser = modelUser::findOrFail($validated->id);
-            $appUser->addMediaFromRequest('profile')->toMediaCollection('hero');
-            $appUser->save();
+        if ($request->profile) {
+            if (isset($user->profile_photo_url)) {
+                $user->updateProfilePhoto($request->profile);
+            }else{
+                $user->addMediaFromRequest('profile')->toMediaCollection('hero');
+                $user->save();
+            }
         }
 
         $user->save();
@@ -122,6 +124,12 @@ class UserController extends Controller
 
     public function utilityLogin()
     {
-        return Inertia::modal('Auth/UtilityLogin')->baseRoute(previous_route_name());
+        // ->with([
+        //     'nft' => $topicNft,
+        // ])
+        return Inertia::modal('Auth/UtilityLogin')
+        ->baseUrl(
+            previous_route_url()
+        );
     }
 }

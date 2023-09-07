@@ -3,15 +3,17 @@
 namespace App\Nova;
 
 use App\Models\Withdrawal;
-use App\Nova\Actions\CacheNftImage;
-use Illuminate\Http\Request;
-use Laravel\Nova\Fields\BelongsTo;
-use Laravel\Nova\Fields\Date;
-use Laravel\Nova\Fields\DateTime;
-use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\Select;
+use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Select;
+use Laravel\Nova\Fields\HasMany;
+use App\Invokables\TruncateValue;
+use App\Nova\Actions\AddMetaData;
+use Laravel\Nova\Fields\DateTime;
+use App\Nova\Actions\EditMetaData;
+use Laravel\Nova\Fields\BelongsTo;
+use App\Nova\Actions\CacheNftImage;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Withdrawals extends Resource
@@ -55,20 +57,39 @@ class Withdrawals extends Resource
     {
         return [
             ID::make(__('ID'), 'id')->sortable(),
-            Text::make(__('Address'), 'wallet_address'),
+            Text::make(__('Address'), 'wallet_address')->sortable()
+                ->displayUsing(new TruncateValue($request)),
+
             BelongsTo::make('User', 'user', User::class)->searchable()->hideFromIndex(),
             Select::make(__('Status'), 'status')
                 ->sortable()
                 ->default('pending')
                 ->rules(['required'])
+                ->filterable()
                 ->options([
                     'minting' => 'Processing',
                     'validated' => 'Validated',
+                    'pending' => 'Pending',
                     'paid' => 'Paid',
                     'minted' => 'Sending',
-                    'burnt' => 'Sent',
+                    'burnt' => 'Burnt',
+                    'sent' => 'Sent',
+                    'hold' => 'Hold',
                 ]),
-            DateTime::make(__('Created At'), 'created_at'),
+
+            DateTime::make(__('Created At'), 'created_at')
+            ->filterable(),
+
+            Text::make('tx')
+                ->filterable(
+                    fn ($request, $query, $value, $attribute) => $query->whereRelation('metas', 'content', $value)
+                )
+                ->displayUsing(function ($value) {
+                    return $this->meta_data?->withdrawal_tx;
+                })
+                ->hideWhenCreating()
+                ->hideWhenUpdating(),
+
             HasMany::make('Metadata', 'metas', Metas::class),
             HasMany::make('Rewards', 'rewards', Rewards::class),
             HasMany::make('Transactions', 'txs', Txs::class),
@@ -114,6 +135,10 @@ class Withdrawals extends Resource
             static::getGlobalActions(),
             [
                 new CacheNftImage,
-            ]);
+                (new AddMetaData),
+                (new EditMetaData(\App\Models\Withdrawal::class)),
+
+            ]
+        );
     }
 }

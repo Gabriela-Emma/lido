@@ -1,5 +1,8 @@
 <template>
-    <Nav :crumbs=crumbs />
+    <div class="sticky top-0 z-30 flex flex-col">
+        <Nav :crumbs=crumbs />
+        <GlobalPlayer />
+    </div>
 
     <section class="">
         <slot></slot>
@@ -12,6 +15,7 @@
 import { Modal } from "momentum-modal"
 import Nav from "./Nav.vue";
 import Spinner from "../../global/Shared/Components/Spinner.vue";
+import GlobalPlayer from "../../global/Shared/Components/GlobalPlayer.vue";
 
 const props = withDefaults(
     defineProps<{

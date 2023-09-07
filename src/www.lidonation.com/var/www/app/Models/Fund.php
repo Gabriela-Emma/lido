@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Enums\CatalystCurrencyEnum;
+use App\Enums\CurrencySymbolEnum;
 use App\Models\Interfaces\IHasMetaData;
 use App\Models\Traits\HasAssessments;
 use App\Models\Traits\HasHero;
@@ -11,6 +13,7 @@ use App\Models\Traits\HasParent;
 use App\Models\Traits\HasTaxonomies;
 use App\Scopes\OrderByLaunchedDateScope;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
@@ -43,8 +46,10 @@ class Fund extends Model implements HasMedia, IHasMetaData
 
     protected $with = ['media', 'parent'];
 
-    //    protected string $urlGroup = 'project-catalyst/challenges';
+    protected $appends = ['link','hero_url', 'thumbnail_url'];
 
+    //    protected string $urlGroup = 'project-catalyst/challenges';
+    
     protected $casts = [
         'meta_data' => 'array',
         'updated_at' => 'datetime:Y-m-d',
@@ -52,13 +57,21 @@ class Fund extends Model implements HasMedia, IHasMetaData
         'launched_at' => 'datetime:Y-m-d',
         'awarded_at' => 'datetime:Y-m-d',
         'assessment_started_at' => 'datetime:Y-m-d',
+        'amount' => 'integer',
     ];
+
+    public function currency(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($currency) => $currency ?? $this->parent?->currency ?? 'USD',
+        );
+    }
 
     public function getCurrencySymbolAttribute()
     {
         return match ($this->currency) {
-            'ada' => '₳',
-            default => '$'
+            CatalystCurrencyEnum::ADA => CurrencySymbolEnum::ADA,
+            default => CurrencySymbolEnum::USD
         };
     }
 
@@ -183,7 +196,13 @@ class Fund extends Model implements HasMedia, IHasMetaData
 
     public function proposals(): HasMany
     {
-        return $this->hasMany(Proposal::class, 'fund_id');
+        return $this->hasMany(Proposal::class, 'fund_id')
+        ->where('type', 'proposal');
+    }
+
+    public function snapshot()
+    {
+        return $this->morphOne(CatalystSnapshot::class, 'model');
     }
 
     public function parent_proposals(): HasManyThrough
@@ -194,10 +213,10 @@ class Fund extends Model implements HasMedia, IHasMetaData
     protected function getUrlGroup(): string
     {
         if (! $this->parent) {
-            return 'project-catalyst/funds';
+            return 'catalyst-explorer/funds';
         }
 
-        return 'project-catalyst/challenges';
+        return 'catalyst-explorer/challenges';
     }
 
     /**

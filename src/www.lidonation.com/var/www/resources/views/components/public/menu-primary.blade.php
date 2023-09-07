@@ -1,4 +1,4 @@
-<li class="flex items-center flow-root h-full menu-item" x-data>
+<li class="flex items-center justify-end h-full gap-2 menu-item" x-data>
     <a href="#" @click.prevent="$dispatch('toggle-lido-menu')" class="inline-flex items-center flex-1 menu-link">
         <span class="text-xl font-normal uppercase xl:text-2xl">
             Menu

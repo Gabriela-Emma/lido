@@ -1,4 +1,9 @@
 body.proposal {
+    .splide__video__play:after{
+        border-color: transparent transparent transparent #FFF !important;
+        border-width: 30px 0 27px 30px !important;
+    }
+
     article {
         h3:not(:first-of-type) {
             @apply mt-6;
@@ -13,6 +18,14 @@ body.proposal .drip {
         .spec-title,
         .amount-received {
             @apply hidden;
+        }
+    }
+}
+
+body.proposal #related-proposals {
+    .proposal-drips {
+        .proposal-drip img {
+            display: none !important;
         }
     }
 }

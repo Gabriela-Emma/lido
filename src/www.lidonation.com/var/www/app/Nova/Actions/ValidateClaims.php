@@ -23,16 +23,23 @@ class ValidateClaims extends Action
      *
      * @return string[]
      */
-    public function handle(ActionFields $fields, Collection $models): array
+    public function handle(ActionFields $fields, Collection $models)
     {
         $code = $fields->code;
         foreach ($models as $model) {
             $id = $model->id;
             $meta = $model->metas()->where('key', 'ideascale_verification_code')->where('content', $code)->first();
             // user making the claim
-            $regularUser = User::whereHas('metas', function ($query) use ($code) {
-                $query->where('key', 'ideascale_verification_code')->where('content', $code);
-            })->first();
+            $regularUser = User::whereHas('metas', fn ($query) =>
+                $query->where([
+                        'key' => 'ideascale_verification_code',
+                        'content' => $code
+                    ])
+                )->first();
+
+            if (!$regularUser instanceof User) {
+                return Action::danger('Could not find user');
+            }
 
             // getting related data
             $data = Meta::where('key', 'claim_data')->where('model_id', $id)->first();

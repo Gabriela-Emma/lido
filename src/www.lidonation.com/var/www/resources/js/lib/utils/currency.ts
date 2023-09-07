@@ -1,11 +1,19 @@
-export function currency(value, locale: string = 'en-US') {
+import { shortNumber } from "./shortNumber";
+
+export function currency(value, currency: string = 'USD', locale: string = 'en-US',  maximumFractionDigits = 0) {
     if (typeof value !== "number") {
         return value;
     }
-    const formatter = new Intl.NumberFormat(locale, {
-        style: 'currency',
-        currency: 'USD',
-        maximumFractionDigits: 0
-    });
-    return formatter.format(value);
+    switch (currency) {
+        case 'ADA':
+            return shortNumber(value, maximumFractionDigits, locale) + ' ₳';
+        default:
+            const formatter = new Intl.NumberFormat(locale, {
+                style: 'currency',
+                notation: 'compact',
+                currency,
+                maximumFractionDigits
+            });
+            return formatter.format(value);
+    }
 }

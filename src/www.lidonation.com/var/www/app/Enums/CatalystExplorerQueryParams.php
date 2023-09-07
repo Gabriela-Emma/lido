@@ -14,17 +14,27 @@ enum CatalystExplorerQueryParams: string
 
     const FUNDED_PROPOSALS = 'fp';
 
+    const OPENSOURCE_PROPOSALS = 'op';
+
     const GROUPS = 'g';
 
     const MIN_BUDGET = '1';
 
-    const MAX_BUDGET = '2000000';
+    const MAX_BUDGET = '4000000';
+
+    const NOT_APPROVED = 'n';
+
+    const OVER_BUDGET = 'o';
 
     const PAGE = 'p';
 
     const PER_PAGE = 'l';
 
     const PEOPLE = 'pp';
+
+    const QUICKPITCHES = 'qp';
+
+    const RANKED_VIEW = 'rv';
 
     const STATUS = 'ss';
 
@@ -45,4 +55,6 @@ enum CatalystExplorerQueryParams: string
     const SORTS = 'st';
 
     const TAGS = 'ts';
+
+    const CATEGORIES = 'cts';
 }

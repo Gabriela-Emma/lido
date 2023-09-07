@@ -15,8 +15,7 @@ class WalletFactory extends Factory
      *
      * @return array
      */
-    public function definition()
-    {   //dd(implode(", ", $this->faker->words(24)));
+    public function definition(){
         return [
             'user_id' => User::inRandomOrder()->first()->id,
             'address' => 'addr_test1qze6hr2g2ywal9mskfzh4vym6jq3t9fvcmcyaxeqf8skhct7x'.$this->faker->unique()->word(8),

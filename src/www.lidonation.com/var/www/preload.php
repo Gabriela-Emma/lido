@@ -15,16 +15,16 @@
  * Server restart is not required.
  *
  * --- Config ---
- * Generated at: 2023-06-01 13:33:49
+ * Generated at: 2023-07-05 01:27:14
  * Opcache
- *     - Used Memory: 131.2 MB
- *     - Free Memory: 380.8 MB
+ *     - Used Memory: 133.5 MB
+ *     - Free Memory: 378.5 MB
  *     - Wasted Memory: 0.0 MB
- *     - Cached files: 3116
- *     - Hit rate: 99.90%
- *     - Misses: 3669
+ *     - Cached files: 3206
+ *     - Hit rate: 99.99%
+ *     - Misses: 3958
  * Preloader config
- *     - Memory limit: 256 MB
+ *     - Memory limit: 2048 MB
  *     - Files excluded: 0
  *     - Files appended: 0
  *

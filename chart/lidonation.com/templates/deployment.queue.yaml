@@ -7,7 +7,7 @@ metadata:
     service: "{{ $.Chart.Name }}-queue"
     app: "{{ $.Chart.Name }}"
 spec:
-  replicas: 1
+  replicas: {{ .Values.services.queue.replicaCount}}
   selector:
     matchLabels:
       app: "{{ $.Chart.Name }}"
@@ -71,18 +71,18 @@ spec:
                 command: ["php", "/var/www/artisan", "horizon:terminate"]
         resources:
           limits:
-            memory: 8192Mi
+            memory: 9216Mi
             cpu: 4
           requests:
             cpu: 80m
-            memory: 300Mi
+            memory: 1024Mi
         env:
           - name: CONTAINER_ROLE
             value: queue
           - name: NEWRELIC_APP_NAME
             value: Lighthouse Queue
           - name: PHP_MEMORY_LIMIT
-            value: 2048M
+            value: 8192M
         envFrom:
           - configMapRef:
               name: "{{ $.Chart.Name }}-configmap"

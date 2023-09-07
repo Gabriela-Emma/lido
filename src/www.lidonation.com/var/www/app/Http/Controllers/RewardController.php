@@ -24,6 +24,7 @@ class RewardController extends Controller
     {
         return Inertia::render('Login', []);
     }
+
     public function index(Request $request)
     {
         $rewards = $this->queryNewRewards($request->user());
@@ -49,13 +50,13 @@ class RewardController extends Controller
                 ['label' => 'Withdraw'],
             ],
         ]);
-      }
+    }
 
     public function history(Request $request)
     {
         return Inertia::render('RewardHistory', [
             'withdrawalsPaginated' => WithdrawalData::collection(
-                $request->user()->withdrawals()->orderByDesc('created_at')->with(['rewards', 'txs'])->paginate(10)
+                $request->user()->withdrawals()->orderByDesc('created_at')->with(['rewards', 'txs'])->fastPaginate(10)
             ),
             'crumbs' => [
                 ['label' => 'Rewards'],
@@ -95,16 +96,14 @@ class RewardController extends Controller
                 ->firstOrFail();
         }
 
-
-
         return [$withdrawal];
     }
 
     public function process(Request $request)
     {
         $user = auth()?->user();
-        if (!$user->wallet_address) {
-            if (!$request->has('address')) {
+        if (! $user->wallet_address) {
+            if (! $request->has('address')) {
                 return response()->json([
                     'message' => 'Could not find an account with those credentials',
                 ], 401);
@@ -145,10 +144,10 @@ class RewardController extends Controller
             return back()->withInput();
         }
 
-        if ((bool)$request->stake_address) {
+        if ((bool) $request->stake_address) {
             $user = User::where('wallet_stake_address', $request->stake_address)->first();
 
-            if ((bool)$user) {
+            if ((bool) $user) {
                 Auth::login($user);
 
                 return back()->withInput();
@@ -193,7 +192,7 @@ class RewardController extends Controller
         $seed = file_get_contents('/data/phuffycoin/wallets/mint/seed.txt');
         try {
             return Http::post(
-                config('cardano.lucidEndpoint') . '/wallet/address',
+                config('cardano.lucidEndpoint').'/wallet/address',
                 compact('seed')
             )->throw()->object();
         } catch (Exception $e) {
@@ -205,7 +204,7 @@ class RewardController extends Controller
     {
         return Reward::where('user_id', $user?->id)
             ->where('status', 'issued')->orderBy('created_at', 'desc')
-            ->with('user')->paginate(12, ['*'], 'p')->setPath('/')->onEachSide(0);
+            ->with('user')->fastPaginate(12, ['*'], 'p')->setPath('/')->onEachSide(0);
     }
 
     public function processedRewards($user)

@@ -9,8 +9,11 @@ use App\Models\Traits\HasMetaData;
 use App\Models\Traits\HasPromos;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Contracts\Auth\CanResetPassword;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -32,8 +35,6 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\Permission\Traits\HasRoles;
 use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 use Staudenmeir\EloquentJsonRelations\HasJsonRelationships;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class User extends Authenticatable implements HasMedia, Interfaces\IHasMetaData, CanComment, CanResetPassword, MustVerifyEmail
 {
@@ -62,7 +63,7 @@ class User extends Authenticatable implements HasMedia, Interfaces\IHasMetaData,
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'lang',
     ];
 
     /**
@@ -241,6 +242,33 @@ class User extends Authenticatable implements HasMedia, Interfaces\IHasMetaData,
         );
     }
 
+    public function completedTopics(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                $topics = LearningTopic::whereRelation('learningLessons.answers', 'user_id', $this->id)->get();
+                return $topics->filter(function($topic) {
+                    $completedLessonsCount = $topic->learningLessons()->whereHas(
+                        'answers',
+                        fn($query) =>
+                            $query->where('user_id', $this->id)
+                            ->whereRelation('answer', 'correctness', 'correct')
+                        )->count();
+                    return $topic->learningLessons()->count() == $completedLessonsCount;
+                });
+            }
+        );
+    }
+
+    public function scopeIncludeDuplicates(Builder $query, $include = true): Builder
+    {
+        if ($include) {
+            return $query;
+        }
+
+        return $query->whereDoesntHave('primary_account');
+    }
+
     public function follows(CatalystUser|int $catalystUser): bool
     {
         return $this->whereHas('following', fn ($q) => $q->whereIn('what_id', [$catalystUser?->id ?? $catalystUser]))->count() > 0;
@@ -267,6 +295,11 @@ class User extends Authenticatable implements HasMedia, Interfaces\IHasMetaData,
     public function promos(): HasMany
     {
         return $this->hasMany(Promo::class, 'user_id');
+    }
+
+    public function nfts():HasMany
+    {
+        return $this->hasMany(Nft::class);
     }
 
     public function mint_txs_phuffycoin(): HasMany
@@ -329,6 +362,11 @@ class User extends Authenticatable implements HasMedia, Interfaces\IHasMetaData,
     public function primary_account(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function duplicate_accounts(): HasMany
+    {
+        return $this->hasMany(User::class, 'primary_account_id');
     }
 
     public function __toString()

@@ -1,16 +1,14 @@
 <template>
     <div>
         <!-- Button -->
-        <div @click="toggle()" :aria-expanded="open"  :class="{ 'rounded-sm': !open }">
+        <button @click="toggle()" :aria-expanded="open" :class="{ 'rounded-sm': !open }">
             <slot name="button-title"></slot>
-            <!-- <span class="text-xl tracking-wide md:text-2xl">Delegate with 1-click!</span>
-            <span class="text-slate-400" aria-hidden="true">&darr;</span> -->
-        </div>
+        </button>
 
         <!-- Panel -->
-            <WalletList :open="open" @delagate="delegate($event)">
-                
-            </WalletList>
+        <WalletList :open="open" @delagate="delegate($event)">
+
+        </WalletList>
     </div>
 </template>
 
@@ -25,7 +23,7 @@ import WalletList from './WalletList.vue'
 let open = ref(false)
 // wallet store
 let walletStore = useWalletStore();
-let { walletData} = storeToRefs(walletStore);
+let { walletData } = storeToRefs(walletStore);
 let { walletName } = storeToRefs(walletStore);
 
 const walletService = new WalletService();

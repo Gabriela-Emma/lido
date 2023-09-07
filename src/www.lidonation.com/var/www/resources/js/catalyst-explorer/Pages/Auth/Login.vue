@@ -1,21 +1,27 @@
 <template>
     <div class="bg-slate-100 login-form-wrapper">
         <LoginForm  :role="'catalyst-explorer'"
-                    :showLogo="true"
+                    :showLogo="showLogo"
                    :errors="errors"
+                   :embedded="embedded"
                    @setForm="getForm($event)"
-                   @submit="submit"/>
+                   @submit="submit"
+                   @go-to-register="router.get(route('catalystExplorer.register'))"
+                   />
     </div>
 </template>
 
 <script lang="ts" setup>
-import {router, useForm, usePage} from "@inertiajs/vue3";
+import {router, useForm} from "@inertiajs/vue3";
 import LoginForm from "../../../global/Shared/Components/LoginForm.vue";
+import route from "ziggy-js";
 
-const props = withDefaults(
+withDefaults(
     defineProps<{
         errors?: Object,
-    }>(), {});
+        embedded?: boolean,
+        showLogo?: boolean,
+    }>(), {embedded: false, showLogo:true});
 
 let form = useForm({})
 
@@ -24,9 +30,9 @@ let getForm = (loginForm) => {
 }
 
 let submit = () => {
-    form.post(`${usePage().props.base_url}/api/catalyst-explorer/login`, {
+    form.post(route('catalystExplorerApi.login'), {
         onSuccess: () => {
-            router.get(`${usePage().props.base_url}/catalyst-explorer/my/dashboard`)
+            window.location.reload();
         }
     });
 }

@@ -9,13 +9,16 @@ import PrimeVue from 'primevue/config';
 import route from "ziggy-js";
 import {modal} from "momentum-modal";
 import timeago from 'vue-timeago3';
-import moment from "moment-timezone";
 import {shortNumber} from "./lib/utils/shortNumber";
 import {currency} from "./lib/utils/currency";
 import {timeAgo} from "./lib/utils/timeago";
+import VuePlyr from 'vue-plyr';
+import 'vue-plyr/dist/vue-plyr.css';
 import {contrastColor} from "./lib/utils/contrastColor";
 let messages = require('../../storage/app/snippets.json');
 const axios = require('axios');
+import MasonryWall from '@yeger/vue-masonry-wall';
+
 
 //cache snippets to disk
 axios.get(`${window.location.origin}/api/cache/snippets`);
@@ -32,14 +35,15 @@ createInertiaApp({
     },
     setup({el, App, props, plugin}) {
         const pinia = createPinia();
-        watch(
-            pinia.state,
-            (state) => {
-                // persist the whole state to the local storage whenever it changes
-                sessionStorage.setItem('piniaState', JSON.stringify(state))
-            },
-            {deep: true}
-        );
+        // exchausts available memory on draft ballots page
+        // watch(
+        //     pinia.state,
+        //     (state) => {
+        //         // persist the whole state to the local storage whenever it changes
+        //         sessionStorage.setItem('piniaState', JSON.stringify(state))
+        //     },
+        //     {deep: true}
+        // );
 
         const i18n = createI18n({
             locale: <string>props.initialPage.props.locale,
@@ -55,7 +59,10 @@ createInertiaApp({
             .use(PrimeVue)
             .use(timeago)
             .use(pinia)
-            .use(i18n);
+            .use(MasonryWall)
+            .use(i18n).use(VuePlyr, {
+                plyr: {}
+            });
 
         app.directive('focus', {
             mounted(el, binding, vnode) {

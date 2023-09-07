@@ -21,14 +21,14 @@ spec:
             claimName: "{{ .Values.namespace }}-search-pvc"
       containers:
         - name: meilisearch
-          image: getmeili/meilisearch:v1.1.1
+          image: getmeili/meilisearch:v1.3.2
           resources:
             limits:
-              memory: 12288Mi
+              memory: 16384Mi
               cpu: 5
             requests:
               cpu: 600m
-              memory: 2048Mi
+              memory: 4096Mi
           envFrom:
             - secretRef:
                 name: "{{ $.Chart.Name }}-search-secret"

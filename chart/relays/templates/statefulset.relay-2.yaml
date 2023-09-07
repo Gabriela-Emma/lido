@@ -1,4 +1,4 @@
-{{- if eq .Values.services.cardano.config.CARDANO_NETWORK "main" -}}
+{{- if eq .Values.services.cardano.config.CARDANO_NETWORK "mainnet" -}}
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -65,7 +65,7 @@ spec:
               cpu: "1"
               memory: 16384Mi
             limits:
-              cpu: "7"
+              cpu: "8"
               memory: 36864Mi
           env:
             - name: NODE_NAME

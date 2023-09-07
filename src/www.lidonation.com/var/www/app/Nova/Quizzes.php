@@ -7,13 +7,13 @@ use App\Nova\Actions\AddMetaData;
 use App\Nova\Actions\EditMetaData;
 use Ebess\AdvancedNovaMediaLibrary\Fields\Images;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use JetBrains\PhpStorm\Pure;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Markdown;
-use Laravel\Nova\Fields\MorphedByMany;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 
@@ -47,6 +47,16 @@ class Quizzes extends Resource
         'title',
         'content',
     ];
+
+    /**
+     * Get the value that should be displayed to represent the resource.
+     *
+     * @return string
+     */
+    public function title()
+    {
+        return Str::limit(data_get($this, static::$title), 24);
+    }
 
     /**
      * Get the fields displayed by the resource.
@@ -89,6 +99,8 @@ class Quizzes extends Resource
                         Text::make('Type', 'model_type')->default(Quiz::class)->onlyOnForms(),
                     ];
                 })->searchable(),
+
+            HasMany::make(__('Responses'), 'responses', AnswerResponses::class),
 
             HasMany::make('Metadata', 'metas', Metas::class),
         ];

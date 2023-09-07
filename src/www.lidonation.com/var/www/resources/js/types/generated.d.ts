@@ -19,8 +19,30 @@ export type AssetMetaData = {
 logo: string | null;
 ticker: string | null;
 };
+export type CatalystRegistrationData = {
+id: number | null;
+tx: string | null;
+voting_power: string | null;
+stake_pub: string | null;
+created_at?: string | null;
+};
+export type CommentData = {
+id: number | null;
+title: string | null;
+text: string;
+status?: string | null;
+createdAt?: any;
+};
+export type CommunityReviewData = {
+id: number | null;
+title: string | null;
+content: string;
+status?: string | null;
+comments: Array<App.DataTransferObjects.CommentData> | null;
+};
 export type LearnerData = {
 name: string | null;
+active_pool_id: string | null;
 wallet_address?: string | null;
 email: string | null;
 wallet_stake_address?: string | null;
@@ -28,6 +50,7 @@ nextLessonAt?: string | null;
 nextLesson?: App.DataTransferObjects.LearningLessonData | null;
 totalRewardSum?: number | null;
 availableRewards?: Array<App.DataTransferObjects.RewardData> | null;
+completed_topics: Array<App.DataTransferObjects.LearningTopicData> | null;
 };
 export type LearningAttemptData = {
 retryAt?: any;
@@ -102,6 +125,21 @@ uri: string | null;
 feature_url: string | null;
 content: string | null;
 };
+export type ProposalData = {
+id: number | null;
+title: string | null;
+link: string;
+status?: string | null;
+};
+export type ProposalRatingData = {
+id: number | null;
+rationale: string | null;
+rating: string | null;
+meta_data: any;
+proposal: App.DataTransferObjects.ProposalData | null;
+community_review: App.DataTransferObjects.CommunityReviewData | null;
+status?: string | null;
+};
 export type QuizData = {
 id: number | null;
 title: string;
@@ -137,6 +175,12 @@ created_at?: string | null;
 status: string | null;
 asset_details?: App.DataTransferObjects.AssetDetailsData | null;
 memo: string | null;
+};
+export type TaxonomyData = {
+id: number;
+title: string;
+slug: string;
+current_fund_proposals: number | null;
 };
 export type TxData = {
 id: number | null;

@@ -1,11 +1,13 @@
-<div class="flex"  x-data={show:false}>
-    <div class="flex-1 px-4 py-2 leading-relaxed rounded-sm border sm:px-6 sm:py-4">
-        <h2 class="flex flex-row gap-2 items-center">
+<div class="flex" x-data={show:false}>
+    <div class="flex-1 px-4 py-2 leading-relaxed border rounded-sm sm:px-6 sm:py-4">
+        <h2 class="flex flex-row items-center gap-2">
             <span>
                 {{$discussion?->title}}
             </span>
             <x-public.stars :amount="$discussion->rating" />
-            <span>({{$discussion->ratings_count}})</span>
+            <span>
+                ({{$discussion?->community_reviews?->count()}})
+            </span>
         </h2>
 
         <x-markdown>{{$discussion?->content}}</x-markdown>
@@ -26,8 +28,8 @@
                             <div class="flex-shrink-0 mr-3">
                                 <img class="w-8 h-8 rounded-sm sm:w-10 sm:h-10" src="{{$comment->gravatar}}" alt="Commenter gravatar">
                             </div>
-                            <div class="flex-1 px-4 py-2 leading-relaxed rounded-sm border sm:px-6 sm:py-4">
-                                <div class="flex flex-row gap-1 items-center">
+                            <div class="flex-1 px-4 py-2 leading-relaxed border rounded-sm sm:px-6 sm:py-4">
+                                <div class="flex flex-row items-center gap-1">
                                     <strong>{{$comment->name}}</strong>
                                     <x-public.stars :amount="$comment->rating->rating" :size="3" />
                                 </div>
@@ -46,8 +48,7 @@
         @endif
 
         <div class="mt-6">
-
-            <div class="flex flex-row gap-2 justify-start items-center p-2 rounded-md border hover:cursor-pointer hover:bg-gray-100" @click="show=!show">
+            <div class="flex flex-row items-center justify-start gap-2 p-2 border rounded-md hover:cursor-pointer hover:bg-gray-100" @click="show=!show">
                 <div>
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />

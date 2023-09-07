@@ -20,6 +20,7 @@ use Exception;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Fluent;
 use Livewire\Component;
@@ -93,11 +94,14 @@ class DelegatorsComponent extends Component
             $this->loadUserNfts($user);
             $this->loadLidoRewards($user);
 
+            $date = Carbon::now()->subDays(7);
             $this->myResponse = AnswerResponse::with('answer.question')
                 ->where([
                     'user_id' => $user->id,
                     'quiz_id' => $this->everyEpochQuiz?->id,
-                ])->first();
+                    'context_type' => EveryEpoch::class,
+                ])->where('created_at', '>=', $date)
+                ->first();
 
             if ($this->myResponse instanceof AnswerResponse && $this->myResponse?->answer?->question instanceof Question) {
                 $this->everyEpochQuestion = QuizQuestionData::from(Question::with(['answers'])->find($this->myResponse?->question_id))->toArray();
@@ -282,7 +286,10 @@ class DelegatorsComponent extends Component
                 //from image meta establish protocol and the uri
                 switch (gettype($imageMeta)) {
                     case 'string': //eg "https://cardano.org/favicon-32x32.png"  OR "ipfs://QmbQDvKJeo2NgGcGdnUiUFibTzuKNK5Uij7jzmK8ZccmWp"
-                        [$imageProtocol, $imageUri] = explode('://', $imageMeta);
+                        $parts = explode('://', $imageMeta);
+                        if (count($parts) > 1) {
+                            [$imageProtocol, $imageUri] = explode('://', $imageMeta);
+                        }
                         break;
                     case 'array': //eg ["ipfs://", "QmbQDvKJeo2NgGcGdnUiUFibTzuKNK5Uij7jzmK8ZccmWp"]
                         [$protocol, $uri] = $imageMeta;

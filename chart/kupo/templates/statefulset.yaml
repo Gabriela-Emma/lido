@@ -1,0 +1,119 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: "{{ $.Chart.Name }}"
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: "{{ $.Chart.Name }}"
+    role: kupo
+    network: {{ .Values.services.cardano.config.CARDANO_NETWORK }}    
+spec:
+  selector:
+    matchLabels:
+      app: "{{ $.Chart.Name }}"
+      release: {{ .Release.Name }}
+  replicas: 1
+  updateStrategy:
+    type: RollingUpdate
+  serviceName: "{{ $.Chart.Name }}-service"
+  template:
+    metadata:
+      labels:
+        app: "{{ $.Chart.Name }}"
+        chart: "{{ $.Chart.Name }}-{{ $.Chart.Version }}"
+        role: data
+        network: {{ .Values.services.cardano.config.CARDANO_NETWORK }}
+        release: {{ .Release.Name }}
+        service: "kupo"
+    spec:      
+      serviceAccountName: ""
+      volumes:
+        - name: node-ipc
+          emptyDir: {}
+        - name: "{{ $.Chart.Name }}-1-pv"
+          persistentVolumeClaim:
+            claimName: "{{ .Values.namespace }}-data-cardano-kupo-pvc"
+        - name: node-configurations
+          configMap:
+            name: "lidolovelace-cardano-configurations-configmap"
+      containers:
+        - name: app
+          image: "{{ .Values.services.kupo.image.repository }}:{{ .Values.services.kupo.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args: [
+              "--host", "0.0.0.0",
+              "--node-socket", "/ipc/node.socket",
+              "--node-config", "/tmp/config/config.json",
+              "--workdir", "/db",
+              "--since", "origin",
+              "--match", "*/*",
+          ]
+          resources:
+            limits:
+              memory: 16384Mi
+              cpu: 4
+            requests:
+              cpu: 800m
+              memory: 2048Mi
+          envFrom:
+            - configMapRef:
+                name: "lidolovelace-cardano-configmap"
+          env:
+            - name: LOGGER_MIN_SEVERITY
+              value: info
+          ports:
+            - name: kupo
+              containerPort: 1442
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /ipc
+              name: node-ipc
+            - name: node-configurations
+              mountPath: /tmp/config
+              readOnly: true
+            - name: "{{ $.Chart.Name }}-1-pv"
+              mountPath: /config
+              subPath: config
+              readOnly: false
+            - name: "{{ $.Chart.Name }}-1-pv"
+              mountPath: /db
+              subPath: db
+              readOnly: false
+        - name: sidecar
+          image: busybox:1.28
+          args:
+            - sleep
+            - "2592000"
+          volumeMounts:
+            - mountPath: /ipc
+              name: node-ipc
+            - name: "{{ $.Chart.Name }}-1-pv"
+              mountPath: /config
+              subPath: config
+              readOnly: false
+            - name: "{{ $.Chart.Name }}-1-pv"
+              mountPath: /db
+              subPath: db
+              readOnly: false
+        - name: ipc
+          image: alpine/socat:1.7.4.4
+          env:
+            - name: CARDANO_NODE_SOCKET_TCP_HOST
+              value: "lidolovelace-cardano-relay-1-service"
+            - name: CARDANO_NODE_SOCKET_TCP_PORT
+              value: "30111"
+            - name: SOCAT_TIMEOUT
+              value: "3600"
+          command: [
+            "sh",
+            "-c",
+            "socat UNIX-LISTEN:/ipc/node.socket,fork TCP:${CARDANO_NODE_SOCKET_TCP_HOST}:${CARDANO_NODE_SOCKET_TCP_PORT},ignoreeof"
+          ]
+          volumeMounts:
+            - name: node-ipc
+              mountPath: /ipc
+          ports:
+            - name: ipc
+              containerPort: 30130
+      imagePullSecrets:
+        - name: {{ .Values.image.pullSecret }}

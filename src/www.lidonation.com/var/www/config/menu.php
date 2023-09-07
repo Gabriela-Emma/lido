@@ -137,7 +137,7 @@ return [
             new Illuminate\Support\Fluent([
                 'title' => 'Voter Tool',
                 'route_type' => 'route_name',
-                'route' => 'projectCatalyst.voterTool',
+                'route' => 'catalystExplorer.voterTool',
             ]),
             new Illuminate\Support\Fluent([
                 'title' => 'My Bookmarks',
@@ -190,7 +190,7 @@ return [
                     new Illuminate\Support\Fluent([
                         'title' => 'Charts',
                         'route_type' => 'route_name',
-                        'route' => 'projectCatalyst.dashboard',
+                        'route' => 'catalystExplorer.charts',
                     ]),
                     new Illuminate\Support\Fluent([
                         'title' => 'Monthly Reports',

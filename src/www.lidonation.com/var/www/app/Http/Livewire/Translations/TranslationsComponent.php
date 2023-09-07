@@ -61,7 +61,7 @@ class TranslationsComponent extends LivewireDatatable
             }
         }
 
-        if ($this->filter) {//
+        if ($this->filter) {
             switch ($this->filter) {
                 case 'news':
                     $this->query->sourceType(News::class);
@@ -85,26 +85,25 @@ class TranslationsComponent extends LivewireDatatable
         }
 
         $this->query
-//            ->orderBy('content', 'desc')
             ->orderBy('source_id')
             ->orderBy('source_type');
 
         return $this->query;
     }
 
-    public function toggleGroupRelated()
+    public function toggleGroupRelated($groupRelated)
     {
-        $this->groupRelated = ! $this->groupRelated;
+        $this->groupRelated = $groupRelated;
     }
 
-    public function toggleOnlyMine()
+    public function toggleOnlyMine($onlyMine)
     {
-        $this->onlyMine = ! $this->onlyMine;
+        $this->onlyMine = $onlyMine;
     }
 
-    public function toggleMissing()
+    public function toggleMissing($missing)
     {
-        $this->onlyMissing = ! $this->onlyMissing;
+        $this->onlyMissing = $missing;
     }
 
     public function toggleFilter($filter)

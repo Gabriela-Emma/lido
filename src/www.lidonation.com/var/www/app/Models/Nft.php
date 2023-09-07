@@ -36,6 +36,9 @@ class Nft extends Model implements HasLink, HasMedia
     //@todo owner should be an accessor that returns an array from tx-es minted addresses
     protected $hidden = ['artist_id', 'user_id', 'deleted_at', 'model_type', 'model_id', 'media', 'owner', 'txs'];
 
+    // allow masss filling for nft cloning
+    protected $guarded = [];
+
     protected $casts = [
         'metadata' => AsArrayObject::class,
         'updated_at' => 'datetime:Y-m-d',

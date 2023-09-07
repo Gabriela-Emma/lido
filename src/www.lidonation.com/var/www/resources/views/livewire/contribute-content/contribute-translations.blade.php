@@ -1,9 +1,9 @@
 <div>
     <x-public.page-header :size="'md'">
         <x-slot name="title">
-            <div class='font-black text-teal-600 flex flex-row justify-start items-end gap-3 relative -bottom-6'>
+            <div class='relative flex flex-row items-end justify-start gap-3 font-black text-teal-600 -bottom-6'>
                 <div>
-                    <svg class="text-teal-600 h-20 w-20 text-gray-400" fill="none" stroke="currentColor"
+                    <svg class="w-20 h-20 text-gray-400" fill="none" stroke="currentColor"
                          viewBox="0 0 48 48"
                          aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -22,14 +22,14 @@
         @endisset
     </x-public.page-header>
 
-    <section class="relative bg-white relative py-8">
+    <section class="relative py-8 bg-white">
         <div class="container">
             @can('translate articles')
-                <div class="bg-gray-50 border-t-4 flex flex-col justify-center py-4 sm:px-6 lg:px-8 mb-4 translations-wrapper">
+                <div class="flex flex-col justify-center py-4 mb-4 border-t-4 bg-gray-50 sm:px-6 lg:px-8 translations-wrapper">
                     <livewire:translations.translations-component />
                 </div>
             @else
-                <div class="bg-info flex flex-col justify-center py-4 sm:px-6 lg:px-8 mb-4">
+                <div class="flex flex-col justify-center py-4 mb-4 bg-info sm:px-6 lg:px-8">
                     <p>
                         Your account still need to be set up for translation.
                     </p>

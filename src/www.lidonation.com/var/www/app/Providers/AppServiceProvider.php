@@ -112,6 +112,8 @@ class AppServiceProvider extends ServiceProvider
             return $validator->validateExists($attribute, $value, $parameters);
         });
 
+        Str::macro('truncate', fn ($value, $maxLength) => truncate_middle($value, $maxLength));
+
         //        Builder::macro('createFilters', function () {
         //            return $this->engine()->getTotalCount(
         //                $this->engine()->search($this)

@@ -4,6 +4,7 @@ import Proposal from "./proposal";
 export default interface Filters {
     currentPage: number;
     funded: boolean;
+    opensource: boolean;
     fundingStatus: string;
     projectStatus: string;
     cohort: string;

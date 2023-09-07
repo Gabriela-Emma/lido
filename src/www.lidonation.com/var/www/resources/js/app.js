@@ -773,6 +773,15 @@ window.proposalDrip = function proposal(proposal) {
     }
 }
 
+window.quickpitch = function () {
+    return {
+        pitchPlayer: null,
+        init() {
+            this.pitchPlayer = new Plyr(this.$refs.quickPitch);
+        }
+    }
+}
+
 //@todo this does not work. Breaks contribute content content. need to reevaluate modals handling on the site.
 // window.LivewireUIModal = LivewireUIModal;
 
@@ -1018,6 +1027,22 @@ window.globalReactions = function globalReactions(counts) {
     }
 }
 
+window.scrollSection = function scrollSection() {
+    return {
+        scroll(position, id){
+
+            const scrollableDiv = document.getElementById(id);
+            const scrollAmount = 300;
+
+            if (position === 'left') {
+                scrollableDiv.scrollLeft -= scrollAmount;
+            } else if (position === 'right') {
+                scrollableDiv.scrollLeft += scrollAmount;
+            }
+        }
+    }
+}
+
 Alpine.magic('tt', el => message => {
     let instance = tippy(el, {content: message, trigger: 'manual'})
 
@@ -1047,4 +1072,3 @@ if (rellaxElement.length > 0) {
         });
     }
 }
-

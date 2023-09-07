@@ -270,4 +270,7 @@ return [
         'Shortcode' => Webwizo\Shortcodes\Facades\Shortcode::class,
     ])->toArray(),
 
+    'slte' => [
+        'registration_open' => env('REGISTRATION_OPEN', false),
+    ],
 ];
