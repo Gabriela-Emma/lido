@@ -78,7 +78,6 @@ class CatalystVoterToolController extends Controller
         $this->challengeFilter = $request->input(CatalystExplorerQueryParams::CHALLENGES, null);
         $this->tagsFilter = $request->input(CatalystExplorerQueryParams::TAGS,null);
         $this->categoriesFilter = $request->input(CatalystExplorerQueryParams::CATEGORIES, null);
-        dd($this->tagsFilter);
         $this->query();
 
         return Inertia::render('VoterTool', [
