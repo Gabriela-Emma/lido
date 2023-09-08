@@ -52,19 +52,23 @@ Route::group(
     [
         'prefix' => 'delegators',
         'middleware' => ['auth:sanctum'],
-    ], function () {
+    ],
+    function () {
         Route::get('/current', [DelegatorController::class, 'current']);
         Route::get('/{id}', [DelegatorController::class, 'index']);
-    });
+    }
+);
 Route::group(
     [
         'prefix' => 'delegators',
         'middleware' => [],
-    ], function () {
+    ],
+    function () {
         Route::post('/create', [DelegatorController::class, 'create']);
         Route::post('/logout', [DelegatorController::class, 'logout']);
         Route::post('/login', [DelegatorController::class, 'login']);
-    });
+    }
+);
 
 // Partners
 
@@ -72,20 +76,24 @@ Route::group(
     [
         'prefix' => 'partners',
         'middleware' => ['auth:sanctum'],
-    ], function () {
+    ],
+    function () {
         Route::get('/promos', [PromoController::class, 'index']);
         Route::get('/promos/{id}', [PromoController::class, 'read']);
-    });
+    }
+);
 Route::group(
     [
         'prefix' => 'partners',
         'middleware' => [],
-    ], function () {
+    ],
+    function () {
         Route::post('/policies', [PartnersController::class, 'policies']);
         Route::post('/create', [PartnersController::class, 'create']);
         Route::post('/logout', [PartnersController::class, 'logout']);
         Route::post('/login', [PartnersController::class, 'login']);
-    });
+    }
+);
 
 Route::group([
     'prefix' => 'phuffycoin',
@@ -122,12 +130,14 @@ Route::get('/ccv4/check-eligibility', function (Request $request) {
             ->whereRelation('metas', ['key' => 'program', 'content' => 'ccv4'])->first();
 
         $rewards = Reward::where(
-            'stake_address', $user?->wallet_stake_address)
+            'stake_address',
+            $user?->wallet_stake_address
+        )
             ->where('model_id', $giveaway?->id);
 
         $withdrawals = Withdrawal::with(['txs', 'metas'])
             ->whereRelation('metas', ['key' => 'withdrawal_tx'])
-            ->withWhereHas('rewards', function ($query) use($rewards) {
+            ->withWhereHas('rewards', function ($query) use ($rewards) {
                 $query->whereIn('id',  $rewards->get()->pluck('id'));
             })
             ->get();
@@ -135,8 +145,8 @@ Route::get('/ccv4/check-eligibility', function (Request $request) {
         // response array
         $response['eligibility'] = 'true';
         $response['rewards']['awarded'] = $rewards->whereIn('status', ['issued', 'processed'])->get();
-        $response['rewards']['withdrawal_txs'] = $withdrawals->isNotEmpty() ? $withdrawals->map(fn($withdrawal) => $withdrawal->withdrawal_tx) : [];
-    }else {
+        $response['rewards']['withdrawal_txs'] = $withdrawals->isNotEmpty() ? $withdrawals->map(fn ($withdrawal) => $withdrawal->withdrawal_tx) : [];
+    } else {
         $response['eligibility'] = 'false';
         $response['rewards']['awarded'] = [];
         $response['rewards']['withdrawal_txs'] = [];
@@ -171,12 +181,12 @@ Route::post('/ccv4/claim-rewards', function (Request $request) {
 
     $ballots = $ballots->get();
     if ($ballots->isNotEmpty()) {
-        if (! $user instanceof User) {
+        if (!$user instanceof User) {
             $user = new User;
             $user->name = $request->account;
             $user->wallet_stake_address = $request->account;
             $user->wallet_address = $request->wallet_address;
-            $user->email = $request->email ?? substr($request->account, -4).'@anonymous.com';
+            $user->email = $request->email ?? substr($request->account, -4) . '@anonymous.com';
             $user->password = Hash::make(Str::random(10));
             $user->save();
         }
@@ -187,11 +197,13 @@ Route::post('/ccv4/claim-rewards', function (Request $request) {
     $rewards = [];
 
     // for each rule in the giveaway
-    $giveaway->rules?->each(function($rule) use ($user, $ballots, &$rewards, $giveaway) {
+    $giveaway->rules?->each(function ($rule) use ($user, $ballots, &$rewards, $giveaway) {
 
         // issue a reward to the user if one hasn't already been issued
         $reward = Reward::where(
-            'stake_address', $user?->wallet_stake_address)
+            'stake_address',
+            $user?->wallet_stake_address
+        )
             ->where('model_id', $giveaway?->id)
             ->get();
 
@@ -248,14 +260,17 @@ Route::group(
     [
         'prefix' => 'catalyst',
         'middleware' => ['localize'],
-    ], function () {
+    ],
+    function () {
         Route::get('/proposals', [ProposalController::class, 'index']);
-    });
+    }
+);
 
 Route::group(
     [
         'middleware' => [],
-    ], function () {
+    ],
+    function () {
         Route::get('cardano/config', function (Request $request) {
             $credentials = [
                 'poolId' => config('cardano.pool.hash'),
@@ -270,12 +285,13 @@ Route::group(
 
         Route::any('cardano/{relativePath?}', function (CardanoBlockfrostService $frost, Request $request, $relativePath = null) {
             $method = $request->method();
-            $uri = '/'.$relativePath;
+            $uri = '/' . $relativePath;
             $data = $request->all();
 
             return $frost->request($method, $uri, $data);
         })->where('relativePath', ('.*'));
-    });
+    }
+);
 
 // Catalyst Explorer Public API
 Route::prefix('catalyst-explorer')->as('catalystExplorerApi.')
@@ -346,15 +362,18 @@ Route::prefix('catalyst-explorer')->as('catalystExplorerApi.')
         Route::get('/tallies', [CatalystTalliesController::class, 'index'])
             ->name('tallies');
 
+        Route::get('/tallies/date', [CatalystTalliesController::class, 'getUpdatedAtDate'])
+            ->name('talliesDate');
+
         Route::prefix('proposals')->as('proposals.')->group(function () {
             Route::post('/login', [CatalystExplorer\UserController::class, 'login'])->name('login');
 
             Route::prefix('/{proposal:id}')->group(function () {
                 Route::post('/repo', [CatalystExplorer\RepoController::class, 'store'])
-                ->name('storeRepo');
+                    ->name('storeRepo');
 
                 Route::post('/quickpitch', [ProposalController::class, 'storeQuickpitch'])
-                ->name('storeQuickpitch');
+                    ->name('storeQuickpitch');
             });
         });
 
@@ -362,14 +381,13 @@ Route::prefix('catalyst-explorer')->as('catalystExplorerApi.')
 
             Route::get('/bookmarks', [CatalystMyBookmarksController::class, 'index'])
                 ->name('myBookmarks');
-
         });
 
         Route::get('/my/draft-ballots', [CatalystBookmarksController::class, 'draftBallotIndex'])
-                ->name('draftBallots');
+            ->name('draftBallots');
 
         Route::get('/my/draft-ballots/{draftBallot:id}', [CatalystBookmarksController::class, 'getDraftBallot'])
-                ->name('draftBallot');
+            ->name('draftBallot');
 
         Route::post('/react/report/{catalystReport:id}', [CatalystExplorer\ReportController::class, 'createReaction']);
 
@@ -380,8 +398,6 @@ Route::prefix('catalyst-explorer')->as('catalystExplorerApi.')
         ], function () {
             Route::post('/{catalystReport:id}', [CatalystExplorer\ReportController::class, 'createComment']);
         });
-
-
     });
 
 Route::prefix('earn')->as('earnApi.')->group(function () {
