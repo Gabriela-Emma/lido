@@ -10,7 +10,8 @@ use Meilisearch\Endpoints\Indexes;
 
 class CatalystTalliesController extends Controller
 {
-    public function index(Request $request) {
+    public function index(Request $request)
+    {
         $perPage = $request->input('pp', 24);
         $page = $request->input('p', 1);
         $order = $request->input('o', 'asc');
@@ -19,13 +20,13 @@ class CatalystTalliesController extends Controller
         $challenges = collect($request->input('c', []));
 
         $query = CatalystTally::setEagerLoads([])->with('model')
-        ->where('model_type', Proposal::class)
-        ->orderBy($orderBy, $order);
+            ->where('model_type', Proposal::class)
+            ->orderBy($orderBy, $order);
 
         if ($challenges->isNotEmpty()) {
             $query->whereHas(
                 'model',
-                fn($q) => $q->whereIn('fund_id', $challenges->toArray() )
+                fn ($q) => $q->whereIn('fund_id', $challenges->toArray())
             );
         }
 
@@ -44,5 +45,16 @@ class CatalystTalliesController extends Controller
         }
 
         return $query->fastPaginate($perPage, ['*'], 'page', $page);
+    }
+
+
+    public function getUpdatedAtDate(Request $request)
+    {
+        $mostRecentTally = CatalystTally::latest('updated_at')->first();
+        $responseData = [
+            'updated_at' => $mostRecentTally->updated_at,
+        ];
+
+        return response()->json($responseData);
     }
 }
