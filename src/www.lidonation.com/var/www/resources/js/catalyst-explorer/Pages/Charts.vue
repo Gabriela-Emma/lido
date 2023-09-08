@@ -333,7 +333,6 @@ let order$ = ref<string>('asc');
 let search$ = ref<string>(null);
 let tallyUpdatedAt = ref<string>(null);
 
-const tallyUpdatedAt = '2023-09-08T13:00:15Z';
 const fundsLabelValue = computed(() => {
     return props?.funds?.map((fund) => {
         return { 'label': fund.title, 'value': fund.id }
