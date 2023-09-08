@@ -18,7 +18,7 @@
             class="relative flex flex-row items-center pr-3 mt-auto -top-2 gap-x-3 md:text-md md:leading-8 md:gap-x-8">
             <span class="hidden md:w-6 md:h-6"></span>
             <div class="m-0">
-                <x-public.stars :amount="$discussion->rating" :size="6"/>
+                <x-public.stars :amount="$model?->meta_data?->{$mataKey} ?? $discussion->rating" :size="6"/>
             </div>
             <div class="flex flex-row gap-1 text-xs font-semibold flex-nowrap sm:text-sm 2x:text-base">
                 <?php $mataKey = match ($discussion->title) {
