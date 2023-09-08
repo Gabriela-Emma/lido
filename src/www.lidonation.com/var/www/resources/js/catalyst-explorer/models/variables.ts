@@ -9,6 +9,7 @@ export enum VARIABLES {
     GROUPS = 'g',
     MIN_BUDGET = 1,
     MAX_BUDGET = 4000000,
+    CATEGORY = 'cts',
     PAGE = 'p',
     PER_PAGE = 'l',
     PEOPLE = 'pp',

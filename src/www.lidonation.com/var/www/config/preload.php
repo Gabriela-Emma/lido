@@ -59,7 +59,6 @@ return [
     | Measured in MB (MegaBytes). Using `0` or `null` disables the limit.
     |
     */
-
     'memory' => 2048,
 
     /*
