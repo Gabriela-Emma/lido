@@ -11,13 +11,13 @@
         }
     ],
     "paths": {
-        "/catalyst-ledger-snapshots": {
+        "/ledger-snapshots": {
             "get": {
                 "tags": [
-                    "catalyst-ledger-snapshots"
+                    "ledger-snapshots"
                 ],
-                "summary": "Get a list of catalyst-ledger-snapshots",
-                "description": "Returns a list of all catalyst-ledger-snapshots",
+                "summary": "Get a list of ledger-snapshots",
+                "description": "Returns a list of all ledger-snapshots",
                 "operationId": "catalystLedgerSnapshot",
                 "responses": {
                     "200": {
@@ -57,12 +57,12 @@
                 }
             }
         },
-        "/catalyst-ledger-snapshots/{snapshot_id}": {
+        "/ledger-snapshots/{snapshot_id}": {
             "get": {
                 "tags": [
-                    "catalyst-ledger-snapshots"
+                    "ledger-snapshots"
                 ],
-                "summary": "Get catalyst-ledger-snapshot by snapshot id",
+                "summary": "Get ledger-snapshot by snapshot id",
                 "description": "Returns a single Archive snapshot.",
                 "operationId": "catalystLedgerSnapshots",
                 "parameters": [
@@ -86,12 +86,12 @@
                 }
             }
         },
-        "/catalyst-ledger-snapshots/latest": {
+        "/ledger-snapshots/latest": {
             "get": {
                 "tags": [
-                    "catalyst-ledger-snapshots"
+                    "ledger-snapshots"
                 ],
-                "summary": "Get latest catalyst-ledger-snapshot ",
+                "summary": "Get latest ledger-snapshot ",
                 "description": "Returns a single Archive snapshot.",
                 "operationId": "LatestCatalystLedgerSnapshots",
                 "responses": {
@@ -1515,11 +1515,11 @@
                 "properties": {
                     "first": {
                         "type": "string",
-                        "example": "/api/catalyst-explorer/catalyst-ledger-snapshots?page=1"
+                        "example": "/api/catalyst-explorer/ledger-snapshots?page=1"
                     },
                     "last": {
                         "type": "string",
-                        "example": "/api/catalyst-explorer/catalyst-ledger-snapshots?page=1"
+                        "example": "/api/catalyst-explorer/ledger-snapshots?page=1"
                     },
                     "prev": {
                         "type": "string",
@@ -1527,7 +1527,7 @@
                     },
                     "next": {
                         "type": "string",
-                        "example": "/api/catalyst-explorer/catalyst-ledger-snapshots?page=2"
+                        "example": "/api/catalyst-explorer/ledger-snapshots?page=2"
                     }
                 },
                 "type": "object"
@@ -1551,7 +1551,7 @@
                     },
                     "path": {
                         "type": "string",
-                        "example": "/api/catalyst-explorer/catalyst-ledger-snapshots"
+                        "example": "/api/catalyst-explorer/ledger-snapshots"
                     },
                     "per_page": {
                         "type": "integer",
@@ -1578,7 +1578,7 @@
                 "properties": {
                     "url": {
                         "type": "string",
-                        "example": "/api/catalyst-explorer/catalyst-ledger-snapshots?page=1"
+                        "example": "/api/catalyst-explorer/ledger-snapshots?page=1"
                     },
                     "label": {
                         "type": "string",

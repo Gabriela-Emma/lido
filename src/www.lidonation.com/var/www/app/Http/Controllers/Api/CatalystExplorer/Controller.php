@@ -480,10 +480,10 @@ use OpenApi\Annotations as OA;
  *      schema="catalystLedgerSnapshots_links",
  *      type="object",
  *
- *      @OA\Property(property="first", type="string", example="/api/catalyst-explorer/catalyst-ledger-snapshots?page=1"),
- *      @OA\Property(property="last", type="string", example="/api/catalyst-explorer/catalyst-ledger-snapshots?page=1"),
+ *      @OA\Property(property="first", type="string", example="/api/catalyst-explorer/ledger-snapshots?page=1"),
+ *      @OA\Property(property="last", type="string", example="/api/catalyst-explorer/ledger-snapshots?page=1"),
  *      @OA\Property(property="prev", type="string", example=null),
- *      @OA\Property(property="next", type="string", example="/api/catalyst-explorer/catalyst-ledger-snapshots?page=2"),
+ *      @OA\Property(property="next", type="string", example="/api/catalyst-explorer/ledger-snapshots?page=2"),
  * ),
  *
  *  @OA\Schema(
@@ -494,7 +494,7 @@ use OpenApi\Annotations as OA;
  *      @OA\Property(property="from", type="integer", example=1),
  *      @OA\Property(property="last_page", type="integer", example=1),
  *      @OA\Property(property="links", ref="#/components/schemas/catalystLedgerSnapshots_meta_links_array"),
- *      @OA\Property(property="path", type="string", example="/api/catalyst-explorer/catalyst-ledger-snapshots"),
+ *      @OA\Property(property="path", type="string", example="/api/catalyst-explorer/ledger-snapshots"),
  *      @OA\Property(property="per_page", type="integer", example=200),
  *      @OA\Property(property="to", type="integer", example=100),
  *      @OA\Property(property="total", type="integer", example=100),
@@ -513,7 +513,7 @@ use OpenApi\Annotations as OA;
  *      schema="catalystLedgerSnapshots_meta_links_array_object",
  *      type="object",
  *
- *      @OA\Property(property="url", type="string", example="/api/catalyst-explorer/catalyst-ledger-snapshots?page=1"),
+ *      @OA\Property(property="url", type="string", example="/api/catalyst-explorer/ledger-snapshots?page=1"),
  *      @OA\Property(property="label", type="string", example="1"),
  *      @OA\Property(property="active", type="boolean", example=true),
  *),
