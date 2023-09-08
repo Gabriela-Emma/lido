@@ -7,7 +7,7 @@
             <div>
                 <div class="flex flex-row flex-wrap justify-start gap-6">
                     <div v-if="!!taxonomies" v-for="tax in taxonomies.data" :key="tax.id"
-                        class="flex flex-auto bg-white rounded-md cursor-pointer hover:bg-slate-200"
+                        class="flex flex-auto rounded-md cursor-pointer "
                         :class="[selectedId == tax.id ? 'bg-teal-100 hover:bg-teal-300' : 'bg-white hover:bg-slate-200']"
                         @click='emitData(tax.id)'>
                         <div class="flex flex-row items-center justify-between w-full p-4">
