@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Api\CatalystExplorer;
 use OpenApi\Annotations as OA;
 use App\Http\Controllers\Controller;
 use App\Models\CatalystLedgerSnapshot;
+use Illuminate\Database\Eloquent\Builder;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\ResponseFactory;
+use App\Http\Resources\CatalystLedgerSnapshotResource;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class CatalystLedgerSnapshotController extends Controller
@@ -19,14 +21,13 @@ class CatalystLedgerSnapshotController extends Controller
      *     tags={"catalyst-ledger-snapshots"},
      *     summary="Get a list of catalyst-ledger-snapshots",
      *     description="Returns a list of all catalyst-ledger-snapshots",
-     *     operationId="catalyst-ledger-snapshots",
+     *     operationId="catalystLedgerSnapshot",
      *
-     *  
      *     @OA\Response(
      *         response=200,
      *         description="successful",
      *
-     *         @OA\JsonContent(
+     *          @OA\JsonContent(
      *             type="object",
      *
      *             @OA\Property(
@@ -34,64 +35,67 @@ class CatalystLedgerSnapshotController extends Controller
      *                 type="array",
      *
      *                 @OA\Items(
-     *                     ref="#/components/schemas/catalyst-ledger-snapshots"
+     *                     ref="#/components/schemas/catalystLedgerSnapshot"
      *                 )
      *             ),
      *
      *             @OA\Property(
      *                 property="links",
      *                 type="object",
-     *                 ref="#/components/schemas/catalyst-ledger-snapshots_links"
+     *                 @OA\Property(
+     *                     ref="#/components/schemas/catalystLedgerSnapshots_links"
+     *                 )
      *             ),
      *             @OA\Property(
      *                 property="meta",
      *                 type="object",
-     *                 ref="#/components/schemas/catalyst-ledger-snapshots_meta"
+     *                 @OA\Property(
+     *                     ref="#/components/schemas/catalystLedgerSnapshots_meta"
+     *                 )
      *             )
      *         )
-     *     ),
+     *     )
      * )
      */
-
     public function catalystLedgerSnapshots(): \Illuminate\Http\Response|AnonymousResourceCollection|Application|ResponseFactory
     {
-        $per_page = request('per_page', 200);
+        $per_page = request('per_page', 24);
 
-        if ($per_page > 200) {
+        if ($per_page > 60) {
             return response([
                 'status_code' => 400,
-                'message' => 'query parameter \'per_page\' should not exceed 200'
+                'message' => 'query parameter \'per_page\' should not exceed 60'
             ], 400);
         }
 
-        // if ($funds->get()->isEmpty()) {
-        //     return response([
-        //         'status_code' => 404,
-        //         'message' => 'No challenge found',
-        //     ], Response::HTTP_NOT_FOUND);
-        // } else {
-        //     return ChallengeResource::collection($funds->fastPaginate($per_page));
-        // }
+        if (request()->has('search')) {
+            $snapshots = CatalystLedgerSnapshot::search(request('search'))->query(
+                fn (Builder $query) => $query->filter(request(['ids']))
+            );
+        } else {
+            $snapshots = CatalystLedgerSnapshot::query()->fastPaginate($per_page)->onEachSide(0);
+        }
+
+        return CatalystLedgerSnapshotResource::collection($snapshots);
     }
 
 
     /**
      * @OA\Get(
-     *     path="/challenges/{snapshot_id}",
-     *     tags={"catalyst-ledger-snapshot"},
-     *     summary="Get catalyst-ledger-snapshot by challenge id",
+     *     path="/catalyst-ledger-snapshots/{snapshot_id}",
+     *     tags={"catalyst-ledger-snapshots"},
+     *     summary="Get catalyst-ledger-snapshot by snapshot id",
      *     description="Returns a single Archive snapshot.",
-     *     operationId="snapshot",
+     *     operationId="catalystLedgerSnapshots",
      *
      *     @OA\Parameter(
-     *         name="challenge_id",
+     *         name="snapshot_id",
      *         in="path",
      *         description="id of snapshot to return",
      *         required=true,
      *
      *         @OA\Schema(
-     *             type="integer",
-     *             format="int64"
+     *             type="string",
      *         )
      *     ),
      *
@@ -101,31 +105,53 @@ class CatalystLedgerSnapshotController extends Controller
      *     ),
      *     @OA\Response(
      *         response=404,
-     *         description="CatalystLedgerSnapshots not found"
+     *         description="CatalystLedgerSnapshot not found"
      *      ),
      *
      * )
      */
-
-     
-    public function challenge($challenge_id)
+    public function catalystLedgerSnapshot($snapshot_id)
     {
 
+        $snapshot = CatalystLedgerSnapshot::where('snapshot_id', $snapshot_id)
+            ->first();
 
+        if (is_null($snapshot)) {
+            return response([
+                'errors' => 'CatalystLedgerSnapshot not found',
+            ], Response::HTTP_NOT_FOUND);
+        }
 
-        // Fund::withoutGlobalScopes();
-
-        // $challenge = Fund::where('id', $challenge_id)
-        //     ->whereNotNull('parent_id')
-        //     ->first();
-
-        // if (is_null($challenge)) {
-        //     return response([
-        //         'errors' => 'Challenge not found',
-        //     ], Response::HTTP_NOT_FOUND);
-        // }
-
-        // return new ChallengeResource($challenge);
+        return new CatalystLedgerSnapshotResource($snapshot);
     }
 
+
+
+
+    // /**
+    //  * @OA\Get(
+    //  *     path="/catalyst-ledger-snapshots/latest",
+    //  *     tags={"catalyst-ledger-snapshots"},
+    //  *     summary="Get latest catalyst-ledger-snapshot ",
+    //  *     description="Returns a single Archive snapshot.",
+    //  *     operationId="LatestCatalystLedgerSnapshots",
+    //  *
+    //  *
+    //  *     @OA\Response(
+    //  *         response=200,
+    //  *         description="successful",
+    //  *     ),
+    //  *     @OA\Response(
+    //  *         response=404,
+    //  *         description="CatalystLedgerSnapshot not found"
+    //  *      ),
+    //  *
+    //  * )
+    //  */
+    public function latestCatalystLedgerSnapshot()
+    {
+        
+        $snapshot  = CatalystLedgerSnapshot::query()->first();
+        return new CatalystLedgerSnapshotResource($snapshot);
+    }
 }

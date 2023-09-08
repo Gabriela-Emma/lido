@@ -453,6 +453,70 @@ use OpenApi\Annotations as OA;
  *      @OA\Property(property="label", type="string", example="1"),
  *      @OA\Property(property="active", type="boolean", example=true),
  *),
+
+
+ *  @OA\Schema(
+ *       schema="catalystLedgerSnapshot",
+ *       type="object",
+ *
+ *       @OA\Property(property="id", type="integer", example=92),
+ *       @OA\Property(property="snapshot_id", type="string", example="b1871635-eb3d-4def-a7f2-1bb40aa1ac80"),
+ *       @OA\Property(property="size", type="string", example="F3: DApp Creation"),
+ *       @OA\Property(property="epoch", type="string", example="456"),
+ *       @OA\Property(property="fund", type="string", example="fund 10"),
+ *       @OA\Property(property="created_at", type="string", example="usd"),
+ *   ),
+ *
+ * @OA\Schema(
+ *      schema="catalystLedgerSnapshots",
+ *      type="array",
+ *
+ *      @OA\Items(
+ *          ref="#/components/schemas/catalystLedgerSnapshot"
+ *      ),
+ * ),
+ *
+ * @OA\Schema(
+ *      schema="catalystLedgerSnapshots_links",
+ *      type="object",
+ *
+ *      @OA\Property(property="first", type="string", example="/api/catalyst-explorer/catalyst-ledger-snapshots?page=1"),
+ *      @OA\Property(property="last", type="string", example="/api/catalyst-explorer/catalyst-ledger-snapshots?page=1"),
+ *      @OA\Property(property="prev", type="string", example=null),
+ *      @OA\Property(property="next", type="string", example="/api/catalyst-explorer/catalyst-ledger-snapshots?page=2"),
+ * ),
+ *
+ *  @OA\Schema(
+ *      schema="catalystLedgerSnapshots_meta",
+ *      type="object",
+ *
+ *      @OA\Property(property="current_page", type="integer", example=1),
+ *      @OA\Property(property="from", type="integer", example=1),
+ *      @OA\Property(property="last_page", type="integer", example=1),
+ *      @OA\Property(property="links", ref="#/components/schemas/catalystLedgerSnapshots_meta_links_array"),
+ *      @OA\Property(property="path", type="string", example="/api/catalyst-explorer/catalyst-ledger-snapshots"),
+ *      @OA\Property(property="per_page", type="integer", example=200),
+ *      @OA\Property(property="to", type="integer", example=100),
+ *      @OA\Property(property="total", type="integer", example=100),
+ * ),
+ *
+ * * @OA\Schema(
+ *      schema="catalystLedgerSnapshots_meta_links_array",
+ *      type="array",
+ *
+ *      @OA\Items(
+ *          ref="#/components/schemas/catalystLedgerSnapshots_meta_links_array_object"
+ *      ),
+ * ),
+ *
+ * @OA\Schema(
+ *      schema="catalystLedgerSnapshots_meta_links_array_object",
+ *      type="object",
+ *
+ *      @OA\Property(property="url", type="string", example="/api/catalyst-explorer/catalyst-ledger-snapshots?page=1"),
+ *      @OA\Property(property="label", type="string", example="1"),
+ *      @OA\Property(property="active", type="boolean", example=true),
+ *),
  */
 class Controller extends BaseController
 {
