@@ -11,7 +11,7 @@ class CatalystTally extends Model
 {
     use HasModel;
 
-    public $timestamps = false;
+    //public $timestamps = false;
 
     protected $fillable = [
         'hash',
