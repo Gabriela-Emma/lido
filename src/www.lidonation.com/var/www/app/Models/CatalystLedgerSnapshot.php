@@ -3,13 +3,10 @@
 namespace App\Models;
 
 use App\Scopes\OrderByDateScope;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class CatalystLedgerSnapshot extends Model
 {
-    use HasFactory;
 
     public $guarded = [];
 

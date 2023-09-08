@@ -319,9 +319,9 @@ Route::prefix('catalyst-explorer')->as('catalystExplorerApi.')
         Route::get('/tags', [CatalystExplorer\TagController::class, 'tags'])->name('tags');
         Route::get('/tags/{tag}', [CatalystExplorer\TagController::class, 'tag'])->name('tag');
 
-        Route::get('/catalyst-ledger-snapshots/latest', [CatalystExplorer\CatalystLedgerSnapshotController::class, 'latestCatalystLedgerSnapshot'])->name('latestCatalystLedgerSnapshots');
-        Route::get('/catalyst-ledger-snapshots', [CatalystExplorer\CatalystLedgerSnapshotController::class, 'catalystLedgerSnapshots'])->name('catalystLedgerSnapshots');
-        Route::get('/catalyst-ledger-snapshots/{snapshot_id}', [CatalystExplorer\CatalystLedgerSnapshotController::class, 'catalystLedgerSnapshot'])->name('catalystLedgerSnapshot');
+        Route::get('/ledger-snapshots/latest', [CatalystExplorer\CatalystLedgerSnapshotController::class, 'latestCatalystLedgerSnapshot'])->name('latestCatalystLedgerSnapshots');
+        Route::get('/ledger-snapshots', [CatalystExplorer\CatalystLedgerSnapshotController::class, 'catalystLedgerSnapshots'])->name('catalystLedgerSnapshots');
+        Route::get('/ledger-snapshots/{snapshot_id}', [CatalystExplorer\CatalystLedgerSnapshotController::class, 'catalystLedgerSnapshot'])->name('catalystLedgerSnapshot');
 
         Route::post('/reports/follow', [CatalystExplorer\ReportController::class, 'follow']);
 

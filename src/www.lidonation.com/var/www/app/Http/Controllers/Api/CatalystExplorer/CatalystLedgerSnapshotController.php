@@ -17,10 +17,10 @@ class CatalystLedgerSnapshotController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/catalyst-ledger-snapshots",
-     *     tags={"catalyst-ledger-snapshots"},
-     *     summary="Get a list of catalyst-ledger-snapshots",
-     *     description="Returns a list of all catalyst-ledger-snapshots",
+     *     path="/ledger-snapshots",
+     *     tags={"ledger-snapshots"},
+     *     summary="Get a list of ledger-snapshots",
+     *     description="Returns a list of all ledger-snapshots",
      *     operationId="catalystLedgerSnapshot",
      *
      *     @OA\Response(
@@ -82,9 +82,9 @@ class CatalystLedgerSnapshotController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/catalyst-ledger-snapshots/{snapshot_id}",
-     *     tags={"catalyst-ledger-snapshots"},
-     *     summary="Get catalyst-ledger-snapshot by snapshot id",
+     *     path="/ledger-snapshots/{snapshot_id}",
+     *     tags={"ledger-snapshots"},
+     *     summary="Get ledger-snapshot by snapshot id",
      *     description="Returns a single Archive snapshot.",
      *     operationId="catalystLedgerSnapshots",
      *
@@ -130,9 +130,9 @@ class CatalystLedgerSnapshotController extends Controller
 
     // /**
     //  * @OA\Get(
-    //  *     path="/catalyst-ledger-snapshots/latest",
-    //  *     tags={"catalyst-ledger-snapshots"},
-    //  *     summary="Get latest catalyst-ledger-snapshot ",
+    //  *     path="/ledger-snapshots/latest",
+    //  *     tags={"ledger-snapshots"},
+    //  *     summary="Get latest ledger-snapshot ",
     //  *     description="Returns a single Archive snapshot.",
     //  *     operationId="LatestCatalystLedgerSnapshots",
     //  *
@@ -150,7 +150,7 @@ class CatalystLedgerSnapshotController extends Controller
     //  */
     public function latestCatalystLedgerSnapshot()
     {
-        
+
         $snapshot  = CatalystLedgerSnapshot::query()->first();
         return new CatalystLedgerSnapshotResource($snapshot);
     }
