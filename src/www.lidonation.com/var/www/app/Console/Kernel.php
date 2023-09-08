@@ -33,7 +33,9 @@ class Kernel extends ConsoleKernel
         // $schedule->job(new ProcessPendingWithdrawalsJob)->daily();
         $schedule->job(new CalculateDelegationEpochs)->daily();
         $schedule->job(new LidoStatsJob)->everyFifteenMinutes();
-        $schedule->job(new SyncCatalystLedgerSnapshots)->everyFifteenMinutes();
+        if (app()->environment('production')) {
+            $schedule->job(new SyncCatalystLedgerSnapshots)->everyFifteenMinutes();
+        }
         $schedule->job(new CardanoStatsJob)->everyTwoHours();
         $schedule->job(new RefreshLidoTwitterToken)->everyThirtyMinutes();
 
