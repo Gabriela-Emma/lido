@@ -1488,7 +1488,7 @@
                     },
                     "size": {
                         "type": "string",
-                        "example": "F3: DApp Creation"
+                        "example": "8434"
                     },
                     "epoch": {
                         "type": "string",
@@ -1500,7 +1500,7 @@
                     },
                     "created_at": {
                         "type": "string",
-                        "example": "usd"
+                        "example": "2023-09-08T12:00:15Z"
                     }
                 },
                 "type": "object"
