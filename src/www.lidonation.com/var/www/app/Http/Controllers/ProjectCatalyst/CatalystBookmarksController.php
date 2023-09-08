@@ -219,4 +219,14 @@ class CatalystBookmarksController extends Controller
         $rationale->saveMeta('group_id', $data['group_id'], $rationale);
         return redirect()->back();
     }
+
+    public function deleteDraftBallot(Request $request, BookmarkCollection $bookmarkCollection){
+        $bookmarkCollection->delete();
+
+        foreach ($bookmarkCollection->items as $bookmarkItem) {
+            $bookmarkItem->delete();
+        }
+
+        return redirect()->back();
+    }
 }
