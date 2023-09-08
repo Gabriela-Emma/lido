@@ -27,7 +27,7 @@
                     Viewing Proposals in {{ currentChallenge.label }}
                 </h2>
                 <button type="button" @click="resetFilters"
-                class="flex items-center justify-center gap-2 px-2 py-2 mb-6 ml-auto text-sm font-medium text-white bg-teal-600 border border-transparent rounded-sm shadow-sm md:gap-3 md:px-3 md:text-lg 2xl:text-xl hover:bg-labs-black hover:text-white focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
+                    class="flex items-center justify-center gap-2 px-2 py-2 mb-6 ml-auto text-sm font-medium text-white bg-teal-600 border border-transparent rounded-sm shadow-sm md:gap-3 md:px-3 md:text-lg 2xl:text-xl hover:bg-labs-black hover:text-white focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
                     Reset Filters
                 </button>
             </div>
@@ -43,9 +43,15 @@
             </div>
         </section>
 
+        <section class='container my-16'>
+                <BrowseByTaxonomy :taxonomy="'Category'" :selected-id="taxonomyRef == 'Category' ? selectedId : null" 
+                    @taxonomy="(payload) => taxonomyRef = payload" @taxon="(payload) => categoriesFilterRef = payload" />
+
+        </section>
+
         <section class="container mb-16">
             <h2 class="mt-6 text-4xl">
-                Challenges in {{ fund.label }}
+                Browse By Challenge in {{ fund.label }}
             </h2>
             <p>The community was asked to provide solutions to these challenges</p>
 
@@ -53,6 +59,11 @@
                 <ChallengeCard v-for="challenge in challenges" :challenge="challenge" :fund="fund"
                     @challenge="($e) => challengeFilterRef = $e" />
             </div>
+        </section>
+
+        <section class='container mb-16'>
+                <BrowseByTaxonomy :taxonomy="'Tag'" :selected-id="taxonomyRef == 'Tag' ? selectedId : null" @taxonomy="(payload) => taxonomyRef = payload"
+                    @taxon="(payload) => tagsFilterRef = payload" />
         </section>
     </main>
 </template>
@@ -70,6 +81,7 @@ import ChallengeCard from "../modules/voterTool/ChallengeCard.vue"
 import VoterToolFilters from '../modules/voterTool/VoterToolFilters.vue'
 import FilterGroups from '../models/filter-groups';
 import { useProposalsStore } from '../stores/proposals-store';
+import BrowseByTaxonomy from '../modules/voterTool/BrowseByTaxonomy.vue';
 
 const props = withDefaults(
     defineProps<{
@@ -83,6 +95,8 @@ const props = withDefaults(
         challengeFilter?: number,
         locale: string,
         challenges: Fund[],
+        tagsFilter: number,
+        categoriesFilter: number,
         fund: Fund,
         filters: {
             links: [],
@@ -102,8 +116,16 @@ const props = withDefaults(
 });
 
 const currentChallenge = computed(() => {
-  return props?.challenges.find(challenge => challenge?.id === props?.challengeFilter);
+    return props?.challenges.find(challenge => challenge?.id === props?.challengeFilter);
 })
+const selectedId = computed(() => {
+    if (taxonomyRef.value == 'Tag') {
+        return tagsFilterRef.value;
+    } else {
+        return categoriesFilterRef.value
+    }
+})
+
 
 let searchRender = ref(0);
 let search = ref(props.search);
@@ -113,6 +135,9 @@ let filterPerPageRef = ref<number>(props.filterPerPage);
 let challengeFilterRef = ref<number>(props.challengeFilter);
 let perPageRef = ref<number>(props.perPage);
 let filterRef = ref(props.currentFilter);
+let taxonomyRef = ref<string>(null);
+let tagsFilterRef = ref<number>(props.tagsFilter);
+let categoriesFilterRef = ref<number>(props.categoriesFilter);
 const proposalStore = useProposalsStore();
 proposalStore.viewType = 'card';
 
@@ -140,6 +165,13 @@ watch([currPageRef, perPageRef], () => {
 });
 
 watch([currFilterGroupRef, filterPerPageRef], () => {
+    query();
+});
+
+watch([tagsFilterRef, categoriesFilterRef], () => {
+    filterRef.value = null;
+    search.value = null;
+    challengeFilterRef.value = null;
     query();
 });
 
@@ -177,10 +209,18 @@ async function query() {
         data[VARIABLES.CHALLENGES] = challengeFilterRef.value;
     }
 
+    if (taxonomyRef.value == 'Tag') {
+        data[VARIABLES.TAGS] = tagsFilterRef.value;
+    }
+
+    if (taxonomyRef.value == 'Category') {
+        data[VARIABLES.CATEGORY] = categoriesFilterRef.value;
+    }
+
     router.get(
         "/catalyst-explorer/voter-tool",
         data,
-        { preserveState: true, preserveScroll: !challengeFilterRef.value }
+        { preserveState: true, preserveScroll: !challengeFilterRef.value && !taxonomyRef.value }
     );
 
     //@ts-ignore
@@ -188,16 +228,19 @@ async function query() {
         // @ts-ignore
         window?.fathom?.trackGoal(VARIABLES.TRACKER_ID_GROUPS, 0);
     }
-    
+
 }
 function resetFilters() {
-  search.value = '';
-  filterRef.value = null;
-  currPageRef.value = null;
-  perPageRef.value = props.perPage;
-  currFilterGroupRef.value = null;
-  challengeFilterRef.value = null;
-  query();
+    search.value = '';
+    filterRef.value = null;
+    currPageRef.value = null;
+    perPageRef.value = props.perPage;
+    currFilterGroupRef.value = null;
+    challengeFilterRef.value = null;
+    categoriesFilterRef.value = null
+    tagsFilterRef.value = null;
+    taxonomyRef.value = null;
+    query();
 }
 
 onMounted(() => {

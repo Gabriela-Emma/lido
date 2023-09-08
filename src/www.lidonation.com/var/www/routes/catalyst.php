@@ -148,6 +148,9 @@ Route::group(
             Route::get('/voter-tool/counts', [CatalystVoterToolController::class, 'setCounts'])
             ->name('voterTool.counts');
 
+            Route::get('/voter-tool/taxomomies', [CatalystVoterToolController::class, 'setTaxonomy'])
+            ->name('voterTool.taxomomy');
+
             Route::get('/proposals/{proposal:id}/bookmark', [CatalystProposalsController::class, 'bookmark']);
             Route::get('/bookmarks', [CatalystBookmarksController::class, 'index'])
             ->name('bookmarks');
@@ -183,6 +186,9 @@ Route::group(
 
                 Route::get('/draft-ballots/{draftBallot:id}/edit', [CatalystBookmarksController::class, 'editDraftBallot'])
                 ->name('draftBallot.edit');
+
+                Route::delete('/draft-ballots/{draftBallot:id}/delete', [CatalystBookmarksController::class, 'deleteDraftBallot'])
+                ->name('draftBallot.delete');
 
                 Route::patch('/draft-ballot/{draftBallot:id}/update', [CatalystBookmarksController::class, 'updateDraftBallot'])
                 ->name('draftBallot.update');

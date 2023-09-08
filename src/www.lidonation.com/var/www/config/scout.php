@@ -68,7 +68,7 @@ return [
     */
 
     'chunk' => [
-        'searchable' => 200,
+        'searchable' => 80,
         'unsearchable' => 500,
     ],
 

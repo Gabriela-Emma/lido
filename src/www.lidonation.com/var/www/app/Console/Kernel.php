@@ -7,6 +7,7 @@ use App\Jobs\CardanoStatsJob;
 use App\Jobs\LidoStatsJob;
 use App\Jobs\ProcessPendingWithdrawalsJob;
 use App\Jobs\RefreshLidoTwitterToken;
+use App\Jobs\SyncCatalystLedgerSnapshots;
 use App\Jobs\SyncCatalystVotingPowersJob;
 use App\Jobs\SyncCatatalystVotersJob;
 use Illuminate\Console\Scheduling\Schedule;
@@ -32,6 +33,9 @@ class Kernel extends ConsoleKernel
         // $schedule->job(new ProcessPendingWithdrawalsJob)->daily();
         $schedule->job(new CalculateDelegationEpochs)->daily();
         $schedule->job(new LidoStatsJob)->everyFifteenMinutes();
+        if (app()->environment('production')) {
+            $schedule->job(new SyncCatalystLedgerSnapshots)->everyFifteenMinutes();
+        }
         $schedule->job(new CardanoStatsJob)->everyTwoHours();
         $schedule->job(new RefreshLidoTwitterToken)->everyThirtyMinutes();
 
