@@ -187,6 +187,9 @@ Route::group(
                 Route::get('/draft-ballots/{draftBallot:id}/edit', [CatalystBookmarksController::class, 'editDraftBallot'])
                 ->name('draftBallot.edit');
 
+                Route::delete('/draft-ballots/{draftBallot:id}/delete', [CatalystBookmarksController::class, 'deleteDraftBallot'])
+                ->name('draftBallot.delete');
+
                 Route::patch('/draft-ballot/{draftBallot:id}/update', [CatalystBookmarksController::class, 'updateDraftBallot'])
                 ->name('draftBallot.update');
 
