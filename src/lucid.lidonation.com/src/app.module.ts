@@ -8,6 +8,7 @@ import { LidoMinuteModule } from './modules/lido-minute/lido-minute.module.js';
 import { CardanoModule } from './modules/cardano/cardano.module.js';
 import { RewardsModule } from './modules/rewards/rewards.module.js';
 import { VotesModule } from './modules/votes/votes.module.js';
+import { IpfsModule } from './modules/ipfs/ipfs.module.js';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { VotesModule } from './modules/votes/votes.module.js';
     CardanoModule,
     RewardsModule,
     VotesModule,
+    IpfsModule,
     ConfigModule.forRoot(),
   ],
   controllers: [AppController],
