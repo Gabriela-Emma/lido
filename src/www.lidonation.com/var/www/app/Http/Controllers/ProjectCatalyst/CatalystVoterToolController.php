@@ -100,7 +100,7 @@ class CatalystVoterToolController extends Controller
 
     protected function query()
     {
-        if (!$this->search && !$this->searchGroup && !$this->challengeFilter) {
+        if (!$this->search && !$this->searchGroup && !$this->challengeFilter && !$this->categoriesFilter && !$this->tagsFilter) {
             return null;
         }
 
@@ -185,7 +185,6 @@ class CatalystVoterToolController extends Controller
         $this->proposals = $pagination->onEachSide(1)->toArray();
     }
 
-    #[ArrayShape(['filters' => 'array'])]
     function getUserFilters($param)
     {
         $_options = [
@@ -243,11 +242,11 @@ class CatalystVoterToolController extends Controller
         }
 
         if ($this->tagsFilter) {
-            $_options[] = "tags.id = {$this->tagsFilter}";
+            $_options['filters'][] = "tags.id = {$this->tagsFilter}";
         }
 
         if ($this->categoriesFilter) {
-            $_options[] = "categories.id = {$this->categoriesFilter}";
+            $_options['filters'][] = "categories.id = {$this->categoriesFilter}";
         }
 
         return $_options;
