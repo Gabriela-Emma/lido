@@ -8,7 +8,7 @@
                 <div class="flex flex-row flex-wrap justify-start gap-6">
                     <div v-if="!!taxonomies" v-for="tax in taxonomies.data" :key="tax.id"
                         class="flex flex-auto bg-white rounded-md cursor-pointer hover:bg-slate-200"
-                        :class="[selected == tax.id ? 'bg-teal-100 hover:bg-teal-300' : 'bg-white hover:bg-slate-200']"
+                        :class="[selectedId == tax.id ? 'bg-teal-100 hover:bg-teal-300' : 'bg-white hover:bg-slate-200']"
                         @click='emitData(tax.id)'>
                         <div class="flex flex-row items-center justify-between w-full p-4">
                             <div class="font-medium text-slate-700">
@@ -45,6 +45,7 @@ import { VARIABLES } from '../../models/variables';
 
 const props = defineProps<{
     taxonomy: string,
+    selectedId: number
 }>()
 
 const emit = defineEmits<{
@@ -52,11 +53,9 @@ const emit = defineEmits<{
     (e: 'taxonomy', name: string): void
 }>()
 
-let selected = ref(null);
 let loaded = ref(false);
 
 let emitData = (tax) => {
-    selected.value = tax
     emit("taxon", tax);
     emit("taxonomy", props.taxonomy);
 }
@@ -86,8 +85,8 @@ const setTaxonomies = async () => {
         await axios.get(
             route(
                 'catalystExplorer.voterTool.taxomomy'),
-                { params: data }
-            )
+            { params: data }
+        )
     ).data;
     loaded.value = true;
 };

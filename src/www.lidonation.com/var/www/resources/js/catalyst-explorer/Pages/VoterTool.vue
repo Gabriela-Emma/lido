@@ -44,8 +44,9 @@
         </section>
 
         <section class='container my-16'>
-            <BrowseByTaxonomy :taxonomy="'Category'" @taxonomy="(payload) => taxonomyRef = payload"
-                    @taxon="(payload) => categoriesFilterRef = payload"/>
+                <BrowseByTaxonomy :taxonomy="'Category'" :selected-id="taxonomyRef == 'Category' ? selectedId : null" 
+                    @taxonomy="(payload) => taxonomyRef = payload" @taxon="(payload) => categoriesFilterRef = payload" />
+
         </section>
 
         <section class="container mb-16">
@@ -61,8 +62,8 @@
         </section>
 
         <section class='container mb-16'>
-            <BrowseByTaxonomy :taxonomy="'Tag'" @taxonomy="(payload) => taxonomyRef = payload"
-                @taxon="(payload) => tagsFilterRef = payload" />
+                <BrowseByTaxonomy :taxonomy="'Tag'" :selected-id="taxonomyRef == 'Tag' ? selectedId : null" @taxonomy="(payload) => taxonomyRef = payload"
+                    @taxon="(payload) => tagsFilterRef = payload" />
         </section>
     </main>
 </template>
@@ -94,8 +95,8 @@ const props = withDefaults(
         challengeFilter?: number,
         locale: string,
         challenges: Fund[],
-        tagsFilter:number,
-        categoriesFilter:number,
+        tagsFilter: number,
+        categoriesFilter: number,
         fund: Fund,
         filters: {
             links: [],
@@ -117,6 +118,14 @@ const props = withDefaults(
 const currentChallenge = computed(() => {
     return props?.challenges.find(challenge => challenge?.id === props?.challengeFilter);
 })
+const selectedId = computed(() => {
+    if (taxonomyRef.value == 'Tag') {
+        return tagsFilterRef.value;
+    } else {
+        return categoriesFilterRef.value
+    }
+})
+
 
 let searchRender = ref(0);
 let search = ref(props.search);
@@ -159,19 +168,10 @@ watch([currFilterGroupRef, filterPerPageRef], () => {
     query();
 });
 
-watch(tagsFilterRef, () => {
+watch([tagsFilterRef, categoriesFilterRef], () => {
     filterRef.value = null;
     search.value = null;
     challengeFilterRef.value = null;
-    categoriesFilterRef.value = null;
-    query();
-});
-
-watch(categoriesFilterRef, () => {
-    filterRef.value = null;
-    search.value = null;
-    challengeFilterRef.value = null;
-    tagsFilterRef.value = null 
     query();
 });
 
@@ -220,7 +220,7 @@ async function query() {
     router.get(
         "/catalyst-explorer/voter-tool",
         data,
-        { preserveState: true, preserveScroll: !challengeFilterRef.value }
+        { preserveState: true, preserveScroll: !challengeFilterRef.value && !taxonomyRef.value }
     );
 
     //@ts-ignore
