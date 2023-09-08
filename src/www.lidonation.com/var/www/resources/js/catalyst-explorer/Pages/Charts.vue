@@ -330,7 +330,7 @@ let perPage$ = ref<number>(36);
 let order$ = ref<string>('asc');
 let search$ = ref<string>(null);
 
-const tallyUpdatedAt = '2023-09-08T00:00:31Z';
+const tallyUpdatedAt = '2023-09-08T05:01:09Z';
 const fundsLabelValue = computed(() => {
     return props?.funds?.map((fund) => {
         return { 'label': fund.title, 'value': fund.id}
@@ -461,6 +461,7 @@ function getMetrics() {
                     }
                 ]
             }
+
             chartDataVotesCastScatter$.value = {
                 datasets: [{
                     label: 'Votes Cast',
