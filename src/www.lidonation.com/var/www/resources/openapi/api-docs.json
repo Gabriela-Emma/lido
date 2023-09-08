@@ -11,6 +11,99 @@
         }
     ],
     "paths": {
+        "/catalyst-ledger-snapshots": {
+            "get": {
+                "tags": [
+                    "catalyst-ledger-snapshots"
+                ],
+                "summary": "Get a list of catalyst-ledger-snapshots",
+                "description": "Returns a list of all catalyst-ledger-snapshots",
+                "operationId": "catalystLedgerSnapshot",
+                "responses": {
+                    "200": {
+                        "description": "successful",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/catalystLedgerSnapshot"
+                                            }
+                                        },
+                                        "links": {
+                                            "properties": {
+                                                "": {
+                                                    "$ref": "#/components/schemas/catalystLedgerSnapshots_links"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "meta": {
+                                            "properties": {
+                                                "": {
+                                                    "$ref": "#/components/schemas/catalystLedgerSnapshots_meta"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/catalyst-ledger-snapshots/{snapshot_id}": {
+            "get": {
+                "tags": [
+                    "catalyst-ledger-snapshots"
+                ],
+                "summary": "Get catalyst-ledger-snapshot by snapshot id",
+                "description": "Returns a single Archive snapshot.",
+                "operationId": "catalystLedgerSnapshots",
+                "parameters": [
+                    {
+                        "name": "snapshot_id",
+                        "in": "path",
+                        "description": "id of snapshot to return",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful"
+                    },
+                    "404": {
+                        "description": "CatalystLedgerSnapshot not found"
+                    }
+                }
+            }
+        },
+        "/catalyst-ledger-snapshots/latest": {
+            "get": {
+                "tags": [
+                    "catalyst-ledger-snapshots"
+                ],
+                "summary": "Get latest catalyst-ledger-snapshot ",
+                "description": "Returns a single Archive snapshot.",
+                "operationId": "LatestCatalystLedgerSnapshots",
+                "responses": {
+                    "200": {
+                        "description": "successful"
+                    },
+                    "404": {
+                        "description": "CatalystLedgerSnapshot not found"
+                    }
+                }
+            }
+        },
         "/challenges": {
             "get": {
                 "tags": [
@@ -1371,6 +1464,121 @@
                     "url": {
                         "type": "string",
                         "example": "/api/catalyst-explorer/people?page=1"
+                    },
+                    "label": {
+                        "type": "string",
+                        "example": "1"
+                    },
+                    "active": {
+                        "type": "boolean",
+                        "example": true
+                    }
+                },
+                "type": "object"
+            },
+            "catalystLedgerSnapshot": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 92
+                    },
+                    "snapshot_id": {
+                        "type": "string",
+                        "example": "b1871635-eb3d-4def-a7f2-1bb40aa1ac80"
+                    },
+                    "size": {
+                        "type": "string",
+                        "example": "F3: DApp Creation"
+                    },
+                    "epoch": {
+                        "type": "string",
+                        "example": "456"
+                    },
+                    "fund": {
+                        "type": "string",
+                        "example": "fund 10"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "example": "usd"
+                    }
+                },
+                "type": "object"
+            },
+            "catalystLedgerSnapshots": {
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/catalystLedgerSnapshot"
+                }
+            },
+            "catalystLedgerSnapshots_links": {
+                "properties": {
+                    "first": {
+                        "type": "string",
+                        "example": "/api/catalyst-explorer/catalyst-ledger-snapshots?page=1"
+                    },
+                    "last": {
+                        "type": "string",
+                        "example": "/api/catalyst-explorer/catalyst-ledger-snapshots?page=1"
+                    },
+                    "prev": {
+                        "type": "string",
+                        "example": null
+                    },
+                    "next": {
+                        "type": "string",
+                        "example": "/api/catalyst-explorer/catalyst-ledger-snapshots?page=2"
+                    }
+                },
+                "type": "object"
+            },
+            "catalystLedgerSnapshots_meta": {
+                "properties": {
+                    "current_page": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "from": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "last_page": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "links": {
+                        "$ref": "#/components/schemas/catalystLedgerSnapshots_meta_links_array"
+                    },
+                    "path": {
+                        "type": "string",
+                        "example": "/api/catalyst-explorer/catalyst-ledger-snapshots"
+                    },
+                    "per_page": {
+                        "type": "integer",
+                        "example": 200
+                    },
+                    "to": {
+                        "type": "integer",
+                        "example": 100
+                    },
+                    "total": {
+                        "type": "integer",
+                        "example": 100
+                    }
+                },
+                "type": "object"
+            },
+            "catalystLedgerSnapshots_meta_links_array": {
+                "type": "array",
+                "items": {
+                    "$ref": "#/components/schemas/catalystLedgerSnapshots_meta_links_array_object"
+                }
+            },
+            "catalystLedgerSnapshots_meta_links_array_object": {
+                "properties": {
+                    "url": {
+                        "type": "string",
+                        "example": "/api/catalyst-explorer/catalyst-ledger-snapshots?page=1"
                     },
                     "label": {
                         "type": "string",
