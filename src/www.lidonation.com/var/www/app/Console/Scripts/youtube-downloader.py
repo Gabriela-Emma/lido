@@ -15,10 +15,6 @@ video_url = sys.argv[1] # videos url
 output_path = sys.argv[2] # the directory to store the video
 custom_filename = sys.argv[3] #actual video filename
 
-
-# Replace this URL with the YouTube video URL you want to download
-video_url = "https://www.youtube.com/watch?v=pn0wynLO5G8"
-
 # Create a YouTube object
 yt = YouTube(video_url)
 
