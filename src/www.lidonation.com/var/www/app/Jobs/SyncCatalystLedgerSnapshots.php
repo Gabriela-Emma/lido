@@ -34,10 +34,7 @@ class SyncCatalystLedgerSnapshots implements ShouldQueue
      */
     public function handle()
     {
-        $nextPage = null;
-
-        do {
-            $response = Http::get('https://archiver.projectcatalyst.io/api/v1/archives' . ($nextPage ? "?next=$nextPage" : ''));
+            $response = Http::get('https://archiver.projectcatalyst.io/api/v1/archives');
             $data = $response->json();
 
             foreach ($data['archives'] as $archive) {
@@ -58,7 +55,5 @@ class SyncCatalystLedgerSnapshots implements ShouldQueue
                     ]);
                 }
             }
-            $nextPage = urlencode($data['next']);
-        } while (!!$nextPage);
     }
 }
