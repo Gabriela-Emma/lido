@@ -35,41 +35,43 @@ class PublishProposalYotubeVideosToIpfsJob implements ShouldQueue
      */
     public function handle()
     {
-        $videoUrl = $this->proposal->videos->first()->content;
-        
-        $directory = 'youtube_videos';
-        $outputDirectory = storage_path($directory);
-        $fileName = $this->extractVideoId($videoUrl) . '.mp4';
-        $videoFilePath = $outputDirectory . '/' . $fileName;
-
-        // Path to the Python script
-        $pythonScriptPath = app_path('Console/Scripts/youtube-downloader.py');
+        if (!!$this->proposal->quickpitch && $this->proposal->is_ideafest_proposal) {
+            $videoUrl = $this->proposal->videos->where('key', 'youtube')->first()->content; //only once on ideafest
+            
+            $directory = 'youtube_videos';
+            $outputDirectory = storage_path($directory);
+            $fileName = $this->extractVideoId($videoUrl) . '.mp4';
+            $videoFilePath = $outputDirectory . '/' . $fileName;
     
-        // Execute the Python script
-        exec("python3 {$pythonScriptPath} {$videoUrl} {$outputDirectory} {$fileName}", $output, $exitCode);
-
-        // Check if the execution was successful
-        if ($exitCode === 0) {
-            $videoData = file_get_contents($videoFilePath);
-            $fileContent = base64_encode($videoData);
-            $data = compact('fileName', 'fileContent');
-
-            $res = Http::post(
-                    config('cardano.lucidEndpoint').'/ipfs/upload',
-                    $data
-                )->throw();
-
-            if ($res->successful()) {
-                $r = $res->object();
-                
-                foreach($r->ipfsPath as $item) {
-                    $this->saveMeta($item->path);
-                    $this->deleteVideo($videoFilePath);
+            // Path to the Python script
+            $pythonScriptPath = app_path('Console/Scripts/youtube-downloader.py');
+        
+            // Execute the Python script
+            exec("python3 {$pythonScriptPath} {$videoUrl} {$outputDirectory} {$fileName}", $output, $exitCode);
+    
+            // Check if the execution was successful
+            if ($exitCode === 0) {
+                $videoData = file_get_contents($videoFilePath);
+                $fileContent = base64_encode($videoData);
+                $data = compact('fileName', 'fileContent');
+    
+                $res = Http::post(
+                        config('cardano.lucidEndpoint').'/ipfs/upload',
+                        $data
+                    )->throw();
+    
+                if ($res->successful()) {
+                    $r = $res->object();
+                    
+                    foreach($r->ipfsPath as $item) {
+                        $this->saveMeta($item->path);
+                        $this->deleteVideo($videoFilePath);
+                    }
                 }
+    
+            } else {
+                Log::info('Video could not be downloaded');
             }
-
-        } else {
-            Log::info('Video could not be downloaded');
         }
     }
 
