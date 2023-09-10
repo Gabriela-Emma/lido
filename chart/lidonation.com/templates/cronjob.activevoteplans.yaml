@@ -35,9 +35,7 @@ spec:
                   mountPath: /VOLUME_ROOT
               command: ["/bin/sh", "-c"]
                 args:
-                - |
-                #!/bin/bash
-                set -xe
+                - 
                 sleep 10m
 
                 curl http://127.0.0.1:10000/api/v0/vote/active/plans
