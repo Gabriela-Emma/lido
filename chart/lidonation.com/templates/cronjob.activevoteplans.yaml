@@ -65,5 +65,5 @@ spec:
                   fi
                   curl http://127.0.0.1:10000/api/v0/vote/active/plans > /leader1stuff/activevoteplans.json
           imagePullSecrets:
-        - name: {{ .Values.image.pullSecret }}
+            - name: {{ .Values.image.pullSecret }}
           restartPolicy: Never    
