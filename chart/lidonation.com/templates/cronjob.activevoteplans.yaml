@@ -52,3 +52,4 @@ spec:
                     exit 1
                   fi
                   curl http://127.0.0.1:10000/api/v0/vote/active/plans > /VOLUME_ROOT/activevoteplans.json
+          restartPolicy: Never    
