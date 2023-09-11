@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class CatalystVotingPower extends Model
 {
@@ -16,4 +17,9 @@ class CatalystVotingPower extends Model
         'voting_power',
         'catalyst_snapshot_id',
     ];
+
+    public function catalyst_snapshot()
+    {
+        return $this->belongsTo(CatalystSnapshot::class, 'catalyst_snapshot_id', 'id');
+    }
 }

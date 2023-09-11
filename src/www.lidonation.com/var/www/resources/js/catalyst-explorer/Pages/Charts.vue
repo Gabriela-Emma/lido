@@ -111,13 +111,8 @@
                                 </h2>
                                 <p>Pie chart of wallet balance</p>
                             </div>
-                            <div class="flex items-center gap-2">
-                                <a target="_blank"
-                                    :href="`${baseUrl}/storage/files/catalyst/catalyst-snapshot-f10-100826079.final.json`"
-                                    type="button"
-                                    class="px-2 py-1 text-xs font-semibold text-gray-900 bg-white rounded-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
-                                    Download raw snapshot
-                                </a>
+                            <div v-if="props.filters?.fundId">
+                                <Attachment :fundId="props.filters?.fundId"/>
                             </div>
                         </div>
 
@@ -280,10 +275,11 @@
 import Multiselect from '@vueform/multiselect';
 import { router, usePage } from '@inertiajs/vue3';
 import { watch, ref } from 'vue';
-import AdaPowerRangesPie from "../modules/charts/AdaPowerRangesPie.vue"
+import AdaPowerRangesPie from "../modules/charts/AdaPowerRangesPie.vue";
+import Attachment from '../modules/charts/Attachment.vue';
 import { VARIABLES } from "../models/variables";
 import { computed } from 'vue';
-import Proposal from '../models/proposal'
+import Proposal from '../models/proposal';
 import Fund from '../models/fund';
 import axios from '../../lib/utils/axios';
 import route from 'ziggy-js';
