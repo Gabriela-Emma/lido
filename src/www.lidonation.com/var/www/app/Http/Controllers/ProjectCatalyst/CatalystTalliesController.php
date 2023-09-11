@@ -5,6 +5,7 @@ namespace App\Http\Controllers\ProjectCatalyst;
 use App\Http\Controllers\Controller;
 use App\Models\CatalystTally;
 use App\Models\Proposal;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Meilisearch\Endpoints\Indexes;
 
@@ -48,11 +49,11 @@ class CatalystTalliesController extends Controller
     }
 
 
-    public function getUpdatedAtDate(Request $request)
+    public function getUpdatedAtDate(Request $request): JsonResponse
     {
         $mostRecentTally = CatalystTally::latest('updated_at')->first();
         $responseData = [
-            'updated_at' => $mostRecentTally->updated_at,
+            'updated_at' => $mostRecentTally->updated_at->utc(),
         ];
 
         return response()->json($responseData);
