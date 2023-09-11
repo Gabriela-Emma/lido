@@ -4,7 +4,7 @@ metadata:
   namespace: {{ .Values.namespace }}
   name: "{{ $.Chart.Name }}-activevoteplans"
 spec:
-  schedule: "*/2 * * * *"
+  schedule: "*/15 * * * *"
   jobTemplate:
     spec:
       template:
@@ -15,6 +15,7 @@ spec:
           initContainers:
             - name: fetch-archive
               image: registry.lidonation.com/lidonation/lidonation/jormungandr:fund10
+              imagePullPolicy: IfNotPresent
               volumeMounts:
                 - name: shared-volume
                   mountPath: /VOLUME_ROOT
@@ -24,15 +25,19 @@ spec:
                 - |
                   LATEST_ARCHIVE_ID_FROM_LIDO=$(curl -s https://www.lidonation.com/api/catalyst-explorer/ledger-snapshots/latest | jq -r '.data.snapshot_id')
                   URL=$(curl -s https://archiver.projectcatalyst.io/api/v1/archives/$LATEST_ARCHIVE_ID_FROM_LIDO/download | jq -r .url)
-                  curl -o /VOLUME_ROOT/archive.tar.zstd "$URL"
-                  zstd -d /VOLUME_ROOT/archive.tar.zstd
-                  tar -xvf /VOLUME_ROOT/archive.tar
+                  curl -o VOLUME_ROOT/archive.tar.zstd "$URL"
+                  zstd -d VOLUME_ROOT/archive.tar.zstd
+                  tar -xvf VOLUME_ROOT/archive.tar
+                  mkdir VOLUME_ROOT/persist
+                  mkdir VOLUME_ROOT/persist/leader-1
+                  mv volatile permanent  VOLUME_ROOT/persist/leader-1/
+                  mv artifacts VOLUME_ROOT/ 
                   rm -f /VOLUME_ROOT/archive.tar.zstd /VOLUME_ROOT/archive.tar
-                  mkdir -p /VOLUME_ROOT/persist/leader-1/
-                  mv /VOLUME_ROOT/artifacts /VOLUME_ROOT/persist/leader-1/
+                  echo "All set..."
           containers:
             - name: query-api
               image: bitnami/kubectl:1.24.9-debian-11-r10
+              imagePullPolicy: IfNotPresent
               volumeMounts:
                 - name: shared-volume
                   mountPath: /VOLUME_ROOT
@@ -47,4 +52,3 @@ spec:
                     exit 1
                   fi
                   curl http://127.0.0.1:10000/api/v0/vote/active/plans > /VOLUME_ROOT/activevoteplans.json
-          restartPolicy: Never
