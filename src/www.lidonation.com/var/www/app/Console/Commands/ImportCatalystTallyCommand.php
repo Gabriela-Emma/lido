@@ -26,19 +26,23 @@ class ImportCatalystTallyCommand extends Command
     /**
      * Execute the console command.
      */
-    public function handle()
+    public function handle() 
     {
         $file = $this->argument('file');
         $votesCast = Items::fromFile($file);
-
         foreach($votesCast as $data) {
             $data = new Fluent($data);
-            CatalystTally::updateOrCreate([
-                'hash' => $data->proposal_id,
-            ], [
-                'hash' => $data->proposal_id,
-                'tally' => $data->votes_cast
-            ]);
+            $proposalData = $data->proposals;
+            foreach ($proposalData as $value) {
+                $proposalTally = new Fluent($value);
+                CatalystTally::updateOrCreate([
+                    'hash' => $proposalTally->proposal_id,
+                ], [
+                    'hash' => $proposalTally->proposal_id,
+                    'tally' => $proposalTally->votes_cast
+                ]);
+            }
+
         }
     }
 }
