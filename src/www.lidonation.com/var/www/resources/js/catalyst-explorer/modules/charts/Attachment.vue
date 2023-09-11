@@ -20,17 +20,16 @@ const props = withDefaults(
     {},
 );
 
-const baseUrl = usePage().props.base_url;
 const fundId = ref<number>(props.fundId);
 const attachementLink = ref<string>('');
 
-getTallies();
+getAttachmentLink();
 
-function getTallies() {
+function getAttachmentLink() {
     axios.get(`${usePage().props.base_url}/catalyst-explorer/charts/attachment/link`,
             {
                 params: {
-                    "fund-id": fundId?.value
+                    "fs": fundId?.value
                 }
             }
         )
