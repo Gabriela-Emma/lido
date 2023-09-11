@@ -28,9 +28,7 @@ use App\Http\Controllers\ProjectCatalyst\CatalystMyProposalsController;
 use App\Http\Controllers\ProjectCatalyst\CatalystMyVotesController;
 use App\Http\Controllers\ProjectCatalyst\CatalystMyRankingController;
 use App\Http\Controllers\ProjectCatalyst\CatalystRegistrationsController;
-use App\Http\Controllers\ProjectCatalyst\CatalystTalliesController;
 use App\Http\Controllers\ProjectCatalyst\CatalystUserProfilesController;
-use App\Models\DraftBallot;
 use Illuminate\Http\Request;
 
 // Project Catalyst

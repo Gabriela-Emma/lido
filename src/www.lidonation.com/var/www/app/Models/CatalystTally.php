@@ -13,6 +13,11 @@ class CatalystTally extends Model
 
     public $timestamps = false;
 
+    public $casts = [
+        'tally' => 'integer',
+        'updated_at' => 'datetime'
+    ];
+
     protected $fillable = [
         'hash',
         'tally',
