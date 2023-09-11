@@ -15,7 +15,7 @@ spec:
           initContainers:
             - name: fetch-archive
               image: registry.lidonation.com/lidonation/lidonation/jormungandr:fund10
-              imagePullPolicy: IfNotPresent
+              imagePullPolicy: Always
               volumeMounts:
                 - name: shared-volume
                   mountPath: /VOLUME_ROOT
@@ -52,4 +52,6 @@ spec:
                     exit 1
                   fi
                   curl http://127.0.0.1:10000/api/v0/vote/active/plans > /VOLUME_ROOT/activevoteplans.json
+          imagePullSecrets:
+        - name: {{ .Values.image.pullSecret }}
           restartPolicy: Never    
