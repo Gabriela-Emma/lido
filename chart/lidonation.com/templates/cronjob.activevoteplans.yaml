@@ -15,7 +15,7 @@ spec:
                 claimName: "{{ .Values.namespace }}-catalyst-utils-pvc"          
           initContainers:
             - name: fetch-archive
-              image: busybox:1.28
+              image: bitnami/kubectl:1.24.9-debian-11-r10
               imagePullPolicy: IfNotPresent
               volumeMounts:
                 - name: "{{ $.Chart.Name }}-catalyst-utils-pv"
@@ -48,7 +48,7 @@ spec:
                 - name: GENESIS_PATH
                   value: /leader1stuff/artifacts/block0.bin
             - name: query-api
-              image: busybox:1.28
+              image: bitnami/kubectl:1.24.9-debian-11-r10
               imagePullPolicy: IfNotPresent
               volumeMounts:
                 - name: "{{ $.Chart.Name }}-catalyst-utils-pv"
