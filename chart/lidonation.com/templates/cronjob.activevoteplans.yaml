@@ -59,6 +59,7 @@ spec:
                 - "/bin/sh"
                 - "-c"
                 - |
+                  apk add curl 
                   sleep 5m
                   curl http://127.0.0.1:10000/api/v0/vote/active/plans
                   if [[ $? -ne 0 ]]; then
