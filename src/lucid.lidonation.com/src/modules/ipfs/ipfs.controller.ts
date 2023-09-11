@@ -1,6 +1,5 @@
 import {Controller, Get, Param, Post, Req} from "@nestjs/common";
 import {Request} from "express";
-import { forEach } from "lodash";
 import Moralis from 'moralis';
 
 @Controller('ipfs')
@@ -12,9 +11,9 @@ export class IpfsController {
 
     try {
         let api_key = process.env.MORALIS_API_KEY
-        console.log(api_key);
+        
         await Moralis.start({ apiKey: api_key});
-        // Moralis.EvmApi.
+        
     } catch (error) {
         
     }

@@ -34,7 +34,7 @@ class PublishProposalYotubeVideosToIpfs extends Action
     {
         $models->each(function (Proposal $p) {
             try {
-                PublishProposalYotubeVideosToIpfsJob::dispatchSync($p);
+                PublishProposalYotubeVideosToIpfsJob::dispatch($p);
             } catch (\Exception $e) {
                 $this->markAsFailed($p, $e);
             }

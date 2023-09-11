@@ -16,17 +16,18 @@
         </div>
         <div  @click="showCategory=!showCategory"
             class="relative flex flex-row items-center pr-3 mt-auto -top-2 gap-x-3 md:text-md md:leading-8 md:gap-x-8">
+            <?php $mataKey = match ($discussion->title) {
+                'Impact Alignment' => 'aligment_score',
+                'Feasibility' => 'feasibility_score',
+                'Value for money' => 'auditability_score',
+                default => null
+           } ?>
             <span class="hidden md:w-6 md:h-6"></span>
             <div class="m-0">
-                <x-public.stars :amount="$discussion->rating" :size="6"/>
+                <x-public.stars :amount="round($model?->meta_data?->{$mataKey} ?? $discussion->rating, 2)"
+                    :size="6"/>
             </div>
             <div class="flex flex-row gap-1 text-xs font-semibold flex-nowrap sm:text-sm 2x:text-base">
-                <?php $mataKey = match ($discussion->title) {
-                    'Impact Alignment' => 'aligment_score',
-                    'Feasibility' => 'feasibility_score',
-                    'Value for money' => 'auditability_score',
-                    default => null
-               } ?>
                 <span>
                     {{round($model?->meta_data?->{$mataKey} ?? $discussion->rating, 2)}}
                 </span>

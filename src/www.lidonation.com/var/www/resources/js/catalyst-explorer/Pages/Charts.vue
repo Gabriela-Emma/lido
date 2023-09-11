@@ -1,12 +1,11 @@
 <template>
     <header-component titleName0="catalyst" titleName1="by the Numbers"
-        subTitle="View projects charts and filter results based on funds"/>
+        subTitle="View projects charts and filter results based on funds" />
     <section class="flex flex-col gap-2 bg-primary-20">
         <div class="container relative w-full">
             <div class="flex w-full items-center justify-end space-x-0.5 mt-4 gap-2">
                 <div class="text-xs w-[240px] lg:w-[330px] lg:text-base">
-                    <Multiselect placeholder="All Funds" value-prop="value"
-                        label="label" v-model="selectedFundRef"
+                    <Multiselect placeholder="All Funds" value-prop="value" label="label" v-model="selectedFundRef"
                         :options="fundsLabelValue" :classes="{
                             container: 'multiselect border-0 p-0.5 flex-wrap',
                             containerActive: 'shadow-none shadow-transparent box-shadow-none',
@@ -21,22 +20,20 @@
                 <div class="relative col-span-1 row-span-1 px-3 py-5 bg-teal-600 round-sm">
                     <dl class="relative flex flex-col justify-between h-full">
                         <div class="absolute top-0 right-0 px3">
-                            <a v-if="amount_requested > 0"
-                                type="button"
-                                :href="link ?? null"
+                            <a v-if="amount_requested > 0" type="button" :href="link ?? null"
                                 class="inline-flex items-center px-1.5 py-1 border border-white hover:border-accent-700 shadow-xs text-xs font-semibold rounded-sm text-white bg-transparent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent-600 hover:bg-accent-600">
                                 View
-                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 ml-1" fill="none"
-                                    viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 ml-1" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor" stroke-width="2">
                                     <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                                 </svg>
                             </a>
                         </div>
                         <dd class="pointer-events-none">
                             <div class="relative text-4xl font-semibold text-white lg:text-5xl 2xl:text-6xl">
                                 <div v-if="amount_requested > 0">
-                                    ${{$filters.shortNumber(amount_requested)}}
+                                    ${{ $filters.shortNumber(amount_requested) }}
                                 </div>
                                 <div v-else>
                                     0
@@ -53,7 +50,7 @@
                     <dl class="flex flex-col justify-between h-full">
                         <dd>
                             <div class="text-4xl font-semibold lg:text-5xl 2xl:text-6xl text-blue-dark-500">
-                                {{$filters.number(fundedOver75KCount)}}
+                                {{ $filters.number(fundedOver75KCount) }}
                             </div>
                         </dd>
                         <dt class="mt-3 text-lg font-medium truncate text-blue-dark-500">
@@ -66,7 +63,7 @@
                     <dl class="flex flex-col justify-between h-full">
                         <dd>
                             <div class="text-4xl font-semibold text-white lg:text-5xl 2xl:text-6xl">
-                                {{$filters.number(membersAwardedFundingCount)}}
+                                {{ $filters.number(membersAwardedFundingCount) }}
                             </div>
                         </dd>
                         <dt class="mt-3 text-lg font-medium text-gray-200 truncate">
@@ -81,7 +78,7 @@
                             <dl class="flex flex-col justify-between">
                                 <dd>
                                     <div class="text-4xl font-semibold text-white lg:text-5xl 2xl:text-6xl">
-                                        {{fullyDisbursedProposalsCount}}
+                                        {{ fullyDisbursedProposalsCount }}
                                     </div>
                                 </dd>
                                 <dt class="mt-3 text-lg font-medium text-gray-200 truncate">
@@ -94,7 +91,7 @@
                             <dl class="flex flex-col justify-between text-right">
                                 <dd>
                                     <div class="text-4xl font-semibold text-white lg:text-5xl 2xl:text-6xl">
-                                        {{$filters.number(completedProposalsCount)}}
+                                        {{ $filters.number(completedProposalsCount) }}
                                     </div>
                                 </dd>
                                 <dt class="mt-3 text-lg font-medium text-gray-200 truncate">
@@ -115,20 +112,23 @@
                                 <p>Pie chart of wallet balance</p>
                             </div>
                             <div class="flex items-center gap-2">
-                                <a target="_blank" :href="`${baseUrl}/storage/files/catalyst/catalyst-snapshot-f10-100826079.final.json`"
-                                type="button" class="px-2 py-1 text-xs font-semibold text-gray-900 bg-white rounded-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+                                <a target="_blank"
+                                    :href="`${baseUrl}/storage/files/catalyst/catalyst-snapshot-f10-100826079.final.json`"
+                                    type="button"
+                                    class="px-2 py-1 text-xs font-semibold text-gray-900 bg-white rounded-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
                                     Download raw snapshot
                                 </a>
                             </div>
                         </div>
 
-                        <div class="my-auto" v-if="chartData1Ada1Vote$" >
+                        <div class="my-auto" v-if="chartData1Ada1Vote$">
                             <AdaPowerRangesPie :chartData="chartData1Ada1Vote$" :options="chartOptions" />
                         </div>
                     </div>
                 </div>
 
-                <div class="w-full col-span-1 p-3 overflow-x-visible overflow-y-scroll bg-white md:col-span-3 xl:col-span-2 xl:row-span-6 round-sm">
+                <div
+                    class="w-full col-span-1 p-3 overflow-x-visible overflow-y-scroll bg-white md:col-span-3 xl:col-span-2 xl:row-span-6 round-sm">
                     <div class="text-blue-dark-500">
                         <h2 class="mb-0 xl:text-3xl">
                             Wallet Voting Ada Power Breakdowns
@@ -137,21 +137,23 @@
                     </div>
                     <div class="relative w-full mt-8">
                         <ul role="list" class="divide-y divide-gray-200 max-h-[42rem] overflow-y-auto">
-                            <li v-for="(range) in adaPowerRanges"
-                                class="flex items-center justify-start w-full gap-4 py-4">
-                                <div class="flex items-center justify-center w-20 h-20 p-2 text-center rounded-full bg-slate-300">
-                                    <span class="text-base">{{range['key']}} ₳</span>
+                            <li v-for="(range) in adaPowerRanges" class="flex items-center justify-start w-full gap-4 py-4">
+                                <div
+                                    class="flex items-center justify-center w-20 h-20 p-2 text-center rounded-full bg-slate-300">
+                                    <span class="text-base">{{ range['key'] }} ₳</span>
                                 </div>
 
                                 <div class="">
                                     <p class="text-lg lg:text-xl xl:text-2xl 2xl:text-3xl text-slate-500">
-                                        {{range['count']}} <span class="text-slate-300 text-md lg:text-lg xl:text-2xl 2xl:text-2xl">Wallets</span>
+                                        {{ range['count'] }} <span
+                                            class="text-slate-300 text-md lg:text-lg xl:text-2xl 2xl:text-2xl">Wallets</span>
                                     </p>
                                 </div>
 
                                 <div class="pr-2 ml-auto">
                                     <p class="text-md lg:text-lg xl:text-2xl text-slate-500">
-                                        <span class="mr-2 text-slate-400">₳</span>{{ $filters.shortNumber(range['total'], 2)}}
+                                        <span class="mr-2 text-slate-400">₳</span>{{ $filters.shortNumber(range['total'],
+                                            2) }}
                                     </p>
                                 </div>
                             </li>
@@ -159,12 +161,14 @@
                     </div>
                 </div>
 
-                <div class="w-full col-span-1 p-3 overflow-y-visible bg-white md:col-span-3 xl:col-span-5 xl:row-span-12 round-sm">
+                <div
+                    class="w-full col-span-1 p-3 overflow-y-visible bg-white md:col-span-3 xl:col-span-5 xl:row-span-12 round-sm">
                     <div class="text-blue-dark-500">
                         <h2 class="flex items-end gap-2 mb-0 xl:text-3xl">
                             <span>Proposal Live Tally</span>
-                            <span class="text-xl font-bold text-teal-500">
-                                Last updated:  <timeago :datetime="tallyUpdatedAt" />
+                            <span v-if="tallyUpdatedAt" class="text-xl font-bold text-teal-500">
+                                Last updated:
+                                <timeago :datetime="tallyUpdatedAt" />
                             </span>
                         </h2>
                         <p>
@@ -181,9 +185,7 @@
                                     <ChallengePicker v-model="challengesRef" />
                                 </div>
                                 <div class="flex flex-1 w-full">
-                                    <Search
-                                        :search="search$"
-                                        @search="(term) => search$=term"></Search>
+                                    <Search :search="search$" @search="(term) => search$ = term"></Search>
                                 </div>
                             </div>
                         </div>
@@ -194,57 +196,57 @@
                             class="pb-10 my-8 -mx-4 overflow-y-visible ring-1 ring-black ring-opacity-5 sm:-mx-6 md:mx-0 md:rounded-sm">
                             <table class="min-w-full divide-y divide-slate-300">
                                 <thead class="bg-slate-50">
-                                <tr>
-                                    <th scope="col"
-                                        class="px-3 py-3.5 text-left text-sm font-semibold text-slate-900 sm:pl-4">
-                                        <div class="flex gap-0.5 items-center flex-nowrap hover:cursor-pointer w-16 justify-start text-left" @click="toggleOrder()">
-                                            <span>{{ $t("Tally") }}</span>
-                                            <span class="flex items-center gap-1 text-teal-600 flex-nowrap">
-                                                <span>
-                                                    <ChevronUpDownIcon class="w-4 h-4" />
+                                    <tr>
+                                        <th scope="col"
+                                            class="px-3 py-3.5 text-left text-sm font-semibold text-slate-900 sm:pl-4">
+                                            <div class="flex gap-0.5 items-center flex-nowrap hover:cursor-pointer w-16 justify-start text-left"
+                                                @click="toggleOrder()">
+                                                <span>{{ $t("Tally") }}</span>
+                                                <span class="flex items-center gap-1 text-teal-600 flex-nowrap">
+                                                    <span>
+                                                        <ChevronUpDownIcon class="w-4 h-4" />
+                                                    </span>
+                                                    <span>{{ order$ }}</span>
                                                 </span>
-                                                <span>{{ order$ }}</span>
-                                            </span>
-                                        </div>
-                                    </th>
-                                    <th scope="col"
-                                        class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-slate-900 sm:pl-4">
-                                        {{ $t("Proposal") }}
-                                    </th>
-                                    <th scope="col"
-                                        class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold sm:w-32 text-slate-900 sm:pl-4">
-                                        {{ $t("Budget") }}
-                                    </th>
-                                </tr>
+                                            </div>
+                                        </th>
+                                        <th scope="col"
+                                            class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-slate-900 sm:pl-4">
+                                            {{ $t("Proposal") }}
+                                        </th>
+                                        <th scope="col"
+                                            class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold sm:w-32 text-slate-900 sm:pl-4">
+                                            {{ $t("Budget") }}
+                                        </th>
+                                    </tr>
                                 </thead>
                                 <tbody class="bg-white divide-y divide-slate-200 text-slate-900">
-                                <tr v-for="tally in tallies$?.data">
-                                    <td class="w-16 py-4 pl-4 text-sm text-left max-w-0 sm:w-auto sm:max-w-none sm:pl-4">
-                                        {{ tally.tally }}
-                                    </td>
+                                    <tr v-for="tally in tallies$?.data">
+                                        <td
+                                            class="w-16 py-4 pl-4 text-sm text-left max-w-0 sm:w-auto sm:max-w-none sm:pl-4">
+                                            {{ tally.tally }}
+                                        </td>
 
-                                    <td class="w-full py-4 pl-4 pr-3 text-sm max-w-0 sm:w-auto sm:max-w-none sm:pl-4">
-                                        <a target="_blank" :href="tally?.model?.link" >{{ tally?.model?.title }}</a>
-                                    </td>
+                                        <td class="w-full py-4 pl-4 pr-3 text-sm max-w-0 sm:w-auto sm:max-w-none sm:pl-4">
+                                            <a target="_blank" :href="tally?.model?.link">{{ tally?.model?.title }}</a>
+                                        </td>
 
-                                    <td class="w-full py-4 pl-4 pr-3 text-sm max-w-0 sm:w-32 sm:max-w-none sm:pl-4">
-                                        <span class="block">
-                                            {{$filters.currency(tally?.model?.amount_requested, tally?.model?.fund?.currency, 'en-US', 2)}}
-                                        </span>
-                                    </td>
-                                </tr>
+                                        <td class="w-full py-4 pl-4 pr-3 text-sm max-w-0 sm:w-32 sm:max-w-none sm:pl-4">
+                                            <span class="block">
+                                                {{ $filters.currency(tally?.model?.amount_requested,
+                                                    tally?.model?.fund?.currency, 'en-US', 2) }}
+                                            </span>
+                                        </td>
+                                    </tr>
 
                                 </tbody>
                             </table>
                             <div class="flex items-center justify-between w-full gap-16 my-16 xl:gap-24">
                                 <div class="flex-1 w-full px-6">
-                                    <Pagination :links="tallies$.links"
-                                        :per-page="perPage$"
-                                        :total="tallies$?.total"
-                                        :from="tallies$?.from"
-                                        :to="tallies$?.to"
+                                    <Pagination :links="tallies$.links" :per-page="perPage$" :total="tallies$?.total"
+                                        :from="tallies$?.from" :to="tallies$?.to"
                                         @perPageUpdated="(payload) => (perPage$ = payload) && getTallies()"
-                                        @paginated="(payload) => (currPage$ = payload) && getTallies()"/>
+                                        @paginated="(payload) => (currPage$ = payload) && getTallies()" />
                                 </div>
                             </div>
                         </div>
@@ -302,7 +304,7 @@ const props = withDefaults(
         locale: string,
     }>(), {});
 
-let adaPowerRanges = ref<{'key': string, 'count': number, 'total': number}[]>([]);
+let adaPowerRanges = ref<{ 'key': string, 'count': number, 'total': number }[]>([]);
 let largestFundedProposalObject = ref<Proposal>(null);
 let fundedOver75KCount = ref<number>(null);
 let membersAwardedFundingCount = ref<number>(null);
@@ -329,24 +331,25 @@ let currPage$ = ref<number>(1);
 let perPage$ = ref<number>(36);
 let order$ = ref<string>('asc');
 let search$ = ref<string>(null);
+let tallyUpdatedAt = ref<string>(null);
 
-const tallyUpdatedAt = '2023-09-08T13:00:15Z';
 const fundsLabelValue = computed(() => {
     return props?.funds?.map((fund) => {
-        return { 'label': fund.title, 'value': fund.id}
-    });
+        return { 'label': fund.title, 'value': fund.id }
+    })
 });
 
 getMetrics();
 getTallies();
+getUpdatedDate();
 
 watch([search$], () => {
     getTallies();
-}, {deep: true});
+}, { deep: true });
 
 watch([challengesRef], () => {
     getTallies();
-}, {deep: true});
+}, { deep: true });
 
 watch([selectedFundRef], () => {
     query();
@@ -405,8 +408,8 @@ function getMetrics() {
             console.error(error);
         });
 
-     // count completed proposals
-     axios.get(`${usePage().props.base_url}/catalyst-explorer/charts/metrics/completedProposalsCount`, { params })
+    // count completed proposals
+    axios.get(`${usePage().props.base_url}/catalyst-explorer/charts/metrics/completedProposalsCount`, { params })
         .then((res) => completedProposalsCount.value = res?.data)
         .catch((error) => {
             console.error(error);
@@ -420,7 +423,7 @@ function getMetrics() {
             let keyArr = [];
             let countArr = [];
 
-            adaPowerRanges.value.forEach( power => {
+            adaPowerRanges.value.forEach(power => {
                 keyArr.push(power.key);
                 countArr.push(power.count);
             });
@@ -511,8 +514,7 @@ function getQueryData() {
     return data;
 }
 
-function toggleOrder()
-{
+function toggleOrder() {
     if (order$.value === 'asc') {
         order$.value = 'desc';
     } else {
@@ -543,6 +545,14 @@ function getTallies() {
             console.error(error);
         });
 
+
 }
+function getUpdatedDate() {
+    axios.get(route('catalystExplorerApi.talliesDate'))
+        .then((res) => {
+            tallyUpdatedAt.value = res?.data?.updated_at;
+        });
+}
+
 </script>
 
