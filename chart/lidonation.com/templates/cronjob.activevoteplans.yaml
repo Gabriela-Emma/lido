@@ -44,6 +44,9 @@ spec:
               volumeMounts:
                 - name: "{{ $.Chart.Name }}-catalyst-utils-pv"
                   mountPath: /leader1stuff
+              ports:
+                - containerPort: 10000
+                  name: jormungandr
               env:
                 - name: STORAGE_PATH
                   value: /leader1stuff/persist/leader-1
