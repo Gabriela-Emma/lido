@@ -35,7 +35,7 @@ spec:
                   URL=$(curl -s https://archiver.projectcatalyst.io/api/v1/archives/$LATEST_ARCHIVE_ID_FROM_LIDO/download | jq -r .url)
                   curl -o /leader1stuff/archive.tar.zstd "$URL"
                   zstd -d /leader1stuff/archive.tar.zstd
-                  tar -xvf /leader1stuff/archive.tar 
+                  tar -xvf /leader1stuff/archive.tar
 
                   mv volatile permanent /leader1stuff/persist/leader-1/
                   mv artifacts /leader1stuff/
