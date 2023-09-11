@@ -10,48 +10,49 @@ spec:
       template:
         spec:
           volumes:
-            - name: shared-volume
-              emptyDir: {}
+            - name: "{{ $.Chart.Name }}-catalyst-utils-pv"
+              persistentVolumeClaim:
+              claimName: "{{ .Values.namespace }}-catalyst-utils-pvc"          
           initContainers:
             - name: fetch-archive
               image: registry.lidonation.com/lidonation/lidonation/jormungandr:fund10
               imagePullPolicy: Always
               volumeMounts:
-                - name: shared-volume
-                  mountPath: /VOLUME_ROOT
+                - name: "{{ $.Chart.Name }}-catalyst-utils-pv"
+                  mountPath: /leader1stuff
               command:
                 - "/bin/sh"
                 - "-c"
                 - |
                   LATEST_ARCHIVE_ID_FROM_LIDO=$(curl -s https://www.lidonation.com/api/catalyst-explorer/ledger-snapshots/latest | jq -r '.data.snapshot_id')
                   URL=$(curl -s https://archiver.projectcatalyst.io/api/v1/archives/$LATEST_ARCHIVE_ID_FROM_LIDO/download | jq -r .url)
-                  curl -o VOLUME_ROOT/archive.tar.zstd "$URL"
-                  zstd -d VOLUME_ROOT/archive.tar.zstd
-                  tar -xvf VOLUME_ROOT/archive.tar
-                  mkdir VOLUME_ROOT/persist
-                  mkdir VOLUME_ROOT/persist/leader-1
-                  mv volatile permanent  VOLUME_ROOT/persist/leader-1/
-                  mv artifacts VOLUME_ROOT/ 
-                  rm -f /VOLUME_ROOT/archive.tar.zstd /VOLUME_ROOT/archive.tar
+                  curl -o /leader1stuff/archive.tar.zstd "$URL"
+                  zstd -d /leader1stuff/archive.tar.zstd
+                  tar -xvf /leader1stuff/archive.tar
+                  mkdir /leader1stuff/persist
+                  mkdir /leader1stuff/persist/leader-1
+                  mv volatile permanent  /leader1stuff/persist/leader-1/
+                  mv artifacts /leader1stuff/ 
+                  rm -f /leader1stuff/archive.tar.zstd /leader1stuff/archive.tar
                   echo "All set..."
           containers:
             - name: query-api
               image: bitnami/kubectl:1.24.9-debian-11-r10
               imagePullPolicy: IfNotPresent
               volumeMounts:
-                - name: shared-volume
-                  mountPath: /VOLUME_ROOT
+                - name: "{{ $.Chart.Name }}-catalyst-utils-pv"
+                  mountPath: /leader1stuff
               command:
                 - "/bin/sh"
                 - "-c"
                 - |
-                  sleep 10m
+                  sleep 5m
                   curl http://127.0.0.1:10000/api/v0/vote/active/plans
                   if [[ $? -ne 0 ]]; then
                     echo "Failed to get the active vote plans."
                     exit 1
                   fi
-                  curl http://127.0.0.1:10000/api/v0/vote/active/plans > /VOLUME_ROOT/activevoteplans.json
+                  curl http://127.0.0.1:10000/api/v0/vote/active/plans > /leader1stuff/activevoteplans.json
           imagePullSecrets:
         - name: {{ .Values.image.pullSecret }}
           restartPolicy: Never    
