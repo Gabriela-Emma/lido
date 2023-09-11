@@ -21,7 +21,6 @@ use Illuminate\Support\Str;
 use Laravel\Sanctum\Sanctum;
 use Vinkla\Hashids\Facades\Hashids;
 use App\Models\CatalystTally;
-use App\Observers\CatalystTallyObserver;
 
 //use Spatie\NovaTranslatable\Translatable;
 
@@ -75,7 +74,7 @@ class AppServiceProvider extends ServiceProvider
         //                config('laravellocalization.supportedLocales')
         //            )->keys()->toArray()
         //        );
-        CatalystTally::observe(CatalystTallyObserver::class);
+
         Sanctum::usePersonalAccessTokenModel(PersonalAccessToken::class);
         Blade::directive('percent', fn ($expression) => (round(((float) $expression) * 100, 3).'%'));
         Blade::directive('markdownLang', function ($expression) {

@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\CatalystTally;
 use Illuminate\Support\Fluent;
+use JsonMachine\Exception\InvalidArgumentException;
 use JsonMachine\Items;
 use Illuminate\Console\Command;
 
@@ -25,16 +26,17 @@ class ImportCatalystTallyCommand extends Command
 
     /**
      * Execute the console command.
+     * @throws InvalidArgumentException
      */
-    public function handle() 
+    public function handle(): void
     {
         $file = $this->argument('file');
         $votesCast = Items::fromFile($file);
         foreach($votesCast as $data) {
             $data = new Fluent($data);
-            $proposalData = $data->proposals;
-            foreach ($proposalData as $value) {
+            foreach ($data->proposals as $value) {
                 $proposalTally = new Fluent($value);
+
                 CatalystTally::updateOrCreate([
                     'hash' => $proposalTally->proposal_id,
                 ], [
