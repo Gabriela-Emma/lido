@@ -15,7 +15,7 @@ spec:
                 claimName: "{{ .Values.namespace }}-catalyst-utils-pvc"          
           initContainers:
             - name: fetch-archive
-              image: bitnami/kubectl:1.24.9-debian-11-r10
+              image: alpine:latest
               imagePullPolicy: IfNotPresent
               volumeMounts:
                 - name: "{{ $.Chart.Name }}-catalyst-utils-pv"
@@ -24,20 +24,20 @@ spec:
                 - "/bin/sh"
                 - "-c"
                 - |
-                  sudo apt install curl
-                  sudo apt install zstd
+                  apk add curl zstd
+                  mkdir -p /leader1stuff/persist
+                  mkdir -p /leader1stuff/persist/leader-1
+                  rm -rf /leader1stuff/volatile /leader1stuff/permanent /leader1stuff/artifacts
+
                   LATEST_ARCHIVE_ID_FROM_LIDO=$(curl -s https://www.lidonation.com/api/catalyst-explorer/ledger-snapshots/latest | jq -r '.data.snapshot_id')
                   URL=$(curl -s https://archiver.projectcatalyst.io/api/v1/archives/$LATEST_ARCHIVE_ID_FROM_LIDO/download | jq -r .url)
                   curl -o /leader1stuff/archive.tar.zstd "$URL"
                   zstd -d /leader1stuff/archive.tar.zstd
-                  tar -xvf /leader1stuff/archive.tar
-                  mkdir -p /leader1stuff/persist
-                  mkdir -p /leader1stuff/persist/leader-1
-                  rm -rf /leader1stuff/volatile /leader1stuff/permanent /leader1stuff/artifacts
-                  mv volatile permanent  /leader1stuff/persist/leader-1/
-                  mv artifacts /leader1stuff/ 
+                  tar -xvf /leader1stuff/archive.tar 
+
+                  mv volatile permanent /leader1stuff/persist/leader-1/
+                  mv artifacts /leader1stuff/
                   rm -f /leader1stuff/archive.tar.zstd /leader1stuff/archive.tar
-                  echo "All set..."
           containers:
             - name: jormungandr
               image: registry.lidonation.com/lidonation/lidonation/jormungandr:fund10
@@ -50,7 +50,7 @@ spec:
                 - name: GENESIS_PATH
                   value: /leader1stuff/artifacts/block0.bin
             - name: query-api
-              image: bitnami/kubectl:1.24.9-debian-11-r10
+              image: alpine:latest
               imagePullPolicy: IfNotPresent
               volumeMounts:
                 - name: "{{ $.Chart.Name }}-catalyst-utils-pv"
