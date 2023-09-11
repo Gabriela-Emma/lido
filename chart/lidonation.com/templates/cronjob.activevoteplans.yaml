@@ -4,7 +4,7 @@ metadata:
   namespace: {{ .Values.namespace }}
   name: "{{ $.Chart.Name }}-activevoteplans"
 spec:
-  schedule: "*/2 * * * *"
+  schedule: "*/15 * * * *"
   jobTemplate:
     spec:
       template:
