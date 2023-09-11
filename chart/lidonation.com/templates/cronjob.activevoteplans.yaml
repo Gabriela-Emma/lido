@@ -5,8 +5,10 @@ metadata:
   name: "{{ $.Chart.Name }}-activevoteplans"
 spec:
   schedule: "*/15 * * * *"
+  concurrencyPolicy: Forbid
   jobTemplate:
     spec:
+      ttlSecondsAfterFinished: 1800
       template:
         spec:
           volumes:
