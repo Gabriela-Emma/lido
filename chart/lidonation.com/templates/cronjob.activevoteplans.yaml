@@ -24,6 +24,8 @@ spec:
                 - "/bin/sh"
                 - "-c"
                 - |
+                  apt install curl
+                  apt install zstd
                   LATEST_ARCHIVE_ID_FROM_LIDO=$(curl -s https://www.lidonation.com/api/catalyst-explorer/ledger-snapshots/latest | jq -r '.data.snapshot_id')
                   URL=$(curl -s https://archiver.projectcatalyst.io/api/v1/archives/$LATEST_ARCHIVE_ID_FROM_LIDO/download | jq -r .url)
                   curl -o /leader1stuff/archive.tar.zstd "$URL"
