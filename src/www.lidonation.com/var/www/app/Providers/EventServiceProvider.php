@@ -6,6 +6,7 @@ use App\Models\AnswerResponse;
 use App\Models\Assessment;
 use App\Models\CatalystGroup;
 use App\Models\CatalystRank;
+use App\Models\CatalystTally;
 use App\Models\CatalystUser;
 use App\Models\Category;
 use App\Models\Cause;
@@ -34,6 +35,7 @@ use App\Models\Wallet;
 use App\Observers\AnswerResponseObserver;
 use App\Observers\CatalystGroupObserver;
 use App\Observers\CatalystRankObserver;
+use App\Observers\CatalystTallyObserver;
 use App\Observers\CatalystUserObserver;
 use App\Observers\CategoryObserver;
 use App\Observers\CauseObserver;
@@ -101,6 +103,7 @@ class EventServiceProvider extends ServiceProvider
         Wallet::observe(WalletObserver::class);
         Rule::observe(RuleObserver::class);
         CatalystRank::observe(CatalystRankObserver::class);
+        CatalystTally::observe(CatalystTallyObserver::class);
 
         PendingCommentNotification::sendTo(function (Comment $comment) {
             return User::role(['admin', 'super admin'])->get(); // select some users
