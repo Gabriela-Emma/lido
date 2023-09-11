@@ -47,7 +47,7 @@ class CatalystVotingPowers extends Resource
         return [
             ID::make()->sortable(),
 
-            Text::make(__('Stake Pub'), 'stake_pub')->sortable(),
+            Text::make(__('Stake Pub'), 'voter_id')->sortable(),
 
             Number::make(__('Voting Power'), 'voting_power')
                 ->required(),

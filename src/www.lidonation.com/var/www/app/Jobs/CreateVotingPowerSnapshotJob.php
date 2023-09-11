@@ -27,7 +27,7 @@ class CreateVotingPowerSnapshotJob implements ShouldQueue
     public function handle(): void
     {
         CatalystVotingPower::create([
-            'stake_pub' => $this->stake_address,
+            'voter_id' => $this->stake_address,
             'voting_power' => $this->voting_power,
             'catalyst_snapshot_id' => $this->snapshot->id,
         ]);
