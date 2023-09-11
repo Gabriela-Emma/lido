@@ -3,12 +3,14 @@
 namespace App\Nova;
 
 use App\Models\CatalystSnapshot;
+// use App\Models\CatalystVotingPower;
 use App\Models\Fund;
 use App\Nova\Actions\AddMetaData;
 use App\Nova\Actions\AttachCategory;
 use App\Nova\Actions\AttachLink;
 use App\Nova\Actions\AttachTag;
 use App\Nova\Actions\EditMetaData;
+use App\Nova\Actions\ImportVotingPower;
 use App\Nova\Actions\PublishModel;
 use App\Nova\Actions\SyncSnapshotVotingPowers;
 use App\Scopes\PublishedScope;
@@ -92,6 +94,9 @@ class CatalystSnapshots extends Resource
 
             HasMany::make('Metadata', 'metas', Metas::class),
 
+            HasMany::make('Voting Powers', 'votingPowers', CatalystVotingPowers::class)
+                ->hideFromIndex(),
+
         ];
     }
 
@@ -134,7 +139,7 @@ class CatalystSnapshots extends Resource
     {
         return array_merge(
             [
-                (new SyncSnapshotVotingPowers),
+                (new ImportVotingPower)->onlyOnDetail(),
                 (new AddMetaData),
                 (new EditMetaData(Fund::class)),
                 (new PublishModel),

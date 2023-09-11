@@ -8,6 +8,7 @@ use App\Http\Resources\FundResource;
 use App\Models\CatalystSnapshot;
 use App\Models\CatalystUser;
 use App\Models\Fund;
+use App\Models\Meta;
 use App\Models\Proposal;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -340,6 +341,20 @@ class CatalystChartsController extends Controller
         }
 
         return $_options;
+    }
+
+    protected function attachmentLink(Request $request)
+    {
+        $snapshot = CatalystSnapshot::where('model_type', Fund::class)
+            ->where('model_id', $request->input('fund-id'))
+            ->first();
+
+        $link = Meta::where('model_type', CatalystSnapshot::class)
+            ->where('model_id', $snapshot->id)
+            ->where('key', 'snapshot_file_path')
+            ->first();
+        
+        return '/storage/'.$link->content;
     }
 
 }
