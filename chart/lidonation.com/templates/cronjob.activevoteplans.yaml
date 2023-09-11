@@ -24,7 +24,7 @@ spec:
                 - "/bin/sh"
                 - "-c"
                 - |
-                  apk add curl zstd
+                  apk add curl zstd jq
                   mkdir -p /leader1stuff/persist
                   mkdir -p /leader1stuff/persist/leader-1
                   rm -rf /leader1stuff/volatile /leader1stuff/permanent /leader1stuff/artifacts
