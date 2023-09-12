@@ -67,16 +67,21 @@ spec:
                 - "-c"
                 - |
                   apk add curl zstd jq
+
                   rm -rf /leader1stuff/*
                   mkdir -p /leader1stuff/persist/leader-1
 
+                  cd /tmp
                   LATEST_ARCHIVE_ID_FROM_LIDO=$(curl -s https://www.lidonation.com/api/catalyst-explorer/ledger-snapshots/latest | jq -r '.data.snapshot_id')
                   URL=$(curl -s https://archiver.projectcatalyst.io/api/v1/archives/$LATEST_ARCHIVE_ID_FROM_LIDO/download | jq -r .url)
-                  curl -o /leader1stuff/archive.tar.zstd "$URL"
-                  zstd -d /leader1stuff/archive.tar.zstd
-                  tar -xvf /leader1stuff/archive.tar
+                  curl -o archive.tar.zstd "$URL"
+                  zstd -d archive.tar.zstd
+                  tar -xvf archive.tar
 
-                  rm -f /leader1stuff/archive.tar.zstd /leader1stuff/archive.tar
+                  mv volatile permanent /leader1stuff/persist/leader-1/
+                  mv artifacts /leader1stuff/
+
+                  rm -f /tmp/archive.tar.zstd /tmp/archive.tar
           containers:
             - name: jormungandr
               image: registry.lidonation.com/lidonation/lidonation/jormungandr:fund10
@@ -92,7 +97,7 @@ spec:
                   value: /leader1stuff/persist/leader-1
                 - name: GENESIS_PATH
                   value: /leader1stuff/artifacts/block0.bin
-            - name: query-api
+            - name: generate-voteplans
               image: alpine:latest
               imagePullPolicy: IfNotPresent
               volumeMounts:
@@ -103,6 +108,7 @@ spec:
                 - "-c"
                 - |
                   sleep 4m
+                  apk add curl
                   curl http://127.0.0.1:10000/api/v0/vote/active/plans
                   if [[ $? -ne 0 ]]; then
                     echo "Failed to get the active vote plans."
@@ -110,7 +116,7 @@ spec:
                   fi
                   curl http://127.0.0.1:10000/api/v0/vote/active/plans > /leader1stuff/activevotingplans.proposals.json
                   kill -9 $(pidof jormungandr)
-            - name: publish-votesplans
+            - name: publish-voteplans
               image: bitnami/kubectl:1.27.5-debian-11-r17
               imagePullPolicy: IfNotPresent
               volumeMounts:
@@ -120,7 +126,6 @@ spec:
                 - "/bin/sh"
                 - "-c"
                 - |
-                  apk add curl
                   sleep 7m
                   kubectl cp /leader1stuff/activevotingplans.proposals.json $(kubectl get pods -l service=lidolovelace-web-fpm --field-selector=status.phase=Running -o=jsonpath='{.items[0].metadata.name}'):/var/www/storage/app/catalyst/activevotingplans.proposals.json
           imagePullSecrets:

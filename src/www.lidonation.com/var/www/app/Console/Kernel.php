@@ -8,7 +8,6 @@ use App\Jobs\LidoStatsJob;
 use App\Jobs\ProcessPendingWithdrawalsJob;
 use App\Jobs\RefreshLidoTwitterToken;
 use App\Jobs\SyncCatalystLedgerSnapshots;
-use App\Jobs\SyncCatalystVotingPowersJob;
 use App\Jobs\SyncCatatalystVotersJob;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
