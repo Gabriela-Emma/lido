@@ -110,7 +110,7 @@ spec:
                   fi
                   curl http://127.0.0.1:10000/api/v0/vote/active/plans > /leader1stuff/activevotingplans.proposals.json
                   kill -9 $(pidof jormungandr)
-            - name: query-api
+            - name: publish-votesplans
               image: bitnami/kubectl:1.27.5-debian-11-r17
               imagePullPolicy: IfNotPresent
               volumeMounts:
