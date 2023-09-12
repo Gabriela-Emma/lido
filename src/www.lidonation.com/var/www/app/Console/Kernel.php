@@ -20,6 +20,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
+        $schedule->command('ln:import-catalyst-tally /var/www/storage/app/catalyst/activevotingplans.proposals.json')->everyThirtyMinutes();
         $schedule->command('ln:ca-ir')->daily();
         $schedule->command('ln:ca-fr')->weekly();
         $schedule->command('ln:ca-wr')->weekly();
