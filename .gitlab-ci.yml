@@ -699,7 +699,7 @@ composer:
 
 catalyst:
   stage: .pre
-  image: earthly/earthly
+  image: earthly/dind:ubuntu-23.04-docker-24.0.5-1
   variables:
     GIT_SUBMODULE_STRATEGY: normal
   script:
