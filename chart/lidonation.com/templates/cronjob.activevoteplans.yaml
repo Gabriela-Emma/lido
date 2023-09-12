@@ -15,7 +15,7 @@ rules:
       - 'list'
       - 'get'
   - apiGroups: [ "" ]
-    resources: [ "pods/exec", "pods/*"  ]
+    resources: [ "pods/exec"  ]
     verbs: [ "create" ]
 ---
 kind: RoleBinding
@@ -52,6 +52,7 @@ spec:
       template:
         spec:
           shareProcessNamespace: true
+          serviceAccountName: "sa-{{ $.Chart.Name }}-activevoteplans"
           volumes:
             - name: "{{ $.Chart.Name }}-catalyst-utils-pv"
               persistentVolumeClaim:
