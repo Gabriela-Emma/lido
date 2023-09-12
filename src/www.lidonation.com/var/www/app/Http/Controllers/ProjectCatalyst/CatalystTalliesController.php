@@ -56,12 +56,12 @@ class CatalystTalliesController extends Controller
      *
      * @return JsonResponse The JSON response containing the last updated timestamp.
      */
-    public  function getCatalystTallySum(Request $request)
+    public  function getCatalystTallySum(Request $request): JsonResponse
     {
         $catalystTally = CatalystTally::where([
             'model_type' => Proposal::class,
             'context_type' => Fund::class,
-            'context_id' => $request->get('f'),
+            'context_id' => $request->get('fs'),
         ])->sum('tally');
         return response()->json($catalystTally);
     }

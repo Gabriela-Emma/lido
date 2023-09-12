@@ -140,7 +140,7 @@
 
                                 <div class="">
                                     <p class="text-lg lg:text-xl xl:text-2xl 2xl:text-3xl text-slate-500">
-                                        {{ range['count'] }} <span
+                                        {{ range['count'].toLocaleString() }} <span
                                             class="text-slate-300 text-md lg:text-lg xl:text-2xl 2xl:text-2xl">Wallets</span>
                                     </p>
                                 </div>
@@ -172,9 +172,9 @@
                                 We won't know the yes or no vote until after the voting period ends.
                             </p>
                         </div>
-                        <div class="p-1" v-if="talliesSum$">
-                            <div class="text-xl md:text-2xl xl:text-3xl 2xl:text-4xl text-slate-700">
-                                {{talliesSum$}}
+                        <div class="p-1.5 text-center bg-teal-600 text-slate-100 shadow-accent-900 shadow-sm rounded-sm" v-if="talliesSum$">
+                            <div class="text-xl md:text-2xl xl:text-3xl 2xl:text-4xl text-white">
+                                {{talliesSum$.toLocaleString()}}
                             </div>
                             <small class="text-sm">Total Votes Cast</small>
                         </div>
@@ -182,7 +182,7 @@
 
                     <div class="py-4">
                         <div class="h-16 my-4 border border-r-0 rounded-sm">
-                            <div class="flex-col md:flex-row flex-wrap w-full gap-2">
+                            <div class="flex flex-col md:flex-row flex-wrap w-full gap-2">
                                 <div class="flex flex-1 max-w-[24rem] border-r">
                                     <ChallengePicker v-model="challengesRef" />
                                 </div>
@@ -539,7 +539,7 @@ function toggleOrder() {
 
 function getTallies() {
     axios.get(
-        route('catalystExplorerApi.talliesUpdatedAt'),
+        route('catalystExplorerApi.tallies'),
         {
             params: {
                 p: currPage$.value,
