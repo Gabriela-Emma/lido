@@ -49,9 +49,12 @@ spec:
   jobTemplate:
     spec:
       ttlSecondsAfterFinished: 1800
+      parallelism: 1
+      completionMode: 'Indexed'
       template:
         spec:
           shareProcessNamespace: true
+          restartPolicy: Never
           serviceAccountName: "sa-{{ $.Chart.Name }}-activevoteplans"
           volumes:
             - name: "{{ $.Chart.Name }}-catalyst-utils-pv"
@@ -118,6 +121,7 @@ spec:
                   fi
                   curl http://127.0.0.1:10000/api/v0/vote/active/plans > /leader1stuff/activevotingplans.proposals.json
                   kill -9 $(pidof jormungandr)
+                  exit 1
             - name: publish-voteplans
               image: bitnami/kubectl:1.27.5-debian-11-r17
               imagePullPolicy: IfNotPresent
@@ -132,6 +136,6 @@ spec:
                   POD_NAME=$(kubectl get pods -l service=lidolovelace-web-fpm --field-selector=status.phase=Running -o=jsonpath='{.items[0].metadata.name}')
                   echo "publishing to $POD_NAME"
                   kubectl cp /leader1stuff/activevotingplans.proposals.json $POD_NAME:/var/www/storage/app/catalyst/activevotingplans.proposals.json -c app
+                  exit 1
           imagePullSecrets:
             - name: {{ .Values.image.pullSecret }}
-          restartPolicy: Never    

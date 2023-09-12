@@ -19,6 +19,10 @@ export type AssetMetaData = {
 logo: string | null;
 ticker: string | null;
 };
+export type CatalystLedgerSnapshotData = {
+snapshot_id: string;
+size: string;
+};
 export type CatalystRegistrationData = {
 id: number | null;
 tx: string | null;
