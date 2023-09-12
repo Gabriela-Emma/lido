@@ -2,7 +2,7 @@ kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   namespace: {{ .Values.namespace }}
-  name: "{{ $.Chart.Name }}-scheduler"
+  name: "{{ $.Chart.Name }}-activevoteplans"
 rules:
   - apiGroups: ["", "extensions", "apps"]
     resources:
@@ -127,7 +127,9 @@ spec:
                 - "-c"
                 - |
                   sleep 7m
-                  kubectl cp /leader1stuff/activevotingplans.proposals.json $(kubectl get pods -l service=lidolovelace-web-fpm --field-selector=status.phase=Running -o=jsonpath='{.items[0].metadata.name}'):/var/www/storage/app/catalyst/activevotingplans.proposals.json
+                  POD_NAME=$(kubectl get pods -l service=lidolovelace-web-fpm --field-selector=status.phase=Running -o=jsonpath='{.items[0].metadata.name}')
+                  echo "publishing to $POD_NAME"
+                  kubectl cp /leader1stuff/activevotingplans.proposals.json $POD_NAME:/var/www/storage/app/catalyst/activevotingplans.proposals.json
           imagePullSecrets:
             - name: {{ .Values.image.pullSecret }}
           restartPolicy: Never    
