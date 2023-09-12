@@ -366,8 +366,10 @@ Route::prefix('catalyst-explorer')->as('catalystExplorerApi.')
         Route::get('/tallies', [CatalystTalliesController::class, 'index'])
             ->name('tallies');
 
-        Route::get('/tallies/date', [CatalystTalliesController::class, 'getUpdatedAtDate'])
-            ->name('talliesDate');
+        Route::get('/tallies/date', [CatalystTalliesController::class, 'getLastUpdated'])
+            ->name('talliesUpdatedAt');
+        Route::get('/tallies/sum', [CatalystTalliesController::class, 'getCatalystTallySum'])
+            ->name('talliesSum');
 
         Route::prefix('proposals')->as('proposals.')->group(function () {
             Route::post('/login', [CatalystExplorer\UserController::class, 'login'])->name('login');

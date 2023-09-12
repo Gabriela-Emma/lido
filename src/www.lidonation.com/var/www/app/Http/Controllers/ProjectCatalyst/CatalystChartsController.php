@@ -355,8 +355,12 @@ class CatalystChartsController extends Controller
             ->where('model_id', $snapshot->id)
             ->where('key', 'snapshot_file_path')
             ->first();
+
+        if ( ! $link ) {
+            return null;
+        }
         
-        return '/storage/'.$link->content;
+        return '/storage/' . $link?->content;
     }
 
 }

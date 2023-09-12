@@ -65,8 +65,6 @@ class ImportVotingPower extends Action
                 $this->markAsFailed($snapshot, $e);
             }
         });
-
-        // dd($fields->file->getSize());
     }
 
     protected function deleteExistingRecords(CatalystSnapshot $snapshot)
