@@ -96,7 +96,7 @@ spec:
                 - name: GENESIS_PATH
                   value: /leader1stuff/artifacts/block0.bin
             - name: query-api
-              image: bitnami/kubectl:1.24.9-debian-11-r10
+              image: bitnami/kubectl:1.27.5-debian-11-r17
               imagePullPolicy: IfNotPresent
               volumeMounts:
                 - name: "{{ $.Chart.Name }}-catalyst-utils-pv"
@@ -105,7 +105,7 @@ spec:
                 - "/bin/sh"
                 - "-c"
                 - |
-                  apk add curl 
+                  apt-get install -y jq curl 
                   sleep 5m
                   curl http://127.0.0.1:10000/api/v0/vote/active/plans
                   if [[ $? -ne 0 ]]; then
