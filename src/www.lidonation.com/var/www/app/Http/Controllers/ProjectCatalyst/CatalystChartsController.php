@@ -287,7 +287,9 @@ class CatalystChartsController extends Controller
                 WHEN voting_power BETWEEN 75000000000000 AND 100000000000000 THEN '75M-100M-33'
                 WHEN voting_power > 100000000000000 THEN '> 100M-34'
                 END as range,  COUNT(*) as wallets, SUM(voting_power) as ada"
-            )->whereIn('catalyst_snapshot_id', $snapshotIds)->groupByRaw(1);
+            )->whereIn('catalyst_snapshot_id', $snapshotIds)
+                ->where('voting_power', '>=', 450000000)
+                ->groupByRaw(1);
 
         $adaPowerRangesCollection = $agg->get()
         ->map(fn ($row) => [$row->range => [$row->wallets, $row->ada]])
@@ -346,7 +348,7 @@ class CatalystChartsController extends Controller
     protected function attachmentLink(Request $request)
     {
         $snapshot = CatalystSnapshot::where('model_type', Fund::class)
-            ->where('model_id', $request->input('fund-id'))
+            ->where('model_id', $request->input('fs'))
             ->first();
 
         $link = Meta::where('model_type', CatalystSnapshot::class)
