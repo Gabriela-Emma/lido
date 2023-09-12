@@ -32,7 +32,7 @@ class SyncCatalystLedgerSnapshots implements ShouldQueue
      *
      * @return void
      */
-    public function handle()
+    public function handle(): void
     {
             $response = Http::get('https://archiver.projectcatalyst.io/api/v1/archives');
             $data = $response->json();
@@ -42,7 +42,7 @@ class SyncCatalystLedgerSnapshots implements ShouldQueue
 
                 // related fund
                 $fund = Fund::whereRaw("LOWER(REPLACE(title, ' ', '')) = ?", [strtolower($fundTitle)])->first();
-                
+
                 $existingArchive = CatalystLedgerSnapshot::where('snapshot_id', $archive['id'])->first();
                 if (!$existingArchive instanceof CatalystLedgerSnapshot) {
                     CatalystLedgerSnapshot::create([

@@ -8,7 +8,6 @@ use App\Jobs\LidoStatsJob;
 use App\Jobs\ProcessPendingWithdrawalsJob;
 use App\Jobs\RefreshLidoTwitterToken;
 use App\Jobs\SyncCatalystLedgerSnapshots;
-use App\Jobs\SyncCatalystVotingPowersJob;
 use App\Jobs\SyncCatatalystVotersJob;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -20,6 +19,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
+        $schedule->command('ln:import-catalyst-tally /var/www/storage/app/catalyst/activevotingplans.proposals.json')->everyThirtyMinutes();
         $schedule->command('ln:ca-ir')->daily();
         $schedule->command('ln:ca-fr')->weekly();
         $schedule->command('ln:ca-wr')->weekly();
