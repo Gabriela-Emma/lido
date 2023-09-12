@@ -451,14 +451,18 @@ Route::prefix('validate-wallet')->group(function () {
         ->name('nft-auth');
 });
 
-//Route::get('test', function(){
-//    $image = (new \App\Invokables\GenerateProposalImage)(Proposal::whereNotNull('funded_at')->inRandomOrder()->first())
-//        ->windowSize(440, 440);
-//        $image = base64_decode(str_replace('data:image/png;base64,', '', $image->base64Screenshot()));
-//        $response = Response::make($image, 200);
-//        $response->header('Content-Type', 'image/png');
-//    return $response;
-//});
+Route::get('test', function() {
+//    $bs = (new \App\Invokables\GenerateProposalImage)(Proposal::find(8045));
+//    dd($bs->consoleMessages());
+    $image = (new \App\Invokables\GenerateProposalImage)(
+//        Proposal::whereNotNull('funded_at')->inRandomOrder()->first()
+        proposal: Proposal::find(8045)
+    )?->windowSize(1306, 1106);
+        $image = base64_decode(str_replace('data:image/png;base64,', '', $image->base64Screenshot()));
+        $response = Response::make($image, 200);
+        $response->header('Content-Type', 'image/png');
+    return $response;
+});
 
 Route::comments();
 

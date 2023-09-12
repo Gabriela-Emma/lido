@@ -1,4 +1,4 @@
-<div class="relative z-20 flex justify-center w-full text-white bg-black">
+<div class="relative z-20 flex justify-center w-full text-white bg-black global-banner">
     <a href="{{url('/catalyst-explorer/proposals?l=24&fs[]=113&t=p')}}" class="relative inline-flex items-center gap-2 text-white justify-centerfy-center hover:text-yellow-300 z-100">
         <span class="py-0.5 md:py-1 text-xs font-bold md:text-md xl:text-md">
             Catalyst Fund 10 is Live! Start your research.

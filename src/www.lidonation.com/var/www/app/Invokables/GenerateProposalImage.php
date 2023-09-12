@@ -5,6 +5,7 @@ namespace App\Invokables;
 use App\Models\Proposal;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
 use Spatie\Browsershot\Browsershot;
 use Spatie\Browsershot\Exceptions\CouldNotTakeBrowsershot;
 
@@ -28,19 +29,21 @@ class GenerateProposalImage
         $image = Browsershot::html($html)
             ->setChromePath('/usr/bin/chromium-browser')
             ->addChromiumArguments(['no-sandbox'])
+            ->setOption('args', ['--disable-web-security'])
             ->emulateMedia('screen')
-            ->deviceScaleFactor(3)
+            ->deviceScaleFactor(1)
             ->waitUntilNetworkIdle();
 
+        $slug = Str::limit($proposal->slug, 36, '');
         if ($save) {
-            $locale = App::currentLocale();
-            File::ensureDirectoryExists(storage_path("app/images/{$proposal->slug}/$locale/"));
+            $locale = $_locale ?? App::currentLocale();
+            $path = storage_path("app/images/{$slug}/$locale");
+
+            File::ensureDirectoryExists($path);
             $image->setScreenshotType('jpeg', 100)
-                ->windowSize(440, 440)
+                ->windowSize(1306, 1106)
                 ->save(
-                    storage_path(
-                        "app/images/{$proposal->slug}/$locale/{$proposal->slug}-cardano-catalyst-proposal-summary-card.jpeg"
-                    )
+                    "{$path}/{$slug}-cardano-catalyst-proposal-summary-card.jpeg"
                 );
 
             return null;
