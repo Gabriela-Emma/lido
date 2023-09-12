@@ -43,6 +43,7 @@ spec:
           containers:
             - name: jormungandr
               image: registry.lidonation.com/lidonation/lidonation/jormungandr:fund10
+              imagePullPolicy: Always
               volumeMounts:
                 - name: "{{ $.Chart.Name }}-catalyst-utils-pv"
                   mountPath: /leader1stuff
