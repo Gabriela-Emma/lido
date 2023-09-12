@@ -19,10 +19,10 @@
     <link rel="manifest" href="/site.webmanifest">
 
     <!-- Styles -->
-    <link rel="stylesheet" href="//unpkg.com/tippy.js@6/dist/tippy.css"/>
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
-    <link rel="stylesheet" href="https://cdn.plyr.io/3.7.2/plyr.css" />
+    <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/dist/tippy.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
+    <link rel="stylesheet" href="https:https://cdn.plyr.io/3.7.2/plyr.css" />
 
     <link rel="stylesheet" href="{{ asset(mix('css/splide-core.min.css')) }}">
     <link rel="stylesheet" href="{{ asset(mix('css/splide-default.min.css')) }}">
@@ -98,18 +98,18 @@
         <!-- Scripts -->
         @livewireScripts
 
-        <script src="//js.stripe.com/v3/"></script>
+        <script src="https://js.stripe.com/v3/"></script>
 
         <script>
             const stripe = Stripe("{{config('services.stripe.key')}}");
         </script>
 
         <!-- @todo move to npm package -->
-        <script src="//cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
-        <script src="//cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
-        <script src="https://unpkg.com/smoothscroll-polyfill@0.4.4/dist/smoothscroll.js"></script>
-        <script src="https://unpkg.com/three@0.150.0/build/three.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+        <script src="https:https://unpkg.com/smoothscroll-polyfill@0.4.4/dist/smoothscroll.js"></script>
+        <script src="https:https://unpkg.com/three@0.150.0/build/three.min.js"></script>
+        <script src="https:https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
         <script src="{{ mix('vendor/splide/splide-shader-carousel.min.js') }}"></script>
 
         <script src="{{ mix('js/global.js') }}" ></script>

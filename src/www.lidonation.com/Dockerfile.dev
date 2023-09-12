@@ -1,56 +1,79 @@
-FROM ubuntu:22.04
+FROM php:8.2-fpm-alpine3.17
 
-LABEL maintainer="Taylor Otwell"
+RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/main" > /etc/apk/repositories \
+    && echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories \
+    && echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
+    && echo "http://dl-cdn.alpinelinux.org/alpine/v3.17/main" >> /etc/apk/repositories \
+    && apk upgrade -U -a \
+    && apk add -Uuv \
+    autoconf \
+    bash \
+    chromium \
+    ffmpeg \
+    fcgi \
+    font-noto-emoji \
+    freetype \
+    freetype-dev \
+    gifsicle \
+    gcc \
+    g++ \
+    git \
+    harfbuzz \
+    imagemagick \
+    imagemagick-dev \
+    jpegoptim \
+    libstdc++ \
+    libtool \
+    libjpeg-turbo-dev \
+    libzip-dev \
+    libpng-dev \
+    make \
+    netcat-openbsd \
+    postgresql-dev \
+    pcre-dev \
+    nginx \
+    nodejs \
+    npm \
+    nss \
+    optipng \
+    pngquant \
+    postgresql-client \
+    supervisor \
+    ttf-freefont \
+    wqy-zenhei \
+    && rm -rf /var/cache/apk/*
 
-ARG WWWGROUP
-ARG NODE_VERSION=18
-ARG POSTGRES_VERSION=15
+ENV CHROME_BIN=/usr/bin/chromium-browser \
+    CHROME_PATH=/usr/lib/chromium/ \
+    PUPPETEER_EXECUTABLE_PATH="/usr/bin/chromium-browser"
 
-ENV DEBIAN_FRONTEND noninteractive
+# Download and install composer
+COPY --from=composer:2.3 /usr/bin/composer /usr/bin/composer
 
-COPY /opt  /opt
+RUN docker-php-ext-configure gd --with-freetype=/usr/include/ --with-jpeg=/usr/include
 
-WORKDIR /var/www/html
+RUN docker-php-ext-install -j$(nproc) pdo pdo_pgsql pdo_mysql mysqli pgsql opcache pcntl gd bcmath posix zip exif intl
 
-ENV DEBIAN_FRONTEND noninteractive
-ENV TZ=UTC
+RUN printf "\n" | pecl install redis imagick && docker-php-ext-enable redis imagick
 
-RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+RUN npm install --global --unsafe-perm puppeteer
 
-RUN apt-get update \
-    && apt-get install -y gnupg gosu curl ca-certificates zip unzip git supervisor sqlite3 libcap2-bin libpng-dev python2 dnsutils pv \
-    && curl -sS 'https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x14aa40ec0831756756d7f66c4f4ea0aae5267a6c' | gpg --dearmor | tee /usr/share/keyrings/ppa_ondrej_php.gpg > /dev/null \
-    && echo "deb [signed-by=/usr/share/keyrings/ppa_ondrej_php.gpg] https://ppa.launchpadcontent.net/ondrej/php/ubuntu jammy main" > /etc/apt/sources.list.d/ppa_ondrej_php.list \
-    && apt-get update \
-    && apt-get install -y php8.2-cli php8.2-dev \
-       php8.2-pgsql php8.2-sqlite3 php8.2-gd \
-       php8.2-curl php8.2-imagick php8.2-xdebug\
-       php8.2-imap php8.2-mysql php8.2-mbstring \
-       php8.2-xml php8.2-zip php8.2-bcmath \
-       php8.2-intl php8.2-readline php8.2-pcov \
-       php8.2-msgpack php8.2-igbinary php8.2-redis \
-    && php -r "readfile('https://getcomposer.org/installer');" | php -- --install-dir=/usr/bin/ --filename=composer \
-    && curl -sLS https://deb.nodesource.com/setup_$NODE_VERSION.x | bash - \
-    && apt-get install -y nodejs \
-    && npm install -g npm \
-    && curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | gpg --dearmor | tee /usr/share/keyrings/yarn.gpg >/dev/null \
-    && echo "deb [signed-by=/usr/share/keyrings/yarn.gpg] https://dl.yarnpkg.com/debian/ stable main" > /etc/apt/sources.list.d/yarn.list \
-    && curl -sS https://www.postgresql.org/media/keys/ACCC4CF8.asc | gpg --dearmor | tee /usr/share/keyrings/pgdg.gpg >/dev/null \
-    && echo "deb [signed-by=/usr/share/keyrings/pgdg.gpg] http://apt.postgresql.org/pub/repos/apt jammy-pgdg main" > /etc/apt/sources.list.d/pgdg.list \
-    && apt-get update \
-    && apt-get install -y yarn \
-    && apt-get install -y mysql-client \
-    && apt-get install -y postgresql-client-$POSTGRES_VERSION \
-    && apt-get -y autoremove \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
-RUN setcap "cap_net_bind_service=+ep" /usr/bin/php8.2
-
-RUN groupadd --force -g 1000 sail
-RUN useradd -ms /bin/bash --no-user-group -g 1000 -u 1337 sail
+RUN apk del autoconf g++ libtool make pcre-dev
 
 COPY ./docker/start-container /usr/local/bin/start-container
+COPY ./src/www.lidonation.com/opt /opt
+COPY ./src/www.lidonation.com/etc /opt
+COPY ./src/www.lidonation.com/usr /opt
+
+RUN  wget --no-check-certificate 'https://docs.google.com/uc?export=download&id=1tSt8GXQ3veQ7I0UjJhZgqIIm-MgptVwA' -O /opt/cardano-cli && chmod a+x /opt/cardano-cli
+
+# Install PHP extensions
+RUN chmod a+x /opt/install-extensions.sh /opt/entrypoint.sh \
+    && chmod a+x /opt/php-fpm-healthcheck \
+    && mkdir -p /run/nginx \
+    && /opt/install-extensions.sh
+
+
 RUN chmod +x /usr/local/bin/start-container
 
 #COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf

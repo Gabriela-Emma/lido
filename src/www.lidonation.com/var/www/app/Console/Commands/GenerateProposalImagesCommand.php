@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Jobs\GenerateProposalImagesJob;
+use App\Models\Proposal;
 use App\Repositories\ProposalRepository;
 use Illuminate\Console\Command;
 
@@ -35,9 +36,8 @@ class GenerateProposalImagesCommand extends Command
     /**
      * Execute the console command.
      */
-    public function handle(ProposalRepository $proposalRepository)
+    public function handle(ProposalRepository $proposalRepository): void
     {
-        $proposal = $proposalRepository->get($this->argument('proposal'));
-        GenerateProposalImagesJob::dispatch($proposal);
+        GenerateProposalImagesJob::dispatchSync(Proposal::findOrFail($this->argument('proposal')));
     }
 }

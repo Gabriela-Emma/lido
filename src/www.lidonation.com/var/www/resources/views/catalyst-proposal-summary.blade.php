@@ -4,7 +4,7 @@
         height: auto;
     }
 
-    footer, #header, #mobile-menu, #top-blob {
+    footer, #header, #mobile-menu, #top-blob, .global-banner, #global-video-player-wrapper {
         display: none !important;
     }
 </style>
