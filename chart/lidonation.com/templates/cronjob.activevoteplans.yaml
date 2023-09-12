@@ -50,7 +50,7 @@ spec:
     spec:
       ttlSecondsAfterFinished: 1800
       parallelism: 1
-      completionMode: 'Indexed'
+{{/*      completionMode: 'Indexed'*/}}
       template:
         spec:
           shareProcessNamespace: true
