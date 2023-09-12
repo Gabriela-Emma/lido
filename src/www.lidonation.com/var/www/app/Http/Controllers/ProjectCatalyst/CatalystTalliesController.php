@@ -20,6 +20,7 @@ class CatalystTalliesController extends Controller
         $orderBy = $request->input('ob', 'tally');
         $search = $request->input('s', null);
         $challenges = collect($request->input('c', []));
+        $funds = $request->input('fs', 113);
 
         $query = CatalystTally::setEagerLoads([])->with('model')
             ->where('model_type', Proposal::class)
@@ -35,8 +36,8 @@ class CatalystTalliesController extends Controller
         if ($search) {
             $proposalsQuery = Proposal::search(
                 $search,
-                function (Indexes $index, $query, $options) {
-                    $options['filter'] = 'fund.id = 113';
+                function (Indexes $index, $query, $options) use ($funds) {
+                    $options['filter'] = "fund.id = {$funds}";
                     $options['attributesToRetrieve'] = ['id'];
                     return $index->search($query, $options);
                 }
