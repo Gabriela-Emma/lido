@@ -140,7 +140,7 @@
 
                                 <div class="">
                                     <p class="text-lg lg:text-xl xl:text-2xl 2xl:text-3xl text-slate-500">
-                                        {{ range['count'] }} <span
+                                        {{ range['count'].toLocaleString() }} <span
                                             class="text-slate-300 text-md lg:text-lg xl:text-2xl 2xl:text-2xl">Wallets</span>
                                     </p>
                                 </div>
@@ -158,24 +158,31 @@
 
                 <div
                     class="w-full col-span-1 p-3 overflow-y-visible bg-white md:col-span-3 xl:col-span-5 xl:row-span-12 round-sm">
-                    <div class="text-blue-dark-500">
-                        <h2 class="flex items-end gap-2 mb-0 xl:text-3xl">
-                            <span>Proposal Live Tally</span>
-                            <span v-if="tallyUpdatedAt" class="text-xl font-bold text-teal-500">
-                                Last updated:
-                                <timeago :datetime="tallyUpdatedAt" />
-                            </span>
-                        </h2>
-                        <p>
-                            This shows how many wallets have expressed an opinion for a proposal.
-                            <!-- This shows how many times a proposal has been voted on. -->
-                            We won't know the yes or no vote until after the voting period ends.
-                        </p>
+                    <div class="flex items-center justify-between">
+                        <div class="text-blue-dark-500">
+                            <h2 class="flex items-end gap-2 mb-0 xl:text-3xl">
+                                <span>Proposal Live Tally</span>
+                                <span v-if="tallyUpdatedAt$" class="text-xl font-bold text-teal-500">
+                                    Last updated:
+                                    <timeago :datetime="tallyUpdatedAt$" />
+                                </span>
+                            </h2>
+                            <p>
+                                This shows how many wallets have expressed an opinion for a proposal.
+                                We won't know the yes or no vote until after the voting period ends.
+                            </p>
+                        </div>
+                        <div class="p-1.5 text-center bg-teal-600 text-slate-100 shadow-accent-900 shadow-sm rounded-sm" v-if="talliesSum$">
+                            <div class="text-xl md:text-2xl xl:text-3xl 2xl:text-4xl text-white">
+                                {{talliesSum$.toLocaleString()}}
+                            </div>
+                            <small class="text-sm">Total Votes Cast</small>
+                        </div>
                     </div>
 
                     <div class="py-4">
                         <div class="h-16 my-4 border border-r-0 rounded-sm">
-                            <div class="flex flex-wrap w-full gap-2">
+                            <div class="flex flex-col md:flex-row flex-wrap w-full gap-2">
                                 <div class="flex flex-1 max-w-[24rem] border-r">
                                     <ChallengePicker v-model="challengesRef" />
                                 </div>
@@ -327,8 +334,10 @@ let currPage$ = ref<number>(1);
 let perPage$ = ref<number>(36);
 let order$ = ref<string>('asc');
 let search$ = ref<string>(null);
-let tallyUpdatedAt = ref<string>(null);
+
 const attachementLink = ref<string>(null);
+let tallyUpdatedAt$ = ref<string>(null);
+let talliesSum$ = ref<number>(null);
 
 const fundsLabelValue = computed(() => {
     return props?.funds?.map((fund) => {
@@ -501,6 +510,15 @@ function getMetrics() {
         .catch((error) => {
             console.error(error);
         });
+
+    // fetch tallies sum
+    axios.get(route('catalystExplorerApi.talliesSum'), { params })
+        .then((res) => {
+            talliesSum$.value = res?.data;
+        })
+        .catch((error) => {
+            console.error(error);
+        });
 }
 
 function getQueryData() {
@@ -546,9 +564,9 @@ function getTallies() {
 
 }
 function getUpdatedDate() {
-    axios.get(route('catalystExplorerApi.talliesDate'))
+    axios.get(route('catalystExplorerApi.talliesUpdatedAt'))
         .then((res) => {
-            tallyUpdatedAt.value = res?.data?.updated_at;
+            tallyUpdatedAt$.value = res?.data?.updated_at;
         });
 }
 
