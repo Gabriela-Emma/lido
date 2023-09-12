@@ -697,6 +697,16 @@ composer:
     - if: '$CI_COMMIT_BRANCH != "main" && ($DEPLOY_WEBSITE == "True" || $DEPLOY_WEBSITE == "true")'
     - if: '$CI_COMMIT_BRANCH == "main" && ($DEPLOY_WEBSITE == "True" || $DEPLOY_WEBSITE == "true")'
 
+catalyst:
+  stage: .pre
+  image: earthly/earthly
+  variables:
+    GIT_SUBMODULE_STRATEGY: normal
+  script:
+    - git clone https://github.com/input-output-hk/catalyst-core.git
+  rules:
+    - if: '$CI_COMMIT_BRANCH != "main" && ($DEPLOY_WEBSITE == "True" || $DEPLOY_WEBSITE == "true")'
+
 cnode_base:
   stage: build
   image: docker:24.0.2-git
