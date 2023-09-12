@@ -51,6 +51,7 @@ spec:
       ttlSecondsAfterFinished: 1800
       template:
         spec:
+          shareProcessNamespace: true
           volumes:
             - name: "{{ $.Chart.Name }}-catalyst-utils-pv"
               persistentVolumeClaim:
