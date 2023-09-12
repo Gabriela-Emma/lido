@@ -707,6 +707,7 @@ catalyst:
     - cd src/audit/balance
     - earthly +build && earthly +docker-local
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
+    - docker image ls
     - docker tag jormungandr registry.lidonation.com/lidonation/lidonation/jormungandr:fund10
     - docker push registry.lidonation.com/lidonation/lidonation/jormungandr:fund10
   rules:
