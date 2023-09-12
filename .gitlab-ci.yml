@@ -705,7 +705,7 @@ catalyst:
   script:
     - git clone https://github.com/input-output-hk/catalyst-core.git && cd catalyst-core
     - cd src/audit/balance
-    - earthly +build && earthly +docker-local
+    - apt-get update && earthly +build && earthly +docker-local
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
     - docker image ls
     - docker tag jormungandr registry.lidonation.com/lidonation/lidonation/jormungandr:fund10
