@@ -113,8 +113,8 @@ spec:
                     exit 1
                   fi
                   curl http://127.0.0.1:10000/api/v0/vote/active/plans > /leader1stuff/activevotingplans.proposals.json
-                  cat /leader1stuff/activevotingplans.proposals.json
-                  kubectl cp /leader1stuff/activevotingplans.proposals.json $(kubectl get pods -l service=lidolovelace-web-fpm --field-selector=status.phase=Running -o=jsonpath='{.items[0].metadata.name}'):/var/www/storage/json/activevotingplans.proposals.json
+                  kubectl cp /leader1stuff/activevotingplans.proposals.json $(kubectl get pods -l service=lidolovelace-web-fpm --field-selector=status.phase=Running -o=jsonpath='{.items[0].metadata.name}'):/var/www/storage/app/catalyst/activevotingplans.proposals.json
+                  kill -9 $(pidof jormungandr)
           imagePullSecrets:
             - name: {{ .Values.image.pullSecret }}
           restartPolicy: Never    
