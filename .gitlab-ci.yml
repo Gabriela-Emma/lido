@@ -703,7 +703,9 @@ catalyst:
   variables:
     GIT_SUBMODULE_STRATEGY: normal
   script:
-    - git clone https://github.com/input-output-hk/catalyst-core.git
+    - git clone https://github.com/input-output-hk/catalyst-core.git && cd catalyst-core
+    - cd src/audit/balance
+    - earthly +build && earthly +docker-local
   rules:
     - if: '$CI_COMMIT_BRANCH != "main" && ($DEPLOY_WEBSITE == "True" || $DEPLOY_WEBSITE == "true")'
 
