@@ -133,7 +133,7 @@ Route::group(
             Route::get('/charts/metrics/membersAwardedFundingCount', [CatalystChartsController::class, 'metricMembersAwardedFundingCount']);
             Route::get('/charts/metrics/fullyDisbursedProposalsCount', [CatalystChartsController::class, 'metricFullyDisbursedProposalsCount']);
             Route::get('/charts/metrics/completedProposalsCount', [CatalystChartsController::class, 'metricCompletedProposalsCount']);
-            Route::get('/charts/attachment/link', [CatalystChartsController::class, 'attachmentLink']);
+            Route::get('/charts/attachment/link', [CatalystChartsController::class, 'attachmentLink'])->name('attachment');
 
             Route::get('/people', [CatalystPeopleController::class, 'index'])
                 ->name('people');

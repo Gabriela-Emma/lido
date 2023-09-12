@@ -111,8 +111,8 @@
                                 </h2>
                                 <p>Pie chart of wallet balance</p>
                             </div>
-                            <div v-if="props.filters?.fundId">
-                                <Attachment :fundId="props.filters?.fundId"/>
+                            <div v-if="attachementLink">
+                                <Attachment :attachementLink="attachementLink"/>
                             </div>
                         </div>
 
@@ -334,6 +334,8 @@ let currPage$ = ref<number>(1);
 let perPage$ = ref<number>(36);
 let order$ = ref<string>('asc');
 let search$ = ref<string>(null);
+
+const attachementLink = ref<string>(null);
 let tallyUpdatedAt$ = ref<string>(null);
 let talliesSum$ = ref<number>(null);
 
@@ -346,6 +348,7 @@ const fundsLabelValue = computed(() => {
 getMetrics();
 getTallies();
 getUpdatedDate();
+getAttachmentLink();
 
 watch([search$], () => {
     getTallies();
@@ -566,6 +569,18 @@ function getUpdatedDate() {
             tallyUpdatedAt$.value = res?.data?.updated_at;
         });
 }
+
+function getAttachmentLink() {
+    const params = getQueryData();
+
+    axios.get(route('catalystExplorer.attachment'), { params })
+        .then((res) => attachementLink.value = res?.data)
+        .catch((error) => {
+            console.error(error);
+        });
+
+}
+
 
 </script>
 
