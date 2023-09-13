@@ -452,8 +452,8 @@ Route::prefix('validate-wallet')->group(function () {
 });
 
 Route::get('test', function() {
-//    $bs = (new \App\Invokables\GenerateProposalImage)(Proposal::find(8045));
-//    dd($bs->consoleMessages());
+    $bs = (new \App\Invokables\GenerateProposalImage)(Proposal::find(8045));
+    dd($bs->consoleMessages());
     $image = (new \App\Invokables\GenerateProposalImage)(
 //        Proposal::whereNotNull('funded_at')->inRandomOrder()->first()
         proposal: Proposal::find(8045)
