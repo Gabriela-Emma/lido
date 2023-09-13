@@ -8,6 +8,7 @@ use App\Nova\Actions\AddMetaData;
 use App\Nova\Actions\AttachCategory;
 use App\Nova\Actions\AttachTag;
 use App\Nova\Actions\EditMetaData;
+use App\Nova\Actions\GenerateProposalSummaryImage;
 use App\Nova\Actions\PublishProposalYotubeVideosToIpfs;
 use App\Nova\Actions\SetFund;
 use App\Nova\Actions\SetProposalStatus;
@@ -253,6 +254,7 @@ class Proposals extends Resource
                 (new AttachTag),
                 (new AttachCategory),
                 (new TranslateModel),
+                (new GenerateProposalSummaryImage),
                 (new SyncProposalsDetail),
                 (new PublishProposalYotubeVideosToIpfs),
             ]);

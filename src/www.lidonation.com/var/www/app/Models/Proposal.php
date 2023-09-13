@@ -61,6 +61,8 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
 
     public static string $group = 'Catalyst';
 
+    public static int $previewImageNameLength = 40;
+
     public static int $perPageViaRelationship = 15;
 
     protected string $urlGroup = 'proposals';
@@ -211,6 +213,11 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
         Artisan::call('ln:index App\\\\Models\\\\Proposal ln__proposals');
     }
 
+    public function getSummaryPreviewImageName(): string
+    {
+        return Str::limit($this->slug, static::$previewImageNameLength, '');
+    }
+
     public function getIsImpactProposalAttribute()
     {
         if ($this->meta_data?->impact_proposal) {
@@ -300,12 +307,14 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
         return '₳ '.number_format($this->yes_votes_count, 0, '.', ',');
     }
 
-    public function getGeneratedSummaryPicAttribute(): string|UrlGenerator|Application
+    public function generatedSummaryPic(): Attribute
     {
-        $locale = App::currentLocale();
-
-        return url(
-            "images/{$this->slug}/$locale/{$this->slug}-cardano-catalyst-proposal-summary-card.jpeg"
+        return Attribute::make(
+            get: function ($value) {
+                $slug = $this->getSummaryPreviewImageName();
+                $locale = $_locale ?? App::currentLocale();
+                return asset("images/{$slug}/$locale/{$slug}-cardano-catalyst-proposal-summary-card.jpeg");
+            },
         );
     }
 

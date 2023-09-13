@@ -130,7 +130,5 @@
     <x-comments::scripts />
 
     <livewire:global-player-component />
-
-    <link rel="preload" href="{{ asset(mix('css/catalyst-explorer.css')) }}" as="style">
 </body>
 </html>

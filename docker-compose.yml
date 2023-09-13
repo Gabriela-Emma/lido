@@ -125,6 +125,7 @@ services:
       DB_CONNECTION: pgsqlWeb
       FPM_SERVICE: '127.0.0.1'
       XDG_CONFIG_HOME: /var/www/html
+      PHP_MEMORY_LIMIT: 1024M
       POSTGRESQL_DB_SYNC_DB_HOST: postgres_dbsync
       POSTGRESQL_DB_SYNC_PASSWORD: v8hlDV0yMAHHlIurYupj
       POSTGRESQL_DB_SYNC_DB: cexplorer
@@ -161,6 +162,7 @@ services:
       APP_SETUP: "true"
       PHP_OPCACHE_ENABLE: 0
       PHP_OPCACHE_VALIDATE_TIMESTAMPS: 1
+      PHP_MEMORY_LIMIT: 2048M
       CARDANO_NETWORK_ARGUMENT: "--testnet-magic 2"
       CARDANO_NETWORK: "testnet"
       CARDANO_NODE_SOCKET_PATH: /ipc/node.socket
@@ -216,6 +218,7 @@ services:
       APP_SETUP: "true"
       PHP_OPCACHE_ENABLE: 0
       PHP_OPCACHE_VALIDATE_TIMESTAMPS: 1
+      PHP_MEMORY_LIMIT: 2048M
       GOOGLE_APPLICATION_CREDENTIALS: '/data/google-credentials.json'
       CARDANO_NETWORK_ARGUMENT: "--testnet-magic 2"
       CARDANO_NETWORK: "testnet"

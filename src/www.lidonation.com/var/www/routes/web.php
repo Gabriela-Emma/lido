@@ -452,12 +452,14 @@ Route::prefix('validate-wallet')->group(function () {
 });
 
 Route::get('test', function() {
-//    $bs = (new \App\Invokables\GenerateProposalImage)(Proposal::find(8045));
-//    dd($bs->consoleMessages());
+    phpinfo();
+    return;
+    $proposal = Proposal::with(['users'])->find(8045);
     $image = (new \App\Invokables\GenerateProposalImage)(
 //        Proposal::whereNotNull('funded_at')->inRandomOrder()->first()
-        proposal: Proposal::find(8045)
-    )?->windowSize(1306, 1106);
+        proposal: $proposal
+    )->windowSize(640, 820);
+//        ?->windowSize(1306, 1106);
         $image = base64_decode(str_replace('data:image/png;base64,', '', $image->base64Screenshot()));
         $response = Response::make($image, 200);
         $response->header('Content-Type', 'image/png');
