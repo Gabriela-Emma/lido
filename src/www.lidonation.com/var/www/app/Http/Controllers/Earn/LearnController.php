@@ -187,7 +187,7 @@ class LearnController extends Controller
                 'next_lesson_at',
                 'total_reward_sum',
                 'available_rewards',
-                'completed_topics'
+                'completed_topics',
             ])->toArray());
     }
 

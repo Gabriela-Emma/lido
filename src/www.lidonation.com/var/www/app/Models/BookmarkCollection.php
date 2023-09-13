@@ -45,12 +45,12 @@ class BookmarkCollection extends Model
     public function proposals()
     {
         return $this->hasMany(BookmarkItem::class)
-        ->where('model_type', Proposal::class);
+            ->where('model_type', Proposal::class);
     }
 
     public function rationales()
     {
         return $this->hasMany(Discussion::class, 'model_id')
-        ->where('model_type', BookmarkCollection::class);
+            ->where('model_type', BookmarkCollection::class);
     }
 }

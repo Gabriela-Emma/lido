@@ -19,37 +19,37 @@ class MakeSearchableLocaleJob extends MakeSearchable implements ShouldBeUniqueUn
         parent::__construct($models);
     }
 
-       // Laravel features like "touch" can easily cause a model to be queued for index over and over on repeated updates, this job lock prevents redundant index queueing
-       public function uniqueId()
-       {
-           // Return an md5 hash of the collection ids
-           return md5($this->models
-               ->map(fn (Model $model) => $model->getMorphClass().':'.$model->getKey())
-               ->unique()
-               ->sort()
-               ->implode(';')
-           );
-       }
+    // Laravel features like "touch" can easily cause a model to be queued for index over and over on repeated updates, this job lock prevents redundant index queueing
+    public function uniqueId()
+    {
+        // Return an md5 hash of the collection ids
+        return md5($this->models
+            ->map(fn (Model $model) => $model->getMorphClass().':'.$model->getKey())
+            ->unique()
+            ->sort()
+            ->implode(';')
+        );
+    }
 
-       /**
-        * Handle the job.
-        *
-        * @return void
-        */
-       public function handle()
-       {
-           if (count($this->models) === 0) {
-               return;
-           }
+    /**
+     * Handle the job.
+     *
+     * @return void
+     */
+    public function handle()
+    {
+        if (count($this->models) === 0) {
+            return;
+        }
 
-           collect($this->locales)
-               ->each(
-                   function ($locale) {
-                       app()->setLocale($locale);
-                       $this->models->first()
-                           ->searchableUsing()
-                           ->update($this->models);
-                   }
-               );
-       }
+        collect($this->locales)
+            ->each(
+                function ($locale) {
+                    app()->setLocale($locale);
+                    $this->models->first()
+                        ->searchableUsing()
+                        ->update($this->models);
+                }
+            );
+    }
 }

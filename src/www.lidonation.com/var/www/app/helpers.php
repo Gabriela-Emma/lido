@@ -46,9 +46,9 @@ function previous_route_url(): string
     }
 
     return app('router')->getRoutes()
-    ->match(
-        app('request')->create(url()->previous())
-    )->uri();
+        ->match(
+            app('request')->create(url()->previous())
+        )->uri();
 }
 
 function previous_route_name_is(string $routeName): bool
@@ -140,7 +140,7 @@ function breakLongText($text, $length = 1000, $maxLength = 1100, $needle = '.'):
  *
  * @return string
  */
-function truncate_middle($string = '', $maxLength = 16): string|null
+function truncate_middle($string = '', $maxLength = 16): ?string
 {
     // Early exit if no truncation necessary
     if (strlen($string) <= $maxLength) {

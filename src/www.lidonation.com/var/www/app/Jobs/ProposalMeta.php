@@ -4,12 +4,10 @@ namespace App\Jobs;
 
 use App\Models\Proposal;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
@@ -22,7 +20,6 @@ class ProposalMeta implements ShouldQueue
      *
      * @return void
      */
-
     protected $proposals = [];
 
     public function __construct()
@@ -43,21 +40,21 @@ class ProposalMeta implements ShouldQueue
         $responseData = json_decode($response->body());
 
         foreach ($responseData as $proposal) {
-           
-            if (isset($proposal->proposal_category) && $proposal->proposal_category->category_name === "Fund 10") {
-            
+
+            if (isset($proposal->proposal_category) && $proposal->proposal_category->category_name === 'Fund 10') {
+
                 $this->proposals[] = $proposal;
             }
         }
 
         foreach ($this->proposals as $proposal) {
             $title = $proposal->proposal_title;
-            
+
             $matchingProposal = Proposal::where('title->en', $title)->first();
 
             $jsonString = str_replace("'", '"', $proposal?->proposal_files_url);
             $dataObject = json_decode($jsonString);
-            
+
             Log::info('Saving metadata for proposal');
             if ($matchingProposal) {
                 $matchingProposal->saveMeta('chain_proposal_id', $proposal->chain_proposal_id, $matchingProposal, true);

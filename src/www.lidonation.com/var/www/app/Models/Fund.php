@@ -46,10 +46,10 @@ class Fund extends Model implements HasMedia, IHasMetaData
 
     protected $with = ['media', 'parent'];
 
-    protected $appends = ['link','hero_url', 'thumbnail_url'];
+    protected $appends = ['link', 'hero_url', 'thumbnail_url'];
 
     //    protected string $urlGroup = 'project-catalyst/challenges';
-    
+
     protected $casts = [
         'meta_data' => 'array',
         'updated_at' => 'datetime:Y-m-d',
@@ -197,7 +197,7 @@ class Fund extends Model implements HasMedia, IHasMetaData
     public function proposals(): HasMany
     {
         return $this->hasMany(Proposal::class, 'fund_id')
-        ->where('type', 'proposal');
+            ->where('type', 'proposal');
     }
 
     public function snapshot()

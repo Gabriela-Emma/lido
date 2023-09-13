@@ -106,7 +106,6 @@ class CatalystVoterToolComponent extends Component
                 $user_options['filters'][] = "proposals_count = 1 AND proposals.fund = {$this->fund?->id}";
             }
 
-
             $this->searchBuilder = CatalystUser::search(null,
                 function (Indexes $index, $query, $options) use ($user_options) {
                     $options['filter'] = $user_options['filters'];

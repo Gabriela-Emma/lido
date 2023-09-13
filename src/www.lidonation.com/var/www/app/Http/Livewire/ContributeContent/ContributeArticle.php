@@ -94,7 +94,7 @@ class ContributeArticle extends ModalComponent
         $this->submittingArticle = false;
     }
 
-    public function mount(PostRepository $postRepository, ?int $postId = null)
+    public function mount(PostRepository $postRepository, int $postId = null)
     {
         if (! $postId) {
             return;

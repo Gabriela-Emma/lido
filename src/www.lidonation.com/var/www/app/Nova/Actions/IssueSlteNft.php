@@ -2,15 +2,14 @@
 
 namespace App\Nova\Actions;
 
-use App\Models\User;
 use App\Jobs\IssueNftsJob;
-use Illuminate\Bus\Queueable;
 use App\Models\LearningTopic;
-use Laravel\Nova\Actions\Action;
-use Illuminate\Support\Collection;
-use Laravel\Nova\Fields\ActionFields;
+use App\Models\User;
+use Illuminate\Bus\Queueable;
 use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Collection;
+use Laravel\Nova\Actions\Action;
+use Laravel\Nova\Fields\ActionFields;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class IssueSlteNft extends Action
@@ -20,8 +19,6 @@ class IssueSlteNft extends Action
     /**
      * Perform the action on the given models.
      *
-     * @param  \Laravel\Nova\Fields\ActionFields  $fields
-     * @param  \Illuminate\Support\Collection  $models
      * @return mixed
      */
     public function handle(ActionFields $fields, Collection $models)
@@ -36,7 +33,6 @@ class IssueSlteNft extends Action
                     $topicCompleted = $model->completedTopics->contains($topicId);
                     $learningLesson = $learningTopic->learningLessons?->first();
 
-
                     if ($topicCompleted) {
                         IssueNftsJob::dispatch($learningTopic, $learningLesson, $model);
                     } else {
@@ -45,7 +41,7 @@ class IssueSlteNft extends Action
                         continue;
                     }
                 }
-            } else if ($model instanceof LearningTopic) {
+            } elseif ($model instanceof LearningTopic) {
                 //@todo implement
             }
         }
@@ -54,7 +50,6 @@ class IssueSlteNft extends Action
     /**
      * Get the fields available on the action.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function fields(NovaRequest $request)

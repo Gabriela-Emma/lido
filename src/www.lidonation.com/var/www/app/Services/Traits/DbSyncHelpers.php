@@ -47,7 +47,7 @@ trait DbSyncHelpers
     /**
      * @throws RequestException
      */
-    public function getUserAddresses(string $fromTx = null): object|null
+    public function getUserAddresses(string $fromTx = null): ?object
     {
         $fromTx = $fromTx ?? ($this->getSeedTransaction())?->id;
 

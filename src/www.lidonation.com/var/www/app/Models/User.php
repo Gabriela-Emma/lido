@@ -247,13 +247,14 @@ class User extends Authenticatable implements HasMedia, Interfaces\IHasMetaData,
         return Attribute::make(
             get: function () {
                 $topics = LearningTopic::whereRelation('learningLessons.answers', 'user_id', $this->id)->get();
-                return $topics->filter(function($topic) {
+
+                return $topics->filter(function ($topic) {
                     $completedLessonsCount = $topic->learningLessons()->whereHas(
                         'answers',
-                        fn($query) =>
-                            $query->where('user_id', $this->id)
+                        fn ($query) => $query->where('user_id', $this->id)
                             ->whereRelation('answer', 'correctness', 'correct')
-                        )->count();
+                    )->count();
+
                     return $topic->learningLessons()->count() == $completedLessonsCount;
                 });
             }
@@ -297,7 +298,7 @@ class User extends Authenticatable implements HasMedia, Interfaces\IHasMetaData,
         return $this->hasMany(Promo::class, 'user_id');
     }
 
-    public function nfts():HasMany
+    public function nfts(): HasMany
     {
         return $this->hasMany(Nft::class);
     }

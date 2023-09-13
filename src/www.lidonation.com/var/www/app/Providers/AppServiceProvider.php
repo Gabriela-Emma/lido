@@ -20,7 +20,6 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Laravel\Sanctum\Sanctum;
 use Vinkla\Hashids\Facades\Hashids;
-use App\Models\CatalystTally;
 
 //use Spatie\NovaTranslatable\Translatable;
 

@@ -13,10 +13,10 @@ class Category extends Taxonomy
         return url("categories/{$this->slug}");
     }
 
-//    public function models(): MorphToMany
-//    {
-//        return $this->morphToMany(Model::class, 'model', ModelTag::class, 'category_id', 'model_id');
-//    }
+    //    public function models(): MorphToMany
+    //    {
+    //        return $this->morphToMany(Model::class, 'model', ModelTag::class, 'category_id', 'model_id');
+    //    }
 
     public function news(): MorphToMany
     {

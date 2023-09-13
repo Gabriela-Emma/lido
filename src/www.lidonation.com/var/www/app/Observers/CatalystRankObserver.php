@@ -7,7 +7,7 @@ use App\Models\Proposal;
 
 class CatalystRankObserver
 {
-     /**
+    /**
      * Handle events after all transactions are committed.
      *
      * @var bool
@@ -17,7 +17,6 @@ class CatalystRankObserver
     /**
      * Handle the CatalystRank "created" event.
      *
-     * @param  \App\Models\CatalystRank  $catalystRank
      * @return void
      */
     public function created(CatalystRank $catalystRank)
@@ -28,7 +27,6 @@ class CatalystRankObserver
     /**
      * Handle the CatalystRank "updated" event.
      *
-     * @param  \App\Models\CatalystRank  $catalystRank
      * @return void
      */
     public function updated(CatalystRank $catalystRank)
@@ -39,7 +37,6 @@ class CatalystRankObserver
     /**
      * Handle the CatalystRank "deleted" event.
      *
-     * @param  \App\Models\CatalystRank  $catalystRank
      * @return void
      */
     public function deleted(CatalystRank $catalystRank)
@@ -50,7 +47,6 @@ class CatalystRankObserver
     /**
      * Handle the CatalystRank "restored" event.
      *
-     * @param  \App\Models\CatalystRank  $catalystRank
      * @return void
      */
     public function restored(CatalystRank $catalystRank)
@@ -61,7 +57,6 @@ class CatalystRankObserver
     /**
      * Handle the CatalystRank "force deleted" event.
      *
-     * @param  \App\Models\CatalystRank  $catalystRank
      * @return void
      */
     public function forceDeleted(CatalystRank $catalystRank)

@@ -35,14 +35,14 @@ class CatalystBookmarksController extends Controller
         // if collection doesn't exist, create one
         $collection = BookmarkCollection::byHash($data->collection['hash']) ?? DraftBallot::byHash($data->collection['hash']) ?? null;
 
-        if (!$collection instanceof BookmarkCollection) {
+        if (! $collection instanceof BookmarkCollection) {
             $collection = new BookmarkCollection;
             $collection->title = $data->collection['title'] ?? null;
             $collection->content = $data->collection['content'] ?? null;
             $collection->visibility = 'unlisted';
             $collection->status = 'published';
             $collection->user_id = Auth::id();
-            $collection->color = '#' . str_pad(dechex(mt_rand(0, 0xFFFFFF)), 6, '0', STR_PAD_LEFT);
+            $collection->color = '#'.str_pad(dechex(mt_rand(0, 0xFFFFFF)), 6, '0', STR_PAD_LEFT);
             $collection->save();
         }
 
@@ -126,7 +126,7 @@ class CatalystBookmarksController extends Controller
 
     public function editDraftBallot(Request $request, DraftBallot $draftBallot)
     {
-        if (!Gate::allows('update', $draftBallot)) {
+        if (! Gate::allows('update', $draftBallot)) {
             abort(403);
             // return redirect()->route('catalystExplorer.login');
         }
@@ -156,11 +156,12 @@ class CatalystBookmarksController extends Controller
         //@todo validate against policy with gate to make sure only collection owner can do this
         $db = new DraftBallot;
         $db->user_id = Auth::id();
-        $db->title = auth()?->user()->name . ' Draft Ballot';
+        $db->title = auth()?->user()->name.' Draft Ballot';
         $db->visibility = 'unlisted';
         $db->status = 'published';
-        $db->color = '#' . str_pad(dechex(mt_rand(0, 0xFFFFFF)), 6, '0', STR_PAD_LEFT);
+        $db->color = '#'.str_pad(dechex(mt_rand(0, 0xFFFFFF)), 6, '0', STR_PAD_LEFT);
         $db->save();
+
         return to_route(
             'catalystExplorer.draftBallot.edit',
             $db->hash
@@ -198,7 +199,7 @@ class CatalystBookmarksController extends Controller
         $data = $request->validate([
             'rationale' => 'required|string',
             'group_id' => 'required|int',
-            'title' => 'nullable'
+            'title' => 'nullable',
         ]);
 
         // user meta data to attach to the fund_id (challenge id)
@@ -206,7 +207,7 @@ class CatalystBookmarksController extends Controller
             ->whereRelation('metas', 'key', '=', 'group_id')
             ->whereRelation('metas', 'content', '=', $data['group_id'])->first();
 
-        if (!$rationale instanceof Discussion) {
+        if (! $rationale instanceof Discussion) {
             $rationale = new Discussion;
             $rationale->user_id = Auth::id();
             $rationale->model_type = BookmarkCollection::class;
@@ -217,10 +218,12 @@ class CatalystBookmarksController extends Controller
         $rationale->content = $data['rationale'];
         $rationale->save();
         $rationale->saveMeta('group_id', $data['group_id'], $rationale);
+
         return redirect()->back();
     }
 
-    public function deleteDraftBallot(Request $request, BookmarkCollection $bookmarkCollection){
+    public function deleteDraftBallot(Request $request, BookmarkCollection $bookmarkCollection)
+    {
         $bookmarkCollection->delete();
 
         foreach ($bookmarkCollection->items as $bookmarkItem) {

@@ -18,11 +18,11 @@ use App\Scopes\PublishedScope;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 use Mtownsend\ReadTime\ReadTime;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\LaravelData\DataCollection;
 
 class LearningLesson extends Model
@@ -70,7 +70,7 @@ class LearningLesson extends Model
             get: fn () => LearningAttempt::where([
                 'learning_lesson_id' => $this->id,
                 'status' => LearningAttemptStatuses::COMPLETED,
-                'user_id' => auth()?->user()?->getAuthIdentifier()
+                'user_id' => auth()?->user()?->getAuthIdentifier(),
             ])->whereRelation('response', [
                 'context_id' => $this->id,
                 'context_type' => LearningLesson::class,
@@ -80,7 +80,7 @@ class LearningLesson extends Model
 
     public function answers(): HasMany
     {
-        return $this->hasMany(AnswerResponse::class, 'context_id', );
+        return $this->hasMany(AnswerResponse::class, 'context_id');
     }
 
     public function nextLesson(): Attribute
@@ -201,10 +201,10 @@ class LearningLesson extends Model
             ->wherePivot('model_type', static::class);
     }
 
-//    public function quiz()
-//    {
-//        return $this->quizzes()->first();
-//    }
+    //    public function quiz()
+    //    {
+    //        return $this->quizzes()->first();
+    //    }
 
     /**
      * The "booted" method of the model.

@@ -2,26 +2,30 @@
 
 namespace App\Http\Controllers\ProjectCatalyst;
 
+use App\Enums\CatalystExplorerQueryParams;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\FundResource;
 use App\Models\Fund;
 use App\Models\Proposal;
-use Inertia\Inertia;
 use Illuminate\Http\Request;
-use Laravel\Scout\Builder;
-use JetBrains\PhpStorm\ArrayShape;
-use Meilisearch\Endpoints\Indexes;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Fluent;
 use Illuminate\Support\Collection;
-use App\Enums\CatalystExplorerQueryParams;
+use Illuminate\Support\Fluent;
+use Inertia\Inertia;
+use JetBrains\PhpStorm\ArrayShape;
+use Laravel\Scout\Builder;
+use Meilisearch\Endpoints\Indexes;
 
 class CatalystChallengeController extends Controller
 {
     protected int $currentPage = 1;
+
     public int $perPage = 24;
+
     protected Builder $searchBuilder;
+
     public ?string $search = null;
+
     public Collection $peopleFilter;
 
     public function index(Request $request, $slug)
@@ -31,7 +35,6 @@ class CatalystChallengeController extends Controller
         $this->currentPage = $request->input('p', 1);
 
         $this->peopleFilter = $request->collect(CatalystExplorerQueryParams::PEOPLE)->map(fn ($n) => intval($n));
-
 
         $fund = Fund::where('slug', $slug)->first();
 
@@ -50,7 +53,7 @@ class CatalystChallengeController extends Controller
             'crumbs' => [
                 ['link' => '/catalyst-explorer/funds', 'label' => 'Funds'],
                 ['link' => $fund->parent->link, 'label' => $fund->parent->label, 'external' => true],
-                ['label' => $fund->title]
+                ['label' => $fund->title],
             ],
         ];
 
@@ -69,7 +72,7 @@ class CatalystChallengeController extends Controller
     {
         return Proposal::where([
             'status' => 'complete',
-            'fund_id' =>  $fund->id
+            'fund_id' => $fund->id,
         ])
             ->count();
     }
@@ -163,12 +166,13 @@ class CatalystChallengeController extends Controller
     protected function getUserFilters($fund): array
     {
         $_options = [];
-        if($fund->id){
-            $_options[] = 'challenge.id = ' . $fund->id;
+        if ($fund->id) {
+            $_options[] = 'challenge.id = '.$fund->id;
         }
         if ($this->peopleFilter->isNotEmpty()) {
             $_options[] = 'users.id IN '.$this->peopleFilter->toJson();
         }
+
         return $_options;
     }
 }

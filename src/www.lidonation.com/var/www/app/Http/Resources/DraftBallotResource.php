@@ -18,35 +18,35 @@ class DraftBallotResource extends JsonResource
     public function toArray($request): array|\JsonSerializable|Arrayable
     {
         $items = $this->items()->get(['model_id', 'id'])->map(
-            fn($i) => ([ 'id' => $i->id, 'model_id' => $i->model_id ])
+            fn ($i) => (['id' => $i->id, 'model_id' => $i->model_id])
         );
         $items = ($items->pluck('model_id'))->combine($items->values());
 
-        $proposals = Proposal::with(['vote',])
+        $proposals = Proposal::with(['vote'])
             ->whereIn(
                 'id',
                 $items->keys()->toArray()
             )->get()->groupBy('fund_id');
 
-        $groups = Fund::whereIn('id', $proposals->keys()->toArray())->get()->map(fn($fund) => ( array_merge(
+        $groups = Fund::whereIn('id', $proposals->keys()->toArray())->get()->map(fn ($fund) => (array_merge(
             (new FundResource($fund))->toArray($request),
             [
                 // when assembling group, add the discussion to the group if fund_id match exists
                 'rationale' => ($this->rationales
                     ->first(
-                        fn($rationale) => $rationale->meta_data->group_id ==  $fund->id
+                        fn ($rationale) => $rationale->meta_data->group_id == $fund->id
                     ))?->only(['title', 'content', 'status']) ?? [
                         'title' => null,
                         'content' => null,
                         'status' => null,
                     ],
                 'items' => (ProposalResource::collection($proposals[$fund->id]))
-                ->map(function($resource) use ($items)  {
-                    return [
-                        'id' => $items[$resource?->id]['id'],
-                        'model' => $resource->toArray(request())
-                    ];
-                })
+                    ->map(function ($resource) use ($items) {
+                        return [
+                            'id' => $items[$resource?->id]['id'],
+                            'model' => $resource->toArray(request()),
+                        ];
+                    }),
             ]
         )));
 

@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers\ProjectCatalyst;
 
+use App\Enums\CatalystExplorerQueryParams;
 use App\Http\Controllers\Controller;
-use App\Scopes\OrderByDateScope;
 use App\Models\Proposal;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Inertia\Inertia;
 use Inertia\Response;
-use Illuminate\Support\Collection;
-use App\Enums\CatalystExplorerQueryParams;
 
 class CatalystMyProposalsController extends Controller
 {
@@ -53,17 +52,16 @@ class CatalystMyProposalsController extends Controller
 
         $catalystProfiles = $user->catalyst_users?->pluck('id');
 
-
         $query = Proposal::select('proposals.*')
-        ->join('funds', 'proposals.fund_id', '=', 'funds.id')
-        ->whereIn('proposals.user_id', $catalystProfiles)
-        ->whereHas('fund', function ($query) use ($fundsFilterArray) {
-            if (!empty($fundsFilterArray)) {
-                $query->whereIn('funds.parent_id', $fundsFilterArray);
-            }
-        })
-        ->orderBy('funds.launched_at', 'DESC')
-        ->orderBy('proposals.funded_at', 'DESC');
+            ->join('funds', 'proposals.fund_id', '=', 'funds.id')
+            ->whereIn('proposals.user_id', $catalystProfiles)
+            ->whereHas('fund', function ($query) use ($fundsFilterArray) {
+                if (! empty($fundsFilterArray)) {
+                    $query->whereIn('funds.parent_id', $fundsFilterArray);
+                }
+            })
+            ->orderBy('funds.launched_at', 'DESC')
+            ->orderBy('proposals.funded_at', 'DESC');
 
         $paginator = $query->fastPaginate($this->perPage, ['*'], 'p')->setPath('/');
 

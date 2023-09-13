@@ -37,12 +37,13 @@ class EarnController extends Controller
         }
     }
 
-    public function awardNft(){
+    public function awardNft()
+    {
         $user = User::find(Auth::id());
         $topicId = $user->learning_attempts->first()->learning_topic_id;
         $topicNft = $user->nfts()->where([
             ['model_id', $topicId],
-            ['model_type', 'App\Models\LearningTopic']
+            ['model_type', 'App\Models\LearningTopic'],
         ])->first();
 
         return Inertia::modal('NftAwarded')

@@ -2,7 +2,6 @@
 
 namespace App\Scopes;
 
-use App\Models\Cardano\PoolRetire;
 use App\Models\Cardano\PoolUpdate;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;

@@ -31,11 +31,11 @@ class CatalystMyRankingController extends Controller
         $ranks = CatalystRank::withTrashed()
             ->where('user_id', auth()?->user()?->id)
             ->get()
-            ->map(function($rank) {
+            ->map(function ($rank) {
                 return [
                     'id' => $rank['id'],
                     'rank' => $rank['rank'],
-                    'model_id' => $rank['model_id'], 
+                    'model_id' => $rank['model_id'],
                 ];
             });
 
@@ -49,7 +49,7 @@ class CatalystMyRankingController extends Controller
             'proposal' => 'required|exists:proposals,id',
             'rankValue' => 'required|in:1,-1',
         ]);
-        
+
         $proposal = Proposal::find($data['proposal']);
         $rank = new CatalystRank;
         $rank->user_id = auth()->id();
@@ -70,9 +70,9 @@ class CatalystMyRankingController extends Controller
             ->first();
 
         // Check if the new ranking is the same as the existing vote (if so delete else update rank)
-        if($data['rankValue'] == $rank->rank){
+        if ($data['rankValue'] == $rank->rank) {
             $rank->rank = 0;
-        } else{
+        } else {
             $rank->rank = $data['rankValue'];
         }
         $rank->save();

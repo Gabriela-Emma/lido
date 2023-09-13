@@ -2,9 +2,8 @@
 
 namespace App\DataTransferObjects;
 
-
-use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Attributes\MapOutputName;
+use Spatie\LaravelData\Data;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
 #[TypeScript]

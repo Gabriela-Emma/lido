@@ -2,20 +2,18 @@
 
 namespace App\Models;
 
-use App\Models\Traits\HasHero;
 use App\Models\Traits\HasAuthor;
-use App\Models\Traits\MintsNfts;
-use App\Scopes\OrderByOrderScope;
-use App\Models\Traits\HasMetaData;
 use App\Models\Traits\HasGiveaways;
+use App\Models\Traits\HasHero;
 use App\Models\Traits\HasLocaleUrl;
+use App\Models\Traits\HasMetaData;
 use App\Models\Traits\HasTranslations;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Scopes\OrderByOrderScope;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class LearningTopic extends Model
 {
@@ -27,7 +25,6 @@ class LearningTopic extends Model
         HasTranslations,
         HasTimestamps,
         SoftDeletes;
-
 
     protected $casts = [
         //        'lessons' => DataCollection::class.':'.LearningTopicData::class,
@@ -99,7 +96,7 @@ class LearningTopic extends Model
     public function nfts(): HasMany
     {
         return $this->hasMany(Nft::class, 'model_id')
-        ->where('model_type', static::class);
+            ->where('model_type', static::class);
     }
 
     /**

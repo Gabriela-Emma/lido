@@ -30,14 +30,13 @@ class ValidateClaims extends Action
             $id = $model->id;
             $meta = $model->metas()->where('key', 'ideascale_verification_code')->where('content', $code)->first();
             // user making the claim
-            $regularUser = User::whereHas('metas', fn ($query) =>
-                $query->where([
-                        'key' => 'ideascale_verification_code',
-                        'content' => $code
-                    ])
-                )->first();
+            $regularUser = User::whereHas('metas', fn ($query) => $query->where([
+                'key' => 'ideascale_verification_code',
+                'content' => $code,
+            ])
+            )->first();
 
-            if (!$regularUser instanceof User) {
+            if (! $regularUser instanceof User) {
                 return Action::danger('Could not find user');
             }
 

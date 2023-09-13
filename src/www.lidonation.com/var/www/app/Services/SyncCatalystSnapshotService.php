@@ -10,7 +10,8 @@ use JsonMachine\Items;
 class SyncCatalystSnapshotService
 {
     public function __construct()
-    {}
+    {
+    }
 
     public function syncCatalystSnapshot()
     {
@@ -20,18 +21,17 @@ class SyncCatalystSnapshotService
             $slug = 'fund-'.$date->fund;
             $fund = Fund::where('slug', $slug)
                 ->first();
-                    
+
             if ($fund instanceof Fund) {
                 $snapshot_at = Carbon::parse($date->date);
                 $epoch = $this->dateToEpoch($snapshot_at);
 
-                
                 try {
                     $existingSnapshot = CatalystSnapshot::where('order', $date->fund)
                         ->first();
 
                     if ($existingSnapshot instanceof CatalystSnapshot) {
-                        
+
                         $existingSnapshot->model_id = $fund->id;
                         $existingSnapshot->model_type = Fund::class;
                         $existingSnapshot->epoch = $epoch;
@@ -41,11 +41,11 @@ class SyncCatalystSnapshotService
                         $existingSnapshot->save();
                     } else {
                         CatalystSnapshot::firstOrCreate([
-                            "model_id" => $fund->id,
-                            "model_type" => Fund::class,
-                            "epoch" => $epoch,
-                            "order" => $date->fund,
-                            "snapshot_at" => $snapshot_at,
+                            'model_id' => $fund->id,
+                            'model_type' => Fund::class,
+                            'epoch' => $epoch,
+                            'order' => $date->fund,
+                            'snapshot_at' => $snapshot_at,
                         ]);
                     }
                 } catch (\Throwable $th) {
@@ -59,7 +59,7 @@ class SyncCatalystSnapshotService
     {
         $poxisSnapshotAt = $snapshot_at->timestamp;
         $epoch = ceil(($poxisSnapshotAt - 1506203091) / 432000);
-        
+
         return $epoch;
     }
 }

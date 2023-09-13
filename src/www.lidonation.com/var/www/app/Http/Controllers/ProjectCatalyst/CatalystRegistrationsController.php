@@ -3,15 +3,11 @@
 namespace App\Http\Controllers\ProjectCatalyst;
 
 use App\Http\Controllers\Controller;
-use App\Models\Assessment;
 use App\Models\CatalystRegistration;
 use Illuminate\Http\Request;
-use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Fluent;
 use Inertia\Inertia;
 use Inertia\Response;
 use JetBrains\PhpStorm\ArrayShape;
-use Meilisearch\Endpoints\Indexes;
 
 class CatalystRegistrationsController extends Controller
 {
@@ -53,7 +49,7 @@ class CatalystRegistrationsController extends Controller
 
         $registrationBuilder = CatalystRegistration::where('stake_pub', $this->search);
         $paginatedResults = $registrationBuilder->fastPaginate($this->perPage, ['*'], 'p', $this->currentPage)
-        ->setPath('/')->onEachSide(1);
+            ->setPath('/')->onEachSide(1);
 
         return $paginatedResults->toArray();
     }

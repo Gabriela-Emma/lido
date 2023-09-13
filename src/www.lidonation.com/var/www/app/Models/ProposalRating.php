@@ -43,7 +43,7 @@ class ProposalRating extends Model
     {
         return $this->hasMany(Meta::class, 'model_id')->orWhere([
             'model_type' => static::class,
-            'model_type' => Assessment::class
+            'model_type' => Assessment::class,
         ]);
     }
 }

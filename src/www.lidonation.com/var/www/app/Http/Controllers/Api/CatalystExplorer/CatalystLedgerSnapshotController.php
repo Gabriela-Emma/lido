@@ -2,19 +2,18 @@
 
 namespace App\Http\Controllers\Api\CatalystExplorer;
 
-use OpenApi\Annotations as OA;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\CatalystLedgerSnapshotResource;
 use App\Models\CatalystLedgerSnapshot;
-use Illuminate\Database\Eloquent\Builder;
-use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\ResponseFactory;
-use App\Http\Resources\CatalystLedgerSnapshotResource;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use OpenApi\Annotations as OA;
+use Symfony\Component\HttpFoundation\Response;
 
 class CatalystLedgerSnapshotController extends Controller
 {
-
     /**
      * @OA\Get(
      *     path="/ledger-snapshots",
@@ -64,7 +63,7 @@ class CatalystLedgerSnapshotController extends Controller
         if ($per_page > 60) {
             return response([
                 'status_code' => 400,
-                'message' => 'query parameter \'per_page\' should not exceed 60'
+                'message' => 'query parameter \'per_page\' should not exceed 60',
             ], 400);
         }
 
@@ -78,7 +77,6 @@ class CatalystLedgerSnapshotController extends Controller
 
         return CatalystLedgerSnapshotResource::collection($snapshots);
     }
-
 
     /**
      * @OA\Get(
@@ -125,9 +123,6 @@ class CatalystLedgerSnapshotController extends Controller
         return new CatalystLedgerSnapshotResource($snapshot);
     }
 
-
-
-
     // /**
     //  * @OA\Get(
     //  *     path="/ledger-snapshots/latest",
@@ -151,7 +146,8 @@ class CatalystLedgerSnapshotController extends Controller
     public function latestCatalystLedgerSnapshot()
     {
 
-        $snapshot  = CatalystLedgerSnapshot::query()->first();
+        $snapshot = CatalystLedgerSnapshot::query()->first();
+
         return new CatalystLedgerSnapshotResource($snapshot);
     }
 }

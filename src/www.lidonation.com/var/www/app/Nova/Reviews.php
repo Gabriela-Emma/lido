@@ -45,10 +45,10 @@ class Reviews extends Articles
         ];
     }
 
-       /**
-        * Get the actions available for the resource.
-        */
-       #[Pure]
+    /**
+     * Get the actions available for the resource.
+     */
+    #[Pure]
     public function actions(Request $request): array
     {
         return array_merge(
@@ -134,104 +134,104 @@ class Reviews extends Articles
         ];
     }
 
-//       /**
-//        * Get the fields displayed by the resource.
-//        *
-//        * @param  Request  $request
-//        * @return array
-//        */
-//       public function fields(Request $request): array
-//       {
-//           return [
-//               ID::make(__('ID'), 'id')->sortable(),
-//               Text::make(__('Title'), 'title')->onlyOnForms(),
-//               Stack::make('Details', [
-//                   Text::make(__('Title'), 'title')->displayUsing(fn ($name) => Str::limit($name, 40)
-//                   ),
-//                   Slug::make(__('Slug'), 'slug')->displayUsing(fn ($name) => Str::limit($name, 35)
-//                   ),
-//               ]),
-//               Text::make(__('Meta Title'), 'meta_title')
-//                   ->hideFromIndex(),
-//               Select::make(__('Status'), 'status')->options([
-//                   'published' => 'Published',
-//                   'draft' => 'Draft',
-//                   'pending' => 'Pending',
-//                   'ready' => 'Ready',
-//                   'scheduled' => 'Scheduled',
-//               ])->sortable(),
-//               DateTime::make('Published At')
-//                   ->help('Defaults to today. ')
-//                   ->hideWhenUpdating(),
-//               BelongsTo::make(__('Author'), 'author', User::class)
-//                   ->searchable(),
-//
-//               Number::make(__('Order'), 'order')
-//                   ->sortable()
-//                   ->hideFromDetail()
-//                   ->default(fn () => 0),
-//
-//               new Panel('Media', self::mediaFields()),
-//               new Panel('Content', self::contentFields()),
-//               HasMany::make(__('Discussions'), 'discussions', Discussions::class),
-//               new Panel('Snippets', $this->snippetsFields()),
-//               new Panel('Meta Data', $this->metaDataFields()),
-//
-//               BelongsToMany::make(__('Links'), 'links')
-//                   ->hideFromIndex()
-//                   ->searchable()->fields(function () {
-//                       return [
-//                           Text::make(__('Model'), 'model_type')
-//                               ->default(function (NovaRequest $request) {
-//                                   return $request->model()::class;
-//                               }),
-//                       ];
-//                   }),
-//               BelongsToMany::make(__('Categories'), 'categories')
-//                   ->hideFromIndex()
-//                   ->searchable()->fields(function () {
-//                       return [
-//                           Text::make(__('Model'), 'model_type')
-//                               ->default(function (NovaRequest $request) {
-//                                   return $request->model()::class;
-//                               }),
-//                       ];
-//                   }),
-//               BelongsToMany::make(__('Tags'), 'tags')
-//                   ->hideFromIndex()
-//                   ->searchable()->fields(function () {
-//                       return [
-//                           Text::make(__('Model'), 'model_type')->default(function (NovaRequest $request) {
-//                               return $request->model()::class;
-//                           }),
-//                       ];
-//                   }),
-//
-//           ];
-//       }
+    //       /**
+    //        * Get the fields displayed by the resource.
+    //        *
+    //        * @param  Request  $request
+    //        * @return array
+    //        */
+    //       public function fields(Request $request): array
+    //       {
+    //           return [
+    //               ID::make(__('ID'), 'id')->sortable(),
+    //               Text::make(__('Title'), 'title')->onlyOnForms(),
+    //               Stack::make('Details', [
+    //                   Text::make(__('Title'), 'title')->displayUsing(fn ($name) => Str::limit($name, 40)
+    //                   ),
+    //                   Slug::make(__('Slug'), 'slug')->displayUsing(fn ($name) => Str::limit($name, 35)
+    //                   ),
+    //               ]),
+    //               Text::make(__('Meta Title'), 'meta_title')
+    //                   ->hideFromIndex(),
+    //               Select::make(__('Status'), 'status')->options([
+    //                   'published' => 'Published',
+    //                   'draft' => 'Draft',
+    //                   'pending' => 'Pending',
+    //                   'ready' => 'Ready',
+    //                   'scheduled' => 'Scheduled',
+    //               ])->sortable(),
+    //               DateTime::make('Published At')
+    //                   ->help('Defaults to today. ')
+    //                   ->hideWhenUpdating(),
+    //               BelongsTo::make(__('Author'), 'author', User::class)
+    //                   ->searchable(),
+    //
+    //               Number::make(__('Order'), 'order')
+    //                   ->sortable()
+    //                   ->hideFromDetail()
+    //                   ->default(fn () => 0),
+    //
+    //               new Panel('Media', self::mediaFields()),
+    //               new Panel('Content', self::contentFields()),
+    //               HasMany::make(__('Discussions'), 'discussions', Discussions::class),
+    //               new Panel('Snippets', $this->snippetsFields()),
+    //               new Panel('Meta Data', $this->metaDataFields()),
+    //
+    //               BelongsToMany::make(__('Links'), 'links')
+    //                   ->hideFromIndex()
+    //                   ->searchable()->fields(function () {
+    //                       return [
+    //                           Text::make(__('Model'), 'model_type')
+    //                               ->default(function (NovaRequest $request) {
+    //                                   return $request->model()::class;
+    //                               }),
+    //                       ];
+    //                   }),
+    //               BelongsToMany::make(__('Categories'), 'categories')
+    //                   ->hideFromIndex()
+    //                   ->searchable()->fields(function () {
+    //                       return [
+    //                           Text::make(__('Model'), 'model_type')
+    //                               ->default(function (NovaRequest $request) {
+    //                                   return $request->model()::class;
+    //                               }),
+    //                       ];
+    //                   }),
+    //               BelongsToMany::make(__('Tags'), 'tags')
+    //                   ->hideFromIndex()
+    //                   ->searchable()->fields(function () {
+    //                       return [
+    //                           Text::make(__('Model'), 'model_type')->default(function (NovaRequest $request) {
+    //                               return $request->model()::class;
+    //                           }),
+    //                       ];
+    //                   }),
+    //
+    //           ];
+    //       }
 
-       public static function contentFields(): array
-       {
-           return [
-               Markdown::make(__('Social Post'), 'social_excerpt')
-                   ->nullable()
-                   ->help(
-                       'This will be use by the bots when posting to to social media.'
-                   ),
-               Markdown::make(__('Comment Prompt'), 'comment_prompt')
-                   ->nullable()
-                   ->help(
-                       'Usually a call to action or a prompting question to solicit a comment.'
-                   ),
-               Markdown::make(__('Summary'), 'excerpt')
-                   ->help(
-                       '2 to 3 sentence summary for listing pages on the site.'
-                   )->nullable(),
-               Markdown::make(__('Transparency Disclaimer'), 'prologue')
-                   ->help('Blob about notable circumstance about the making of the review. credits. Transparency.')
-                   ->nullable(),
-               Markdown::make(__('Content'), 'content'),
-               //            Markdown::make(__('Epilogue'), 'epilogue')->nullable(),
-           ];
-       }
+    public static function contentFields(): array
+    {
+        return [
+            Markdown::make(__('Social Post'), 'social_excerpt')
+                ->nullable()
+                ->help(
+                    'This will be use by the bots when posting to to social media.'
+                ),
+            Markdown::make(__('Comment Prompt'), 'comment_prompt')
+                ->nullable()
+                ->help(
+                    'Usually a call to action or a prompting question to solicit a comment.'
+                ),
+            Markdown::make(__('Summary'), 'excerpt')
+                ->help(
+                    '2 to 3 sentence summary for listing pages on the site.'
+                )->nullable(),
+            Markdown::make(__('Transparency Disclaimer'), 'prologue')
+                ->help('Blob about notable circumstance about the making of the review. credits. Transparency.')
+                ->nullable(),
+            Markdown::make(__('Content'), 'content'),
+            //            Markdown::make(__('Epilogue'), 'epilogue')->nullable(),
+        ];
+    }
 }

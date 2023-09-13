@@ -2,16 +2,8 @@
 
 namespace App\Http\Livewire\Earn;
 
-use App\Invokables\GetLidoRewardsPot;
-use App\Models\EveryEpoch;
-use App\Models\Giveaway;
 use App\Models\Promo;
-use App\Services\CardanoBlockfrostService;
 use Livewire\Component;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Contracts\View\View;
 
 class CcvComponent extends Component
 {
@@ -20,7 +12,6 @@ class CcvComponent extends Component
     public $giveway;
 
     public $rewardPot;
-
 
     public function mount()
     {

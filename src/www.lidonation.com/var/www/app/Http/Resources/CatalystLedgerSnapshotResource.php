@@ -5,7 +5,6 @@ namespace App\Http\Resources;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Carbon;
 
 class CatalystLedgerSnapshotResource extends JsonResource
 {
@@ -20,7 +19,7 @@ class CatalystLedgerSnapshotResource extends JsonResource
         return [
             'id' => $this->id,
             'snapshot_id' => $this->snapshot_id,
-            'size' => $this->size ,
+            'size' => $this->size,
             'epoch' => $this->epoch,
             'fund' => $this->fund()->first()->title,
             'slot' => $this->slot,

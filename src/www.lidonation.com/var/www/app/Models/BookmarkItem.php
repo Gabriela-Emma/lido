@@ -32,13 +32,15 @@ class BookmarkItem extends Model
             $item->save();
         }
         Withdrawal::withCount('rewards')
-        ->whereHas('rewards', fn($q) => $q->where('asset_type', 'ft'))
-        ->where('status', 'pending')->get()
-        ->filter(fn($w) => $w->rewards_count < 5)
-        ->each(function($w){
-            Reward::where('withdrawal_id', $w->id)->each(function($r) {
-                $r->withdrawal_id = null; $r->status = 'issued'; $r->save();
+            ->whereHas('rewards', fn ($q) => $q->where('asset_type', 'ft'))
+            ->where('status', 'pending')->get()
+            ->filter(fn ($w) => $w->rewards_count < 5)
+            ->each(function ($w) {
+                Reward::where('withdrawal_id', $w->id)->each(function ($r) {
+                    $r->withdrawal_id = null;
+                    $r->status = 'issued';
+                    $r->save();
+                });
             });
-        });
     }
 }

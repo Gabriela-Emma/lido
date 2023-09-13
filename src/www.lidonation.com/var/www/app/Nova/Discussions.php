@@ -2,23 +2,23 @@
 
 namespace App\Nova;
 
-use App\Models\Post;
-use Laravel\Nova\Panel;
 use App\Models\Discussion;
-use Illuminate\Support\Str;
-use Laravel\Nova\Fields\ID;
+use App\Models\Post;
+use App\Nova\Actions\AddMetaData;
+use App\Nova\Actions\EditMetaData;
+use App\Nova\Traits\HasSnippets;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use JetBrains\PhpStorm\Pure;
-use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\DateTime;
+use Laravel\Nova\Fields\HasMany;
+use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Markdown;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
-use App\Nova\Traits\HasSnippets;
-use Laravel\Nova\Fields\HasMany;
-use App\Nova\Actions\AddMetaData;
-use Laravel\Nova\Fields\DateTime;
-use Laravel\Nova\Fields\Markdown;
-use App\Nova\Actions\EditMetaData;
-use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Panel;
 
 class Discussions extends Resource
 {
@@ -106,6 +106,7 @@ class Discussions extends Resource
             new Panel('Meta Data', $this->metaDataFields()),
         ];
     }
+
     public function actions(Request $request): array
     {
         return array_merge(
@@ -116,7 +117,6 @@ class Discussions extends Resource
             ]
         );
     }
-
 
     public function metaDataFields(): array
     {

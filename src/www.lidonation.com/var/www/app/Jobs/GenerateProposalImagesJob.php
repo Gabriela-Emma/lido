@@ -27,7 +27,6 @@ class GenerateProposalImagesJob implements ShouldQueue
     /**
      * Execute the job
      *
-     * @return void
      *
      * @throws CouldNotTakeBrowsershot
      */

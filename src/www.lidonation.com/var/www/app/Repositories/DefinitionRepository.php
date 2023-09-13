@@ -14,13 +14,13 @@ class DefinitionRepository extends Repository
         parent::__construct($model);
     }
 
-       // get the record with the given id
-       public function get(mixed $idOrSlug, ...$params)
-       {
-           if (is_int($idOrSlug)) {
-               return $this->model->findOrFail($idOrSlug);
-           }
+    // get the record with the given id
+    public function get(mixed $idOrSlug, ...$params)
+    {
+        if (is_int($idOrSlug)) {
+            return $this->model->findOrFail($idOrSlug);
+        }
 
-           return $this->model->where('slug', '=', $idOrSlug)->firstOrFail();
-       }
+        return $this->model->where('slug', '=', $idOrSlug)->firstOrFail();
+    }
 }

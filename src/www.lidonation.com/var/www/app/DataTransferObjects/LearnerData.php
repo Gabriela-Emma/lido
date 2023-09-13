@@ -2,7 +2,6 @@
 
 namespace App\DataTransferObjects;
 
-use App\Models\LearningTopic;
 use Spatie\LaravelData\Attributes\DataCollectionOf;
 use Spatie\LaravelData\Attributes\MapOutputName;
 use Spatie\LaravelData\Data;

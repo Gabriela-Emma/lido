@@ -12,7 +12,6 @@ use App\Nova\Actions\AttachTag;
 use App\Nova\Actions\EditMetaData;
 use App\Nova\Actions\ImportVotingPower;
 use App\Nova\Actions\PublishModel;
-use App\Nova\Actions\SyncSnapshotVotingPowers;
 use App\Scopes\PublishedScope;
 use Ebess\AdvancedNovaMediaLibrary\Fields\Images;
 use Illuminate\Database\Eloquent\Builder;
@@ -26,7 +25,6 @@ use Laravel\Nova\Fields\MorphTo;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Laravel\Nova\Panel;
 
 class CatalystSnapshots extends Resource
 {
@@ -87,10 +85,10 @@ class CatalystSnapshots extends Resource
                 ->sortable(),
 
             MorphTo::make(__('Type'), 'model')
-            ->types([
-                Funds::class
-            ])->searchable()
-            ->filterable(),
+                ->types([
+                    Funds::class,
+                ])->searchable()
+                ->filterable(),
 
             HasMany::make('Metadata', 'metas', Metas::class),
 

@@ -2,21 +2,21 @@
 
 namespace App\Models;
 
-use Illuminate\Support\Str;
-use Spatie\Image\Manipulations;
-use Spatie\MediaLibrary\HasMedia;
 use App\Models\Interfaces\HasLink;
 use App\Models\Traits\HasMetaData;
 use App\Repositories\FundRepository;
 use Illuminate\Database\Eloquent\Builder;
-use Spatie\MediaLibrary\InteractsWithMedia;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Str;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
+use Spatie\Image\Manipulations;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class Taxonomy extends Model implements HasMedia, HasLink
 {
@@ -78,7 +78,7 @@ class Taxonomy extends Model implements HasMedia, HasLink
         if (isset($this->attributes['thumbnailUrl'])) {
             return $this->attributes['thumbnailUrl'];
         }
-        if (!$this->hero?->hasGeneratedConversion('thumbnail')) {
+        if (! $this->hero?->hasGeneratedConversion('thumbnail')) {
             return null;
         }
 
@@ -111,8 +111,9 @@ class Taxonomy extends Model implements HasMedia, HasLink
     {
         $fund = app(FundRepository::class)
             ->funds('inGovernance')->first();
+
         return Attribute::make(
-            get: fn ($value) => $this->proposals()->whereRelation('fund.parent', 'id',  $fund?->id)->count(),
+            get: fn ($value) => $this->proposals()->whereRelation('fund.parent', 'id', $fund?->id)->count(),
         );
     }
 
@@ -131,7 +132,7 @@ class Taxonomy extends Model implements HasMedia, HasLink
         if (static::whereSlug($slug = Str::slug($title))->exists()) {
             $max = intval(static::whereTitle($title)->latest('id')->count());
 
-            return "{$slug}-" . preg_replace_callback(
+            return "{$slug}-".preg_replace_callback(
                 '/(\d+)$/',
                 fn ($matches) => $matches[1] + 1,
                 $max
@@ -176,7 +177,7 @@ class Taxonomy extends Model implements HasMedia, HasLink
             'id' => $this->id,
             'slug' => $this->slug,
             'title' => $this->title,
-            'current_fund_proposals' => $this->current_fund_proposals
+            'current_fund_proposals' => $this->current_fund_proposals,
         ];
     }
 

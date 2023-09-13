@@ -15,49 +15,49 @@ class ProposalRepository extends Repository
         parent::__construct($model);
     }
 
-       // get the record with the given id
-       public function get($idOrSlug, ...$params)
-       {
-           if (is_int($idOrSlug)) {
-               return $this->model->findOrFail($idOrSlug);
-           }
+    // get the record with the given id
+    public function get($idOrSlug, ...$params)
+    {
+        if (is_int($idOrSlug)) {
+            return $this->model->findOrFail($idOrSlug);
+        }
 
-           return $this->model->where('slug', '=', $idOrSlug)->firstOrFail();
-       }
+        return $this->model->where('slug', '=', $idOrSlug)->firstOrFail();
+    }
 
-       public function fundedCount($scope = null)
-       {
-           if ((bool) $scope) {
-               $query = $this->getModel()->{$scope}();
-           } else {
-               $query = $this->getModel();
-           }
+    public function fundedCount($scope = null)
+    {
+        if ((bool) $scope) {
+            $query = $this->getModel()->{$scope}();
+        } else {
+            $query = $this->getModel();
+        }
 
-           return $query->count();
-       }
+        return $query->count();
+    }
 
-       public function count($scope = null)
-       {
-           if ((bool) $scope) {
-               $query = $this->getModel()->{$scope}();
-           } else {
-               $query = $this->getModel();
-           }
+    public function count($scope = null)
+    {
+        if ((bool) $scope) {
+            $query = $this->getModel()->{$scope}();
+        } else {
+            $query = $this->getModel();
+        }
 
-           return $query->count();
-       }
+        return $query->count();
+    }
 
-       /**
-        * @return mixed
-        * Return posts in passed taxonomy class.
-        * If no taxonomy is passed, you may pass mixed taxonomy types if passing in objects
-        */
-       public function inTaxonomies(string $taxonomyClass = null, ...$taxonomies): mixed
-       {
-           if (! isset($this->query)) {
-               $this->query = Proposal::whereRaw('1=1');
-           }
+    /**
+     * @return mixed
+     * Return posts in passed taxonomy class.
+     * If no taxonomy is passed, you may pass mixed taxonomy types if passing in objects
+     */
+    public function inTaxonomies(string $taxonomyClass = null, ...$taxonomies): mixed
+    {
+        if (! isset($this->query)) {
+            $this->query = Proposal::whereRaw('1=1');
+        }
 
-           return parent::inTaxonomies($taxonomyClass, $taxonomies);
-       }
+        return parent::inTaxonomies($taxonomyClass, $taxonomies);
+    }
 }

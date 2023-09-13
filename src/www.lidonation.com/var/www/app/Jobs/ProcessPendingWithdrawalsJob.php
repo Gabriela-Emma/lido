@@ -29,17 +29,17 @@ class ProcessPendingWithdrawalsJob implements ShouldQueue
      */
     public function __construct(protected $payments = null, protected $msg = null, protected $processWithdrawals = null)
     {
-        if (!$payments) {
+        if (! $payments) {
             $jobs = $this->getBatchPaymentsArr();
 
-            if (!!$jobs) {
+            if ((bool) $jobs) {
                 Bus::batch([
-                    function () use($jobs) {
-                        collect($jobs)->each(function($job) {
-                             dispatch(new self($job['payments'], $job['msg'], $job['processWithdrawals']))->delay(now()->addminutes(3));
-                         });
+                    function () use ($jobs) {
+                        collect($jobs)->each(function ($job) {
+                            dispatch(new self($job['payments'], $job['msg'], $job['processWithdrawals']))->delay(now()->addminutes(3));
+                        });
                     },
-                 ])->dispatch();
+                ])->dispatch();
             }
         }
     }
@@ -70,14 +70,14 @@ class ProcessPendingWithdrawalsJob implements ShouldQueue
                     $withdrawal->status = 'paid';
                     $withdrawal->save();
 
-                    $withdrawal->rewards->each(function ($reward) use($tx, $withdrawal) {
+                    $withdrawal->rewards->each(function ($reward) use ($tx, $withdrawal) {
                         $reward->status = 'paid';
                         $reward->save();
 
                         if ($reward->model_type == Nft::class) {
                             $nft = Nft::where('user_id', $reward->user_id)
-                                    ->where('policy', $reward->asset_type)
-                                    ->first();
+                                ->where('policy', $reward->asset_type)
+                                ->first();
 
                             $nft->status = 'minted';
                             $nft->owner_address = $withdrawal->wallet_address;
@@ -96,7 +96,6 @@ class ProcessPendingWithdrawalsJob implements ShouldQueue
                             $newTx->metadata = $nft->metadata;
                             $newTx->minted_at = now();
                             $newTx->save();
-
 
                         }
                     });
@@ -129,14 +128,11 @@ class ProcessPendingWithdrawalsJob implements ShouldQueue
             $payments = $allPayments->slice($lastPayment - $paymentsLimit, $paymentsLimit);
             $processWithdrawals = $withdrawals->slice($lastPayment - $paymentsLimit, $paymentsLimit);
 
-
-            array_push($jobs, ['payments'=> $payments, 'msg'=>$msg, 'processWithdrawals'=>$processWithdrawals]);
+            array_push($jobs, ['payments' => $payments, 'msg' => $msg, 'processWithdrawals' => $processWithdrawals]);
         }
 
-       return $jobs;
+        return $jobs;
     }
-
-
 
     protected function getWithdrawals()
     {
@@ -150,6 +146,7 @@ class ProcessPendingWithdrawalsJob implements ShouldQueue
 
             return;
         }
+
         return $withdrawals;
 
     }
@@ -171,8 +168,8 @@ class ProcessPendingWithdrawalsJob implements ShouldQueue
             if ($nftRewards->count() != 0) {
                 foreach ($nftRewards as $nftReward) {
                     $nft = Nft::where('user_id', $nftReward->user_id)
-                            ->where('policy', $nftReward->asset_type)
-                            ->first();
+                        ->where('policy', $nftReward->asset_type)
+                        ->first();
 
                     $metadata = array_merge($nft?->metadata?->toArray() ?? [], [
                         'name' => $nft?->name,
@@ -225,10 +222,11 @@ class ProcessPendingWithdrawalsJob implements ShouldQueue
         }
 
         $hasNfts = $nftsCount > 0 ? true : false;
+
         return [$payments, $msg, $hasNfts];
     }
 
-     /**
+    /**
      * Get the middleware the job should pass through.
      */
     public function middleware(): array

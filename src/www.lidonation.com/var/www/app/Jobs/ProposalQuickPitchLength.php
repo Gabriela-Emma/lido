@@ -34,7 +34,7 @@ class ProposalQuickPitchLength implements ShouldQueue
      */
     public function handle()
     {
-        if (!$this->proposal->quickpitch) {
+        if (! $this->proposal->quickpitch) {
             return;
         }
 
@@ -56,7 +56,7 @@ class ProposalQuickPitchLength implements ShouldQueue
         if ($videoDuration !== null) {
             $this->proposal->quickpitch_length = $videoDuration;
             $this->proposal->save();
-            Log::info('ProposalQuickPitchLength job success for Proposal ID: ' . $this->proposal->id);
+            Log::info('ProposalQuickPitchLength job success for Proposal ID: '.$this->proposal->id);
         } else {
             return;
         }
@@ -65,28 +65,26 @@ class ProposalQuickPitchLength implements ShouldQueue
     /**
      * Get the duration of a YouTube video.
      *
-     * @param  string  $url
      * @return int|null
      */
     private function getYoutubeVideoDuration(string $url)
     {
         $id = $this->youtubeId($url);
 
-        if (!$id) {
+        if (! $id) {
             return null;
         }
 
         // Make an API request to get video information from YouTube
-        $response = Http::get("https://www.googleapis.com/youtube/v3/videos", [
+        $response = Http::get('https://www.googleapis.com/youtube/v3/videos', [
             'id' => $id,
             'part' => 'contentDetails',
             'key' => config('services.youtube.api_key'),
         ]);
 
-
         $responseData = json_decode($response->body());
 
-        if (isset($responseData->items) && !empty($responseData->items)) {
+        if (isset($responseData->items) && ! empty($responseData->items)) {
             $videoDuration = $responseData->items[0]->contentDetails->duration;
 
             if (preg_match('/PT((\d+)H)?((\d+)M)?((\d+)S)?/', $videoDuration, $matches)) {
@@ -104,14 +102,13 @@ class ProposalQuickPitchLength implements ShouldQueue
     /**
      * Get the duration of a Vimeo video.
      *
-     * @param  string  $url
      * @return int|null
      */
     private function getVimeoVideoDuration(string $url)
     {
         $id = $this->vimeoId($url);
 
-        if (!$id) {
+        if (! $id) {
             return null;
         }
 
@@ -131,12 +128,14 @@ class ProposalQuickPitchLength implements ShouldQueue
             parse_str(parse_url($url, PHP_URL_QUERY), $query);
             $videoId = $query['v'] ?? null;
         }
+
         return $videoId;
     }
 
     private function vimeoId(string $url)
     {
         $videoId = substr(parse_url($url, PHP_URL_PATH), 1);
+
         return $videoId;
     }
 }

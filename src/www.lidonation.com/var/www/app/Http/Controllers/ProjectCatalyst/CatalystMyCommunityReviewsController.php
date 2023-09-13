@@ -3,17 +3,16 @@
 namespace App\Http\Controllers\ProjectCatalyst;
 
 use App\DataTransferObjects\ProposalRatingData;
+use App\Enums\CatalystExplorerQueryParams;
 use App\Http\Controllers\Controller;
 use App\Models\Assessment;
 use App\Models\Discussion;
 use App\Models\ProposalRating;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Inertia\Inertia;
-use App\Enums\CatalystExplorerQueryParams;
-use Inertia\Response;
 use Illuminate\Support\Collection;
-use Illuminate\Pagination\LengthAwarePaginator ;
+use Inertia\Inertia;
+use Inertia\Response;
 
 class CatalystMyCommunityReviewsController extends Controller
 {
@@ -43,7 +42,6 @@ class CatalystMyCommunityReviewsController extends Controller
         $this->perPage = $request->input('l', 24);
         $this->fundsFilter = $request->collect(CatalystExplorerQueryParams::FUNDS)->map(fn ($n) => intval($n));
 
-
         return Inertia::render('Auth/UserCommunityReviews', $this->data());
     }
 
@@ -55,19 +53,17 @@ class CatalystMyCommunityReviewsController extends Controller
 
         $catalystProfiles = $user->catalyst_users?->pluck('id');
         $ratings = ProposalRating::with(['metas', 'proposal', 'community_review.comments'])
-        ->orderBy('id')
-        ->whereHas('proposal', function ($query) use ($catalystProfiles, $fundsFilterArray) {
-            $query
-                ->withoutGlobalScopes()
-                ->where(function ($q) use ($fundsFilterArray) {
-                    foreach ($fundsFilterArray as $fundId) {
-                        $q->orWhereRelation('fund', 'parent_id', $fundId);
-                    }
-                })
-                ->whereIn('proposals.user_id', $catalystProfiles);
-        });
-
-
+            ->orderBy('id')
+            ->whereHas('proposal', function ($query) use ($catalystProfiles, $fundsFilterArray) {
+                $query
+                    ->withoutGlobalScopes()
+                    ->where(function ($q) use ($fundsFilterArray) {
+                        foreach ($fundsFilterArray as $fundId) {
+                            $q->orWhereRelation('fund', 'parent_id', $fundId);
+                        }
+                    })
+                    ->whereIn('proposals.user_id', $catalystProfiles);
+            });
 
         // $reviews = Assessment::whereHas('discussion', function ($query) use ($catalystProfiles) {
         //     $query->whereHas('proposal', function ($discssionQuery) use ($catalystProfiles) {
@@ -79,9 +75,9 @@ class CatalystMyCommunityReviewsController extends Controller
         // });
 
         $paginator = $ratings->paginate($this->perPage, ['*'], 'p')
-        ->through(fn($m) => $m->setAppends(['meta_data']))
-        ->setPath('/')
-        ->onEachSide(1);
+            ->through(fn ($m) => $m->setAppends(['meta_data']))
+            ->setPath('/')
+            ->onEachSide(1);
 
         // dd(ProposalRatingData::collection($paginator)->toArray());
 
@@ -102,7 +98,7 @@ class CatalystMyCommunityReviewsController extends Controller
         ];
     }
 
-    public function replyToReview( Request $request, Assessment $assessment)
+    public function replyToReview(Request $request, Assessment $assessment)
     {
         $request->validate([
             'reply' => 'required|string',
@@ -132,7 +128,8 @@ class CatalystMyCommunityReviewsController extends Controller
         return redirect()->back();
     }
 
-    public function editResponse(Assessment $assessment, Request $request){
+    public function editResponse(Assessment $assessment, Request $request)
+    {
         $id = $request->resId;
 
         $comment = $assessment->comments()->find($id);

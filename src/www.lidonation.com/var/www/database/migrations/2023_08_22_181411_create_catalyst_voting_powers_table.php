@@ -22,7 +22,7 @@ return new class extends Migration
                 ->references('id')
                 ->on('catalyst_snapshots');
 
-                $table->unique(['stake_pub', 'catalyst_snapshot_id']);
+            $table->unique(['stake_pub', 'catalyst_snapshot_id']);
         });
     }
 

@@ -32,7 +32,9 @@ class IohkPostCrawlerObserver extends CrawlObserver
 
     protected $authorEmail;
 
-    public function __construct(protected $lang){}
+    public function __construct(protected $lang)
+    {
+    }
 
     /**
      * Called when the crawler will crawl the url.
@@ -48,7 +50,7 @@ class IohkPostCrawlerObserver extends CrawlObserver
     public function crawled(
         UriInterface $url,
         ResponseInterface $response,
-        ?UriInterface $foundOnUrl = null
+        UriInterface $foundOnUrl = null
     ): void {
         // 1. remove unnecessary info from reponse body
         $cleanedBody = $this->cleanDomDocument($response->getBody());
@@ -83,7 +85,7 @@ class IohkPostCrawlerObserver extends CrawlObserver
     public function crawlFailed(
         UriInterface $url,
         RequestException $requestException,
-        ?UriInterface $foundOnUrl = null
+        UriInterface $foundOnUrl = null
     ): void {
         Log::error('crawlFailed', ['url' => $url, 'error' => $requestException->getMessage()]);
     }
@@ -104,7 +106,7 @@ class IohkPostCrawlerObserver extends CrawlObserver
                 $externalPost->subTitle = $this->subTitle;
                 $externalPost->content = $this->content;
                 $externalPost->save();
-            } elseif (!is_null($this->title)) {
+            } elseif (! is_null($this->title)) {
                 $externalPost = new ExternalPost;
                 $externalPost->title = [$locale => $this->title];
                 $externalPost->meta_title = [$locale => $this->subTitle];

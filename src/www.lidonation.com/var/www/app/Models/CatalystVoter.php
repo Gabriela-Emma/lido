@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-use DateTime;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 
 class CatalystVoter extends Model
@@ -17,6 +15,6 @@ class CatalystVoter extends Model
     public function registrations()
     {
         return CatalystRegistration::where('stake_pub', $this->stake_pub)
-                ->where('stake_key', $this->stake_key);
+            ->where('stake_key', $this->stake_key);
     }
 }
