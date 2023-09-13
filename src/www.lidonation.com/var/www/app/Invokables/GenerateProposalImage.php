@@ -24,14 +24,6 @@ class GenerateProposalImage
             App::setLocale($_locale);
         }
 
-//        dd(
-//            $this->get_content('http://host.docker.internal:8880/css/catalyst-explorer.css?id=27c293362d21eca17fe479e556768707')
-//            Http::get(
-//                'http://host.docker.internal:8880/css/catalyst-explorer.css?id=27c293362d21eca17fe479e556768707'
-//                asset(mix('css/catalyst-explorer.css'))
-//            )->body()
-//        );
-
         $html = view('catalyst-proposal-summary', compact('proposal'))
             ->render();
 
@@ -42,21 +34,19 @@ class GenerateProposalImage
             ->dismissDialogs()
             ->ignoreHttpsErrors()
             ->showBrowserHeaderAndFooter()
-            ->setDelay(1000)
             ->setOption('args', ['--disable-web-security'])
             ->emulateMedia('screen')
-            ->deviceScaleFactor(1)
+            ->deviceScaleFactor(2)
             ->waitUntilNetworkIdle();
 
-        $slug = Str::limit($proposal->slug, 36, '');
+        $slug = Str::limit($proposal->slug, Proposal::$previewImageNameLength, '');
         if ($save) {
             $locale = $_locale ?? App::currentLocale();
             $path = storage_path("app/images/{$slug}/$locale");
 
             File::ensureDirectoryExists($path);
             $image->setScreenshotType('jpeg', 100)
-                ->windowSize(1306, 1106)
-
+                ->windowSize(640, 820)
                 ->save(
                     "{$path}/{$slug}-cardano-catalyst-proposal-summary-card.jpeg"
                 );
