@@ -13,7 +13,6 @@ class TxObserver
 {
     public function created(Tx $tx): void
     {
-        //@todo set seed and class depending on what it's attached to
         switch ($tx->model::class) {
             case Nft::class:
                 $this->dispatchMintingJob($tx);

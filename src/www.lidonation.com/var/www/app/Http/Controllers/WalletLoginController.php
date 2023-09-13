@@ -22,8 +22,7 @@ class WalletLoginController extends Controller
             'stakeAddrHex' => 'sometimes|required_without_all:email,password,key,signature',
         ]);
 
-        // @todo validate that signature belongs to stake address in account
-        if ($request->signature) {
+        if($request->signature){
             $validationResponse = $this->validateAddress(
                 $request->key,
                 $request->signature,

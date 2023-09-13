@@ -58,7 +58,7 @@ class CatalystSubMenuComponent extends Component
         $this->path = $this->routeParts->last();
         $this->crumbs = collect([
             [
-                'label' => 'Dashboard', // @todo maybe make snippets a global variable?
+                'label' => 'Dashboard', 
                 'link' => route('projectCatalyst.dashboard'),
                 'order' => 0,
             ],

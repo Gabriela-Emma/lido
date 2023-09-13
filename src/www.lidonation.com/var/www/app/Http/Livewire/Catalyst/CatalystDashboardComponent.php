@@ -92,7 +92,6 @@ class CatalystDashboardComponent extends Component
             ->orderByDesc('amount_requested')
             ->first();
 
-        // @todo optimize this query to remove 100+ n+1 queries
         $this->topFundedProposals = Proposal::with(['discussions.ratings', 'groups'])
             ->where('proposals.type', 'proposal')
             ->whereNotNull('funded_at')

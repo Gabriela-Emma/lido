@@ -174,7 +174,6 @@ class Assessment extends Model implements IHasMetaData
     /**
      * @return mixed
      *
-     * @todo optimize query; reduce to 1 query.
      */
     public function children(): Attribute
     {

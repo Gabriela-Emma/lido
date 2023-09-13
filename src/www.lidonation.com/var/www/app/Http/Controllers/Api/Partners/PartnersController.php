@@ -31,7 +31,6 @@ class PartnersController extends Controller
             $user = User::where('wallet_stake_address', $request->partner)->firstOrFail();
             $isPartner = $user->hasRole(RoleEnum::partner()->value);
 
-            // @todo can we validate this on the blockchain somehow
             // I think just call our lucid backand verity the signed using their helper function
             // since it's possible for an account not to have an email address.
             if ((bool) $user && $isPartner) {

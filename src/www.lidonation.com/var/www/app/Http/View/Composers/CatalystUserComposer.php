@@ -49,7 +49,7 @@ class CatalystUserComposer
         //            $perPage = 16, $columns = ['*'], $pageName = 'proposals'
         //        );
 
-        // @todo This should be an injecktable operation
+
         $discussions = $this->catalystUser?->proposals
             ->map(
                 fn ($p) => $p->discussions

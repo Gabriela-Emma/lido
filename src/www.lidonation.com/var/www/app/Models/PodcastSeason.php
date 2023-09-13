@@ -30,7 +30,7 @@ class PodcastSeason extends Model implements HasMedia, HasLink, IHasMetaData
     public function link(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => '' // TODO: Implement getLinkAttribute() method.,
+            get: fn ($value) => ''
         );
     }
 

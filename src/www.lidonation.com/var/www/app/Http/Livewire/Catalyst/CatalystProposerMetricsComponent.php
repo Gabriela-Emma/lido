@@ -46,9 +46,6 @@ class CatalystProposerMetricsComponent extends Component
         $this->emit('ownMetricsToggle');
     }
 
-    //
-    // @Todo
-    // : refactor to magic variable accessors
     public function getMetric($metric)
     {
         return $this->{$metric};
@@ -83,8 +80,7 @@ class CatalystProposerMetricsComponent extends Component
             $username = request()->route('catalystUser');
         }
         $this->catalystUser = $catalystUserRepository->get($username, 'own_proposals');
-        //
-        // @Todo This should be an injecktable operation
+        // 
         $discussions = $this->catalystUser?->{$relation}
             ->map(
                 fn ($p) => $p->discussions

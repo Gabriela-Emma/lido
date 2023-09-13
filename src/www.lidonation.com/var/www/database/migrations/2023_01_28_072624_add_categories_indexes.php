@@ -14,7 +14,6 @@ return new class extends Migration
     public function up()
     {
         Schema::table('categories', function (Blueprint $table) {
-            //@todo update all records to have valid slugs and no nulls before creating index
             //            $table->string('slug')->unique();
             $table->fullText('title');
             $table->fullText('content');

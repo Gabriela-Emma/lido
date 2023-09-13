@@ -32,7 +32,6 @@ class DelegatorController extends Controller
         if ((bool) $request->delegator) {
             $user = User::where('wallet_stake_address', $request->delegator)->first();
 
-            // @todo can we validate this on the blockchain somehow
             // since it's possible for an account not to have an email address.
             if ((bool) $user) {
                 Auth::login($user, $remember = true);

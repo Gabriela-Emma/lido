@@ -37,7 +37,6 @@ class PopulatePaymentAddressJob implements ShouldQueue
                 ->collect()
                 ?->first()['address'];
 
-            // @todo confirm that address picked is actually owned by the associated stake key (using the lucid service)
             // Ticket: Ticket-01472
             $frost_stake_key = $cardanoBlockfrostService->get("addresses/$address", null)['stake_address'];
             $address_confirmed = ($frost_stake_key == $this->user->wallet_stake_address) ? true : false;
