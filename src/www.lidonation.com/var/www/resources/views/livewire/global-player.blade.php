@@ -1,5 +1,5 @@
 <section x-data="globalVideoPlayer"  id="global-video-player-wrapper" @toggle-podcast.window="queueOrPauseContent($event)"
-         class="fixed w-full left-0 -bottom-32 bg-yellow-500 text-slate-800 border-t border-yellow-600 z-30 drop-shadow-2xl">
+         class="fixed w-full left-0 -bottom-48 bg-yellow-500 text-slate-800 border-t border-yellow-600 z-30 drop-shadow-2xl">
     <div class="py-4 container relative overflow-visible">
         <div class="flex gap-2 items-center">
             <div>

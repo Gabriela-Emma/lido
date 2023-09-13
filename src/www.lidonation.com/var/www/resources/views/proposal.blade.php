@@ -12,7 +12,7 @@
         <meta property="article:published_time" content="{{$proposal->published_at}}"/>
         <meta property="twitter:card" content="summary_large_image"/>
         <meta property="twitter:title" content="{{$proposal->title}}"/>
-        <meta property="twitter:description" content="{{$proposal->social_post}}"/>
+        <meta property="twitter:description" content="{{$proposal->solution}}"/>
         <meta property="twitter:image" content="{{$proposal->generated_summary_pic}}"/>
         <meta property="twitter:url" content="{{$proposal->url}}"/>
         <meta property="twitter:site" content="@lidonation"/>
