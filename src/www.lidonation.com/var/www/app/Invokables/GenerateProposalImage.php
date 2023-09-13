@@ -29,6 +29,7 @@ class GenerateProposalImage
         $image = Browsershot::html($html)
             ->setChromePath('/usr/bin/chromium-browser')
             ->addChromiumArguments(['no-sandbox'])
+            ->noSandbox()
             ->setOption('args', ['--disable-web-security'])
             ->emulateMedia('screen')
             ->deviceScaleFactor(1)
