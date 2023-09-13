@@ -17,7 +17,7 @@ spec:
       terminationGracePeriodSeconds: 10
       containers:
         - name: ncdb
-          image: nocodb/nocodb:0.109.7
+          image: nocodb/nocodb:0.111.4
           env:
             - name: NC_REDIS_URL
               value: {{ .Values.services.ncdb.redisUrl }}
