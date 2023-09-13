@@ -89,7 +89,7 @@ class Nft extends Model implements HasLink, HasMedia
      * @param  mixed  $model
      * @param  bool  $updateIfExist
      */
-    public function saveMeta(string $key, string $content, ?IHasMetaData $model = null, $updateIfExist = true): bool
+    public function saveMeta(string $key, string $content, IHasMetaData $model = null, $updateIfExist = true): bool
     {
         $model = $model ?? $this;
         $meta = null;

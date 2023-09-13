@@ -40,7 +40,7 @@
             </div>
 
             <div class="2xl:h[80px]">
-                <div class="flex flex-row flex-no-wrap mb-2">
+                <div class="flex flex-row flex-no-wrap mb-1">
                     @if($proposal->amount_received > 0.00)
                         <div
                             class="inline-block px-2 py-0.5 pb-3 text-sm font-semibold rounded-tl-sm rounded-bl-sm bg-pink-600">
@@ -75,11 +75,11 @@
                 </div>
 
                 @if($proposal->discussions?->isNotEmpty())
-                    <div class="w-full p-2 mt-8 mb-4 bg-teal-800/50">
-                        <b class="text-sm text-slate-300">
+                    <div class="w-full p-2 mt-2 mb-4 bg-teal-800/50">
+                        <b class="text-sm text-slate-300 font-light">
                             Community Review Results ({{$proposal->discussions->first()?->community_reviews?->count()}} reviewers)
                         </b>
-                        <div class="flex flex-col gap-2">
+                        <div class="flex flex-col gap-1">
                             @foreach($proposal->discussions as $discussion)
                                 <div class="flex items-center justify-between gap-2 flex-nowrap">
                                     <div>
@@ -103,7 +103,7 @@
 
                 @if($proposal->solution)
                     <div
-                        class="my-3 text-white bg-teal-700rounded-sm">
+                        class="my-2 text-white bg-teal-700rounded-sm">
                         <b class="text-sm text-slate-300">
                             {{ $snippets->solution}}
                         </b>

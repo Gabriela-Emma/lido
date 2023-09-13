@@ -3,14 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Contracts\Auth\Authenticatable;
 
 class WalletLoginController extends Controller
 {
@@ -21,7 +19,7 @@ class WalletLoginController extends Controller
             'key' => 'sometimes|required_without_all:email,password|min:13',
             'signature' => 'sometimes|required_without_all:email,password|min:13',
             'txHash' => 'sometimes|required_without_all:email,password,key,signature',
-            'stakeAddrHex'=> 'sometimes|required_without_all:email,password,key,signature',
+            'stakeAddrHex' => 'sometimes|required_without_all:email,password,key,signature',
         ]);
 
         if($request->signature){
@@ -33,7 +31,7 @@ class WalletLoginController extends Controller
                 $request->stakeAddrHex
             );
 
-        }else{
+        } else {
             $validationResponse = $this->validateAddress(
                 null,
                 null,
@@ -46,31 +44,32 @@ class WalletLoginController extends Controller
         $user = User::where('wallet_stake_address', $credentials['account'])->first();
 
         // since it's possible for an account not to have an email address.
-            if ($user instanceof User && $validationResponse) {
-                Auth::login($user, $request->get('remember', false));
+        if ($user instanceof User && $validationResponse) {
+            Auth::login($user, $request->get('remember', false));
 
-                if ($request->has('redirect') && Route::has($request->redirect)) {
-                    redirect()->route($request->redirect);
-                }
-
-                return auth()->user();
+            if ($request->has('redirect') && Route::has($request->redirect)) {
+                redirect()->route($request->redirect);
             }
-            return response()->json([
-                'message' => 'We are having trouble logging you in with your stake address. Try your email and password or try registering again.',
-            ], 401);
+
+            return auth()->user();
+        }
+
+        return response()->json([
+            'message' => 'We are having trouble logging you in with your stake address. Try your email and password or try registering again.',
+        ], 401);
     }
 
     public function validateAddress(
-        ?string $key = null,
-        ?string $signature = null,
-        ?string $txHash = null,
-        ?string $account = null,
-        ?string $stakeAddrHex = null
+        string $key = null,
+        string $signature = null,
+        string $txHash = null,
+        string $account = null,
+        string $stakeAddrHex = null
 
     ) {
-            return Http::post(
-                config('cardano.lucidEndpoint') . '/wallet/authenticate',
-                compact('txHash', 'account','key','signature', 'stakeAddrHex')
-            )->throw();
+        return Http::post(
+            config('cardano.lucidEndpoint').'/wallet/authenticate',
+            compact('txHash', 'account', 'key', 'signature', 'stakeAddrHex')
+        )->throw();
     }
 }

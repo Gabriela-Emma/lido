@@ -1,12 +1,10 @@
 <?php
 
-use App\Models\User;
-use App\Models\Reward;
-use App\Models\LearningTopic;
 use App\Models\LearningLesson;
+use App\Models\LearningTopic;
+use App\Models\Reward;
+use App\Models\User;
 use App\Repositories\AdaRepository;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration
@@ -17,7 +15,6 @@ return new class extends Migration
     {
         $this->adaRepository = app(AdaRepository::class);
     }
-
 
     /**
      * Run the migrations.
@@ -42,20 +39,19 @@ return new class extends Migration
                         $lessonReward = Reward::where([
                             'model_type' => LearningLesson::class,
                             'model_id' => $lesson->id,
-                            'user_id' => $user->id
+                            'user_id' => $user->id,
                         ])->first();
-                        if (!$lessonReward instanceof Reward) {
+                        if (! $lessonReward instanceof Reward) {
                             $this->issueNft($user, $lesson);
                         }
                     }
                 );
             }
 
-
         );
     }
 
-    public function issueNft($user, $lesson,)
+    public function issueNft($user, $lesson)
     {
         // get first rule
         $reward = new Reward;
@@ -67,7 +63,7 @@ return new class extends Migration
         $giveaway = $lesson?->topic?->giveaway;
         $rule = $giveaway?->rules->first();
         if (($rule?->subject ?? null) !== 'usd.amount') {
-            $reward->asset = explode('.',  $rule?->subject)[0];
+            $reward->asset = explode('.', $rule?->subject)[0];
             $reward->asset_type = 'ft';
             $reward->amount = 2000000;
         } else {
@@ -89,6 +85,7 @@ return new class extends Migration
         if ($quote) {
             $rewardAmount = 1 / $quote;
         }
+
         return $rewardAmount > 0 ? number_format($rewardAmount, 6) * 1000000 : 1000000;
     }
 

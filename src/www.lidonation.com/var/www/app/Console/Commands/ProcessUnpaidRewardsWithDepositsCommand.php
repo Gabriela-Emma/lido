@@ -25,8 +25,8 @@ class ProcessUnpaidRewardsWithDepositsCommand extends Command
     {
 
         $metas = \App\Models\Meta::where('key', 'quickpitch')
-                ->orderBy('model_id')
-                ->get();
+            ->orderBy('model_id')
+            ->get();
 
         foreach ($metas as $meta) {
             $proposal = \App\Models\Proposal::find($meta->model_id);

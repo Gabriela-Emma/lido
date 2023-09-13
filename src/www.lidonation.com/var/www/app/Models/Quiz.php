@@ -55,11 +55,11 @@ class Quiz extends Model implements HasMedia, IHasMetaData
         return $this->hasMany(AnswerResponse::class);
     }
 
-//    public function giveaways(): MorphToMany
-//    {
-//        return $this->morphToMany(Giveaway::class, 'giveaways', 'giveaway_model', 'model_id', 'giveaway_id')
-//            ->wherePivot('type', static::class);
-//    }
+    //    public function giveaways(): MorphToMany
+    //    {
+    //        return $this->morphToMany(Giveaway::class, 'giveaways', 'giveaway_model', 'model_id', 'giveaway_id')
+    //            ->wherePivot('type', static::class);
+    //    }
 
     public function everyEpochs(): MorphToMany
     {

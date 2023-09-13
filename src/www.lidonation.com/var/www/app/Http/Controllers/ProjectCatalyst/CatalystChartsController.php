@@ -19,30 +19,35 @@ use Meilisearch\Endpoints\Indexes;
 
 class CatalystChartsController extends Controller
 {
-
     public mixed $fund;
 
     public mixed $largestFundedProposalObject;
 
     public mixed $fundedOver75KCount;
 
-    public int|null $membersAwardedFundingCount;
+    public ?int $membersAwardedFundingCount;
 
-    public int|null $completedProposalsCount;
+    public ?int $completedProposalsCount;
 
-    public int|null $fullyDisbursedProposalsCount;
+    public ?int $fullyDisbursedProposalsCount;
 
     public $adaPowerRanges;
 
     public string $fundSlugFilter;
 
-    public int|null $fundFilter = 113;
-    public string|null $fundingStatus = null;
-    public string|null $proposalStatus = null;
-    public string|null $proposalType = null;
-    public bool|null $fundedProposalsFilter;
-    public string|null $sortBy = null;
-    public string|null $sortOrder = null;
+    public ?int $fundFilter = 113;
+
+    public ?string $fundingStatus = null;
+
+    public ?string $proposalStatus = null;
+
+    public ?string $proposalType = null;
+
+    public ?bool $fundedProposalsFilter;
+
+    public ?string $sortBy = null;
+
+    public ?string $sortOrder = null;
 
     public function metricLargestFundedProposalObject(Request $request)
     {
@@ -82,13 +87,12 @@ class CatalystChartsController extends Controller
         $this->sortOrder = 'desc';
         $res = $this->query(false, ['funded_at', 'fund_id', 'amount_requested'], ['type = proposal'])->raw();
 
-        $fundIds = !!$this->fundFilter ? DB::table('funds')->where('parent_id', $this->fundFilter)->pluck('id')
+        $fundIds = (bool) $this->fundFilter ? DB::table('funds')->where('parent_id', $this->fundFilter)->pluck('id')
             : DB::table('funds')->where('parent_id', '>', 0)->pluck('id');
-
 
         if (isset($res['hits'])) {
             return CatalystUser::whereHas('proposals',
-                function ($q) use($fundIds) {
+                function ($q) use ($fundIds) {
                     $q->whereNotNull('funded_at')
                         ->where('fund_id', $fundIds->toArray())
                         ->orWhereIn('fund_id', $fundIds->toArray());
@@ -106,12 +110,12 @@ class CatalystChartsController extends Controller
         $res = $this->query(false, ['amount_requested', 'amount_received'], ['type = proposal'])->raw();
         if (isset($res['hits'])) {
             return collect($res['hits'])
-                    ->each( function($proposal) {
-                        if ($proposal['amount_requested'] == $proposal['amount_received'] && $proposal['amount_received'] > 0) {
-                            return $proposal;
-                        };
-                    })
-                    ->count();
+                ->each(function ($proposal) {
+                    if ($proposal['amount_requested'] == $proposal['amount_received'] && $proposal['amount_received'] > 0) {
+                        return $proposal;
+                    }
+                })
+                ->count();
         }
 
         return null;
@@ -125,7 +129,7 @@ class CatalystChartsController extends Controller
 
         if (isset($res['hits'])) {
             return collect($res['hits'])
-                        ->count();
+                ->count();
         }
 
         return null;
@@ -139,12 +143,11 @@ class CatalystChartsController extends Controller
 
         $powersResults = [];
 
-        foreach($this->adaPowerRanges as $key => $power)
-        {
+        foreach ($this->adaPowerRanges as $key => $power) {
             $powersResults[] = new Fluent([
                 'key' => $key,
                 'count' => $power['0'],
-                'total' => $power['1']
+                'total' => $power['1'],
             ]);
         }
 
@@ -158,7 +161,7 @@ class CatalystChartsController extends Controller
         $funds = CatalystSnapshot::with('model')
             ->where('model_type', Fund::class)
             ->orderBy('snapshot_at', 'desc')
-            ->get()->map(fn($cs) => $cs->model);
+            ->get()->map(fn ($cs) => $cs->model);
 
         $challenges = Fund::where('parent_id', '=', 113)->get(['id', 'title']);
 
@@ -167,7 +170,7 @@ class CatalystChartsController extends Controller
             'challenges' => FundResource::collection($challenges)->toArray($request),
             'filters' => [
                 'fundId' => $this->fundFilter,
-            ]
+            ],
         ];
 
         return Inertia::render('Charts', $props);
@@ -177,7 +180,7 @@ class CatalystChartsController extends Controller
     {
         $this->fundFilter = $request->input(CatalystExplorerQueryParams::FUNDS, 113);
 
-        $this->fund = !is_null($this->fundFilter)
+        $this->fund = ! is_null($this->fundFilter)
             ? Fund::where('id', $this->fundFilter)->first()
             : null;
     }
@@ -257,8 +260,8 @@ class CatalystChartsController extends Controller
         $fundIds = $this->fund
             ? [$this->fund?->id]
             : CatalystSnapshot::query()->where('model_type', Fund::class)
-            ->pluck('model_id')
-            ->toArray();
+                ->pluck('model_id')
+                ->toArray();
 
         $snapshotIds = CatalystSnapshot::whereIn('model_id', $fundIds)
             ->where('model_type', Fund::class)
@@ -288,32 +291,31 @@ class CatalystChartsController extends Controller
                 WHEN voting_power > 100000000000000 THEN '> 100M-34'
                 END as range,  COUNT(*) as wallets, SUM(voting_power) as ada"
             )->whereIn('catalyst_snapshot_id', $snapshotIds)
-                ->where('voting_power', '>=', 450000000)
-                ->groupByRaw(1);
+            ->where('voting_power', '>=', 450000000)
+            ->groupByRaw(1);
 
         $adaPowerRangesCollection = $agg->get()
-        ->map(fn ($row) => [$row->range => [$row->wallets, $row->ada]])
-        ->collapse();
+            ->map(fn ($row) => [$row->range => [$row->wallets, $row->ada]])
+            ->collapse();
 
         // convert the collection to an associative array whose structure is fully representative of our front-end needs
         $adaPowerRangesFormattedArray = [];
         foreach ($adaPowerRangesCollection as $range => $value) {
             $rangeArray = explode('-', $range);
-            $finalRange = $rangeArray[0] . ( count($rangeArray) == 3 ? ' - ' . $rangeArray[1] : '');
+            $finalRange = $rangeArray[0].(count($rangeArray) == 3 ? ' - '.$rangeArray[1] : '');
 
             $adaPowerRangesFormattedArray[$finalRange] = [
                 $value['0'],
                 round($value['1'] / 1000000, 2),
-                intval( isset($rangeArray['2']) ?$rangeArray['2'] : $rangeArray['1'] )
+                intval(isset($rangeArray['2']) ? $rangeArray['2'] : $rangeArray['1']),
             ];
         }
 
-
         // convert then order the array to collection and assing to the objects $adaPowerRanges property
         $this->adaPowerRanges = collect($adaPowerRangesFormattedArray)
-        ->sortBy(function ($value, $key) {
-            return $value[count($value) - 1];
-        });
+            ->sortBy(function ($value, $key) {
+                return $value[count($value) - 1];
+            });
     }
 
     #[ArrayShape(['filters' => 'array'])]
@@ -338,7 +340,7 @@ class CatalystChartsController extends Controller
         }
 
         // filter by fund
-        if ((int)$this->fundFilter) {
+        if ((int) $this->fundFilter) {
             $_options[] = "fund.id = {$this->fundFilter}";
         }
 
@@ -355,8 +357,11 @@ class CatalystChartsController extends Controller
             ->where('model_id', $snapshot->id)
             ->where('key', 'snapshot_file_path')
             ->first();
-        
-        return '/storage/'.$link->content;
-    }
 
+        if (! $link) {
+            return null;
+        }
+
+        return '/storage/'.$link?->content;
+    }
 }

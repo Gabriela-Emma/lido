@@ -23,7 +23,7 @@ return new class extends Migration
             $table->text('hash');
 
             $table->integer('tally')
-            ->unsigned()->default(0);
+                ->unsigned()->default(0);
         });
     }
 

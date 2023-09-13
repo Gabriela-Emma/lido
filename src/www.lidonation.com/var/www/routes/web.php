@@ -256,13 +256,13 @@ Route::group(
         Route::get('/proposals/{proposal}/', function (Proposal $proposal) {
             // related proposal in fund
             $relatedProposalsQuery = Proposal::whereRelation('fund', 'parent_id', $proposal->fund?->parent_id)
-            ->whereHas('users', fn($q) => $q->whereIn('id', $proposal->users->pluck('id')) )
-            ->where('id', '!=', $proposal->id);
+                ->whereHas('users', fn ($q) => $q->whereIn('id', $proposal->users->pluck('id')))
+                ->where('id', '!=', $proposal->id);
 
             $relatedProposals = $relatedProposalsQuery->limit(6)->get();
 
             // other proposals form same category
-            return view('proposal', compact('proposal', 'relatedProposals' ));
+            return view('proposal', compact('proposal', 'relatedProposals'));
         })->name('proposal');
 
         // Archive News
@@ -451,14 +451,16 @@ Route::prefix('validate-wallet')->group(function () {
         ->name('nft-auth');
 });
 
-//Route::get('test', function(){
-//    $image = (new \App\Invokables\GenerateProposalImage)(Proposal::whereNotNull('funded_at')->inRandomOrder()->first())
-//        ->windowSize(440, 440);
-//        $image = base64_decode(str_replace('data:image/png;base64,', '', $image->base64Screenshot()));
-//        $response = Response::make($image, 200);
-//        $response->header('Content-Type', 'image/png');
-//    return $response;
-//});
+Route::get('test', function () {
+    $image = (new \App\Invokables\GenerateProposalImage)(
+        proposal: Proposal::whereNotNull('funded_at')->inRandomOrder()->first()
+    )->windowSize(520, 320);
+    $image = base64_decode(str_replace('data:image/png;base64,', '', $image->base64Screenshot()));
+    $response = Response::make($image, 200);
+    $response->header('Content-Type', 'image/png');
+
+    return $response;
+});
 
 Route::comments();
 

@@ -30,9 +30,9 @@
  *
  *
  * For more information:
+ *
  * @see https://github.com/laragear/preload
  */
-
 require_once '/var/www';
 
 $files = [
@@ -3150,21 +3150,20 @@ $files = [
     '/var/www/app/Http/Livewire/CommentComponent.php',
     '/var/www/app/Http/Livewire/ContributeContent/ContributeMoney.php',
     '/var/www/app/Http/Livewire/ContributeContent/ContributeReview.php',
-    '/var/www/preload.php'
+    '/var/www/preload.php',
 ];
 
 foreach ($files as $file) {
     try {
-        if (!(\is_file($file) && \is_readable($file))) {
+        if (! (\is_file($file) && \is_readable($file))) {
             continue;
         }
         require_once $file;
     } catch (\Throwable $e) {
-        echo 'Preloader Script has stopped with an error' . \PHP_EOL .
-             'Message: ' . $e->getMessage() . \PHP_EOL .
-             'File: ' . $file . \PHP_EOL;
+        echo 'Preloader Script has stopped with an error'.\PHP_EOL.
+             'Message: '.$e->getMessage().\PHP_EOL.
+             'File: '.$file.\PHP_EOL;
 
         throw $e;
     }
 }
-

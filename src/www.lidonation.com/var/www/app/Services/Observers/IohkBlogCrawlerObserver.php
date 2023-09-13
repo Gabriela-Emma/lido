@@ -33,7 +33,7 @@ class IohkBlogCrawlerObserver extends CrawlObserver
     public function crawled(
         UriInterface $url,
         ResponseInterface $response,
-        ?UriInterface $foundOnUrl = null
+        UriInterface $foundOnUrl = null
     ): void {
         // 1. remove unnecessary info from reponse body
         $cleanedBody = $this->cleanDomDocument($response->getBody());
@@ -57,7 +57,7 @@ class IohkBlogCrawlerObserver extends CrawlObserver
     public function crawlFailed(
         UriInterface $url,
         RequestException $requestException,
-        ?UriInterface $foundOnUrl = null
+        UriInterface $foundOnUrl = null
     ): void {
         Log::error('crawlFailed', ['url' => $url, 'error' => $requestException->getMessage()]);
     }

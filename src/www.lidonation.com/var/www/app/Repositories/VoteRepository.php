@@ -15,26 +15,26 @@ class VoteRepository extends Repository
         parent::__construct($model);
     }
 
-       public function causes($scope = null): array|Collection
-       {
-           if ((bool) $scope) {
-               return $this->getModel()::{$scope}()->get();
-           }
+    public function causes($scope = null): array|Collection
+    {
+        if ((bool) $scope) {
+            return $this->getModel()::{$scope}()->get();
+        }
 
-           return $this->all();
-       }
+        return $this->all();
+    }
 
-       /**
-        * @return mixed
-        * Return posts in passed taxonomy class.
-        * If no taxonomy is passed, you may pass mixed taxonomy types if passing in objects
-        */
-       public function inTaxonomies(string $taxonomyClass = null, ...$taxonomies): mixed
-       {
-           if (! isset($this->query)) {
-               $this->query = Vote::whereRaw('1=1');
-           }
+    /**
+     * @return mixed
+     * Return posts in passed taxonomy class.
+     * If no taxonomy is passed, you may pass mixed taxonomy types if passing in objects
+     */
+    public function inTaxonomies(string $taxonomyClass = null, ...$taxonomies): mixed
+    {
+        if (! isset($this->query)) {
+            $this->query = Vote::whereRaw('1=1');
+        }
 
-           return parent::inTaxonomies($taxonomyClass, $taxonomies);
-       }
+        return parent::inTaxonomies($taxonomyClass, $taxonomies);
+    }
 }

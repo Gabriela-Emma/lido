@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Http\Livewire\Catalyst;
+
 use App\Models\CatalystUser;
 use App\Repositories\CatalystUserRepository;
 use App\Repositories\FundRepository;
@@ -8,24 +10,38 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Fluent;
 use Livewire\Component;
+
 class CatalystProposerMetricsComponent extends Component
 {
     public bool $ownMetrics = true;
+
     public CatalystUser $catalystUser;
+
     protected $allTimeCaAverage;
+
     protected $allTimeCaRatingCount;
+
     protected $allTimeCaAverageGroups;
+
     protected $allTimeFundedPerRound;
+
     protected $allTimeAwardedPerRound;
+
     protected $allTimeReceivedPerRound;
+
     protected $allTimeFundingPerRound;
+
     protected $allTimeProposedPerRound;
+
     protected $allTimeCompletedPerRound;
+
     protected $allDiscussions;
+
     public $discussionData;
+
     public function toggleOwnMetrics(CatalystUserRepository $catalystUserRepository, FundRepository $fundRepository, CatalystUser $catalystUser)
     {
-        $this->ownMetrics = !$this->ownMetrics;
+        $this->ownMetrics = ! $this->ownMetrics;
         $this->setData($catalystUserRepository, $fundRepository, $catalystUser);
         $this->emit('ownMetricsToggle');
     }
@@ -34,11 +50,14 @@ class CatalystProposerMetricsComponent extends Component
     {
         return $this->{$metric};
     }
+
     public function getMetricData(string $metric, CatalystUser $catalystUser, CatalystUserRepository $catalystUserRepository, FundRepository $fundRepository)
     {
         $this->setData($catalystUserRepository, $fundRepository, $catalystUser);
+
         return $this->{$metric}?->data?->toArray() ?? [];
     }
+
     public function mount(
         CatalystUserRepository $catalystUserRepository,
         FundRepository $fundRepository,
@@ -46,10 +65,12 @@ class CatalystProposerMetricsComponent extends Component
     ) {
         $this->setData($catalystUserRepository, $fundRepository, $catalystUser);
     }
+
     public function render(): Factory|View|Application
     {
         return view('livewire.catalyst.proposer.metrics');
     }
+
     protected function setData(CatalystUserRepository $catalystUserRepository, FundRepository $fundRepository, CatalystUser $catalystUser)
     {
         $relation = $this->ownMetrics ? 'own_proposals' : 'proposals';
@@ -98,14 +119,16 @@ class CatalystProposerMetricsComponent extends Component
                     return [];
                 });
             }
+
             return $item;
         })->pluck('proposals');
-        $adaProposal =  $proposalGroups->map(function ($item) {
+        $adaProposal = $proposalGroups->map(function ($item) {
             if ($item->fund->currency == 'USD') {
                 $item->proposals = $item->proposals->map(function ($p) {
                     return [];
                 });
             }
+
             return $item;
         })->pluck('proposals');
         $this->setAllTimeProposedPerRound($labels, $proposals);
@@ -115,6 +138,7 @@ class CatalystProposerMetricsComponent extends Component
         $this->setAllTimeAwardedPerRound($labels, $usdProposal, $adaProposal);
         $this->setAllTimeFundedPerRound($labels, $proposals);
     }
+
     // ## Proposed
     protected function setAllTimeProposedPerRound($labels, $proposals)
     {
@@ -123,6 +147,7 @@ class CatalystProposerMetricsComponent extends Component
             'data' => $proposals->map(fn ($ps) => $ps->count()),
         ]);
     }
+
     // ## Funded
     protected function setAllTimeFundedPerRound($labels, $proposals)
     {
@@ -133,8 +158,9 @@ class CatalystProposerMetricsComponent extends Component
             )->map(fn ($g) => $g->get('funded') ?? 0)->values(),
         ]);
     }
+
     //  $$ Received
-    protected function setAllTimeReceivedPerRound($labels, $usdProposal, $adaProposal,)
+    protected function setAllTimeReceivedPerRound($labels, $usdProposal, $adaProposal)
     {
         $this->allTimeReceivedPerRound = new Fluent([
             'labels' => $labels,
@@ -146,6 +172,7 @@ class CatalystProposerMetricsComponent extends Component
             )->values(),
         ]);
     }
+
     // $$ Awarded
     protected function setAllTimeAwardedPerRound($labels, $usdProposal, $adaProposal)
     {
@@ -159,6 +186,7 @@ class CatalystProposerMetricsComponent extends Component
             )->values(),
         ]);
     }
+
     // $$ Requested
     protected function setAllTimeFundingPerRound($labels, $adaProposal, $usdProposal)
     {
@@ -172,6 +200,7 @@ class CatalystProposerMetricsComponent extends Component
             )->values(),
         ]);
     }
+
     // ## Completed
     protected function setAllTimeCompletedPerRound($labels, $proposals)
     {
@@ -182,13 +211,14 @@ class CatalystProposerMetricsComponent extends Component
             )->map(fn ($g) => $g->get('complete') ?? 0)->values(),
         ]);
     }
+
     protected function discussionsRatings()
     {
         $discussionRatings = [];
         foreach ($this->allDiscussions as $discussion) {
             $title = $discussion['title'];
             $rating = $discussion->rating;
-            if (!isset($discussionRatings[$title])) {
+            if (! isset($discussionRatings[$title])) {
                 $discussionRatings[$title] = [
                     'totalRating' => 0,
                     'totalCount' => 0,

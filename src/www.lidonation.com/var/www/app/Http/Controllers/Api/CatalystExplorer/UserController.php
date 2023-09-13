@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Api\CatalystExplorer;
 
-use Inertia\Inertia;
-use Illuminate\Http\Request;
-use Illuminate\Support\Fluent;
-use App\Models\User;
 use App\Http\Controllers\Controller;
+use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Fluent;
+use Inertia\Inertia;
 use Laravel\Fortify\Contracts\UpdatesUserProfileInformation;
 
 class UserController extends Controller implements UpdatesUserProfileInformation
@@ -74,7 +74,7 @@ class UserController extends Controller implements UpdatesUserProfileInformation
 
         $user = User::where('email', $validated->email);
 
-        if (!$user instanceof User) {
+        if (! $user instanceof User) {
             $user = new User;
             $user->name = $validated->name;
             $user->email = $validated->email;
@@ -96,7 +96,7 @@ class UserController extends Controller implements UpdatesUserProfileInformation
             'discord' => 'nullable|bail|min:2',
             'telegram' => 'nullable|bail|min:2',
             'bio' => 'nullable|min:10',
-            'profile' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
+            'profile' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]));
 
         // prevent changing email to a different user's email
@@ -111,7 +111,7 @@ class UserController extends Controller implements UpdatesUserProfileInformation
         if ($request->profile) {
             if (isset($user->profile_photo_url)) {
                 $user->updateProfilePhoto($request->profile);
-            }else{
+            } else {
                 $user->addMediaFromRequest('profile')->toMediaCollection('hero');
                 $user->save();
             }
@@ -128,8 +128,8 @@ class UserController extends Controller implements UpdatesUserProfileInformation
         //     'nft' => $topicNft,
         // ])
         return Inertia::modal('Auth/UtilityLogin')
-        ->baseUrl(
-            previous_route_url()
-        );
+            ->baseUrl(
+                previous_route_url()
+            );
     }
 }

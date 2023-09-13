@@ -3,10 +3,10 @@
 namespace App\Console\Commands;
 
 use App\Models\CatalystTally;
+use Illuminate\Console\Command;
 use Illuminate\Support\Fluent;
 use JsonMachine\Exception\InvalidArgumentException;
 use JsonMachine\Items;
-use Illuminate\Console\Command;
 
 class ImportCatalystTallyCommand extends Command
 {
@@ -19,20 +19,21 @@ class ImportCatalystTallyCommand extends Command
 
     /**
      * The console command description.
-    *
+     *
      * @var string
      */
     protected $description = 'Import Catalyst Votes Casts snapshot from a file.';
 
     /**
      * Execute the console command.
+     *
      * @throws InvalidArgumentException
      */
     public function handle(): void
     {
         $file = $this->argument('file');
         $votesCast = Items::fromFile($file);
-        foreach($votesCast as $data) {
+        foreach ($votesCast as $data) {
             $data = new Fluent($data);
             foreach ($data->proposals as $value) {
                 $proposalTally = new Fluent($value);
@@ -40,7 +41,7 @@ class ImportCatalystTallyCommand extends Command
                     'hash' => $proposalTally->proposal_id,
                 ], [
                     'hash' => $proposalTally->proposal_id,
-                    'tally' => $proposalTally->votes_cast
+                    'tally' => $proposalTally->votes_cast,
                 ]);
             }
 

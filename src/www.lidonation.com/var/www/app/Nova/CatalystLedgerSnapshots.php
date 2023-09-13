@@ -2,20 +2,19 @@
 
 namespace App\Nova;
 
-use App\Nova\Funds;
-use Laravel\Nova\Fields\ID;
-use Illuminate\Http\Request;
-use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\Number;
-use Laravel\Nova\Fields\DateTime;
-use Laravel\Nova\Fields\BelongsTo;
 use App\Models\CatalystLedgerSnapshot;
+use Illuminate\Http\Request;
+use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\DateTime;
+use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Number;
+use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class CatalystLedgerSnapshots extends Resource
 {
-
     public static $group = 'Catalyst';
+
     /**
      * The model the resource corresponds to.
      *
@@ -36,13 +35,12 @@ class CatalystLedgerSnapshots extends Resource
      * @var array
      */
     public static $search = [
-        'id,snapshot_id','fund_id,slot',
+        'id,snapshot_id', 'fund_id,slot',
     ];
 
     /**
      * Get the fields displayed by the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function fields(NovaRequest $request)
@@ -52,7 +50,7 @@ class CatalystLedgerSnapshots extends Resource
             Text::make('Snapshot ID', 'snapshot_id'),
             Number::make('Size'),
             Text::make('Epoch')->sortable(),
-            BelongsTo::make('Fund', 'fund', Funds::class), 
+            BelongsTo::make('Fund', 'fund', Funds::class),
             Text::make('Slot')->sortable(),
             DateTime::make('Created At', 'created_at')->sortable(),
         ];
@@ -61,7 +59,6 @@ class CatalystLedgerSnapshots extends Resource
     /**
      * Get the cards available for the request.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function cards(NovaRequest $request)
@@ -72,7 +69,6 @@ class CatalystLedgerSnapshots extends Resource
     /**
      * Get the filters available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function filters(NovaRequest $request)
@@ -83,7 +79,6 @@ class CatalystLedgerSnapshots extends Resource
     /**
      * Get the lenses available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function lenses(NovaRequest $request)
@@ -94,7 +89,6 @@ class CatalystLedgerSnapshots extends Resource
     /**
      * Get the actions available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function actions(NovaRequest $request)

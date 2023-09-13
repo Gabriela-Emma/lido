@@ -2,9 +2,6 @@
 
 namespace App\Models\Traits;
 
-use App\Models\Rating;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-
 trait HasRatings
 {
     public function getTotalRatingsPercentDataAttribute()

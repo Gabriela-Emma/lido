@@ -3,16 +3,16 @@
 namespace App\Jobs;
 
 use App\Models\Assessment;
+use App\Models\Discussion;
+use App\Models\Flag;
 use App\Models\Proposal;
+use App\Repositories\CommentRepository;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Collection;
-use App\Models\Discussion;
-use App\Models\Flag;
-use App\Repositories\CommentRepository;
 
 class SyncF10ReviewsJob implements ShouldQueue
 {
@@ -33,13 +33,13 @@ class SyncF10ReviewsJob implements ShouldQueue
      */
     public function handle(): void
     {
-        $this->reviews->each(function($review) {
+        $this->reviews->each(function ($review) {
             $proposal = Proposal::with('fund')
-            ->whereRelation('metas', 'content', $review->proposal_id)
-            ->whereRelation('metas', 'key', 'ideascale_id')
-            ->first();
+                ->whereRelation('metas', 'content', $review->proposal_id)
+                ->whereRelation('metas', 'key', 'ideascale_id')
+                ->first();
 
-            if (!$proposal instanceof Proposal) {
+            if (! $proposal instanceof Proposal) {
                 return;
             }
 
@@ -49,8 +49,8 @@ class SyncF10ReviewsJob implements ShouldQueue
 
             $metas = [
                 'ranking' => $review->ranking,
-                'moderated' => !!$review->moderated,
-                'allocated' => !!$review->allocated,
+                'moderated' => (bool) $review->moderated,
+                'allocated' => (bool) $review->allocated,
                 'assessor_id' => $review->assessor,
                 'assessor_level' => $review->assessor_level,
                 'catalyst_record_id' => $review->row_id,
@@ -114,7 +114,7 @@ class SyncF10ReviewsJob implements ShouldQueue
             'status' => 'published',
             'rating' => [
                 'rating' => $assessmentRating,
-                'status' => 'published'
+                'status' => 'published',
             ],
             'meta' => $metas,
         ];
@@ -124,9 +124,9 @@ class SyncF10ReviewsJob implements ShouldQueue
         );
 
         // create flags
-        $flags = collect( $review->flags );
-        if ( $flags->isNotEmpty() ) {
-            $flags->each(function($f) use($assessment) {
+        $flags = collect($review->flags);
+        if ($flags->isNotEmpty()) {
+            $flags->each(function ($f) use ($assessment) {
                 $flag = new Flag;
                 $flag->type = $f['flag_type'];
                 $flag->score = $f['score'];

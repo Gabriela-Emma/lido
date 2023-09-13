@@ -32,5 +32,4 @@ class CreateVotingPowerSnapshotJob implements ShouldQueue
             'catalyst_snapshot_id' => $this->snapshot->id,
         ]);
     }
-    
 }

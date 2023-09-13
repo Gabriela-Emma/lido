@@ -27,7 +27,7 @@ class AnswerResponse extends Model implements IHasMetaData
     ];
 
     protected $fillable = [
-        'context_id', 'context_type','craeted_at'
+        'context_id', 'context_type', 'craeted_at',
     ];
 
     /**

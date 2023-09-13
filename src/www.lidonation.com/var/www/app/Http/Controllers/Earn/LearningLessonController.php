@@ -107,9 +107,10 @@ class LearningLessonController extends Controller
 
     public function getLessons(LearningTopic $learningTopic)
     {
-        if (auth()?->user() && !auth()->user()->hasRole('admin')) {
+        if (auth()?->user() && ! auth()->user()->hasRole('admin')) {
             App::setLocale('sw');
         }
+
         return LearningLessonData::collection($learningTopic->learningLessons()->get());
     }
 

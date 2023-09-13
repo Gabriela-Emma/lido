@@ -65,7 +65,6 @@ class Discussion extends Model implements Interfaces\IHasMetaData
         return $this->belongsTo(Review::class, 'model_id');
     }
 
-
     public function proposal(): BelongsTo
     {
         return $this->belongsTo(Proposal::class, 'model_id');

@@ -120,7 +120,7 @@ Route::get('/ccv4/check-eligibility', function (Request $request) {
 
     // check user by account and log them in
     $user = User::where('wallet_stake_address', $stake_address)->first();
-    !is_null($user) ? Auth::login($user) : '';
+    ! is_null($user) ? Auth::login($user) : '';
 
     // build response based on ballots casted
     $response = [];
@@ -138,7 +138,7 @@ Route::get('/ccv4/check-eligibility', function (Request $request) {
         $withdrawals = Withdrawal::with(['txs', 'metas'])
             ->whereRelation('metas', ['key' => 'withdrawal_tx'])
             ->withWhereHas('rewards', function ($query) use ($rewards) {
-                $query->whereIn('id',  $rewards->get()->pluck('id'));
+                $query->whereIn('id', $rewards->get()->pluck('id'));
             })
             ->get();
 
@@ -165,7 +165,7 @@ Route::post('/ccv4/claim-rewards', function (Request $request) {
         $error = [
             'name' => 'Giveaway Error',
             'message' => 'Giveaway error, try again later.',
-            'type' => 'error'
+            'type' => 'error',
         ];
 
         return json_encode($error);
@@ -181,12 +181,12 @@ Route::post('/ccv4/claim-rewards', function (Request $request) {
 
     $ballots = $ballots->get();
     if ($ballots->isNotEmpty()) {
-        if (!$user instanceof User) {
+        if (! $user instanceof User) {
             $user = new User;
             $user->name = $request->account;
             $user->wallet_stake_address = $request->account;
             $user->wallet_address = $request->wallet_address;
-            $user->email = $request->email ?? substr($request->account, -4) . '@anonymous.com';
+            $user->email = $request->email ?? substr($request->account, -4).'@anonymous.com';
             $user->password = Hash::make(Str::random(10));
             $user->save();
         }
@@ -197,7 +197,7 @@ Route::post('/ccv4/claim-rewards', function (Request $request) {
     $rewards = [];
 
     // for each rule in the giveaway
-    $giveaway->rules?->each(function ($rule) use ($user, $ballots, &$rewards, $giveaway) {
+    $giveaway->rules?->each(function ($rule) use ($user, &$rewards, $giveaway) {
 
         // issue a reward to the user if one hasn't already been issued
         $reward = Reward::where(
@@ -207,7 +207,7 @@ Route::post('/ccv4/claim-rewards', function (Request $request) {
             ->where('model_id', $giveaway?->id)
             ->get();
 
-        if (!$reward instanceof Reward) {
+        if (! $reward instanceof Reward) {
             $asset_name = trim($rule->subject, '.amount');
             $amount = $rule->predicate;
 
@@ -285,7 +285,7 @@ Route::group(
 
         Route::any('cardano/{relativePath?}', function (CardanoBlockfrostService $frost, Request $request, $relativePath = null) {
             $method = $request->method();
-            $uri = '/' . $relativePath;
+            $uri = '/'.$relativePath;
             $data = $request->all();
 
             return $frost->request($method, $uri, $data);
@@ -366,8 +366,10 @@ Route::prefix('catalyst-explorer')->as('catalystExplorerApi.')
         Route::get('/tallies', [CatalystTalliesController::class, 'index'])
             ->name('tallies');
 
-        Route::get('/tallies/date', [CatalystTalliesController::class, 'getUpdatedAtDate'])
-            ->name('talliesDate');
+        Route::get('/tallies/date', [CatalystTalliesController::class, 'getLastUpdated'])
+            ->name('talliesUpdatedAt');
+        Route::get('/tallies/sum', [CatalystTalliesController::class, 'getCatalystTallySum'])
+            ->name('talliesSum');
 
         Route::prefix('proposals')->as('proposals.')->group(function () {
             Route::post('/login', [CatalystExplorer\UserController::class, 'login'])->name('login');

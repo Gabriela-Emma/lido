@@ -4,9 +4,9 @@ namespace App\Console\Commands;
 
 use App\Jobs\SyncCatalystVotingPowersJob;
 use App\Models\CatalystSnapshot;
+use Illuminate\Console\Command;
 use Illuminate\Support\Fluent;
 use JsonMachine\Items;
-use Illuminate\Console\Command;
 
 class ImportCatalystSnapshotCommand extends Command
 {
@@ -19,7 +19,7 @@ class ImportCatalystSnapshotCommand extends Command
 
     /**
      * The console command description.
-    *
+     *
      * @var string
      */
     protected $description = 'Import Catalyst Snaphot voting power from a file.';
@@ -37,10 +37,11 @@ class ImportCatalystSnapshotCommand extends Command
         $snapshot = CatalystSnapshot::findOrFail($snapshot);
         if (is_null($snapshot)) {
             $this->error('Snapshot is required.');
+
             return;
         }
 
-        foreach($votingPowers as $vp) {
+        foreach ($votingPowers as $vp) {
             $vp = new Fluent($vp);
 
             dispatch(new SyncCatalystVotingPowersJob(

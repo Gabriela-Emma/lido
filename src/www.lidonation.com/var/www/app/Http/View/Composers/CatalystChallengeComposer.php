@@ -28,8 +28,7 @@ class CatalystChallengeComposer
                 ->route('fund')
         );
 
-
-        if (!$fund instanceof Fund ) {
+        if (! $fund instanceof Fund) {
             abort(404);
         }
 
@@ -59,7 +58,6 @@ class CatalystChallengeComposer
             ->whereNotNull('funded_at')
             ->where('fund_id', $fund->id)
             ->sum('amount_requested');
-
 
         $view->with(compact(
             'proposals',

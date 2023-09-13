@@ -56,10 +56,10 @@ abstract class Resource extends NovaResource
     }
 
     #[Pure]
- public static function getGlobalActions(): array
- {
-     return [
-         (new EditModel),
-     ];
- }
+    public static function getGlobalActions(): array
+    {
+        return [
+            (new EditModel),
+        ];
+    }
 }

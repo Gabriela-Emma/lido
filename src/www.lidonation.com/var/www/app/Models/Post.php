@@ -309,7 +309,7 @@ class Post extends Model implements HasMedia, Interfaces\IHasMetaData, Sitemapab
         return $this->created_at->formatLocalized('%b %d %Y');
     }
 
-    public function getChildrenAttribute(): Collection|null
+    public function getChildrenAttribute(): ?Collection
     {
         return self::where('parent_id', '=', $this->id)->get();
     }

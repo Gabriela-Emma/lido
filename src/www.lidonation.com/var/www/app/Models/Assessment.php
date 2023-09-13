@@ -58,10 +58,10 @@ class Assessment extends Model implements IHasMetaData
         //        'children' // cannot eager load children and parent, causes an infinite loop
     ];
 
-     /*
-     * This string will be used in notifications on what a new comment
-     * was made.
-     */
+    /*
+    * This string will be used in notifications on what a new comment
+    * was made.
+    */
     public function commentableName(): string
     {
         return $this->model?->proposal?->title ?? '';
@@ -219,7 +219,7 @@ class Assessment extends Model implements IHasMetaData
     {
         //        $array = $this->toArray();
         $proposal = collect($this->model?->model?->toSearchableArray())
-            ->only(['id', 'slug', 'title', 'users', 'fund', 'challenge', 'groups', 'funded', 'completed' ]);
+            ->only(['id', 'slug', 'title', 'users', 'fund', 'challenge', 'groups', 'funded', 'completed']);
 
         return [
             'id' => $this->id,

@@ -21,7 +21,7 @@ class MintTx extends Model implements IHasMetaData
         return '₳ '.number_format($this->amount, 0, '.', ',');
     }
 
-    public function getEpochDelegationAmountFormattedAttribute(): string|null
+    public function getEpochDelegationAmountFormattedAttribute(): ?string
     {
         if (! isset($this->meta_data?->epoch_delegation_amount)) {
             return $this->meta_data?->epoch_delegation_amount;

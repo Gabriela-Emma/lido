@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
 use App\Jobs\SyncF10ProposalCategories;
+use Illuminate\Console\Command;
 
 class SyncF10Categories extends Command
 {

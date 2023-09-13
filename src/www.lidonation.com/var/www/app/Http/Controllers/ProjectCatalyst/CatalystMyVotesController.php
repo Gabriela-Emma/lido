@@ -6,17 +6,14 @@ use App\Http\Controllers\Controller;
 use App\Models\CatalystVote;
 use App\Models\Proposal;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
-use Inertia\Inertia;
-use Inertia\Response;
 
 class CatalystMyVotesController extends Controller
 {
     // views
     public function index(Proposal $proposal)
     {
-        
-       return $proposal->vote?->first();
+
+        return $proposal->vote?->first();
 
     }
 
@@ -55,9 +52,9 @@ class CatalystMyVotesController extends Controller
         ]);
 
         // Check if the new vote is the same as the existing vote
-        if($data['vote'] == $vote->vote){
+        if ($data['vote'] == $vote->vote) {
             $vote->delete();
-        } else{
+        } else {
             $vote->content = $data['content'] ?? '';
             $vote->vote = $data['vote'];
 

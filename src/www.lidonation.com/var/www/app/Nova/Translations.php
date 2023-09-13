@@ -2,20 +2,20 @@
 
 namespace App\Nova;
 
-use Laravel\Nova\Panel;
-use App\Models\Translation;
-use Laravel\Nova\Fields\ID;
-use Illuminate\Http\Request;
 use App\Invokables\GetModels;
-use Laravel\Nova\Fields\Date;
-use Laravel\Nova\Fields\Text;
-use App\Nova\Filters\Language;
-use Laravel\Nova\Fields\Select;
+use App\Models\Translation;
 use App\Nova\Actions\AddMetaData;
-use Laravel\Nova\Fields\Markdown;
-use App\Nova\Actions\EditMetaData;
-use Laravel\Nova\Fields\BelongsTo;
 use App\Nova\Actions\AttachTranslation;
+use App\Nova\Actions\EditMetaData;
+use App\Nova\Filters\Language;
+use Illuminate\Http\Request;
+use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\Date;
+use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Markdown;
+use Laravel\Nova\Fields\Select;
+use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Panel;
 
 class Translations extends Resource
 {

@@ -2,18 +2,18 @@
 
 namespace App\Nova;
 
-use App\Models\Withdrawal;
-use Laravel\Nova\Fields\ID;
-use Illuminate\Http\Request;
-use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\Select;
-use Laravel\Nova\Fields\HasMany;
 use App\Invokables\TruncateValue;
+use App\Models\Withdrawal;
 use App\Nova\Actions\AddMetaData;
-use Laravel\Nova\Fields\DateTime;
-use App\Nova\Actions\EditMetaData;
-use Laravel\Nova\Fields\BelongsTo;
 use App\Nova\Actions\CacheNftImage;
+use App\Nova\Actions\EditMetaData;
+use Illuminate\Http\Request;
+use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\DateTime;
+use Laravel\Nova\Fields\HasMany;
+use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Select;
+use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Withdrawals extends Resource
@@ -78,7 +78,7 @@ class Withdrawals extends Resource
                 ]),
 
             DateTime::make(__('Created At'), 'created_at')
-            ->filterable(),
+                ->filterable(),
 
             Text::make('tx')
                 ->filterable(

@@ -25,13 +25,12 @@ class GenerateProposalImagesJob implements ShouldQueue
     }
 
     /**
-     * Execute the job.
+     * Execute the job
      *
-     * @return void
      *
      * @throws CouldNotTakeBrowsershot
      */
-    public function handle()
+    public function handle(): void
     {
         collect(config('laravellocalization.supportedLocales'))->keys()
             ->each(fn ($locale) => (new GenerateProposalImage)($this->proposal, $locale, true));

@@ -39,7 +39,7 @@ class CatalystVotes extends Resource
      * @var array
      */
     public static $search = [
-        'id'
+        'id',
     ];
 
     /**
@@ -67,19 +67,19 @@ class CatalystVotes extends Resource
      * Get the actions available for the resource.
      */
     #[Pure]
- public function actions(Request $request): array
- {
-     return [
-         (new AddMetaData),
-         (new EditMetaData(CatalystUser::class)),
-         (new ValidateClaims),
-     ];
- }
+    public function actions(Request $request): array
+    {
+        return [
+            (new AddMetaData),
+            (new EditMetaData(CatalystUser::class)),
+            (new ValidateClaims),
+        ];
+    }
 
- public function lenses(NovaRequest $request)
- {
-     return [
-         (new PendingClaims),
-     ];
- }
+    public function lenses(NovaRequest $request)
+    {
+        return [
+            (new PendingClaims),
+        ];
+    }
 }

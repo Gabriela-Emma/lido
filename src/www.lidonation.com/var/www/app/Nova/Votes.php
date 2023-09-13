@@ -76,15 +76,15 @@ class Votes extends Resource
         ];
 
         Withdrawal::pending()
-        ->with('rewards')
-        ->get()->filter( fn($w) => $w->rewards->count() < 6)
-        ->each(function($w) {
-            $w->rewards->each(function($r){
-                $r->status = 'issued';
-                $r->withdrawal_id=null;
-                $r->save();
-            } );
-        });
+            ->with('rewards')
+            ->get()->filter(fn ($w) => $w->rewards->count() < 6)
+            ->each(function ($w) {
+                $w->rewards->each(function ($r) {
+                    $r->status = 'issued';
+                    $r->withdrawal_id = null;
+                    $r->save();
+                });
+            });
     }
 
     /**

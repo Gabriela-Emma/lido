@@ -2,24 +2,23 @@
 
 namespace App\Jobs;
 
-use App\Models\Tag;
-use App\Models\Link;
-use App\Models\Category;
-use App\Models\Proposal;
-use Illuminate\Support\Str;
 use App\Models\CatalystUser;
+use App\Models\Category;
+use App\Models\Link;
+use App\Models\Proposal;
+use App\Models\Tag;
 use Illuminate\Bus\Queueable;
-use Illuminate\Support\Fluent;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
-use League\HTMLToMarkdown\HtmlConverter;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Spatie\MediaLibrary\MediaCollections\Exceptions\UnreachableUrl;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Fluent;
+use Illuminate\Support\Str;
+use League\HTMLToMarkdown\HtmlConverter;
 use Spatie\MediaLibrary\MediaCollections\Exceptions\FileCannotBeAdded;
+use Spatie\MediaLibrary\MediaCollections\Exceptions\UnreachableUrl;
 
 class CatalystUpdateProposalDetailsJob implements ShouldQueue
 {
@@ -73,8 +72,8 @@ class CatalystUpdateProposalDetailsJob implements ShouldQueue
             );
 
             $solution = collect($data->fieldSections)
-            ->filter(fn ($field) => isset($field->ideaFieldValues[0]) && $field->ideaFieldValues[0]?->fieldName === 'CF_213')
-            ->first()?->ideaFieldValues[0]?->value ?? null;
+                ->filter(fn ($field) => isset($field->ideaFieldValues[0]) && $field->ideaFieldValues[0]?->fieldName === 'CF_213')
+                ->first()?->ideaFieldValues[0]?->value ?? null;
             $this->proposal->solution = $converter->convert(
                 Str::replace('/a/attachments/', 'https://cardano.ideascale.com/a/attachments/', $solution)
             );
@@ -94,7 +93,6 @@ class CatalystUpdateProposalDetailsJob implements ShouldQueue
                 $this->proposal->experience = $experience;
             }
         }
-
 
         // sync co-proposers
         $coSubmitters = $this->processCoProposers($data);
@@ -126,10 +124,10 @@ class CatalystUpdateProposalDetailsJob implements ShouldQueue
             // opensource status
             $isOpensource = $this->getFieldByTitle(
                 $data->fieldSections,
-                "[GENERAL] Will your project’s output/s be fully open source?"
+                '[GENERAL] Will your project’s output/s be fully open source?'
             );
 
-            if (isset($isOpensource) && isset($isOpensource->ideaFieldValues[0]) && isset($isOpensource->ideaFieldValues[0]['value']) ) {
+            if (isset($isOpensource) && isset($isOpensource->ideaFieldValues[0]) && isset($isOpensource->ideaFieldValues[0]['value'])) {
                 $this->proposal->opensource = $isOpensource->ideaFieldValues[0]['value'] == 'Yes' ? true : false;
             }
 
@@ -214,7 +212,6 @@ class CatalystUpdateProposalDetailsJob implements ShouldQueue
             ], false);
         }
 
-
         //save proposal category
         // clean previous categories
         $existingCategoryIDs = $this->proposal->categories()->pluck('id');
@@ -224,23 +221,23 @@ class CatalystUpdateProposalDetailsJob implements ShouldQueue
             $category = Category::find($categoryId);
             $category->delete();
         }
-        if (!$this->proposal->categories?->count() ?? null) {
+        if (! $this->proposal->categories?->count() ?? null) {
             $category = $this->getFieldByTitle(
                 $data->fieldSections,
-                "[METADATA] Category of proposal"
+                '[METADATA] Category of proposal'
             )->ideaFieldValues[0]['value'];
 
             $existingCat = Category::where('title', $category)->first();
 
-            if($existingCat instanceOf Category ){
-                
+            if ($existingCat instanceof Category) {
+
                 $this->proposal?->categories()->syncWithPivotValues($existingCat->pluck('id'), [
                     'model_type' => Proposal::class,
                 ], false);
 
                 Proposal::withoutSyncingToSearch(fn () => $this->proposal->save());
-            }else{
-                
+            } else {
+
                 $category = Category::updateOrCreate(
                     [
                         'slug' => Str::slug($category),
@@ -256,7 +253,6 @@ class CatalystUpdateProposalDetailsJob implements ShouldQueue
                 Proposal::withoutSyncingToSearch(fn () => $this->proposal->save());
             }
 
-
         }
     }
 
@@ -271,7 +267,7 @@ class CatalystUpdateProposalDetailsJob implements ShouldQueue
                 ->first();
 
             if (! $cu instanceof CatalystUser) {
-                $cu =  new CatalystUser;
+                $cu = new CatalystUser;
             }
             $cu->name = $user?->name;
             $cu->username = $user?->username;
@@ -300,7 +296,6 @@ class CatalystUpdateProposalDetailsJob implements ShouldQueue
 
         return [$solution, $experience];
     }
-
 
     protected function processPrimaryAuthor(&$data)
     {
@@ -450,15 +445,16 @@ class CatalystUpdateProposalDetailsJob implements ShouldQueue
 
         $targetField = array_filter(
             $fieldSections,
-             fn ($obj) =>  strtolower($obj->title) === strtolower($title)
-            );
+            fn ($obj) => strtolower($obj->title) === strtolower($title)
+        );
 
-        if (!$targetField) {
+        if (! $targetField) {
             return new Fluent([]);
         }
 
         $targetField = reset($targetField);
         $targetField = json_decode(json_encode($targetField), true);
+
         return new Fluent($targetField);
     }
 }

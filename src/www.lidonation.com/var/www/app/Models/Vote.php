@@ -28,10 +28,10 @@ class Vote extends Model
     }
 
     #[Pure]
- public function getSubmittedAttribute(): bool
- {
-     return $this->status === 'submitted';
- }
+    public function getSubmittedAttribute(): bool
+    {
+        return $this->status === 'submitted';
+    }
 
     /**
      * The "booted" method of the model.

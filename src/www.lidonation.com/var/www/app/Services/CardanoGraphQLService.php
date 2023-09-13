@@ -185,7 +185,7 @@ class CardanoGraphQLService
      *
      * @throws GuzzleException
      */
-    public function getPolicyMints(?string $policyId = null, $withAggregate = false): Collection|array
+    public function getPolicyMints(string $policyId = null, $withAggregate = false): Collection|array
     {
         $policyId = $policyId ?? config('cardano.mint.policies.phuffycoin');
         $query = (new TokenMintQuery)($policyId);
@@ -215,7 +215,7 @@ class CardanoGraphQLService
      *
      * @throws GuzzleException
      */
-    public function getStakingRewardTxs(?User $user = null, $withAggregate = false): Collection|array|null
+    public function getStakingRewardTxs(User $user = null, $withAggregate = false): Collection|array|null
     {
         $user = $user ?? auth()->user();
         if (! $user?->wallet_stake_address) {
@@ -251,7 +251,7 @@ class CardanoGraphQLService
      *
      * @throws GuzzleException
      */
-    public function getUtxosBalance(array $addresses = null, ?User $user = null): int
+    public function getUtxosBalance(array $addresses = null, User $user = null): int
     {
         if (! is_array($addresses)) {
             $user = $user ?? auth()->user();
@@ -273,7 +273,7 @@ class CardanoGraphQLService
      *
      * @throws GuzzleException
      */
-    public function getAddressTxs(array $addresses = null, ?User $user = null, $withAggregate = false): Collection|array
+    public function getAddressTxs(array $addresses = null, User $user = null, $withAggregate = false): Collection|array
     {
         if (! is_array($addresses)) {
             $user = $user ?? auth()->user();
@@ -333,7 +333,7 @@ class CardanoGraphQLService
      *
      * @throws GuzzleException
      */
-    public function getAddressesTokenUtxos(string $policyId, array $addresses = null, ?User $user = null, $withAggregate = false): Collection|array
+    public function getAddressesTokenUtxos(string $policyId, array $addresses = null, User $user = null, $withAggregate = false): Collection|array
     {
         if (! is_array($addresses)) {
             // get all address
@@ -396,7 +396,7 @@ class CardanoGraphQLService
      *
      * @throws GuzzleException
      */
-    public function getStakeAddressTokenTxs(?User $user = null, ?string $policyId = null, $withAggregate = false): Collection|array
+    public function getStakeAddressTokenTxs(User $user = null, string $policyId = null, $withAggregate = false): Collection|array
     {
         $user = $user ?? auth()->user();
         $policyId = $policyId ?? config('cardano.mint.policies.phuffycoin');

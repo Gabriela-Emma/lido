@@ -2,21 +2,19 @@
 
 namespace App\Http\Controllers\ProjectCatalyst;
 
-use App\Models\Tag;
+use App\Enums\CatalystExplorerQueryParams;
+use App\Http\Controllers\Controller;
+use App\Models\Category;
 use App\Models\Fund;
+use App\Models\Proposal;
+use App\Models\Tag;
+use App\Repositories\FundRepository;
+use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Fluent;
 use Inertia\Inertia;
 use Inertia\Response;
-use App\Models\Category;
-use App\Models\Proposal;
-use Illuminate\Http\Request;
-use Illuminate\Support\Fluent;
 use Meilisearch\Endpoints\Indexes;
-use App\Http\Controllers\Controller;
-use App\Repositories\FundRepository;
-use App\Enums\CatalystExplorerQueryParams;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Pagination\LengthAwarePaginator;
-use phpDocumentor\Reflection\PseudoTypes\ArrayShape;
 
 class CatalystVoterToolController extends Controller
 {
@@ -30,13 +28,13 @@ class CatalystVoterToolController extends Controller
 
     protected $currentPage;
 
-    protected  $currentFilterGroup;
+    protected $currentFilterGroup;
 
     protected $filterGroupLimit;
 
     protected int $limit = 24;
 
-    public  $searchGroup = null;
+    public $searchGroup = null;
 
     public $perPage;
 
@@ -50,14 +48,11 @@ class CatalystVoterToolController extends Controller
 
     public $taxonomy;
 
-
-
     /**
      * Display a listing of the resource.
      *
      * @return Response
      */
-
     public function __construct()
     {
         $this->fund = app(FundRepository::class)
@@ -81,7 +76,7 @@ class CatalystVoterToolController extends Controller
 
         return Inertia::render('VoterTool', [
             'search' => $this->search,
-            'currentPage' =>  $this->currentPage,
+            'currentPage' => $this->currentPage,
             'perPage' => $this->limit,
             'challenges' => $this->challenges,
             'challengeFilter' => intval($this->challengeFilter),
@@ -100,18 +95,16 @@ class CatalystVoterToolController extends Controller
 
     protected function query()
     {
-        if (!$this->search && !$this->searchGroup && !$this->challengeFilter && !$this->categoriesFilter && !$this->tagsFilter) {
+        if (! $this->search && ! $this->searchGroup && ! $this->challengeFilter && ! $this->categoriesFilter && ! $this->tagsFilter) {
             return null;
         }
 
         $filters = $this->getUserFilters($this->searchGroup);
         if (isset($filters['filters'])) {
             $_options = $filters;
-        } else 
-            if ($filters == null) {
+        } elseif ($filters == null) {
             return;
         }
-
 
         $this->searchBuilder = Proposal::search(
             $this->search,
@@ -120,7 +113,7 @@ class CatalystVoterToolController extends Controller
                     $options['filter'] = implode(' AND ', $_options['filters']);
                 }
 
-                $options['attributesToRetrieve'] =  [
+                $options['attributesToRetrieve'] = [
                     'id',
                     'amount_requested',
                     'amount_received',
@@ -178,14 +171,14 @@ class CatalystVoterToolController extends Controller
             $response->limit,
             $this->currentPage,
             [
-                'pageName' => 'p'
+                'pageName' => 'p',
             ]
         );
 
         $this->proposals = $pagination->onEachSide(1)->toArray();
     }
 
-    function getUserFilters($param)
+    public function getUserFilters($param)
     {
         $_options = [
             'filters' => ["fund.id = {$this->fund?->id}"],
@@ -193,15 +186,15 @@ class CatalystVoterToolController extends Controller
         ];
 
         if ($param == 'firstTimers') {
-            $_options['filters'][] = "users.first_timer = true";
+            $_options['filters'][] = 'users.first_timer = true';
         }
 
         if ($param == 'oneTimers') {
-            $_options['filters'][] = "users.proposals_count = 1";
+            $_options['filters'][] = 'users.proposals_count = 1';
         }
 
         if ($param == 'completedProposals') {
-            $_options['filters'][] = "users.proposals_completed > 0";
+            $_options['filters'][] = 'users.proposals_completed > 0';
             $_options['sort'][] = 'users.proposals_completed:asc';
         }
 
@@ -210,11 +203,11 @@ class CatalystVoterToolController extends Controller
         }
 
         if ($param == 'over250K') {
-            $_options['filters'][] = "amount_requested >= 250000";
+            $_options['filters'][] = 'amount_requested >= 250000';
         }
 
         if ($param == 'mediumProposals') {
-            $_options['filters'][] = "(amount_requested 75000 TO 250000)";
+            $_options['filters'][] = '(amount_requested 75000 TO 250000)';
         }
 
         if ($param == 'impactProposals') {
@@ -254,74 +247,74 @@ class CatalystVoterToolController extends Controller
 
     public function getGroupFilters()
     {
-        $filters =   collect(
+        $filters = collect(
             [
                 [
-                    "title" => "Quick Pitches",
-                    "description" => "Proposals with Quick Pitches.",
-                    "param" => "quickPitchProposals",
-                    "count" => null
+                    'title' => 'Quick Pitches',
+                    'description' => 'Proposals with Quick Pitches.',
+                    'param' => 'quickPitchProposals',
+                    'count' => null,
                 ],
                 [
-                    "title" =>  "Completed Proposals",
-                    "description" =>  "From teams with completed Proposals",
-                    "param" =>  "completedProposals",
-                    "count" => null
+                    'title' => 'Completed Proposals',
+                    'description' => 'From teams with completed Proposals',
+                    'param' => 'completedProposals',
+                    'count' => null,
                 ],
                 [
-                    "title" =>  "Opensource",
-                    "description" =>  "Opensource projects",
-                    "param" =>  "opensource",
-                    "count" => null
+                    'title' => 'Opensource',
+                    'description' => 'Opensource projects',
+                    'param' => 'opensource',
+                    'count' => null,
                 ],
                 [
-                    "title" => "Ideafest Proposals",
-                    "description" => "Projects presented at Ideafest!",
-                    "param" => "ideafestProposals",
-                    "count" => null
+                    'title' => 'Ideafest Proposals',
+                    'description' => 'Projects presented at Ideafest!',
+                    'param' => 'ideafestProposals',
+                    'count' => null,
                 ],
                 [
-                    "title" =>  "Impact Proposals",
-                    "description" =>  "Proposals with Impact",
-                    "param" =>  "impactProposals",
-                    "count" => null
+                    'title' => 'Impact Proposals',
+                    'description' => 'Proposals with Impact',
+                    'param' => 'impactProposals',
+                    'count' => null,
                 ],
                 [
-                    "title" =>  "First Timers",
-                    "description" =>  "Proposals from first time members!",
-                    "param" =>  "firstTimers",
-                    "count" => null
+                    'title' => 'First Timers',
+                    'description' => 'Proposals from first time members!',
+                    'param' => 'firstTimers',
+                    'count' => null,
                 ],
                 [
-                    "title" =>  "One timers",
-                    "description" =>  "Members with only 1 proposal",
-                    "param" =>  "oneTimers",
-                    "count" => null
+                    'title' => 'One timers',
+                    'description' => 'Members with only 1 proposal',
+                    'param' => 'oneTimers',
+                    'count' => null,
                 ],
                 [
-                    "title" =>  "Small Cap",
-                    "description" =>  "Proposals with budgets below 75K",
-                    "param" =>  "below75k",
-                    "count" => null
+                    'title' => 'Small Cap',
+                    'description' => 'Proposals with budgets below 75K',
+                    'param' => 'below75k',
+                    'count' => null,
                 ],
                 [
-                    "title" =>  "Medium Cap",
-                    "description" =>  "Proposals with budgets between 75K & 250K",
-                    "param" =>  "mediumProposals",
-                    "count" => null
+                    'title' => 'Medium Cap',
+                    'description' => 'Proposals with budgets between 75K & 250K',
+                    'param' => 'mediumProposals',
+                    'count' => null,
                 ],
                 [
-                    "title" =>  "Large Cap",
-                    "description" =>  "Proposals with budgets over 250K",
-                    "param" =>  "over250K",
-                    "count" => null
+                    'title' => 'Large Cap',
+                    'description' => 'Proposals with budgets over 250K',
+                    'param' => 'over250K',
+                    'count' => null,
                 ],
                 [
-                    "title" =>  "Women Proposals",
-                    "description" =>  "Proposals By Women.",
-                    "param" =>  "womanProposals",
-                    "count" => null
-                ]
+                    'title' => 'Women Proposals',
+                    'description' => 'Proposals By Women.',
+                    'param' => 'womanProposals',
+                    'count' => null,
+                ],
             ]
         );
         $offset = (($this->currentFilterGroup ?? 1) - 1) * $this->filterGroupLimit;
@@ -350,9 +343,11 @@ class CatalystVoterToolController extends Controller
                 if (isset($option_['filters']) && count($option_['filters']) > 0) {
                     $options['filter'] = implode(' AND ', $option_['filters']);
                 }
+
                 return $index->search($query, $options);
             }
         )->raw();
+
         return $proposals['estimatedTotalHits'];
     }
 
@@ -361,10 +356,11 @@ class CatalystVoterToolController extends Controller
         $params = $request->input();
         $counts = collect([]);
 
-        foreach ($params as  $param) {
+        foreach ($params as $param) {
             $count = $this->getProposalCount($param);
             $counts->put($param, $count);
         }
+
         return $counts;
     }
 
@@ -375,13 +371,13 @@ class CatalystVoterToolController extends Controller
         if ($tax == 'Tag') {
             return
                 Tag::whereRelation('proposals.fund.parent', 'id', $this->fund->id)
-                ->withCount(['proposals' => fn ($q) => $q->whereRelation('fund.parent', 'id', $this->fund->id)])
-                ->fastPaginate($limit, ['*'], 'p')->setPath('/')->onEachSide(1)->toArray();
+                    ->withCount(['proposals' => fn ($q) => $q->whereRelation('fund.parent', 'id', $this->fund->id)])
+                    ->fastPaginate($limit, ['*'], 'p')->setPath('/')->onEachSide(1)->toArray();
         } else {
             return
                 Category::whereRelation('proposals.fund.parent', 'id', $this->fund->id)
-                ->withCount(['proposals' => fn ($q) => $q->whereRelation('fund.parent', 'id', $this->fund->id)])
-                ->fastPaginate($limit, ['*'], 'p')->setPath('/')->onEachSide(1)->toArray();
+                    ->withCount(['proposals' => fn ($q) => $q->whereRelation('fund.parent', 'id', $this->fund->id)])
+                    ->fastPaginate($limit, ['*'], 'p')->setPath('/')->onEachSide(1)->toArray();
         }
     }
 }

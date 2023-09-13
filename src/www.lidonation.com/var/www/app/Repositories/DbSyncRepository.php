@@ -14,8 +14,8 @@ class DbSyncRepository extends Repository
         parent::__construct($model);
     }
 
-       protected function handleException(\Exception $e)
-       {
-           report($e);
-       }
+    protected function handleException(\Exception $e)
+    {
+        report($e);
+    }
 }

@@ -21,7 +21,6 @@ class BookmarkItems extends Resource
      */
     public static $model = \App\Models\BookmarkItem::class;
 
-
     public static $perPageViaRelationship = 25;
 
     /**
@@ -37,26 +36,25 @@ class BookmarkItems extends Resource
      * @var array
      */
     public static $search = [
-        'id', 'title'
+        'id', 'title',
     ];
 
     /**
      * Get the fields displayed by the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function fields(NovaRequest $request)
     {
         return [
             ID::make()->sortable(),
-            Text::make("Title")->sortable(),
+            Text::make('Title')->sortable(),
             BelongsTo::make('Bookmark', 'collection', BookmarkCollections::class)->searchable(),
             Markdown::make('Content'),
             Text::make('Link')->sortable(),
             DateTime::make('Created At')->sortable(),
             MorphTo::make('Bookmarkable', 'model')->types([
-                Proposals::class
+                Proposals::class,
             ])->searchable(),
         ];
     }
@@ -64,7 +62,6 @@ class BookmarkItems extends Resource
     /**
      * Get the cards available for the request.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function cards(NovaRequest $request)
@@ -75,7 +72,6 @@ class BookmarkItems extends Resource
     /**
      * Get the filters available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function filters(NovaRequest $request)
@@ -86,7 +82,6 @@ class BookmarkItems extends Resource
     /**
      * Get the lenses available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function lenses(NovaRequest $request)
@@ -97,7 +92,6 @@ class BookmarkItems extends Resource
     /**
      * Get the actions available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function actions(NovaRequest $request)

@@ -11,7 +11,7 @@
 
     @env('production')
         <!-- Cloudflare Web Analytics -->
-        <script defer src='//static.cloudflareinsights.com/beacon.min.js'
+        <script defer src='https://static.cloudflareinsights.com/beacon.min.js'
                 data-cf-beacon='{"token": "{{config('services.cloudflare.token')}}"}'></script>
 
         <!-- Fathom - beautiful, simple website analytics  -->

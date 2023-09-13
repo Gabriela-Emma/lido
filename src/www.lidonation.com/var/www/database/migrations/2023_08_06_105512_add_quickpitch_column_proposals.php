@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('proposals', function(Blueprint $table){
+        Schema::table('proposals', function (Blueprint $table) {
             $table->string('quickpitch')->nullable();
             $table->integer('quickpitch_length')->nullable();
         });

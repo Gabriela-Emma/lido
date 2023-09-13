@@ -61,7 +61,7 @@ class PhuffycoinService
         return $delegations;
     }
 
-    public function getCohortHighestDelegatedAmount(int $epoch): int|null
+    public function getCohortHighestDelegatedAmount(int $epoch): ?int
     {
         return $this->getCohortDelegations($epoch)->sortByDesc('amount')->first()?->amount ?? null;
     }
@@ -131,13 +131,13 @@ class PhuffycoinService
      * @throws GuzzleException
      */
     #[NoReturn]
- public function submitPhuffyVote(Vote $vote)
- {
-     $this->generateVoteDraft($vote);
-     $this->generatePhuffyVoteTx($vote);
-     $this->signVoteTransaction($vote);
-     $this->submitVoteTransaction($vote);
- }
+    public function submitPhuffyVote(Vote $vote)
+    {
+        $this->generateVoteDraft($vote);
+        $this->generatePhuffyVoteTx($vote);
+        $this->signVoteTransaction($vote);
+        $this->submitVoteTransaction($vote);
+    }
 
     /**
      * @throws ErrorException
@@ -468,154 +468,154 @@ class PhuffycoinService
      * @throws GuzzleException
      */
     #[NoReturn]
- protected function generatePhuffyVoteTx(Vote &$vote)
- {
-     // args
-     $tokenPhuffyName = config('cardano.mint.tokens.phuffy_coin.name');
-     $phuffyPolicyId = config('cardano.mint.policies.phuffycoin');
+    protected function generatePhuffyVoteTx(Vote &$vote)
+    {
+        // args
+        $tokenPhuffyName = config('cardano.mint.tokens.phuffy_coin.name');
+        $phuffyPolicyId = config('cardano.mint.policies.phuffycoin');
 
-     $tokenMajiName = config('cardano.mint.tokens.maji_coin.name');
-     $majiPolicyId = config('cardano.mint.policies.maji');
+        $tokenMajiName = config('cardano.mint.tokens.maji_coin.name');
+        $majiPolicyId = config('cardano.mint.policies.maji');
 
-     $metadataFile = "/data/mint/wallets/votes/{$vote->id}/metadata.json";
+        $metadataFile = "/data/mint/wallets/votes/{$vote->id}/metadata.json";
 
-     // mint treasury amount
-     $mintAddress = config('cardano.mint.payment-address');
-     $mintUtxo = $this->getMintInput();
+        // mint treasury amount
+        $mintAddress = config('cardano.mint.payment-address');
+        $mintUtxo = $this->getMintInput();
 
-     // get utxos
-     [$depositPhuffyUtxos, $depositUtxos] = $this->getVoteUtxos($vote);
+        // get utxos
+        [$depositPhuffyUtxos, $depositUtxos] = $this->getVoteUtxos($vote);
 
-     // balances
-     $depositTxHashAndTxIndex = $depositUtxos->keys()->first();
-     $depositWalletAdaBalance = $depositUtxos->sum(fn ($utxo) => $utxo->value->lovelace);
-     $depositWalletPhuffyBalance = $depositPhuffyUtxos->sum('quantity');
+        // balances
+        $depositTxHashAndTxIndex = $depositUtxos->keys()->first();
+        $depositWalletAdaBalance = $depositUtxos->sum(fn ($utxo) => $utxo->value->lovelace);
+        $depositWalletPhuffyBalance = $depositPhuffyUtxos->sum('quantity');
 
-     // get current slot
-     $tip = static::getCurrentTip();
+        // get current slot
+        $tip = static::getCurrentTip();
 
-     // dusts, fees and minimums
-     $fee = $this->calculateVoteTransactionFee($vote);
+        // dusts, fees and minimums
+        $fee = $this->calculateVoteTransactionFee($vote);
 
-     $minUtxoLovelaces = (int) ceil(((mb_strlen($tokenMajiName) - 1) / 8) * 37037 + 1444443);
+        $minUtxoLovelaces = (int) ceil(((mb_strlen($tokenMajiName) - 1) / 8) * 37037 + 1444443);
 
-     // mint deposit
-     $governorDepositAddr = config('cardano.mint.addresses.governor');
+        // mint deposit
+        $governorDepositAddr = config('cardano.mint.addresses.governor');
 
-     // tx change to mint treasury
-     $change = ($mintUtxo->amount) - ($minUtxoLovelaces + $fee);
+        // tx change to mint treasury
+        $change = ($mintUtxo->amount) - ($minUtxoLovelaces + $fee);
 
-     $majiMintAmount = 5000000;
-     $user = Auth::user();
+        $majiMintAmount = 5000000;
+        $user = Auth::user();
 
-     // build final tx
-     $command = [
-         '/opt/cardano-cli',
-         'transaction',
-         'build-raw',
-         '--fee',
-         $fee,
-         '--tx-in',
-         $depositTxHashAndTxIndex,
-         '--tx-in',
-         $mintUtxo->txIn,
-         '--tx-out',
-         "$mintAddress+$change",
-         '--tx-out',
-         "{$user->wallet_address}+$depositWalletAdaBalance+".'"'."{$majiMintAmount} $majiPolicyId.$tokenMajiName".'"',
-         '--tx-out',
-         "$governorDepositAddr+$minUtxoLovelaces+".'"'."$depositWalletPhuffyBalance $phuffyPolicyId.$tokenPhuffyName".'"',
-         '--mint="'."$majiMintAmount $majiPolicyId.$tokenMajiName".'"',
-         '--minting-script-file /data/mint/policies/maji/policy.script',
-         "--metadata-json-file $metadataFile",
-         '--invalid-hereafter',
-         intval($tip->slot) + 1000,
-         '--out-file',
-         "/data/mint/wallets/votes/{$vote->id}/vote.final",
-     ];
-     $process = $this->processCommand($command, true);
-     $process->run();
-     if (! $process->isSuccessful()) {
-         throw new ErrorException($process->getErrorOutput(), $process->getExitCode());
-     }
- }
+        // build final tx
+        $command = [
+            '/opt/cardano-cli',
+            'transaction',
+            'build-raw',
+            '--fee',
+            $fee,
+            '--tx-in',
+            $depositTxHashAndTxIndex,
+            '--tx-in',
+            $mintUtxo->txIn,
+            '--tx-out',
+            "$mintAddress+$change",
+            '--tx-out',
+            "{$user->wallet_address}+$depositWalletAdaBalance+".'"'."{$majiMintAmount} $majiPolicyId.$tokenMajiName".'"',
+            '--tx-out',
+            "$governorDepositAddr+$minUtxoLovelaces+".'"'."$depositWalletPhuffyBalance $phuffyPolicyId.$tokenPhuffyName".'"',
+            '--mint="'."$majiMintAmount $majiPolicyId.$tokenMajiName".'"',
+            '--minting-script-file /data/mint/policies/maji/policy.script',
+            "--metadata-json-file $metadataFile",
+            '--invalid-hereafter',
+            intval($tip->slot) + 1000,
+            '--out-file',
+            "/data/mint/wallets/votes/{$vote->id}/vote.final",
+        ];
+        $process = $this->processCommand($command, true);
+        $process->run();
+        if (! $process->isSuccessful()) {
+            throw new ErrorException($process->getErrorOutput(), $process->getExitCode());
+        }
+    }
 
     /**
      * @throws ErrorException
      * @throws GuzzleException
      */
     #[NoReturn]
- protected function generateVoteDraft(Vote &$vote)
- {
-     $mintAddress = config('cardano.mint.payment-address');
-     $mintUtxo = $this->getMintInput();
+    protected function generateVoteDraft(Vote &$vote)
+    {
+        $mintAddress = config('cardano.mint.payment-address');
+        $mintUtxo = $this->getMintInput();
 
-     $governorDepositAddr = config('cardano.mint.addresses.governor');
+        $governorDepositAddr = config('cardano.mint.addresses.governor');
 
-     $tokenPhuffyName = config('cardano.mint.tokens.phuffy_coin.name');
-     $phuffyPolicyId = config('cardano.mint.policies.phuffycoin');
+        $tokenPhuffyName = config('cardano.mint.tokens.phuffy_coin.name');
+        $phuffyPolicyId = config('cardano.mint.policies.phuffycoin');
 
-     $tokenMajiName = config('cardano.mint.tokens.maji_coin.name');
-     $majiPolicyId = config('cardano.mint.policies.maji');
-     $majiAmount = 5000000;
+        $tokenMajiName = config('cardano.mint.tokens.maji_coin.name');
+        $majiPolicyId = config('cardano.mint.policies.maji');
+        $majiAmount = 5000000;
 
-     // get utxos
-     [$depositPhuffyUtxos, $depositUtxos] = $this->getVoteUtxos($vote);
+        // get utxos
+        [$depositPhuffyUtxos, $depositUtxos] = $this->getVoteUtxos($vote);
 
-     // balances
-     $depositTxHashAndTxIndex = $depositUtxos->keys()->first();
-     $depositWalletAdaBalance = $depositUtxos->sum(fn ($utxo) => $utxo->value->lovelace);
-     $depositWalletPhuffyBalance = $depositPhuffyUtxos->sum('quantity');
+        // balances
+        $depositTxHashAndTxIndex = $depositUtxos->keys()->first();
+        $depositWalletAdaBalance = $depositUtxos->sum(fn ($utxo) => $utxo->value->lovelace);
+        $depositWalletPhuffyBalance = $depositPhuffyUtxos->sum('quantity');
 
-     $minUtxoLovelaces = (int) ceil(((mb_strlen($tokenMajiName) - 1) / 8) * 37037 + 1444443);
-     $change = ($mintUtxo->amount) - (($minUtxoLovelaces * 2));
+        $minUtxoLovelaces = (int) ceil(((mb_strlen($tokenMajiName) - 1) / 8) * 37037 + 1444443);
+        $change = ($mintUtxo->amount) - (($minUtxoLovelaces * 2));
 
-     // generate metadata
-     $metadata = [
-         '674' => [
-             'msg' => [
-                 'LIDO PHUFFY Vote',
-                 "for {$vote->cause?->title}",
-             ],
-         ],
-     ];
-     file_put_contents("/data/mint/wallets/votes/{$vote->id}/metadata.json", json_encode($metadata, JSON_FORCE_OBJECT));
-     $metadataFile = "/data/mint/wallets/votes/{$vote->id}/metadata.json";
+        // generate metadata
+        $metadata = [
+            '674' => [
+                'msg' => [
+                    'LIDO PHUFFY Vote',
+                    "for {$vote->cause?->title}",
+                ],
+            ],
+        ];
+        file_put_contents("/data/mint/wallets/votes/{$vote->id}/metadata.json", json_encode($metadata, JSON_FORCE_OBJECT));
+        $metadataFile = "/data/mint/wallets/votes/{$vote->id}/metadata.json";
 
-     $user = Auth::user();
+        $user = Auth::user();
 
-     // build tx draft
-     $command = [
-         '/opt/cardano-cli',
-         'transaction',
-         'build-raw',
-         '--fee',
-         0,
-         '--tx-in',
-         $depositTxHashAndTxIndex,
-         '--tx-in',
-         $mintUtxo->txIn,
-         '--tx-out',
-         "$mintAddress+$change",
-         '--tx-out',
-         "{$user->wallet_address}+1500000+".'"'."{$majiAmount} $majiPolicyId.$tokenMajiName".'"',
-         '--tx-out',
-         "$governorDepositAddr+$depositWalletAdaBalance+".'"'."$depositWalletPhuffyBalance $phuffyPolicyId.$tokenPhuffyName".'"',
-         '--mint="'."$majiAmount $majiPolicyId.$tokenMajiName".'"',
-         '--minting-script-file /data/mint/policies/maji/policy.script',
-         "--metadata-json-file $metadataFile",
-         '--invalid-hereafter',
-         0,
-         '--out-file',
-         "/data/mint/wallets/votes/{$vote?->id}/vote.draft",
-     ];
+        // build tx draft
+        $command = [
+            '/opt/cardano-cli',
+            'transaction',
+            'build-raw',
+            '--fee',
+            0,
+            '--tx-in',
+            $depositTxHashAndTxIndex,
+            '--tx-in',
+            $mintUtxo->txIn,
+            '--tx-out',
+            "$mintAddress+$change",
+            '--tx-out',
+            "{$user->wallet_address}+1500000+".'"'."{$majiAmount} $majiPolicyId.$tokenMajiName".'"',
+            '--tx-out',
+            "$governorDepositAddr+$depositWalletAdaBalance+".'"'."$depositWalletPhuffyBalance $phuffyPolicyId.$tokenPhuffyName".'"',
+            '--mint="'."$majiAmount $majiPolicyId.$tokenMajiName".'"',
+            '--minting-script-file /data/mint/policies/maji/policy.script',
+            "--metadata-json-file $metadataFile",
+            '--invalid-hereafter',
+            0,
+            '--out-file',
+            "/data/mint/wallets/votes/{$vote?->id}/vote.draft",
+        ];
 
-     $process = $this->processCommand($command, true);
-     $process->run();
-     if (! $process->isSuccessful()) {
-         throw new ErrorException($process->getErrorOutput(), $process->getExitCode());
-     }
- }
+        $process = $this->processCommand($command, true);
+        $process->run();
+        if (! $process->isSuccessful()) {
+            throw new ErrorException($process->getErrorOutput(), $process->getExitCode());
+        }
+    }
 
     /**
      * @throws ErrorException

@@ -1,11 +1,9 @@
 <?php
 
-use App\Models\Nft;
 use App\Models\LearningTopic;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
+use App\Models\Nft;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\Http;
 
 return new class extends Migration
 {
@@ -24,7 +22,7 @@ return new class extends Migration
                 $nft->save();
             });
         } catch (Exception $e) {
-            echo "Error occurred: " . $e->getMessage();
+            echo 'Error occurred: '.$e->getMessage();
         }
     }
 
@@ -32,7 +30,7 @@ return new class extends Migration
     {
         $seedFile = '/data/phuffycoin/wallets/mint/seed.txt';
 
-        if (!file_exists($seedFile)) {
+        if (! file_exists($seedFile)) {
             throw new Exception("Seed file not found: $seedFile");
         }
 
@@ -42,7 +40,7 @@ return new class extends Migration
             throw new Exception("Seed file is empty: $seedFile");
         }
 
-        $res = Http::post(config('cardano.lucidEndpoint') . '/cardano/policy', compact('seed'))->throw();
+        $res = Http::post(config('cardano.lucidEndpoint').'/cardano/policy', compact('seed'))->throw();
 
         return $res;
     }

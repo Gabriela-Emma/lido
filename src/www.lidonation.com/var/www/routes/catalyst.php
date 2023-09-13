@@ -1,35 +1,34 @@
 <?php
 
-use Inertia\Inertia;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AnonymousBookmarkController;
-use App\Http\Livewire\Catalyst\CatalystFundComponent;
-use App\Http\Livewire\Catalyst\CatalystGroupsComponent;
-use App\Http\Livewire\Catalyst\CatalystProposersComponent;
-use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 use App\Http\Controllers\Api\CatalystExplorer\UserController;
-use App\Http\Controllers\ProjectCatalyst\CatalystFundsController;
-use App\Http\Controllers\ProjectCatalyst\CatalystGroupsController;
-use App\Http\Controllers\ProjectCatalyst\CatalystPeopleController;
-use App\Http\Controllers\ProjectCatalyst\ProposalSearchController;
-use App\Http\Controllers\ProjectCatalyst\CatalystReportsController;
-use App\Http\Controllers\ProjectCatalyst\CatalystMyGroupsController;
-use App\Http\Controllers\ProjectCatalyst\CatalystProposerController;
-use App\Http\Controllers\ProjectCatalyst\CatalystBookmarksController;
-use App\Http\Controllers\ProjectCatalyst\CatalystProposalsController;
-use App\Http\Controllers\ProjectCatalyst\CatalystVoterToolController;
 use App\Http\Controllers\ProjectCatalyst\CatalystAssessmentsController;
+use App\Http\Controllers\ProjectCatalyst\CatalystBookmarksController;
 use App\Http\Controllers\ProjectCatalyst\CatalystChallengeController;
 use App\Http\Controllers\ProjectCatalyst\CatalystChartsController;
+use App\Http\Controllers\ProjectCatalyst\CatalystFundsController;
+use App\Http\Controllers\ProjectCatalyst\CatalystGroupsController;
 use App\Http\Controllers\ProjectCatalyst\CatalystMyBookmarksController;
 use App\Http\Controllers\ProjectCatalyst\CatalystMyCommunityReviewsController;
 use App\Http\Controllers\ProjectCatalyst\CatalystMyDashboardController;
+use App\Http\Controllers\ProjectCatalyst\CatalystMyGroupsController;
 use App\Http\Controllers\ProjectCatalyst\CatalystMyProposalsController;
-use App\Http\Controllers\ProjectCatalyst\CatalystMyVotesController;
 use App\Http\Controllers\ProjectCatalyst\CatalystMyRankingController;
+use App\Http\Controllers\ProjectCatalyst\CatalystMyVotesController;
+use App\Http\Controllers\ProjectCatalyst\CatalystPeopleController;
+use App\Http\Controllers\ProjectCatalyst\CatalystProposalsController;
+use App\Http\Controllers\ProjectCatalyst\CatalystProposerController;
 use App\Http\Controllers\ProjectCatalyst\CatalystRegistrationsController;
+use App\Http\Controllers\ProjectCatalyst\CatalystReportsController;
 use App\Http\Controllers\ProjectCatalyst\CatalystUserProfilesController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\ProjectCatalyst\CatalystVoterToolController;
+use App\Http\Controllers\ProjectCatalyst\ProposalSearchController;
+use App\Http\Livewire\Catalyst\CatalystFundComponent;
+use App\Http\Livewire\Catalyst\CatalystGroupsComponent;
+use App\Http\Livewire\Catalyst\CatalystProposersComponent;
+use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 // Project Catalyst
 
@@ -133,7 +132,7 @@ Route::group(
             Route::get('/charts/metrics/membersAwardedFundingCount', [CatalystChartsController::class, 'metricMembersAwardedFundingCount']);
             Route::get('/charts/metrics/fullyDisbursedProposalsCount', [CatalystChartsController::class, 'metricFullyDisbursedProposalsCount']);
             Route::get('/charts/metrics/completedProposalsCount', [CatalystChartsController::class, 'metricCompletedProposalsCount']);
-            Route::get('/charts/attachment/link', [CatalystChartsController::class, 'attachmentLink']);
+            Route::get('/charts/attachment/link', [CatalystChartsController::class, 'attachmentLink'])->name('attachment');
 
             Route::get('/people', [CatalystPeopleController::class, 'index'])
                 ->name('people');
@@ -145,14 +144,14 @@ Route::group(
                 ->name('voterTool');
 
             Route::get('/voter-tool/counts', [CatalystVoterToolController::class, 'setCounts'])
-            ->name('voterTool.counts');
+                ->name('voterTool.counts');
 
             Route::get('/voter-tool/taxomomies', [CatalystVoterToolController::class, 'setTaxonomy'])
-            ->name('voterTool.taxomomy');
+                ->name('voterTool.taxomomy');
 
             Route::get('/proposals/{proposal:id}/bookmark', [CatalystProposalsController::class, 'bookmark']);
             Route::get('/bookmarks', [CatalystBookmarksController::class, 'index'])
-            ->name('bookmarks');
+                ->name('bookmarks');
 
             Route::get('/bookmarks/{bookmarkCollection:id}', [CatalystBookmarksController::class, 'view'])
                 ->name('bookmark`');
@@ -160,12 +159,12 @@ Route::group(
             Route::get('/draft-ballots/{draftBallot:id}', [CatalystBookmarksController::class, 'viewDraftBallot'])
                 ->name('draftBallot.view');
             Route::get('/draft-ballot/{draftBallot:id}/update', [CatalystBookmarksController::class, 'viewUpdateDraftBallot'])
-            ->name('draftBallotUpdate.view');
+                ->name('draftBallotUpdate.view');
 
             // exports
             Route::get('/export/proposals', [CatalystProposalsController::class, 'exportProposals']);
             Route::get('/download/proposals', [CatalystProposalsController::class, 'downloadProposals'])
-            ->name('download.proposals');
+                ->name('download.proposals');
 
             // Bookmarks
             Route::post('/bookmarks/items', [CatalystMyBookmarksController::class, 'createItem'])->name('bookmarkItem.create');
@@ -173,27 +172,28 @@ Route::group(
             Route::delete('/bookmark-collection', [CatalystMyBookmarksController::class, 'deleteCollection'])->name('bookmarkCollection.delete');
             Route::delete('/bookmark-item/{bookmarkItem:id}', [CatalystMyBookmarksController::class, 'deleteItem'])->name('bookmarkItem.delete');
 
-            Route::middleware(['auth.catalyst'])->prefix('/my')->group(function () {});
+            Route::middleware(['auth.catalyst'])->prefix('/my')->group(function () {
+            });
             Route::get('/cardano-treasury', App\Http\Livewire\Catalyst\CardanoTreasuryComponent::class)
                 ->name('cardano-treasury');
 
             Route::middleware(['auth.catalyst'])->prefix('/my')->group(function () {
                 Route::post('/bookmarks/{bookmarkCollection:id}/create-ballot', [CatalystBookmarksController::class, 'createDraftBallotFromCollection'])
-                ->name('bookmark.createBallot');
+                    ->name('bookmark.createBallot');
                 Route::post('/draft-ballots', [CatalystBookmarksController::class, 'createDraftBallot'])
-                ->name('createBallot');
+                    ->name('createBallot');
 
                 Route::get('/draft-ballots/{draftBallot:id}/edit', [CatalystBookmarksController::class, 'editDraftBallot'])
-                ->name('draftBallot.edit');
+                    ->name('draftBallot.edit');
 
                 Route::delete('/draft-ballots/{draftBallot:id}/delete', [CatalystBookmarksController::class, 'deleteDraftBallot'])
-                ->name('draftBallot.delete');
+                    ->name('draftBallot.delete');
 
                 Route::patch('/draft-ballot/{draftBallot:id}/update', [CatalystBookmarksController::class, 'updateDraftBallot'])
-                ->name('draftBallot.update');
+                    ->name('draftBallot.update');
 
                 Route::post('/draft-ballots/{draftBallot:id}/rationale', [CatalystBookmarksController::class, 'storeDraftBallotRationale'])
-                ->name('draftBallot.storeRationale');
+                    ->name('draftBallot.storeRationale');
 
                 Route::get('/dashboard', [CatalystMyDashboardController::class, 'index'])
                     ->name('myDashboard');
@@ -202,7 +202,7 @@ Route::group(
                     ->name('myBookmarks');
 
                 Route::get('/draft-ballots', fn () => Inertia::render('Auth/MyDraftBallots'))
-                ->name('myDraftBallots');
+                    ->name('myDraftBallots');
 
                 Route::get('/profiles', [CatalystUserProfilesController::class, 'index'])
                     ->name('myProfiles');
@@ -243,7 +243,6 @@ Route::group(
                 Route::get('/groups/{catalystGroup:id}/sum/awarded', [CatalystMyGroupsController::class, 'metricTotalAwardedFunds']);
                 Route::get('/groups/{catalystGroup:id}/sum/received', [CatalystMyGroupsController::class, 'metricTotalReceivedFunds']);
                 Route::get('/groups/{catalystGroup:id}/sum/remaining', [CatalystMyGroupsController::class, 'metricTotalFundsRemaining']);
-
 
                 // Votes
                 Route::prefix('/votes')->as('votes.')->group(function () {

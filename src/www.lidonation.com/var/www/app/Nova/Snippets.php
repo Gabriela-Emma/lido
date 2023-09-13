@@ -3,23 +3,23 @@
 namespace App\Nova;
 
 use App\Models\Snippet;
-use Laravel\Nova\Panel;
-use Illuminate\Support\Str;
-use Laravel\Nova\Fields\ID;
-use JetBrains\PhpStorm\Pure;
-use Laravel\Nova\Fields\URL;
-use Laravel\Nova\Fields\Text;
+use App\Nova\Actions\AddMetaData;
+use App\Nova\Actions\EditMetaData;
+use App\Nova\Actions\TranslateModel;
 use App\Scopes\PublishedScope;
+use Ebess\AdvancedNovaMediaLibrary\Fields\Images;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Str;
+use JetBrains\PhpStorm\Pure;
+use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Markdown;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
-use App\Nova\Actions\AddMetaData;
-use Laravel\Nova\Fields\Markdown;
-use App\Nova\Actions\EditMetaData;
-use Laravel\Nova\Fields\BelongsTo;
-use App\Nova\Actions\TranslateModel;
-use Illuminate\Database\Eloquent\Builder;
+use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\URL;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Ebess\AdvancedNovaMediaLibrary\Fields\Images;
+use Laravel\Nova\Panel;
 
 //use Spatie\NovaTranslatable\Translatable;
 

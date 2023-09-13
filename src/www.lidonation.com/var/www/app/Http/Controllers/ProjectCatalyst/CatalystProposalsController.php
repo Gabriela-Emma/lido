@@ -12,8 +12,8 @@ use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Fluent;
-use Illuminate\Support\Stringable;
 use Illuminate\Support\Str;
+use Illuminate\Support\Stringable;
 use Inertia\Inertia;
 use Inertia\Response;
 use JetBrains\PhpStorm\ArrayShape;
@@ -256,7 +256,7 @@ class CatalystProposalsController extends Controller
         $this->ranked = $request->has(CatalystExplorerQueryParams::RANKED_VIEW);
         if (
             $this->ranked &&
-            !Str::of($request->input(CatalystExplorerQueryParams::SORTS))
+            ! Str::of($request->input(CatalystExplorerQueryParams::SORTS))
                 ->contains('ranking_total')
         ) {
             $sort = collect(['ranking_total', 'desc']);
@@ -452,34 +452,34 @@ class CatalystProposalsController extends Controller
         }
 
         if ((bool) $this->quickpitches) {
-            $_options[] = "quickpitch IS NOT NULL";
+            $_options[] = 'quickpitch IS NOT NULL';
         }
 
         // filter by fund
         if ($this->fundsFilter->isNotEmpty()) {
-            $_options[] = '(' . $this->fundsFilter->map(fn ($f) => "fund.id = {$f}")->implode(' OR ') . ')';
+            $_options[] = '('.$this->fundsFilter->map(fn ($f) => "fund.id = {$f}")->implode(' OR ').')';
         }
 
         // filter by challenge
         if ($this->challengesFilter->isNotEmpty()) {
-            $_options[] = '(' . $this->challengesFilter->map(fn ($c) => "challenge.id = {$c}")->implode(' OR ') . ')';
+            $_options[] = '('.$this->challengesFilter->map(fn ($c) => "challenge.id = {$c}")->implode(' OR ').')';
         }
 
         // filter by tags
         if ($this->tagsFilter->isNotEmpty()) {
-            $_options[] = 'tags.id IN ' . $this->tagsFilter->toJson();
+            $_options[] = 'tags.id IN '.$this->tagsFilter->toJson();
         }
 
         if ($this->categoriesFilter->isNotEmpty()) {
-            $_options[] = 'categories.id IN ' . $this->categoriesFilter->toJson();
+            $_options[] = 'categories.id IN '.$this->categoriesFilter->toJson();
         }
 
         if ($this->peopleFilter->isNotEmpty()) {
-            $_options[] = 'users.id IN ' . $this->peopleFilter->toJson();
+            $_options[] = 'users.id IN '.$this->peopleFilter->toJson();
         }
 
         if ($this->groupsFilter->isNotEmpty()) {
-            $_options[] = 'groups.id IN ' . $this->groupsFilter->toJson();
+            $_options[] = 'groups.id IN '.$this->groupsFilter->toJson();
         }
 
         // filter by budget range
@@ -521,24 +521,24 @@ class CatalystProposalsController extends Controller
     {
         $this->download = $request->input('d', false);
         $this->downloadType = $request->input('d_t', null);
-        if (!isset($request->ballot)){
+        if (! isset($request->ballot)) {
             return;
         }
 
         $ballot = DraftBallot::byHash($request->ballot);
 
-        if (!$ballot instanceof DraftBallot) {
+        if (! $ballot instanceof DraftBallot) {
             return;
         }
         $proposalIds = $ballot->proposals()->get(['model_id'])
-        ->pluck('model_id')->values();
+            ->pluck('model_id')->values();
 
         return (new ExportModelService)
-        ->export(
-            new ProposalExport(
-                $proposalIds,
-                app()->getLocale()),
+            ->export(
+                new ProposalExport(
+                    $proposalIds,
+                    app()->getLocale()),
                 "proposals.{$this->downloadType}"
-        );
+            );
     }
 }

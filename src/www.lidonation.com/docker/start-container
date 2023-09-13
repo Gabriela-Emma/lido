@@ -15,7 +15,7 @@ if [ $# -gt 0 ]; then
 else
   case "$CONTAINER_ROLE" in
     queue | q)
-      /usr/bin/php -d variables_order=EGPCS /var/www/html/artisan horizon
+      php -d variables_order=EGPCS /var/www/html/artisan horizon
       ;;
     scheduler | s)
       while [ true ]
@@ -25,7 +25,7 @@ else
       done
       ;;
     app | a)
-      /usr/bin/php -d variables_order=EGPCS -d max_execution_time=300 /var/www/html/artisan serve --host=0.0.0.0 --port=80
+      php -d variables_order=EGPCS -d max_execution_time=300 /var/www/html/artisan serve --host=0.0.0.0 --port=80
       ;;
     *)
       echo 'this container has no role... it is a sitting duck doing nothing!'

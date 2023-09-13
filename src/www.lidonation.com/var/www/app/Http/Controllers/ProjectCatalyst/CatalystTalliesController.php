@@ -4,6 +4,7 @@ namespace App\Http\Controllers\ProjectCatalyst;
 
 use App\Http\Controllers\Controller;
 use App\Models\CatalystTally;
+use App\Models\Fund;
 use App\Models\Proposal;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -19,6 +20,7 @@ class CatalystTalliesController extends Controller
         $orderBy = $request->input('ob', 'tally');
         $search = $request->input('s', null);
         $challenges = collect($request->input('c', []));
+        $funds = $request->input('fs', 113);
 
         $query = CatalystTally::setEagerLoads([])->with('model')
             ->where('model_type', Proposal::class)
@@ -34,9 +36,10 @@ class CatalystTalliesController extends Controller
         if ($search) {
             $proposalsQuery = Proposal::search(
                 $search,
-                function (Indexes $index, $query, $options) {
-                    $options['filter'] = 'fund.id = 113';
+                function (Indexes $index, $query, $options) use ($funds) {
+                    $options['filter'] = "fund.id = {$funds}";
                     $options['attributesToRetrieve'] = ['id'];
+
                     return $index->search($query, $options);
                 }
             );
@@ -48,14 +51,40 @@ class CatalystTalliesController extends Controller
         return $query->fastPaginate($perPage, ['*'], 'page', $page);
     }
 
-
-    public function getUpdatedAtDate(Request $request): JsonResponse
+    /**
+     * Returns the total tally per fund  as a JSON response.
+     *
+     * @param  Request  $request The HTTP request object.
+     * @return JsonResponse The JSON response containing the last updated timestamp.
+     */
+    public function getCatalystTallySum(Request $request): JsonResponse
     {
+        $catalystTally = CatalystTally::where([
+            'model_type' => Proposal::class,
+            'context_type' => Fund::class,
+            'context_id' => $request->get('fs'),
+        ])->sum('tally');
+
+        return response()->json($catalystTally);
+    }
+
+    /**
+     * Returns the last updated timestamp as a JSON response.
+     *
+     * @param  Request  $request The HTTP request object.
+     * @return JsonResponse The JSON response containing the last updated timestamp.
+     */
+    public function getLastUpdated(Request $request): JsonResponse
+    {
+        // Retrieve the most recent CatalystTally object based on the updated_at field.
         $mostRecentTally = CatalystTally::latest('updated_at')->first();
+
+        // Create an array with the updated_at timestamp.
         $responseData = [
-            'updated_at' => $mostRecentTally->updated_at->utc(),
+            'updated_at' => $mostRecentTally->updated_at?->utc(),
         ];
 
+        // Return the JSON response.
         return response()->json($responseData);
     }
 }

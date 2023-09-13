@@ -10,7 +10,7 @@ use Livewire\Component;
 
 class LoginComponent extends Component
 {
-    public Nft|null $randomNft = null;
+    public ?Nft $randomNft = null;
 
     public function mount()
     {

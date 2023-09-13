@@ -4,7 +4,6 @@ namespace App\Jobs;
 
 use App\Models\Fund;
 use App\Models\Proposal;
-use App\Services\SettingService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
