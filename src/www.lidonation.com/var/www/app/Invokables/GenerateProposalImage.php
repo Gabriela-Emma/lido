@@ -30,6 +30,9 @@ class GenerateProposalImage
             ->setChromePath('/usr/bin/chromium-browser')
             ->addChromiumArguments(['no-sandbox'])
             ->noSandbox()
+            ->dismissDialogs()
+            ->ignoreHttpsErrors()
+            ->setDelay(1000)
             ->setOption('args', ['--disable-web-security'])
             ->emulateMedia('screen')
             ->deviceScaleFactor(1)
@@ -43,6 +46,7 @@ class GenerateProposalImage
             File::ensureDirectoryExists($path);
             $image->setScreenshotType('jpeg', 100)
                 ->windowSize(1306, 1106)
+
                 ->save(
                     "{$path}/{$slug}-cardano-catalyst-proposal-summary-card.jpeg"
                 );
