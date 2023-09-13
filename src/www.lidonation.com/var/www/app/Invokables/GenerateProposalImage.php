@@ -5,6 +5,7 @@ namespace App\Invokables;
 use App\Models\Proposal;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 use Spatie\Browsershot\Browsershot;
 use Spatie\Browsershot\Exceptions\CouldNotTakeBrowsershot;
@@ -22,6 +23,14 @@ class GenerateProposalImage
         if (isset($_locale)) {
             App::setLocale($_locale);
         }
+
+//        dd(
+//            $this->get_content('http://host.docker.internal:8880/css/catalyst-explorer.css?id=27c293362d21eca17fe479e556768707')
+//            Http::get(
+//                'http://host.docker.internal:8880/css/catalyst-explorer.css?id=27c293362d21eca17fe479e556768707'
+//                asset(mix('css/catalyst-explorer.css'))
+//            )->body()
+//        );
 
         $html = view('catalyst-proposal-summary', compact('proposal'))
             ->render();
@@ -57,4 +66,14 @@ class GenerateProposalImage
 
         return $image;
     }
+
+    protected   function get_content($URL){
+      $ch = curl_init();
+      curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+      curl_setopt($ch, CURLOPT_URL, $URL);
+      $data = curl_exec($ch);
+      curl_close($ch);
+      return $data;
+    }
+
 }
