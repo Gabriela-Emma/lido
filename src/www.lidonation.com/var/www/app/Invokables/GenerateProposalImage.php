@@ -32,6 +32,7 @@ class GenerateProposalImage
             ->noSandbox()
             ->dismissDialogs()
             ->ignoreHttpsErrors()
+            ->showBrowserHeaderAndFooter()
             ->setDelay(1000)
             ->setOption('args', ['--disable-web-security'])
             ->emulateMedia('screen')
