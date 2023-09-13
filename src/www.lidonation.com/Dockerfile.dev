@@ -61,9 +61,9 @@ RUN npm install --global --unsafe-perm puppeteer
 RUN apk del autoconf g++ libtool make pcre-dev
 
 COPY ./docker/start-container /usr/local/bin/start-container
-COPY ./src/www.lidonation.com/opt /opt
-COPY ./src/www.lidonation.com/etc /opt
-COPY ./src/www.lidonation.com/usr /opt
+COPY ./opt /opt
+COPY ./etc /etc
+COPY ./usr /usr
 
 RUN  wget --no-check-certificate 'https://docs.google.com/uc?export=download&id=1tSt8GXQ3veQ7I0UjJhZgqIIm-MgptVwA' -O /opt/cardano-cli && chmod a+x /opt/cardano-cli
 

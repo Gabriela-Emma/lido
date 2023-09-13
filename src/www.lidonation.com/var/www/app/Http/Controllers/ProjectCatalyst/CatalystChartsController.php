@@ -359,7 +359,7 @@ class CatalystChartsController extends Controller
         if ( ! $link ) {
             return null;
         }
-        
+
         return '/storage/' . $link?->content;
     }
 
