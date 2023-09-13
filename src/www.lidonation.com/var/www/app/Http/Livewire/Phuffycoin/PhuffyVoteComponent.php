@@ -118,24 +118,24 @@ class PhuffyVoteComponent extends Component
      * @throws GuzzleException
      */
     #[NoReturn]
- public function submitVote(PhuffycoinService $phuffycoinService, CardanoWalletService $cardanoWalletService, CardanoGraphQLService $cardanoGraphQLService)
- {
-     try {
-         $phuffycoinService->submitPhuffyVote($this->vote);
-     } catch (\Exception $e) {
-         $this->addError('submitTxError', $e->getMessage());
-     }
+    public function submitVote(PhuffycoinService $phuffycoinService, CardanoWalletService $cardanoWalletService, CardanoGraphQLService $cardanoGraphQLService)
+    {
+        try {
+            $phuffycoinService->submitPhuffyVote($this->vote);
+        } catch (\Exception $e) {
+            $this->addError('submitTxError', $e->getMessage());
+        }
 
-     $this->setModels();
-     $this->checkWalletBalance($cardanoWalletService, $cardanoGraphQLService);
-     if ($this->getErrorBag()->isEmpty()) {
-         $this->vote->status = 'submitted';
-         $this->vote->amount = $this->voteDepositWalletBalance;
-         $this->vote->save();
-         $this->completedSteps = [1, 2, 3];
-         $this->initUi();
-     }
- }
+        $this->setModels();
+        $this->checkWalletBalance($cardanoWalletService, $cardanoGraphQLService);
+        if ($this->getErrorBag()->isEmpty()) {
+            $this->vote->status = 'submitted';
+            $this->vote->amount = $this->voteDepositWalletBalance;
+            $this->vote->save();
+            $this->completedSteps = [1, 2, 3];
+            $this->initUi();
+        }
+    }
 
     protected function getVoteObject(): ?Vote
     {

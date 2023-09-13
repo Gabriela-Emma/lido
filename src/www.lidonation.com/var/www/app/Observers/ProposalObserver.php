@@ -9,7 +9,6 @@ use App\Models\User;
 
 class ProposalObserver extends CatalystObserver
 {
-
     /**
      * Handle the User "created" event.
      *

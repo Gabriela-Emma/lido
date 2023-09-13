@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Http\View\Composers;
+
 use App\Repositories\CatalystGroupRepository;
 use App\Repositories\FundRepository;
 use Illuminate\Support\Collection;
@@ -8,23 +10,39 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Fluent;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
+
 class CatalystGroupComposer
 {
     private $catalystGroup;
+
     private $groupProposals;
+
     private $allTimeCaAverage;
+
     private $allTimeCaRatingCount;
+
     private $allTimeCaAverageGroups;
+
     private Fluent $allTimeFundingPerRound;
+
     private Fluent $allTimeCompletedPerRound;
+
     private Fluent $allTimeFundedPerRound;
+
     private Fluent $allTimeAwardedPerRound;
+
     private Fluent $allTimeReceivedPerRound;
+
     private Fluent $allTimeProposedPerRound;
+
     private ?Collection $wordCloudSet;
+
     private ?Collection $proposalChallenges;
+
     private $allDiscussions;
+
     private $discussionData;
+
     /**
      * Create a new profile composer.
      */
@@ -40,8 +58,8 @@ class CatalystGroupComposer
         );
         $this->setTagCloud();
         //
-// @Todo
-//  This should be an injecktable operation
+        // @Todo
+        //  This should be an injecktable operation
         $discussions = $this->catalystGroup?->proposals
             ->map(
                 fn ($p) => $p->discussions
@@ -80,14 +98,16 @@ class CatalystGroupComposer
                     return [];
                 });
             }
+
             return $item;
         })->pluck('proposals');
-        $adaProposal =  $proposalGroups->map(function ($item) {
+        $adaProposal = $proposalGroups->map(function ($item) {
             if ($item->fund->currency == 'USD') {
                 $item->proposals = $item->proposals->map(function ($p) {
                     return [];
                 });
             }
+
             return $item;
         })->pluck('proposals');
         $this->proposalChallenges = $this->catalystGroup->proposals
@@ -113,6 +133,7 @@ class CatalystGroupComposer
             )->map(function ($g) {
                 $complete = $g->get('complete') ?? 0;
                 $funded = $g->get('funded') ?? 0;
+
                 return $complete + $funded;
             })->values(),
         ]);
@@ -154,6 +175,7 @@ class CatalystGroupComposer
             )->values(),
         ]);
     }
+
     /**
      * Bind data to the view.
      */
@@ -178,6 +200,7 @@ class CatalystGroupComposer
             ]
         );
     }
+
     protected function setTagCloud()
     {
         $this->wordCloudSet = Cache::remember("{$this->catalystGroup->slug}DetailsWordCloud", HOUR_IN_SECONDS, function () {
@@ -204,16 +227,18 @@ class CatalystGroupComposer
           ) w group by word ORDER BY occurrences DESC LIMIT 100;
         EOT
             );
+
             return collect($query);
         });
     }
+
     protected function discussionsRatings()
     {
         $discussionRatings = [];
         foreach ($this->allDiscussions as $discussion) {
             $title = $discussion['title'];
             $rating = $discussion->rating;
-            if (!isset($discussionRatings[$title])) {
+            if (! isset($discussionRatings[$title])) {
                 $discussionRatings[$title] = [
                     'totalRating' => 0,
                     'totalCount' => 0,

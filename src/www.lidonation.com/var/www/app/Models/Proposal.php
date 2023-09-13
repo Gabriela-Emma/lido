@@ -15,8 +15,6 @@ use App\Models\Traits\HasRepos;
 use App\Models\Traits\HasTaxonomies;
 use App\Models\Traits\HasTranslations;
 use App\Traits\SearchableLocale;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\Routing\UrlGenerator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
@@ -68,7 +66,7 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
     protected string $urlGroup = 'proposals';
 
     protected $appends = [
-        'link'
+        'link',
     ];
 
     /**
@@ -149,7 +147,7 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
             'categories',
             'funding_status',
             'status',
-            'votes_cast'
+            'votes_cast',
         ];
     }
 
@@ -192,7 +190,7 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
             'yes_votes_count',
             'ranking_total',
             'users.proposals_completed',
-            'votes_cast'
+            'votes_cast',
         ];
     }
 
@@ -313,6 +311,7 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
             get: function ($value) {
                 $slug = $this->getSummaryPreviewImageName();
                 $locale = $_locale ?? App::currentLocale();
+
                 return asset("images/{$slug}/$locale/{$slug}-cardano-catalyst-proposal-summary-card.jpeg");
             },
         );
@@ -322,10 +321,10 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
     {
         return Attribute::make(
             get: fn () => $this->quickpitch ? collect(
-                    explode(
-                        '/',
-                         $this->quickpitch)
-                )?->last() : null
+                explode(
+                    '/',
+                    $this->quickpitch)
+            )?->last() : null
         );
     }
 
@@ -339,7 +338,7 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
                     'content' => $this->quickpitch,
                 ],
             ])
-            ->filter(fn ($m) => !! $m->content)
+            ->filter(fn ($m) => (bool) $m->content)
             ->map(function ($m) {
                 $m->content = Str::replace('youtu.be/', 'youtube.com/watch?v=', $m->content);
                 if (Str::contains($m->content, 'youtube')) {
@@ -514,8 +513,8 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
 
     public function bookmark_items()
     {
-        return $this->hasMany(BookmarkItem::class, 'model_id' )
-        ->where('bookmark_items.model_type', Proposal::class);
+        return $this->hasMany(BookmarkItem::class, 'model_id')
+            ->where('bookmark_items.model_type', Proposal::class);
     }
 
     /**
@@ -556,9 +555,10 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
             'project_length' => $this->meta_data->project_length ?? null,
             'vote_casts' => $this->meta_data->vote_casts ?? null,
             'ranking_total' => $this->ranking_total ?? 0,
-            'users' => $this->users->map(function($u){
+            'users' => $this->users->map(function ($u) {
                 $proposals = $u->proposals?->map(fn ($p) => $p->toArray());
-                return  [
+
+                return [
                     'id' => $u->id,
                     'ideascale_id' => $u->ideascale_id,
                     'username' => $u->username,
@@ -568,7 +568,7 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
                     'proposals_completed' => $proposals->filter(fn ($p) => $p['status'] === 'complete')?->count() ?? 0,
                     'first_timer' => ($proposals?->map(fn ($p) => $p['fund']['id'])->unique()->count() === 1),
                 ];
-            } ),
+            }),
             'fund' => [
                 'id' => $this->fund?->parent?->id,
                 'amount' => $this->fund?->parent?->amount ? intval($this->fund?->parent?->amount) : null,
@@ -577,11 +577,11 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
                 'launched_at' => $this->fund?->parent?->launched_at,
             ],
             'challenge' => [
-                'id' =>  $this->fund?->id,
+                'id' => $this->fund?->id,
                 'amount' => $this->fund?->amount ? intval($this->fund?->amount) : null,
                 'label' => $this->fund?->label,
                 'status' => $this->fund?->status,
-            ]
+            ],
         ]);
     }
 
@@ -592,7 +592,7 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
      */
     protected function makeAllSearchableUsing($query): Builder
     {
-        return $query->with(['users', 'tags', 'groups','categories']);
+        return $query->with(['users', 'tags', 'groups', 'categories']);
     }
 
     public function users(): BelongsToMany
@@ -613,14 +613,14 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
     public function vote()
     {
         return $this->hasOne(CatalystVote::class, 'model_id')
-        ->where('model_type', '=', static::class)
-        ->where('user_id', '=', auth()?->user()?->id);
+            ->where('model_type', '=', static::class)
+            ->where('user_id', '=', auth()?->user()?->id);
     }
 
     public function tally()
     {
         return $this->hasOne(CatalystTally::class, 'model_id')
-        ->where('model_type', '=', static::class);
+            ->where('model_type', '=', static::class);
     }
 
     /**

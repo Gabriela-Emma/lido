@@ -56,11 +56,11 @@ class LearningLessonData extends Data
     ) {
     }
 
-//    public static function fromModel(LearningLesson $learningLesson): LearningLessonData
-//    {
-//        if ($learningLesson->model?->content) {
-//            $learningLesson->model->content = Shortcode::compile($learningLesson?->model?->content);
-//        }
-//        return new self(...$learningLesson->get(['hash', 'title', 'content', 'length', 'model',]));
-//    }
+    //    public static function fromModel(LearningLesson $learningLesson): LearningLessonData
+    //    {
+    //        if ($learningLesson->model?->content) {
+    //            $learningLesson->model->content = Shortcode::compile($learningLesson?->model?->content);
+    //        }
+    //        return new self(...$learningLesson->get(['hash', 'title', 'content', 'length', 'model',]));
+    //    }
 }

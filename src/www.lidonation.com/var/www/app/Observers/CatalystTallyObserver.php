@@ -9,7 +9,6 @@ class CatalystTallyObserver
     /**
      * Handle the CatalystTally "created" event.
      *
-     * @param CatalystTally $catalystTally
      * @return void
      */
     public function created(CatalystTally $catalystTally)
@@ -19,9 +18,6 @@ class CatalystTallyObserver
 
     /**
      * Handle the CatalystTally "updated" event.
-     *
-     * @param CatalystTally $catalystTally
-     * @return void
      */
     public function saving(CatalystTally $catalystTally): void
     {
@@ -31,7 +27,6 @@ class CatalystTallyObserver
     /**
      * Handle the CatalystTally "deleted" event.
      *
-     * @param CatalystTally $catalystTally
      * @return void
      */
     public function deleted(CatalystTally $catalystTally)
@@ -42,7 +37,6 @@ class CatalystTallyObserver
     /**
      * Handle the CatalystTally "restored" event.
      *
-     * @param CatalystTally $catalystTally
      * @return void
      */
     public function restored(CatalystTally $catalystTally)
@@ -53,7 +47,6 @@ class CatalystTallyObserver
     /**
      * Handle the CatalystTally "force deleted" event.
      *
-     * @param CatalystTally $catalystTally
      * @return void
      */
     public function forceDeleted(CatalystTally $catalystTally)

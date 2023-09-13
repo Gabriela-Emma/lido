@@ -79,12 +79,12 @@ class NewlyRecordedArticles extends Lens
      * Get the cards available on the lens.
      */
     #[Pure]
- public function cards(Request $request): array
- {
-     return [
-         new NewArticleRecordings,
-     ];
- }
+    public function cards(Request $request): array
+    {
+        return [
+            new NewArticleRecordings,
+        ];
+    }
 
     /**
      * Get the filters available for the lens.

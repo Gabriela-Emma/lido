@@ -19,8 +19,8 @@ trait HasGravatar
         return "https://www.gravatar.com/avatar/$hash?d=retro&r=r";
     }
 
-       protected function getGravatarEmailField(): string
-       {
-           return $this->gravatarEmailField;
-       }
+    protected function getGravatarEmailField(): string
+    {
+        return $this->gravatarEmailField;
+    }
 }

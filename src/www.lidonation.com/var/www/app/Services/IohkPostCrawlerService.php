@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Services\Observers\IohkPostCrawlerObserver;
 use GuzzleHttp\RequestOptions;
-use Illuminate\Support\Facades\App;
 use Spatie\Crawler\Crawler;
 use Spatie\Crawler\CrawlProfiles\CrawlInternalUrls;
 

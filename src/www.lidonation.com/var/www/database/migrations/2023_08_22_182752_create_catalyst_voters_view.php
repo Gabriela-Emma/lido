@@ -1,9 +1,7 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
@@ -17,7 +15,7 @@ return new class extends Migration
         DB::statement('CREATE MATERIALIZED VIEW _catalyst_voters AS
                 SELECT DISTINCT stake_pub, stake_key
                 FROM catalyst_registrations'
-            );
+        );
     }
 
     /**

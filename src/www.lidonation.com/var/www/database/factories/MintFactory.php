@@ -18,7 +18,7 @@ class MintFactory extends Factory
     public function definition()
     {
         $wallet = Wallet::inRandomOrder()->first();
-        
+
         return [
             'user_id' => $wallet->user_id,
             'type' => $this->faker->randomElement(['nft', 'ada', 'nft', 'phuffy', 'nft']),

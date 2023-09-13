@@ -97,8 +97,8 @@ class Rewards extends Resource
                 ->searchable(),
 
             Text::make(__('Stake Address'), 'stake_address')
-            ->filterable()
-            ->sortable()
+                ->filterable()
+                ->sortable()
                 ->displayUsing(function ($value) use ($request) {
                     if ($request->isResourceIndexRequest()) {
                         return Str::truncate($value, 16);

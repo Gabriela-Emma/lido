@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class CatalystLedgerSnapshot extends Model
 {
-
     public $guarded = [];
 
     public function fund(): BelongsTo

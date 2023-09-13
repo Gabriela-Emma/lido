@@ -1,11 +1,11 @@
 <?php
 
-use App\Models\EveryEpoch;
 use App\Models\AnswerResponse;
+use App\Models\EveryEpoch;
+use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration
 {
@@ -34,7 +34,6 @@ return new class extends Migration
         // }
     }
 
-
     public function convertToEpoch($date)
     {
         // try {
@@ -46,6 +45,7 @@ return new class extends Migration
         //     return null;
         // }
     }
+
     /**
      * Reverse the migrations.
      *

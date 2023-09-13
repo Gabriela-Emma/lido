@@ -17,8 +17,8 @@ return new class extends Migration
     public function up()
     {
         $metas = Meta::where('key', 'quickpitch')
-                ->orderBy('model_id')
-                ->get();
+            ->orderBy('model_id')
+            ->get();
 
         foreach ($metas as $meta) {
             $proposal = Proposal::find($meta->model_id);

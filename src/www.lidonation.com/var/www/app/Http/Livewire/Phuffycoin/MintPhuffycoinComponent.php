@@ -23,9 +23,9 @@ class MintPhuffycoinComponent extends Component
 
     public ?Collection $utxos = null;
 
-    public Collection|null $mints = null;
+    public ?Collection $mints = null;
 
-    public Collection|null $mintTxs = null;
+    public ?Collection $mintTxs = null;
 
     public int $currEpoch;
 

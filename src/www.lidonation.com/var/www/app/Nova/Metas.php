@@ -3,11 +3,11 @@
 namespace App\Nova;
 
 use App\Models\Meta;
+use Illuminate\Support\Str;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Markdown;
 use Laravel\Nova\Fields\MorphTo;
 use Laravel\Nova\Fields\Text;
-use Illuminate\Support\Str;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Metas extends Resource
@@ -86,9 +86,9 @@ class Metas extends Resource
                 ->filterable()
                 ->hideFromIndex(),
             Text::make(__('Value'), 'content')
-            ->onlyOnIndex()
-            ->filterable()
-            ->sortable(),
+                ->onlyOnIndex()
+                ->filterable()
+                ->sortable(),
             MorphTo::make(__('Type'), 'model')->types([
                 Articles::class,
                 AnswerResponses::class,
@@ -109,12 +109,12 @@ class Metas extends Resource
                 CatalystUsers::class,
                 CatalystGroups::class,
             ])->searchable()
-            ->filterable(),
+                ->filterable(),
         ];
 
         $modelObj = Meta::find(request()->resourceId);
 
-        if (!isset($modelObj)) {
+        if (! isset($modelObj)) {
             return $metaFields;
         }
 

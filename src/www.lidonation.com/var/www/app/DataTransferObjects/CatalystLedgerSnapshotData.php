@@ -13,7 +13,6 @@ class CatalystLedgerSnapshotData extends Data
 
         public string $size,
 
-
     ) {
     }
 }

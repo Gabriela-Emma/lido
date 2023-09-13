@@ -2,10 +2,8 @@
 
 namespace App\Models;
 
-use App\Repositories\FundRepository;
-use Illuminate\Contracts\Routing\UrlGenerator;
 use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Contracts\Routing\UrlGenerator;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 class Tag extends Taxonomy
@@ -45,9 +43,8 @@ class Tag extends Taxonomy
             ->withPivot(['model_type']);
     }
 
-
-//    public function models(): MorphToMany
-//    {
-//        return $this->morphToMany(Model::class, 'model', ModelTag::class, 'tag_id', 'model_id');
-//    }
+    //    public function models(): MorphToMany
+    //    {
+    //        return $this->morphToMany(Model::class, 'model', ModelTag::class, 'tag_id', 'model_id');
+    //    }
 }

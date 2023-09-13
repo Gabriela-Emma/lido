@@ -2,21 +2,21 @@
 
 namespace App\Http\Controllers\Earn;
 
-use App\Jobs\IssueNftsJob;
-use App\Models\Nft;
-use App\Models\User;
-use App\Models\Reward;
-use Illuminate\Http\Request;
-use App\Models\LearningTopic;
-use App\Models\AnswerResponse;
-use App\Models\LearningLesson;
-use App\Models\QuestionAnswer;
-use Illuminate\Support\Carbon;
-use App\Models\LearningAttempt;
-use App\Repositories\AdaRepository;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use App\Enums\LearningAttemptStatuses;
+use App\Http\Controllers\Controller;
+use App\Jobs\IssueNftsJob;
+use App\Models\AnswerResponse;
+use App\Models\LearningAttempt;
+use App\Models\LearningLesson;
+use App\Models\LearningTopic;
+use App\Models\Nft;
+use App\Models\QuestionAnswer;
+use App\Models\Reward;
+use App\Models\User;
+use App\Repositories\AdaRepository;
+use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class LearningAnswerResponseController extends Controller
 {
@@ -78,19 +78,20 @@ class LearningAnswerResponseController extends Controller
         $topicCompleted = $user->completedTopics->contains($learningTopic);
         $topicNft = $user->nfts()->where([
             'model_id' => $learningTopic->id,
-            'model_type' => LearningTopic::class
+            'model_type' => LearningTopic::class,
         ])->first();
 
-        if ($topicCompleted && !$topicNft instanceof Nft) {
+        if ($topicCompleted && ! $topicNft instanceof Nft) {
             IssueNftsJob::dispatch($learningTopic, $learningLesson, Auth::user());
         }
 
         //issue normal reward
         $this->issueReward($request, $ans->question_answer_id, $learningLesson);
 
-        if ($topicCompleted && !$topicNft instanceof Nft){
+        if ($topicCompleted && ! $topicNft instanceof Nft) {
             return redirect()->route('earn.learn.nft.awarded');
         }
+
         return back()->withInput();
     }
 
@@ -120,11 +121,11 @@ class LearningAnswerResponseController extends Controller
             $reward->model_id = $learningLesson->id;
             $reward->model_type = LearningLesson::class;
 
-             // get related giveaway
+            // get related giveaway
             $giveaway = $learningLesson->topic->giveaway;
             $rule = $giveaway->rules->first();
-            if ( ($rule?->subject ?? null) !== 'usd.amount' ) {
-                $reward->asset = explode('.',  $rule->subject)[0];
+            if (($rule?->subject ?? null) !== 'usd.amount') {
+                $reward->asset = explode('.', $rule->subject)[0];
                 $reward->asset_type = 'ft';
                 $reward->amount = $rule->predicate;
             } else {
@@ -138,18 +139,18 @@ class LearningAnswerResponseController extends Controller
             $reward->save();
         }
 
-
     }
 
     protected function usdInAda()
     {
-         //fetch quote
-         $rewardAmount = -1;
-         $quote = $this->adaRepository->quote()?->price ?? null;
-         if ($quote) {
-             $rewardAmount = 1 / $quote;
-         }
-         return $rewardAmount > 0 ? number_format($rewardAmount, 6) * 1000000 : 1000000;
+        //fetch quote
+        $rewardAmount = -1;
+        $quote = $this->adaRepository->quote()?->price ?? null;
+        if ($quote) {
+            $rewardAmount = 1 / $quote;
+        }
+
+        return $rewardAmount > 0 ? number_format($rewardAmount, 6) * 1000000 : 1000000;
     }
 
     protected function recordLearningAttempt(AnswerResponse $answerResponse, LearningLesson $learningLesson): void

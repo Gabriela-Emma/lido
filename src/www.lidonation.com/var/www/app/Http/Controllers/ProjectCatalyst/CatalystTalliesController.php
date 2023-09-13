@@ -39,6 +39,7 @@ class CatalystTalliesController extends Controller
                 function (Indexes $index, $query, $options) use ($funds) {
                     $options['filter'] = "fund.id = {$funds}";
                     $options['attributesToRetrieve'] = ['id'];
+
                     return $index->search($query, $options);
                 }
             );
@@ -53,25 +54,24 @@ class CatalystTalliesController extends Controller
     /**
      * Returns the total tally per fund  as a JSON response.
      *
-     * @param Request $request The HTTP request object.
-     *
+     * @param  Request  $request The HTTP request object.
      * @return JsonResponse The JSON response containing the last updated timestamp.
      */
-    public  function getCatalystTallySum(Request $request): JsonResponse
+    public function getCatalystTallySum(Request $request): JsonResponse
     {
         $catalystTally = CatalystTally::where([
             'model_type' => Proposal::class,
             'context_type' => Fund::class,
             'context_id' => $request->get('fs'),
         ])->sum('tally');
+
         return response()->json($catalystTally);
     }
 
     /**
      * Returns the last updated timestamp as a JSON response.
      *
-     * @param Request $request The HTTP request object.
-     *
+     * @param  Request  $request The HTTP request object.
      * @return JsonResponse The JSON response containing the last updated timestamp.
      */
     public function getLastUpdated(Request $request): JsonResponse

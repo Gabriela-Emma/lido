@@ -90,10 +90,10 @@ class ContentManager extends Lens
      * Get the cards available on the lens.
      */
     #[Pure]
- public function cards(Request $request): array
- {
-     return [];
- }
+    public function cards(Request $request): array
+    {
+        return [];
+    }
 
     /**
      * Get the filters available for the lens.

@@ -2,18 +2,16 @@
 
 namespace App\Jobs;
 
+use App\Models\LearningLesson;
+use App\Models\LearningTopic;
 use App\Models\Nft;
 use App\Models\Reward;
-use App\Models\LearningTopic;
-use Illuminate\Bus\Queueable;
-use App\Models\LearningLesson;
 use App\Models\User;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
 
 class IssueNftsJob implements ShouldQueue
 {
@@ -28,7 +26,8 @@ class IssueNftsJob implements ShouldQueue
         public LearningTopic $topic,
         public LearningLesson $learningLesson,
         public User $user
-        ) {}
+    ) {
+    }
 
     /**
      * Execute the job.
@@ -39,7 +38,7 @@ class IssueNftsJob implements ShouldQueue
     {
         $nftTemplate = $this->topic->nftTemplate;
 
-        if (!$nftTemplate instanceof Nft) {
+        if (! $nftTemplate instanceof Nft) {
             return null;
         }
 
@@ -53,7 +52,7 @@ class IssueNftsJob implements ShouldQueue
         $userNft->user_id = $this->user->id;
         $userNft->model_type = LearningTopic::class;
         $userNft->model_id = $this->topic->id;
-        $userNft->name = $nftTemplate->name . $this->topic->nfts->count();
+        $userNft->name = $nftTemplate->name.$this->topic->nfts->count();
         $userNft->save();
 
         // issue nft reward

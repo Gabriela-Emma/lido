@@ -3,19 +3,19 @@
 namespace App\Nova;
 
 use App\Models\Prompt;
-use Laravel\Nova\Fields\ID;
-use Illuminate\Http\Request;
-use Laravel\Nova\Fields\Slug;
-use Laravel\Nova\Fields\Text;
-use App\Scopes\PublishedScope;
-use Laravel\Nova\Fields\Stack;
-use Laravel\Nova\Fields\Select;
 use App\Nova\Actions\AddMetaData;
-use Laravel\Nova\Fields\Markdown;
 use App\Nova\Actions\EditMetaData;
 use App\Nova\Actions\PublishModel;
-use Laravel\Nova\Fields\BelongsTo;
+use App\Scopes\PublishedScope;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\Request;
+use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Markdown;
+use Laravel\Nova\Fields\Select;
+use Laravel\Nova\Fields\Slug;
+use Laravel\Nova\Fields\Stack;
+use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class LegacyQuestions extends Resource

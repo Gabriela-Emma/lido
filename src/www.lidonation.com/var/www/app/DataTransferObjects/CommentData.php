@@ -3,9 +3,9 @@
 namespace App\DataTransferObjects;
 
 use Livewire\Wireable;
+use Spatie\LaravelData\Attributes\MapOutputName;
 use Spatie\LaravelData\Concerns\WireableData;
 use Spatie\LaravelData\Data;
-use Spatie\LaravelData\Attributes\MapOutputName;
 use Spatie\TypeScriptTransformer\Attributes\Optional as TypeScriptOptional;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 

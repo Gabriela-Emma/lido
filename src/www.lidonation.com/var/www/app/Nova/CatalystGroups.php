@@ -121,12 +121,12 @@ class CatalystGroups extends Resource
      * Get the actions available for the resource.
      */
     #[Pure]
- public function actions(NovaRequest $request): array
- {
-     return [
-         (new AddMetaData),
-         (new EditMetaData(CatalystGroup::class)),
-         (new SyncCatalystGroupProposals),
-     ];
- }
+    public function actions(NovaRequest $request): array
+    {
+        return [
+            (new AddMetaData),
+            (new EditMetaData(CatalystGroup::class)),
+            (new SyncCatalystGroupProposals),
+        ];
+    }
 }

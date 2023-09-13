@@ -2,19 +2,17 @@
 
 namespace App\Jobs;
 
-use App\Models\Fund;
 use App\Models\Category;
 use App\Models\Proposal;
-use Illuminate\Support\Str;
 use Illuminate\Bus\Queueable;
-use Illuminate\Support\Fluent;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Fluent;
+use Illuminate\Support\Str;
 
 class SyncF10ProposalCategories implements ShouldQueue
 {
@@ -39,25 +37,25 @@ class SyncF10ProposalCategories implements ShouldQueue
         Proposal::whereRelation('fund.parent', 'id', 113)->each(
             function ($proposal) {
                 $data = $this->getIdeaScaleData($proposal);
-                if (!$data || !isset($data->fieldSections) || !is_array($data->fieldSections)) {
-                    Log::warning('Invalid data for proposal ' . $proposal->id);
+                if (! $data || ! isset($data->fieldSections) || ! is_array($data->fieldSections)) {
+                    Log::warning('Invalid data for proposal '.$proposal->id);
+
                     return;
                 }
                 // Remove existing relationships
-                $proposal->categories()->sync([]); 
+                $proposal->categories()->sync([]);
 
-
-                if (!$proposal->categories?->count() ?? null) {
+                if (! $proposal->categories?->count() ?? null) {
                     $category = $this->getFieldByTitle(
                         $data->fieldSections,
-                        "[METADATA] Category of proposal"
+                        '[METADATA] Category of proposal'
                     )->ideaFieldValues[0]['value'];
 
                     $existingCat = Category::where('title', $category)->first();
 
                     if ($existingCat instanceof Category) {
                         $proposal->categories()->syncWithoutDetaching([
-                            $existingCat->id => ['model_type' => Proposal::class]
+                            $existingCat->id => ['model_type' => Proposal::class],
                         ]);
 
                         Proposal::withoutSyncingToSearch(fn () => $proposal->save());
@@ -72,7 +70,7 @@ class SyncF10ProposalCategories implements ShouldQueue
                         );
 
                         $proposal->categories()->syncWithoutDetaching([
-                            $newCategory->id => ['model_type' => Proposal::class]
+                            $newCategory->id => ['model_type' => Proposal::class],
                         ]);
 
                         Proposal::withoutSyncingToSearch(fn () => $proposal->save());
@@ -82,21 +80,19 @@ class SyncF10ProposalCategories implements ShouldQueue
         );
     }
 
-
-
     public function getIdeaScaleData($proposal)
     {
         $parts = collect(explode('/', $proposal->ideascale_link))->last();
         $ideascaleId = collect(explode('-', $parts))->first();
 
         $authResponse = Http::get('https://cardano.ideascale.com/a/community/api/get-token');
-        if (!$authResponse->successful()) {
+        if (! $authResponse->successful()) {
             return;
         }
         $response = Http::withToken($authResponse->body())
             ->get("https://cardano.ideascale.com/a/community/api/idea/{$ideascaleId}/detail");
 
-        if (!$response->successful()) {
+        if (! $response->successful()) {
             return;
         }
 
@@ -108,15 +104,16 @@ class SyncF10ProposalCategories implements ShouldQueue
 
         $targetField = array_filter(
             $fieldSections,
-            fn ($obj) =>  strtolower($obj->title) === strtolower($title)
+            fn ($obj) => strtolower($obj->title) === strtolower($title)
         );
 
-        if (!$targetField) {
+        if (! $targetField) {
             return new Fluent([]);
         }
 
         $targetField = reset($targetField);
         $targetField = json_decode(json_encode($targetField), true);
+
         return new Fluent($targetField);
     }
 }
