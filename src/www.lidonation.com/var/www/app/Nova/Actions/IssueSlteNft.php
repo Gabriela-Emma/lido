@@ -46,7 +46,6 @@ class IssueSlteNft extends Action
                     }
                 }
             } else if ($model instanceof LearningTopic) {
-                //@todo implement
             }
         }
     }

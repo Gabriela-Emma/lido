@@ -50,7 +50,6 @@ class CatalystMyVotesController extends Controller
 
     public function update(Request $request, CatalystVote $vote)
     {
-        // TODO: check if user is allowed to edit this vote
         $data = $request->validate([
             'vote' => 'required|in:0,1,2',
         ]);
@@ -69,7 +68,6 @@ class CatalystMyVotesController extends Controller
 
     public function destroy(Request $request, CatalystVote $vote)
     {
-        // TODO: check if user is allowed to edit this vote
         $vote->delete();
     }
 }

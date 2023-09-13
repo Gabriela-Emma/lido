@@ -36,7 +36,6 @@ class ImportCatalystTallyCommand extends Command
             $data = new Fluent($data);
             foreach ($data->proposals as $value) {
                 $proposalTally = new Fluent($value);
-
                 CatalystTally::updateOrCreate([
                     'hash' => $proposalTally->proposal_id,
                 ], [

@@ -50,7 +50,6 @@ class PhuffycoinService
     {
         $users = User::whereNotNull('wallet_stake_address')->cursor();
         $delegations = collect([]);
-        // @todo turn this into an async call (or batches) that fetches multiple users at a time
         foreach ($users as $user) {
             $epochDelegation = $this->getEpochDelegation($user, $epoch);
             if (! $epochDelegation) {

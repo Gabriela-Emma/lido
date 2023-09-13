@@ -40,8 +40,7 @@ class CatalystGroupComposer
         );
         $this->setTagCloud();
         //
-// @Todo
-//  This should be an injecktable operation
+
         $discussions = $this->catalystGroup?->proposals
             ->map(
                 fn ($p) => $p->discussions

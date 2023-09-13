@@ -11,7 +11,6 @@ use TimeHunter\LaravelGoogleReCaptchaV3\Validations\GoogleReCaptchaV3ValidationR
 /**
  * Class CommentController
  *
- * @todo add akismet-esque spam protection
  */
 class CommentController extends Controller
 {
