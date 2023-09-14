@@ -5,11 +5,22 @@
         <meta property="og:description" content="{{$proposal->social_post}}"/>
         <meta property="og:url" content="{{$proposal->url}}"/>
         <meta property="og:image" content="{{$proposal->generated_summary_pic}}"/>
-        <meta property="og:image:width" content="2048"/>
-        <meta property="og:image:height" content="2048"/>
+        <meta property="og:image:width" content="520"/>
+        <meta property="og:image:height" content="320"/>
+
+        @if(!!$proposal->quickpitch)
+        <meta property="og:video" content="{{$proposal->quickpitch}}" />
+            <meta property="og:video:url" content="{{$proposal->quickpitch}}" />
+        <meta property="og:video:secure_url" content="{{$proposal->quickpitch}}" />
+        <meta property="og:video:type" content="application/x-shockwave-flash" />
+        <meta property="og:video:width" content="398">
+        <meta property="og:video:height" content="224">
+        @endif
+
         <meta property="article:publisher" content="{{config('app.name')}}"/>
         <meta property="article:author" content="{{$proposal->author?->name}}"/>
         <meta property="article:published_time" content="{{$proposal->published_at}}"/>
+
         <meta property="twitter:card" content="summary_large_image"/>
         <meta property="twitter:title" content="{{$proposal->title}}"/>
         <meta property="twitter:description" content="{{$proposal->solution}}"/>
