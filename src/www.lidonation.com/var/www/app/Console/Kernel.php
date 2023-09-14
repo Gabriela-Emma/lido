@@ -19,7 +19,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        $schedule->command('ln:import-catalyst-tally /var/www/storage/app/catalyst/activevotingplans.proposals.json')->everyThirtyMinutes();
+//        $schedule->command('ln:import-catalyst-tally /var/www/storage/app/catalyst/activevotingplans.proposals.json')->everyThirtyMinutes();
         $schedule->command('ln:ca-ir')->daily();
         $schedule->command('ln:ca-fr')->weekly();
         $schedule->command('ln:ca-wr')->weekly();
@@ -33,9 +33,9 @@ class Kernel extends ConsoleKernel
         // $schedule->job(new ProcessPendingWithdrawalsJob)->daily();
         $schedule->job(new CalculateDelegationEpochs)->daily();
         $schedule->job(new LidoStatsJob)->everyFifteenMinutes();
-        if (app()->environment('production')) {
-            $schedule->job(new SyncCatalystLedgerSnapshots)->everyFifteenMinutes();
-        }
+//        if (app()->environment('production')) {
+//            $schedule->job(new SyncCatalystLedgerSnapshots)->everyFifteenMinutes();
+//        }
         $schedule->job(new CardanoStatsJob)->everyTwoHours();
         $schedule->job(new RefreshLidoTwitterToken)->everyThirtyMinutes();
 

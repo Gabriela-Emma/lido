@@ -153,7 +153,6 @@ class CatalystBookmarksController extends Controller
 
     public function createDraftBallot(Request $request)
     {
-        //@todo validate against policy with gate to make sure only collection owner can do this
         $db = new DraftBallot;
         $db->user_id = Auth::id();
         $db->title = auth()?->user()->name.' Draft Ballot';
@@ -183,7 +182,6 @@ class CatalystBookmarksController extends Controller
 
     public function createDraftBallotFromCollection(Request $request, BookmarkCollection $bookmarkCollection)
     {
-        //@todo validate against policy with gate to make sure only collection owner can do this
         $bookmarkCollection->type = DraftBallot::class;
         $bookmarkCollection->save();
         $db = DraftBallot::find($bookmarkCollection->id);

@@ -208,7 +208,6 @@ class Post extends Model implements HasMedia, Interfaces\IHasMetaData, Sitemapab
         //         ->inTaxonomies(null, $taxs)
         //         ->limit(5);
 
-        //     // @TODO fix query above sometimes returns a collection with the current post
         //     return $query->get()
         //         ->whereNotIn('id', $this->id)->take(4);
 
@@ -231,7 +230,6 @@ class Post extends Model implements HasMedia, Interfaces\IHasMetaData, Sitemapab
             ->where('id', '!=', $this->id)
             ->get();
 
-        // @TODO fix query above sometimes returns a collection with the current post
         return $related_posts->take(4);
     }
 

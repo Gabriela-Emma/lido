@@ -25,7 +25,6 @@ class SavePaidToDelegatesMetric implements ShouldQueue
      */
     public function handle(CalculateCardanoMetricsEvent $event, CardanoGraphQLService $cardanoGraphQLService)
     {
-        // @todo implement actual code
         // get the data from cardano
         $paidToDelegates = $cardanoGraphQLService->getPoolDelegationRewardsSum();
 

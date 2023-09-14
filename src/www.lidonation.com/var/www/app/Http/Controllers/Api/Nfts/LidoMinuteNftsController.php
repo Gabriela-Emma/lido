@@ -69,7 +69,6 @@ class LidoMinuteNftsController extends Controller
         return new TxResource($tx);
     }
 
-    //@todo move this to a an involkable
     protected function mintAddressFromLucid()
     {
         $seed = file_get_contents('/data/nfts/lido-minute/wallets/mint/seed.txt');

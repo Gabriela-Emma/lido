@@ -32,7 +32,6 @@ class EveryEpoch extends Model implements HasMedia
         'content',
     ];
 
-    //@todo move this to be a has one of many relation
     public function giveaway(): Attribute
     {
         return Attribute::make(get: fn ($value) => $this->giveaways?->first() ?? $this->quizzes?->first()?->giveaway);

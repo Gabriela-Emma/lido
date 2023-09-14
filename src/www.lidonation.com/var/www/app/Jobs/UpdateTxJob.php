@@ -120,7 +120,6 @@ class UpdateTxJob implements ShouldQueue
         $tx->save();
     }
 
-    //@todo move this to a an involkable
     protected function getAddressFromLucid(): object|array|null
     {
         $seed = $this->paymentWalletOrSeed?->passphrase ?? $this->paymentWalletOrSeed;
