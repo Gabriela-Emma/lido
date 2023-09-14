@@ -26,9 +26,6 @@ class GenerateProposalImage
         $html = view('catalyst-proposal-summary', compact('proposal'))
             ->render();
 
-//        echo $html;
-//        return null;
-
         $image = Browsershot::html($html)
             ->setChromePath('/usr/bin/chromium-browser')
             ->addChromiumArguments(['no-sandbox'])
@@ -57,16 +54,5 @@ class GenerateProposalImage
         }
 
         return $image;
-    }
-
-    protected function get_content($URL)
-    {
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_URL, $URL);
-        $data = curl_exec($ch);
-        curl_close($ch);
-
-        return $data;
     }
 }
