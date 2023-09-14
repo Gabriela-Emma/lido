@@ -1,143 +1,143 @@
-kind: Role
-apiVersion: rbac.authorization.k8s.io/v1
-metadata:
-  namespace: {{ .Values.namespace }}
-  name: "{{ $.Chart.Name }}-activevoteplans"
-rules:
-  - apiGroups: ["", "extensions", "apps"]
-    resources:
-      - deployments
-      - replicasets
-      - pods
-      - pods/list
-      - pods/exec
-    verbs:
-      - 'list'
-      - 'get'
-  - apiGroups: [ "" ]
-    resources: [ "pods/exec"  ]
-    verbs: [ "create" ]
----
-kind: RoleBinding
-apiVersion: rbac.authorization.k8s.io/v1
-metadata:
-  name: "{{ $.Chart.Name }}-activevoteplans"
-  namespace: {{ .Values.namespace }}
-subjects:
-  - kind: ServiceAccount
-    name: "sa-{{ $.Chart.Name }}-activevoteplans"
-    apiGroup: ""
-roleRef:
-  kind: Role
-  name: "{{ $.Chart.Name }}-activevoteplans"
-  apiGroup: rbac.authorization.k8s.io
----
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: "sa-{{ $.Chart.Name }}-activevoteplans"
-  namespace: {{ .Values.namespace }}
----
-apiVersion: batch/v1
-kind: CronJob
-metadata:
-  namespace: {{ .Values.namespace }}
-  name: "{{ $.Chart.Name }}-activevoteplans"
-spec:
-  schedule: "*/15 * * * *"
-  concurrencyPolicy: Forbid
-  jobTemplate:
-    spec:
-      ttlSecondsAfterFinished: 1800
-      parallelism: 1
-      backoffLimit: 0
-      activeDeadlineSeconds: 600
+{{/*kind: Role*/}}
+{{/*apiVersion: rbac.authorization.k8s.io/v1*/}}
+{{/*metadata:*/}}
+{{/*  namespace: {{ .Values.namespace }}*/}}
+{{/*  name: "{{ $.Chart.Name }}-activevoteplans"*/}}
+{{/*rules:*/}}
+{{/*  - apiGroups: ["", "extensions", "apps"]*/}}
+{{/*    resources:*/}}
+{{/*      - deployments*/}}
+{{/*      - replicasets*/}}
+{{/*      - pods*/}}
+{{/*      - pods/list*/}}
+{{/*      - pods/exec*/}}
+{{/*    verbs:*/}}
+{{/*      - 'list'*/}}
+{{/*      - 'get'*/}}
+{{/*  - apiGroups: [ "" ]*/}}
+{{/*    resources: [ "pods/exec"  ]*/}}
+{{/*    verbs: [ "create" ]*/}}
+{{/*---*/}}
+{{/*kind: RoleBinding*/}}
+{{/*apiVersion: rbac.authorization.k8s.io/v1*/}}
+{{/*metadata:*/}}
+{{/*  name: "{{ $.Chart.Name }}-activevoteplans"*/}}
+{{/*  namespace: {{ .Values.namespace }}*/}}
+{{/*subjects:*/}}
+{{/*  - kind: ServiceAccount*/}}
+{{/*    name: "sa-{{ $.Chart.Name }}-activevoteplans"*/}}
+{{/*    apiGroup: ""*/}}
+{{/*roleRef:*/}}
+{{/*  kind: Role*/}}
+{{/*  name: "{{ $.Chart.Name }}-activevoteplans"*/}}
+{{/*  apiGroup: rbac.authorization.k8s.io*/}}
+{{/*---*/}}
+{{/*apiVersion: v1*/}}
+{{/*kind: ServiceAccount*/}}
+{{/*metadata:*/}}
+{{/*  name: "sa-{{ $.Chart.Name }}-activevoteplans"*/}}
+{{/*  namespace: {{ .Values.namespace }}*/}}
+{{/*---*/}}
+{{/*apiVersion: batch/v1*/}}
+{{/*kind: CronJob*/}}
+{{/*metadata:*/}}
+{{/*  namespace: {{ .Values.namespace }}*/}}
+{{/*  name: "{{ $.Chart.Name }}-activevoteplans"*/}}
+{{/*spec:*/}}
+{{/*  schedule: "*/15 * * * *"*/}}
+{{/*  concurrencyPolicy: Forbid*/}}
+{{/*  jobTemplate:*/}}
+{{/*    spec:*/}}
+{{/*      ttlSecondsAfterFinished: 1800*/}}
+{{/*      parallelism: 1*/}}
+{{/*      backoffLimit: 0*/}}
+{{/*      activeDeadlineSeconds: 600*/}}
 {{/*      completionMode: 'Indexed'*/}}
-      template:
-        spec:
-          shareProcessNamespace: true
-          restartPolicy: Never
-          serviceAccountName: "sa-{{ $.Chart.Name }}-activevoteplans"
-          volumes:
-            - name: "{{ $.Chart.Name }}-catalyst-utils-pv"
-              persistentVolumeClaim:
-                claimName: "{{ .Values.namespace }}-catalyst-utils-pvc"          
-          initContainers:
-            - name: fetch-archive
-              image: alpine:latest
-              imagePullPolicy: IfNotPresent
-              volumeMounts:
-                - name: "{{ $.Chart.Name }}-catalyst-utils-pv"
-                  mountPath: /leader1stuff
-              command:
-                - "/bin/sh"
-                - "-c"
-                - |
-                  apk add curl zstd jq
+{{/*      template:*/}}
+{{/*        spec:*/}}
+{{/*          shareProcessNamespace: true*/}}
+{{/*          restartPolicy: Never*/}}
+{{/*          serviceAccountName: "sa-{{ $.Chart.Name }}-activevoteplans"*/}}
+{{/*          volumes:*/}}
+{{/*            - name: "{{ $.Chart.Name }}-catalyst-utils-pv"*/}}
+{{/*              persistentVolumeClaim:*/}}
+{{/*                claimName: "{{ .Values.namespace }}-catalyst-utils-pvc"          */}}
+{{/*          initContainers:*/}}
+{{/*            - name: fetch-archive*/}}
+{{/*              image: alpine:latest*/}}
+{{/*              imagePullPolicy: IfNotPresent*/}}
+{{/*              volumeMounts:*/}}
+{{/*                - name: "{{ $.Chart.Name }}-catalyst-utils-pv"*/}}
+{{/*                  mountPath: /leader1stuff*/}}
+{{/*              command:*/}}
+{{/*                - "/bin/sh"*/}}
+{{/*                - "-c"*/}}
+{{/*                - |*/}}
+{{/*                  apk add curl zstd jq*/}}
 
-                  rm -rf /leader1stuff/*
-                  mkdir -p /leader1stuff/persist/leader-1
+{{/*                  rm -rf /leader1stuff/**/}}
+{{/*                  mkdir -p /leader1stuff/persist/leader-1*/}}
 
-                  cd /tmp
-                  LATEST_ARCHIVE_ID_FROM_LIDO=$(curl -s https://www.lidonation.com/api/catalyst-explorer/ledger-snapshots/latest | jq -r '.data.snapshot_id')
-                  URL=$(curl -s https://archiver.projectcatalyst.io/api/v1/archives/$LATEST_ARCHIVE_ID_FROM_LIDO/download | jq -r .url)
-                  curl -o archive.tar.zstd "$URL"
-                  zstd -d archive.tar.zstd
-                  tar -xvf archive.tar
+{{/*                  cd /tmp*/}}
+{{/*                  LATEST_ARCHIVE_ID_FROM_LIDO=$(curl -s https://www.lidonation.com/api/catalyst-explorer/ledger-snapshots/latest | jq -r '.data.snapshot_id')*/}}
+{{/*                  URL=$(curl -s https://archiver.projectcatalyst.io/api/v1/archives/$LATEST_ARCHIVE_ID_FROM_LIDO/download | jq -r .url)*/}}
+{{/*                  curl -o archive.tar.zstd "$URL"*/}}
+{{/*                  zstd -d archive.tar.zstd*/}}
+{{/*                  tar -xvf archive.tar*/}}
 
-                  mv volatile permanent /leader1stuff/persist/leader-1/
-                  mv artifacts /leader1stuff/
+{{/*                  mv volatile permanent /leader1stuff/persist/leader-1/*/}}
+{{/*                  mv artifacts /leader1stuff/*/}}
 
-                  rm -f /tmp/archive.tar.zstd /tmp/archive.tar
-          containers:
-            - name: jormungandr
-              image: registry.lidonation.com/lidonation/lidonation/jormungandr:fund10
-              imagePullPolicy: Always
-              volumeMounts:
-                - name: "{{ $.Chart.Name }}-catalyst-utils-pv"
-                  mountPath: /leader1stuff
-              ports:
-                - containerPort: 10000
-                  name: jormungandr
-              env:
-                - name: STORAGE_PATH
-                  value: /leader1stuff/persist/leader-1
-                - name: GENESIS_PATH
-                  value: /leader1stuff/artifacts/block0.bin
-            - name: generate-voteplans
-              image: alpine:latest
-              imagePullPolicy: IfNotPresent
-              volumeMounts:
-                - name: "{{ $.Chart.Name }}-catalyst-utils-pv"
-                  mountPath: /leader1stuff
-              command:
-                - "/bin/sh"
-                - "-c"
-                - |
-                  sleep 5m
-                  apk add curl
-                  curl http://127.0.0.1:10000/api/v0/vote/active/plans
-                  if [[ $? -ne 0 ]]; then
-                    echo "Failed to get the active vote plans."
-                    exit 0
-                  fi
-                  curl http://127.0.0.1:10000/api/v0/vote/active/plans > /leader1stuff/activevotingplans.proposals.json
-                  kill -9 $(pidof jormungandr)
-                  exit 0
-            - name: publish-voteplans
-              image: bitnami/kubectl:1.27.5-debian-11-r17
-              imagePullPolicy: IfNotPresent
-              volumeMounts:
-                - name: "{{ $.Chart.Name }}-catalyst-utils-pv"
-                  mountPath: /leader1stuff
-              command:
-                - "/bin/sh"
-                - "-c"
-                - |
-                  sleep 7m
-                  POD_NAME=$(kubectl get pods -l service=lidolovelace-web-fpm --field-selector=status.phase=Running -o=jsonpath='{.items[0].metadata.name}')
-                  echo "publishing to $POD_NAME"
-                  kubectl cp /leader1stuff/activevotingplans.proposals.json $POD_NAME:/var/www/storage/app/catalyst/activevotingplans.proposals.json -c app
-                  exit 0
-          imagePullSecrets:
-            - name: {{ .Values.image.pullSecret }}
+{{/*                  rm -f /tmp/archive.tar.zstd /tmp/archive.tar*/}}
+{{/*          containers:*/}}
+{{/*            - name: jormungandr*/}}
+{{/*              image: registry.lidonation.com/lidonation/lidonation/jormungandr:fund10*/}}
+{{/*              imagePullPolicy: Always*/}}
+{{/*              volumeMounts:*/}}
+{{/*                - name: "{{ $.Chart.Name }}-catalyst-utils-pv"*/}}
+{{/*                  mountPath: /leader1stuff*/}}
+{{/*              ports:*/}}
+{{/*                - containerPort: 10000*/}}
+{{/*                  name: jormungandr*/}}
+{{/*              env:*/}}
+{{/*                - name: STORAGE_PATH*/}}
+{{/*                  value: /leader1stuff/persist/leader-1*/}}
+{{/*                - name: GENESIS_PATH*/}}
+{{/*                  value: /leader1stuff/artifacts/block0.bin*/}}
+{{/*            - name: generate-voteplans*/}}
+{{/*              image: alpine:latest*/}}
+{{/*              imagePullPolicy: IfNotPresent*/}}
+{{/*              volumeMounts:*/}}
+{{/*                - name: "{{ $.Chart.Name }}-catalyst-utils-pv"*/}}
+{{/*                  mountPath: /leader1stuff*/}}
+{{/*              command:*/}}
+{{/*                - "/bin/sh"*/}}
+{{/*                - "-c"*/}}
+{{/*                - |*/}}
+{{/*                  sleep 5m*/}}
+{{/*                  apk add curl*/}}
+{{/*                  curl http://127.0.0.1:10000/api/v0/vote/active/plans*/}}
+{{/*                  if [[ $? -ne 0 ]]; then*/}}
+{{/*                    echo "Failed to get the active vote plans."*/}}
+{{/*                    exit 0*/}}
+{{/*                  fi*/}}
+{{/*                  curl http://127.0.0.1:10000/api/v0/vote/active/plans > /leader1stuff/activevotingplans.proposals.json*/}}
+{{/*                  kill -9 $(pidof jormungandr)*/}}
+{{/*                  exit 0*/}}
+{{/*            - name: publish-voteplans*/}}
+{{/*              image: bitnami/kubectl:1.27.5-debian-11-r17*/}}
+{{/*              imagePullPolicy: IfNotPresent*/}}
+{{/*              volumeMounts:*/}}
+{{/*                - name: "{{ $.Chart.Name }}-catalyst-utils-pv"*/}}
+{{/*                  mountPath: /leader1stuff*/}}
+{{/*              command:*/}}
+{{/*                - "/bin/sh"*/}}
+{{/*                - "-c"*/}}
+{{/*                - |*/}}
+{{/*                  sleep 7m*/}}
+{{/*                  POD_NAME=$(kubectl get pods -l service=lidolovelace-web-fpm --field-selector=status.phase=Running -o=jsonpath='{.items[0].metadata.name}')*/}}
+{{/*                  echo "publishing to $POD_NAME"*/}}
+{{/*                  kubectl cp /leader1stuff/activevotingplans.proposals.json $POD_NAME:/var/www/storage/app/catalyst/activevotingplans.proposals.json -c app*/}}
+{{/*                  exit 0*/}}
+{{/*          imagePullSecrets:*/}}
+{{/*            - name: {{ .Values.image.pullSecret }}*/}}
