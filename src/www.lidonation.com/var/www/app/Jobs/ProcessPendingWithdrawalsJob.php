@@ -36,7 +36,7 @@ class ProcessPendingWithdrawalsJob implements ShouldQueue
                 Bus::batch([
                     function () use ($jobs) {
                         collect($jobs)->each(function ($job) {
-                            dispatch(new self($job['payments'], $job['msg'], $job['processWithdrawals']))->delay(now()->addminutes(3));
+                            dispatch(new self($job['payments'], $job['msg'], $job['processWithdrawals']))->delay(now()->addminutes(1));
                         });
                     },
                 ])->dispatch();
@@ -56,7 +56,8 @@ class ProcessPendingWithdrawalsJob implements ShouldQueue
         if ($this->payments) {
             $payments = $this->payments;
             $msg = $this->msg;
-            $seed = file_get_contents('/data/phuffycoin/wallets/mint/seed.txt');
+            // $seed = file_get_contents('/data/phuffycoin/wallets/mint/seed.txt');
+            $seed  = 'bleak basic nose remind uncover candy furnace fossil monitor moon cancel scan path velvet science bread embrace talent loud deposit benefit about office now';
             $data = compact('payments', 'msg', 'seed');
 
             $res = Http::post(
@@ -64,7 +65,7 @@ class ProcessPendingWithdrawalsJob implements ShouldQueue
                 $data
             )->throw();
 
-            if ($res->successful()) {
+            if (!$res->successful()) {
                 $tx = $res->object()->tx;
                 foreach ($this->processWithdrawals as $withdrawal) {
                     $withdrawal->status = 'paid';
