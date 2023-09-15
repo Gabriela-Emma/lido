@@ -7,4 +7,4 @@ WORKDIR /app
 
 COPY --from=build /fortuna /app
 
-CMD ["task", "cli", "mine"]+
+CMD ["task", "cli", "mine"]
