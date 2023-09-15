@@ -863,12 +863,12 @@ fortuna:
       docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
       echo "Building fortuna Dockerfile..."
       docker build --network host  \
-        -f ./src/fortuna.lidonation.com/Dockerfile -t "$CI_APPLICATION_REPOSITORY/fortuna.lidonation.com:$CI_APPLICATION_TAG" \
-        -t "$CI_APPLICATION_REPOSITORY/fortuna.lidonation.com:latest" ./src/fortuna.lidonation.com/.
+        -f ./src/fortuna/Dockerfile -t "$CI_APPLICATION_REPOSITORY/fortuna:$CI_APPLICATION_TAG" \
+        -t "$CI_APPLICATION_REPOSITORY/fortuna:latest" ./src/fortuna/.
 
       echo "Pushing web to GitLab Container Registry..."
-      docker push "$CI_APPLICATION_REPOSITORY/fortuna.lidonation.com:$CI_APPLICATION_TAG"
-      docker push "$CI_APPLICATION_REPOSITORY/fortuna.lidonation.com:latest"
+      docker push "$CI_APPLICATION_REPOSITORY/fortuna:$CI_APPLICATION_TAG"
+      docker push "$CI_APPLICATION_REPOSITORY/fortuna:latest"
       echo ""
   rules:
     - if: '$DEPLOY_CARDANO_FORTUNA == "True"'
