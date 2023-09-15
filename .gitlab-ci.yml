@@ -1142,8 +1142,6 @@ mainnet:
   <<: *deploy_template
   stage: mainnet
   retry: 1
-  needs:
-    - review
   script:
     - *setup
     - deploy_services
