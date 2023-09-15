@@ -3,6 +3,7 @@
 namespace App\Nova;
 
 use App\Models\CatalystLedgerSnapshot;
+use App\Nova\Actions\CatalystLedgerSnapshotDownload;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\DateTime;
@@ -93,6 +94,8 @@ class CatalystLedgerSnapshots extends Resource
      */
     public function actions(NovaRequest $request)
     {
-        return [];
+        return [
+            (new CatalystLedgerSnapshotDownload),
+        ];
     }
 }

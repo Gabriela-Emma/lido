@@ -10,7 +10,7 @@
 
         @if(!!$proposal->quickpitch)
         <meta property="og:video" content="{{$proposal->quickpitch}}" />
-            <meta property="og:video:url" content="{{$proposal->quickpitch}}" />
+        <meta property="og:video:url" content="{{$proposal->quickpitch}}" />
         <meta property="og:video:secure_url" content="{{$proposal->quickpitch}}" />
         <meta property="og:video:type" content="application/x-shockwave-flash" />
         <meta property="og:video:width" content="398">

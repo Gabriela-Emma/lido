@@ -5,6 +5,6 @@ FROM denoland/deno:alpine-1.36.3 as base
 
 WORKDIR /app
 
-COPY --from=build /fortuna /app
+COPY --from=fortuna /fortuna /app
 
 CMD ["task", "cli", "mine"]
