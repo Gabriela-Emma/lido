@@ -845,10 +845,10 @@ web:
       when: manual
 
 fortuna:
-  stage: .pre
+  stage: build
   image: docker:24.0.2-git
   retry: 1
-  cache: { }
+  cache: {}
   script:
     - *auto_devops_custom
     - |
