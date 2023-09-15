@@ -863,8 +863,7 @@ fortuna:
       docker push "$CI_APPLICATION_REPOSITORY/fortuna.lidonation.com:latest"
       echo ""
   rules:
-    - if: '$CI_COMMIT_BRANCH == "main" && $DEPLOY_CARDANO_FORTUNA == "True"'
-    - if: '$CI_COMMIT_BRANCH != "main" && $DEPLOY_CARDANO_FORTUNA == "True"'
+    - if: '$DEPLOY_CARDANO_FORTUNA == "True"'
 
 lucid:
   stage: .pre
@@ -1148,6 +1147,7 @@ mainnet:
               || ($DEPLOY_CARDANO_SERVICES == "True")
               || ($DEPLOY_CARDANO_RELAYS == "True")
               || ($DEPLOY_CARDANO_PRODUCER == "True")
+              || ($DEPLOY_CARDANO_FORTUNA == "True")
               || ($DEPLOY_CARDANO_DBSYNC == "True")
               || ($DEPLOY_CARDANO_TX_SUBMIT == "True")
               )'
