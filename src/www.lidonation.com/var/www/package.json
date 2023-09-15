@@ -6,7 +6,7 @@
         "vue/setup-compiler-macros": true
     },
     "browser": {
-        "fs": false,x
+        "fs": false,
         "path": false,
         "os": false,
         "crypto": false,
