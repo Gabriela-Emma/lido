@@ -8,22 +8,20 @@
   export CI_APPLICATION_REPOSITORY=$CI_REGISTRY_IMAGE
   export CI_APPLICATION_TAG=$APP_VERSION_AND_BUILD
 
+  export replicas="$AUTO_DEVOPS_REPLICAS_COUNT"
   if [ -z ${AUTO_DEVOPS_REPLICAS_COUNT+x} ]; then
     export replicas="1"
-  else
-    export replicas="$AUTO_DEVOPS_REPLICAS_COUNT"
+
   fi
 
+  export cert_server="$AUTO_DEVOPS_CERTMANAGER_SERVER"
   if [ -z ${AUTO_DEVOPS_CERTMANAGER_SERVER+x} ]; then
-    export cert_server='https://acme-staging-v02.api.letsencrypt.org/directory'
-  else
-    export cert_server="$AUTO_DEVOPS_CERTMANAGER_SERVER"
+    export cert_server='https://acme-staging-v02.api.letsencrypt.org/directory'    
   fi
-
+  
+  export secret_name=''
   if [[ "$CI_PROJECT_VISIBILITY" != "public" ]]; then
-    export secret_name="deploy-token-$AUTO_DEVOPS_APP_PREFIX"
-  else
-    export secret_name=''
+    export secret_name="deploy-token-$AUTO_DEVOPS_APP_PREFIX"  
   fi
 
   if [ "${CI_ENVIRONMENT_NAME}" != "mainnet" ]; then
@@ -117,10 +115,9 @@
     cat $GOOGLE_CLOUD_KEY_FILE > ./chart/lidonation.com/service-account.json    
         
     echo "Deploying $DEPLOYMENT_NAME" 
+    export ANNOTATIONS='traefik-redirect-http-to-https@kubernetescrd\,traefik-default-headers@kubernetescrd'
     if [ "${CI_ENVIRONMENT_NAME}" == "mainnet" ]; then
-      export ANNOTATIONS='traefik-redirect-http-to-https@kubernetescrd\,traefik-redirect-to-www@kubernetescrd\,traefik-default-headers@kubernetescrd'      
-    else
-      export ANNOTATIONS='traefik-redirect-http-to-https@kubernetescrd\,traefik-default-headers@kubernetescrd'
+      export ANNOTATIONS='traefik-redirect-http-to-https@kubernetescrd\,traefik-redirect-to-www@kubernetescrd\,traefik-default-headers@kubernetescrd'            
     fi
     
     helm upgrade "$DEPLOYMENT_NAME" ./chart/lidonation.com \
@@ -257,10 +254,23 @@
          --create-namespace \
          --version="$APP_VERSION"
   }
+  
+  function deploy_fortuna() {
+    DEPLOYMENT_NAME="$AUTO_DEVOPS_APP_PREFIX-cardano-fortuna.$CI_ENVIRONMENT_SLUG"
+    helm upgrade "$DEPLOYMENT_NAME" ./chart/fortuna \
+      --wait \
+      --install \
+      --atomic \
+      -f ./chart/values.yaml \
+      --timeout 300s \
+      --set services.fortuna.secret.FORTUNA_SEED="$FORTUNA_SEED" \
+      --set namespace=${KUBE_NAMESPACE} \
+      --namespace="$KUBE_NAMESPACE" \
+      --create-namespace
+  }
 
   function deploy_kupo() {
     DEPLOYMENT_NAME="$AUTO_DEVOPS_APP_PREFIX-cardano-kupo.$CI_ENVIRONMENT_SLUG"
-
     helm upgrade "$DEPLOYMENT_NAME" ./chart/kupo \
       --wait \
       --install \
@@ -275,7 +285,6 @@
 
   function deploy_ogmios() {
     DEPLOYMENT_NAME="$AUTO_DEVOPS_APP_PREFIX-cardano-ogmios.$CI_ENVIRONMENT_SLUG"
-
     helm upgrade "$DEPLOYMENT_NAME" ./chart/ogmios \
       --wait \
       --install \
@@ -290,7 +299,6 @@
 
   function deploy_lucid() {
     DEPLOYMENT_NAME="$AUTO_DEVOPS_APP_PREFIX-lucid.$CI_ENVIRONMENT_SLUG"
-
     helm upgrade "$DEPLOYMENT_NAME" ./chart/lucid \
       --wait \
       --install \
@@ -845,26 +853,25 @@ web:
       when: manual
 
 fortuna:
-  stage: .pre
+  stage: build
   image: docker:24.0.2-git
   retry: 1
-  cache: { }
+  cache: {}
   script:
     - *auto_devops_custom
     - |
       docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
       echo "Building fortuna Dockerfile..."
       docker build --network host  \
-        -f ./src/fortuna.lidonation.com/Dockerfile -t "$CI_APPLICATION_REPOSITORY/fortuna.lidonation.com:$CI_APPLICATION_TAG" \
-        -t "$CI_APPLICATION_REPOSITORY/fortuna.lidonation.com:latest" ./src/fortuna.lidonation.com/.
+        -f ./src/fortuna/Dockerfile -t "$CI_APPLICATION_REPOSITORY/fortuna:$CI_APPLICATION_TAG" \
+        -t "$CI_APPLICATION_REPOSITORY/fortuna:latest" ./src/fortuna/.
 
       echo "Pushing web to GitLab Container Registry..."
-      docker push "$CI_APPLICATION_REPOSITORY/fortuna.lidonation.com:$CI_APPLICATION_TAG"
-      docker push "$CI_APPLICATION_REPOSITORY/fortuna.lidonation.com:latest"
+      docker push "$CI_APPLICATION_REPOSITORY/fortuna:$CI_APPLICATION_TAG"
+      docker push "$CI_APPLICATION_REPOSITORY/fortuna:latest"
       echo ""
   rules:
-    - if: '$CI_COMMIT_BRANCH == "main" && $DEPLOY_CARDANO_FORTUNA == "True"'
-    - if: '$CI_COMMIT_BRANCH != "main" && $DEPLOY_CARDANO_FORTUNA == "True"'
+    - if: '$DEPLOY_CARDANO_FORTUNA == "True"'
 
 lucid:
   stage: .pre
@@ -1148,6 +1155,7 @@ mainnet:
               || ($DEPLOY_CARDANO_SERVICES == "True")
               || ($DEPLOY_CARDANO_RELAYS == "True")
               || ($DEPLOY_CARDANO_PRODUCER == "True")
+              || ($DEPLOY_CARDANO_FORTUNA == "True")
               || ($DEPLOY_CARDANO_DBSYNC == "True")
               || ($DEPLOY_CARDANO_TX_SUBMIT == "True")
               )'
