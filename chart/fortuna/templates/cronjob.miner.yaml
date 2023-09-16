@@ -8,7 +8,7 @@ spec:
   concurrencyPolicy: Forbid
   jobTemplate:
     spec:
-      ttlSecondsAfterFinished: 900
+      activeDeadlineSeconds: 2700
       parallelism: 1
       backoffLimit: 5
       template:
