@@ -10,7 +10,7 @@ spec:
     spec:
       ttlSecondsAfterFinished: 900
       parallelism: 1
-      backoffLimit: 1
+      backoffLimit: 5
       activeDeadlineSeconds: 2700
       template:
         spec:
