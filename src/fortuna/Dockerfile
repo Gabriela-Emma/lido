@@ -7,4 +7,6 @@ WORKDIR /app
 
 COPY --from=fortuna /fortuna /app
 
-CMD ["task", "cli", "mine"]
+RUN deno cache miner/main.ts
+
+CMD ["run", "--allow-all", "miner/main.ts"]
