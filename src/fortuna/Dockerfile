@@ -7,8 +7,8 @@ WORKDIR /app
 
 COPY --from=fortuna /fortuna /app
 
-RUN deno cache miner/main.ts
+# RUN deno cache miner/main.ts
 
-ENTRYPOINT ["deno"]
+# ENTRYPOINT ["deno"]
 
-CMD ["run", "--allow-all", "miner/main.ts", "mine"]
+# CMD ["run", "--allow-all", "miner/main.ts", "mine"]
