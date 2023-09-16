@@ -47,6 +47,7 @@ spec:
                 - name: KUPO_URL
                   value: http://lidolovelace-cardano-kupo-service.lidolovelace.svc.cluster.local:1442
                 - name: OGMIOS_URL
-                  value: wss://lidolovelace-cardano-ogmios-service.lidolovelace.svc.cluster.local:1337
+                  value: wss://ogmios-mainnet-api-goaskada-com-e2b526.us1.demeter.run
+#                  value: ws://lidolovelace-cardano-ogmios-service.lidolovelace.svc.cluster.local:1337
           imagePullSecrets:
             - name: {{ .Values.image.pullSecret }}
