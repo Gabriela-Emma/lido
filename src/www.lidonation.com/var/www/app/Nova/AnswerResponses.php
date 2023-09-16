@@ -17,6 +17,7 @@ use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Actions\ExportAsCsv;
 
 class AnswerResponses extends Resource
 {
@@ -160,6 +161,7 @@ class AnswerResponses extends Resource
             [
                 (new AddMetaData),
                 (new EditMetaData(Question::class)),
+                ExportAsCsv::make()->nameable(),
             ]
         );
     }

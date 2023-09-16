@@ -21,6 +21,7 @@ use Laravel\Nova\Fields\Stack;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
+use Laravel\Nova\Actions\ExportAsCsv;
 
 //use Spatie\NovaTranslatable\Translatable;
 
@@ -139,6 +140,7 @@ class Causes extends Resource
             static::getGlobalActions(
                 (new AddMetaData),
                 (new EditMetaData(\App\Models\Cause::class)),
+                ExportAsCsv::make()->nameable(),
 
             ),
         ]);

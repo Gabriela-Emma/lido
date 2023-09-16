@@ -8,6 +8,7 @@ use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Image;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Actions\ExportAsCsv;
 
 class Media extends Resource
 {
@@ -108,6 +109,8 @@ class Media extends Resource
      */
     public function actions(Request $request): array
     {
-        return [];
+        return [
+            ExportAsCsv::make()->nameable(),
+        ];
     }
 }

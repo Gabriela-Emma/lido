@@ -42,6 +42,7 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
+use Laravel\Nova\Actions\ExportAsCsv;
 
 class Articles extends Resource
 {
@@ -267,6 +268,7 @@ class Articles extends Resource
                 (new TranslateModel),
                 (new AddModelSnippet),
                 (new AttachLink),
+                ExportAsCsv::make()->nameable(),
             ]);
     }
 

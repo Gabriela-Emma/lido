@@ -13,6 +13,7 @@ use Laravel\Nova\Fields\Markdown;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
+use Laravel\Nova\Actions\ExportAsCsv;
 
 class CatalystReports extends Resource
 {
@@ -102,6 +103,7 @@ class CatalystReports extends Resource
         return [
             (new AddMetaData),
             (new EditMetaData(TwitterAttendance::class)),
+            ExportAsCsv::make()->nameable(),
         ];
     }
 

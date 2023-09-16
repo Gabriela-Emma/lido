@@ -12,6 +12,7 @@ use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Markdown;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Actions\ExportAsCsv;
 
 class BookmarkCollections extends Resource
 {
@@ -115,6 +116,8 @@ class BookmarkCollections extends Resource
     {
         return array_merge(
             static::getGlobalActions(),
-            []);
+            [
+                ExportAsCsv::make()->nameable(),
+            ]);
     }
 }

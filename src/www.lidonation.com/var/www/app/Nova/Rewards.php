@@ -23,6 +23,7 @@ use Laravel\Nova\Fields\MorphTo;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Actions\ExportAsCsv;
 
 class Rewards extends Resource
 {
@@ -195,6 +196,7 @@ class Rewards extends Resource
                 (new RecalculateRewards),
                 (new IssueAdditionalRewards),
                 (new DispersePoolRewards),
+                ExportAsCsv::make()->nameable(),
             ]);
     }
 }

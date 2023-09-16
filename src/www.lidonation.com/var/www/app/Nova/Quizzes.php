@@ -16,6 +16,7 @@ use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Markdown;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Actions\ExportAsCsv;
 
 class Quizzes extends Resource
 {
@@ -141,6 +142,7 @@ class Quizzes extends Resource
             [
                 (new AddMetaData),
                 (new EditMetaData(\App\Models\Quiz::class)),
+                ExportAsCsv::make()->nameable(),
             ]);
     }
 }

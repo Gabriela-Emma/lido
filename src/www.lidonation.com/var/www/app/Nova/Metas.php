@@ -9,6 +9,7 @@ use Laravel\Nova\Fields\Markdown;
 use Laravel\Nova\Fields\MorphTo;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Actions\ExportAsCsv;
 
 class Metas extends Resource
 {
@@ -72,7 +73,9 @@ class Metas extends Resource
      */
     public function actions(NovaRequest $request): array
     {
-        return [];
+        return [
+            ExportAsCsv::make()->nameable(),
+        ];
     }
 
     public function metaDataFields(): array

@@ -15,6 +15,7 @@ use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Actions\ExportAsCsv;
 
 class Withdrawals extends Resource
 {
@@ -137,6 +138,7 @@ class Withdrawals extends Resource
                 new CacheNftImage,
                 (new AddMetaData),
                 (new EditMetaData(\App\Models\Withdrawal::class)),
+                ExportAsCsv::make()->nameable(),
 
             ]
         );

@@ -17,6 +17,7 @@ use Laravel\Nova\Fields\Markdown;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
+use Laravel\Nova\Actions\ExportAsCsv;
 
 class CatalystUsers extends Resource
 {
@@ -126,6 +127,7 @@ class CatalystUsers extends Resource
             (new AddMetaData),
             (new EditMetaData(CatalystUser::class)),
             (new ValidateClaims),
+            ExportAsCsv::make()->nameable(),
         ];
     }
 

@@ -20,6 +20,7 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\URL;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
+use Laravel\Nova\Actions\ExportAsCsv;
 
 //use Spatie\NovaTranslatable\Translatable;
 
@@ -137,6 +138,7 @@ class Snippets extends Resource
                 (new TranslateModel),
                 (new AddMetaData),
                 (new EditMetaData(\App\Models\Snippet::class)),
+                ExportAsCsv::make()->nameable(),
 
             ]);
     }

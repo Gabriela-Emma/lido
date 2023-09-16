@@ -11,6 +11,7 @@ use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Actions\ExportAsCsv;
 
 class CatalystLedgerSnapshots extends Resource
 {
@@ -96,6 +97,7 @@ class CatalystLedgerSnapshots extends Resource
     {
         return [
             (new CatalystLedgerSnapshotDownload),
+            ExportAsCsv::make()->nameable(),
         ];
     }
 }
