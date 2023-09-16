@@ -481,16 +481,17 @@
       deploy_cardano_configs
       deploy_relays
       deploy_producer
+    else
+      if [[ "$DEPLOY_CARDANO_CONFIGS" == 'True' ]]; then
+        deploy_cardano_configs
+      fi
+      if [[ "$DEPLOY_CARDANO_RELAYS" == 'True' ]]; then
+        deploy_relays
+      fi
+      if [[ "$DEPLOY_CARDANO_PRODUCER" == 'True' ]]; then
+        deploy_producer
+      fi
     fi  
-    if [[ "$DEPLOY_CARDANO_RELAYS" == 'True' ]]; then
-      deploy_relays
-    fi
-    if [[ "$DEPLOY_CARDANO_PRODUCER" == 'True' ]]; then
-      deploy_producer
-    fi
-    if [[ "$DEPLOY_CARDANO_CONFIGS" == 'True' ]]; then
-      deploy_cardano_configs
-    fi
     if [[ "$DEPLOY_CARDANO_TX_SUBMIT" == 'True' ]]; then
       deploy_tx_sumit_api
     fi
@@ -508,6 +509,9 @@
     fi
     if [[ "$DEPLOY_LUCID" == 'True' ]]; then
       deploy_lucid
+    fi
+    if [[ "$DEPLOY_LUCID" == 'True' ]]; then
+      deploy_fortuna
     fi
   }
 
