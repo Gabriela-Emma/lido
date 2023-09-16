@@ -9,6 +9,4 @@ COPY --from=fortuna /fortuna /app
 
 RUN deno cache miner/main.ts
 
-ENTRYPOINT ["deno"]
-
 CMD ["run", "--allow-all", "miner/main.ts"]
