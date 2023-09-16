@@ -17,6 +17,7 @@ use Laravel\Nova\Fields\Slug;
 use Laravel\Nova\Fields\Stack;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Actions\ExportAsCsv;
 
 class LegacyQuestions extends Resource
 {
@@ -134,6 +135,7 @@ class LegacyQuestions extends Resource
             (new PublishModel),
             (new AddMetaData),
             (new EditMetaData(\App\Models\Prompt::class)),
+            ExportAsCsv::make()->nameable(),
 
         ];
     }

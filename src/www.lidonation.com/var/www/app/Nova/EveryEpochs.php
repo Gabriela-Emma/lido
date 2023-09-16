@@ -15,6 +15,7 @@ use Laravel\Nova\Fields\Markdown;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Actions\ExportAsCsv;
 
 class EveryEpochs extends Resource
 {
@@ -118,6 +119,7 @@ class EveryEpochs extends Resource
             [
                 (new AddMetaData),
                 (new EditMetaData(EveryEpoch::class)),
+                ExportAsCsv::make()->nameable(),
             ]);
     }
 }

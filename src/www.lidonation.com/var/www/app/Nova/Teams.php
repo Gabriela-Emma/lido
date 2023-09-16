@@ -17,6 +17,7 @@ use Laravel\Nova\Fields\Markdown;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
+use Laravel\Nova\Actions\ExportAsCsv;
 
 class Teams extends Resource
 {
@@ -123,6 +124,7 @@ class Teams extends Resource
             (new AddMetaData),
             (new EditMetaData(Team::class)),
             (new AttachLink),
+            ExportAsCsv::make()->nameable(),
         ];
     }
 

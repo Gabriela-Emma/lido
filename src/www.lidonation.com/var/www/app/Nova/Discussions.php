@@ -19,6 +19,7 @@ use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Panel;
+use Laravel\Nova\Actions\ExportAsCsv;
 
 class Discussions extends Resource
 {
@@ -114,6 +115,7 @@ class Discussions extends Resource
             [
                 (new AddMetaData),
                 (new EditMetaData(\App\Models\Discussion::class)),
+                ExportAsCsv::make()->nameable(),
             ]
         );
     }

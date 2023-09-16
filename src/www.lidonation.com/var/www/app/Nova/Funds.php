@@ -30,6 +30,7 @@ use Laravel\Nova\Fields\Stack;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
+use Laravel\Nova\Actions\ExportAsCsv;
 
 class Funds extends Resource
 {
@@ -202,6 +203,7 @@ class Funds extends Resource
                 (new AttachTag),
                 (new AttachCategory),
                 (new AttachLink),
+                ExportAsCsv::make()->nameable(),
             ]
         );
     }

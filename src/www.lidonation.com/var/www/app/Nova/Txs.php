@@ -14,6 +14,7 @@ use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Actions\ExportAsCsv;
 
 class Txs extends Resource
 {
@@ -125,6 +126,7 @@ class Txs extends Resource
             static::getGlobalActions(),
             [
                 (new MintNft),
+                ExportAsCsv::make()->nameable(),
             ]
         );
     }
