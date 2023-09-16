@@ -24,8 +24,10 @@ spec:
             - name: fortuna
               image: "{{ .Values.services.fortuna.image.repository }}:{{ .Values.image.tag }}"
               imagePullPolicy: IfNotPresent
-              \
-
+              command:
+                - /bin/sh
+                - -c
+                - deno task cli mine
               lifecycle:
                 postStart:
                   exec:
