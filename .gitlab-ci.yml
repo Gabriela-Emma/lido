@@ -510,7 +510,7 @@
     if [[ "$DEPLOY_LUCID" == 'True' ]]; then
       deploy_lucid
     fi
-    if [[ "$DEPLOY_LUCID" == 'True' ]]; then
+    if [[ "$DEPLOY_CARDANO_FORTUNA" == 'True' ]]; then
       deploy_fortuna
     fi
   }
