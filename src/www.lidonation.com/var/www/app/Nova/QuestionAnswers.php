@@ -14,6 +14,7 @@ use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Markdown;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Actions\ExportAsCsv;
 
 class QuestionAnswers extends Resource
 {
@@ -136,6 +137,7 @@ class QuestionAnswers extends Resource
             [
                 (new AddMetaData),
                 (new EditMetaData(\App\Models\Question::class)),
+                ExportAsCsv::make()->nameable(),
             ]);
     }
 }

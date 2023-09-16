@@ -14,6 +14,7 @@ use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Actions\ExportAsCsv;
 
 class LearningLessons extends Resource
 {
@@ -134,7 +135,7 @@ class LearningLessons extends Resource
         return array_merge(
             static::getGlobalActions(),
             [
-
+                ExportAsCsv::make()->nameable(),
             ]
         );
     }

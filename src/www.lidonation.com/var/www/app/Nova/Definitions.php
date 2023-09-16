@@ -14,6 +14,7 @@ use Laravel\Nova\Fields\Slug;
 use Laravel\Nova\Fields\Stack;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Actions\ExportAsCsv;
 
 class Definitions extends Resource
 {
@@ -107,6 +108,7 @@ class Definitions extends Resource
             static::getGlobalActions(),
             [
                 (new TranslateModel),
+                ExportAsCsv::make()->nameable(),
             ]);
     }
 }

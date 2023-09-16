@@ -12,6 +12,7 @@ use Laravel\Nova\Fields\Markdown;
 use Laravel\Nova\Fields\MorphTo;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Actions\ExportAsCsv;
 
 class Comments extends Resource
 {
@@ -169,6 +170,7 @@ class Comments extends Resource
             static::getGlobalActions(),
             [
                 (new PublishModel),
+                ExportAsCsv::make()->nameable(),
             ]);
     }
 }

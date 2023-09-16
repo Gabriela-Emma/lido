@@ -16,6 +16,7 @@ use Laravel\Nova\Fields\Markdown;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Panel;
+use Laravel\Nova\Actions\ExportAsCsv;
 
 class Translations extends Resource
 {
@@ -137,6 +138,7 @@ class Translations extends Resource
                 (new AttachTranslation),
                 (new AddMetaData),
                 (new EditMetaData(\App\Models\Translation::class)),
+                ExportAsCsv::make()->nameable(),
 
             ]);
     }

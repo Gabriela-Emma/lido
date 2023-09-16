@@ -12,6 +12,7 @@ use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Actions\ExportAsCsv;
 
 class Link extends Resource
 {
@@ -111,6 +112,7 @@ class Link extends Resource
             [
                 (new AddMetaData),
                 (new EditMetaData(Link::class)),
+                ExportAsCsv::make()->nameable(),
             ]);
     }
 }

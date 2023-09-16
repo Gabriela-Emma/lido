@@ -20,6 +20,7 @@ use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\URL;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Actions\ExportAsCsv;
 
 class Nfts extends Resource
 {
@@ -151,6 +152,7 @@ class Nfts extends Resource
                 new CacheNftImage,
                 (new AddMetaData),
                 (new EditMetaData(\App\Models\Nft::class)),
+                ExportAsCsv::make()->nameable(),
 
             ]);
     }

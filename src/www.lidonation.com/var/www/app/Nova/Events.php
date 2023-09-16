@@ -12,6 +12,7 @@ use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Markdown;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Actions\ExportAsCsv;
 
 class Events extends Resource
 {
@@ -101,6 +102,7 @@ class Events extends Resource
             [
                 (new AddMetaData),
                 (new EditMetaData(Event::class)),
+                ExportAsCsv::make()->nameable(),
             ]);
     }
 }

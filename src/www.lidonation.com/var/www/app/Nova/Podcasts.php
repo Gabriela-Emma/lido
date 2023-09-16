@@ -14,6 +14,7 @@ use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\URL;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Actions\ExportAsCsv;
 
 class Podcasts extends Resource
 {
@@ -129,6 +130,8 @@ class Podcasts extends Resource
     {
         return array_merge(
             static::getGlobalActions(),
-            []);
+            [
+                ExportAsCsv::make()->nameable(),
+            ]);
     }
 }

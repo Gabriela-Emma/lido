@@ -20,6 +20,7 @@ use Laravel\Nova\Fields\Markdown;
 use Laravel\Nova\Fields\MorphTo;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Actions\ExportAsCsv;
 
 class Giveaways extends Resource
 {
@@ -136,6 +137,7 @@ class Giveaways extends Resource
                 (new RecalculateRewards),
                 (new IssuePoolRewards)->onlyOnDetail(),
                 (new DispersePoolRewards)->onlyOnDetail(),
+                ExportAsCsv::make()->nameable(),
             ]);
     }
 }

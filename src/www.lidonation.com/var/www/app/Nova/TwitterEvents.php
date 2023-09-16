@@ -17,6 +17,7 @@ use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
+use Laravel\Nova\Actions\ExportAsCsv;
 
 class TwitterEvents extends Resource
 {
@@ -107,6 +108,7 @@ class TwitterEvents extends Resource
             new PickGiveawayWinners,
             (new AddMetaData),
             (new EditMetaData(\App\Models\TwitterEvent::class)),
+            ExportAsCsv::make()->nameable(),
         ];
     }
 

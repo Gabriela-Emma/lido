@@ -11,6 +11,7 @@ use Laravel\Nova\Fields\MorphedByMany;
 use Laravel\Nova\Fields\MorphTo;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Actions\ExportAsCsv;
 
 class Wallets extends Resource
 {
@@ -108,6 +109,8 @@ class Wallets extends Resource
      */
     public function actions(Request $request)
     {
-        return [];
+        return [
+            ExportAsCsv::make()->nameable(),
+        ];
     }
 }

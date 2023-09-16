@@ -4,6 +4,7 @@ namespace App\Nova;
 
 use App\Nova\Actions\fetchIohkBlog;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Actions\ExportAsCsv;
 
 class ExternalPost extends Articles
 {
@@ -38,6 +39,7 @@ class ExternalPost extends Articles
             static::getGlobalActions(),
             [
                 (new fetchIohkBlog),
+                ExportAsCsv::make()->nameable(),
             ]);
     }
 }

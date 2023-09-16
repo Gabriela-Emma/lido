@@ -33,6 +33,7 @@ use Laravel\Nova\Fields\Stack;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
+use Laravel\Nova\Actions\ExportAsCsv;
 
 class Proposals extends Resource
 {
@@ -257,6 +258,7 @@ class Proposals extends Resource
                 (new GenerateProposalSummaryImage),
                 (new SyncProposalsDetail),
                 (new PublishProposalYotubeVideosToIpfs),
+                ExportAsCsv::make()->nameable(),
             ]);
     }
 

@@ -26,6 +26,7 @@ use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
+use Laravel\Nova\Actions\ExportAsCsv;
 
 class User extends Resource
 {
@@ -243,6 +244,7 @@ class User extends Resource
                 (new PopulatePaymentAddress)->confirmText('Check skip, to skip updating wallet_address field on models that already have one!'),
                 (new FetchDelegation),
                 (new IssueSlteNft),
+                ExportAsCsv::make()->nameable(),
             ]
         );
     }
