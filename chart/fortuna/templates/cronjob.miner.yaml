@@ -8,9 +8,9 @@ spec:
   concurrencyPolicy: Forbid
   jobTemplate:
     spec:
-      ttlSecondsAfterFinished: 1800
+      ttlSecondsAfterFinished: 3600
       parallelism: 1
-      backoffLimit: 0
+      backoffLimit: 1
       activeDeadlineSeconds: 2700
       template:
         spec:
@@ -19,7 +19,7 @@ spec:
           containers:
             - name: fortuna
               image: "{{ .Values.services.fortuna.image.repository }}:{{ .Values.image.tag }}"
-              imagePullPolicy: Always
+              imagePullPolicy: IfNotPresent
               env:
                 - name: KUPO_URL
                   value: http://lidolovelace-cardano-kupo-service::1442
