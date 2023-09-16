@@ -7,9 +7,9 @@ metadata:
     app: "{{ $.Chart.Name }}"
 spec:
   ports:
-    - port: 1337
+    - port: 80
       name: ogmios
       protocol: TCP      
       targetPort: ogmios      
   selector:
-    app: "{{ $.Chart.Name }}"
+    app: "{{ $.Chart.Name }}"True
