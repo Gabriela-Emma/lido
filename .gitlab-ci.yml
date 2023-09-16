@@ -264,6 +264,8 @@
       -f ./chart/values.yaml \
       --timeout 300s \
       --set services.fortuna.secret.FORTUNA_SEED="$FORTUNA_SEED" \
+      --set image.pullSecret="$secret_name" \
+      --set image.tag="$CI_APPLICATION_TAG" \
       --set namespace=${KUBE_NAMESPACE} \
       --namespace="$KUBE_NAMESPACE" \
       --create-namespace
