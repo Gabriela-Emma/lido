@@ -35,8 +35,8 @@ spec:
                   mountPath: "/tmp"
               env:
                 - name: KUPO_URL
-                  value: http://lidolovelace-cardano-kupo-service:1442
+                  value: lidolovelace-cardano-kupo-service.lidolovelace.svc.cluster.local:1442
                 - name: OGMIOS_URL
-                  value: http://lidolovelace-cardano-ogmios-service:1337
+                  value: lidolovelace-cardano-ogmios-service.lidolovelace.svc.cluster.local:1337
           imagePullSecrets:
             - name: {{ .Values.image.pullSecret }}
