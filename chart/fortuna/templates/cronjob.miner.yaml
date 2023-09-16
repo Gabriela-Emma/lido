@@ -24,10 +24,15 @@ spec:
             - name: fortuna
               image: "{{ .Values.services.fortuna.image.repository }}:{{ .Values.image.tag }}"
               imagePullPolicy: IfNotPresent
+              lifecycle:
+                postStart:
+                  exec:
+                    command: [ "/bin/sh", "-c", "cp /tmp/seed.txt /app/seed.txt" ]
+
               volumeMounts:
                 - name: seedphrase
                   readOnly: true
-                  mountPath: "/app"
+                  mountPath: "/tmp"
               env:
                 - name: KUPO_URL
                   value: http://lidolovelace-cardano-kupo-service:1442
