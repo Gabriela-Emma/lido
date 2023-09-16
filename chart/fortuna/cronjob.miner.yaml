@@ -1,0 +1,29 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  namespace: {{ .Values.namespace }}
+  name: "{{ $.Chart.Name }}-fortuna"
+spec:
+  schedule: "*/5 * * * *"
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      ttlSecondsAfterFinished: 1800
+      parallelism: 1
+      backoffLimit: 0
+      activeDeadlineSeconds: 2700
+      template:
+        spec:
+          shareProcessNamespace: true
+          restartPolicy: OnFailure
+          containers:
+            - name: fortuna
+              image: "{{ .Values.services.fortuna.image.repository }}:{{ .Values.image.tag }}"
+              imagePullPolicy: Always
+              env:
+                - name: KUPO_URL
+                  value: http://lidolovelace-cardano-kupo-service::1442
+                - name: OGMIOS_URL
+                  value: http://lidolovelace-cardano-ogmios-service::1337
+          imagePullSecrets:
+            - name: {{ .Values.image.pullSecret }}

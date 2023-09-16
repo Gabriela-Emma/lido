@@ -23,6 +23,8 @@ DEPLOY_INFRA: False
 
 services:
   fortuna:
+    image:
+      repository: registry.lidonation.com/lidonation/lidonation/fortuna
     secret:
       FORTUNA_SEED:
   kibana:
