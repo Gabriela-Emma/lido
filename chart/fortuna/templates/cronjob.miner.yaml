@@ -24,11 +24,14 @@ spec:
             - name: fortuna
               image: "{{ .Values.services.fortuna.image.repository }}:{{ .Values.image.tag }}"
               imagePullPolicy: IfNotPresent
+              command:
+                - /bin/sh
+                - -c
+                - deno task cli mine
               lifecycle:
                 postStart:
                   exec:
                     command: [ "/bin/sh", "-c", "cp /tmp/seed.txt /app/seed.txt && cp /tmp/seed.txt /app/miner/seed.txt" ]
-
               volumeMounts:
                 - name: seedphrase
                   readOnly: true
