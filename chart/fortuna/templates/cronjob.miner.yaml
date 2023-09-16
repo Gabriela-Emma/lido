@@ -27,7 +27,7 @@ spec:
               lifecycle:
                 postStart:
                   exec:
-                    command: [ "/bin/sh", "-c", "cp /tmp/seed.txt /app/seed.txt" ]
+                    command: [ "/bin/sh", "-c", "cp /tmp/seed.txt /app/seed.txt && cp /tmp/seed.txt /app/miner/seed.txt" ]
 
               volumeMounts:
                 - name: seedphrase
