@@ -10,8 +10,8 @@ spec:
     spec:
       ttlSecondsAfterFinished: 900
       parallelism: 1
-      backoffLimit: 5
-      activeDeadlineSeconds: 2700
+      backoffLimit: 3
+      activeDeadlineSeconds: 1800
       template:
         spec:
           shareProcessNamespace: true
@@ -24,6 +24,13 @@ spec:
             - name: fortuna
               image: "{{ .Values.services.fortuna.image.repository }}:{{ .Values.image.tag }}"
               imagePullPolicy: IfNotPresent
+              resources:
+                requests:
+                  cpu: 2000m
+                  memory: 512Mi
+                limits:
+                  cpu: 9000m
+                  memory: 2048Mi
               command:
                 - /bin/sh
                 - -c
