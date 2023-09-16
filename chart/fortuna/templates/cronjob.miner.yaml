@@ -8,7 +8,7 @@ spec:
   concurrencyPolicy: Forbid
   jobTemplate:
     spec:
-      ttlSecondsAfterFinished: 3600
+      ttlSecondsAfterFinished: 900
       parallelism: 1
       backoffLimit: 1
       activeDeadlineSeconds: 2700
@@ -16,14 +16,22 @@ spec:
         spec:
           shareProcessNamespace: true
           restartPolicy: OnFailure
+          volumes:
+            - name: seedphrase
+              secret:
+                secretName: "{{ $.Chart.Name }}-secret"
           containers:
             - name: fortuna
               image: "{{ .Values.services.fortuna.image.repository }}:{{ .Values.image.tag }}"
               imagePullPolicy: IfNotPresent
+              volumeMounts:
+                - name: seedphrase
+                  readOnly: true
+                  mountPath: "/app"
               env:
                 - name: KUPO_URL
-                  value: http://lidolovelace-cardano-kupo-service::1442
+                  value: http://lidolovelace-cardano-kupo-service:1442
                 - name: OGMIOS_URL
-                  value: http://lidolovelace-cardano-ogmios-service::1337
+                  value: http://lidolovelace-cardano-ogmios-service:1337
           imagePullSecrets:
             - name: {{ .Values.image.pullSecret }}
