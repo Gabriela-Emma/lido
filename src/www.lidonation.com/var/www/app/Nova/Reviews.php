@@ -21,6 +21,7 @@ use Laravel\Nova\Fields\Stack;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
+use Laravel\Nova\Actions\ExportAsCsv;
 
 class Reviews extends Articles
 {
@@ -55,6 +56,7 @@ class Reviews extends Articles
             parent::actions($request),
             [
                 (new GenerateModelRatingImages),
+                ExportAsCsv::make()->nameable(),
             ]
         );
     }

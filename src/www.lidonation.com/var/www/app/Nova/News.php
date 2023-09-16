@@ -4,6 +4,7 @@ namespace App\Nova;
 
 use JetBrains\PhpStorm\Pure;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Actions\ExportAsCsv;
 
 class News extends Articles
 {
@@ -25,6 +26,7 @@ class News extends Articles
     {
         return [
             //            new CategoryFilter('news')
+            ExportAsCsv::make()->nameable(),
         ];
     }
 }

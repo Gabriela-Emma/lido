@@ -25,6 +25,7 @@ use Laravel\Nova\Fields\MorphTo;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Actions\ExportAsCsv;
 
 class CatalystSnapshots extends Resource
 {
@@ -144,6 +145,7 @@ class CatalystSnapshots extends Resource
                 (new AttachTag),
                 (new AttachCategory),
                 (new AttachLink),
+                ExportAsCsv::make()->nameable(),
             ],
             static::getGlobalActions(),
         );

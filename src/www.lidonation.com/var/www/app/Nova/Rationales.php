@@ -17,6 +17,7 @@ use Laravel\Nova\Fields\Slug;
 use Laravel\Nova\Fields\Stack;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Actions\ExportAsCsv;
 
 class Rationales extends Resource
 {
@@ -135,6 +136,7 @@ class Rationales extends Resource
             static::getGlobalActions(),
             [
                 (new PublishModel),
+                ExportAsCsv::make()->nameable(),
             ]);
     }
 }

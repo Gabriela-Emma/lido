@@ -18,6 +18,7 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\URL;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
+use Laravel\Nova\Actions\ExportAsCsv;
 
 class CatalystGroups extends Resource
 {
@@ -127,6 +128,7 @@ class CatalystGroups extends Resource
             (new AddMetaData),
             (new EditMetaData(CatalystGroup::class)),
             (new SyncCatalystGroupProposals),
+            ExportAsCsv::make()->nameable(),
         ];
     }
 }

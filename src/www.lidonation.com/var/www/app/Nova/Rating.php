@@ -12,6 +12,7 @@ use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Actions\ExportAsCsv;
 
 class Rating extends Resource
 {
@@ -115,6 +116,7 @@ class Rating extends Resource
             static::getGlobalActions(),
             [
                 (new PublishModel),
+                ExportAsCsv::make()->nameable(),
             ]);
     }
 }

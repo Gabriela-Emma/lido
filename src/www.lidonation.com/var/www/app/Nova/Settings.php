@@ -8,6 +8,7 @@ use JetBrains\PhpStorm\Pure;
 use Laravel\Nova\Fields\Code;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Actions\ExportAsCsv;
 
 class Settings extends Resource
 {
@@ -62,6 +63,8 @@ class Settings extends Resource
     #[Pure]
     public function actions(Request $request): array
     {
-        return array_merge(static::getGlobalActions(), []);
+        return array_merge(static::getGlobalActions(), [
+            ExportAsCsv::make()->nameable(),
+        ]);
     }
 }
