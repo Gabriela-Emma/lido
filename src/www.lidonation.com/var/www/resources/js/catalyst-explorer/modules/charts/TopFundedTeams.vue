@@ -21,7 +21,7 @@
                                         :alt="proposerData.owner.name" />
                                 </div>
                                 <div class="flex-1 min-w-0 px-4 md:grid md:grid-cols-2 md:gap-4">
-                                    <div class="flex justify-items-center">
+                                    <div class="flex items-center justify-start">
                                         <p class="text-xl font-medium text-gray-600 truncate ">
                                             {{ proposerData?.team ? proposerData?.team.name : proposerData.owner.name }}
                                         </p>
@@ -95,7 +95,6 @@ const props = defineProps<{
 const proposals: Ref<Proposal[]> = ref(null);
 let numberRange = computed(() => Array.from({ length: 5 }, (_, index) => index + 1));
 
-
 const proposalOwners = computed(() => {
     return proposals.value?.map((proposal) => {
         let user = proposal.users.find((user) => {
@@ -107,9 +106,11 @@ const proposalOwners = computed(() => {
 
 
 const getTopProposals = async () => {
-    console.log({ 'lessgo': props.fund });
-
-    proposals.value = (await axios.get(route('catalystExplorer.topFundedProposals'), { params: props.fund })).data;
+    proposals.value = (
+        await axios.get(
+            route('catalystExplorer.topFundedProposals'), { params: props.fund }
+        )
+    ).data;
 }
 
 watch(() => props.fund, () => {
