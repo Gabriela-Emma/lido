@@ -35,6 +35,9 @@ class CatalystGroup extends Model implements HasMedia, HasLink
 
     protected $withCount = ['proposals', 'members', 'owner', 'challenges'];
 
+    protected $appends = ['link', 'thumbnail_url','gravatar'];
+
+
     /**
      * All the relationships to be touched.
      *

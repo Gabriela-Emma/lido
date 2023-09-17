@@ -1,37 +1,39 @@
 <template>
-    <div class="p-3 bg-white lg:w-1/2 ">
+    <div class="p-3 bg-white lg:w-1/2 " v-if="proposals?.length">
         <div>
             <h2 class="mb-0 xl:text-3xl">
                 Top Funded Teams
             </h2>
             <p>
-                Across all funding rounds
+                Across {{ proposals?.[0].fund.parent.label }}
             </p>
         </div>
         <div class="relative m-2">
             <ul role="list" class="divide-y divide-gray-200 max-h-[28rem] overflow-y-auto">
-                <li v-for="proposer in proposalOwners" v-if="proposals">
-                    <a :href="$utils.localizeRoute(`project-catalyst/users/${proposer.id}`)" class="block hover:bg-gray-50"
-                        target="_blank">
+                <li v-for="proposerData in proposalOwners" v-if="proposals">
+                    <a :href="proposerData?.team ? proposerData?.team.link : $utils.localizeRoute(`project-catalyst/users/${proposerData?.owner?.id}`)"
+                        class="block hover:bg-gray-50" target="_blank">
                         <div class="flex items-center px-4 py-4 sm:px-6">
                             <div class="flex items-center flex-1 min-w-0">
                                 <div class="flex-shrink-0">
                                     <img class="relative inline-block w-10 h-10 rounded-full ring-2 ring-white"
-                                        :src="proposer.profile_photo_url" :alt="proposer.name" />
+                                        :src="proposerData?.team ? (proposerData?.team.thumbnail_url ?? proposerData?.team.gravatar) : proposerData?.owner.profile_photo_url"
+                                        :alt="proposerData.owner.name" />
                                 </div>
                                 <div class="flex-1 min-w-0 px-4 md:grid md:grid-cols-2 md:gap-4">
-                                    <div>
+                                    <div class="flex justify-items-center">
                                         <p class="text-xl font-medium text-gray-600 truncate ">
-                                            {{ proposer?.name }}
+                                            {{ proposerData?.team ? proposerData?.team.name : proposerData.owner.name }}
                                         </p>
                                     </div>
                                     <div class="hidden md:block">
                                         <div>
                                             <p class="text-lg text-gray-900 md:text-xl 2xl:text-2xl">
-                                                {{ $filters.currency(proposer?.amount_requested, proposer?.currency) }}
+                                                {{ $filters.currency(proposerData?.amount_requested, proposerData?.currency)
+                                                }}
                                             </p>
                                             <p class="flex items-center mt-2 text-sm text-gray-500">
-                                                {{ proposer?.fund_Label }}
+                                                {{ proposerData?.fund_Label }}
                                             </p>
                                         </div>
                                     </div>
@@ -50,7 +52,8 @@
                     </a>
                 </li>
 
-                <li v-else v-for="index in numberRange">
+                <!-- loading animation -->
+                <!-- <li v-else v-for="index in numberRange">
                     <div class="flex items-center px-4 py-4 sm:px-6 animate-pulse">
                         <div class="flex items-center flex-1 min-w-0">
                             <div class="flex-shrink-0">
@@ -63,14 +66,14 @@
                                 <div class="hidden md:block">
                                     <div>
                                         <div class="w-2/3  h-2 mb-1.5 rounded bg-slate-400"></div>
-                                        <div class="w-2/3 h-2 rounded bg-slate-400 " ></div>
+                                        <div class="w-2/3 h-2 rounded bg-slate-400 "></div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                </li>
+                </li> -->
             </ul>
         </div>
     </div>
@@ -98,11 +101,14 @@ const proposalOwners = computed(() => {
         let user = proposal.users.find((user) => {
             return user.id == proposal.user_id
         })
-        return { ...user, amount_requested: proposal?.amount_requested, fund_Label: proposal?.fund?.label, currency: proposal?.fund?.currency }
+        return { owner: { ...user }, amount_requested: proposal?.amount_requested, fund_Label: proposal?.fund?.label, currency: proposal?.fund?.currency, team: proposal.groups[0] }
     });
 });
 
+
 const getTopProposals = async () => {
+    console.log({ 'lessgo': props.fund });
+
     proposals.value = (await axios.get(route('catalystExplorer.topFundedProposals'), { params: props.fund })).data;
 }
 

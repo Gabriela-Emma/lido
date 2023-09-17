@@ -368,9 +368,9 @@ class CatalystChartsController extends Controller
         return $_options;
     }
 
-    public function getTopFundedProposals()
+    public function getTopFundedProposals(Request $request)
     {
-        return (Proposal::with(['users', 'groups'])->whereRelation('fund.parent','id',97)
+        return (Proposal::with(['users', 'groups'])->whereRelation('fund.parent','id',intval(request()->query(0)))
             ->where(['proposals.type' => 'proposal'])
             ->whereNotNull('funded_at')
             ->orderByDesc('amount_requested')
