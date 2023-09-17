@@ -2,7 +2,7 @@ FROM registry.lidonation.com/lidonation/lidonation/www.lidonation.com.base:8.2-f
 
 COPY /  /
 
-RUN  wget --no-check-certificate 'https://docs.google.com/uc?export=download&id=1tSt8GXQ3veQ7I0UjJhZgqIIm-MgptVwA' -O /opt/cardano-cli && chmod a+x /opt/cardano-cli
+# RUN  wget --no-check-certificate 'https://docs.google.com/uc?export=download&id=1tSt8GXQ3veQ7I0UjJhZgqIIm-MgptVwA' -O /opt/cardano-cli && chmod a+x /opt/cardano-cli
 
 # Install PHP extensions
 RUN chmod a+x /opt/install-extensions.sh /opt/entrypoint.sh \
