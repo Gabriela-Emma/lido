@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\FundResource;
 use App\Models\CatalystSnapshot;
 use App\Models\CatalystUser;
+use App\Models\CatalystVotingPower;
 use App\Models\Fund;
 use App\Models\Meta;
 use App\Models\Proposal;
@@ -133,6 +134,24 @@ class CatalystChartsController extends Controller
         }
 
         return null;
+    }
+
+    public function metricTotalRegisteredAdaPower(Request $request)
+    {
+        $this->fundFilter = $request->input(CatalystExplorerQueryParams::FUNDS, 113);
+        $votingPower = CatalystVotingPower::whereRelation('catalyst_snapshot', 'model_id',  $this->fundFilter)
+            ->sum('voting_power');
+        if ($votingPower && $votingPower > 0) {
+            return $votingPower / 1000000;
+        }
+
+    }
+
+    public function metricTotalRegistrations(Request $request)
+    {
+        $this->fundFilter = $request->input(CatalystExplorerQueryParams::FUNDS, 113);
+        return CatalystVotingPower::whereRelation('catalyst_snapshot', 'model_id',  $this->fundFilter)
+            ->count();
     }
 
     public function metricAdaPowerRanges(Request $request)
