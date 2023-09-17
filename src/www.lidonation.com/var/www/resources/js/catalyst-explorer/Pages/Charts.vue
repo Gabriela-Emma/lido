@@ -260,6 +260,11 @@
                     </div>
                 </div>
 
+                <div class="relative w-full col-span-1 row-span-6 lg:col-span-5 round-sm">
+                    <TopFundedTeams :fund="filters?.fundId"/>
+                </div>
+                
+
                 <!-- Live Tally -->
                 <div
                     class="w-full col-span-1 p-3 overflow-y-visible bg-white md:col-span-3 xl:col-span-5 xl:row-span-12 round-sm">
@@ -278,7 +283,7 @@
                             </p>
                         </div>
                         <div class="p-1.5 text-center bg-teal-600 text-slate-100 shadow-accent-900 shadow-sm rounded-sm" v-if="talliesSum$">
-                            <div class="text-xl md:text-2xl xl:text-3xl 2xl:text-4xl text-white">
+                            <div class="text-xl text-white md:text-2xl xl:text-3xl 2xl:text-4xl">
                                 {{talliesSum$.toLocaleString()}}
                             </div>
                             <small class="text-sm">Total Votes Cast</small>
@@ -287,7 +292,7 @@
 
                     <div class="py-4">
                         <div class="h-16 my-4 border border-r-0 rounded-sm">
-                            <div class="flex flex-col md:flex-row flex-wrap w-full gap-2">
+                            <div class="flex flex-col flex-wrap w-full gap-2 md:flex-row">
                                 <div class="flex flex-1 max-w-[24rem] border-r">
                                     <ChallengePicker v-model="challengesRef" />
                                 </div>
@@ -400,6 +405,7 @@ import { ChevronUpDownIcon } from '@heroicons/vue/20/solid';
 import Search from '../Shared/Components/Search.vue';
 import ChallengePicker from '../modules/funds/ChallengePicker.vue';
 import Challenge from '../models/challenge';
+import TopFundedTeams from "../modules/charts/TopFundedTeams.vue"
 
 
 const props = withDefaults(

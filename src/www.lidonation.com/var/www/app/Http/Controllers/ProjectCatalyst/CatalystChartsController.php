@@ -92,12 +92,14 @@ class CatalystChartsController extends Controller
             : DB::table('funds')->where('parent_id', '>', 0)->pluck('id');
 
         if (isset($res['hits'])) {
-            return CatalystUser::whereHas('proposals',
+            return CatalystUser::whereHas(
+                'proposals',
                 function ($q) use ($fundIds) {
                     $q->whereNotNull('funded_at')
                         ->where('fund_id', $fundIds->toArray())
                         ->orWhereIn('fund_id', $fundIds->toArray());
-                })
+                }
+            )
                 ->count();
         } else {
             return null;
@@ -144,7 +146,6 @@ class CatalystChartsController extends Controller
         if ($votingPower && $votingPower > 0) {
             return $votingPower / 1000000;
         }
-
     }
 
     public function metricTotalRegistrations(Request $request)
@@ -199,7 +200,7 @@ class CatalystChartsController extends Controller
     {
         $this->fundFilter = $request->input(CatalystExplorerQueryParams::FUNDS, 113);
 
-        $this->fund = ! is_null($this->fundFilter)
+        $this->fund = !is_null($this->fundFilter)
             ? Fund::where('id', $this->fundFilter)->first()
             : null;
     }
@@ -279,15 +280,16 @@ class CatalystChartsController extends Controller
         $fundIds = $this->fund
             ? [$this->fund?->id]
             : CatalystSnapshot::query()->where('model_type', Fund::class)
-                ->pluck('model_id')
-                ->toArray();
+            ->pluck('model_id')
+            ->toArray();
 
         $snapshotIds = CatalystSnapshot::whereIn('model_id', $fundIds)
             ->where('model_type', Fund::class)
             ->pluck('id');
 
         $agg = DB::table('catalyst_voting_powers')
-            ->selectRaw("CASE
+            ->selectRaw(
+                "CASE
                 WHEN voting_power BETWEEN 450000000 AND 1000000000 THEN '450-1k-1'
                 WHEN voting_power BETWEEN 1000000000 AND 5000000000 THEN '1k-5k-2'
                 WHEN voting_power BETWEEN 5000000000 AND 10000000000 THEN '5K-10k-3'
@@ -321,7 +323,7 @@ class CatalystChartsController extends Controller
         $adaPowerRangesFormattedArray = [];
         foreach ($adaPowerRangesCollection as $range => $value) {
             $rangeArray = explode('-', $range);
-            $finalRange = $rangeArray[0].(count($rangeArray) == 3 ? ' - '.$rangeArray[1] : '');
+            $finalRange = $rangeArray[0] . (count($rangeArray) == 3 ? ' - ' . $rangeArray[1] : '');
 
             $adaPowerRangesFormattedArray[$finalRange] = [
                 $value['0'],
@@ -366,6 +368,15 @@ class CatalystChartsController extends Controller
         return $_options;
     }
 
+    public function getTopFundedProposals(Request $request)
+    {
+        return (Proposal::with(['users', 'groups'])->whereRelation('fund.parent','id',intval(request()->query(0)))
+            ->where(['proposals.type' => 'proposal'])
+            ->whereNotNull('funded_at')
+            ->orderByDesc('amount_requested')
+            ->limit(15)->get());
+    }
+
     protected function attachmentLink(Request $request)
     {
         $snapshot = CatalystSnapshot::where('model_type', Fund::class)
@@ -377,10 +388,10 @@ class CatalystChartsController extends Controller
             ->where('key', 'snapshot_file_path')
             ->first();
 
-        if (! $link) {
+        if (!$link) {
             return null;
         }
 
-        return '/storage/'.$link?->content;
+        return '/storage/' . $link?->content;
     }
 }
