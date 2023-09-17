@@ -26,7 +26,7 @@ class News extends Articles
     {
         return [
             //            new CategoryFilter('news')
-            ExportAsCsv::make()->nameable(),
+//            ExportAsCsv::make()->nameable(),
         ];
     }
 }
