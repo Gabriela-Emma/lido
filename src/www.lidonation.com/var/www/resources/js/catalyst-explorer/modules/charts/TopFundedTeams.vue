@@ -58,12 +58,12 @@
                             </div>
                             <div class="flex-1 min-w-0 px-4 md:grid md:grid-cols-2 md:gap-4">
                                 <div>
-                                    <div class="h-2 rounded bg-slate-400"></div>
+                                    <div class="w-2/3 h-2 rounded bg-slate-400"></div>
                                 </div>
                                 <div class="hidden md:block">
                                     <div>
-                                        <div class="w-1/4 h-2 mb-1.5 rounded bg-slate-400"></div>
-                                        <div class="w-1/4 h-2 rounded bg-slate-400 " ></div>
+                                        <div class="w-2/3  h-2 mb-1.5 rounded bg-slate-400"></div>
+                                        <div class="w-2/3 h-2 rounded bg-slate-400 " ></div>
                                     </div>
                                 </div>
                             </div>
