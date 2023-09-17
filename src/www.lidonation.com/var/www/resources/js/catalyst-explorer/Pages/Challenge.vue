@@ -1,19 +1,11 @@
 <template>
     <div class="bg-primary-20">
         <header class="text-white bg-teal-600">
-            <header-component
-                :titleName0="fund.data.label"
-                titleName1=" "
-                subTitle="Browse through the proposals of a specific challenge."
-                color="teal-600"
-            />
+            <header-component :titleName0="fund.data.label" titleName1=" "
+                subTitle="Browse through the proposals of a specific challenge." color="teal-600" />
             <div class="container">
-                <section
-                    class="overflow-visible relative z-0 py-10 min-h-[28rem]"
-                >
-                    <h1
-                        class="flex flex-row flex-wrap items-end gap-2 mb-6 text-3xl font-bold 2xl:text-5xl decorate"
-                    ></h1>
+                <section class="overflow-visible relative z-0 py-10 min-h-[28rem]">
+                    <h1 class="flex flex-row flex-wrap items-end gap-2 mb-6 text-3xl font-bold 2xl:text-5xl decorate"></h1>
 
                     <div class="my-4 summary">
                         <div class="max-w-4xl font-semibold">
@@ -21,26 +13,16 @@
                         </div>
                     </div>
 
-                    <div
-                        class="relative mt-6"
-                        :class="{
-                            'max-h-52 overflow-clip': !expanded,
-                            'max-h-[40vh] overflow-auto': expanded,
-                        }"
-                    >
+                    <div class="relative mt-6" :class="{
+                        'max-h-52 overflow-clip': !expanded,
+                        'max-h-[40vh] overflow-auto': expanded,
+                    }">
                         <div v-html="fundContent"></div>
 
-                        <div
-                            v-if="!expanded"
-                            class="absolute w-full h-20 text-center bg-teal-600 -bottom-8 bg-opacity-90"
-                        >
-                            <div
-                                class="flex items-center justify-center w-full h-full"
-                            >
-                                <div
-                                    class="py-3 text-xl font-bold text-white hover:cursor-pointer hover:text-yellow-400"
-                                    @click="expandContent"
-                                >
+                        <div v-if="!expanded" class="absolute w-full h-20 text-center bg-teal-600 -bottom-8 bg-opacity-90">
+                            <div class="flex items-center justify-center w-full h-full">
+                                <div class="py-3 text-xl font-bold text-white hover:cursor-pointer hover:text-yellow-400"
+                                    @click="expandContent">
                                     <span>Expand</span>
                                 </div>
                             </div>
@@ -50,21 +32,15 @@
                 <section class="relative py-8 text-white bg-teal-600 text-md">
                     <div class="flex flex-row flex-wrap justify-start">
                         <div
-                            class="border border-gray-300 -mt-px -ml-px inline-flex flex-col gap-6 justify-between border-opacity-50 p-4 pr-8pl-8first-of-type:pl-0 min-w-20 xl:min-w-[initial]"
-                        >
+                            class="border border-gray-300 -mt-px -ml-px inline-flex flex-col gap-6 justify-between border-opacity-50 p-4 pr-8pl-8first-of-type:pl-0 min-w-20 xl:min-w-[initial]">
                             <div
-                                class="flex flex-row flex-no-wrap items-center justify-between gap-5 text-gray-200 md:justify-start"
-                            >
-                                <div
-                                    class="flex text-xl font-semibold flex-nowrap xl:text-3xl"
-                                >
+                                class="flex flex-row flex-no-wrap items-center justify-between gap-5 text-gray-200 md:justify-start">
+                                <div class="flex text-xl font-semibold flex-nowrap xl:text-3xl">
                                     <span class="font-semibold">
                                         {{ fund.data.proposals_count ?? "-" }}
                                     </span>
                                 </div>
-                                <div
-                                    class="flex gap-1 text-base font-normal flex-nowrap leading-2"
-                                >
+                                <div class="flex gap-1 text-base font-normal flex-nowrap leading-2">
                                     <span>
                                         {{ $t("Total Proposals") }}
                                     </span>
@@ -73,21 +49,15 @@
                         </div>
 
                         <div
-                            class="border border-gray-300 -mt-px -ml-px inline-flex flex-col gap-6 justify-between border-opacity-50 p-4 pr-8pl-8first-of-type:pl-0 min-w-20 xl:min-w-[initial]"
-                        >
+                            class="border border-gray-300 -mt-px -ml-px inline-flex flex-col gap-6 justify-between border-opacity-50 p-4 pr-8pl-8first-of-type:pl-0 min-w-20 xl:min-w-[initial]">
                             <div
-                                class="flex flex-row flex-no-wrap items-center justify-between gap-5 text-gray-200 md:justify-start"
-                            >
-                                <div
-                                    class="flex text-xl font-semibold flex-nowrap xl:text-3xl"
-                                >
+                                class="flex flex-row flex-no-wrap items-center justify-between gap-5 text-gray-200 md:justify-start">
+                                <div class="flex text-xl font-semibold flex-nowrap xl:text-3xl">
                                     <span class="font-semibold">
                                         {{ fundedProposalsCount }}
                                     </span>
                                 </div>
-                                <div
-                                    class="flex gap-1 text-base font-normal flex-nowrap leading-2"
-                                >
+                                <div class="flex gap-1 text-base font-normal flex-nowrap leading-2">
                                     <span>
                                         {{ $t("Funded Proposals") }}
                                     </span>
@@ -96,21 +66,15 @@
                         </div>
 
                         <div
-                            class="border border-gray-300 -mt-px -ml-px inline-flex flex-col gap-6 justify-between border-opacity-50 p-4 pr-8pl-8first-of-type:pl-0 min-w-20 xl:min-w-[initial]"
-                        >
+                            class="border border-gray-300 -mt-px -ml-px inline-flex flex-col gap-6 justify-between border-opacity-50 p-4 pr-8pl-8first-of-type:pl-0 min-w-20 xl:min-w-[initial]">
                             <div
-                                class="flex flex-row flex-no-wrap items-center justify-between gap-5 text-gray-200 md:justify-start"
-                            >
-                                <div
-                                    class="flex text-xl font-semibold flex-nowrap xl:text-3xl"
-                                >
+                                class="flex flex-row flex-no-wrap items-center justify-between gap-5 text-gray-200 md:justify-start">
+                                <div class="flex text-xl font-semibold flex-nowrap xl:text-3xl">
                                     <span class="font-semibold">
                                         {{ completedProposalsCount }}
                                     </span>
                                 </div>
-                                <div
-                                    class="flex gap-1 text-base font-normal flex-nowrap leading-2"
-                                >
+                                <div class="flex gap-1 text-base font-normal flex-nowrap leading-2">
                                     <span>
                                         {{ $t("Completed Proposals") }}
                                     </span>
@@ -119,14 +83,10 @@
                         </div>
 
                         <div
-                            class="border border-gray-300 -mt-px -ml-px inline-flex flex-col gap-6 justify-between border-opacity-50 p-4 pr-8pl-8first-of-type:pl-0 min-w-20 xl:min-w-[initial]"
-                        >
+                            class="border border-gray-300 -mt-px -ml-px inline-flex flex-col gap-6 justify-between border-opacity-50 p-4 pr-8pl-8first-of-type:pl-0 min-w-20 xl:min-w-[initial]">
                             <div
-                                class="flex flex-row flex-no-wrap items-center justify-between gap-5 text-gray-200 md:justify-start"
-                            >
-                                <div
-                                    class="flex text-xl font-semibold flex-nowrap xl:text-3xl"
-                                >
+                                class="flex flex-row flex-no-wrap items-center justify-between gap-5 text-gray-200 md:justify-start">
+                                <div class="flex text-xl font-semibold flex-nowrap xl:text-3xl">
                                     <span class="font-semibold">
                                         {{
                                             $filters.currency(
@@ -136,9 +96,7 @@
                                         }}
                                     </span>
                                 </div>
-                                <div
-                                    class="flex gap-1 text-base font-normal flex-nowrap leading-2"
-                                >
+                                <div class="flex gap-1 text-base font-normal flex-nowrap leading-2">
                                     <span>
                                         {{ $t("Available") }}
                                     </span>
@@ -147,14 +105,10 @@
                         </div>
 
                         <div
-                            class="border border-gray-300 -mt-px -ml-px inline-flex flex-col gap-6 justify-between border-opacity-50 p-4 pr-8pl-8first-of-type:pl-0 min-w-20 xl:min-w-[initial]"
-                        >
+                            class="border border-gray-300 -mt-px -ml-px inline-flex flex-col gap-6 justify-between border-opacity-50 p-4 pr-8pl-8first-of-type:pl-0 min-w-20 xl:min-w-[initial]">
                             <div
-                                class="flex flex-row flex-no-wrap items-center justify-between gap-5 text-gray-200 md:justify-start"
-                            >
-                                <div
-                                    class="flex text-xl font-semibold flex-nowrap xl:text-3xl"
-                                >
+                                class="flex flex-row flex-no-wrap items-center justify-between gap-5 text-gray-200 md:justify-start">
+                                <div class="flex text-xl font-semibold flex-nowrap xl:text-3xl">
                                     <span class="font-semibold">
                                         {{
                                             $filters.currency(
@@ -164,9 +118,7 @@
                                         }}
                                     </span>
                                 </div>
-                                <div
-                                    class="flex gap-1 text-base font-normal flex-nowrap leading-2"
-                                >
+                                <div class="flex gap-1 text-base font-normal flex-nowrap leading-2">
                                     <span>
                                         {{ $t("Requested") }}
                                     </span>
@@ -175,14 +127,10 @@
                         </div>
 
                         <div
-                            class="border border-gray-300 -mt-px -ml-px inline-flex flex-col gap-6 justify-between border-opacity-50 p-4 pr-8pl-8first-of-type:pl-0 min-w-20 xl:min-w-[initial]"
-                        >
+                            class="border border-gray-300 -mt-px -ml-px inline-flex flex-col gap-6 justify-between border-opacity-50 p-4 pr-8pl-8first-of-type:pl-0 min-w-20 xl:min-w-[initial]">
                             <div
-                                class="flex flex-row flex-no-wrap items-center justify-between gap-5 text-gray-200 md:justify-start"
-                            >
-                                <div
-                                    class="flex text-xl font-semibold flex-nowrap xl:text-3xl"
-                                >
+                                class="flex flex-row flex-no-wrap items-center justify-between gap-5 text-gray-200 md:justify-start">
+                                <div class="flex text-xl font-semibold flex-nowrap xl:text-3xl">
                                     <span class="font-semibold">
                                         {{
                                             $filters.currency(
@@ -192,9 +140,7 @@
                                         }}
                                     </span>
                                 </div>
-                                <div
-                                    class="flex gap-1 text-base font-normal flex-nowrap leading-2"
-                                >
+                                <div class="flex gap-1 text-base font-normal flex-nowrap leading-2">
                                     <span>
                                         {{ $t("Awarded") }}
                                     </span>
@@ -207,30 +153,18 @@
         </header>
         <section class="container py-10 overflow-visible lg:py-20">
             <div
-                class="grid grid-cols-1 gap-3 mx-auto md:grid-cols-2 xl:grid-cols-3 3xl:grid-cols-4 max-w-7xl 2xl:max-w-full"
-            >
+                class="grid grid-cols-1 gap-3 mx-auto md:grid-cols-2 xl:grid-cols-3 3xl:grid-cols-4 max-w-7xl 2xl:max-w-full">
                 <template v-for="proposal in proposals.data">
-                    <ProposalCard
-                        v-if="proposal?.id"
-                        :key="proposal.id"
-                        :proposal="proposal"
-                        :showRankedCard=false
-                    ></ProposalCard>
+                    <ProposalCard v-if="proposal?.id" :key="proposal.id" :proposal="proposal" :showRankedCard=false>
+                    </ProposalCard>
                 </template>
             </div>
-            <div
-                class="flex my-16 gap-16 xl:gap-24 justify-between items-start w-full"
-            >
+            <div class="flex items-start justify-between w-full gap-16 my-16 xl:gap-24">
                 <div class="flex-1">
-                    <Pagination
-                        :links="props.proposals.links"
-                        :per-page="props.perPage"
-                        :total="props.proposals?.total"
-                        :from="props.proposals?.from"
-                        :to="props.proposals?.to"
+                    <Pagination :links="props.proposals.links" :per-page="props.perPage" :total="props.proposals?.total"
+                        :from="props.proposals?.from" :to="props.proposals?.to"
                         @perPageUpdated="(payload) => (perPageRef = payload)"
-                        @paginated="(payload) => (currPageRef = payload)"
-                    />
+                        @paginated="(payload) => (currPageRef = payload)" />
                 </div>
             </div>
         </section>

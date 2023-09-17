@@ -148,6 +148,8 @@ Route::group(
             Route::get('/charts/attachment/link', [CatalystChartsController::class, 'attachmentLink'])
                 ->name('attachment');
 
+            Route::get('/charts/topFundedProposals', [CatalystChartsController::class, 'getTopFundedProposals'])
+            ->name('topFundedProposals');
 
             Route::get('/people', [CatalystPeopleController::class, 'index'])
                 ->name('people');

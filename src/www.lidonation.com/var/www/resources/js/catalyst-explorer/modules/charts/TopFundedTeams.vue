@@ -1,0 +1,115 @@
+<template>
+    <div class="p-3 bg-white lg:w-1/2 ">
+        <div>
+            <h2 class="mb-0 xl:text-3xl">
+                Top Funded Teams
+            </h2>
+            <p>
+                Across all funding rounds
+            </p>
+        </div>
+        <div class="relative m-2">
+            <ul role="list" class="divide-y divide-gray-200 max-h-[28rem] overflow-y-auto">
+                <li v-for="proposer in proposalOwners" v-if="proposals">
+                    <a :href="$utils.localizeRoute(`project-catalyst/users/${proposer.id}`)" class="block hover:bg-gray-50"
+                        target="_blank">
+                        <div class="flex items-center px-4 py-4 sm:px-6">
+                            <div class="flex items-center flex-1 min-w-0">
+                                <div class="flex-shrink-0">
+                                    <img class="relative inline-block w-10 h-10 rounded-full ring-2 ring-white"
+                                        :src="proposer.profile_photo_url" :alt="proposer.name" />
+                                </div>
+                                <div class="flex-1 min-w-0 px-4 md:grid md:grid-cols-2 md:gap-4">
+                                    <div>
+                                        <p class="text-xl font-medium text-gray-600 truncate ">
+                                            {{ proposer?.name }}
+                                        </p>
+                                    </div>
+                                    <div class="hidden md:block">
+                                        <div>
+                                            <p class="text-lg text-gray-900 md:text-xl 2xl:text-2xl">
+                                                {{ $filters.currency(proposer?.amount_requested, proposer?.currency) }}
+                                            </p>
+                                            <p class="flex items-center mt-2 text-sm text-gray-500">
+                                                {{ proposer?.fund_Label }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <!-- Heroicon name: solid/chevron-right -->
+                                <svg class="w-5 h-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                                    fill="currentColor" aria-hidden="true">
+                                    <path fill-rule="evenodd"
+                                        d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                        </div>
+                    </a>
+                </li>
+
+                <li v-else v-for="index in numberRange">
+                    <div class="flex items-center px-4 py-4 sm:px-6 animate-pulse">
+                        <div class="flex items-center flex-1 min-w-0">
+                            <div class="flex-shrink-0">
+                                <div class="w-10 h-10 rounded-full bg-slate-400"></div>
+                            </div>
+                            <div class="flex-1 min-w-0 px-4 md:grid md:grid-cols-2 md:gap-4">
+                                <div>
+                                    <div class="h-2 rounded bg-slate-400"></div>
+                                </div>
+                                <div class="hidden md:block">
+                                    <div>
+                                        <div class="w-1/4 h-2 mb-1.5 rounded bg-slate-400"></div>
+                                        <div class="w-1/4 h-2 rounded bg-slate-400 " ></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+    </div>
+</template>
+
+<script setup lang="ts">
+import { Ref, computed, ref, watch } from 'vue';
+import Proposal from '../../models/proposal';
+import axios from 'axios';
+import route from 'ziggy-js';
+import { inject } from "vue";
+
+const $utils: any = inject('$utils');
+
+const props = defineProps<{
+    fund: number
+}>()
+
+const proposals: Ref<Proposal[]> = ref(null);
+let numberRange = computed(() => Array.from({ length: 5 }, (_, index) => index + 1));
+
+
+const proposalOwners = computed(() => {
+    return proposals.value?.map((proposal) => {
+        let user = proposal.users.find((user) => {
+            return user.id == proposal.user_id
+        })
+        return { ...user, amount_requested: proposal?.amount_requested, fund_Label: proposal?.fund?.label, currency: proposal?.fund?.currency }
+    });
+});
+
+const getTopProposals = async () => {
+    proposals.value = (await axios.get(route('catalystExplorer.topFundedProposals'), { params: props.fund })).data;
+}
+
+watch(() => props.fund, () => {
+    getTopProposals();
+})
+
+getTopProposals();
+
+</script>
