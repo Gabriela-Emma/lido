@@ -1,6 +1,7 @@
 import Repo from "./repo";
 import Fund from "./fund";
 import Vote from "./vote";
+import Group from "./group";
 
 export default interface Proposal {
     amount_received: number;
@@ -43,6 +44,7 @@ export default interface Proposal {
         ideascale_id: number;
         media: {original_url: string}[]
     }[];
+    groups:Group[]
 
     // for ui
     disabled: boolean;

@@ -1,6 +1,7 @@
 import Profile from "./profile";
 
 export default interface Group {
+[x: string]: any;
     id: number;
     slug: string;
     name: string;
@@ -14,5 +15,8 @@ export default interface Group {
     website: string;
     github: string;
     logo:string;
-    owner: Profile
+    owner: Profile;
+    gravatar:string
+    thumbnail_url:string;
+
 }
