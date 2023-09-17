@@ -2,13 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class CatalystVotingPower extends Model
 {
-    use HasFactory;
-
     public $timestamps = false;
 
     protected $fillable = [
@@ -17,7 +14,7 @@ class CatalystVotingPower extends Model
         'catalyst_snapshot_id',
     ];
 
-    public function catalyst_snapshot()
+    public function catalyst_snapshot(): BelongsTo
     {
         return $this->belongsTo(CatalystSnapshot::class, 'catalyst_snapshot_id', 'id');
     }

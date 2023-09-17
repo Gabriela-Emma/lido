@@ -126,13 +126,28 @@ Route::group(
             Route::get('people/{catalystUser:id}/metrics/sum/F10-co-proposals', [CatalystProposerController::class, 'getF10CoProposalCount']);
 
             //catalyst charts metrics
-            Route::get('/charts/metrics/adaPowerRanges', [CatalystChartsController::class, 'metricAdaPowerRanges']);
-            Route::get('/charts/metrics/largestFundedProposalObject', [CatalystChartsController::class, 'metricLargestFundedProposalObject']);
-            Route::get('/charts/metrics/fundedOver75KCount', [CatalystChartsController::class, 'metricFundedOver75KCount']);
-            Route::get('/charts/metrics/membersAwardedFundingCount', [CatalystChartsController::class, 'metricMembersAwardedFundingCount']);
-            Route::get('/charts/metrics/fullyDisbursedProposalsCount', [CatalystChartsController::class, 'metricFullyDisbursedProposalsCount']);
-            Route::get('/charts/metrics/completedProposalsCount', [CatalystChartsController::class, 'metricCompletedProposalsCount']);
-            Route::get('/charts/attachment/link', [CatalystChartsController::class, 'attachmentLink'])->name('attachment');
+            Route::prefix('/metrics')->as('metrics.')->group(function () {
+                Route::get('/adaPowerRanges', [CatalystChartsController::class, 'metricAdaPowerRanges'])
+                    ->name('adaPowerRanges');
+                Route::get('/largestFundedProposalObject', [CatalystChartsController::class, 'metricLargestFundedProposalObject'])
+                    ->name('largestFundedProposalObject');
+                Route::get('/fundedOver75KCount', [CatalystChartsController::class, 'metricFundedOver75KCount'])
+                    ->name('fundedOver75KCount');
+                Route::get('/membersAwardedFundingCount', [CatalystChartsController::class, 'metricMembersAwardedFundingCount'])
+                    ->name('membersAwardedFundingCount');
+                Route::get('/fullyDisbursedProposalsCount', [CatalystChartsController::class, 'metricFullyDisbursedProposalsCount'])
+                    ->name('fullyDisbursedProposalsCount');
+                Route::get('/completedProposalsCount', [CatalystChartsController::class, 'metricCompletedProposalsCount'])
+                    ->name('completedProposalsCount');
+                Route::get('/total-registered-ada-power', [CatalystChartsController::class, 'metricTotalRegisteredAdaPower'])
+                    ->name('totalRegisteredAdaPower');
+                Route::get('/total-registrations', [CatalystChartsController::class, 'metricTotalRegistrations'])
+                    ->name('totalRegistrations');
+            });
+
+            Route::get('/charts/attachment/link', [CatalystChartsController::class, 'attachmentLink'])
+                ->name('attachment');
+
 
             Route::get('/people', [CatalystPeopleController::class, 'index'])
                 ->name('people');

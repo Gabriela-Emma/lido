@@ -111,24 +111,27 @@
                                 </h2>
                                 <p>Pie chart of wallet balance</p>
                             </div>
-                            <div v-if="attachementLink">
-                                <Attachment :attachementLink="attachementLink"/>
+                            <div v-if="attachmentLink">
+                                <Attachment :attachementLink="attachmentLink"/>
                             </div>
                         </div>
 
-                        <div class="my-auto" v-if="chartData1Ada1Vote$">
-                            <AdaPowerRangesPie :chartData="chartData1Ada1Vote$" :options="chartOptions" />
+                        <div class="my-auto" v-if="chartData1Registration1Vote$">
+                            <AdaPowerRangesPie :chartData="chartData1Registration1Vote$" :options="chartOptions" />
                         </div>
                     </div>
                 </div>
 
+                <!-- Pie by registrations -->
                 <div
                     class="w-full col-span-1 p-3 overflow-x-visible overflow-y-scroll bg-white md:col-span-3 xl:col-span-2 xl:row-span-6 round-sm">
                     <div class="text-blue-dark-500">
                         <h2 class="mb-0 xl:text-3xl">
                             Wallet Voting Ada Power Breakdowns
                         </h2>
-                        <p>Ranges of wallet balance</p>
+                        <p>
+                            The Pie by registrations
+                        </p>
                     </div>
                     <div class="relative w-full mt-8">
                         <ul role="list" class="divide-y divide-gray-200 max-h-[42rem] overflow-y-auto">
@@ -156,6 +159,108 @@
                     </div>
                 </div>
 
+                <!-- Number Grid -->
+                <div class="relative col-span-1 row-span-6 lg:col-span-2 round-sm">
+                    <div class="grid grid-cols-2">
+                        <div class="relative col-span-2 row-span-1 px-3 py-8 border border-white bg-blue-dark-500 round-sm">
+                            <dl class="flex flex-col justify-between h-full text-center text-white">
+                                <dd>
+                                    <div class="text-4xl font-semibold lg:text-5xl 2xl:text-6xl">
+                                      ₳{{ $filters.shortNumber(totalRegisteredAdaPower, 3) }}
+                                    </div>
+                                </dd>
+                                <dt class="mt-3 text-lg font-medium truncate">
+                                    Total Registered Ada Voting Power
+                                </dt>
+                            </dl>
+                        </div>
+                        <div class="relative col-span-1 row-span-1 px-3 py-5 bg-teal-900 border border-white round-sm">
+                            <dl class="flex flex-col justify-between h-full text-white">
+                                <dd>
+                                    <div class="text-4xl font-semibold lg:text-5xl 2xltext-6xl">
+                                        Coming Soon
+                                    </div>
+                                </dd>
+                                <dt class="mt-3 text-lg font-medium truncate">
+                                    ₳ registered but didn't vote
+                                </dt>
+                            </dl>
+                        </div>
+                        <div class="relative col-span-1 row-span-1 px-3 py-5 bg-teal-700 border border-white round-sm">
+                            <dl class="flex flex-col justify-between h-full">
+                                <dd>
+                                    <div class="text-4xl font-semibold text-white lg:text-5xl 2xltext-6xl">
+                                        Coming Soon
+                                    </div>
+                                </dd>
+                                <dt class="mt-3 text-lg font-medium truncate text-slate-200">
+                                    Wallets registered but didn't vote
+                                </dt>
+                            </dl>
+                        </div>
+                        <div class="relative col-span-1 row-span-1 px-3 py-5 bg-teal-500 border border-white round-sm">
+                            <dl class="flex flex-col justify-between h-full">
+                                <dd>
+                                    <div class="text-4xl font-semibold text-white lg:text-5xl 2xltext-6xl">
+                                        Coming Soon
+                                    </div>
+                                </dd>
+                                <dt class="mt-3 text-lg font-medium text-gray-200 truncate">
+                                    ₳ Power delegated
+                                </dt>
+                            </dl>
+                        </div>
+                        <div class="relative col-span-1 row-span-1 px-3 py-5 bg-teal-800 border border-white round-sm">
+                            <dl class="flex flex-col justify-between h-full">
+                                <dd>
+                                    <div class="text-4xl font-semibold text-white lg:text-5xl 2xltext-6xl">
+                                        Coming Soon
+                                    </div>
+                                </dd>
+                                <dt class="mt-3 text-lg font-medium text-gray-200 truncate">
+                                    Total Wallet Delegations
+                                </dt>
+                            </dl>
+                        </div>
+                        <div class="relative col-span-2 row-span-1 px-3 py-8 bg-teal-900 border border-white round-sm">
+                            <dl class="flex flex-col justify-between h-full text-center text-white">
+                                <dd>
+                                    <div class="text-4xl font-semibold lg:text-5xl 2xl:text-6xl">
+                                        {{totalRegistrations?.toLocaleString()}}
+                                    </div>
+                                </dd>
+                                <dt class="mt-3 text-lg font-medium truncate">
+                                    Total Registrations
+                                </dt>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- The pie by Ada Power -->
+                <div class="relative w-full col-span-1 row-span-6 p-3 bg-white md:col-span-3 round-sm">
+                    <div class="relative flex flex-col justify-start h-full">
+                        <div class="flex flex-wrap items-start justify-between">
+                            <div class="text-teal-600">
+                                <h2 class="mb-0 xl:text-3xl">
+                                    Ada Power Ranges
+                                </h2>
+                                <p>
+                                    The pie by Ada Power
+                                </p>
+                            </div>
+                            <div v-if="attachmentLink">
+                                <Attachment :attachementLink="attachmentLink"/>
+                            </div>
+                        </div>
+
+                        <div class="my-auto" v-if="chartData1Ada1Vote$">
+                            <AdaPowerRangesPie :chartData="chartData1Ada1Vote$" :options="chartOptions" />
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Live Tally -->
                 <div
                     class="w-full col-span-1 p-3 overflow-y-visible bg-white md:col-span-3 xl:col-span-5 xl:row-span-12 round-sm">
                     <div class="flex items-center justify-between">
@@ -314,6 +419,8 @@ let membersAwardedFundingCount = ref<number>(null);
 let fullyDisbursedProposalsCount = ref<number>(null);
 let completedProposalsCount = ref<number>(null);
 let challengesRef = ref<Challenge[]>(props.challenges);
+let totalRegisteredAdaPower = ref<number>(null);
+let totalRegistrations = ref<number>(0);
 
 const baseUrl = usePage().props.base_url;
 
@@ -335,7 +442,7 @@ let perPage$ = ref<number>(36);
 let order$ = ref<string>('asc');
 let search$ = ref<string>(null);
 
-const attachementLink = ref<string>(null);
+const attachmentLink = ref<string>(null);
 let tallyUpdatedAt$ = ref<string>(null);
 let talliesSum$ = ref<number>(null);
 
@@ -372,6 +479,7 @@ watch([currPage$, perPage$], () => {
 });
 
 const chartDataVotesCastScatter$ = ref<object>();
+const chartData1Registration1Vote$ = ref<object>();
 const chartData1Ada1Vote$ = ref<object>();
 const chartOptions = ref<object>();
 
@@ -388,42 +496,42 @@ function getMetrics() {
     const params = getQueryData();
 
     // get largest funded
-    axios.get(`${usePage().props.base_url}/catalyst-explorer/charts/metrics/largestFundedProposalObject`, { params })
+    axios.get(`${usePage().props.base_url}/catalyst-explorer/metrics/largestFundedProposalObject`, { params })
         .then((res) => largestFundedProposalObject.value = res?.data)
         .catch((error) => {
             console.error(error);
         });
 
     // proposals funded over 75k
-    axios.get(`${usePage().props.base_url}/catalyst-explorer/charts/metrics/fundedOver75KCount`, { params })
+    axios.get(`${usePage().props.base_url}/catalyst-explorer/metrics/fundedOver75KCount`, { params })
         .then((res) => fundedOver75KCount.value = res?.data)
         .catch((error) => {
             console.error(error);
         });
 
     // count members awarded funding
-    axios.get(`${usePage().props.base_url}/catalyst-explorer/charts/metrics/membersAwardedFundingCount`, { params })
+    axios.get(`${usePage().props.base_url}/catalyst-explorer/metrics/membersAwardedFundingCount`, { params })
         .then((res) => membersAwardedFundingCount.value = res?.data)
         .catch((error) => {
             console.error(error);
         });
 
     // count fully disbursed proposals
-    axios.get(`${usePage().props.base_url}/catalyst-explorer/charts/metrics/fullyDisbursedProposalsCount`, { params })
+    axios.get(`${usePage().props.base_url}/catalyst-explorer/metrics/fullyDisbursedProposalsCount`, { params })
         .then((res) => fullyDisbursedProposalsCount.value = res?.data)
         .catch((error) => {
             console.error(error);
         });
 
     // count completed proposals
-    axios.get(`${usePage().props.base_url}/catalyst-explorer/charts/metrics/completedProposalsCount`, { params })
+    axios.get(route('catalystExplorer.metrics.completedProposalsCount'), { params })
         .then((res) => completedProposalsCount.value = res?.data)
         .catch((error) => {
             console.error(error);
         });
 
     // fetch adaRanges
-    axios.get(`${usePage().props.base_url}/catalyst-explorer/charts/metrics/adaPowerRanges`, { params })
+    axios.get(route('catalystExplorer.metrics.adaPowerRanges'), { params })
         .then((res) => {
             adaPowerRanges.value = res?.data;
 
@@ -434,7 +542,49 @@ function getMetrics() {
                 keyArr.push(power.key);
                 countArr.push(power.count);
             });
+            chartData1Registration1Vote$.value = {
+                labels: keyArr,
+                datasets: [
+                    {
+                        backgroundColor: [
+                            '#a3899d', // 450 - 1k
+                            '#917289', // 1k - 5k
+                            '#7e5a75', // 5K - 10k
+                            '#6c4262', // 10K - 25k
 
+                            '#5a2b4e', // 25k - 50k
+                            '#48143b', // 50k - 75k
+                            '#39102f', // 75k - 100k
+
+                            '#84c3da', // 100k - 250k
+                            '#66b5d1', // 250k - 500k
+                            '#50abcb', // 500k - 750k
+                            '#3aa0c4', //750k - 1M
+
+                            '#fce865', // 1M - 5M
+                            '#fcdf23', // 5M - 10M
+                            '#e2c609', // 10M - 15M
+
+                            '#ff9319', // 15M - 21M
+                            '#ff8700', // 30M - 45M
+                            '#ff8700', // 30M-45M
+
+                            '#4bb92f', // 45M - 75M
+                            '#8d00ff', // 75M - 100M
+
+                            // '#E4578A' // 9M - 10M
+                        ],
+                        data: countArr,
+                    }
+                ]
+            }
+
+            keyArr = [];
+            countArr = [];
+            adaPowerRanges.value.forEach(power => {
+                keyArr.push(power.key);
+                countArr.push(power.total);
+            });
             chartData1Ada1Vote$.value = {
                 labels: keyArr,
                 datasets: [
@@ -519,6 +669,21 @@ function getMetrics() {
         .catch((error) => {
             console.error(error);
         });
+
+    // get total ada power
+    axios.get(route('catalystExplorer.metrics.totalRegisteredAdaPower'), { params })
+        .then((res) => totalRegisteredAdaPower.value = res?.data)
+        .catch((error) => {
+            console.error(error);
+        });
+
+    // get total ada power
+    axios.get(route('catalystExplorer.metrics.totalRegistrations'), { params })
+        .then((res) => totalRegistrations.value = res?.data)
+        .catch((error) => {
+            console.error(error);
+        });
+
 }
 
 function getQueryData() {
@@ -574,7 +739,7 @@ function getAttachmentLink() {
     const params = getQueryData();
 
     axios.get(route('catalystExplorer.attachment'), { params })
-        .then((res) => attachementLink.value = res?.data)
+        .then((res) => attachmentLink.value = res?.data)
         .catch((error) => {
             console.error(error);
         });
