@@ -95,7 +95,6 @@ const props = defineProps<{
 const proposals: Ref<Proposal[]> = ref(null);
 let numberRange = computed(() => Array.from({ length: 5 }, (_, index) => index + 1));
 
-
 const proposalOwners = computed(() => {
     return proposals.value?.map((proposal) => {
         let user = proposal.users.find((user) => {
@@ -107,9 +106,11 @@ const proposalOwners = computed(() => {
 
 
 const getTopProposals = async () => {
-    console.log({ 'lessgo': props.fund });
-
-    proposals.value = (await axios.get(route('catalystExplorer.topFundedProposals'), { params: props.fund })).data;
+    proposals.value = (
+        await axios.get(
+            route('catalystExplorer.topFundedProposals'), { params: props.fund }
+        )
+    ).data;
 }
 
 watch(() => props.fund, () => {
