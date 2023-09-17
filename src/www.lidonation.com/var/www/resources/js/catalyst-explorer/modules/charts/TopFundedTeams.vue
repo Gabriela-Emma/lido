@@ -21,7 +21,7 @@
                                         :alt="proposerData.owner.name" />
                                 </div>
                                 <div class="flex-1 min-w-0 px-4 md:grid md:grid-cols-2 md:gap-4">
-                                    <div class="flex justify-items-center">
+                                    <div class="flex items-center justify-start">
                                         <p class="text-xl font-medium text-gray-600 truncate ">
                                             {{ proposerData?.team ? proposerData?.team.name : proposerData.owner.name }}
                                         </p>
