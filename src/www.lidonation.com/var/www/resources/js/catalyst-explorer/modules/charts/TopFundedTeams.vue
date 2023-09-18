@@ -1,14 +1,22 @@
 <template>
-    <div class="p-3 bg-white lg:w-1/2 " v-if="proposals?.length > 0">
+    <div class="p-3 bg-white lg:w-1/2">
         <div>
             <h2 class="mb-0 xl:text-3xl">
                 Top Funded Teams
             </h2>
-            <p>
+            <p v-if="proposals?.length > 0">
                 Across {{ proposals?.[0]?.fund?.parent?.label }}
             </p>
+            <div class="relative text-xl flex gap-4 items-center" v-if="proposals?.length < 1">
+                <p>That's all we know.</p>
+                <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 fill-red-700">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+                    </svg>
+                </span>
+            </div>
         </div>
-        <div class="relative m-2">
+        <div class="relative m-2" v-if="proposals?.length > 0">
             <ul role="list" class="divide-y divide-gray-200 max-h-[28rem] overflow-y-auto">
                 <li v-for="proposerData in proposalOwners" v-if="proposals">
                     <a :href="proposerData?.team ? proposerData?.team.link : $utils.localizeRoute(`project-catalyst/users/${proposerData?.owner?.id}`)"
