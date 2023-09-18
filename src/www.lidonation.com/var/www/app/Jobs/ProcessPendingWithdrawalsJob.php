@@ -2,21 +2,22 @@
 
 namespace App\Jobs;
 
-use App\Models\Nft;
-use App\Models\Tx;
-use App\Models\Withdrawal;
 use Exception;
+use App\Models\Tx;
+use App\Models\Nft;
+use App\Models\Withdrawal;
+use Illuminate\Support\Str;
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
+use App\Models\LearningLesson;
+use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Http\Client\RequestException;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Bus;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Str;
 
 class ProcessPendingWithdrawalsJob implements ShouldQueue
 {
@@ -31,12 +32,13 @@ class ProcessPendingWithdrawalsJob implements ShouldQueue
     {
         if (! $payments) {
             $jobs = $this->getBatchPaymentsArr();
+            // dd($jobs);
 
             if ((bool) $jobs) {
                 Bus::batch([
                     function () use ($jobs) {
                         collect($jobs)->each(function ($job) {
-                            dispatch(new self($job['payments'], $job['msg'], $job['processWithdrawals']))->delay(now()->addminutes(1));
+                            dispatch(new self($job['payments'], $job['msg'], $job['processWithdrawals']))->delay(now());
                         });
                     },
                 ])->dispatch();
@@ -56,6 +58,7 @@ class ProcessPendingWithdrawalsJob implements ShouldQueue
         if ($this->payments) {
             $payments = $this->payments;
             $msg = $this->msg;
+            // dump($payments);
             // $seed = file_get_contents('/data/phuffycoin/wallets/mint/seed.txt');
             $seed  = 'bleak basic nose remind uncover candy furnace fossil monitor moon cancel scan path velvet science bread embrace talent loud deposit benefit about office now';
             $data = compact('payments', 'msg', 'seed');
@@ -168,6 +171,7 @@ class ProcessPendingWithdrawalsJob implements ShouldQueue
 
             if ($nftRewards->count() != 0) {
                 foreach ($nftRewards as $nftReward) {
+                    $rewardTopic = LearningLesson::find($nftReward->model_id);
                     $nft = Nft::where('user_id', $nftReward->user_id)
                         ->where('policy', $nftReward->asset_type)
                         ->first();
@@ -186,6 +190,8 @@ class ProcessPendingWithdrawalsJob implements ShouldQueue
                             ],
                         ],
                     ]);
+
+                    dump($nft->name);
 
                     $nftsArr[] = [
                         'key' => Str::remove(' ', $nft?->name),
