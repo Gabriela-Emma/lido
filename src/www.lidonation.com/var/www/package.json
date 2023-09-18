@@ -23,7 +23,7 @@
         "watch-poll": "mix watch -- --watch-options-poll=1000",
         "hot": "mix watch --hot",
         "lint": "./vendor/bin/pint",
-        "production": "yarn mix --production",
+        "production": "NODE_OPTIONS=\"--max-old-space-size=4096\" yarn mix --production",
         "build-post-translator": "cd nova-components/PostTranslator && npm run dev",
         "build-post-translator-prod": "cd nova-components/PostTranslator && npm run prod"
     },
