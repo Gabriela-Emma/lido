@@ -260,8 +260,9 @@
                     </div>
                 </div>
 
-                <div class="relative w-full col-span-1 row-span-6 lg:col-span-5 round-sm">
+                <div class="relative w-full col-span-1 row-span-6 md:col-span-5 round-sm flex justify-between gap-4">
                     <TopFundedTeams :fund="filters?.fundId"/>
+                    <TopFundedProposals :fund="filters?.fundId"/>
                 </div>
                 
 
@@ -406,6 +407,7 @@ import Search from '../Shared/Components/Search.vue';
 import ChallengePicker from '../modules/funds/ChallengePicker.vue';
 import Challenge from '../models/challenge';
 import TopFundedTeams from "../modules/charts/TopFundedTeams.vue"
+import TopFundedProposals from '../modules/charts/TopFundedProposals.vue';
 
 
 const props = withDefaults(
