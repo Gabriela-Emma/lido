@@ -1,11 +1,11 @@
 <template>
-    <div class="p-3 bg-white lg:w-1/2 " v-if="proposals?.length">
+    <div class="p-3 bg-white lg:w-1/2 " v-if="proposals?.length > 0">
         <div>
             <h2 class="mb-0 xl:text-3xl">
                 Top Funded Teams
             </h2>
             <p>
-                Across {{ proposals?.[0].fund.parent.label }}
+                Across {{ proposals?.[0]?.fund?.parent?.label }}
             </p>
         </div>
         <div class="relative m-2">
@@ -85,6 +85,7 @@ import Proposal from '../../models/proposal';
 import axios from 'axios';
 import route from 'ziggy-js';
 import { inject } from "vue";
+import {VARIABLES} from "../../models/variables";
 
 const $utils: any = inject('$utils');
 
@@ -104,11 +105,12 @@ const proposalOwners = computed(() => {
     });
 });
 
-
 const getTopProposals = async () => {
     proposals.value = (
         await axios.get(
-            route('catalystExplorer.topFundedProposals'), { params: props.fund }
+            route(
+                'catalystExplorer.topFundedProposals'),
+            { params: {[VARIABLES.FUNDS]: props.fund} }
         )
     ).data;
 }
