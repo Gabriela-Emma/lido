@@ -1,5 +1,5 @@
 <template>
-    <div class="p-3 bg-white">
+    <div class="p-3 bg-whiten h-full">
         <div>
             <h2 class="mb-0 xl:text-3xl">
                 Top Funded Teams

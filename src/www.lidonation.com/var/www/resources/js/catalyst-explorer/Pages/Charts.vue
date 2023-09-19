@@ -166,7 +166,7 @@
 
                 <!-- Number Grid -->
                 <div class="relative col-span-1 lg:col-span-2 xl:col-span-3 row-span-6 round-sm">
-                    <div class="grid grid-cols-2">
+                    <div class="grid grid-cols-2 h-full">
                         <div
                             class="relative col-span-2 row-span-1 px-3 py-8 border border-white bg-blue-dark-500 round-sm">
                             <dl class="flex flex-col justify-between h-full text-center text-white">
@@ -266,10 +266,10 @@
                     </div>
                 </div>
 
-                <div class="relative col-span-1 row-span-6 p-3 bg-white md:col-span-3 xl:col-span-4 round-sm">
+                <div class="relative col-span-1 row-span-6 p-3 bg-white md:col-span-3 xl:col-span-4 xl:row-span-10 round-sm">
                     <TopFundedTeams :fund="filters?.fundId"/>
                 </div>
-                <div class="relative col-span-1 row-span-6 p-3 bg-white md:col-span-3 xl:col-span-4 round-sm">
+                <div class="relative col-span-1 row-span-6 p-3 bg-white md:col-span-3 xl:col-span-4 xl:row-span-10 round-sm">
                     <TopFundedProposals :fund="filters?.fundId"/>
                 </div>
 
