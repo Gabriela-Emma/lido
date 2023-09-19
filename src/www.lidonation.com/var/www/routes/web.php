@@ -70,6 +70,19 @@ use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 // Redirects
 Route::get('/cardano-treasury-fund', fn () => redirect(LaravelLocalization::localizeURL('cardano-treasury')));
 
+// catalyst snapshot download
+Route::get('/download-remote-file', function(Request $request) {
+    $mime = $request->input('mime');
+    $filename = $request->input('filename');
+    $url = $request->input('url');
+
+    return \Illuminate\Support\Facades\Response::download($url, $filename, ['Content-Type' => $mime]);
+//    $response = Response::make($url, 200);
+//    $response->header('Content-Type', $mime);
+//    return $response;
+//    return response()->download($url, $filename, ['Content-Type' => $mime]);
+});
+
 //Route::prefix(LaravelLocalization::setLocale())->middleware(['localeSessionRedirect', 'localizationRedirect', 'localeViewPath'])->group(function () {
 
 Route::group(
