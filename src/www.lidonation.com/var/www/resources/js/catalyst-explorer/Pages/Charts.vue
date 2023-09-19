@@ -264,7 +264,7 @@
                     <TopFundedTeams :fund="filters?.fundId"/>
                     <TopFundedProposals :fund="filters?.fundId"/>
                 </div>
-                
+
 
                 <!-- Live Tally -->
                 <div
@@ -432,7 +432,7 @@ let totalRegistrations = ref<number>(0);
 
 const baseUrl = usePage().props.base_url;
 
-let selectedFundRef = ref<number>(props.filters.fundId);
+let selectedFundRef = ref<number>(props.filters?.fundId);
 
 let amount_requested = ref<number>(0);
 let link = ref<string>('');
