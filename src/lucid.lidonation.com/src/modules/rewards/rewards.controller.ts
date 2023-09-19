@@ -21,6 +21,7 @@ export class RewardsController {
     );
 
     const payments = request.body.payments;
+    
     if (!payments.length) {
       return payments;
     }
@@ -33,15 +34,15 @@ export class RewardsController {
     let nftMetadata = {};
     let policy;
     for (let i = 0; i < payments.length; i++) {
+
       let pmt = payments[i];
 
       if (pmt.nfts) {
         for (let n = 0; n < pmt.nfts.length; n++) {
           let nft = pmt.nfts[n];
-          if (nft?.key.length > 0){
+          if (!!nft?.key){
             nfts.push(nft);
           }
-          
         }
       }
       const address = pmt.address;
@@ -69,7 +70,6 @@ export class RewardsController {
         nftMetadata = { ...nftMetadata ,...metadata}
         policy = lucid.utils.mintingPolicyToId(await this.getPolicy(lucid));
         nfts = [];
-
       } else {
         tx = await tx.payToAddress(address, amounts).attachMetadata(674, {
           msg: ['Rewards Withdrawal'],
