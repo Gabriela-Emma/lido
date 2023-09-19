@@ -70,12 +70,10 @@ export class RewardsController {
         nftMetadata = { ...nftMetadata ,...metadata}
         policy = lucid.utils.mintingPolicyToId(await this.getPolicy(lucid));
         nfts = [];
-      } else if (!!amounts) {
+      } else {
         tx = await tx.payToAddress(address, amounts).attachMetadata(674, {
           msg: ['Rewards Withdrawal'],
         });
-      }else{
-        continue;
       }
 
     }
