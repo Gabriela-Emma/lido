@@ -202,7 +202,7 @@
                             <dl class="flex flex-col justify-between h-full">
                                 <dd>
                                     <div class="text-4xl font-semibold text-white lg:text-5xl 2xltext-6xl">
-                                        {{ totalDelegationRegistrationsAdaPower ?? '-' }}
+                                        ₳{{ $filters.shortNumber(totalDelegationRegistrationsAdaPower, 3) }}
                                     </div>
                                 </dd>
                                 <dt class="mt-3 text-lg font-medium text-gray-200 truncate">
@@ -214,7 +214,7 @@
                             <dl class="flex flex-col justify-between h-full">
                                 <dd>
                                     <div class="text-4xl font-semibold text-white lg:text-5xl 2xltext-6xl">
-                                        {{totalDelegationRegistrations ?? '-'}}
+                                        {{totalDelegationRegistrations?.toLocaleString() ?? '-'}}
                                     </div>
                                 </dd>
                                 <dt class="mt-3 text-lg font-medium text-gray-200 truncate">
@@ -697,14 +697,14 @@ function getMetrics() {
 
     // get total delegation registrations
     axios.get(route('catalystExplorer.metrics.totalDelegationRegistrations'), { params })
-        .then((res) => totalDelegationRegistrationsAdaPower.value = res?.data)
+        .then((res) => totalDelegationRegistrations.value = res?.data)
         .catch((error) => {
             console.error(error);
         });
 
     // get total delegation registrations ada power
     axios.get(route('catalystExplorer.metrics.totalDelegationRegistrationsAdaPower'), { params })
-        .then((res) => totalDelegationRegistrations.value = res?.data)
+        .then((res) => totalDelegationRegistrationsAdaPower.value = res?.data)
         .catch((error) => {
             console.error(error);
         });

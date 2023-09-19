@@ -164,7 +164,7 @@ class CatalystChartsController extends Controller
     {
         $this->fundFilter = $request->input(CatalystExplorerQueryParams::FUNDS, 113);
         $votingPower = CatalystVotingPower::whereRelation('catalyst_snapshot', 'model_id',  113)
-            ->whereHas('delegations', operator: '>', count: 2)
+            ->whereHas('delegations', operator: '>', count: 1)
             ->sum('voting_power');
 
         if ($votingPower && $votingPower > 0) {
@@ -178,7 +178,7 @@ class CatalystChartsController extends Controller
     {
         $this->fundFilter = $request->input(CatalystExplorerQueryParams::FUNDS, 113);
         return CatalystVotingPower::whereRelation('catalyst_snapshot', 'model_id',  113)
-            ->whereHas('delegations', operator: '>', count: 2)
+            ->whereHas('delegations', operator: '>', count: 1)
             ->count();
     }
 
