@@ -40,8 +40,7 @@ export class RewardsController {
       if (pmt.nfts) {
         for (let n = 0; n < pmt.nfts.length; n++) {
           let nft = pmt.nfts[n];
-          const proccessedNft = nfts.some((nftInArray) => nftInArray.key == nft.key)
-          if (nft?.key.length > 0 && !proccessedNft){
+          if (!!nft?.key){
             nfts.push(nft);
           }
         }

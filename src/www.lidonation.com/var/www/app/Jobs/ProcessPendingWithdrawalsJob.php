@@ -7,6 +7,7 @@ use App\Models\Tx;
 use App\Models\Nft;
 use App\Models\Withdrawal;
 use Illuminate\Support\Str;
+use App\Models\LearningTopic;
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
 use App\Models\LearningLesson;
@@ -30,15 +31,14 @@ class ProcessPendingWithdrawalsJob implements ShouldQueue
      */
     public function __construct(protected $payments = null, protected $msg = null, protected $processWithdrawals = null)
     {
-        if (! $payments) {
+        if (!$payments) {
             $jobs = $this->getBatchPaymentsArr();
-            // dd($jobs);
 
             if ((bool) $jobs) {
                 Bus::batch([
                     function () use ($jobs) {
                         collect($jobs)->each(function ($job) {
-                            dispatch(new self($job['payments'], $job['msg'], $job['processWithdrawals']))->delay(now());
+                            dispatch(new self($job['payments'], $job['msg'], $job['processWithdrawals']))->delay(now()->addMinutes(3));
                         });
                     },
                 ])->dispatch();
@@ -58,13 +58,12 @@ class ProcessPendingWithdrawalsJob implements ShouldQueue
         if ($this->payments) {
             $payments = $this->payments;
             $msg = $this->msg;
-            // dump($payments);
             // $seed = file_get_contents('/data/phuffycoin/wallets/mint/seed.txt');
             $seed  = 'bleak basic nose remind uncover candy furnace fossil monitor moon cancel scan path velvet science bread embrace talent loud deposit benefit about office now';
             $data = compact('payments', 'msg', 'seed');
 
             $res = Http::post(
-                config('cardano.lucidEndpoint').'/rewards/withdraw',
+                config('cardano.lucidEndpoint') . '/rewards/withdraw',
                 $data
             )->throw();
 
@@ -100,7 +99,6 @@ class ProcessPendingWithdrawalsJob implements ShouldQueue
                             $newTx->metadata = $nft->metadata;
                             $newTx->minted_at = now();
                             $newTx->save();
-
                         }
                     });
 
@@ -108,7 +106,6 @@ class ProcessPendingWithdrawalsJob implements ShouldQueue
                 }
             }
         }
-
     }
 
     protected function getBatchPaymentsArr()
@@ -116,7 +113,7 @@ class ProcessPendingWithdrawalsJob implements ShouldQueue
         // query pending withdrawals and destructure to needed payment format
         $withdrawals = $this->getWithdrawals();
 
-        if (! $withdrawals) {
+        if (!$withdrawals) {
             return;
         }
 
@@ -143,7 +140,7 @@ class ProcessPendingWithdrawalsJob implements ShouldQueue
         // get all pending withdrawals or bail
         $withdrawals = Withdrawal::validated()
             ->get()
-            ->filter(fn ($w) => ! isset($w->meta_data?->withdrawal_tx));
+            ->filter(fn ($w) => !isset($w->meta_data?->withdrawal_tx));
 
         if ($withdrawals->isEmpty()) {
             Log::info('No Withdrawal to process');
@@ -152,7 +149,6 @@ class ProcessPendingWithdrawalsJob implements ShouldQueue
         }
 
         return $withdrawals;
-
     }
 
     protected function getPayments($withdrawals)
@@ -171,11 +167,24 @@ class ProcessPendingWithdrawalsJob implements ShouldQueue
 
             if ($nftRewards->count() != 0) {
                 foreach ($nftRewards as $nftReward) {
-                    $rewardTopic = LearningLesson::find($nftReward->model_id);
+
+                    $rewardTopic = LearningLesson::find($nftReward->model_id)->topic->id;
+
+                    if (!$rewardTopic) {
+                        continue;
+                    }
+
                     $nft = Nft::where('user_id', $nftReward->user_id)
-                        ->where('policy', $nftReward->asset_type)
+                        ->where([
+                            'model_type' => LearningTopic::class,
+                            'model_id' => $rewardTopic,
+                        ])
                         ->first();
 
+                    if (!$nft instanceof Nft) {
+                        continue;
+                    }
+                    
                     $metadata = array_merge($nft?->metadata?->toArray() ?? [], [
                         'name' => $nft?->name,
                         'image' => $nft?->storage_link,
@@ -191,7 +200,6 @@ class ProcessPendingWithdrawalsJob implements ShouldQueue
                         ],
                     ]);
 
-                    dump($nft->name);
 
                     $nftsArr[] = [
                         'key' => Str::remove(' ', $nft?->name),
