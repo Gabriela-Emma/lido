@@ -107,10 +107,10 @@ class SyncCatatalystVotersJob implements ShouldQueue
                     $newDelegation->weight = $voterDelegation[1];
 
                     $command = Process::fromShellCommandline(
-                        '/opt/jcli address account ' . $newDelegation->voting_pub
+                        '/opt/jcli address account '.$newDelegation->voting_pub
                     );
                     $command->run();
-                    $catId = str_replace(array("\r", "\n"), '', $command->getOutput());
+                    $catId = str_replace(["\r", "\n"], '', $command->getOutput());
                     $newDelegation->cat_onchain_id = $catId;
                     $newDelegation->save();
                 });

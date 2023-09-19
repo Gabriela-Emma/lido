@@ -18,6 +18,7 @@ use App\Nova\Filters\StatusFilter;
 use Ebess\AdvancedNovaMediaLibrary\Fields\Images;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Laravel\Nova\Actions\ExportAsCsv;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\Boolean;
@@ -33,7 +34,6 @@ use Laravel\Nova\Fields\Stack;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
-use Laravel\Nova\Actions\ExportAsCsv;
 
 class Proposals extends Resource
 {

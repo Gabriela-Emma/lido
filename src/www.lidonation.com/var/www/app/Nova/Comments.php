@@ -7,12 +7,12 @@ use App\Nova\Actions\PublishModel;
 use App\Scopes\PublishedScope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Laravel\Nova\Actions\ExportAsCsv;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\Markdown;
 use Laravel\Nova\Fields\MorphTo;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Laravel\Nova\Actions\ExportAsCsv;
 
 class Comments extends Resource
 {

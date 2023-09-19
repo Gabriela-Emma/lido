@@ -22,7 +22,7 @@ class WalletLoginController extends Controller
             'stakeAddrHex' => 'sometimes|required_without_all:email,password,key,signature',
         ]);
 
-        if($request->signature){
+        if ($request->signature) {
             $validationResponse = $this->validateAddress(
                 $request->key,
                 $request->signature,

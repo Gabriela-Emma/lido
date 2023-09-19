@@ -9,6 +9,7 @@ use App\Nova\Actions\AttachTranslation;
 use App\Nova\Actions\EditMetaData;
 use App\Nova\Filters\Language;
 use Illuminate\Http\Request;
+use Laravel\Nova\Actions\ExportAsCsv;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\ID;
@@ -16,7 +17,6 @@ use Laravel\Nova\Fields\Markdown;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Panel;
-use Laravel\Nova\Actions\ExportAsCsv;
 
 class Translations extends Resource
 {

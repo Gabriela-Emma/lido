@@ -10,6 +10,7 @@ use App\Nova\Traits\HasSnippets;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use JetBrains\PhpStorm\Pure;
+use Laravel\Nova\Actions\ExportAsCsv;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\HasMany;
@@ -19,7 +20,6 @@ use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Panel;
-use Laravel\Nova\Actions\ExportAsCsv;
 
 class Discussions extends Resource
 {

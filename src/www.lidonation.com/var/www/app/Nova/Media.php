@@ -4,11 +4,11 @@ namespace App\Nova;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Laravel\Nova\Actions\ExportAsCsv;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Image;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Laravel\Nova\Actions\ExportAsCsv;
 
 class Media extends Resource
 {

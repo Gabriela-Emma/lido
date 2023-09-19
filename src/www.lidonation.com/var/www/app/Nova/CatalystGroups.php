@@ -8,6 +8,7 @@ use App\Nova\Actions\EditMetaData;
 use App\Nova\Actions\SyncCatalystGroupProposals;
 use Ebess\AdvancedNovaMediaLibrary\Fields\Images;
 use JetBrains\PhpStorm\Pure;
+use Laravel\Nova\Actions\ExportAsCsv;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\HasMany;
@@ -18,7 +19,6 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\URL;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
-use Laravel\Nova\Actions\ExportAsCsv;
 
 class CatalystGroups extends Resource
 {

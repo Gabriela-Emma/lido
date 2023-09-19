@@ -10,13 +10,13 @@ use App\Nova\Actions\ValidateClaims;
 use App\Nova\Lenses\PendingClaims;
 use Illuminate\Http\Request;
 use JetBrains\PhpStorm\Pure;
+use Laravel\Nova\Actions\ExportAsCsv;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Markdown;
 use Laravel\Nova\Fields\MorphTo;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Laravel\Nova\Actions\ExportAsCsv;
 
 class CatalystVotes extends Resource
 {

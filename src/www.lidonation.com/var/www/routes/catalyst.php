@@ -154,7 +154,7 @@ Route::group(
                 ->name('attachments.votingPowers');
 
             Route::get('/charts/topFundedProposals', [CatalystChartsController::class, 'getTopFundedProposals'])
-            ->name('topFundedProposals');
+                ->name('topFundedProposals');
 
             Route::get('/people', [CatalystPeopleController::class, 'index'])
                 ->name('people');

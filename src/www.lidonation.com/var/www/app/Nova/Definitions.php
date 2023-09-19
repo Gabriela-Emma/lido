@@ -6,6 +6,7 @@ use App\Models\Definition;
 use App\Nova\Actions\TranslateModel;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Laravel\Nova\Actions\ExportAsCsv;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Markdown;
 use Laravel\Nova\Fields\Number;
@@ -14,7 +15,6 @@ use Laravel\Nova\Fields\Slug;
 use Laravel\Nova\Fields\Stack;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Laravel\Nova\Actions\ExportAsCsv;
 
 class Definitions extends Resource
 {

@@ -395,3 +395,4 @@ dd($catId);
   $delegation->cat_onchain_id = $catId;
   $delegation->save();  
 });
+exit

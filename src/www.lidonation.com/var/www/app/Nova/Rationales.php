@@ -7,6 +7,7 @@ use App\Nova\Actions\PublishModel;
 use App\Scopes\PublishedScope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Laravel\Nova\Actions\ExportAsCsv;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Gravatar;
 use Laravel\Nova\Fields\HasOne;
@@ -17,7 +18,6 @@ use Laravel\Nova\Fields\Slug;
 use Laravel\Nova\Fields\Stack;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Laravel\Nova\Actions\ExportAsCsv;
 
 class Rationales extends Resource
 {

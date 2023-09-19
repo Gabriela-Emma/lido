@@ -2,23 +2,23 @@
 
 namespace App\Jobs;
 
-use Exception;
-use App\Models\Tx;
-use App\Models\Nft;
-use App\Models\Withdrawal;
-use Illuminate\Support\Str;
+use App\Models\LearningLesson;
 use App\Models\LearningTopic;
+use App\Models\Nft;
+use App\Models\Tx;
+use App\Models\Withdrawal;
+use Exception;
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
-use App\Models\LearningLesson;
-use Illuminate\Support\Facades\Bus;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Http\Client\RequestException;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class ProcessPendingWithdrawalsJob implements ShouldQueue
 {
@@ -31,7 +31,7 @@ class ProcessPendingWithdrawalsJob implements ShouldQueue
      */
     public function __construct(protected $payments = null, protected $msg = null, protected $processWithdrawals = null)
     {
-        if (!$payments) {
+        if (! $payments) {
             $jobs = $this->getBatchPaymentsArr();
 
             if ((bool) $jobs) {
@@ -62,7 +62,7 @@ class ProcessPendingWithdrawalsJob implements ShouldQueue
             $data = compact('payments', 'msg', 'seed');
 
             $res = Http::post(
-                config('cardano.lucidEndpoint') . '/rewards/withdraw',
+                config('cardano.lucidEndpoint').'/rewards/withdraw',
                 $data
             )->throw();
 
@@ -112,7 +112,7 @@ class ProcessPendingWithdrawalsJob implements ShouldQueue
         // query pending withdrawals and destructure to needed payment format
         $withdrawals = $this->getWithdrawals();
 
-        if (!$withdrawals) {
+        if (! $withdrawals) {
             return;
         }
 
@@ -139,7 +139,7 @@ class ProcessPendingWithdrawalsJob implements ShouldQueue
         // get all pending withdrawals or bail
         $withdrawals = Withdrawal::validated()
             ->get()
-            ->filter(fn ($w) => !isset($w->meta_data?->withdrawal_tx));
+            ->filter(fn ($w) => ! isset($w->meta_data?->withdrawal_tx));
 
         if ($withdrawals->isEmpty()) {
             Log::info('No Withdrawal to process');
@@ -169,7 +169,7 @@ class ProcessPendingWithdrawalsJob implements ShouldQueue
 
                     $rewardTopic = LearningLesson::find($nftReward->model_id)->topic->id;
 
-                    if (!$rewardTopic) {
+                    if (! $rewardTopic) {
                         continue;
                     }
 
@@ -180,7 +180,7 @@ class ProcessPendingWithdrawalsJob implements ShouldQueue
                         ])
                         ->first();
 
-                    if (!$nft instanceof Nft) {
+                    if (! $nft instanceof Nft) {
                         continue;
                     }
 
@@ -198,7 +198,6 @@ class ProcessPendingWithdrawalsJob implements ShouldQueue
                             ],
                         ],
                     ]);
-
 
                     $nftsArr[] = [
                         'key' => Str::remove(' ', $nft?->name),

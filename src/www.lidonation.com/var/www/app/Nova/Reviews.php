@@ -7,6 +7,7 @@ use App\Nova\Actions\GenerateModelRatingImages;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use JetBrains\PhpStorm\Pure;
+use Laravel\Nova\Actions\ExportAsCsv;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\DateTime;
@@ -21,7 +22,6 @@ use Laravel\Nova\Fields\Stack;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
-use Laravel\Nova\Actions\ExportAsCsv;
 
 class Reviews extends Articles
 {

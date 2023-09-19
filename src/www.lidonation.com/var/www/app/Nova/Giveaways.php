@@ -11,6 +11,7 @@ use App\Nova\Actions\IssuePoolRewards;
 use App\Nova\Actions\RecalculateRewards;
 use Ebess\AdvancedNovaMediaLibrary\Fields\Images;
 use Illuminate\Http\Request;
+use Laravel\Nova\Actions\ExportAsCsv;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\HasMany;
@@ -20,7 +21,6 @@ use Laravel\Nova\Fields\Markdown;
 use Laravel\Nova\Fields\MorphTo;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Actions\ExportAsCsv;
 
 class Giveaways extends Resource
 {

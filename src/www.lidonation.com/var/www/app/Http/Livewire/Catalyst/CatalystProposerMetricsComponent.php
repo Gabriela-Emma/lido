@@ -80,7 +80,7 @@ class CatalystProposerMetricsComponent extends Component
             $username = request()->route('catalystUser');
         }
         $this->catalystUser = $catalystUserRepository->get($username, 'own_proposals');
-        // 
+        //
         $discussions = $this->catalystUser?->{$relation}
             ->map(
                 fn ($p) => $p->discussions

@@ -91,7 +91,7 @@ class Podcast extends Model implements HasLink, IHasMetaData, HasMedia
     public function link(): Attribute
     {
         return Attribute::make(
-            get: fn () => '' 
+            get: fn () => ''
         );
     }
 

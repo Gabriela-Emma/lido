@@ -98,6 +98,7 @@ class CatalystGroupComposer
                     return [];
                 });
             }
+
             return $item;
         })->pluck('proposals');
         $adaProposals = collect($proposalGroups->toArray())->map(function ($item) {
@@ -106,6 +107,7 @@ class CatalystGroupComposer
                     return [];
                 });
             }
+
             return $item;
         })->pluck('proposals');
 

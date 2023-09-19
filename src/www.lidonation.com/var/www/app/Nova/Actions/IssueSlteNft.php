@@ -41,7 +41,7 @@ class IssueSlteNft extends Action
                         continue;
                     }
                 }
-            } else if ($model instanceof LearningTopic) {
+            } elseif ($model instanceof LearningTopic) {
             }
         }
     }

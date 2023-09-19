@@ -4,6 +4,7 @@ namespace App\Nova;
 
 use App\Models\Wallet;
 use Illuminate\Http\Request;
+use Laravel\Nova\Actions\ExportAsCsv;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Code;
 use Laravel\Nova\Fields\ID;
@@ -11,7 +12,6 @@ use Laravel\Nova\Fields\MorphedByMany;
 use Laravel\Nova\Fields\MorphTo;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Actions\ExportAsCsv;
 
 class Wallets extends Resource
 {

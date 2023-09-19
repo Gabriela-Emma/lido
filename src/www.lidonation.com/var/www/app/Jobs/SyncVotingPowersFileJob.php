@@ -41,7 +41,7 @@ class SyncVotingPowersFileJob implements ShouldQueue
             ->skip(1)
             ->chunk(500)
             ->each(function (LazyCollection $chunk) {
-                CreateVotingPowerSnapshotJob::dispatch($chunk, $this->snapshot);
+                CreateVotingPowerSnapshotJob::dispatch($chunk, $this->snapshot?->id);
             });
     }
 }

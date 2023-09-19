@@ -173,7 +173,6 @@ class Assessment extends Model implements IHasMetaData
 
     /**
      * @return mixed
-     *
      */
     public function children(): Attribute
     {

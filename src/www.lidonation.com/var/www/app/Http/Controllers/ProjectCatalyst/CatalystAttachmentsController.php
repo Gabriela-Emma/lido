@@ -10,8 +10,6 @@ use Illuminate\Http\Request;
 
 class CatalystAttachmentsController extends Controller
 {
-   
-
     protected function votingPowersAttachemnt(Request $request)
     {
         $snapshot = CatalystSnapshot::where('model_type', Fund::class)
@@ -23,10 +21,10 @@ class CatalystAttachmentsController extends Controller
             ->where('key', 'snapshot_file_path')
             ->first();
 
-        if (!$link) {
+        if (! $link) {
             return null;
         }
 
-        return '/storage/' . $link?->content;
+        return '/storage/'.$link?->content;
     }
 }

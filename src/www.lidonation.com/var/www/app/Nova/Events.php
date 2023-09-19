@@ -7,12 +7,12 @@ use App\Nova\Actions\AddMetaData;
 use App\Nova\Actions\EditMetaData;
 use Illuminate\Http\Request;
 use JetBrains\PhpStorm\Pure;
+use Laravel\Nova\Actions\ExportAsCsv;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Markdown;
 use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Actions\ExportAsCsv;
 
 class Events extends Resource
 {

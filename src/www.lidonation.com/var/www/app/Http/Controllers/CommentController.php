@@ -10,7 +10,6 @@ use TimeHunter\LaravelGoogleReCaptchaV3\Validations\GoogleReCaptchaV3ValidationR
 
 /**
  * Class CommentController
- *
  */
 class CommentController extends Controller
 {

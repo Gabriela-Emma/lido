@@ -6,13 +6,13 @@ use App\Nova\Actions\AddMetaData;
 use App\Nova\Actions\EditMetaData;
 use Illuminate\Http\Request;
 use JetBrains\PhpStorm\Pure;
+use Laravel\Nova\Actions\ExportAsCsv;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Actions\ExportAsCsv;
 
 class Link extends Resource
 {

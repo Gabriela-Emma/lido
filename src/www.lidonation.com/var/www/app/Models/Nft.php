@@ -11,7 +11,6 @@ use App\Models\Traits\HasModel;
 use App\Models\Traits\HasPromos;
 use App\Models\Traits\HasTranslations;
 use App\Models\Traits\HasTxs;
-use App\Nova\LearningTopics;
 use Illuminate\Database\Eloquent\Casts\AsArrayObject;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -75,7 +74,7 @@ class Nft extends Model implements HasLink, HasMedia
 
     public function getMetaAttribute(): ?Fluent
     {
-        if (!isset($this->metas)) {
+        if (! isset($this->metas)) {
             return null;
         }
 
@@ -102,7 +101,7 @@ class Nft extends Model implements HasLink, HasMedia
             ])->first();
         }
 
-        if (!$meta instanceof Meta) {
+        if (! $meta instanceof Meta) {
             $meta = new Meta;
             $meta->key = $key;
             $meta->model_type = static::class;
@@ -125,21 +124,18 @@ class Nft extends Model implements HasLink, HasMedia
         );
     }
 
-
     public function topic(): Attribute
     {
         return Attribute::make(
-            get: function (){
-                if($this->model instanceof LearningTopic){
+            get: function () {
+                if ($this->model instanceof LearningTopic) {
                     return $this->model;
-                }else{
+                } else {
                     return null;
                 }
             }
         );
     }
-
-
 
     public function artist(): BelongsTo
     {
