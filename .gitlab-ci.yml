@@ -684,7 +684,7 @@ yarn:
   artifacts:
     paths:
       - ./src/www.lidonation.com/var/www/public
-    expire_in: 6 days
+    expire_in: 2 days
   rules:
     - if: '$CI_COMMIT_BRANCH != "main" && ($DEPLOY_WEBSITE == "True" || $DEPLOY_WEBSITE == "true")'
     - if: '$CI_COMMIT_BRANCH == "main" && ($DEPLOY_WEBSITE == "True" || $DEPLOY_WEBSITE == "true")'
@@ -706,7 +706,7 @@ composer:
     paths:
       - ./src/www.lidonation.com/var/www/public/docs
       - ./src/www.lidonation.com/var/www/vendor
-    expire_in: 6 days
+    expire_in: 2 days
   rules:
     - if: '$CI_COMMIT_BRANCH != "main" && ($DEPLOY_WEBSITE == "True" || $DEPLOY_WEBSITE == "true")'
     - if: '$CI_COMMIT_BRANCH == "main" && ($DEPLOY_WEBSITE == "True" || $DEPLOY_WEBSITE == "true")'
