@@ -845,7 +845,7 @@ web:
 
       docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
       echo "Building web Dockerfile..."
-      docker build --network host  \
+      docker build --network host --no-cache  \
         -f ./src/www.lidonation.com/Dockerfile -t "$CI_APPLICATION_REPOSITORY/www.lidonation.com:$CI_APPLICATION_TAG" \
         -t "$CI_APPLICATION_REPOSITORY/www.lidonation.com:latest" ./src/www.lidonation.com/.
 
