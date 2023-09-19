@@ -720,8 +720,7 @@ function getTallies() {
                 pp: perPage$.value,
                 o: order$.value,
                 s: search$.value,
-                c: challengesRef.value?.map((challenge) => (challenge.id || challenge)),
-                fs: selectedFundRef.value
+                c: challengesRef.value?.map((challenge) => (challenge.id || challenge))
             }
         })
         .then((res) => {
