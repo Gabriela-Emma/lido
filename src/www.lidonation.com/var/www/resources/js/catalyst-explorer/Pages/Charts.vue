@@ -746,7 +746,7 @@ function getUpdatedDate() {
 function getAttachmentLink() {
     const params = getQueryData();
 
-    axios.get(route('catalystExplorer.attachment'), { params })
+    axios.get(route('catalystExplorer.attachments.votingPowers'), { params })
         .then((res) => attachmentLink.value = res?.data)
         .catch((error) => {
             console.error(error);

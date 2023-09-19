@@ -39,11 +39,9 @@ class SyncVotingPowersFileJob implements ShouldQueue
             fclose($handle);
         })
             ->skip(1)
-            ->chunk(50)
+            ->chunk(500)
             ->each(function (LazyCollection $chunk) {
-                $chunk->each(function ($row) {
-                    CreateVotingPowerSnapshotJob::dispatch($this->snapshot, $row[0], $row[1]);
-                });
+                CreateVotingPowerSnapshotJob::dispatch($chunk, $this->snapshot);
             });
     }
 }
