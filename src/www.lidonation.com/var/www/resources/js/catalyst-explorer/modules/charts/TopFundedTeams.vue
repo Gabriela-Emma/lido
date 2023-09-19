@@ -7,7 +7,7 @@
             <p v-if="proposals?.length > 0">
                 Across {{ proposals?.[0]?.fund?.parent?.label }}
             </p>
-            <div class="relative text-xl flex gap-4 items-center" v-if="proposals?.length < 1">
+            <div class="relative flex items-center gap-4 text-xl" v-if="proposals?.length < 1">
                 <p>That's all we know.</p>
                 <span>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 fill-red-700">
@@ -90,6 +90,7 @@
 <script setup lang="ts">
 import { Ref, computed, ref, watch } from 'vue';
 import Proposal from '../../models/proposal';
+import Group from '../../models/group';
 import axios from 'axios';
 import route from 'ziggy-js';
 import { inject } from "vue";
@@ -102,6 +103,8 @@ const props = defineProps<{
 }>()
 
 const proposals: Ref<Proposal[]> = ref(null);
+const teams: Ref<Group[]> = ref(null);
+
 let numberRange = computed(() => Array.from({ length: 5 }, (_, index) => index + 1));
 
 const proposalOwners = computed(() => {
@@ -123,10 +126,21 @@ const getTopProposals = async () => {
     ).data;
 }
 
+const getTopTeams = async () => {
+    teams.value = (
+        await axios.get(
+            route(
+                'catalystExplorer.topFundedTeams'),
+            { params: { [VARIABLES.FUNDS]: props.fund } }
+        )
+    ).data;
+}
+
 watch(() => props.fund, () => {
     getTopProposals();
 })
 
 getTopProposals();
+getTopTeams();
 
 </script>

@@ -2,21 +2,22 @@
 
 namespace App\Http\Controllers\ProjectCatalyst;
 
-use App\Enums\CatalystExplorerQueryParams;
-use App\Http\Controllers\Controller;
-use App\Http\Resources\FundResource;
-use App\Models\CatalystSnapshot;
-use App\Models\CatalystUser;
-use App\Models\CatalystVotingPower;
 use App\Models\Fund;
 use App\Models\Meta;
-use App\Models\Proposal;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Fluent;
 use Inertia\Inertia;
+use App\Models\Proposal;
+use App\Models\CatalystUser;
+use Illuminate\Http\Request;
+use App\Models\CatalystGroup;
+use Illuminate\Support\Fluent;
+use App\Models\CatalystSnapshot;
+use Illuminate\Support\Facades\DB;
 use JetBrains\PhpStorm\ArrayShape;
 use Meilisearch\Endpoints\Indexes;
+use App\Models\CatalystVotingPower;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\FundResource;
+use App\Enums\CatalystExplorerQueryParams;
 
 class CatalystChartsController extends Controller
 {
@@ -370,11 +371,25 @@ class CatalystChartsController extends Controller
 
     public function getTopFundedProposals(Request $request)
     {
-        return (Proposal::with(['users', 'groups'])->whereRelation('fund.parent','id',$request->input(CatalystExplorerQueryParams::FUNDS, 113))
+        return Proposal::with(['users', 'groups'])->whereRelation('fund.parent', 'id', $request->input(CatalystExplorerQueryParams::FUNDS, 113))
             ->where(['proposals.type' => 'proposal'])
             ->whereNotNull('funded_at')
             ->orderByDesc('amount_requested')
-            ->limit(15)->get());
+            ->limit(15)->get();
+    }
+
+    public function getTopFundedTeams(Request $request)
+    {
+        return CatalystUser::with('groups')
+            ->whereHas(
+                'proposals',
+                fn ($q) => $q->whereNotNull('funded_at')
+                    ->whereRelation('fund.parent', 'id', $request->input(CatalystExplorerQueryParams::FUNDS, 113))
+            )->withSum([
+                'proposals as amount_requested' => function ($query) {
+                    $query->whereNotNull('funded_at');
+                },
+            ], 'amount_requested')->orderBy('amount_requested', 'desc')->limit(15)->get();
     }
 
     protected function attachmentLink(Request $request)

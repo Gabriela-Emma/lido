@@ -151,6 +151,9 @@ Route::group(
             Route::get('/charts/topFundedProposals', [CatalystChartsController::class, 'getTopFundedProposals'])
             ->name('topFundedProposals');
 
+            Route::get('/charts/getTopFundedTeams', [CatalystChartsController::class, 'getTopFundedTeams'])
+            ->name('topFundedTeams');
+
             Route::get('/people', [CatalystPeopleController::class, 'index'])
                 ->name('people');
 
