@@ -74,6 +74,8 @@ export class RewardsController {
         tx = await tx.payToAddress(address, amounts).attachMetadata(674, {
           msg: ['Rewards Withdrawal'],
         });
+      }else{
+        continue;
       }
 
     }
