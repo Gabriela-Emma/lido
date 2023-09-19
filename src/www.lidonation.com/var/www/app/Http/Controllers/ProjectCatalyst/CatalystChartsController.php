@@ -56,7 +56,7 @@ class CatalystChartsController extends Controller
         $this->fundedProposalsFilter = true;
         $this->sortBy = 'amount_requested';
         $this->sortOrder = 'desc';
-        $res = $this->query(false, ['link', 'amount_requested'])->raw();
+        $res = $this->query(false, ['link', 'amount_requested'], ['type = proposal'])->raw();
 
         if (isset($res['hits'])) {
             return collect($res['hits'])->first();
@@ -375,23 +375,5 @@ class CatalystChartsController extends Controller
             ->whereNotNull('funded_at')
             ->orderByDesc('amount_requested')
             ->limit(15)->get());
-    }
-
-    protected function attachmentLink(Request $request)
-    {
-        $snapshot = CatalystSnapshot::where('model_type', Fund::class)
-            ->where('model_id', $request->input('fs'))
-            ->first();
-
-        $link = Meta::where('model_type', CatalystSnapshot::class)
-            ->where('model_id', $snapshot->id)
-            ->where('key', 'snapshot_file_path')
-            ->first();
-
-        if (!$link) {
-            return null;
-        }
-
-        return '/storage/' . $link?->content;
     }
 }

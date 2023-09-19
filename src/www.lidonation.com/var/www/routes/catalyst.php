@@ -3,6 +3,7 @@
 use App\Http\Controllers\AnonymousBookmarkController;
 use App\Http\Controllers\Api\CatalystExplorer\UserController;
 use App\Http\Controllers\ProjectCatalyst\CatalystAssessmentsController;
+use App\Http\Controllers\ProjectCatalyst\CatalystAttachmentsController;
 use App\Http\Controllers\ProjectCatalyst\CatalystBookmarksController;
 use App\Http\Controllers\ProjectCatalyst\CatalystChallengeController;
 use App\Http\Controllers\ProjectCatalyst\CatalystChartsController;
@@ -145,8 +146,8 @@ Route::group(
                     ->name('totalRegistrations');
             });
 
-            Route::get('/charts/attachment/link', [CatalystChartsController::class, 'attachmentLink'])
-                ->name('attachment');
+            Route::get('/attachments/voting-powers', [CatalystAttachmentsController::class, 'votingPowersAttachemnt'])
+                ->name('attachments.votingPowers');
 
             Route::get('/charts/topFundedProposals', [CatalystChartsController::class, 'getTopFundedProposals'])
             ->name('topFundedProposals');

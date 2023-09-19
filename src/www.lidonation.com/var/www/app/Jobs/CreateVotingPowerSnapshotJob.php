@@ -2,12 +2,14 @@
 
 namespace App\Jobs;
 
+use App\Models\CatalystSnapshot;
 use App\Models\CatalystVotingPower;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\LazyCollection;
 
 class CreateVotingPowerSnapshotJob implements ShouldQueue
 {
@@ -16,7 +18,8 @@ class CreateVotingPowerSnapshotJob implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct(protected $snapshot, protected $stake_address, protected $voting_power)
+    // public function __construct(protected $snapshot, protected $stake_address, protected $voting_power)
+    public function __construct(protected LazyCollection $chunk, protected CatalystSnapshot $snapshot)
     {
         //
     }
@@ -26,10 +29,12 @@ class CreateVotingPowerSnapshotJob implements ShouldQueue
      */
     public function handle(): void
     {
-        CatalystVotingPower::create([
-            'voter_id' => $this->stake_address,
-            'voting_power' => $this->voting_power,
-            'catalyst_snapshot_id' => $this->snapshot->id,
-        ]);
+        $this->chunk->each(function ($row) {
+            CatalystVotingPower::create([
+                'voter_id' => $row[0],
+                'voting_power' => $row[1],
+                'catalyst_snapshot_id' => $this->snapshot->id,
+            ]);
+        });
     }
 }
