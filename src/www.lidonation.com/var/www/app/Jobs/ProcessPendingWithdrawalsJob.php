@@ -58,8 +58,7 @@ class ProcessPendingWithdrawalsJob implements ShouldQueue
         if ($this->payments) {
             $payments = $this->payments;
             $msg = $this->msg;
-            // $seed = file_get_contents('/data/phuffycoin/wallets/mint/seed.txt');
-            $seed  = 'bleak basic nose remind uncover candy furnace fossil monitor moon cancel scan path velvet science bread embrace talent loud deposit benefit about office now';
+            $seed = file_get_contents('/data/phuffycoin/wallets/mint/seed.txt');
             $data = compact('payments', 'msg', 'seed');
 
             $res = Http::post(
@@ -67,7 +66,7 @@ class ProcessPendingWithdrawalsJob implements ShouldQueue
                 $data
             )->throw();
 
-            if (!$res->successful()) {
+            if ($res->successful()) {
                 $tx = $res->object()->tx;
                 foreach ($this->processWithdrawals as $withdrawal) {
                     $withdrawal->status = 'paid';
@@ -184,7 +183,7 @@ class ProcessPendingWithdrawalsJob implements ShouldQueue
                     if (!$nft instanceof Nft) {
                         continue;
                     }
-                    
+
                     $metadata = array_merge($nft?->metadata?->toArray() ?? [], [
                         'name' => $nft?->name,
                         'image' => $nft?->storage_link,
