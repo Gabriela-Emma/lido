@@ -140,10 +140,14 @@ Route::group(
                     ->name('fullyDisbursedProposalsCount');
                 Route::get('/completedProposalsCount', [CatalystChartsController::class, 'metricCompletedProposalsCount'])
                     ->name('completedProposalsCount');
-                Route::get('/total-registered-ada-power', [CatalystChartsController::class, 'metricTotalRegisteredAdaPower'])
+                Route::get('/total-registrations-ada-power', [CatalystChartsController::class, 'metricTotalRegisteredAdaPower'])
                     ->name('totalRegisteredAdaPower');
                 Route::get('/total-registrations', [CatalystChartsController::class, 'metricTotalRegistrations'])
                     ->name('totalRegistrations');
+                Route::get('/total-delegation-registrations', [CatalystChartsController::class, 'metricTotalDelegationRegistrations'])
+                    ->name('totalDelegationRegistrations');
+                Route::get('/total-delegation-registrations-ada-power', [CatalystChartsController::class, 'metricTotalDelegationRegistrationsAdaPower'])
+                    ->name('totalDelegationRegistrationsAdaPower');
             });
 
             Route::get('/attachments/voting-powers', [CatalystAttachmentsController::class, 'votingPowersAttachemnt'])

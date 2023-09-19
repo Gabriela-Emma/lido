@@ -15,7 +15,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Fluent;
 use Inertia\Inertia;
+use Inertia\Response;
 use JetBrains\PhpStorm\ArrayShape;
+use Laravel\Scout\Builder;
 use Meilisearch\Endpoints\Indexes;
 
 class CatalystChartsController extends Controller
@@ -65,7 +67,7 @@ class CatalystChartsController extends Controller
         return null;
     }
 
-    public function metricFundedOver75KCount(Request $request)
+    public function metricFundedOver75KCount(Request $request): ?int
     {
         $this->setFilters($request);
         $this->fundedProposalsFilter = true;
@@ -106,7 +108,7 @@ class CatalystChartsController extends Controller
         }
     }
 
-    public function metricFullyDisbursedProposalsCount(Request $request)
+    public function metricFullyDisbursedProposalsCount(Request $request): ?int
     {
         $this->setFilters($request);
         $this->fundedProposalsFilter = true;
@@ -124,7 +126,7 @@ class CatalystChartsController extends Controller
         return null;
     }
 
-    public function metricCompletedProposalsCount(Request $request)
+    public function metricCompletedProposalsCount(Request $request): ?int
     {
         $this->setFilters($request);
         $this->fundedProposalsFilter = true;
@@ -138,24 +140,49 @@ class CatalystChartsController extends Controller
         return null;
     }
 
-    public function metricTotalRegisteredAdaPower(Request $request)
+    public function metricTotalRegisteredAdaPower(Request $request): float|int|null
     {
         $this->fundFilter = $request->input(CatalystExplorerQueryParams::FUNDS, 113);
         $votingPower = CatalystVotingPower::whereRelation('catalyst_snapshot', 'model_id',  $this->fundFilter)
             ->sum('voting_power');
+
         if ($votingPower && $votingPower > 0) {
             return $votingPower / 1000000;
         }
+
+        return null;
     }
 
     public function metricTotalRegistrations(Request $request)
     {
         $this->fundFilter = $request->input(CatalystExplorerQueryParams::FUNDS, 113);
         return CatalystVotingPower::whereRelation('catalyst_snapshot', 'model_id',  $this->fundFilter)
+            ->count() ?? null;
+    }
+
+    public function metricTotalDelegationRegistrationsAdaPower(Request $request): float|int|null
+    {
+        $this->fundFilter = $request->input(CatalystExplorerQueryParams::FUNDS, 113);
+        $votingPower = CatalystVotingPower::whereRelation('catalyst_snapshot', 'model_id',  113)
+            ->whereHas('delegations', operator: '>', count: 2)
+            ->sum('voting_power');
+
+        if ($votingPower && $votingPower > 0) {
+            return $votingPower / 1000000;
+        }
+
+        return null;
+    }
+
+    public function metricTotalDelegationRegistrations(Request $request)
+    {
+        $this->fundFilter = $request->input(CatalystExplorerQueryParams::FUNDS, 113);
+        return CatalystVotingPower::whereRelation('catalyst_snapshot', 'model_id',  113)
+            ->whereHas('delegations', operator: '>', count: 2)
             ->count();
     }
 
-    public function metricAdaPowerRanges(Request $request)
+    public function metricAdaPowerRanges(Request $request): Fluent
     {
         $this->setFilters($request);
 
@@ -174,7 +201,7 @@ class CatalystChartsController extends Controller
         return new Fluent($powersResults);
     }
 
-    public function index(Request $request)
+    public function index(Request $request): Response
     {
         $this->setFilters($request);
 
@@ -196,7 +223,7 @@ class CatalystChartsController extends Controller
         return Inertia::render('Charts', $props);
     }
 
-    protected function setFilters(Request $request)
+    protected function setFilters(Request $request): void
     {
         $this->fundFilter = $request->input(CatalystExplorerQueryParams::FUNDS, 113);
 
@@ -205,7 +232,7 @@ class CatalystChartsController extends Controller
             : null;
     }
 
-    protected function query($returnBuilder = false, $attrs = null, $filters = [])
+    protected function query($returnBuilder = false, $attrs = null, $filters = []): Fluent|Builder
     {
         $_options = [
             'filters' => array_merge([], $this->getUserFilters(), $filters),

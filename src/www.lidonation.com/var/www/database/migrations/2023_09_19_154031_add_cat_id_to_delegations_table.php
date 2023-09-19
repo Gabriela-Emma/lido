@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::table('delegations', function (Blueprint $table) {
             $table->text('cat_onchain_id')->after('catalyst_registration_id')->nullable();
+            $table->index('cat_onchain_id', 'cat_onchain_id_index');
         });
     }
 
@@ -27,6 +28,7 @@ return new class extends Migration
     {
         Schema::table('delegations', function (Blueprint $table) {
             $table->dropColumn('cat_onchain_id');
+            $table->dropIndex('cat_onchain_id_index');
         });
     }
 };

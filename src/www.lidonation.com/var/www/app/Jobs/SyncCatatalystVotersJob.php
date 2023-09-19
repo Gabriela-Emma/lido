@@ -12,6 +12,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Fluent;
+use Symfony\Component\Process\Process;
 
 class SyncCatatalystVotersJob implements ShouldQueue
 {
@@ -104,6 +105,13 @@ class SyncCatatalystVotersJob implements ShouldQueue
                     $newDelegation->catalyst_registration_id = $catalystRegistration->id;
                     $newDelegation->voting_pub = $voterDelegation[0];
                     $newDelegation->weight = $voterDelegation[1];
+
+                    $command = Process::fromShellCommandline(
+                        '/opt/jcli address account ' . $newDelegation->voting_pub
+                    );
+                    $command->run();
+                    $catId = str_replace(array("\r", "\n"), '', $command->getOutput());
+                    $newDelegation->cat_onchain_id = $catId;
                     $newDelegation->save();
                 });
             }

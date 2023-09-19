@@ -202,7 +202,7 @@
                             <dl class="flex flex-col justify-between h-full">
                                 <dd>
                                     <div class="text-4xl font-semibold text-white lg:text-5xl 2xltext-6xl">
-                                        Coming Soon
+                                        {{ totalDelegationRegistrationsAdaPower ?? '-' }}
                                     </div>
                                 </dd>
                                 <dt class="mt-3 text-lg font-medium text-gray-200 truncate">
@@ -214,7 +214,7 @@
                             <dl class="flex flex-col justify-between h-full">
                                 <dd>
                                     <div class="text-4xl font-semibold text-white lg:text-5xl 2xltext-6xl">
-                                        Coming Soon
+                                        {{totalDelegationRegistrations ?? '-'}}
                                     </div>
                                 </dd>
                                 <dt class="mt-3 text-lg font-medium text-gray-200 truncate">
@@ -429,6 +429,8 @@ let completedProposalsCount = ref<number>(null);
 let challengesRef = ref<Challenge[]>(props.challenges);
 let totalRegisteredAdaPower = ref<number>(null);
 let totalRegistrations = ref<number>(0);
+let totalDelegationRegistrationsAdaPower = ref<number>(null);
+let totalDelegationRegistrations = ref<number>(0);
 
 const baseUrl = usePage().props.base_url;
 
@@ -678,16 +680,31 @@ function getMetrics() {
             console.error(error);
         });
 
-    // get total ada power
+    // get total registrations
     axios.get(route('catalystExplorer.metrics.totalRegisteredAdaPower'), { params })
         .then((res) => totalRegisteredAdaPower.value = res?.data)
         .catch((error) => {
             console.error(error);
         });
 
-    // get total ada power
+    // get total registrations ada power
     axios.get(route('catalystExplorer.metrics.totalRegistrations'), { params })
         .then((res) => totalRegistrations.value = res?.data)
+        .catch((error) => {
+            console.error(error);
+        });
+
+
+    // get total delegation registrations
+    axios.get(route('catalystExplorer.metrics.totalDelegationRegistrations'), { params })
+        .then((res) => totalDelegationRegistrationsAdaPower.value = res?.data)
+        .catch((error) => {
+            console.error(error);
+        });
+
+    // get total delegation registrations ada power
+    axios.get(route('catalystExplorer.metrics.totalDelegationRegistrationsAdaPower'), { params })
+        .then((res) => totalDelegationRegistrations.value = res?.data)
         .catch((error) => {
             console.error(error);
         });
