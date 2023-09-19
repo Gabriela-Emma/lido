@@ -10,8 +10,10 @@
             <div class="relative flex items-center gap-4 text-xl" v-if="proposals?.length < 1">
                 <p>That's all we know.</p>
                 <span>
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 fill-red-700">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="w-6 h-6 fill-red-700">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
                     </svg>
                 </span>
             </div>
@@ -94,7 +96,7 @@ import Group from '../../models/group';
 import axios from 'axios';
 import route from 'ziggy-js';
 import { inject } from "vue";
-import {VARIABLES} from "../../models/variables";
+import { VARIABLES } from "../../models/variables";
 
 const $utils: any = inject('$utils');
 
@@ -121,7 +123,7 @@ const getTopProposals = async () => {
         await axios.get(
             route(
                 'catalystExplorer.topFundedProposals'),
-            { params: {[VARIABLES.FUNDS]: props.fund} }
+            { params: { [VARIABLES.FUNDS]: props.fund } }
         )
     ).data;
 }

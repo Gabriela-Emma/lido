@@ -380,11 +380,16 @@ class CatalystChartsController extends Controller
 
     public function getTopFundedTeams(Request $request)
     {
+        $param = $request->input(CatalystExplorerQueryParams::FUNDS, null);
+
         return CatalystUser::with('groups')
             ->whereHas(
                 'proposals',
                 fn ($q) => $q->whereNotNull('funded_at')
-                    ->whereRelation('fund.parent', 'id', $request->input(CatalystExplorerQueryParams::FUNDS, 113))
+                    ->when(
+                        $param,
+                        fn ($q, $param) => $q->whereRelation('fund.parent', 'id', $param)
+                    )
             )->withSum([
                 'proposals as amount_requested' => function ($query) {
                     $query->whereNotNull('funded_at');
