@@ -260,8 +260,8 @@
                     </div>
                 </div>
 
-                <div class="relative w-full col-span-1 row-span-6 md:col-span-5 round-sm flex justify-between gap-4">
-                    <TopFundedTeams :fund="filters?.fundId"/>
+                <div class="relative flex justify-between w-full col-span-1 row-span-6 gap-4 md:col-span-5 round-sm">
+                    <TopFundedTeams :fundId="filters?.fundId"/>
                     <TopFundedProposals :fund="filters?.fundId"/>
                 </div>
                 

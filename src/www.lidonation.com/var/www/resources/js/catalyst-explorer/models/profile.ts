@@ -11,6 +11,7 @@ export default interface Profile {
     discord?:string;
     telegram?:string;
     profile_photo:string
+    profile_photo_url:string
     role?:string; 
     admin?:boolean;
     title?:string;

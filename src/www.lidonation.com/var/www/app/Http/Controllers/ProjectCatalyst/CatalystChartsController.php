@@ -382,19 +382,56 @@ class CatalystChartsController extends Controller
     {
         $param = $request->input(CatalystExplorerQueryParams::FUNDS, null);
 
-        return CatalystUser::with('groups')
+        $users = CatalystUser::with('groups')
             ->whereHas(
                 'proposals',
-                fn ($q) => $q->whereNotNull('funded_at')
-                    ->when(
+                function ($q) use ($param) {
+                    $q->whereNotNull('funded_at')
+                        ->when(
+                            $param,
+                            function ($q, $param) {
+                                $q->whereRelation('fund.parent', 'id', $param);
+                            }
+                        );
+                }
+            )
+            ->withSum([
+                'proposals as amount_requested' => function ($query) use ($param) {
+                    $query->whereNotNull('funded_at')->when(
                         $param,
-                        fn ($q, $param) => $q->whereRelation('fund.parent', 'id', $param)
-                    )
-            )->withSum([
-                'proposals as amount_requested' => function ($query) {
-                    $query->whereNotNull('funded_at');
+                        function ($query, $param) {
+                            $query->whereRelation('fund.parent', 'id', $param);
+                        }
+                    );
                 },
-            ], 'amount_requested')->orderBy('amount_requested', 'desc')->limit(15)->get();
+            ], 'amount_requested')
+            ->orderBy('amount_requested', 'desc')
+            ->get();
+
+        $groupedUsers = $users->filter(function ($user) {
+            return !is_null($user->groups->first());
+        })->groupBy(function ($user) {
+            return $user->groups->first()->id;
+        });
+
+        $groupedUsers = $groupedUsers->map(function ($group) {
+            return $group->sortByDesc('amount_requested')->values();
+        });
+
+        $ungroupedUsers = $groupedUsers->map(function ($group) {
+            return $group->first();
+        });
+
+        $finalUsers = $ungroupedUsers->concat($users->filter(function ($user) {
+            return is_null($user->groups->first());
+        }))->sortByDesc('amount_requested')->values()->all();
+
+        $result = [
+            'fund' => Fund::find($param),
+            'proposers' => array_slice($finalUsers, 0, 15),
+        ];
+
+        return $result;
     }
 
     protected function attachmentLink(Request $request)
