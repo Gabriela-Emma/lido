@@ -3,17 +3,18 @@
 namespace App\Http\Controllers\ProjectCatalyst;
 
 use App\Models\Fund;
+use App\Models\Meta;
 use Inertia\Inertia;
+use Inertia\Response;
 use App\Models\Proposal;
+use Laravel\Scout\Builder;
 use App\Models\CatalystUser;
 use Illuminate\Http\Request;
 use App\Models\CatalystGroup;
 use Illuminate\Support\Fluent;
 use App\Models\CatalystSnapshot;
 use Illuminate\Support\Facades\DB;
-use Inertia\Response;
 use JetBrains\PhpStorm\ArrayShape;
-use Laravel\Scout\Builder;
 use Meilisearch\Endpoints\Indexes;
 use App\Models\CatalystVotingPower;
 use App\Http\Controllers\Controller;
@@ -158,7 +159,6 @@ class CatalystChartsController extends Controller
         $this->fundFilter = $request->input(CatalystExplorerQueryParams::FUNDS, 113);
 
         return CatalystVotingPower::whereRelation('catalyst_snapshot', 'model_id', $this->fundFilter)
-            ->count() ?? null;
     }
 
     public function metricTotalDelegationRegistrationsAdaPower(Request $request): float|int|null
