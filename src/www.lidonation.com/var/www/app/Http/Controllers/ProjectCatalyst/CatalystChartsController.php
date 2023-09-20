@@ -158,7 +158,7 @@ class CatalystChartsController extends Controller
     {
         $this->fundFilter = $request->input(CatalystExplorerQueryParams::FUNDS, 113);
 
-        return CatalystVotingPower::whereRelation('catalyst_snapshot', 'model_id', $this->fundFilter)
+        return CatalystVotingPower::whereRelation('catalyst_snapshot', 'model_id', $this->fundFilter);
     }
 
     public function metricTotalDelegationRegistrationsAdaPower(Request $request): float|int|null
