@@ -403,7 +403,7 @@
 <script lang="ts" setup>
 import Multiselect from '@vueform/multiselect';
 import { router, usePage } from '@inertiajs/vue3';
-import { watch, ref } from 'vue';
+import { watch, ref, defineAsyncComponent } from 'vue';
 import AdaPowerRangesPie from "../modules/charts/AdaPowerRangesPie.vue";
 import Attachment from '../modules/charts/Attachment.vue';
 import { VARIABLES } from "../models/variables";
@@ -417,8 +417,6 @@ import { ChevronUpDownIcon } from '@heroicons/vue/20/solid';
 import Search from '../Shared/Components/Search.vue';
 import ChallengePicker from '../modules/funds/ChallengePicker.vue';
 import Challenge from '../models/challenge';
-import TopFundedTeams from "../modules/charts/TopFundedTeams.vue"
-import TopFundedProposals from '../modules/charts/TopFundedProposals.vue';
 
 
 const props = withDefaults(
@@ -430,6 +428,10 @@ const props = withDefaults(
         },
         locale: string,
     }>(), {});
+
+
+const TopFundedTeams = defineAsyncComponent(() => import('../modules/charts/TopFundedTeams.vue'));
+const TopFundedProposals = defineAsyncComponent(() => import('../modules/charts/TopFundedProposals.vue'));
 
 let adaPowerRanges = ref<{ 'key': string, 'count': number, 'total': number }[]>([]);
 let largestFundedProposalObject = ref<Proposal>(null);

@@ -401,22 +401,33 @@ class CatalystChartsController extends Controller
 
     public function getTopFundedProposals(Request $request)
     {
-        return Proposal::with(['users', 'groups'])->whereRelation('fund.parent', 'id', $request->input(CatalystExplorerQueryParams::FUNDS, 113))
-            ->where(['proposals.type' => 'proposal'])
-            ->whereNotNull('funded_at')
-            ->orderByDesc('amount_requested')
-            ->limit(15)->get();
+        $query = Proposal::with(['users', 'groups'])
+        ->whereRelation('fund.parent', 'id', $request->input(CatalystExplorerQueryParams::FUNDS, 113))
+        ->where(['proposals.type' => 'proposal'])
+        ->orderByDesc('amount_requested')
+        ->when($request->input(CatalystExplorerQueryParams::CHART_FUND_STATUS) == 1,
+        function($query){
+            $query->whereNotNull('funded_at');
+        }
+        )
+        ->limit(15);
+
+        return $query->get();
     }
 
     public function getTopFundedTeams(Request $request)
     {
         $param = $request->input(CatalystExplorerQueryParams::FUNDS, null);
+        $fundedStatus = $request->input(CatalystExplorerQueryParams::CHART_FUND_STATUS);
 
         $users = CatalystUser::with('groups')
             ->whereHas(
                 'proposals',
-                function ($q) use ($param) {
-                    $q->whereNotNull('funded_at')
+                function ($q) use ($param, $fundedStatus) {
+                    $q->when($fundedStatus == 1,
+                        function($q){
+                            $q->whereNotNull('funded_at');
+                        })
                         ->when(
                             $param,
                             function ($q, $param) {
@@ -426,8 +437,11 @@ class CatalystChartsController extends Controller
                 }
             )
             ->withSum([
-                'proposals as amount_requested' => function ($query) use ($param) {
-                    $query->whereNotNull('funded_at')->when(
+                'proposals as amount_requested' => function ($query) use ($param, $fundedStatus) {
+                    $query->when($fundedStatus == 1,
+                    function($q){
+                        $q->whereNotNull('funded_at');
+                    })->when(
                         $param,
                         function ($query, $param) {
                             $query->whereRelation('fund.parent', 'id', $param);
