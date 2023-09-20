@@ -28,5 +28,6 @@ export enum VARIABLES {
     TAGS = 'ts',
     FILTER_GROUP = 'fg',
     CURRENT_FILTER_GROUPS = 'fgs',
-    FILTER_GROUPS_PER_PAGE = 'pfgs'
+    FILTER_GROUPS_PER_PAGE = 'pfgs',
+    CHART_FUND_STATUS = 'cfs'
 }

@@ -1,9 +1,12 @@
 <template>
     <div class="p-3 bg-white h-full">
-        <div>
-            <h2 class="mb-0 xl:text-3xl">Top Funded Proposals</h2>
-            <p v-if="proposals?.length > 0">Across {{ proposals?.[0]?.fund?.parent?.label }}</p>
-            <div class="relative text-xl flex gap-4 items-center" v-if="proposals?.length < 1">
+        <div class="bg-primary-20 p-3">
+            <div class="flex flex-col md:flex-row md:justify-between">
+                <h2 class="mb-0 xl:text-3xl block">{{widgetLabel}} Proposals</h2>
+                <FundingTypeSelectorVue/>
+            </div>
+            <p v-if="!loadingProposals && !emptyDataProposals">Across {{ proposals?.[0]?.fund?.parent?.label }}</p>
+            <div class="relative text-xl flex gap-4 items-center" v-if="!loadingProposals && emptyDataProposals">
                 <p>That's all we know.</p>
                 <span>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 fill-red-700">
@@ -12,7 +15,15 @@
                 </span>
             </div>
         </div>
-        <div class="relative m-2" v-if="proposals?.length > 0">
+        <div class="relative m-2" v-if="loadingProposals">
+                <ul
+                    role="list"
+                    class="divide-y divide-gray-200 max-h-[28rem] overflow-y-auto"
+                >
+                    <li v-for="index in 6" :key="index"><PulseLoading/></li>
+                </ul>
+        </div>
+        <div class="relative m-2" v-if="!loadingProposals && !emptyDataProposals">
             <ul
                 role="list"
                 class="divide-y divide-gray-200 max-h-[28rem] overflow-y-auto"
@@ -79,12 +90,16 @@
     </div>
 </template>
 <script lang="ts" setup>
-import { Ref, ref, watch } from "vue";
+import { Ref, ref, watch, onMounted, computed } from "vue";
 import Proposal from "../../models/proposal";
 import axios from "axios";
 import route from "ziggy-js";
 import { VARIABLES } from "../../models/variables";
 import ProposalAuthors from "../proposals/partials/ProposalAuthors.vue";
+import PulseLoading from "./PulseLoading.vue";
+import {useChartsWidgetStore} from "../../stores/chart-widgets-store";
+import { storeToRefs } from "pinia";
+import FundingTypeSelectorVue from "./FundingTypeSelector.vue";
 
 const props = withDefaults(
     defineProps<{
@@ -93,22 +108,29 @@ const props = withDefaults(
     {}
 );
 
-const proposals: Ref<Proposal[]> = ref(null);
+const chartWidgets = useChartsWidgetStore();
+chartWidgets.getTopProposals(props.fund);
+const {proposals, loadingProposals, emptyDataProposals, chartsProposalsOptions, selectedValue} = storeToRefs(chartWidgets);
 
-const getTopProposals = async () => {
-    proposals.value = (
-        await axios.get(route("catalystExplorer.topFundedProposals"), {
-            params: { [VARIABLES.FUNDS]: props.fund },
-        })
-    ).data;
-};
+
+onMounted(() => {
+    chartWidgets.updateSelectedFundId(props.fund);
+})
+
+const widgetLabel = computed(() => {
+    const selectedOption = chartsProposalsOptions.value.find(
+        option => option.value === selectedValue.value
+    );
+    return selectedOption ? selectedOption.label : '';
+})
+
 
 watch(
     () => props.fund,
     () => {
-        getTopProposals();
+        chartWidgets.updateSelectedFundId(props.fund);
+        chartWidgets.getTopProposals(props.fund);
     }
 );
 
-getTopProposals();
 </script>

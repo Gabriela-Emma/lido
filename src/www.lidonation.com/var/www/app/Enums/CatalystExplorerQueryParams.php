@@ -57,4 +57,6 @@ enum CatalystExplorerQueryParams: string
     const TAGS = 'ts';
 
     const CATEGORIES = 'cts';
+
+    const CHART_FUND_STATUS = 'cfs';
 }
