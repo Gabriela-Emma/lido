@@ -4,10 +4,10 @@
             <h2 class="mb-0 xl:text-3xl">
                 Top Funded Teams
             </h2>
-            <p v-if="fund">
+            <p v-if="proposers?.length">
                 Across {{ fund?.label }}
             </p>
-            <p v-else>
+            <p v-if="proposers?.length && !fund">
                 Across all funds
             </p>
             <div class="relative flex items-center gap-4 text-xl" v-if="proposers?.length < 1">
