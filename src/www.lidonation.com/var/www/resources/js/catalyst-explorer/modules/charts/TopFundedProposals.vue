@@ -1,5 +1,5 @@
 <template>
-    <div class="p-3 bg-white lg:w-1/2">
+    <div class="p-3 bg-white h-full">
         <div>
             <h2 class="mb-0 xl:text-3xl">Top Funded Proposals</h2>
             <p v-if="proposals?.length > 0">Across {{ proposals?.[0]?.fund?.parent?.label }}</p>
@@ -30,11 +30,10 @@
                                 >
                                     <div class="flex flex-col">
                                         <p
-                                            class="text-xl font-medium truncate text-gray-600"
-                                        >
+                                            class="text-xl font-medium truncate text-gray-600">
                                             {{ proposal.title }}
                                         </p>
-                                        <ProposalAuthors :proposal="proposal"/>
+                                        <ProposalAuthors :size="6" :proposal="proposal" />
                                     </div>
                                     <div class="hidden md:block">
                                         <div>

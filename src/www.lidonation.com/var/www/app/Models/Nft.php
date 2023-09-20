@@ -120,7 +120,20 @@ class Nft extends Model implements HasLink, HasMedia
     public function link(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => '' 
+            get: fn ($value) => ''
+        );
+    }
+
+    public function topic(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                if ($this->model instanceof LearningTopic) {
+                    return $this->model;
+                } else {
+                    return null;
+                }
+            }
         );
     }
 

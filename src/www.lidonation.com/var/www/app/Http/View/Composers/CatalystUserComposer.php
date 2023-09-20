@@ -49,7 +49,6 @@ class CatalystUserComposer
         //            $perPage = 16, $columns = ['*'], $pageName = 'proposals'
         //        );
 
-
         $discussions = $this->catalystUser?->proposals
             ->map(
                 fn ($p) => $p->discussions

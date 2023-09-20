@@ -4,6 +4,7 @@ namespace App\Nova;
 
 use App\Models\BookmarkCollection;
 use Illuminate\Http\Request;
+use Laravel\Nova\Actions\ExportAsCsv;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Color;
 use Laravel\Nova\Fields\DateTime;
@@ -12,7 +13,6 @@ use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Markdown;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Laravel\Nova\Actions\ExportAsCsv;
 
 class BookmarkCollections extends Resource
 {

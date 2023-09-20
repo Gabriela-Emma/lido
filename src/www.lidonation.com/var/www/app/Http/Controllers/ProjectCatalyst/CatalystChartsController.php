@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\ProjectCatalyst;
 
 use App\Models\Fund;
-use App\Models\Meta;
 use Inertia\Inertia;
 use App\Models\Proposal;
 use App\Models\CatalystUser;
@@ -12,7 +11,9 @@ use App\Models\CatalystGroup;
 use Illuminate\Support\Fluent;
 use App\Models\CatalystSnapshot;
 use Illuminate\Support\Facades\DB;
+use Inertia\Response;
 use JetBrains\PhpStorm\ArrayShape;
+use Laravel\Scout\Builder;
 use Meilisearch\Endpoints\Indexes;
 use App\Models\CatalystVotingPower;
 use App\Http\Controllers\Controller;
@@ -57,7 +58,7 @@ class CatalystChartsController extends Controller
         $this->fundedProposalsFilter = true;
         $this->sortBy = 'amount_requested';
         $this->sortOrder = 'desc';
-        $res = $this->query(false, ['link', 'amount_requested'])->raw();
+        $res = $this->query(false, ['link', 'amount_requested'], ['type = proposal'])->raw();
 
         if (isset($res['hits'])) {
             return collect($res['hits'])->first();
@@ -66,7 +67,7 @@ class CatalystChartsController extends Controller
         return null;
     }
 
-    public function metricFundedOver75KCount(Request $request)
+    public function metricFundedOver75KCount(Request $request): ?int
     {
         $this->setFilters($request);
         $this->fundedProposalsFilter = true;
@@ -107,7 +108,7 @@ class CatalystChartsController extends Controller
         }
     }
 
-    public function metricFullyDisbursedProposalsCount(Request $request)
+    public function metricFullyDisbursedProposalsCount(Request $request): ?int
     {
         $this->setFilters($request);
         $this->fundedProposalsFilter = true;
@@ -125,7 +126,7 @@ class CatalystChartsController extends Controller
         return null;
     }
 
-    public function metricCompletedProposalsCount(Request $request)
+    public function metricCompletedProposalsCount(Request $request): ?int
     {
         $this->setFilters($request);
         $this->fundedProposalsFilter = true;
@@ -139,24 +140,52 @@ class CatalystChartsController extends Controller
         return null;
     }
 
-    public function metricTotalRegisteredAdaPower(Request $request)
+    public function metricTotalRegisteredAdaPower(Request $request): float|int|null
     {
         $this->fundFilter = $request->input(CatalystExplorerQueryParams::FUNDS, 113);
-        $votingPower = CatalystVotingPower::whereRelation('catalyst_snapshot', 'model_id',  $this->fundFilter)
+        $votingPower = CatalystVotingPower::whereRelation('catalyst_snapshot', 'model_id', $this->fundFilter)
             ->sum('voting_power');
+
         if ($votingPower && $votingPower > 0) {
             return $votingPower / 1000000;
         }
+
+        return null;
     }
 
     public function metricTotalRegistrations(Request $request)
     {
         $this->fundFilter = $request->input(CatalystExplorerQueryParams::FUNDS, 113);
-        return CatalystVotingPower::whereRelation('catalyst_snapshot', 'model_id',  $this->fundFilter)
+
+        return CatalystVotingPower::whereRelation('catalyst_snapshot', 'model_id', $this->fundFilter)
+            ->count() ?? null;
+    }
+
+    public function metricTotalDelegationRegistrationsAdaPower(Request $request): float|int|null
+    {
+        $this->fundFilter = $request->input(CatalystExplorerQueryParams::FUNDS, 113);
+        $votingPower = CatalystVotingPower::whereHas('delegations', operator: '>', count: 1)
+            ->whereHas('catalyst_snapshot', fn ($q) => $q->where('model_id', $this->fundFilter))
+            ->sum('voting_power');
+
+        if ($votingPower && $votingPower > 0) {
+            return $votingPower / 1000000;
+        }
+
+        return null;
+    }
+
+    public function metricTotalDelegationRegistrations(Request $request)
+    {
+
+        $this->fundFilter = $request->input(CatalystExplorerQueryParams::FUNDS, 113);
+
+        return CatalystVotingPower::whereHas('delegations', operator: '>', count: 1)
+            ->whereHas('catalyst_snapshot', fn ($q) => $q->where('model_id', $this->fundFilter))
             ->count();
     }
 
-    public function metricAdaPowerRanges(Request $request)
+    public function metricAdaPowerRanges(Request $request): Fluent
     {
         $this->setFilters($request);
 
@@ -175,7 +204,7 @@ class CatalystChartsController extends Controller
         return new Fluent($powersResults);
     }
 
-    public function index(Request $request)
+    public function index(Request $request): Response
     {
         $this->setFilters($request);
 
@@ -197,16 +226,16 @@ class CatalystChartsController extends Controller
         return Inertia::render('Charts', $props);
     }
 
-    protected function setFilters(Request $request)
+    protected function setFilters(Request $request): void
     {
         $this->fundFilter = $request->input(CatalystExplorerQueryParams::FUNDS, 113);
 
-        $this->fund = !is_null($this->fundFilter)
+        $this->fund = ! is_null($this->fundFilter)
             ? Fund::where('id', $this->fundFilter)->first()
             : null;
     }
 
-    protected function query($returnBuilder = false, $attrs = null, $filters = [])
+    protected function query($returnBuilder = false, $attrs = null, $filters = []): Fluent|Builder
     {
         $_options = [
             'filters' => array_merge([], $this->getUserFilters(), $filters),
@@ -281,8 +310,8 @@ class CatalystChartsController extends Controller
         $fundIds = $this->fund
             ? [$this->fund?->id]
             : CatalystSnapshot::query()->where('model_type', Fund::class)
-            ->pluck('model_id')
-            ->toArray();
+                ->pluck('model_id')
+                ->toArray();
 
         $snapshotIds = CatalystSnapshot::whereIn('model_id', $fundIds)
             ->where('model_type', Fund::class)
@@ -324,7 +353,7 @@ class CatalystChartsController extends Controller
         $adaPowerRangesFormattedArray = [];
         foreach ($adaPowerRangesCollection as $range => $value) {
             $rangeArray = explode('-', $range);
-            $finalRange = $rangeArray[0] . (count($rangeArray) == 3 ? ' - ' . $rangeArray[1] : '');
+            $finalRange = $rangeArray[0].(count($rangeArray) == 3 ? ' - '.$rangeArray[1] : '');
 
             $adaPowerRangesFormattedArray[$finalRange] = [
                 $value['0'],

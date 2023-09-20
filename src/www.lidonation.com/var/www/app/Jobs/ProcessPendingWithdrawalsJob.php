@@ -2,6 +2,8 @@
 
 namespace App\Jobs;
 
+use App\Models\LearningLesson;
+use App\Models\LearningTopic;
 use App\Models\Nft;
 use App\Models\Tx;
 use App\Models\Withdrawal;
@@ -36,7 +38,7 @@ class ProcessPendingWithdrawalsJob implements ShouldQueue
                 Bus::batch([
                     function () use ($jobs) {
                         collect($jobs)->each(function ($job) {
-                            dispatch(new self($job['payments'], $job['msg'], $job['processWithdrawals']))->delay(now()->addminutes(3));
+                            dispatch(new self($job['payments'], $job['msg'], $job['processWithdrawals']))->delay(now()->addMinutes(3));
                         });
                     },
                 ])->dispatch();
@@ -96,7 +98,6 @@ class ProcessPendingWithdrawalsJob implements ShouldQueue
                             $newTx->metadata = $nft->metadata;
                             $newTx->minted_at = now();
                             $newTx->save();
-
                         }
                     });
 
@@ -104,7 +105,6 @@ class ProcessPendingWithdrawalsJob implements ShouldQueue
                 }
             }
         }
-
     }
 
     protected function getBatchPaymentsArr()
@@ -148,7 +148,6 @@ class ProcessPendingWithdrawalsJob implements ShouldQueue
         }
 
         return $withdrawals;
-
     }
 
     protected function getPayments($withdrawals)
@@ -167,9 +166,23 @@ class ProcessPendingWithdrawalsJob implements ShouldQueue
 
             if ($nftRewards->count() != 0) {
                 foreach ($nftRewards as $nftReward) {
+
+                    $rewardTopic = LearningLesson::find($nftReward->model_id)->topic->id;
+
+                    if (! $rewardTopic) {
+                        continue;
+                    }
+
                     $nft = Nft::where('user_id', $nftReward->user_id)
-                        ->where('policy', $nftReward->asset_type)
+                        ->where([
+                            'model_type' => LearningTopic::class,
+                            'model_id' => $rewardTopic,
+                        ])
                         ->first();
+
+                    if (! $nft instanceof Nft) {
+                        continue;
+                    }
 
                     $metadata = array_merge($nft?->metadata?->toArray() ?? [], [
                         'name' => $nft?->name,

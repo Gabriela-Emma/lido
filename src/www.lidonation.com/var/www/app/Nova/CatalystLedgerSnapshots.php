@@ -5,13 +5,13 @@ namespace App\Nova;
 use App\Models\CatalystLedgerSnapshot;
 use App\Nova\Actions\CatalystLedgerSnapshotDownload;
 use Illuminate\Http\Request;
+use Laravel\Nova\Actions\ExportAsCsv;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Laravel\Nova\Actions\ExportAsCsv;
 
 class CatalystLedgerSnapshots extends Resource
 {

@@ -5,10 +5,10 @@ namespace App\Nova;
 use App\Models\Setting;
 use Illuminate\Http\Request;
 use JetBrains\PhpStorm\Pure;
+use Laravel\Nova\Actions\ExportAsCsv;
 use Laravel\Nova\Fields\Code;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Actions\ExportAsCsv;
 
 class Settings extends Resource
 {

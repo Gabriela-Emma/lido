@@ -376,3 +376,23 @@ round(3.27)
 round(3.47)
 round(3.57)
 exit
+$command = \Symfony\Component\Process\Process::fromShellCommandline(
+  '/opt/jcli address account ' . Delegation::first()?->voting_pub
+);$command->run();
+$catId = $command->getOutput();
+dd($catId);
+$command = \Symfony\Component\Process\Process::fromShellCommandline(
+  '/opt/jcli address account ' . \App\Models\Delegation::first()?->voting_pub
+);$command->run();
+$catId = $command->getOutput();
+dd($catId);
+\App\Models\Delegation::cursor()->each(function($delegation){
+  $command = \Symfony\Component\Process\Process::fromShellCommandline(
+    '/opt/jcli address account ' . $delegation->voting_pub
+  );
+  $command->run();
+  $catId = str_replace(array("\r", "\n"), '', $command->getOutput());
+  $delegation->cat_onchain_id = $catId;
+  $delegation->save();  
+});
+exit

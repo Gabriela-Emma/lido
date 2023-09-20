@@ -3,8 +3,8 @@
 namespace App\Nova;
 
 use App\Nova\Actions\fetchIohkBlog;
-use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Actions\ExportAsCsv;
+use Laravel\Nova\Http\Requests\NovaRequest;
 
 class ExternalPost extends Articles
 {

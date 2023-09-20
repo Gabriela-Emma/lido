@@ -6,12 +6,12 @@ use App\Models\MintTx;
 use App\Nova\Actions\AddMetaData;
 use App\Nova\Actions\EditMetaData;
 use Illuminate\Http\Request;
+use Laravel\Nova\Actions\ExportAsCsv;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Actions\ExportAsCsv;
 
 class MintTxs extends Resource
 {

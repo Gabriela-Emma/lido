@@ -6,13 +6,13 @@ use App\Models\TwitterAttendance;
 use App\Nova\Actions\AddMetaData;
 use App\Nova\Actions\EditMetaData;
 use Illuminate\Support\Str;
+use Laravel\Nova\Actions\ExportAsCsv;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
-use Laravel\Nova\Actions\ExportAsCsv;
 
 class TwitterAttendances extends Resource
 {
