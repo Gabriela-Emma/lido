@@ -1,10 +1,10 @@
 <template>
-    <div class="p-3 bg-whiten h-full">
+    <div class="h-full p-3 bg-whiten">
         <div>
             <h2 class="mb-0 xl:text-3xl">
                 Top Funded Teams
             </h2>
-            <p v-if="proposers?.length">
+            <p v-if="proposers?.length && fund">
                 Across {{ fund?.label }}
             </p>
             <p v-if="proposers?.length && !fund">
