@@ -16,4 +16,6 @@ export default interface Profile {
     admin?:boolean;
     title?:string;
     wallets?:Wallet[];
+    // proposers
+    amount_requested?:string
 }
