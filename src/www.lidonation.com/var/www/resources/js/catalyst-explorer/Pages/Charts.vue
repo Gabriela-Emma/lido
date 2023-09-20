@@ -235,7 +235,7 @@
                                     </div>
                                 </dd>
                                 <dt class="mt-3 text-lg font-medium truncate">
-                                    Total Registrations
+                                    Total Valid Registrations
                                 </dt>
                             </dl>
                         </div>
