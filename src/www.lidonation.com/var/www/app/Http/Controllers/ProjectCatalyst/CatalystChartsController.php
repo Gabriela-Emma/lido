@@ -2,22 +2,24 @@
 
 namespace App\Http\Controllers\ProjectCatalyst;
 
-use App\Enums\CatalystExplorerQueryParams;
-use App\Http\Controllers\Controller;
-use App\Http\Resources\FundResource;
-use App\Models\CatalystSnapshot;
-use App\Models\CatalystUser;
-use App\Models\CatalystVotingPower;
 use App\Models\Fund;
-use App\Models\Proposal;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Fluent;
+use App\Models\Meta;
 use Inertia\Inertia;
 use Inertia\Response;
-use JetBrains\PhpStorm\ArrayShape;
+use App\Models\Proposal;
 use Laravel\Scout\Builder;
+use App\Models\CatalystUser;
+use Illuminate\Http\Request;
+use App\Models\CatalystGroup;
+use Illuminate\Support\Fluent;
+use App\Models\CatalystSnapshot;
+use Illuminate\Support\Facades\DB;
+use JetBrains\PhpStorm\ArrayShape;
 use Meilisearch\Endpoints\Indexes;
+use App\Models\CatalystVotingPower;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\FundResource;
+use App\Enums\CatalystExplorerQueryParams;
 
 class CatalystChartsController extends Controller
 {
@@ -156,8 +158,7 @@ class CatalystChartsController extends Controller
     {
         $this->fundFilter = $request->input(CatalystExplorerQueryParams::FUNDS, 113);
 
-        return CatalystVotingPower::whereRelation('catalyst_snapshot', 'model_id', $this->fundFilter)
-            ->count() ?? null;
+        return CatalystVotingPower::whereRelation('catalyst_snapshot', 'model_id', $this->fundFilter);
     }
 
     public function metricTotalDelegationRegistrationsAdaPower(Request $request): float|int|null
@@ -404,5 +405,79 @@ class CatalystChartsController extends Controller
             ->whereNotNull('funded_at')
             ->orderByDesc('amount_requested')
             ->limit(15)->get();
+    }
+
+    public function getTopFundedTeams(Request $request)
+    {
+        $param = $request->input(CatalystExplorerQueryParams::FUNDS, null);
+
+        $users = CatalystUser::with('groups')
+            ->whereHas(
+                'proposals',
+                function ($q) use ($param) {
+                    $q->whereNotNull('funded_at')
+                        ->when(
+                            $param,
+                            function ($q, $param) {
+                                $q->whereRelation('fund.parent', 'id', $param);
+                            }
+                        );
+                }
+            )
+            ->withSum([
+                'proposals as amount_requested' => function ($query) use ($param) {
+                    $query->whereNotNull('funded_at')->when(
+                        $param,
+                        function ($query, $param) {
+                            $query->whereRelation('fund.parent', 'id', $param);
+                        }
+                    );
+                },
+            ], 'amount_requested')
+            ->orderBy('amount_requested', 'desc')
+            ->get();
+
+        $groupedUsers = $users->filter(function ($user) {
+            return !is_null($user->groups->first());
+        })->groupBy(function ($user) {
+            return $user->groups->first()->id;
+        });
+
+        $groupedUsers = $groupedUsers->map(function ($group) {
+            return $group->sortByDesc('amount_requested')->values();
+        });
+
+        $ungroupedUsers = $groupedUsers->map(function ($group) {
+            return $group->first();
+        });
+
+        $finalUsers = $ungroupedUsers->concat($users->filter(function ($user) {
+            return is_null($user->groups->first());
+        }))->sortByDesc('amount_requested')->values()->all();
+
+        $result = [
+            'fund' => Fund::find($param),
+            'proposers' => array_slice($finalUsers, 0, 15),
+        ];
+
+        return $result;
+    }
+
+    protected function attachmentLink(Request $request)
+    {
+        $snapshot = CatalystSnapshot::where('model_type', Fund::class)
+            ->where('model_id', $request->input('fs'))
+            ->first();
+
+        $link = Meta::where('model_type', CatalystSnapshot::class)
+            ->where('model_id', $snapshot->id)
+            ->where('key', 'snapshot_file_path')
+            ->first();
+
+        if (!$link) {
+            return null;
+        }
+
+        return '/storage/' . $link?->content;
     }
 }
