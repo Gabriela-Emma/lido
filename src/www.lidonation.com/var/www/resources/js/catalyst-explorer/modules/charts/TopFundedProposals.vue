@@ -18,15 +18,15 @@
         <div class="relative m-2" v-if="loadingProposals">
                 <ul
                     role="list"
-                    class="divide-y divide-gray-200 max-h-[28rem] overflow-y-auto"
+                    class="divide-y divide-gray-200 max-h-[39rem] overflow-y-auto"
                 >
-                    <li v-for="index in 6" :key="index"><PulseLoading/></li>
+                    <li v-for="index in 8" :key="index"><PulseLoading/></li>
                 </ul>
         </div>
         <div class="relative m-2" v-if="!loadingProposals && !emptyDataProposals">
             <ul
                 role="list"
-                class="divide-y divide-gray-200 max-h-[28rem] overflow-y-auto"
+                class="divide-y divide-gray-200 max-h-[39rem] overflow-y-auto"
             >
                 <li v-for="proposal in proposals" v-if="proposals">
                     <a
@@ -54,7 +54,8 @@
                                                 {{
                                                     $filters.currency(
                                                         proposal.amount_requested,
-                                                        proposal.currency
+                                                        proposal.currency,
+                                                        'en-US', 2
                                                     )
                                                 }}
                                             </p>
