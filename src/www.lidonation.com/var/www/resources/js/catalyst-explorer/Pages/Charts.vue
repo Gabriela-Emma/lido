@@ -89,24 +89,6 @@
 
                 <!-- Live Tally -->
                 <LiveTally :challenges="challenges" :fund-id="selectedFundRef" />
-                <!-- <div class="relative w-full col-span-1 row-span-6 p-3 bg-white md:col-span-3 round-sm">
-                    <div class="relative flex flex-col justify-start h-full">
-                        <div class="flex flex-wrap items-start justify-between">
-                            <div class="text-teal-600">
-                                <h2 class="mb-0 xl:text-3xl">
-                                    Vote Tallies
-                                </h2>
-                                <p>
-                                    Votes cast as of <timeago :datetime="tallyUpdatedAt" />
-                                </p>
-                            </div>
-                        </div>
-
-                        <div class="my-auto" v-if="chartDataVotesCastScatter$">
-                            <VoteTallyScatterChart :chartData="chartDataVotesCastScatter$" :options="chartOptions" />
-                        </div>
-                    </div>
-                </div> -->
             </div>
         </div>
     </section>
@@ -121,9 +103,6 @@ import { computed } from 'vue';
 import Fund from '../models/fund';
 import axios from '../../lib/utils/axios';
 import route from 'ziggy-js';
-import Pagination from '../Shared/Components/Pagination.vue';
-import Search from '../Shared/Components/Search.vue';
-import ChallengePicker from '../modules/funds/ChallengePicker.vue';
 import Challenge from '../models/challenge';
 import Over75k from '../modules/charts/Over75k.vue';
 import LargestWinningProposal from '../modules/charts/LargestWinningProposal.vue';
@@ -132,13 +111,10 @@ import WalletBalanceChart from '../modules/charts/WalletBalanceChart.vue';
 import MembersAwarded from '../modules/charts/MembersAwarded.vue';
 import RegistrationChart from '../modules/charts/RegistrationChart.vue';
 import AdaPowerChart from '../modules/charts/AdaPowerChart.vue';
-// import LiveTally from '../modules/charts/LiveTally.vue';
-// import VotingAggrigates from '../modules/charts/VotingAggrigates.vue';
 
 const VotingAggrigates = defineAsyncComponent(() =>
     import('../modules/charts/VotingAggrigates.vue')
 )
-
 const LiveTally = defineAsyncComponent(() =>
     import('../modules/charts/LiveTally.vue')
 )
@@ -362,7 +338,6 @@ function getAttachmentLink() {
         .catch((error) => {
             console.error(error);
         });
-
 }
 
 

@@ -1,4 +1,4 @@
-<template>
+max-h<template>
     <div class="h-full p-3 bg-white">
         <div class="p-3 bg-primary-20">
             <div class="flex flex-col md:flex-row md:justify-between">
@@ -25,7 +25,7 @@
             </ul>
         </div>
         <div class="relative m-2" v-if="!loadingProposals && !emptyDataProposals">
-            <ul role="list" class="divide-y divide-gray-200 max-h-[28rem] overflow-y-auto">
+            <ul role="list" class="divide-y divide-gray-200 max-h-[32rem] overflow-y-auto">
                 <li v-for="proposal in proposals" v-if="proposals">
                     <a :href="proposal.link" class="block hover:bg-gray-50" target="_blank">
                         <div class="flex items-center px-4 py-4 sm:px-6">
