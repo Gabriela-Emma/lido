@@ -3,7 +3,7 @@
         <div class="bg-primary-20 p-3">
             <div class="flex flex-col md:flex-row md:justify-between">
                 <h2 class="mb-0 xl:text-3xl block">{{widgetLabel}} Teams</h2>
-                <FundingTypeSelectorVue/>
+                <FundingTypeSelectorVue />
             </div>
             <p v-if="!loadingTeams && !emptyDataTeams">
                 Combined aggregate requested funding of all proposals associated with a group or person across {{ fund?.label }}
