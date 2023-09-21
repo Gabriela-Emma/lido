@@ -396,3 +396,4 @@ dd($catId);
   $delegation->save();  
 });
 exit
+exit

@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Proposal;
 use App\Services\SettingService;
+use Illuminate\Support\Str;
 use Revolution\Google\Sheets\Facades\Sheets;
 
 class F10ProposalVotingResultsSeeder extends FSeeder
@@ -17,7 +18,7 @@ class F10ProposalVotingResultsSeeder extends FSeeder
     {
         // save proposals
         $sheets = Sheets::spreadsheet(
-            $settingService->getSettings()?->catalyst_f10_voting_results_sheet ?? ''
+            '1HnWOWEehj-ThIyys9Oy-hsjzgI92IDLes0sH0a0zT0A'
         );
         collect($sheets->sheetList())->each(function ($sheetName) use ($sheets) {
             $sheet = $sheets->sheet($sheetName)?->get();
@@ -36,8 +37,9 @@ class F10ProposalVotingResultsSeeder extends FSeeder
                     if (! isset($row[1]) || intval($row[1]) <= 0) {
                         return true;
                     }
-                    $proposal = Proposal::where('title->en', $row[0])
-                        ->whereHas('fund.parent', fn ($q) => $q->where('id', 113))
+                    $slug = Str::limit(Str::slug($row[0]), 150, '').'-'.'f10';
+                    $proposal = Proposal::where('slug', $slug )
+                        ->whereRelation('fund', 'parent_id', 113)
                         ->withOut([
                             'fund',
                             'media',
@@ -46,6 +48,7 @@ class F10ProposalVotingResultsSeeder extends FSeeder
                         ])->first();
 
                     if (! $proposal instanceof Proposal) {
+                        echo 'no result for: ' . $row[0] . PHP_EOL;
                         return true;
                     }
                     $proposal->yes_votes_count = intval(filter_var($row[2], FILTER_SANITIZE_NUMBER_INT));
@@ -68,8 +71,9 @@ class F10ProposalVotingResultsSeeder extends FSeeder
 
                     $proposal->save();
                     $proposal->saveMeta('unique_wallets', $row[1]);
-                    $proposal->saveMeta('funds_remaining', preg_replace('/([^0-9\\.])/i', '', $row[8]));
-
+                    if (isset($row[8])) {
+                        $proposal->saveMeta('funds_remaining', preg_replace('/([^0-9\\.])/i', '', $row[8]));
+                    }
                     return true;
                 });
             });
