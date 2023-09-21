@@ -17,9 +17,7 @@ class F10ProposalVotingResultsSeeder extends FSeeder
     public function run(SettingService $settingService)
     {
         // save proposals
-        $sheets = Sheets::spreadsheet(
-            '1HnWOWEehj-ThIyys9Oy-hsjzgI92IDLes0sH0a0zT0A'
-        );
+        $sheets = Sheets::spreadsheet($settingService->getSettings()?->catalyst_f10_voting_results_sheet ?? '');
         collect($sheets->sheetList())->each(function ($sheetName) use ($sheets) {
             $sheet = $sheets->sheet($sheetName)?->get();
             $sheet->each(function ($row) {
