@@ -17,89 +17,22 @@
     <section class="relative bg-gray-100">
         <div class="container py-8">
             <div class="grid h-full grid-cols-1 grid-rows-1 gap-4 md:grid-cols-3 xl:grid-cols-8 xl:grid-rows-10">
-                <div class="relative col-span-1 row-span-1 px-3 py-5 bg-teal-600 xl:col-span-2 round-sm">
-                    <dl class="relative flex flex-col justify-between h-full">
-                        <div class="absolute top-0 right-0 px3">
-                            <a v-if="amount_requested > 0" type="button" :href="link ?? null"
-                                class="inline-flex items-center px-1.5 py-1 border border-white hover:border-accent-700 shadow-xs text-xs font-semibold rounded-sm text-white bg-transparent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent-600 hover:bg-accent-600">
-                                View
-                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 ml-1" fill="none" viewBox="0 0 24 24"
-                                    stroke="currentColor" stroke-width="2">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                                </svg>
-                            </a>
-                        </div>
-                        <dd class="pointer-events-none">
-                            <div class="relative text-4xl font-semibold text-white lg:text-5xl 2xl:text-6xl">
-                                <div v-if="amount_requested > 0">
-                                    ${{ $filters.shortNumber(amount_requested) }}
-                                </div>
-                                <div v-else>
-                                    0
-                                </div>
-                            </div>
-                        </dd>
-                        <dt class="mt-3 text-lg font-medium text-gray-200 truncate pointer-events-none">
-                            Largest Winning Proposal
-                        </dt>
-                    </dl>
-                </div>
 
+                <!-- proposal metrics -->
+                <div class="relative col-span-1 row-span-1 px-3 py-5 bg-teal-600 xl:col-span-2 round-sm">
+                    <LargestWinningProposal :fundId="selectedFundRef" />
+                </div>
                 <div class="relative col-span-1 row-span-1 px-3 py-5 bg-white round-sm">
-                    <dl class="flex flex-col justify-between h-full">
-                        <dd>
-                            <div class="text-4xl font-semibold lg:text-5xl 2xl:text-6xl text-blue-dark-500">
-                                {{ $filters.number(fundedOver75KCount) }}
-                            </div>
-                        </dd>
-                        <dt class="mt-3 text-lg font-medium truncate text-blue-dark-500">
-                            Funded >= 75K
-                        </dt>
-                    </dl>
+                    <Over75k :fundId="selectedFundRef" />
                 </div>
-
                 <div class="relative col-span-1 row-span-1 px-3 py-5 bg-teal-600 xl:col-span-2 round-sm">
-                    <dl class="flex flex-col justify-between h-full">
-                        <dd>
-                            <div class="text-4xl font-semibold text-white lg:text-5xl 2xl:text-6xl">
-                                {{ $filters.number(membersAwardedFundingCount) }}
-                            </div>
-                        </dd>
-                        <dt class="mt-3 text-lg font-medium text-gray-200 truncate">
-                            Members Awarded Funding
-                        </dt>
-                    </dl>
+                    <MembersAwarded :fundId="selectedFundRef" />
                 </div>
 
                 <!-- Proposals with Fully Disbursed Funds -->
                 <div class="relative col-span-1 row-span-1 p-3 bg-blue-dark-500 md:col-span-3 xl:col-span-3 round-sm">
                     <div class="flex flex-row flex-wrap items-start justify-between h-full md:flex-nowrap">
-                        <div>
-                            <dl class="flex flex-col justify-between">
-                                <dd>
-                                    <div class="text-4xl font-semibold text-white lg:text-5xl 2xl:text-6xl">
-                                        {{ fullyDisbursedProposalsCount }}
-                                    </div>
-                                </dd>
-                                <dt class="mt-3 text-lg font-medium text-gray-200 truncate">
-                                    Proposals with Fully Disbursed Funds
-                                </dt>
-                            </dl>
-                        </div>
-
-                        <div class="ml-auto md:mt-auto">
-                            <dl class="flex flex-col justify-between text-right">
-                                <dd>
-                                    <div class="text-4xl font-semibold text-white lg:text-5xl 2xl:text-6xl">
-                                        {{ $filters.number(completedProposalsCount) }}
-                                    </div>
-                                </dd>
-                                <dt class="mt-3 text-lg font-medium text-gray-200 truncate">
-                                    Completed Proposals
-                                </dt>
-                            </dl>
-                        </div>
+                        <FundedAndCompleted :fundId="selectedFundRef" />
                     </div>
                 </div>
 
@@ -107,164 +40,33 @@
                 <div
                     class="relative w-full col-span-1 row-span-6 p-3 bg-white md:col-span-3 round-sm xl:col-span-5 max-h-[60rem]">
                     <div class="relative flex flex-col justify-start h-full">
-                        <div class="flex flex-wrap items-start justify-between">
-                            <div class="text-teal-600">
-                                <h2 class="mb-0 xl:text-3xl">
-                                    1 stake key 1 Vote Ranges
-                                </h2>
-                                <p>Pie chart of wallet balance</p>
-                            </div>
-                            <div v-if="attachmentLink">
-                                <Attachment :attachementLink="attachmentLink" />
-                            </div>
-                        </div>
-
-                        <div class="my-auto" v-if="chartData1Registration1Vote$">
-                            <AdaPowerRangesPie :chartData="chartData1Registration1Vote$" :options="chartOptions" />
-                        </div>
+                        <WalletBalanceChart :attachment-link="attachmentLink"
+                            :chartData1Registration1Vote$="chartData1Registration1Vote$" :chart-options="chartOptions" />
                     </div>
                 </div>
 
                 <!-- Pie by registrations -->
                 <div
                     class="w-full col-span-1 p-3 overflow-x-visible overflow-y-scroll bg-white md:col-span-4 xl:col-span-3 xl:row-span-6 round-sm max-h-[60rem]">
-                    <div class="text-blue-dark-500">
-                        <h2 class="mb-0 xl:text-3xl">
-                            Wallet Voting Ada Power Breakdowns
-                        </h2>
-                        <p>
-                            The Pie by registrations
-                        </p>
-                    </div>
-                    <div class="relative w-full mt-8">
-                        <ul role="list" class="divide-y divide-gray-200 max-h-[42rem] overflow-y-auto">
-                            <li v-for="(range) in adaPowerRanges" class="flex items-center justify-start w-full gap-4 py-4">
-                                <div
-                                    class="flex items-center justify-center w-20 h-20 p-2 text-center rounded-full bg-slate-300">
-                                    <span class="text-base">{{ range['key'] }} ₳</span>
-                                </div>
-
-                                <div class="">
-                                    <p class="text-lg lg:text-xl xl:text-2xl 2xl:text-3xl text-slate-500">
-                                        {{ range['count'].toLocaleString() }} <span
-                                            class="text-slate-300 text-md lg:text-lg xl:text-2xl 2xl:text-2xl">Wallets</span>
-                                    </p>
-                                </div>
-
-                                <div class="pr-2 ml-auto">
-                                    <p class="text-md lg:text-lg xl:text-2xl text-slate-500">
-                                        <span class="mr-2 text-slate-400">₳</span>{{
-                                            $filters.shortNumber(range['total'],
-                                                2)
-                                        }}
-                                    </p>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
+                    <RegistrationChart :ada-power-ranges="adaPowerRanges" />
                 </div>
 
                 <!-- Number Grid -->
-                <div class="relative col-span-1 row-span-6 lg:col-span-2 xl:col-span-3 round-sm">
-                    <div class="grid h-full grid-cols-2">
-                        <div class="relative col-span-2 row-span-1 px-3 py-8 border border-white bg-blue-dark-500 round-sm">
-                            <dl class="flex flex-col justify-between h-full text-center text-white">
-                                <dd>
-                                    <div class="text-4xl font-semibold lg:text-5xl 2xl:text-6xl">
-                                        ₳{{ $filters.shortNumber(totalRegisteredAdaPower, 3) }}
-                                    </div>
-                                </dd>
-                                <dt class="mt-3 text-lg font-medium truncate">
-                                    Total Registered Ada Voting Power
-                                </dt>
-                            </dl>
-                        </div>
-                        <div class="relative col-span-1 row-span-1 px-3 py-5 bg-teal-900 border border-white round-sm">
-                            <dl class="flex flex-col justify-between h-full text-white">
-                                <dd>
-                                    <div class="text-4xl font-semibold lg:text-5xl 2xltext-6xl">
-                                        Coming Soon
-                                    </div>
-                                </dd>
-                                <dt class="mt-3 text-lg font-medium truncate">
-                                    ₳ registered but didn't vote
-                                </dt>
-                            </dl>
-                        </div>
-                        <div class="relative col-span-1 row-span-1 px-3 py-5 bg-teal-700 border border-white round-sm">
-                            <dl class="flex flex-col justify-between h-full">
-                                <dd>
-                                    <div class="text-4xl font-semibold text-white lg:text-5xl 2xltext-6xl">
-                                        Coming Soon
-                                    </div>
-                                </dd>
-                                <dt class="mt-3 text-lg font-medium truncate text-slate-200">
-                                    Wallets registered but didn't vote
-                                </dt>
-                            </dl>
-                        </div>
-                        <div class="relative col-span-1 row-span-1 px-3 py-5 bg-teal-500 border border-white round-sm">
-                            <dl class="flex flex-col justify-between h-full">
-                                <dd>
-                                    <div class="text-4xl font-semibold text-white lg:text-5xl 2xltext-6xl">
-                                        ₳{{ $filters.shortNumber(totalDelegationRegistrationsAdaPower, 3) }}
-                                    </div>
-                                </dd>
-                                <dt class="mt-3 text-lg font-medium text-gray-200 truncate">
-                                    ₳ Power delegated
-                                </dt>
-                            </dl>
-                        </div>
-                        <div class="relative col-span-1 row-span-1 px-3 py-5 bg-teal-800 border border-white round-sm">
-                            <dl class="flex flex-col justify-between h-full">
-                                <dd>
-                                    <div class="text-4xl font-semibold text-white lg:text-5xl 2xltext-6xl">
-                                        {{ totalDelegationRegistrations?.toLocaleString() ?? '-' }}
-                                    </div>
-                                </dd>
-                                <dt class="mt-3 text-lg font-medium text-gray-200 truncate">
-                                    Total Wallet Delegations
-                                </dt>
-                            </dl>
-                        </div>
-                        <div class="relative col-span-2 row-span-1 px-3 py-8 bg-teal-900 border border-white round-sm">
-                            <dl class="flex flex-col justify-between h-full text-center text-white">
-                                <dd>
-                                    <div class="text-4xl font-semibold lg:text-5xl 2xl:text-6xl">
-                                        {{ totalRegistrations?.toLocaleString() }}
-                                    </div>
-                                </dd>
-                                <dt class="mt-3 text-lg font-medium truncate">
-                                    Total Valid Registrations
-                                </dt>
-                            </dl>
-                        </div>
+                <div class="relative col-span-6 row-span-6 bg-white md:col-span-4 round-sm xl:col-span-3">
+                    <div class="grid h-full grid-cols-2 ">
+                        <VotingAggrigates :fund-id="selectedFundRef" />
                     </div>
                 </div>
 
                 <!-- The pie by Ada Power -->
                 <div class="relative w-full col-span-1 row-span-6 p-3 bg-white md:col-span-3 xl:col-span-5 round-sm">
                     <div class="relative flex flex-col justify-start h-full">
-                        <div class="flex flex-wrap items-start justify-between">
-                            <div class="text-teal-600">
-                                <h2 class="mb-0 xl:text-3xl">
-                                    Ada Power Ranges
-                                </h2>
-                                <p>
-                                    The pie by Ada Power
-                                </p>
-                            </div>
-                            <div v-if="attachmentLink">
-                                <Attachment :attachementLink="attachmentLink" />
-                            </div>
-                        </div>
-
-                        <div class="my-auto" v-if="chartData1Ada1Vote$">
-                            <AdaPowerRangesPie :chartData="chartData1Ada1Vote$" :options="chartOptions" />
-                        </div>
+                        <AdaPowerChart :attachmentLink="attachmentLink" :chart-data1-ada1-vote$="chartData1Ada1Vote$"
+                            :chart-options="chartOptions" />
                     </div>
                 </div>
 
+                <!-- Top funded -->
                 <div
                     class="relative col-span-1 row-span-6 p-3 bg-white md:col-span-3 xl:col-span-4 xl:row-span-10 round-sm">
                     <TopFundedTeams :fund-id="filters?.fundId" />
@@ -275,108 +77,7 @@
                 </div>
 
                 <!-- Live Tally -->
-                <div
-                    class="w-full col-span-1 p-3 overflow-y-visible bg-white md:col-span-3 xl:col-span-8 xl:row-span-12 round-sm">
-                    <div class="flex items-center justify-between">
-                        <div class="text-blue-dark-500">
-                            <h2 class="flex items-end gap-2 mb-0 xl:text-3xl">
-                                <span>Proposal Live Tally</span>
-                                <span v-if="tallyUpdatedAt$" class="text-xl font-bold text-teal-500">
-                                    Last updated:
-                                    <timeago :datetime="tallyUpdatedAt$" />
-                                </span>
-                            </h2>
-                            <p>
-                                This shows how many wallets have expressed an opinion for a proposal.
-                                We won't know the yes or no vote until after the voting period ends.
-                            </p>
-                        </div>
-                        <div class="p-1.5 text-center bg-teal-600 text-slate-100 shadow-accent-900 shadow-sm rounded-sm"
-                            v-if="talliesSum$">
-                            <div class="text-xl text-white md:text-2xl xl:text-3xl 2xl:text-4xl">
-                                {{ talliesSum$.toLocaleString() }}
-                            </div>
-                            <small class="text-sm">Total Votes Cast</small>
-                        </div>
-                    </div>
-
-                    <div class="py-4">
-                        <div class="h-16 my-4 border border-r-0 rounded-sm">
-                            <div class="flex flex-col flex-wrap w-full gap-2 md:flex-row">
-                                <div class="flex flex-1 max-w-[24rem] border-r">
-                                    <ChallengePicker v-model="challengesRef" />
-                                </div>
-                                <div class="flex flex-1 w-full">
-                                    <Search :search="search$" @search="(term) => search$ = term"></Search>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="relative w-full my-8" v-if="tallies$">
-                        <div
-                            class="pb-10 my-8 -mx-4 overflow-y-visible ring-1 ring-black ring-opacity-5 sm:-mx-6 md:mx-0 md:rounded-sm">
-                            <table class="min-w-full divide-y divide-slate-300">
-                                <thead class="bg-slate-50">
-                                    <tr>
-                                        <th scope="col"
-                                            class="px-3 py-3.5 text-left text-sm font-semibold text-slate-900 sm:pl-4">
-                                            <div class="flex gap-0.5 items-center flex-nowrap hover:cursor-pointer w-16 justify-start text-left"
-                                                @click="toggleOrder()">
-                                                <span>{{ $t("Tally") }}</span>
-                                                <span class="flex items-center gap-1 text-teal-600 flex-nowrap">
-                                                    <span>
-                                                        <ChevronUpDownIcon class="w-4 h-4" />
-                                                    </span>
-                                                    <span>{{ order$ }}</span>
-                                                </span>
-                                            </div>
-                                        </th>
-                                        <th scope="col"
-                                            class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-slate-900 sm:pl-4">
-                                            {{ $t("Proposal") }}
-                                        </th>
-                                        <th scope="col"
-                                            class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold sm:w-32 text-slate-900 sm:pl-4">
-                                            {{ $t("Budget") }}
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody class="bg-white divide-y divide-slate-200 text-slate-900">
-                                    <tr v-for="tally in tallies$?.data">
-                                        <td
-                                            class="w-16 py-4 pl-4 text-sm text-left max-w-0 sm:w-auto sm:max-w-none sm:pl-4">
-                                            {{ tally.tally }}
-                                        </td>
-
-                                        <td class="w-full py-4 pl-4 pr-3 text-sm max-w-0 sm:w-auto sm:max-w-none sm:pl-4">
-                                            <a target="_blank" :href="tally?.model?.link">{{ tally?.model?.title }}</a>
-                                        </td>
-
-                                        <td class="w-full py-4 pl-4 pr-3 text-sm max-w-0 sm:w-32 sm:max-w-none sm:pl-4">
-                                            <span class="block">
-                                                {{
-                                                    $filters.currency(tally?.model?.amount_requested,
-                                                        tally?.model?.fund?.currency, 'en-US', 2)
-                                                }}
-                                            </span>
-                                        </td>
-                                    </tr>
-
-                                </tbody>
-                            </table>
-                            <div class="flex items-center justify-between w-full gap-16 my-16 xl:gap-24">
-                                <div class="flex-1 w-full px-6">
-                                    <Pagination :links="tallies$.links" :per-page="perPage$" :total="tallies$?.total"
-                                        :from="tallies$?.from" :to="tallies$?.to"
-                                        @perPageUpdated="(payload) => (perPage$ = payload) && getTallies()"
-                                        @paginated="(payload) => (currPage$ = payload) && getTallies()" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
+                <LiveTally :challenges="challenges" :fund-id="selectedFundRef"/>
                 <!-- <div class="relative w-full col-span-1 row-span-6 p-3 bg-white md:col-span-3 round-sm">
                     <div class="relative flex flex-col justify-start h-full">
                         <div class="flex flex-wrap items-start justify-between">
@@ -404,20 +105,32 @@
 import Multiselect from '@vueform/multiselect';
 import { router, usePage } from '@inertiajs/vue3';
 import { watch, ref, defineAsyncComponent } from 'vue';
-import AdaPowerRangesPie from "../modules/charts/AdaPowerRangesPie.vue";
-import Attachment from '../modules/charts/Attachment.vue';
 import { VARIABLES } from "../models/variables";
 import { computed } from 'vue';
-import Proposal from '../models/proposal';
 import Fund from '../models/fund';
 import axios from '../../lib/utils/axios';
 import route from 'ziggy-js';
 import Pagination from '../Shared/Components/Pagination.vue';
-import { ChevronUpDownIcon } from '@heroicons/vue/20/solid';
 import Search from '../Shared/Components/Search.vue';
 import ChallengePicker from '../modules/funds/ChallengePicker.vue';
 import Challenge from '../models/challenge';
+import Over75k from '../modules/charts/Over75k.vue';
+import LargestWinningProposal from '../modules/charts/LargestWinningProposal.vue';
+import FundedAndCompleted from '../modules/charts/FundedAndCompleted.vue';
+import WalletBalanceChart from '../modules/charts/WalletBalanceChart.vue';
+import MembersAwarded from '../modules/charts/MembersAwarded.vue';
+import RegistrationChart from '../modules/charts/RegistrationChart.vue';
+import AdaPowerChart from '../modules/charts/AdaPowerChart.vue';
+// import LiveTally from '../modules/charts/LiveTally.vue';
+// import VotingAggrigates from '../modules/charts/VotingAggrigates.vue';
 
+const VotingAggrigates = defineAsyncComponent(() =>
+    import('../modules/charts/VotingAggrigates.vue')
+)
+
+const LiveTally = defineAsyncComponent(() =>
+    import('../modules/charts/LiveTally.vue')
+)
 
 const props = withDefaults(
     defineProps<{
@@ -434,39 +147,14 @@ const TopFundedTeams = defineAsyncComponent(() => import('../modules/charts/TopF
 const TopFundedProposals = defineAsyncComponent(() => import('../modules/charts/TopFundedProposals.vue'));
 
 let adaPowerRanges = ref<{ 'key': string, 'count': number, 'total': number }[]>([]);
-let largestFundedProposalObject = ref<Proposal>(null);
 let fundedOver75KCount = ref<number>(null);
-let membersAwardedFundingCount = ref<number>(null);
-let fullyDisbursedProposalsCount = ref<number>(null);
-let completedProposalsCount = ref<number>(null);
-let challengesRef = ref<Challenge[]>(props.challenges);
-let totalRegisteredAdaPower = ref<number>(null);
-let totalRegistrations = ref<number>(0);
-let totalDelegationRegistrationsAdaPower = ref<number>(null);
-let totalDelegationRegistrations = ref<number>(0);
-
-const baseUrl = usePage().props.base_url;
 
 let selectedFundRef = ref<number>(props.filters?.fundId);
 
-let amount_requested = ref<number>(0);
-let link = ref<string>('');
-
-let tallies$ = ref<{
-    links: [],
-    total: number,
-    to: number,
-    from: number,
-    data: any[]
-}>(null);
-
 let currPage$ = ref<number>(1);
 let perPage$ = ref<number>(36);
-let order$ = ref<string>('asc');
-let search$ = ref<string>(null);
 
 const attachmentLink = ref<string>(null);
-let tallyUpdatedAt$ = ref<string>(null);
 let talliesSum$ = ref<number>(null);
 
 const fundsLabelValue = computed(() => {
@@ -476,27 +164,12 @@ const fundsLabelValue = computed(() => {
 });
 
 getMetrics();
-getTallies();
-getUpdatedDate();
 getAttachmentLink();
-
-watch([search$], () => {
-    getTallies();
-}, { deep: true });
-
-watch([challengesRef], () => {
-    getTallies();
-}, { deep: true });
 
 watch([selectedFundRef], () => {
     query();
-    getTallies();
 }, { deep: true });
 
-watch([largestFundedProposalObject], () => {
-    amount_requested.value = largestFundedProposalObject.value.amount_requested;
-    link.value = largestFundedProposalObject.value.link;
-});
 
 watch([currPage$, perPage$], () => {
     fundedOver75KCount.value = fundedOver75KCount.value;
@@ -518,41 +191,6 @@ function query() {
 
 function getMetrics() {
     const params = getQueryData();
-
-    // get largest funded
-    axios.get(`${usePage().props.base_url}/catalyst-explorer/metrics/largestFundedProposalObject`, { params })
-        .then((res) => largestFundedProposalObject.value = res?.data)
-        .catch((error) => {
-            console.error(error);
-        });
-
-    // proposals funded over 75k
-    axios.get(`${usePage().props.base_url}/catalyst-explorer/metrics/fundedOver75KCount`, { params })
-        .then((res) => fundedOver75KCount.value = res?.data)
-        .catch((error) => {
-            console.error(error);
-        });
-
-    // count members awarded funding
-    axios.get(`${usePage().props.base_url}/catalyst-explorer/metrics/membersAwardedFundingCount`, { params })
-        .then((res) => membersAwardedFundingCount.value = res?.data)
-        .catch((error) => {
-            console.error(error);
-        });
-
-    // count fully disbursed proposals
-    axios.get(`${usePage().props.base_url}/catalyst-explorer/metrics/fullyDisbursedProposalsCount`, { params })
-        .then((res) => fullyDisbursedProposalsCount.value = res?.data)
-        .catch((error) => {
-            console.error(error);
-        });
-
-    // count completed proposals
-    axios.get(route('catalystExplorer.metrics.completedProposalsCount'), { params })
-        .then((res) => completedProposalsCount.value = res?.data)
-        .catch((error) => {
-            console.error(error);
-        });
 
     // fetch adaRanges
     axios.get(route('catalystExplorer.metrics.adaPowerRanges'), { params })
@@ -685,40 +323,10 @@ function getMetrics() {
             console.error(error);
         });
 
-    // fetch tallies sum
     axios.get(route('catalystExplorerApi.talliesSum'), { params })
         .then((res) => {
             talliesSum$.value = res?.data;
         })
-        .catch((error) => {
-            console.error(error);
-        });
-
-    // get total registrations
-    axios.get(route('catalystExplorer.metrics.totalRegisteredAdaPower'), { params })
-        .then((res) => totalRegisteredAdaPower.value = res?.data)
-        .catch((error) => {
-            console.error(error);
-        });
-
-    // get total registrations ada power
-    axios.get(route('catalystExplorer.metrics.totalRegistrations'), { params })
-        .then((res) => totalRegistrations.value = res?.data)
-        .catch((error) => {
-            console.error(error);
-        });
-
-
-    // get total delegation registrations
-    axios.get(route('catalystExplorer.metrics.totalDelegationRegistrations'), { params })
-        .then((res) => totalDelegationRegistrations.value = res?.data)
-        .catch((error) => {
-            console.error(error);
-        });
-
-    // get total delegation registrations ada power
-    axios.get(route('catalystExplorer.metrics.totalDelegationRegistrationsAdaPower'), { params })
-        .then((res) => totalDelegationRegistrationsAdaPower.value = res?.data)
         .catch((error) => {
             console.error(error);
         });
@@ -734,46 +342,6 @@ function getQueryData() {
     return data;
 }
 
-function toggleOrder() {
-    if (order$.value === 'asc') {
-        order$.value = 'desc';
-    } else {
-        order$.value = 'asc';
-    }
-
-    getTallies();
-}
-
-function getTallies() {
-    axios.get(
-        route('catalystExplorerApi.tallies'),
-        {
-            params: {
-                p: currPage$.value,
-                pp: perPage$.value,
-                o: order$.value,
-                s: search$.value,
-                c: challengesRef.value?.map((challenge) => (challenge.id || challenge))
-            }
-        })
-        .then((res) => {
-            tallies$.value = res?.data;
-            perPage$.value = res?.data?.per_page;
-            currPage$.value = res?.data?.page;
-        })
-        .catch((error) => {
-            console.error(error);
-        });
-
-
-}
-
-function getUpdatedDate() {
-    axios.get(route('catalystExplorerApi.talliesUpdatedAt'))
-        .then((res) => {
-            tallyUpdatedAt$.value = res?.data?.updated_at;
-        });
-}
 
 function getAttachmentLink() {
     const params = getQueryData();
