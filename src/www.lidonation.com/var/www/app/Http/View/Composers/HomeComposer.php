@@ -52,11 +52,11 @@ class HomeComposer
                 'insights' => $insights,
                 'newToLibrary' => $newToLibrary->sortByDesc('published_at'),
                 'latestLidoMinute' => $latestLidoMinute,
-                'quickPitches' => Proposal::where('quickpitch_length', '<', 200)
-                    ->whereRelation('fund', 'parent_id', 113)
-                    ->inRandomOrder()
-                    ->limit(8)
-                    ->get(),
+//                'quickPitches' => Proposal::where('quickpitch_length', '<', 200)
+//                    ->whereRelation('fund', 'parent_id', 113)
+//                    ->inRandomOrder()
+//                    ->limit(8)
+//                    ->get(),
                 'proposal' => Proposal::inRandomOrder()
                     ->where('status', 'complete')
                     ->whereNotNull('solution')
