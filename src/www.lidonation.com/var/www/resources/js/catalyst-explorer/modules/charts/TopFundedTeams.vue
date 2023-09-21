@@ -5,7 +5,9 @@
                 <h2 class="mb-0 xl:text-3xl block">{{widgetLabel}} Teams</h2>
                 <FundingTypeSelectorVue/>
             </div>
-            <p v-if="!loadingTeams && !emptyDataTeams">Across {{ fund.label }}</p>
+            <p v-if="!loadingTeams && !emptyDataTeams">
+                Combined aggregate requested funding of all proposals associated with a group or person across {{ fund?.label }}
+            </p>
             <div class="relative text-xl flex gap-4 items-center" v-if="!loadingTeams && emptyDataTeams">
                 <p>That's all we know.</p>
                 <span>
