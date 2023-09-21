@@ -1,5 +1,5 @@
 max-h<template>
-    <div class="h-full p-3 bg-white">
+    <div class="h-full">
         <div class="p-3 bg-primary-20">
             <div class="flex flex-col md:flex-row md:justify-between">
                 <h2 class="block mb-0 xl:text-3xl">{{ widgetLabel }} Proposals</h2>
@@ -25,7 +25,7 @@ max-h<template>
             </ul>
         </div>
         <div class="relative m-2" v-if="!loadingProposals && !emptyDataProposals">
-            <ul role="list" class="divide-y divide-gray-200 max-h-[32rem] overflow-y-auto">
+            <ul role="list" class="divide-y divide-gray-200 max-h-[42rem] overflow-y-auto">
                 <li v-for="proposal in proposals" v-if="proposals">
                     <a :href="proposal.link" class="block hover:bg-gray-50" target="_blank">
                         <div class="flex items-center px-4 py-4 sm:px-6">

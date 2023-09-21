@@ -1,5 +1,5 @@
 <template>
-    <div class="h-full p-3 bg-white">
+    <div class="h-full">
         <div class="bg-primary-20 p-3">
             <div class="flex flex-col md:flex-row md:justify-between">
                 <h2 class="mb-0 xl:text-3xl block">{{widgetLabel}} Teams</h2>
@@ -26,7 +26,7 @@
                 </ul>
         </div>
         <div class="relative m-2" v-if="!loadingTeams && !emptyDataTeams">
-            <ul role="list" class="divide-y divide-gray-200 max-h-[32rem] overflow-y-auto">
+            <ul role="list" class="divide-y divide-gray-200 max-h-[42rem] overflow-y-auto">
                 <li v-for="proposer in proposers" v-if="proposers">
                     <a :href="$utils.localizeRoute(`project-catalyst/users/${proposer?.id}`)"
                         class="block hover:bg-gray-50" target="_blank">
