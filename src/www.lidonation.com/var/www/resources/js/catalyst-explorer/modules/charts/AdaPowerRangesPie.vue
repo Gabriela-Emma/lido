@@ -1,18 +1,18 @@
 <template>
     <div class="canvas-pie">
-        <Pie :data="chartData" :options="options" />
+        <Doughnut :data="chartData" :options="options" />
     </div>
 </template>
 
 <script lang="ts">
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
-import { Pie } from 'vue-chartjs';
+import { Doughnut } from 'vue-chartjs'
 
 ChartJS.register(ArcElement, Tooltip, Legend)
 
 export default {
     name: 'PieChart',
-    components: { Pie },
+    components: { Doughnut },
     props: {
         chartData: {
             type: Object,

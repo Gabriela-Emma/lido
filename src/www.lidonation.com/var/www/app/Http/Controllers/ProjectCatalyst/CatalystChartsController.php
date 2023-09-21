@@ -213,6 +213,7 @@ class CatalystChartsController extends Controller
             ->where('model_type', Fund::class)
             ->orderBy('snapshot_at', 'desc')
             ->get()->map(fn ($cs) => $cs->model);
+            
 
         $challenges = Fund::where('parent_id', '=', 113)->get(['id', 'title']);
 
