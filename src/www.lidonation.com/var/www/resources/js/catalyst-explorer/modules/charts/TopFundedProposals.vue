@@ -43,7 +43,8 @@
                                                 {{
                                                     $filters.currency(
                                                         proposal.amount_requested,
-                                                        proposal.currency
+                                                        proposal.currency,
+                                                        'en-US', 2
                                                     )
                                                 }}
                                             </p>

@@ -5,7 +5,9 @@
                 <h2 class="mb-0 xl:text-3xl block">{{widgetLabel}} Teams</h2>
                 <FundingTypeSelectorVue/>
             </div>
-            <p v-if="!loadingTeams && !emptyDataTeams">Across {{ fund.label }}</p>
+            <p v-if="!loadingTeams && !emptyDataTeams">
+                Combined aggregate requested funding of all proposals associated with a group or person across {{ fund?.label }}
+            </p>
             <div class="relative text-xl flex gap-4 items-center" v-if="!loadingTeams && emptyDataTeams">
                 <p>That's all we know.</p>
                 <span>
@@ -18,13 +20,13 @@
         <div class="relative m-2" v-if="loadingTeams">
                 <ul
                     role="list"
-                    class="divide-y divide-gray-200 max-h-[28rem] overflow-y-auto"
+                    class="divide-y divide-gray-200 max-h-[39rem] overflow-y-auto"
                 >
-                    <li v-for="index in 6" :key="index"><PulseLoading/></li>
+                    <li v-for="index in 8" :key="index"><PulseLoading/></li>
                 </ul>
         </div>
         <div class="relative m-2" v-if="!loadingTeams && !emptyDataTeams">
-            <ul role="list" class="divide-y divide-gray-200 max-h-[28rem] overflow-y-auto">
+            <ul role="list" class="divide-y divide-gray-200 max-h-[39rem] overflow-y-auto">
                 <li v-for="proposer in proposers" v-if="proposers">
                     <a :href="$utils.localizeRoute(`project-catalyst/users/${proposer?.id}`)"
                         class="block hover:bg-gray-50" target="_blank">
@@ -43,7 +45,7 @@
                                     <div class="hidden md:block">
                                         <div>
                                             <p class="text-lg text-gray-900 md:text-xl 2xl:text-2xl">
-                                                {{ $filters.currency(parseInt(proposer?.amount_requested), fund?.currency)
+                                                {{ $filters.currency(parseInt(proposer?.amount_requested), fund?.currency, 'en-US', 2)
                                                 }}
                                             </p>
                                             <p class="flex items-center mt-2 text-sm text-gray-500">
