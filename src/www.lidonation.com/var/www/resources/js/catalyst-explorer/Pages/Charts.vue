@@ -52,11 +52,22 @@
                 </div>
 
                 <!-- Number Grid -->
-                <div class="relative col-span-6 row-span-6 bg-white md:col-span-4 round-sm xl:col-span-3">
-                    <div class="grid h-full grid-cols-2 ">
-                        <VotingAggrigates :fund-id="selectedFundRef" />
+                <Suspense>
+                    <div class="relative col-span-6 row-span-6 bg-white md:col-span-4 round-sm xl:col-span-3">
+                        <div class="grid h-full grid-cols-2 ">
+                            <VotingAggrigates :fund-id="selectedFundRef" />
+                        </div>
                     </div>
-                </div>
+
+                    <template #fallback>
+                        <div
+                            class="relative col-span-6 row-span-6 bg-slate-200 md:col-span-4 round-sm xl:col-span-3 animate-pulse">
+                            <div class="grid h-full grid-cols-2 ">
+                            </div>
+                        </div>
+                    </template>
+                </Suspense>
+
 
                 <!-- The pie by Ada Power -->
                 <div class="relative w-full col-span-1 row-span-6 p-3 bg-white md:col-span-3 xl:col-span-5 round-sm">
@@ -77,7 +88,7 @@
                 </div>
 
                 <!-- Live Tally -->
-                <LiveTally :challenges="challenges" :fund-id="selectedFundRef"/>
+                <LiveTally :challenges="challenges" :fund-id="selectedFundRef" />
                 <!-- <div class="relative w-full col-span-1 row-span-6 p-3 bg-white md:col-span-3 round-sm">
                     <div class="relative flex flex-col justify-start h-full">
                         <div class="flex flex-wrap items-start justify-between">
