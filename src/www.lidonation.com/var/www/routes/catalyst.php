@@ -148,6 +148,11 @@ Route::group(
                     ->name('totalDelegationRegistrations');
                 Route::get('/total-delegation-registrations-ada-power', [CatalystChartsController::class, 'metricTotalDelegationRegistrationsAdaPower'])
                     ->name('totalDelegationRegistrationsAdaPower');
+
+                Route::get('/total-yes-votes', [CatalystChartsController::class, 'metricsTotalYesVotes'])
+                    ->name('totalYesVotes');
+                Route::get('/total-no-votes', [CatalystChartsController::class, 'metricsTotalNoVotes'])
+                    ->name('totalNoVotes');
             });
 
             Route::get('/attachments/voting-powers', [CatalystAttachmentsController::class, 'votingPowersAttachemnt'])

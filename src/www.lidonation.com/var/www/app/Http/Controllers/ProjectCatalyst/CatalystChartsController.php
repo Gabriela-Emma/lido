@@ -176,6 +176,26 @@ class CatalystChartsController extends Controller
         return null;
     }
 
+    public function metricsTotalYesVotes(Request $request): float|int|null
+    {
+        $p = Proposal::query();
+        if ($this->fundFilter) {
+            $p->whereRelation('fund', 'parent_id', $this->fundFilter);
+        }
+
+        return $p->sum('yes_votes_count');
+    }
+
+    public function metricsTotalNoVotes(Request $request): float|int|null
+    {
+        $p = Proposal::query();
+        if ($this->fundFilter) {
+            $p->whereRelation('fund', 'parent_id', $this->fundFilter);
+        }
+
+        return $p->sum('no_votes_count');
+    }
+
     public function metricTotalDelegationRegistrations(Request $request)
     {
 
@@ -213,7 +233,7 @@ class CatalystChartsController extends Controller
             ->where('model_type', Fund::class)
             ->orderBy('snapshot_at', 'desc')
             ->get()->map(fn ($cs) => $cs->model);
-            
+
 
         $challenges = Fund::where('parent_id', '=', 113)->get(['id', 'title']);
 

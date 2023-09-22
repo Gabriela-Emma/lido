@@ -52,7 +52,7 @@ spec:
       parallelism: 1
       backoffLimit: 0
       activeDeadlineSeconds: 600
-      completionMode: 'Indexed'
+{{/*      completionMode: 'Indexed'*/}}
       template:
         spec:
           shareProcessNamespace: true

@@ -77,6 +77,11 @@
                     </div>
                 </div>
 
+                <!-- Yes Votes no Votes Sum -->
+                <div class="relative col-span-1 row-span-1 md:col-span-8">
+                    <YesNoVotesSum :fundId="selectedFundRef" />
+                </div>
+
                 <!-- Top funded -->
                 <div
                     class="relative col-span-1 row-span-6 p-3 bg-white md:col-span-3 xl:col-span-4 xl:row-span-10 round-sm">
@@ -111,6 +116,7 @@ import WalletBalanceChart from '../modules/charts/WalletBalanceChart.vue';
 import MembersAwarded from '../modules/charts/MembersAwarded.vue';
 import RegistrationChart from '../modules/charts/RegistrationChart.vue';
 import AdaPowerChart from '../modules/charts/AdaPowerChart.vue';
+import YesNoVotesSum from "@/catalyst-explorer/modules/charts/YesNoVotesSum.vue";
 
 const VotingAggrigates = defineAsyncComponent(() =>
     import('../modules/charts/VotingAggrigates.vue')
