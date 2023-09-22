@@ -14,6 +14,7 @@ src/pool/config/db-sync/secrets/*
 docker_volumes/*
 !docker_volumes/.gitkeep
 data/relay/data/*
+data/www/data/*
 data/postgres/cdbsync/data/*
 !data/postgres/cdbsync/data/.gitkeep
 src/www.lidonation.com/var/www/storage/json/data/*

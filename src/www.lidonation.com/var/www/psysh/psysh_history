@@ -397,3 +397,7 @@ dd($catId);
 });
 exit
 exit
+Proposal::whereRelation('fund', 'parent_id', 113)->searchable();
+exit
+SyncCatatalystVotersJob::dispatchSync();
+SyncCatatalystVotersJob::dispatchSync();

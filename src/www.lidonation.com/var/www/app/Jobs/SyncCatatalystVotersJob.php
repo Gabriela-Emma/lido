@@ -89,8 +89,6 @@ class SyncCatatalystVotersJob implements ShouldQueue
                 compact('voterTransaction')
             )->throw();
 
-
-
             // save voter details if $response is succeful
             if ($res->successful()) {
                 $votersDetails = new Fluent($res->json()['data']);

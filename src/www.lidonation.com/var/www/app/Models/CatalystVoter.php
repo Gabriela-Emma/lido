@@ -3,18 +3,16 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class CatalystVoter extends Model
 {
-    protected $table = '_catalyst_voters';
-
     protected $with = [];
 
-    protected $appends = ['registrations'];
+    protected $appends = [];
 
-    public function registrations()
+    public function registrations(): HasMany
     {
-        return CatalystRegistration::where('stake_pub', $this->stake_pub)
-            ->where('stake_key', $this->stake_key);
+        return $this->hasMany(CatalystRegistration::class, 'stake_pub', 'stake_pub');
     }
 }

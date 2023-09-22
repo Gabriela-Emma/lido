@@ -57,7 +57,11 @@ export class VotesController {
       const delegator = delegators[i];
       let publicKey = (await this.getPublicKey(delegator[0])).to_bech32();
       let weight = delegator[1];
-      votersPublicKeys.push([publicKey, weight]);
+      votersPublicKeys.push({
+        voteKey: delegator[0],
+        votePub: publicKey,
+        weight
+      });
     }
 
     return JSON.stringify(votersPublicKeys);
