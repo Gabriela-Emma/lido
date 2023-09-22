@@ -17,7 +17,7 @@
             <dl class="flex flex-col justify-between">
                 <dd>
                     <div class="text-4xl font-semibold text-white lg:text-5xl 2xl:text-6xl">
-                        {{ $filters.number(talliesSum$, 2) }}
+                        {{ $filters.number(talliesSum$, 4) }}
                     </div>
                 </dd>
                 <dt class="mt-3 text-lg font-medium text-gray-200 truncate">
