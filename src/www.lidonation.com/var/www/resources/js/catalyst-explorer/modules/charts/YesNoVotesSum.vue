@@ -1,5 +1,5 @@
 <template>
-    <div class="grid grid-cols-7 gap-4">
+    <div class="grid grid-cols-7 gap-4 text-sm md:text-lg">
         <div class="col-span-2 p-2 bg-white text-teal-900">
             <dl class="flex flex-col justify-between p-2">
                 <dd>
@@ -7,7 +7,7 @@
                         {{ $filters.shortNumber(yesVotesSum, 2) }}
                     </div>
                 </dd>
-                <dt class="mt-3 text-lg font-medium truncate">
+                <dt class="mt-3 font-medium truncate">
                     Yes Votes ₳ Sum
                 </dt>
             </dl>
@@ -20,7 +20,7 @@
                         {{ $filters.number(talliesSum$, 4) }}
                     </div>
                 </dd>
-                <dt class="mt-3 text-lg font-medium text-gray-200 truncate">
+                <dt class="mt-3 font-medium text-gray-200 truncate">
                     Total Votes Cast
                 </dt>
             </dl>
@@ -33,7 +33,7 @@
                         {{ $filters.shortNumber(noVotesSum) }}
                     </div>
                 </dd>
-                <dt class="mt-3 text-lg font-medium">
+                <dt class="mt-3 font-medium">
                     No Votes ₳ Sum
                 </dt>
             </dl>
