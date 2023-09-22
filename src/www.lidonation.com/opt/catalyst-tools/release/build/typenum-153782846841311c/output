@@ -1,0 +1,3 @@
+cargo:rerun-if-changed=build/main.rs
+cargo:rustc-env=TYPENUM_BUILD_CONSTS=/opt/catalyst-core/target/release/build/typenum-153782846841311c/out/consts.rs
+cargo:rustc-env=TYPENUM_BUILD_OP=/opt/catalyst-core/target/release/build/typenum-153782846841311c/out/op.rs

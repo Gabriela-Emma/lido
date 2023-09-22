@@ -1,0 +1,1 @@
+cargo:rustc-cfg=crypto_backend="__internal_ex_backend_ristretto255"

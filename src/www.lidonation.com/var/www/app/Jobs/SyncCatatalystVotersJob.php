@@ -8,6 +8,7 @@ use App\Services\CardanoBlockfrostService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Http\Client\RequestException;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Http;
@@ -45,6 +46,8 @@ class SyncCatatalystVotersJob implements ShouldQueue
                         'order' => 'desc',
                     ])->collect();
 
+                    dd($votersRegistrationTransactions);
+
                 $votersRegistrationTransactions->each(function ($voterTransaction) {
                     if (is_array($voterTransaction)) {
                         $transaction = new Fluent([
@@ -73,8 +76,9 @@ class SyncCatatalystVotersJob implements ShouldQueue
      * Execute the job.
      *
      * @return void
+     * @throws RequestException
      */
-    public function handle()
+    public function handle(): void
     {
         if ($this->encodedTransactionDetails) {
             $voterTransaction = $this->encodedTransactionDetails;
@@ -84,6 +88,8 @@ class SyncCatatalystVotersJob implements ShouldQueue
                 config('cardano.lucidEndpoint').'/votes/decode-voter-transaction',
                 compact('voterTransaction')
             )->throw();
+
+
 
             // save voter details if $response is succeful
             if ($res->successful()) {
