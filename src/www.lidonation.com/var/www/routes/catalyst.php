@@ -123,8 +123,8 @@ Route::group(
             Route::get('people/{catalystUser:id}/metrics/sum/completed-proposals', [CatalystProposerController::class, 'getCompletedProposalCount']);
             Route::get('people/{catalystUser:id}/metrics/sum/outstanding-proposals', [CatalystProposerController::class, 'getOutsandingProposalCount']);
             Route::get('people/{catalystUser:id}/metrics/sum/outstanding-co-proposals', [CatalystProposerController::class, 'getCoProposalCount']);
-            Route::get('people/{catalystUser:id}/metrics/sum/F10primary-proposals', [CatalystProposerController::class, 'getF10PrimaryProposalCount']);
-            Route::get('people/{catalystUser:id}/metrics/sum/F10-co-proposals', [CatalystProposerController::class, 'getF10CoProposalCount']);
+            Route::get('people/{catalystUser:id}/metrics/sum/f10primary-proposals', [CatalystProposerController::class, 'getF10PrimaryProposalCount']);
+            Route::get('people/{catalystUser:id}/metrics/sum/f10-co-proposals', [CatalystProposerController::class, 'getF10CoProposalCount']);
 
             //catalyst charts metrics
             Route::prefix('/metrics')->as('metrics.')->group(function () {

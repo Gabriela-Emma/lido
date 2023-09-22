@@ -103,7 +103,7 @@ axios.get(`${usePage().props.base_url}/catalyst-explorer/people/${props.profileQ
         console.error(error);
     });
 
-axios.get(`${usePage().props.base_url}/catalyst-explorer/people/${props.profileQuickView.id}/metrics/sum/F10primary-proposals`, {})
+axios.get(`${usePage().props.base_url}/catalyst-explorer/people/${props.profileQuickView.id}/metrics/sum/f10primary-proposals`, {})
     .then((res) => {
         singlePrimaryProposalCount.value = res.data
     })
@@ -111,7 +111,7 @@ axios.get(`${usePage().props.base_url}/catalyst-explorer/people/${props.profileQ
         console.error(error);
     });
 
-axios.get(`${usePage().props.base_url}/catalyst-explorer/people/${props.profileQuickView.id}/metrics/sum/F10-co-proposals`, {})
+axios.get(`${usePage().props.base_url}/catalyst-explorer/people/${props.profileQuickView.id}/metrics/sum/f10-co-proposals`, {})
     .then((res) => {
         multipleProposalCount.value = res.data
     })
