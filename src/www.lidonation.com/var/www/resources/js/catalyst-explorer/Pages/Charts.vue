@@ -55,12 +55,10 @@
                 <!-- Number Grid -->
                 <Suspense>
                     <div class="relative col-span-1 row-span-6 bg-white md:col-span-2 round-sm xl:col-span-3">
-                        <div class="grid h-full grid-cols-2 ">
-                            <VotingAggrigates :fund-id="selectedFundRef" />
-                        </div>
+                        <VotingAggregates :fund-id="selectedFundRef" />
                     </div>
 
-                    <template #fallback>
+                    <template #fallba.ck>
                         <div
                             class="relative col-span-1 row-span-6 bg-slate-200 md:col-span-4 round-sm xl:col-span-3 animate-pulse">
                             <div class="grid h-full grid-cols-2 ">
@@ -117,7 +115,7 @@ import RegistrationChart from '../modules/charts/RegistrationChart.vue';
 import AdaPowerChart from '../modules/charts/AdaPowerChart.vue';
 import YesNoVotesSum from "@/catalyst-explorer/modules/charts/YesNoVotesSum.vue";
 
-const VotingAggrigates = defineAsyncComponent(() =>
+const VotingAggregates = defineAsyncComponent(() =>
     import('../modules/charts/VotingAggrigates.vue')
 )
 const LiveTally = defineAsyncComponent(() =>

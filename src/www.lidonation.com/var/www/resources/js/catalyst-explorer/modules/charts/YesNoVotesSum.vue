@@ -4,7 +4,7 @@
             <dl class="flex flex-col justify-between p-2">
                 <dd>
                     <div class="text-4xl font-semibold lg:text-5xl 2xl:text-6xl">
-                        {{ $filters.shortNumber(yesVotesSum, 2) }}
+                        {{ yesVotesSum$ > 0 ? $filters.shortNumber(yesVotesSum$, 2) : '-' }}
                     </div>
                 </dd>
                 <dt class="mt-3 font-medium truncate">
@@ -17,7 +17,7 @@
             <dl class="flex flex-col justify-between">
                 <dd>
                     <div class="text-4xl font-semibold text-white lg:text-5xl 2xl:text-6xl">
-                        {{ talliesSum$.toLocaleString() }}
+                        {{ talliesSum$ > 0 ? talliesSum$.toLocaleString() : '-' }}
                     </div>
                 </dd>
                 <dt class="mt-3 font-medium text-gray-200 truncate">
@@ -30,7 +30,7 @@
             <dl class="flex flex-col justify-between text-right">
                 <dd>
                     <div class="text-4xl font-semibold lg:text-5xl 2xl:text-6xl">
-                        {{ $filters.shortNumber(noVotesSum) }}
+                        {{ noVotesSum$  > 0 ? $filters.shortNumber(noVotesSum$) : '-' }}
                     </div>
                 </dd>
                 <dt class="mt-3 font-medium">
@@ -54,10 +54,9 @@ const props = defineProps<{
 }>()
 
 let talliesSum$ = ref(null);
-let yesVotesSum = ref(null);
-let noVotesSum = ref(null);
+let yesVotesSum$ = ref(null);
+let noVotesSum$ = ref(null);
 let fundId = ref(props.fundId);
-
 
 function getQueryData() {
     const data = {};
@@ -69,7 +68,7 @@ function getQueryData() {
 }
 
 let query = () => {
-    let params = getQueryData()
+    let params = getQueryData();
     axios.get(route('catalystExplorerApi.talliesSum'), { params })
         .then((res) => {
             talliesSum$.value = res?.data;
@@ -79,13 +78,13 @@ let query = () => {
         });
 
     axios.get(route('catalystExplorer.metrics.totalYesVotes'), { params })
-        .then((res) => yesVotesSum.value = res?.data)
+        .then((res) => yesVotesSum$.value = res?.data)
         .catch((error) => {
             console.error(error);
         });
 
     axios.get(route('catalystExplorer.metrics.totalNoVotes'), { params })
-        .then((res) => noVotesSum.value = res?.data)
+        .then((res) => noVotesSum$.value = res?.data)
         .catch((error) => {
             console.error(error);
         });
@@ -93,7 +92,7 @@ let query = () => {
 
 watch(() => props.fundId, () => {
     query();
-})
+}, { deep: true });
 query();
 
 </script>

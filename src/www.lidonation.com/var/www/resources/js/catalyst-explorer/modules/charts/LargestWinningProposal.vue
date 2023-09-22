@@ -41,7 +41,6 @@ let amount_requested = ref(null);
 let largestFundedProposalObject = ref(null);
 let link = ref(null);
 
-
 function getQueryData() {
     const data = {};
     if (props.fundId) {

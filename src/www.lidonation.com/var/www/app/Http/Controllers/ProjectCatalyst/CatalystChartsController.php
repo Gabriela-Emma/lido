@@ -179,6 +179,7 @@ class CatalystChartsController extends Controller
     public function metricsTotalYesVotes(Request $request): float|int|null
     {
         $p = Proposal::query();
+        $this->setFilters($request);
         if ($this->fundFilter) {
             $p->whereRelation('fund', 'parent_id', $this->fundFilter);
         }
@@ -189,7 +190,8 @@ class CatalystChartsController extends Controller
     public function metricsTotalNoVotes(Request $request): float|int|null
     {
         $p = Proposal::query();
-        if ($this->fundFilter) {
+        $this->setFilters($request);
+        if ( $this->fundFilter ) {
             $p->whereRelation('fund', 'parent_id', $this->fundFilter);
         }
 

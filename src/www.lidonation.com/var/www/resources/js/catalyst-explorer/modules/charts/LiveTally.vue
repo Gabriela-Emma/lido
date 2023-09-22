@@ -1,5 +1,5 @@
 <template>
-    <div v-if="tallies$.data.length > 0" class="w-full col-span-1 p-3 overflow-y-visible bg-white md:col-span-5 xl:col-span-8 xl:row-span-12 round-sm">
+    <div v-if="tallies$?.data?.length > 0" class="w-full col-span-1 p-3 overflow-y-visible bg-white md:col-span-5 xl:col-span-8 xl:row-span-12 round-sm">
         <div class="flex items-center justify-between">
             <div class="text-blue-dark-500">
                 <h2 class="flex items-end gap-2 mb-0 xl:text-3xl">
@@ -87,7 +87,7 @@
                 </table>
                 <div class="flex items-center justify-between w-full gap-16 my-16 xl:gap-24">
                     <div class="flex-1 w-full px-6">
-                        <Pagination :links="tallies$.links" :per-page="perPage$" :total="tallies$?.total"
+                        <Pagination :links="tallies$?.links" :per-page="perPage$" :total="tallies$?.total"
                             :from="tallies$?.from" :to="tallies$?.to"
                             @perPageUpdated="(payload) => (perPage$ = payload) && getTallies()"
                             @paginated="(payload) => (currPage$ = payload) && getTallies()" />
