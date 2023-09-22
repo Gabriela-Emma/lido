@@ -77,7 +77,7 @@ class CatalystGroupsController extends Controller
 
     public function update(Request $request, CatalystGroup $catalystGroup)
     {
-        if (! $catalystGroup->id) {
+        if (!$catalystGroup->id) {
             throw (new ModelNotFoundException())->setModel(CatalystGroup::class);
         }
         $request->validate([
@@ -103,8 +103,17 @@ class CatalystGroupsController extends Controller
             ->where('status', 'published')
             ->whereHas('proposals', fn ($q) => $q->whereNotNull('funded_at'))
             ->withSum([
-                'proposals as amount_awarded' => function ($query) {
-                    $query->whereNotNull('funded_at');
+                'proposals as amount_awarded_ada' => function ($query) {
+                    $query->whereNotNull('funded_at')
+                        ->whereHas('fund', function ($q) {
+                            $q->where('currency', 'ADA');
+                        });
+                },
+                'proposals as amount_awarded_usd' => function ($query) {
+                    $query->whereNotNull('funded_at')
+                        ->whereHas('fund', function ($q) {
+                            $q->where('currency', 'USD');
+                        });
                 },
             ], 'amount_requested')
             ->withSum([
@@ -123,18 +132,20 @@ class CatalystGroupsController extends Controller
 
         $paginator = $query->fastPaginate($this->perPage, ['*'], 'p')->setPath('/');
 
-        $paginator->through(fn ($group) => [
-            'id' => $group->id,
-            'logo' => $group->thumbnail_url ?? $group->gravatar,
-            'name' => $group->name,
-            'twitter' => $group->twitter,
-            'website' => $group->website,
-            'github' => $group->github,
-            'slug' => $group->slug,
-            'discord' => $group->discord,
-            'amount_awarded' => $group->amount_awarded,
-            'amount_received' => $group->amount_received,
-        ]
+        $paginator->through(
+            fn ($group) => [
+                'id' => $group->id,
+                'logo' => $group->thumbnail_url ?? $group->gravatar,
+                'name' => $group->name,
+                'twitter' => $group->twitter,
+                'website' => $group->website,
+                'github' => $group->github,
+                'slug' => $group->slug,
+                'discord' => $group->discord,
+                'amount_awarded_ada' => $group->amount_awarded_ada,
+                'amount_awarded_usd' => $group->amount_awarded_usd,
+                'amount_received' => $group->amount_received,
+            ]
         );
 
         return $paginator->onEachSide(1)->toArray();
