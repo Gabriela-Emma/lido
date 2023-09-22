@@ -24,6 +24,7 @@ class CatalystTalliesController extends Controller
 
         $query = CatalystTally::setEagerLoads([])->with('model')
             ->where('model_type', Proposal::class)
+            ->where('context_id', $funds)
             ->orderBy($orderBy, $order);
 
         if ($challenges->isNotEmpty()) {
