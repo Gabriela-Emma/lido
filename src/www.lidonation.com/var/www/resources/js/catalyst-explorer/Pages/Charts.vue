@@ -78,7 +78,7 @@
                 </div>
 
                 <!-- Yes Votes no Votes Sum -->
-                <div class="relative col-span-1 row-span-1 md:col-span-8">
+                <div class="relative row-span-1 col-span-8">
                     <YesNoVotesSum :fundId="selectedFundRef" />
                 </div>
 
