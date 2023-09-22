@@ -12,7 +12,7 @@ class CatalystProposerController extends Controller
         return $catalystUser->proposals()->where('status', 'complete')->count();
     }
 
-    public function getOutsandingProposalCount(CatalystUser $catalystUser)
+    public function getOutstandingProposalCount(CatalystUser $catalystUser)
     {
         return $catalystUser->own_proposals()->where('status', 'in_progress')->count();
     }
