@@ -2,12 +2,16 @@
 
 namespace App\Http\Controllers\ProjectCatalyst;
 
-use App\Http\Controllers\Controller;
-use App\Models\CatalystRegistration;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
+use JsonMachine\Items;
+use Illuminate\Http\Request;
 use JetBrains\PhpStorm\ArrayShape;
+use App\Http\Controllers\Controller;
+use App\Models\CatalystRegistration;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
+
 
 class CatalystRegistrationsController extends Controller
 {
@@ -33,6 +37,7 @@ class CatalystRegistrationsController extends Controller
             'search' => $this->search,
             'perPage' => $this->perPage,
             'registrations' => $this->query($request),
+            'voterData' => $this->getVoterData(),
             'crumbs' => [
                 ['label' => 'Registrations'],
             ],
@@ -60,5 +65,28 @@ class CatalystRegistrationsController extends Controller
         $_options = [];
 
         return $_options;
+    }
+
+    public function getVoterData(){
+        $filePath = storage_path('json/vote.json');
+        $jsonContents = file_get_contents($filePath);
+        $data = json_decode($jsonContents, true);
+
+        $collection = new Collection($data);
+
+        $paginatedData = $collection->slice(($this->currentPage - 1) * $this->perPage, $this->perPage)->all();
+
+        $paginator = new LengthAwarePaginator(
+            $paginatedData,
+            $collection->count(),
+            $this->perPage,
+            $this->currentPage,
+            [
+                'pageName' => 'p',
+            ]        
+        );
+
+        return
+        $paginator->onEachSide(1)->toArray();
     }
 }
