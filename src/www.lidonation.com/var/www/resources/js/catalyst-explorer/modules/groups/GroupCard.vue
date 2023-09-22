@@ -13,20 +13,24 @@
                             {{ catalystGroup.name }}
                         </a>
                     </h3>
-                    <div class="flex flex-col justify-center gap2 itemscenter">
-                        <span class="text-xl font-semibold text-teal-600">
-                            ₳{{ $filters.shortNumber(catalystGroup.amount_awarded_ada, 1) }}
-                        </span>
-                        <span class="text-xs text-gray-500">{{ $t('Awarded') }}</span>
-                    </div>
-                    <span class="flex items-center justify-between ">
-                        <PlusIcon class="w-7 h-7 mr-2 -ml-1 text-black font-bold" aria-hidden="true" />
-                    </span>
-                    <div class="flex flex-col justify-center gap2 itemscenter">
-                        <span class="text-xl font-semibold text-teal-600">
-                            ${{ $filters.shortNumber(catalystGroup.amount_awarded_usd, 1) }}
-                        </span>
-                        <span class="text-xs text-gray-500">{{ $t('Awarded') }}</span>
+                    <div>
+                        <div class="flex flex-col justify-center gap-2 itemscenter">
+                            <div class="flex flex-row gap-2">
+                                <div v-if="!!catalystGroup.amount_awarded_ada" class="flex flex-row gap-2">
+                                    <span class="text-xl font-semibold text-teal-600">
+                                        ₳{{ $filters.shortNumber(catalystGroup.amount_awarded_ada, 1) }}
+                                    </span>
+                                    <span class="flex items-center justify-between ">
+                                        <PlusIcon class="w-7 h-7 -ml-1 text-black font-bold" aria-hidden="true" />
+                                    </span>
+                                </div>
+
+                                <span class="text-xl font-semibold text-teal-600">
+                                    ${{ $filters.shortNumber(catalystGroup.amount_awarded_usd, 1) }}
+                                </span>
+                            </div>
+                            <span class="text-xs text-gray-500">{{ $t('Awarded') }}</span>
+                        </div>
                     </div>
                 </div>
 
