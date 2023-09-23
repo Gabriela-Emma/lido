@@ -1,5 +1,5 @@
 <template>
-    <dl class="flex flex-col justify-between h-full text-center text-white">
+    <dl class="flex flex-col justify-between h-full text-center text-white text-sm xl:text-base">
         <dd>
             <div class="text-4xl font-semibold lg:text-5xl 2xl:text-6xl">
                 {{ totalRegistrations?.toLocaleString() }}

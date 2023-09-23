@@ -1,5 +1,5 @@
 <template>
-    <dl class="flex flex-col justify-between h-full">
+    <dl class="flex flex-col text-xs xl:text-base justify-between h-full">
         <dd>
             <div class="text-4xl font-semibold lg:text-5xl 2xl:text-6xl text-blue-dark-500">
                 {{ $filters.number(fundedOver75KCount) }}

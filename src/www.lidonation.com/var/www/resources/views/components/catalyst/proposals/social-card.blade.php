@@ -168,7 +168,7 @@
                 class="flex flex-row items-center justify-start py-2 text-sm">
                 <div class="flex flex-row gap-2">
                     <div class="font-medium text-gray-300">
-                        Unique Wallets:
+                        Votes Cast:
                     </div>
                     <div>
                         {{$proposal->meta_data?->unique_wallets}}

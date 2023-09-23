@@ -6,7 +6,7 @@
                     {{ fullyDisbursedProposalsCount }}
                 </div>
             </dd>
-            <dt class="mt-3 text-lg font-medium text-gray-200 truncate">
+            <dt class="mt-3 text-xs 2xl:text-lg font-medium text-gray-200 truncate">
                 Proposals with Fully Disbursed Funds
             </dt>
         </dl>
@@ -19,7 +19,7 @@
                     {{ $filters.number(completedProposalsCount) }}
                 </div>
             </dd>
-            <dt class="mt-3 text-lg font-medium text-gray-200 truncate">
+            <dt class="mt-3 text-xs 2xl:text-lg font-medium text-gray-200 truncate">
                 Completed Proposals
             </dt>
         </dl>
