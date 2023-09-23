@@ -79,7 +79,7 @@ class CatalystRegistrationsController extends Controller
             $data = json_decode($jsonContents, true);
             $collection = new Collection($data);
 
-            $paginatedData = $collection->slice(($currentPage - 1) * $perPage, $perPage)->all();
+            $paginatedData = $collection->slice(($currentPage - 1) * $perPage, $perPage)->values();
 
             $paginator = new LengthAwarePaginator(
                 $paginatedData,

@@ -1,5 +1,5 @@
 <template>
-    <div class="grid h-full grid-cols-2 text-sm">
+    <div class="grid h-full grid-cols-2 text-xs">
         <div class="relative col-span-2 row-span-1 md:text-base px-3 py-8 border border-white bg-blue-dark-500 round-sm">
             <RegisteredAdaPower :fundId="fundId"/>
         </div>

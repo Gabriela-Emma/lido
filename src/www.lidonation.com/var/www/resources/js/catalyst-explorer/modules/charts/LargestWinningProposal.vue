@@ -1,5 +1,5 @@
 <template>
-    <dl class="relative flex flex-col justify-between h-full">
+    <dl class="relative flex flex-col justify-between h-full text-sm xl:text-base">
         <div class="absolute top-0 right-0 px3">
             <a v-if="amount_requested > 0" type="button" :href="link ?? null" target="_blank"
                 class="inline-flex items-center px-1.5 py-1 border border-white hover:border-accent-700 shadow-xs text-xs font-semibold rounded-sm text-white bg-transparent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent-600 hover:bg-accent-600">
