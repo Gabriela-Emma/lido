@@ -97,7 +97,9 @@
                             </div>
                         </div>
                         <!--  -->
-                        <VoterData :search="search"/>
+                        <div class="mt-4">
+                            <VoterData v-if="search.length" :search="search" />
+                        </div>
                         <!--  -->
                     </div>
                 </div>
@@ -139,7 +141,6 @@ let perPageRef = ref<number>(props.perPage);
 watch([search], () => {
     return query();
 }, { deep: true });
-
 
 
 watch([currPageRef, perPageRef], async () => {

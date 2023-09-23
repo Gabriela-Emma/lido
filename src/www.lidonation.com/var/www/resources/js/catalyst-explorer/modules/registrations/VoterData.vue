@@ -1,5 +1,8 @@
 <template>
-    <div class="flow-root mt-8">
+    <div class="flow-root mt-8" v-if="voterData?.data">
+        <h1 class="text-lg font-semibold leading-6 text-gray-900">
+            My Vote History
+        </h1>
         <div class="-my-2 overflow-x-auto">
             <div class="inline-block min-w-full py-2 align-middle">
                 <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-sm">
@@ -28,36 +31,39 @@
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
-                            <tr v-for="data in voterData.data">
+                            <tr v-for="data in voterData?.data">
                                 <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 whitespace-nowrap sm:pl-6">
-                                    {{ data.fragment_id }}
+                                    {{ data?.fragment_id }}
                                 </td>
                                 <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 whitespace-nowrap sm:pl-6">
-                                    {{ data.caster }}
+                                    {{ data?.caster }}
                                 </td>
                                 <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 whitespace-nowrap sm:pl-6">
-                                    {{ data.proposal }}
+                                    {{ data?.proposal }}
                                 </td>
                                 <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 whitespace-nowrap sm:pl-6">
-                                    {{ data.time }}
+                                    {{ data?.time }}
                                 </td>
                                 <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 whitespace-nowrap sm:pl-6">
-                                    {{ data.choice }}
+                                    {{ data?.choice }}
                                 </td>
                                 <td class="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 whitespace-nowrap sm:pl-6">
-                                    {{ data.raw_fragment }}
+                                    {{ data?.raw_fragment }}
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
-            <div class="flex-1">
-                <Pagination :links="voterData.links" :per-page="perPage" :total="voterData?.total"
-                    :from="voterData?.from" :to="voterData?.to"
-                    @perPageUpdated="(payload) => perPageRef = payload" @paginated="(payload) => currPageRef = payload" />
+            <div class="flex-1 mb-9">
+                <Pagination :links="voterData.links" :per-page="perPageRef" :total="voterData?.total"
+                    :from="voterData?.from" :to="voterData?.to" @perPageUpdated="(payload) => perPageRef = payload"
+                    @paginated="(payload) => currPageRef = payload" />
             </div>
         </div>
+    </div>
+    <div v-else class="flow-root p-2 font-semibold leading-6 text-gray-900 bg-white" >
+        <p>Vote History not found</p>
     </div>
 </template>
 
@@ -66,7 +72,7 @@
 import { Ref, ref } from 'vue';
 import Pagination from '../../Shared/Components/Pagination.vue';
 import VoteData from '../../models/vote-data';
-import {VARIABLES} from '../../models/variables'
+import { VARIABLES } from '../../models/variables'
 import axios from 'axios';
 import route from 'ziggy-js';
 import { watch } from 'vue';
@@ -76,7 +82,7 @@ const props = defineProps<{
     search: string
 }>()
 
-let voterData= ref<{
+let voterData = ref<{
     links: [],
     total: number,
     to: number,
@@ -112,8 +118,9 @@ let query = () => {
         })
 }
 
-watch(() => props.search, () => {
+watch([() => props.search, currPageRef, perPageRef], () => {
     query();
 })
+query();
 
 </script>

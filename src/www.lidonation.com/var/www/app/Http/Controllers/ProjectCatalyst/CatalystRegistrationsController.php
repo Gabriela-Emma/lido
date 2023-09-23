@@ -37,7 +37,6 @@ class CatalystRegistrationsController extends Controller
             'search' => $this->search,
             'perPage' => $this->perPage,
             'registrations' => $this->query($request),
-            'voterData' => $this->getVoterData(),
             'crumbs' => [
                 ['label' => 'Registrations'],
             ],
@@ -67,26 +66,37 @@ class CatalystRegistrationsController extends Controller
         return $_options;
     }
 
-    public function getVoterData(){
-        $filePath = storage_path('json/vote.json');
-        $jsonContents = file_get_contents($filePath);
-        $data = json_decode($jsonContents, true);
+    public function getVoterData(Request $request)
+    {
+        $search = $request->input('s', null);
+        $perPage = $request->input('l', 24);
+        $currentPage = $request->input('p', 1);
 
-        $collection = new Collection($data);
+        $filePath = '/data/catalyst-tools/voting-history/f10/'.$search.'.json';
 
-        $paginatedData = $collection->slice(($this->currentPage - 1) * $this->perPage, $this->perPage)->all();
+        if (file_exists($filePath)) {
+            $jsonContents = file_get_contents($filePath);
+            $data = json_decode($jsonContents, true);
+            $collection = new Collection($data);
 
-        $paginator = new LengthAwarePaginator(
-            $paginatedData,
-            $collection->count(),
-            $this->perPage,
-            $this->currentPage,
-            [
-                'pageName' => 'p',
-            ]        
-        );
+            $paginatedData = $collection->slice(($currentPage - 1) * $perPage, $perPage)->all();
 
-        return
-        $paginator->onEachSide(1)->toArray();
+            $paginator = new LengthAwarePaginator(
+                $paginatedData,
+                $collection->count(),
+                $perPage,
+                $currentPage,
+                [
+                    'pageName' => 'p',
+                ]
+            );
+
+            return
+            $paginator->onEachSide(1)->toArray();
+        } else {
+            return [];
+        }
+
+
     }
 }
