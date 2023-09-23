@@ -86,12 +86,20 @@ const props = withDefaults(
                 value: 'name:desc',
             },
             {
-                label: 'Amount Awarded: High to Low',
-                value: 'amount_awarded:desc',
+                label: 'Amount Awarded Ada: High to Low',
+                value: 'amount_awarded_ada:desc',
             },
             {
-                label: 'Amount Awarded: Low to High',
-                value: 'amount_awarded:asc',
+                label: 'Amount Awarded Ada: Low to High',
+                value: 'amount_awarded_ada:asc',
+            },
+            {
+                label: 'Amount Awarded USD: High to Low',
+                value: 'amount_awarded_usd:desc',
+            },
+            {
+                label: 'Amount Awarded USD: Low to High',
+                value: 'amount_awarded_usd:asc',
             },
         ]
     });
