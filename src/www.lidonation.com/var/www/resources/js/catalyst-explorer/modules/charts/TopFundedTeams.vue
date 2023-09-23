@@ -1,14 +1,14 @@
 <template>
     <div class="h-full">
-        <div class="bg-primary-20 p-3">
+        <div class="p-3 bg-primary-20">
             <div class="flex flex-col md:flex-row md:justify-between">
-                <h2 class="mb-0 xl:text-3xl block">{{widgetLabel}} Teams</h2>
+                <h2 class="block mb-0 xl:text-3xl">{{widgetLabel}} Teams</h2>
                 <FundingTypeSelectorVue />
             </div>
             <p v-if="!loadingTeams && !emptyDataTeams">
                 Combined aggregate requested funding of all proposals associated with a group or person across {{ fund?.label }}
             </p>
-            <div class="relative text-xl flex gap-4 items-center" v-if="!loadingTeams && emptyDataTeams">
+            <div class="relative flex items-center gap-4 text-xl" v-if="!loadingTeams && emptyDataTeams">
                 <p>That's all we know.</p>
                 <span>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 fill-red-700">
@@ -74,8 +74,6 @@
 
 <script setup lang="ts">
 import { Ref, computed, ref, watch, onMounted } from 'vue';
-import axios from 'axios';
-import route from 'ziggy-js';
 import { inject } from "vue";
 import { VARIABLES } from "../../models/variables";
 import Fund from '../../models/fund';

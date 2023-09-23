@@ -92,6 +92,8 @@ Route::group(
 
             Route::get('/registrations', [CatalystRegistrationsController::class, 'index'])
                 ->name('registrations');
+            Route::get('/votes-data', [CatalystRegistrationsController::class, 'getVoterData'])
+                ->name('voterData');
 
             Route::get('/assessments', [CatalystAssessmentsController::class, 'index'])
                 ->name('assessments');
