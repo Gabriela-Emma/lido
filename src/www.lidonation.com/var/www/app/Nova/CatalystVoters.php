@@ -4,6 +4,8 @@ namespace App\Nova;
 
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
+use App\Models\CatalystVoter;
+use App\Nova\Actions\GenarateVoterHistory;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
@@ -14,8 +16,9 @@ class CatalystVoters extends Resource
      *
      * @var string
      */
-    public static $model = \App\Models\CatalystVoter::class;
+    public static $model = CatalystVoter::class;
 
+    public static $group = 'Catalyst';
     /**
      * The single value that should be used to represent the resource when being displayed.
      *
@@ -97,6 +100,8 @@ class CatalystVoters extends Resource
      */
     public function actions(NovaRequest $request)
     {
-        return [];
+        return [
+            (new GenarateVoterHistory)
+        ];
     }
 }

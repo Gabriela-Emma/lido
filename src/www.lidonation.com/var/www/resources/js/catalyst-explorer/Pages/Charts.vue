@@ -58,7 +58,7 @@
                         <VotingAggregates :fund-id="selectedFundRef" />
                     </div>
 
-                    <template #fallba.ck>
+                    <template #fallback>
                         <div
                             class="relative col-span-1 row-span-6 bg-slate-200 md:col-span-4 round-sm xl:col-span-3 animate-pulse">
                             <div class="grid h-full grid-cols-2 ">
@@ -75,7 +75,7 @@
                 </div>
 
                 <!-- Yes Votes no Votes Sum -->
-                <div class="relative row-span-1 col-span-1 md:col-span-5 xl:col-span-8">
+                <div class="relative col-span-1 row-span-1 md:col-span-5 xl:col-span-8">
                     <YesNoVotesSum :fundId="selectedFundRef" />
                 </div>
 
