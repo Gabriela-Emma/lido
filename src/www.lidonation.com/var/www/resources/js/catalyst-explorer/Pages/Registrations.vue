@@ -21,7 +21,7 @@
 
             <section class="py-8">
                 <div class="container">
-                    <VoterVotesCast v-if="search?.length" :search="search"/>
+                    <VoterVotesCast v-if="search?.length" :search="search" :curr-page="currPageRef" :per-page="perPageRef"/>
                 </div>
             </section>
         </main>
@@ -80,7 +80,7 @@ function query() {
     router.get(
         route('catalystExplorer.registrations'),
         data,
-        {preserveState: true, preserveScroll: true}
+        {preserveState: false, preserveScroll: true}
     );
 }
 </script>

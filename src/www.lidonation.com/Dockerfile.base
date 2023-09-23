@@ -2,13 +2,13 @@ FROM php:8.2-fpm-alpine3.17 as cc
 
 RUN apk add --no-cache musl-dev git curl
 
-RUN curl –proto ‘=https’ –tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y && source $HOME/.cargo/env
+RUN curl –proto ‘=https’ –tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 
 RUN cd /opt && git clone https://github.com/input-output-hk/catalyst-core.git
 
 WORKDIR /opt/catalyst-core
 
-RUN cargo build --release -p audit
+RUN source $HOME/.cargo/env && cargo build --release -p audit
 
 FROM php:8.2-fpm-alpine3.17
 
