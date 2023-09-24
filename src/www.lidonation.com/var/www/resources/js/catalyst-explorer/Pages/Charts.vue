@@ -51,7 +51,6 @@
                 </div>
 
 
-
                 <!-- Number Grid -->
                 <Suspense>
                     <div class="relative col-span-1 row-span-6 bg-white md:col-span-2 round-sm xl:col-span-3">

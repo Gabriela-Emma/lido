@@ -28,7 +28,7 @@
         <div class="relative m-2" v-if="!loadingTeams && !emptyDataTeams">
             <ul role="list" class="divide-y divide-gray-200 max-h-[42rem] overflow-y-auto">
                 <li v-for="proposer in proposers" v-if="proposers">
-                    <a :href="$utils.localizeRoute(`project-catalyst/users/${proposer?.id}`)"
+                    <a :href="proposer?.groups[0]?.link ? proposer?.groups[0]?.link : $utils.localizeRoute(`project-catalyst/users/${proposer?.id}`)"
                         class="block hover:bg-gray-50" target="_blank">
                         <div class="flex items-center px-4 py-4 sm:px-6">
                             <div class="flex items-center flex-1 min-w-0">
@@ -39,7 +39,7 @@
                                 <div class="flex-1 min-w-0 px-4 md:grid md:grid-cols-2 md:gap-4">
                                     <div class="flex items-center justify-start">
                                         <p class="text-xl font-medium text-gray-600 truncate ">
-                                            {{ proposer.name }}
+                                            {{ proposer?.groups[0]?.name ?? proposer?.name }}
                                         </p>
                                     </div>
                                     <div class="hidden md:block">
