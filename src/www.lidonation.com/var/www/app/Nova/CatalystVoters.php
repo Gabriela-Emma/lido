@@ -100,8 +100,6 @@ class CatalystVoters extends Resource
      */
     public function actions(NovaRequest $request)
     {
-        return [
-            (new GenarateVoterHistory)
-        ];
+        return [];
     }
 }

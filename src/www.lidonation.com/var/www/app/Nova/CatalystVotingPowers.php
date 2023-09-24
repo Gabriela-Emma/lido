@@ -2,18 +2,17 @@
 
 namespace App\Nova;
 
-use App\Models\CatalystVotingPower;
-use Laravel\Nova\Actions\ExportAsCsv;
-use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\Number;
+use Illuminate\Http\Request;
+use App\Models\CatalystVoter;
 use Laravel\Nova\Fields\Text;
+use App\Nova\Filters\FundSnapshot;
+use App\Models\CatalystVotingPower;
+use App\Nova\Actions\GenarateVoterHistory;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class CatalystVotingPowers extends Resource
 {
-    public static $displayInNavigation = false;
-
     /**
      * The model the resource corresponds to.
      *
@@ -21,6 +20,7 @@ class CatalystVotingPowers extends Resource
      */
     public static $model = CatalystVotingPower::class;
 
+    public static $group = 'Catalyst';
     /**
      * The single value that should be used to represent the resource when being displayed.
      *
@@ -34,12 +34,13 @@ class CatalystVotingPowers extends Resource
      * @var array
      */
     public static $search = [
-        'id',
+        'id', 'voter_id', 'catalyst_snapshot_id'
     ];
 
     /**
      * Get the fields displayed by the resource.
      *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function fields(NovaRequest $request)
@@ -47,19 +48,20 @@ class CatalystVotingPowers extends Resource
         return [
             ID::make()->sortable(),
 
-            Text::make(__('Stake Pub'), 'voter_id')->sortable(),
+            Text::make(__('Voter Id '), 'voter_id')->sortable(),
 
-            Number::make(__('Voting Power'), 'voting_power')
-                ->required(),
+            Text::make(__('Snapshot Id '), 'catalyst_snapshot_id')->sortable(),
 
-            BelongsTo::make(__('Catalyst Snapshot'), 'catalyst_snapshot', CatalystSnapshots::class)
-                ->hideFromIndex(),
+            Text::make(__('Voting Power'), 'voting_power')->sortable(),
+
+
         ];
     }
 
     /**
      * Get the cards available for the request.
      *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function cards(NovaRequest $request)
@@ -70,16 +72,20 @@ class CatalystVotingPowers extends Resource
     /**
      * Get the filters available for the resource.
      *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function filters(NovaRequest $request)
     {
-        return [];
+        return [
+            (new FundSnapshot)
+        ];
     }
 
     /**
      * Get the lenses available for the resource.
      *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function lenses(NovaRequest $request)
@@ -90,12 +96,13 @@ class CatalystVotingPowers extends Resource
     /**
      * Get the actions available for the resource.
      *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function actions(NovaRequest $request)
     {
         return [
-            ExportAsCsv::make()->nameable(),
+            (new GenarateVoterHistory)
         ];
     }
 }
