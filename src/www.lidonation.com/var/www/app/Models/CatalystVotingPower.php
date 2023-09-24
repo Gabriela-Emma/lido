@@ -15,6 +15,15 @@ class CatalystVotingPower extends Model
         'catalyst_snapshot_id',
     ];
 
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'consumed'=> 'boolean'
+    ];
+
     public function catalyst_snapshot(): BelongsTo
     {
         return $this->belongsTo(CatalystSnapshot::class, 'catalyst_snapshot_id', 'id');
