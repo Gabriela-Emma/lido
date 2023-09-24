@@ -1,4 +1,4 @@
-FROM registry.lidonation.com/lidonation/lidonation/www.lidonation.com.base:8.2-fpm-alpine3.18
+FROM registry.lidonation.com/lidonation/lidonation/www.lidonation.com.base:8.2-fpm-alpine3.18-2023-09-23
 
 COPY /  /
 
