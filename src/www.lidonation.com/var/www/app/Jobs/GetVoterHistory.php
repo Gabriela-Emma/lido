@@ -32,7 +32,7 @@ class GetVoterHistory implements ShouldQueue
      *
      * @return void
      */
-    public function handle()
+    public function handle(): void
     {
         $voter = CatalystVoter::where('cat_id', $this->model->voter_id)->first();
         $voting_key  = substr($voter->voting_key, 2);
