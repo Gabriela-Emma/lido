@@ -91,7 +91,7 @@ class CatalystChartsController extends Controller
         $this->sortOrder = 'desc';
         $res = $this->query(false, ['funded_at', 'fund_id', 'amount_requested'], ['type = proposal'])->raw();
 
-        $fundIds = (bool) $this->fundFilter ? DB::table('funds')->where('parent_id', $this->fundFilter)->pluck('id')
+        $fundIds = (bool)$this->fundFilter ? DB::table('funds')->where('parent_id', $this->fundFilter)->pluck('id')
             : DB::table('funds')->where('parent_id', '>', 0)->pluck('id');
 
         if (isset($res['hits'])) {
@@ -166,7 +166,7 @@ class CatalystChartsController extends Controller
     {
         $this->fundFilter = $request->input(CatalystExplorerQueryParams::FUNDS, 113);
         $votingPower = CatalystVotingPower::whereHas('delegations', operator: '>', count: 1)
-            ->whereHas('catalyst_snapshot', fn ($q) => $q->where('model_id', $this->fundFilter))
+            ->whereHas('catalyst_snapshot', fn($q) => $q->where('model_id', $this->fundFilter))
             ->sum('voting_power');
 
         if ($votingPower && $votingPower > 0) {
@@ -191,7 +191,7 @@ class CatalystChartsController extends Controller
     {
         $p = Proposal::query();
         $this->setFilters($request);
-        if ( $this->fundFilter ) {
+        if ($this->fundFilter) {
             $p->whereRelation('fund', 'parent_id', $this->fundFilter);
         }
 
@@ -204,7 +204,7 @@ class CatalystChartsController extends Controller
         $this->fundFilter = $request->input(CatalystExplorerQueryParams::FUNDS, 113);
 
         return CatalystVotingPower::whereHas('delegations', operator: '>', count: 1)
-            ->whereHas('catalyst_snapshot', fn ($q) => $q->where('model_id', $this->fundFilter))
+            ->whereHas('catalyst_snapshot', fn($q) => $q->where('model_id', $this->fundFilter))
             ->count();
     }
 
@@ -234,7 +234,7 @@ class CatalystChartsController extends Controller
         $funds = CatalystSnapshot::with('model')
             ->where('model_type', Fund::class)
             ->orderBy('snapshot_at', 'desc')
-            ->get()->map(fn ($cs) => $cs->model);
+            ->get()->map(fn($cs) => $cs->model);
 
 
         $challenges = Fund::where('parent_id', '=', 113)->get(['id', 'title']);
@@ -254,7 +254,7 @@ class CatalystChartsController extends Controller
     {
         $this->fundFilter = $request->input(CatalystExplorerQueryParams::FUNDS, 113);
 
-        $this->fund = ! is_null($this->fundFilter)
+        $this->fund = !is_null($this->fundFilter)
             ? Fund::where('id', $this->fundFilter)->first()
             : null;
     }
@@ -311,7 +311,7 @@ class CatalystChartsController extends Controller
                     'challenge.amount',
                 ];
 
-                if ((bool) $this->sortBy && (bool) $this->sortOrder) {
+                if ((bool)$this->sortBy && (bool)$this->sortOrder) {
                     $options['sort'] = ["$this->sortBy:$this->sortOrder"];
                 }
 
@@ -370,14 +370,14 @@ class CatalystChartsController extends Controller
             ->groupByRaw(1);
 
         $adaPowerRangesCollection = $agg->get()
-            ->map(fn ($row) => [$row->range => [$row->wallets, $row->ada]])
+            ->map(fn($row) => [$row->range => [$row->wallets, $row->ada]])
             ->collapse();
 
         // convert the collection to an associative array whose structure is fully representative of our front-end needs
         $adaPowerRangesFormattedArray = [];
         foreach ($adaPowerRangesCollection as $range => $value) {
             $rangeArray = explode('-', $range);
-            $finalRange = $rangeArray[0].(count($rangeArray) == 3 ? ' - '.$rangeArray[1] : '');
+            $finalRange = $rangeArray[0] . (count($rangeArray) == 3 ? ' - ' . $rangeArray[1] : '');
 
             $adaPowerRangesFormattedArray[$finalRange] = [
                 $value['0'],
@@ -398,24 +398,24 @@ class CatalystChartsController extends Controller
     {
         $_options = [];
 
-        if ((bool) $this->fundingStatus && $this->fundingStatus !== 'paid') {
+        if ((bool)$this->fundingStatus && $this->fundingStatus !== 'paid') {
             $_options[] = "funding_status = {$this->fundingStatus}";
         }
 
-        if ((bool) $this->proposalStatus) {
+        if ((bool)$this->proposalStatus) {
             $_options[] = "status = {$this->proposalStatus}";
         }
 
-        if ((bool) $this->proposalType) {
+        if ((bool)$this->proposalType) {
             $_options[] = "type = {$this->proposalType}";
         }
 
-        if ((bool) $this->fundedProposalsFilter) {
+        if ((bool)$this->fundedProposalsFilter) {
             $_options[] = "funded = {$this->fundedProposalsFilter}";
         }
 
         // filter by fund
-        if ((int) $this->fundFilter) {
+        if ((int)$this->fundFilter) {
             $_options[] = "fund.id = {$this->fundFilter}";
         }
 
@@ -425,47 +425,47 @@ class CatalystChartsController extends Controller
     public function getTopFundedProposals(Request $request)
     {
         $query = Proposal::with(['users', 'groups'])
-        ->whereRelation('fund.parent', 'id', $request->input(CatalystExplorerQueryParams::FUNDS, 113))
-        ->where(['proposals.type' => 'proposal'])
-        ->orderByDesc('amount_requested')
-        ->when($request->input(CatalystExplorerQueryParams::CHART_FUND_STATUS) == 1,
-        function($query){
-            $query->whereNotNull('funded_at');
-        }
-        )
-        ->limit(15);
+            ->whereRelation('fund.parent', 'id', $request->input(CatalystExplorerQueryParams::FUNDS, 113))
+            ->where(['proposals.type' => 'proposal'])
+            ->orderByDesc('amount_requested')
+            ->when($request->input(CatalystExplorerQueryParams::CHART_FUND_STATUS) == 1,
+                function ($query) {
+                    $query->whereNotNull('funded_at');
+                }
+            )
+            ->limit(15);
 
         return $query->get();
     }
 
     public function getTopFundedTeams(Request $request)
     {
-        $param = $request->input(CatalystExplorerQueryParams::FUNDS, null);
+        $fund = $request->input(CatalystExplorerQueryParams::FUNDS, null);
         $fundedStatus = $request->input(CatalystExplorerQueryParams::CHART_FUND_STATUS);
 
         $users = CatalystUser::with('groups')
             ->whereHas(
                 'proposals',
-                function ($q) use ($param, $fundedStatus) {
+                function ($q) use ($fund, $fundedStatus) {
                     $q->when($fundedStatus == 1,
-                        function($q){
+                        function ($q) {
                             $q->whereNotNull('funded_at');
                         })
                         ->when(
-                            $param,
-                            function ($q, $param) {
-                                $q->whereRelation('fund.parent', 'id', $param);
+                            $fund,
+                            function ($q, $fund) {
+                                $q->whereRelation('fund.parent', 'id', $fund);
                             }
                         );
                 }
             )
             ->withSum([
-                'proposals as amount_requested' => function ($query) use ($param, $fundedStatus) {
+                'proposals as amount_requested' => function ($query) use ($fund, $fundedStatus) {
                     $query->when($fundedStatus == 1,
-                    function($q){
-                        $q->whereNotNull('funded_at');
-                    })->when(
-                        $param,
+                        function ($q) {
+                            $q->whereNotNull('funded_at');
+                        })->when(
+                        $fund,
                         function ($query, $param) {
                             $query->whereRelation('fund.parent', 'id', $param);
                         }
@@ -473,6 +473,7 @@ class CatalystChartsController extends Controller
                 },
             ], 'amount_requested')
             ->orderBy('amount_requested', 'desc')
+            ->limit(100)
             ->get();
 
         $groupedUsers = $users->filter(function ($user) {
@@ -489,16 +490,16 @@ class CatalystChartsController extends Controller
             return $group->first();
         });
 
+//        dd($ungroupedUsers->toArray());
+
         $finalUsers = $ungroupedUsers->concat($users->filter(function ($user) {
             return is_null($user->groups->first());
         }))->sortByDesc('amount_requested')->values()->all();
 
-        $result = [
-            'fund' => Fund::find($param),
-            'proposers' => array_slice($finalUsers, 0, 15),
+        return [
+            'fund' => Fund::find($fund),
+            'proposers' => array_slice($finalUsers, 0, 21),
         ];
-
-        return $result;
     }
 
     protected function attachmentLink(Request $request)

@@ -34,7 +34,7 @@
 
                 <ProposalViewTypes class="mr-4"></ProposalViewTypes>
 
-                <button @click="openIdeascaleLinks" v-if="props.proposals.total <= 35"
+                <button @click="openIdeascaleLddinks" v-if="props.proposals.total <= 35"
                     class="bg-white rounded-sm px-2 py-2.5 text-gray-400 flex-wrap hover:text-yellow-500">Open Ideascale
                     Links</button>
                 <div class="flex flex-col text-center text-pink-500" v-if="filtering || search">
@@ -201,6 +201,24 @@
                                             </span>
                                             <span class="text-xs">
                                                 $ {{ $t('Distributed') }}
+                                            </span>
+                                        </div>
+                                        <div class="flex flex-col text-center text-teal-light-500" v-if="metricSumAdaApproved"
+                                            key="sumAdaApproved">
+                                            <span class="font-semibold">
+                                                ₳{{ $filters.shortNumber(metricSumAdaApproved, 2) }}
+                                            </span>
+                                            <span class="text-xs">
+                                                ₳ {{ $t('Awarded') }}
+                                            </span>
+                                        </div>
+                                        <div class="flex flex-col text-center text-teal-400" v-if="metricSumAdaDistributed"
+                                            key="sumAdaDistributed">
+                                            <span class="font-semibold">
+                                                ₳{{ $filters.shortNumber(metricSumAdaDistributed, 2) }}
+                                            </span>
+                                            <span class="text-xs">
+                                                ₳ {{ $t('Distributed') }}
                                             </span>
                                         </div>
                                         <div class="flex flex-col text-center text-pink-500" v-if="metricSumCompleted"

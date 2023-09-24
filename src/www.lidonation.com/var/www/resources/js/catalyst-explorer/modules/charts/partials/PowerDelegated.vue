@@ -1,7 +1,7 @@
 <template>
     <dl class="flex flex-col justify-between h-full">
         <dd>
-            <div class="text-4xl font-semibold text-white lg:text-5xl 2xltext-6xl">
+            <div class="text-3xl font-semibold text-white lg:text-4xl 2xltext-5xl">
                 ₳{{ $filters.shortNumber(totalDelegationRegistrationsAdaPower, 3) }}
             </div>
         </dd>
