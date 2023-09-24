@@ -37,7 +37,6 @@ class GetVoterHistory implements ShouldQueue
     public function handle(): void
     {
         $voter = CatalystVoter::where('cat_id', $this->model->voter_id)->first();
-        // dd($this->model);
 
         if(!$voter instanceof CatalystVoter){
             return;
