@@ -20,14 +20,18 @@
                                     <span class="text-xl font-semibold text-teal-600">
                                         ₳{{ $filters.shortNumber(catalystGroup.amount_awarded_ada, 1) }}
                                     </span>
+                                </div>
+                                <div v-if="!!catalystGroup.amount_awarded_ada && !!catalystGroup.amount_awarded_usd">
                                     <span class="flex items-center justify-between ">
                                         <PlusIcon class="w-7 h-7 -ml-1 text-black font-bold" aria-hidden="true" />
                                     </span>
                                 </div>
+                                <div v-if="!!catalystGroup.amount_awarded_usd">
+                                    <span class="text-xl font-semibold text-teal-600">
+                                        ${{ $filters.shortNumber(catalystGroup.amount_awarded_usd, 1) }}
+                                    </span>
+                                </div>
 
-                                <span class="text-xl font-semibold text-teal-600">
-                                    ${{ $filters.shortNumber(catalystGroup.amount_awarded_usd, 1) }}
-                                </span>
                             </div>
                             <span class="text-xs text-gray-500">{{ $t('Awarded') }}</span>
                         </div>
