@@ -39,7 +39,6 @@ class UpdateVotingPowerStatusf10 implements ShouldQueue
                 if($voter instanceof CatalystVoter &&  file_exists('/data/catalyst-tools/voting-history/f10/' . $voter->stake_pub . '.json')){
                     $power->consumed = 1;
                     $power->save();
-                    dump($power);
                 }else{
                     $power->consumed = 0;
                     $power->save();
