@@ -3,15 +3,17 @@
 namespace App\Jobs;
 
 use App\Models\Model;
+use JsonMachine\Items;
 use App\Models\CatalystVoter;
-use App\Models\CatalystVotingPower;
 use Illuminate\Bus\Queueable;
+use App\Models\CatalystVotingPower;
 use Illuminate\Queue\SerializesModels;
 use Symfony\Component\Process\Process;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
+use Throwable;
 
 class GetVoterHistory implements ShouldQueue
 {
@@ -35,6 +37,10 @@ class GetVoterHistory implements ShouldQueue
     public function handle(): void
     {
         $voter = CatalystVoter::where('cat_id', $this->model->voter_id)->first();
+
+        if(!$voter instanceof CatalystVoter){
+            return;
+        }
         $voting_key  = substr($voter->voting_key, 2);
         $command = './find --fragments ' . $this->fragment_storage . ' --voting-key ' . $voting_key;
         $workingDirectory = '/opt/catalyst-tools';

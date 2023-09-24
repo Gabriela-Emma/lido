@@ -75,9 +75,8 @@ class CatalystRegistrationsController extends Controller
         $filePath = '/data/catalyst-tools/voting-history/f10/'.$search.'.json';
 
         if (file_exists($filePath)) {
-            $jsonContents = file_get_contents($filePath);
-            $data = json_decode($jsonContents, true);
-            $collection = new Collection($data);
+            $jsonContents = Items::fromFile($filePath);
+            $collection = new Collection($jsonContents);
 
             $paginatedData = $collection->slice(($currentPage - 1) * $perPage, $perPage)->values();
 
