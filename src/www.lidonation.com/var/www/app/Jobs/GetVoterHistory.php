@@ -37,7 +37,6 @@ class GetVoterHistory implements ShouldQueue
         $voter = CatalystVoter::where('cat_id', $this->model->voter_id)->first();
         $voting_key  = substr($voter->voting_key, 2);
         $command = './find --fragments ' . $this->fragment_storage . ' --voting-key ' . $voting_key;
-        // $command = './find --fragments /data/catalyst-tools/ledger-snapshots/f10/persist/leader-1 --voting-key 1ccc5f1c512849edd71ae9afb0b5fcaeb9605e9decbff6d49b9ab6da5539787d';
         $workingDirectory = '/opt/catalyst-tools';
 
         $process = Process::fromShellCommandline($command, $workingDirectory);
