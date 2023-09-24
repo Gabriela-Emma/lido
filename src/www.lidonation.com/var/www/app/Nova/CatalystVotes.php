@@ -3,7 +3,6 @@
 namespace App\Nova;
 
 use App\Models\CatalystUser;
-use App\Models\CatalystVote;
 use App\Nova\Actions\AddMetaData;
 use App\Nova\Actions\EditMetaData;
 use App\Nova\Actions\ValidateClaims;
@@ -23,7 +22,7 @@ class CatalystVotes extends Resource
     /**
      * The model the resource corresponds to.
      */
-    public static string $model = CatalystVote::class;
+    public static string $model = CatalystVotes::class;
 
     public static $group = 'Catalyst';
 

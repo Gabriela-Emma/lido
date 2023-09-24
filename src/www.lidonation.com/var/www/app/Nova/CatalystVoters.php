@@ -5,20 +5,18 @@ namespace App\Nova;
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
 use App\Models\CatalystVoter;
-use Laravel\Nova\Fields\Text;
-use App\Nova\Filters\FundSnapshot;
-use App\Models\CatalystVotingPower;
 use App\Nova\Actions\GenarateVoterHistory;
+use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
-class CatalystVotingPowers extends Resource
+class CatalystVoters extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = CatalystVotingPower::class;
+    public static $model = CatalystVoter::class;
 
     public static $group = 'Catalyst';
     /**
@@ -34,7 +32,7 @@ class CatalystVotingPowers extends Resource
      * @var array
      */
     public static $search = [
-        'id', 'voter_id', 'catalyst_snapshot_id'
+        'id', 'stake_pub', 'stake_key', 'cat_id', 'voting_pub', 'voting_key'
     ];
 
     /**
@@ -48,12 +46,15 @@ class CatalystVotingPowers extends Resource
         return [
             ID::make()->sortable(),
 
-            Text::make(__('Voter Id '), 'voter_id')->sortable(),
+            Text::make(__('Stake Pub'), 'stake_pub')->sortable(),
 
-            Text::make(__('Snapshot Id '), 'catalyst_snapshot_id')->sortable(),
+            Text::make(__('Stake key'), 'stake_key')->sortable(),
 
-            Text::make(__('Voting Power'), 'voting_power')->sortable(),
+            Text::make(__('Voting Pub'), 'voting_pub')->sortable(),
 
+            Text::make(__('Voting key'), 'voting_key')->sortable(),
+
+            Text::make(__('Cat Id'), 'cat_id')->sortable(),
 
         ];
     }
@@ -77,9 +78,7 @@ class CatalystVotingPowers extends Resource
      */
     public function filters(NovaRequest $request)
     {
-        return [
-            (new FundSnapshot)
-        ];
+        return [];
     }
 
     /**
@@ -101,8 +100,6 @@ class CatalystVotingPowers extends Resource
      */
     public function actions(NovaRequest $request)
     {
-        return [
-            (new GenarateVoterHistory)
-        ];
+        return [];
     }
 }
