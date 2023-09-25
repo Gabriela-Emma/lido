@@ -45,7 +45,7 @@ class GetVotingHistory extends Command
             return;
         }
 
-        $snapshot->votingPowers()->each(
+        $snapshot->votingPowers()->orderBy('voting_power')->each(
             function ($power) {
                 if ($this->option('queue')) {
                     GetVoterHistory::dispatch($power);

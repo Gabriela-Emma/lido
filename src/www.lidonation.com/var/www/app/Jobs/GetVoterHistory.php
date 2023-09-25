@@ -19,8 +19,6 @@ class GetVoterHistory implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public $fragment_storage = '/data/catalyst-tools/ledger-snapshots/f10/persist/leader-1';
-
     /**
      * Create a new job instance.
      *
@@ -42,6 +40,7 @@ class GetVoterHistory implements ShouldQueue
         if (!$voter instanceof CatalystVoter) {
             return;
         }
+
         $voting_key = substr($voter->voting_key, 2);
         $command = './find --fragments ' . $this->getFragmentStorage() . ' --voting-key ' . $voting_key;
         $workingDirectory = '/opt/catalyst-tools';
