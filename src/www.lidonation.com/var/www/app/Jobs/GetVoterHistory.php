@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Models\Model;
+use Illuminate\Support\Str;
 use JsonMachine\Items;
 use App\Models\CatalystVoter;
 use Illuminate\Bus\Queueable;
@@ -60,42 +61,19 @@ class GetVoterHistory implements ShouldQueue
         }
     }
 
-    public function getFragmentStorage(): string
+    public function getFragmentStorage(): ?string
     {
-        $fragments = collect([
-            '1',
-            '2',
-            '3',
-            '4',
-            '5',
-            '6',
-            '7',
-            '8',
-            '9',
-            '10',
-            '11',
-            '12',
-            '13',
-            '14',
-            '15',
-            '16',
-            '17',
-            '18',
-            '19',
-            '20',
-            '21',
-            '22',
-            '23',
-            '24',
-            '25'
-        ]);
+        $fragments = collect(scandir('/data/catalyst-tools/ledger-snapshots'))
+            ->filter( fn($dir) => Str::of($dir)->contains('f10') );
 
-        do {
-            $folder = '/data/catalyst-tools/ledger-snapshots/f10-' . $fragments->random() . '/persist/leader-1';
-            $file = $folder . '/volatile/db';
-        } while ($this->dbWouldBlock($file));
+        foreach ($fragments as $fragment) {
+            $fragmentStorage = '/data/catalyst-tools/ledger-snapshots/' . $fragment . '/persist/leader-1';
+             if ( !$this->dbWouldBlock("{$fragmentStorage}/volatile/db") ) {
+                 return $fragmentStorage;
+             }
+        }
 
-        return $folder;
+        return null;
     }
 
     protected function dbWouldBlock($file): bool
