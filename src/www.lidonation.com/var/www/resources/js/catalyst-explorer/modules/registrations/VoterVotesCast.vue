@@ -182,7 +182,7 @@ let query = () => {
 }
 
 let setDownload = () => {
-    const jsonString = JSON.stringify(voterData.value);
+    const jsonString = JSON.stringify(voterData.value.data);
     const blob = new Blob([jsonString], { type: "application/json" });
     const blobUrl = URL.createObjectURL(blob);
     const downloadLink = document.createElement("a");
