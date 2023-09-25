@@ -3,7 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use App\Jobs\UpdateVotingPowerStatusf10;
+use App\Jobs\UpdateVotingPowerStatusF10;
 
 class UpdateConsumedStatusOnVotingPowers extends Command
 {
@@ -12,7 +12,7 @@ class UpdateConsumedStatusOnVotingPowers extends Command
      *
      * @var string
      */
-    protected $signature = 'ln:updateVotingPowers';
+    protected $signature = 'ln:update-voting-powers-consumed-status';
 
     /**
      * The console command description.
@@ -26,8 +26,8 @@ class UpdateConsumedStatusOnVotingPowers extends Command
      *
      * @return int
      */
-    public function handle()
+    public function handle(): int
     {
-        UpdateVotingPowerStatusf10::dispatchSync();
+        UpdateVotingPowerStatusF10::dispatchSync();
     }
 }

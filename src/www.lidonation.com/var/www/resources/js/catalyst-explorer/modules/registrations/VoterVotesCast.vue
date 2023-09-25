@@ -104,11 +104,10 @@
 import {Ref, ref} from 'vue';
 import Pagination from '../../Shared/Components/Pagination.vue';
 import VoteData from '../../models/vote-data';
-import {VARIABLES} from '../../models/variables'
+import {VARIABLES} from '../../models/variables';
 import axios from 'axios';
 import route from 'ziggy-js';
 import {watch} from 'vue';
-
 
 const props = defineProps<{
     search: string,
@@ -122,8 +121,7 @@ let voterData = ref<{
     to: number,
     from: number,
     data: VoteData[]
-}>(null)
-
+}>(null);
 
 let search = ref(props.search);
 let currPageRef = ref<number>(props.currPage);

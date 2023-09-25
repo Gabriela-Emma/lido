@@ -20,6 +20,7 @@ class GetVoterHistory implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     public $fragment_storage = '/data/catalyst-tools/ledger-snapshots/f10/persist/leader-1';
+
     /**
      * Create a new job instance.
      *
@@ -38,14 +39,15 @@ class GetVoterHistory implements ShouldQueue
     {
         $voter = CatalystVoter::where('cat_id', $this->model->voter_id)->first();
 
-        if(!$voter instanceof CatalystVoter){
+        if (!$voter instanceof CatalystVoter) {
             return;
         }
-        $voting_key  = substr($voter->voting_key, 2);
+        $voting_key = substr($voter->voting_key, 2);
         $command = './find --fragments ' . $this->fragment_storage . ' --voting-key ' . $voting_key;
         $workingDirectory = '/opt/catalyst-tools';
 
         $process = Process::fromShellCommandline($command, $workingDirectory);
+        $process->setTimeout(900);
         $process->start();
         $process->wait();
 

@@ -29,8 +29,20 @@ class CatalystVotingPower extends Model
         return $this->belongsTo(CatalystSnapshot::class, 'catalyst_snapshot_id', 'id');
     }
 
+
+    public function snapshot(): BelongsTo
+    {
+        return $this->belongsTo(CatalystSnapshot::class, 'catalyst_snapshot_id', 'id');
+    }
+
+
     public function delegations(): HasMany
     {
         return $this->hasMany(Delegation::class, 'cat_onchain_id', 'voter_id');
+    }
+
+    public function voter(): BelongsTo
+    {
+        return $this->belongsTo(CatalystVoter::class, 'voter_id', 'cat_id');
     }
 }

@@ -131,7 +131,6 @@ const props = withDefaults(
         locale: string,
     }>(), {});
 
-
 const TopFundedTeams = defineAsyncComponent(() => import('../modules/charts/TopFundedTeams.vue'));
 const TopFundedProposals = defineAsyncComponent(() => import('../modules/charts/TopFundedProposals.vue'));
 

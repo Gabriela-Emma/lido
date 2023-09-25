@@ -401,3 +401,17 @@ Proposal::whereRelation('fund', 'parent_id', 113)->searchable();
 exit
 SyncCatatalystVotersJob::dispatchSync();
 SyncCatatalystVotersJob::dispatchSync();
+$vp = CatalystVotingPower::where('voter_id', 'ca1qk4edaaetzqnlvwhan2dmj00amndnfavlg34c2vfymtus877hh82vmpk77g')->first();
+$vp->voter;
+$vp->voter()->toSql();
+exit
+$vp = CatalystVotingPower::where('voter_id', 'ca1qk4edaaetzqnlvwhan2dmj00amndnfavlg34c2vfymtus877hh82vmpk77g')->first();
+$vp->voter()->toSql();
+$vp->voter;
+$vp->voter->voting_powers;
+$vp->voter->voting_powers()->toSql();
+exit
+$vp = CatalystVotingPower::where('voter_id', 'ca1qk4edaaetzqnlvwhan2dmj00amndnfavlg34c2vfymtus877hh82vmpk77g')->first();
+$vp->voter->voting_powers()->toSql();
+$vp->voter->voting_powers;
+exit

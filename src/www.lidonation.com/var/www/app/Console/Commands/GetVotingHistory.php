@@ -14,7 +14,7 @@ class GetVotingHistory extends Command
      *
      * @var string
      */
-    protected $signature = 'ln:getVoteHistory {fund : fund_id} {--queue :  run asynchronously}';
+    protected $signature = 'ln:get-vote-history {fund : fund_id} {--queue :  run asynchronously}';
 
     /**
      * The console command description.
@@ -26,31 +26,30 @@ class GetVotingHistory extends Command
     /**
      * Execute the console command.
      *
-     * @return int
      */
-    public function handle()
+    public function handle(): void
     {
         $fund = Fund::find($this->argument('fund'));
 
-        if(!$fund instanceof Fund){
+        if (!$fund instanceof Fund) {
             $this->error('Fund is required.');
 
             return;
         }
 
-        $snapshot= CatalystSnapshot::where('model_id', $fund->id)->first();
+        $snapshot = CatalystSnapshot::where('model_id', $fund->id)->first();
 
-        if(!$snapshot instanceof CatalystSnapshot){
+        if (!$snapshot instanceof CatalystSnapshot) {
             $this->error('Fund has no CatalystSnapshot.');
 
-            return; 
+            return;
         }
 
         $snapshot->votingPowers()->each(
-            function($power){
-                if($this->option('queue')){
+            function ($power) {
+                if ($this->option('queue')) {
                     GetVoterHistory::dispatch($power);
-                }else{
+                } else {
                     GetVoterHistory::dispatchSync($power);
                 }
             }

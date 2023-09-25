@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Fluent;
 use Symfony\Component\Process\Process;
 
-class SyncCatatalystVotersJob implements ShouldQueue
+class SyncCatalystVotersJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -45,8 +45,6 @@ class SyncCatatalystVotersJob implements ShouldQueue
                         'page' => $page,
                         'order' => 'desc',
                     ])->collect();
-
-                    dd($votersRegistrationTransactions);
 
                 $votersRegistrationTransactions->each(function ($voterTransaction) {
                     if (is_array($voterTransaction)) {

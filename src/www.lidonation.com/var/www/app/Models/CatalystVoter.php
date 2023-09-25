@@ -15,4 +15,9 @@ class CatalystVoter extends Model
     {
         return $this->hasMany(CatalystRegistration::class, 'stake_pub', 'stake_pub');
     }
+
+    public function voting_powers(): HasMany
+    {
+        return $this->hasMany(CatalystVotingPower::class, 'voter_id', 'cat_id');
+    }
 }

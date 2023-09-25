@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\ProjectCatalyst;
 
+use App\Jobs\GetVoterHistory;
+use App\Models\CatalystVoter;
+use App\Models\Fund;
 use Inertia\Inertia;
 use Inertia\Response;
 use JsonMachine\Items;
@@ -72,7 +75,19 @@ class CatalystRegistrationsController extends Controller
         $perPage = $request->input('l', 24);
         $currentPage = $request->input('p', 1);
 
-        $filePath = '/data/catalyst-tools/voting-history/f10/'.$search.'.json';
+        $filePath = '/data/catalyst-tools/voting-history/f10/' . $search . '.json';
+
+        if (!file_exists($filePath)) {
+            $voter = CatalystVoter::with('voting_powers')
+                ->where('stake_pub', $search)->whereHas('voting_powers', function ($q) {
+                    $q->whereHas('snapshot', function ($q) {
+                        $q->where('model_type', Fund::class)->where('model_id', 113);
+                    });
+                })->first();
+            if ($voter instanceof CatalystVoter) {
+                GetVoterHistory::dispatchSync($voter->voting_powers?->first());
+            }
+        }
 
         if (file_exists($filePath)) {
             $jsonContents = Items::fromFile($filePath);
@@ -91,11 +106,9 @@ class CatalystRegistrationsController extends Controller
             );
 
             return
-            $paginator->onEachSide(1)->toArray();
-        } else {
-            return [];
+                $paginator->onEachSide(1)->toArray();
         }
 
-
+        return [];
     }
 }
