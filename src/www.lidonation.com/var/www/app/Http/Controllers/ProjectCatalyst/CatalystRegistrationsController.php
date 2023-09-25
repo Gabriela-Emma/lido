@@ -37,9 +37,8 @@ class CatalystRegistrationsController extends Controller
 
         // props
         $props = [
-            'search' => $this->search,
+            'searchTerm' => $this->search,
             'perPage' => $this->perPage,
-            'registrations' => $this->query($request),
             'crumbs' => [
                 ['label' => 'Registrations'],
             ],
@@ -51,9 +50,11 @@ class CatalystRegistrationsController extends Controller
         return Inertia::render('Registrations', $props);
     }
 
-    protected function query(Request $request)
+    public function registrationsData(Request $request)
     {
-
+        $this->search = $request->input('s', null);
+        $this->perPage = $request->input('l', 24);
+        $this->currentPage = $request->input('p', 1);
         $registrationBuilder = CatalystRegistration::where('stake_pub', $this->search);
         $paginatedResults = $registrationBuilder->fastPaginate($this->perPage, ['*'], 'p', $this->currentPage)
             ->setPath('/')->onEachSide(1);
