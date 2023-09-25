@@ -1,13 +1,19 @@
 <template>
-    <div v-if="search && !voterData?.data">
+    <div class="bg-white p-6" v-if="search && !voterData?.data">
         <p v-if="!isLoading">
             Could not find any registration transactions for the stake address <span class="font-bold">{{
                 search
             }}</span>.
         </p>
 
-        <div class="flex items-center" v-if="isLoading">
-            <svg aria-hidden="true" class="w-5 h-5 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+        <div class="flex flex-col justify-center items-center text-lg gap-3" v-if="isLoading">
+            <p>
+                If we haven’t pre-generated your voting results we may need to retrieve your
+                voting history and metadata via offline fragment and jormungandr sidechain analysis
+                <a href="https://github.com/input-output-hk/catalyst-core/blob/main/src/audit/src/find/README.md "
+                   target="_blank">replay</a>. <b>This can take up to 90 seconds.</b>
+            </p>
+            <svg aria-hidden="true" class="w-16 h-16 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-teal-600"
                 viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path
                     d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
@@ -17,12 +23,6 @@
                     fill="currentFill" />
             </svg>
             <span class="sr-only">Loading...</span>
-            <p>
-                If we haven’t pre-generated your voting results we may need to retrieve your
-                voting history and metadata via offline fragment and jormungandr sidechain analysis
-                <a href="https://github.com/input-output-hk/catalyst-core/blob/main/src/audit/src/find/README.md "
-                    target="_blank">replay</a>.
-            </p>
         </div>
     </div>
 
