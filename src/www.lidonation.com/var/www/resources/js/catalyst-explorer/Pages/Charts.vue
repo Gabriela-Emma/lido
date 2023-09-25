@@ -28,7 +28,7 @@
                 <div class="relative col-span-1 row-span-1 px-3 py-5 bg-teal-600 xl:col-span-2 round-sm">
                     <MembersAwarded :fundId="selectedFundRef" />
                 </div>
-                <!-- Proposals with Fully Disbursed Funds -->
+                <!-- Total Funded Propoosals-->
                 <div class="relative col-span-1 row-span-1 p-3 bg-blue-dark-500 md:col-span-2 xl:col-span-3 round-sm">
                     <div class="flex flex-row flex-wrap items-start justify-between h-full md:flex-nowrap">
                         <FundedAndCompleted :fundId="selectedFundRef" />

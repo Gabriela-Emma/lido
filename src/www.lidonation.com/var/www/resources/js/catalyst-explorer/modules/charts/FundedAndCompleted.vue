@@ -7,7 +7,7 @@
                 </div>
             </dd>
             <dt class="mt-3 text-xs 2xl:text-lg font-medium text-gray-200 truncate">
-                Proposals with Fully Disbursed Funds
+                Total Funded Proposals
             </dt>
         </dl>
     </div>
