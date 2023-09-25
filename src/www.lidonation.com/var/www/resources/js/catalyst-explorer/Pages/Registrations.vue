@@ -7,7 +7,7 @@
                 <div class="container">
                     <div class="flex items-center w-full h-10 lg:h-16">
                         <Search :search="search" placeholder="Paste in your stake address"
-                                @search="(term) => search = term">
+                                @search="(term) => setSearch(term)">
                         </Search>
                     </div>
                 </div>
@@ -15,13 +15,13 @@
 
             <section class="py-8">
                 <div class="container">
-                    <VoterRegistrations v-if="search?.length" :search="search" :registrations="registrations"/>
+                    <VoterRegistrations v-if="search?.length" :curr-page="currPageRef" :per-page="perPageRef"/>
                 </div>
             </section>
 
             <section class="py-8">
                 <div class="container">
-                    <VoterVotesCast v-if="search?.length" :search="search" :curr-page="currPageRef" :per-page="perPageRef"/>
+                    <VoterVotesCast v-if="search?.length" :curr-page="currPageRef" :per-page="perPageRef"/>
                 </div>
             </section>
         </main>
@@ -37,26 +37,35 @@ import CatalystRegistrationData = App.DataTransferObjects.CatalystRegistrationDa
 import {VARIABLES} from "../models/variables";
 import {router} from "@inertiajs/vue3";
 import route from "ziggy-js";
+import { useRegistrationsSearchStore } from "../stores/registrations-search-store";
+import { storeToRefs } from "pinia";
+import { onMounted } from "vue";
 
 const props = withDefaults(
     defineProps<{
-        search?: string,
+        searchTerm?: string,
         currPage?: number,
-        perPage?: number,
-        registrations: {
-            links: [],
-            total: number,
-            to: number,
-            from: number,
-            data: CatalystRegistrationData[]
-        }
+        perPage?: number
     }>(), {
-        search: '',
+        searchTerm: '',
     });
 
-let search = ref(props.search);
+const registrationsStore = useRegistrationsSearchStore();
+
 let currPageRef = ref<number>(props.currPage);
 let perPageRef = ref<number>(props.perPage);
+
+
+onMounted(() => {
+    registrationsStore.setSearchValue(props.searchTerm);
+})
+
+const {search} =storeToRefs(registrationsStore);
+
+function setSearch(search: string) {
+    registrationsStore.setSearchValue(search);
+}
+
 
 watch([search], () => {
     return query();

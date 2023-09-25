@@ -26,7 +26,26 @@
         </div>
     </div>
 
-    <div class="bg-white/90 p-4" v-if="search && voterData?.data?.length > 0">
+    <ul v-if="isLoading" role="list" class="bg-white/90 p-4">
+        <li v-for="index in 12" :key="index">
+            <div class="rounded-sm p-4 w-full mx-auto">
+                <div class="animate-pulse">
+                    <div class="flex-1 space-y-6 py-1">
+                        <div class="h-2 bg-primary-50 rounded"></div>
+                        <div class="space-y-3">
+                            <div class="grid grid-cols-3 gap-4">
+                                <div class="h-2 bg-primary-50 rounded col-span-2"></div>
+                                <div class="h-2 bg-primary-50 rounded col-span-1"></div>
+                            </div>
+                            <div class="h-2 bg-primary-50 rounded"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </li>
+    </ul>
+
+    <div class="bg-white/90 p-4" v-if="search && voterData?.data?.length > 0 && !isLoading">
         <div class="flex items-center gap-4 rounded-sm">
             <div class="sm:flex-auto">
                 <div class="flex flex-col gap-2 text-gray-700">
@@ -134,9 +153,10 @@ import { VARIABLES } from '../../models/variables';
 import axios from 'axios';
 import route from 'ziggy-js';
 import { watch } from 'vue';
+import { useRegistrationsSearchStore } from '../../stores/registrations-search-store';
+import { storeToRefs } from "pinia";
 
 const props = defineProps<{
-    search: string,
     currPage: number,
     perPage: number,
 }>()
@@ -149,7 +169,9 @@ let voterData = ref<{
     data: VoteData[]
 }>(null);
 
-let search = ref(props.search);
+const registrationsStore = useRegistrationsSearchStore();
+const {search} =storeToRefs(registrationsStore);
+
 let currPageRef = ref<number>(props.currPage);
 let perPageRef = ref<number>(props.perPage);
 
@@ -192,7 +214,7 @@ let setDownload = () => {
     URL.revokeObjectURL(blobUrl);
 }
 
-watch([() => props.search, currPageRef, perPageRef], () => {
+watch([() => search, currPageRef, perPageRef], () => {
     query();
 })
 query();

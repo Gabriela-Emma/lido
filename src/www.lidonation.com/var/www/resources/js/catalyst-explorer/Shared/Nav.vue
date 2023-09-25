@@ -108,7 +108,8 @@
                         </li>
                         <li class="flow-root menu-item">
                             <a class="px-1 py-3 text-white menu-link hover:text-yellow-500"
-                               href="/catalyst-explorer/registrations">
+                               href="/catalyst-explorer/registrations"
+                               :class="{ 'text-yellow-500': $page.component.startsWith('Registrations') }">
                                 {{ $t('Registrations') }}
                             </a>
                         </li>
