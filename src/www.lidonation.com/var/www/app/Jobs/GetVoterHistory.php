@@ -50,6 +50,7 @@ class GetVoterHistory implements ShouldQueue
         $process->setTimeout(900);
         $process->start();
         $process->wait();
+        sleep(10);
 
         $sourcePath = '/tmp/offline.voting_history_of_' . $voting_key . '.json';
         $destinationPath = '/data/catalyst-tools/voting-history/f10/' . $voter->stake_pub . '.json';
