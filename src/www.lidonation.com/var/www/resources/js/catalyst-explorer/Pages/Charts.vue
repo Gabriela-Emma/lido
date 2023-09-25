@@ -5,7 +5,7 @@
         <div class="container relative w-full">
             <div class="flex w-full items-center justify-end space-x-0.5 mt-4 gap-2">
                 <div class="text-xs w-[240px] lg:w-[330px] lg:text-base">
-                    <Multiselect placeholder="All Funds" value-prop="value" label="label" v-model="selectedFundRef"
+                    <Multiselect placeholder="Funds" value-prop="value" label="label" v-model="selectedFundRef"
                         :options="fundsLabelValue" :classes="{
                             container: 'multiselect border-0 p-0.5 flex-wrap',
                             containerActive: 'shadow-none shadow-transparent box-shadow-none',
@@ -137,7 +137,7 @@ const TopFundedProposals = defineAsyncComponent(() => import('../modules/charts/
 let adaPowerRanges = ref<{ 'key': string, 'count': number, 'total': number }[]>([]);
 let fundedOver75KCount = ref<number>(null);
 
-let selectedFundRef = ref<number>(props.filters?.fundId);
+let selectedFundRef = ref<number | string>(props.filters?.fundId);
 
 let currPage$ = ref<number>(1);
 let perPage$ = ref<number>(36);
@@ -146,9 +146,14 @@ const attachmentLink = ref<string>(null);
 let talliesSum$ = ref<number>(null);
 
 const fundsLabelValue = computed(() => {
-    return props?.funds?.map((fund) => {
-        return { 'label': fund.title, 'value': fund.id }
-    })
+  const fundObjects: { label: string; value: string | number; }[] = [];
+  fundObjects.push({ 'label': 'All Funds', 'value': 'all' });
+
+  props?.funds?.map((fund) => {
+    fundObjects.push({ 'label': fund.title, 'value': fund.id });
+  });
+
+  return fundObjects;
 });
 
 getMetrics();

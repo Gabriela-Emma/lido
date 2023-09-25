@@ -9,6 +9,7 @@ use App\Models\Proposal;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Meilisearch\Endpoints\Indexes;
+use App\Enums\CatalystExplorerQueryParams;
 
 class CatalystTalliesController extends Controller
 {
@@ -60,11 +61,17 @@ class CatalystTalliesController extends Controller
      */
     public function getCatalystTallySum(Request $request): JsonResponse
     {
-        $catalystTally = CatalystTally::where([
+        $fs = $request->get(CatalystExplorerQueryParams::FUNDS);
+        $query = CatalystTally::where([
             'model_type' => Proposal::class,
             'context_type' => Fund::class,
-            'context_id' => $request->get('fs'),
-        ])->sum('tally');
+        ]);
+
+        if ($fs !== CatalystExplorerQueryParams::ALL_FUNDS) {
+            $query->where('context_id', $fs);
+        }
+
+        $catalystTally = $query->sum('tally');
 
         return response()->json($catalystTally);
     }

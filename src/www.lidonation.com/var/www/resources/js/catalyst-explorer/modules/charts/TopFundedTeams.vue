@@ -6,7 +6,7 @@
                 <FundingTypeSelectorVue />
             </div>
             <p v-if="!loadingTeams && !emptyDataTeams">
-                Combined aggregate requested funding of all proposals associated with a group or person across {{ fund?.label }}
+                Combined aggregate requested funding of all proposals associated with a group or person across <span v-if="fundId !== 'all'">{{ fund?.label }}</span> <span v-else>all funds</span>
             </p>
             <div class="relative flex items-center gap-4 text-xl" v-if="!loadingTeams && emptyDataTeams">
                 <p>That's all we know.</p>
@@ -86,7 +86,7 @@ import PulseLoading from "./PulseLoading.vue";
 const $utils: any = inject('$utils');
 
 const props = defineProps<{
-    fundId: number
+    fundId: number | string
 }>()
 
 const chartWidgets = useChartsWidgetStore();
