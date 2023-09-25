@@ -43,14 +43,14 @@ class GetVoterHistory implements ShouldQueue
             return;
         }
         $voting_key = substr($voter->voting_key, 2);
-        $command = './find --fragments ' . $this->fragment_storage . ' --voting-key ' . $voting_key;
+        $command = './find --fragments ' . $this->getFragmentStorage() . ' --voting-key ' . $voting_key;
         $workingDirectory = '/opt/catalyst-tools';
 
         $process = Process::fromShellCommandline($command, $workingDirectory);
         $process->setTimeout(900);
         $process->start();
         $process->wait();
-        sleep(20);
+        sleep(30);
 
         if (app()->runningInConsole()) {
             echo $process->getOutput();
@@ -63,5 +63,38 @@ class GetVoterHistory implements ShouldQueue
         } else {
             rename($sourcePath, $destinationPath);
         }
+    }
+
+    public function getFragmentStorage(): string
+    {
+        $fragments = collect([
+            '1',
+            '2',
+            '3',
+            '4',
+            '5',
+            '6',
+            '7',
+            '8',
+            '9',
+            '10',
+            '11',
+            '12',
+            '13',
+            '14',
+            '15',
+            '16',
+            '17',
+            '18',
+            '19',
+            '20',
+            '21',
+            '22',
+            '23',
+            '24',
+            '25'
+        ]);
+
+        return '/data/catalyst-tools/ledger-snapshots/f10-' . $fragments->random() . '/persist/leader-1';
     }
 }
