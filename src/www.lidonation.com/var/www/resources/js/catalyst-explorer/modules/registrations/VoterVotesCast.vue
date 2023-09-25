@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-white p-6" v-if="search && !voterData?.data">
+    <div class="bg-white p-6" v-if="(search && !voterData?.data) || voterData?.data?.length === 0">
         <p v-if="!isLoading">
             Could not find any registration transactions for the stake address <span class="font-bold">{{
                 search
