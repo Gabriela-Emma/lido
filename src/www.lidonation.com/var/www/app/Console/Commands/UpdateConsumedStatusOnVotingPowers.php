@@ -24,9 +24,8 @@ class UpdateConsumedStatusOnVotingPowers extends Command
     /**
      * Execute the console command.
      *
-     * @return int
      */
-    public function handle(): int
+    public function handle(): void
     {
         UpdateVotingPowerStatusF10::dispatchSync();
     }

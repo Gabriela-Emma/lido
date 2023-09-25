@@ -49,11 +49,7 @@ class GetVoterHistory implements ShouldQueue
         $process->setTimeout(900);
         $process->start();
         $process->wait();
-        sleep(30);
 
-//        if (app()->runningInConsole()) {
-//            echo $process->getOutput();
-//        }
         $sourcePath = '/tmp/offline.voting_history_of_' . $voting_key . '.json';
         $destinationPath = '/data/catalyst-tools/voting-history/f10/' . $voter->stake_pub . '.json';
         $jsonContents = file_get_contents($sourcePath);
@@ -94,6 +90,24 @@ class GetVoterHistory implements ShouldQueue
             '25'
         ]);
 
-        return '/data/catalyst-tools/ledger-snapshots/f10-' . $fragments->random() . '/persist/leader-1';
+        do {
+            $folder = '/data/catalyst-tools/ledger-snapshots/f10-' . $fragments->random() . '/persist/leader-1';
+            $file = $folder . '/volatile/db';
+        } while ($this->dbWouldBlock($file));
+
+        return $folder;
+    }
+
+    protected function dbWouldBlock($file): bool
+    {
+        if (!file_exists($file)) {
+            return true;
+        }
+
+        $openEd = fopen($file, 'r');
+        if (!flock($openEd, LOCK_EX|LOCK_NB, $wouldBlock)) {
+            return true;
+        }
+        return false;
     }
 }

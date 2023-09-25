@@ -69,12 +69,11 @@ class CatalystRegistrationsController extends Controller
         return $_options;
     }
 
-    public function getVoterData(Request $request)
+    public function getVoterData(Request $request): array
     {
         $search = $request->input('s', null);
         $perPage = $request->input('l', 24);
         $currentPage = $request->input('p', 1);
-
         $filePath = '/data/catalyst-tools/voting-history/f10/' . $search . '.json';
 
         if (!file_exists($filePath)) {
@@ -84,9 +83,10 @@ class CatalystRegistrationsController extends Controller
                         $q->where('model_type', Fund::class)->where('model_id', 113);
                     });
                 })->first();
+
             if ($voter instanceof CatalystVoter) {
                 GetVoterHistory::dispatchSync($voter->voting_powers?->first());
-                sleep(20);
+                sleep(5);
             }
         }
 
