@@ -5,7 +5,7 @@ max-h<template>
                 <h2 class="block mb-0 xl:text-3xl">{{ widgetLabel }} Proposals</h2>
                 <FundingTypeSelectorVue />
             </div>
-            <p v-if="!loadingProposals && !emptyDataProposals">Across {{ proposals?.[0]?.fund?.parent?.label }}</p>
+            <p v-if="!loadingProposals && !emptyDataProposals">Across <span v-if="fund !== 'all'">{{ proposals?.[0]?.fund?.parent?.label }}</span> <span v-else>all funds</span></p>
             <div class="relative flex items-center gap-4 text-xl" v-if="!loadingProposals && emptyDataProposals">
                 <p>That's all we know.</p>
                 <span>
@@ -18,7 +18,7 @@ max-h<template>
             </div>
         </div>
         <div class="relative m-2" v-if="loadingProposals">
-            <ul role="list" class="divide-y divide-gray-200 max-h-[28rem] overflow-y-auto">
+            <ul role="list" class="divide-y divide-gray-200 max-h-[39rem] overflow-y-auto">
                 <li v-for="index in 6" :key="index">
                     <PulseLoading />
                 </li>
@@ -84,7 +84,7 @@ import FundingTypeSelectorVue from "./FundingTypeSelector.vue";
 
 const props = withDefaults(
     defineProps<{
-        fund: number;
+        fund: number | string
     }>(),
     {}
 );

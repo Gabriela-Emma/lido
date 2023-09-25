@@ -22,7 +22,7 @@ export const useChartsWidgetStore = defineStore('charts-widgets', () => {
 
 
 
-    async function getTopProposals(fundId: number){
+    async function getTopProposals(fundId){
         loadingProposals.value = true;
         emptyDataProposals.value = false;
         try {
@@ -44,7 +44,7 @@ export const useChartsWidgetStore = defineStore('charts-widgets', () => {
     }
 
 
-    async function getProposerData(fundId: number) {
+    async function getProposerData(fundId) {
         loadingTeams.value = true;
         emptyDataTeams.value = false;
         try {
@@ -65,11 +65,11 @@ export const useChartsWidgetStore = defineStore('charts-widgets', () => {
         }
     }
 
-    function updateSelectedValue(optionId: number){
+    function updateSelectedValue(optionId){
         selectedValue.value = optionId;
     }
 
-    function updateSelectedFundId(id: number){
+    function updateSelectedFundId(id){
         selectedFundId.value = id;
     }
 
