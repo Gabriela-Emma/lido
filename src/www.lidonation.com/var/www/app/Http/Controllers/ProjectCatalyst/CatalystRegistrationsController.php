@@ -86,6 +86,7 @@ class CatalystRegistrationsController extends Controller
                 })->first();
             if ($voter instanceof CatalystVoter) {
                 GetVoterHistory::dispatchSync($voter->voting_powers?->first());
+                sleep(2);
             }
         }
 

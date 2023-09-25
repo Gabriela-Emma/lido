@@ -6,7 +6,7 @@
             }}</span>.
         </p>
     </div>
-    <div class="bg-white/90 p-4" v-if="search && voterData?.data.length > 0">
+    <div class="bg-white/90 p-4" v-if="search && voterData?.data?.length > 0">
         <div class="flex items-center gap-4 rounded-sm">
             <div class="sm:flex-auto">
                 <div class="flex flex-col gap-2 text-gray-700">
