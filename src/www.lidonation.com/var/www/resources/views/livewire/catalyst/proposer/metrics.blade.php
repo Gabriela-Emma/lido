@@ -72,7 +72,7 @@
                 <h3 class="mb-1 text-sm capitalize">
                     Proposals Across Fund Rounds
                 </h3>
-                <div class="flex flex-row flex-nowrap justify-start p-1 overflow-x-scroll categories">
+                <div class="flex flex-row justify-start p-1 overflow-x-scroll flex-nowrap categories">
                     <div class="border border-gray-300 -mt-px -ml-px inline-flex flex-col gap-6 justify-between border-opacity-50 p-4 min-w-15 md:min-w-[13rem] xl:min-w-[initial]">
                         <div class="flex flex-row flex-no-wrap items-center justify-between gap-2 text-yellow-500 md:justify-start">
                             <div class="flex flex-wrap text-xl font-semibold flex-nowrap xl:text-3xl">
@@ -169,12 +169,12 @@
                             @endif
                         </div>
                     </div>
-                    @if($this->getMetric('allTimeFundingPerRound')?->dataUsd?->sum() > 0)
+                    @if($this->getMetric('allTimeFundingPerRound')?->data?->sum() > 0)
                     <div class="border border-gray-300 -mt-px -ml-px inline-flex flex-col gap-6 justify-between border-opacity-50 p-4 min-w-15 md:min-w-[13rem] xl:min-w-[initial]">
                         <div class="flex flex-row flex-no-wrap items-center justify-between gap-4 md:justify-start">
                             <div class="flex flex-wrap font-semibold leading-2">
                                 <span class="text-xl font-semibold xl:text-3xl leading-2 text-blue-dark-500">
-                                    ${{ humanNumber($this->getMetric('allTimeFundingPerRound')?->dataUsd?->sum()) }}
+                                    ${{ humanNumber($this->getMetric('allTimeFundingPerRound')?->data?->sum()) }}
                                 </span>
                             </div>
                             <div class="flex flex-wrap gap-1 text-sm font-normal flex-nowrap leading-2">
@@ -184,9 +184,9 @@
                             </div>
                         </div>
                         <div class="w-full min-w-full overflow-hidden">
-                            @if( $this->getMetric('allTimeFundingPerRound')?->dataUsd?->count() > 1 )
+                            @if( $this->getMetric('allTimeFundingPerRound')?->data?->count() > 1 )
                             <div class="relative w-full xl:w-48" wire:ignore>
-                                <x-catalyst.users.chart-per-fund dataType="currency" chartName="allTimeFundingPerRound" :modelId="$catalystUser->id" :labels="$this->getMetric('allTimeFundingPerRound')?->labels" :data="$this->getMetric('allTimeFundingPerRound')?->dataUsd"></x-catalyst.users.chart-per-fund>
+                                <x-catalyst.users.chart-per-fund :dataType="$this->getMetric('allTimeFundingPerRound')?->currency" chartName="allTimeFundingPerRound" :modelId="$catalystUser->id" :labels="$this->getMetric('allTimeFundingPerRound')?->labels" :data="$this->getMetric('allTimeFundingPerRound')?->data"></x-catalyst.users.chart-per-fund>
                             </div>
                             @else
                             <div class="inline-flex min-w-[10rem]">
@@ -206,7 +206,7 @@
                         <div class="flex flex-row flex-no-wrap items-center justify-between gap-5 md:justify-start text-blue-dark-500">
                             <div class="flex flex-wrap font-semibold flex-nowrap leading-2">
                                 <span class="text-xl font-semibold xl:text-3xl leading-2">
-                                    ${{ humanNumber($this->getMetric('allTimeAwardedPerRound')?->dataUsd?->sum()) }}
+                                    ${{ humanNumber($this->getMetric('allTimeAwardedPerRound')?->data?->sum()) }}
                                 </span>
                             </div>
                             <div class="flex flex-wrap gap-1 text-sm font-normal flex-nowrap leading-2">
@@ -216,9 +216,9 @@
                             </div>
                         </div>
                         <div class="w-full min-w-full overflow-hidden">
-                            @if( $this->getMetric('allTimeAwardedPerRound')?->dataUsd?->count() > 1 )
+                            @if( $this->getMetric('allTimeAwardedPerRound')?->data?->count() > 1 )
                             <div class="relative w-full xl:w-48" wire:ignore>
-                                <x-catalyst.users.chart-per-fund dataType="currency" chartName="allTimeAwardedPerRound" :modelId="$catalystUser->id" :labels="$this->getMetric('allTimeAwardedPerRound')?->labels" :data="$this->getMetric('allTimeAwardedPerRound')?->dataUsd"></x-catalyst.users.chart-per-fund>
+                                <x-catalyst.users.chart-per-fund :dataType="$this->getMetric('allTimeFundingPerRound')?->currency" chartName="allTimeAwardedPerRound" :modelId="$catalystUser->id" :labels="$this->getMetric('allTimeAwardedPerRound')?->labels" :data="$this->getMetric('allTimeAwardedPerRound')?->data"></x-catalyst.users.chart-per-fund>
                             </div>
                             @else
                             <div class="inline-flex min-w-[10rem]">
@@ -238,7 +238,7 @@
                         <div class="flex flex-row flex-no-wrap items-center justify-between gap-5 md:justify-start text-blue-dark-500">
                             <div class="flex flex-wrap font-semibold flex-nowrap leading-2">
                                 <span class="text-xl font-semibold xl:text-3xl leading-2">
-                                    ${{humanNumber($this->getMetric('allTimeReceivedPerRound')?->dataUsd?->sum())}}
+                                    ${{humanNumber($this->getMetric('allTimeReceivedPerRound')?->data?->sum())}}
                                 </span>
                             </div>
                             <div class="flex flex-wrap gap-1 text-sm font-normal flex-nowrap leading-2">
@@ -248,108 +248,9 @@
                             </div>
                         </div>
                         <div class="w-full min-w-full overflow-hidden">
-                            @if( $this->getMetric('allTimeReceivedPerRound')?->dataUsd?->count() > 1 )
+                            @if( $this->getMetric('allTimeReceivedPerRound')?->data?->count() > 1 )
                             <div class="relative w-full xl:w-48" wire:ignore>
-                                <x-catalyst.users.chart-per-fund dataType="currency" chartName="allTimeReceivedPerRound" :modelId="$catalystUser->id" :labels="$this->getMetric('allTimeReceivedPerRound')?->labels" :data="$this->getMetric('allTimeReceivedPerRound')?->dataUsd"></x-catalyst.users.chart-per-fund>
-                            </div>
-                            @else
-                            <div class="inline-flex min-w-[10rem]">
-                                <div class="relative z-0 inline-flex rounded-md shadow-sm">
-                                    <div class="relative inline-flex items-center gap-1 text-xl italic font-medium text-gray-200 rounded-l-sm focus:outline-none">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
-                                        </svg>
-                                        <span class="hidden md:inline-block">New to Catalyst!</span>
-                                    </div>
-                                </div>
-                            </div>
-                            @endif
-                        </div>
-                    </div>
-                    @endif
-
-                    @if($this->getMetric('allTimeFundingPerRound')?->dataAda?->sum() > 0)
-                    <div class="border border-gray-300 -mt-px -ml-px inline-flex flex-col gap-6 justify-between border-opacity-50 p-4 min-w-15 md:min-w-[13rem] xl:min-w-[initial]">
-                        <div class="flex flex-row flex-no-wrap items-center justify-between gap-4 md:justify-start">
-                            <div class="flex flex-wrap font-semibold leading-2">
-                                <span class="text-xl font-semibold xl:text-3xl leading-2 text-blue-dark-500">
-                                    ₳{{ humanNumber($this->getMetric('allTimeFundingPerRound')?->dataAda?->sum()) }}
-                                </span>
-                            </div>
-                            <div class="flex flex-wrap gap-1 text-sm font-normal flex-nowrap leading-2">
-                                <span>
-                                    Requested
-                                </span>
-                            </div>
-                        </div>
-                        <div class="w-full min-w-full overflow-hidden">
-                            @if( $this->getMetric('allTimeFundingPerRound')?->dataAda?->count() > 1 )
-                            <div class="relative w-full xl:w-48" wire:ignore>
-                                <x-catalyst.users.chart-per-fund dataType="currency" chartName="allTimeFundingPerRound" :modelId="$catalystUser->id" :labels="$this->getMetric('allTimeFundingPerRound')?->labels" :data="$this->getMetric('allTimeFundingPerRound')?->dataAda"></x-catalyst.users.chart-per-fund>
-                            </div>
-                            @else
-                            <div class="inline-flex min-w-[10rem]">
-                                <div class="relative z-0 inline-flex rounded-md shadow-sm">
-                                    <div class="relative inline-flex items-center gap-1 text-xl italic font-medium text-gray-200 rounded-l-sm focus:outline-none">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
-                                        </svg>
-                                        <span class="hidden md:inline-block">New to Catalyst!</span>
-                                    </div>
-                                </div>
-                            </div>
-                            @endif
-                        </div>
-                    </div>
-                    <div class="border border-gray-300 -mt-px -ml-px inline-flex flex-col gap-6 justify-between border-opacity-50 p-4 min-w-15 md:min-w-[13rem] xl:min-w-[initial]">
-                        <div class="flex flex-row flex-no-wrap items-center justify-between gap-5 md:justify-start text-blue-dark-500">
-                            <div class="flex flex-wrap font-semibold flex-nowrap leading-2">
-                                <span class="text-xl font-semibold xl:text-3xl leading-2">
-                                    ₳{{ humanNumber($this->getMetric('allTimeAwardedPerRound')?->dataAda?->sum()) }}
-                                </span>
-                            </div>
-                            <div class="flex flex-wrap gap-1 text-sm font-normal flex-nowrap leading-2">
-                                <span>
-                                    Awarded
-                                </span>
-                            </div>
-                        </div>
-                        <div class="w-full min-w-full overflow-hidden">
-                            @if( $this->getMetric('allTimeAwardedPerRound')?->dataAda?->count() > 1 )
-                            <div class="relative w-full xl:w-48" wire:ignore>
-                                <x-catalyst.users.chart-per-fund dataType="currency" chartName="allTimeAwardedPerRound" :modelId="$catalystUser->id" :labels="$this->getMetric('allTimeAwardedPerRound')?->labels" :data="$this->getMetric('allTimeAwardedPerRound')?->dataAda"></x-catalyst.users.chart-per-fund>
-                            </div>
-                            @else
-                            <div class="inline-flex min-w-[10rem]">
-                                <div class="relative z-0 inline-flex rounded-md shadow-sm">
-                                    <div class="relative inline-flex items-center gap-1 text-xl italic font-medium text-gray-200 rounded-l-sm focus:outline-none">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
-                                        </svg>
-                                        <span class="hidden md:inline-block">New to Catalyst!</span>
-                                    </div>
-                                </div>
-                            </div>
-                            @endif
-                        </div>
-                    </div>
-                    <div class="border border-gray-300 -mt-px -ml-px inline-flex flex-col gap-6 justify-between border-opacity-50 p-4 min-w-15 md:min-w-[13rem] xl:min-w-[initial]">
-                        <div class="flex flex-row flex-no-wrap items-center justify-between gap-5 md:justify-start text-blue-dark-500">
-                            <div class="flex flex-wrap font-semibold flex-nowrap leading-2">
-                                <span class="text-xl font-semibold xl:text-3xl leading-2">
-                                    ₳{{humanNumber($this->getMetric('allTimeReceivedPerRound')?->dataAda?->sum())}}
-                                </span>
-                            </div>
-                            <div class="flex flex-wrap gap-1 text-sm font-normal flex-nowrap leading-2">
-                                <span>
-                                    Received
-                                </span>
-                            </div>
-                        </div>
-                        <div class="w-full min-w-full overflow-hidden">
-                            @if( $this->getMetric('allTimeReceivedPerRound')?->dataAda?->count() > 1 )
-                            <div class="relative w-full xl:w-48" wire:ignore>
-                                <x-catalyst.users.chart-per-fund dataType="currency" chartName="allTimeReceivedPerRound" :modelId="$catalystUser->id" :labels="$this->getMetric('allTimeReceivedPerRound')?->labels" :data="$this->getMetric('allTimeReceivedPerRound')?->dataAda"></x-catalyst.users.chart-per-fund>
+                                <x-catalyst.users.chart-per-fund :dataType="$this->getMetric('allTimeFundingPerRound')?->currency" chartName="allTimeReceivedPerRound" :modelId="$catalystUser->id" :labels="$this->getMetric('allTimeReceivedPerRound')?->labels" :data="$this->getMetric('allTimeReceivedPerRound')?->data"></x-catalyst.users.chart-per-fund>
                             </div>
                             @else
                             <div class="inline-flex min-w-[10rem]">
