@@ -442,3 +442,20 @@ $snapshot->votingPowers()->orderBy('voting_power')->each(
         \App\Jobs\GetVoterHistory::dispatchSync($power);
     }
 );
+$fund = \App\Models\Fund::find(113);
+$snapshot = \App\Models\CatalystSnapshot::where('model_id', $fund->id)->first();
+$snapshot->votingPowers()->orderBy('voting_power')->count();
+$fund = \App\Models\Fund::find(113);
+$snapshot = \App\Models\CatalystSnapshot::where('model_id', $fund->id)->first();
+$snapshot->votingPowers()->orderBy('voting_power')->each(
+    function ($power) {
+        \App\Jobs\GetVoterHistory::dispatch($power);
+    }
+);
+$fund = \App\Models\Fund::find(113);
+$snapshot = \App\Models\CatalystSnapshot::where('model_id', $fund->id)->first();
+$snapshot->votingPowers()->orderBy('voting_power')->each(
+    function ($power) {
+        \App\Jobs\GetVoterHistory::dispatch($power);
+    }
+);
