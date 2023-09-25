@@ -11,7 +11,7 @@
                 If we haven’t pre-generated your voting results we may need to retrieve your
                 voting history and metadata via offline fragment and jormungandr sidechain analysis
                 <a href="https://github.com/input-output-hk/catalyst-core/blob/main/src/audit/src/find/README.md "
-                   target="_blank">replay</a>. <b>This can take up to 90 seconds.</b>
+                    target="_blank">replay</a>. <b>This can take up to 90 seconds.</b>
             </p>
             <svg aria-hidden="true" class="w-16 h-16 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-teal-600"
                 viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -30,9 +30,14 @@
         <div class="flex items-center gap-4 rounded-sm">
             <div class="sm:flex-auto">
                 <div class="flex flex-col gap-2 text-gray-700">
-                    <h1 class="text-lg font-semibold leading-6 text-gray-900">
-                        My Voting History
-                    </h1>
+                    <div class="flex flex-row items-center p-1">
+                        <span class="text-lg font-semibold leading-6 text-gray-900">
+                            My Voting History
+                        </span>
+                        <button @click="setDownload()"
+                            class="flex text-sm bg-teal-400 hover:bg-teal-600 text-white p-0.5 ml-2 rounded">Download
+                        </button>
+                    </div>
                     <p class="">
                         Here are the onchain (jormungandr) transactions of votes cast for the stake address <span
                             class="font-bold">{{ search }}</span>
@@ -174,6 +179,17 @@ let query = () => {
     }).catch((e) => {
         isLoading.value = false
     });
+}
+
+let setDownload = () => {
+    const jsonString = JSON.stringify(voterData.value);
+    const blob = new Blob([jsonString], { type: "application/json" });
+    const blobUrl = URL.createObjectURL(blob);
+    const downloadLink = document.createElement("a");
+    downloadLink.href = blobUrl;
+    downloadLink.download = `${search.value}.json`;
+    downloadLink.click();
+    URL.revokeObjectURL(blobUrl);
 }
 
 watch([() => props.search, currPageRef, perPageRef], () => {
