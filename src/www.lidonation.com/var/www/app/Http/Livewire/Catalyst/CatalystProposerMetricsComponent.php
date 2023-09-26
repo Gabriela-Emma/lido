@@ -112,25 +112,23 @@ class CatalystProposerMetricsComponent extends Component
                 ),
             ])
         )->reverse();
+
         $labels = $proposalGroups->pluck('fund.title');
         $currency = $proposalGroups->pluck('fund.currency');
         $allProposals = $proposalGroups->pluck('proposals');
 
         $usdProposal = $proposalGroups->map(function ($item) {
             if ($item->fund->currency == 'USD') {
-                return $item->proposals->count() ? $item->proposals : null;
+                return $item;
             }
-            return $item;
         })?->pluck('proposals');
 
         $adaProposal = $proposalGroups->map(function ($item) {
             if ($item->fund->currency == 'ADA') {
-                return $item->proposals->count() ? $item->proposals : null;
+                return $item;
             }
-            return $item;
         })?->pluck('proposals');
 
-        // dd($adaProposal);
         $this->setAllTimeProposedPerRound($labels, $allProposals);
         $this->setAllTimeCompletedPerRound($labels, $allProposals);
         $this->setAllTimeFundingPerRound($labels, $allProposals, $currency, $adaProposal, $usdProposal);
@@ -168,7 +166,7 @@ class CatalystProposerMetricsComponent extends Component
             'totalAda' => $adaProposal->flatMap(function ($proposalCollection) {
                 return $proposalCollection?->pluck('amount_received');
             })->sum(),
-            'totalUds' => $usdProposal->flatMap(function ($proposalCollection) {
+            'totalUsd' => $usdProposal->flatMap(function ($proposalCollection) {
                 return $proposalCollection?->pluck('amount_received');
             })->sum(),
             'data' => $proposals->map(
@@ -188,7 +186,7 @@ class CatalystProposerMetricsComponent extends Component
                     return $proposal['funded'];
                 })->pluck('amount_received');
             })->sum(),
-            'totalUds' => $usdProposal->flatMap(function ($proposalCollection) {
+            'totalUsd' => $usdProposal->flatMap(function ($proposalCollection) {
                 return $proposalCollection?->filter(function ($proposal) {
                     return $proposal['funded']; 
                 })->pluck('amount_received');
@@ -209,7 +207,7 @@ class CatalystProposerMetricsComponent extends Component
             'totalAda' => $adaProposal->flatMap(function ($proposalCollection) {
                 return $proposalCollection?->pluck('amount_received');
             })->sum(),
-            'totalUds' => $usdProposal->flatMap(function ($proposalCollection) {
+            'totalUsd' => $usdProposal->flatMap(function ($proposalCollection) {
                 return $proposalCollection?->pluck('amount_requested');
             })->sum(),
             'data' => $proposals->map(
