@@ -109,9 +109,7 @@ class Taxonomy extends Model implements HasMedia, HasLink
 
     protected function currentFundProposals(): Attribute
     {
-        $fund = app(FundRepository::class)
-            ->funds('inGovernance')->first();
-
+        $fund = Fund::where('parent_id', null)->first();
         return Attribute::make(
             get: fn ($value) => $this->proposals()->whereRelation('fund.parent', 'id', $fund?->id)->count(),
         );
