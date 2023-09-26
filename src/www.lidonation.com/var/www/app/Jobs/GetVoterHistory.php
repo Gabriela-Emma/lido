@@ -3,6 +3,8 @@
 namespace App\Jobs;
 
 use App\Models\Model;
+use Illuminate\Queue\Middleware\RateLimited;
+use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Str;
 use JsonMachine\Items;
 use App\Models\CatalystVoter;
@@ -66,14 +68,36 @@ class GetVoterHistory implements ShouldQueue
         $fragments = collect(scandir('/data/catalyst-tools/ledger-snapshots'))
             ->filter( fn($dir) => Str::of($dir)->contains('f10') );
 
-        foreach ($fragments as $fragment) {
-            $fragmentStorage = '/data/catalyst-tools/ledger-snapshots/' . $fragment . '/persist/leader-1';
-             if ( !$this->dbWouldBlock("{$fragmentStorage}/volatile/db") ) {
-                 return $fragmentStorage;
-             }
+        $index = Redis::get('jfragment');
+
+        if ($index === null) {
+            Redis::set('jfragment', 0);
+        } else {
+            if ($index + 1 >= $fragments->count()) {
+                Redis::set('jfragment', 0);
+            } else {
+                Redis::set('jfragment', $index + 1);
+            }
         }
 
-        return null;
+        $index = Redis::get('jfragment');
+        $fragment = $fragments->values()->get($index);
+
+        return  '/data/catalyst-tools/ledger-snapshots/' . $fragment . '/persist/leader-1';
+
+//        foreach ($fragments as $fragment) {
+//            $fragmentStorage = '/data/catalyst-tools/ledger-snapshots/' . $fragment . '/persist/leader-1';
+//            if ( $this->dbWouldBlock("{$fragmentStorage}/volatile/db") === false ) {
+//                 if ($index === null) {
+//                     Redis::set('jfragment', 1);
+//                 } else {
+//                     Redis::set('jfragment', $index + 1);
+//                 }
+//                 return $fragmentStorage;
+//            }
+//        }
+//
+//        return null;
     }
 
     protected function dbWouldBlock($file): bool
@@ -87,5 +111,10 @@ class GetVoterHistory implements ShouldQueue
             return true;
         }
         return false;
+    }
+
+    public function middleware(): array
+    {
+        return [new RateLimited('vote_history')];
     }
 }
