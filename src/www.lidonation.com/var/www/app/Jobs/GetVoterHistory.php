@@ -22,6 +22,8 @@ class GetVoterHistory implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    public int $timeout = 65000;
+
     /**
      * Create a new job instance.
      *

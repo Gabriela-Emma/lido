@@ -8,7 +8,7 @@ use App\Models\CatalystVoter;
 use Laravel\Nova\Fields\Text;
 use App\Nova\Filters\FundSnapshot;
 use App\Models\CatalystVotingPower;
-use App\Nova\Actions\GenarateVoterHistory;
+use App\Nova\Actions\GenerateVoterHistory;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class CatalystVotingPowers extends Resource
@@ -102,7 +102,7 @@ class CatalystVotingPowers extends Resource
     public function actions(NovaRequest $request)
     {
         return [
-            (new GenarateVoterHistory)
+            (new GenerateVoterHistory)
         ];
     }
 }

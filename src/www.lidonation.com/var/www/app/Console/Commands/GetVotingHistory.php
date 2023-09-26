@@ -46,9 +46,9 @@ class GetVotingHistory extends Command
         }
 
         $votingPowers = $snapshot->votingPowers()->cursor();
-        foreach ($votingPowers as $power) {
+        foreach ($votingPowers as $delay => $power) {
             if ($this->option('queue')) {
-                GetVoterHistory::dispatch($power);
+                GetVoterHistory::dispatch($power)->delay( now()->addSeconds($delay));
             } else {
                 GetVoterHistory::dispatchSync($power);
             }

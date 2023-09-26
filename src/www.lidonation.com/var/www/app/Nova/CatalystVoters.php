@@ -5,7 +5,7 @@ namespace App\Nova;
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
 use App\Models\CatalystVoter;
-use App\Nova\Actions\GenarateVoterHistory;
+use App\Nova\Actions\GenerateVoterHistory;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 

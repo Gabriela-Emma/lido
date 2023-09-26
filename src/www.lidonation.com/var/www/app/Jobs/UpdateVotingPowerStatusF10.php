@@ -25,7 +25,8 @@ class UpdateVotingPowerStatusF10 implements ShouldQueue
         CatalystVotingPower::whereRelation('catalyst_snapshot', 'model_id', 113)->each(
             function ($power) {
                 $voter = CatalystVoter::where('cat_id', $power->voter_id)->first();
-                if ($voter instanceof CatalystVoter && file_exists("/data/catalyst-tools/voting-history/f10/{$voter->stake_pub}.json")) {
+
+                if ($voter instanceof CatalystVoter) {
                     $power->consumed = 1;
                 } else {
                     $power->consumed = 0;
