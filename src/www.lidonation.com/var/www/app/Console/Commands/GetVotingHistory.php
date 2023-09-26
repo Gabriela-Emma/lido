@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\CatalystVoter;
 use App\Models\Fund;
 use App\Jobs\GetVoterHistory;
 use Illuminate\Console\Command;
@@ -47,8 +48,13 @@ class GetVotingHistory extends Command
 
         $votingPowers = $snapshot->votingPowers()->cursor();
         foreach ($votingPowers as $delay => $power) {
+            $voter = CatalystVoter::where('cat_id', $power->voter_id)->first();
+            $destinationPath = '/data/catalyst-tools/voting-history/f10/' . $voter->stake_pub . '.json';
+            if (file_exists($destinationPath)) {
+                continue;
+            }
             if ($this->option('queue')) {
-                GetVoterHistory::dispatch($power)->delay( now()->addSeconds($delay));
+                GetVoterHistory::dispatch($power)->delay(now()->addSeconds($delay));
             } else {
                 GetVoterHistory::dispatchSync($power);
             }
