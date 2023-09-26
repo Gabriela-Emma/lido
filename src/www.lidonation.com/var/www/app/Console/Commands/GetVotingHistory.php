@@ -49,6 +49,9 @@ class GetVotingHistory extends Command
         $votingPowers = $snapshot->votingPowers()->cursor();
         foreach ($votingPowers as $delay => $power) {
             $voter = CatalystVoter::where('cat_id', $power->voter_id)->first();
+            if (!$voter instanceof CatalystVoter) {
+                continue;
+            }
             $destinationPath = '/data/catalyst-tools/voting-history/f10/' . $voter->stake_pub . '.json';
             if (file_exists($destinationPath)) {
                 continue;
