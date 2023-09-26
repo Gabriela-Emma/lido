@@ -68,7 +68,6 @@ class CatalystProposerMetricsComponent extends Component
 
     public function render(): Factory|View|Application
     {
-        // dd($this->allTimeReceivedPerRound);
         return view('livewire.catalyst.proposer.metrics');
     }
 
