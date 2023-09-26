@@ -92,7 +92,8 @@ class CatalystGroupComposer
         )->reverse();
         $labels = $proposalGroups->pluck('fund.title');
         $proposals = $proposalGroups->pluck('proposals');
-        $usdProposals = collect($proposalGroups->toArray())->map(function ($item) {
+        $currency = $proposalGroups->pluck('fund.currency');
+        $usdProposal = collect($proposalGroups->toArray())->map(function ($item) {
             if ($item['fund']->currency === 'ADA') {
                 $item['proposals'] = $item['proposals']->map(function ($p) {
                     return [];
@@ -101,7 +102,7 @@ class CatalystGroupComposer
 
             return $item;
         })->pluck('proposals');
-        $adaProposals = collect($proposalGroups->toArray())->map(function ($item) {
+        $adaProposal = collect($proposalGroups->toArray())->map(function ($item) {
             if ($item['fund']->currency === 'USD') {
                 $item['proposals'] = $item['proposals']->map(function ($p) {
                     return [];
@@ -148,36 +149,48 @@ class CatalystGroupComposer
         // $$ Requested
         $this->allTimeFundingPerRound = new Fluent([
             'labels' => $labels,
-            'dataUsd' => $usdProposals->map(
+            'currency' => $currency,
+            'totalUsd' => $usdProposal->map(
                 fn ($ps) => $ps?->sum('amount_requested')
             )->values(),
-            'dataAda' => $adaProposals->map(
+            'totalAda' => $adaProposal->map(
                 fn ($ps) => $ps?->sum('amount_requested')
+            )->values(),
+            'data' => $proposals->map(
+                fn ($ps) => $ps->sum('amount_requested')
             )->values(),
         ]);
         // $$ Awarded
         $this->allTimeAwardedPerRound = new Fluent([
             'labels' => $labels,
-            'dataUsd' => $usdProposals->map(
+            'currency' => $currency,
+            'totalUsd' => $usdProposal->map(
                 fn ($ps) => $ps?->filter(
                     fn ($p) => ($p instanceof Proposal && $p?->funded_at)
                 )->sum('amount_requested')
             )->values(),
-            'dataAda' => $adaProposals->map(
+            'totalAda' => $adaProposal->map(
                 fn ($ps) => $ps?->filter(
                     fn ($p) => ($p instanceof Proposal && $p?->funded_at)
                 )->sum('amount_requested')
+            )->values(),
+            'data' => $proposals->map(
+                fn ($ps) => $ps->filter(fn ($p) => $p->funded)->sum('amount_requested')
             )->values(),
         ]);
 
         //  $$ Received
         $this->allTimeReceivedPerRound = new Fluent([
             'labels' => $labels,
-            'dataUsd' => $usdProposals->map(
+            'currency' => $currency,
+            'totalUsd' => $usdProposal->map(
                 fn ($ps) => $ps?->sum('amount_received')
             )->values(),
-            'dataAda' => $adaProposals->map(
+            'totalAda' => $adaProposal->map(
                 fn ($ps) => $ps?->sum('amount_received')
+            )->values(),
+            'data' => $proposals->map(
+                fn ($ps) => $ps->sum('amount_received')
             )->values(),
         ]);
     }
