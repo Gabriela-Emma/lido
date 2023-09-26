@@ -115,19 +115,19 @@ class CatalystProposerMetricsComponent extends Component
         $labels = $proposalGroups->pluck('fund.title');
         $currency = $proposalGroups->pluck('fund.currency');
         $allProposals = $proposalGroups->pluck('proposals');
-
+        
         $usdProposal = $proposalGroups->map(function ($item) {
             if ($item->fund->currency == 'USD') {
                 return $item;
             }
         })?->pluck('proposals');
-
+        
         $adaProposal = $proposalGroups->map(function ($item) {
             if ($item->fund->currency == 'ADA') {
                 return $item;
             }
         })?->pluck('proposals');
-
+       
         $this->setAllTimeProposedPerRound($labels, $allProposals);
         $this->setAllTimeCompletedPerRound($labels, $allProposals);
         $this->setAllTimeFundingPerRound($labels, $allProposals, $currency, $adaProposal, $usdProposal);
@@ -172,6 +172,7 @@ class CatalystProposerMetricsComponent extends Component
                 fn ($ps) => $ps->sum('amount_received')
             )->values(),
         ]);
+
     }
 
     // $$ Awarded
@@ -183,12 +184,12 @@ class CatalystProposerMetricsComponent extends Component
             'totalAda' => $adaProposal->flatMap(function ($proposalCollection) {
                 return $proposalCollection?->filter(function ($proposal) {
                     return $proposal['funded'];
-                })->pluck('amount_received');
+                })->pluck('amount_requested');
             })->sum(),
             'totalUsd' => $usdProposal->flatMap(function ($proposalCollection) {
                 return $proposalCollection?->filter(function ($proposal) {
                     return $proposal['funded']; 
-                })->pluck('amount_received');
+                })->pluck('amount_requested');
             })->sum(),
             'data' => $proposals->map(
                 fn ($ps) => $ps->filter(fn ($p) => $p->funded)->sum('amount_requested')
@@ -204,7 +205,7 @@ class CatalystProposerMetricsComponent extends Component
             'labels' => $labels,
             'currency' => $currency,
             'totalAda' => $adaProposal->flatMap(function ($proposalCollection) {
-                return $proposalCollection?->pluck('amount_received');
+                return $proposalCollection?->pluck('amount_requested');
             })->sum(),
             'totalUsd' => $usdProposal->flatMap(function ($proposalCollection) {
                 return $proposalCollection?->pluck('amount_requested');
