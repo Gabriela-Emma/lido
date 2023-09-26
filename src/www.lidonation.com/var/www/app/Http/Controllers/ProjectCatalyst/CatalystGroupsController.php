@@ -127,7 +127,11 @@ class CatalystGroupsController extends Controller
             ->when($this->sort, function ($query, $sort) {
                 $sortParts = explode(':', $sort);
 
-                return $query->orderBy($sortParts[0], $sortParts[1]);
+                $sortBy = $sortParts[0];
+                $sortDirection = $sortParts[1];
+
+//                return $query->orderByRaw("ISNULL({$sortBy}), {$sortBy} {$sortDirection}");
+                return $query->orderBy($sortBy, $sortDirection);
             });
 
         $paginator = $query->fastPaginate($this->perPage, ['*'], 'p')->setPath('/');

@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-white p-6" v-if="search && !voterData?.data">
+    <div class="bg-white p-6" v-if="(search && !voterData?.data) || voterData?.data?.length === 0">
         <p v-if="!isLoading">
             Could not find any registration transactions for the stake address <span class="font-bold">{{
                 search
@@ -11,7 +11,7 @@
                 If we haven’t pre-generated your voting results we may need to retrieve your
                 voting history and metadata via offline fragment and jormungandr sidechain analysis
                 <a href="https://github.com/input-output-hk/catalyst-core/blob/main/src/audit/src/find/README.md "
-                   target="_blank">replay</a>. <b>This can take up to 90 seconds.</b>
+                    target="_blank">replay</a>. <b>This can take up to 90 seconds.</b>
             </p>
             <svg aria-hidden="true" class="w-16 h-16 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-teal-600"
                 viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -26,13 +26,37 @@
         </div>
     </div>
 
-    <div class="bg-white/90 p-4" v-if="search && voterData?.data?.length > 0">
+    <ul v-if="isLoading" role="list" class="bg-white/90 p-4">
+        <li v-for="index in 12" :key="index">
+            <div class="rounded-sm p-4 w-full mx-auto">
+                <div class="animate-pulse">
+                    <div class="flex-1 space-y-6 py-1">
+                        <div class="h-2 bg-primary-50 rounded"></div>
+                        <div class="space-y-3">
+                            <div class="grid grid-cols-3 gap-4">
+                                <div class="h-2 bg-primary-50 rounded col-span-2"></div>
+                                <div class="h-2 bg-primary-50 rounded col-span-1"></div>
+                            </div>
+                            <div class="h-2 bg-primary-50 rounded"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </li>
+    </ul>
+
+    <div class="bg-white/90 p-4" v-if="search && voterData?.data?.length > 0 && !isLoading">
         <div class="flex items-center gap-4 rounded-sm">
             <div class="sm:flex-auto">
                 <div class="flex flex-col gap-2 text-gray-700">
-                    <h1 class="text-lg font-semibold leading-6 text-gray-900">
-                        My Voting History
-                    </h1>
+                    <div class="flex flex-row items-center p-1">
+                        <span class="text-lg font-semibold leading-6 text-gray-900">
+                            My Voting History
+                        </span>
+                        <button @click="setDownload()"
+                            class="flex text-sm bg-teal-400 hover:bg-teal-600 text-white p-0.5 ml-2 rounded">Download
+                        </button>
+                    </div>
                     <p class="">
                         Here are the onchain (jormungandr) transactions of votes cast for the stake address <span
                             class="font-bold">{{ search }}</span>
@@ -129,9 +153,10 @@ import { VARIABLES } from '../../models/variables';
 import axios from 'axios';
 import route from 'ziggy-js';
 import { watch } from 'vue';
+import { useRegistrationsSearchStore } from '../../stores/registrations-search-store';
+import { storeToRefs } from "pinia";
 
 const props = defineProps<{
-    search: string,
     currPage: number,
     perPage: number,
 }>()
@@ -144,7 +169,9 @@ let voterData = ref<{
     data: VoteData[]
 }>(null);
 
-let search = ref(props.search);
+const registrationsStore = useRegistrationsSearchStore();
+const {search} =storeToRefs(registrationsStore);
+
 let currPageRef = ref<number>(props.currPage);
 let perPageRef = ref<number>(props.perPage);
 
@@ -176,7 +203,18 @@ let query = () => {
     });
 }
 
-watch([() => props.search, currPageRef, perPageRef], () => {
+let setDownload = () => {
+    const jsonString = JSON.stringify(voterData.value.data);
+    const blob = new Blob([jsonString], { type: "application/json" });
+    const blobUrl = URL.createObjectURL(blob);
+    const downloadLink = document.createElement("a");
+    downloadLink.href = blobUrl;
+    downloadLink.download = `${search.value}.json`;
+    downloadLink.click();
+    URL.revokeObjectURL(blobUrl);
+}
+
+watch([() => search, currPageRef, perPageRef], () => {
     query();
 })
 query();

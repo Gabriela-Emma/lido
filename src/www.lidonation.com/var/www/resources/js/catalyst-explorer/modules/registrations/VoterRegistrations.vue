@@ -1,9 +1,27 @@
 <template>
-    <div v-if="search && registrations?.data?.length === 0">
+    <div class="bg-white p-6" v-if="search && registrations?.data?.length === 0">
         <p>
             Could not find any registration transactions for the stake address <span class="font-bold">{{ search }}</span>.
         </p>
     </div>
+    <ul v-if="isLoading" role="list" class="bg-white/90 p-4">
+        <li v-for="index in 4" :key="index">
+            <div class="rounded-sm p-4 w-full mx-auto">
+                <div class="animate-pulse">
+                    <div class="flex-1 space-y-6 py-1">
+                        <div class="h-2 bg-primary-50 rounded"></div>
+                        <div class="space-y-3">
+                            <div class="grid grid-cols-3 gap-4">
+                                <div class="h-2 bg-primary-50 rounded col-span-2"></div>
+                                <div class="h-2 bg-primary-50 rounded col-span-1"></div>
+                            </div>
+                            <div class="h-2 bg-primary-50 rounded"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </li>
+    </ul>
     <div class="bg-white/90 p-4" v-if="search && registrations?.data?.length > 0">
         <div class="flex items-center gap-4 rounded-sm">
             <div class="sm:flex-auto">
@@ -72,20 +90,62 @@
 
 <script lang="ts" setup>
 import CatalystRegistrationData = App.DataTransferObjects.CatalystRegistrationData;
+import { Ref, ref } from 'vue';
+import { VARIABLES } from '../../models/variables';
+import axios from 'axios';
+import route from 'ziggy-js';
+import { watch } from 'vue';
+import { useRegistrationsSearchStore } from '../../stores/registrations-search-store';
+import { storeToRefs } from "pinia";
 
 const props = withDefaults(
     defineProps<{
-        search?: string,
         currPage?: number,
         perPage?: number,
-        registrations: {
-            links: [],
-            total: number,
-            to: number,
-            from: number,
-            data: CatalystRegistrationData[]
-        }
     }>(), {
-        search: '',
+});
+
+let registrations = ref<{
+    links: [],
+    total: number,
+    to: number,
+    from: number,
+    data: CatalystRegistrationData[]
+}>(null);
+const registrationsStore = useRegistrationsSearchStore();
+const {search} =storeToRefs(registrationsStore);
+
+let currPageRef = ref<number>(props.currPage);
+let perPageRef = ref<number>(props.perPage);
+let isLoading = ref(false);
+
+function getQueryData() {
+    const data = {};
+    if (search.value?.length > 0) {
+        data[VARIABLES.SEARCH] = search.value;
+    }
+    if (currPageRef.value) {
+        data[VARIABLES.PAGE] = currPageRef.value;
+    }
+    if (perPageRef.value) {
+        data[VARIABLES.PER_PAGE] = perPageRef.value;
+    }
+    return data;
+}
+
+let query = () => {
+    let params = getQueryData();
+    isLoading.value = true
+    axios.get(route('catalystExplorer.registrationsData'), { params }).then((res) => {
+        registrations.value = res.data
+        isLoading.value = false
+    }).catch((e) => {
+        isLoading.value = false
     });
+}
+
+watch([() => search], () => {
+    query();
+})
+query();
 </script>

@@ -37,9 +37,8 @@ class CatalystRegistrationsController extends Controller
 
         // props
         $props = [
-            'search' => $this->search,
+            'searchTerm' => $this->search,
             'perPage' => $this->perPage,
-            'registrations' => $this->query($request),
             'crumbs' => [
                 ['label' => 'Registrations'],
             ],
@@ -51,9 +50,11 @@ class CatalystRegistrationsController extends Controller
         return Inertia::render('Registrations', $props);
     }
 
-    protected function query(Request $request)
+    public function registrationsData(Request $request)
     {
-
+        $this->search = $request->input('s', null);
+        $this->perPage = $request->input('l', 24);
+        $this->currentPage = $request->input('p', 1);
         $registrationBuilder = CatalystRegistration::where('stake_pub', $this->search);
         $paginatedResults = $registrationBuilder->fastPaginate($this->perPage, ['*'], 'p', $this->currentPage)
             ->setPath('/')->onEachSide(1);
@@ -69,12 +70,11 @@ class CatalystRegistrationsController extends Controller
         return $_options;
     }
 
-    public function getVoterData(Request $request)
+    public function getVoterData(Request $request): array
     {
         $search = $request->input('s', null);
         $perPage = $request->input('l', 24);
         $currentPage = $request->input('p', 1);
-
         $filePath = '/data/catalyst-tools/voting-history/f10/' . $search . '.json';
 
         if (!file_exists($filePath)) {
@@ -84,9 +84,10 @@ class CatalystRegistrationsController extends Controller
                         $q->where('model_type', Fund::class)->where('model_id', 113);
                     });
                 })->first();
+
             if ($voter instanceof CatalystVoter) {
                 GetVoterHistory::dispatchSync($voter->voting_powers?->first());
-                sleep(20);
+                sleep(5);
             }
         }
 

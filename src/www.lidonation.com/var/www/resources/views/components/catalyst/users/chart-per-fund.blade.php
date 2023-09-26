@@ -1,7 +1,7 @@
 @props([
     'labels' => ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
     'data' => [200, 150, 350, 225, 125],
-    'dataType' => 'number',
+    'dataType' => null,
     'chartName' => 'chartName',
     'modelId' => 'modelId',
 ])
@@ -10,6 +10,7 @@
     values: @js($data),
     chartName: @js($chartName),
     modelId: @js($modelId),
+    dataType: @js($dataType),
     init() {
         Livewire.on('ownMetricsToggle', async () => {
             this.values = await $wire.getMetricData(this.chartName, this.modelId);
@@ -39,14 +40,14 @@
                         display: false,
                         min: 0,
                         grid: {
-                          display: false
+                            display: false
                         }
                     },
                     y: {
                         display: false,
                         min: 0,
                         grid: {
-                          display: false
+                            display: false
                         }
                     }
                 },
@@ -55,21 +56,23 @@
                     tooltip: {
                         displayColors: false,
                         callbacks: {
-                            label(point) {
-                                switch (point.dataset.dataType) {
-                                    case 'currency':
-                                        return new Intl.NumberFormat(
-                                        'en-US',
-                                         {
+                            label(context) {
+                                const point = context.dataset.data[context.dataIndex];
+                                const dataType = context.dataset.dataType[context.dataIndex];
+                                switch (dataType) {
+                                    case 'USD':
+                                        return new Intl.NumberFormat('en-US', {
                                             style: 'currency',
                                             currency: 'USD',
                                             minimumFractionDigits: 0,
-                                            maximumFractionDigits: 0
-                                         }).format(point.raw)
+                                            maximumFractionDigits: 0,
+                                        }).format(point);
                                     case 'percent':
-                                        return `${point.raw}%`;
+                                        return `${point}%`;
+                                    case 'ADA':
+                                        return `₳${new Intl.NumberFormat('en-US',{minimumFractionDigits: 0,maximumFractionDigits: 0}).format(point)}`;
                                     default:
-                                        return point.raw;
+                                        return point;
                                 }
                             }
                         }
@@ -77,13 +80,13 @@
                 }
             }
         })
-
         this.$watch('values', () => {
             chart.data.labels = this.labels
             chart.data.datasets[0].data = this.values
+            chart.data.datasets[0].dataType = this.values
             chart.update()
         })
     }
 }">
-    <canvas x-ref="canvas" class="bg-transparent rounded-sm p-0 w-44h-24 "></canvas>
+    <canvas x-ref="canvas" class="p-0 bg-transparent rounded-sm w-44h-24 "></canvas>
 </div>

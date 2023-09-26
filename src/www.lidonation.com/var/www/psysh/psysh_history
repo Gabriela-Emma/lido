@@ -415,3 +415,47 @@ $vp = CatalystVotingPower::where('voter_id', 'ca1qk4edaaetzqnlvwhan2dmj00amndnfa
 $vp->voter->voting_powers()->toSql();
 $vp->voter->voting_powers;
 exit
+$fund = Fund::find(113);
+        if (!$fund instanceof Fund) {
+            $this->error('Fund is required.');
+            return;
+        }
+        $snapshot = CatalystSnapshot::where('model_id', $fund->id)->first();
+        if (!$snapshot instanceof CatalystSnapshot) {
+            $this->error('Fund has no CatalystSnapshot.');
+            return;
+        }
+        $snapshot->votingPowers()->orderBy('voting_power')->each(
+            function ($power) {
+                GetVoterHistory::dispatchSync($power);
+//                if ($this->option('queue')) {
+//                    GetVoterHistory::dispatch($power);
+//                } else {
+//                    GetVoterHistory::dispatchSync($power);
+//                }
+            }
+        );
+$fund = \App\Models\Fund::find(113);
+$snapshot = \App\Models\CatalystSnapshot::where('model_id', $fund->id)->first();
+$snapshot->votingPowers()->orderBy('voting_power')->each(
+    function ($power) {
+        \App\Jobs\GetVoterHistory::dispatchSync($power);
+    }
+);
+$fund = \App\Models\Fund::find(113);
+$snapshot = \App\Models\CatalystSnapshot::where('model_id', $fund->id)->first();
+$snapshot->votingPowers()->orderBy('voting_power')->count();
+$fund = \App\Models\Fund::find(113);
+$snapshot = \App\Models\CatalystSnapshot::where('model_id', $fund->id)->first();
+$snapshot->votingPowers()->orderBy('voting_power')->each(
+    function ($power) {
+        \App\Jobs\GetVoterHistory::dispatch($power);
+    }
+);
+$fund = \App\Models\Fund::find(113);
+$snapshot = \App\Models\CatalystSnapshot::where('model_id', $fund->id)->first();
+$snapshot->votingPowers()->orderBy('voting_power')->each(
+    function ($power) {
+        \App\Jobs\GetVoterHistory::dispatch($power);
+    }
+);

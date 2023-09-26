@@ -100,6 +100,10 @@ class AppServiceProvider extends ServiceProvider
             Limit::perMinute(100),
         ]);
 
+        RateLimiter::for('vote_history', function (object $job) {
+            return Limit::perMinute(15);
+        });
+
         Validator::extend('hashed_exists', function ($attribute, $value, $parameters, $validator) {
             if (is_array($value)) {
                 $value = array_map(fn ($item) => (
