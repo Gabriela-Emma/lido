@@ -45,14 +45,13 @@ class GetVotingHistory extends Command
             return;
         }
 
-        $snapshot->votingPowers()->each(
-            function ($power) {
-                if ($this->option('queue')) {
-                    GetVoterHistory::dispatch($power);
-                } else {
-                    GetVoterHistory::dispatchSync($power);
-                }
+        $votingPowers = $snapshot->votingPowers()->cursor();
+        foreach ($votingPowers as $power) {
+            if ($this->option('queue')) {
+                GetVoterHistory::dispatch($power);
+            } else {
+                GetVoterHistory::dispatchSync($power);
             }
-        );
+        }
     }
 }
