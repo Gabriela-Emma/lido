@@ -145,7 +145,7 @@
                         </div>
                     </div>
                     <div class="flex w-full min-w-full overflow-hidden">
-                        @if ($allTimeProposedPerRound->data->count() > 1)
+                        @if ($allTimeProposedPerRound->data->count() > 0)
                             <div class="relative w-full xl:w-48">
                                 <x-catalyst.users.chart-per-fund :labels="$allTimeProposedPerRound->labels"
                                     :data="$allTimeProposedPerRound->data"></x-catalyst.users.chart-per-fund>
@@ -167,19 +167,19 @@
                         @endif
                     </div>
                 </div>
-                @if ($allTimeFundingPerRound->data?->sum() > 0)
+                @if ($allTimeFundingPerRound->data?->count() > 0)
                     <div
                         class="border border-teal-600 -mt-px -ml-px inline-flex flex-col gap-6 justify-between border-opacity-50 p-4 min-w-15 md:min-w-[13rem] xl:min-w-[initial]">
                         <div class="flex flex-row flex-no-wrap items-center justify-between gap-4 md:justify-start">
                             <div class="flex-col flex-wrap font-semibold leading-2" x-data>
-                                @if ($allTimeFundingPerRound->totalAda)
+                                @if ($allTimeFundingPerRound->totalAda->sum())
                                     <div>
                                         <span class="font-semibold ">
                                             ₳{{ humanNumber($allTimeFundingPerRound->totalAda->sum()) }}
                                         </span>
                                     </div>
                                 @endif
-                                @if ($allTimeFundingPerRound->totalUsd)
+                                @if ($allTimeFundingPerRound->totalUsd->sum())
                                     <div>
                                         <span class="font-semibold">
                                             ${{ humanNumber($allTimeFundingPerRound->totalUsd->sum()) }}
@@ -194,7 +194,7 @@
                             </div>
                         </div>
                         <div class="w-full min-w-full overflow-hidden">
-                            @if ($allTimeFundingPerRound->data?->count() > 1)
+                            @if ($allTimeFundingPerRound->data?->sum() > 0)
                                 <div class="relative w-full xl:w-48">
                                     <x-catalyst.users.chart-per-fund :dataType="$allTimeFundingPerRound->currency" :labels="$allTimeFundingPerRound->labels"
                                         :data="$allTimeFundingPerRound->data"></x-catalyst.users.chart-per-fund>
@@ -221,14 +221,14 @@
                         <div
                             class="flex flex-row flex-no-wrap items-center justify-between gap-5 md:justify-start text-blue-dark-500">
                             <div class="flex-col flex-wrap font-semibold leading-2" x-data>
-                                @if ($allTimeAwardedPerRound->totalAda)
+                                @if ($allTimeAwardedPerRound->totalAda->sum())
                                     <div>
                                         <span class="font-semibold ">
                                             ₳{{ humanNumber($allTimeAwardedPerRound->totalAda->sum()) }}
                                         </span>
                                     </div>
                                 @endif
-                                @if ($allTimeAwardedPerRound->totalUsd)
+                                @if ($allTimeAwardedPerRound->totalUsd->sum())
                                     <div>
                                         <span class="font-semibold">
                                             ${{ humanNumber($allTimeAwardedPerRound->totalUsd->sum()) }}
@@ -243,7 +243,7 @@
                             </div>
                         </div>
                         <div class="w-full min-w-full overflow-hidden">
-                            @if ($allTimeAwardedPerRound->data?->count() > 1)
+                            @if ($allTimeAwardedPerRound->data?->sum() > 0)
                                 <div class="relative w-full xl:w-48">
                                     <x-catalyst.users.chart-per-fund :dataType="$allTimeAwardedPerRound->currency" :labels="$allTimeAwardedPerRound->labels"
                                         :data="$allTimeAwardedPerRound->data"></x-catalyst.users.chart-per-fund>
@@ -270,14 +270,14 @@
                         <div
                             class="flex flex-row flex-no-wrap items-center justify-between gap-5 md:justify-start text-blue-dark-500">
                             <div class="flex-col flex-wrap font-semibold leading-2" x-data>
-                                @if ($allTimeReceivedPerRound->totalAda->count() > 1)
+                                @if ($allTimeReceivedPerRound->totalAda->sum())
                                     <div>
                                         <span class="font-semibold ">
                                             ₳{{ humanNumber($allTimeReceivedPerRound->totalAda->sum()) }}
                                         </span>
                                     </div>
                                 @endif
-                                @if ($allTimeReceivedPerRound->totalUsd->count() > 1)
+                                @if ($allTimeReceivedPerRound->totalUsd->sum())
                                     <div>
                                         <span class="font-semibold">
                                             ${{ humanNumber($allTimeReceivedPerRound->totalUsd->sum()) }}
