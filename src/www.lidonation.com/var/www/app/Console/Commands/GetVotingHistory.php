@@ -46,7 +46,7 @@ class GetVotingHistory extends Command
             return;
         }
 
-        $votingPowers = $snapshot->votingPowers()->cursor();
+        $votingPowers = $snapshot->votingPowers()->orderByDesc('voting_power')->cursor();
         foreach ($votingPowers as $delay => $power) {
             $voter = CatalystVoter::where('cat_id', $power->voter_id)->first();
             if (!$voter instanceof CatalystVoter) {

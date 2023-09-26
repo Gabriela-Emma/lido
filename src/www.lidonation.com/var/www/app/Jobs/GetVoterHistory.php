@@ -57,12 +57,7 @@ class GetVoterHistory implements ShouldQueue
 
         $sourcePath = '/tmp/offline.voting_history_of_' . $voting_key . '.json';
         $destinationPath = '/data/catalyst-tools/voting-history/f10/' . $voter->stake_pub . '.json';
-        $jsonContents = file_get_contents($sourcePath);
-        if (empty($jsonContents) || $jsonContents === '[]') {
-            unlink($sourcePath);
-        } else {
-            rename($sourcePath, $destinationPath);
-        }
+        rename($sourcePath, $destinationPath);
     }
 
     public function getFragmentStorage(): ?string

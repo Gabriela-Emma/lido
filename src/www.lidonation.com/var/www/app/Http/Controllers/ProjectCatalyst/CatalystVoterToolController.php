@@ -55,8 +55,7 @@ class CatalystVoterToolController extends Controller
      */
     public function __construct()
     {
-        $this->fund = app(FundRepository::class)
-            ->funds('inGovernance')->first();
+        $this->fund = Fund::where('parent_id', null)->first();
         $this->challenges = app(FundRepository::class)
             ->fundChallenges($this->fund);
     }
