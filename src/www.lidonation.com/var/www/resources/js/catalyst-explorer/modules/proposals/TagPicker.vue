@@ -35,7 +35,7 @@ import {useTagsStore} from "../../stores/tags-store";
 
 const props = withDefaults(
     defineProps<{
-        modelValue?: Challenge
+        modelValue?: number[]
     }>(),
     {},
 );
@@ -47,7 +47,7 @@ const {tags} = storeToRefs(tagsStore);
 // events & watchers
 ////
 const emit = defineEmits<{
-    (e: 'update:modelValue', challenge: Challenge): void
+    (e: 'update:modelValue', challenge: number[]): void
 }>();
 
 watch(selectedRef, (newChallenge, oldFund) => {

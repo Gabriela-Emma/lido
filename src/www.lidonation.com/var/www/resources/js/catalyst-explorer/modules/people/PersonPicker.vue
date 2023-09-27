@@ -34,7 +34,7 @@ import User from '../../../global/Shared/Models/user';
 
 const props = withDefaults(
     defineProps<{
-        modelValue?: User
+        modelValue?: number[]
     }>(),
     {},
 );
@@ -46,7 +46,7 @@ const {people, selectedPeople} = storeToRefs(peopleStore);
 // events & watchers
 ////
 const emit = defineEmits<{
-    (e: 'update:modelValue', user: User): void
+    (e: 'update:modelValue', user: number[]): void
 }>();
 
 watch(selectedRef, (newUser, oldUser) => {

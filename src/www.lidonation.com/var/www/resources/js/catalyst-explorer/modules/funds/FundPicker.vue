@@ -15,7 +15,7 @@
             label="title"
             mode="tags"
             placeholder="Limit to Funds"
-            :loading="funds.length <= 0"
+            @search-change="fundsStore.loadFunds"
             :options="funds"
             :classes="{
                 container: 'multiselect border-0 px-1 py-2',
@@ -35,7 +35,7 @@ import Fund from "../../models/fund";
 
 const props = withDefaults(
     defineProps<{
-        modelValue?: Fund
+        modelValue?: number[]
     }>(),
     {},
 );
@@ -47,7 +47,7 @@ const {funds} = storeToRefs(fundsStore);
 // events & watchers
 ////
 const emit = defineEmits<{
-    (e: 'update:modelValue', fund: Fund): void
+    (e: 'update:modelValue', fund: number[]): void
 }>();
 
 watch(selectedRef, (newFund, oldFund) => {

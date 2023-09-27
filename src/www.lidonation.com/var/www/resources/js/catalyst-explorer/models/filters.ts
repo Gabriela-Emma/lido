@@ -10,7 +10,7 @@ export default interface Filters {
     cohort: string;
     type?: string;
     funds?: number[];
-    challenges?: Fund[];
+    challenges?: number[];
     proposals?: Proposal[];
     tags?: number[];
     people?: number[];

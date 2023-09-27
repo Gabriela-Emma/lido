@@ -7,8 +7,8 @@
             value-prop="id"
             label="title"
             mode="tags"
-            :loading="filteredChallenges?.length <= 0"
-            :options="filteredChallenges"
+            @search-change="challengesStore.loadChallenges()"
+             :options="filteredChallenges"
             :searchable="true"
             :classes="{
                 container: 'multiselect border-0 px-1 py-2 flex-wrap',
@@ -30,7 +30,7 @@ import Challenge from "../../models/challenge";
 
 const props = withDefaults(
     defineProps<{
-        modelValue?: Challenge
+        modelValue?: number[]
     }>(),
     {},
 );
@@ -42,7 +42,7 @@ const {filteredChallenges} = storeToRefs(challengesStore);
 // events & watchers
 ////
 const emit = defineEmits<{
-    (e: 'update:modelValue', challenge: Challenge): void
+    (e: 'update:modelValue', challenge: number[]): void
 }>();
 
 watch(selectedRef, (newChallenge, oldFund) => {

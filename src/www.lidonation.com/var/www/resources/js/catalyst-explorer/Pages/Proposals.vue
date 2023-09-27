@@ -34,7 +34,7 @@
 
                 <ProposalViewTypes class="mr-4"></ProposalViewTypes>
 
-                <button @click="openIdeascaleLddinks" v-if="props.proposals.total <= 35"
+                <button @click="openIdeascaleLinks" v-if="props.proposals.total <= 35"
                     class="bg-white rounded-sm px-2 py-2.5 text-gray-400 flex-wrap hover:text-yellow-500">Open Ideascale
                     Links</button>
                 <div class="flex flex-col text-center text-pink-500" v-if="filtering || search">
@@ -90,7 +90,7 @@
                             stroke="currentColor" class="w-5 h-5">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
                         </svg>
-                    </button>
+                    </button>  
 
                     <ProposalFilter @filter="(payload) => filtersRef = payload"
                         @reRenderFilter="filterRenderKey = Math.random()" :filters="filtersRef" :key="filterRenderKey"

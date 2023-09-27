@@ -47,11 +47,12 @@ export const useChallengesStore = defineStore('challenges', () => {
         }
     }
 
-    onMounted(loadChallenges);
+    // onMounted(loadChallenges);
 
     return {
         filterChallenges,
         filteredChallenges,
-        challenges
+        challenges,
+        loadChallenges
     };
 });
