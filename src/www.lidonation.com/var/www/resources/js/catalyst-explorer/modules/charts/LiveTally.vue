@@ -118,8 +118,6 @@ const props = defineProps<{
     challenges: Challenge[]
 }>()
 
-
-
 let tallies$ = ref<{
     links: [],
     total: number,
