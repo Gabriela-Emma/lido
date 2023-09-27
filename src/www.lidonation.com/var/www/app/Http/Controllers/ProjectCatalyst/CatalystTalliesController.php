@@ -140,11 +140,11 @@ class CatalystTalliesController extends Controller
             $csvData = [];
             foreach ($tallies as $row) {
                 $csvData[] = [
-                    $row->proposal->title,
+                    $row->proposal?->title,
                     $row->tally,
-                    $row->proposal->yes_votes_count,
-                    $row->proposal->no_votes_count,
-                    $row->proposal->amount_requested,
+                    $row->proposal?->yes_votes_count,
+                    $row->proposal?->no_votes_count,
+                    $row->proposal?->amount_requested,
                     $row->hash,
                 ];
             }
