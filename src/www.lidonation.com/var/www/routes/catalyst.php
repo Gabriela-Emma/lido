@@ -7,6 +7,7 @@ use App\Http\Controllers\ProjectCatalyst\CatalystAttachmentsController;
 use App\Http\Controllers\ProjectCatalyst\CatalystBookmarksController;
 use App\Http\Controllers\ProjectCatalyst\CatalystChallengeController;
 use App\Http\Controllers\ProjectCatalyst\CatalystChartsController;
+use App\Http\Controllers\ProjectCatalyst\CatalystFundController;
 use App\Http\Controllers\ProjectCatalyst\CatalystFundsController;
 use App\Http\Controllers\ProjectCatalyst\CatalystGroupsController;
 use App\Http\Controllers\ProjectCatalyst\CatalystMyBookmarksController;
@@ -56,8 +57,8 @@ Route::group(
             Route::get('/bookmarks', App\Http\Livewire\Catalyst\CatalystBookmarksComponent::class)
                 ->name('bookmarks');
 
-            Route::get('/funds/{fund}/', CatalystFundComponent::class)
-                ->name('fund');
+            // Route::get('/funds/{fund}/', CatalystFundComponent::class)
+            //     ->name('fund');
 
             Route::get('/challenges/{fund}/', fn () => view('challenge'))
                 ->name('challenge');
@@ -105,7 +106,9 @@ Route::group(
             Route::get('/funds', [CatalystFundsController::class, 'index'])
                 ->name('funds');
 
-            Route::get('/funds/{fund}/', CatalystFundComponent::class)
+            // Route::get('/funds/{fund}/', CatalystFundComponent::class)
+            //     ->name('fund');
+            Route::get('/funds/{slug}', [CatalystFundController::class, 'index'])
                 ->name('fund');
 
             // Route::get('/challenges/{fund}/', fn () => view('challenge'))

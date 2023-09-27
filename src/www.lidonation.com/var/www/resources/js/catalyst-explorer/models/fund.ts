@@ -21,4 +21,5 @@ export default interface Fund {
     slug: string;
     content: string;
     excerpt: string;
+    funded_proposals: string;
 }
