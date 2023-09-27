@@ -13,6 +13,9 @@
                     This shows how many wallets have expressed an opinion for a proposal.
                     We won't know the yes or no vote until after the voting period ends.
                 </p>
+                <div v-if="attachmentLink" class="pt-4">
+                    <Attachment :attachementLink="attachmentLink" :title="'Download raw tallies'"/>
+                </div>
             </div>
             <div class="p-1.5 text-center bg-teal-600 text-slate-100 shadow-accent-900 shadow-sm rounded-sm"
                 v-if="talliesSum$">
@@ -108,6 +111,7 @@ import Challenge from '../../models/challenge';
 import ChallengePicker from '../funds/ChallengePicker.vue';
 import Search from '../../Shared/Components/Search.vue';
 import { ChevronUpDownIcon } from '@heroicons/vue/20/solid';
+import Attachment from './Attachment.vue';
 
 const props = defineProps<{
     fundId: number
@@ -131,8 +135,11 @@ let search$ = ref<string>(null);
 let challengesRef = ref<Challenge[]>(props.challenges);
 let talliesSum$ = ref<number>(null);
 let tallyUpdatedAt$ = ref<string>(null);
+let attachmentLink = ref<string>(null);
+
 getTallies();
 getUpdatedDate();
+getAttachmentLink();
 
 function getQueryData() {
     const data = {};
@@ -192,6 +199,19 @@ function getTallies() {
         .catch((error) => {
             console.error(error);
         });
+}
+
+function getAttachmentLink() {
+    axios.get(route('catalystExplorerApi.tallies.attachementLink'),
+        {
+            params: {
+                fs: props.fundId,
+            }
+        }
+    )
+    .then((res) => {
+        attachmentLink.value = res?.data;
+    });
 }
 
 watch([search$], () => {

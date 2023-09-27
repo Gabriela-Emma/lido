@@ -19,4 +19,9 @@ class CatalystTally extends Model
         'hash',
         'tally',
     ];
+
+    public function proposal()
+    {
+        return $this->hasOne(Proposal::class, 'id', 'model_id');
+    }
 }

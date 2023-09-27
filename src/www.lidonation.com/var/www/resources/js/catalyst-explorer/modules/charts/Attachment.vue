@@ -3,7 +3,7 @@
         <a :href="props.attachementLink"
             type="button"
             class="px-2 py-1 text-xs font-semibold text-gray-900 bg-white rounded-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
-            Download raw snapshot
+            {{ attachementTitle }}
         </a>
     </div>
 </template>
@@ -12,9 +12,12 @@
 
 const props = withDefaults(
     defineProps<{
-        attachementLink?: string
+        attachementLink?: string;
+        title?: string;
     }>(),
     {},
 );
+
+let attachementTitle = props.title ?? 'Download raw snapshot';
 
 </script>
