@@ -6,6 +6,7 @@ use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Carbon;
+use App\Models\Proposal;
 
 class FundResource extends JsonResource
 {
@@ -33,7 +34,16 @@ class FundResource extends JsonResource
             'content' => $this->content,
             'excerpt' => $this->excerpt,
             'label' => $this->label,
+            'funded_proposals' => $this->fundedProposals()
 
         ];
+    }
+
+    public function fundedProposals()
+    {
+        return Proposal::where('type', 'proposal')
+            ->whereNotNull('funded_at')
+            ->where('fund_id', $this->id)
+            ->count();
     }
 }
