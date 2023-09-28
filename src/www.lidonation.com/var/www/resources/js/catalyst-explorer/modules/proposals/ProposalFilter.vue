@@ -33,7 +33,7 @@
                 <li class="p-4">
                     <BudgetRangePicker v-model="filters.budgets" />
                 </li>
-                <!-- <li class="">
+                <li class="">
                     <ProposalTypePicker v-model="filters.type" :filters="{
                         p: 'Only Proposals',
                         c: 'Only Challenges',
@@ -76,11 +76,11 @@
                         u: 'Unfunded',
                         // p: 'Paused'
                     }" />
-                </li> -->
-
-                <li v-for="picker in pickers">
-                    <Picker : />
                 </li>
+
+                <!-- <li v-for="picker in pickers">
+                    <Picker  />
+                </li> -->
 
                 <li class="p-4 ">
                     <p class="mb-3 text-slate-400">{{ $t("Opensource") }}</p>
@@ -138,6 +138,7 @@ import { useGroupsStore } from "../../stores/groups-store";
 import GroupsPicker from "../groups/GroupsPicker.vue";
 import ProposalTypePicker from "../funds/ProposalTypePicker.vue";
 import Picker from "../../Shared/Components/Picker.vue";
+import { useFiltersStore } from "../../../global/Shared/store/filters-stores";
 
 ////
 // props and class properties
@@ -153,62 +154,7 @@ let showClearAll = ref(false);
 let filters = ref<Filters>(props.filters);
 let search = ref<string>(props.search);
 
-let pickers = ref([
-
-    {
-        "name": "type",
-        "options": {
-            p: 'Only Proposals',
-            c: 'Only Challenges',
-            b: 'Both Proposals & Challenges'
-        },
-        "data": filters.value.type
-    },
-    {
-        "name": "funds",
-        "options": null,
-        "data": filters.value.funds
-    },
-    {
-        "name": "challenges",
-        "options": null,
-        "data": filters.value.challenges
-    },
-    {
-        "name": "fundingStatus",
-        "options": {
-            o: 'Over Budget',
-            n: 'Not Approved',
-            f: 'Funded',
-            p: 'Fully Paid'
-        },
-        "data": filters.value.fundingStatus
-    },
-    {
-        "name": "tags",
-        "options": null,
-        "data": filters.value.tags
-    },
-    {
-        "name": "groups",
-        "options": null,
-        "data": filters.value.groups
-    },
-    {
-        "name": "people",
-        "options": null,
-        "data": filters.value.people
-    },
-    {
-        "name": "projectStatus",
-        "options": {
-            c: 'Complete',
-            i: 'In Progress',
-            u: 'Unfunded',
-        },
-        "data": filters.value.projectStatus
-    },
-])
+const filterStore = useFiltersStore();
 
 ////
 // computer properties
@@ -219,13 +165,15 @@ let pickers = ref([
  */
 const filtering = computed(() => Object.values(props.filters).every(val => !!val) || props.showFilter);
 
+
+
 /**
  * Init Challenges
  */
-// const challengesStore = useChallengesStore();
-// challengesStore.filterChallenges({
-//     funds: props?.filters?.funds
-// });
+const challengesStore = useChallengesStore();
+challengesStore.filterChallenges({
+    funds: props?.filters?.funds
+});
 
 /**
  * Init Tags
@@ -256,11 +204,11 @@ const emit = defineEmits<{
 
 watch(filters, (newValue, oldValue) => {
     // if filtering fund, update challenge store
-    // if (newValue.funds?.length > 0) {
-    //     challengesStore.filterChallenges({
-    //         funds: newValue.funds
-    //     });
-    // }
+    if (newValue.funds?.length > 0) {
+        challengesStore.filterChallenges({
+            funds: newValue.funds
+        });
+    }
 
     // fire filter event
     emit('filter', newValue);

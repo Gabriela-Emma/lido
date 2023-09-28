@@ -476,6 +476,7 @@ function getFiltering() {
 }
 
 function query() {
+    
     const data = getQueryData();
     router.get(
         `/${props.locale}/catalyst-explorer/proposals`,
