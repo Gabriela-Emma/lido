@@ -34,7 +34,7 @@
                     <BudgetRangePicker v-model="filters.budgets" />
                 </li>
                 <li class="">
-                    <ProposalTypePicker v-model="filters.type" :filters="{
+                    <Picker v-model="filters.type" :custom-options="{
                         p: 'Only Proposals',
                         c: 'Only Challenges',
                         b: 'Both Proposals & Challenges'
@@ -42,14 +42,14 @@
                 </li>
 
                 <li class="">
-                    <FundPicker v-model="filters.funds" />
+                    <Picker v-model:funds="filters.funds" />
                 </li>
                 <li class="">
-                    <ChallengePicker v-model="filters.challenges" />
+                    <Picker v-model:challenges="filters.challenges" />
                 </li>
 
                 <li class="">
-                    <FundingStatusPicker v-model="filters.fundingStatus" :filters="{
+                    <Picker v-model:fundingStatus="filters.fundingStatus" :custom-options="{
                         o: 'Over Budget',
                         n: 'Not Approved',
                         f: 'Funded',
@@ -58,29 +58,25 @@
                 </li>
 
                 <li class="">
-                    <TagPicker v-model="filters.tags" />
+                    <Picker v-model:tags="filters.tags" />
                 </li>
 
                 <li class="">
-                    <GroupsPicker v-model="filters.groups" />
+                    <Picker v-model:groups="filters.groups" />
                 </li>
 
                 <li class="">
-                    <PersonPicker v-model="filters.people" />
+                    <Picker v-model:people="filters.people" />
                 </li>
 
                 <li class="">
-                    <ProposalStatusPicker v-model="filters.projectStatus" :filters="{
+                    <Picker v-model:projectStatus="filters.projectStatus" :custom-options="{
                         c: 'Complete',
                         i: 'In Progress',
                         u: 'Unfunded',
                         // p: 'Paused'
                     }" />
                 </li>
-
-                <!-- <li v-for="picker in pickers">
-                    <Picker  />
-                </li> -->
 
                 <li class="p-4 ">
                     <p class="mb-3 text-slate-400">{{ $t("Opensource") }}</p>

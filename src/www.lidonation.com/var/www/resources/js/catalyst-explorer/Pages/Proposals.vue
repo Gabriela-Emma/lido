@@ -486,7 +486,6 @@ function getFiltering() {
 function query() {
     filterStore.setModel({data:props.proposals, filters: props.filters})
     const data = getQueryData();
-    filterStore.getFilteredData(data)
     getMetrics();
     // router.get(
     //     `/${props.locale}/catalyst-explorer/proposals`,

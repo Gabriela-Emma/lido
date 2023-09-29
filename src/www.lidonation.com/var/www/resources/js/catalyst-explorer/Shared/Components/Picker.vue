@@ -7,7 +7,7 @@
             value-prop="id" 
             label="name" 
             mode="tags"
-            @search-change="currentInstance.store.search({$event})" 
+            @search-change="propName == 'funds' ? currentInstance.store.search({$event}) : currentInstance.store.loadFunds({ $event })" 
             :minChars="3" 
             :options="currentInstance.options" 
             :searchable="true" 
@@ -50,14 +50,15 @@ import { useFundsStore } from '../../stores/funds-store';
 
 const props = withDefaults(
     defineProps<{
-        funds?: number[]
+        funds?:number[]
         challenges?:number[]
         type?:string
         fundingStatus?:string
-        tags?:string[]
-        groups?: string[]
-        people?: string[]
+        tags?:number[]
+        groups?: number[]
+        people?: number[]
         status?:string
+        projectStatus?:string
         customOptions?:{}
         customizeUi?:boolean
     }>(),
@@ -68,18 +69,20 @@ const props = withDefaults(
 );
 
 const tagsStore = useTagsStore();
-const { tags } = storeToRefs(tagsStore);
 const peopleStore = usePeopleStore();
 const challengesStore = useChallengesStore();
 const groupsStore = useGroupsStore();
 const fundsStore = useFundsStore();
 
-const stores =  {
-    'fundsStore': fundsStore,
-    'groupsStore' : groupsStore,
-    'peopleStore': peopleStore
-}
 
+
+const stores =  {
+    'funds': fundsStore,
+    'groups' : groupsStore,
+    'people': peopleStore,
+    'tags': tagsStore,
+    'challenges':challengesStore
+}
 
 interface CurrentInstance {
     selectedRef:string | number[]

@@ -17,4 +17,6 @@ export default interface Filters {
     groups?: number[];
     sort?: number[];
     budgets?: number[];
+    perPage?:number;
+    search?:string;
 }
