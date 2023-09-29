@@ -250,6 +250,8 @@ class CatalystProposalsController extends Controller
         return Inertia::render('Proposals', $props);
     }
 
+
+
     protected function setFilters(Request $request)
     {
         $this->limit = $request->input(CatalystExplorerQueryParams::PER_PAGE, 24);
@@ -492,6 +494,14 @@ class CatalystProposalsController extends Controller
         }
 
         return $_options;
+    }
+
+    public function getFilteredData(Request $request)
+    {
+        dd($request);
+        $this->setFilters($request);
+        return $this->query();
+
     }
 
     /**

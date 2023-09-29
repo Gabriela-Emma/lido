@@ -120,6 +120,9 @@ Route::group(
             Route::get('/proposals', [CatalystProposalsController::class, 'index'])
                 ->name('proposals');
 
+            Route::get('/filtered-proposals', [CatalystProposalsController::class, 'getFilteredData'])
+                ->name('filterProposals');
+
             Route::get('/proposals/metrics/count/approved', [CatalystProposalsController::class, 'metricCountFunded']);
             Route::get('/proposals/metrics/count/paid', [CatalystProposalsController::class, 'metricCountTotalPaid']);
             Route::get('/proposals/metrics/count/completed', [CatalystProposalsController::class, 'metricCountCompleted']);

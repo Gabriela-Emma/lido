@@ -100,12 +100,12 @@
                 <!-- Proposal lists -->
                 <div class="flex-1 mx-auto"
                     :class="{ 'lg:pr-16 opacity-10 lg:opacity-100': showFilters, 'container': !showFilters }">
-                    <Proposals :proposals="props.proposals?.data"></Proposals>
+                    <Proposals :proposals="currentModel.data.data"></Proposals>
 
                     <div class="flex items-start justify-between w-full gap-16 my-16 xl:gap-24">
                         <div class="flex-1">
-                            <Pagination :links="props.proposals.links" :per-page="props.perPage"
-                                :total="props.proposals?.total" :from="props.proposals?.from" :to="props.proposals?.to"
+                            <Pagination :links="currentModel.data.links" :per-page="props.perPage"
+                                :total="currentModel.data.total" :from="currentModel.data.from" :to="currentModel.data.to"
                                 @perPageUpdated="(payload) => perPageRef = payload"
                                 @paginated="(payload) => currPageRef = payload" />
                         </div>
@@ -263,6 +263,7 @@ import { useProposalsRankingStore } from '../stores/proposals-ranking-store';
 import { useUserStore } from '../../global/Shared/store/user-store';
 import { usePlayStore } from '../../global/Shared/store/play-store';
 import { PlayCircleIcon, StopCircleIcon } from '@heroicons/vue/20/solid';
+import { useFiltersStore } from '../../global/Shared/store/filters-stores';
 
 /// props and class properties
 const props = withDefaults(
@@ -409,12 +410,18 @@ proposalsRanking.loadRankings();
 const proposalsStore = useProposalsStore();
 let { viewType } = storeToRefs(proposalsStore);
 
+const filterStore = useFiltersStore();
+const {currentModel} = storeToRefs(filterStore)
+
 let quickpitchingRef = ref<boolean>(false);
 let rankedViewingRef = ref<boolean>(false);
 let cardViewingRef = ref<boolean>(false);
 
 const bookmarksStore = useBookmarksStore();
 bookmarksStore.loadCollections();
+
+filterStore.setModel({ data: props.proposals, filters: props.filters })
+
 
 watch([search, filtersRef, selectedSortRef], () => {
     currPageRef.value = null;
@@ -476,13 +483,15 @@ function getFiltering() {
 }
 
 function query() {
-    
+    filterStore.setModel({data:props.proposals, filters: props.filters})
     const data = getQueryData();
-    router.get(
-        `/${props.locale}/catalyst-explorer/proposals`,
-        data,
-        { preserveState: true, preserveScroll: !currPageRef.value }
-    );
+    filterStore.getFilteredData(data)
+    
+    // router.get(
+    //     `/${props.locale}/catalyst-explorer/proposals`,
+    //     data,
+    //     { preserveState: true, preserveScroll: !currPageRef.value }
+    // );
 
     // @ts-ignore
     if (typeof window?.fathom !== 'undefined') {
