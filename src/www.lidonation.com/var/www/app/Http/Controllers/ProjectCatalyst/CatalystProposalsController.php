@@ -498,7 +498,6 @@ class CatalystProposalsController extends Controller
 
     public function getFilteredData(Request $request)
     {
-        dd($request);
         $this->setFilters($request);
         return $this->query();
 

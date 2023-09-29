@@ -100,9 +100,9 @@
                 <!-- Proposal lists -->
                 <div class="flex-1 mx-auto"
                     :class="{ 'lg:pr-16 opacity-10 lg:opacity-100': showFilters, 'container': !showFilters }">
-                    <Proposals :proposals="currentModel.data.data"></Proposals>
+                    <Proposals :proposals="currentModel?.data?.data"></Proposals>
 
-                    <div class="flex items-start justify-between w-full gap-16 my-16 xl:gap-24">
+                    <div class="flex items-start justify-between w-full gap-16 my-16 xl:gap-24" v-if="currentModel?.data?.data">
                         <div class="flex-1">
                             <Pagination :links="currentModel.data.links" :per-page="props.perPage"
                                 :total="currentModel.data.total" :from="currentModel.data.from" :to="currentModel.data.to"
@@ -420,7 +420,8 @@ let cardViewingRef = ref<boolean>(false);
 const bookmarksStore = useBookmarksStore();
 bookmarksStore.loadCollections();
 
-filterStore.setModel({ data: props.proposals, filters: props.filters })
+// filterStore.setModel({ data: props.proposals, filters: props.filters })
+currentModel.value.data = props.proposals;
 
 
 watch([search, filtersRef, selectedSortRef], () => {
@@ -486,7 +487,7 @@ function query() {
     filterStore.setModel({data:props.proposals, filters: props.filters})
     const data = getQueryData();
     filterStore.getFilteredData(data)
-    
+    getMetrics();
     // router.get(
     //     `/${props.locale}/catalyst-explorer/proposals`,
     //     data,
@@ -499,7 +500,7 @@ function query() {
         window?.fathom?.trackGoal(VARIABLES.TRACKER_ID_PROPOSALS, 0);
     }
 
-    getMetrics();
+    
 }
 
 function getMetrics() {
