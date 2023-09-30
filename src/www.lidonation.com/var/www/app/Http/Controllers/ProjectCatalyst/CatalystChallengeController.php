@@ -24,12 +24,20 @@ class CatalystChallengeController extends Controller
 
     protected Builder $searchBuilder;
 
+    protected int $limit = 24;
+
+    protected ?string $sortBy;
+
+    protected ?string $sortOrder;
+
     public ?string $search = null;
 
     public Collection $peopleFilter;
 
     public function index(Request $request, $slug)
     {
+        $this->setSortFilters($request);
+
         $this->perPage = $request->input('l', 24);
 
         $this->currentPage = $request->input('p', 1);
@@ -40,6 +48,7 @@ class CatalystChallengeController extends Controller
 
         $props = [
             'fund' => new FundResource($fund),
+            'sort' => "{$this->sortBy}:{$this->sortOrder}",
             'proposals' => $this->query($fund),
             'currPage' => $this->currentPage,
             'perPage' => $this->perPage,
@@ -141,6 +150,9 @@ class CatalystChallengeController extends Controller
                     'challenge.label',
                     'challenge.amount',
                 ];
+                if ((bool) $this->sortBy && (bool) $this->sortOrder) {
+                    $options['sort'] = ["$this->sortBy:$this->sortOrder"];
+                }
                 $options['offset'] = (($this->currentPage ?? 1) - 1) * $this->perPage;
                 $options['limit'] = $this->perPage;
 
@@ -167,12 +179,44 @@ class CatalystChallengeController extends Controller
     {
         $_options = [];
         if ($fund->id) {
-            $_options[] = 'challenge.id = '.$fund->id;
+            $_options[] = 'challenge.id = ' . $fund->id;
         }
         if ($this->peopleFilter->isNotEmpty()) {
-            $_options[] = 'users.id IN '.$this->peopleFilter->toJson();
+            $_options[] = 'users.id IN ' . $this->peopleFilter->toJson();
         }
 
         return $_options;
+    }
+
+    protected function setSortFilters(Request $request)
+    {
+        $sort = collect(explode(':', $request->input(CatalystExplorerQueryParams::SORTS, '')))->filter();
+
+        if ($sort->isEmpty()) {
+            $sort = collect(explode(':', collect([
+                'amount_requested:asc',
+                'amount_received:asc',
+                'amount_requested:desc',
+                'amount_received:desc',
+                'ca_rating:asc',
+                'created_at:asc',
+                'ca_rating:desc',
+                'created_at:desc',
+                'funded_at:asc',
+                'funded_at:desc',
+                'no_votes_count:desc',
+                'no_votes_count:asc',
+                'project_length:asc',
+                'project_length:desc',
+                'quickpitch_length:asc',
+                'quickpitch_length:desc',
+                'ranking_total:desc',
+                'ranking_total:asc',
+                'yes_votes_count:asc',
+                'yes_votes_count:desc',
+            ])->random()));
+        }
+        $this->sortBy = $sort->first();
+        $this->sortOrder = $sort->last();
     }
 }
