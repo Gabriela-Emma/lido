@@ -1,10 +1,10 @@
 <template>
-    <header-component titleName0="My Catalyst" titleName1="Proposals" subTitle=""/>
+    <header-component titleName0="My Catalyst" titleName1="Group" subTitle=""/>
     <section class="py-16 bg-primary-20">
         <div class="container">
             <div class="lg:grid lg:grid-cols-12 lg:gap-x-5">
                 <aside class="px-2 py-6 sm:px-6 lg:col-span-3 xl:col-span-2 lg:py-0 lg:px-0">
-                    <UserNav :crumbs="'groups'" />
+                    <UserNav :crumbs="crumbs" />
                 </aside>
 
                 <div class="lg:col-span-9 xl:col-span-10">
@@ -388,6 +388,7 @@ const props = withDefaults(
         profiles: Profile[],
         perPage: number;
         group: Group;
+        crumbs: [];
     }>(),
     {
         group: () => {
