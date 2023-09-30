@@ -328,8 +328,6 @@ watch([selectedPeople], () => {
     filtersRef.value.people = [...filtersRef.value.people, ...selectedPeople.value]
 });
 
-
-
 function query() {
     const data = {};
     if (currPageRef.value) {
