@@ -10,9 +10,9 @@ export const useChallengesStore = defineStore('challenges', () => {
     let filters: Ref<ChallengeFilters> = ref();
     let challenges = ref<Challenge[]>([]);
 
-    let filteredChallenges = computed((): Challenge[] => query(filters.value));
+    let filteredChallenges = computed((): Challenge[] => search(filters.value));
 
-    function query(filters: ChallengeFilters): Challenge[] {
+    function search(filters: ChallengeFilters): Challenge[] {
 
         let results = challenges.value;
 
@@ -31,7 +31,7 @@ export const useChallengesStore = defineStore('challenges', () => {
         filters.value = f;
     }
 
-    async function loadChallenges(fund?: Fund) {
+    async function load(fund?: Fund) {
         // try loading from sessionStore;
 
         if (challenges?.value?.length > 0) {
@@ -47,12 +47,13 @@ export const useChallengesStore = defineStore('challenges', () => {
         }
     }
 
-    // onMounted(loadChallenges);
+    onMounted(load);
 
     return {
         filterChallenges,
         filteredChallenges,
         challenges,
-        loadChallenges
+        search,
+        load
     };
 });

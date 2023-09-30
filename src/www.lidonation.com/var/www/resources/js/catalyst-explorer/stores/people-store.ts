@@ -26,7 +26,7 @@ export const usePeopleStore = defineStore('people', () => {
         }
     }
 
-    async function loadPeople(pp: number[]) {
+    async function load(pp: number[]) {
         try {
             const {data} = await window.axios.get(
                 `/api/catalyst-explorer/people`,
@@ -49,7 +49,7 @@ export const usePeopleStore = defineStore('people', () => {
     return {
         search,
         select,
-        loadPeople,
+        load,
         selectedPeople: selected,
         filters,
         people

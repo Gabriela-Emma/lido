@@ -1,13 +1,14 @@
 <template>
-    <div class="w-full">
-        <Multiselect placeholder="Limit to Person(s)" 
+    <div class="w-full" v-if="!customOptions">
+        <Multiselect 
+            :placeholder="customizeUi.placeholder" 
             noOptionsText="Try typing more chars"
             noResultsText="Try typing more chars" 
             v-model="currentInstance.selectedRef" 
             value-prop="id" 
-            label="name" 
+            :label="customizeUi.label" 
             mode="tags"
-            @search-change="propName == 'funds' ? currentInstance.store.search({$event}) : currentInstance.store.loadFunds({ $event })" 
+            @search-change="propName !== 'funds' ? currentInstance.store.search({$event}) : currentInstance.store.load({ $event })" 
             :minChars="3" 
             :options="currentInstance.options" 
             :searchable="true" 
@@ -21,10 +22,10 @@
             }" />
     </div>
 
-    <div v-if="customOptions"
+    <div v-else
         class="w-full">
         <Multiselect
-            placeholder="Type"
+            :placeholder="customizeUi.placeholder"
             v-model="currentInstance.selectedRef"
             :options="customOptions"
             :classes="{
@@ -40,13 +41,15 @@
 
 <script lang="ts" setup>
 import Multiselect from '@vueform/multiselect';
-import { computed, defineEmits, ref, watch } from "vue";
-import { storeToRefs } from "pinia";
+import { computed, defineEmits, ref, watch, watchEffect } from "vue";
+import { StoreGeneric, storeToRefs } from "pinia";
 import { usePeopleStore } from "../../stores/people-store";
 import { useTagsStore } from '../../stores/tags-store';
 import { useChallengesStore } from '../../stores/challenges-store';
 import { useGroupsStore } from '../../stores/groups-store';
 import { useFundsStore } from '../../stores/funds-store';
+import { useFiltersStore } from '../../../global/Shared/store/filters-stores';
+import { Nullable } from 'primevue/ts-helpers';
 
 const props = withDefaults(
     defineProps<{
@@ -60,11 +63,14 @@ const props = withDefaults(
         status?:string
         projectStatus?:string
         customOptions?:{}
-        customizeUi?:boolean
+        customizeUi?:{
+            label?:string
+            placeholder?:string
+        }
     }>(),
     {
         customOptions:null,
-        customizeUi:false
+        customizeUi:null
     },
 );
 
@@ -73,7 +79,8 @@ const peopleStore = usePeopleStore();
 const challengesStore = useChallengesStore();
 const groupsStore = useGroupsStore();
 const fundsStore = useFundsStore();
-
+const filterStore = useFiltersStore();
+const {currentModel} = storeToRefs(filterStore);
 
 
 const stores =  {
@@ -86,50 +93,37 @@ const stores =  {
 
 interface CurrentInstance {
     selectedRef:string | number[]
-    store?:any
+    store?: StoreGeneric
     options:[] | {}
 }
 
-let excludedKeys = ['customOptions', 'customizeUi'];
-let propKeys = Object.keys(props).filter(key => !excludedKeys.includes(key))
-let propName = propKeys.find((key) => !!props[key]);
+let excludedKeys = ref(['customOptions', 'customizeUi']);
+let propKeys = ref(Object.keys(props).filter(key => !excludedKeys.value.includes(key)))
+let propName = ref(propKeys.value.find((key) => !!props[key]));
 
 const currentInstance = computed(() => {
     let instance = {} as CurrentInstance;
-    instance.selectedRef = props[propName];
-
+    instance.selectedRef = props[propName.value] ?? [];
+   
     if(!props.customOptions){
-        instance.store = stores[propName];
-        instance.options = storeToRefs(instance.store)
-        return instance;
+        instance.store = stores[propName.value];
+        instance.options = storeToRefs(instance.store)[propName.value].value        
     }else{
-        instance.store = stores[propName];
+        instance.store = stores[propName.value];
         instance.options = props.customOptions;
-        return instance;
     }
-})   
+    console.log({tyty: (currentModel.value.filters?.[`${propName.value}`]) });
+    if(!!currentModel.value.filters?.[`${propName.value}`]){
+        currentModel.value.filters[`${propName.value}`] = instance.selectedRef
+    }
+    return instance;
 
+})  
+let selectedref = ref(currentInstance.value.selectedRef)
 
+watch([currentInstance.value?.selectedRef],()=>{
+    //  console.log({'tyty':'tyty'});
+     
+},{deep:true} )
 
-// let selectedRef = ref(props.modelValue);
-// const peopleStore = usePeopleStore();
-// const { people, selectedPeople } = storeToRefs(peopleStore);
-
-// ////
-// // events & watchers
-// ////
-const emit = defineEmits<{
-    (e: `update:${typeof propName}`, selected): void
-}>();
-
-watch([currentInstance.value.selectedRef], (selected, old) => {
-    emit(`update:${typeof propName}`, selected);
-},{deep:true});
-
-// ////
-// // Actions
-// ////////////////
-// function search(search) {
-//     peopleStore.search({ search })
-// }
 </script>

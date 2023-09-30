@@ -133,9 +133,9 @@ export const useFiltersStore = defineStore('filters', () => {
     }
 
 
-    watch(()=>currentModel,() => {
-        getFilteredData(); 
-    });
+    // watch(()=>currentModel,() => {
+    //     getFilteredData(); 
+    // });
 
     return {
         setModel,

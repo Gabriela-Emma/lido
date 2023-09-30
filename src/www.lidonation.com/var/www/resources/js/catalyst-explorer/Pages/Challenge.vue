@@ -224,7 +224,7 @@ let perPageRef = ref<number>(props.perPage);
 let filtersRef = ref<Filters>(props.filters);
 
 const peopleStore = usePeopleStore();
-peopleStore.loadPeople(props?.filters?.people);
+peopleStore.load(props?.filters?.people);
 const { selectedPeople } = storeToRefs(peopleStore);
 
 watch([currPageRef, perPageRef], () => {

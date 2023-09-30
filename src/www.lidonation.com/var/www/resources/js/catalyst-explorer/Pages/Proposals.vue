@@ -401,7 +401,7 @@ const userStore = useUserStore();
 userStore.setUser();
 
 const peopleStore = usePeopleStore();
-peopleStore.loadPeople(props?.filters?.people);
+peopleStore.load(props?.filters?.people);
 const { selectedPeople } = storeToRefs(peopleStore);
 
 const proposalsRanking = useProposalsRankingStore();
@@ -420,9 +420,9 @@ let cardViewingRef = ref<boolean>(false);
 const bookmarksStore = useBookmarksStore();
 bookmarksStore.loadCollections();
 
-// filterStore.setModel({ data: props.proposals, filters: props.filters })
+filterStore.setModel({ data: props.proposals, filters: props.filters })
 currentModel.value.data = props.proposals;
-
+currentModel.value.filters = filtersRef.value
 
 watch([search, filtersRef, selectedSortRef], () => {
     currPageRef.value = null;
@@ -456,7 +456,7 @@ watch(selectedDownloadFormat, () => {
     }
 });
 
-getMetrics();
+// getMetrics();
 
 ////
 // initializers
@@ -484,9 +484,9 @@ function getFiltering() {
 }
 
 function query() {
-    filterStore.setModel({data:props.proposals, filters: props.filters})
+    // filterStore.setModel({data:props.proposals, filters: props.filters})
     const data = getQueryData();
-    getMetrics();
+    // getMetrics();
     // router.get(
     //     `/${props.locale}/catalyst-explorer/proposals`,
     //     data,

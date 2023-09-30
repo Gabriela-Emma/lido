@@ -15,7 +15,7 @@
             label="title"
             mode="tags"
             placeholder="Limit to Funds"
-            @search-change="fundsStore.loadFunds()"
+            @search-change="fundsStore.load()"
             :searchable="true"
             :options="funds"
             :classes="{

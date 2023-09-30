@@ -34,7 +34,11 @@
                     <BudgetRangePicker v-model="filters.budgets" />
                 </li>
                 <li class="">
-                    <Picker v-model="filters.type" :custom-options="{
+                    <Picker v-model:type="filters.type" 
+                    :customize-ui="{
+                        'placeholder': 'Type'
+                    }" 
+                    :custom-options="{
                         p: 'Only Proposals',
                         c: 'Only Challenges',
                         b: 'Both Proposals & Challenges'
@@ -42,14 +46,26 @@
                 </li>
 
                 <li class="">
-                    <Picker v-model:funds="filters.funds" />
+                    <Picker v-model:funds="filters.funds" 
+                    :customize-ui="{
+                        'label': 'title',
+                        'placeholder' : 'Limit to Fund(s)'
+                    }"/>
                 </li>
                 <li class="">
-                    <Picker v-model:challenges="filters.challenges" />
+                    <Picker v-model:challenges="filters.challenges" 
+                    :customize-ui="{
+                        'label': 'title',
+                        'placeholder': 'Limit to Challenge(s)'
+                    }"/>
                 </li>
 
                 <li class="">
-                    <Picker v-model:fundingStatus="filters.fundingStatus" :custom-options="{
+                    <Picker v-model:fundingStatus="filters.fundingStatus"
+                    :customize-ui="{
+                        'placeholder': 'Funding Status'
+                    }" 
+                    :custom-options="{
                         o: 'Over Budget',
                         n: 'Not Approved',
                         f: 'Funded',
@@ -58,19 +74,35 @@
                 </li>
 
                 <li class="">
-                    <Picker v-model:tags="filters.tags" />
+                    <Picker v-model:tags="filters.tags" 
+                    :customize-ui="{
+                        'label': 'title',
+                        'placeholder': 'Limit to Tag(s)'
+                    }"/>
                 </li>
 
                 <li class="">
-                    <Picker v-model:groups="filters.groups" />
+                    <Picker v-model:groups="filters.groups" 
+                    :customize-ui="{
+                        'label': 'name',
+                        'placeholder': 'Limit to Group(s)'
+                    }"/>
                 </li>
 
                 <li class="">
-                    <Picker v-model:people="filters.people" />
+                    <Picker v-model:people="filters.people" 
+                    :customize-ui="{
+                        'label': 'name',
+                        'placeholder': 'Limit to Person(s)'
+                    }"/>
                 </li>
 
                 <li class="">
-                    <Picker v-model:projectStatus="filters.projectStatus" :custom-options="{
+                    <Picker v-model:projectStatus="filters.projectStatus" 
+                    :customize-ui="{
+                        'placeholder': 'Project Status'
+                    }" 
+                    :custom-options="{
                         c: 'Complete',
                         i: 'In Progress',
                         u: 'Unfunded',

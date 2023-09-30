@@ -7,7 +7,7 @@ import route from "ziggy-js";
 export const useFundsStore = defineStore('funds', () => {
     let funds = ref<Fund[]>([]);
 
-    async function loadFunds() {
+    async function load() {
         // try loading from sessionStore;
         // const piniaState = sessionStorage.getItem("piniaState");
         // if (piniaState) {
@@ -35,6 +35,6 @@ export const useFundsStore = defineStore('funds', () => {
 
     return {
         funds,
-        loadFunds
+        load
     };
 });
