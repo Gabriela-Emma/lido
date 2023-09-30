@@ -152,6 +152,15 @@
             </div>
         </header>
         <section class="container py-10 overflow-visible lg:py-20">
+            <div class="flex w-full justify-end">
+                <div class="text-xs w-[240px] lg:w-[330px] lg:text-base space-x-0.5 mb-3 gap-2">
+                    <Multiselect placeholder="Sort" value-prop="value" label="label" v-model="selectedSortRef"
+                        :options="sorts" :classes="{
+                            container: 'multiselect border-0 p-0.5 flex-wrap',
+                            containerActive: 'shadow-none shadow-transparent box-shadow-none',
+                        }" />
+                </div>
+            </div>
             <div
                 class="grid grid-cols-1 gap-3 mx-auto md:grid-cols-2 xl:grid-cols-3 3xl:grid-cols-4 max-w-7xl 2xl:max-w-full">
                 <template v-for="proposal in proposals.data">
@@ -172,6 +181,7 @@
 </template>
 
 <script lang="ts" setup>
+import Multiselect from '@vueform/multiselect';
 import { ref, watch } from "vue";
 import { marked } from "marked";
 import { computed } from "vue";
@@ -185,12 +195,15 @@ import ProposalCard from "../modules/proposals/ProposalCard.vue";
 import Filters from "../models/filters";
 import { usePeopleStore } from '../stores/people-store';
 import { storeToRefs } from 'pinia';
+import Sort from "../models/sort";
 
 const props = withDefaults(
     defineProps<{
         fund: {
             data: Fund;
         };
+        sorts?: Sort[];
+        sort?: string;
         fundedProposalsCount: number;
         completedProposalsCount: number;
         totalAmountRequested: string;
@@ -206,10 +219,78 @@ const props = withDefaults(
             data: Proposal[];
         };
     }>(),
-    {}
+    {
+        sorts: () => [
+            {
+                label: 'Votes Cast: Low to High',
+                value: 'votes_cast:asc',
+            },
+            {
+                label: 'Votes Cast: High to Low',
+                value: 'votes_cast:desc',
+            },
+            {
+                label: 'Budget: High to Low',
+                value: 'amount_requested:desc',
+            },
+            {
+                label: 'Budget: Low to High',
+                value: 'amount_requested:asc',
+            },
+            {
+                label: 'Community Ranking: High to Low',
+                value: 'ranking_total:desc',
+            },
+            {
+                label: 'Community Ranking: Low to High',
+                value: 'ranking_total:asc',
+            },
+            {
+                label: 'Payments Received: High to Low',
+                value: 'amount_received:desc',
+            },
+            {
+                label: 'Project Length: High to Low',
+                value: 'project_length:desc',
+            },
+            {
+                label: 'Project Length: Low to High',
+                value: 'project_length:asc',
+            },
+            {
+                label: 'Payments Received: Low to High',
+                value: 'amount_received:asc',
+            },
+            {
+                label: 'Yes Votes: High to Low',
+                value: 'yes_votes_count:desc',
+            },
+            {
+                label: 'Yes Votes: Low to High',
+                value: 'yes_votes_count:asc',
+            },
+            {
+                label: 'No Votes: Low to High',
+                value: 'no_votes_count:asc',
+            },
+            {
+                label: 'No Votes: High to Low',
+                value: 'no_votes_count:desc',
+            },
+            {
+                label: 'Rating: High to Low',
+                value: 'ca_rating:desc',
+            },
+            {
+                label: 'Rating: Low to High',
+                value: 'ca_rating:asc',
+            },
+        ]
+    }
 );
 
 let expanded = ref(false);
+let selectedSortRef = ref(props.sort);
 
 function expandContent() {
     expanded.value = !expanded.value;
@@ -236,6 +317,13 @@ watch([filtersRef], () => {
     query();
 }, { deep: true });
 
+
+watch(() => selectedSortRef, () => {
+    currPageRef.value = null;
+    query();
+}, { deep: true });
+
+
 watch([selectedPeople], () => {
     filtersRef.value.people = [...filtersRef.value.people, ...selectedPeople.value]
 });
@@ -250,12 +338,15 @@ function query() {
         data[VARIABLES.PER_PAGE] = perPageRef.value;
     }
 
+    if (!!selectedSortRef.value && selectedSortRef.value.length > 3) {
+        data[VARIABLES.SORTS] = selectedSortRef.value;
+    }
+
     if (filtersRef.value?.people) {
         data[VARIABLES.PEOPLE] = Array.from(filtersRef.value?.people);
     }
 
     router.get(`/catalyst-explorer/challenges/${props.fund.data.slug}`, data, {
-        preserveState: true,
         preserveScroll: true,
     });
 }
