@@ -86,7 +86,7 @@ class CatalystGroupComposer
             fn ($fund) => new Fluent([
                 'fund' => $fund,
                 'proposals' => $this->catalystGroup->proposals->filter(
-                    fn ($p) => $p->fund->parent->id === $fund->id
+                    fn ($p) => $p->fund?->parent?->id === $fund->id
                 ),
             ])
         )->reverse();
