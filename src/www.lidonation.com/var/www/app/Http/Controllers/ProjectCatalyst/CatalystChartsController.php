@@ -298,8 +298,7 @@ class CatalystChartsController extends Controller
         $mode = DB::table('catalyst_voting_powers')
             ->whereIn('catalyst_snapshot_id', $snapshotIds)
             ->where('votes_cast', '>', 0)
-            ->pluck('votes_cast')
-            ->mode();
+            ->mode('votes_cast');
 
         $mode = $mode ?? [];
         
