@@ -22,11 +22,9 @@ class CatalystMyProposalsController extends Controller
 
     public function manage(Proposal $proposal)
     {
-        return Inertia::modal('Auth/UserProposal')
-            ->with([
-                'proposal' => $proposal,
-            ])
-            ->baseRoute('catalystExplorer.myProposals');
+        return Inertia::render('Auth/UserProposal',[
+            'proposal' => $proposal,
+        ]);
     }
 
     /**
