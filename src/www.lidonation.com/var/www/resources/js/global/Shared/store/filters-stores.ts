@@ -131,7 +131,8 @@ export const useFiltersStore = defineStore('filters', () => {
         //     data[VARIABLES.OPENSOURCE_PROPOSALS] = 1;
         // }
 
-        params.value =  data;
+        params.value =  data; 
+        return data;
     }
 
 
@@ -146,6 +147,7 @@ export const useFiltersStore = defineStore('filters', () => {
         setModel,
         currentModel,
         getFilteredData,
-        canFetch
+        canFetch,
+        setParams,
     }
 });

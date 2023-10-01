@@ -98,7 +98,7 @@
                 </li>
 
                 <li class="">
-                    <Picker v-model:projectStatus="filters.projectStatus" 
+                    <Picker v-model:projectStatus="filters.projectStatus " 
                     :customize-ui="{
                         'placeholder': 'Project Status'
                     }" 
@@ -134,7 +134,7 @@
                         {{ $t("These filters are not based on primary catalyst data but rather self assembled datasets by community groups") }}.
                         {{ $t("noValidation") }}.
                     </p>
-                    <Picker v-model:cohort="filters.cohort" 
+                    <Picker v-model:cohort="(filters.cohort )" 
                     :customize-ui="{'placeholder':'Community Cohort'}"
                     :custom-options="{
                         im: 'Impact Proposals',

@@ -411,7 +411,7 @@ const proposalsStore = useProposalsStore();
 let { viewType } = storeToRefs(proposalsStore);
 
 const filterStore = useFiltersStore();
-const {currentModel} = storeToRefs(filterStore)
+const {currentModel} = storeToRefs(filterStore);
 
 let quickpitchingRef = ref<boolean>(false);
 let rankedViewingRef = ref<boolean>(false);
@@ -456,6 +456,10 @@ watch(selectedDownloadFormat, () => {
     }
 });
 
+watch(()=> currentModel,()=>{
+    getMetrics();
+},{deep:true});
+
 getMetrics();
 
 ////
@@ -484,8 +488,8 @@ function getFiltering() {
 }
 
 function query() {
-    const data = getQueryData();
-    getMetrics();
+    // const data = getQueryData();
+    
     // router.get(
     //     `/${props.locale}/catalyst-explorer/proposals`,
     //     data,
@@ -502,7 +506,9 @@ function query() {
 }
 
 function getMetrics() {
-    const params = getQueryData();
+    const params = filterStore.setParams();
+    console.log({params});
+    
 
     // get funded count
     window.axios.get(`${usePage().props.base_url}/catalyst-explorer/proposals/metrics/count/paid`, { params })
@@ -578,91 +584,91 @@ function getMetrics() {
         });
 }
 
-function getQueryData() {
-    const data = {};
-    if (currPageRef.value) {
-        data[VARIABLES.PAGE] = currPageRef.value;
-    }
-    if (perPageRef.value) {
-        data[VARIABLES.PER_PAGE] = perPageRef.value;
-    }
+// function getQueryData() {
+//     const data = {};
+//     if (currPageRef.value) {
+//         data[VARIABLES.PAGE] = currPageRef.value;
+//     }
+//     if (perPageRef.value) {
+//         data[VARIABLES.PER_PAGE] = perPageRef.value;
+//     }
 
-    if (!!rankedViewingRef.value) {
-        data[VARIABLES.RANKED_VIEW] = '';
-    }
+//     if (!!rankedViewingRef.value) {
+//         data[VARIABLES.RANKED_VIEW] = '';
+//     }
 
-    if (!!quickpitchingRef.value) {
-        data[VARIABLES.QUICKPITCHES] = '';
-    }
+//     if (!!quickpitchingRef.value) {
+//         data[VARIABLES.QUICKPITCHES] = '';
+//     }
 
-    if ( !!cardViewingRef.value ) {
-        data[VARIABLES.CARD_VIEW] = '';
-    }
+//     if ( !!cardViewingRef.value ) {
+//         data[VARIABLES.CARD_VIEW] = '';
+//     }
 
-    if (search.value?.length > 0) {
-        data[VARIABLES.SEARCH] = search.value;
-    }
+//     if (search.value?.length > 0) {
+//         data[VARIABLES.SEARCH] = search.value;
+//     }
 
-    if (filtersRef.value?.funded) {
-        data[VARIABLES.FUNDED_PROPOSALS] = 1;
-    }
+//     if (filtersRef.value?.funded) {
+//         data[VARIABLES.FUNDED_PROPOSALS] = 1;
+//     }
 
-    if (filtersRef.value?.opensource) {
-        data[VARIABLES.OPENSOURCE_PROPOSALS] = 1;
-    }
+//     if (filtersRef.value?.opensource) {
+//         data[VARIABLES.OPENSOURCE_PROPOSALS] = 1;
+//     }
 
-    if (filtersRef.value?.funds) {
-        data[VARIABLES.FUNDS] = Array.from(filtersRef.value?.funds);
-    }
+//     if (filtersRef.value?.funds) {
+//         data[VARIABLES.FUNDS] = Array.from(filtersRef.value?.funds);
+//     }
 
-    if (filtersRef.value?.challenges) {
-        data[VARIABLES.CHALLENGES] = Array.from(filtersRef.value?.challenges);
-    }
+//     if (filtersRef.value?.challenges) {
+//         data[VARIABLES.CHALLENGES] = Array.from(filtersRef.value?.challenges);
+//     }
 
-    if (filtersRef.value?.cohort) {
-        data[VARIABLES.COHORT] = filtersRef.value?.cohort;
-    }
+//     if (filtersRef.value?.cohort) {
+//         data[VARIABLES.COHORT] = filtersRef.value?.cohort;
+//     }
 
-    if (filtersRef.value?.fundingStatus) {
-        data[VARIABLES.FUNDING_STATUS] = filtersRef.value?.fundingStatus;
-    }
+//     if (filtersRef.value?.fundingStatus) {
+//         data[VARIABLES.FUNDING_STATUS] = filtersRef.value?.fundingStatus;
+//     }
 
-    if (filtersRef.value?.projectStatus) {
-        data[VARIABLES.STATUS] = filtersRef.value?.projectStatus;
-    }
+//     if (filtersRef.value?.projectStatus) {
+//         data[VARIABLES.STATUS] = filtersRef.value?.projectStatus;
+//     }
 
-    if (filtersRef.value?.type) {
-        data[VARIABLES.TYPE] = filtersRef.value?.type;
-    }
+//     if (filtersRef.value?.type) {
+//         data[VARIABLES.TYPE] = filtersRef.value?.type;
+//     }
 
-    if (filtersRef.value?.tags) {
-        data[VARIABLES.TAGS] = Array.from(filtersRef.value?.tags);
-    }
+//     if (filtersRef.value?.tags) {
+//         data[VARIABLES.TAGS] = Array.from(filtersRef.value?.tags);
+//     }
 
-    if (filtersRef.value?.people) {
-        data[VARIABLES.PEOPLE] = Array.from(filtersRef.value?.people);
-    }
+//     if (filtersRef.value?.people) {
+//         data[VARIABLES.PEOPLE] = Array.from(filtersRef.value?.people);
+//     }
 
-    if (filtersRef.value?.groups) {
-        data[VARIABLES.GROUPS] = Array.from(filtersRef.value?.groups);
-    }
+//     if (filtersRef.value?.groups) {
+//         data[VARIABLES.GROUPS] = Array.from(filtersRef.value?.groups);
+//     }
 
-    if (!!selectedSortRef.value && selectedSortRef.value.length > 3) {
-        data[VARIABLES.SORTS] = selectedSortRef.value;
-    }
+//     if (!!selectedSortRef.value && selectedSortRef.value.length > 3) {
+//         data[VARIABLES.SORTS] = selectedSortRef.value;
+//     }
 
-    if (!!filtersRef.value.budgets) {
-        if (filtersRef.value.budgets[0] > VARIABLES.MIN_BUDGET || filtersRef.value.budgets[1] < VARIABLES.MAX_BUDGET) {
-            data[VARIABLES.BUDGETS] = filtersRef.value.budgets;
-        }
-    }
+//     if (!!filtersRef.value.budgets) {
+//         if (filtersRef.value.budgets[0] > VARIABLES.MIN_BUDGET || filtersRef.value.budgets[1] < VARIABLES.MAX_BUDGET) {
+//             data[VARIABLES.BUDGETS] = filtersRef.value.budgets;
+//         }
+//     }
 
-    return data;
-}
+//     return data;
+// }
 
 function download(format) {
     preparingDownload.value = true;
-    let data = getQueryData();
+    let data = filterStore.setParams();
     if (format) {
         data['d'] = true;
         data['d_t'] = format;

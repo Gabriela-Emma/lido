@@ -98,7 +98,7 @@ interface CurrentInstance {
 
 let excludedKeys = ref(['customOptions', 'customizeUi']);
 let propKeys = ref(Object.keys(props).filter(key => !excludedKeys.value.includes(key)))
-let propName = ref(propKeys.value.find((key) => !!props[key]));
+let propName = ref(propKeys.value.find((key) => props[key]!= null));
 let selectedRef = ref(props[propName.value])
 
 

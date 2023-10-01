@@ -7,7 +7,7 @@
             value-prop="id"
             label="title"
             mode="tags"
-            @search-change="challengesStore.loadChallenges()"
+            @search-change="challengesStore.load()"
              :options="filteredChallenges"
             :searchable="true"
             :classes="{
