@@ -254,6 +254,7 @@ class CatalystProposalsController extends Controller
 
     protected function setFilters(Request $request)
     {
+        // dd($request);
         $this->limit = $request->input(CatalystExplorerQueryParams::PER_PAGE, 24);
         $this->ranked = $request->has(CatalystExplorerQueryParams::RANKED_VIEW);
         if (

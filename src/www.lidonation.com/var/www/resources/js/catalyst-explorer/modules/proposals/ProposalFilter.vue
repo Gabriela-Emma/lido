@@ -134,7 +134,9 @@
                         {{ $t("These filters are not based on primary catalyst data but rather self assembled datasets by community groups") }}.
                         {{ $t("noValidation") }}.
                     </p>
-                    <CohortPicker v-model="filters.cohort" :filters="{
+                    <Picker v-model:cohort="filters.cohort" 
+                    :customize-ui="{'placeholder':'Community Cohort'}"
+                    :custom-options="{
                         im: 'Impact Proposals',
                         wo: 'Women Proposals',
                         id: 'Ideafest Proposals',
@@ -167,6 +169,7 @@ import GroupsPicker from "../groups/GroupsPicker.vue";
 import ProposalTypePicker from "../funds/ProposalTypePicker.vue";
 import Picker from "../../Shared/Components/Picker.vue";
 import { useFiltersStore } from "../../../global/Shared/store/filters-stores";
+import { storeToRefs } from "pinia";
 
 ////
 // props and class properties
@@ -183,7 +186,8 @@ let filters = ref<Filters>(props.filters);
 let search = ref<string>(props.search);
 
 const filterStore = useFiltersStore();
-
+const { currentModel } = storeToRefs(filterStore);
+const {canFetch} = storeToRefs(filterStore);
 ////
 // computer properties
 ///////////////////////
@@ -193,33 +197,6 @@ const filterStore = useFiltersStore();
  */
 const filtering = computed(() => Object.values(props.filters).every(val => !!val) || props.showFilter);
 
-
-
-/**
- * Init Challenges
- */
-const challengesStore = useChallengesStore();
-challengesStore.filterChallenges({
-    funds: props?.filters?.funds
-});
-
-/**
- * Init Tags
- */
-// const tagsStore = useTagsStore();
-// tagsStore.loadTags(props?.filters?.tags);
-
-/**
- * Init People
- */
-// const peopleStore = usePeopleStore();
-// peopleStore.loadPeople(props?.filters?.people);
-
-/**
- * Init Groups
- */
-// const groupsStore = useGroupsStore();
-// groupsStore.loadGroups(props?.filters?.groups);
 
 ////
 // events & watchers
@@ -231,15 +208,9 @@ const emit = defineEmits<{
 }>();
 
 watch(filters, (newValue, oldValue) => {
-    // if filtering fund, update challenge store
-    if (newValue.funds?.length > 0) {
-        challengesStore.filterChallenges({
-            funds: newValue.funds
-        });
-    }
-
-    // fire filter event
-    emit('filter', newValue);
+    canFetch.value = true;
+    currentModel.value.filters['funded'] = filters.value.funded;
+    currentModel.value.filters['opensource'] = filters.value.opensource;
 }, { deep: true });
 
 function clearFilters() {
@@ -256,11 +227,8 @@ function clearFilters() {
     filters.value.tags = [];
     filters.value.people = [];
     filters.value.groups = [];
+    currentModel.value.filters = filters.value
 
-    emit('reRenderFilter');
-    if (search) {
-        emit('clearSearch');
-    }
 }
 
 </script>

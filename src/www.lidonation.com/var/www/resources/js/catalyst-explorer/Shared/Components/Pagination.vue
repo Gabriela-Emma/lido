@@ -92,6 +92,8 @@
 import { computed, ref, watch, ComputedRef} from "vue";
 import Multiselect from '@vueform/multiselect';
 import PaginationLink from "../../models/pagination-link";
+import { useFiltersStore } from "../../../global/Shared/store/filters-stores";
+import { storeToRefs } from "pinia";
 
 const props = withDefaults(
     defineProps<{
@@ -114,12 +116,19 @@ const emit = defineEmits<{
     (e: 'per-page-updated', perPage: number): void
 }>();
 
+const filterStore = useFiltersStore();
+const {currentModel} = storeToRefs(filterStore);
+const {canFetch} = storeToRefs(filterStore);
+
 watch(perPageRef, () => {
     emit('per-page-updated', perPageRef.value);
+    currentModel.value.filters['perPage'] = perPageRef.value;
 });
 
 function paginate(page: number) {
     emit('paginated', page);
+    canFetch.value = true;
+    currentModel.value.filters['currentPage'] = page;
 }
 
 function parsePageNumber(val): number {

@@ -456,7 +456,7 @@ watch(selectedDownloadFormat, () => {
     }
 });
 
-// getMetrics();
+getMetrics();
 
 ////
 // initializers
@@ -484,9 +484,8 @@ function getFiltering() {
 }
 
 function query() {
-    // filterStore.setModel({data:props.proposals, filters: props.filters})
     const data = getQueryData();
-    // getMetrics();
+    getMetrics();
     // router.get(
     //     `/${props.locale}/catalyst-explorer/proposals`,
     //     data,

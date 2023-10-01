@@ -18,6 +18,7 @@ interface CurrentFilteredModel<T = Nullable, K = Nullable, S = Nullable, ST = Nu
 export const useFiltersStore = defineStore('filters', () => {
     let currentModel = ref(({} as CurrentFilteredModel<any, any, any, any>) || null);
     let params = ref(null);
+    let canFetch = ref(false);
 
     function setModel<T, K, S, ST>(model: CurrentFilteredModel<T, K, S, ST>) {
         currentModel.value = model
@@ -28,6 +29,7 @@ export const useFiltersStore = defineStore('filters', () => {
         setUrlHistory(params.value);
         axios.get(route('catalystExplorer.filterProposals'), { params: params.value })
             .then((res) => {
+                canFetch.value = false;
                 currentModel.value.data = res.data
             })
     }
@@ -63,8 +65,8 @@ export const useFiltersStore = defineStore('filters', () => {
         if (currentModel.value.filters.currentPage) {
             data[VARIABLES.PAGE] = currentModel.value.filters.currentPage;
         }
-        if (currentModel.value.filters) {
-            data[VARIABLES.PER_PAGE] = currentModel.value.filters;
+        if (currentModel.value.filters.perPage) {
+            data[VARIABLES.PER_PAGE] = currentModel.value.filters.perPage;
         }
 
         if (currentModel.value.filters.funds) {
@@ -133,13 +135,17 @@ export const useFiltersStore = defineStore('filters', () => {
     }
 
 
-    // watch(()=>currentModel,() => {
-    //     getFilteredData(); 
-    // });
+    watch(()=>currentModel.value.filters,() => {
+        if (canFetch.value){
+            getFilteredData(); 
+        }
+    },{deep:true});
+
 
     return {
         setModel,
         currentModel,
-        getFilteredData
+        getFilteredData,
+        canFetch
     }
 });
