@@ -1,14 +1,3 @@
-<!-- <template>
-        <div class="relative pt-20">
-            <div class="w-3/4" >
-            <header-component :titleName0="" titleName1=" "
-                subTitle="Browse through the proposals of a specific challenge." color="teal-600" />
-            <header class="sticky w-full px-4 py-8 text-white bg-teal-700 top-28">
-               
-        </div>
-        </div>
-</template> -->
-
 <template>
     <header-component titleName0="Manage" titleName1="Proposal" subTitle="" />
     <div class="py-16 bg-primary-20">
