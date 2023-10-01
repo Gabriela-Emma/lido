@@ -268,13 +268,16 @@ class CatalystChartsController extends Controller
     public function metricVotesCastedAverage(Request $request)
     {
         $this->setFilters($request);
+
         $fundIds = $this->getFundIds();
 
-        $snapshotIds = CatalystSnapshot::whereIn('model_id', $fundIds)
+        $snapshotIds = DB::table('catalyst_snapshots')
+            ->whereIn('model_id', $fundIds)
             ->where('model_type', Fund::class)
             ->pluck('id');
 
-        $average = CatalystVotingPower::whereIn('catalyst_snapshot_id', $snapshotIds)
+        $average = DB::table('catalyst_voting_powers')
+            ->whereIn('catalyst_snapshot_id', $snapshotIds)
             ->where('votes_cast', '>', 0)
             ->avg('votes_cast');
 
@@ -284,13 +287,16 @@ class CatalystChartsController extends Controller
     public function metricVotesCastedMode(Request $request)
     {
         $this->setFilters($request);
+
         $fundIds = $this->getFundIds();
 
-        $snapshotIds = CatalystSnapshot::whereIn('model_id', $fundIds)
+        $snapshotIds = DB::table('catalyst_snapshots')
+            ->whereIn('model_id', $fundIds)
             ->where('model_type', Fund::class)
             ->pluck('id');
 
-        $mode = CatalystVotingPower::whereIn('catalyst_snapshot_id', $snapshotIds)
+        $mode = DB::table('catalyst_voting_powers')
+            ->whereIn('catalyst_snapshot_id', $snapshotIds)
             ->where('votes_cast', '>', 0)
             ->pluck('votes_cast')
             ->mode();
@@ -303,9 +309,11 @@ class CatalystChartsController extends Controller
     public function metricVotesCastedMedian(Request $request)
     {
         $this->setFilters($request);
+
         $fundIds = $this->getFundIds();
 
-        $snapshotIds = CatalystSnapshot::whereIn('model_id', $fundIds)
+        $snapshotIds = DB::table('catalyst_snapshots')
+            ->whereIn('model_id', $fundIds)
             ->where('model_type', Fund::class)
             ->pluck('id');
 
@@ -328,13 +336,21 @@ class CatalystChartsController extends Controller
 
     public function metricTotalRegisteredAndVoted(Request $request)
     {
-        $this->fundFilter = $request->input(CatalystExplorerQueryParams::FUNDS, 113);
+        $this->setFilters($request);
+
         if ($this->fundFilter === CatalystExplorerQueryParams::ALL_FUNDS) {
-            $totalVotedRegistrations = CatalystVotingPower::where('consumed', true)
+            $totalVotedRegistrations = DB::table('catalyst_voting_powers')
+                ->where('consumed', true)
                 ->where('votes_cast', '>', 0)
                 ->count();
         } else {
-            $totalVotedRegistrations = CatalystVotingPower::whereRelation('catalyst_snapshot', 'model_id', $this->fundFilter)
+            $snapshotId = DB::table('catalyst_snapshots')
+                ->where('model_type', Fund::class)
+                ->where('model_id', $this->fundFilter)
+                ->pluck('id');
+
+            $totalVotedRegistrations = DB::table('catalyst_voting_powers')
+                ->where('catalyst_snapshot_id', $snapshotId)
                 ->where('consumed', true)
                 ->where('votes_cast', '>', 0)
                 ->count();
@@ -345,12 +361,20 @@ class CatalystChartsController extends Controller
 
     public function metricTotalRegisteredAndNeverVoted(Request $request)
     {
-        $this->fundFilter = $request->input(CatalystExplorerQueryParams::FUNDS, 113);
+        $this->setFilters($request);
+
         if ($this->fundFilter === CatalystExplorerQueryParams::ALL_FUNDS) {
-            $totalNonVotedRegistrations = CatalystVotingPower::where('votes_cast', 0)
+            $totalNonVotedRegistrations = DB::table('catalyst_voting_powers')
+                ->where('votes_cast', 0)
                 ->count();
         } else {
-            $totalNonVotedRegistrations = CatalystVotingPower::whereRelation('catalyst_snapshot', 'model_id', $this->fundFilter)
+            $snapshotId = DB::table('catalyst_snapshots')
+                ->where('model_type', Fund::class)
+                ->where('model_id', $this->fundFilter)
+                ->pluck('id');
+
+            $totalNonVotedRegistrations = DB::table('catalyst_voting_powers')
+                ->where('catalyst_snapshot_id', $snapshotId)
                 ->where('votes_cast', 0)
                 ->count();
         }
@@ -488,11 +512,13 @@ class CatalystChartsController extends Controller
     {
        $fundIds = $this->getFundIds();
 
-       $snapshotIds = CatalystSnapshot::whereIn('model_id', $fundIds)
+       $snapshotIds = DB::table('catalyst_snapshots')
+            ->whereIn('model_id', $fundIds)
             ->where('model_type', Fund::class)
             ->pluck('id');
 
-        $agg = CatalystVotingPower::selectRaw(
+        $agg = DB::table('catalyst_voting_powers')
+            ->selectRaw(
                 "CASE
                 WHEN votes_cast BETWEEN 0 AND 1 THEN '0-1-1'
                 WHEN votes_cast BETWEEN 2 AND 10 THEN '2-10-2'
@@ -726,14 +752,14 @@ class CatalystChartsController extends Controller
     protected function getFundIds()
     {
         if ($this->fundFilter === CatalystExplorerQueryParams::ALL_FUNDS) {
-            $fundIds = CatalystSnapshot::query()
+            $fundIds = DB::table('catalyst_snapshots')
                 ->where('model_type', Fund::class)
                 ->pluck('model_id')
                 ->toArray();
         } else {
             $fundIds = $this->fund
                 ? [$this->fund?->id]
-                : CatalystSnapshot::query()
+                : DB::table('catalyst_snapshots')
                     ->where('model_type', Fund::class)
                     ->pluck('model_id')
                     ->toArray();
