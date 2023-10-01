@@ -6,7 +6,12 @@
             <dl class="flex flex-col text-xs xl:text-base justify-between h-full">
                 <dd>
                     <div class="text-4xl font-semibold lg:text-5xl 2xl:text-6xl text-blue-dark-500">
-                        {{ $filters.shortNumber(votesCastedAverage) ?? '-' }}
+                        <span v-if="votesCastedAverage > 0">
+                            {{ $filters.shortNumber(votesCastedAverage) ?? '-' }}
+                        </span>
+                        <span v-else>
+                            -
+                        </span>
                     </div>
                 </dd>
                 <dt class="mt-3 text-lg font-medium truncate text-blue-dark-500">
@@ -18,7 +23,12 @@
             <dl class="flex flex-col text-xs xl:text-base justify-between h-full">
                 <dd>
                     <div class="text-4xl font-semibold lg:text-5xl 2xl:text-6xl text-blue-dark-500">
-                        {{ $filters.shortNumber(votesCastedMode) ?? '-' }}
+                        <span v-if="votesCastedMode > 0">
+                            {{ $filters.shortNumber(votesCastedMode) ?? '-' }}
+                        </span>
+                        <span v-else>
+                            -
+                        </span>
                     </div>
                 </dd>
                 <dt class="mt-3 text-lg font-medium truncate text-blue-dark-500">
@@ -30,7 +40,12 @@
             <dl class="flex flex-col text-xs xl:text-base justify-between h-full">
                 <dd>
                     <div class="text-4xl font-semibold lg:text-5xl 2xl:text-6xl text-blue-dark-500">
-                        {{ $filters.shortNumber(votesCastedMedian, 2) ?? '-' }}
+                        <span v-if="votesCastedMedian > 0">
+                            {{ $filters.shortNumber(votesCastedMedian) ?? '-' }}
+                        </span>
+                        <span v-else>
+                            -
+                        </span>
                     </div>
                 </dd>
                 <dt class="mt-3 text-lg font-medium truncate text-blue-dark-500">
@@ -42,7 +57,12 @@
             <dl class="flex flex-col text-xs xl:text-base justify-between h-full">
                 <dd>
                     <div class="text-4xl font-semibold lg:text-5xl 2xl:text-6xl text-blue-dark-500">
-                        {{ $filters.shortNumber(totalRegisteredAndVoted, 2) ?? '-' }}
+                        <span v-if="totalRegisteredAndVoted > 0">
+                            {{ $filters.shortNumber(totalRegisteredAndVoted, 2) ?? '-' }}
+                        </span>
+                        <span v-else>
+                            -
+                        </span>
                     </div>
                 </dd>
                 <dt class="mt-3 text-lg font-medium truncate text-blue-dark-500">
@@ -54,7 +74,12 @@
             <dl class="flex flex-col text-xs xl:text-base justify-between h-full">
                 <dd>
                     <div class="text-4xl font-semibold lg:text-5xl 2xl:text-6xl text-blue-dark-500">
-                        {{ $filters.shortNumber(totalRegisteredAndNeverVoted, 2) ?? '-' }}
+                        <span v-if="totalRegisteredAndNeverVoted > 0">
+                            {{ $filters.shortNumber(totalRegisteredAndNeverVoted, 2) ?? '-' }}
+                        </span>
+                        <span v-else>
+                            -
+                        </span>
                     </div>
                 </dd>
                 <dt class="mt-3 text-lg font-medium truncate text-blue-dark-500">

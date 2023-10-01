@@ -278,7 +278,7 @@ class CatalystChartsController extends Controller
             ->where('votes_cast', '>', 0)
             ->avg('votes_cast');
 
-        return $average;
+        return $average > 0 ? number_format($average, 2) : null;
     }
 
     public function metricVotesCastedMode(Request $request)
@@ -294,6 +294,8 @@ class CatalystChartsController extends Controller
             ->where('votes_cast', '>', 0)
             ->pluck('votes_cast')
             ->mode();
+
+        $mode = $mode ?? [];
         
         return count($mode) == 1 ? $mode : null;
     }
@@ -321,7 +323,7 @@ class CatalystChartsController extends Controller
             // Even number of data points, median is the average of the two middle values
             $median = ($sorted->get(($count / 2)-1) + $sorted->get($count / 2)) / 2;
         }
-        return $median;
+        return $median > 0 ? number_format($median, 2) : null;
     }
 
     public function metricTotalRegisteredAndVoted(Request $request)
