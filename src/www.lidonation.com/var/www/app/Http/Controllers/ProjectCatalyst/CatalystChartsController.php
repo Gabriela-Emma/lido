@@ -20,6 +20,7 @@ use App\Models\CatalystVotingPower;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\FundResource;
 use App\Enums\CatalystExplorerQueryParams;
+use App\Models\CatalystVotesCasted;
 
 class CatalystChartsController extends Controller
 {
@@ -36,6 +37,8 @@ class CatalystChartsController extends Controller
     public ?int $fullyDisbursedProposalsCount;
 
     public $adaPowerRanges;
+
+    public $votesRanges;
 
     public string $fundSlugFilter;
 
@@ -262,6 +265,116 @@ class CatalystChartsController extends Controller
         return new Fluent($powersResults);
     }
 
+    public function metricVotesCastedAverage(Request $request)
+    {
+        $this->setFilters($request);
+        $fundIds = $this->getFundIds();
+
+        $snapshotIds = CatalystSnapshot::whereIn('model_id', $fundIds)
+            ->where('model_type', Fund::class)
+            ->pluck('id');
+
+        $average = CatalystVotingPower::whereIn('catalyst_snapshot_id', $snapshotIds)
+            ->where('votes_cast', '>', 0)
+            ->avg('votes_cast');
+
+        return $average;
+    }
+
+    public function metricVotesCastedMode(Request $request)
+    {
+        $this->setFilters($request);
+        $fundIds = $this->getFundIds();
+
+        $snapshotIds = CatalystSnapshot::whereIn('model_id', $fundIds)
+            ->where('model_type', Fund::class)
+            ->pluck('id');
+
+        $mode = CatalystVotingPower::whereIn('catalyst_snapshot_id', $snapshotIds)
+            ->where('votes_cast', '>', 0)
+            ->pluck('votes_cast')
+            ->mode();
+        
+        return count($mode) == 1 ? $mode : null;
+    }
+
+    public function metricVotesCastedMedian(Request $request)
+    {
+        $this->setFilters($request);
+        $fundIds = $this->getFundIds();
+
+        $snapshotIds = CatalystSnapshot::whereIn('model_id', $fundIds)
+            ->where('model_type', Fund::class)
+            ->pluck('id');
+
+        $sorted = CatalystVotingPower::whereIn('catalyst_snapshot_id', $snapshotIds)
+            ->where('votes_cast', '>', 0)
+            ->pluck('votes_cast')
+            ->sort();
+
+        $count = $sorted->count();
+
+        if ($count % 2 == 1) {
+            // Odd number of data points, median is the middle value
+            $median = $sorted->get($count / 2);
+        } else {
+            // Even number of data points, median is the average of the two middle values
+            $median = ($sorted->get(($count / 2)-1) + $sorted->get($count / 2)) / 2;
+        }
+        return $median;
+    }
+
+    public function metricTotalRegisteredAndVoted(Request $request)
+    {
+        $this->fundFilter = $request->input(CatalystExplorerQueryParams::FUNDS, 113);
+        if ($this->fundFilter === CatalystExplorerQueryParams::ALL_FUNDS) {
+            $totalVotedRegistrations = CatalystVotingPower::where('consumed', true)
+                ->where('votes_cast', '>', 0)
+                ->count();
+        } else {
+            $totalVotedRegistrations = CatalystVotingPower::whereRelation('catalyst_snapshot', 'model_id', $this->fundFilter)
+                ->where('consumed', true)
+                ->where('votes_cast', '>', 0)
+                ->count();
+        }
+    
+        return $totalVotedRegistrations ?? null;
+    }
+
+    public function metricTotalRegisteredAndNeverVoted(Request $request)
+    {
+        $this->fundFilter = $request->input(CatalystExplorerQueryParams::FUNDS, 113);
+        if ($this->fundFilter === CatalystExplorerQueryParams::ALL_FUNDS) {
+            $totalNonVotedRegistrations = CatalystVotingPower::where('votes_cast', 0)
+                ->count();
+        } else {
+            $totalNonVotedRegistrations = CatalystVotingPower::whereRelation('catalyst_snapshot', 'model_id', $this->fundFilter)
+                ->where('votes_cast', 0)
+                ->count();
+        }
+    
+        return $totalNonVotedRegistrations ?? null;
+    }
+
+    public function metricVotesCastedRanges(Request $request): Fluent
+    {
+        $this->setFilters($request);
+
+        $this->setVotesCastedStats();
+
+        $votesResults = [];
+
+        foreach ($this->votesRanges as $key => $power) {
+            $votesResults[] = new Fluent([
+                'key' => $key,
+                'count' => $power['0'],
+                'total' => $power['1'],
+            ]);
+        }
+
+        return new Fluent($votesResults);
+    }
+
     public function index(Request $request): Response
     {
         $this->setFilters($request);
@@ -367,6 +480,55 @@ class CatalystChartsController extends Controller
         }
 
         return new Fluent($searchBuilder->raw());
+    }
+
+    protected function setVotesCastedStats()
+    {
+       $fundIds = $this->getFundIds();
+
+       $snapshotIds = CatalystSnapshot::whereIn('model_id', $fundIds)
+            ->where('model_type', Fund::class)
+            ->pluck('id');
+
+        $agg = CatalystVotingPower::selectRaw(
+                "CASE
+                WHEN votes_cast BETWEEN 0 AND 1 THEN '0-1-1'
+                WHEN votes_cast BETWEEN 2 AND 10 THEN '2-10-2'
+                WHEN votes_cast BETWEEN 11 AND 25 THEN '11-25-3'
+                WHEN votes_cast BETWEEN 26 AND 50 THEN '26-50-4'
+                WHEN votes_cast BETWEEN 51 AND 150 THEN '51-150-5'
+                WHEN votes_cast BETWEEN 151 AND 300 THEN '151-300-6'
+                WHEN votes_cast BETWEEN 301 AND 600 THEN '301-600-7'
+                WHEN votes_cast BETWEEN 601 AND 900 THEN '601-900-8'
+                WHEN votes_cast > 900 THEN '900-<-9'
+
+                END as range,  COUNT(*) as proposals, SUM(votes_cast) as votes"
+            )->whereIn('catalyst_snapshot_id', $snapshotIds)
+            ->where('votes_cast', '>', 0)
+            ->groupByRaw(1);
+
+        $votesRangesCollection = $agg->get()
+            ->map(fn($row) => [$row->range => [$row->proposals, $row->votes]])
+            ->collapse();
+
+        // convert the collection to an associative array whose structure is fully representative of our front-end needs
+        $votesRangesFormattedArray = [];
+        foreach ($votesRangesCollection as $range => $value) {
+            $rangeArray = explode('-', $range);
+            $finalRange = $rangeArray[0] . (count($rangeArray) == 3 ? ' - ' . $rangeArray[1] : '');
+
+            $votesRangesFormattedArray[$finalRange] = [
+                $value['0'],
+                $value['1'],
+                intval(isset($rangeArray['2']) ? $rangeArray['2'] : $rangeArray['1']),
+            ];
+        }
+
+        // convert then order the array to collection and assing to the objects $adaPowerRanges property
+        $this->votesRanges = collect($votesRangesFormattedArray)
+            ->sortBy(function ($value, $key) {
+                return $value[count($value) - 1];
+            });
     }
 
     protected function setSnapshotStats()
@@ -557,6 +719,25 @@ class CatalystChartsController extends Controller
             'fund' => Fund::find($fund),
             'proposers' => array_slice($finalUsers, 0, 21),
         ];
+    }
+
+    protected function getFundIds()
+    {
+        if ($this->fundFilter === CatalystExplorerQueryParams::ALL_FUNDS) {
+            $fundIds = CatalystSnapshot::query()
+                ->where('model_type', Fund::class)
+                ->pluck('model_id')
+                ->toArray();
+        } else {
+            $fundIds = $this->fund
+                ? [$this->fund?->id]
+                : CatalystSnapshot::query()
+                    ->where('model_type', Fund::class)
+                    ->pluck('model_id')
+                    ->toArray();
+        }
+
+        return $fundIds;
     }
 
     protected function attachmentLink(Request $request)

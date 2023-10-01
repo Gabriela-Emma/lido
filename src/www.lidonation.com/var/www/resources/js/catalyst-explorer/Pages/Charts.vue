@@ -50,6 +50,10 @@
                     <RegistrationChart :ada-power-ranges="adaPowerRanges" />
                 </div>
 
+                <!-- votes casted breakdown -->
+                <div class="w-full col-span-1 md:col-span-5 xl:col-span-8">
+                    <VotesCastBreakdown :fund-id="selectedFundRef"/>
+                </div>
 
                 <!-- Number Grid -->
                 <Suspense>
@@ -113,6 +117,7 @@ import MembersAwarded from '../modules/charts/MembersAwarded.vue';
 import RegistrationChart from '../modules/charts/RegistrationChart.vue';
 import AdaPowerChart from '../modules/charts/AdaPowerChart.vue';
 import YesNoVotesSum from "@/catalyst-explorer/modules/charts/YesNoVotesSum.vue";
+import VotesCastBreakdown from '../modules/charts/VotesCastBreakdown.vue';
 
 const VotingAggregates = defineAsyncComponent(() =>
     import('../modules/charts/VotingAggrigates.vue')
