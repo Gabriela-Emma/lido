@@ -105,24 +105,15 @@ export const useFiltersStore = defineStore('filters', () => {
             data[VARIABLES.GROUPS] = Array.from(currentModel.value.filters.groups);
         }
 
-        // TODO IMPLEMENT SEARCH 
-        console.log({ search: currentModel.value.search });
-        
+        // TODO IMPLEMENT SEARCH         
         if (currentModel.value.search?.length > 0) {
             data[VARIABLES.SEARCH] = currentModel.value.search;
         }
 
         // TODO implement sorts
-        if (!!currentModel.value.sorts.value && currentModel.value.sorts.value.length > 3) {
-            data[VARIABLES.SORTS] = currentModel.value.sorts.value;
+        if (!!currentModel.value.sorts && currentModel.value.sorts.length > 3) {
+            data[VARIABLES.SORTS] = currentModel.value.sorts;
         }
-
-        // TODO Range picker
-        // if (!!filtersRef.value.budgets) {
-        //     if (filtersRef.value.budgets[0] > VARIABLES.MIN_BUDGET || filtersRef.value.budgets[1] < VARIABLES.MAX_BUDGET) {
-        //         data[VARIABLES.BUDGETS] = filtersRef.value.budgets;
-        //     }
-        // }
 
         params.value =  data; 
         return data;

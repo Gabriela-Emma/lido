@@ -422,9 +422,7 @@ const bookmarksStore = useBookmarksStore();
 bookmarksStore.loadCollections();
 
 filterStore.setModel({ data: props.proposals, filters: props.filters, sorts: selectedSortRef.value, search:search.value })
-// currentModel.value.data = props.proposals;
-// currentModel.value.filters = filtersRef.value;
-// currentModel.value.sorts = selectedSortRef.value;
+
 
 watch([search, filtersRef, selectedSortRef], () => {
     currPageRef.value = null;
@@ -435,7 +433,7 @@ watch([search, filtersRef, selectedSortRef], () => {
 }, { deep: true });
 
 watch([  quickpitchingRef, rankedViewingRef], () => {
-    query();
+    // query();
 });
 
 watch([rankedViewingRef], () => {
@@ -460,9 +458,7 @@ watch(selectedDownloadFormat, () => {
     }
 });
 
-watch(()=> currentModel.value,()=>{
-    console.log({'changed':3});
-    
+watch(()=> currentModel.value,()=>{    
     getMetrics();
 },{deep:true});
 
@@ -494,9 +490,7 @@ function getFiltering() {
 }
 
 async function getMetrics() {
-    const params = await filterStore.setParams();
-    console.log({tyty:params});
-    
+    const params = await filterStore.setParams();    
 
     // get funded count
     window.axios.get(`${usePage().props.base_url}/catalyst-explorer/proposals/metrics/count/paid`, { params })
@@ -572,9 +566,9 @@ async function getMetrics() {
         });
 }
 
-function download(format) {
+async function download(format) {
     preparingDownload.value = true;
-    let data = filterStore.setParams();
+    let data = await filterStore.setParams();
     if (format) {
         data['d'] = true;
         data['d_t'] = format;
