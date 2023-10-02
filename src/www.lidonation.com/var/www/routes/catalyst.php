@@ -162,6 +162,19 @@ Route::group(
                     ->name('totalYesVotes');
                 Route::get('/total-no-votes', [CatalystChartsController::class, 'metricsTotalNoVotes'])
                     ->name('totalNoVotes');
+
+                Route::get('/votes-casted-average', [CatalystChartsController::class, 'metricVotesCastedAverage'])
+                    ->name('votesCastedAverage');
+                Route::get('/votes-casted-mode', [CatalystChartsController::class, 'metricVotesCastedMode'])
+                    ->name('votesCastedMode');
+                Route::get('/votes-casted-median', [CatalystChartsController::class, 'metricVotesCastedMedian'])
+                    ->name('votesCastedMedian');
+                Route::get('/total-registered-and-voted', [CatalystChartsController::class, 'metricTotalRegisteredAndVoted'])
+                    ->name('totalRegisteredAndVoted');
+                Route::get('/total-registered-and-never-voted', [CatalystChartsController::class, 'metricTotalRegisteredAndNeverVoted'])
+                    ->name('totalRegisteredAndNeverVoted');
+                Route::get('/votes-casted-ranges', [CatalystChartsController::class, 'metricVotesCastedRanges'])
+                    ->name('votesCastedRanges');   
             });
 
             Route::get('/attachments/voting-powers', [CatalystAttachmentsController::class, 'votingPowersAttachemnt'])

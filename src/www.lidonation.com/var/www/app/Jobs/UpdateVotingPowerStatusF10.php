@@ -37,6 +37,7 @@ class UpdateVotingPowerStatusF10 implements ShouldQueue
                 if (file_exists($filePath)) {
                     $collection = new Collection(Items::fromFile($filePath));
                     $power->consumed = $collection->isNotEmpty() ? 1 : 0;
+                    $power->votes_cast = $collection->count();
                     $power->save();
                 }
 
