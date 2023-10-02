@@ -2,9 +2,9 @@
     <div class="flex flex-wrap items-start justify-between">
         <div class="text-teal-600">
             <h2 class="mb-0 xl:text-3xl">
-                Votes Casted
+                Votes Cast
             </h2>
-            <p>Pie chart votes casted</p>
+            <p>Pie chart votes cast</p>
         </div>
     </div>
 

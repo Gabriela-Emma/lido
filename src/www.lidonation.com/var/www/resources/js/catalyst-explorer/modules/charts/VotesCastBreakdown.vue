@@ -15,7 +15,7 @@
                     </div>
                 </dd>
                 <dt class="mt-3 text-lg font-medium truncate">
-                    Average of votes cast
+                    Average # of votes cast
                 </dt>
             </dl>
         </div>
@@ -32,7 +32,7 @@
                     </div>
                 </dd>
                 <dt class="mt-3 text-lg font-medium truncate">
-                    Mode of votes cast
+                    Mode: most frequent # of votes cast
                 </dt>
             </dl>
         </div>
@@ -49,7 +49,7 @@
                     </div>
                 </dd>
                 <dt class="mt-3 text-lg font-medium truncate">
-                    Median of votes cast
+                    Median # of votes cast
                 </dt>
             </dl>
         </div>
