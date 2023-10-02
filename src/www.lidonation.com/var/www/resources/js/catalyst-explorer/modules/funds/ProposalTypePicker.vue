@@ -23,7 +23,7 @@ import Challenge from "../../models/challenge";
 
 const props = withDefaults(
     defineProps<{
-        modelValue?: Challenge,
+        modelValue?: string,
         filters: {}
     }>(),
     {},
@@ -35,7 +35,7 @@ let selectedRef = ref(props.modelValue);
 // events & watchers
 ////
 const emit = defineEmits<{
-    (e: 'update:modelValue', challenge: Challenge): void
+    (e: 'update:modelValue', challenge: string): void
 }>();
 
 watch(selectedRef, (newChallenge, oldFund) => {

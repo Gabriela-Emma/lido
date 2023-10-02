@@ -33,6 +33,8 @@
 <script lang="ts" setup>
 import {ref, watch, defineEmits} from "vue";
 import {debounce} from "lodash";
+import { useFiltersStore } from "../../../global/Shared/store/filters-stores";
+import { storeToRefs } from "pinia";
 
 const props = withDefaults(
     defineProps<{
@@ -54,16 +56,25 @@ const emit = defineEmits({
         }
     }
 });
+
+const filterStore = useFiltersStore()
+const {currentModel} = storeToRefs(filterStore);
+const { canFetch } = storeToRefs(filterStore);
+
 let search = ref(props.search);
 watch(search, debounce((term) => {
     if (term.length > 1) {
         emit('search', term);
+        canFetch.value = true;
+        currentModel.value.search = term;
     }
 }, 500));
 function clearSearch() {
     search.value = '';
     emit('search', search.value);
     emit('clearSearch');
+    canFetch.value = true;
+    currentModel.value.search = null;
 }
 
 </script>

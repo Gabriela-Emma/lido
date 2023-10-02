@@ -34,7 +34,7 @@
 
                 <ProposalViewTypes class="mr-4"></ProposalViewTypes>
 
-                <button @click="openIdeascaleLddinks" v-if="props.proposals.total <= 35"
+                <button @click="openIdeascaleLinks" v-if="props.proposals.total <= 35"
                     class="bg-white rounded-sm px-2 py-2.5 text-gray-400 flex-wrap hover:text-yellow-500">Open Ideascale
                     Links</button>
                 <div class="flex flex-col text-center text-pink-500" v-if="filtering || search">
@@ -90,7 +90,7 @@
                             stroke="currentColor" class="w-5 h-5">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
                         </svg>
-                    </button>
+                    </button>  
 
                     <ProposalFilter @filter="(payload) => filtersRef = payload"
                         @reRenderFilter="filterRenderKey = Math.random()" :filters="filtersRef" :key="filterRenderKey"
@@ -100,12 +100,12 @@
                 <!-- Proposal lists -->
                 <div class="flex-1 mx-auto"
                     :class="{ 'lg:pr-16 opacity-10 lg:opacity-100': showFilters, 'container': !showFilters }">
-                    <Proposals :proposals="props.proposals?.data"></Proposals>
+                    <Proposals :proposals="currentModel?.data?.data"></Proposals>
 
-                    <div class="flex items-start justify-between w-full gap-16 my-16 xl:gap-24">
+                    <div class="flex items-start justify-between w-full gap-16 my-16 xl:gap-24" v-if="currentModel?.data?.data">
                         <div class="flex-1">
-                            <Pagination :links="props.proposals.links" :per-page="props.perPage"
-                                :total="props.proposals?.total" :from="props.proposals?.from" :to="props.proposals?.to"
+                            <Pagination :links="currentModel.data.links" :per-page="props.perPage"
+                                :total="currentModel.data.total" :from="currentModel.data.from" :to="currentModel.data.to"
                                 @perPageUpdated="(payload) => perPageRef = payload"
                                 @paginated="(payload) => currPageRef = payload" />
                         </div>
@@ -130,7 +130,7 @@
                                         class="inline-flex flex-wrap justify-center h-full gap-1 mx-auto space-x-2 divide-x-reverse md:flex-nowrap md:gap-2 divide-slate-100 md:space-x-4">
                                         <div class="flex flex-col text-center" key="countTotal">
                                             <span class="font-semibold">
-                                                {{ $filters.number(props.proposals.total, 4) }}
+                                                {{ $filters.number(currentModel.data.total, 4) }}
                                             </span>
                                             <span class="text-xs">
                                                 {{ $t('Submitted') }}
@@ -263,6 +263,7 @@ import { useProposalsRankingStore } from '../stores/proposals-ranking-store';
 import { useUserStore } from '../../global/Shared/store/user-store';
 import { usePlayStore } from '../../global/Shared/store/play-store';
 import { PlayCircleIcon, StopCircleIcon } from '@heroicons/vue/20/solid';
+import { useFiltersStore } from '../../global/Shared/store/filters-stores';
 
 /// props and class properties
 const props = withDefaults(
@@ -400,7 +401,7 @@ const userStore = useUserStore();
 userStore.setUser();
 
 const peopleStore = usePeopleStore();
-peopleStore.loadPeople(props?.filters?.people);
+peopleStore.load(props?.filters?.people);
 const { selectedPeople } = storeToRefs(peopleStore);
 
 const proposalsRanking = useProposalsRankingStore();
@@ -409,6 +410,10 @@ proposalsRanking.loadRankings();
 const proposalsStore = useProposalsStore();
 let { viewType } = storeToRefs(proposalsStore);
 
+const filterStore = useFiltersStore();
+const {currentModel} = storeToRefs(filterStore);
+const {canFetch} = storeToRefs(filterStore);
+
 let quickpitchingRef = ref<boolean>(false);
 let rankedViewingRef = ref<boolean>(false);
 let cardViewingRef = ref<boolean>(false);
@@ -416,14 +421,19 @@ let cardViewingRef = ref<boolean>(false);
 const bookmarksStore = useBookmarksStore();
 bookmarksStore.loadCollections();
 
+filterStore.setModel({ data: props.proposals, filters: props.filters, sorts: selectedSortRef.value, search:search.value })
+
+
 watch([search, filtersRef, selectedSortRef], () => {
     currPageRef.value = null;
-    query();
     searchRender.value = Math.random();
+    canFetch.value = true;
+    currentModel.value.sorts = selectedSortRef.value
+    getMetrics();
 }, { deep: true });
 
-watch([currPageRef, perPageRef, quickpitchingRef, rankedViewingRef], () => {
-    query();
+watch([  quickpitchingRef, rankedViewingRef], () => {
+    // query();
 });
 
 watch([rankedViewingRef], () => {
@@ -447,6 +457,10 @@ watch(selectedDownloadFormat, () => {
         download(selectedDownloadFormat.value);
     }
 });
+
+watch(()=> currentModel.value,()=>{    
+    getMetrics();
+},{deep:true});
 
 getMetrics();
 
@@ -475,25 +489,8 @@ function getFiltering() {
     return false;
 }
 
-function query() {
-    const data = getQueryData();
-    router.get(
-        `/${props.locale}/catalyst-explorer/proposals`,
-        data,
-        { preserveState: true, preserveScroll: !currPageRef.value }
-    );
-
-    // @ts-ignore
-    if (typeof window?.fathom !== 'undefined') {
-        // @ts-ignore
-        window?.fathom?.trackGoal(VARIABLES.TRACKER_ID_PROPOSALS, 0);
-    }
-
-    getMetrics();
-}
-
-function getMetrics() {
-    const params = getQueryData();
+async function getMetrics() {
+    const params = await filterStore.setParams();    
 
     // get funded count
     window.axios.get(`${usePage().props.base_url}/catalyst-explorer/proposals/metrics/count/paid`, { params })
@@ -569,91 +566,9 @@ function getMetrics() {
         });
 }
 
-function getQueryData() {
-    const data = {};
-    if (currPageRef.value) {
-        data[VARIABLES.PAGE] = currPageRef.value;
-    }
-    if (perPageRef.value) {
-        data[VARIABLES.PER_PAGE] = perPageRef.value;
-    }
-
-    if (!!rankedViewingRef.value) {
-        data[VARIABLES.RANKED_VIEW] = '';
-    }
-
-    if (!!quickpitchingRef.value) {
-        data[VARIABLES.QUICKPITCHES] = '';
-    }
-
-    if ( !!cardViewingRef.value ) {
-        data[VARIABLES.CARD_VIEW] = '';
-    }
-
-    if (search.value?.length > 0) {
-        data[VARIABLES.SEARCH] = search.value;
-    }
-
-    if (filtersRef.value?.funded) {
-        data[VARIABLES.FUNDED_PROPOSALS] = 1;
-    }
-
-    if (filtersRef.value?.opensource) {
-        data[VARIABLES.OPENSOURCE_PROPOSALS] = 1;
-    }
-
-    if (filtersRef.value?.funds) {
-        data[VARIABLES.FUNDS] = Array.from(filtersRef.value?.funds);
-    }
-
-    if (filtersRef.value?.challenges) {
-        data[VARIABLES.CHALLENGES] = Array.from(filtersRef.value?.challenges);
-    }
-
-    if (filtersRef.value?.cohort) {
-        data[VARIABLES.COHORT] = filtersRef.value?.cohort;
-    }
-
-    if (filtersRef.value?.fundingStatus) {
-        data[VARIABLES.FUNDING_STATUS] = filtersRef.value?.fundingStatus;
-    }
-
-    if (filtersRef.value?.projectStatus) {
-        data[VARIABLES.STATUS] = filtersRef.value?.projectStatus;
-    }
-
-    if (filtersRef.value?.type) {
-        data[VARIABLES.TYPE] = filtersRef.value?.type;
-    }
-
-    if (filtersRef.value?.tags) {
-        data[VARIABLES.TAGS] = Array.from(filtersRef.value?.tags);
-    }
-
-    if (filtersRef.value?.people) {
-        data[VARIABLES.PEOPLE] = Array.from(filtersRef.value?.people);
-    }
-
-    if (filtersRef.value?.groups) {
-        data[VARIABLES.GROUPS] = Array.from(filtersRef.value?.groups);
-    }
-
-    if (!!selectedSortRef.value && selectedSortRef.value.length > 3) {
-        data[VARIABLES.SORTS] = selectedSortRef.value;
-    }
-
-    if (!!filtersRef.value.budgets) {
-        if (filtersRef.value.budgets[0] > VARIABLES.MIN_BUDGET || filtersRef.value.budgets[1] < VARIABLES.MAX_BUDGET) {
-            data[VARIABLES.BUDGETS] = filtersRef.value.budgets;
-        }
-    }
-
-    return data;
-}
-
-function download(format) {
+async function download(format) {
     preparingDownload.value = true;
-    let data = getQueryData();
+    let data = await filterStore.setParams();
     if (format) {
         data['d'] = true;
         data['d_t'] = format;

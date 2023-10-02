@@ -1,5 +1,5 @@
-import Fund from "./fund";
-import Proposal from "./proposal";
+import Fund from "../../../catalyst-explorer/models/fund";
+import Proposal from "../../../catalyst-explorer/models/proposal";
 
 export default interface Filters {
     currentPage: number;
@@ -17,4 +17,6 @@ export default interface Filters {
     groups?: number[];
     sort?: number[];
     budgets?: number[];
+    perPage?:number;
+    search?:string;
 }

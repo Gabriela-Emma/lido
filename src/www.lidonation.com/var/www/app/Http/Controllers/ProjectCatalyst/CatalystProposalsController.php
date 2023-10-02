@@ -205,21 +205,21 @@ class CatalystProposalsController extends Controller
                     'not_approved' => CatalystExplorerQueryParams::NOT_APPROVED,
                     'funded' => 'f',
                     'paid' => 'p',
-                    default => null
+                    default => ''
                 },
                 'projectStatus' => match ($this->projectStatus) {
                     'complete' => 'c',
                     'in_progress' => 'i',
                     'unfunded' => 'u',
                     'paused' => 'p',
-                    default => null
+                    default => ''
                 },
                 'cohort' => match ($this->proposalCohort) {
                     'impact_proposal' => 'im',
                     'woman_proposal' => 'wo',
                     'ideafest_proposal' => 'id',
                     'has_quick_pitch' => CatalystExplorerQueryParams::QUICKPITCHES,
-                    default => null
+                    default => ''
                 },
                 'type' => match ($this->proposalType) {
                     'proposal' => 'p',
@@ -249,6 +249,8 @@ class CatalystProposalsController extends Controller
 
         return Inertia::render('Proposals', $props);
     }
+
+
 
     protected function setFilters(Request $request)
     {
@@ -492,6 +494,13 @@ class CatalystProposalsController extends Controller
         }
 
         return $_options;
+    }
+
+    public function getFilteredData(Request $request)
+    {
+        $this->setFilters($request);
+        return $this->query();
+
     }
 
     /**

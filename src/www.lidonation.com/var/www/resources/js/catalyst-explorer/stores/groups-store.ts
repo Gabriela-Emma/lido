@@ -24,7 +24,7 @@ export const useGroupsStore = defineStore('groups', () => {
             console.log({e});
         }
     }
-    async function loadGroups(pp: number[]) {
+    async function load(pp: number[]) {
         try {
             const {data} = await window.axios.get(
                 `/api/catalyst-explorer/groups`,
@@ -42,7 +42,7 @@ export const useGroupsStore = defineStore('groups', () => {
 
     return {
         search,
-        loadGroups,
+        load,
         filters,
         groups
     };
