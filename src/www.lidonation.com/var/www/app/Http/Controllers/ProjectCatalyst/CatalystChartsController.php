@@ -479,7 +479,6 @@ class CatalystChartsController extends Controller
                 WHEN votes_cast BETWEEN 301 AND 600 THEN '301-600-7'
                 WHEN votes_cast BETWEEN 601 AND 900 THEN '601-900-8'
                 WHEN votes_cast > 900 THEN '> 900-9'
-
                 END as range,  COUNT(*) as proposals, SUM(voting_power) as voting_power"
             )->whereIn('catalyst_snapshot_id', $snapshotIds)
             ->where('votes_cast', '>', 0)
@@ -502,7 +501,6 @@ class CatalystChartsController extends Controller
             ];
         }
 
-        // convert then order the array to collection and assing to the objects $adaPowerRanges property
         $this->votesRanges = collect($votesRangesFormattedArray)
             ->sortBy(function ($value, $key) {
                 return $value[count($value) - 1];
@@ -686,8 +684,6 @@ class CatalystChartsController extends Controller
         $ungroupedUsers = $groupedUsers->map(function ($group) {
             return $group->first();
         });
-
-//        dd($ungroupedUsers->toArray());
 
         $finalUsers = $ungroupedUsers->concat($users->filter(function ($user) {
             return is_null($user->groups->first());
