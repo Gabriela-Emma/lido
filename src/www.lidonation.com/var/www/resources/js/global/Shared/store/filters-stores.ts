@@ -25,17 +25,17 @@ export const useFiltersStore = defineStore('filters', () => {
     }
 
     async function getFilteredData() {
-        setParams();
-        setUrlHistory(params.value);
+        await setParams();
+        await setUrlHistory(params.value);
         axios.get(route('catalystExplorer.filterProposals'), { params: params.value })
             .then((res) => {
+                currentModel.value.data = res.data;
                 canFetch.value = false;
-                currentModel.value.data = res.data
             })
     }
 
 
-    function setUrlHistory(params) {
+    async function setUrlHistory(params) {
         console.log({ params });
         const searchParams = new URLSearchParams();
 
@@ -60,7 +60,7 @@ export const useFiltersStore = defineStore('filters', () => {
 
     }
 
-    function setParams() {
+    async function setParams() {
         const data = {};
         if (currentModel.value.filters.currentPage) {
             data[VARIABLES.PAGE] = currentModel.value.filters.currentPage;
@@ -106,14 +106,16 @@ export const useFiltersStore = defineStore('filters', () => {
         }
 
         // TODO IMPLEMENT SEARCH 
-        // if (search.value?.length > 0) {
-        //     data[VARIABLES.SEARCH] = search.value;
-        // }
+        console.log({ search: currentModel.value.search });
+        
+        if (currentModel.value.search?.length > 0) {
+            data[VARIABLES.SEARCH] = currentModel.value.search;
+        }
 
         // TODO implement sorts
-        // if (!!currentModel.value.sorts.value && currentModel.value.sorts.value.length > 3) {
-        //     data[VARIABLES.SORTS] = currentModel.value.sorts.value;
-        // }
+        if (!!currentModel.value.sorts.value && currentModel.value.sorts.value.length > 3) {
+            data[VARIABLES.SORTS] = currentModel.value.sorts.value;
+        }
 
         // TODO Range picker
         // if (!!filtersRef.value.budgets) {
@@ -122,21 +124,12 @@ export const useFiltersStore = defineStore('filters', () => {
         //     }
         // }
 
-        // TODO toggle component
-        // if (currentModel.value.filters) {
-        //     data[VARIABLES.FUNDED_PROPOSALS] = 1;
-        // }
-
-        // if (currentModel.value.filters) {
-        //     data[VARIABLES.OPENSOURCE_PROPOSALS] = 1;
-        // }
-
         params.value =  data; 
         return data;
     }
 
 
-    watch(()=>currentModel.value.filters,() => {
+    watch(()=>currentModel.value,() => {
         if (canFetch.value){
             getFilteredData(); 
         }
@@ -149,5 +142,6 @@ export const useFiltersStore = defineStore('filters', () => {
         getFilteredData,
         canFetch,
         setParams,
+        params
     }
 });

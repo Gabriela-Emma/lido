@@ -412,6 +412,7 @@ let { viewType } = storeToRefs(proposalsStore);
 
 const filterStore = useFiltersStore();
 const {currentModel} = storeToRefs(filterStore);
+const {canFetch} = storeToRefs(filterStore);
 
 let quickpitchingRef = ref<boolean>(false);
 let rankedViewingRef = ref<boolean>(false);
@@ -420,17 +421,20 @@ let cardViewingRef = ref<boolean>(false);
 const bookmarksStore = useBookmarksStore();
 bookmarksStore.loadCollections();
 
-filterStore.setModel({ data: props.proposals, filters: props.filters })
-currentModel.value.data = props.proposals;
-currentModel.value.filters = filtersRef.value
+filterStore.setModel({ data: props.proposals, filters: props.filters, sorts: selectedSortRef.value, search:search.value })
+// currentModel.value.data = props.proposals;
+// currentModel.value.filters = filtersRef.value;
+// currentModel.value.sorts = selectedSortRef.value;
 
 watch([search, filtersRef, selectedSortRef], () => {
     currPageRef.value = null;
-    query();
     searchRender.value = Math.random();
+    canFetch.value = true;
+    currentModel.value.sorts = selectedSortRef.value
+    getMetrics();
 }, { deep: true });
 
-watch([currPageRef, perPageRef, quickpitchingRef, rankedViewingRef], () => {
+watch([  quickpitchingRef, rankedViewingRef], () => {
     query();
 });
 
@@ -456,7 +460,7 @@ watch(selectedDownloadFormat, () => {
     }
 });
 
-watch(()=> currentModel.value.filters,()=>{
+watch(()=> currentModel.value,()=>{
     console.log({'changed':3});
     
     getMetrics();
@@ -489,27 +493,9 @@ function getFiltering() {
     return false;
 }
 
-function query() {
-    // const data = getQueryData();
-    
-    // router.get(
-    //     `/${props.locale}/catalyst-explorer/proposals`,
-    //     data,
-    //     { preserveState: true, preserveScroll: !currPageRef.value }
-    // );
-
-    // @ts-ignore
-    if (typeof window?.fathom !== 'undefined') {
-        // @ts-ignore
-        window?.fathom?.trackGoal(VARIABLES.TRACKER_ID_PROPOSALS, 0);
-    }
-
-    
-}
-
-function getMetrics() {
-    const params = filterStore.setParams();
-    console.log({params});
+async function getMetrics() {
+    const params = await filterStore.setParams();
+    console.log({tyty:params});
     
 
     // get funded count
@@ -585,88 +571,6 @@ function getMetrics() {
             console.error(error);
         });
 }
-
-// function getQueryData() {
-//     const data = {};
-//     if (currPageRef.value) {
-//         data[VARIABLES.PAGE] = currPageRef.value;
-//     }
-//     if (perPageRef.value) {
-//         data[VARIABLES.PER_PAGE] = perPageRef.value;
-//     }
-
-//     if (!!rankedViewingRef.value) {
-//         data[VARIABLES.RANKED_VIEW] = '';
-//     }
-
-//     if (!!quickpitchingRef.value) {
-//         data[VARIABLES.QUICKPITCHES] = '';
-//     }
-
-//     if ( !!cardViewingRef.value ) {
-//         data[VARIABLES.CARD_VIEW] = '';
-//     }
-
-//     if (search.value?.length > 0) {
-//         data[VARIABLES.SEARCH] = search.value;
-//     }
-
-//     if (filtersRef.value?.funded) {
-//         data[VARIABLES.FUNDED_PROPOSALS] = 1;
-//     }
-
-//     if (filtersRef.value?.opensource) {
-//         data[VARIABLES.OPENSOURCE_PROPOSALS] = 1;
-//     }
-
-//     if (filtersRef.value?.funds) {
-//         data[VARIABLES.FUNDS] = Array.from(filtersRef.value?.funds);
-//     }
-
-//     if (filtersRef.value?.challenges) {
-//         data[VARIABLES.CHALLENGES] = Array.from(filtersRef.value?.challenges);
-//     }
-
-//     if (filtersRef.value?.cohort) {
-//         data[VARIABLES.COHORT] = filtersRef.value?.cohort;
-//     }
-
-//     if (filtersRef.value?.fundingStatus) {
-//         data[VARIABLES.FUNDING_STATUS] = filtersRef.value?.fundingStatus;
-//     }
-
-//     if (filtersRef.value?.projectStatus) {
-//         data[VARIABLES.STATUS] = filtersRef.value?.projectStatus;
-//     }
-
-//     if (filtersRef.value?.type) {
-//         data[VARIABLES.TYPE] = filtersRef.value?.type;
-//     }
-
-//     if (filtersRef.value?.tags) {
-//         data[VARIABLES.TAGS] = Array.from(filtersRef.value?.tags);
-//     }
-
-//     if (filtersRef.value?.people) {
-//         data[VARIABLES.PEOPLE] = Array.from(filtersRef.value?.people);
-//     }
-
-//     if (filtersRef.value?.groups) {
-//         data[VARIABLES.GROUPS] = Array.from(filtersRef.value?.groups);
-//     }
-
-//     if (!!selectedSortRef.value && selectedSortRef.value.length > 3) {
-//         data[VARIABLES.SORTS] = selectedSortRef.value;
-//     }
-
-//     if (!!filtersRef.value.budgets) {
-//         if (filtersRef.value.budgets[0] > VARIABLES.MIN_BUDGET || filtersRef.value.budgets[1] < VARIABLES.MAX_BUDGET) {
-//             data[VARIABLES.BUDGETS] = filtersRef.value.budgets;
-//         }
-//     }
-
-//     return data;
-// }
 
 function download(format) {
     preparingDownload.value = true;
