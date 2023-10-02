@@ -1,6 +1,7 @@
 import { Controller, Post, Req } from '@nestjs/common';
 import { C, fromHex} from 'lucid-cardano';
 import { Request, json } from 'express';
+import { Logger } from '@nestjs/common';
 import bf from '@lido/utils/blockfrost.js';
 import {
   PublicKey,
@@ -10,32 +11,39 @@ import {
 
 @Controller('votes')
 export class VotesController {
+  private readonly logger = new Logger(VotesController.name);
+
   @Post('decode-voter-transaction')
   async decodeVoterTxDetails(@Req() request: Request) {
-    
-    // 
     const voterTx = request.body.voterTransaction;
-    
-    // fetch voter keys from meta one
-    const voterKeys = await this.getVoterPublicKeys(voterTx.json_metadata.one);
+   
+    try {
+      // fetch voter keys from meta one
+      const voterKeys = await this.getVoterPublicKeys(voterTx.json_metadata.one);
+  
+      // get publicKey and reward address from CIP-36 json_metadata["2"]
+      const publicKey: PublicKey = await this.getPublicKey(voterTx.json_metadata.two);
+      const stakeCredential: StakeCredential = C.StakeCredential.from_keyhash(publicKey.hash());
+      const rewardAddress = C.RewardAddress.new(
+        1, stakeCredential
+      )
+        .to_address()
+        .to_bech32(undefined);
+  
+      let result = {
+        // tx: voterTx.tx_hash,
+        stake_pub: rewardAddress,
+        stake_key: publicKey.to_bech32(),
+        voter_delegations: voterKeys,
+      }
+  
+      return { data: result, statusCode: 200 };
+      
+    } catch (error) {
+      this.logger.error(error + ' on : '+ JSON.stringify(voterTx));
 
-    // get publicKey and reward address from CIP-36 json_metadata["2"]
-    const publicKey: PublicKey = await this.getPublicKey(voterTx.json_metadata.two);
-    const stakeCredential: StakeCredential = C.StakeCredential.from_keyhash(publicKey.hash());
-    const rewardAddress = C.RewardAddress.new(
-      1, stakeCredential
-    )
-      .to_address()
-      .to_bech32(undefined);
-
-    let result = {
-      // tx: voterTx.tx_hash,
-      stake_pub: rewardAddress,
-      stake_key: publicKey.to_bech32(),
-      voter_delegations: voterKeys,
+      return { statusCode: 400 };
     }
-
-    return { data: result };
   }
 
   protected async getVoterPublicKeys(one: Object|string) {
