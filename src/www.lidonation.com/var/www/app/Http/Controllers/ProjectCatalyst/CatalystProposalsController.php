@@ -72,7 +72,6 @@ class CatalystProposalsController extends Controller
 
     public function metricCountFunded(Request $request)
     {
-        dd($request);
         $this->setFilters($request);
         $this->fundedProposalsFilter = true;
         $this->limit = 1;
@@ -255,7 +254,6 @@ class CatalystProposalsController extends Controller
 
     protected function setFilters(Request $request)
     {
-        // dd($request);
         $this->limit = $request->input(CatalystExplorerQueryParams::PER_PAGE, 24);
         $this->ranked = $request->has(CatalystExplorerQueryParams::RANKED_VIEW);
         if (

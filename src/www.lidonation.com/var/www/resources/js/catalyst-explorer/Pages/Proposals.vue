@@ -130,7 +130,7 @@
                                         class="inline-flex flex-wrap justify-center h-full gap-1 mx-auto space-x-2 divide-x-reverse md:flex-nowrap md:gap-2 divide-slate-100 md:space-x-4">
                                         <div class="flex flex-col text-center" key="countTotal">
                                             <span class="font-semibold">
-                                                {{ $filters.number(props.proposals.total, 4) }}
+                                                {{ $filters.number(currentModel.data.total, 4) }}
                                             </span>
                                             <span class="text-xs">
                                                 {{ $t('Submitted') }}
@@ -456,7 +456,9 @@ watch(selectedDownloadFormat, () => {
     }
 });
 
-watch(()=> currentModel,()=>{
+watch(()=> currentModel.value.filters,()=>{
+    console.log({'changed':3});
+    
     getMetrics();
 },{deep:true});
 
