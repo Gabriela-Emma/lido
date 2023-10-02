@@ -12,6 +12,7 @@ use Illuminate\Http\Client\RequestException;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Fluent;
 use Symfony\Component\Process\Process;
 
@@ -88,7 +89,7 @@ class SyncCatalystVotersJob implements ShouldQueue
             )->throw();
 
             // save voter details if $response is succeful
-            if ($res->successful()) {
+            if ($res->json()['statusCode'] == 200) {
                 $votersDetails = new Fluent($res->json()['data']);
 
                 $transaction_time = $this->getTransactionTime($voterTransaction->tx_hash);
@@ -105,8 +106,8 @@ class SyncCatalystVotersJob implements ShouldQueue
                 $voterDelegations->each(function ($voterDelegation) use ($catalystRegistration) {
                     $newDelegation = new Delegation();
                     $newDelegation->catalyst_registration_id = $catalystRegistration->id;
-                    $newDelegation->voting_pub = $voterDelegation[0];
-                    $newDelegation->weight = $voterDelegation[1];
+                    $newDelegation->voting_pub = $voterDelegation['votePub'];
+                    $newDelegation->weight = $voterDelegation['weight'];
 
                     $command = Process::fromShellCommandline(
                         '/opt/jcli address account '.$newDelegation->voting_pub
@@ -116,6 +117,8 @@ class SyncCatalystVotersJob implements ShouldQueue
                     $newDelegation->cat_onchain_id = $catId;
                     $newDelegation->save();
                 });
+            } else {
+                Log::error('Sync Voter Registration Error: ' . json_encode($this->encodedTransactionDetails) );
             }
         }
     }
