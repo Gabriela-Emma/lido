@@ -10,7 +10,6 @@ use App\Models\Proposal;
 use Laravel\Scout\Builder;
 use App\Models\CatalystUser;
 use Illuminate\Http\Request;
-use App\Models\CatalystGroup;
 use Illuminate\Support\Fluent;
 use App\Models\CatalystSnapshot;
 use Illuminate\Support\Facades\DB;
@@ -20,7 +19,6 @@ use App\Models\CatalystVotingPower;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\FundResource;
 use App\Enums\CatalystExplorerQueryParams;
-use App\Models\CatalystVotesCasted;
 
 class CatalystChartsController extends Controller
 {
@@ -42,7 +40,7 @@ class CatalystChartsController extends Controller
 
     public string $fundSlugFilter;
 
-    public int | string $fundFilter = 113;
+    public int|string $fundFilter = 113;
 
     public ?string $fundingStatus = null;
 
@@ -106,9 +104,9 @@ class CatalystChartsController extends Controller
                 return null;
             }
         } else {
-            $fundIds = (bool) $this->fundFilter ? DB::table('funds')->where('parent_id', $this->fundFilter)->pluck('id')
+            $fundIds = (bool)$this->fundFilter ? DB::table('funds')->where('parent_id', $this->fundFilter)->pluck('id')
                 : DB::table('funds')->where('parent_id', '>', 0)->pluck('id');
-    
+
             if (isset($res['hits'])) {
                 return CatalystUser::whereHas(
                     'proposals',
@@ -165,11 +163,11 @@ class CatalystChartsController extends Controller
             $votingPower = CatalystVotingPower::whereRelation('catalyst_snapshot', 'model_id', $this->fundFilter)
                 ->sum('voting_power');
         }
-    
+
         if ($votingPower && $votingPower > 0) {
             return $votingPower / 1000000;
         }
-    
+
         return null;
     }
 
@@ -182,7 +180,7 @@ class CatalystChartsController extends Controller
             $totalRegistrations = CatalystVotingPower::whereRelation('catalyst_snapshot', 'model_id', $this->fundFilter)
                 ->count();
         }
-    
+
         return $totalRegistrations ?? null;
     }
 
@@ -194,14 +192,14 @@ class CatalystChartsController extends Controller
                 ->sum('voting_power');
         } else {
             $votingPower = CatalystVotingPower::whereHas('delegations', operator: '>', count: 1)
-                ->whereHas('catalyst_snapshot', fn ($q) => $q->where('model_id', $this->fundFilter))
+                ->whereHas('catalyst_snapshot', fn($q) => $q->where('model_id', $this->fundFilter))
                 ->sum('voting_power');
         }
-    
+
         if ($votingPower && $votingPower > 0) {
             return $votingPower / 1000000;
         }
-    
+
         return null;
     }
 
@@ -233,7 +231,6 @@ class CatalystChartsController extends Controller
 
     public function metricTotalDelegationRegistrations(Request $request)
     {
-
         $this->fundFilter = $request->input(CatalystExplorerQueryParams::FUNDS, 113);
 
         if ($this->fundFilter === CatalystExplorerQueryParams::ALL_FUNDS) {
@@ -265,123 +262,77 @@ class CatalystChartsController extends Controller
         return new Fluent($powersResults);
     }
 
-    public function metricVotesCastedAverage(Request $request)
+    public function metricVotesCastAverage(Request $request): ?int
     {
         $this->setFilters($request);
-
-        $fundIds = $this->getFundIds();
-
-        $snapshotIds = DB::table('catalyst_snapshots')
-            ->whereIn('model_id', $fundIds)
-            ->where('model_type', Fund::class)
-            ->pluck('id');
-
-        $average = DB::table('catalyst_voting_powers')
-            ->whereIn('catalyst_snapshot_id', $snapshotIds)
-            ->where('votes_cast', '>', 0)
-            ->avg('votes_cast');
-
-        return $average > 0 ? number_format($average, 2) : null;
-    }
-
-    public function metricVotesCastedMode(Request $request)
-    {
-        $this->setFilters($request);
-
-        $fundIds = $this->getFundIds();
-
-        $snapshotIds = DB::table('catalyst_snapshots')
-            ->whereIn('model_id', $fundIds)
-            ->where('model_type', Fund::class)
-            ->pluck('id');
-
-        $mode = DB::table('catalyst_voting_powers')
-            ->whereIn('catalyst_snapshot_id', $snapshotIds)
-            ->where('votes_cast', '>', 0)
-            ->mode('votes_cast');
-
-        $mode = $mode ?? [];
-        
-        return count($mode) == 1 ? $mode : null;
-    }
-
-    public function metricVotesCastedMedian(Request $request)
-    {
-        $this->setFilters($request);
-
-        $fundIds = $this->getFundIds();
-
-        $snapshotIds = DB::table('catalyst_snapshots')
-            ->whereIn('model_id', $fundIds)
-            ->where('model_type', Fund::class)
-            ->pluck('id');
-
-        $sorted = CatalystVotingPower::whereIn('catalyst_snapshot_id', $snapshotIds)
-            ->where('votes_cast', '>', 0)
-            ->pluck('votes_cast')
-            ->sort();
-
-        $count = $sorted->count();
-
-        if ($count % 2 == 1) {
-            // Odd number of data points, median is the middle value
-            $median = $sorted->get($count / 2);
-        } else {
-            // Even number of data points, median is the average of the two middle values
-            $median = ($sorted->get(($count / 2)-1) + $sorted->get($count / 2)) / 2;
+        $totalVotedQuery = CatalystVotingPower::where('consumed', true);
+        if ($this->fundFilter !== CatalystExplorerQueryParams::ALL_FUNDS) {
+            $totalVotedQuery->whereRelation('catalyst_snapshot', 'model_id', $this->fundFilter);
         }
-        return $median > 0 ? number_format($median, 2) : null;
+
+        $avg = $totalVotedQuery->avg('votes_cast');
+        return $avg ? intval(number_format($avg, 2)) : null;
+    }
+
+    public function metricVotesCastMode(Request $request): ?int
+    {
+        $this->setFilters($request);
+        $modeQuery = CatalystVotingPower::select(
+            DB::raw('mode() WITHIN GROUP (ORDER BY votes_cast) AS mode')
+        )->where('consumed', 1);
+
+        if ($this->fundFilter !== CatalystExplorerQueryParams::ALL_FUNDS) {
+            $modeQuery->whereRelation('catalyst_snapshot', 'model_id', $this->fundFilter);
+        }
+
+        $res = DB::select($modeQuery->toSql(), $modeQuery->getBindings());
+        if (!empty($res)) {
+            return intval($res[0]->mode);
+        }
+        return null;
+    }
+
+    public function metricVotesCastMedian(Request $request): ?int
+    {
+        $this->setFilters($request);
+        $modeQuery = CatalystVotingPower::select(
+            DB::raw('PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY votes_cast) AS median')
+        )->where('consumed', 1);
+
+        if ($this->fundFilter !== CatalystExplorerQueryParams::ALL_FUNDS) {
+            $modeQuery->whereRelation('catalyst_snapshot', 'model_id', $this->fundFilter);
+        }
+
+        $res = DB::select($modeQuery->toSql(), $modeQuery->getBindings());
+        if (!empty($res)) {
+            return intval($res[0]->median);
+        }
+        return null;
     }
 
     public function metricTotalRegisteredAndVoted(Request $request)
     {
         $this->setFilters($request);
-
-        if ($this->fundFilter === CatalystExplorerQueryParams::ALL_FUNDS) {
-            $totalVotedRegistrations = DB::table('catalyst_voting_powers')
-                ->where('consumed', true)
-                ->where('votes_cast', '>', 0)
-                ->count();
-        } else {
-            $snapshotId = DB::table('catalyst_snapshots')
-                ->where('model_type', Fund::class)
-                ->where('model_id', $this->fundFilter)
-                ->pluck('id');
-
-            $totalVotedRegistrations = DB::table('catalyst_voting_powers')
-                ->where('catalyst_snapshot_id', $snapshotId)
-                ->where('consumed', true)
-                ->where('votes_cast', '>', 0)
-                ->count();
+        $totalVotedQuery = CatalystVotingPower::where('consumed', 1);
+        if ($this->fundFilter !== CatalystExplorerQueryParams::ALL_FUNDS) {
+            $totalVotedQuery->whereRelation('catalyst_snapshot', 'model_id', $this->fundFilter);
         }
-    
-        return $totalVotedRegistrations ?? null;
+
+        return $totalVotedQuery->count() ?? null;
     }
 
     public function metricTotalRegisteredAndNeverVoted(Request $request)
     {
         $this->setFilters($request);
-
-        if ($this->fundFilter === CatalystExplorerQueryParams::ALL_FUNDS) {
-            $totalNonVotedRegistrations = DB::table('catalyst_voting_powers')
-                ->where('votes_cast', 0)
-                ->count();
-        } else {
-            $snapshotId = DB::table('catalyst_snapshots')
-                ->where('model_type', Fund::class)
-                ->where('model_id', $this->fundFilter)
-                ->pluck('id');
-
-            $totalNonVotedRegistrations = DB::table('catalyst_voting_powers')
-                ->where('catalyst_snapshot_id', $snapshotId)
-                ->where('votes_cast', 0)
-                ->count();
+        $totalVotedQuery = CatalystVotingPower::where('consumed', false);
+        if ($this->fundFilter !== CatalystExplorerQueryParams::ALL_FUNDS) {
+            $totalVotedQuery->whereRelation('catalyst_snapshot', 'model_id', $this->fundFilter);
         }
-    
-        return $totalNonVotedRegistrations ?? null;
+
+        return $totalVotedQuery->count() ?? null;
     }
 
-    public function metricVotesCastedRanges(Request $request): Fluent
+    public function metricVotesCastRanges(Request $request): Fluent
     {
         $this->setFilters($request);
 
@@ -427,7 +378,7 @@ class CatalystChartsController extends Controller
     {
         $this->fundFilter = $request->input(CatalystExplorerQueryParams::FUNDS, 113);
 
-        if($this->fundFilter === CatalystExplorerQueryParams::ALL_FUNDS){
+        if ($this->fundFilter === CatalystExplorerQueryParams::ALL_FUNDS) {
             $this->fund = null;
             return;
         }
@@ -509,9 +460,9 @@ class CatalystChartsController extends Controller
 
     protected function setVotesCastedStats()
     {
-       $fundIds = $this->getFundIds();
+        $fundIds = $this->getFundIds();
 
-       $snapshotIds = DB::table('catalyst_snapshots')
+        $snapshotIds = DB::table('catalyst_snapshots')
             ->whereIn('model_id', $fundIds)
             ->where('model_type', Fund::class)
             ->pluck('id');
@@ -527,15 +478,15 @@ class CatalystChartsController extends Controller
                 WHEN votes_cast BETWEEN 151 AND 300 THEN '151-300-6'
                 WHEN votes_cast BETWEEN 301 AND 600 THEN '301-600-7'
                 WHEN votes_cast BETWEEN 601 AND 900 THEN '601-900-8'
-                WHEN votes_cast > 900 THEN '900-<-9'
+                WHEN votes_cast > 900 THEN '> 900-9'
 
-                END as range,  COUNT(*) as proposals, SUM(votes_cast) as votes"
+                END as range,  COUNT(*) as proposals, SUM(voting_power) as voting_power"
             )->whereIn('catalyst_snapshot_id', $snapshotIds)
             ->where('votes_cast', '>', 0)
             ->groupByRaw(1);
 
         $votesRangesCollection = $agg->get()
-            ->map(fn($row) => [$row->range => [$row->proposals, $row->votes]])
+            ->map(fn($row) => [$row->range => [$row->proposals, $row->voting_power / 1000000]])
             ->collapse();
 
         // convert the collection to an associative array whose structure is fully representative of our front-end needs
@@ -664,7 +615,7 @@ class CatalystChartsController extends Controller
         $param = $request->input(CatalystExplorerQueryParams::FUNDS, 113);
         $query = Proposal::with(['users', 'groups'])
             ->when($param !== CatalystExplorerQueryParams::ALL_FUNDS,
-                function($query) use($param){
+                function ($query) use ($param) {
                     $query->whereRelation('fund.parent', 'id', $param);
                 }
             )
@@ -685,7 +636,7 @@ class CatalystChartsController extends Controller
         $fund = $request->input(CatalystExplorerQueryParams::FUNDS, null);
         $fundedStatus = $request->input(CatalystExplorerQueryParams::CHART_FUND_STATUS);
 
-        if ($fund === CatalystExplorerQueryParams::ALL_FUNDS){
+        if ($fund === CatalystExplorerQueryParams::ALL_FUNDS) {
             $fund = null;
         }
 

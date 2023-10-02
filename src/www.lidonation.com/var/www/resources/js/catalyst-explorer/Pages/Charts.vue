@@ -28,6 +28,7 @@
                 <div class="relative col-span-1 row-span-1 px-3 py-5 bg-teal-600 xl:col-span-2 round-sm">
                     <MembersAwarded :fundId="selectedFundRef" />
                 </div>
+
                 <!-- Total Funded Propoosals-->
                 <div class="relative col-span-1 row-span-1 p-3 bg-blue-dark-500 md:col-span-2 xl:col-span-3 round-sm">
                     <div class="flex flex-row flex-wrap items-start justify-between h-full md:flex-nowrap">
@@ -35,6 +36,12 @@
                     </div>
                 </div>
 
+                <!-- Registrations -->
+                <div class="w-full col-span-1 md:col-span-5 xl:col-span-8">
+                    <div class="bg-slate-900 text-white p-3 w-full text-center text-xl lg:text-2xl xl:text-3xl shadow rounded-sm">
+                        by the Registrations
+                    </div>
+                </div>
 
                 <!--  1 stake key 1 Vote Ranges -->
                 <div
@@ -44,15 +51,11 @@
                             :chartData1Registration1Vote$="chartData1Registration1Vote$" :chart-options="chartOptions" />
                     </div>
                 </div>
+
                 <!-- Wallet breakdowns registrations -->
                 <div
                     class="w-full col-span-1 p-3 overflow-x-visible overflow-y-scroll bg-white md:col-span-2 xl:col-span-3 xl:row-span-6 round-sm max-h-[60rem]">
                     <RegistrationChart :ada-power-ranges="adaPowerRanges" />
-                </div>
-
-                <!-- votes casted breakdown -->
-                <div class="w-full col-span-1 md:col-span-5 xl:col-span-8">
-                    <VotesCastBreakdown :fund-id="selectedFundRef"/>
                 </div>
 
                 <!-- Number Grid -->
@@ -73,13 +76,35 @@
                 <div class="relative w-full col-span-1 row-span-6 p-3 bg-white md:col-span-3 xl:col-span-5 round-sm">
                     <div class="relative flex flex-col justify-start h-full">
                         <AdaPowerChart :attachmentLink="attachmentLink" :chart-data1-ada1-vote$="chartData1Ada1Vote$"
-                            :chart-options="chartOptions" />
+                                       :chart-options="chartOptions" />
                     </div>
                 </div>
+
+
+                <!-- Voters -->
+                <div class="w-full col-span-1 md:col-span-5 xl:col-span-8">
+                    <div class="bg-slate-900 text-white p-3 w-full text-center text-xl lg:text-2xl xl:text-3xl shadow rounded-sm">
+                        by the Confirm Voters
+                    </div>
+                </div>
+
+                <!-- votes casted breakdown -->
+                <div class="w-full col-span-1 md:col-span-5 xl:col-span-8">
+                    <VotesCastBreakdown :fund-id="selectedFundRef"/>
+                </div>
+
 
                 <!-- Yes Votes no Votes Sum -->
                 <div class="relative col-span-1 row-span-1 md:col-span-5 xl:col-span-8">
                     <YesNoVotesSum :fundId="selectedFundRef" />
+                </div>
+
+
+                <!-- Leaderboards -->
+                <div class="w-full col-span-1 md:col-span-5 xl:col-span-8">
+                    <div class="bg-slate-900 text-white p-3 w-full text-center text-xl lg:text-2xl xl:text-3xl shadow rounded-sm">
+                        by the Leaderboards
+                    </div>
                 </div>
 
                 <!-- Top funded -->

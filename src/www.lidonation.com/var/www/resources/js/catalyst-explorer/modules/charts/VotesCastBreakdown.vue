@@ -2,54 +2,54 @@
     <div class="grid h-full grid-cols-1 grid-rows-1 gap-4 md:grid-cols-5 xl:grid-cols-10 xl:grid-rows-10">
 
         <!-- votes metrics -->
-        <div class="col-span-1 md:col-span-1 xl:col-span-2 row-span-1 px-3 py-5 bg-teal-600 round-sm">
+        <div class="col-span-1 md:col-span-1 xl:col-span-2 row-span-1 px-3 py-5 bg-teal-600 text-white round-sm">
             <dl class="flex flex-col text-xs xl:text-base justify-between h-full">
                 <dd>
-                    <div class="text-4xl font-semibold lg:text-5xl 2xl:text-6xl text-blue-dark-500">
-                        <span v-if="votesCastedAverage > 0">
-                            {{ $filters.shortNumber(votesCastedAverage) ?? '-' }}
+                    <div class="text-4xl font-semibold lg:text-5xl 2xl:text-6xl">
+                        <span v-if="votesCastAverage > 0">
+                            {{ $filters.shortNumber(votesCastAverage) ?? '-' }}
                         </span>
                         <span v-else>
                             -
                         </span>
                     </div>
                 </dd>
-                <dt class="mt-3 text-lg font-medium truncate text-blue-dark-500">
-                    Average Votes Casted
+                <dt class="mt-3 text-lg font-medium truncate">
+                    Average of votes cast
                 </dt>
             </dl>
         </div>
-        <div class="col-span-1 md:col-span-1 xl:col-span-2 row-span-1 px-3 py-5 bg-white round-sm">
+        <div class="col-span-1 md:col-span-1 xl:col-span-2 row-span-1 px-3 py-5 bg-teal-900 text-white round-sm">
             <dl class="flex flex-col text-xs xl:text-base justify-between h-full">
                 <dd>
-                    <div class="text-4xl font-semibold lg:text-5xl 2xl:text-6xl text-blue-dark-500">
-                        <span v-if="votesCastedMode > 0">
-                            {{ $filters.shortNumber(votesCastedMode) ?? '-' }}
+                    <div class="text-4xl font-semibold lg:text-5xl 2xl:text-6xl">
+                        <span v-if="votesCastMode > 0">
+                            {{ $filters.shortNumber(votesCastMode) ?? '-' }}
                         </span>
                         <span v-else>
                             -
                         </span>
                     </div>
                 </dd>
-                <dt class="mt-3 text-lg font-medium truncate text-blue-dark-500">
-                    Mode Votes Casted
+                <dt class="mt-3 text-lg font-medium truncate">
+                    Mode of votes cast
                 </dt>
             </dl>
         </div>
-        <div class="col-span-1 md:col-span-1 xl:col-span-2 row-span-1 px-3 py-5 bg-teal-600 round-sm">
+        <div class="col-span-1 md:col-span-1 xl:col-span-2 row-span-1 px-3 py-5 bg-teal-light-400 text-blue-dark-500 round-sm">
             <dl class="flex flex-col text-xs xl:text-base justify-between h-full">
                 <dd>
-                    <div class="text-4xl font-semibold lg:text-5xl 2xl:text-6xl text-blue-dark-500">
-                        <span v-if="votesCastedMedian > 0">
-                            {{ $filters.shortNumber(votesCastedMedian) ?? '-' }}
+                    <div class="text-4xl font-semibold lg:text-5xl 2xl:text-6xl">
+                        <span v-if="votesCastMedian > 0">
+                            {{ $filters.shortNumber(votesCastMedian) ?? '-' }}
                         </span>
                         <span v-else>
                             -
                         </span>
                     </div>
                 </dd>
-                <dt class="mt-3 text-lg font-medium truncate text-blue-dark-500">
-                    Median Votes Casted
+                <dt class="mt-3 text-lg font-medium truncate">
+                    Median of votes cast
                 </dt>
             </dl>
         </div>
@@ -66,14 +66,14 @@
                     </div>
                 </dd>
                 <dt class="mt-3 text-lg font-medium truncate text-blue-dark-500">
-                    Total Registered and voted
+                    Total confirm voters
                 </dt>
             </dl>
         </div>
-        <div class="col-span-1 md:col-span-1 xl:col-span-2 row-span-1 px-3 py-5 bg-teal-600 round-sm">
+        <div class="col-span-1 md:col-span-1 xl:col-span-2 row-span-1 px-3 py-5 bg-blue-dark-500 text-white round-sm">
             <dl class="flex flex-col text-xs xl:text-base justify-between h-full">
                 <dd>
-                    <div class="text-4xl font-semibold lg:text-5xl 2xl:text-6xl text-blue-dark-500">
+                    <div class="text-4xl font-semibold lg:text-5xl 2xl:text-6xl">
                         <span v-if="totalRegisteredAndNeverVoted > 0">
                             {{ $filters.shortNumber(totalRegisteredAndNeverVoted, 2) ?? '-' }}
                         </span>
@@ -82,22 +82,20 @@
                         </span>
                     </div>
                 </dd>
-                <dt class="mt-3 text-lg font-medium truncate text-blue-dark-500">
-                    Total Registered but didn't vote
+                <dt class="mt-3 text-lg font-medium truncate">
+                    Total registered but didn't vote
                 </dt>
             </dl>
         </div>
-        
 
-
-        <!--  votes casted pie -->
+        <!--  votes cast pie -->
         <div class="col-span-1 row-span-6 p-3 bg-white md:col-span-3 round-sm xl:col-span-6 max-h-[60rem]">
             <div class="relative flex flex-col justify-start h-full">
-                <VotesCastedChart :chartDataVotesCasted$="chartDataVotesCasted$"
+                <VotesCastedChart :chartDataVotesCasted$="chartDataVotesCast$"
                     :chart-options="chartOptions"/>
             </div>
         </div>
-        <!-- votes casted breakdown -->
+        <!-- votes cast breakdown -->
         <div
             class="col-span-1 p-3 overflow-x-visible overflow-y-scroll bg-white md:col-span-2 xl:col-span-4 xl:row-span-6 round-sm max-h-[60rem]">
             <VotesCastedBreakdownChart :votes-ranges="votesRanges" :loading-votes-ranges="loadingVotesRanges"/>
@@ -117,9 +115,9 @@ const props = defineProps<{
 }>()
 
 let loadingVotesRanges = ref(true);
-let votesCastedAverage = ref(null);
-let votesCastedMode = ref(null);
-let votesCastedMedian = ref(null);
+let votesCastAverage = ref(null);
+let votesCastMode = ref(null);
+let votesCastMedian = ref(null);
 let votesRanges = ref<{ 'key': string, 'count': number, 'total': number }[]>([]);
 let totalRegisteredAndVoted = ref(null);
 let totalRegisteredAndNeverVoted = ref(null);
@@ -135,28 +133,28 @@ function getQueryData() {
     return data;
 }
 
-const chartDataVotesCasted$ = ref<object>();
+const chartDataVotesCast$ = ref<object>();
 const chartOptions = ref<object>();
 
 function query() {
     let params = getQueryData()
-    axios.get(route('catalystExplorer.metrics.votesCastedAverage'), { params })
+    axios.get(route('catalystExplorer.metrics.votesCastAverage'), { params })
         .then((res) => {
-            votesCastedAverage.value = res?.data;
+            votesCastAverage.value = res?.data;
         })
         .catch((error) => {
             console.error(error);
         });
-    axios.get(route('catalystExplorer.metrics.votesCastedMode'), { params })
+    axios.get(route('catalystExplorer.metrics.votesCastMode'), { params })
         .then((res) => {
-            votesCastedMode.value = res?.data;
+            votesCastMode.value = res?.data;
         })
         .catch((error) => {
             console.error(error);
         });
-    axios.get(route('catalystExplorer.metrics.votesCastedMedian'), { params })
+    axios.get(route('catalystExplorer.metrics.votesCastMedian'), { params })
         .then((res) => {
-            votesCastedMedian.value = res?.data;
+            votesCastMedian.value = res?.data;
         })
         .catch((error) => {
             console.error(error);
@@ -177,7 +175,7 @@ function query() {
             console.error(error);
         });
 
-    axios.get(route('catalystExplorer.metrics.votesCastedRanges'), { params })
+    axios.get(route('catalystExplorer.metrics.votesCastRanges'), { params })
         .then((res) => {
             votesRanges.value = res?.data;
 
@@ -192,21 +190,21 @@ function query() {
             // reset loadingVotesRanges
             loadingVotesRanges.value = false;
 
-            chartDataVotesCasted$.value = {
+            chartDataVotesCast$.value = {
                 labels: keyArr,
                 datasets: [
                     {
                         backgroundColor: [
-                            '#a3899d', // 0 -1
-                            '#917289', // 2-10
-                            '#7e5a75', // 11 - 25
-                            '#6c4262', // 26 - 50
+                            '#ee5e5f', // 0 -1
+                            '#9999ff', // 2-10
+                            '#ffd77d', // 11 - 25
+                            '#00ffe6', // 26 - 50
 
-                            '#5a2b4e', // 51 - 150
+                            '#00b50b', // 51 - 150
                             '#48143b', // 151 - 300
-                            '#39102f', // 301 - 600
+                            '#d2bc14', // 301 - 600
 
-                            '#84c3da', // 601 - 900
+                            '#000000', // 601 - 900
                             '#66b5d1', // 900 <
                         ],
                         data: countArr,

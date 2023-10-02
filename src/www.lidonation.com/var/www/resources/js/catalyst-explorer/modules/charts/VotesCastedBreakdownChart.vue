@@ -1,10 +1,10 @@
 <template>
     <div class="text-blue-dark-500">
         <h2 class="mb-0 xl:text-3xl">
-            Votes Casted Breakdowns
+            Votes Cast Breakdown
         </h2>
         <p>
-            Breakdown of votes casted.
+            Breakdown of votes cast by voting keys.
         </p>
     </div>
     <div class="relative w-full mt-8" v-if="props.loadingVotesRanges">
@@ -23,7 +23,7 @@
 
                 <div class="">
                     <p class="text-lg lg:text-xl xl:text-2xl 2xl:text-3xl text-slate-500">
-                        {{ range['count'].toLocaleString() }} 
+                        {{ range['count'].toLocaleString() }}
                         <span class="text-slate-300 text-md lg:text-lg xl:text-2xl 2xl:text-2xl">
                             <span v-if="range['count'] == 1">Wallet</span>
                             <span v-if="range['count'] > 1">Wallets</span>
@@ -34,8 +34,7 @@
                 <div class="pr-2 ml-auto">
                     <p class="text-md lg:text-lg xl:text-2xl text-slate-500">
                         {{
-                            $filters.shortNumber(range['total'],
-                                2)
+                            $filters.shortNumber(range['total'], 2)
                         }}
                     </p>
                 </div>

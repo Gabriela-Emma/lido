@@ -96,7 +96,7 @@ Route::group(
 
             Route::get('/registrations-data', [CatalystRegistrationsController::class, 'registrationsData'])
                 ->name('registrationsData');
-            
+
             Route::get('/votes-data', [CatalystRegistrationsController::class, 'getVoterData'])
                 ->name('voterData');
 
@@ -166,18 +166,18 @@ Route::group(
                 Route::get('/total-no-votes', [CatalystChartsController::class, 'metricsTotalNoVotes'])
                     ->name('totalNoVotes');
 
-                Route::get('/votes-casted-average', [CatalystChartsController::class, 'metricVotesCastedAverage'])
-                    ->name('votesCastedAverage');
-                Route::get('/votes-casted-mode', [CatalystChartsController::class, 'metricVotesCastedMode'])
-                    ->name('votesCastedMode');
-                Route::get('/votes-casted-median', [CatalystChartsController::class, 'metricVotesCastedMedian'])
-                    ->name('votesCastedMedian');
+                Route::get('/votes-casted-average', [CatalystChartsController::class, 'metricVotesCastAverage'])
+                    ->name('votesCastAverage');
+                Route::get('/votes-casted-mode', [CatalystChartsController::class, 'metricVotesCastMode'])
+                    ->name('votesCastMode');
+                Route::get('/votes-casted-median', [CatalystChartsController::class, 'metricVotesCastMedian'])
+                    ->name('votesCastMedian');
                 Route::get('/total-registered-and-voted', [CatalystChartsController::class, 'metricTotalRegisteredAndVoted'])
                     ->name('totalRegisteredAndVoted');
                 Route::get('/total-registered-and-never-voted', [CatalystChartsController::class, 'metricTotalRegisteredAndNeverVoted'])
                     ->name('totalRegisteredAndNeverVoted');
-                Route::get('/votes-casted-ranges', [CatalystChartsController::class, 'metricVotesCastedRanges'])
-                    ->name('votesCastedRanges');   
+                Route::get('/votes-casted-ranges', [CatalystChartsController::class, 'metricVotesCastRanges'])
+                    ->name('votesCastRanges');
             });
 
             Route::get('/attachments/voting-powers', [CatalystAttachmentsController::class, 'votingPowersAttachemnt'])
