@@ -2,24 +2,27 @@
 
 namespace App\Models;
 
+use Laravel\Scout\Searchable;
+use App\Models\Traits\HasHero;
+use Spatie\Image\Manipulations;
+use App\Traits\SearchableLocale;
+use Spatie\MediaLibrary\HasMedia;
 use App\Models\Interfaces\HasLink;
 use App\Models\Traits\HasGravatar;
-use App\Models\Traits\HasHero;
 use App\Models\Traits\HasMetaData;
 use App\Models\Traits\HasTranslations;
-use Chelout\RelationshipEvents\Concerns\HasBelongsToManyEvents;
-use Chelout\RelationshipEvents\Traits\HasRelationshipObservables;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Database\Eloquent\Builder;
+use Spatie\MediaLibrary\InteractsWithMedia;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Staudenmeir\EloquentHasManyDeep\HasRelationships;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
-use Spatie\Image\Manipulations;
-use Spatie\MediaLibrary\HasMedia;
-use Spatie\MediaLibrary\InteractsWithMedia;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
-use Staudenmeir\EloquentHasManyDeep\HasRelationships;
+use Chelout\RelationshipEvents\Concerns\HasBelongsToManyEvents;
+use Chelout\RelationshipEvents\Traits\HasRelationshipObservables;
 
 class CatalystGroup extends Model implements HasMedia, HasLink
 {
@@ -31,7 +34,8 @@ class CatalystGroup extends Model implements HasMedia, HasLink
         HasBelongsToManyEvents,
         HasRelationshipObservables,
         HasTranslations,
-        InteractsWithMedia;
+        InteractsWithMedia,
+        SearchableLocale;
 
     protected $withCount = ['proposals', 'members', 'owner', 'challenges'];
 
@@ -47,6 +51,91 @@ class CatalystGroup extends Model implements HasMedia, HasLink
     public array $translatable = [
         'bio',
     ];
+
+    public static function runCustomIndex()
+    {
+        Artisan::call('ln:index App\\\\Models\\\\CatalystGroup ln__catalyst_groups');
+    }
+
+    public static function getFilterableAttributes(): array
+    {
+        return [
+            'id',
+            'funded',
+            'completed',
+            'currency',
+            'has_quick_pitch',
+            'quickpitch',
+            'quickpitch_length',
+            'impact_proposal',
+            'woman_proposal',
+            'ideafest_proposal',
+            'ca_rating',
+            'aligment_score',
+            'feasibility_score',
+            'auditability_score',
+            'over_budget',
+            'challenge.id',
+            'groups',
+            'amount_requested',
+            'amount_received',
+            'project_length',
+            'opensource',
+            'paid',
+            'fund.id',
+            'type',
+            'users',
+            'tags',
+            'categories',
+            'funding_status',
+            'status',
+            'votes_cast',
+        ];
+    }
+
+    public static function getSearchableAttributes(): array
+    {
+        return [
+            'id',
+            'title',
+            'website',
+            'excerpt',
+            'content',
+            'problem',
+            'experience',   
+            'solution',
+            'definition_of_success',
+            'comment_prompt',
+            'social_excerpt',
+            'ranking_total',
+            'users',
+            'tags',
+            'categories',
+        ];
+    }
+
+    public static function getSortableAttributes(): array
+    {
+        return [
+            'title',
+            'amount_requested',
+            'amount_received',
+            'project_length',
+            'quickpitch_length',
+            'ca_rating',
+            'aligment_score',
+            'feasibility_score',
+            'auditability_score',
+            'created_at',
+            'funded_at',
+            'no_votes_count',
+            'yes_votes_count',
+            'ranking_total',
+            'users.proposals_completed',
+            'votes_cast',
+        ];
+    }
+
 
     public function link(): Attribute
     {
