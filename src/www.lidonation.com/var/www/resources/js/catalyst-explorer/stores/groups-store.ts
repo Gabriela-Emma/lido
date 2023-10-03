@@ -8,14 +8,15 @@ export const useGroupsStore = defineStore('groups', () => {
     let filters: Ref<GroupFilters> = ref();
     let groups = ref<Group[]>([]);
 
-    async function search(f: GroupFilters) {
+    async function search(f?: GroupFilters) {
         filters.value = f;
+        
         try {
             const {data} = await window.axios.get(
                 `/api/catalyst-explorer/groups`,
                 {
                     params: {
-                        search: filters.value.search
+                        search: filters.value
                     }
                 }
             );

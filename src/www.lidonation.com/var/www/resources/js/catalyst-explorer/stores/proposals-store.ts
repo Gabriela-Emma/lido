@@ -1,9 +1,11 @@
 import { AxiosError } from "axios";
-import {defineStore} from "pinia";
-import {Ref, onMounted, ref} from "vue";
+import {defineStore, storeToRefs} from "pinia";
+import { Ref, onMounted, ref, watch } from "vue";
 import Proposal from "../models/proposal";
 import ProposalFilters from "../models/proposal-filters";
 import { VARIABLES } from "../models/variables";
+import { useFiltersStore } from "../../global/Shared/store/filters-stores";
+
 
 export const useProposalsStore = defineStore('proposals', () => {
     let filters: Ref<ProposalFilters> = ref();
@@ -40,7 +42,7 @@ export const useProposalsStore = defineStore('proposals', () => {
                 `/api/catalyst-explorer/proposals`,
                 {
                     params: {
-                        search: filters.value.search
+                        search: filters.value
                     }
                 }
             );
@@ -66,6 +68,18 @@ export const useProposalsStore = defineStore('proposals', () => {
     }
 
     onMounted(setViewType);
+
+    const filterStore = useFiltersStore();
+    const {currentModel, canFetch} = storeToRefs(filterStore)
+    watch(viewType, () => {
+        if (viewType.value == 'quickpitch') {
+            canFetch.value = true;
+            currentModel.value.filters['quickpitch'] = 1
+        }else{
+            canFetch.value = true;
+            currentModel.value.filters['quickpitch'] = 0 
+        }
+    } );
 
     return {
         search,

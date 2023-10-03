@@ -31,10 +31,10 @@
                     }" />
                 </li>
                 <li class="p-4">
-                    <BudgetRangePicker v-model="filters.budgets" />
+                    <BudgetRangePicker v-model="currentModel.filters.budgets" />
                 </li>
                 <li class="">
-                    <Picker v-model:type="filters.type" 
+                    <Picker v-model:type="currentModel.filters.type" 
                     :customize-ui="{
                         'placeholder': 'Type'
                     }" 
@@ -46,14 +46,14 @@
                 </li>
 
                 <li class="">
-                    <Picker v-model:funds="filters.funds" 
+                    <Picker v-model:funds="currentModel.filters.funds" 
                     :customize-ui="{
                         'label': 'title',
                         'placeholder' : 'Limit to Fund(s)'
                     }"/>
                 </li>
                 <li class="">
-                    <Picker v-model:challenges="filters.challenges" 
+                    <Picker v-model:challenges="currentModel.filters.challenges" 
                     :customize-ui="{
                         'label': 'title',
                         'placeholder': 'Limit to Challenge(s)'
@@ -61,7 +61,7 @@
                 </li>
 
                 <li class="">
-                    <Picker v-model:fundingStatus="filters.fundingStatus"
+                    <Picker v-model:fundingStatus="currentModel.filters.fundingStatus"
                     :customize-ui="{
                         'placeholder': 'Funding Status'
                     }" 
@@ -74,7 +74,7 @@
                 </li>
 
                 <li class="">
-                    <Picker v-model:tags="filters.tags" 
+                    <Picker v-model:tags="currentModel.filters.tags" 
                     :customize-ui="{
                         'label': 'title',
                         'placeholder': 'Limit to Tag(s)'
@@ -82,7 +82,7 @@
                 </li>
 
                 <li class="">
-                    <Picker v-model:groups="filters.groups" 
+                    <Picker v-model:groups="currentModel.filters.groups" 
                     :customize-ui="{
                         'label': 'name',
                         'placeholder': 'Limit to Group(s)'
@@ -90,7 +90,7 @@
                 </li>
 
                 <li class="">
-                    <Picker v-model:people="filters.people" 
+                    <Picker v-model:people="currentModel.filters.people" 
                     :customize-ui="{
                         'label': 'name',
                         'placeholder': 'Limit to Person(s)'
@@ -98,7 +98,7 @@
                 </li>
 
                 <li class="">
-                    <Picker v-model:projectStatus="filters.projectStatus " 
+                    <Picker v-model:projectStatus="currentModel.filters.projectStatus " 
                     :customize-ui="{
                         'placeholder': 'Project Status'
                     }" 
@@ -134,7 +134,7 @@
                         {{ $t("These filters are not based on primary catalyst data but rather self assembled datasets by community groups") }}.
                         {{ $t("noValidation") }}.
                     </p>
-                    <Picker v-model:cohort="(filters.cohort )" 
+                    <Picker v-model:cohort="(currentModel.filters.cohort )" 
                     :customize-ui="{'placeholder':'Community Cohort'}"
                     :custom-options="{
                         im: 'Impact Proposals',

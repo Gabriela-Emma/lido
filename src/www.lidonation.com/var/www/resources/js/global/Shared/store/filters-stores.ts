@@ -81,6 +81,10 @@ export const useFiltersStore = defineStore('filters', () => {
             data[VARIABLES.COHORT] = currentModel.value.filters.cohort;
         }
 
+        if (currentModel.value.filters.quickpitch) {
+            data[VARIABLES.QUICKPITCHES] = 1;
+        }
+
         if (currentModel.value.filters.fundingStatus) {
             data[VARIABLES.FUNDING_STATUS] = currentModel.value.filters?.fundingStatus;
         }
@@ -111,6 +115,10 @@ export const useFiltersStore = defineStore('filters', () => {
 
         if (currentModel.value.filters.funded) {
             data[VARIABLES.FUNDED_PROPOSALS] = 1
+        }
+
+        if (currentModel.value.filters.budgets.length>0) {
+            data[VARIABLES.BUDGETS] = currentModel.value.filters.budgets;
         }
 
         if (currentModel.value.search?.length > 0) {
