@@ -31,6 +31,7 @@ use App\Http\Livewire\Catalyst\CatalystProposersComponent;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
+use App\Http\Controllers\ProjectCatalyst\CatalystEventsController;
 
 // Project Catalyst
 
@@ -119,6 +120,12 @@ Route::group(
 
             Route::get('/proposals', [CatalystProposalsController::class, 'index'])
                 ->name('proposals');
+
+            Route::get('/events', [CatalystEventsController::class, 'index'])
+                ->name('events');
+
+            Route::post('/event/create', [CatalystEventsController::class, 'eventCreate'])
+                ->name('eventCreate');
 
             Route::get('/filtered-proposals', [CatalystProposalsController::class, 'getFilteredData'])
                 ->name('filterProposals');
