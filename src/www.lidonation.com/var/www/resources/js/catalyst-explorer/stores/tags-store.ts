@@ -15,7 +15,7 @@ export const useTagsStore = defineStore('tags', () => {
                 `/api/catalyst-explorer/tags`,
                 {
                     params: {
-                        search: filters.value.search
+                        search: filters.value
                     }
                 }
             );
