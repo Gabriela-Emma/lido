@@ -73,6 +73,14 @@
                         <li class="flow-root menu-item">
                             <Link
                                 class="px-1 py-3 text-white menu-link hover:text-yellow-500"
+                                :class="{ 'text-yellow-500': $page.component.startsWith('CatalystEvents') }"
+                                :href="$utils.localizeRoute('catalyst-explorer/events')">
+                                {{ $t('Events') }}
+                            </Link>
+                        </li>
+                        <li class="flow-root menu-item">
+                            <Link
+                                class="px-1 py-3 text-white menu-link hover:text-yellow-500"
                                 :class="{ 'text-yellow-500': $page.component.startsWith('Groups') }"
                                 :href="$utils.localizeRoute('catalyst-explorer/groups')">
                                 {{ $t('Groups') }}
