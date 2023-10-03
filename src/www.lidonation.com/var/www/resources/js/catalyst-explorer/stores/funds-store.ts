@@ -31,7 +31,7 @@ export const useFundsStore = defineStore('funds', () => {
         }
     }
 
-    // onMounted(loadFunds);
+    // onMounted(load);
 
     return {
         funds,

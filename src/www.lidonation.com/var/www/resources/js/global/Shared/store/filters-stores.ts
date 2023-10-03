@@ -105,12 +105,18 @@ export const useFiltersStore = defineStore('filters', () => {
             data[VARIABLES.GROUPS] = Array.from(currentModel.value.filters.groups);
         }
 
-        // TODO IMPLEMENT SEARCH         
+        if (currentModel.value.filters.opensource) {
+            data[VARIABLES.OPENSOURCE_PROPOSALS] = 1
+        }
+
+        if (currentModel.value.filters.funded) {
+            data[VARIABLES.FUNDED_PROPOSALS] = 1
+        }
+
         if (currentModel.value.search?.length > 0) {
             data[VARIABLES.SEARCH] = currentModel.value.search;
         }
 
-        // TODO implement sorts
         if (!!currentModel.value.sorts && currentModel.value.sorts.length > 3) {
             data[VARIABLES.SORTS] = currentModel.value.sorts;
         }

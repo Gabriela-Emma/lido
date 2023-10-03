@@ -8,7 +8,9 @@
             value-prop="id"
             :label="customizeUi.label" 
             mode="tags"
-            @search-change="propName !== 'funds' ? currentInstance.store.search({ $event }) : currentInstance.store.load({ $event })"
+            @search-change=" selectedRef.length ? currentInstance.store.load():
+            propName !== 'funds' ? currentInstance.store.search({ $event }) 
+            : currentInstance.store.load({ $event })"
             :minChars="3" 
             :options="currentInstance.options" 
             :searchable="true" 
