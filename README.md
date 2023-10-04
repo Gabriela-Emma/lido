@@ -100,6 +100,8 @@ php artisan queue:listen
 php artisan db:seed --class=SearchIndexSeeder
 php artisan scout:import 'App\Models\Proposal'
 php artisan scout:import 'App\Models\CatalystUser'
+php artisan scout:import "App\Models\CatalystGroup"
+
 ```
 
 

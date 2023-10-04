@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Assessment;
+use App\Models\CatalystGroup;
 use App\Models\CatalystUser;
 use App\Models\Link;
 use App\Models\Post;
@@ -18,6 +19,7 @@ class SearchIndexSeeder extends Seeder
     {
         Post::runCustomIndex();
         CatalystUser::runCustomIndex();
+        CatalystGroup::runCustomIndex();
         Proposal::runCustomIndex();
         Assessment::runCustomIndex();
         Link::runCustomIndex();

@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Laravel\Scout\Searchable;
 use App\Models\Traits\HasHero;
 use Spatie\Image\Manipulations;
 use App\Traits\SearchableLocale;
@@ -61,79 +60,46 @@ class CatalystGroup extends Model implements HasMedia, HasLink
     {
         return [
             'id',
-            'funded',
-            'completed',
-            'currency',
-            'has_quick_pitch',
-            'quickpitch',
-            'quickpitch_length',
-            'impact_proposal',
-            'woman_proposal',
-            'ideafest_proposal',
-            'ca_rating',
-            'aligment_score',
-            'feasibility_score',
-            'auditability_score',
-            'over_budget',
-            'challenge.id',
-            'groups',
-            'amount_requested',
-            'amount_received',
-            'project_length',
-            'opensource',
-            'paid',
-            'fund.id',
-            'type',
-            'users',
-            'tags',
-            'categories',
-            'funding_status',
-            'status',
-            'votes_cast',
+            'user.id',
+            'members',
+            'proposals',
+            'proposals_completed',
+            'website',
+            'discord',
+            'github',
         ];
     }
 
     public static function getSearchableAttributes(): array
     {
         return [
-            'id',
-            'title',
-            'website',
-            'excerpt',
-            'content',
-            'problem',
-            'experience',   
-            'solution',
-            'definition_of_success',
-            'comment_prompt',
-            'social_excerpt',
-            'ranking_total',
-            'users',
-            'tags',
-            'categories',
+            'name',
+            'proposals',
+            'members',
+            'owner'
         ];
     }
 
     public static function getSortableAttributes(): array
     {
         return [
-            'title',
-            'amount_requested',
-            'amount_received',
-            'project_length',
-            'quickpitch_length',
-            'ca_rating',
-            'aligment_score',
-            'feasibility_score',
-            'auditability_score',
-            'created_at',
-            'funded_at',
-            'no_votes_count',
-            'yes_votes_count',
-            'ranking_total',
-            'users.proposals_completed',
-            'votes_cast',
+            'name',
+            'id'
         ];
+    }
+
+    /**
+     * Get the indexable data array for the model.
+     */
+    public function toSearchableArray(): array
+    {
+        $array = $this->toArray();
+        $proposals = $this->proposals->map(fn ($p) => $p->toArray());
+
+        return array_merge($array, [
+            'proposals' => $proposals,
+            'proposals_completed' => $proposals->filter(fn ($p) => $p['status'] === 'complete')?->count() ?? 0,
+        ]);
     }
 
 
