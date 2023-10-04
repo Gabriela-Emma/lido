@@ -16,7 +16,7 @@ export const usePeopleStore = defineStore('people', () => {
                 `/api/catalyst-explorer/people`,
                 {
                     params: {
-                        search: filters.value.search
+                        search: filters.value
                     }
                 }
             );
@@ -27,6 +27,8 @@ export const usePeopleStore = defineStore('people', () => {
     }
 
     async function load(pp: number[]) {
+
+        if (people.value.length>0){return}
         try {
             const {data} = await window.axios.get(
                 `/api/catalyst-explorer/people`,

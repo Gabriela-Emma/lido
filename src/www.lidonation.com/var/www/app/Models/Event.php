@@ -15,8 +15,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Nova\Actions\Actionable;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use App\Models\Interfaces\IHasMetaData;
 
-class Event extends Model
+class Event extends Model implements IHasMetaData
 {
     use Actionable,
         HasFactory,

@@ -8,11 +8,13 @@
             value-prop="id"
             :label="customizeUi.label" 
             mode="tags"
-            @search-change="propName !== 'funds' ? currentInstance.store.search({ $event }) : currentInstance.store.load({ $event })"
+            @search-change="currentInstance.store.search($event)"
             :minChars="3" 
+            @open = "currentInstance.store.load(selectedRef)"
             :options="currentInstance.options" 
             :searchable="true" 
             :closeOnSelect="false" 
+            :track-by = "customizeUi.label"
             :classes="{
                 container: 'multiselect border-0 px-1 py-2 flex-wrap',
                 containerActive: 'shadow-none shadow-transparent box-shadow-none',
@@ -27,6 +29,8 @@
         :placeholder="customizeUi.placeholder" 
         v-model="selectedRef" 
         :options="customOptions"
+        :track-by="customizeUi.label"
+        :searchable="true" 
         :classes="{
                 container: 'multiselect border-0 px-1 py-2 flex-wrap',
                 containerActive: 'shadow-none shadow-transparent box-shadow-none',
@@ -47,7 +51,6 @@ import { useChallengesStore } from '../../stores/challenges-store';
 import { useGroupsStore } from '../../stores/groups-store';
 import { useFundsStore } from '../../stores/funds-store';
 import { useFiltersStore } from '../../../global/Shared/store/filters-stores';
-import { Nullable } from 'primevue/ts-helpers';
 
 const props = withDefaults(
     defineProps<{
@@ -125,6 +128,10 @@ watch([selectedRef], () => {
             funds: selectedRef.value
         });
     }
-}, { deep: true }) 
+}, { deep: true });
+
+watch(currentModel.value, (oldValue,newValue) => {
+    selectedRef.value = newValue.filters[`${propName.value}`]
+});
 
 </script>

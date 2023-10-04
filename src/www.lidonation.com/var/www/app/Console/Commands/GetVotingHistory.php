@@ -15,7 +15,7 @@ class GetVotingHistory extends Command
      *
      * @var string
      */
-    protected $signature = 'ln:get-vote-history {fund : fund_id} {--queue :  run asynchronously}';
+        protected $signature = 'ln:get-vote-history {fund : fund_id} {--queue :  run asynchronously}';
 
     /**
      * The console command description.
@@ -46,7 +46,9 @@ class GetVotingHistory extends Command
             return;
         }
 
-        $votingPowers = $snapshot->votingPowers()->orderByDesc('voting_power')->cursor();
+        $votingPowers = $snapshot->votingPowers()->whereNull('consumed')
+            ->orderByDesc('voting_power')
+            ->cursor();
         foreach ($votingPowers as $delay => $power) {
             $voter = CatalystVoter::where('cat_id', $power->voter_id)->first();
             if (!$voter instanceof CatalystVoter) {
