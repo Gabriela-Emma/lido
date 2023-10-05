@@ -40,6 +40,13 @@ class CatalystGroup extends Model implements HasMedia, HasLink
 
     protected $appends = ['link', 'thumbnail_url', 'gravatar'];
 
+    protected $casts = [
+        'name' => 'string',
+        'amount_requested' => 'integer',
+        'amount_awarded_ada' => 'integer',
+        'amount_awarded_usd' => 'integer',
+    ];
+
     /**
      * All the relationships to be touched.
      *
@@ -60,13 +67,9 @@ class CatalystGroup extends Model implements HasMedia, HasLink
     {
         return [
             'id',
-            'user.id',
-            'members',
+            'members.id',
             'proposals',
             'proposals_completed',
-            'website',
-            'discord',
-            'github',
         ];
     }
 
@@ -84,7 +87,21 @@ class CatalystGroup extends Model implements HasMedia, HasLink
     {
         return [
             'name',
-            'id'
+            'id',
+            'website',
+            'amount_awarded_ada',
+            'amount_awarded_usd',
+            'amount_requested'
+        ];
+    }
+
+    public static function getRankingRules(): array
+    {
+        return [
+            'words',
+            'sort',
+            'attribute',
+            'exactness',
         ];
     }
 
@@ -97,8 +114,12 @@ class CatalystGroup extends Model implements HasMedia, HasLink
         $proposals = $this->proposals->map(fn ($p) => $p->toArray());
 
         return array_merge($array, [
-            'proposals' => $proposals,
             'proposals_completed' => $proposals->filter(fn ($p) => $p['status'] === 'complete')?->count() ?? 0,
+            'members' => $this->members->map(fn($m) => $m->toArray()),
+            'owner'=> $this->owner,
+            'amount_received' => $this->proposals()->whereNotNull('funded_at')->sum('amount_received'),
+            'amount_awarded_ada' => $this->amount_awarded_ada,
+            'amount_awarded_usd' => $this->amount_awarded_usd,
         ]);
     }
 
@@ -107,6 +128,30 @@ class CatalystGroup extends Model implements HasMedia, HasLink
     {
         return Attribute::make(
             get: fn () => LaravelLocalization::localizeURL("/project-catalyst/group/{$this->slug}/"),
+        );
+    }
+
+    public function amountAwardedAda(): Attribute
+    {
+        return Attribute::make(
+            get: function(){
+                return  $this->proposals()->whereNotNull('funded_at')
+                ->whereHas('fund', function ($q) {
+                    $q->where('currency', 'ADA');
+                })->sum('amount_requested');
+            },
+        );
+    }
+
+    public function amountAwardedUsd(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                return  $this->proposals()->whereNotNull('funded_at')
+                    ->whereHas('fund', function ($q) {
+                        $q->where('currency', 'USD');
+                    })->sum('amount_requested');
+            },
         );
     }
 

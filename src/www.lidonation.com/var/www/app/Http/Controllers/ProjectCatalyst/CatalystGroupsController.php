@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers\ProjectCatalyst;
 
-use App\Http\Controllers\Controller;
-use App\Models\CatalystGroup;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Http\Request;
-use Illuminate\Support\Fluent;
 use Inertia\Inertia;
 use Inertia\Response;
+use Illuminate\Http\Request;
+use App\Models\CatalystGroup;
+use Illuminate\Support\Fluent;
+use Meilisearch\Endpoints\Indexes;
+use App\Http\Controllers\Controller;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class CatalystGroupsController extends Controller
 {
@@ -99,59 +101,51 @@ class CatalystGroupsController extends Controller
 
     public function query()
     {
-        $query = CatalystGroup::select('id', 'name', 'discord', 'twitter', 'website', 'github', 'slug')
-            ->where('status', 'published')
-            ->whereHas('proposals', fn ($q) => $q->whereNotNull('funded_at'))
-            ->withSum([
-                'proposals as amount_awarded_ada' => function ($query) {
-                    $query->whereNotNull('funded_at')
-                        ->whereHas('fund', function ($q) {
-                            $q->where('currency', 'ADA');
-                        });
-                },
-                'proposals as amount_awarded_usd' => function ($query) {
-                    $query->whereNotNull('funded_at')
-                        ->whereHas('fund', function ($q) {
-                            $q->where('currency', 'USD');
-                        });
-                },
-            ], 'amount_requested')
-            ->withSum([
-                'proposals as amount_received' => function ($query) {
-                    $query->whereNotNull('funded_at');
-                },
-            ], 'amount_received')
-            ->when($this->search, function ($query, $search) {
-                return $query->where('name', 'iLIKE', "%{$search}%");
-            })
-            ->when($this->sort, function ($query, $sort) {
-                $sortParts = explode(':', $sort);
+        $searchBuilder = CatalystGroup::search(
+            $this->search,
+            function (Indexes $index, $query, $options) {
+                $options['attributesToRetrieve'] = $attrs ?? [
+                    'id', 
+                    'name', 
+                    'discord', 
+                    'twitter', 
+                    'website', 
+                    'github', 
+                    'link',
+                    'amount_received',
+                    'thumbnail_url',
+                    'amount_awarded_ada',
+                    'amount_awarded_usd',
+                    'gravatar'
+                ];
+                if ((bool)$this->sort) {
+                    $sortParts = explode(':', $this->sort);
 
-                $sortBy = $sortParts[0];
-                $sortDirection = $sortParts[1];
+                    $sortBy = $sortParts[0];
+                    $sortDirection = $sortParts[1];
+                    $options['sort'] = ["$sortBy:$sortDirection"];
+                }
 
-//                return $query->orderByRaw("ISNULL({$sortBy}), {$sortBy} {$sortDirection}");
-                return $query->orderBy($sortBy, $sortDirection);
-            });
+                $options['offset'] = (($this->currentPage ?? 1) - 1) * $this->perPage;
+                $options['limit'] = $this->perPage;
 
-        $paginator = $query->fastPaginate($this->perPage, ['*'], 'p')->setPath('/');
-
-        $paginator->through(
-            fn ($group) => [
-                'id' => $group->id,
-                'logo' => $group->thumbnail_url ?? $group->gravatar,
-                'name' => $group->name,
-                'twitter' => $group->twitter,
-                'website' => $group->website,
-                'github' => $group->github,
-                'slug' => $group->slug,
-                'discord' => $group->discord,
-                'amount_awarded_ada' => $group->amount_awarded_ada,
-                'amount_awarded_usd' => $group->amount_awarded_usd,
-                'amount_received' => $group->amount_received,
-            ]
+                return $index->search($query, $options);
+            }
         );
 
-        return $paginator->onEachSide(1)->toArray();
+        $response = new Fluent($searchBuilder->raw());
+
+        $pagination = new LengthAwarePaginator(
+            $response->hits,
+            $response->estimatedTotalHits,
+            $response->limit,
+            $this->currentPage,
+            [
+                'pageName' => 'p',
+            ]
+        );
+        return $pagination->onEachSide(1)->toArray();
+
     }
+
 }

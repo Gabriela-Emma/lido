@@ -1,14 +1,14 @@
 <template>
     <li class="flex flex-row justify-center px-6 py-8 text-center rounded-sm bg-primary-10 xl:px-8 xl:text-left">
         <div class="flex flex-col justify-between w-full space-y-6 xl:space-y-10">
-            <a :href="$utils.localizeRoute(`project-catalyst/group/${catalystGroup.slug}`)"
+            <a :href="catalystGroup.link"
                 class="w-32 h-32 mx-auto rounded-full shadow-md shadow-inner lg:w-32 lg:h-32 xl:w-44 xl:h-44">
-                <img class="w-full h-full rounded-full" :src="catalystGroup.logo" alt={{catalystGroup.name}} />
+                <img class="w-full h-full rounded-full" :src="catalystGroup.gravatar ?? catalystGroup.thumbnail_url" alt={{catalystGroup.name}} />
             </a>
             <div class="items-end w-full space-y-2 xl:flex xl:items-center xl:justify-between">
                 <div class="space-y-1 text-lg font-medium leading-6">
                     <h3 class="">
-                        <a :href="$utils.localizeRoute(`project-catalyst/group/${catalystGroup.slug}`)"
+                        <a :href="catalystGroup.link"
                             class="text-gray-800 hover:text-teal-700">
                             {{ catalystGroup.name }}
                         </a>
@@ -23,7 +23,7 @@
                                 </div>
                                 <div v-if="!!catalystGroup.amount_awarded_ada && !!catalystGroup.amount_awarded_usd">
                                     <span class="flex items-center justify-between ">
-                                        <PlusIcon class="w-7 h-7 -ml-1 text-black font-bold" aria-hidden="true" />
+                                        <PlusIcon class="-ml-1 font-bold text-black w-7 h-7" aria-hidden="true" />
                                     </span>
                                 </div>
                                 <div v-if="!!catalystGroup.amount_awarded_usd">

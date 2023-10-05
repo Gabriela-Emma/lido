@@ -549,7 +549,7 @@ class Proposal extends Model implements HasMedia, Interfaces\IHasMetaData, Sitem
             'amount_requested' => $this->amount_requested ? intval($this->amount_requested) : 0,
             'amount_received' => $this->amount_received ? intval($this->amount_received) : 0,
             'paid' => ($this->amount_received > 0) && ($this->amount_received == $this->amount_requested ? 1 : 0),
-            'impact_proposal' => $this->is_impact_proposal ? 1 : 0,
+            'impact_proposal' => $this->iauditability_scores_impact_proposal ? 1 : 0,
             'woman_proposal' => $this->is_woman_proposal ? 1 : 0,
             'ideafest_proposal' => $this->is_ideafest_proposal ? 1 : 0,
             'project_length' => $this->meta_data->project_length ?? null,
