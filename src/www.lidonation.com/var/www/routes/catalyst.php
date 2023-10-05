@@ -202,6 +202,9 @@ Route::group(
             Route::get('/groups', [CatalystGroupsController::class, 'index'])
                 ->name('groups');
 
+            Route::get('/filtered-groups', [CatalystGroupsController::class, 'getFilteredData'])
+            ->name('filterGroups');
+
             Route::get('/voter-tool', [CatalystVoterToolController::class, 'index'])
                 ->name('voterTool');
 

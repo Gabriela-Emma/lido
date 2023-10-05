@@ -122,12 +122,14 @@ const {canFetch} = storeToRefs(filterStore);
 
 watch(perPageRef, () => {
     emit('per-page-updated', perPageRef.value);
+    currentModel.value.filters?.length ? '' : currentModel.value.filters = []
     currentModel.value.filters['perPage'] = perPageRef.value;
 });
 
 function paginate(page: number) {
     emit('paginated', page);
     canFetch.value = true;
+    currentModel.value.filters?.length ? '' : currentModel.value.filters = []
     currentModel.value.filters['currentPage'] = page;
 }
 

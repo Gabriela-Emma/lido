@@ -421,20 +421,23 @@ let cardViewingRef = ref<boolean>(false);
 const bookmarksStore = useBookmarksStore();
 bookmarksStore.loadCollections();
 
-filterStore.setModel({ data: props.proposals, filters: props.filters, sorts: selectedSortRef.value, search:search.value })
+filterStore.setModel({ 
+    data: props.proposals, 
+    filters: props.filters, 
+    sorts: selectedSortRef.value, 
+    search:search.value,
+    model_type: 'proposal'
+})
 
 
-watch([search, filtersRef, selectedSortRef], () => {
+watch([selectedSortRef], () => {
     currPageRef.value = null;
     searchRender.value = Math.random();
     canFetch.value = true;
     currentModel.value.sorts = selectedSortRef.value
-    getMetrics();
 }, { deep: true });
 
-watch([  quickpitchingRef, rankedViewingRef], () => {
-    // query();
-});
+
 
 watch([rankedViewingRef], () => {
     if (!selectedSortRef.value.includes('ranking_total')) {

@@ -5,38 +5,46 @@ import { Ref, onMounted, ref, watch } from "vue";
 import { asyncComputed, useStorage } from "@vueuse/core";
 import axios from "axios";
 import route from "ziggy-js";
-import { isArray } from "lodash";
+import { filter, isArray } from "lodash";
 import { VARIABLES } from "../../../catalyst-explorer/models/variables";
 import { Nullable } from "primevue/ts-helpers";
+import FiltersService from "../../Services/FiltersService";
+import Proposal from "../../../catalyst-explorer/models/proposal";
 
-interface CurrentFilteredModel<T = Nullable, K = Nullable, S = Nullable, ST = Nullable> {
+interface CurrentFilteredModel<T = Nullable, K = Nullable, S = Nullable, ST = Nullable, M = Nullable> {
     data?: T
     filters?: K
     search?:S
     sorts?:ST
+    model_type?:string
 }
 export const useFiltersStore = defineStore('filters', () => {
-    let currentModel = ref(({} as CurrentFilteredModel<any, any, any, any>) || null);
+    let currentModel = ref(({} as CurrentFilteredModel<any, any, any, any, string>) || null);
     let params = ref(null);
     let canFetch = ref(false);
 
-    function setModel<T, K, S, ST>(model: CurrentFilteredModel<T, K, S, ST>) {
+    function setModel<T, K, S, ST, M>(model: CurrentFilteredModel<T, K, S, ST, M>) {
         currentModel.value = model
     }
 
     async function getFilteredData() {
+        
         await setParams();
         await setUrlHistory(params.value);
-        axios.get(route('catalystExplorer.filterProposals'), { params: params.value })
-            .then((res) => {
-                currentModel.value.data = res.data;
-                canFetch.value = false;
-            })
+
+        if(currentModel.value.model_type == 'proposal'){
+            currentModel.value.data = await FiltersService.filterProposals(params.value);
+            canFetch.value = false;
+        } else if (currentModel.value.model_type == 'group'){
+            currentModel.value.data = await FiltersService.filterGroups(params.value);
+            canFetch.value = false;
+        }else{
+            currentModel.value.data = currentModel.value.data;
+        }
     }
 
 
     async function setUrlHistory(params) {
-        console.log({ params });
         const searchParams = new URLSearchParams();
 
         for (const key in params) {
@@ -62,62 +70,62 @@ export const useFiltersStore = defineStore('filters', () => {
 
     async function setParams() {
         const data = {};
-        if (currentModel.value.filters.currentPage) {
+        if (currentModel.value.filters?.currentPage) {
             data[VARIABLES.PAGE] = currentModel.value.filters.currentPage;
         }
-        if (currentModel.value.filters.perPage) {
+        if (currentModel.value.filters?.perPage) {
             data[VARIABLES.PER_PAGE] = currentModel.value.filters.perPage;
         }
 
-        if (currentModel.value.filters.funds) {
+        if (currentModel.value.filters?.funds) {
             data[VARIABLES.FUNDS] = Array.from(currentModel.value.filters.funds);
         }
 
-        if (currentModel.value.filters.challenges) {
+        if (currentModel.value.filters?.challenges) {
             data[VARIABLES.CHALLENGES] = Array.from(currentModel.value.filters?.challenges);
         }
 
-        if (currentModel.value.filters.cohort) {
+        if (currentModel.value.filters?.cohort) {
             data[VARIABLES.COHORT] = currentModel.value.filters.cohort;
         }
 
-        if (currentModel.value.filters.quickpitch) {
+        if (currentModel.value.filters?.quickpitch) {
             data[VARIABLES.QUICKPITCHES] = 1;
         }
 
-        if (currentModel.value.filters.fundingStatus) {
+        if (currentModel.value.filters?.fundingStatus) {
             data[VARIABLES.FUNDING_STATUS] = currentModel.value.filters?.fundingStatus;
         }
 
-        if (currentModel.value.filters.projectStatus) {
+        if (currentModel.value.filters?.projectStatus) {
             data[VARIABLES.STATUS] = currentModel.value.filters.projectStatus;
         }
 
-        if (currentModel.value.filters.type) {
+        if (currentModel.value.filters?.type) {
             data[VARIABLES.TYPE] = currentModel.value.filters.type;
         }
 
-        if (currentModel.value.filters.tags) {
+        if (currentModel.value.filters?.tags) {
             data[VARIABLES.TAGS] = Array.from(currentModel.value.filters.tags);
         }
 
-        if (currentModel.value.filters.people) {
+        if (currentModel.value.filters?.people) {
             data[VARIABLES.PEOPLE] = Array.from(currentModel.value.filters.people);
         }
 
-        if (currentModel.value.filters.groups) {
+        if (currentModel.value.filters?.groups) {
             data[VARIABLES.GROUPS] = Array.from(currentModel.value.filters.groups);
         }
 
-        if (currentModel.value.filters.opensource) {
+        if (currentModel.value.filters?.opensource) {
             data[VARIABLES.OPENSOURCE_PROPOSALS] = 1
         }
 
-        if (currentModel.value.filters.funded) {
+        if (currentModel.value.filters?.funded) {
             data[VARIABLES.FUNDED_PROPOSALS] = 1
         }
 
-        if (currentModel.value.filters.budgets.length>0) {
+        if (currentModel.value.filters?.budgets?.length>0) {
             data[VARIABLES.BUDGETS] = currentModel.value.filters.budgets;
         }
 

@@ -2,24 +2,26 @@
 
 namespace App\Models;
 
+use App\Models\Traits\HasHero;
+use Spatie\Image\Manipulations;
+use App\Traits\SearchableLocale;
+use Spatie\MediaLibrary\HasMedia;
 use App\Models\Interfaces\HasLink;
 use App\Models\Traits\HasGravatar;
-use App\Models\Traits\HasHero;
 use App\Models\Traits\HasMetaData;
 use App\Models\Traits\HasTranslations;
-use Chelout\RelationshipEvents\Concerns\HasBelongsToManyEvents;
-use Chelout\RelationshipEvents\Traits\HasRelationshipObservables;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Database\Eloquent\Builder;
+use Spatie\MediaLibrary\InteractsWithMedia;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Staudenmeir\EloquentHasManyDeep\HasRelationships;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
-use Spatie\Image\Manipulations;
-use Spatie\MediaLibrary\HasMedia;
-use Spatie\MediaLibrary\InteractsWithMedia;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
-use Staudenmeir\EloquentHasManyDeep\HasRelationships;
+use Chelout\RelationshipEvents\Concerns\HasBelongsToManyEvents;
+use Chelout\RelationshipEvents\Traits\HasRelationshipObservables;
 
 class CatalystGroup extends Model implements HasMedia, HasLink
 {
@@ -31,11 +33,19 @@ class CatalystGroup extends Model implements HasMedia, HasLink
         HasBelongsToManyEvents,
         HasRelationshipObservables,
         HasTranslations,
-        InteractsWithMedia;
+        InteractsWithMedia,
+        SearchableLocale;
 
     protected $withCount = ['proposals', 'members', 'owner', 'challenges'];
 
     protected $appends = ['link', 'thumbnail_url', 'gravatar'];
+
+    protected $casts = [
+        'name' => 'string',
+        'amount_requested' => 'integer',
+        'amount_awarded_ada' => 'integer',
+        'amount_awarded_usd' => 'integer',
+    ];
 
     /**
      * All the relationships to be touched.
@@ -48,10 +58,100 @@ class CatalystGroup extends Model implements HasMedia, HasLink
         'bio',
     ];
 
+    public static function runCustomIndex()
+    {
+        Artisan::call('ln:index App\\\\Models\\\\CatalystGroup ln__catalyst_groups');
+    }
+
+    public static function getFilterableAttributes(): array
+    {
+        return [
+            'id',
+            'members.id',
+            'proposals',
+            'proposals_completed',
+        ];
+    }
+
+    public static function getSearchableAttributes(): array
+    {
+        return [
+            'name',
+            'proposals',
+            'members',
+            'owner'
+        ];
+    }
+
+    public static function getSortableAttributes(): array
+    {
+        return [
+            'name',
+            'id',
+            'website',
+            'amount_awarded_ada',
+            'amount_awarded_usd',
+            'amount_requested'
+        ];
+    }
+
+    public static function getRankingRules(): array
+    {
+        return [
+            'words',
+            'sort',
+            'attribute',
+            'exactness',
+        ];
+    }
+
+    /**
+     * Get the indexable data array for the model.
+     */
+    public function toSearchableArray(): array
+    {
+        $array = $this->toArray();
+        $proposals = $this->proposals->map(fn ($p) => $p->toArray());
+
+        return array_merge($array, [
+            'proposals_completed' => $proposals->filter(fn ($p) => $p['status'] === 'complete')?->count() ?? 0,
+            'members' => $this->members->map(fn($m) => $m->toArray()),
+            'owner'=> $this->owner,
+            'amount_received' => intval($this->proposals()->whereNotNull('funded_at')->sum('amount_received')),
+            'amount_awarded_ada' => intval($this->amount_awarded_ada),
+            'amount_awarded_usd' => intval($this->amount_awarded_usd),
+        ]);
+    }
+
+
     public function link(): Attribute
     {
         return Attribute::make(
             get: fn () => LaravelLocalization::localizeURL("/project-catalyst/group/{$this->slug}/"),
+        );
+    }
+
+    public function amountAwardedAda(): Attribute
+    {
+        return Attribute::make(
+            get: function(){
+                return  $this->proposals()->whereNotNull('funded_at')
+                ->whereHas('fund', function ($q) {
+                    $q->where('currency', 'ADA');
+                })->sum('amount_requested');
+            },
+        );
+    }
+
+    public function amountAwardedUsd(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                return  $this->proposals()->whereNotNull('funded_at')
+                    ->whereHas('fund', function ($q) {
+                        $q->where('currency', 'USD');
+                    })->sum('amount_requested');
+            },
         );
     }
 
