@@ -117,9 +117,9 @@ class CatalystGroup extends Model implements HasMedia, HasLink
             'proposals_completed' => $proposals->filter(fn ($p) => $p['status'] === 'complete')?->count() ?? 0,
             'members' => $this->members->map(fn($m) => $m->toArray()),
             'owner'=> $this->owner,
-            'amount_received' => $this->proposals()->whereNotNull('funded_at')->sum('amount_received'),
-            'amount_awarded_ada' => $this->amount_awarded_ada,
-            'amount_awarded_usd' => $this->amount_awarded_usd,
+            'amount_received' => intval($this->proposals()->whereNotNull('funded_at')->sum('amount_received')),
+            'amount_awarded_ada' => intval($this->amount_awarded_ada),
+            'amount_awarded_usd' => intval($this->amount_awarded_usd),
         ]);
     }
 

@@ -12,9 +12,9 @@
                 </div>
             </div>
         </section>
-        <section class="py-8 w-full relative container">
+        <section class="container relative w-full py-8">
             <!-- Sorts and controls -->
-            <div class="flex w-full items-center justify-end mb-3">
+            <div class="flex items-center justify-end w-full mb-3">
                 <div class="text-xs w-[240px] lg:w-[320px] lg:text-base">
                     <Multiselect
                         placeholder="Sort"
@@ -31,16 +31,17 @@
             </div>
 
             <!-- Groups lists -->
-            <Groups :groups="props.groups.data"></Groups>
+            <Groups :groups="currentModel?.data?.data"></Groups>
 
             <div class="flex-1 pb-16 mt-10">
-                <Pagination :links="props.groups.links"
+                <Pagination :links="currentModel.data.links" 
                             :per-page="props.perPage"
-                            :total="props.groups?.total"
-                            :from="props.groups?.from"
-                            :to="props.groups?.to"
+                            :total="currentModel.data.total" 
+                            :from="currentModel.data.from" 
+                            :to="currentModel.data.to"
                             @perPageUpdated="(payload) => perPageRef = payload"
-                            @paginated="(payload) => currPageRef = payload"/>
+                            @paginated="(payload) => currPageRef = payload"
+                />
             </div>
         </section>
     </div>
@@ -59,6 +60,8 @@ import Groups from "../modules/groups/Groups.vue"
 import Search from "../Shared/Components/Search.vue";
 import Multiselect from '@vueform/multiselect';
 import Pagination from "../Shared/Components/Pagination.vue";
+import { useFiltersStore } from '../../global/Shared/store/filters-stores';
+import { storeToRefs } from 'pinia';
 
 
 const props = withDefaults(
@@ -109,45 +112,53 @@ let search = ref(props.search);
 let selectedSortRef = ref<string>(props.sort);
 let currPageRef = ref<number>(props.currPage);
 let perPageRef = ref<number>(props.perPage);
+const filterStore = useFiltersStore();
+const { currentModel } = storeToRefs(filterStore);
+const { canFetch } = storeToRefs(filterStore);
+
+filterStore.setModel({
+    data: props.groups,
+    sorts: selectedSortRef.value,
+    search: search.value,
+    model_type: 'group'
+})
 
 // Watch the search value for changes and trigger the query function
-watch([search, selectedSortRef], () => {
+watch([ selectedSortRef], (newValue,oldValue) => {
     currPageRef.value = null;
-    query();
+    canFetch.value = true;
+    currentModel.value.sorts = selectedSortRef.value;
 }, {deep: true});
 
-watch([currPageRef, perPageRef], () => {
-    query();
-});
 
 // Function to update the data with the new search and selectedsort value
-function query() {
-    const data = {};
-    if (currPageRef.value) {
-        data[VARIABLES.PAGE] = currPageRef.value;
-    }
-    if (perPageRef.value) {
-        data[VARIABLES.PER_PAGE] = perPageRef.value;
-    }
-    if (search.value?.length > 0) {
-        data[VARIABLES.SEARCH] = search.value;
-    }
-    if (!!selectedSortRef.value && selectedSortRef.value.length > 3) {
-        data[VARIABLES.SORTS] = selectedSortRef.value;
-    }
+// function query() {
+//     const data = {};
+//     if (currPageRef.value) {
+//         data[VARIABLES.PAGE] = currPageRef.value;
+//     }
+//     if (perPageRef.value) {
+//         data[VARIABLES.PER_PAGE] = perPageRef.value;
+//     }
+//     if (search.value?.length > 0) {
+//         data[VARIABLES.SEARCH] = search.value;
+//     }
+//     if (!!selectedSortRef.value && selectedSortRef.value.length > 3) {
+//         data[VARIABLES.SORTS] = selectedSortRef.value;
+//     }
 
-    router.get(
-        "/catalyst-explorer/groups",
-        data,
-        {preserveState: true, preserveScroll: !currPageRef.value}
-    );
+//     router.get(
+//         "/catalyst-explorer/groups",
+//         data,
+//         {preserveState: true, preserveScroll: !currPageRef.value}
+//     );
 
-    //@ts-ignore
-    if (typeof window?.fathom !== 'undefined') {
-        // @ts-ignore
-        window?.fathom?.trackGoal(VARIABLES.TRACKER_ID_GROUPS, 0);
-    }
+//     //@ts-ignore
+//     if (typeof window?.fathom !== 'undefined') {
+//         // @ts-ignore
+//         window?.fathom?.trackGoal(VARIABLES.TRACKER_ID_GROUPS, 0);
+//     }
 
-}
+// }
 
 </script>

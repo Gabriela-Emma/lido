@@ -33,7 +33,7 @@ class CatalystGroupsController extends Controller
         $this->perPage = $request->input('l', 24);
         $this->sort = $request->input('st', null);
         $this->currentPage = $request->input('p', 1);
-
+        
         $props = [
             'search' => $this->search,
             'perPage' => $this->perPage,
@@ -120,7 +120,7 @@ class CatalystGroupsController extends Controller
                 ];
                 if ((bool)$this->sort) {
                     $sortParts = explode(':', $this->sort);
-
+                    
                     $sortBy = $sortParts[0];
                     $sortDirection = $sortParts[1];
                     $options['sort'] = ["$sortBy:$sortDirection"];
@@ -146,6 +146,16 @@ class CatalystGroupsController extends Controller
         );
         return $pagination->onEachSide(1)->toArray();
 
+    }
+
+    public function getFilteredData(Request $request)
+    {
+        $this->search = $request->input('s', null);
+        $this->perPage = $request->input('l', 24);
+        $this->sort = $request->input('st', null);
+        $this->currentPage = $request->input('p', 1);
+
+        return $this->query();
     }
 
 }
