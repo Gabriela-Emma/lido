@@ -122,6 +122,7 @@ const {canFetch} = storeToRefs(filterStore);
 
 watch(perPageRef, () => {
     emit('per-page-updated', perPageRef.value);
+    canFetch.value = true;
     currentModel.value.filters?.length ? '' : currentModel.value.filters = []
     currentModel.value.filters['perPage'] = perPageRef.value;
 });
