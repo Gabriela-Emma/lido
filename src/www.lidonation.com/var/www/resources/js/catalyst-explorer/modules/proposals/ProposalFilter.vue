@@ -153,20 +153,7 @@
 import { ref, watch, defineEmits, computed } from "vue";
 import Toggle from '@vueform/toggle'
 import Filters from "../../models/filters";
-import FundPicker from "../funds/FundPicker.vue";
-import ChallengePicker from "../funds/ChallengePicker.vue";
-import { useChallengesStore } from "../../stores/challenges-store";
-import FundingStatusPicker from "../funds/FundingStatusPicker.vue";
-import TagPicker from "./TagPicker.vue";
-import { useTagsStore } from "../../stores/tags-store";
 import BudgetRangePicker from "./BudgetRangePicker.vue";
-import PersonPicker from "../people/PersonPicker.vue";
-import { usePeopleStore } from "../../stores/people-store";
-import CohortPicker from "./CohortPicker.vue";
-import ProposalStatusPicker from "./ProposalStatusPicker.vue";
-import { useGroupsStore } from "../../stores/groups-store";
-import GroupsPicker from "../groups/GroupsPicker.vue";
-import ProposalTypePicker from "../funds/ProposalTypePicker.vue";
 import Picker from "../../Shared/Components/Picker.vue";
 import { useFiltersStore } from "../../../global/Shared/store/filters-stores";
 import { storeToRefs } from "pinia";

@@ -69,7 +69,11 @@ class CatalystGroup extends Model implements HasMedia, HasLink
             'id',
             'members.id',
             'proposals',
+            'proposals.tags',
+            'proposals.fund',
             'proposals_completed',
+            'amount_received',
+            'funded_proposal_count'
         ];
     }
 
@@ -91,7 +95,8 @@ class CatalystGroup extends Model implements HasMedia, HasLink
             'website',
             'amount_awarded_ada',
             'amount_awarded_usd',
-            'amount_requested'
+            'amount_requested',
+            'funded_proposal_count'
         ];
     }
 
@@ -99,9 +104,9 @@ class CatalystGroup extends Model implements HasMedia, HasLink
     {
         return [
             'words',
-            'sort',
             'attribute',
             'exactness',
+            'sort',
         ];
     }
 
@@ -114,13 +119,24 @@ class CatalystGroup extends Model implements HasMedia, HasLink
         $proposals = $this->proposals->map(fn ($p) => $p->toArray());
 
         return array_merge($array, [
-            'proposals_completed' => $proposals->filter(fn ($p) => $p['status'] === 'complete')?->count() ?? 0,
             'members' => $this->members->map(fn($m) => $m->toArray()),
             'owner'=> $this->owner,
-            'amount_received' => intval($this->proposals()->whereNotNull('funded_at')->sum('amount_received')),
+            'amount_received' => intval($proposals->whereNotNull('funded_at')->sum('amount_received')),
+            'proposals_completed' => $proposals->filter(fn ($p) => $p['status'] === 'complete')?->count() ?? 0,
+            'funded_proposal_count' => $proposals->whereNotNull('funded_at')->count() ?? 0,
             'amount_awarded_ada' => intval($this->amount_awarded_ada),
             'amount_awarded_usd' => intval($this->amount_awarded_usd),
         ]);
+    }
+
+    /**
+     * Modify the query used to retrieve models when making all of the models searchable.
+     *
+     * @param  Builder  $query
+     */
+    protected function makeAllSearchableUsing($query): Builder
+    {
+        return $query->with(['proposals']);
     }
 
 
