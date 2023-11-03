@@ -3,7 +3,7 @@
 
 
 ######################################
-# User Variables - Change as desired #
+# LidoUser Variables - Change as desired #
 # Leave as is if unsure              #
 ######################################
 
@@ -98,7 +98,7 @@ CPU_CORES=6
 # shellcheck disable=SC2034,SC2086,SC2230,SC2009,SC2206,SC2062,SC2059,SC2229,SC2154,SC2162,SC2120
 
 ######################################
-# User Variables - Change as desired #
+# LidoUser Variables - Change as desired #
 # Leave as is if unsure              #
 ######################################
 
@@ -313,10 +313,10 @@ checkUpdate() {
   return 0
 }
 
-# Description : Check that old script User Variables section contain all current settings from GitHub.
+# Description : Check that old script LidoUser Variables section contain all current settings from GitHub.
 #             : Prints final result to stdout
-#             : $1 = Old/Current script User Variables
-#             : $2 = User Variables section from GitHub
+#             : $1 = Old/Current script LidoUser Variables
+#             : $2 = LidoUser Variables section from GitHub
 checkUserVariables() {
   tmp_old_static=$(sed '/PGREST_API/d' <<< "$1") # remove old PGREST_API variable, replaced by KOIOS_API
   tmp_head=$(head -n -2 <<< "$tmp_old_static")
