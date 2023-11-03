@@ -61,7 +61,7 @@ versionCheck() { printf '%s\n%s' "${1//v/}" "${2//v/}" | sort -C -V; } #$1=avail
 usage() {
   cat <<-EOF >&2
 		
-		Usage: $(basename "$0") [-n <mainnet|preprod|guild|preview>] [-p path] [-t <name>] [-b <branch>] [-u] [-s [p][b][l][f][d][c][o][w][x]]
+		Usage: $(basename "$0") [-n <mainnet|preprod|guild|preview>] [-p path] [-t <name>] [-b <branch>] [-u] [-s [p][b][l][m][f][d][c][o][w][x]]
 		Set up dependencies for building/using common tools across cardano ecosystem.
 		The script will always update dynamic content from existing scripts retaining existing user variables
 		
@@ -74,6 +74,7 @@ usage() {
 		  p   Install common pre-requisite OS-level Dependencies for most tools on this repo (Default: skip)
 		  b   Install OS level dependencies for tools required while building cardano-node/cardano-db-sync components (Default: skip)
 		  l   Build and Install libsodium fork from IO repositories (Default: skip)
+		  m   Download latest (released) binaries for mithril-signer, mithril-client (Default: skip)
 		  f   Force overwrite entire content of scripts and config files (backups of existing ones will be created) (Default: skip)
 		  d   Download latest (released) binaries for bech32, cardano-address, cardano-node, cardano-cli, cardano-db-sync and cardano-submit-api (Default: skip)
 		  c   Install/Upgrade CNCLI binary (Default: skip)
@@ -92,6 +93,7 @@ set_defaults() {
   [[ -z ${WANT_BUILD_DEPS} ]] && WANT_BUILD_DEPS='N'
   [[ -z ${FORCE_OVERWRITE} ]] && FORCE_OVERWRITE='N'
   [[ -z ${LIBSODIUM_FORK} ]] && LIBSODIUM_FORK='N'
+  [[ -z ${INSTALL_MITHRIL} ]] && INSTALL_MITHRIL='N'
   [[ -z ${INSTALL_CNCLI} ]] && INSTALL_CNCLI='N'
   [[ -z ${INSTALL_CWHCLI} ]] && INSTALL_CWHCLI='N'
   [[ -z ${INSTALL_OGMIOS} ]] && INSTALL_OGMIOS='N'
@@ -429,14 +431,14 @@ download_ogmios() {
   if command -v ogmios >/dev/null; then ogmios_version="$(ogmios --version)"; else ogmios_version="v0.0.0"; fi
   rm -rf /tmp/ogmios && mkdir /tmp/ogmios
   pushd /tmp/ogmios >/dev/null || err_exit
-  ogmios_asset_url="$(curl -s https://api.github.com/repos/CardanoSolutions/ogmios/releases/latest | jq -r '.assets[].browser_download_url')"
+  ogmios_asset_url="$(curl -s https://api.github.com/repos/CardanoSolutions/ogmios/releases | jq -r '.[0].assets[].browser_download_url')"
   if curl -sL -f -m ${CURL_TIMEOUT} -o ogmios.zip ${ogmios_asset_url}; then
     unzip ogmios.zip &>/dev/null
     rm -f ogmios.zip
     [[ -f bin/ogmios ]] && OGMIOSPATH=bin/ogmios
     [[ -f ogmios ]] && OGMIOSPATH=ogmios
     [[ -n ${OGMIOSPATH} ]] || err_exit "ogmios downloaded but binary not found after extracting package!"
-    ogmios_git_version="$(curl -s https://api.github.com/repos/CardanoSolutions/ogmios/releases/latest | jq -r '.tag_name')"
+    ogmios_git_version="$(curl -s https://api.github.com/repos/CardanoSolutions/ogmios/releases | jq -r '.[0].tag_name')"
     if ! versionCheck "${ogmios_git_version}" "${ogmios_version}"; then
       [[ "${ogmios_version}" = "0.0.0" ]] && echo -e "\n  latest version: ${ogmios_git_version}" || echo -e "\n  installed version: ${ogmios_version} | latest version: ${ogmios_git_version}"
       chmod +x /tmp/ogmios/${OGMIOSPATH}
@@ -489,6 +491,25 @@ download_cardanosigner() {
   fi
 }
 
+# Download pre-built mithril-signer binary
+download_mithril() {
+    echo -e "\nDownloading Mithril..."
+    pushd "${HOME}"/tmp >/dev/null || err_exit
+    # dynamic latest release updated automatically, uncomment and comment out the hardcoded release below if needed
+    # mithril_release="$(curl -s https://api.github.com/repos/input-output-hk/mithril/releases/latest | jq -r '.tag_name')"
+    # hardcoded latest release requiring a bump
+    mithril_release="2342.0"
+    echo -e "\n  Downloading Mithril Signer/Client ${mithril_release}..."
+    rm -f mithril-signer mithril-client
+    curl -m 200 -sfL https://github.com/input-output-hk/mithril/releases/download/${mithril_release}/mithril-${mithril_release}-linux-x64.tar.gz -o mithril.tar.gz || err_exit " Could not download mithril's latest release archive from IO github!"
+    tar zxf mithril.tar.gz mithril-signer mithril-client &>/dev/null
+    rm -f mithril.tar.gz
+    [[ -f mithril-signer ]] || err_exit " mithril archive downloaded but binary (mithril-signer) not found after extracting package!"
+    [[ -f mithril-client ]] || err_exit " mithril archive downloaded but binary (mithril-client) not found after extracting package!"
+    mv -t "${HOME}"/.local/bin mithril-signer mithril-client
+    chmod +x "${HOME}"/.local/bin/*
+}
+
 # Create folder structure and set up permissions/ownerships
 setup_folder() {
   echo -e "\nCreating Folder Structure .."
@@ -500,8 +521,9 @@ setup_folder() {
     echo -e "\nexport ${CNODE_VNAME}_HOME=${CNODE_HOME}" >> "${HOME}"/.bashrc
   fi
   
-  $sudo mkdir -p "${CNODE_HOME}"/files "${CNODE_HOME}"/db "${CNODE_HOME}"/guild-db "${CNODE_HOME}"/logs "${CNODE_HOME}"/scripts "${CNODE_HOME}"/scripts/archive "${CNODE_HOME}"/sockets "${CNODE_HOME}"/priv
+  $sudo mkdir -p "${CNODE_HOME}"/files "${CNODE_HOME}"/db "${CNODE_HOME}"/guild-db "${CNODE_HOME}"/logs "${CNODE_HOME}"/scripts "${CNODE_HOME}"/scripts/archive "${CNODE_HOME}"/sockets "${CNODE_HOME}"/priv "${CNODE_HOME}"/mithril/data-stores
   $sudo chown -R "$U_ID":"$G_ID" "${CNODE_HOME}" 2>/dev/null
+  
 }
 
 # Download and update scripts for cnode
@@ -561,7 +583,7 @@ populate_cnode() {
   
   pushd "${CNODE_HOME}"/scripts >/dev/null || err_exit
   
-  [[ ${FORCE_OVERWRITE} = 'Y' ]] && echo -e "\nForced full upgrade! Please edit scripts/env, scripts/cnode.sh, scripts/dbsync.sh, scripts/submitapi.sh, scripts/ogmios.sh, scripts/gLiveView.sh and scripts/topologyUpdater.sh (alongwith files/topology.json, files/config.json, files/dbsync.json) as required!"
+  [[ ${FORCE_OVERWRITE} = 'Y' ]] && echo -e "\nForced full upgrade! Please edit scripts/env, scripts/cnode.sh, scripts/dbsync.sh, scripts/submitapi.sh, scripts/ogmios.sh, scripts/gLiveView.sh and scripts/topologyUpdater.sh scripts/mithril-client.sh scripts/mithril-relay.sh scripts/mithril-signer.sh (alongwith files/topology.json, files/config.json, files/dbsync.json) as required!"
   
   updateWithCustomConfig "blockPerf.sh"
   updateWithCustomConfig "cabal-build-all.sh"
@@ -579,6 +601,9 @@ populate_cnode() {
   updateWithCustomConfig "setup_mon.sh"
   updateWithCustomConfig "setup-grest.sh" "grest-helper-scripts"
   updateWithCustomConfig "topologyUpdater.sh"
+  updateWithCustomConfig "mithril-client.sh"
+  updateWithCustomConfig "mithril-relay.sh"
+  updateWithCustomConfig "mithril-signer.sh"
   
   find "${CNODE_HOME}/scripts" -name '*.sh' -exec chmod 755 {} \; 2>/dev/null
   chmod -R 700 "${CNODE_HOME}"/priv 2>/dev/null
@@ -591,6 +616,7 @@ parse_args() {
     [[ "${S_ARGS}" =~ "p" ]] && INSTALL_OS_DEPS="Y"
     [[ "${S_ARGS}" =~ "b" ]] && INSTALL_OS_DEPS="Y" && WANT_BUILD_DEPS="Y"
     [[ "${S_ARGS}" =~ "l" ]] && INSTALL_OS_DEPS="Y" && WANT_BUILD_DEPS="Y" && INSTALL_LIBSODIUM_FORK="Y"
+    [[ "${S_ARGS}" =~ "m" ]] && INSTALL_MITHRIL="Y"
     [[ "${S_ARGS}" =~ "f" ]] && FORCE_OVERWRITE="Y" && POPULATE_CNODE="F"
     [[ "${S_ARGS}" =~ "d" ]] && INSTALL_CNODEBINS="Y"
     [[ "${S_ARGS}" =~ "c" ]] && INSTALL_CNCLI="Y"
@@ -613,6 +639,7 @@ main_flow() {
   [[ "${INSTALL_OS_DEPS}" == "Y" ]] && os_dependencies
   [[ "${WANT_BUILD_DEPS}" == "Y" ]] && build_dependencies
   [[ "${INSTALL_LIBSODIUM_FORK}" == "Y" ]] && build_libsodium
+  [[ "${INSTALL_MITHRIL}" == "Y" ]] && download_mithril
   [[ "${FORCE_OVERWRITE}" == "Y" ]] && POPULATE_CNODE="F" && populate_cnode
   [[ "${POPULATE_CNODE}" == "Y" ]] && populate_cnode
   [[ "${INSTALL_CNODEBINS}" == "Y" ]] && download_cnodebins

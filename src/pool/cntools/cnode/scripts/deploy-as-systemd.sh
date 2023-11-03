@@ -8,14 +8,9 @@
 
 PARENT="$(dirname "$0")" 
 
-if [[ $(grep "_HOME=" "${PARENT}"/env) =~ ^#?([^[:space:]]+)_HOME ]]; then
-  vname=$(tr '[:upper:]' '[:lower:]' <<< "${BASH_REMATCH[1]}")
-else
-  echo "failed to get cnode instance name from env file, aborting!"
-  exit 1
-fi
-
 . "${PARENT}"/env offline
+
+vname="${CNODE_VNAME}"
 
 echo -e "\e[32m~~ Cardano Node ~~\e[0m"
 echo "launches the main cnode.sh script to deploy cardano-node"
@@ -35,6 +30,20 @@ echo
 read -rsn1 yn
 if [[ ${yn} = [Yy]* ]]; then
   ./submitapi.sh -d
+fi
+
+if command -v mithril-signer >/dev/null 2>&1 ; then
+  echo -e "\e[32m~~ Mithril Signer ~~\e[0m"
+  echo "Deploy Mithril Signer as a systemd service? [y|n]"
+  read -rsn1 yn
+  if [[ ${yn} = [Yy]* ]]; then
+    ./mithril-signer.sh -d
+  else
+    if [[ -f /etc/systemd/system/${vname}-mithril-signer.service ]]; then
+      sudo systemctl disable ${vname}-mithril-signer.service
+      sudo rm -f /etc/systemd/system/${vname}-mithril-signer.service
+    fi
+  fi
 fi
 
 if command -v ogmios >/dev/null 2>&1 ; then
@@ -290,7 +299,7 @@ After=${vname}.service
 [Service]
 Type=simple
 Restart=on-failure
-RestartSec=20
+RestartSec=1
 User=$USER
 WorkingDirectory=${CNODE_HOME}/scripts
 ExecStart=/bin/bash -l -c \"exec ${CNODE_HOME}/scripts/logMonitor.sh\"
@@ -401,26 +410,8 @@ else
 fi
 
 echo
-echo -e "\e[32m~~ Startup Log Monitor ~~\e[0m"
-echo "Parses JSON log of cardano-node for traces of interest to provide metrics for chain validation and ledger replay startup events."
-echo "Optional to use."
-echo
-echo "Deploy Startup Log Monitor as systemd services? [y|n]"
-read -rsn1 yn
-if [[ ${yn} = [Yy]* ]]; then
-  ./startupLogMonitor.sh -d
-else
-  if [[ -f /etc/systemd/system/${vname}-startup-logmonitor.service ]]; then
-    sudo systemctl disable ${vname}-startup-logmonitor.service
-    sudo rm -f /etc/systemd/system/${vname}-startup-logmonitor.service
-  fi
-fi
-
-echo
 sudo systemctl daemon-reload
-[[ -f /etc/systemd/system/${vname}.service ]] && sudo systemctl enable ${vname}.service
 [[ -f /etc/systemd/system/${vname}-logmonitor.service ]] && sudo systemctl enable ${vname}-logmonitor.service
-[[ -f /etc/systemd/system/${vname}-startup-logmonitor.service ]] && sudo systemctl enable ${vname}-startup-logmonitor.service
 [[ -f /etc/systemd/system/${vname}-tu-fetch.service ]] && sudo systemctl enable ${vname}-tu-fetch.service
 [[ -f /etc/systemd/system/${vname}-tu-restart.timer ]] && sudo systemctl enable ${vname}-tu-restart.timer
 [[ -f /etc/systemd/system/${vname}-tu-push.timer ]] && sudo systemctl enable ${vname}-tu-push.timer
@@ -430,6 +421,7 @@ sudo systemctl daemon-reload
 [[ -f /etc/systemd/system/${vname}-cncli-validate.service ]] && sudo systemctl enable ${vname}-cncli-validate.service
 [[ -f /etc/systemd/system/${vname}-cncli-ptsendtip.service ]] && sudo systemctl enable ${vname}-cncli-ptsendtip.service
 [[ -f /etc/systemd/system/${vname}-cncli-ptsendslots.service ]] && sudo systemctl enable ${vname}-cncli-ptsendslots.service
+[[ -f /etc/systemd/system/${vname}-mithril-signer.service ]] && sudo systemctl enable ${vname}-mithril-signer.service
 
 
 echo
