@@ -2,36 +2,35 @@
 
 use App\Http\Controllers\AnonymousBookmarkController;
 use App\Http\Controllers\Api\CatalystExplorer\UserController;
-use App\Http\Controllers\ProjectCatalyst\CatalystAssessmentsController;
-use App\Http\Controllers\ProjectCatalyst\CatalystAttachmentsController;
-use App\Http\Controllers\ProjectCatalyst\CatalystBookmarksController;
-use App\Http\Controllers\ProjectCatalyst\CatalystChallengeController;
-use App\Http\Controllers\ProjectCatalyst\CatalystChartsController;
-use App\Http\Controllers\ProjectCatalyst\CatalystFundController;
-use App\Http\Controllers\ProjectCatalyst\CatalystFundsController;
-use App\Http\Controllers\ProjectCatalyst\CatalystGroupsController;
-use App\Http\Controllers\ProjectCatalyst\CatalystMyBookmarksController;
-use App\Http\Controllers\ProjectCatalyst\CatalystMyCommunityReviewsController;
-use App\Http\Controllers\ProjectCatalyst\CatalystMyDashboardController;
-use App\Http\Controllers\ProjectCatalyst\CatalystMyGroupsController;
-use App\Http\Controllers\ProjectCatalyst\CatalystMyProposalsController;
-use App\Http\Controllers\ProjectCatalyst\CatalystMyRankingController;
-use App\Http\Controllers\ProjectCatalyst\CatalystMyVotesController;
-use App\Http\Controllers\ProjectCatalyst\CatalystPeopleController;
-use App\Http\Controllers\ProjectCatalyst\CatalystProposalsController;
-use App\Http\Controllers\ProjectCatalyst\CatalystProposerController;
-use App\Http\Controllers\ProjectCatalyst\CatalystRegistrationsController;
-use App\Http\Controllers\ProjectCatalyst\CatalystReportsController;
-use App\Http\Controllers\ProjectCatalyst\CatalystUserProfilesController;
-use App\Http\Controllers\ProjectCatalyst\CatalystVoterToolController;
-use App\Http\Controllers\ProjectCatalyst\ProposalSearchController;
-use App\Http\Livewire\Catalyst\CatalystFundComponent;
-use App\Http\Livewire\Catalyst\CatalystGroupsComponent;
-use App\Http\Livewire\Catalyst\CatalystProposersComponent;
+use App\Inertia\CatalystExplorer\AssessmentsController;
+use App\Inertia\CatalystExplorer\AttachmentsController;
+use App\Inertia\CatalystExplorer\BookmarksController;
+use App\Inertia\CatalystExplorer\ChallengeController;
+use App\Inertia\CatalystExplorer\ChartsController;
+use App\Inertia\CatalystExplorer\EventsController;
+use App\Inertia\CatalystExplorer\FundController;
+use App\Inertia\CatalystExplorer\FundsController;
+use App\Inertia\CatalystExplorer\GroupsController;
+use App\Inertia\CatalystExplorer\HomeController;
+use App\Inertia\CatalystExplorer\MyBookmarksController;
+use App\Inertia\CatalystExplorer\MyCommunityReviewsController;
+use App\Inertia\CatalystExplorer\MyDashboardController;
+use App\Inertia\CatalystExplorer\MyGroupsController;
+use App\Inertia\CatalystExplorer\MyProposalsController;
+use App\Inertia\CatalystExplorer\MyRankingController;
+use App\Inertia\CatalystExplorer\MyVotesController;
+use App\Inertia\CatalystExplorer\PeopleController;
+use App\Inertia\CatalystExplorer\ProposalsController;
+use App\Inertia\CatalystExplorer\ProposalSearchController;
+use App\Inertia\CatalystExplorer\ProposerController;
+use App\Inertia\CatalystExplorer\RegistrationsController;
+use App\Inertia\CatalystExplorer\ReportsController;
+use App\Inertia\CatalystExplorer\UserProfilesController;
+use App\Inertia\CatalystExplorer\VoterToolController;
+use App\Livewire\CatalystExplorer\VotesComponent;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
-use App\Http\Controllers\ProjectCatalyst\CatalystEventsController;
 
 // Project Catalyst
 
@@ -43,32 +42,12 @@ Route::group(
     function () {
         Route::get('/catalyst-proposals/users/{catalystUser}', fn () => view('catalyst.user'));
         Route::prefix('project-catalyst')->as('projectCatalyst.')->group(function () {
-            Route::get('/reports', App\Http\Livewire\Catalyst\CatalystReportsComponent::class)
-                ->name('reports');
 
-            Route::get('/dashboard', App\Http\Livewire\Catalyst\CatalystDashboardComponent::class)
-                ->name('dashboard');
-
-            Route::get('/votes/ccv4', App\Http\Livewire\Catalyst\CatalystVotesComponent::class)
+            Route::get('/votes/ccv4', VotesComponent::class)
                 ->name('votes.ccv4');
-
-            Route::get('/voter-tool', App\Http\Livewire\Catalyst\CatalystVoterToolComponent::class)
-                ->name('voterTool');
-
-            Route::get('/bookmarks', App\Http\Livewire\Catalyst\CatalystBookmarksComponent::class)
-                ->name('bookmarks');
-
-            // Route::get('/funds/{fund}/', CatalystFundComponent::class)
-            //     ->name('fund');
 
             Route::get('/challenges/{fund}/', fn () => view('challenge'))
                 ->name('challenge');
-
-            Route::get('/groups', CatalystGroupsComponent::class)
-                ->name('groups');
-
-            Route::get('/users', CatalystProposersComponent::class)
-                ->name('users');
 
             Route::get('/users/{catalystUser}', fn () => view('catalyst.user'))
                 ->name('user');
@@ -76,7 +55,12 @@ Route::group(
             Route::get('/group/{catalystGroup}', fn () => view('catalyst.group'))
                 ->name('group');
         });
-        Route::prefix('/catalyst-explorer')->as('catalystExplorer.')->group(function () {
+
+        Route::prefix('/catalyst-explorer')->as('catalyst-explorer.')->group(function () {
+            Route::get('/', [HomeController::class, 'index'])
+                ->name('home');
+
+            // Auth
             Route::get('/login', fn () => Inertia::render('Auth/Login'))
                 ->name('login');
 
@@ -86,181 +70,190 @@ Route::group(
             Route::get('/register', fn () => Inertia::render('Auth/Register'))
                 ->name('register');
 
-            Route::get('/reports', [CatalystReportsController::class, 'index'])
+            // Funds
+            Route::prefix('/funds')->as('funds.')->group(function () {
+                Route::get('/', [FundsController::class, 'index'])
+                    ->name('index');
+
+                Route::get('/funds/{slug}', [FundController::class, 'index'])
+                    ->name('fund');
+
+                Route::get('/challenges/{slug}', [ChallengeController::class, 'index'])
+                    ->name('challenge');
+            });
+
+            Route::get('/reports', [ReportsController::class, 'index'])
                 ->name('reports');
 
-            Route::get('/charts', [CatalystChartsController::class, 'index'])
+            Route::get('/charts', [ChartsController::class, 'index'])
                 ->name('charts');
 
-            Route::get('/registrations', [CatalystRegistrationsController::class, 'index'])
+            Route::get('/registrations', [RegistrationsController::class, 'index'])
                 ->name('registrations');
 
-            Route::get('/registrations-data', [CatalystRegistrationsController::class, 'registrationsData'])
-                ->name('registrationsData');
+            Route::get('/registrations-data', [RegistrationsController::class, 'registrationsData'])
+                ->name('registrations-data');
 
-            Route::get('/votes-data', [CatalystRegistrationsController::class, 'getVoterData'])
-                ->name('voterData');
+            Route::get('/votes-data', [RegistrationsController::class, 'getVoterData'])
+                ->name('voter-data');
 
-            Route::get('/assessments', [CatalystAssessmentsController::class, 'index'])
+            Route::get('/assessments', [AssessmentsController::class, 'index'])
                 ->name('assessments');
-
-            Route::get('/funds', [CatalystFundsController::class, 'index'])
-                ->name('funds');
 
             // Route::get('/funds/{fund}/', CatalystFundComponent::class)
             //     ->name('fund');
-            Route::get('/funds/{slug}', [CatalystFundController::class, 'index'])
-                ->name('fund');
 
             // Route::get('/challenges/{fund}/', fn () => view('challenge'))
             //     ->name('challenge');
 
-            Route::get('/challenges/{slug}', [CatalystChallengeController::class, 'index'])
-                ->name('challenge');
-
-            Route::get('/proposals', [CatalystProposalsController::class, 'index'])
+            Route::get('/proposals', [ProposalsController::class, 'index'])
                 ->name('proposals');
 
-            Route::get('/events', [CatalystEventsController::class, 'index'])
+            Route::get('/events', [EventsController::class, 'index'])
                 ->name('events');
 
-            Route::post('/event/create', [CatalystEventsController::class, 'eventCreate'])
-                ->name('eventCreate');
+            Route::post('/event/create', [EventsController::class, 'eventCreate'])
+                ->name('event-create');
 
-            Route::get('/filtered-proposals', [CatalystProposalsController::class, 'getFilteredData'])
-                ->name('filterProposals');
+            Route::get('/filtered-proposals', [ProposalsController::class, 'getFilteredData'])
+                ->name('filter-proposals');
 
-            Route::get('/proposals/metrics/count/approved', [CatalystProposalsController::class, 'metricCountFunded']);
-            Route::get('/proposals/metrics/count/paid', [CatalystProposalsController::class, 'metricCountTotalPaid']);
-            Route::get('/proposals/metrics/count/completed', [CatalystProposalsController::class, 'metricCountCompleted']);
+            Route::get('/filtered-people', [PeopleController::class, 'getFilteredData'])
+                ->name('filter-people');
 
-            Route::get('/proposals/metrics/sum/budget', [CatalystProposalsController::class, 'metricSumBudget']);
-            Route::get('/proposals/metrics/sum/approved', [CatalystProposalsController::class, 'metricSumApproved']);
-            Route::get('/proposals/metrics/sum/distributed', [CatalystProposalsController::class, 'metricSumDistributed']);
-            Route::get('/proposals/metrics/sum/completed', [CatalystProposalsController::class, 'metricSumCompleted']);
+            Route::get('/proposals/metrics/count/approved', [ProposalsController::class, 'metricCountFunded']);
+            Route::get('/proposals/metrics/count/paid', [ProposalsController::class, 'metricCountTotalPaid']);
+            Route::get('/proposals/metrics/count/completed', [ProposalsController::class, 'metricCountCompleted']);
 
-            Route::get('people/{catalystUser:id}/metrics/sum/completed-proposals', [CatalystProposerController::class, 'getCompletedProposalCount']);
-            Route::get('people/{catalystUser:id}/metrics/sum/outstanding-proposals', [CatalystProposerController::class, 'getOutstandingProposalCount']);
-            Route::get('people/{catalystUser:id}/metrics/sum/outstanding-co-proposals', [CatalystProposerController::class, 'getCoProposalCount']);
-            Route::get('people/{catalystUser:id}/metrics/sum/f10primary-proposals', [CatalystProposerController::class, 'getF10PrimaryProposalCount']);
-            Route::get('people/{catalystUser:id}/metrics/sum/f10-co-proposals', [CatalystProposerController::class, 'getF10CoProposalCount']);
+            Route::get('/proposals/metrics/sum/budget', [ProposalsController::class, 'metricSumBudget']);
+            Route::get('/proposals/metrics/sum/approved', [ProposalsController::class, 'metricSumApproved']);
+            Route::get('/proposals/metrics/sum/distributed', [ProposalsController::class, 'metricSumDistributed']);
+            Route::get('/proposals/metrics/sum/completed', [ProposalsController::class, 'metricSumCompleted']);
+
+            Route::prefix('/people')->as('people.')->group(function () {
+                Route::get('/', [PeopleController::class, 'index'])
+                    ->name('index');
+
+                Route::prefix('/{catalystUser:id}')->as('people.')->group(function () {
+                    Route::get('/metrics/sum/completed-proposals', [ProposerController::class, 'getCompletedProposalCount']);
+                    Route::get('/metrics/sum/outstanding-proposals', [ProposerController::class, 'getOutstandingProposalCount']);
+                    Route::get('/metrics/sum/outstanding-co-proposals', [ProposerController::class, 'getCoProposalCount']);
+                    Route::get('/metrics/sum/f10primary-proposals', [ProposerController::class, 'getF10PrimaryProposalCount']);
+                    Route::get('/metrics/sum/f10-co-proposals', [ProposerController::class, 'getF10CoProposalCount']);
+                });
+            });
 
             //catalyst charts metrics
             Route::prefix('/metrics')->as('metrics.')->group(function () {
-                Route::get('/adaPowerRanges', [CatalystChartsController::class, 'metricAdaPowerRanges'])
+                Route::get('/adaPowerRanges', [ChartsController::class, 'metricAdaPowerRanges'])
                     ->name('adaPowerRanges');
-                Route::get('/largestFundedProposalObject', [CatalystChartsController::class, 'metricLargestFundedProposalObject'])
+                Route::get('/largestFundedProposalObject', [ChartsController::class, 'metricLargestFundedProposalObject'])
                     ->name('largestFundedProposalObject');
-                Route::get('/fundedOver75KCount', [CatalystChartsController::class, 'metricFundedOver75KCount'])
+                Route::get('/fundedOver75KCount', [ChartsController::class, 'metricFundedOver75KCount'])
                     ->name('fundedOver75KCount');
-                Route::get('/membersAwardedFundingCount', [CatalystChartsController::class, 'metricMembersAwardedFundingCount'])
+                Route::get('/membersAwardedFundingCount', [ChartsController::class, 'metricMembersAwardedFundingCount'])
                     ->name('membersAwardedFundingCount');
-                Route::get('/fullyDisbursedProposalsCount', [CatalystChartsController::class, 'metricFullyDisbursedProposalsCount'])
+                Route::get('/fullyDisbursedProposalsCount', [ChartsController::class, 'metricFullyDisbursedProposalsCount'])
                     ->name('fullyDisbursedProposalsCount');
-                Route::get('/completedProposalsCount', [CatalystChartsController::class, 'metricCompletedProposalsCount'])
+                Route::get('/completedProposalsCount', [ChartsController::class, 'metricCompletedProposalsCount'])
                     ->name('completedProposalsCount');
-                Route::get('/total-registrations-ada-power', [CatalystChartsController::class, 'metricTotalRegisteredAdaPower'])
+                Route::get('/total-registrations-ada-power', [ChartsController::class, 'metricTotalRegisteredAdaPower'])
                     ->name('totalRegisteredAdaPower');
-                Route::get('/total-registrations', [CatalystChartsController::class, 'metricTotalRegistrations'])
+                Route::get('/total-registrations', [ChartsController::class, 'metricTotalRegistrations'])
                     ->name('totalRegistrations');
-                Route::get('/total-delegation-registrations', [CatalystChartsController::class, 'metricTotalDelegationRegistrations'])
+                Route::get('/total-delegation-registrations', [ChartsController::class, 'metricTotalDelegationRegistrations'])
                     ->name('totalDelegationRegistrations');
-                Route::get('/total-delegation-registrations-ada-power', [CatalystChartsController::class, 'metricTotalDelegationRegistrationsAdaPower'])
+                Route::get('/total-delegation-registrations-ada-power', [ChartsController::class, 'metricTotalDelegationRegistrationsAdaPower'])
                     ->name('totalDelegationRegistrationsAdaPower');
 
-                Route::get('/total-yes-votes', [CatalystChartsController::class, 'metricsTotalYesVotes'])
+                Route::get('/total-yes-votes', [ChartsController::class, 'metricsTotalYesVotes'])
                     ->name('totalYesVotes');
-                Route::get('/total-no-votes', [CatalystChartsController::class, 'metricsTotalNoVotes'])
+                Route::get('/total-no-votes', [ChartsController::class, 'metricsTotalNoVotes'])
                     ->name('totalNoVotes');
 
-                Route::get('/votes-casted-average', [CatalystChartsController::class, 'metricVotesCastAverage'])
+                Route::get('/votes-casted-average', [ChartsController::class, 'metricVotesCastAverage'])
                     ->name('votesCastAverage');
-                Route::get('/votes-casted-mode', [CatalystChartsController::class, 'metricVotesCastMode'])
+                Route::get('/votes-casted-mode', [ChartsController::class, 'metricVotesCastMode'])
                     ->name('votesCastMode');
-                Route::get('/votes-casted-median', [CatalystChartsController::class, 'metricVotesCastMedian'])
+                Route::get('/votes-casted-median', [ChartsController::class, 'metricVotesCastMedian'])
                     ->name('votesCastMedian');
-                Route::get('/total-registered-and-voted', [CatalystChartsController::class, 'metricTotalRegisteredAndVoted'])
+                Route::get('/total-registered-and-voted', [ChartsController::class, 'metricTotalRegisteredAndVoted'])
                     ->name('totalRegisteredAndVoted');
-                Route::get('/total-registered-and-never-voted', [CatalystChartsController::class, 'metricTotalRegisteredAndNeverVoted'])
+                Route::get('/total-registered-and-never-voted', [ChartsController::class, 'metricTotalRegisteredAndNeverVoted'])
                     ->name('totalRegisteredAndNeverVoted');
-                Route::get('/votes-casted-ranges', [CatalystChartsController::class, 'metricVotesCastRanges'])
+                Route::get('/votes-casted-ranges', [ChartsController::class, 'metricVotesCastRanges'])
                     ->name('votesCastRanges');
             });
 
-            Route::get('/attachments/voting-powers', [CatalystAttachmentsController::class, 'votingPowersAttachemnt'])
+            Route::get('/attachments/voting-powers', [AttachmentsController::class, 'votingPowersAttachemnt'])
                 ->name('attachments.votingPowers');
 
-            Route::get('/charts/topFundedProposals', [CatalystChartsController::class, 'getTopFundedProposals'])
+            Route::get('/charts/topFundedProposals', [ChartsController::class, 'getTopFundedProposals'])
                 ->name('topFundedProposals');
 
-            Route::get('/charts/getTopFundedTeams', [CatalystChartsController::class, 'getTopFundedTeams'])
-            ->name('topFundedTeams');
+            Route::get('/charts/getTopFundedTeams', [ChartsController::class, 'getTopFundedTeams'])
+                ->name('topFundedTeams');
 
-            Route::get('/people', [CatalystPeopleController::class, 'index'])
-                ->name('people');
-
-            Route::get('/groups', [CatalystGroupsController::class, 'index'])
+            Route::get('/groups', [GroupsController::class, 'index'])
                 ->name('groups');
 
-            Route::get('/filtered-groups', [CatalystGroupsController::class, 'getFilteredData'])
-            ->name('filterGroups');
+            Route::get('/filtered-groups', [GroupsController::class, 'getFilteredData'])
+                ->name('filter-groups');
 
-            Route::get('/voter-tool', [CatalystVoterToolController::class, 'index'])
-                ->name('voterTool');
+            Route::get('/voter-tool', [VoterToolController::class, 'index'])
+                ->name('voter-tool');
 
-            Route::get('/voter-tool/counts', [CatalystVoterToolController::class, 'setCounts'])
+            Route::get('/voter-tool/counts', [VoterToolController::class, 'setCounts'])
                 ->name('voterTool.counts');
 
-            Route::get('/voter-tool/taxomomies', [CatalystVoterToolController::class, 'setTaxonomy'])
+            Route::get('/voter-tool/taxomomies', [VoterToolController::class, 'setTaxonomy'])
                 ->name('voterTool.taxomomy');
 
-            Route::get('/proposals/{proposal:id}/bookmark', [CatalystProposalsController::class, 'bookmark']);
-            Route::get('/bookmarks', [CatalystBookmarksController::class, 'index'])
+            Route::get('/proposals/{proposal:id}/bookmark', [ProposalsController::class, 'bookmark']);
+            Route::get('/bookmarks', [BookmarksController::class, 'index'])
                 ->name('bookmarks');
 
-            Route::get('/bookmarks/{bookmarkCollection:id}', [CatalystBookmarksController::class, 'view'])
+            Route::get('/bookmarks/{bookmarkCollection:id}', [BookmarksController::class, 'view'])
                 ->name('bookmark`');
 
-            Route::get('/draft-ballots/{draftBallot:id}', [CatalystBookmarksController::class, 'viewDraftBallot'])
+            Route::get('/draft-ballots/{draftBallot:id}', [BookmarksController::class, 'viewDraftBallot'])
                 ->name('draftBallot.view');
-            Route::get('/draft-ballot/{draftBallot:id}/update', [CatalystBookmarksController::class, 'viewUpdateDraftBallot'])
+            Route::get('/draft-ballot/{draftBallot:id}/update', [BookmarksController::class, 'viewUpdateDraftBallot'])
                 ->name('draftBallotUpdate.view');
 
             // exports
-            Route::get('/export/proposals', [CatalystProposalsController::class, 'exportProposals']);
-            Route::get('/download/proposals', [CatalystProposalsController::class, 'downloadProposals'])
+            Route::get('/export/proposals', [ProposalsController::class, 'exportProposals']);
+            Route::get('/download/proposals', [ProposalsController::class, 'downloadProposals'])
                 ->name('download.proposals');
 
             // Bookmarks
-            Route::post('/bookmarks/items', [CatalystMyBookmarksController::class, 'createItem'])->name('bookmarkItem.create');
-            Route::get('/export/bookmarked-proposals', [CatalystMyBookmarksController::class, 'exportBookmarks']);
-            Route::delete('/bookmark-collection', [CatalystMyBookmarksController::class, 'deleteCollection'])->name('bookmarkCollection.delete');
-            Route::delete('/bookmark-item/{bookmarkItem:id}', [CatalystMyBookmarksController::class, 'deleteItem'])->name('bookmarkItem.delete');
+            Route::post('/bookmarks/items', [MyBookmarksController::class, 'createItem'])->name('bookmarkItem.create');
+            Route::get('/export/bookmarked-proposals', [MyBookmarksController::class, 'exportBookmarks']);
+            Route::delete('/bookmark-collection', [MyBookmarksController::class, 'deleteCollection'])->name('bookmarkCollection.delete');
+            Route::delete('/bookmark-item/{bookmarkItem:id}', [MyBookmarksController::class, 'deleteItem'])->name('bookmarkItem.delete');
 
             Route::middleware(['auth.catalyst'])->prefix('/my')->group(function () {
             });
-            Route::get('/cardano-treasury', App\Http\Livewire\Catalyst\CardanoTreasuryComponent::class)
-                ->name('cardano-treasury');
 
             Route::middleware(['auth.catalyst'])->prefix('/my')->group(function () {
-                Route::post('/bookmarks/{bookmarkCollection:id}/create-ballot', [CatalystBookmarksController::class, 'createDraftBallotFromCollection'])
+                Route::post('/bookmarks/{bookmarkCollection:id}/create-ballot', [BookmarksController::class, 'createDraftBallotFromCollection'])
                     ->name('bookmark.createBallot');
-                Route::post('/draft-ballots', [CatalystBookmarksController::class, 'createDraftBallot'])
+                Route::post('/draft-ballots', [BookmarksController::class, 'createDraftBallot'])
                     ->name('createBallot');
 
-                Route::get('/draft-ballots/{draftBallot:id}/edit', [CatalystBookmarksController::class, 'editDraftBallot'])
+                Route::get('/draft-ballots/{draftBallot:id}/edit', [BookmarksController::class, 'editDraftBallot'])
                     ->name('draftBallot.edit');
 
-                Route::delete('/draft-ballots/{draftBallot:id}/delete', [CatalystBookmarksController::class, 'deleteDraftBallot'])
+                Route::delete('/draft-ballots/{draftBallot:id}/delete', [BookmarksController::class, 'deleteDraftBallot'])
                     ->name('draftBallot.delete');
 
-                Route::patch('/draft-ballot/{draftBallot:id}/update', [CatalystBookmarksController::class, 'updateDraftBallot'])
+                Route::patch('/draft-ballot/{draftBallot:id}/update', [BookmarksController::class, 'updateDraftBallot'])
                     ->name('draftBallot.update');
 
-                Route::post('/draft-ballots/{draftBallot:id}/rationale', [CatalystBookmarksController::class, 'storeDraftBallotRationale'])
+                Route::post('/draft-ballots/{draftBallot:id}/rationale', [BookmarksController::class, 'storeDraftBallotRationale'])
                     ->name('draftBallot.storeRationale');
 
-                Route::get('/dashboard', [CatalystMyDashboardController::class, 'index'])
+                Route::get('/dashboard', [MyDashboardController::class, 'index'])
                     ->name('myDashboard');
 
                 Route::get('/bookmarks', [fn () => Inertia::render('Auth/MyBookmarks')])
@@ -269,71 +262,71 @@ Route::group(
                 Route::get('/draft-ballots', fn () => Inertia::render('Auth/MyDraftBallots'))
                     ->name('myDraftBallots');
 
-                Route::get('/profiles', [CatalystUserProfilesController::class, 'index'])
+                Route::get('/profiles', [UserProfilesController::class, 'index'])
                     ->name('myProfiles');
 
-                Route::post('/profiles/{catalystUser:id}', [CatalystUserProfilesController::class, 'update']);
+                Route::post('/profiles/{catalystUser:id}', [UserProfilesController::class, 'update']);
 
-                Route::get('/proposals', [CatalystMyProposalsController::class, 'index'])
+                Route::get('/proposals', [MyProposalsController::class, 'index'])
                     ->name('myProposals');
-                Route::get('/proposals/{proposal:id}', [CatalystMyProposalsController::class, 'manage'])
+                Route::get('/proposals/{proposal:id}', [MyProposalsController::class, 'manage'])
                     ->name('myProposal');
 
-                Route::get('/reviews', [CatalystMyCommunityReviewsController::class, 'index'])
+                Route::get('/reviews', [MyCommunityReviewsController::class, 'index'])
                     ->name('myCommunityReviews');
-                Route::post('/reviews/{assessment}', [CatalystMyCommunityReviewsController::class, 'replyToReview'])
+                Route::post('/reviews/{assessment}', [MyCommunityReviewsController::class, 'replyToReview'])
                     ->name('replyToMyCommunityReview');
-                Route::delete('/reviews/{assessment}', [CatalystMyCommunityReviewsController::class, 'destroyResponse'])
+                Route::delete('/reviews/{assessment}', [MyCommunityReviewsController::class, 'destroyResponse'])
                     ->name('destroyResponseToMyCommunityReview');
-                Route::patch('/reviews/{assessment}', [CatalystMyCommunityReviewsController::class, 'editResponse'])
+                Route::patch('/reviews/{assessment}', [MyCommunityReviewsController::class, 'editResponse'])
                     ->name('editResponseToMyCommunityReview');
 
-                Route::post('/groups/{catalystGroup:id}', [CatalystGroupsController::class, 'update']);
-                Route::get('/groups/{catalystGroup:id}/proposals', [CatalystMyGroupsController::class, 'proposals']);
+                Route::post('/groups/{catalystGroup:id}', [GroupsController::class, 'update']);
+                Route::get('/groups/{catalystGroup:id}/proposals', [MyGroupsController::class, 'proposals']);
 
-                Route::get('/groups/create/{catalystUser:id}', [CatalystMyGroupsController::class, 'create']);
-                Route::delete('/groups/{catalystGroup:id}/proposals/{proposal:id}', [CatalystMyGroupsController::class, 'removeProposal']);
-                Route::put('/groups/{catalystGroup:id}/proposals', [CatalystMyGroupsController::class, 'addProposal']);
+                Route::get('/groups/create/{catalystUser:id}', [MyGroupsController::class, 'create']);
+                Route::delete('/groups/{catalystGroup:id}/proposals/{proposal:id}', [MyGroupsController::class, 'removeProposal']);
+                Route::put('/groups/{catalystGroup:id}/proposals', [MyGroupsController::class, 'addProposal']);
 
-                Route::get('/groups/{catalystGroup:id}/members', [CatalystMyGroupsController::class, 'getMembers']);
-                Route::delete('/groups/{catalystGroup:id}/members/{member:id}', [CatalystMyGroupsController::class, 'removeMembers']);
-                Route::put('/groups/{catalystGroup:id}/members', [CatalystMyGroupsController::class, 'addMembers']);
+                Route::get('/groups/{catalystGroup:id}/members', [MyGroupsController::class, 'getMembers']);
+                Route::delete('/groups/{catalystGroup:id}/members/{member:id}', [MyGroupsController::class, 'removeMembers']);
+                Route::put('/groups/{catalystGroup:id}/members', [MyGroupsController::class, 'addMembers']);
 
-                Route::post('/groups', [CatalystGroupsController::class, 'create']);
-                Route::get('/groups', [CatalystMyGroupsController::class, 'index'])
+                Route::post('/groups', [GroupsController::class, 'create']);
+                Route::get('/groups', [MyGroupsController::class, 'index'])
                     ->name('myGroups');
-                Route::get('/groups/{catalystGroup:id}', [CatalystMyGroupsController::class, 'manage'])
+                Route::get('/groups/{catalystGroup:id}', [MyGroupsController::class, 'manage'])
                     ->name('myGroup');
-                Route::get('/groups/{catalystGroup:id}/sum/proposals', [CatalystMyGroupsController::class, 'metricProposalsCount']);
-                Route::get('/groups/{catalystGroup:id}/sum/awarded', [CatalystMyGroupsController::class, 'metricTotalAwardedFunds']);
-                Route::get('/groups/{catalystGroup:id}/sum/received', [CatalystMyGroupsController::class, 'metricTotalReceivedFunds']);
-                Route::get('/groups/{catalystGroup:id}/sum/remaining', [CatalystMyGroupsController::class, 'metricTotalFundsRemaining']);
+                Route::get('/groups/{catalystGroup:id}/sum/proposals', [MyGroupsController::class, 'metricProposalsCount']);
+                Route::get('/groups/{catalystGroup:id}/sum/awarded', [MyGroupsController::class, 'metricTotalAwardedFunds']);
+                Route::get('/groups/{catalystGroup:id}/sum/received', [MyGroupsController::class, 'metricTotalReceivedFunds']);
+                Route::get('/groups/{catalystGroup:id}/sum/remaining', [MyGroupsController::class, 'metricTotalFundsRemaining']);
 
                 // Votes
                 Route::prefix('/votes')->as('votes.')->group(function () {
                     // Views
-                    Route::get('proposal/{proposal:id}', [CatalystMyVotesController::class, 'index'])->name('index');
-                    Route::get('/{vote}', [CatalystMyVotesController::class, 'view'])->name('view');
+                    Route::get('proposal/{proposal:id}', [MyVotesController::class, 'index'])->name('index');
+                    Route::get('/{vote}', [MyVotesController::class, 'view'])->name('view');
 
                     // CRUDs
-                    Route::post('/store', [CatalystMyVotesController::class, 'store'])->name('store');
-                    Route::patch('/{vote}/update', [CatalystMyVotesController::class, 'update'])
+                    Route::post('/store', [MyVotesController::class, 'store'])->name('store');
+                    Route::patch('/{vote}/update', [MyVotesController::class, 'update'])
                         ->name('update');
-                    Route::delete('/{vote}/delete', [CatalystMyVotesController::class, 'destroy'])->name('destroy');
+                    Route::delete('/{vote}/delete', [MyVotesController::class, 'destroy'])->name('destroy');
 
                 });
 
                 // Ranks
                 Route::prefix('/ranks')->as('ranks.')->group(function () {
                     // Views
-                    Route::get('/', [CatalystMyRankingController::class, 'index'])->name('index');
-                    Route::get('/{rank}', [CatalystMyRankingController::class, 'view'])->name('view');
+                    Route::get('/', [MyRankingController::class, 'index'])->name('index');
+                    Route::get('/{rank}', [MyRankingController::class, 'view'])->name('view');
 
                     // CRUDs
-                    Route::post('/store', [CatalystMyRankingController::class, 'store'])->name('store');
-                    Route::patch('/{rank}/update', [CatalystMyRankingController::class, 'update'])
+                    Route::post('/store', [MyRankingController::class, 'store'])->name('store');
+                    Route::patch('/{rank}/update', [MyRankingController::class, 'update'])
                         ->name('update');
-                    Route::delete('/{rank}/delete', [CatalystMyRankingController::class, 'destroy'])->name('destroy');
+                    Route::delete('/{rank}/delete', [MyRankingController::class, 'destroy'])->name('destroy');
 
                 });
             });

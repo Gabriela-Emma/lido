@@ -15,7 +15,7 @@ use Spatie\TypeScriptTransformer\Attributes\Optional as TypeScriptOptional;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
 #[TypeScript]
-class WithdrawalData extends Data
+final class WithdrawalData extends Data
 {
     public function __construct(
         public ?int $id,

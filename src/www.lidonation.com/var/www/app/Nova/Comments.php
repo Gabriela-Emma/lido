@@ -101,8 +101,8 @@ class Comments extends Resource
             //            ]),
             //
             //            MorphTo::make('Commentator')->types([
-            //                User::class,
-            //                //                CatalystUser::class
+            //                LidoUser::class,
+            //                //                CatalystLidoUser::class
             //            ]),
             //
             //            Markdown::make('Original text'),

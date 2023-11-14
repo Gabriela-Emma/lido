@@ -69,7 +69,7 @@ class BookmarkCollections extends Resource
             DateTime::make('Created At')->sortable(),
             DateTime::make('Updated At')->sortable(),
 
-            BelongsTo::make('User', 'user', User::class)->searchable()->sortable(),
+            BelongsTo::make('LidoUser', 'user', User::class)->searchable()->sortable(),
 
             Markdown::make(__('Content'), 'content')->sortable(),
 

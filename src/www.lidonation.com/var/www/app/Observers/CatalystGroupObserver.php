@@ -3,24 +3,23 @@
 namespace App\Observers;
 
 use App\Invokables\FillPostData;
-use App\Jobs\SyncCatalystGroupProposalsJob;
-use App\Models\CatalystGroup;
+use App\Models\CatalystExplorer\Group;
 use App\Models\Post;
 
 class CatalystGroupObserver
 {
     /**
-     * Handle the User "created" event.
+     * Handle the LidoUser "created" event.
      */
-    public function creating(CatalystGroup $catalystGroup): void
+    public function creating(Group $catalystGroup): void
     {
         (new FillPostData)($catalystGroup);
     }
 
     /**
-     * Handle the User "created" event.
+     * Handle the LidoUser "created" event.
      */
-    public function updating(CatalystGroup $catalystGroup): void
+    public function updating(Group $catalystGroup): void
     {
         //        SyncCatalystGroupProposalsJob::dispatch($catalystGroup->id);
     }

@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Definition extends Model
 {
-    use HasFactory, SoftDeletes, HasTimestamps;
+    use HasFactory, HasTimestamps, SoftDeletes;
 
     /**
      * The attributes that should be cast.

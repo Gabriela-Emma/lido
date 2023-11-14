@@ -24,20 +24,21 @@ class PostFactory extends Factory
      *
      * @return array
      */
-    public function definition()
+    public function definition(): array
     {
         // attach shortcode to content.
         $content = $this->faker->paragraphs(rand(5, 18), true);
         $link = Link::inRandomOrder()->first();
-        $linkShortcode = '[link model_type="link" id='.$link->id.']'.$link->label.'[/link]';
+        if ($link) {
+            $linkShortcode = '[link model_type="link" id='.$link->id.']'.$link->label.'[/link]';
 
-        $content = substr_replace($content, $linkShortcode, 100, 0);
-
+            $content = substr_replace($content, $linkShortcode, 100, 0);
+        }
         $this->faker->addProvider(new PicsumPhotosProvider($this->faker));
 
         return [
             'parent_id' => $this->faker->randomDigit(),
-            'user_id' => fn () => User::inRandomOrder()->first()->id,
+            'user_id' => fn () => User::inRandomOrder()->first()?->id,
             'title' => $this->faker->words(4, true),
             'meta_title' => $this->faker->words(5, true),
             'status' => $this->faker->randomElement(['published', 'draft', 'published', 'pending', 'published']),
@@ -58,7 +59,7 @@ class PostFactory extends Factory
      *
      * @return Factory
      */
-    public function published()
+    public function published(): Factory
     {
         return $this->state(function (array $attributes) {
             return [
@@ -80,11 +81,13 @@ class PostFactory extends Factory
         });
     }
 
-    protected function afterCreatingJobs(Post $post)
+    protected function afterCreatingJobs(Post $post): void
     {
         // add media
-        $post->addMediaFromBase64($this->getImageUrl())
-            ->toMediaCollection('hero');
+        if (!app()->environment('testing')) {
+            $post->addMediaFromBase64($this->getImageUrl())
+                ->toMediaCollection('hero');
+        }
 
         Reaction::factory()
             ->count(random_int(2, 3))

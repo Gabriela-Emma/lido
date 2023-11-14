@@ -13,7 +13,7 @@ use Illuminate\Queue\SerializesModels;
 
 class CalculateDelegationEpochs implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, DbSyncHelpers;
+    use DbSyncHelpers, Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     /**
      * Create a new job instance.

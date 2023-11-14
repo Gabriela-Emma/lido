@@ -165,7 +165,7 @@ class Reviews extends Articles
     //               DateTime::make('Published At')
     //                   ->help('Defaults to today. ')
     //                   ->hideWhenUpdating(),
-    //               BelongsTo::make(__('Author'), 'author', User::class)
+    //               BelongsTo::make(__('Author'), 'author', LidoUser::class)
     //                   ->searchable(),
     //
     //               Number::make(__('Order'), 'order')

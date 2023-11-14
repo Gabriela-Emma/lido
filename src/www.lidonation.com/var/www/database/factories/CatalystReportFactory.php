@@ -2,12 +2,12 @@
 
 namespace Database\Factories;
 
-use App\Models\CatalystReport;
-use App\Models\Proposal;
+use App\Models\CatalystExplorer\CatalystReport;
+use App\Models\CatalystExplorer\Proposal;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\CatalystReport>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\CatalystExplorer\CatalystReport>
  */
 class CatalystReportFactory extends Factory
 {

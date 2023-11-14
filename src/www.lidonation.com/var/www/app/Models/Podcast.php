@@ -19,19 +19,20 @@ use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class Podcast extends Model implements HasLink, IHasMetaData, HasMedia
+class Podcast extends Model implements HasLink, HasMedia, IHasMetaData
 {
     use HasAuthor,
-        HasMetaData,
-        HasLinks,
         HasHero,
+        HasLinks,
+        HasMetaData,
         HasTranslations,
         InteractsWithMedia,
-        SoftDeletes,
-        MintsNfts;
+        MintsNfts,
+        SoftDeletes;
 
     protected $with = [
         'nfts',
+        'author'
     ];
 
     protected $casts = [
@@ -85,7 +86,7 @@ class Podcast extends Model implements HasLink, IHasMetaData, HasMedia
             return $this->attributes['thumbnailUrl'];
         }
 
-        return $this->hero?->getfullUrl('thumbnail') ?? $this->nfts?->shuffle()?->first()?->preview_link;
+        return $this->hero?->getfullUrl('thumbnail') ?? $this->nfts?->shuffle()?->first()?->hero?->getfullUrl('preview') ?? $this->nfts?->shuffle()?->first()?->preview_link;
     }
 
     public function link(): Attribute

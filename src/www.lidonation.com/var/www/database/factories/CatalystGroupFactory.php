@@ -2,16 +2,16 @@
 
 namespace Database\Factories;
 
-use App\Models\CatalystGroup;
+use App\Models\CatalystExplorer\Group;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\CatalystGroup>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\CatalystExplorer\Group>
  */
 class CatalystGroupFactory extends Factory
 {
-    protected $model = CatalystGroup::class;
+    protected $model = Group::class;
 
     /**
      * Define the model's default state.

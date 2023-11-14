@@ -180,7 +180,7 @@ class CardanoGraphQLService
 
     /**
      * getPolicyMints
-     * User $user User whose wallet to check. Defaults to currently authenticated
+     * LidoUser $user LidoUser whose wallet to check. Defaults to currently authenticated
      * string $policyId token to limit to. Defaults to PHUFFY.
      *
      * @throws GuzzleException
@@ -210,7 +210,7 @@ class CardanoGraphQLService
 
     /**
      * getStakingRewardTxs
-     * User $user User whose wallet to check. Defaults to currently authenticated
+     * LidoUser $user LidoUser whose wallet to check. Defaults to currently authenticated
      * string $policyId token to limit to. Defaults to PHUFFY.
      *
      * @throws GuzzleException
@@ -247,7 +247,7 @@ class CardanoGraphQLService
      * returns utxos for address list pass. If none is passed,
      * defaults to passed user's addresses associated with their stake key.
      * array $addresses array of addresses to query against
-     * User $user User whose wallet to check. Defaults to currently authenticated
+     * LidoUser $user LidoUser whose wallet to check. Defaults to currently authenticated
      *
      * @throws GuzzleException
      */
@@ -268,7 +268,7 @@ class CardanoGraphQLService
 
     /**
      * getAddressTxs
-     * User $user User whose wallet to check. Defaults to currently authenticated
+     * LidoUser $user LidoUser whose wallet to check. Defaults to currently authenticated
      * string $policyId token to limit to. Defaults to PHUFFY.
      *
      * @throws GuzzleException
@@ -328,7 +328,7 @@ class CardanoGraphQLService
 
     /**
      * getAddressesTokenUtxos
-     * User $user User whose wallet to check. Defaults to currently authenticated
+     * LidoUser $user LidoUser whose wallet to check. Defaults to currently authenticated
      * string $policyId token to limit to. Defaults to PHUFFY.
      *
      * @throws GuzzleException
@@ -391,7 +391,7 @@ class CardanoGraphQLService
 
     /**
      * getStakeAddressTokenTxs
-     * User $user User whose wallet to check. Defaults to currently authenticated
+     * LidoUser $user LidoUser whose wallet to check. Defaults to currently authenticated
      * string $policyId token to limit to. Defaults to PHUFFY.
      *
      * @throws GuzzleException

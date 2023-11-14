@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
+use App\Models\CatalystExplorer\Fund;
 use App\Models\Interfaces\HasLink;
 use App\Models\Traits\HasMetaData;
-use App\Repositories\FundRepository;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
@@ -18,13 +18,13 @@ use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class Taxonomy extends Model implements HasMedia, HasLink
+class Taxonomy extends Model implements HasLink, HasMedia
 {
     use HasFactory,
-        SoftDeletes,
-        HasTimestamps,
         HasMetaData,
-        InteractsWithMedia;
+        HasTimestamps,
+        InteractsWithMedia,
+        SoftDeletes;
 
     protected $with = ['media'];
 
@@ -110,6 +110,7 @@ class Taxonomy extends Model implements HasMedia, HasLink
     protected function currentFundProposals(): Attribute
     {
         $fund = Fund::where('parent_id', null)->first();
+
         return Attribute::make(
             get: fn ($value) => $this->proposals()->whereRelation('fund.parent', 'id', $fund?->id)->count(),
         );

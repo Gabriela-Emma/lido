@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api\CatalystExplorer;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CatalystLedgerSnapshotResource;
-use App\Models\CatalystLedgerSnapshot;
+use App\Models\CatalystExplorer\CatalystLedgerSnapshot;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Database\Eloquent\Builder;

@@ -15,7 +15,7 @@ class SnippetFactory extends Factory
     public function definition()
     {
         return [
-            // 'user_id' => fn () => User::inRandomOrder()->first()->id,
+            // 'user_id' => fn () => LidoUser::inRandomOrder()->first()->id,
             // 'name' => $this->faker->unique()->words(rand(1, 9), true),
             // 'status' => $this->faker->randomElement(['published', 'draft', 'published', 'pending', 'published']),
             // 'content' => $this->faker->paragraphs(rand(5, 14), true),

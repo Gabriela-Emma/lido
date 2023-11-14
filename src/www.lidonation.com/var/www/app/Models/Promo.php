@@ -14,11 +14,17 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class Promo extends Model implements HasMedia
 {
-    use HasAuthor, HasFactory, HasHero, HasTranslations, InteractsWithMedia;
+    use HasAuthor,
+        HasHero,
+        HasTranslations,
+        InteractsWithMedia;
 
     public $translatable = [
         'title',
         'content',
+    ];
+    protected $includes = [
+        'media',
     ];
 
     public function token(): MorphTo
@@ -54,7 +60,7 @@ class Promo extends Model implements HasMedia
      *
      * @return void
      */
-    protected static function booted()
+    protected static function booted(): void
     {
         parent::booted();
         static::addGlobalScope(new PublishedScope);

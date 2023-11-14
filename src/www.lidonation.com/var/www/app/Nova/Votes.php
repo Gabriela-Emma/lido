@@ -70,7 +70,7 @@ class Votes extends Resource
             ID::make(__('ID'), 'id')->sortable(),
             Number::make(__('Amount'), 'amount'),
             BelongsTo::make(__('Cause'), 'cause', Causes::class)->searchable(),
-            BelongsTo::make(__('User'))->searchable(),
+            BelongsTo::make(__('LidoUser'))->searchable(),
             Text::make(__('Status'), 'status'),
             Text::make(__('Memo'), 'memo'),
             BelongsToMany::make(__('Wallets'), 'wallets', Wallets::class),

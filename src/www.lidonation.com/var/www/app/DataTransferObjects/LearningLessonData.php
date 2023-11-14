@@ -11,7 +11,7 @@ use Spatie\TypeScriptTransformer\Attributes\Optional as TypeScriptOptional;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
 #[TypeScript]
-class LearningLessonData extends Data
+final class LearningLessonData extends Data
 {
     public function __construct(
         public string $hash,

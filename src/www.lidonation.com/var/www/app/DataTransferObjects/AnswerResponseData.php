@@ -11,7 +11,7 @@ use Spatie\TypeScriptTransformer\Attributes\Optional as TypeScriptOptional;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
 #[TypeScript]
-class AnswerResponseData extends Data
+final class AnswerResponseData extends Data
 {
     use WireableData;
 

@@ -1,9 +1,11 @@
 // @ts-nocheck
-import Alpine, {Alpine as AlpineType} from 'alpinejs'
-import Clipboard from "@ryangjchandler/alpine-clipboard"
-import Tooltip from "@ryangjchandler/alpine-tooltip";
-import persist from '@alpinejs/persist';
-import CardanoWallet from "./lib/interfaces/CardanoWallet";
+// //import Alpine, {Alpine as AlpineType} from 'alpinejs'
+// import Clipboard from "@ryangjchandler/alpine-clipboard"
+// import Tooltip from "@ryangjchandler/alpine-tooltip";
+// import persist from '@alpinejs/persist';
+// import CardanoWallet from "../../../www2/resources/js/lib/interfaces/CardanoWallet";
+import '../scss/lido.scss'
+import '../scss/_phuffycoin.scss';
 
 export {};
 declare global {
@@ -59,6 +61,8 @@ Alpine.data('delegationLearningModule', function () {
         init: function () {
             // this.walletService = new WalletService();
             // this.wallet = this.walletService.getWallet();
+            console.log("tytytyt");
+            
         },
         vote: function () {
             console.log('vote');

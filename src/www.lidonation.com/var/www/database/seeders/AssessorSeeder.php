@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Assessor;
+use App\Models\CatalystExplorer\Assessor;
 use Illuminate\Database\Seeder;
 
 class AssessorSeeder extends Seeder

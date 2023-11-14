@@ -2,8 +2,8 @@
 
 namespace App\Http\Resources;
 
-use App\Models\Fund;
-use App\Models\Proposal;
+use App\Models\CatalystExplorer\Fund;
+use App\Models\CatalystExplorer\Proposal;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;

@@ -46,24 +46,24 @@ use Spatie\Sitemap\Tags\Url;
  * @property int $id
  * @property string thumbnail_url
  */
-class Post extends Model implements HasMedia, Interfaces\IHasMetaData, Sitemapable, HasLink
+class Post extends Model implements HasLink, HasMedia, Interfaces\IHasMetaData, Sitemapable
 {
     use Actionable,
         HasAuthor,
         HasChildren,
         HasComments,
-        HasReactions,
         HasEditor,
         HasHero,
-        HasMetaData,
-        HasRemovableGlobalScopes,
-        HasTimestamps,
-        HasPrompts,
-        HasParent,
-        HasSnippets,
-        HasSlug,
         HasLinks,
+        HasMetaData,
+        HasParent,
+        HasPrompts,
+        HasReactions,
+        HasRemovableGlobalScopes,
+        HasSlug,
+        HasSnippets,
         HasTaxonomies,
+        HasTimestamps,
         HasTranslations,
         InteractsWithMedia,
         SearchableLocale,
@@ -92,6 +92,10 @@ class Post extends Model implements HasMedia, Interfaces\IHasMetaData, Sitemapab
 
     public $translatableExcludedFromGeneration = [
         'content_audio',
+    ];
+
+    protected $appends = [
+        'link'
     ];
 
     protected $guarded = ['user_id', 'created_at', 'published_at'];
@@ -235,7 +239,7 @@ class Post extends Model implements HasMedia, Interfaces\IHasMetaData, Sitemapab
 
     public function link(): Attribute
     {
-        return Attribute::make(get: fn () => LaravelLocalization::localizeURL("/posts/{$this->slug}/"));
+        return Attribute::make(get: fn () => LaravelLocalization::localizeURL(app()->getLocale()."/posts/{$this->slug}/"));
     }
 
     public function getRecordingLinkAttribute(): string|UrlGenerator|Application

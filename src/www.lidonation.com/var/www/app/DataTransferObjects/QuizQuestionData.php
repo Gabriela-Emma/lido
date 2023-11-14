@@ -11,7 +11,7 @@ use Spatie\TypeScriptTransformer\Attributes\Optional as TypeScriptOptional;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
 #[TypeScript]
-class QuizQuestionData extends Data
+final class QuizQuestionData extends Data
 {
     public function __construct(
         public ?int $id,

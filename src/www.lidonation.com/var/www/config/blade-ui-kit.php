@@ -55,7 +55,7 @@ return [
     */
 
     'livewire' => [
-        //
+        'carbon' => Components\DateTime\Carbon::class,
     ],
 
     /*

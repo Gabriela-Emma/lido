@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreAssessorRequest;
 use App\Http\Requests\UpdateAssessorRequest;
-use App\Models\Assessor;
+use App\Models\CatalystExplorer\Assessor;
 
 class AssessorController extends Controller
 {

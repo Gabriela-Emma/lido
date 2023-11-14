@@ -2,29 +2,28 @@
 
 namespace Database\Seeders;
 
+// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
     /**
      * Seed the application's database.
-     *
-     * @return void
      */
-    public function run()
+    public function run(): void
     {
         $this->call([
             PermissionSeeder::class,
             RoleSeeder::class,
-            UserSeeder::class,
+            // UserSeeder::class,
 
             SnippetSeeder::class,
 
-            SearchIndexSeeder::class,
+            // SearchIndexSeeder::class,
 
             LidoModelsDatabaseSeeder::class,
 
-            CatalystDatabaseSeeder::class,
+            // CatalystDatabaseSeeder::class,
         ]);
     }
 }

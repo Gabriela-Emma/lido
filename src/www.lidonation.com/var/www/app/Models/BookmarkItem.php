@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class BookmarkItem extends Model
 {
-    use HasModel, HasFactory, SoftDeletes;
+    use HasFactory, HasModel, SoftDeletes;
 
     // public function title(): Attribute
     // {

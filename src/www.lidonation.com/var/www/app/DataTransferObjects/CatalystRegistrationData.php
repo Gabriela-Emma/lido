@@ -12,7 +12,7 @@ use Spatie\TypeScriptTransformer\Attributes\Optional as TypeScriptOptional;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
 #[TypeScript]
-class CatalystRegistrationData extends Data
+final class CatalystRegistrationData extends Data
 {
     public function __construct(
         public ?int $id,

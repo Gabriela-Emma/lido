@@ -3,7 +3,7 @@
 namespace App\Policies;
 
 use App\Enums\PermissionEnum;
-use App\Models\CatalystReport;
+use App\Models\CatalystExplorer\CatalystReport;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 

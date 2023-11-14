@@ -5,12 +5,16 @@ namespace App\Http\Controllers\Delegators;
 use App\Enums\RoleEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Invokable;
+use App\Http\Integrations\Blockfrost\Requests\BlockfrostRequest;
 use App\Models\User;
+use App\Services\CardanoBlockfrostService;
+use DateTimeImmutable;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Inertia\Inertia;
 
 class DelegatorController extends Controller
 {
@@ -76,11 +80,11 @@ class DelegatorController extends Controller
         //     'password' => 'nullable|min:5',
         //     'stake_address' => 'bail|required|min:13',
         // ]);
-        // $user = User::where('email', $request->email)
+        // $user = LidoUser::where('email', $request->email)
         //     ->orWhere('wallet_stake_address', $request->stake_address)->first();
 
-        // if (! $user instanceof User) {
-        //     $user = new User;
+        // if (! $user instanceof LidoUser) {
+        //     $user = new LidoUser;
         //     $user->name = $request->name;
         //     $user->email = $request->email ?? substr($request->stake_address, -4).'@anonymous.com';
         //     $user->password = Hash::make($request->password);
@@ -93,5 +97,35 @@ class DelegatorController extends Controller
         // Auth::login($user,$remember=true );
 
         // return auth()->user();
+    }
+
+    public function delegators(Request $request)
+    {
+        return Inertia::render('Home');
+    }
+
+    public function poolDetails()
+    {
+        $poolId = config('cardano.pool.hash');
+        $frost = new BlockfrostRequest('/pools/'.$poolId);
+        $details = $frost->send()->collect();
+
+        return $details;
+    }
+
+    public function poolBlocks()
+    {
+        $poolId = config('cardano.pool.hash');
+        $blocks = app(CardanoBlockfrostService::class)->request('get', '/pools/'.$poolId.'/blocks', ['count' => 21, 'order' => 'desc'])->collect();
+        $mintedBlocks = $blocks->map(function ($block) {
+            $res = app(CardanoBlockfrostService::class)->request('get', '/blocks/'.$block, null)->collect();
+
+            return [
+                'date' => (new DateTimeImmutable('@'.$res['time']))->format('m/d/Y H:i:s'),
+                ...$res,
+            ];
+        })->all();
+
+        return $mintedBlocks;
     }
 }

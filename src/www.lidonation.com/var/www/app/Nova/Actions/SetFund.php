@@ -2,7 +2,7 @@
 
 namespace App\Nova\Actions;
 
-use App\Models\Fund;
+use App\Models\CatalystExplorer\Fund;
 use Exception;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\InteractsWithQueue;

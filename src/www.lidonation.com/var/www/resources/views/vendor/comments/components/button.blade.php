@@ -1,12 +1,18 @@
+@props([
+    'submit' => false,
+    'small' => false,
+    'danger' => false,
+    'link' => false,
+])
 <button
-    type="{{ isset($submit) && $submit ? 'submit' : 'button' }}"
+    type="{{ $submit ? 'submit' : 'button' }}"
     @class([
-        'comments-button bg-teal-600 rounded-sm',
-        'is-small' => isset($small) && $small,
-        'is-danger' => isset($danger) && $danger,
-        'is-link' => isset($link) && $link,
-    ])"
-    {{ $attributes->except('type', 'size', 'submit') }}
+        'comments-button',
+        'is-small' => $small,
+        'is-danger' => $danger,
+        'is-link' => $link,
+    ])
+    {{ $attributes->except('type', 'size', 'submit', 'link') }}
 >
     {{ $slot }}
 </button>

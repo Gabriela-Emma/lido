@@ -24,8 +24,8 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 class Cause extends Model implements HasMedia, Interfaces\IHasMetaData
 {
     use Actionable,
-        HasAuthor,
         HasAssessments,
+        HasAuthor,
         HasHero,
         HasLinks,
         HasMetaData,

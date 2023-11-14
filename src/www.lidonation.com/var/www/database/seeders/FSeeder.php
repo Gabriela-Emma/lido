@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\CatalystUser;
+use App\Models\CatalystExplorer\CatalystUser;
+use App\Models\CatalystExplorer\Fund;
+use App\Models\CatalystExplorer\Proposal;
 use App\Models\Discussion;
-use App\Models\Fund;
 use App\Models\Link;
-use App\Models\Proposal;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Fluent;
@@ -123,7 +123,7 @@ class FSeeder extends Seeder
     {
         $parts = explode('@', $user->author);
         $cu = CatalystUser::where('username', $parts[count($parts) - 1])->first();
-        // save CatalystUser
+        // save CatalystLidoUser
         if (! $cu) {
             $cu = $this->createCatalystUser($user);
         } else {

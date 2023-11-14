@@ -3,14 +3,14 @@
 namespace App\Observers;
 
 use App\Invokables\FillPostData;
+use App\Models\CatalystExplorer\Proposal;
 use App\Models\Model;
-use App\Models\Proposal;
 use App\Models\User;
 
 class ProposalObserver extends CatalystObserver
 {
     /**
-     * Handle the User "created" event.
+     * Handle the LidoUser "created" event.
      *
      * @return void
      */

@@ -28,14 +28,14 @@ use Spatie\LaravelData\DataCollection;
 class LearningLesson extends Model
 {
     use HasAuthor,
-        HasHero,
-        HasRewards,
         HasHashIds,
+        HasHero,
         HashIdModel,
         HasMetaData,
         HasModel,
-        HasTranslations,
+        HasRewards,
         HasTimestamps,
+        HasTranslations,
         SoftDeletes;
 
     protected $hidden = ['id'];

@@ -126,7 +126,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | System User
+    | System LidoUser
     |--------------------------------------------------------------------------
     |
     | Default user id that should own models created by the system.
@@ -137,7 +137,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | System User Email
+    | System LidoUser Email
     |--------------------------------------------------------------------------
     |
     | Default user email that should own models created by the system.
@@ -148,7 +148,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | System User Email
+    | System LidoUser Email
     |--------------------------------------------------------------------------
     |
     | Default user email that should own models created by the system.
@@ -248,6 +248,7 @@ return [
         ShortcodesServiceProvider::class,
         App\Providers\ShortcodesServiceProvider::class,
         App\Providers\ValidatorServiceProvider::class,
+        Jenssegers\Agent\AgentServiceProvider::class,
     ],
 
     /*
@@ -272,5 +273,6 @@ return [
 
     'slte' => [
         'registration_open' => env('REGISTRATION_OPEN', false),
+        'Agent' => Jenssegers\Agent\Facades\Agent::class,
     ],
 ];

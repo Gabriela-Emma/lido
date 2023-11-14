@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Models\CatalystGroup;
+use App\Models\CatalystExplorer\Group;
 use App\Models\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Collection;
 class CatalystGroupRepository extends Repository
 {
     // Constructor to bind model to repo
-    public function __construct(CatalystGroup $model)
+    public function __construct(Group $model)
     {
         parent::__construct($model);
     }

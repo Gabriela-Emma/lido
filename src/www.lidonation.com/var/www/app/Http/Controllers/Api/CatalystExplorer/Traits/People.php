@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api\CatalystExplorer\Traits;
 
 use App\Http\Resources\PeopleResource;
-use App\Models\CatalystUser;
+use App\Models\CatalystExplorer\CatalystUser;
 use App\Models\Meta;
 use App\Models\User;
 use Illuminate\Contracts\Foundation\Application;

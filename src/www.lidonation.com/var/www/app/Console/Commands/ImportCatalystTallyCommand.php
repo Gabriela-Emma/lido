@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Models\CatalystTally;
+use App\Models\CatalystExplorer\CatalystTally;
 use Illuminate\Console\Command;
 use Illuminate\Support\Fluent;
 use JsonMachine\Exception\InvalidArgumentException;

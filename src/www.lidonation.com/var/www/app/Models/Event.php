@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Interfaces\IHasMetaData;
 use App\Models\Traits\HasAssessments;
 use App\Models\Traits\HasAuthor;
 use App\Models\Traits\HasHero;
@@ -15,17 +16,16 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Nova\Actions\Actionable;
 use Spatie\MediaLibrary\InteractsWithMedia;
-use App\Models\Interfaces\IHasMetaData;
 
 class Event extends Model implements IHasMetaData
 {
     use Actionable,
-        HasFactory,
-        HasAuthor,
         HasAssessments,
-        HasMetaData,
+        HasAuthor,
+        HasFactory,
         HasHero,
         HasLinks,
+        HasMetaData,
         HasTimestamps,
         HasTranslations,
         InteractsWithMedia,

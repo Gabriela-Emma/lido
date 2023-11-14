@@ -29,7 +29,7 @@ class ProcessUnpaidRewardsWithDepositsCommand extends Command
             ->get();
 
         foreach ($metas as $meta) {
-            $proposal = \App\Models\Proposal::find($meta->model_id);
+            $proposal = \App\Models\CatalystExplorer\Proposal::find($meta->model_id);
             if ($proposal) {
                 $proposal->quickpitch = $meta->content;
                 $proposal->save();

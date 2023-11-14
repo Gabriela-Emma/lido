@@ -11,7 +11,7 @@ use Illuminate\Support\Str;
 class TranslationObserver
 {
     /**
-     * Handle the User "created" event.
+     * Handle the LidoUser "created" event.
      *
      * @return void
      */
@@ -40,7 +40,7 @@ class TranslationObserver
     }
 
     /**
-     * Handle the User "created" event.
+     * Handle the LidoUser "created" event.
      *
      * @return void
      */

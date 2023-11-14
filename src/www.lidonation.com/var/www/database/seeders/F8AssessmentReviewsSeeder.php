@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\Assessment;
-use App\Models\AssessmentReview;
-use App\Models\AssessmentReviewsCommentsAssessors;
-use App\Models\Assessor;
+use App\Models\CatalystExplorer\Assessment;
+use App\Models\CatalystExplorer\AssessmentReview;
+use App\Models\CatalystExplorer\AssessmentReviewsCommentsAssessors;
+use App\Models\CatalystExplorer\Assessor;
 use App\Services\SettingService;
 use Illuminate\Support\Str;
 use Revolution\Google\Sheets\Facades\Sheets;

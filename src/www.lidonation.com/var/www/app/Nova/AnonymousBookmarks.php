@@ -3,7 +3,7 @@
 namespace App\Nova;
 
 use App\Models\AnonymousBookmark;
-use App\Models\Fund;
+use App\Models\CatalystExplorer\Fund;
 use App\Nova\Metrics\AnonymousBookmarkTrend;
 use App\Scopes\PublishedScope;
 use Illuminate\Database\Eloquent\Builder;

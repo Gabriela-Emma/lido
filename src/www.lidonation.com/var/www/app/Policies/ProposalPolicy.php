@@ -3,7 +3,7 @@
 namespace App\Policies;
 
 use App\Enums\PermissionEnum;
-use App\Models\Proposal;
+use App\Models\CatalystExplorer\Proposal;
 use App\Models\User;
 
 class ProposalPolicy extends AppPolicy

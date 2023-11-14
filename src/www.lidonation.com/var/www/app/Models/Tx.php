@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Tx extends Model
 {
-    use HasModel, HasAuthor, HasFactory;
+    use HasAuthor, HasFactory, HasModel;
 
     protected $hidden = ['user_id', 'deleted_at', 'model_type', 'model_id', 'media'];
 

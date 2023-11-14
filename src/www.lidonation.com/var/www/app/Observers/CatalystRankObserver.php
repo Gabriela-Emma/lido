@@ -2,8 +2,8 @@
 
 namespace App\Observers;
 
-use App\Models\CatalystRank;
-use App\Models\Proposal;
+use App\Models\CatalystExplorer\CatalystRank;
+use App\Models\CatalystExplorer\Proposal;
 
 class CatalystRankObserver
 {

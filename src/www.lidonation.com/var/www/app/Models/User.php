@@ -36,24 +36,24 @@ use Spatie\Permission\Traits\HasRoles;
 use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 use Staudenmeir\EloquentJsonRelations\HasJsonRelationships;
 
-class User extends Authenticatable implements HasMedia, Interfaces\IHasMetaData, CanComment, CanResetPassword, MustVerifyEmail
+class User extends Authenticatable implements CanComment, CanResetPassword, HasMedia, Interfaces\IHasMetaData, MustVerifyEmail
 {
     use HasApiTokens,
         HasCatalystProfiles,
-        HasJsonRelationships,
-        HasRelationships,
-        InteractsWithMedia,
-        InteractsWithComments,
         HasFactory,
-        HasProfilePhoto,
-        HasTeams,
-        HasPromos,
-        Notifiable,
         HasGravatar,
-        TwoFactorAuthenticatable,
+        HasJsonRelationships,
         HasMetaData,
+        HasProfilePhoto,
+        HasPromos,
+        HasRelationships,
         HasRoles,
-        Notifiable;
+        HasTeams,
+        InteractsWithComments,
+        InteractsWithMedia,
+        Notifiable,
+        Notifiable,
+        TwoFactorAuthenticatable;
 
     protected $with = ['media'];
 

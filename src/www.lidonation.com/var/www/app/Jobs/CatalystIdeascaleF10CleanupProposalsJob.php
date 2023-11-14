@@ -2,8 +2,8 @@
 
 namespace App\Jobs;
 
-use App\Models\Fund;
-use App\Models\Proposal;
+use App\Models\CatalystExplorer\Fund;
+use App\Models\CatalystExplorer\Proposal;
 use App\Services\SettingService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -12,7 +12,6 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Str;
 use Spatie\MediaLibrary\MediaCollections\Exceptions\FileCannotBeAdded;
 
 class CatalystIdeascaleF10CleanupProposalsJob implements ShouldQueue

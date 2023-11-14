@@ -8,7 +8,7 @@ use Spatie\LaravelData\DataCollection;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
 #[TypeScript]
-class PostSearchResultData extends Data
+final class PostSearchResultData extends Data
 {
     public function __construct(
         public ?string $type,

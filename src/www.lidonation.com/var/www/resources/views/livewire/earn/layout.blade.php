@@ -24,17 +24,11 @@
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
     <link rel="stylesheet" href="https://cdn.plyr.io/3.7.2/plyr.css" />
 
-    <link rel="stylesheet" href="{{ asset(mix('css/splide-core.min.css')) }}">
-    <link rel="stylesheet" href="{{ asset(mix('css/splide-default.min.css')) }}">
-
     @stack('styles')
 
     @livewireStyles
-    @bukStyles(true)
 
     <x-comments::styles />
-
-    <link rel="stylesheet" href="{{ asset(mix('css/earn-ccv4.css')) }}">
 
     @include('includes.analytics')
 
@@ -44,31 +38,25 @@
 </head>
 <body class="h-full delegators" x-cloak x-transition.duration.500ms
     x-data="earnCcv4" >
-    @include('includes.global-search-handler')
-
+    <livewire:components.lido-menu lazy="on-load" />
+    
     @include('includes.header')
 
     <main class="flex flex-col px-8 bg-white min-h-[68vh]">
         {{ $slot }}
     </main>
 
-    <!-- slte popup modal -->
-    <x-slte-popup-modal />
-
     {{-- include squiggly svg for text animation--}}
     @include('svg.squiggle')
 
     @include('includes.footer')
 
-    <x-lido-menu />
-
     <!-- Scripts -->
-    @livewireScripts
+    @livewireScriptConfig
 
-    <!-- @todo move to npm package -->
+    @include('includes.global-search-handler')
 
-    <script src="{{ mix('js/global.js') }}" ></script>
-    <script src="{{ mix('js/earn-ccv4.js') }}" defer></script>
+    @vite(['resources/js/earn-ccv4.ts'])
     
 
 
@@ -76,8 +64,6 @@
     @endif
 
     @stack('scripts')
-
-    <script src="{{ mix('js/bootstrap.js') }}"></script>
 
     <!-- Dynamic tailwind classes -->
     <span class="hidden text-white md:visible xl:invisible md:w-8 md:h-8"></span>

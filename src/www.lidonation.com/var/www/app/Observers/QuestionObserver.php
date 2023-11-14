@@ -7,7 +7,7 @@ use App\Models\Question;
 class QuestionObserver
 {
     /**
-     * Handle the User "created" event.
+     * Handle the LidoUser "created" event.
      */
     public function creating(Question $question): void
     {

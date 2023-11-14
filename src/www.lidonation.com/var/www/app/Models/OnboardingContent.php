@@ -12,7 +12,7 @@ use Spatie\Feed\FeedItem;
 
 class OnboardingContent extends Post implements Feedable
 {
-    use HasParent, HasFactory, HasComments;
+    use HasComments, HasFactory, HasParent;
 
     protected $with = ['media', 'tags.media', 'categories.media', 'author.media', 'snippets'];
 

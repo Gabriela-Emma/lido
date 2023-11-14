@@ -1,33 +1,28 @@
 version: "3.9"
 
 services:
-  traefik:
-    image: "traefik:v3.0"
-    command:
-      - "--log.level=INFO"
-      - "--providers.docker=true"
-      - "--api.insecure=true"
-      - "--providers.docker.exposedbydefault=false"
-      - "--entrypoints.web.address=:80"
-      - "--entryPoints.web.forwardedHeaders.insecure"
-      - "traefik.backend.loadbalancer.stickiness.sameSite=none"
-      #      - "--providers.file.directory=/configuration/"
-      #      - "--providers.file.watch=true"
-      - "traefik.http.routers.http-catchall.rule=hostregexp(`{host:.+}`)"
-      - "traefik.http.routers.http-catchall.entrypoints=web"
-    ports:
-      # - "80:80"
-      - "8880:80"
-      - "8008:8080"
+  lidonation.lucid:
+    image: nextjs/lidonation.lucid:latest
+    build:
+      context: src/lucid.lidonation.com
+      dockerfile: Dockerfile.dev
+    container_name: lidonation.lucid
+    command: npx nest start --watch
+    expose:
+      - "3000"
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
+    env_file:
+      - ./src/lucid.lidonation.com/.env
     volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - './src/lucid.lidonation.com:/usr/src/app'
     networks:
       - lido
 
   ## Databases
   lidolovelace-search-service:
     container_name: meili
-    image: getmeili/meilisearch:v1.3.4
+    image: getmeili/meilisearch:v1.4.2
     ports:
       - "7700:7700"
     environment:
@@ -76,7 +71,7 @@ services:
       - lido
 
   webdb:
-    image: postgres:15.4-alpine3.18
+    image: postgres:16.0-alpine3.18
     container_name: lido_web_db
     environment:
       - POSTGRES_LOGGING=true
@@ -199,16 +194,6 @@ services:
 
   lidolovelace-web-fpm-service:
     image: lidonation
-    labels:
-      - "traefik.enable=true"
-      - "traefik.port=80"
-      - "traefik.docker.network=lido"
-      - "traefik.frontend.passHostHeader=true"
-      - "traefik.backend.loadbalancer.stickiness.sameSite=none"
-      - "traefik.http.routers.lidolovelace-web-fpm-service.rule=Host(`localhost`)"
-      - "traefik.http.routers.lidolovelace-web-fpm-service.entrypoints=web"
-    extra_hosts:
-      - 'host.docker.internal:host-gateway'
     depends_on:
       - webdb
       - redis
@@ -228,12 +213,18 @@ services:
       MEDIA_DISK: public
       TELESCOPE_USE_DARK_THEME: "true"
       XDG_CONFIG_HOME: /var/www/html
+      LARAVEL_SAIL: 1
+      WWWUSER: '${WWWUSER:-$(UID)}'
     build:
       context: ./src/www.lidonation.com
-      args: {}
+      args:
+        WWWGROUP: '${WWWGROUP:-$(id -g)}'
       dockerfile: ./Dockerfile.dev
-    expose:
-      - 80
+    extra_hosts:
+        - 'host.docker.internal:host-gateway'
+    ports:
+        - '${APP_PORT:-80}:80'
+        - '${VITE_PORT:-5173}:${VITE_PORT:-5173}'
     volumes:
       - type: volume
         source: node-ipc

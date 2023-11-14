@@ -3,6 +3,7 @@
 .cardano.env
 .bashrc
 .npmrc
+.vite
 node_modules
 temp
 wiki
@@ -24,4 +25,3 @@ src/www.lidonation.com/var/www/storage/json/data/*
 # cntools
 logs/archive/
 !.gitkeep
-mix-manifest.json

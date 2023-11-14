@@ -2,6 +2,13 @@
 
 return [
 
+    //    'activations' => [
+    //        'provider' => 'users',
+    //        'table' => 'password_activation_tokens',
+    //        'expire' => 4320,
+    //        'throttle' => 60,
+    //    ],
+
     /*
     |--------------------------------------------------------------------------
     | Authentication Defaults
@@ -41,6 +48,11 @@ return [
             'provider' => 'users',
         ],
 
+        'statamic' => [
+            'driver' => 'session',
+            'provider' => 'statamic',
+        ],
+
         'translator' => [
             'driver' => 'session',
             'provider' => 'translators',
@@ -55,7 +67,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | User Providers
+    | LidoUser Providers
     |--------------------------------------------------------------------------
     |
     | All authentication drivers have a user provider. This defines how the
@@ -79,6 +91,10 @@ return [
         'translators' => [
             'driver' => 'eloquent',
             'model' => App\Models\Translator::class,
+        ],
+
+        'statamic' => [
+            'driver' => 'statamic',
         ],
 
         // 'users' => [
@@ -108,6 +124,32 @@ return [
             'table' => 'password_resets',
             'expire' => 60,
             'throttle' => 60,
+        ],
+        'resets' => [
+            'provider' => 'users',
+            'table' => 'password_reset_tokens',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+        'activations' => [
+            'provider' => 'users',
+            'table' => 'password_activation_tokens',
+            'expire' => 4320,
+            'throttle' => 60,
+
+        ],
+        'statamic_resets' => [
+            'provider' => 'statamic',
+            'table' => 'password_reset_tokens',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+        'statamic_activations' => [
+            'provider' => 'statamic',
+            'table' => 'password_activation_tokens',
+            'expire' => 4320,
+            'throttle' => 60,
+
         ],
     ],
 

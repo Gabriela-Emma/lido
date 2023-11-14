@@ -6,21 +6,24 @@ use App\Http\Controllers\Api\Nfts\LidoMinuteNftsController;
 use App\Http\Controllers\Api\Partners\PartnersController;
 use App\Http\Controllers\Api\Phuffycoin\PhuffycoinController;
 use App\Http\Controllers\Delegators\DelegatorController;
+use App\Http\Controllers\Delegators\EveryEpochController;
 use App\Http\Controllers\Earn\EarnController;
 use App\Http\Controllers\Earn\LearnController;
 use App\Http\Controllers\Earn\LearningLessonController;
 use App\Http\Controllers\GenerateMnemonicPhraseController;
 use App\Http\Controllers\GlobalSearchController;
-use App\Http\Controllers\ProjectCatalyst\CatalystBookmarksController;
-use App\Http\Controllers\ProjectCatalyst\CatalystMyBookmarksController;
-use App\Http\Controllers\ProjectCatalyst\CatalystMyRankingController;
-use App\Http\Controllers\ProjectCatalyst\CatalystProposalsController;
-use App\Http\Controllers\ProjectCatalyst\CatalystTalliesController;
+use App\Http\Controllers\LidoStatsController;
 use App\Http\Controllers\PromoController;
 use App\Http\Controllers\QuestionResponseController;
 use App\Http\Controllers\RewardController;
 use App\Http\Controllers\SnippetController;
-use App\Models\Catalyst\Ccv4BallotChoice;
+use App\Http\Integrations\Blockfrost\Requests\BlockfrostRequest;
+use App\Inertia\CatalystExplorer\BookmarksController;
+use App\Inertia\CatalystExplorer\MyBookmarksController;
+use App\Inertia\CatalystExplorer\MyRankingController;
+use App\Inertia\CatalystExplorer\ProposalsController;
+use App\Inertia\CatalystExplorer\TalliesController;
+use App\Models\CatalystExplorer\Ccv4BallotChoice;
 use App\Models\Giveaway;
 use App\Models\Reward;
 use App\Models\User;
@@ -70,18 +73,6 @@ Route::group(
     }
 );
 
-// Partners
-
-Route::group(
-    [
-        'prefix' => 'partners',
-        'middleware' => ['auth:sanctum'],
-    ],
-    function () {
-        Route::get('/promos', [PromoController::class, 'index']);
-        Route::get('/promos/{id}', [PromoController::class, 'read']);
-    }
-);
 Route::group(
     [
         'prefix' => 'partners',
@@ -94,6 +85,18 @@ Route::group(
         Route::post('/login', [PartnersController::class, 'login']);
     }
 );
+
+
+Route::group(
+    [
+        'prefix' => 'pool',
+    ],
+    function () {
+        Route::get('/details', [DelegatorController::class, 'poolDetails']);
+        Route::get('/blocks', [DelegatorController::class, 'poolBlocks']);
+    }
+);
+
 
 Route::group([
     'prefix' => 'phuffycoin',
@@ -120,7 +123,7 @@ Route::get('/ccv4/check-eligibility', function (Request $request) {
 
     // check user by account and log them in
     $user = User::where('wallet_stake_address', $stake_address)->first();
-    ! is_null($user) ? Auth::login($user) : '';
+    !is_null($user) ? Auth::login($user) : '';
 
     // build response based on ballots casted
     $response = [];
@@ -181,12 +184,12 @@ Route::post('/ccv4/claim-rewards', function (Request $request) {
 
     $ballots = $ballots->get();
     if ($ballots->isNotEmpty()) {
-        if (! $user instanceof User) {
+        if (!$user instanceof User) {
             $user = new User;
             $user->name = $request->account;
             $user->wallet_stake_address = $request->account;
             $user->wallet_address = $request->wallet_address;
-            $user->email = $request->email ?? substr($request->account, -4).'@anonymous.com';
+            $user->email = $request->email ?? substr($request->account, -4) . '@anonymous.com';
             $user->password = Hash::make(Str::random(10));
             $user->save();
         }
@@ -207,7 +210,7 @@ Route::post('/ccv4/claim-rewards', function (Request $request) {
             ->where('model_id', $giveaway?->id)
             ->get();
 
-        if (! $reward instanceof Reward) {
+        if (!$reward instanceof Reward) {
             $asset_name = trim($rule->subject, '.amount');
             $amount = $rule->predicate;
 
@@ -271,24 +274,22 @@ Route::group(
         'middleware' => [],
     ],
     function () {
+        Route::get('/epochs/latest/parameters', function (Request $request) {
+            return CardanoBlockfrostService::queryBlockFrost('/epochs/latest/parameters');
+        })->name('blockfrost-query');
         Route::get('cardano/config', function (Request $request) {
             $credentials = [
-                'poolId' => config('cardano.pool.hash'),
-                'blockExplorer' => config('cardano.pool.block_explorer'),
-                'blockfrostUrl' => config('services.blockfrost.baseUrl'),
-                'projectId' => config('services.blockfrost.projectId'),
                 'network_id' => config('cardano.network.network_id'),
+                'app_url' => config('app.url'),
             ];
 
             return json_encode($credentials);
-        });
+        })->name('cardano-config');
 
-        Route::any('cardano/{relativePath?}', function (CardanoBlockfrostService $frost, Request $request, $relativePath = null) {
-            $method = $request->method();
-            $uri = '/'.$relativePath;
-            $data = $request->all();
-
-            return $frost->request($method, $uri, $data);
+        Route::any('cardano/{relativePath?}', function (Request $request, $relativePath = null) {
+            $uri = '/' . $relativePath;
+            $frost = new BlockfrostRequest($uri);
+            return $frost->send()->json();
         })->where('relativePath', ('.*'));
     }
 );
@@ -306,7 +307,7 @@ Route::prefix('catalyst-explorer')->as('catalystExplorerApi.')
         Route::get('/proposals', [CatalystExplorer\ProposalController::class, 'proposals'])->name('proposals');
         Route::get('/proposals/{proposal_id}', [CatalystExplorer\ProposalController::class, 'proposal']);
 
-        Route::get('/proposals-ranks', [CatalystMyRankingController::class, 'ranks'])->name('proposals.ranks');
+        Route::get('/proposals-ranks', [MyRankingController::class, 'ranks'])->name('proposals.ranks');
 
         Route::post('/people/claim', [CatalystExplorer\ProfileController::class, 'claim']);
 
@@ -336,15 +337,15 @@ Route::prefix('catalyst-explorer')->as('catalystExplorerApi.')
         Route::post('/register', [CatalystExplorer\UserController::class, 'create']);
 
         // counts
-        Route::get('/metrics/proposals/count/approved', [CatalystProposalsController::class, 'metricCountFunded']);
-        Route::get('/metrics/metrics/count/paid', [CatalystProposalsController::class, 'metricCountTotalPaid']);
-        Route::get('/metrics/metrics/count/completed', [CatalystProposalsController::class, 'metricCountCompleted']);
+        Route::get('/metrics/proposals/count/approved', [ProposalsController::class, 'metricCountFunded']);
+        Route::get('/metrics/metrics/count/paid', [ProposalsController::class, 'metricCountTotalPaid']);
+        Route::get('/metrics/metrics/count/completed', [ProposalsController::class, 'metricCountCompleted']);
 
         // sums
-        Route::get('/metrics/metrics/sum/budget', [CatalystProposalsController::class, 'metricSumBudget']);
-        Route::get('/metrics/metrics/sum/approved', [CatalystProposalsController::class, 'metricSumApproved']);
-        Route::get('/metrics/metrics/sum/distributed', [CatalystProposalsController::class, 'metricSumDistributed']);
-        Route::get('/metrics/metrics/sum/completed', [CatalystProposalsController::class, 'metricSumCompleted']);
+        Route::get('/metrics/metrics/sum/budget', [ProposalsController::class, 'metricSumBudget']);
+        Route::get('/metrics/metrics/sum/approved', [ProposalsController::class, 'metricSumApproved']);
+        Route::get('/metrics/metrics/sum/distributed', [ProposalsController::class, 'metricSumDistributed']);
+        Route::get('/metrics/metrics/sum/completed', [ProposalsController::class, 'metricSumCompleted']);
         //        Route::post('/profiles', [CatalystUserProfilesController::class, 'update'])->name('myProfileUpdate');
     });
 
@@ -363,14 +364,14 @@ Route::prefix('catalyst-explorer')->as('catalystExplorerApi.')
         Route::post('proposal/repo', [CatalystExplorer\RepoController::class, 'store']);
         Route::patch('proposal/repo', [CatalystExplorer\RepoController::class, 'updateRepo']);
 
-        Route::get('/tallies', [CatalystTalliesController::class, 'index'])
+        Route::get('/tallies', [TalliesController::class, 'index'])
             ->name('tallies');
 
-        Route::get('/tallies/date', [CatalystTalliesController::class, 'getLastUpdated'])
+        Route::get('/tallies/date', [TalliesController::class, 'getLastUpdated'])
             ->name('talliesUpdatedAt');
-        Route::get('/tallies/sum', [CatalystTalliesController::class, 'getCatalystTallySum'])
+        Route::get('/tallies/sum', [TalliesController::class, 'getCatalystTallySum'])
             ->name('talliesSum');
-        Route::get('/tallies/attachment-link', [CatalystTalliesController::class, 'getAttachementLink'])
+        Route::get('/tallies/attachment-link', [TalliesController::class, 'getAttachementLink'])
             ->name('tallies.attachementLink');
 
         Route::prefix('proposals')->as('proposals.')->group(function () {
@@ -387,14 +388,14 @@ Route::prefix('catalyst-explorer')->as('catalystExplorerApi.')
 
         Route::prefix('/my')->group(function () {
 
-            Route::get('/bookmarks', [CatalystMyBookmarksController::class, 'index'])
+            Route::get('/bookmarks', [MyBookmarksController::class, 'index'])
                 ->name('myBookmarks');
         });
 
-        Route::get('/my/draft-ballots', [CatalystBookmarksController::class, 'draftBallotIndex'])
+        Route::get('/my/draft-ballots', [BookmarksController::class, 'draftBallotIndex'])
             ->name('draftBallots');
 
-        Route::get('/my/draft-ballots/{draftBallot:id}', [CatalystBookmarksController::class, 'getDraftBallot'])
+        Route::get('/my/draft-ballots/{draftBallot:id}', [BookmarksController::class, 'getDraftBallot'])
             ->name('draftBallot');
 
         Route::post('/react/report/{catalystReport:id}', [CatalystExplorer\ReportController::class, 'createReaction']);
@@ -421,23 +422,17 @@ Route::prefix('earn')->as('earnApi.')->group(function () {
     });
 });
 
-Route::prefix('promos')->as('promos')
-    ->middleware([
-        'auth:sanctum',
-    ])
-    ->group(function () {
-        Route::post('/create', [PromoController::class, 'store'])->name('store');
-        Route::get('/', [PromoController::class, 'show']);
-    });
+Route::prefix('promos')->as('promos.')->group(function () {
+    Route::get('/', [PromoController::class, 'show'])->name('view');
+    Route::post('/create', [PromoController::class, 'store'])->name('store');
+});
 
 Route::prefix('quizzes')->as('quizzes')
     ->middleware([])
     ->group(function () {
-        Route::post('/questions/answers/responses', [QuestionResponseController::class, 'store'])
-            ->name('responses.store');
 
         Route::post('/giveaway', [QuestionResponseController::class, 'store'])
-            ->name('responses.store');
+            ->name('responses.store.giveaway');
     });
 
 Route::get('/generate-mnemonic-phrase', [GenerateMnemonicPhraseController::class, 'generate']);
@@ -445,5 +440,13 @@ Route::get('/generate-mnemonic-phrase', [GenerateMnemonicPhraseController::class
 // snippets
 Route::get('/cache/snippets', [SnippetController::class, 'index'])->name('cache.snippets');
 
+// every epoch
+
+
+//search
 Route::get('/s', [GlobalSearchController::class, 'index'])
     ->name('search');
+
+// lido stats
+Route::get('lido-stats', [LidoStatsController::class, 'index'])
+    ->name('lidoStats');

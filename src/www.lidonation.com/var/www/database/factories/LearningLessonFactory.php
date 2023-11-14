@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Insight;
 use App\Models\LearningLesson;
+use App\Models\Model;
 use App\Models\News;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -24,7 +25,7 @@ class LearningLessonFactory extends Factory
 
         return [
             'user_id' => fn () => User::inRandomOrder()->first()->id,
-            'model_id' => $model::inRandomOrder()->first()->id,
+            'model_id' => $model::inRandomOrder()?->first()?->id,
             'model_type' => $model,
             'title' => $this->faker->words(4, true),
             'content' => $this->faker->paragraph(rand(2, 5), true),

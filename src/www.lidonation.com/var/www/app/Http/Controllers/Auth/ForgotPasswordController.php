@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Auth;
 // use Illuminate\Http\Request;
 // use DB;
 // use Carbon\Carbon;
-// use App\Models\User;
+// use App\Models\LidoUser;
 // use Mail;
 // use Hash;
 // use Illuminate\Support\Str;

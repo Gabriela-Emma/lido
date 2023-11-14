@@ -11,7 +11,7 @@ use Spatie\Feed\FeedItem;
 
 class ExternalPost extends Post
 {
-    use HasParent, SearchableLocale, HasComments;
+    use HasComments, HasParent, SearchableLocale;
 
     protected $with = ['media', 'tags.media', 'categories.media', 'author.media'];
 

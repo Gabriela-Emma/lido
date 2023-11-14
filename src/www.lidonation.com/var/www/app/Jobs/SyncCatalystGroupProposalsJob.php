@@ -2,8 +2,8 @@
 
 namespace App\Jobs;
 
-use App\Models\CatalystUser;
-use App\Models\Proposal;
+use App\Models\CatalystExplorer\CatalystUser;
+use App\Models\CatalystExplorer\Proposal;
 use App\Repositories\CatalystGroupRepository;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;

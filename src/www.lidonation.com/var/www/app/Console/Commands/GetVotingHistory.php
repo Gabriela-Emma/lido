@@ -2,11 +2,11 @@
 
 namespace App\Console\Commands;
 
-use App\Models\CatalystVoter;
-use App\Models\Fund;
 use App\Jobs\GetVoterHistory;
+use App\Models\CatalystExplorer\CatalystSnapshot;
+use App\Models\CatalystExplorer\CatalystVoter;
+use App\Models\CatalystExplorer\Fund;
 use Illuminate\Console\Command;
-use App\Models\CatalystSnapshot;
 
 class GetVotingHistory extends Command
 {
@@ -15,7 +15,7 @@ class GetVotingHistory extends Command
      *
      * @var string
      */
-        protected $signature = 'ln:get-vote-history {fund : fund_id} {--queue :  run asynchronously}';
+    protected $signature = 'ln:get-vote-history {fund : fund_id} {--queue :  run asynchronously}';
 
     /**
      * The console command description.
@@ -26,13 +26,12 @@ class GetVotingHistory extends Command
 
     /**
      * Execute the console command.
-     *
      */
     public function handle(): void
     {
         $fund = Fund::find($this->argument('fund'));
 
-        if (!$fund instanceof Fund) {
+        if (! $fund instanceof Fund) {
             $this->error('Fund is required.');
 
             return;
@@ -40,7 +39,7 @@ class GetVotingHistory extends Command
 
         $snapshot = CatalystSnapshot::where('model_id', $fund->id)->first();
 
-        if (!$snapshot instanceof CatalystSnapshot) {
+        if (! $snapshot instanceof CatalystSnapshot) {
             $this->error('Fund has no CatalystSnapshot.');
 
             return;
@@ -51,10 +50,10 @@ class GetVotingHistory extends Command
             ->cursor();
         foreach ($votingPowers as $delay => $power) {
             $voter = CatalystVoter::where('cat_id', $power->voter_id)->first();
-            if (!$voter instanceof CatalystVoter) {
+            if (! $voter instanceof CatalystVoter) {
                 continue;
             }
-            $destinationPath = '/data/catalyst-tools/voting-history/f10/' . $voter->stake_pub . '.json';
+            $destinationPath = '/data/catalyst-tools/voting-history/f10/'.$voter->stake_pub.'.json';
             if (file_exists($destinationPath)) {
                 continue;
             }

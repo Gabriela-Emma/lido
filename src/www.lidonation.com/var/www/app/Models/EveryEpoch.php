@@ -16,12 +16,12 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 
 class EveryEpoch extends Model implements HasMedia
 {
-    use HasMetaData,
+    use HasAuthor,
         HasFactory,
-        HasAuthor,
+        HasGiveaways,
+        HasMetaData,
         HasTimestamps,
         HasTranslations,
-        HasGiveaways,
         InteractsWithMedia,
         SoftDeletes;
 

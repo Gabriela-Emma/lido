@@ -1,9 +1,5 @@
 <?php
 
-use Dotenv\Dotenv;
-use Dotenv\Exception\InvalidPathException;
-use Dotenv\Exception\ValidationException;
-
 /*
 |--------------------------------------------------------------------------
 | Create The Application
@@ -18,15 +14,6 @@ use Dotenv\Exception\ValidationException;
 $app = new Illuminate\Foundation\Application(
     $_ENV['APP_BASE_PATH'] ?? dirname(__DIR__)
 );
-
-// overload container's env with .env entries
-try {
-    (Dotenv::createMutable(__DIR__.'/../'))->load();
-} catch (ValidationException $e) {
-    \Illuminate\Support\Facades\Log::info('could not overload container ENVs: '.$e->getMessage());
-} catch (InvalidPathException $e) {
-    // do not sweat it.
-}
 
 /*
 |--------------------------------------------------------------------------

@@ -11,7 +11,7 @@ use Illuminate\Support\Str;
 class UserObserver
 {
     /**
-     * Handle the User "created" event.
+     * Handle the LidoUser "created" event.
      */
     public function updating(User $user): void
     {

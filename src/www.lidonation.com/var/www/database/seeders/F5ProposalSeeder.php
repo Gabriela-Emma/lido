@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\CatalystExplorer\Proposal;
 use App\Models\Discussion;
-use App\Models\Proposal;
 use App\Repositories\CommentRepository;
 use Illuminate\Support\Fluent;
 use JsonMachine\Items;

@@ -1,13 +1,24 @@
+@props([
+    'compact' => false,
+    'left' => false,
+    'bottom' => false,
+    'title' => '',
+])
 <div
     x-cloak
-    @class(['comments-modal', 'is-compact' => $compact ?? false, 'is-left' => $left ?? false, 'is-bottom' => $bottom ?? false])
-    {{ $attributes }}
+    @class([
+        'comments-modal',
+        'is-compact' => $compact,
+        'is-left' => $left,
+        'is-bottom' => $bottom
+    ])
+    {{ $attributes->except(['compact', 'left', 'bottom']) }}
 >
-    @isset($title)
+    @if($title)
         <p class="comments-modal-title">
             {{ $title }}
         </p>
-    @endisset
+    @endif
     <div class="comments-modal-contents">
         {{ $slot }}
     </div>

@@ -19,8 +19,8 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 
 class Question extends Model implements HasMedia, IHasMetaData
 {
-    use HasMetaData,
-        HasAuthor,
+    use HasAuthor,
+        HasMetaData,
         HasTimestamps,
         HasTranslations,
         InteractsWithMedia,

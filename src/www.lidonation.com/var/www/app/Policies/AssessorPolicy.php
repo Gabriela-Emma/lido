@@ -2,7 +2,7 @@
 
 namespace App\Policies;
 
-use App\Models\Assessor;
+use App\Models\CatalystExplorer\Assessor;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 

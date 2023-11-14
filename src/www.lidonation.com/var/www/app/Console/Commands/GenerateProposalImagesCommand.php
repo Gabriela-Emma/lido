@@ -3,7 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Jobs\GenerateProposalImagesJob;
-use App\Models\Proposal;
+use App\Models\CatalystExplorer\Proposal;
 use App\Repositories\ProposalRepository;
 use Illuminate\Console\Command;
 

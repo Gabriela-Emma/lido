@@ -18,9 +18,9 @@ use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class PodcastSeason extends Model implements HasMedia, HasLink, IHasMetaData
+class PodcastSeason extends Model implements HasLink, HasMedia, IHasMetaData
 {
-    use HasAuthor, HasMetaData, HasLinks, HasTranslations, SoftDeletes, HasHero, InteractsWithMedia;
+    use HasAuthor, HasHero, HasLinks, HasMetaData, HasTranslations, InteractsWithMedia, SoftDeletes;
 
     public $translatable = [
         'name',

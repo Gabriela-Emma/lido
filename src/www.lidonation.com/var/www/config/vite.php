@@ -13,13 +13,16 @@ return [
     'configs' => [
         'default' => [
             'entrypoints' => [
-                //                'ssr' => 'resources/scripts/ssr.ts',
-                'phuffycoin' => 'resources/js/phuffycoin.ts',
+                'partners' => 'resources/js/partners.ts',
+                'lido' => 'resources/js/lido.ts',
+                'phuffycoin' => 'resources/js/apps/phuffycoin.ts',
+                'catalyst-explorer' => 'resources/js/apps/catalyst-explorer.ts',
+                'earn' => 'resources/js/apps/earn.ts',
                 'paths' => [
-                    'resources/js/app.js',
-                    'resources/js/global.js',
-                    'resources/sass/bootstrap.scss',
-                    'resources/sass/app.scss',
+                    'resources/js/lido.js',
+                    'resources/js/partners.js',
+                    'resources/js/apps/catalyst-explorer.ts',
+                    'resources/js/apps/earn.ts',
                 ],
                 'ignore' => '/\\.(d\\.ts|json)$/',
             ],
@@ -61,7 +64,7 @@ return [
     'commands' => [
         'artisan' => [
             'vite:tsconfig',
-            // 'typescript:generate'
+            'typescript:generate',
         ],
         'shell' => [
             //

@@ -8,7 +8,7 @@ use App\Models\Snippet;
 class SnippetObserver
 {
     /**
-     * Handle the User "created" event.
+     * Handle the LidoUser "created" event.
      *
      * @return void
      */
@@ -25,7 +25,7 @@ class SnippetObserver
     }
 
     /**
-     * Handle the User "created" event.
+     * Handle the LidoUser "created" event.
      *
      * @return void
      */

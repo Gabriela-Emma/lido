@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api\CatalystExplorer;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\GroupResource;
-use App\Models\CatalystGroup;
+use App\Models\CatalystExplorer\Group;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use OpenApi\Annotations as OA;
@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class GroupController extends Controller
 {
-    use Traits\Group;
+    use Traits\GroupDefinition;
 
     /**
      * @OA\Get(
@@ -47,7 +47,7 @@ class GroupController extends Controller
      */
     public function group($groupId): \Illuminate\Http\Response|GroupResource|Application|ResponseFactory
     {
-        $group = CatalystGroup::find($groupId);
+        $group = Group::find($groupId);
 
         if (is_null($group)) {
             return response([

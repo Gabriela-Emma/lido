@@ -3,7 +3,7 @@
         <section class="flex flex-row items-center justify-between h-full text-gray-600 md:text-xl">
             <div class='flex flex-row items-center justify-start h-full gap-5'>
                 <div class='flex flex-row items-center justify-start h-full gap-a brand-logo-wrapper'>
-                    <a href="/" class='inline-block brand-logo-link mr-2'>
+                    <a wire:navigate.hover href="/" class='inline-block brand-logo-link mr-2'>
                         <img class="hidden md:block logo" width="110" height="110"
                              src="{{asset('img/llogo-transparent.png')}}"
                              alt="lidonation white transparent logo" />
@@ -13,12 +13,12 @@
                              alt="lidonation bare black logo"/>
                     </a>
 
-                    <x-public.site-title></x-public.site-title>
+                    <x-global.site-title></x-global.site-title>
                 </div>
             </div>
             <div class="z-20 flex flex-row items-center justify-end h-full gap-1">
                 <ul class="z-50 h-full text-white flex flex-row items-center gap-4" id="primary-menu">
-                    <x-public.menu-primary></x-public.menu-primary>
+                    <x-global.menu-primary></x-global.menu-primary>
                 </ul>
             </div>
         </section>

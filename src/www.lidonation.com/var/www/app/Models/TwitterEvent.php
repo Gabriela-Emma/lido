@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class TwitterEvent extends Model implements IHasMetaData
 {
-    use SoftDeletes, HasFactory, HasAuthor, HasMetaData;
+    use HasAuthor, HasFactory, HasMetaData, SoftDeletes;
 
     /**
      * The attributes that should be cast.

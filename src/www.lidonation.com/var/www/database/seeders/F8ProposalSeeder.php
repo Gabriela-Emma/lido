@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\CatalystUser;
+use App\Models\CatalystExplorer\CatalystUser;
 use App\Models\Discussion;
 use App\Models\User;
 use App\Repositories\CommentRepository;

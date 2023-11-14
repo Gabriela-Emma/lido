@@ -7,7 +7,7 @@ use Spatie\LaravelData\Data;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
 #[TypeScript]
-class PromoData extends Data
+final class PromoData extends Data
 {
     public function __construct(
         public ?string $title,

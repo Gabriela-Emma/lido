@@ -7,6 +7,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Rule extends Model
 {
-    use HasModel,
-        HasFactory;
+    use HasFactory,
+        HasModel;
 }

@@ -10,8 +10,8 @@ use Parental\HasChildren;
 class Reaction extends Model
 {
     use HasChildren;
-    use SoftDeletes;
     use HasFactory;
+    use SoftDeletes;
 
     protected $table = 'lido_reactions';
 

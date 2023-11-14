@@ -1,28 +1,21 @@
-// @ts-nocheck
-import Alpine, {Alpine as AlpineType} from 'alpinejs'
-import persist from '@alpinejs/persist';
-import focus from '@alpinejs/focus';
-import WalletService from "./lib/services/WalletService";
+import { Livewire, Alpine } from '../../vendor/livewire/livewire/dist/livewire.esm';
+import './bootstrap';
+import '../scss/earn-ccv4.scss';
+import WalletService from './global/services/wallet-service';
 import {C, Cardano} from "lucid-cardano";
-import CardanoService from "./lib/services/CardanoService";
 import {Axios, AxiosError} from "axios";
-import Plyr from 'plyr';
+
 export {};
 declare global {
     interface Window {
-        Alpine: AlpineType;
         cardano: Cardano;
         delegationLearningModule: any;
         axios: Axios;
     }
 }
 
-Alpine.plugin(persist);
-Alpine.plugin(focus);
-
 Alpine.data('earnCcv4', function () {
     return {
-        cardanoService: null,
         environment: 'test',
 
         wallet: null,
@@ -40,7 +33,6 @@ Alpine.data('earnCcv4', function () {
         cardanoScanRelativeUrl: null,
         async init() {
                 this.walletService = new WalletService();
-                this.cardanoService = new CardanoService();
 
                 if (window.location.origin === 'https://www.lidonation.com') {
                     this.environment = 'production';
@@ -75,13 +67,13 @@ Alpine.data('earnCcv4', function () {
                 this.walletAddress = await this.walletService.getAddress();
                 this.stakeAddress = <string>await this.walletService.getStakeAddress(this.walletName);
                 this.walletBalance = await this.walletService.getBalance(this.walletName);
-                const walletBalance = C.Value.from_bytes(Buffer.from(this.walletBalance, 'hex')).coin().to_str();
-                if (!!walletBalance) {
-                    this.walletBalance = (walletBalance / 1000000).toLocaleString(undefined, {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2
-                    });
-                }
+                // const walletBalance = C.Value.from_bytes(Buffer.from(this.walletBalance, 'hex')).coin().to_str();
+                // if (!!walletBalance) {
+                //     this.walletBalance = (walletBalance / 1000000).toLocaleString(undefined, {
+                //         minimumFractionDigits: 2,
+                //         maximumFractionDigits: 2
+                //     });
+                // }
                 this.walletLoaded = true;
                 this.walletLoading = false;
                 return true;
@@ -131,7 +123,4 @@ Alpine.data('earnCcv4', function () {
     }
 }.bind(Alpine));
 
-window.globalVideoPlayer = globalVideoPlayer;
-
-window.Alpine = Alpine;
-window.Alpine.start();
+Livewire.start()

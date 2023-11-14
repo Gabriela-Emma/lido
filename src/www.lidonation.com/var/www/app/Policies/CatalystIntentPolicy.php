@@ -2,7 +2,7 @@
 
 namespace App\Policies;
 
-use App\Models\CatalystIntent;
+use App\Models\CatalystExplorer\CatalystIntent;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 

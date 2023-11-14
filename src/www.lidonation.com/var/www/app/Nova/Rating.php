@@ -3,6 +3,7 @@
 namespace App\Nova;
 
 use App\Nova\Actions\PublishModel;
+use App\Nova\CatalystExplorer\Rationales;
 use App\Scopes\PublishedScope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;

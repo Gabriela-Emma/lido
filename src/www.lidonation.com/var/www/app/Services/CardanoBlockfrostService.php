@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Http\Integrations\Blockfrost\Requests\BlockfrostRequest;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Facades\Http;
 
@@ -63,5 +64,13 @@ class CardanoBlockfrostService
         return Http::withHeaders([
             'project_id' => $this->projectId,
         ])->baseUrl($this->blockfrostUrl);
+    }
+
+    public static function queryBlockFrost(string $endpoint)
+    {
+        $blockfrostReq = new BlockfrostRequest($endpoint);
+        $response = $blockfrostReq->send();
+
+        return $response->json();
     }
 }

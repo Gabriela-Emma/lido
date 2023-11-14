@@ -15,7 +15,7 @@ class CauseObserver
     }
 
     /**
-     * Handle the User "created" event.
+     * Handle the LidoUser "created" event.
      *
      * @return void
      */

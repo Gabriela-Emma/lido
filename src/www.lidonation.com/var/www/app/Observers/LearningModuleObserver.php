@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
 class LearningModuleObserver
 {
     /**
-     * Handle the User "created" event.
+     * Handle the LidoUser "created" event.
      */
     public function creating(LearningModule $learningModule): void
     {
@@ -19,7 +19,7 @@ class LearningModuleObserver
     }
 
     /**
-     * Handle the User "created" event.
+     * Handle the LidoUser "created" event.
      */
     public function forceDeleting(LearningModule $learningModule): void
     {

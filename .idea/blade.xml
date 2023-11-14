@@ -19,6 +19,7 @@
       <data directive="@component" injection="true" prefix="&lt;?php $__env-&gt;startComponent(" suffix="); ?&gt;" />
       <data directive="@componentfirst" injection="true" prefix="&lt;?php $__env-&gt;startComponentFirst(" suffix="); ?&gt;" />
       <data directive="@continue" injection="true" prefix="&lt;?php if(" suffix=") continue; ?&gt;" />
+      <data directive="@cp_svg" injection="true" prefix="&lt;?php _bladeDirective(" suffix="); ?&gt;" />
       <data directive="@csrf" />
       <data directive="@datetime" injection="true" prefix="&lt;?php _bladeDirective(" suffix="); ?&gt;" />
       <data directive="@dd" injection="true" prefix="&lt;?php dd(" suffix="); ?&gt;" />
@@ -60,6 +61,7 @@
       <data directive="@endlang" />
       <data directive="@endmarkdown" />
       <data directive="@endonce" />
+      <data directive="@endpersist" />
       <data directive="@endphp" />
       <data directive="@endprepend" />
       <data directive="@endprependonce" />
@@ -71,6 +73,7 @@
       <data directive="@endsection" />
       <data directive="@endslot" />
       <data directive="@endswitch" />
+      <data directive="@endteleport" />
       <data directive="@endunless" />
       <data directive="@endunlessrole" />
       <data directive="@endverbatim" />
@@ -106,16 +109,19 @@
       <data directive="@json" injection="true" prefix="&lt;?php echo json_encode(" suffix=") ?&gt;" />
       <data directive="@lang" injection="true" prefix="&lt;?php echo app('translator')-&gt;get(" suffix="); ?&gt;" />
       <data directive="@livewire" injection="true" prefix="&lt;?php \Livewire\Livewire::mount(" suffix="); ?&gt;" />
+      <data directive="@livewireScriptConfig" />
       <data directive="@livewireScripts" />
       <data directive="@livewireStyles" />
       <data directive="@markdown" injection="true" prefix="&lt;?php _bladeDirective(" suffix="); ?&gt;" />
       <data directive="@markdownLang" injection="true" prefix="&lt;?php _bladeDirective(" suffix="); ?&gt;" />
       <data directive="@method" injection="true" prefix="&lt;?php echo method_field(" suffix="); ?&gt;" />
       <data directive="@multilangualForm" />
+      <data directive="@nocache" injection="true" prefix="&lt;?php _bladeDirective(" suffix="); ?&gt;" />
       <data directive="@once" />
       <data directive="@overwrite" />
       <data directive="@parent" />
       <data directive="@percent" injection="true" prefix="&lt;?php _bladeDirective(" suffix="); ?&gt;" />
+      <data directive="@persist" injection="true" prefix="&lt;?php echo e(" suffix="); ?&gt;" />
       <data directive="@php" injection="true" prefix="&lt;?php (" suffix="); ?&gt;" />
       <data directive="@prepend" injection="true" prefix="&lt;?php $__env-&gt;startPrepend(" suffix="); ?&gt;" />
       <data directive="@prependonce" injection="true" prefix="&lt;?php $___phpstorm_prepend_once_params = [" suffix="]; if (! $__env-&gt;hasRenderedOnce($___phpstorm_prepend_once_params[1])): $__env-&gt;markAsRenderedOnce($___phpstorm_prepend_once_params); $__env-&gt;startPrepend($___phpstorm_prepend_once_params[0]); ?&gt;" />
@@ -138,6 +144,7 @@
       <data directive="@style" injection="true" prefix="class=&quot;&lt;?php echo \Illuminate\Support\Arr::toCssStyles(" suffix=")?&gt;&quot;" />
       <data directive="@svg" injection="true" prefix="&lt;?php echo e(svg(" suffix=")); ?&gt;" />
       <data directive="@switch" injection="true" prefix="&lt;?php switch(" suffix="): ?&gt;" />
+      <data directive="@teleport" injection="true" prefix="&lt;?php echo e(" suffix="); ?&gt;" />
       <data directive="@this" />
       <data directive="@unless" injection="true" prefix="&lt;?php if (! (" suffix=")): ?&gt;" />
       <data directive="@unlessrole" injection="true" prefix="&lt;?php if(! \Spatie\Permission\PermissionServiceProvider::bladeMethodWrapper('hasRole', {" suffix="})): ?&gt;" />

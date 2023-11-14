@@ -4,7 +4,7 @@
 ])
 <div href="{{$promo->uri}}" target="_blank">
     <a href="{{$promo->uri}}" target="_blank" title="{{$promo->content}}">
-        <img src="{{$promo->feature_url}}" alt="{{$promo->title}}'s promo" title="{{$promo->content}}">
+        <img src="{{$promo?->feature_url}}" alt="{{$promo->title}}'s promo" title="{{$promo->content}}">
     </a>
 {{--    <div--}}
 {{--        class="absolute left-0 bottom-0 flex gap-2 items-center text-yellow-500 bg-gradient-to-t from-slate-800 h-auto w-full p-2.5 sm:p-2">--}}

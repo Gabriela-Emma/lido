@@ -2,6 +2,7 @@
 
 namespace App\Nova;
 
+use App\Nova\CatalystExplorer\Proposals;
 use Ebess\AdvancedNovaMediaLibrary\Fields\Images;
 use Illuminate\Http\Request;
 use Laravel\Nova\Actions\ExportAsCsv;
@@ -10,7 +11,6 @@ use Laravel\Nova\Fields\Color;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Markdown;
 use Laravel\Nova\Fields\MorphedByMany;
-use Laravel\Nova\Fields\MorphToMany;
 use Laravel\Nova\Fields\Slug;
 use Laravel\Nova\Fields\Stack;
 use Laravel\Nova\Fields\Text;

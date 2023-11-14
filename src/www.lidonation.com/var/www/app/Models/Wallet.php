@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Wallet extends Model
 {
-    use HasAuthor, SoftDeletes, HasFactory;
+    use HasAuthor, HasFactory, SoftDeletes;
 
     public function models(): MorphToMany
     {

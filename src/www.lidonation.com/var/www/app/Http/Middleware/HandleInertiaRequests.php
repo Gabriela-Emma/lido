@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Illuminate\Http\Request;
 use Inertia\Middleware;
+use Tightenco\Ziggy\Ziggy;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -20,15 +21,14 @@ class HandleInertiaRequests extends Middleware
             'catalyst-explorer' => 'layouts/catalyst-explorer',
             'earn' => 'layouts/earn',
             'rewards' => 'layouts/rewards',
+            'delegators' => 'layouts/delegators',
             's' => 'layouts/lido-search',
-            default => 'layout/app'
+            default => parent::rootView($request)
         };
     }
 
     /**
-     * Determines the current asset version.
-     *
-     * @see https://inertiajs.com/asset-versioning
+     * Determine the current asset version.
      */
     public function version(Request $request): ?string
     {
@@ -36,9 +36,9 @@ class HandleInertiaRequests extends Middleware
     }
 
     /**
-     * Defines the props that are shared by default.
+     * Define the props that are shared by default.
      *
-     * @see https://inertiajs.com/shared-data
+     * @return array<string, mixed>
      */
     public function share(Request $request): array
     {
@@ -48,11 +48,16 @@ class HandleInertiaRequests extends Middleware
             $user['roles'] = $request->user()?->getRoleNames();
         }
 
-        return array_merge(parent::share($request), [
-            'user' => fn () => $user ?? null,
-            'locale' => app()->getLocale(),
-            'asset_url' => asset('/'),
-            'base_url' => config('app.url'),
-        ]);
+        return [
+            ...parent::share($request),
+            'ziggy' => fn () => [
+                ...(new Ziggy)->toArray(),
+                'location' => $request->url(),
+                'user' => fn () => $user ?? null,
+                'locale' => app()->getLocale(),
+                'asset_url' => asset('/'),
+                'base_url' => config('app.url'),
+            ],
+        ];
     }
 }

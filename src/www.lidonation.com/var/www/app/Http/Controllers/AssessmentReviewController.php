@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreAssessmentReviewRequest;
 use App\Http\Requests\UpdateAssessmentReviewRequest;
-use App\Models\AssessmentReview;
+use App\Models\CatalystExplorer\AssessmentReview;
 
 class AssessmentReviewController extends Controller
 {

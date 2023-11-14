@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api\CatalystExplorer;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ProposalResource;
 use App\Jobs\ProposalQuickPitchLength;
-use App\Models\Proposal;
+use App\Models\CatalystExplorer\Proposal;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Request;

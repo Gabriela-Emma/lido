@@ -3,13 +3,15 @@
 namespace App\Invokables;
 
 use App\Models\EveryEpoch;
-use App\Services\CardanoBlockfrostService;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
+use App\Services\CardanoBlockfrostService;
 
 class GetLidoRewardsPot
 {
     public function __invoke(?EveryEpoch $everyEpoch): Collection
     {
+
         return $everyEpoch
             ?->giveaway?->balances
             ?->filter(fn ($bal) => $bal['name'] !== 'lovelace')->map(function ($balance) {

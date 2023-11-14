@@ -3,8 +3,8 @@ import Clipboard from "@ryangjchandler/alpine-clipboard"
 import Tooltip from "@ryangjchandler/alpine-tooltip";
 import persist from '@alpinejs/persist';
 import focus from '@alpinejs/focus';
-import {cardanoWallet} from "./lib/utils/cardanoWallet";
-import {globalVideoPlayer} from "./lib/utils/globalVideoPlayer";
+import {cardanoWallet} from "../../../www2/resources/js/lib/utils/cardanoWallet";
+import {globalVideoPlayer} from "../../../www2/resources/js/lib/utils/globalVideoPlayer";
 import LZString from 'lz-string';
 import {difference, filter, flatten, groupBy, includes, map, omit, reject, some, trim, uniq, uniqBy} from "lodash";
 

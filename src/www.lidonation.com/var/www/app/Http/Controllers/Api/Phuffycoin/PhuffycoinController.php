@@ -163,6 +163,7 @@ class PhuffycoinController extends Controller
         $mintTxs = $request->input('mintTxs');
         $txUtxos = $blockfrostService->get("txs/{$depositTx}/utxos", null)->object();
         if (empty($mintTxs)) {
+
             return response('Invalidate mint data.', 400);
         }
         $mintTxs = MintTx::lockForUpdate()->find($mintTxs);

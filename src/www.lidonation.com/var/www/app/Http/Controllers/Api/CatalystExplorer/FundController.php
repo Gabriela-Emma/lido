@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api\CatalystExplorer;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\FundResource;
-use App\Models\Fund;
+use App\Models\CatalystExplorer\Fund;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -66,7 +66,7 @@ class FundController extends Controller
                 'message' => 'query parameter \'per_page\' should not exceed 60'], 400);
         }
 
-        $funds = Fund::orderByDesc('launched_at')
+        $funds = Fund::orderByDesc('launched_at')->without(['proposals', 'parent'])
             ->funds()
             ->filter(request(['search']));
 

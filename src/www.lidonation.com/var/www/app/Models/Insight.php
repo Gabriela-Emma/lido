@@ -13,7 +13,7 @@ use Spatie\Feed\FeedItem;
 
 class Insight extends Post implements Feedable
 {
-    use HasParent, HasComments, SearchableLocale, SoftDeletes;
+    use HasParent, SearchableLocale, SoftDeletes;
 
     protected $with = ['media', 'tags.media', 'categories.media', 'author.media'];
 

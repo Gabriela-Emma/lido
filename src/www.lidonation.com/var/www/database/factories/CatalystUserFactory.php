@@ -2,11 +2,11 @@
 
 namespace Database\Factories;
 
-use App\Models\CatalystUser;
+use App\Models\CatalystExplorer\CatalystUser;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\CatalystUser>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\CatalystExplorer\CatalystUser>
  */
 class CatalystUserFactory extends Factory
 {

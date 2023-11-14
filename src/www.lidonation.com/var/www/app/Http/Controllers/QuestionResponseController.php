@@ -70,9 +70,8 @@ class QuestionResponseController extends Controller
         $answer->question_id = $request->input('question');
         $answer->question_answer_id = $request->input('answer');
         $answer->user_id = $user->id;
-        $answer->stake_address = $user->wallet_stake_address;
         $answer->context_type = EveryEpoch::class;
-        // $answer->context_id =
+        $answer->stake_address = $request->input('stake_address') ?? $user->wallet_stake_address;
         $answer->save();
 
         return $answer;

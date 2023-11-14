@@ -6,19 +6,16 @@
         <form class="comments-form-inner" wire:submit.prevent="reply">
             <div
                 x-data="{ isExpanded: false }"
-                x-init="
-                    $wire.on('reply-{{ $comment->id }}', () => {
-                        isExpanded = false;
-                    });
-                "
+                x-on:reply-{{ $comment->id }}="isExpanded = false"
             >
                 <input
                     x-show="!isExpanded"
                     @click="isExpanded = true"
+                    @focus="isExpanded = true"
                     class="comments-placeholder"
                     placeholder="{{ __('comments::comments.write_reply') }}"
                 >
-                <template x-if="isExpanded">
+                <div x-show="isExpanded">
                     <div>
                         <x-dynamic-component
                             :component="\Spatie\LivewireComments\Support\Config::editor()"
@@ -39,7 +36,7 @@
                             {{ __('comments::comments.cancel') }}
                         </x-comments::button>
                     </div>
-                </template>
+                </div>
             </div>
         </form>
     </div>

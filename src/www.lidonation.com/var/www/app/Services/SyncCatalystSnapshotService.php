@@ -2,8 +2,8 @@
 
 namespace App\Services;
 
-use App\Models\CatalystSnapshot;
-use App\Models\Fund;
+use App\Models\CatalystExplorer\CatalystSnapshot;
+use App\Models\CatalystExplorer\Fund;
 use Carbon\Carbon;
 use JsonMachine\Items;
 

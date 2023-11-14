@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Models\CatalystUser;
+use App\Models\CatalystExplorer\CatalystUser;
 use Illuminate\Database\Eloquent\Collection;
 
 class CatalystUserRepository extends Repository

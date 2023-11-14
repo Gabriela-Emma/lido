@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Http\Traits\HasHashIds;
+use App\Models\CatalystExplorer\Proposal;
 use App\Models\Traits\HasAuthor;
 use App\Models\Traits\HashIdModel;
 use Illuminate\Database\Eloquent\Casts\Attribute;

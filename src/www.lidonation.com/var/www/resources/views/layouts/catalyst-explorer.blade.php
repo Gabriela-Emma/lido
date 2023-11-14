@@ -1,56 +1,53 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-<head>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <link rel="stylesheet" href="{{ asset(mix('css/catalyst-explorer.css')) }}">
+        <title inertia>{{ config('app.name', 'Laravel') }}</title>
 
-    {{-- <script src="https://player.vimeo.com/api/player.js"></script> --}}
+        <!-- Fonts -->
+        <link rel="preconnect" href="https://fonts.bunny.net">
+        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
-    @env('production')
-        <!-- Cloudflare Web Analytics -->
-        <script defer src='https://static.cloudflareinsights.com/beacon.min.js'
-                data-cf-beacon='{"token": "{{config('services.cloudflare.token')}}"}'></script>
+        @livewireStyles
 
-        <!-- Fathom - beautiful, simple website analytics  -->
-        <script src="https://essential-jazzy.lidonation.com/script.js" data-spa="auto"
-                data-site="{{config('services.fathom.site')}}" defer></script>
-        <!-- / Fathom -->
-    @endenv
+        @env('production')
+            <!-- Cloudflare Web Analytics -->
+            <script defer src='https://static.cloudflareinsights.com/beacon.min.js'
+                    data-cf-beacon='{"token": "{{config('services.cloudflare.token')}}"}'></script>
 
-    @routes
-    <script src="{{ mix('/js/alpine.js') }}" defer></script>
-    <script src="{{ mix('/js/catalyst-explorer.js') }}" defer></script>
-
-    @inertiaHead
-</head>
-<body class="projectCatalyst">
-
-<x-lido-menu />
-
-@include('includes.global-search-handler')
-
-@include('includes.header')
-
-<main>
-    @inertia
-</main>
+            <!-- Fathom - beautiful, simple website analytics  -->
+            <script src="https://essential-jazzy.lidonation.com/script.js" data-spa="auto"
+                    data-site="{{config('services.fathom.site')}}" defer></script>
+            <!-- / Fathom -->
+        @endenv
 
 
-{{-- include squiggly svg for text animation--}}
-@include('svg.squiggle')
+        <!-- Scripts -->
+        @routes
 
-@include('includes.footer')
+        @inertiaHead
+    </head>
+    <body x-data x-cloak class="font-sans antialiased catalyst-explorer-app">
+        <livewire:components.lido-menu lazy="on-load" />
 
-<script src="{{ mix('js/bootstrap.js') }}"></script>
+        @include('includes.header')
 
-<script src="{{ mix('js/global.js') }}"></script>
+        <main>
+            @inertia
+        </main>
 
-{{--<livewire:global-player-component />--}}
+        @include('svg.squiggle')
 
-<link rel="preload" href="{{ asset(mix('css/app.css')) }}" as="style">
-</body>
+        @include('includes.footer')
+
+        @livewireScripts
+
+        @vite(['resources/js/apps/catalyst-explorer/app.ts'])
+
+        @include('includes.global-search-handler')
+    </body>
 </html>

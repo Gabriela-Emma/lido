@@ -13,7 +13,7 @@ class Meta extends Model
     protected $with = [];
 
     use HasFactory,
-        HasModel,
         HasMetaData,
+        HasModel,
         HasTimestamps;
 }
