@@ -2,10 +2,10 @@
 
 namespace App\Jobs;
 
-use App\Models\Assessment;
+use App\Models\CatalystExplorer\Assessment;
+use App\Models\CatalystExplorer\Proposal;
 use App\Models\Discussion;
 use App\Models\Flag;
-use App\Models\Proposal;
 use App\Repositories\CommentRepository;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;

@@ -8,7 +8,7 @@ use Spatie\TypeScriptTransformer\Attributes\Optional as TypeScriptOptional;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
 #[TypeScript]
-class LearningAttemptData extends Data
+final class LearningAttemptData extends Data
 {
     public function __construct(
         #[TypeScriptOptional]

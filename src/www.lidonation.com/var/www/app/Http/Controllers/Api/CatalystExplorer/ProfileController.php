@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Api\CatalystExplorer;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\PeopleResource;
-use App\Models\CatalystUser;
+use App\Models\CatalystExplorer\CatalystUser;
+use App\Models\CatalystExplorer\Proposal;
 use App\Models\NotificationRequestTemplate;
-use App\Models\Proposal;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Support\Facades\Auth;

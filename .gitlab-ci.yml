@@ -519,8 +519,8 @@
 
 stages:
   - .pre
-  - build
   - test
+  - build
   - preview
   - mainnet
   - .post
@@ -662,33 +662,6 @@ workflow:
 
 ########## Pre-Build jobs #########
 ###################################
-yarn:
-  stage: .pre
-  image: node:15.9.0-alpine3.10
-  services: []
-  retry: 1
-  before_script:
-    - apk add --update curl && rm -rf /var/cache/apk/*
-  script: |-
-    set -vx
-    export PATH=$PATH:/usr/local/bin
-    cd ./src/www.lidonation.com/var/www
-    curl -X GET https://www.lidonation.com/api/cache/snippets > ./storage/app/snippets.json
-    touch .npmrc
-    echo "//npm.pkg.github.com/:_authToken=${GITHUB_PACKAGE_REGISTRY_TOKEN}" > .npmrc
-    echo '@spatie:registry=https://npm.pkg.github.com' >> .npmrc
-    echo '@splidejs:registry=https://npm.pkg.github.com' >> .npmrc
-    yarn config set ignore-engines true
-    yarn install
-    yarn run production
-  artifacts:
-    paths:
-      - ./src/www.lidonation.com/var/www/public
-    expire_in: 2 days
-  rules:
-    - if: '$CI_COMMIT_BRANCH != "main" && ($DEPLOY_WEBSITE == "True" || $DEPLOY_WEBSITE == "true")'
-    - if: '$CI_COMMIT_BRANCH == "main" && ($DEPLOY_WEBSITE == "True" || $DEPLOY_WEBSITE == "true")'
-
 composer:
   stage: .pre
   image: composer:2.2.6
@@ -710,6 +683,58 @@ composer:
   rules:
     - if: '$CI_COMMIT_BRANCH != "main" && ($DEPLOY_WEBSITE == "True" || $DEPLOY_WEBSITE == "true")'
     - if: '$CI_COMMIT_BRANCH == "main" && ($DEPLOY_WEBSITE == "True" || $DEPLOY_WEBSITE == "true")'
+
+pest:
+  stage: .pre
+  image: docker:24.0.7-dind-alpine3.18
+  cache: { }
+  retry: 1
+  script:
+    - |
+      set -xev
+      mkdir -p $(pwd)/src/www.lidonation.com/var/www/tests/reports    
+      
+      docker run --rm --interactive \
+          --volume ${PWD}/src/www.lidonation.com/var/www/:/app \
+          composer install --ignore-platform-reqs --optimize-autoloader
+      docker-compose -f docker-compose.testing.yml up -d
+      
+      docker-compose -f docker-compose.testing.yml exec -t lidonation php /var/www/html/vendor/bin/pest --parallel --processes=12
+      
+      docker-compose -f docker-compose.testing.yml down --volumes
+  rules:
+    - if: '$CI_COMMIT_BRANCH != "main" && ($DEPLOY_WEBSITE == "True" || $DEPLOY_WEBSITE == "true")'
+
+yarn:
+  stage: .pre
+  image: node:16.5.0
+  services: []
+  retry: 1
+  needs:
+    - composer
+  before_script:
+    - apk add --update curl && rm -rf /var/cache/apk/*
+  script: |-
+    set -vx
+    export PATH=$PATH:/usr/local/bin
+    cd ./src/www.lidonation.com/var/www
+    curl -X GET https://www.lidonation.com/api/cache/snippets > ./storage/app/snippets.json
+    touch .npmrc
+    echo "//npm.pkg.github.com/:_authToken=${GITHUB_PACKAGE_REGISTRY_TOKEN}" > .npmrc
+    echo '@spatie:registry=https://npm.pkg.github.com' >> .npmrc
+    echo '@splidejs:registry=https://npm.pkg.github.com' >> .npmrc
+    yarn config set ignore-engines true
+    yarn install 
+    yarn run build
+
+  artifacts:
+    paths:
+      - ./src/www.lidonation.com/var/www/public
+    expire_in: 2 days
+  rules:
+    - if: '$CI_COMMIT_BRANCH != "main" && ($DEPLOY_WEBSITE == "True" || $DEPLOY_WEBSITE == "true")'
+    - if: '$CI_COMMIT_BRANCH == "main" && ($DEPLOY_WEBSITE == "True" || $DEPLOY_WEBSITE == "true")'
+
 #
 #catalyst:
 #  stage: .pre

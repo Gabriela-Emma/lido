@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
 use App\Jobs\UpdateVotingPowerStatusF10;
+use Illuminate\Console\Command;
 
 class UpdateConsumedStatusOnVotingPowers extends Command
 {
@@ -23,7 +23,6 @@ class UpdateConsumedStatusOnVotingPowers extends Command
 
     /**
      * Execute the console command.
-     *
      */
     public function handle(): void
     {

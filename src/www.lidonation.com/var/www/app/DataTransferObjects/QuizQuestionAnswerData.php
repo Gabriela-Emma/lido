@@ -9,7 +9,7 @@ use Spatie\TypeScriptTransformer\Attributes\Optional as TypeScriptOptional;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
 #[TypeScript]
-class QuizQuestionAnswerData extends Data
+final class QuizQuestionAnswerData extends Data
 {
     public function __construct(
         public ?int $id,

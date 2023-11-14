@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api\CatalystExplorer;
 
 use App\Http\Controllers\Controller;
-use App\Models\CatalystReport;
+use App\Models\CatalystExplorer\CatalystReport;
 use App\Models\NotificationRequestTemplate;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -28,7 +28,7 @@ class ReportController extends Controller
         ]));
         $catalystReport->comment($validated->comment, Auth::user());
 
-        return to_route('catalystExplorer.reports');
+        return to_route('catalyst-explorer.reports');
     }
 
     public function createReaction(Request $request, CatalystReport $catalystReport)

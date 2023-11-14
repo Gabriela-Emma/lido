@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\CatalystReport;
+use App\Models\CatalystExplorer\CatalystReport;
 use App\Models\Comment;
 use App\Models\Reactions\Reaction;
 use Faker\Generator as Faker;

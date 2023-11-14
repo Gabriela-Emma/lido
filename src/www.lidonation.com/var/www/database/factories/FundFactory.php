@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\CatalystExplorer\Fund;
 use App\Models\Category;
-use App\Models\Fund;
 use App\Models\Tag;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;

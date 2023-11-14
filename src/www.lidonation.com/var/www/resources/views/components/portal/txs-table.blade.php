@@ -1,12 +1,13 @@
 @props([
-    'txs'
+    'txs',
+    'phuffyTxs'
 ])
 <table class="min-w-full overflow-auto divide-y divide-gray-200">
     <tbody
         class="flex flex-col justify-between min-w-full divide-y divide-gray-300 h-52">
 
     @forelse($txs as $tx)
-        @if($tx->type === 'PHUFFY')
+        @if($phuffyTxs)
             <tr class="flex flex-row text-left text-yellow-500">
                 <td class="px-6 py-4 text-sm font-medium whitespace44-nowrap w-28">
                     @if($tx?->date)

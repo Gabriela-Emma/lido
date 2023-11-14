@@ -2,6 +2,7 @@
 
 namespace App\Nova;
 
+use App\Nova\CatalystExplorer\Proposals;
 use Laravel\Nova\Actions\ExportAsCsv;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\DateTime;

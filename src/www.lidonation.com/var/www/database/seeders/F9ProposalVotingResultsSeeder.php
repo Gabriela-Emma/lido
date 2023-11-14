@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Proposal;
+use App\Models\CatalystExplorer\Proposal;
 use App\Services\SettingService;
 use Revolution\Google\Sheets\Facades\Sheets;
 

@@ -2,10 +2,10 @@
 
 namespace App\Jobs;
 
-use App\Models\CatalystUser;
+use App\Models\CatalystExplorer\CatalystUser;
+use App\Models\CatalystExplorer\Proposal;
 use App\Models\Category;
 use App\Models\Link;
-use App\Models\Proposal;
 use App\Models\Tag;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;

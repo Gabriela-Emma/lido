@@ -24,13 +24,11 @@
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
     <link rel="stylesheet" href="https://cdn.plyr.io/3.7.2/plyr.css" />
 
-    <link rel="stylesheet" href="{{ asset(mix('css/splide-core.min.css')) }}">
-    <link rel="stylesheet" href="{{ asset(mix('css/splide-default.min.css')) }}">
+   
 
     @stack('styles')
 
     @livewireStyles
-    @bukStyles(true)
 
     <x-comments::styles />
 
@@ -92,7 +90,6 @@
 
 @include('includes.footer')
 
-<x-lido-menu />
 
 <section>
     <!-- Scripts -->
@@ -120,14 +117,13 @@
 
     @stack('scripts')
 
-    <script src="{{ mix('js/bootstrap.js') }}"></script>
+    @vite(['resources/js/phuffycoin.ts'])
+
 
     <!-- Dynamic tailwind classes -->
     <span class="hidden text-white md:visible xl:invisible md:w-8 md:h-8"></span>
     <span class="sm:max-w-2xl sm:max-w-3xl sm:max-w-4xl sm:max-w-5xl sm:max-w-6xl sm:max-w-7xl 2xl:max-w-4xl 2xl:max-w-5xl 2xl:max-w-6xl 2xl:max-w-7xl "></span>
 </section>
-
-<x-comments::scripts />
 
 <livewire:global-player-component />
 

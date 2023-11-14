@@ -3,7 +3,7 @@
 namespace App\Policies;
 
 use App\Enums\PermissionEnum;
-use App\Models\CatalystUser;
+use App\Models\CatalystExplorer\CatalystUser;
 use App\Models\User;
 
 class CatalystUserPolicy extends AppPolicy

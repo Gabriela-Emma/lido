@@ -2,7 +2,7 @@
 
 namespace App\Observers;
 
-use App\Models\CatalystTally;
+use App\Models\CatalystExplorer\CatalystTally;
 
 class CatalystTallyObserver
 {

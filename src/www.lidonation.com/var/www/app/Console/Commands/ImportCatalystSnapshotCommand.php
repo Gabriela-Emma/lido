@@ -3,7 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Jobs\SyncCatalystVotingPowersJob;
-use App\Models\CatalystSnapshot;
+use App\Models\CatalystExplorer\CatalystSnapshot;
 use Illuminate\Console\Command;
 use Illuminate\Support\Fluent;
 use JsonMachine\Items;

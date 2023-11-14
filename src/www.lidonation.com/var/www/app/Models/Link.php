@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Artisan;
  */
 class Link extends Model
 {
-    use HasFactory, HasTimestamps, SoftDeletes, SearchableLocale;
+    use HasFactory, HasTimestamps, SearchableLocale, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.

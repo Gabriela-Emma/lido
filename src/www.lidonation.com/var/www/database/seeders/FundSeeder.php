@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Fund;
+use App\Models\CatalystExplorer\Fund;
 use Illuminate\Database\Seeder;
 
 class FundSeeder extends Seeder

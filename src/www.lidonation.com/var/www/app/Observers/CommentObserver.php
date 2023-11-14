@@ -8,7 +8,7 @@ use App\Models\User;
 class CommentObserver
 {
     /**
-     * Handle the User "created" event.
+     * Handle the LidoUser "created" event.
      *
      * @return void
      */

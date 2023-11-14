@@ -3,7 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Jobs\CatalystUpdateProposalDetailsJob;
-use App\Models\Proposal;
+use App\Models\CatalystExplorer\Proposal;
 use App\Services\SettingService;
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputArgument;

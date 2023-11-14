@@ -29,7 +29,7 @@ class UserController extends Controller implements UpdatesUserProfileInformation
             if ((bool) $user) {
                 Auth::login($user, $remember = true);
 
-                return redirect()->route('catalystExplorer.myDashboard');
+                return redirect()->route('catalyst-explorer.myDashboard');
             } else {
                 return response()->json([
                     'message' => 'Could not find an account with those credentials',
@@ -44,7 +44,7 @@ class UserController extends Controller implements UpdatesUserProfileInformation
                 return redirect($request->baseURL);
             }
 
-            return to_route('catalystExplorer.myDashboard');
+            return to_route('catalyst-explorer.myDashboard');
         }
 
         return redirect()->back()->withInput($request->only('email'))->withErrors([
@@ -81,7 +81,7 @@ class UserController extends Controller implements UpdatesUserProfileInformation
             $user->password = Hash::make($validated->password);
             $user->save();
 
-            return to_route('catalystExplorer.login');
+            return to_route('catalyst-explorer.login');
         }
     }
 
@@ -119,7 +119,7 @@ class UserController extends Controller implements UpdatesUserProfileInformation
 
         $user->save();
 
-        return to_route('catalystExplorer.myProfiles');
+        return to_route('catalyst-explorer.myProfiles');
     }
 
     public function utilityLogin()

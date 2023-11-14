@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\CatalystExplorer\Assessment;
 use Parental\HasParent;
 
 class Prompt extends Assessment

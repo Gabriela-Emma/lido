@@ -2,8 +2,8 @@
 
 namespace App\Jobs;
 
-use App\Models\Fund;
-use App\Models\Proposal;
+use App\Models\CatalystExplorer\Fund;
+use App\Models\CatalystExplorer\Proposal;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;

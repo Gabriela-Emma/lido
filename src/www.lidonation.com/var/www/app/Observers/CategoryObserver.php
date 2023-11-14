@@ -8,7 +8,7 @@ use Illuminate\Support\Str;
 class CategoryObserver
 {
     /**
-     * Handle the User "created" event.
+     * Handle the LidoUser "created" event.
      *
      * @return void
      */

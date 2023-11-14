@@ -8,6 +8,7 @@ return [
 
     'fathom' => [
         'site' => env('ANALYTICS_ID'),
+        'key' => env('FATHOM_ANALYTICS_API_KEY'),
     ],
 
     'cardano-wallet' => [
@@ -39,6 +40,10 @@ return [
 
     'catalyst' => [
         'catalyst_reporting_spreadsheet_id' => env('CATALYST_REPORTING_SPREADSHEET_ID', ''),
+    ],
+
+    'lucid' => [
+        'url' => env('CARDANO_LUCID_ENDPOINT', 'http://lidonation.lucid:3000'),
     ],
 
     /*

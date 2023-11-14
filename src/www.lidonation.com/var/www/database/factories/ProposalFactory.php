@@ -2,10 +2,10 @@
 
 namespace Database\Factories;
 
+use App\Models\CatalystExplorer\Fund;
+use App\Models\CatalystExplorer\Proposal;
 use App\Models\Category;
-use App\Models\Fund;
 use App\Models\Link;
-use App\Models\Proposal;
 use App\Models\Tag;
 use App\Models\Team;
 use App\Models\User;

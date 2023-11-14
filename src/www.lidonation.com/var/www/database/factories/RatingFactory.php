@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\Assessment;
+use App\Models\CatalystExplorer\Assessment;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;

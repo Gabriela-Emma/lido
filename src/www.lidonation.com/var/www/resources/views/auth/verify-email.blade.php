@@ -1,5 +1,5 @@
-<x-guest-layout>
-    <x-jet-authentication-card>
+<x-layouts.guest>
+    <x-jet.authentication-card>
         <x-slot name="logo">
             <img class="block logo" width="200" height="200" src="{{asset('img/llogo-transparent.png')}}"
                  alt="lido nation logo" />
@@ -20,9 +20,9 @@
                 @csrf
 
                 <div>
-                    <x-jet-button type="submit">
+                    <x-jet.button type="submit">
                         {{ __('Resend Verification Email') }}
-                    </x-jet-button>
+                    </x-jet.button>
                 </div>
             </form>
 
@@ -34,5 +34,5 @@
                 </button>
             </form>
         </div>
-    </x-jet-authentication-card>
-</x-guest-layout>
+    </x-jet.authentication-card>
+</x-layouts.guest>

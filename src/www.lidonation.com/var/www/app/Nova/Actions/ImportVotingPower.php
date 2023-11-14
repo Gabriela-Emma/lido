@@ -3,9 +3,9 @@
 namespace App\Nova\Actions;
 
 use App\Jobs\SyncVotingPowersFileJob;
-use App\Models\CatalystSnapshot;
-use App\Models\CatalystVotingPower;
-use App\Models\Fund;
+use App\Models\CatalystExplorer\CatalystSnapshot;
+use App\Models\CatalystExplorer\CatalystVotingPower;
+use App\Models\CatalystExplorer\Fund;
 use App\Models\Meta;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\InteractsWithQueue;

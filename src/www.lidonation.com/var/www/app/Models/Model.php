@@ -8,5 +8,10 @@ use Illuminate\Database\Eloquent\Model as EloquentModel;
 
 class Model extends EloquentModel
 {
-    use HasRemovableGlobalScopes, HasFactory;
+    use HasFactory, HasRemovableGlobalScopes;
+
+    public function scopeNoEagerLoads($query)
+    {
+        return $query->setEagerLoads([]);
+    }
 }

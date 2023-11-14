@@ -2,8 +2,8 @@
 
 namespace App\Jobs;
 
-use App\Models\CatalystLedgerSnapshot;
-use App\Models\Fund;
+use App\Models\CatalystExplorer\CatalystLedgerSnapshot;
+use App\Models\CatalystExplorer\Fund;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;

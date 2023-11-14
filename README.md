@@ -98,9 +98,12 @@ php artisan queue:listen
 
 ## terminal 2: run the following commands to build the search engine
 php artisan db:seed --class=SearchIndexSeeder
-php artisan scout:import 'App\Models\Proposal'
-php artisan scout:import 'App\Models\CatalystUser'
-php artisan scout:import "App\Models\CatalystGroup"
+php artisan scout:import 'App\Models\CatalystExplorer\Proposal'
+php artisan scout:import 'App\Models\CatalystExplorer\CatalystUser'
+php artisan scout:import "App\Models\CatalystExplorer\Group"
+php artisan scout:import 'App\Models\Post'
+php artisan scout:import 'App\Models\CatalystExplorer\Assessment'
+
 
 ```
 
@@ -134,4 +137,8 @@ Solution: run `docker login registry.lidonation.com` and log in using your gitla
 
 Errors about search index not existing.
 Search indexes should be created in a seeder. If your seeder errored while running, you may have to run the seeder for search index directly to resolve this error.
-`php artisan db:seed --class 'SearchIndexSeeder'` should do it
+`php artisan db:seed --class='SearchIndexSeeder'` should do it
+
+# Getting an API key from CoinMarketCap
+Head over to https://pro.coinmarketcap.com and click on GET YOUR API KEY NOW, sign up or login.
+An API key should already be provided on the dashboard. You can just copy and use it.

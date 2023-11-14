@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
+use App\Models\CatalystExplorer\Proposal;
 use App\Models\Post;
-use App\Models\Proposal;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Spatie\Sitemap\Sitemap;

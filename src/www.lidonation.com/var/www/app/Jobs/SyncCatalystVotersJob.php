@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use App\Models\CatalystRegistration;
+use App\Models\CatalystExplorer\CatalystRegistration;
 use App\Models\Delegation;
 use App\Services\CardanoBlockfrostService;
 use Illuminate\Bus\Queueable;
@@ -74,7 +74,6 @@ class SyncCatalystVotersJob implements ShouldQueue
     /**
      * Execute the job.
      *
-     * @return void
      * @throws RequestException
      */
     public function handle(): void
@@ -118,7 +117,7 @@ class SyncCatalystVotersJob implements ShouldQueue
                     $newDelegation->save();
                 });
             } else {
-                Log::error('Sync Voter Registration Error: ' . json_encode($this->encodedTransactionDetails) );
+                Log::error('Sync Voter Registration Error: '.json_encode($this->encodedTransactionDetails));
             }
         }
     }

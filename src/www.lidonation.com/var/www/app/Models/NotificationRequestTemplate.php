@@ -11,9 +11,9 @@ use Staudenmeir\EloquentJsonRelations\HasJsonRelationships;
 class NotificationRequestTemplate extends Model
 {
     use Actionable,
+        HasJsonRelationships,
         HasMetaData,
         HasTimestamps,
-        HasJsonRelationships,
         SoftDeletes;
 
     protected $casts = [

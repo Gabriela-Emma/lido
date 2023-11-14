@@ -16,10 +16,10 @@ class Translation extends Model
 {
     use HasAuthor,
         HasFactory,
-        HasTimestamps,
-        SoftDeletes,
+        HasMetaData,
         HasRemovableGlobalScopes,
-        HasMetaData;
+        HasTimestamps,
+        SoftDeletes;
 
     protected $guarded = ['user_id', 'created_at', 'published_at'];
 

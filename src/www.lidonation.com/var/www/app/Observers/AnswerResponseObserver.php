@@ -7,7 +7,7 @@ use App\Models\AnswerResponse;
 class AnswerResponseObserver
 {
     /**
-     * Handle the User "created" event.
+     * Handle the LidoUser "created" event.
      */
     public function creating(AnswerResponse $answerResponse): void
     {

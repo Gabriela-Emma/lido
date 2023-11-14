@@ -22,8 +22,8 @@ class LearningTopic extends Model
         HasHero,
         HasLocaleUrl,
         HasMetaData,
-        HasTranslations,
         HasTimestamps,
+        HasTranslations,
         SoftDeletes;
 
     protected $casts = [

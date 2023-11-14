@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Prunable;
 
 class AnonymousBookmark extends Model
 {
-    use UsesUuid, Prunable;
+    use Prunable, UsesUuid;
 
     protected $fillable = ['bookmark', 'created_at', 'updated_at'];
 }

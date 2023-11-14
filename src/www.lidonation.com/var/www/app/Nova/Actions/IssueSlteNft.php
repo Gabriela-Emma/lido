@@ -36,7 +36,7 @@ class IssueSlteNft extends Action
                     if ($topicCompleted) {
                         IssueNftsJob::dispatch($learningTopic, $learningLesson, $model);
                     } else {
-                        Action::danger('Failed to issue NFT for User ');
+                        Action::danger('Failed to issue NFT for LidoUser ');
 
                         continue;
                     }

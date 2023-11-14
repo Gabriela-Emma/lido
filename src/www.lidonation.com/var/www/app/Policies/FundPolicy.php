@@ -3,7 +3,7 @@
 namespace App\Policies;
 
 use App\Enums\PermissionEnum;
-use App\Models\Fund;
+use App\Models\CatalystExplorer\Fund;
 use App\Models\User;
 
 class FundPolicy extends AppPolicy

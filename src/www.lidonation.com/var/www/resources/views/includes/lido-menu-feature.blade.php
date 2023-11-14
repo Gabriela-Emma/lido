@@ -1,4 +1,4 @@
-<a href="{{localizeRoute('delegators')}}#everyEpoch" class="flex flex-col gap-4">
+<a href="{{localizeRoute('delegators.home')}}" class="flex flex-col gap-4">
     <img class="block" src="{{asset('img/every-epoch-logo.png')}}" alt="Every Epoch logo">
 
     <span class="block text-center">

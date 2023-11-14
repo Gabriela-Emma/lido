@@ -68,8 +68,8 @@ return [
     */
 
     'chunk' => [
-        'searchable' =>  env('SCOUT_CHUNK_SEARCHABLE', 80),
-        'unsearchable' =>  env('SCOUT_CHUNK_UNSEARCHABLE', 500)
+        'searchable' => env('SCOUT_CHUNK_SEARCHABLE', 80),
+        'unsearchable' => env('SCOUT_CHUNK_UNSEARCHABLE', 500),
     ],
 
     /*
@@ -87,7 +87,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Identify User
+    | Identify LidoUser
     |--------------------------------------------------------------------------
     |
     | This option allows you to control whether to notify the search engine

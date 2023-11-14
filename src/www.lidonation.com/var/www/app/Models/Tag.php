@@ -2,12 +2,16 @@
 
 namespace App\Models;
 
+use App\Models\CatalystExplorer\Proposal;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\UrlGenerator;
-use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 class Tag extends Taxonomy
 {
+    public $append = [
+        'models',
+    ];
+
     public function getUrlAttribute(): string|UrlGenerator|Application
     {
         return url("tags/{$this->slug}");

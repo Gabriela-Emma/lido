@@ -49,4 +49,4 @@ COPY --chown=node:node --from=build /usr/src/app/dist ./dist
 COPY --chown=node:node package.json ./dist/
 COPY --chown=node:node yarn.lock ./dist/
 
-CMD [ "node", "dist/main.js" ]
+CMD [ "node", "dist/main.ts" ]

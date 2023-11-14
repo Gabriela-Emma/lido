@@ -3,17 +3,17 @@
 namespace App\Providers;
 
 use App\Enums\RoleEnum;
-use App\Models\Assessment;
 use App\Models\BookmarkCollection;
-use App\Models\CatalystGroup;
-use App\Models\CatalystUser;
+use App\Models\CatalystExplorer\Assessment;
+use App\Models\CatalystExplorer\CatalystUser;
+use App\Models\CatalystExplorer\Group;
+use App\Models\CatalystExplorer\Proposal;
 use App\Models\Comment;
 use App\Models\Definition;
 use App\Models\Discussion;
 use App\Models\DraftBallot;
 use App\Models\Event;
 use App\Models\Post;
-use App\Models\Proposal;
 use App\Models\Team;
 use App\Models\Withdrawal;
 use App\Policies\BookmarkCollectionPolicy;
@@ -47,7 +47,7 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        CatalystGroup::class => CatalystGroupPolicy::class,
+        Group::class => CatalystGroupPolicy::class,
         CatalystUser::class => CatalystUserPolicy::class,
         Comment::class => CommentPolicy::class,
         Discussion::class => DiscussionPolicy::class,

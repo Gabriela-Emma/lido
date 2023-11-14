@@ -2,12 +2,12 @@
 
 namespace App\Http\View\Composers;
 
-use App\Models\CatalystUser;
+use App\Models\CatalystExplorer\CatalystUser;
+use App\Models\CatalystExplorer\Proposal;
 use App\Models\Insight;
 use App\Models\News;
 use App\Models\Podcast;
 use App\Models\Post;
-use App\Models\Proposal;
 use App\Models\Review;
 use App\Models\User;
 use App\Repositories\EventRepository;
@@ -53,11 +53,11 @@ class HomeComposer
                 'newToLibrary' => $newToLibrary->sortByDesc('published_at'),
                 'latestLidoMinute' => $latestLidoMinute,
                 'quickPitches' => null,
-//                'quickPitches' => Proposal::where('quickpitch_length', '<', 200)
-//                    ->whereRelation('fund', 'parent_id', 113)
-//                    ->inRandomOrder()
-//                    ->limit(8)
-//                    ->get(),
+                //                'quickPitches' => Proposal::where('quickpitch_length', '<', 200)
+                //                    ->whereRelation('fund', 'parent_id', 113)
+                //                    ->inRandomOrder()
+                //                    ->limit(8)
+                //                    ->get(),
                 'proposal' => Proposal::inRandomOrder()
                     ->where('status', 'complete')
                     ->whereNotNull('solution')

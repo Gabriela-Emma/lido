@@ -3,8 +3,8 @@
 namespace App\Jobs;
 
 use App\Actions\GitCmdRunner;
+use App\Models\CatalystExplorer\Proposal;
 use App\Models\Commit;
-use App\Models\Proposal;
 use App\Models\Repo;
 use App\Services\GitRepoService;
 use Illuminate\Bus\Queueable;

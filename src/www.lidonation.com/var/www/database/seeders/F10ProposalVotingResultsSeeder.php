@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Proposal;
+use App\Models\CatalystExplorer\Proposal;
 use App\Services\SettingService;
 use Illuminate\Support\Str;
 use Revolution\Google\Sheets\Facades\Sheets;
@@ -36,7 +36,7 @@ class F10ProposalVotingResultsSeeder extends FSeeder
                         return true;
                     }
                     $slug = Str::limit(Str::slug($row[0]), 150, '').'-'.'f10';
-                    $proposal = Proposal::where('slug', $slug )
+                    $proposal = Proposal::where('slug', $slug)
                         ->whereRelation('fund', 'parent_id', 113)
                         ->withOut([
                             'fund',
@@ -46,7 +46,8 @@ class F10ProposalVotingResultsSeeder extends FSeeder
                         ])->first();
 
                     if (! $proposal instanceof Proposal) {
-                        echo 'no result for: ' . $row[0] . PHP_EOL;
+                        echo 'no result for: '.$row[0].PHP_EOL;
+
                         return true;
                     }
                     $proposal->yes_votes_count = intval(filter_var($row[2], FILTER_SANITIZE_NUMBER_INT));
@@ -72,6 +73,7 @@ class F10ProposalVotingResultsSeeder extends FSeeder
                     if (isset($row[8])) {
                         $proposal->saveMeta('funds_remaining', preg_replace('/([^0-9\\.])/i', '', $row[8]));
                     }
+
                     return true;
                 });
             });

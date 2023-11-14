@@ -1,7 +1,0 @@
-body.home #new-to-library .posts .post:nth-child(2n) {
-    @apply md:border-r-0 xl:border-r;
-}
-body.home #new-to-library .posts .post:last-of-type{
-    @apply border-r-0 pr-0;
-}
-

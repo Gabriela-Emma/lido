@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Laravel\Sanctum\Sanctum;
+use Saloon\Laravel\SaloonServiceProvider;
 use Vinkla\Hashids\Facades\Hashids;
 
 //use Spatie\NovaTranslatable\Translatable;
@@ -61,6 +62,8 @@ class AppServiceProvider extends ServiceProvider
                 );
             }
         );
+
+        $this->app->register(SaloonServiceProvider::class);
     }
 
     /**
@@ -73,6 +76,11 @@ class AppServiceProvider extends ServiceProvider
         //                config('laravellocalization.supportedLocales')
         //            )->keys()->toArray()
         //        );
+
+        Blade::anonymousComponentPath(
+            __DIR__.'/../views/components',
+            'lido'
+        );
 
         Sanctum::usePersonalAccessTokenModel(PersonalAccessToken::class);
         Blade::directive('percent', fn ($expression) => (round(((float) $expression) * 100, 3).'%'));

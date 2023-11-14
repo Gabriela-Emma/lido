@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\Assessment;
+use App\Models\CatalystExplorer\Assessment;
 use App\Models\Discussion;
 use App\Models\Rating;
 use App\Models\Review;

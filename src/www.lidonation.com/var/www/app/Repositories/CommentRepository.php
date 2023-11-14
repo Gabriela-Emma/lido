@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Models\Assessment;
+use App\Models\CatalystExplorer\Assessment;
 use Illuminate\Support\Facades\Auth;
 use JetBrains\PhpStorm\Pure;
 

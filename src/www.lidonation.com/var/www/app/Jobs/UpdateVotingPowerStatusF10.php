@@ -2,15 +2,14 @@
 
 namespace App\Jobs;
 
-use App\Models\CatalystVoter;
+use App\Models\CatalystExplorer\CatalystVoter;
+use App\Models\CatalystExplorer\CatalystVotingPower;
 use Illuminate\Bus\Queueable;
-use App\Models\CatalystVotingPower;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
 use JsonMachine\Exception\InvalidArgumentException;
 use JsonMachine\Items;
 
@@ -21,7 +20,6 @@ class UpdateVotingPowerStatusF10 implements ShouldQueue
     /**
      * Execute the job.
      *
-     * @return void
      * @throws InvalidArgumentException
      */
     public function handle(): void
@@ -30,10 +28,10 @@ class UpdateVotingPowerStatusF10 implements ShouldQueue
             function ($power) {
                 $voter = CatalystVoter::where('cat_id', $power->voter_id)->first();
 
-                if (!$voter instanceof CatalystVoter) {
+                if (! $voter instanceof CatalystVoter) {
                     return;
                 }
-                $filePath = '/data/catalyst-tools/voting-history/f10/' . $voter->stake_pub . '.json';
+                $filePath = '/data/catalyst-tools/voting-history/f10/'.$voter->stake_pub.'.json';
                 if (file_exists($filePath)) {
                     $collection = new Collection(Items::fromFile($filePath));
                     $power->consumed = $collection->isNotEmpty() ? 1 : 0;

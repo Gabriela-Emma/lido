@@ -1,5 +1,5 @@
-<x-comments::signed-comments-layout>
+<x-comments::signed-layout>
 
     The comment has been rejected.
 
-</x-comments::signed-comments-layout>
+</x-comments::signed-layout>

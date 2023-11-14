@@ -3,13 +3,13 @@
 namespace App\Observers;
 
 use App\Invokables\FillPostData;
-use App\Models\Assessment;
+use App\Models\CatalystExplorer\Assessment;
 use Illuminate\Support\Carbon;
 
 class LegacyCommentObserver
 {
     /**
-     * Handle the User "created" event.
+     * Handle the LidoUser "created" event.
      */
     public function creating(Assessment $comment): void
     {

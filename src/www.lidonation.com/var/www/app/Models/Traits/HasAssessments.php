@@ -2,7 +2,7 @@
 
 namespace App\Models\Traits;
 
-use App\Models\Assessment;
+use App\Models\CatalystExplorer\Assessment;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 trait HasAssessments

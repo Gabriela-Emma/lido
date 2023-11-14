@@ -6,6 +6,7 @@ use App\Models\Discussion;
 use App\Models\Post;
 use App\Nova\Actions\AddMetaData;
 use App\Nova\Actions\EditMetaData;
+use App\Nova\CatalystExplorer\Rationales;
 use App\Nova\Traits\HasSnippets;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;

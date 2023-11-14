@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Integrations\Lucid\Requests\LucidRequest;
 use App\Models\User;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Http\JsonResponse;
@@ -67,9 +68,16 @@ class WalletLoginController extends Controller
         string $stakeAddrHex = null
 
     ) {
-        return Http::post(
-            config('cardano.lucidEndpoint').'/wallet/authenticate',
-            compact('txHash', 'account', 'key', 'signature', 'stakeAddrHex')
-        )->throw();
+        $lucidReq = new  LucidRequest('/wallet/authenticate',null);
+        
+        $lucidReq->body()->merge([
+            'signature' => $signature,
+            'key' => $key,
+            'txHash' => $txHash,
+            'stakeAddrHex' => $stakeAddrHex,
+            'account' => $account
+        ]);
+         return $lucidReq->send()->body();
+        
     }
 }

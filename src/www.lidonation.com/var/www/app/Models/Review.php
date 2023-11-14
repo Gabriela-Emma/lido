@@ -19,7 +19,7 @@ use Spatie\Feed\FeedItem;
 
 class Review extends Post implements Feedable
 {
-    use HasParent, HasDiscussions, HasRatings, SearchableLocale, HasAssessments;
+    use HasAssessments, HasDiscussions, HasParent, HasRatings, SearchableLocale;
 
     protected $with = ['media', 'tags.media', 'categories.media', 'author.media'];
 

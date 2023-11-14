@@ -3,7 +3,7 @@
 namespace App\Policies;
 
 use App\Enums\PermissionEnum;
-use App\Models\Assessment;
+use App\Models\CatalystExplorer\Assessment;
 use App\Models\Comment;
 use App\Models\User;
 

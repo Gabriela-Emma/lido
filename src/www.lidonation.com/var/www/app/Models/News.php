@@ -12,7 +12,7 @@ use Spatie\Feed\FeedItem;
 
 class News extends Post implements Feedable
 {
-    use HasParent, SearchableLocale, HasComments;
+    use HasComments, HasParent, SearchableLocale;
 
     protected $with = ['media', 'tags.media', 'categories.media', 'author.media'];
 

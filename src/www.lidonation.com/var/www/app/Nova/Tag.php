@@ -2,6 +2,8 @@
 
 namespace App\Nova;
 
+use App\Nova\CatalystExplorer\Funds;
+use App\Nova\CatalystExplorer\Proposals;
 use Illuminate\Http\Request;
 use Laravel\Nova\Actions\ExportAsCsv;
 use Laravel\Nova\Fields\Color;

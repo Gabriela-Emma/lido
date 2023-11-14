@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use App\Models\Catalyst\Ccv4BallotChoice;
+use App\Models\CatalystExplorer\Ccv4BallotChoice;
 use App\Services\CardanoBlockfrostService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;

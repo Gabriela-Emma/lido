@@ -15,7 +15,7 @@ use Illuminate\Support\Fluent;
 
 class MintPhuffycoinsJob implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, DbSyncHelpers;
+    use DbSyncHelpers, Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     protected PhuffycoinService $phuffycoinService;
 

@@ -2,8 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Models\Fund;
-use App\Models\Taxonomy;
+use App\Models\CatalystExplorer\Fund;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\HigherOrderBuilderProxy;

@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class TwitterAttendance extends Model implements IHasMetaData
 {
-    use SoftDeletes, HasAuthor, HasMetaData;
+    use HasAuthor, HasMetaData, SoftDeletes;
 
     protected $with = ['metas'];
 

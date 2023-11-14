@@ -3,7 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Jobs\SyncCatalystGroupProposalsJob;
-use App\Models\CatalystGroup;
+use App\Models\CatalystExplorer\Group;
 use Illuminate\Console\Command;
 
 class SyncCatalystGroupProposals extends Command
@@ -41,7 +41,7 @@ class SyncCatalystGroupProposals extends Command
                 SyncCatalystGroupProposalsJob::dispatch($cgId);
             }
         } else {
-            CatalystGroup::cursor()->each(fn (CatalystGroup $cg) => SyncCatalystGroupProposalsJob::dispatch($cg->id));
+            Group::cursor()->each(fn (Group $cg) => SyncCatalystGroupProposalsJob::dispatch($cg->id));
         }
     }
 }

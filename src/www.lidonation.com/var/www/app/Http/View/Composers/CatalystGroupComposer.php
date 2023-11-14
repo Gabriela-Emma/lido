@@ -2,7 +2,7 @@
 
 namespace App\Http\View\Composers;
 
-use App\Models\Proposal;
+use App\Models\CatalystExplorer\Proposal;
 use App\Repositories\CatalystGroupRepository;
 use App\Repositories\FundRepository;
 use Illuminate\Support\Collection;

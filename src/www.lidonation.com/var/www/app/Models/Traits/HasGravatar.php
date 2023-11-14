@@ -2,7 +2,7 @@
 
 namespace App\Models\Traits;
 
-use JetBrains\PhpStorm\Pure;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 trait HasGravatar
 {
@@ -11,12 +11,11 @@ trait HasGravatar
      */
     public string $gravatarEmailField = 'email';
 
-    #[Pure]
-    public function getGravatarAttribute(): string
+    public function gravatar(): Attribute
     {
-        $hash = md5(strtolower(trim($this->{$this->getGravatarEmailField()})));
-
-        return "https://www.gravatar.com/avatar/$hash?d=retro&r=r";
+        return Attribute::make(
+            get: fn () => 'https://www.gravatar.com/avatar/'.md5(strtolower(trim($this->{$this->getGravatarEmailField()}))).'?d=retro&r=r'
+        );
     }
 
     protected function getGravatarEmailField(): string

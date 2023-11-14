@@ -2,12 +2,13 @@
 
 namespace Database\Factories;
 
-use App\Models\Assessment;
+use App\Models\CatalystExplorer\Assessment;
+use App\Models\CatalystExplorer\Assessor;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Assessor>
+ * @extends Factory<Assessor>
  */
 class AssessmentFactory extends Factory
 {

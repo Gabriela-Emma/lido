@@ -6,8 +6,6 @@
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <link rel="stylesheet" href="{{ asset(mix('css/rewards.css')) }}">
-
     @env('production')
         <!-- Cloudflare Web Analytics -->
         <script defer src='https://static.cloudflareinsights.com/beacon.min.js'
@@ -20,18 +18,14 @@
     @endenv
 
     @routes
-    <script src="{{ mix('/js/alpine.js') }}" defer></script>
-    <script src="{{ mix('/js/rewards.js') }}" defer></script>
+
+    @livewireStyles
 
     @inertiaHead
 </head>
-<body class="rewards">
+<body class="rewards" x-data x-cloak>
 
-@include('includes.top-banner')
-
-<x-lido-menu />
-
-@include('includes.global-search-handler')
+<livewire:components.lido-menu lazy="on-load"/>
 
 @include('includes.header')
 
@@ -39,13 +33,16 @@
     @inertia
 </main>
 
-
 {{-- include squiggly svg for text animation--}}
 @include('svg.squiggle')
 
 @include('includes.footer')
 
-{{--<livewire:global-player-component />--}}
+@livewireScripts
+
+@include('includes.global-search-handler')
+
+@vite(['resources/js/apps/rewards/app.ts'])
 
 </body>
 </html>

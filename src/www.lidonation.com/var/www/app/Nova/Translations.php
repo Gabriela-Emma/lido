@@ -160,7 +160,7 @@ class Translations extends Resource
                         (new GetModels)()->toArray()
                     )->toArray()
                 )->filterable(),
-            //            BelongsTo::make(__('Source'), 'source', [User::class])
+            //            BelongsTo::make(__('Source'), 'source', [LidoUser::class])
             //                ->searchable(),
             Text::make(__('Source Id'), 'source_id')->filterable()->sortable(),
             Text::make(__('Source Field'), 'source_field')->filterable()->sortable(),

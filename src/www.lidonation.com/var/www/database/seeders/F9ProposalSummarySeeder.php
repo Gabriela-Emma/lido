@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\CatalystUser;
+use App\Models\CatalystExplorer\CatalystUser;
 use JsonMachine\Exception\InvalidArgumentException;
 use JsonMachine\Items;
 use Spatie\MediaLibrary\MediaCollections\Exceptions\FileCannotBeAdded;

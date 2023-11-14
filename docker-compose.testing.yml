@@ -1,0 +1,76 @@
+version: "3.9"
+
+services:
+  webdb_test:
+    image: postgres:16.0-alpine3.18
+    container_name: webdb_test
+    environment:
+      - POSTGRES_LOGGING=true
+      - POSTGRES_DB=lidoweb
+      - POSTGRES_PASSWORD=ASLJ023470AlserLFH
+      - POSTGRES_USER=llovelace
+      - POSTGRES_POSTGRES_PASSWORD=alj2340aaALJAF2341408AUUZLJK
+      - "ES_JAVA_OPTS=-Xms1024m -Xmx3072m"
+    healthcheck:
+      test: pg_isready -U "$$POSTGRES_USER" -d "$$POSTGRES_DB"
+      interval: 10s
+      timeout: 2s
+      retries: 10
+    volumes:
+      - type: volume
+        source: webdb_test
+        target: /var/lib/postgresql/data
+        volume:
+          nocopy: true
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "10"
+    networks:
+      - lido_test
+
+  ## Website
+  lidonation:
+    image: lidonation.test
+    depends_on:
+      - webdb_test
+    entrypoint: [ "/bin/sh","-c" ]
+    command:
+      - |
+        set -vx
+        composer install --no-interaction --no-suggest --optimize-autoloader
+        php ./vendor/bin/pest
+    environment:
+      APP_SETUP: "true"
+      PHP_OPCACHE_ENABLE: 0
+      PHP_OPCACHE_VALIDATE_TIMESTAMPS: 1
+      PHP_MEMORY_LIMIT: 2048M
+      GOOGLE_APPLICATION_CREDENTIALS: '/data/google-credentials.json'
+      CONTAINER_ROLE: "test"
+      POSTGRESQL_WEB_DB_HOST: webdb_test
+      FPM_SERVICE: '127.0.0.1'
+      MEDIA_DISK: public
+    build:
+      context: ./src/www.lidonation.com
+      dockerfile: ./Dockerfile.test
+    volumes:
+      - ./src/www.lidonation.com/var/www:/var/www/html:cached
+    networks:
+      - lido_test
+
+secrets:
+  postgres_db:
+    file: ./src/pool/config/db-sync/secrets/postgres_db
+  postgres_password:
+    file: ./src/pool/config/db-sync/secrets/postgres_password
+  postgres_user:
+    file: ./src/pool/config/db-sync/secrets/postgres_user
+
+volumes:
+  node-ipc:
+  webdb_test:
+
+networks:
+  lido_test:
+    driver: bridge

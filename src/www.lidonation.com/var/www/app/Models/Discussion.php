@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\CatalystExplorer\Proposal;
 use App\Models\Traits\HasAssessments;
 use App\Models\Traits\HasAuthor;
 use App\Models\Traits\HasMetaData;
@@ -17,12 +18,12 @@ use Parental\HasChildren;
 
 class Discussion extends Model implements Interfaces\IHasMetaData
 {
-    use HasTimestamps,
+    use HasAssessments,
         HasAuthor,
-        HasMetaData,
-        HasAssessments,
-        HasSnippets,
         HasChildren,
+        HasMetaData,
+        HasSnippets,
+        HasTimestamps,
         SoftDeletes;
 
     public int|DateTime|null $cacheFor = 3600;

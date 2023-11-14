@@ -42,7 +42,7 @@ function previous_route_url(): string
     $previousUrl = url()->previous();
     $currentUrl = url()->current();
     if ($previousUrl === $currentUrl) {
-        return route('catalystExplorer.proposals');
+        return route('catalyst-explorer.proposals');
     }
 
     return app('router')->getRoutes()
@@ -137,8 +137,6 @@ function breakLongText($text, $length = 1000, $maxLength = 1100, $needle = '.'):
  *
  * This method will give priority to the right-hand side of the string when
  * data is truncated.
- *
- * @return string
  */
 function truncate_middle($string = '', $maxLength = 16): ?string
 {

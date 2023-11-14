@@ -15,7 +15,7 @@ use Spatie\LaravelData\DataCollection;
 
 class Withdrawal extends Model implements IHasMetaData
 {
-    use HasTxs, HasMetaData, HasAuthor, HasFactory;
+    use HasAuthor, HasFactory, HasMetaData, HasTxs;
 
     protected $with = ['txs'];
 

@@ -2,27 +2,43 @@
 
 namespace App\Http\Controllers\Invokable;
 
-use App\Enums\RoleEnum;
-use App\Http\Controllers\Controller;
 use App\Models\User;
-use Illuminate\Contracts\Auth\Authenticatable;
+use App\Enums\RoleEnum;
 use Illuminate\Http\Request;
+use Illuminate\Support\Fluent;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Fluent;
+use Illuminate\Support\Facades\Validator;
+use App\Livewire\Forms\AuthenticationForm;
+use Illuminate\Contracts\Auth\Authenticatable;
 
 class CreateUserController extends Controller
 {
-    public function __invoke(Request $request): ?Authenticatable
+    public function __invoke(?Request $request ,?array $form): ?Authenticatable
     {
-        $validated = new Fluent($request->validate([
-            'name' => 'nullable|min:3',
-            'email' => 'nullable|email|unique:users',
-            'password' => 'nullable|min:5',
-            'stake_address' => 'bail|required|min:13',
-            'wallet_address' => 'nullable|min:13',
-            'assets' => 'nullable',
-        ]));
+
+        if (isset($form)) {
+            $request = $form;
+            $validated = Validator::make($request,[
+                'name' => 'nullable|min:3',
+                'email' => 'nullable|email|unique:users',
+                'password' => 'nullable|min:5',
+                'stake_address' => 'bail|required|min:13',
+                'wallet_address' => 'nullable|min:13',
+                'assets' => 'nullable',
+            ]);
+            $validated = new Fluent($validated->getData());
+        }else {
+            $validated = new Fluent($request->validate([
+                'name' => 'nullable|min:3',
+                'email' => 'nullable|email|unique:users',
+                'password' => 'nullable|min:5',
+                'stake_address' => 'bail|required|min:13',
+                'wallet_address' => 'nullable|min:13',
+                'assets' => 'nullable',
+            ]));
+        }
 
         $user = User::where('email', $validated->email)
             ->orWhere('wallet_stake_address', $validated->stake_address)->first();

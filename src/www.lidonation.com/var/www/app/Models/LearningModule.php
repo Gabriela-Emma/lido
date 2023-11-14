@@ -17,11 +17,11 @@ class LearningModule extends Model
 {
     use HasAuthor,
         HasHero,
-        HasMetaData,
         HasLocaleUrl,
+        HasMetaData,
         HasSlug,
-        HasTranslations,
         HasTimestamps,
+        HasTranslations,
         SoftDeletes;
 
     protected $casts = [

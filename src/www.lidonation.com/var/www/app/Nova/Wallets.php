@@ -56,7 +56,7 @@ class Wallets extends Resource
         return [
             ID::make(__('ID'), 'id')->sortable(),
             Text::make(__('Address'), 'address'),
-            BelongsTo::make(__('User'))->searchable(),
+            BelongsTo::make(__('LidoUser'))->searchable(),
             //            MorphedByMany::make('models', 'models', [Votes::class]),
             //            MorphTo::make(__('Attached to'), 'models')->types([
             //                Articles::class,

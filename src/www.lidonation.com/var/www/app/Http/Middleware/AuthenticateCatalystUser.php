@@ -11,10 +11,10 @@ class AuthenticateCatalystUser extends Authenticate
      *
      * @param  Request  $request
      */
-    protected function redirectTo($request)
+    protected function redirectTo($request): ?string
     {
         if (! $request->expectsJson()) {
-            return route('catalystExplorer.login');
+            return route('catalyst-explorer.login');
         }
     }
 }

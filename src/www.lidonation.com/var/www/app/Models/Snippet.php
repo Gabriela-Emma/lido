@@ -18,16 +18,16 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class Snippet extends Model implements HasMedia, Interfaces\IHasMetaData
 {
-    use HasFactory,
-        HasAuthor,
+    use HasAuthor,
+        HasFactory,
+        HasHero,
         HasMetaData,
         HasTimestamps,
+        HasTranslations,
         InteractsWithMedia,
-        SoftDeletes,
-        HasHero,
-        HasTranslations;
+        SoftDeletes;
 
-    protected $with = ['media'];
+    protected $with = [];
 
     public int|DateTime|null $cacheFor = 10800;
 

@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\CatalystUser;
+use App\Models\CatalystExplorer\CatalystUser;
 use Illuminate\Database\Seeder;
 
 class CatalystUserSeeder extends Seeder

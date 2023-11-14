@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Mint extends Model
 {
-    use HasFactory, HasAuthor;
+    use HasAuthor, HasFactory;
 
     /**
      * The attributes that should be cast.

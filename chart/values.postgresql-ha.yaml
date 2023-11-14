@@ -226,7 +226,7 @@ postgresql:
   ## Container Security Context
   ## https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
   ## @param postgresql.containerSecurityContext.enabled Enable container security context
-  ## @param postgresql.containerSecurityContext.runAsUser User ID for the PostgreSQL with Repmgr container
+  ## @param postgresql.containerSecurityContext.runAsUser LidoUser ID for the PostgreSQL with Repmgr container
   ## @param postgresql.containerSecurityContext.runAsNonRoot Set PostgreSQL with Repmgr containers' Security Context runAsNonRoot
   ## @param postgresql.containerSecurityContext.readOnlyRootFilesystem Set PostgreSQL with Repmgr containers' Security Context runAsNonRoot
   ## e.g:
@@ -691,7 +691,7 @@ witness:
   ## Container Security Context
   ## https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
   ## @param witness.containerSecurityContext.enabled Enable container security context
-  ## @param witness.containerSecurityContext.runAsUser User ID for the PostgreSQL witness with Repmgr container
+  ## @param witness.containerSecurityContext.runAsUser LidoUser ID for the PostgreSQL witness with Repmgr container
   ## @param witness.containerSecurityContext.runAsNonRoot Set PostgreSQL witness with Repmgr containers' Security Context runAsNonRoot
   ## @param witness.containerSecurityContext.readOnlyRootFilesystem Set PostgreSQL witness with Repmgr containers' Security Context runAsNonRoot
   ## e.g:
@@ -1171,7 +1171,7 @@ pgpool:
   ## Container Security Context
   ## https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
   ## @param pgpool.containerSecurityContext.enabled Enable container security context
-  ## @param pgpool.containerSecurityContext.runAsUser User ID for the Pgpool container
+  ## @param pgpool.containerSecurityContext.runAsUser LidoUser ID for the Pgpool container
   ## @param pgpool.containerSecurityContext.runAsNonRoot Set Pgpool containers' Security Context runAsNonRoot
   ## @param pgpool.containerSecurityContext.readOnlyRootFilesystem Set Pgpool containers' Security Context runAsNonRoot
   ## e.g:
@@ -1530,7 +1530,7 @@ metrics:
   ## K8s Security Context
   ## https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
   ## @param metrics.podSecurityContext.enabled Enable security context for PostgreSQL Prometheus exporter
-  ## @param metrics.podSecurityContext.runAsUser User ID for the PostgreSQL Prometheus exporter container
+  ## @param metrics.podSecurityContext.runAsUser LidoUser ID for the PostgreSQL Prometheus exporter container
   ##
   podSecurityContext:
     enabled: true
@@ -1768,7 +1768,7 @@ volumePermissions:
     pullSecrets: []
   ## K8s Security Context
   ## https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
-  ## @param volumePermissions.podSecurityContext.runAsUser Init container volume-permissions User ID
+  ## @param volumePermissions.podSecurityContext.runAsUser Init container volume-permissions LidoUser ID
   ##
   podSecurityContext:
     runAsUser: 0

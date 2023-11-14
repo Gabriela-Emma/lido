@@ -3,7 +3,6 @@
 namespace App\Http\View\Composers;
 
 use App\Models\Podcast;
-use App\Models\Proposal;
 use App\Repositories\AdaRepository;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\View\View;

@@ -2,7 +2,7 @@
 
 namespace App\Policies;
 
-use App\Models\AssessmentReview;
+use App\Models\CatalystExplorer\AssessmentReview;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 

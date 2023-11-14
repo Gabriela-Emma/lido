@@ -1,4 +1,4 @@
-<x-comments::signed-comments-layout>
+<x-comments::signed-layout>
 
     Do you want to reject the comment?
 
@@ -7,7 +7,7 @@
         <button id="confirmationButton" class="button" type="submit">Approve</button>
     </form>
 
-</x-comments::signed-comments-layout>
+</x-comments::signed-layout>
 
 <script>
     document.getElementById("confirmationButton").click();

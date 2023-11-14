@@ -2,8 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Models\Proposal;
-use App\Models\Taxonomy;
+use App\Models\CatalystExplorer\Proposal;
 use JetBrains\PhpStorm\Pure;
 
 class ProposalRepository extends Repository

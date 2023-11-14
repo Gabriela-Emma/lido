@@ -61,7 +61,7 @@ class Withdrawals extends Resource
             Text::make(__('Address'), 'wallet_address')->sortable()
                 ->displayUsing(new TruncateValue($request)),
 
-            BelongsTo::make('User', 'user', User::class)->searchable()->hideFromIndex(),
+            BelongsTo::make('LidoUser', 'user', User::class)->searchable()->hideFromIndex(),
             Select::make(__('Status'), 'status')
                 ->sortable()
                 ->default('pending')

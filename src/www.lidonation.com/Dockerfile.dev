@@ -1,6 +1,6 @@
 FROM php:8.2-fpm-alpine3.18 as cc
 
-RUN apk add git gcc g++  --no-cache musl-dev curl
+RUN apk add git gcc g++ --no-cache musl-dev curl
 
 WORKDIR /opt
 
@@ -11,6 +11,11 @@ RUN cd /opt/catalyst-core && curl –proto ‘=https’ –tlsv1.2 -sSf https://
     && cargo build --release -p audit
 
 FROM php:8.2-fpm-alpine3.17
+
+ARG WWWGROUP
+ARG GITHUB_PACKAGE_REGISTRY_TOKEN
+
+RUN addgroup -g ${WWWGROUP} sail && adduser -D -s /bin/sh -G sail -u 1337 sail
 
 COPY --from=cc /opt/catalyst-core/target/release/ /opt/catalyst-tools
 
@@ -59,7 +64,8 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/main" > /etc/apk/repositorie
 
 ENV CHROME_BIN=/usr/bin/chromium-browser \
     CHROME_PATH=/usr/lib/chromium/ \
-    PUPPETEER_EXECUTABLE_PATH="/usr/bin/chromium-browser"
+    PUPPETEER_EXECUTABLE_PATH="/usr/bin/chromium-browser" \
+    GITHUB_PACKAGE_REGISTRY_TOKEN=${GITHUB_PACKAGE_REGISTRY_TOKEN}
 
 # Download and install composer
 COPY --from=composer:2.3 /usr/bin/composer /usr/bin/composer
@@ -72,14 +78,16 @@ RUN printf "\n" | pecl install redis imagick && docker-php-ext-enable redis imag
 
 RUN npm install --global --unsafe-perm puppeteer
 
+RUN apk add yarn --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/community/ && \
+  yarn install
+
 RUN apk del autoconf g++ libtool make pcre-dev
+
 
 COPY ./docker/start-container /usr/local/bin/start-container
 COPY ./opt /opt
 COPY ./etc /etc
 COPY ./usr /usr
-
-# RUN  wget --no-check-certificate 'https://docs.google.com/uc?export=download&id=1tSt8GXQ3veQ7I0UjJhZgqIIm-MgptVwA' -O /opt/cardano-cli && chmod a+x /opt/cardano-cli
 
 # Install PHP extensions
 RUN chmod a+x /opt/install-extensions.sh /opt/entrypoint.sh \

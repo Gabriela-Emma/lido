@@ -12,7 +12,7 @@ use Spatie\TypeScriptTransformer\Attributes\Optional as TypeScriptOptional;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
 #[TypeScript]
-class TxData extends Data
+final class TxData extends Data
 {
     public function __construct(
         public ?int $id,

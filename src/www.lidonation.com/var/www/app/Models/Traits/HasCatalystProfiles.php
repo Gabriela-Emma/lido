@@ -2,7 +2,7 @@
 
 namespace App\Models\Traits;
 
-use App\Models\CatalystUser;
+use App\Models\CatalystExplorer\CatalystUser;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 trait HasCatalystProfiles

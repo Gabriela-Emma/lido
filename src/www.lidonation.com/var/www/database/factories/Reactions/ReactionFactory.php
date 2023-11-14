@@ -22,7 +22,7 @@ class ReactionFactory extends Factory
     public function definition()
     {
         $reaction = $this->faker->randomElement(['❤️', '👍', '🎉', '🚀', '👎', '👀']);
-        $commenter = User::inRandomOrder()->first();
+        $commenter = User::inRandomOrder()?->first();
 
         return [
             'commenter_type' => $commenter::class,

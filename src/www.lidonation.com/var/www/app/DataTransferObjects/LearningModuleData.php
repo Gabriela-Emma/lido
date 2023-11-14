@@ -10,7 +10,7 @@ use Spatie\TypeScriptTransformer\Attributes\Optional as TypeScriptOptional;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
 #[TypeScript]
-class LearningModuleData extends Data
+final class LearningModuleData extends Data
 {
     public function __construct(
         public int $id,

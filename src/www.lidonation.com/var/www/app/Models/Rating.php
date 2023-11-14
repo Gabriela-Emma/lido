@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\CatalystExplorer\Assessment;
 use App\Models\Traits\HasAuthor;
 use App\Models\Traits\HasMetaData;
 use DateTime;
@@ -13,10 +14,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Rating extends Model
 {
-    use HasFactory,
-        HasTimestamps,
-        HasAuthor,
+    use HasAuthor,
+        HasFactory,
         HasMetaData,
+        HasTimestamps,
         SoftDeletes;
 
     protected $with = ['model'];

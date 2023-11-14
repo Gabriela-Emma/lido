@@ -21,11 +21,11 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 class Quiz extends Model implements HasMedia, IHasMetaData
 {
     use HasAuthor,
+        HasGiveaways,
         HasHero,
         HasMetaData,
         HasTimestamps,
         HasTranslations,
-        HasGiveaways,
         InteractsWithMedia,
         SoftDeletes;
 
@@ -55,11 +55,6 @@ class Quiz extends Model implements HasMedia, IHasMetaData
         return $this->hasMany(AnswerResponse::class);
     }
 
-    //    public function giveaways(): MorphToMany
-    //    {
-    //        return $this->morphToMany(Giveaway::class, 'giveaways', 'giveaway_model', 'model_id', 'giveaway_id')
-    //            ->wherePivot('type', static::class);
-    //    }
 
     public function everyEpochs(): MorphToMany
     {

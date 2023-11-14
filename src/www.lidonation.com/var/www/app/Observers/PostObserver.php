@@ -14,7 +14,7 @@ class PostObserver
     }
 
     /**
-     * Handle the User "created" event.
+     * Handle the LidoUser "created" event.
      */
     public function creating(Post $post): void
     {
@@ -24,7 +24,7 @@ class PostObserver
         ]);
     }
 
-    public function deleting(Post $post)
+    public function deleting(Post $post): void
     {
         if ($post->forceDeleting) {
             $post->metas()->delete();

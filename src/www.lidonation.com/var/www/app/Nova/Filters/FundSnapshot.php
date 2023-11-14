@@ -2,9 +2,9 @@
 
 namespace App\Nova\Filters;
 
-use App\Models\CatalystSnapshot;
-use Laravel\Nova\Filters\Filter;
+use App\Models\CatalystExplorer\CatalystSnapshot;
 use Illuminate\Database\Eloquent\Builder;
+use Laravel\Nova\Filters\Filter;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class FundSnapshot extends Filter
@@ -25,7 +25,7 @@ class FundSnapshot extends Filter
      */
     public function apply(NovaRequest $request, $query, $value)
     {
-        return $query->whereRelation('catalyst_snapshot.model','id', $value);
+        return $query->whereRelation('catalyst_snapshot.model', 'id', $value);
     }
 
     /**

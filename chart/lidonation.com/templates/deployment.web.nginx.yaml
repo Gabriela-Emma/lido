@@ -54,6 +54,8 @@ spec:
         envFrom:
           - configMapRef:
               name: "{{ $.Chart.Name }}-configmap"
+          - secretRef:
+              name: "{{ $.Chart.Name }}-nginx-secrets"
         env:
           - name: FPM_SERVICE
             value: "{{ $.Chart.Name }}-fpm-service"

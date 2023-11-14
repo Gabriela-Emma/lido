@@ -2,7 +2,7 @@
 
 namespace App\Invokables;
 
-use App\Models\Proposal;
+use App\Models\CatalystExplorer\Proposal;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;

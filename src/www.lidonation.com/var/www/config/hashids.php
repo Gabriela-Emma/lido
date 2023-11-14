@@ -47,8 +47,8 @@ return [
             'length' => 11,
             'alphabet' => 'abcdefghijklmnopqrstuvwxyz0123456789',
         ],
-        \App\Models\CatalystVote::class => [
-            'salt' => \App\Models\CatalystVote::class.env('APP_KEY'),
+        \App\Models\CatalystExplorer\CatalystVote::class => [
+            'salt' => \App\Models\CatalystExplorer\CatalystVote::class.env('APP_KEY'),
             'length' => 11,
             'alphabet' => 'abcdefghijklmnopqrstuvwxy0123456789',
         ],

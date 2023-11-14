@@ -1,11 +1,22 @@
+@props([
+    'comment' => null,
+])
 @php
-$segment = md5(strtolower($user?->email ?? config('app.default_commenter_email')));
-$defaultAvatar = "https://www.gravatar.com/avatar/{$segment}?d=retro";
+    /** @var ?\Spatie\Comments\Models\Comment $comment */
+    $avatar = $comment?->commentatorProperties()?->avatar;
+
+    if (! $avatar) {
+        $defaultImage = Spatie\Comments\Support\Config::getGravatarDefaultImage();
+        $avatar = "https://www.gravatar.com/avatar/unknown?d={$defaultImage}";
+
+        if ($user = auth()->user()) {
+            $segment = md5(strtolower($user->email));
+            $avatar = "https://www.gravatar.com/avatar/{$segment}?d={$defaultImage}";
+        }
+    }
 @endphp
 <img
     class="comments-avatar"
-    src="{{ isset($comment, $user) ? $comment->commentatorProperties()?->avatar : $defaultAvatar }}"
-    alt="avatar"
+    src="{{ $avatar }}"
+    alt="{{ trim("{$comment?->commentatorProperties()?->name} avatar") }}"
 >
-
-

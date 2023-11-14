@@ -8,7 +8,7 @@ use App\Models\Post;
 class ModelCategoryObserver
 {
     /**
-     * Handle the User "created" event.
+     * Handle the LidoUser "created" event.
      *
      * @return void
      */

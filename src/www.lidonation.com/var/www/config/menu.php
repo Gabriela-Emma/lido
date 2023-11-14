@@ -6,23 +6,27 @@ return [
         'items' => [
             new Illuminate\Support\Fluent([
                 'title' => 'What is Cardano',
-                'route_type' => 'url',
-                'route' => 'what-is-cardano-and-how-does-it-use-the-blockchain',
+                'route_type' => 'route_name',
+                'route' => 'what-is-cardano',
+                'navigate' => 'livewire',
             ]),
             new Illuminate\Support\Fluent([
                 'title' => 'What is staking',
-                'route_type' => 'url',
-                'route' => 'what-is-the-point-of-buying-ada-and-staking-in-cardano',
+                'route_type' => 'route_name',
+                'route' => 'what-is-staking',
+                'navigate' => 'livewire',
             ]),
             new Illuminate\Support\Fluent([
                 'title' => 'How do I buy Ada',
-                'route_type' => 'url',
-                'route' => 'how-to-buy-cardano-ada',
+                'route_type' => 'route_name',
+                'route' => 'how-to-buy-ada',
+                'navigate' => 'livewire',
             ]),
             new Illuminate\Support\Fluent([
                 'title' => 'How to stake your Ada',
-                'route_type' => 'url',
+                'route_type' => 'route_name',
                 'route' => 'how-to-stake-ada',
+                'navigate' => 'livewire',
             ]),
         ],
     ]),
@@ -38,21 +42,19 @@ return [
                 'title' => 'Bazaar',
                 'route_type' => 'route_name',
                 'route' => 'bazaar',
+                'navigate' => 'livewire',
             ]),
-            //            new Illuminate\Support\Fluent([
-            //                'title' => 'Community Calendar',
-            //                'route_type' => 'route_name',
-            //                'route' => 'lido-minute'
-            //            ]),
             new Illuminate\Support\Fluent([
                 'title' => 'Contribute',
                 'route_type' => 'route_name',
-                'route' => 'contributeContent',
+                'route' => 'contribute.home',
+                'navigate' => 'livewire',
             ]),
             new Illuminate\Support\Fluent([
                 'title' => 'Advertise',
                 'route_type' => 'route_name',
                 'route' => 'lido-minute',
+                'navigate' => 'livewire',
             ]),
             new Illuminate\Support\Fluent([
                 'title' => 'Nfts',
@@ -61,6 +63,7 @@ return [
                         'title' => 'A Day at the Lake',
                         'route_type' => 'route_name',
                         'route' => 'lido-minute-nft',
+                        'navigate' => 'livewire',
                     ]),
                 ],
             ]),
@@ -73,16 +76,19 @@ return [
                 'title' => 'Library',
                 'route_type' => 'route_name',
                 'route' => 'library',
+                'navigate' => 'livewire',
             ]),
             new Illuminate\Support\Fluent([
                 'title' => 'Lido Minute',
                 'route_type' => 'route_name',
                 'route' => 'lido-minute',
+                'navigate' => 'livewire',
             ]),
             new Illuminate\Support\Fluent([
                 'title' => 'Tags',
                 'route_type' => 'route_name',
                 'route' => 'tags',
+                'navigate' => 'livewire',
             ]),
             new Illuminate\Support\Fluent([
                 'title' => 'Topics',
@@ -91,26 +97,31 @@ return [
                         'title' => 'News',
                         'route_type' => 'cat_id_or_slug',
                         'route' => 'news-and-interviews',
+                        'navigate' => 'livewire',
                     ]),
                     new Illuminate\Support\Fluent([
                         'title' => 'Decentralization',
                         'route_type' => 'cat_id_or_slug',
                         'route' => 'decentralization',
+                        'navigate' => 'livewire',
                     ]),
                     new Illuminate\Support\Fluent([
                         'title' => 'Blockchain',
                         'route_type' => 'cat_id_or_slug',
                         'route' => 'blockchain',
+                        'navigate' => 'livewire',
                     ]),
                     new Illuminate\Support\Fluent([
                         'title' => 'Cardano',
                         'route_type' => 'cat_id_or_slug',
                         'route' => 'cardano-blockchain',
+                        'navigate' => 'livewire',
                     ]),
                     new Illuminate\Support\Fluent([
                         'title' => 'Lido Nation',
                         'route_type' => 'cat_id_or_slug',
                         'route' => 'lido-nation-news',
+                        'navigate' => 'livewire',
                     ]),
                     new Illuminate\Support\Fluent([
                         'title' => 'Project Catalyst',
@@ -131,18 +142,63 @@ return [
             ]),
         ],
     ]),
-    new \Illuminate\Support\Fluent([
-        'title' => 'Project Catalyst',
+    new Illuminate\Support\Fluent([
+        'title' => 'Catalyst Explorer',
         'items' => [
+            new Illuminate\Support\Fluent([
+                'title' => 'Explorer Home',
+                'route_type' => 'route_name',
+                'route' => 'catalyst-explorer.home',
+            ]),
             new Illuminate\Support\Fluent([
                 'title' => 'Voter Tool',
                 'route_type' => 'route_name',
-                'route' => 'catalystExplorer.voterTool',
+                'route' => 'catalyst-explorer.voter-tool',
+            ]),
+            new Illuminate\Support\Fluent([
+                'title' => 'Proposals',
+                'route_type' => 'route_name',
+                'route' => 'catalyst-explorer.proposals',
+            ]),
+            new Illuminate\Support\Fluent([
+                'title' => 'People',
+                'route_type' => 'route_name',
+                'route' => 'catalyst-explorer.people.index',
+            ]),
+            new Illuminate\Support\Fluent([
+                'title' => 'Proposal Assessments',
+                'route_type' => 'route_name',
+                'route' => 'catalyst-explorer.assessments',
+            ]),
+            new Illuminate\Support\Fluent([
+                'title' => 'Groups',
+                'route_type' => 'route_name',
+                'route' => 'catalyst-explorer.groups',
+            ]),
+            new Illuminate\Support\Fluent([
+                'title' => 'Funds',
+                'route_type' => 'route_name',
+                'route' => 'catalyst-explorer.funds.index',
+            ]),
+            new Illuminate\Support\Fluent([
+                'title' => 'Charts',
+                'route_type' => 'route_name',
+                'route' => 'catalyst-explorer.charts',
+            ]),
+            new Illuminate\Support\Fluent([
+                'title' => 'Monthly Reports',
+                'route_type' => 'route_name',
+                'route' => 'catalyst-explorer.reports',
+            ]),
+            new Illuminate\Support\Fluent([
+                'title' => 'CCV4 Results',
+                'route_type' => 'route_name',
+                'route' => 'projectCatalyst.votes.ccv4',
             ]),
             new Illuminate\Support\Fluent([
                 'title' => 'My Bookmarks',
                 'route_type' => 'route_name',
-                'route' => 'projectCatalyst.bookmarks',
+                'route' => 'catalyst-explorer.myBookmarks',
             ]),
             new Illuminate\Support\Fluent([
                 'title' => 'Catalyst API',
@@ -150,70 +206,16 @@ return [
                 'route' => '/catalyst-explorer/api',
             ]),
             new Illuminate\Support\Fluent([
-                'title' => 'Lido Nation Projects',
-                'route_type' => 'route_name',
-                'route' => 'lido-blockchain-labs.nairobi',
+                'title' => 'Weekly Townhall',
+                'route_type' => 'url',
+                'route' => 'https://bit.ly/catalyst-townhall',
+                'target' => '_blank',
             ]),
             new Illuminate\Support\Fluent([
-                'title' => 'Catalyst Explorer',
-                'items' => [
-                    //                    new Illuminate\Support\Fluent([
-                    //                        'title' => 'Explorer Home',
-                    //                        'route_type' => 'route_name',
-                    //                        'route' => 'projectCatalyst.'
-                    //                    ]),
-                    new Illuminate\Support\Fluent([
-                        'title' => 'Proposals',
-                        'route_type' => 'route_name',
-                        'route' => 'catalystExplorer.proposals',
-                    ]),
-                    new Illuminate\Support\Fluent([
-                        'title' => 'People',
-                        'route_type' => 'route_name',
-                        'route' => 'catalystExplorer.people',
-                    ]),
-                    new Illuminate\Support\Fluent([
-                        'title' => 'Proposal Assessments',
-                        'route_type' => 'route_name',
-                        'route' => 'catalystExplorer.assessments',
-                    ]),
-                    new Illuminate\Support\Fluent([
-                        'title' => 'Groups',
-                        'route_type' => 'route_name',
-                        'route' => 'catalystExplorer.groups',
-                    ]),
-                    new Illuminate\Support\Fluent([
-                        'title' => 'Funds',
-                        'route_type' => 'route_name',
-                        'route' => 'catalystExplorer.funds',
-                    ]),
-                    new Illuminate\Support\Fluent([
-                        'title' => 'Charts',
-                        'route_type' => 'route_name',
-                        'route' => 'catalystExplorer.charts',
-                    ]),
-                    new Illuminate\Support\Fluent([
-                        'title' => 'Monthly Reports',
-                        'route_type' => 'route_name',
-                        'route' => 'catalystExplorer.reports',
-                    ]),
-                    new Illuminate\Support\Fluent([
-                        'title' => 'CCV4 Results',
-                        'route_type' => 'route_name',
-                        'route' => 'projectCatalyst.votes.ccv4',
-                    ]),
-                    new Illuminate\Support\Fluent([
-                        'title' => 'Weekly Townhall',
-                        'route_type' => 'url',
-                        'route' => 'https://bit.ly/catalyst-townhall',
-                    ]),
-                    new Illuminate\Support\Fluent([
-                        'title' => 'Sign in',
-                        'route_type' => 'route_name',
-                        'route' => 'catalystExplorer.login',
-                        'guest' => true,
-                    ]),
-                ],
+                'title' => 'Sign in',
+                'route_type' => 'route_name',
+                'route' => 'catalyst-explorer.login',
+                'guest' => true,
             ]),
         ],
     ]),
@@ -223,17 +225,20 @@ return [
             new Illuminate\Support\Fluent([
                 'title' => 'Delegators',
                 'route_type' => 'route_name',
-                'route' => 'delegators',
+                'route' => 'delegators.home',
+                'navigate' => 'livewire',
             ]),
             new Illuminate\Support\Fluent([
                 'title' => 'The pool',
                 'route_type' => 'route_name',
                 'route' => 'lido-pool',
+                'navigate' => 'livewire',
             ]),
             new Illuminate\Support\Fluent([
                 'title' => 'Phuffycoin',
                 'route_type' => 'route_name',
-                'route' => 'phuffycoin',
+                'route' => 'phuffycoin.home',
+                'navigate' => 'livewire',
             ]),
         ],
     ]),
@@ -244,21 +249,25 @@ return [
                 'title' => 'The Team',
                 'route_type' => 'route_name',
                 'route' => 'team',
+                'navigate' => 'livewire',
             ]),
             new Illuminate\Support\Fluent([
                 'title' => 'Privacy Policy',
                 'route_type' => 'route_name',
                 'route' => 'privacyPolicy',
+                'navigate' => 'livewire',
             ]),
             new Illuminate\Support\Fluent([
                 'title' => 'Financial Details',
                 'route_type' => 'route_name',
                 'route' => 'financial-details',
+                'navigate' => 'livewire',
             ]),
             new Illuminate\Support\Fluent([
                 'title' => 'Contact Us',
                 'route_type' => 'route_name',
                 'route' => 'community',
+                'navigate' => 'livewire',
             ]),
         ],
     ]),
@@ -278,7 +287,7 @@ return [
             new Illuminate\Support\Fluent([
                 'title' => 'Jifunze upate tuzo',
                 'route_type' => 'url',
-                'route' => 'https://www.lidonation.com/sw/earn/learn',
+                'route' => 'sw/earn/learn',
             ]),
         ],
     ]),

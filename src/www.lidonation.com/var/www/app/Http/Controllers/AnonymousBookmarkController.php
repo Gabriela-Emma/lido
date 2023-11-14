@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreAnonymousBookmarkRequest;
 use App\Http\Requests\UpdateAnonymousBookmarkRequest;
 use App\Models\AnonymousBookmark;
 use Illuminate\Http\Request;
@@ -58,7 +57,7 @@ class AnonymousBookmarkController extends Controller
      *
      * @return Response
      */
-    public function store(StoreAnonymousBookmarkRequest $request)
+    public function store(\Illuminate\Http\Client\Request $request)
     {
         //
     }

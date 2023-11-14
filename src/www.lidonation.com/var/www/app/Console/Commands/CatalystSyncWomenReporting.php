@@ -3,7 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Jobs\CatalystSyncWomenReportFromGSheetJob;
-use App\Models\Fund;
+use App\Models\CatalystExplorer\Fund;
 use App\Services\SettingService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Str;

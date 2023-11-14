@@ -3,7 +3,7 @@
 namespace App\Observers;
 
 use App\Invokables\FillPostData;
-use App\Models\Fund;
+use App\Models\CatalystExplorer\Fund;
 use Illuminate\Support\Facades\Artisan;
 
 class FundObserver
@@ -14,7 +14,7 @@ class FundObserver
     }
 
     /**
-     * Handle the User "created" event.
+     * Handle the LidoUser "created" event.
      *
      * @return void
      */

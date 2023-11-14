@@ -459,7 +459,7 @@ primary:
   ## Container Security Context
   ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
   ## @param primary.containerSecurityContext.enabled Enable container security context
-  ## @param primary.containerSecurityContext.runAsUser User ID for the container
+  ## @param primary.containerSecurityContext.runAsUser LidoUser ID for the container
   ##
   containerSecurityContext:
     enabled: true
@@ -779,7 +779,7 @@ readReplicas:
   ## Container Security Context
   ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
   ## @param readReplicas.containerSecurityContext.enabled Enable container security context
-  ## @param readReplicas.containerSecurityContext.runAsUser User ID for the container
+  ## @param readReplicas.containerSecurityContext.runAsUser LidoUser ID for the container
   ##
   containerSecurityContext:
     enabled: true
@@ -1114,7 +1114,7 @@ volumePermissions:
   ## Init container' Security Context
   ## Note: the chown of the data folder is done to containerSecurityContext.runAsUser
   ## and not the below volumePermissions.containerSecurityContext.runAsUser
-  ## @param volumePermissions.containerSecurityContext.runAsUser User ID for the init container
+  ## @param volumePermissions.containerSecurityContext.runAsUser LidoUser ID for the init container
   ##
   containerSecurityContext:
     runAsUser: 0

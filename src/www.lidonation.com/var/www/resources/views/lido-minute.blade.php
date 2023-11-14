@@ -1,4 +1,4 @@
-<x-public-layout class="overflow-x-hidden lido-minute-podcast" :metaTitle="$metaTitle">
+<div class="overflow-x-hidden lido-minute">
     <header class="py-16">
         <div class="container">
             <h1 class="text-3xl font-light leading-8 tracking-tight text-slate-800 sm:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl pr-8 xl:pr-20 2xl:max-w-7xl">
@@ -12,17 +12,9 @@
     <div class="container">
         @if($newEpisodes)
         <section class="splide minute-splide relative bg-primary-10 mb-16 relative" id="new-lido-minutes">
-            <div class="splide__track">
-                <div class="splide__list gap-2 episodes">
-                    @foreach($newEpisodes as $post)
-                        <div class="splide__slide">
-                            @include('podcast.drip')
-                        </div>
-                    @endforeach
-                </div>
-            </div>
+
         </section>
-    @endif
+        @endif
     </div>
 
     <section class="relative bg-white py-16">
@@ -116,136 +108,4 @@
         </div>
     </section>
 
-
-    {{--    <section class="">--}}
-    {{--        <div class="container py-4">--}}
-    {{--            <div--}}
-    {{--                x-data="{--}}
-    {{--                skip: 3,--}}
-    {{--                atBeginning: false,--}}
-    {{--                atEnd: false,--}}
-    {{--                next() {--}}
-    {{--                    this.to((current, offset) => current + (offset * this.skip))--}}
-    {{--                },--}}
-    {{--                prev() {--}}
-    {{--                    this.to((current, offset) => current - (offset * this.skip))--}}
-    {{--                },--}}
-    {{--                to(strategy) {--}}
-    {{--                    let slider = this.$refs.slider--}}
-    {{--                    let current = slider.scrollLeft--}}
-    {{--                    let offset = slider.firstElementChild.getBoundingClientRect().width--}}
-    {{--                    slider.scrollTo({ left: strategy(current, offset), behavior: 'smooth' })--}}
-    {{--                },--}}
-    {{--                focusableWhenVisible: {--}}
-    {{--                    'x-intersect:enter'() {--}}
-    {{--                        this.$el.removeAttribute('tabindex')--}}
-    {{--                    },--}}
-    {{--                    'x-intersect:leave'() {--}}
-    {{--                        this.$el.setAttribute('tabindex', '-1')--}}
-    {{--                    },--}}
-    {{--                },--}}
-    {{--                disableNextAndPreviousButtons: {--}}
-    {{--                    'x-intersect:enter.threshold.05'() {--}}
-    {{--                        let slideEls = this.$el.parentElement.children--}}
-
-    {{--                        // If this is the first slide.--}}
-    {{--                        if (slideEls[0] === this.$el) {--}}
-    {{--                            this.atBeginning = true--}}
-    {{--                        // If this is the last slide.--}}
-    {{--                        } else if (slideEls[slideEls.length-1] === this.$el) {--}}
-    {{--                            this.atEnd = true--}}
-    {{--                        }--}}
-    {{--                    },--}}
-    {{--                    'x-intersect:leave.threshold.05'() {--}}
-    {{--                        let slideEls = this.$el.parentElement.children--}}
-
-    {{--                        // If this is the first slide.--}}
-    {{--                        if (slideEls[0] === this.$el) {--}}
-    {{--                            this.atBeginning = false--}}
-    {{--                        // If this is the last slide.--}}
-    {{--                        } else if (slideEls[slideEls.length-1] === this.$el) {--}}
-    {{--                            this.atEnd = false--}}
-    {{--                        }--}}
-    {{--                    },--}}
-    {{--                },--}}
-    {{--            }"--}}
-    {{--                class="flex w-full flex-col  border-t border-slate-800"--}}
-    {{--            >--}}
-    {{--                <div class="flex justify-end gap-2">--}}
-    {{--                    <!-- Prev Button -->--}}
-    {{--                    <button--}}
-    {{--                        x-on:click="prev"--}}
-    {{--                        class="text-6xl"--}}
-    {{--                        :aria-disabled="atBeginning"--}}
-    {{--                        :tabindex="atEnd ? -1 : 0"--}}
-    {{--                        :class="{ 'opacity-50 cursor-not-allowed': atBeginning }"--}}
-    {{--                    >--}}
-    {{--                            <span aria-hidden="true">--}}
-    {{--                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"--}}
-    {{--                                     stroke-width="1.5" stroke="currentColor" class="w-6 h-6">--}}
-    {{--                                  <path stroke-linecap="round" stroke-linejoin="round"--}}
-    {{--                                        d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18"/>--}}
-    {{--                                </svg>--}}
-    {{--                            </span>--}}
-    {{--                        <span class="sr-only">Skip to previous slide page</span>--}}
-    {{--                    </button>--}}
-
-    {{--                    <!-- Next Button -->--}}
-    {{--                    <button--}}
-    {{--                        x-on:click="next"--}}
-    {{--                        class="text-6xl"--}}
-    {{--                        :aria-disabled="atEnd"--}}
-    {{--                        :tabindex="atEnd ? -1 : 0"--}}
-    {{--                        :class="{ 'opacity-50 cursor-not-allowed': atEnd }"--}}
-    {{--                    >--}}
-    {{--                            <span aria-hidden="true">--}}
-    {{--                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"--}}
-    {{--                                     stroke-width="1.5" stroke="currentColor" class="w-6 h-6">--}}
-    {{--                                  <path stroke-linecap="round" stroke-linejoin="round"--}}
-    {{--                                        d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3"/>--}}
-    {{--                                </svg>--}}
-    {{--                            </span>--}}
-    {{--                        <span class="sr-only">Skip to next slide page</span>--}}
-    {{--                    </button>--}}
-    {{--                </div>--}}
-
-    {{--                <div--}}
-    {{--                    x-on:keydown.right="next"--}}
-    {{--                    x-on:keydown.left="prev"--}}
-    {{--                    tabindex="0"--}}
-    {{--                    role="region"--}}
-    {{--                    aria-labelledby="carousel-label"--}}
-    {{--                    class="flex space-x-6">--}}
-    {{--                    <h2 id="carousel-label" class="sr-only" hidden>Recent episodes</h2>--}}
-
-    {{--                    <span id="carousel-content-label" class="sr-only" hidden>Carousel</span>--}}
-
-    {{--                    <div--}}
-    {{--                        x-ref="slider"--}}
-    {{--                        tabindex="0"--}}
-    {{--                        role="listbox"--}}
-    {{--                        aria-labelledby="carousel-content-label"--}}
-    {{--                        class="flex w-full snap-x snap-mandatory overflow-x-scroll gap-3"--}}
-    {{--                    >--}}
-    {{--                        @foreach($newEpisodes as $episode)--}}
-    {{--                            <div class="bg-white shadow-sm rounded-sm p-2 podcast-wrapper">--}}
-    {{--                                <div x-bind="disableNextAndPreviousButtons"--}}
-    {{--                                     class="flex w-1/3 shrink-0 snap-start flex-col items-start justify-center podcast-inner"--}}
-    {{--                                     role="option">--}}
-    {{--                                    <img class="mt-2 w-full" src="{{$episode->thumbnail_url}}"--}}
-    {{--                                         alt="placeholder image">--}}
-
-    {{--                                    <button x-bind="focusableWhenVisible"--}}
-    {{--                                            class="py-2 text-xl font-semibold text-slate-800">--}}
-    {{--                                        {{$episode->title}}--}}
-    {{--                                    </button>--}}
-    {{--                                </div>--}}
-    {{--                            </div>--}}
-    {{--                        @endforeach--}}
-    {{--                    </div>--}}
-    {{--                </div>--}}
-    {{--            </div>--}}
-    {{--        </div>--}}
-    {{--    </section>--}}
-
-</x-public-layout>
+</div>

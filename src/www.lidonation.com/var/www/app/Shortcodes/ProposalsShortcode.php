@@ -2,7 +2,7 @@
 
 namespace App\Shortcodes;
 
-use App\Models\Proposal;
+use App\Models\CatalystExplorer\Proposal;
 
 class ProposalsShortcode
 {

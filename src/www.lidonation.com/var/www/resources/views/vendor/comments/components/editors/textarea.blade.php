@@ -1,1 +1,12 @@
-<textarea wire:model.lazy="{{ $model }}" @isset($autofocus) autofocus @endisset class="comments-textarea"></textarea>
+@props([
+    'comment' => null,
+    'placeholder' => '',
+    'model',
+    'autofocus' => false,
+])
+<textarea
+    wire:model="{{ $model }}"
+    @if($autofocus) autofocus @endif
+    class="comments-textarea"
+    placeholder="{{ $placeholder }}"
+></textarea>

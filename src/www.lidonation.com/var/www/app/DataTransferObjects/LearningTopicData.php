@@ -8,7 +8,7 @@ use Spatie\LaravelData\DataCollection;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
 #[TypeScript]
-class LearningTopicData extends Data
+final class LearningTopicData extends Data
 {
     public function __construct(
         public int $id,
