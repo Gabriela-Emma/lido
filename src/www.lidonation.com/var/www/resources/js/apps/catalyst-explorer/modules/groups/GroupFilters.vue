@@ -57,11 +57,11 @@
 
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
-import { useFiltersStore } from '../../../global/Shared/store/filters-stores';
-import Picker from '../../Shared/Components/Picker.vue';
 import BudgetRangePicker from '../proposals/BudgetRangePicker.vue';
 import Toggle from '@vueform/toggle/src/Toggle';
 import { ref, watch } from 'vue';
+import {useFiltersStore} from "@/global/stores/filters-stores";
+import Picker from "@apps/catalyst-explorer/Components/Global/Picker.vue";
 
 const props = defineProps<{
     showFilter: boolean,

@@ -158,7 +158,6 @@ import Filters from "@apps/catalyst-explorer/models/filters";
 import Picker from "@apps/catalyst-explorer/Components/Global/Picker.vue";
 import BudgetRangePicker from "@apps/catalyst-explorer/modules/proposals/BudgetRangePicker.vue";
 import { Ref } from "vue";
-import { watchEffect } from "vue";
 
 ////
 // props and class properties
