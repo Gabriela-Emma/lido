@@ -12,6 +12,7 @@ use App\Livewire\Library\PostComponent;
 use App\Livewire\LibraryComponent;
 use App\Livewire\LidoMinute;
 use App\Livewire\LidoMinuteNftComponent;
+use App\Livewire\LidoBlockchainLabsComponent;
 use App\Livewire\PrivacyPolicyComponent;
 use App\Livewire\Tags\TagsComponent;
 use App\Livewire\TeamComponent;
@@ -64,6 +65,9 @@ Route::group(
 
         Route::get('/lido-minute-nft', LidoMinuteNftComponent::class)
             ->name('lido-minute-nft');
+
+        Route::get('lido-blockchain-labs/nairobi', LidoBlockchainLabsComponent::class)
+            ->name('labs');
 
         Route::get('/mint/lido-minute', function () {
             return view('mint-lido-minute');
