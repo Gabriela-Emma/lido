@@ -15,7 +15,7 @@ class GlobalReaction extends Component
     public function mount($post)
     {
         $this->post = $post;
-        $this->reactions = $this->post->lido_reactions()->get();
+        $this->reactions = $this->post->lido_reactions()->get()->toArray();
     }
 
     public function addReaction($reactionType)
