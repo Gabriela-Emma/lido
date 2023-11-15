@@ -3,7 +3,6 @@
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\NewsletterController;
-use App\Http\Controllers\WalletLoginController;
 use App\Http\Livewire\Delegators\DelegatorsComponent;
 use App\Livewire\BazaarComponent;
 use App\Livewire\CommunityComponent;
@@ -11,7 +10,7 @@ use App\Livewire\FinancialDetails;
 use App\Livewire\HomeComponent;
 use App\Livewire\Library\PostComponent;
 use App\Livewire\LibraryComponent;
-use App\Livewire\LidoMinuteComponent;
+use App\Livewire\LidoMinute;
 use App\Livewire\LidoMinuteNftComponent;
 use App\Livewire\PrivacyPolicyComponent;
 use App\Livewire\Tags\TagsComponent;
@@ -22,9 +21,6 @@ use App\Livewire\HowToBuyAdaComponent;
 use App\Livewire\HowToStakeAdaComponent;
 use App\Livewire\TaxonomyPageComponent;
 use App\Models\Mint;
-use App\Models\OnboardingContent;
-use App\Repositories\PostRepository;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -39,7 +35,6 @@ use Laravel\Fortify\Http\Controllers\RegisteredUserController;
 use Laravel\Fortify\Http\Controllers\TwoFactorAuthenticatedSessionController;
 use Laravel\Fortify\Http\Controllers\TwoFactorQrCodeController;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
-use App\Http\Controllers\PostController;
 
 /*
 |--------------------------------------------------------------------------
@@ -65,7 +60,7 @@ Route::group(
         Route::get('/bazaar', BazaarComponent::class)
             ->name('bazaar');
 
-        Route::get('/lido-minute', LidoMinuteComponent::class)->name('lido-minute')->middleware([]);
+        Route::get('/lido-minute', LidoMinute::class)->name('lido-minute')->middleware([]);
 
         Route::get('/lido-minute-nft', LidoMinuteNftComponent::class)
             ->name('lido-minute-nft');

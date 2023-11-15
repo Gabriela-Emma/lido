@@ -16,8 +16,8 @@
     <div class="container">
         <div class="flex flex-wrap gap-8 mb-12 xl:flex-nowrap posts">
             @if ($showPodcast)
-                <div class="flex flex-col w-full shrink-0 snap-center xl:w-2/5">
-                    @livewire('components.lido-minute', ['latestLidoMinute' => $latestLidoMinute])
+                <div class="flex flex-col w-full shrink-0 snap-center xl:w-2/5 relative">
+                    <x-podcast.drip :podcast="$latestLidoMinute" />
                 </div>
             @endif
 

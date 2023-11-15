@@ -1,3 +1,6 @@
+@props([
+    'podcast'
+])
 <div class="relative h-full rounded-sm"
     x-data="{
         playing: false,

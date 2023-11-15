@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Livewire\Components;
 
@@ -6,7 +6,6 @@ use App\Enums\ComponentThemesEnum;
 use App\Models\Category;
 use App\Models\Post;
 use App\Models\Tag;
-use App\Models\Taxonomy;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -16,6 +15,7 @@ use Livewire\Component;
 class MorePostsComponent extends Component
 {
     public $theme = ComponentThemesEnum::column;
+
     public ?Collection $posts;
 
     public bool $hasMorePages;
@@ -39,10 +39,9 @@ class MorePostsComponent extends Component
         if (isset($this->taxonomy)) {
             $this->moreLabel = 'More '.ucfirst($this->taxonomy->title).' Posts';
             $this->mountTaxonomy();
-
         } else {
             $postsCursor = Post::with(['media', 'tags'])
-                ->orderByDesc('published_at')
+                ->latest('published_at')
                 ->offset($this->offset)
                 ->cursorPaginate($this->perPage);
 
@@ -83,11 +82,6 @@ class MorePostsComponent extends Component
         ]);
     }
 
-    public function render(): Factory|View|Application
-    {
-        return view('livewire.components.more-posts');
-    }
-
     public function loadMorePosts(): void
     {
         if (isset($this->taxonomy)) {
@@ -125,7 +119,7 @@ class MorePostsComponent extends Component
 
     public function morePosts(): void
     {
-        $postsCursor = Post::orderByDesc('published_at')
+        $postsCursor = Post::latest('published_at')
             ->cursorPaginate($this->perPage, ['*'], 'cursor', $this->nextCursor);
 
         $newPosts = collect($postsCursor->items())->each(fn ($p) => $p->load(['media', 'tags']));
@@ -149,7 +143,7 @@ class MorePostsComponent extends Component
         }
     }
 
-    protected function setTaxonomyModelDetails()
+    protected function setTaxonomyModelDetails(): void
     {
         switch ($this->taxonomy) {
             case ($this->taxonomy instanceof Category):
@@ -164,5 +158,10 @@ class MorePostsComponent extends Component
                 $this->pivotInstance = app('App\Models\ModelTag');
             break;
         }
+    }
+
+    public function render(): Factory|View|Application
+    {
+        return view('livewire.components.more-posts');
     }
 }
