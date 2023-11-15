@@ -1,21 +1,11 @@
-<div>
-    <section class="bg-gray-100 py-4">
-        <div class="container mx-auto border-b-2 border-gray-600">
-            <h1 class="text-4xl font-bold tracking-tight text-black">Lido Nation Contributors</h1>
-            <p class="text-sm">The Lido Nation contributors page is a platform where users can sign up to
-                contribute to
-                the Lido Nation
-                project. By contributing, users can help to support the development and growth of the
-                Lidonation
-                platform.</p>
-        </div>
-    </section>
-
+<div class="bg-gray-100">
+    <x-contribute.header title="Contributor Sign Up Form"
+        subTitle="Fill in the details below to sign up to be a Lido Nation contributor" />
 
     @if ($show)
         <div class="bg-gray-100 flex items-center justify-center py-6">
-            <div class="bg-gray-100 rounded shadow-md p-4 px-4  mb-6 w-full container">
-                <div class="text-gray-600 flex flex-col justify-center">
+            <div class="bg-gray-100 mb-6 w-full container">
+                <div class="text-gray-600 flex flex-col justify-center rounded shadow-md p-4 px-4 bg-white">
                     <div class="flex items-start gap-4">
                         <p class="text-black font-bold text-lg">Form successfully submitted</p>
                         <span>
@@ -36,18 +26,18 @@
 
     @if (!$show)
         <div class="bg-gray-100 flex items-center justify-center py-6">
-            <div class="bg-gray-100 rounded shadow-md p-4 px-4  mb-6 w-full container">
-                <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 lg:grid-cols-3">
-
-                    <form wire:submit="save" class="lg:col-span-3 mx-auto">
-                        <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-5">
+            <div class="bg-gray-100 mb-6 w-full container">
+                <div>
+                    <form wire:submit="save">
+                        <div
+                            class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-6 bg-white rounded shadow-md p-4 px-4">
                             <div class="md:col-span-5">
-                                <h3>Fill in the details below to sign-up to be a contributor</h3>
+                                <h3>Sign up form</h3>
                             </div>
                             <div class="md:col-span-5">
                                 <label for="full_name">Full Name</label>
                                 <input wire:model="fullName" type="text" name="full_name" id="full_name"
-                                    class="h-10 border border-black mt-1 rounded-md px-4 w-full bg-gray-50"
+                                    class="h-10 mt-1 px-4 w-full bg-gray-50 outline-none border border-gray-100 rounded-sm text-sm focus:border-blue-500"
                                     value="" placeholder="John Doe" />
                                 <div class="text-sm text-red-600">
                                     @error('fullName')
@@ -59,7 +49,7 @@
                             <div class="md:col-span-5">
                                 <label for="email">Email Address</label>
                                 <input wire:model="email" type="email" name="email" id="email"
-                                    class="h-10 border border-black mt-1 rounded-md px-4 w-full bg-gray-50"
+                                    class="h-10 mt-1 px-4 w-full bg-gray-50 outline-none border border-gray-100 rounded-sm text-sm focus:border-blue-500"
                                     value="" placeholder="email@domain.com" />
                                 <div class="text-sm text-red-600">
                                     @error('email')
@@ -71,7 +61,7 @@
                             <div class="md:col-span-3">
                                 <label for="password">Password</label>
                                 <input wire:model="password" type="password" name="password" id="password"
-                                    class="h-10 border border-black mt-1 px-4 w-full bg-gray-50 appearance-none"
+                                    class="h-10 mt-1 px-4 w-full bg-gray-50 outline-none border border-gray-100 rounded-sm text-sm focus:border-blue-500"
                                     value="" placeholder="*******" />
                                 <div class="text-sm text-red-600">
                                     @error('password')
@@ -84,7 +74,7 @@
                                 <label for="password_confirm">Confirm password</label>
                                 <input wire:model="passwordConfirm" type="password" name="password_confirm"
                                     id="password_confirm"
-                                    class="h-10 border border-black mt-1 px-4 w-full bg-gray-50 appearance-none"
+                                    class="h-10 mt-1 px-4 w-full bg-gray-50 outline-none border border-gray-100 rounded-sm text-sm focus:border-blue-500"
                                     value="" placeholder="*******" />
                                 <div class="text-sm text-red-600">
                                     @error('passwordConfirm')
@@ -96,29 +86,28 @@
                             <div class="md:col-span-3">
                                 <label for="twitter">Twitter</label>
                                 <input wire:model="twitter" type="text" name="twitter" id="twitter"
-                                    class="h-10 border border-black mt-1 rounded-md px-4 w-full bg-gray-50"
+                                    class="h-10 mt-1 px-4 w-full bg-gray-50 outline-none border border-gray-100 rounded-sm text-sm focus:border-blue-500"
                                     value="" placeholder="Optional" />
                             </div>
 
                             <div class="md:col-span-2">
                                 <label for="telegram">Telegram</label>
                                 <input wire:model="telegram" type="text" name="telegram" id="telegram"
-                                    class="h-10 border border-black mt-1 rounded-md px-4 w-full bg-gray-50"
+                                    class="h-10 mt-1 px-4 w-full bg-gray-50 outline-none border border-gray-100 rounded-sm text-sm focus:border-blue-500"
                                     value="" placeholder="Optional" />
                             </div>
 
                             <div class="md:col-span-5">
-                                <label for="areas_of_interest" class="block text-sm font-medium text-gray-900">Areas of
+                                <label for="areas_of_interest" class="block text-sm font-medium">Areas of
                                     interest (You can select more than one.)</label>
                             </div>
 
                             <div class="md:col-span-5">
-                                <div class="flex flex-col gap-2 border border-black px-4 py-3 divide-y divide-black">
+                                <div class="flex flex-col gap-2">
                                     @foreach ($options as $value => $label)
-                                        <div>
-                                            <label for="{{ $value }}"
-                                                class="mr-2 ">{{ $label }}</label><input type="checkbox"
-                                                value="{{ $value }}" wire:model="interests">
+                                        <div class="border border-gray-100 rounded-sm bg-gray-50 py-3 px-2">
+                                            <label for="{{ $value }}" class="mr-2 ">{{ $label }}</label>
+                                            <input type="checkbox" value="{{ $value }}" wire:model="interests">
                                         </div>
                                     @endforeach
                                 </div>
@@ -146,7 +135,7 @@
                                 @endif
                                 <div class="inline-flex items-end">
                                     <button type="submit"
-                                        class="bg-blue-700 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded">Submit</button>
+                                        class="bg-slate-900 hover:bg-slate-600 text-white font-bold py-2 px-4 rounded">Submit</button>
                                 </div>
                             </div>
 
