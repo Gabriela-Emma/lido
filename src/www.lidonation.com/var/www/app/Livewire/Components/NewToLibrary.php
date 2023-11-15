@@ -26,7 +26,9 @@ class NewToLibrary extends Component
 
     public function mount(): void
     {
-        $this->latestLidoMinute = Podcast::where('status', 'published')->orderBy('published_at', 'DESC')->first();
+        $this->latestLidoMinute = Podcast::where('status', 'published')
+            ->orderBy('published_at', 'DESC')->first();
+
         if (isset($this->latestLidoMinute)) {
             $this->showPodcast = true;
         } else {

@@ -1,20 +1,6 @@
 <div class="overflow-x-hidden lido-minute">
-    <header class="py-16">
-        <div class="container">
-            <h1 class="text-3xl font-light leading-8 tracking-tight text-slate-800 sm:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl pr-8 xl:pr-20 2xl:max-w-7xl">
-                <span class="font-extrabold text-yellow-500">LIDO Minute.</span>
-                <span>Bite size podcast for Blockchain & Cardano education.</span>
-            </h1>
-        </div>
-    </header>
-
-
     <div class="container">
-        @if($newEpisodes)
-        <section class="splide minute-splide relative bg-primary-10 mb-16 relative" id="new-lido-minutes">
-
-        </section>
-        @endif
+        <livewire:components.lido-minute-list-component />
     </div>
 
     <section class="relative bg-white py-16">
@@ -61,7 +47,6 @@
         </div>
     </section>
 
-
     <section class="bg-white py-12 lg:py-16 ">
         <div class="container">
             <div class="lg:grid lg:grid-cols-2 lg:items-center lg:gap-8">
@@ -107,5 +92,4 @@
             </div>
         </div>
     </section>
-
 </div>

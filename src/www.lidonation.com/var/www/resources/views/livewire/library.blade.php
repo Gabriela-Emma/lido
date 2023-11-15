@@ -47,7 +47,7 @@
 
     <x-global.tags :tags="$tags" :bgColor="'bg-eggplant-600'"/>
 
-    <livewire:library.podcast-content-component />
+    <livewire:components.lido-minute-list-component />
 
     <section class="relative py-16">
         <div class="container">

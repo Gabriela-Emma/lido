@@ -1,5 +1,4 @@
 <div class="posts w-full mt-12">
-
     @if($posts)
         <x-post.posts :posts="$posts" :theme="$theme"/>
     @endif
@@ -11,7 +10,7 @@
                 wire:loading
                 wire:loading.target="loadMorePosts"
                 class="w-full xl:border-r xl:border-slate-600 pr-6 -mt-px -ml-px post">
-                <x-placeholder.more-posts-placeholder/>
+                <x-placeholder.more-posts-placeholder />
             </div>
         @endforeach
     </div>
