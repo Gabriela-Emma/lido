@@ -144,6 +144,14 @@
                                 {{ $t('Voter Tool') }}
                             </Link>
                         </li>
+                        <li class="flow-root menu-item">
+                            <Link
+                                class="px-1 py-3 text-white menu-link hover:text-yellow-500"
+                                :class="{ 'text-yellow-500': $page.component.startsWith('DReps') }"
+                                :href="route('catalyst-explorer.dReps.index')">
+                                {{ $t('dReps') }}
+                            </Link>
+                        </li>
                         <!--                        <li class="flow-root menu-item" x-data="bookmarksMenuLink">-->
                         <!--                            <Link href="/catalyst-explorer/bookmarks" class="inline-flex items-center menu-link group">-->
                         <!--                            <span class="relative z-0 inline-flex rounded-md shadow-sm" x-cloak>-->
@@ -276,6 +284,15 @@
                                     :class="{ 'text-yellow-500': $page.component.startsWith('VoterTool') }"
                                     :href="route('catalyst-explorer.voter-tool')">
                                     {{ $t('Voter Tool') }}
+                                </Link>
+                            </li>
+                            <li class="flow-root menu-item p-1.5 w-full items-center">
+                                <Link
+                                    class="px-1 py-3 text-teal-600 menu-link hover:text-yellow-500"
+                                    @click.stop="(toggle = false)"
+                                    :class="{ 'text-yellow-500': $page.component.startsWith('DReps') }"
+                                    :href="route('catalyst-explorer.dReps.index')">
+                                    {{ $t('dReps') }}
                                 </Link>
                             </li>
                         </ul>

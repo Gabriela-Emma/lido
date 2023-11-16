@@ -7,6 +7,7 @@ use App\Inertia\CatalystExplorer\AttachmentsController;
 use App\Inertia\CatalystExplorer\BookmarksController;
 use App\Inertia\CatalystExplorer\ChallengeController;
 use App\Inertia\CatalystExplorer\ChartsController;
+use App\Inertia\CatalystExplorer\DRepsController;
 use App\Inertia\CatalystExplorer\EventsController;
 use App\Inertia\CatalystExplorer\FundController;
 use App\Inertia\CatalystExplorer\FundsController;
@@ -141,6 +142,13 @@ Route::group(
                     Route::get('/metrics/sum/f10primary-proposals', [ProposerController::class, 'getF10PrimaryProposalCount']);
                     Route::get('/metrics/sum/f10-co-proposals', [ProposerController::class, 'getF10CoProposalCount']);
                 });
+            });
+
+
+            //DReps
+            Route::prefix('/dreps')->as('dReps.')->group(function () {
+                Route::get('/', [DRepsController::class, 'index'])
+                    ->name('index');
             });
 
             //catalyst charts metrics
@@ -313,7 +321,6 @@ Route::group(
                     Route::patch('/{vote}/update', [MyVotesController::class, 'update'])
                         ->name('update');
                     Route::delete('/{vote}/delete', [MyVotesController::class, 'destroy'])->name('destroy');
-
                 });
 
                 // Ranks
@@ -327,7 +334,6 @@ Route::group(
                     Route::patch('/{rank}/update', [MyRankingController::class, 'update'])
                         ->name('update');
                     Route::delete('/{rank}/delete', [MyRankingController::class, 'destroy'])->name('destroy');
-
                 });
             });
         });
