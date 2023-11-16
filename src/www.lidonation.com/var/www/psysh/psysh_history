@@ -74,3 +74,6 @@ CatalystUser::runCustomIndex();
 exit
 Proposal::runCustomIndex();
 exit
+config();
+config()->all();
+exit

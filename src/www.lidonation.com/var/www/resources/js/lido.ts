@@ -21,6 +21,20 @@ if (rellaxElement.length > 0) {
     }
 }
 
+const globalReactions = function globalReactions(counts) {
+    return {
+        reactionsCount: counts,
+
+        async addReaction(reaction, id) {
+            let data = {
+                comment: reaction
+            }
+            const res = await window.axios.post(`/react/post/${id}`, data);
+            this.reactionsCount = res.data;
+        },
+    }
+}
+
 
 declare global {
     interface Window {
@@ -30,4 +44,4 @@ declare global {
 }
 
 window.globalVideoPlayer = globalVideoPlayer;
-window.globalReactions =globalReactions
+window.globalReactions = globalReactions

@@ -1,9 +1,9 @@
 <?php
 
-use App\Livewire\LidoMinuteComponent;
+use App\Livewire\LidoMinute;
 use Livewire\Livewire;
 
 it('renders successfully', function () {
-    Livewire::test(LidoMinuteComponent::class)
+    Livewire::test(LidoMinute::class)
         ->assertStatus(200);
 });

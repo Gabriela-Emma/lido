@@ -1,6 +1,6 @@
 <?php
 
-use App\Livewire\GlobalReaction;
+use App\Livewire\Components\GlobalReaction;
 use Livewire\Livewire;
 
 it('renders successfully', function () {
