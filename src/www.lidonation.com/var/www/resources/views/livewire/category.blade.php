@@ -24,7 +24,7 @@
     <section class="relative py-8 bg-scroll bg-center bg-cover bg-pool-bw-light bg-gray-50 bg-blend-hard-light"
         aria-labelledby="quick-links-title">
         <div class="container">
-            <div class="sm:grid sm:grid-cols-2 lg:grid-cols-4 2xl:grid-cols-4 my-8">
+            <div class="sm:grid sm:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-4 my-8">
                 @foreach ($postsByCategory->models as $post)
                     @if ($loop->first)
                         <div class="col-span-2 xl:col-span-3 2xl:col-span-4 my-4">

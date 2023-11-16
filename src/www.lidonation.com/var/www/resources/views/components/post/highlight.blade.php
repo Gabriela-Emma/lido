@@ -1,4 +1,4 @@
-<div class="lg:grid lg:grid-cols-7 gap-8 items-start col-span-2 xl:col-span-3 2xl:col-span-4">
+<div class="xl:grid xl:grid-cols-7 gap-8 items-start col-span-2 xl:col-span-4 2xl:col-span-4">
     @if($post->hero)
         <div class="col-span-3 overflow-hidden max-h-[32rem]">
             <a href="{{$post->link}}">
