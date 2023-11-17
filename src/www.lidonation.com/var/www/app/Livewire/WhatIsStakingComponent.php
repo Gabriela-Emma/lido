@@ -4,11 +4,13 @@ namespace App\Livewire;
 
 use Closure;
 use App\Models\Post;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 use App\Models\OnboardingContent;
 use Illuminate\Contracts\View\View;
 use App\Repositories\PostRepository;
 
+#[Title('What is staking on Cardano')]
 class WhatIsStakingComponent extends Component
 {
     public $post;

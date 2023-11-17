@@ -41,6 +41,6 @@ class TaxonomyPageComponent extends Component
         if (Route::currentRouteNamed('category')) {
             return view('livewire.category')->withShortcodes();
         }
-        return view('livewire.tag')->withShortcodes();
+        return view('livewire.tag')->title($this->taxonomy->title)->withShortcodes();
     }
 }

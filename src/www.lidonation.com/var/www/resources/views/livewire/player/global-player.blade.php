@@ -1,4 +1,4 @@
-<section x-data="globalVideoPlayer" @toggle-podcast.window="queueOrPauseContent($event.detail)"
+<section x-cloak x-data="globalVideoPlayer" @toggle-podcast.window="queueOrPauseContent($event.detail)"
          x-init=" playlist = @js($podcasts ?? []);"
          class="p-2 bg-yellow-500 border-yellow-600 text-slate-800 drop-shadow-2xl"
          @click.outside="maximize = false" @mouseenter="maximize = true"
