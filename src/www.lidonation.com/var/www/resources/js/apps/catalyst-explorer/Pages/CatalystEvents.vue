@@ -1,4 +1,5 @@
 <template>
+    <Head title="Catalyst Event" />
     <header-component
         titleName0="catalyst"
         titleName1="events"
@@ -34,4 +35,5 @@
 
 <script lang="ts" setup>
 import EventForm from "../modules/eventsModule/EventForm.vue"
+import {Head} from "@inertiajs/vue3";
 </script>

@@ -1,4 +1,6 @@
 <template>
+    <Head :title="fund?.data?.title" />
+
     <div class="bg-primary-20">
         <header class="text-white bg-teal-600">
             <header-component titleName0="Catalyst" titleName1="Fund"
@@ -143,6 +145,7 @@
 <script lang="ts" setup>
 import Fund from '../models/fund';
 import FundChallenge from '../modules/funds/FundChallenge.vue';
+import {Head} from "@inertiajs/vue3";
 const props = withDefaults(
     defineProps<{
         fund: {

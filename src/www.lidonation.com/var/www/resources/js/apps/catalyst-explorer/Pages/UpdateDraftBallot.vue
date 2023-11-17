@@ -1,4 +1,6 @@
 <template>
+    <Head :title="draftBallot.title" />
+
     <Modal>
         <form class="z-40 flex flex-col p-4 overflow-y-auto md:w-full md:h-full" @submit.prevent="submit">
             <div>
@@ -38,7 +40,7 @@
 </template>
 
 <script setup lang="ts">
-import {useForm} from '@inertiajs/vue3';
+import {Head, useForm} from '@inertiajs/vue3';
 import {useModal} from 'momentum-modal';
 import route from 'ziggy-js';
 import DraftBallot from "@apps/catalyst-explorer/models/draft-ballot";

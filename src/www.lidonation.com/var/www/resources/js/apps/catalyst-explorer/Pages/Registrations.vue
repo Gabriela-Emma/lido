@@ -1,4 +1,6 @@
 <template>
+    <Head title="Project Catalyst Registrations & Voting History" />
+
     <header-component titleName0="Catalyst" titleName1="Registrations" subTitle=""/>
 
     <div class="relative z-10">
@@ -34,7 +36,7 @@ import {ref, watch} from "vue";
 import VoterVotesCast from "@apps/catalyst-explorer/modules/registrations/VoterVotesCast.vue";
 import VoterRegistrations from "@apps/catalyst-explorer/modules/registrations/VoterRegistrations.vue";
 import {VARIABLES} from "@apps/catalyst-explorer/models/variables";
-import {router} from "@inertiajs/vue3";
+import {Head, router} from "@inertiajs/vue3";
 import route from "ziggy-js";
 import {storeToRefs} from "pinia";
 import {onMounted} from "vue";

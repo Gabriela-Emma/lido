@@ -1,4 +1,5 @@
 <template>
+    <Head title="Bookmark Proposal" />
     <Modal>
         <div class="relative flex flex-col w-full bg-teal-900 rounded-sm overflow-clip">
             <div class="pt-12 xl:pt-16">
@@ -213,7 +214,7 @@ import {defineEmits, ref, watch} from "vue";
 import Modal from "@/global/Components/Modal.vue";
 import Challenge from "@apps/catalyst-explorer/models/challenge";
 import Proposal from "@apps/catalyst-explorer/models/proposal";
-import {usePage} from "@inertiajs/vue3";
+import {Head, usePage} from "@inertiajs/vue3";
 import Login from "./Auth/Login.vue";
 import {useBookmarksStore} from "@apps/catalyst-explorer/stores/bookmarks-store";
 import Multiselect from '@vueform/multiselect';

@@ -1,4 +1,6 @@
 <template>
+    <Head title="Project Catalyst Charts & Analysis" />
+
     <header-component titleName0="catalyst" titleName1="by the Numbers"
         subTitle="View projects charts and filter results based on funds" />
     <section class="flex flex-col gap-2 bg-primary-20">
@@ -126,7 +128,7 @@
 
 <script lang="ts" setup>
 import Multiselect from '@vueform/multiselect';
-import { router } from '@inertiajs/vue3';
+import {Head, router} from '@inertiajs/vue3';
 import { watch, ref, defineAsyncComponent } from 'vue';
 import { computed } from 'vue';
 import route from 'ziggy-js';

@@ -1,4 +1,6 @@
 <template>
+    <Head title="Project Catalyst Voter Tool" />
+
   <header-component titleName0="catalyst" titleName1="Voter Tool"
                     subTitle="All Votes must be submitted in the official Catalyst Voting App. This is a research & planning tool only!"/>
 
@@ -72,7 +74,7 @@
 
 <script setup lang="ts">
 import {computed, onBeforeUnmount, onMounted, ref, watch} from 'vue';
-import {router} from '@inertiajs/vue3';
+import {Head, router} from '@inertiajs/vue3';
 import Fund from "@apps/catalyst-explorer/models/fund";
 import FilterGroups from "@apps/catalyst-explorer/models/filter-groups";
 import Proposal from "@apps/catalyst-explorer/models/proposal";

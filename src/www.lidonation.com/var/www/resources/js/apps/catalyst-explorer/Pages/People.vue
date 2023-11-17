@@ -1,4 +1,6 @@
 <template>
+    <Head title="Project Catalyst People" />
+
     <header-component titleName0="catalyst" titleName1="proposers"
                       subTitle="Diverse, independent, and together inspiring the highest level of human collaboration" />
 
@@ -46,8 +48,8 @@
                         @clearSearch="search = ''"
                         :filters="filtersRef"
                         :funds="props.funds"
-                        :search="search" 
-                        :show-filter="showFilters" 
+                        :search="search"
+                        :show-filter="showFilters"
                         :key="filterRenderKey"/>
                 </div>
 
@@ -55,7 +57,7 @@
                 <div class="flex-1 mx-auto">
 
                     <PeopleList :users="currentModel?.data?.data" />
-        
+
                     <div class="flex-1 pb-16 container">
                         <Pagination :links="currentModel.data.links" :per-page="perPageRef"
                                 :total="currentModel.data.total" :from="currentModel.data.from" :to="currentModel.data.to"
@@ -74,7 +76,7 @@ import Multiselect from '@vueform/multiselect';
 import Search from "@apps/catalyst-explorer/Components/Global/Search.vue";
 import Sort from "@apps/catalyst-explorer/models/sort";
 import Filters from "@/global/models/filters";
-import {router} from "@inertiajs/vue3";
+import {Head, router} from "@inertiajs/vue3";
 import User from "@/global/models/user";
 import Pagination from "@apps/catalyst-explorer/Components/Global/Pagination.vue";
 import {VARIABLES} from "@apps/catalyst-explorer/models/variables";
