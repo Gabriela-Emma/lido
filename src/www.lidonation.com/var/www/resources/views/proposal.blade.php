@@ -29,10 +29,6 @@
         <meta property="twitter:site" content="@lidonation"/>
     @endpush
 
-    @push('styles')
-        <link rel="stylesheet" href="{{asset('css/splide-extension-video.min.css')}}">
-    @endpush
-
 {{--    <livewire:catalyst-explorer.sub-menu-component />--}}
 
     <section class="relative py-10 bg-white lg:py-20">
