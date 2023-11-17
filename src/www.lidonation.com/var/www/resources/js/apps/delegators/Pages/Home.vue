@@ -1,4 +1,6 @@
 <template>
+    <Head title="Lido Delegators" />
+
     <section class="container relative py-8">
         <div class="flex w-full h-auto gap-">
             <DelegateToLidoPitch class="w-full xl:w-2/5" />
@@ -119,6 +121,7 @@ import Blocks from "@apps/delegators/modules/blocks/Blocks.vue";
 import LidoOrigin from "@/global/Components/LidoOrigin.vue";
 import DelegateToLidoPitch from "@apps/delegators/modules/delegate-to-lido/DelegateToLidoPitch.vue";
 import DelegateToLido from "@/global/Components/DelegateToLido.vue";
+import {Head} from "@inertiajs/vue3";
 
 </script>
 
