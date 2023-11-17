@@ -188,7 +188,15 @@
                     @endif
 
                     @if($proposal->content)
-                        <x-catalyst.proposals.proposal-content :proposal="$proposal" :pageLocale="(app()->getLocale())"  />
+                        <article class="relative p-4 text-justify">
+                            @if ($proposal->content)
+                                <x-markdown>($proposal->content)</x-markdown>
+                            @endif
+                            @if ($proposal->definition_of_success)
+                                <h2>Definition of Success</h2>
+                                <x-markdown>{{ $proposal->definition_of_success }}</x-markdown>
+                            @endif
+                        </article>
                     @endif
                 </div>
             </section>

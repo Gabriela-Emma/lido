@@ -109,7 +109,6 @@
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="{{ mix('vendor/splide/splide-shader-carousel.min.js') }}"></script>
 
-
     @stack('scripts')
 
     @vite(['resources/js/lido.ts'])
