@@ -77,3 +77,6 @@ exit
 config();
 config()->all();
 exit
+assets('vendor/splide/splide-shader-carousel.min.js');
+asset('vendor/splide/splide-shader-carousel.min.js');
+exit

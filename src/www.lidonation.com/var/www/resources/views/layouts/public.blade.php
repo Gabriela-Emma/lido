@@ -30,8 +30,6 @@
 
     <x-comments::styles />
 
-    <link rel="stylesheet" href="{{ asset(mix('css/app.css')) }}">
-
     @include('includes.analytics')
 
     @env('local')
@@ -100,12 +98,12 @@
     </script>
 
     <!-- @todo move to npm package -->
-    <script src="//cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
-    <script src="//cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
-    <script src=://unpkg.com/smoothscroll-polyfill@0.4.4/dist/smoothscroll.js"></script>
+    <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+    <script src="https://unpkg.com/smoothscroll-polyfill@0.4.4/dist/smoothscroll.js"></script>
     <script src="https://unpkg.com/three@0.150.0/build/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <script src="{{ mix('vendor/splide/splide-shader-carousel.min.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
 
     @stack('scripts')
 
