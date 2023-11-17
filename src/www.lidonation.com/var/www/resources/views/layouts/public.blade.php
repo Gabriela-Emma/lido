@@ -16,8 +16,6 @@
 
     @include('includes.site-icons')
 
-    <link rel="manifest" href="/site.webmanifest">
-
     <!-- Styles -->
     <link rel="stylesheet" href="//unpkg.com/tippy.js@6/dist/tippy.css"/>
     <link rel="stylesheet" href="//cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
@@ -117,5 +115,7 @@
     <span class="hidden text-white md:visible xl:invisible md:w-8 md:h-8"></span>
     <span class="sm:max-w-2xl sm:max-w-3xl sm:max-w-4xl sm:max-w-5xl sm:max-w-6xl sm:max-w-7xl 2xl:max-w-4xl 2xl:max-w-5xl 2xl:max-w-6xl 2xl:max-w-7xl "></span>
 </section>
+
+<livewire:components.lido-menu lazy="on-load" />
 </body>
 </html>

@@ -52,7 +52,11 @@ migrate:
 
 .PHONY: watch
 watch:
-	 $(sail) up -d && $(sail) npx vite 
+	 $(sail) up -d && $(sail) npx vite
+
+.PHONY: vite
+ vite:
+	 $(sail) npx vite
 
 .PHONY: build
 build:
