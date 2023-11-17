@@ -30,8 +30,6 @@ const walletService = new WalletService();
 let delegating: Ref<boolean> = ref(false);
 let delegationTransactionId = ref(null);
 
-
-
 let delegate = async (wallet) => {
     delegating.value = true;
     try {

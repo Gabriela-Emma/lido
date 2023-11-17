@@ -1,6 +1,8 @@
 <template>
     <section class="container relative py-8">
         <div class="flex w-full h-auto gap-8">
+            <DelegateToLido class="w-full xl:w-2/5" />
+
             <Blocks class="w-full xl:w-3/5"></Blocks>
         </div>
     </section>
@@ -115,10 +117,8 @@
 <script lang="ts" setup>
 import EveryEpoch from "@apps/delegators/modules/everyEpoch/EveryEpoch.vue";
 import Blocks from "@apps/delegators/modules/blocks/Blocks.vue";
-import OriginPlaceholder from "@/global/Components/partials/OriginPlaceholder.vue"
 import LidoOrigin from "@/global/Components/LidoOrigin.vue";
-import { defineAsyncComponent } from "vue";
-import DelegateToLido from "@/global/Components/DelegateToLido.vue";
+import DelegateToLido from "@apps/delegators/modules/delegate-to-lido/DelegateToLido.vue";
 
 </script>
 
