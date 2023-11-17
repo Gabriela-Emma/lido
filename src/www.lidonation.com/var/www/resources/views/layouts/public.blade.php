@@ -125,8 +125,6 @@
     <span class="sm:max-w-2xl sm:max-w-3xl sm:max-w-4xl sm:max-w-5xl sm:max-w-6xl sm:max-w-7xl 2xl:max-w-4xl 2xl:max-w-5xl 2xl:max-w-6xl 2xl:max-w-7xl "></span>
 </section>
 
-<livewire:global-player-component />
-
 <link rel="preload" href="{{ asset(mix('css/catalyst-explorer.css')) }}" as="style">
 </body>
 </html>
