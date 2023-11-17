@@ -24,9 +24,9 @@
         </p>
     </x-public.page-header>
 
-{{--    <div class="max-w-5xl mx-auto">--}}
-{{--        <livewire:contribute-content.contribute-translation />--}}
-{{--    </div>--}}
+   <div class="max-w-5xl mx-auto">
+        <livewire:contribute.contribute-translation />
+  </div>
 
     <section class="relative bg-white relative py-16">
         <div class="container">
