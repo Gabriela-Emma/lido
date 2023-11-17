@@ -9,4 +9,5 @@ enum StatusEnum: string
     case DRAFT = 'draft';
     case PENDING = 'pending';
     case ACCEPTED = 'accepted';
+    
 }
