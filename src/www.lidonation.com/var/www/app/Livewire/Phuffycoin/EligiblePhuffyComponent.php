@@ -19,8 +19,6 @@ class EligiblePhuffyComponent extends Component
             $this->eligiblePhuffyTotal = $response->json()[0]['quantity'];
         }
 
-
-
     }
 
     public function render()

@@ -2,25 +2,24 @@
 
 namespace App\Http\Controllers\Invokable;
 
-use App\Models\User;
 use App\Enums\RoleEnum;
-use Illuminate\Http\Request;
-use Illuminate\Support\Fluent;
 use App\Http\Controllers\Controller;
+use App\Models\User;
+use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use App\Livewire\Forms\AuthenticationForm;
-use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Support\Fluent;
 
 class CreateUserController extends Controller
 {
-    public function __invoke(?Request $request ,?array $form): ?Authenticatable
+    public function __invoke(?Request $request, ?array $form): ?Authenticatable
     {
 
         if (isset($form)) {
             $request = $form;
-            $validated = Validator::make($request,[
+            $validated = Validator::make($request, [
                 'name' => 'nullable|min:3',
                 'email' => 'nullable|email|unique:users',
                 'password' => 'nullable|min:5',
@@ -29,7 +28,7 @@ class CreateUserController extends Controller
                 'assets' => 'nullable',
             ]);
             $validated = new Fluent($validated->getData());
-        }else {
+        } else {
             $validated = new Fluent($request->validate([
                 'name' => 'nullable|min:3',
                 'email' => 'nullable|email|unique:users',

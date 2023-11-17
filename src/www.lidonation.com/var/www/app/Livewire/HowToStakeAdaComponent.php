@@ -2,13 +2,13 @@
 
 namespace App\Livewire;
 
-use Closure;
+use App\Models\OnboardingContent;
 use App\Models\Post;
+use App\Repositories\PostRepository;
+use Closure;
+use Illuminate\Contracts\View\View;
 use Livewire\Attributes\Title;
 use Livewire\Component;
-use App\Models\OnboardingContent;
-use Illuminate\Contracts\View\View;
-use App\Repositories\PostRepository;
 
 #[Title('How to stake Ada')]
 class HowToStakeAdaComponent extends Component
@@ -23,6 +23,6 @@ class HowToStakeAdaComponent extends Component
 
     public function render(): View|Closure|string
     {
-    return view('components.how-to-stake-ada')->with('post', $this->post);
+        return view('components.how-to-stake-ada')->with('post', $this->post);
     }
 }

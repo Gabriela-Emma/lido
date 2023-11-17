@@ -29,6 +29,7 @@ use App\Inertia\CatalystExplorer\ReportsController;
 use App\Inertia\CatalystExplorer\UserProfilesController;
 use App\Inertia\CatalystExplorer\VoterToolController;
 use App\Livewire\CatalystExplorer\VotesComponent;
+use App\Models\CatalystExplorer\Proposal;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
@@ -41,6 +42,18 @@ Route::group(
         'middleware' => ['localeSessionRedirect', 'localizationRedirect', 'localeViewPath'],
     ],
     function () {
+        Route::get('/proposals/{proposal}/', function (Proposal $proposal) {
+            // related proposal in fund
+            $relatedProposalsQuery = Proposal::whereRelation('fund', 'parent_id', $proposal->fund?->parent_id)
+                ->whereHas('users', fn ($q) => $q->whereIn('id', $proposal->users->pluck('id')))
+                ->where('id', '!=', $proposal->id);
+
+            $relatedProposals = $relatedProposalsQuery->limit(6)->get();
+
+            // other proposals form same category
+            return view('proposal', compact('proposal', 'relatedProposals'));
+        })->name('proposal');
+
         Route::get('/catalyst-proposals/users/{catalystUser}', fn () => view('catalyst.user'));
         Route::prefix('project-catalyst')->as('projectCatalyst.')->group(function () {
 
@@ -143,7 +156,6 @@ Route::group(
                     Route::get('/metrics/sum/f10-co-proposals', [ProposerController::class, 'getF10CoProposalCount']);
                 });
             });
-
 
             //DReps
             Route::prefix('/dreps')->as('dReps.')->group(function () {

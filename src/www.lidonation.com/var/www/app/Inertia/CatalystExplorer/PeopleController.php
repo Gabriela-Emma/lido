@@ -4,7 +4,6 @@ namespace App\Inertia\CatalystExplorer;
 
 use App\Enums\CatalystExplorerQueryParams;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\FundResource;
 use App\Models\CatalystExplorer\CatalystUser;
 use App\Models\CatalystExplorer\Fund;
 use Illuminate\Http\Request;
@@ -33,7 +32,7 @@ class PeopleController extends Controller
     protected int $limit = 24;
 
     protected ?bool $fundedProposalsFilter = false;
-    
+
     protected Builder $searchBuilder;
 
     public Collection $fundsFilter;
@@ -53,7 +52,7 @@ class PeopleController extends Controller
 
         $funds = Fund::funds()
             ->get()
-            ->map(fn($f) => new Fluent(['id' => $f->id, 'title' => $f->title]));
+            ->map(fn ($f) => new Fluent(['id' => $f->id, 'title' => $f->title]));
 
         // props
         $props = [
@@ -137,7 +136,7 @@ class PeopleController extends Controller
                 return $index->search($query, $options);
             }
         );
-        
+
         if ($returnBuilder) {
             return $this->searchBuilder;
         }

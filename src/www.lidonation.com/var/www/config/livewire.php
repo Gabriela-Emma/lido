@@ -65,7 +65,7 @@ return [
 
     'temporary_file_upload' => [
         'disk' => null,        // Example: 'local', 's3'              | Default: 'default'
-        'rules' => 'file|mimes:png,jpg,pdf|max:12288|dimensions:ratio=1/1|dimensions:min_width=640,max_width=2560|dimensions:min_height=640,max_height=2560',      
+        'rules' => 'file|mimes:png,jpg,pdf|max:12288|dimensions:ratio=1/1|dimensions:min_width=640,max_width=2560|dimensions:min_height=640,max_height=2560',
         'directory' => null,   // Example: 'tmp'                      | Default: 'livewire-tmp'
         'middleware' => null,  // Example: 'throttle:5,1'             | Default: 'throttle:60,1'
         'preview_mimes' => [   // Supported file types for temporary pre-signed file URLs...

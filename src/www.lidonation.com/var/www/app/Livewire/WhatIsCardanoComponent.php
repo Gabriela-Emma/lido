@@ -2,13 +2,13 @@
 
 namespace App\Livewire;
 
-use Closure;
+use App\Models\OnboardingContent;
 use App\Models\Post;
+use App\Repositories\PostRepository;
+use Closure;
+use Illuminate\Contracts\View\View;
 use Livewire\Attributes\Title;
 use Livewire\Component;
-use App\Models\OnboardingContent;
-use Illuminate\Contracts\View\View;
-use App\Repositories\PostRepository;
 
 #[Title('What is Cardano')]
 class WhatIsCardanoComponent extends Component
@@ -23,6 +23,6 @@ class WhatIsCardanoComponent extends Component
 
     public function render(): View|Closure|string
     {
-    return view('components.what-is-cardano')->with('post', $this->post);
+        return view('components.what-is-cardano')->with('post', $this->post);
     }
 }

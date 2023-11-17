@@ -32,19 +32,19 @@ class TaxonomyComponent extends Component
     public function mount(): void
     {
         switch ($this->taxonomy) {
-            case ($this->taxonomy instanceof Category):
+            case $this->taxonomy instanceof Category:
                 $taxonomyInstance = app(Category::class);
                 $taxPivotColumn = 'category_id';
                 $pivotInstance = app(ModelCategory::class);
                 $this->setPosts($taxonomyInstance, $taxPivotColumn, $pivotInstance);
-               break;
+                break;
 
-            case ($this->taxonomy instanceof Tag):
+            case $this->taxonomy instanceof Tag:
                 $taxonomyInstance = app('App\Models\Tag');
                 $taxPivotColumn = 'tag_id';
                 $pivotInstance = app('App\Models\ModelTag');
                 $this->setPosts($taxonomyInstance, $taxPivotColumn, $pivotInstance);
-              break;
+                break;
         }
     }
 
@@ -64,7 +64,7 @@ class TaxonomyComponent extends Component
     {
         $this->posts = $taxInstance::where('id', $this->taxonomy->id)
             ->get()
-            ->map(function ($cat) use($taxPivotColumn, $pivotInstance) {
+            ->map(function ($cat) use ($taxPivotColumn, $pivotInstance) {
                 $catIds = $pivotInstance::where([
                     $taxPivotColumn => $this->taxonomy->id,
                 ])->pluck('model_id')->all();

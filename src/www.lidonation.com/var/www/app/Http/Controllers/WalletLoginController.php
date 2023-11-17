@@ -8,7 +8,6 @@ use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 
 class WalletLoginController extends Controller
@@ -68,16 +67,17 @@ class WalletLoginController extends Controller
         string $stakeAddrHex = null
 
     ) {
-        $lucidReq = new  LucidRequest('/wallet/authenticate',null);
-        
+        $lucidReq = new LucidRequest('/wallet/authenticate', null);
+
         $lucidReq->body()->merge([
             'signature' => $signature,
             'key' => $key,
             'txHash' => $txHash,
             'stakeAddrHex' => $stakeAddrHex,
-            'account' => $account
+            'account' => $account,
         ]);
-         return $lucidReq->send()->body();
-        
+
+        return $lucidReq->send()->body();
+
     }
 }

@@ -14,8 +14,6 @@ class EarnController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return Modal|RedirectResponse
      */
     public function addWallet(): Modal|RedirectResponse
     {
@@ -55,8 +53,6 @@ class EarnController extends Controller
 
     /**
      * Display a listing of the resource.
-     *
-     * @return Response
      */
     public function index(): Response
     {

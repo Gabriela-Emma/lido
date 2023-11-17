@@ -95,7 +95,7 @@ class Post extends Model implements HasLink, HasMedia, Interfaces\IHasMetaData, 
     ];
 
     protected $appends = [
-        'link'
+        'link',
     ];
 
     protected $guarded = ['user_id', 'created_at', 'published_at'];

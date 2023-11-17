@@ -279,7 +279,7 @@ class CatalystUser extends User implements CanComment, HasMedia
         return Attribute::make(
             get: function () {
                 return $this->proposals()->whereNotNull('funded_at')
-                   ->sum('amount_requested');
+                    ->sum('amount_requested');
             },
         );
     }
@@ -289,7 +289,7 @@ class CatalystUser extends User implements CanComment, HasMedia
         return Attribute::make(
             get: function () {
                 return $this->proposals()->whereNotNull('funded_at')
-                  ->sum('amount_requested');
+                    ->sum('amount_requested');
             },
         );
     }

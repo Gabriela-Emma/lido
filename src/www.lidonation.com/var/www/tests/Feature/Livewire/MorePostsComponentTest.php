@@ -23,7 +23,7 @@ it('sets hasMorePages', function () {
 
     $componentInstance = Livewire::test(MorePostsComponent::class, ['perPage' => $perPage]);
 
-    // with 4 posts and perpage set to 2 we expect to have hasMorePages set to true on component load 
+    // with 4 posts and perpage set to 2 we expect to have hasMorePages set to true on component load
     $componentInstance->assertSet('hasMorePages', true);
 
     // assert that on sub-sequent loadMorePosts the hasMorePages variable will be set to null
@@ -96,7 +96,6 @@ it('loads more posts with "loadMorePosts()" method', function () {
     $componentInstance->assertCount('posts', $perPage * 2);
 });
 
-
 it('hides "More Recent Posts" button when no more posts to load', function () {
     $moreLabel = 'More Recent Posts';
 
@@ -105,10 +104,8 @@ it('hides "More Recent Posts" button when no more posts to load', function () {
     //asseting we dont see the label when hasMorePages is set to false
     $componentInstance->set('hasMorePages', false)
         ->assertDontSee($moreLabel);
-    
+
     //asseting we do see the label when hasMorePages is set to true
     $componentInstance->set('hasMorePages', true)
         ->assertSee($moreLabel);
 });
-
-

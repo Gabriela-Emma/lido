@@ -8,19 +8,19 @@ use App\Livewire\BazaarComponent;
 use App\Livewire\CommunityComponent;
 use App\Livewire\FinancialDetails;
 use App\Livewire\HomeComponent;
+use App\Livewire\HowToBuyAdaComponent;
+use App\Livewire\HowToStakeAdaComponent;
 use App\Livewire\Library\PostComponent;
 use App\Livewire\LibraryComponent;
+use App\Livewire\LidoBlockchainLabsComponent;
 use App\Livewire\LidoMinute;
 use App\Livewire\LidoMinuteNftComponent;
-use App\Livewire\LidoBlockchainLabsComponent;
 use App\Livewire\PrivacyPolicyComponent;
 use App\Livewire\Tags\TagsComponent;
+use App\Livewire\TaxonomyPageComponent;
 use App\Livewire\TeamComponent;
 use App\Livewire\WhatIsCardanoComponent;
 use App\Livewire\WhatIsStakingComponent;
-use App\Livewire\HowToBuyAdaComponent;
-use App\Livewire\HowToStakeAdaComponent;
-use App\Livewire\TaxonomyPageComponent;
 use App\Models\Mint;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -234,4 +234,3 @@ Route::get('/reset-password/{token}', function (Request $request, $token) {
 Route::post('reset-password', [ForgotPasswordController::class, 'submitResetPasswordForm'])->name('password.update');
 Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 Route::comments();
-

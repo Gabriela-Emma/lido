@@ -43,10 +43,10 @@ class NewToLibrary extends Component
 
     public function togglePodcast()
     {
-        $this->showPodcast = !$this->showPodcast;
-        $this->featurePostsCount=$this->featurePostsCount+1;
+        $this->showPodcast = ! $this->showPodcast;
+        $this->featurePostsCount = $this->featurePostsCount + 1;
 
-        $this->newToLibrary=null;
+        $this->newToLibrary = null;
         Post::withoutGlobalScope(LimitScope::class);
         $this->newToLibrary = Post::orderBy('published_at', 'DESC')
             ->limit($this->featurePostsCount)->get()

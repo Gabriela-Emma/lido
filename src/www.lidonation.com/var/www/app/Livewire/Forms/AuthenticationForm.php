@@ -2,12 +2,12 @@
 
 namespace App\Livewire\Forms;
 
-use Livewire\Form;
-use App\Models\User;
 use App\Enums\RoleEnum;
-use Livewire\Attributes\Rule;
-use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Invokable\CreateUserController;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\Rule;
+use Livewire\Form;
 
 class AuthenticationForm extends Form
 {
@@ -26,25 +26,26 @@ class AuthenticationForm extends Form
     #[Rule('sometimes|min:13')]
     public string $stake_address;
 
-    public  $remember = 1;
+    public $remember = 1;
 
     public array $walletInfo;
 
     public function store()
     {
         $this->setWalletInfo();
-        $user =  (new CreateUserController)(null,$this->all());
+        $user = (new CreateUserController)(null, $this->all());
         if ($user instanceof User) {
             return $user;
-        }else {
+        } else {
             return response()->json([
                 'message' => 'We are having trouble logging you in with provided credentials.',
-            ], 401);        }
+            ], 401);
+        }
     }
 
     public function login()
     {
-        
+
         $this->setWalletInfo();
         $this->validate();
         if ((bool) $this->stake_address) {
@@ -54,6 +55,7 @@ class AuthenticationForm extends Form
 
             if ((bool) $user && $isPartner) {
                 Auth::login($user, $this->remember);
+
                 return $user;
             } else {
                 return response()->json([
@@ -74,7 +76,7 @@ class AuthenticationForm extends Form
         ], 401);
     }
 
-    public function setWalletInfo() : void
+    public function setWalletInfo(): void
     {
         $this->stake_address = $this->walletInfo['stake_address'];
         $this->wallet_address = $this->walletInfo['wallet_address'];

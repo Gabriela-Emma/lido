@@ -16,7 +16,7 @@ class LidoModelsDatabaseSeeder extends Seeder
             LinkSeeder::class,
             TagSeeder::class,
 
-             ArticlesSeeder::class,
+            ArticlesSeeder::class,
 
             LidoEarnLearnDatabaseSeeder::class,
 
@@ -32,10 +32,10 @@ class LidoModelsDatabaseSeeder extends Seeder
             RewardSeeder::class,
             WithdrawalSeeder::class,
 
-//            EventSeeder::class,
-//            TwitterEventSeeder::class,
+            //            EventSeeder::class,
+            //            TwitterEventSeeder::class,
 
-                    //    LidoMinuteSeeder::class,
+            //    LidoMinuteSeeder::class,
 
             PodcastSeeder::class,
             NftSeeder::class,

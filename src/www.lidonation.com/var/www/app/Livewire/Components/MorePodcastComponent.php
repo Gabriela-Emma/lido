@@ -1,12 +1,14 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Livewire\Components;
 
 use App\Models\Podcast;
-use Illuminate\Support\Collection;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Application;
+use Illuminate\Support\Collection;
 use Livewire\Component;
 
 class MorePodcastComponent extends Component
@@ -18,7 +20,9 @@ class MorePodcastComponent extends Component
     public int $offset = 0;
 
     public int $perPage = 6;
+
     public ?string $nextCursor = null;
+
     public string $moreLabel = 'More Podcast';
 
     public bool $showInitial = true;

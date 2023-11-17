@@ -1,10 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\PromoController;
 use App\Livewire\Partners\LoginComponent;
 use App\Livewire\Partners\PartnerDashboardComponent;
-use App\Http\Controllers\Api\Partners\PartnersController;
+use Illuminate\Support\Facades\Route;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 /*

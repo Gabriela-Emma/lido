@@ -8,7 +8,6 @@ class FathomConnector extends Connector
 {
     /**
      * Constructor
-     *
      */
     public function __construct()
     {

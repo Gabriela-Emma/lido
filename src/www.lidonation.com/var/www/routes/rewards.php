@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\RewardController;
 use App\Http\Controllers\WithdrawalController;
-use App\Livewire\Earn\CcvComponent;
 use Illuminate\Support\Facades\Route;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
@@ -29,7 +28,6 @@ Route::group(
                     Route::get('/{withdrawal:id}', [WithdrawalController::class, 'view'])
                         ->name('view');
                 });
-
 
             });
     }

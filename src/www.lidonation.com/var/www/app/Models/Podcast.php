@@ -32,7 +32,7 @@ class Podcast extends Model implements HasLink, HasMedia, IHasMetaData
 
     protected $with = [
         'nfts',
-        'author'
+        'author',
     ];
 
     protected $casts = [

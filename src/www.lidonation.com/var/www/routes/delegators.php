@@ -1,10 +1,10 @@
 <?php
 
+use App\Http\Controllers\Delegators\EveryEpochController;
+use App\Http\Controllers\QuestionResponseController;
+use App\Inertia\Delegators\HomeController;
 use App\Livewire\LidoPoolDetails;
 use Illuminate\Support\Facades\Route;
-use App\Inertia\Delegators\HomeController;
-use App\Http\Controllers\QuestionResponseController;
-use App\Http\Controllers\Delegators\EveryEpochController;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 /*

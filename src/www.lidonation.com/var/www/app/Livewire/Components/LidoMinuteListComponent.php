@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Livewire\Components;
 
@@ -17,6 +19,7 @@ class LidoMinuteListComponent extends Component
         // Fetch the latest episodes
         $this->newEpisodes = Podcast::latest()->take(3)->get();
     }
+
     public function render(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
         return view('livewire.components.lido-minute-list-component');
