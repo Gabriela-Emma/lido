@@ -41,7 +41,7 @@
         "spatie/browsershot": "^3.59",
         "spatie/crawler": "^7.1",
         "spatie/laravel-backup": "^8.3",
-        "spatie/laravel-comments": "^1.4.6",
+        "spatie/laravel-comments": "^1.4.7",
         "spatie/laravel-comments-livewire": "^2.0.3",
         "spatie/laravel-data": "^3.9",
         "spatie/laravel-enum": "^3.0",
