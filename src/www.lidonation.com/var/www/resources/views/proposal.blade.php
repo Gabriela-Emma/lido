@@ -190,7 +190,7 @@
                     @if($proposal->content)
                         <article class="relative p-4 text-justify">
                             @if ($proposal->content)
-                                <x-markdown>($proposal->content)</x-markdown>
+                                <x-markdown>{{$proposal->content}}</x-markdown>
                             @endif
                             @if ($proposal->definition_of_success)
                                 <h2>Definition of Success</h2>
