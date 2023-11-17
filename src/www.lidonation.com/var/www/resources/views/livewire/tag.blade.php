@@ -1,8 +1,8 @@
-<div class="tag" :metaTitle="'Tag: '.$tag - > title">
+<div class="tag" :metaTitle="Tag: {$tag->title}">
     <header>
         <div class="container py-4 ml-10">
-            <div class="flex z-10 flex-col">
-                <span class='z-10 font-semibold text-sm text-slate-700'>{{ __('Tag') }}</span>
+            <div class="flex z-10 flex-col mb-2">
+                <span class='z-10 font-semibold text-sm text-slate-700'>{{ (new ReflectionClass($tag))->getShortName() }}</span>
                 <span class='z-10 font-semibold text-teal-600'>{{ $tag->title }}</span>
             </div>
             <p class="mt-3 mb-1 text-xl max-w-3xl font-normal text-gray-500 sm:mt-4">

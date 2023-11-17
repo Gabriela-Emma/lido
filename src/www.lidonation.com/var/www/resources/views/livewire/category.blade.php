@@ -1,4 +1,4 @@
-<div class="category" :metaTitle="'Cat: '.$category - > title">
+<div class="category" :metaTitle="Cat: {$category->title}">
     <header>
         <div class="container py-4 pb-4">
             <div class="flex flex-row gap-4 text-sm">
