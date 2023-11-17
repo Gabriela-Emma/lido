@@ -11,7 +11,7 @@
     @stack('tags')
 
     <title>
-        {{ ($metaTitle ?? $snippets->siteTitle ) .  ' | ' . Str::title( config('app.name', 'Laravel') . ' ' . $localeDetail?->native)}}
+        {{ ( $title ?? $metaTitle ?? $snippets->siteTitle) . ' | ' . Str::title(config('app.name', 'Lido Nation') . ' ' . $localeDetail?->native) }}
     </title>
 
     @include('includes.site-icons')
@@ -24,7 +24,7 @@
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
     <link rel="stylesheet" href="https://cdn.plyr.io/3.7.2/plyr.css" />
 
-   
+
 
     @stack('styles')
 

@@ -9,7 +9,7 @@
     <meta property="fb:app_id" content="{{ config('services.facebook.app_id') }}" />
 
     <title>
-        {{ ($metaTitle ?? $snippets->siteTitle) . ' | ' . Str::title(config('app.name', 'Laravel') . ' ' . $localeDetail?->native) }}
+        {{ ( $title ?? $metaTitle ?? $snippets->siteTitle) . ' | ' . Str::title(config('app.name', 'Lido Nation') . ' ' . $localeDetail?->native) }}
     </title>
 
     @livewireStyles
