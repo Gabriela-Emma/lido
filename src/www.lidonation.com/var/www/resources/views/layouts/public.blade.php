@@ -109,22 +109,14 @@
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="{{ mix('vendor/splide/splide-shader-carousel.min.js') }}"></script>
 
-    <script src="{{ mix('js/global.js') }}" ></script>
-
-    @if (Route::currentRouteName() != 'phuffycoin' && Route::currentRouteName() != 'delegators' && Route::currentRouteName() != 'governanceMarathon' )
-        <script src="{{ mix('js/app.js') }}" defer></script>
-    @endif
 
     @stack('scripts')
 
-    @vite(['resources/js/phuffycoin.ts'])
-
+    @vite(['resources/js/lido.ts'])
 
     <!-- Dynamic tailwind classes -->
     <span class="hidden text-white md:visible xl:invisible md:w-8 md:h-8"></span>
     <span class="sm:max-w-2xl sm:max-w-3xl sm:max-w-4xl sm:max-w-5xl sm:max-w-6xl sm:max-w-7xl 2xl:max-w-4xl 2xl:max-w-5xl 2xl:max-w-6xl 2xl:max-w-7xl "></span>
 </section>
-
-<link rel="preload" href="{{ asset(mix('css/catalyst-explorer.css')) }}" as="style">
 </body>
 </html>
