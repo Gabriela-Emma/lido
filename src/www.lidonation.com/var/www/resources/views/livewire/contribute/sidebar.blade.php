@@ -7,7 +7,7 @@
             </a>
         </li>
         <li class="mb-1 group active">
-            <a wire:navigate href="{{route('contribute.translation')}}" class="flex items-start py-2 px-4  hover:bg-gray-950 hover:text-gray-100 rounded-sm group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100">
+            <a wire:navigate href="{{route('contributeTranslations')}}" class="flex items-start py-2 px-4  hover:bg-gray-950 hover:text-gray-100 rounded-sm group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100">
                 <i class="ri-home-2-line mr-3 text-lg"></i>
                 <span class="text-sm">Translations</span>
             </a>

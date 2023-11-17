@@ -14,19 +14,17 @@ class ContributeTranslations extends ModalComponent
 
     public function mount()
     {
-        if (Auth::check()) {
+        // if (Auth::check()) {
             $locales = config('laravellocalization.supportedLocales');
             $translates = Auth::user()->meta_data?->translates;
             if ((bool) $translates) {
                 $this->translatingTo = $locales[$translates]['native'];
-            }
+            // }
         }
     }
 
     public function render(): Factory|View|Application
     {
-        return view('livewire.contribute-content.contribute-translations')->layout('layouts.app', [
-            'metaTitle' => 'Contribute Translations',
-        ]);
+        return view('livewire.contribute.contribute-translations');
     }
 }
