@@ -2,7 +2,7 @@
     'commit',
     'view' => 'detail'
 ])
-<div class="p-5 w-full bg-white rounded-sm relative flex flex-col justify-start bg-white shadow-sm mb-4 relative break-inside-avoid drip">
+<div class="p-5 w-full rounded-sm flex flex-col justify-start bg-white shadow-sm mb-4 relative break-inside-avoid drip">
     <div class="break-long-words break-words">
         <x-markdown>{{$commit->content}}</p></x-markdown>
     </div>

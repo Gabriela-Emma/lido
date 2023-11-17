@@ -86,14 +86,14 @@
                                         {{$discussion->title}}
                                     </div>
                                     <div>
-                                            <?php $mataKey = match ($discussion->title) {
-                                            'Impact Alignment' => 'aligment_score',
-                                            'Feasibility' => 'feasibility_score',
-                                            'Value for money' => 'auditability_score',
-                                            default => null
+                                        <?php $mataKey = match ($discussion->title) {
+                                             'Impact Alignment' => 'aligment_score',
+                                             'Feasibility' => 'feasibility_score',
+                                             'Value for money' => 'auditability_score',
+                                             default => null
                                         } ?>
                                         <x-public.stars theme='text-white' :size="5"
-                                                        :amount="round($proposal?->meta_data?->{$mataKey} ?? $discussion->rating)" />
+                                        :amount="round($proposal?->meta_data?->{$mataKey} ?? $discussion->rating)" />
                                     </div>
                                 </div>
                             @endforeach
@@ -143,25 +143,25 @@
             </a>
         </div> --}}
         @if($proposal->yes_votes_count_formatted)
-            <div
-                class="grid items-center justify-start grid-cols-2 py-2 space-x-2 text-sm">
-                <div class="flex flex-row gap-2">
-                    <div class="font-medium text-gray-300">
-                        Yes Votes:
-                    </div>
-                    <div>
-                        {{$proposal->yes_votes_count_formatted}}
-                    </div>
+        <div
+            class="grid items-center justify-start grid-cols-2 py-2 space-x-2 text-sm">
+            <div class="flex flex-row gap-2">
+                <div class="font-medium text-gray-300">
+                    Yes Votes:
                 </div>
-                <div class="flex flex-row gap-2">
-                    <div class="font-medium text-gray-300">
-                        No Votes:
-                    </div>
-                    <div>
-                        {{$proposal->no_votes_count_formatted}}
-                    </div>
+                <div>
+                    {{$proposal->yes_votes_count_formatted}}
                 </div>
             </div>
+            <div class="flex flex-row gap-2">
+                <div class="font-medium text-gray-300">
+                    No Votes:
+                </div>
+                <div>
+                    {{$proposal->no_votes_count_formatted}}
+                </div>
+            </div>
+        </div>
         @endif
         @if($proposal->meta_data?->unique_wallets)
             <div

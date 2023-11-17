@@ -33,7 +33,7 @@
         <link rel="stylesheet" href="{{asset('css/splide-extension-video.min.css')}}">
     @endpush
 
-    @livewire('catalyst.catalyst-sub-menu-component')
+{{--    <livewire:catalyst-explorer.sub-menu-component />--}}
 
     <section class="relative py-10 bg-white lg:py-20">
         <div class="container">
@@ -202,7 +202,7 @@
                             ({{$proposal->discussions?->first()?->community_reviews?->count()}})
                         </h2>
                         <div class="proposal-discussions-wrapper">
-                            <x-public.discussions :model="$proposal" :editable="false"></x-public.discussions>
+                            <x-global.discussions :model="$proposal" :editable="false"></x-global.discussions>
                         </div>
                     @endif
                 </section>
