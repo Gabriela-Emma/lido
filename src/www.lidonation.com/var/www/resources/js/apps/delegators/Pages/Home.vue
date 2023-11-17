@@ -1,7 +1,7 @@
 <template>
     <section class="container relative py-8">
-        <div class="flex w-full h-auto gap-8">
-            <DelegateToLido class="w-full xl:w-2/5" />
+        <div class="flex w-full h-auto gap-">
+            <DelegateToLidoPitch class="w-full xl:w-2/5" />
 
             <Blocks class="w-full xl:w-3/5"></Blocks>
         </div>
@@ -107,7 +107,6 @@
                     <p class="font-semibold">Because the future is for everyone!</p>
                 </div>
                 <DelegateToLido class="" :column="false"></DelegateToLido>
-
             </div>
 
         </div>
@@ -118,7 +117,8 @@
 import EveryEpoch from "@apps/delegators/modules/everyEpoch/EveryEpoch.vue";
 import Blocks from "@apps/delegators/modules/blocks/Blocks.vue";
 import LidoOrigin from "@/global/Components/LidoOrigin.vue";
-import DelegateToLido from "@apps/delegators/modules/delegate-to-lido/DelegateToLido.vue";
+import DelegateToLidoPitch from "@apps/delegators/modules/delegate-to-lido/DelegateToLidoPitch.vue";
+import DelegateToLido from "@/global/Components/DelegateToLido.vue";
 
 </script>
 
