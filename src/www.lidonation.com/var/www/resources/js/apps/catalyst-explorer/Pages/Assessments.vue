@@ -1,4 +1,6 @@
 <template>
+    <Head title="Catalyst Assessments" />
+
     <header-component titleName0="catalyst" titleName1="Proposal Assessments" subTitle="Catalyst Proposal Assessments"/>
 
     <main class="flex flex-col gap-2 bg-primary-20">
@@ -35,7 +37,7 @@
 
 <script lang="ts" setup>
 import {ref, watch} from "vue";
-import {router} from "@inertiajs/vue3";
+import {Head, router} from "@inertiajs/vue3";
 import route from "ziggy-js";
 import Assessment from "@apps/catalyst-explorer/models/assessment";
 import {VARIABLES} from "@apps/catalyst-explorer/models/variables";

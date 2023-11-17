@@ -1,4 +1,6 @@
 <template>
+    <Head title="Project Catalyst Proposals" />
+
     <header-component titleName0="catalyst" titleName1="Proposals"
         subTitle='search proposals and challenges by title, content, or author and co-authors' />
 
@@ -262,7 +264,7 @@ import Proposals from "@apps/catalyst-explorer/modules/proposals/Proposals.vue";
 import ProposalViewTypes from "@apps/catalyst-explorer/modules/proposals/partials/ProposalViewTypes.vue";
 import Search from "@apps/catalyst-explorer/Components/Global/Search.vue";
 import Proposal from '../models/proposal';
-import { usePage } from '@inertiajs/vue3';
+import {Head, usePage} from '@inertiajs/vue3';
 import page from '@/global/utils/page';
 
 /// props and class properties

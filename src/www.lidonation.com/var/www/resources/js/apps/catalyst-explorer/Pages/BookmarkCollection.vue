@@ -1,4 +1,6 @@
 <template>
+    <Head title="Project Catalyst Bookmark" />
+
     <header-component titleName0="Bookmark" :titleName1="bookmarkCollection?.title"
                       :subTitle="`Created ${$filters.timeAgo(bookmarkCollection.created_at)}. Has ${bookmarkCollection?.items_count} item${bookmarkCollection?.items_count > 1 ? 's' : ''}.`"/>
 
@@ -130,7 +132,7 @@
 </template>
 
 <script lang="ts" setup>
-import {Link, router, usePage} from '@inertiajs/vue3';
+import {Head, Link, router, usePage} from '@inertiajs/vue3';
 import BookmarkCollection from "@apps/catalyst-explorer/models/bookmark-collection";
 import {ArrowUturnLeftIcon, ArrowDownTrayIcon, TrashIcon, BookOpenIcon, ArchiveBoxArrowDownIcon} from '@heroicons/vue/20/solid';
 import {computed, inject, Ref, ref, watch} from "vue";
