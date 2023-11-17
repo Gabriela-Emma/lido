@@ -188,7 +188,7 @@
                                     :modelId="$proposal->id"
                                     wire:key="{{$proposal->id}}"
                                     theme="{{$proposal->status == 'complete' ? 'pink': 'accent'}}"
-                                    :modelType="\App\Models\Proposal::class"/>
+                                    :modelType="\App\Models\CatalystExplorer\Proposal::class"/>
                             </div>
                         </div>
                     </div>

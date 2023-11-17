@@ -17,29 +17,29 @@ class ProposerMetricsComponent extends Component
 
     public CatalystUser $catalystUser;
 
-    protected $allTimeCaAverage;
+    public $allTimeCaAverage;
 
-    protected $allTimeCaRatingCount;
+    public $allTimeCaRatingCount;
 
-    protected $allTimeCaAverageGroups;
+    public $allTimeCaAverageGroups;
 
-    protected $allTimeFundedPerRound;
+    public $allTimeFundedPerRound;
 
-    protected $allTimeAwardedPerRound;
+    public $allTimeAwardedPerRound;
 
-    protected $allTimeReceivedPerRound;
+    public $allTimeReceivedPerRound;
 
-    protected $allTimeFundingPerRound;
+    public $allTimeFundingPerRound;
 
-    protected $allTimeProposedPerRound;
+    public $allTimeProposedPerRound;
 
-    protected $allTimeCompletedPerRound;
+    public $allTimeCompletedPerRound;
 
-    protected $allDiscussions;
+    public $allDiscussions;
 
     public $discussionData;
 
-    public function toggleOwnMetrics(CatalystUserRepository $catalystUserRepository, FundRepository $fundRepository, CatalystUser $catalystUser)
+    public function toggleOwnMetrics(CatalystUserRepository $catalystUserRepository, FundRepository $fundRepository, CatalystUser $catalystUser): void
     {
         $this->ownMetrics = ! $this->ownMetrics;
         $this->setData($catalystUserRepository, $fundRepository, $catalystUser);
@@ -68,10 +68,10 @@ class ProposerMetricsComponent extends Component
 
     public function render(): Factory|View|Application
     {
-        return view('livewire.catalyst.proposer.metrics');
+        return view('components.catalyst.users.profile-metrics');
     }
 
-    protected function setData(CatalystUserRepository $catalystUserRepository, FundRepository $fundRepository, CatalystUser $catalystUser)
+    protected function setData(CatalystUserRepository $catalystUserRepository, FundRepository $fundRepository, CatalystUser $catalystUser): void
     {
         $relation = $this->ownMetrics ? 'own_proposals' : 'proposals';
         if ($catalystUser?->username) {
@@ -80,6 +80,7 @@ class ProposerMetricsComponent extends Component
             $username = request()->route('catalystUser');
         }
         $this->catalystUser = $catalystUserRepository->get($username, 'own_proposals');
+
         //
         $discussions = $this->catalystUser?->{$relation}
             ->map(
@@ -91,6 +92,7 @@ class ProposerMetricsComponent extends Component
         $ratings = $discussions->map(fn ($disc) => $disc->ratings)->collapse();
         $this->allTimeCaRatingCount = $ratings->count();
         $this->allTimeCaAverage = $ratings->avg('rating');
+
         // combined ratings by discussion
         $groups = $ratings->map(fn ($v) => ([
             'rating' => $v->rating,
@@ -102,6 +104,7 @@ class ProposerMetricsComponent extends Component
                     'percent' => intval(round($v->avg('rating') / 5 * 100)),
                 ]
             );
+
         $this->allTimeCaAverageGroups = $groups;
         $proposalGroups = $fundRepository->funds('funds')->map(
             fn ($fund) => new Fluent([
@@ -137,29 +140,29 @@ class ProposerMetricsComponent extends Component
     }
 
     // ## Proposed
-    protected function setAllTimeProposedPerRound($labels, $proposals)
+    protected function setAllTimeProposedPerRound($labels, $proposals): void
     {
-        $this->allTimeProposedPerRound = new Fluent([
+        $this->allTimeProposedPerRound = [
             'labels' => $labels,
             'data' => $proposals->map(fn ($ps) => $ps->count()),
-        ]);
+        ];
     }
 
     // ## Funded
-    protected function setAllTimeFundedPerRound($labels, $proposals)
+    protected function setAllTimeFundedPerRound($labels, $proposals): void
     {
-        $this->allTimeFundedPerRound = new Fluent([
+        $this->allTimeFundedPerRound = [
             'labels' => $labels,
             'data' => $proposals->map(
                 fn ($ps) => $ps->countBy(fn ($p) => $p->funding_status)
             )->map(fn ($g) => $g->get('funded') ?? 0)->values(),
-        ]);
+        ];
     }
 
     //  $$ Received
-    protected function setAllTimeReceivedPerRound($labels, $proposals, $currency, $adaProposal, $usdProposal)
+    protected function setAllTimeReceivedPerRound($labels, $proposals, $currency, $adaProposal, $usdProposal): void
     {
-        $this->allTimeReceivedPerRound = new Fluent([
+        $this->allTimeReceivedPerRound = [
             'labels' => $labels,
             'currency' => $currency,
             'totalAda' => $adaProposal->flatMap(function ($proposalCollection) {
@@ -171,14 +174,14 @@ class ProposerMetricsComponent extends Component
             'data' => $proposals->map(
                 fn ($ps) => $ps->sum('amount_received')
             )->values(),
-        ]);
+        ];
 
     }
 
     // $$ Awarded
-    protected function setAllTimeAwardedPerRound($labels, $proposals, $currency, $adaProposal, $usdProposal)
+    protected function setAllTimeAwardedPerRound($labels, $proposals, $currency, $adaProposal, $usdProposal): void
     {
-        $this->allTimeAwardedPerRound = new Fluent([
+        $this->allTimeAwardedPerRound = [
             'labels' => $labels,
             'currency' => $currency,
             'totalAda' => $adaProposal->flatMap(function ($proposalCollection) {
@@ -194,14 +197,14 @@ class ProposerMetricsComponent extends Component
             'data' => $proposals->map(
                 fn ($ps) => $ps->filter(fn ($p) => $p->funded)->sum('amount_requested')
             )->values(),
-        ]);
+        ];
 
     }
 
     // $$ Requested
-    protected function setAllTimeFundingPerRound($labels, $proposals, $currency, $adaProposal, $usdProposal)
+    protected function setAllTimeFundingPerRound($labels, $proposals, $currency, $adaProposal, $usdProposal): void
     {
-        $this->allTimeFundingPerRound = new Fluent([
+        $this->allTimeFundingPerRound = [
             'labels' => $labels,
             'currency' => $currency,
             'totalAda' => $adaProposal->flatMap(function ($proposalCollection) {
@@ -213,22 +216,22 @@ class ProposerMetricsComponent extends Component
             'data' => $proposals->map(
                 fn ($ps) => $ps->sum('amount_requested')
             )->values(),
-        ]);
+        ];
 
     }
 
     // ## Completed
-    protected function setAllTimeCompletedPerRound($labels, $proposals)
+    protected function setAllTimeCompletedPerRound($labels, $proposals): void
     {
-        $this->allTimeCompletedPerRound = new Fluent([
+        $this->allTimeCompletedPerRound = [
             'labels' => $labels,
             'data' => $proposals->map(
                 fn ($ps) => $ps->countBy(fn ($p) => $p->status)
             )->map(fn ($g) => $g->get('complete') ?? 0)->values(),
-        ]);
+        ];
     }
 
-    protected function discussionsRatings()
+    protected function discussionsRatings(): void
     {
         $discussionRatings = [];
         foreach ($this->allDiscussions as $discussion) {
