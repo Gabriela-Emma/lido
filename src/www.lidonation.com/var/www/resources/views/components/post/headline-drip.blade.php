@@ -11,8 +11,6 @@
     <div class="flex flex-col gap-1 pt-4">
         @if( $post->categories->isNotEmpty() || $post->tags->isNotEmpty())
             <div class="flex flex-row flex-wrap justify-start gap-2 sm:max-w-md">
-                <x-public.post-type :post="$post"></x-public.post-type>
-
                 @if($post->categories->isNotEmpty())
                     @foreach($post->categories as $tax)
                         <x-public.post-taxonomies :tax="$tax"></x-public.post-taxonomies>

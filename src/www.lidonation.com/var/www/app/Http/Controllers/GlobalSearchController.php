@@ -39,7 +39,7 @@ class GlobalSearchController extends Controller
 
         return response($hits->map(function ($hit) {
             $hit['type'] = match ($hit['type']) {
-                News::class => 'news',
+                Post::class => 'articles',
                 Insight::class => 'insights',
                 Review::class => 'reviews',
                 default => 'posts',

@@ -2,7 +2,6 @@
 
 namespace App\Livewire\Components;
 
-use App\Models\News;
 use App\Models\Post;
 use App\Repositories\PostRepository;
 use App\Scopes\LimitScope;
@@ -20,7 +19,7 @@ class BlockchainHeadlinesComponent extends Component
     public function mount(PostRepository $postRepository): void
     {
         Post::withoutGlobalScope(LimitScope::class);
-        $this->quickNews = Post::where('type', News::class)
+        $this->quickNews = Post::whereRelation('categories', 'slug', 'news-and-interviews')
             ->orderByDesc('published_at')
             ->limit($this->limit)
             ->get()
