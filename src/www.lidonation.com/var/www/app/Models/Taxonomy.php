@@ -8,7 +8,6 @@ use App\Models\Traits\HasMetaData;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
@@ -20,17 +19,14 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class Taxonomy extends Model implements HasLink, HasMedia
 {
-    use HasFactory,
-        HasMetaData,
+    use HasMetaData,
         HasTimestamps,
         InteractsWithMedia,
         SoftDeletes;
 
     protected $with = ['media'];
 
-    protected $withCount = ['insights', 'news'];
-
-    protected $appends = ['posts_count'];
+    protected $withCount = ['posts'];
 
     protected $fillable = ['title'];
 
@@ -38,16 +34,6 @@ class Taxonomy extends Model implements HasLink, HasMedia
     {
         return Attribute::make(
             get: fn ($value) => LaravelLocalization::localizeURL("/tags/{$this->slug}/"),
-        );
-    }
-
-    /**
-     * Get the user's first name.
-     */
-    protected function postsCount(): Attribute
-    {
-        return Attribute::make(
-            get: fn ($value) => $this->insights_count + $this->news_count,
         );
     }
 
@@ -94,16 +80,6 @@ class Taxonomy extends Model implements HasLink, HasMedia
         $query->when(
             $filters['ids'] ?? false,
             fn (Builder $query, $ids) => $query->whereIn('id', is_array($ids) ? $ids : explode(',', $ids))
-        );
-    }
-
-    /**
-     * Get the user's first name.
-     */
-    protected function models(): Attribute
-    {
-        return Attribute::make(
-            get: fn ($value) => ($value ?? $this->news->concat($this->reviews)->concat($this->insights))->sortByDesc('published_at'),
         );
     }
 
@@ -170,7 +146,7 @@ class Taxonomy extends Model implements HasLink, HasMedia
         return 'slug';
     }
 
-    public function toArray()
+    public function toArray(): array
     {
         return [
             'id' => $this->id,
@@ -187,6 +163,7 @@ class Taxonomy extends Model implements HasLink, HasMedia
      */
     protected static function booted()
     {
+        parent::booted();
         //        static::addGlobalScope(new PublishedScope);
         //        static::addGlobalScope(new OrderByOrderScope);
         //        static::addGlobalScope(new OrderByDateScope);

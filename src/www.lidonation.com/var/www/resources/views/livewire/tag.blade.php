@@ -16,7 +16,7 @@
         <hr />
         <div class="container">
             <div class="sm:grid sm:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-4 my-8">
-                @foreach ($postsByTag->models->take(9) as $post)
+                @foreach ($postsByTag->posts->take(9) as $post)
                     @if ($loop->first)
                         <x-post.highlight :post="$post" />
                     @endif

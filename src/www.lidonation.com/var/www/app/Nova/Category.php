@@ -2,6 +2,7 @@
 
 namespace App\Nova;
 
+use App\Models\Post;
 use App\Nova\CatalystExplorer\Proposals;
 use Ebess\AdvancedNovaMediaLibrary\Fields\Images;
 use Illuminate\Http\Request;
@@ -73,7 +74,7 @@ class Category extends Resource
             MorphedByMany::make('Proposals', 'proposals', Proposals::class)
                 ->searchable(),
 
-            MorphedByMany::make('News', 'news', News::class),
+            MorphedByMany::make('Posts', 'posts', Articles::class),
 
             MorphedByMany::make('Insight', 'insights', Insights::class)
                 ->searchable(),
