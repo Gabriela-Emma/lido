@@ -58,45 +58,7 @@
                                 :href="route('catalyst-explorer.proposals')">
                                 {{ $t('Proposals') }}
                             </Link>
-                        </li>
-                        <li class="flow-root menu-item">
-                            <Link
-                                class="px-1 py-3 text-white menu-link hover:text-yellow-500"
-                                :class="{ 'text-yellow-500': $page.component.startsWith('People') }"
-                                :href="route('catalyst-explorer.people.index')">
-                                {{ $t('People') }}
-                            </Link>
-                        </li>
-                        <li class="flow-root menu-item">
-                            <Link
-                                class="px-1 py-3 text-white menu-link hover:text-yellow-500"
-                                :class="{ 'text-yellow-500': $page.component.startsWith('CatalystEvents') }"
-                                :href="$utils.localizeRoute('catalyst-explorer/events')">
-                                {{ $t('Events') }}
-                            </Link>
-                        </li>
-                        <li class="flow-root menu-item">
-                            <Link
-                                class="px-1 py-3 text-white menu-link hover:text-yellow-500"
-                                :class="{ 'text-yellow-500': $page.component.startsWith('Groups') }"
-                                :href="route('catalyst-explorer.groups')">
-                                {{ $t('Groups') }}
-                            </Link>
-                        </li>
-                        <li class="flow-root menu-item">
-                            <Link class="px-1 py-3 text-white menu-link hover:text-yellow-500"
-                                  :class="{ 'text-yellow-500': $page.component.startsWith('Reports')}"
-                                  :href="$utils.localizeRoute('catalyst-explorer/reports')">
-                                {{ $t('Monthly Reports') }}
-                            </Link>
-                        </li>
-                        <li class="flow-root menu-item">
-                            <Link class="px-1 py-3 text-white menu-link hover:text-yellow-500"
-                                  :class="{ 'text-yellow-500': $page.component.endsWith('Assessments')}"
-                                  :href="$utils.localizeRoute('catalyst-explorer/assessments')">
-                                {{ $t('PAs') }}
-                            </Link>
-                        </li>
+                        </li>                       
                         <li class="flow-root menu-item">
                             <a
                                 class="px-1 py-3 text-white menu-link hover:text-yellow-500"
@@ -104,27 +66,6 @@
                                 :href="route('catalyst-explorer.charts')">
                                 {{ $t('Charts') }}
                             </a>
-                        </li>
-                        <li class="flow-root menu-item">
-                            <a class="px-1 py-3 text-white menu-link hover:text-yellow-500"
-                               href="/project-catalyst/votes/ccv4">
-                                {{ $t('CCV4 Votes') }}
-                            </a>
-                        </li>
-                        <li class="flow-root menu-item">
-                            <a class="px-1 py-3 text-white menu-link hover:text-yellow-500"
-                               href="/catalyst-explorer/registrations"
-                               :class="{ 'text-yellow-500': $page.component.startsWith('Registrations') }">
-                                {{ $t('Registrations') }}
-                            </a>
-                        </li>
-                        <li class="flow-root menu-item">
-                            <Link
-                                class="px-1 py-3 text-white menu-link hover:text-yellow-500"
-                                :class="{ 'text-yellow-500': $page.component.startsWith('Funds') }"
-                                :href="route('catalyst-explorer.funds.index')">
-                                {{ $t('Funds') }}
-                            </Link>
                         </li>
 
                         <!-- <li class="flow-root menu-item">
@@ -144,14 +85,7 @@
                                 {{ $t('Voter Tool') }}
                             </Link>
                         </li>
-                        <li class="flow-root menu-item">
-                            <Link
-                                class="px-1 py-3 text-white menu-link hover:text-yellow-500"
-                                :class="{ 'text-yellow-500': $page.component.startsWith('DReps') }"
-                                :href="route('catalyst-explorer.dReps.index')">
-                                {{ $t('dReps') }}
-                            </Link>
-                        </li>
+                        <MenuDropdown />                     
                         <!--                        <li class="flow-root menu-item" x-data="bookmarksMenuLink">-->
                         <!--                            <Link href="/catalyst-explorer/bookmarks" class="inline-flex items-center menu-link group">-->
                         <!--                            <span class="relative z-0 inline-flex rounded-md shadow-sm" x-cloak>-->
@@ -310,6 +244,7 @@ import {computed, inject, Ref, ref} from "vue";
 import {Bars3Icon, XMarkIcon, HomeIcon} from '@heroicons/vue/20/solid';
 import {onClickOutside} from '@vueuse/core';
 import route from "ziggy-js";
+import MenuDropdown from "../Navigation/MenuDropdown.vue"
 
 
 const $utils: any = inject('$utils');
