@@ -26,10 +26,11 @@
         <div class="container">
             <h1>Nicole</h1>
             <livewire:translations.translations-component />
+            
             <!-- @can('translate articles') -->
-                <div class="flex flex-col justify-center py-4 mb-4 border-t-4 bg-gray-50 sm:px-6 lg:px-8 translations-wrapper">
+                <!-- <div class="flex flex-col justify-center py-4 mb-4 border-t-4 bg-gray-50 sm:px-6 lg:px-8 translations-wrapper">
                     <livewire:translations.translations-component />
-                </div>
+                </div> -->
             <!-- @else
                 <div class="flex flex-col justify-center py-4 mb-4 bg-info sm:px-6 lg:px-8">
                     <p>

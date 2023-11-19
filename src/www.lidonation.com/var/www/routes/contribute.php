@@ -35,8 +35,8 @@ Route::group(
             Route::get('/contribute/recording/', ContributeRecordingComponent::class)
                 ->name('recording');
 
-            Route::get('/contribute/translation/', ContributeRecordingComponent::class)
-                ->name('translation');
+            // Route::get('/contribute/translation/', ContributeTranslation::class)
+            //     ->name('translation');
         });
 
         Route::get('/contribute-content', ContributeContent::class)
@@ -45,11 +45,11 @@ Route::group(
         //    Route::get('/contribute-content/audio/{post}', ContributeRecordingComponent::class)
         //        ->name('contributeAudio');
 
-        Route::get('/contribute-content/translation', ContributeTranslations::class)
-            ->middleware(['auth:' . config('fortify.guard')])
+        Route::get('/contribute/translation', ContributeTranslations::class)
+            // ->middleware(['auth:' . config('fortify.guard')])
             ->name('contributeTranslations');
 
-        Route::get('/contribute-content/translation/{translation}', ContributeTranslation::class)
+        Route::get('/contribute/translation/{translation}', ContributeTranslation::class)
             ->middleware(['auth:' . config('fortify.guard')])
             ->name('contributeTranslation');
     }

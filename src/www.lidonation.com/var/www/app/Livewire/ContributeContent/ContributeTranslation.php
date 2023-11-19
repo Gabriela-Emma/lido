@@ -90,15 +90,15 @@ class ContributeTranslation extends ModalComponent
     {
         $this->translation = $translation;
         $this->model = $translation->source;
-        // $this->fields = collect($this->model->translatable)
-        //     ->filter(
-        //         fn ($field) => ! in_array($field, $this->model->translatableExcludedFromGeneration)
-        //     );
-        // $this->translations = Translation::orWhere([
-        //     ['source_id', $this->model->id],
-        //     ['source_type', get_class($this->model)],
-        //     ['lang', $this->translation->lang],
-        // ])->get();
+        $this->fields = collect($this->model->translatable)
+            ->filter(
+                fn ($field) => ! in_array($field, $this->model->translatableExcludedFromGeneration)
+            );
+        $this->translations = Translation::orWhere([
+            ['source_id', $this->model->id],
+            ['source_type', get_class($this->model)],
+            ['lang', $this->translation->lang],
+        ])->get();
         if (Auth::check()) {
             $locales = config('laravellocalization.supportedLocales');
             $translates = Auth::user()->meta_data?->translates;
