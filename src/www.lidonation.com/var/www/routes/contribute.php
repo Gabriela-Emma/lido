@@ -35,8 +35,8 @@ Route::group(
             Route::get('/contribute/recording/', ContributeRecordingComponent::class)
                 ->name('recording');
 
-            Route::get('/contribute/translation/', ContributeRecordingComponent::class)
-                ->name('translation');
+            // Route::get('/contribute/translation/', ContributeTranslation::class)
+            //     ->name('translation');
         });
 
         Route::get('/contribute-content', ContributeContent::class)

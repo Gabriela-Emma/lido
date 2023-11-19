@@ -1,7 +1,6 @@
 <?php
 
-
-namespace App\Livewire\Translations;
+namespace App\Http\Livewire\Translations;
 
 use App\Models\Insight;
 use App\Models\News;
@@ -11,137 +10,88 @@ use App\Models\Review;
 use App\Models\Snippet;
 use App\Models\Translation;
 use Illuminate\Support\Facades\Auth;
-use Mediconesystems\LivewireDatatables\Column;
-use Mediconesystems\LivewireDatatables\Http\Livewire\LivewireDatatable;
+use Livewire\Component;
 
-class TranslationsComponent extends LivewireDatatable
+class TranslationsComponent extends Component
 {
-   public $model = Translation::class;
+    public $translations;
+    public $perPage = 50;
+    public $onlyMissing = false;
+    public $onlyMine = false;
+    public $groupRelated = false;
+    public $filter = null;
 
-   public $perPage = 50;
+    public function render()
+    {
+        $user = Auth::user();
 
-   public $exportable = false;
+        $query = Translation::where('lang', $user->meta_data->translates);
 
-   public $beforeTableSlot = 'livewire.translations.before';
+        if ($this->onlyMissing) {
+            $query->missingTranslation();
+        }
 
-   public bool $onlyMissing = false;
+        if ($this->onlyMine) {
+            $query->myTranslations();
+        }
 
-   public bool $onlyMine = false;
+        if ($this->groupRelated) {
+            if (in_array($this->filter, ['news', 'insights', 'reviews', 'onboarding'])) {
+                $query->sourceField('title');
+            }
+        }
 
-   public bool $groupRelated = false;
+        if ($this->filter) {
+            switch ($this->filter) {
+                case 'news':
+                    $query->sourceType(News::class);
+                    break;
+                case 'reviews':
+                    $query->sourceType(Review::class);
+                    break;
+                case 'insights':
+                    $query->sourceType(Insight::class);
+                    break;
+                case 'onboarding':
+                    $query->sourceType(OnboardingContent::class);
+                    break;
+                case 'proposal':
+                    $query->sourceType(Proposal::class);
+                    break;
+                case 'snippets':
+                    $query->sourceType(Snippet::class);
+                    break;
+            }
+        }
 
-   public ?string $filter = null;
+        $this->translations = $query
+            ->orderBy('source_id')
+            ->orderBy('source_type')
+            ->paginate($this->perPage);
 
-   protected $listeners = [
-       'toggleMissing' => 'toggleMissing',
-       'toggleGroupRelated' => 'toggleGroupRelated',
-       'toggleOnlyMine' => 'toggleOnlyMine',
-       'toggleFilter' => 'toggleFilter',
-   ];
+    }
 
-   protected $query;
+    public function toggleGroupRelated($groupRelated)
+    {
+        $this->groupRelated = $groupRelated;
+    }
 
-   public function builder()
-   {
-       if (! $this->query) {
-           $user = Auth::user();
-           $this->query = Translation::where('lang', $user->meta_data->translates);
-       }
+    public function toggleOnlyMine($onlyMine)
+    {
+        $this->onlyMine = $onlyMine;
+    }
 
-       if ($this->onlyMissing) {
-           $this->query->missingTranslation();
-       }
+    public function toggleMissing($missing)
+    {
+        $this->onlyMissing = $missing;
+    }
 
-       if ($this->onlyMine) {
-           $this->query->myTranslations();
-       }
+    public function toggleFilter($filter)
+    {
+        $this->filter = $filter;
+    }
 
-       if ($this->groupRelated) {
-           if (in_array($this->filter, ['news', 'insights', 'reviews', 'onbaording'])) {
-               $this->query->sourceField('title');
-           }
-       }
-
-       if ($this->filter) {
-           switch ($this->filter) {
-               case 'news':
-                   $this->query->sourceType(News::class);
-                   break;
-               case 'reviews':
-                   $this->query->sourceType(Review::class);
-                   break;
-               case 'insights':
-                   $this->query->sourceType(Insight::class);
-                   break;
-               case 'onboarding':
-                   $this->query->sourceType(OnboardingContent::class);
-                   break;
-               case 'proposal':
-                   $this->query->sourceType(Proposal::class);
-                   break;
-               case 'snippets':
-                   $this->query->sourceType(Snippet::class);
-                   break;
-           }
-       }
-
-       $this->query
-           ->orderBy('source_id')
-           ->orderBy('source_type');
-
-       return $this->query;
-   }
-
-   public function toggleGroupRelated($groupRelated)
-   {
-       $this->groupRelated = $groupRelated;
-   }
-
-   public function toggleOnlyMine($onlyMine)
-   {
-       $this->onlyMine = $onlyMine;
-   }
-
-   public function toggleMissing($missing)
-   {
-       $this->onlyMissing = $missing;
-   }
-
-   public function toggleFilter($filter)
-   {
-       $this->filter = $filter;
-   }
-
-   /**
-    * the order of the columns matter.
-    */
-   public function columns(): array
-   {
-       return [
-
-           Column::name('source_id')
-               ->excludeFromExport()->unsortable()
-               ->label('Related Object'),
-
-           Column::callback('source_type', 'computeType')
-               ->unsortable()->excludeFromExport()
-               ->label('Type'),
-
-           Column::name('source_content')
-               ->unsortable()
-               ->label('Source Text'),
-
-           Column::name('content')
-               ->unsortable()
-               ->label('Translation')->editable(),
-
-           Column::callback(['id'], function ($id) {
-               return view('livewire.translations.table-actions', ['id' => $id]);
-           })->unsortable()->excludeFromExport(),
-       ];
-   }
-
-   public function getMissingProperty(): bool
+    public function getMissingProperty(): bool
    {
        return true;
    }
@@ -161,3 +111,4 @@ class TranslationsComponent extends LivewireDatatable
        return collect(explode('\\', $source_type))->last();
    }
 }
+
