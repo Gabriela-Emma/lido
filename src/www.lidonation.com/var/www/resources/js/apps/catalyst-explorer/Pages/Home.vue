@@ -416,7 +416,7 @@ const animateText = () => {
         if (currentIndex === textArray.length) {
             clearInterval(intervalId);
         }
-    }, 500); // Add a new letter every 1000 milliseconds (1 second)
+    }, 50); // Add a new letter every 1000 milliseconds (1 second)
     return {
         animatedText,
     };
