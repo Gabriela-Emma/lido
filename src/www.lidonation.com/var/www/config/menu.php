@@ -148,7 +148,7 @@ return [
             new Illuminate\Support\Fluent([
                 'title' => 'Explorer Home',
                 'route_type' => 'route_name',
-                'route' => 'catalyst-explorer.proposals',
+                'route' => 'catalyst-explorer.home',
             ]),
             new Illuminate\Support\Fluent([
                 'title' => 'Voter Tool',
