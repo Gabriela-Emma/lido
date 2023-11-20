@@ -1,6 +1,7 @@
 <?php
 
 use App\Enums\StatusEnum;
+use App\Models\CatalystExplorer\CatalystCommunity;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -14,10 +15,10 @@ return new class extends Migration
     {
         Schema::create('catalystcommunity', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->text('content');
-             $table->user_id();
-            $table->enum('status' , [StatusEnum::DRAFT, StatusEnum::PENDING, StatusEnum::ACCEPTED, StatusEnum::SCHEDULE, StatusEnum::PUBLISHED]);
+            $table->title();
+            $table->content();
+            $table->user_id();
+            $table->enum('status' , StatusEnum::values());
             $table->timestamps();
             $table->softDeletes();
         });
