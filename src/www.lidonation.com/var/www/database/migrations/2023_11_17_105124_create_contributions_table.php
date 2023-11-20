@@ -12,7 +12,6 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('contributions', function (Blueprint $table) {
-            $table->id();
             $table->title();
             $table->content();
             $table->model_type();
