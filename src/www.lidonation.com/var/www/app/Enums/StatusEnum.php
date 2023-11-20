@@ -10,5 +10,7 @@ enum StatusEnum: string
     case PENDING = 'pending';
     case ACCEPTED = 'accepted';
 
+    case SCHEDULE = 'scheduled';
+
     case PUBLISHED = 'published';
 }
