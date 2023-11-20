@@ -1,4 +1,6 @@
 <template>
+    <Head title="Project Catalyst Monthly Reports" />
+
     <header-component titleName0="catalyst" titleName1="Monthly Reports"
                       subTitle="Catalyst Funded Projects Monthly Reporting"/>
 
@@ -38,7 +40,7 @@
 
 <script lang="ts" setup>
 import {ref, watch} from "vue";
-import {router} from "@inertiajs/vue3";
+import {Head, router} from "@inertiajs/vue3";
 import ReportCard from "@apps/catalyst-explorer/modules/reports/ReportCard.vue";
 import Search from "@apps/catalyst-explorer/Components/Global/Search.vue";
 import Pagination from "@apps/catalyst-explorer/Components/Global/Pagination.vue";

@@ -16,9 +16,9 @@ class NftImageGridComponent extends Component
     public function mount()
     {
         $this->dayAtTheLakeItems = Nft::where('model_type', Podcast::class)
-                ->where('status', 'minted')
-                ->inRandomOrder()
-                ->limit(7)->get();
+            ->where('status', 'minted')
+            ->inRandomOrder()
+            ->limit(7)->get();
     }
 
     public function render(): View|\Illuminate\Foundation\Application|Factory|Application

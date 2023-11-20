@@ -16,7 +16,7 @@ import { marked } from 'marked';
 import ziggy from '../../global/models/ziggy';
 import page from '@/global/utils/page';
 
-const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
+const appName = import.meta.env.VITE_APP_NAME || 'LIDO Nation';
 declare module '@vue/runtime-core' {
     interface ComponentCustomProperties {
         $filters: {

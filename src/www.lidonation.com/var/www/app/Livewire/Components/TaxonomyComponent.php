@@ -6,6 +6,7 @@ use App\Enums\ComponentThemesEnum;
 use App\Models\Category;
 use App\Models\Insight;
 use App\Models\ModelCategory;
+use App\Models\ModelTag;
 use App\Models\News;
 use App\Models\Post;
 use App\Models\Review;
@@ -32,19 +33,19 @@ class TaxonomyComponent extends Component
     public function mount(): void
     {
         switch ($this->taxonomy) {
-            case ($this->taxonomy instanceof Category):
+            case $this->taxonomy instanceof Category:
                 $taxonomyInstance = app(Category::class);
                 $taxPivotColumn = 'category_id';
                 $pivotInstance = app(ModelCategory::class);
                 $this->setPosts($taxonomyInstance, $taxPivotColumn, $pivotInstance);
-               break;
+                break;
 
-            case ($this->taxonomy instanceof Tag):
-                $taxonomyInstance = app('App\Models\Tag');
+            case $this->taxonomy instanceof Tag:
+                $taxonomyInstance = app(Tag::class);
                 $taxPivotColumn = 'tag_id';
-                $pivotInstance = app('App\Models\ModelTag');
+                $pivotInstance = app(ModelTag::class);
                 $this->setPosts($taxonomyInstance, $taxPivotColumn, $pivotInstance);
-              break;
+                break;
         }
     }
 
@@ -55,22 +56,17 @@ class TaxonomyComponent extends Component
         ]);
     }
 
-    public function render(): Factory|View|Application
-    {
-        return view('livewire.components.taxonomy');
-    }
-
     public function setPosts($taxInstance, $taxPivotColumn, $pivotInstance): void
     {
         $this->posts = $taxInstance::where('id', $this->taxonomy->id)
             ->get()
-            ->map(function ($cat) use($taxPivotColumn, $pivotInstance) {
+            ->map(function ($cat) use ($taxPivotColumn, $pivotInstance) {
                 $catIds = $pivotInstance::where([
                     $taxPivotColumn => $this->taxonomy->id,
                 ])->pluck('model_id')->all();
                 Post::withoutGlobalScope(LimitScope::class);
                 $cat->models = Post::whereIn('id', $catIds)
-                    ->whereIn('type', [News::class, Insight::class, Review::class])
+                    ->whereIn('type', [Post::class, Insight::class, Review::class])
                     ->orderByDesc('published_at')
                     ->limit($this->perPage)->get();
 
@@ -79,5 +75,10 @@ class TaxonomyComponent extends Component
             ->first()
             ?->models
             ->collect();
+    }
+
+    public function render(): Factory|View|Application
+    {
+        return view('livewire.components.taxonomy');
     }
 }

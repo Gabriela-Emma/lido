@@ -3,9 +3,8 @@
 namespace App\Invokables;
 
 use App\Models\EveryEpoch;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Auth;
 use App\Services\CardanoBlockfrostService;
+use Illuminate\Support\Collection;
 
 class GetLidoRewardsPot
 {

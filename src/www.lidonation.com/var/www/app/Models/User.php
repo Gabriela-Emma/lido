@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\DataTransferObjects\LearningLessonData;
+use App\Models\CatalystExplorer\CatalystUser;
 use App\Models\Traits\HasCatalystProfiles;
 use App\Models\Traits\HasGravatar;
 use App\Models\Traits\HasMetaData;

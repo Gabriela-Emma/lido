@@ -1,4 +1,4 @@
-<div class="category" :metaTitle="'Cat: '.$category - > title">
+<div class="category" :metaTitle="Cat: {$category->title}">
     <header>
         <div class="container py-4 pb-4">
             <div class="flex flex-row gap-4 text-sm">
@@ -25,7 +25,7 @@
         aria-labelledby="quick-links-title">
         <div class="container">
             <div class="sm:grid sm:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-4 my-8">
-                @foreach ($postsByCategory->models as $post)
+                @foreach ($postsByCategory->posts as $post)
                     @if ($loop->first)
                         <div class="col-span-2 xl:col-span-3 2xl:col-span-4 my-4">
                             <x-post.highlight :post="$post" />

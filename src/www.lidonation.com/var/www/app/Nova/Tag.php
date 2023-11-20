@@ -58,11 +58,11 @@ class Tag extends Resource
             Slug::make(__('Slug'))->sortable(),
             Markdown::make(__('Content'), 'content')->sortable(),
 
-            MorphedByMany::make('Funds', 'news', Funds::class),
+            MorphedByMany::make('Funds', 'funds', Funds::class),
 
             MorphedByMany::make('Proposals', 'proposals', Proposals::class),
 
-            MorphedByMany::make('News', 'news', News::class),
+            MorphedByMany::make('Post', 'posts', Articles::class),
 
             MorphedByMany::make('Insight', 'insights', Insights::class),
 

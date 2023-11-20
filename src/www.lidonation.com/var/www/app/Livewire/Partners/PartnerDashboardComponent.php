@@ -8,7 +8,6 @@ use Illuminate\Contracts\View\View;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
-
 class PartnerDashboardComponent extends Component
 {
     public $assets = [];

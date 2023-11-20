@@ -6,7 +6,9 @@
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    @env('production')
+    <title inertia>{{ config('app.name', 'Lido Nation') }}</title>
+
+@env('production')
         <!-- Cloudflare Web Analytics -->
         <script defer src='https://static.cloudflareinsights.com/beacon.min.js'
                 data-cf-beacon='{"token": "{{config('services.cloudflare.token')}}"}'></script>

@@ -6,7 +6,6 @@ use App\Http\Controllers\Api\Nfts\LidoMinuteNftsController;
 use App\Http\Controllers\Api\Partners\PartnersController;
 use App\Http\Controllers\Api\Phuffycoin\PhuffycoinController;
 use App\Http\Controllers\Delegators\DelegatorController;
-use App\Http\Controllers\Delegators\EveryEpochController;
 use App\Http\Controllers\Earn\EarnController;
 use App\Http\Controllers\Earn\LearnController;
 use App\Http\Controllers\Earn\LearningLessonController;
@@ -86,7 +85,6 @@ Route::group(
     }
 );
 
-
 Route::group(
     [
         'prefix' => 'pool',
@@ -96,7 +94,6 @@ Route::group(
         Route::get('/blocks', [DelegatorController::class, 'poolBlocks']);
     }
 );
-
 
 Route::group([
     'prefix' => 'phuffycoin',
@@ -123,7 +120,7 @@ Route::get('/ccv4/check-eligibility', function (Request $request) {
 
     // check user by account and log them in
     $user = User::where('wallet_stake_address', $stake_address)->first();
-    !is_null($user) ? Auth::login($user) : '';
+    ! is_null($user) ? Auth::login($user) : '';
 
     // build response based on ballots casted
     $response = [];
@@ -184,12 +181,12 @@ Route::post('/ccv4/claim-rewards', function (Request $request) {
 
     $ballots = $ballots->get();
     if ($ballots->isNotEmpty()) {
-        if (!$user instanceof User) {
+        if (! $user instanceof User) {
             $user = new User;
             $user->name = $request->account;
             $user->wallet_stake_address = $request->account;
             $user->wallet_address = $request->wallet_address;
-            $user->email = $request->email ?? substr($request->account, -4) . '@anonymous.com';
+            $user->email = $request->email ?? substr($request->account, -4).'@anonymous.com';
             $user->password = Hash::make(Str::random(10));
             $user->save();
         }
@@ -210,7 +207,7 @@ Route::post('/ccv4/claim-rewards', function (Request $request) {
             ->where('model_id', $giveaway?->id)
             ->get();
 
-        if (!$reward instanceof Reward) {
+        if (! $reward instanceof Reward) {
             $asset_name = trim($rule->subject, '.amount');
             $amount = $rule->predicate;
 
@@ -287,8 +284,9 @@ Route::group(
         })->name('cardano-config');
 
         Route::any('cardano/{relativePath?}', function (Request $request, $relativePath = null) {
-            $uri = '/' . $relativePath;
+            $uri = '/'.$relativePath;
             $frost = new BlockfrostRequest($uri);
+
             return $frost->send()->json();
         })->where('relativePath', ('.*'));
     }
@@ -441,7 +439,6 @@ Route::get('/generate-mnemonic-phrase', [GenerateMnemonicPhraseController::class
 Route::get('/cache/snippets', [SnippetController::class, 'index'])->name('cache.snippets');
 
 // every epoch
-
 
 //search
 Route::get('/s', [GlobalSearchController::class, 'index'])

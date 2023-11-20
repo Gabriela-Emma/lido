@@ -11,20 +11,19 @@
     @stack('tags')
 
     <title>
-        {{ ($metaTitle ?? $snippets->siteTitle ) .  ' | ' . Str::title( config('app.name', 'Laravel') . ' ' . $localeDetail?->native)}}
+        {{ ( $title ?? $metaTitle ?? $snippets->siteTitle) . ' | ' . Str::title(config('app.name', 'Lido Nation') . ' ' . $localeDetail?->native) }}
     </title>
 
     @include('includes.site-icons')
 
-    <link rel="manifest" href="/site.webmanifest">
-
     <!-- Styles -->
-    <link rel="stylesheet" href="//unpkg.com/tippy.js@6/dist/tippy.css"/>
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
+    <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/dist/tippy.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
     <link rel="stylesheet" href="https://cdn.plyr.io/3.7.2/plyr.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide-extension-video@0.8.0/dist/css/splide-extension-video.min.css">
 
-   
 
     @stack('styles')
 
@@ -32,13 +31,7 @@
 
     <x-comments::styles />
 
-    <link rel="stylesheet" href="{{ asset(mix('css/app.css')) }}">
-
     @include('includes.analytics')
-
-    @env('local')
-        <script src="//localhost:35729/livereload.js"></script>
-    @endenv
 
     <x-feed-links></x-feed-links>
 
@@ -102,31 +95,23 @@
     </script>
 
     <!-- @todo move to npm package -->
-    <script src="//cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
-    <script src="//cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
-    <script src=://unpkg.com/smoothscroll-polyfill@0.4.4/dist/smoothscroll.js"></script>
+    <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+    <script src="https://unpkg.com/smoothscroll-polyfill@0.4.4/dist/smoothscroll.js"></script>
     <script src="https://unpkg.com/three@0.150.0/build/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <script src="{{ mix('vendor/splide/splide-shader-carousel.min.js') }}"></script>
-
-    <script src="{{ mix('js/global.js') }}" ></script>
-
-    @if (Route::currentRouteName() != 'phuffycoin' && Route::currentRouteName() != 'delegators' && Route::currentRouteName() != 'governanceMarathon' )
-        <script src="{{ mix('js/app.js') }}" defer></script>
-    @endif
+    <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide-extension-video@0.8.0/dist/js/splide-extension-video.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
 
     @stack('scripts')
 
-    @vite(['resources/js/phuffycoin.ts'])
-
+    @vite(['resources/js/lido.ts'])
 
     <!-- Dynamic tailwind classes -->
     <span class="hidden text-white md:visible xl:invisible md:w-8 md:h-8"></span>
     <span class="sm:max-w-2xl sm:max-w-3xl sm:max-w-4xl sm:max-w-5xl sm:max-w-6xl sm:max-w-7xl 2xl:max-w-4xl 2xl:max-w-5xl 2xl:max-w-6xl 2xl:max-w-7xl "></span>
 </section>
 
-<livewire:global-player-component />
-
-<link rel="preload" href="{{ asset(mix('css/catalyst-explorer.css')) }}" as="style">
+<livewire:components.lido-menu lazy="on-load" />
 </body>
 </html>

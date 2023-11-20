@@ -14,47 +14,20 @@ use App\Scopes\LimitScope;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
+#[Title('Blockchain & Cardano Content Library')]
 class LibraryComponent extends Component
 {
-    public ?int $cardanoStakedAddresses;
-
-    public $reviews;
-
     public $tags;
-
-    public int $postsCount;
-
-    public $latestLidoMinutes;
 
     public $categories;
 
-    protected function posts(): Post
-    {
-        return Post::whereIn('type', [News::class, Review::class, Insight::class]);
-    }
-
     public function mount(PostRepository $posts): void
     {
-        $this->tags = Tag::whereHas('insights')
-            ->orWhereHas('news')
-            ->orWhereHas('reviews')
-            ->get();
-
-        $this->categories = Category::whereHas('insights')->orWhereHas('news')->orWhereHas('reviews')->get()
-            ->map(function ($cat) {
-                $catIds = ModelCategory::where([
-                    'category_id' => $cat->id,
-                ])->pluck('model_id')->all();
-                Post::withoutGlobalScope(LimitScope::class);
-                $cat->models = Post::whereIn('id', $catIds)
-                    ->limit(4)->get();
-
-                return $cat;
-            })->sortByDesc(fn ($c) => $c->posts_count)->values();
-
-        $this->postsCount = 0;
+        $this->tags = Tag::whereHas('posts')->get();
+        $this->categories = Category::whereHas('posts')->get();
     }
 
     public function render(): Factory|View|Application

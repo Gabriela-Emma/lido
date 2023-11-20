@@ -2,10 +2,10 @@
 
 use App\Livewire\Contribute\ContributeComponent;
 use App\Livewire\Contribute\ContributeRecordingComponent;
+use App\Livewire\Contribute\LidonationContributorForm;
 use App\Livewire\ContributeContent\ContributeContent;
 use App\Livewire\ContributeContent\ContributeTranslation;
 use App\Livewire\ContributeContent\ContributeTranslations;
-use App\Livewire\Contribute\LidonationContributorForm;
 use Illuminate\Support\Facades\Route;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
@@ -46,11 +46,11 @@ Route::group(
         //        ->name('contributeAudio');
 
         Route::get('/contribute-content/translation', ContributeTranslations::class)
-            ->middleware(['auth:' . config('fortify.guard')])
+            ->middleware(['auth:'.config('fortify.guard')])
             ->name('contributeTranslations');
 
         Route::get('/contribute-content/translation/{translation}', ContributeTranslation::class)
-            ->middleware(['auth:' . config('fortify.guard')])
+            ->middleware(['auth:'.config('fortify.guard')])
             ->name('contributeTranslation');
     }
 );

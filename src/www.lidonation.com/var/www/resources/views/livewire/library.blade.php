@@ -31,7 +31,7 @@
 
     @if($categories && !empty($categories))
         @foreach(collect($categories)->take(2) as $cat)
-            @if($cat->models && $cat->models->isNotEmpty())
+            @if($cat->posts && $cat->posts->isNotEmpty())
                 <section class="relative py-16 bg-white border-t border-slate-300">
                     <div class="container">
                         <livewire:components.taxonomy-component :taxonomy="$cat" :per-page="4" lazy="on-scroll" />
@@ -73,7 +73,7 @@
 
     @if(!empty($categories))
         @foreach(collect($categories)->skip(4)->take(2) as $cat)
-            @if($cat->models && $cat->models->isNotEmpty())
+            @if($cat->posts && $cat->posts->isNotEmpty())
                 <section class="relative py-16 bg-primary-10 border-y">
                     <div class="container">
                         <livewire:components.taxonomy-component :taxonomy="$cat" :per-page="4" lazy="on-scroll" :theme="\App\Enums\ComponentThemesEnum::column" />

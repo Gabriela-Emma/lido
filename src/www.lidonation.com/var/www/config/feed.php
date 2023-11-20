@@ -2,7 +2,7 @@
 
 $languages = ['en-US' => 'English', 'fr-FR' => 'Français', 'sw-KE' => 'Kiswahili', 'es-ES' => 'Español'];
 $items = [
-    'news' => [],
+    'post' => [],
     'review' => [],
     'insight' => [],
 ];

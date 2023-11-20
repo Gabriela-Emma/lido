@@ -2,19 +2,18 @@
 
 namespace App\Http\Controllers\Delegators;
 
-use App\Models\Quiz;
-use App\Models\User;
-use App\Models\Reward;
-use App\Models\EveryEpoch;
-use Illuminate\Http\Request;
-use App\Models\AnswerResponse;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use App\DataTransferObjects\QuizData;
+use App\Http\Controllers\Controller;
+use App\Http\Integrations\Blockfrost\Requests\BlockfrostRequest;
 use App\Invokables\GetLidoRewardsPot;
 use App\Invokables\GetPoolMultiplier;
-use App\Services\CardanoBlockfrostService;
-use App\Http\Integrations\Blockfrost\Requests\BlockfrostRequest;
+use App\Models\AnswerResponse;
+use App\Models\EveryEpoch;
+use App\Models\Quiz;
+use App\Models\Reward;
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class EveryEpochController extends Controller
 {
@@ -42,9 +41,9 @@ class EveryEpochController extends Controller
 
     public function getEveryEpoch()
     {
-        $frostReq  = new BlockfrostRequest('/epochs/latest/');
+        $frostReq = new BlockfrostRequest('/epochs/latest/');
         $this->epoch = $frostReq->send()->json();
-        
+
         $this->everyEpoch = EveryEpoch::with('quizzes.questions.answers')
             ->where('epoch', $this->epoch['epoch'])
             ->orderBy('created_at', 'desc')
@@ -70,15 +69,14 @@ class EveryEpochController extends Controller
                 ];
             })
             ->toArray();
-        
 
         $this->rewardPot = collect((new GetLidoRewardsPot)($this->everyEpoch))
             ->filter(
                 fn ($asset) => isset($this->rewardsTemplate[$asset['asset'].'.amount']) && $asset['amount'] >= $this->rewardsTemplate[$asset['asset'].'.amount']
             );
-            
+
         $user = Auth::user();
-        if ( $user && $user->wallet_stake_address) {
+        if ($user && $user->wallet_stake_address) {
             $this->myResponse = AnswerResponse::with('answer.question')
                 ->where([
                     'user_id' => $user->id,

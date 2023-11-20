@@ -4,6 +4,7 @@ import Rellax from 'rellax/rellax';
 import Chart from 'chart.js/auto';
 import {WordCloudController, WordElement} from 'chartjs-chart-wordcloud';
 import globalVideoPlayer from './global/utils/globalVideoPlayer';
+import {Splide} from '@splidejs/splide';
 
 Chart.register(WordCloudController, WordElement);
 
@@ -44,4 +45,61 @@ declare global {
 }
 
 window.globalVideoPlayer = globalVideoPlayer;
-window.globalReactions = globalReactions
+window.globalReactions = globalReactions;
+
+let secondarySlider, primarySlider;
+if (document.getElementById('proposal-secondary-slide')) {
+    secondarySlider = new Splide('#proposal-secondary-slide', {
+        rewind: true,
+        fixedWidth: 100,
+        fixedHeight: 64,
+        isNavigation: true,
+        gap: 10,
+        focus: 'left',
+        arrows: false,
+        pagination: false,
+        cover: true,
+        breakpoints: {
+            '600': {
+                fixedWidth: 66,
+                fixedHeight: 40,
+            }
+        }
+    }).mount();
+}
+if (document.getElementById('proposal-primary-slide')) {
+    primarySlider = new Splide('#proposal-primary-slide', {
+        type: 'fade',
+        heightRatio: 0.3,
+        pagination: false,
+        arrows: false,
+        height: 640,
+        cover: true,
+        disableOverlayUI: false,
+        lazyLoad: 'sequential',
+        breakpoints: {
+            1650: {
+                height: 580,
+            },
+            960: {
+                height: 270,
+            },
+        },
+        video: {
+            loop: false,
+            playerOptions: {
+                youtube: {},
+            }
+        }
+    });
+}
+
+if (
+    document.getElementById('proposal-primary-slide') &&
+    document.getElementById('proposal-secondary-slide')
+) {
+    primarySlider.sync(secondarySlider).mount({Video});
+} else {
+    // primarySlider.mount({Video});
+}
+

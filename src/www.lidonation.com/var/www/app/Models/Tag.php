@@ -5,50 +5,43 @@ namespace App\Models;
 use App\Models\CatalystExplorer\Proposal;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\UrlGenerator;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Tag extends Taxonomy
 {
-    public $append = [
-        'models',
-    ];
+    public $append = [];
 
     public function getUrlAttribute(): string|UrlGenerator|Application
     {
         return url("tags/{$this->slug}");
     }
 
-    public function funds(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    public function funds(): BelongsToMany
     {
         return $this->belongsToMany(PropFundosal::class, ModelTag::class, 'tag_id', 'model_id')
             ->withPivot(['model_type']);
     }
 
-    public function proposals(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    public function proposals(): BelongsToMany
     {
         return $this->belongsToMany(Proposal::class, ModelTag::class, 'tag_id', 'model_id')
             ->withPivot(['model_type']);
     }
 
-    public function insights(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    public function insights(): BelongsToMany
     {
         return $this->belongsToMany(Insight::class, ModelTag::class, 'tag_id', 'model_id')
             ->withPivot(['model_type']);
     }
-
-    public function news(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    public function posts(): BelongsToMany
     {
-        return $this->belongsToMany(News::class, ModelTag::class, 'tag_id', 'model_id')
+        return $this->belongsToMany(Post::class, ModelTag::class, 'tag_id', 'model_id')
             ->withPivot(['model_type']);
     }
 
-    public function reviews(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    public function reviews(): BelongsToMany
     {
         return $this->belongsToMany(Review::class, ModelTag::class, 'tag_id', 'model_id')
             ->withPivot(['model_type']);
     }
-
-    //    public function models(): MorphToMany
-    //    {
-    //        return $this->morphToMany(Model::class, 'model', ModelTag::class, 'tag_id', 'model_id');
-    //    }
 }

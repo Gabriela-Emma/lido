@@ -97,11 +97,12 @@ class PhuffycoinApp extends Component
         } catch (ErrorException|\Exception $e) {
             report($e);
         }
+
         return view('livewire.phuffycoin.phuffycoin-app')->with([
             'registeredUsers' => $lidoDelegationNftAggregate?->count,
             'causes' => $causeRepository->paginate(),
             'votes' => $voteRepository->all(),
-//            'faqs' => $faqs,
+            //            'faqs' => $faqs,
             'campaign' => new Fluent([
                 'metrics' => new Fluent([
                     'phuffy' => new Fluent([

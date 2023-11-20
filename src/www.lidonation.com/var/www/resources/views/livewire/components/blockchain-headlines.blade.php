@@ -34,6 +34,8 @@
             <hr class="border-b border-b-black" />
         @endforeach
 
-        <livewire:components.more-headlines-component offset="{{$limit}}" :per-page="3" more-label="More Recent Headlines"/>
+        <livewire:components.more-headlines-component
+            :offset="$limit" :per-page="3"
+            more-label="More Recent Headlines" />
     </div>
 </div>

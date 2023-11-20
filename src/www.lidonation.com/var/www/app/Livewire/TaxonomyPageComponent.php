@@ -28,10 +28,10 @@ class TaxonomyPageComponent extends Component
     public function mount(Request $request, Category $category, Tag $tag): void
     {
         if (Route::currentRouteNamed('category')) {
-            $this->postsByCategory = $this->category->load(['news', 'insights']);
+            $this->postsByCategory = $this->category->load(['posts', 'insights']);
             $this->taxonomy = $this->postsByCategory;
         } else {
-            $this->postsByTag = $this->tag->load(['news', 'insights']);
+            $this->postsByTag = $this->tag->load(['posts', 'insights']);
             $this->taxonomy = $this->postsByTag;
         }
     }
@@ -41,6 +41,7 @@ class TaxonomyPageComponent extends Component
         if (Route::currentRouteNamed('category')) {
             return view('livewire.category')->withShortcodes();
         }
-        return view('livewire.tag')->withShortcodes();
+
+        return view('livewire.tag')->title($this->taxonomy->title)->withShortcodes();
     }
 }

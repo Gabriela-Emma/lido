@@ -19,9 +19,9 @@ class Category extends Taxonomy
     //        return $this->morphToMany(Model::class, 'model', ModelTag::class, 'category_id', 'model_id');
     //    }
 
-    public function news(): MorphToMany
+    public function posts(): MorphToMany
     {
-        return $this->morphedByMany(News::class, 'model', ModelCategory::class, 'category_id', 'model_id')
+        return $this->morphedByMany(Post::class, 'model', ModelCategory::class, 'category_id', 'model_id')
             ->withPivot(['model_type']);
     }
 

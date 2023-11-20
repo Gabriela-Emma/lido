@@ -40,7 +40,7 @@ class SubMenuComponent extends Component
 
     public function render(): Factory|View|Application
     {
-        return view('livewire.catalyst.submenu');
+        return view('components.catalyst.submenu');
     }
 
     protected function init(): static
@@ -59,7 +59,7 @@ class SubMenuComponent extends Component
         $this->crumbs = collect([
             [
                 'label' => 'Dashboard',
-                'link' => route('projectCatalyst.dashboard'),
+                'link' => route('catalyst-explorer.home'),
                 'order' => 0,
             ],
         ]);
@@ -161,7 +161,7 @@ class SubMenuComponent extends Component
         if ($this->section === 'proposals' && $this->model) {
             $this->crumbs->push([
                 'label' => 'Funds',
-                'link' => route('catalyst-explorer.funds'),
+                'link' => route('catalyst-explorer.funds.index'),
                 'order' => $this->crumbs->count() + 3,
             ]);
             $this->crumbs->push([

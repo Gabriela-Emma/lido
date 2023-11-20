@@ -5,6 +5,7 @@ namespace App\Inertia\CatalystExplorer;
 use App\Http\Controllers\Controller;
 use App\Models\CatalystExplorer\Group;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Fluent;
@@ -50,7 +51,7 @@ class GroupsController extends Controller
         return Inertia::render('Groups', $props);
     }
 
-    public function create(Request $request)
+    public function create(Request $request): RedirectResponse
     {
         $validated = new Fluent($request->validate([
             'email' => 'sometimes|email',
@@ -77,7 +78,7 @@ class GroupsController extends Controller
         return to_route('catalyst-explorer.myGroups');
     }
 
-    public function update(Request $request, Group $catalystGroup)
+    public function update(Request $request, Group $catalystGroup): RedirectResponse
     {
         if (! $catalystGroup->id) {
             throw (new ModelNotFoundException())->setModel(Group::class);
@@ -99,7 +100,7 @@ class GroupsController extends Controller
         return to_route('catalyst-explorer.myGroups');
     }
 
-    public function query()
+    public function query(): array
     {
         $searchBuilder = Group::search(
             $this->search,

@@ -77,3 +77,11 @@ exit
 config();
 config()->all();
 exit
+assets('vendor/splide/splide-shader-carousel.min.js');
+asset('vendor/splide/splide-shader-carousel.min.js');
+exit
+$t = Category::find(12);
+$t->posts->count();
+$t = Category::find(5);
+$t->posts->count();
+exit

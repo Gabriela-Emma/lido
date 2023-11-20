@@ -1,4 +1,6 @@
 <template>
+    <Head title="Catalyst Challenge Category" />
+
     <div class="bg-primary-20">
         <header class="text-white bg-teal-600">
             <header-component :titleName0="fund.data.label" titleName1=" "
@@ -186,7 +188,7 @@ import { ref, watch } from "vue";
 import { marked } from "marked";
 import { computed } from "vue";
 import Proposal from "@apps/catalyst-explorer/models/proposal";
-import { router } from "@inertiajs/vue3";
+import {Head, router} from "@inertiajs/vue3";
 import { VARIABLES } from "@apps/catalyst-explorer/models/variables";
 import Fund from "@apps/catalyst-explorer/models/fund";
 import ProposalCard from "@apps/catalyst-explorer/modules/proposals/ProposalCard.vue";

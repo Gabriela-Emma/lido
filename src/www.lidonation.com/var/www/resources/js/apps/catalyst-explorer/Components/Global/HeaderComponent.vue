@@ -79,7 +79,6 @@
 import { inject } from 'vue'
 import { Link } from '@inertiajs/vue3';
 import { storeToRefs } from 'pinia';
-import route from 'ziggy-js';
 import {useUserStore} from "@/global/stores/user-store";
 import ConnectWallet from '@/global/Components/ConnectWallet.vue';
 

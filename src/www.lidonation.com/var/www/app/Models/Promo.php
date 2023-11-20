@@ -6,7 +6,6 @@ use App\Models\Traits\HasAuthor;
 use App\Models\Traits\HasHero;
 use App\Models\Traits\HasTranslations;
 use App\Scopes\PublishedScope;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -23,6 +22,7 @@ class Promo extends Model implements HasMedia
         'title',
         'content',
     ];
+
     protected $includes = [
         'media',
     ];
@@ -57,8 +57,6 @@ class Promo extends Model implements HasMedia
 
     /**
      * The "booted" method of the model.
-     *
-     * @return void
      */
     protected static function booted(): void
     {

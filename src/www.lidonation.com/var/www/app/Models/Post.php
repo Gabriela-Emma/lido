@@ -69,14 +69,6 @@ class Post extends Model implements HasLink, HasMedia, Interfaces\IHasMetaData, 
         SearchableLocale,
         SoftDeletes;
 
-    //    public int|DateTime|null $cacheFor = 900;
-
-    /**
-     * Invalidate the cache automatically
-     * upon update in the database.
-     */
-    protected static bool $flushCacheOnUpdate = true;
-
     public $translatable = [
         'title',
         'subtitle',
@@ -95,7 +87,7 @@ class Post extends Model implements HasLink, HasMedia, Interfaces\IHasMetaData, 
     ];
 
     protected $appends = [
-        'link'
+        'link',
     ];
 
     protected $guarded = ['user_id', 'created_at', 'published_at'];
@@ -200,41 +192,6 @@ class Post extends Model implements HasLink, HasMedia, Interfaces\IHasMetaData, 
     public function getSummaryAttribute()
     {
         return $this?->excerpt ?? Str::words($this->content, 80);
-    }
-
-    public function getRelatedPostsAttribute()
-    {
-        //     $taxs = $this->tags
-        //         ->concat($this->categories);
-        //     $query = $this::where('id', '!=', $this->id);
-        //     $query = app(PostRepository::class)
-        //         ->setQuery($query)
-        //         ->inTaxonomies(null, $taxs)
-        //         ->limit(5);
-
-        //     return $query->get()
-        //         ->whereNotIn('id', $this->id)->take(4);
-
-        // get related categories ids in Array
-        $categories_id = $this->categories->pluck('id');
-        $rel_cat_ids = ModelCategory::whereIn('category_id', $categories_id)
-            ->pluck('model_id');
-
-        // get related tags ids in Array
-        $tags_id = $this->tags->pluck('id');
-        $rel_tags_ids = ModelTag::whereIn('tag_id', $tags_id)
-            ->pluck('model_id');
-
-        // concatinate rel_cat_ids with rel_tags_ids
-        $related_ids = $rel_cat_ids->concat($rel_tags_ids);
-
-        // get related posts from the related_ids array.
-        $related_posts = Post::select('*')
-            ->whereIn('id', $related_ids)
-            ->where('id', '!=', $this->id)
-            ->get();
-
-        return $related_posts->take(4);
     }
 
     public function link(): Attribute

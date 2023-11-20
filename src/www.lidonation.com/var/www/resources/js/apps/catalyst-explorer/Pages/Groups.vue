@@ -1,4 +1,5 @@
 <template>
+    <Head title="Project Catalyst Groups" />
     <header-component titleName0="catalyst" titleName1="groups"
                       subTitle="Diverse, independent, and together inspiring the highest level of human collaboration"/>
 
@@ -31,7 +32,7 @@
             </div>
 
             <!-- Groups lists -->
-            <Groups :groups="currentModel?.data?.data"></Groups>
+            <GroupList :groups="currentModel?.data?.data" />
 
             <div class="flex-1 pb-16 mt-10">
                 <Pagination :links="currentModel.data.links"
@@ -57,6 +58,8 @@ import {useFiltersStore} from "@/global/stores/filters-stores";
 import Search from "@apps/catalyst-explorer/Components/Global/Search.vue";
 import Group from "@apps/catalyst-explorer/models/group";
 import Pagination from "@apps/catalyst-explorer/Components/Global/Pagination.vue";
+import {Head} from "@inertiajs/vue3";
+import GroupList from "@apps/catalyst-explorer/modules/groups/GroupList.vue";
 
 const props = withDefaults(
     defineProps<{

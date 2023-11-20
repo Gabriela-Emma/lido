@@ -1,14 +1,9 @@
 <template>
     <div
         class="relative w-full p-8 rounded-sm bg-gradient-to-br from-teal-800 via-teal-600 to-teal-900 2xl:col-span-2">
-        <!-- Delegate to lido Dapp -->
-        <div>
-            <!-- Build a component to delegate to lido -->
-        </div>
-
         <!-- Stake to lido CTA -->
         <div>
-            <div>
+            <div class="relative">
                 <p class="text-slate-200 text-2xl xl:text-3xl 2xl:text-4xl font-semibold mb-3">
                     You can stake to Lido Nation by using our pool ticker or Pool ID in any Cardano
                     wallet that supports staking.
@@ -31,9 +26,16 @@
                         </dl>
                     </div>
                 </div>
-                <p class="text-slate-100 text-2xl font-bold">
-                    If you've got a wallet extension installed: <br/>
-                </p>
+                <div class="flex flex-col items-center gap-4 mt-16">
+                    <div>
+                        <p class="text-slate-100 text-2xl font-bold">
+                            If you've got a wallet extension installed: <br/>
+                        </p>
+                    </div>
+                    <div>
+                        <DelegateToLido />
+                    </div>
+                </div>
             </div>
 
             <div class="absolute z-0 inline-flex mt-auto pointer-events-none right-4 bottom-3">
@@ -46,5 +48,6 @@
 </template>
 
 <script lang="ts" setup>
+import DelegateToLido from "@/global/Components/DelegateToLido.vue";
 
 </script>

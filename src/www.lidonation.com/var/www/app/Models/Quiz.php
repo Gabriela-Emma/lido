@@ -55,7 +55,6 @@ class Quiz extends Model implements HasMedia, IHasMetaData
         return $this->hasMany(AnswerResponse::class);
     }
 
-
     public function everyEpochs(): MorphToMany
     {
         return $this->morphedByMany(EveryEpoch::class, 'model', 'model_quiz', 'quiz_id', 'model_id');

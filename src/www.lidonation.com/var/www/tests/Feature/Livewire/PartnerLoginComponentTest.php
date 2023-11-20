@@ -2,9 +2,9 @@
 
 namespace Tests\Feature\Livewire;
 
-use Tests\TestCase;
-use Livewire\Livewire;
 use App\Livewire\Partners\LoginComponent;
+use Livewire\Livewire;
+use Tests\TestCase;
 
 class PartnerLoginComponentTest extends TestCase
 {

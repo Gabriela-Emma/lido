@@ -12,5 +12,4 @@
 <script lang="ts" setup>
 import { Modal } from "momentum-modal"
 import Nav from "./Nav.vue";
-
 </script>

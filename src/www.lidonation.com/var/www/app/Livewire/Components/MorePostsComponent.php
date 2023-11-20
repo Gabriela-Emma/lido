@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Livewire\Components;
 
@@ -31,7 +33,9 @@ class MorePostsComponent extends Component
     public Category|Tag|null $taxonomy;
 
     protected ?object $taxInstance;
+
     protected string $taxPivotColumn;
+
     protected ?object $pivotInstance;
 
     public function mount(): void
@@ -54,7 +58,7 @@ class MorePostsComponent extends Component
         $this->setTaxonomyModelDetails();
 
         $taxonomy = $this->taxInstance::where('id', $this->taxonomy->id)->get();
-        if (!$taxonomy || $taxonomy->isEmpty()) {
+        if (! $taxonomy || $taxonomy->isEmpty()) {
             return;
         }
         $postsCursor = $taxonomy
@@ -146,17 +150,17 @@ class MorePostsComponent extends Component
     protected function setTaxonomyModelDetails(): void
     {
         switch ($this->taxonomy) {
-            case ($this->taxonomy instanceof Category):
+            case $this->taxonomy instanceof Category:
                 $this->taxInstance = app('App\Models\Category');
                 $this->taxPivotColumn = 'category_id';
                 $this->pivotInstance = app('App\Models\ModelCategory');
-            break;
+                break;
 
-            case ($this->taxonomy instanceof Tag):
+            case $this->taxonomy instanceof Tag:
                 $this->taxInstance = app('App\Models\Tag');
                 $this->taxPivotColumn = 'tag_id';
                 $this->pivotInstance = app('App\Models\ModelTag');
-            break;
+                break;
         }
     }
 

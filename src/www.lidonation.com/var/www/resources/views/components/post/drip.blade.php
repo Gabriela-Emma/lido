@@ -12,8 +12,6 @@
     @endif
 
     <div class="flex flex-row flex-wrap gap-2 mb-1">
-        <x-public.post-type :post="$post"></x-public.post-type>
-
         @if($post?->categories->isNotEmpty())
             <x-public.post-taxonomies :tax="$post->categories->first()"></x-public.post-taxonomies>
         @endif

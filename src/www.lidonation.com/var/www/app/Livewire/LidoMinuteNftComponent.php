@@ -6,8 +6,10 @@ use App\Models\Nft;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Collection;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
+#[Title('A Day at the Lake NFT Series')]
 class LidoMinuteNftComponent extends Component
 {
     public array|Collection $portraitNfts;
@@ -23,8 +25,6 @@ class LidoMinuteNftComponent extends Component
     public array|Collection $tidePoolNfts;
 
     public array|Collection $behindCurtainNfts;
-
-    public $metaTitle = 'A Day at the Lake NFT Series';
 
     /**
      * Create a new component instance.

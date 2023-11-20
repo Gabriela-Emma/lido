@@ -1,5 +1,5 @@
 <template>
-    <div class="z-40 bg-white rounded-bl-sm rounded-br-sm " :class="{'absolute shadow-md ':column}">
+    <div class="z-40 bg-white rounded-bl-sm rounded-br-sm " :class="{'shadow-md ':column}">
         <div v-if="column" class="md:w-96">
             <button @click="toggle()"  :class="{ 'rounded-sm': !open }" type="button"
                 class="flex items-center w-full gap-2 px-4 py-2 text-xl font-semibold text-gray-700 hover:cursor-pointer hover:text-teal-600">
@@ -7,9 +7,9 @@
             </button>
             <div v-if="!!open" ref="target" class="absolute z-40 w-full mt-0 overflow-visible bg-white rounded-bl-sm rounded-br-sm shadow-md ">
                 <div class="inline-flex items-center gap-2 px-4 py-2 text-xl font-semibold text-gray-700 hover:cursor-pointer hover:text-teal-600"
-                    v-for="wallet in supportedWallets" 
-                    @click ="delegate(wallet.name); open = !open " 
-                    role="menuitem" 
+                    v-for="wallet in supportedWallets"
+                    @click ="delegate(wallet.name); open = !open "
+                    role="menuitem"
                     :disabled=!walletService.supports(wallet.name) >
                     <img :alt=wallet.altText class="w-6 h-auto" :src=wallet.imageSrc />
                     <span :class="{ 'text-slate-300': !walletService.supports(wallet.name) }">
@@ -64,7 +64,7 @@
                 </div>
             </div>
         </div>
-    </div>    
+    </div>
 </template>
 
 <script lang="ts" setup >

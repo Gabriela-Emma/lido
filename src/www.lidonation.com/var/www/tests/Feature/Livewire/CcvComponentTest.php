@@ -4,7 +4,6 @@ use App\Livewire\Earn\CcvComponent;
 use App\Models\Nft;
 use App\Models\Promo;
 use App\Models\User;
-use Database\Seeders\NftSeeder;
 use Livewire\Livewire;
 
 it('renders successfully', function () {
@@ -14,7 +13,7 @@ it('renders successfully', function () {
         'user_id' => $user->id,
         'token_id' => $nft->id,
         'title' => 'new promo title',
-        'status' => 'published'
+        'status' => 'published',
     ]);
 
     Livewire::test(CcvComponent::class)

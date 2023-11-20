@@ -27,7 +27,7 @@ class MoreHeadlinesComponent extends Component
     public function mount(): void
     {
         $postsCursor = Post::with(['media', 'tags'])
-            ->where('type', News::class)
+            ->where('type', Post::class)
             ->orderByDesc('published_at')
             ->offset($this->offset)
             ->cursorPaginate($this->perPage);

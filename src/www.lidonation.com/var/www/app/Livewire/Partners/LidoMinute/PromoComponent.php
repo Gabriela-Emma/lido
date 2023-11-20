@@ -3,12 +3,12 @@
 namespace App\Livewire\Partners\LidoMinute;
 
 use App\Models\Promo;
-use Livewire\Component;
-use Illuminate\Routing\Redirector;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Contracts\Foundation\Application;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Routing\Redirector;
+use Livewire\Component;
 use Livewire\WithFileUploads;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class PromoComponent extends Component
 {
@@ -24,7 +24,7 @@ class PromoComponent extends Component
 
     public $mediaComponentNames = ['promoUpload'];
 
-    // #[Rule('mimes:jpeg,jpg,png|max:10240')] 
+    // #[Rule('mimes:jpeg,jpg,png|max:10240')]
     public $promoUpload;
 
     public function rules(): array

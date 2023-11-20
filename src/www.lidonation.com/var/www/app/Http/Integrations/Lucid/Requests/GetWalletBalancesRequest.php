@@ -2,13 +2,13 @@
 
 namespace App\Http\Integrations\Lucid\Requests;
 
-use Saloon\Enums\Method;
-use Saloon\Http\Request;
-use Saloon\Http\Connector;
+use App\Http\Integrations\Lucid\LucidConnector;
 use Saloon\Contracts\Body\HasBody;
+use Saloon\Enums\Method;
+use Saloon\Http\Connector;
+use Saloon\Http\Request;
 use Saloon\Traits\Body\HasJsonBody;
 use Saloon\Traits\Request\HasConnector;
-use App\Http\Integrations\Lucid\LucidConnector;
 
 class GetWalletBalancesRequest extends Request implements HasBody
 {

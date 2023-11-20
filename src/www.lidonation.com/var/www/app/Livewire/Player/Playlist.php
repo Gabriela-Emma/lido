@@ -3,8 +3,8 @@
 namespace App\Livewire\Player;
 
 use App\Models\Podcast;
-use Livewire\Component;
 use Illuminate\Database\Eloquent\Collection;
+use Livewire\Component;
 
 class Playlist extends Component
 {

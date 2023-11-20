@@ -21,8 +21,6 @@ class PostFactory extends Factory
 
     /**
      * Define the model's default state.
-     *
-     * @return array
      */
     public function definition(): array
     {
@@ -56,8 +54,6 @@ class PostFactory extends Factory
 
     /**
      * Indicate that the user is suspended.
-     *
-     * @return Factory
      */
     public function published(): Factory
     {
@@ -84,7 +80,7 @@ class PostFactory extends Factory
     protected function afterCreatingJobs(Post $post): void
     {
         // add media
-        if (!app()->environment('testing')) {
+        if (! app()->environment('testing')) {
             $post->addMediaFromBase64($this->getImageUrl())
                 ->toMediaCollection('hero');
         }
