@@ -18,6 +18,7 @@ return new class extends Migration
             $table->model_type();
             $table->model_id();
             $table->user_id();
+            $table->enum('status', ['available', 'claimed', 'completed', 'expired']);
             $table->softDeletes();
             $table->timestamps();
         });
