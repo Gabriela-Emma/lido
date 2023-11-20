@@ -168,7 +168,7 @@
                                     :modelId="$challenge->id"
                                     wire:key="{{$challenge->id}}"
                                     theme="{{$challenge->funding_status == 'completed' ? 'pink': 'accent'}}"
-                                    :modelType="\App\Models\Proposal::class"/>
+                                    :modelType="\App\Models\CatalystExplorer\Proposal::class"/>
                             </div>
                         </div>
                     </div>
