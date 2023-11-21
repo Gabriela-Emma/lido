@@ -49,7 +49,14 @@
                                 {{ $t('dReps') }}
                                 </Link>
                             </li>
-                            <li class="text-gray-900 hover:text-teal-800 font-normal">Proposers</li>
+                            <li>
+                                <Link
+                                class="text-gray-900 menu-link font-normal hover:text-teal-800"
+                                :class="{ 'text-yellow-500': $page.component.startsWith('People') }"
+                                :href="route('catalyst-explorer.people.index')">
+                                {{ $t('Proposers') }}
+                                </Link>
+                            </li>
                         </ul>
                         <ul class="block px-4 py-2 text-teal-600">Charts
                             <li>
@@ -85,7 +92,14 @@
                                 {{ $t('Registration') }}
                             </a>
                             </li>
-                            <li class="text-gray-900 hover:text-teal-800 font-normal">Check MY Vote</li>
+                            <li>
+                                <Link
+                                class="text-gray-900 menu-link font-normal hover:text-teal-800"
+                                :class="{ 'text-yellow-500': $page.component.startsWith('VoterTool') }"
+                                :href="route('catalyst-explorer.voter-tool')">
+                                {{ $t('Check MY Vote') }}
+                                </Link>
+                            </li>
                         </ul>
                     </ul>
                     <button
