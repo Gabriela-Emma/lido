@@ -5,10 +5,11 @@ namespace App\Models\CatalystExplorer;
 use App\Enums\StatusEnum;
 use App\Models\Model;
 use App\Models\Traits\HasAuthor;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class CatalystCommunity extends Model
 {
-    use HasAuthor;
+    use HasAuthor, SoftDeletes;
 
     protected $fillable = [
         'title',
@@ -18,6 +19,8 @@ class CatalystCommunity extends Model
     ];
 
     protected $casts = [
+        'updated_at' => 'datetime:M d y',
+        'created_at' => 'datetime:M d y',
         'status' => StatusEnum::class,
     ];
 
