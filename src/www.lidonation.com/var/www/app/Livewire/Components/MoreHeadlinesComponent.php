@@ -2,7 +2,6 @@
 
 namespace App\Livewire\Components;
 
-use App\Models\News;
 use App\Models\Post;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -48,7 +47,7 @@ class MoreHeadlinesComponent extends Component
 
     public function loadMoreHeadlines(): void
     {
-        $postsCursor = Post::where('type', News::class)
+        $postsCursor = Post::where('type', Post::class)
             ->orderByDesc('published_at')
             ->cursorPaginate(
                 $this->perPage,

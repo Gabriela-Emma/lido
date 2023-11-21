@@ -7,7 +7,6 @@ use App\Models\Category;
 use App\Models\Insight;
 use App\Models\ModelCategory;
 use App\Models\ModelTag;
-use App\Models\News;
 use App\Models\Post;
 use App\Models\Review;
 use App\Models\Tag;

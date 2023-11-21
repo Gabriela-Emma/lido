@@ -16,10 +16,10 @@ it('sets hasMorePages', function () {
 
     User::factory()->create(); //Post factory need's an existing user, so we first seed one
 
-    Post::factory()->create(['title' => 'First hasMorePages', 'type' => News::class, 'status' => 'published']);
-    Post::factory()->create(['title' => 'Second hasMorePages', 'type' => News::class, 'status' => 'published']);
-    Post::factory()->create(['title' => 'Third hasMorePages', 'type' => News::class, 'status' => 'published']);
-    Post::factory()->create(['title' => 'Fourth hasMorePages', 'type' => News::class, 'status' => 'published']);
+    Post::factory()->create(['title' => 'First hasMorePages', 'type' => Post::class, 'status' => 'published']);
+    Post::factory()->create(['title' => 'Second hasMorePages', 'type' => Post::class, 'status' => 'published']);
+    Post::factory()->create(['title' => 'Third hasMorePages', 'type' => Post::class, 'status' => 'published']);
+    Post::factory()->create(['title' => 'Fourth hasMorePages', 'type' => Post::class, 'status' => 'published']);
 
     $componentInstance = Livewire::test(MorePostsComponent::class, ['perPage' => $perPage]);
 
@@ -39,10 +39,10 @@ it('sets offset', function () {
 
     // seed posts and make sure to set published_at date column, this will help in knowing the order of posts
     $dateToday = Illuminate\Support\Carbon::now();
-    Post::factory()->create(['title' => 'Warn costs of South Africa', 'type' => News::class, 'status' => 'published', 'published_at' => $dateToday->subDays(6)]);
-    Post::factory()->create(['title' => 'Testing the first water-pr', 'type' => News::class, 'status' => 'published', 'published_at' => $dateToday->subDays(5)]);
-    Post::factory()->create(['title' => 'Rubber duckies that float', 'type' => News::class, 'status' => 'published', 'published_at' => $dateToday->subDays(4)]);
-    Post::factory()->create(['title' => 'New Axe capital hedge fund', 'type' => News::class, 'status' => 'published', 'published_at' => $dateToday->subDays(3)]);
+    Post::factory()->create(['title' => 'Warn costs of South Africa', 'type' => Post::class, 'status' => 'published', 'published_at' => $dateToday->subDays(6)]);
+    Post::factory()->create(['title' => 'Testing the first water-pr', 'type' => Post::class, 'status' => 'published', 'published_at' => $dateToday->subDays(5)]);
+    Post::factory()->create(['title' => 'Rubber duckies that float', 'type' => Post::class, 'status' => 'published', 'published_at' => $dateToday->subDays(4)]);
+    Post::factory()->create(['title' => 'New Axe capital hedge fund', 'type' => Post::class, 'status' => 'published', 'published_at' => $dateToday->subDays(3)]);
 
     // instanciate the component with pre-defined perpage attribute and an offset of 1 then call loadMorePosts
     // with offset of 1 and perPage of 2 we expect one post and it should be the fourth in order of published_at (DESC)
@@ -57,10 +57,10 @@ it('sets perPage', function () {
 
     User::factory()->create(); //Post factory need's an existing user, so we first seed one
 
-    Post::factory()->create(['title' => 'Testing the first water-proof hair dryer', 'type' => News::class, 'status' => 'published']);
-    Post::factory()->create(['title' => 'Rubber duckies that actually float', 'type' => News::class, 'status' => 'published']);
-    Post::factory()->create(['title' => 'The new Axe capital hedge fund', 'type' => News::class, 'status' => 'published']);
-    Post::factory()->create(['title' => 'Warn costs of South Africa', 'type' => News::class, 'status' => 'published']);
+    Post::factory()->create(['title' => 'Testing the first water-proof hair dryer', 'type' => Post::class, 'status' => 'published']);
+    Post::factory()->create(['title' => 'Rubber duckies that actually float', 'type' => Post::class, 'status' => 'published']);
+    Post::factory()->create(['title' => 'The new Axe capital hedge fund', 'type' => Post::class, 'status' => 'published']);
+    Post::factory()->create(['title' => 'Warn costs of South Africa', 'type' => Post::class, 'status' => 'published']);
 
     // instanciate the component with pre-defined perpage attribute
     $componentInstance = Livewire::test(MorePostsComponent::class, ['perPage' => $perPage]);
@@ -76,10 +76,10 @@ it('loads more posts with "loadMorePosts()" method', function () {
 
     User::factory()->create(); //Post factory need's an existing user, so we first seed one
 
-    Post::factory()->create(['title' => 'Testing the first water-proof hair dryer', 'type' => News::class, 'status' => 'published']);
-    Post::factory()->create(['title' => 'Rubber duckies that actually float', 'type' => News::class, 'status' => 'published']);
-    Post::factory()->create(['title' => 'The new Axe capital hedge fund', 'type' => News::class, 'status' => 'published']);
-    Post::factory()->create(['title' => 'Warn costs of South Africa', 'type' => News::class, 'status' => 'published']);
+    Post::factory()->create(['title' => 'Testing the first water-proof hair dryer', 'type' => Post::class, 'status' => 'published']);
+    Post::factory()->create(['title' => 'Rubber duckies that actually float', 'type' => Post::class, 'status' => 'published']);
+    Post::factory()->create(['title' => 'The new Axe capital hedge fund', 'type' => Post::class, 'status' => 'published']);
+    Post::factory()->create(['title' => 'Warn costs of South Africa', 'type' => Post::class, 'status' => 'published']);
 
     // first execution of loadMorePosts
     $componentInstance = Livewire::test(MorePostsComponent::class)

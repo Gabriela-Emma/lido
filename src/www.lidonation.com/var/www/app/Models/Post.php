@@ -28,7 +28,7 @@ use Illuminate\Contracts\Routing\UrlGenerator;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Str;
 use Laravel\Nova\Actions\Actionable;
@@ -41,12 +41,14 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\Sitemap\Contracts\Sitemapable;
 use Spatie\Sitemap\Tags\Url;
+use Spatie\Feed\Feedable;
+use Spatie\Feed\FeedItem;
 
 /**
  * @property int $id
  * @property string thumbnail_url
  */
-class Post extends Model implements HasLink, HasMedia, Interfaces\IHasMetaData, Sitemapable
+class Post extends Model implements HasLink, HasMedia, Interfaces\IHasMetaData, Sitemapable, Feedable
 {
     use Actionable,
         HasAuthor,
@@ -101,6 +103,8 @@ class Post extends Model implements HasLink, HasMedia, Interfaces\IHasMetaData, 
         'thumbs_down',
         'thumbs_up',
     ];
+
+    protected $with = ['media', 'tags.media', 'categories.media', 'author.media'];
 
     /**
      * The attributes that should be cast.
@@ -407,6 +411,23 @@ class Post extends Model implements HasLink, HasMedia, Interfaces\IHasMetaData, 
     public function lessons()
     {
         return $this->hasMany(Lesson::class, 'lesson_post');
+    }
+
+    public function toFeedItem(): FeedItem
+    {
+        return FeedItem::create()
+            ->id($this->id)
+            ->title($this->title)
+            ->summary($this->summary)
+            ->updated($this->updated_at)
+            ->link($this->link)
+            ->authorEmail($this->author?->email ?? config('app.email'))
+            ->authorName($this?->author?->name);
+    }
+
+    public static function getFeedItems(): Collection|array
+    {
+        return self::all();
     }
 
     /**

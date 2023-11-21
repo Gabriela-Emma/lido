@@ -13,7 +13,6 @@ class ArticlesSeeder extends Seeder
     {
         $this->call([
             PostSeeder::class,
-            NewsSeeder::class,
             InsightsSeeder::class,
             ReviewsSeeder::class,
         ]);
