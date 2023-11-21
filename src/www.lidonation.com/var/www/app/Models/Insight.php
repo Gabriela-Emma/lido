@@ -33,7 +33,7 @@ class Insight extends Post implements Feedable
      *
      * @throws \ReflectionException
      */
-    public function getMorphClass()
+    public function getMorphClass(): string
     {
         return self::class;
     }
@@ -56,11 +56,11 @@ class Insight extends Post implements Feedable
     }
 
     /**
-     * Get the indexable data array for the model.
+     * Get the index able data array for the model.
      *
      * @return array
      */
-    public function toSearchableArray()
+    public function toSearchableArray(): array
     {
         return parent::toSearchableArray();
     }
@@ -70,7 +70,7 @@ class Insight extends Post implements Feedable
      *
      * @return string
      */
-    public function searchableAs()
+    public function searchableAs(): string
     {
         return parent::searchableAs();
     }

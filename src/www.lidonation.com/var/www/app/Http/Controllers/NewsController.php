@@ -12,7 +12,7 @@ class NewsController extends PostController
 {
     public function category(Request $request, Category $category): Factory|View|Application
     {
-        $category->fastPaginate(10)->load(['Posts']);
+        $category->fastPaginate(10)->load(['posts']);
         $section = 'Posts';
 
         return view('category')->with(compact('category', 'section'));

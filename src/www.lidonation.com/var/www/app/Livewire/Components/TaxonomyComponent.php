@@ -25,6 +25,8 @@ class TaxonomyComponent extends Component
 
     public int $perPage = 6;
 
+    public int $offset = 0;
+
     public Category|Tag $taxonomy;
 
     public string $taxType;
@@ -57,23 +59,13 @@ class TaxonomyComponent extends Component
 
     public function setPosts($taxInstance, $taxPivotColumn, $pivotInstance): void
     {
-        $this->posts = $taxInstance::where('id', $this->taxonomy->id)
-            ->get()
-            ->map(function ($cat) use ($taxPivotColumn, $pivotInstance) {
-                $catIds = $pivotInstance::where([
-                    $taxPivotColumn => $this->taxonomy->id,
-                ])->pluck('model_id')->all();
-                Post::withoutGlobalScope(LimitScope::class);
-                $cat->models = Post::whereIn('id', $catIds)
-                    ->whereIn('type', [Post::class, Insight::class, Review::class])
-                    ->orderByDesc('published_at')
-                    ->limit($this->perPage)->get();
-
-                return $cat;
-            })
-            ->first()
-            ?->models
-            ->collect();
+        Post::withoutGlobalScope(LimitScope::class);
+        $this->posts = Post::with(['media'])
+            ->whereRelation('categories', 'slug', 'news-and-interviews')
+            ->orderByDesc('published_at')
+            ->limit($this->perPage)
+            ->offset($this->offset)
+            ->get();
     }
 
     public function render(): Factory|View|Application

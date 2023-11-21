@@ -1,4 +1,4 @@
-<div class="tag" :metaTitle="Tag: {$tag->title}">
+<div class="tag" metaTitle="Tag: {{$tag->title}}">
     <header>
         <div class="container py-4 ml-10">
             <div class="flex z-10 flex-col mb-2">
@@ -16,13 +16,10 @@
         <hr />
         <div class="container">
             <div class="sm:grid sm:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-4 my-8">
-                @foreach ($postsByTag->posts->take(9) as $post)
-                    @if ($loop->first)
-                        <x-post.highlight :post="$post" />
-                    @endif
-                @endforeach
+                <x-post.highlight :post="$featurePost" />
             </div>
-            <livewire:components.taxonomy-component :taxonomy='$taxonomy' :per-page="$perPage" />
+
+            <livewire:components.taxonomy-component :offset="1" :taxonomy='$taxonomy' :per-page="$perPage" />
         </div>
     </section>
     <section class="py-16">
