@@ -9,3 +9,4 @@
         ({{$ratingsCount}})
     </span>
 </span>
+
