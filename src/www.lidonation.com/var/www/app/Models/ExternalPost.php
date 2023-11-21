@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Traits\SearchableLocale;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Str;
 use Parental\HasParent;
 use Spatie\Comments\Models\Concerns\HasComments;

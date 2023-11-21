@@ -140,7 +140,6 @@ class Articles extends Resource
                 ->required(),
             Select::make(__('Type'), 'type')->options([
                 Review::class => 'Reviews',
-                \App\Models\News::class => 'News',
                 Insight::class => 'Insights',
                 \App\Models\OnboardingContent::class => 'OnboardingContent',
                 \App\Models\ExternalPost::class => 'ExternalPost',

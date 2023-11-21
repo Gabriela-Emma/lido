@@ -3,7 +3,6 @@
 namespace App\Repositories;
 
 use App\Models\Insight;
-use App\Models\News;
 use App\Models\Post;
 use App\Models\Review;
 use Illuminate\Database\Eloquent\Builder;
@@ -31,7 +30,7 @@ class PostRepository extends Repository
     }
 
     public function models($types = [
-        News::class,
+        Post::class,
         Insight::class,
         Review::class,
     ])
@@ -42,7 +41,7 @@ class PostRepository extends Repository
     }
 
     public function setModels($types = [
-        News::class,
+        Post::class,
         Insight::class,
         Review::class,
     ]): Builder

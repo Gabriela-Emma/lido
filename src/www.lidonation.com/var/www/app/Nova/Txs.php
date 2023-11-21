@@ -63,7 +63,7 @@ class Txs extends Resource
             Text::make(__('Address')),
             Number::make(__('Quantity')),
             MorphTo::make('model')->types([
-                News::class,
+                Post::class,
                 Reviews::class,
                 Insights::class,
                 Podcasts::class,
