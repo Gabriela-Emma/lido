@@ -198,13 +198,13 @@
             </div>
         </div>
     </section>
-    
+
     <section class="py-12 bg-gray-50 border border-gray-100" id="commentForm{{$post->id}}">
         <div class="px-6 max-w-6xl xl:mx-auto">
         <livewire:comments :showNotificationOptions="Auth::check()" :hideNotificationOptions="!Auth::check()" :hideAvatars="false" :noReplies="false" :model="$post" />
 </div>
     </section>
-    
+
     <div class="my-16">
         <div class="container">
             <livewire:components.support-lido-component lazy="on-load" theme="teal"

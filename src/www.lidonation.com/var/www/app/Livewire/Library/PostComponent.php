@@ -14,6 +14,7 @@ class PostComponent extends Component
 
     public function mount(Post $post): void
     {
+        $post->load(['media']);
         $this->post = $post;
     }
 

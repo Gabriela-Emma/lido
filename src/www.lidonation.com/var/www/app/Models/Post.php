@@ -260,7 +260,7 @@ class Post extends Model implements HasLink, HasMedia, Interfaces\IHasMetaData, 
      * @param  mixed  $team
      * @return bool
      */
-    public function ownsTeam($team)
+    public function ownsTeam($team): bool
     {
         if (is_null($team)) {
             return false;
