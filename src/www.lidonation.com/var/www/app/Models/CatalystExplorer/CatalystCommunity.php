@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Models\CatalystExplorer;
 
@@ -23,5 +25,4 @@ class CatalystCommunity extends Model
         'created_at' => 'datetime:M d y',
         'status' => StatusEnum::class,
     ];
-
 }

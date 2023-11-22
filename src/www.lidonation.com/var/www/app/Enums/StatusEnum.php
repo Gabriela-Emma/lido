@@ -14,4 +14,3 @@ enum StatusEnum: string
     case COMPLETED = 'completed';
     case EXPIRED = 'expired';
 }
-

@@ -33,10 +33,12 @@ class PostComponent extends Component
             'thumbs_up',
         ]);
 
-        $this->reactions = collect($this->reactions)->mapWithKeys(function ($reaction) use ($post) {
-            $prop = "{$reaction}_count";
-            return [$reaction => $post->{$prop}];
-        })->toArray();
+        $this->reactions = collect($this->reactions)
+            ->mapWithKeys(function ($reaction) use ($post) {
+                $prop = "{$reaction}_count";
+
+                return [$reaction => $post->{$prop}];
+            })->toArray();
 
         $this->post = $post;
     }

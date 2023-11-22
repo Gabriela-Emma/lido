@@ -2,9 +2,7 @@
 
 namespace App\Enums;
 
-use Spatie\Enum\Enum;
-
-enum ContributionStatusEnum : string
+enum ContributionStatusEnum: string
 {
     use Traits\HasValues;
 
@@ -14,5 +12,3 @@ enum ContributionStatusEnum : string
     case EXPIRED = 'expired';
 
 }
-
-

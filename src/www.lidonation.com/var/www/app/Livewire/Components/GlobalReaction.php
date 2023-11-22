@@ -38,7 +38,8 @@ class GlobalReaction extends Component
         $this->post = $post;
         $this->reactions = collect($this->reactions)->mapWithKeys(function ($reaction) use ($post) {
             $prop = "{$reaction}_count";
-            return [ (ReactionEnum::from($reaction))->value => $post->{$prop}];
+
+            return [(ReactionEnum::from($reaction))->value => $post->{$prop}];
         })->toArray();
     }
 

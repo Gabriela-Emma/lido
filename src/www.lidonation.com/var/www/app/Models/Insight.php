@@ -29,7 +29,6 @@ class Insight extends Post implements Feedable
     /**
      * Get the class name for polymorphic relations.
      *
-     * @return string
      *
      * @throws \ReflectionException
      */
@@ -57,8 +56,6 @@ class Insight extends Post implements Feedable
 
     /**
      * Get the index able data array for the model.
-     *
-     * @return array
      */
     public function toSearchableArray(): array
     {
@@ -67,8 +64,6 @@ class Insight extends Post implements Feedable
 
     /**
      * Get the index name for the model.
-     *
-     * @return string
      */
     public function searchableAs(): string
     {

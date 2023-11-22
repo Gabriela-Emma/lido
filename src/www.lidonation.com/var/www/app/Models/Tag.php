@@ -33,6 +33,7 @@ class Tag extends Taxonomy
         return $this->belongsToMany(Insight::class, ModelTag::class, 'tag_id', 'model_id')
             ->withPivot(['model_type']);
     }
+
     public function posts(): BelongsToMany
     {
         return $this->belongsToMany(Post::class, ModelTag::class, 'tag_id', 'model_id')

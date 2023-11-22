@@ -1,7 +1,6 @@
 <?php
 
 use App\Livewire\Components\MorePostsComponent;
-use App\Models\News;
 use App\Models\Post;
 use App\Models\User;
 use Livewire\Livewire;

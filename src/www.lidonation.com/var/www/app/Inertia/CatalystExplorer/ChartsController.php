@@ -371,7 +371,7 @@ class ChartsController extends Controller
             'filters' => [
                 'fundId' => $this->fundFilter,
             ],
-            'locale' => app()->getLocale()
+            'locale' => app()->getLocale(),
         ];
 
         return Inertia::render('Charts', $props);

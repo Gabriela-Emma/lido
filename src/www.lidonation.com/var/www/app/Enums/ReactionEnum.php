@@ -42,7 +42,7 @@ final class ReactionEnum extends Enum
             'party_popper' => '🎉',
             'rocket' => '🚀',
             'thumbs_down' => '👎',
-            'eye' => '👀'
+            'eye' => '👀',
         ];
     }
 }

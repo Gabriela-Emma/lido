@@ -31,10 +31,10 @@ class LidoOriginStats
 
     public function __invoke(): array
     {
-        $this->newsArticles = Post::whereHas('categories', function($q) {
-                $q->where('slug', 'news-and-interviews');
-            })
-            ->count();;
+        $this->newsArticles = Post::whereHas('categories', function ($q) {
+            $q->where('slug', 'news-and-interviews');
+        })
+            ->count();
         $this->educationalArticles = Insight::count();
         $this->minutesOfAudioReadings = $this->getAudioMinutes();
         $this->hrsOfTwitterSpacesWork = $this->getHoursOfTwitterSpace();

@@ -26,29 +26,29 @@ use App\Traits\SearchableLocale;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\UrlGenerator;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Str;
 use Laravel\Nova\Actions\Actionable;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 use Parental\HasChildren;
 use Spatie\Comments\Models\Concerns\HasComments;
+use Spatie\Feed\Feedable;
+use Spatie\Feed\FeedItem;
 use Spatie\Image\Manipulations;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\Sitemap\Contracts\Sitemapable;
 use Spatie\Sitemap\Tags\Url;
-use Spatie\Feed\Feedable;
-use Spatie\Feed\FeedItem;
 
 /**
  * @property int $id
  * @property string thumbnail_url
  */
-class Post extends Model implements HasLink, HasMedia, Interfaces\IHasMetaData, Sitemapable, Feedable
+class Post extends Model implements Feedable, HasLink, HasMedia, Interfaces\IHasMetaData, Sitemapable
 {
     use Actionable,
         HasAuthor,
@@ -95,13 +95,13 @@ class Post extends Model implements HasLink, HasMedia, Interfaces\IHasMetaData, 
     protected $guarded = ['user_id', 'created_at', 'published_at'];
 
     protected $withCount = [
-//        'comments',
-//        'hearts',
-//        'eyes',
-//        'party_popper',
-//        'rocket',
-//        'thumbs_down',
-//        'thumbs_up',
+        //        'comments',
+        //        'hearts',
+        //        'eyes',
+        //        'party_popper',
+        //        'rocket',
+        //        'thumbs_down',
+        //        'thumbs_up',
     ];
 
     protected $with = [];
@@ -117,20 +117,20 @@ class Post extends Model implements HasLink, HasMedia, Interfaces\IHasMetaData, 
         'content' => 'array',
     ];
 
-//    public function reactionsCounts(): Attribute
-//    {
-//        return Attribute::make(get: function () {
-//            $counts = [];
-//
-//            foreach (ReactionEnum::REACTIONS as $reaction => $class) {
-//                $counts[$reaction] = $this->lido_reactions()
-//                    ->where('type', $class)
-//                    ->count();
-//            }
-//
-//            return (array) $counts;
-//        });
-//    }
+    //    public function reactionsCounts(): Attribute
+    //    {
+    //        return Attribute::make(get: function () {
+    //            $counts = [];
+    //
+    //            foreach (ReactionEnum::REACTIONS as $reaction => $class) {
+    //                $counts[$reaction] = $this->lido_reactions()
+    //                    ->where('type', $class)
+    //                    ->count();
+    //            }
+    //
+    //            return (array) $counts;
+    //        });
+    //    }
 
     public static function getFilterableAttributes(): array
     {
@@ -258,7 +258,6 @@ class Post extends Model implements HasLink, HasMedia, Interfaces\IHasMetaData, 
      * Determine if the user owns the given team.
      *
      * @param  mixed  $team
-     * @return bool
      */
     public function ownsTeam($team): bool
     {
