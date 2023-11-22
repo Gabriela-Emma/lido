@@ -6,7 +6,7 @@
                     {{ fullyDisbursedProposalsCount }}
                 </div>
             </dd>
-            <dt class="mt-3 text-xs 2xl:text-lg font-medium text-gray-200 truncate">
+            <dt class="mt-3 text-xs font-medium text-gray-200 truncate 2xl:text-lg">
                 Total Funded Proposals
             </dt>
         </dl>
@@ -19,7 +19,7 @@
                     {{ $filters.number(completedProposalsCount) }}
                 </div>
             </dd>
-            <dt class="mt-3 text-xs 2xl:text-lg font-medium text-gray-200 truncate">
+            <dt class="mt-3 text-xs font-medium text-gray-200 truncate 2xl:text-lg">
                 Completed Proposals
             </dt>
         </dl>
@@ -54,7 +54,7 @@ function getQueryData() {
 
 let query = () => {
     let params = getQueryData()
-    axios.get(`${usePage().props.base_url}/catalyst-explorer/metrics/fullyDisbursedProposalsCount`, { params })
+    axios.get(route('catalyst-explorer.metrics.fullyDisbursedProposalsCount'), { params })
         .then((res) => fullyDisbursedProposalsCount.value = res?.data)
         .catch((error) => {
             console.error(error);

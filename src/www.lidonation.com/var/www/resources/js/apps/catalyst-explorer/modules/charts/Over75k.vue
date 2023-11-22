@@ -1,5 +1,5 @@
 <template>
-    <dl class="flex flex-col text-xs xl:text-base justify-between h-full">
+    <dl class="flex flex-col justify-between h-full text-xs xl:text-base">
         <dd>
             <div class="text-4xl font-semibold lg:text-5xl 2xl:text-6xl text-blue-dark-500">
                 {{ $filters.number(fundedOver75KCount) }}
@@ -16,6 +16,7 @@ import { ref, watch } from 'vue';
 import { VARIABLES } from '../../models/variables';
 import axios from 'axios';
 import { usePage } from '@inertiajs/vue3';
+import route from 'ziggy-js';
 
 const props = defineProps<{
     fundId: number
@@ -35,7 +36,7 @@ function getQueryData() {
 
 let query = () => {
     let params = getQueryData()
-    axios.get(`${usePage().props.base_url}/catalyst-explorer/metrics/fundedOver75KCount`, { params })
+    axios.get(route('catalyst-explorer.metrics.fundedOver75KCount'), { params })
         .then((res) => fundedOver75KCount.value = res?.data)
         .catch((error) => {
             console.error(error);
