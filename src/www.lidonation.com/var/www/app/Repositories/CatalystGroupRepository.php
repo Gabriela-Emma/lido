@@ -53,7 +53,6 @@ class CatalystGroupRepository extends Repository
     public function buildQuery(): Builder
     {
         $this->query = $this->model
-//            ->cacheFor(HOUR_IN_SECONDS)
             ->withCount([
                 'proposals as alltime_proposals_completed' => function ($query) {
                     $query->where('status', '=', 'complete')

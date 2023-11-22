@@ -20,7 +20,6 @@ class CatalystUserRepository extends Repository
         }
 
         $this->query = $this->model
-//            ->cacheFor(HOUR_IN_SECONDS)
             ->with(["{$relation}.discussions.ratings"])
             ->withCount([
                 "$relation as alltime_proposals_completed" => fn ($query) => $query->where('status', '=', 'complete')->orWhere('status', '=', 'launched'),

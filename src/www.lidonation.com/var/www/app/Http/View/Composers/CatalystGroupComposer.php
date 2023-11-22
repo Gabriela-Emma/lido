@@ -220,9 +220,9 @@ class CatalystGroupComposer
         );
     }
 
-    protected function setTagCloud()
+    protected function setTagCloud(): void
     {
-        $this->wordCloudSet = Cache::remember("{$this->catalystGroup->slug}DetailsWordCloud", HOUR_IN_SECONDS, function () {
+        $this->wordCloudSet = Cache::remember("{$this->catalystGroup->slug}DetailsWordCloud", 3600, function () {
             $query = DB::select(
                 <<<EOT
         select w.word, SUM(w.num_occurrences) as occurrences
@@ -251,7 +251,7 @@ class CatalystGroupComposer
         });
     }
 
-    protected function discussionsRatings()
+    protected function discussionsRatings(): void
     {
         $discussionRatings = [];
         foreach ($this->allDiscussions as $discussion) {

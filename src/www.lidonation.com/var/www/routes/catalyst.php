@@ -28,6 +28,7 @@ use App\Inertia\CatalystExplorer\RegistrationsController;
 use App\Inertia\CatalystExplorer\ReportsController;
 use App\Inertia\CatalystExplorer\UserProfilesController;
 use App\Inertia\CatalystExplorer\VoterToolController;
+use App\Livewire\CatalystExplorer\ProposalComponent;
 use App\Livewire\CatalystExplorer\VotesComponent;
 use App\Models\CatalystExplorer\Proposal;
 use Illuminate\Support\Facades\Route;
@@ -42,6 +43,7 @@ Route::group(
         'middleware' => ['localeSessionRedirect', 'localizationRedirect', 'localeViewPath'],
     ],
     function () {
+        Route::get('/proposals/{proposal}/v3', ProposalComponent::class);
         Route::get('/proposals/{proposal}/', function (Proposal $proposal) {
             // related proposal in fund
             $relatedProposalsQuery = Proposal::with(['monthly_reports'])
@@ -56,6 +58,7 @@ Route::group(
         })->name('proposal');
 
         Route::get('/catalyst-proposals/users/{catalystUser}', fn () => view('catalyst.user'));
+
         Route::prefix('project-catalyst')->as('projectCatalyst.')->group(function () {
 
             Route::get('/votes/ccv4', VotesComponent::class)

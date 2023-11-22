@@ -177,14 +177,14 @@
                                     @if ($allTimeFundingPerRound['totalAda'])
                                         <div>
                                         <span class="font-semibold ">
-                                            ₳{{ humanNumber($allTimeFundingPerRound['totalAda']) }}
+                                            ₳{{ humanNumber($allTimeFundingPerRound['totalAda']->sum() ) }}
                                         </span>
                                         </div>
                                     @endif
                                     @if ($allTimeFundingPerRound['totalUsd'])
                                         <div>
                                         <span class="font-semibold">
-                                            ${{ humanNumber($allTimeFundingPerRound['totalUsd']) }}
+                                            ${{ humanNumber($allTimeFundingPerRound['totalUsd']->sum()) }}
                                         </span>
                                         </div>
                                     @endif
@@ -227,14 +227,14 @@
                                     @if ($allTimeAwardedPerRound['totalAda'])
                                         <div>
                                         <span class="font-semibold ">
-                                            ₳{{ humanNumber($allTimeAwardedPerRound['totalAda']) }}
+                                            ₳{{ humanNumber($allTimeAwardedPerRound['totalAda']->sum()) }}
                                         </span>
                                         </div>
                                     @endif
                                     @if ($allTimeAwardedPerRound['totalUsd'])
                                         <div>
                                         <span class="font-semibold">
-                                            ${{ humanNumber($allTimeAwardedPerRound['totalUsd']) }}
+                                            ${{ humanNumber($allTimeAwardedPerRound['totalUsd']->sum()) }}
                                         </span>
                                         </div>
                                     @endif
@@ -277,14 +277,14 @@
                                     @if ($allTimeReceivedPerRound['totalAda'])
                                         <div>
                                         <span class="font-semibold ">
-                                            ₳{{ humanNumber($allTimeReceivedPerRound['totalAda']) }}
+                                            ₳{{ humanNumber($allTimeReceivedPerRound['totalAda']->sum()) }}
                                         </span>
                                         </div>
                                     @endif
                                     @if ($allTimeReceivedPerRound['totalUsd'])
                                         <div>
                                         <span class="font-semibold">
-                                            ${{ humanNumber($allTimeReceivedPerRound['totalUsd']) }}
+                                            ${{ humanNumber($allTimeReceivedPerRound['totalUsd']->sum()) }}
                                         </span>
                                         </div>
                                     @endif
