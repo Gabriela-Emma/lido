@@ -32,6 +32,7 @@ import { ref, watch } from 'vue';
 import { VARIABLES } from '../../models/variables';
 import axios from 'axios';
 import { usePage } from '@inertiajs/vue3';
+import route from 'ziggy-js';
 
 const props = defineProps<{
     fundId: number
@@ -57,7 +58,7 @@ watch([largestFundedProposalObject], () => {
 
 let query = () => {
     let params = getQueryData()
-    axios.get(`${usePage().props.base_url}/catalyst-explorer/metrics/largestFundedProposalObject`, { params })
+    axios.get(route('catalyst-explorer.metrics.largestFundedProposalObject'), { params })
         .then((res) => largestFundedProposalObject.value = res?.data)
         .catch((error) => {
             console.error(error);
