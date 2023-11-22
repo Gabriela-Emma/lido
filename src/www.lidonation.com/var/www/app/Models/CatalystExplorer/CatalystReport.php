@@ -18,12 +18,12 @@ class CatalystReport extends Model
 
     protected $withCount = [
         'comments',
-        'hearts',
-        'eyes',
-        'party_popper',
-        'rocket',
-        'thumbs_down',
-        'thumbs_up',
+//        'hearts',
+//        'eyes',
+//        'party_popper',
+//        'rocket',
+//        'thumbs_down',
+//        'thumbs_up',
     ];
 
     public function getExcerptAttribute($value): string

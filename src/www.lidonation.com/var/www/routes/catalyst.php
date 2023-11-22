@@ -44,10 +44,11 @@ Route::group(
     function () {
         Route::get('/proposals/{proposal}/', function (Proposal $proposal) {
             // related proposal in fund
-            $relatedProposalsQuery = Proposal::whereRelation('fund', 'parent_id', $proposal->fund?->parent_id)
+            $relatedProposalsQuery = Proposal::with(['monthly_reports'])
+                ->whereRelation('fund', 'parent_id', $proposal->fund?->parent_id)
                 ->whereHas('users', fn ($q) => $q->whereIn('id', $proposal->users->pluck('id')))
                 ->where('id', '!=', $proposal->id);
-
+//
             $relatedProposals = $relatedProposalsQuery->limit(6)->get();
 
             // other proposals form same category
