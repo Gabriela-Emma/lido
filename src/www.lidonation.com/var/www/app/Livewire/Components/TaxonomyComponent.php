@@ -4,7 +4,6 @@ namespace App\Livewire\Components;
 
 use App\Enums\ComponentThemesEnum;
 use App\Models\Category;
-use App\Models\Insight;
 use App\Models\Post;
 use App\Models\Review;
 use App\Models\Tag;
@@ -54,7 +53,7 @@ class TaxonomyComponent extends Component
         Post::withoutGlobalScope(LimitScope::class);
         $this->posts = Post::with(['media'])
             ->whereRelation($relation, $taxPivotColumn, $this->taxonomy->id)
-            ->whereIn('type', [Post::class, Insight::class, Review::class])
+            ->whereIn('type', [Post::class, Review::class])
             ->orderByDesc('published_at')
             ->limit($this->perPage)
             ->offset($this->offset)

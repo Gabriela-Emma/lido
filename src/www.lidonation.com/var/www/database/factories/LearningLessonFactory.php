@@ -2,9 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\Insight;
 use App\Models\LearningLesson;
-use App\Models\Model;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -21,7 +19,7 @@ class LearningLessonFactory extends Factory
      */
     public function definition()
     {
-        $model = $this->faker->randomElement([Insight::class, Post::class]);
+        $model = $this->faker->randomElement([Post::class]);
 
         return [
             'user_id' => fn () => User::inRandomOrder()->first()->id,

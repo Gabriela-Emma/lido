@@ -13,7 +13,7 @@ class TaxonomyController extends PostController
 {
     public function category(Request $request, Category $category): Factory|View|Application
     {
-        $category->load(['news', 'reviews', 'insights']);
+        $category->load(['reviews']);
         $postsCount = $category->models->count();
 
         return view('category')
@@ -22,7 +22,7 @@ class TaxonomyController extends PostController
 
     public function tag(Request $request, Tag $tag): Factory|View|Application
     {
-        $tag->load(['news', 'reviews', 'insights']);
+        $tag->load(['reviews']);
 
         return view('tag')
             ->with(compact('tag'))->withShortcodes();

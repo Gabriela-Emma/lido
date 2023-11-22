@@ -4,7 +4,6 @@ namespace App\Http\View\Composers;
 
 use App\Models\CatalystExplorer\CatalystUser;
 use App\Models\CatalystExplorer\Proposal;
-use App\Models\Insight;
 use App\Models\Podcast;
 use App\Models\Post;
 use App\Models\Review;
@@ -29,7 +28,6 @@ class HomeComposer
      */
     public function compose(View $view): void
     {
-        $insights = $this->posts->setModel(new Insight)->limit(6)->all();
         $reviews = $this->posts->setModel(new Review)->limit(2)->all();
         $events = $this->events->upcoming();
         $users = User::whereHas('roles', fn ($query) => $query->whereIn('name', ['super admin']))->get();
@@ -41,14 +39,12 @@ class HomeComposer
         $newToLibrary = Post::whereIn('type', [
             Post::class,
             Review::class,
-            Insight::class,
         ])->limit($latestLidoMinute instanceof Podcast ? 3 : 4)->get()->map(fn ($m) => $m->load(['media', 'tags']));
 
         $view->with(
             [
                 'users' => $users,
                 'reviews' => $reviews,
-                'insights' => $insights,
                 'newToLibrary' => $newToLibrary->sortByDesc('published_at'),
                 'latestLidoMinute' => $latestLidoMinute,
                 'quickPitches' => null,

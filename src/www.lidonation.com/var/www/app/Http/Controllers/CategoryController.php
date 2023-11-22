@@ -9,7 +9,7 @@ class CategoryController extends Controller
 {
     public function index(Request $request, Category $category)
     {
-        $category->load(['reviews', 'news', 'insights']);
+        $category->load(['reviews']);
 
         return view('category')->with(compact('category'));
     }

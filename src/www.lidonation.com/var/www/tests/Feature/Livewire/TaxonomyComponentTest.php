@@ -10,7 +10,7 @@ it('renders successfully', function () {
     $taxonomy = Category::factory()->make([
         'title' => 'first title',
     ]);
-    $taxonomy->load(['posts', 'reviews', 'insights']);
+    $taxonomy->load(['posts', 'reviews']);
 
     Livewire::test(TaxonomyComponent::class, ['taxonomy' => $taxonomy])
         ->assertStatus(200);

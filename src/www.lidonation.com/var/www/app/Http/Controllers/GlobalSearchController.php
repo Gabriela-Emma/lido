@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\DataTransferObjects\PostSearchResultData;
-use App\Models\Insight;
 use App\Models\Post;
 use App\Models\Review;
 use Illuminate\Http\Request;
@@ -39,7 +38,6 @@ class GlobalSearchController extends Controller
         return response($hits->map(function ($hit) {
             $hit['type'] = match ($hit['type']) {
                 Post::class => 'articles',
-                Insight::class => 'insights',
                 Review::class => 'reviews',
                 default => 'posts',
             };

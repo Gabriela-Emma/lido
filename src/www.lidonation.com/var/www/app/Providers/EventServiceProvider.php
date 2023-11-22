@@ -15,7 +15,6 @@ use App\Models\Comment;
 use App\Models\Definition;
 use App\Models\Discussion;
 use App\Models\ExternalPost;
-use App\Models\Insight;
 use App\Models\LearningModule;
 use App\Models\OnboardingContent;
 use App\Models\Post;
@@ -83,7 +82,6 @@ class EventServiceProvider extends ServiceProvider
         Discussion::observe(DiscussionObserver::class);
         Fund::observe(FundObserver::class);
         LearningModule::observe(LearningModuleObserver::class);
-        Insight::observe(PostObserver::class);
         OnboardingContent::observe(PostObserver::class);
         Post::observe(PostObserver::class);
         ExternalPost::observe(PostObserver::class);

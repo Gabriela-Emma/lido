@@ -75,9 +75,6 @@ class Category extends Resource
 
             MorphedByMany::make('Posts', 'posts', Articles::class),
 
-            MorphedByMany::make('Insight', 'insights', Insights::class)
-                ->searchable(),
-
             MorphedByMany::make('Review', 'reviews', Reviews::class)
                 ->searchable(),
 

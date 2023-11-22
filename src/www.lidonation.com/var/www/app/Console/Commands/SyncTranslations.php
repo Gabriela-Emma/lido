@@ -4,7 +4,6 @@ namespace App\Console\Commands;
 
 use App\Invokables\GetModels;
 use App\Jobs\SyncTranslationJob;
-use App\Models\Insight;
 use App\Models\Post;
 use App\Models\Review;
 use App\Scopes\LimitScope;
@@ -72,7 +71,6 @@ class SyncTranslations extends Command
         $models->each(function ($modelClass) use ($fields, $source, $targets) {
             switch ($modelClass) {
                 case Post::class:
-                case Insight::class:
                 case Review::class:
                     $modelClass::withoutGlobalScope(LimitScope::class);
                     break;

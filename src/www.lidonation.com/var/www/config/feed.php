@@ -4,7 +4,6 @@ $languages = ['en-US' => 'English', 'fr-FR' => 'Français', 'sw-KE' => 'Kiswahil
 $items = [
     'post' => [],
     'review' => [],
-    'insight' => [],
 ];
 
 $feeds = collect($items)->map(function ($item, $key) use ($languages) {

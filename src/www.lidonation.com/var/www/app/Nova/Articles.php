@@ -2,7 +2,6 @@
 
 namespace App\Nova;
 
-use App\Models\Insight;
 use App\Models\Post;
 use App\Models\Review;
 use App\Nova\Actions\AddMetaData;
@@ -140,7 +139,6 @@ class Articles extends Resource
                 ->required(),
             Select::make(__('Type'), 'type')->options([
                 Review::class => 'Reviews',
-                Insight::class => 'Insights',
                 \App\Models\OnboardingContent::class => 'OnboardingContent',
                 \App\Models\ExternalPost::class => 'ExternalPost',
             ])->onlyOnForms(),
