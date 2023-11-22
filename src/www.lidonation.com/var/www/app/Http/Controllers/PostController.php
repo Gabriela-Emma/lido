@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Fluent;
 use Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist;
 use Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig;
+use Illuminate\Support\Facades\DB;
 
 class PostController extends Controller
 {
@@ -60,5 +61,15 @@ class PostController extends Controller
         $post->save();
 
         return $post->fresh()->reactionsCounts;
+    }
+
+    public function getCatalystPost()
+    {
+
+        $tagSlug = 'project-catalyst';
+
+        $posts = Post::whereHas('tags', function ($query) use ($tagSlug) {
+          $query->where('slug', $tagSlug);
+        })->get();
     }
 }

@@ -4,81 +4,122 @@
     <section class="">
         <div class="flex flex-col gap-4 h-screen p-20">
             <div class="flex flex-col gap-4">
-                <h2 class="text-teal-500 font-bold text-[60px] text-start">{{ animatedText }}</h2>
+                <h2 class="text-teal-500 font-bold text-[60px] text-start">
+                    {{ animatedText }}
+                </h2>
 
-            <p class="text-[14px] text-blue-dark-500 mt-8 mb-4 w-[50%]">
-                Project Catalyst propels collaborative innovation
-                to new heights and fuels Cardano ecosystem expansion by
-                connecting people with groundbreaking ideas to a funding source,
-                collaborating with and voted for by the Cardano community, and
-                spearheaded by the Cardano treasury.
-            </p>
-            <a
-                href="https://docs.projectcatalyst.io/about-project-catalyst/what-is-project-catalyst"
-                class="bg-teal-900 text-white py-2 px-8 rounded-lg w-[9%]"
-                >Read more</a
-            >
+                <p class="text-[14px] text-blue-dark-500 mt-8 mb-4 w-[50%]">
+                    Project Catalyst propels collaborative innovation to new
+                    heights and fuels Cardano ecosystem expansion by connecting
+                    people with groundbreaking ideas to a funding source,
+                    collaborating with and voted for by the Cardano community,
+                    and spearheaded by the Cardano treasury.
+                </p>
+                <a
+                    href="https://docs.projectcatalyst.io/about-project-catalyst/what-is-project-catalyst"
+                    class="bg-teal-900 text-white py-2 rounded-lg w-[15%] text-center"
+                    >Read more</a
+                >
             </div>
 
             <div class="w-[100%] flex flex-col mt-20">
-            <div class="mb-16">
-                <h2  class="text-eggplant-500 font-bold text-[48px] mb-4">Idea journey</h2>
-                <p   class="text-blue-dark-500 text-[14px]">
-                    See how an idea comes to life within Project Catalyst.
-                </p>
+                <div class="mb-16">
+                    <h2 class="text-eggplant-500 font-bold text-[48px] mb-4">
+                        Idea journey
+                    </h2>
+                    <p class="text-blue-dark-500 text-[14px]">
+                        See how an idea comes to life within Project Catalyst.
+                    </p>
+                </div>
+                <div class="grid grid-cols-5 gap-8">
+                    <div
+                        class="flex flex-col rounded-sm shadow-md bg-primary-20 p-8 text-center"
+                    >
+                        <h3 class="text-[20px] mb-4 text-teal-500">
+                            Submission
+                        </h3>
+                        <p class="text-[16px]">
+                            Participants submit initial proposals for ideas to
+                            solve challenges. A set amount of ada is allocated
+                            to the new funding round.
+                        </p>
+                    </div>
+
+                    <div
+                        class="flex flex-col rounded-sm shadow-md bg-primary-20 p-8 text-center"
+                    >
+                        <h3 class="text-[20px] mb-4 text-teal-500">
+                            Community reviews
+                        </h3>
+                        <p class="text-[16px]">
+                            Community members share ideas and insights to refine
+                            the proposals.
+                        </p>
+                    </div>
+
+                    <div
+                        class="flex flex-col rounded-sm shadow-md bg-primary-20 p-8 text-center"
+                    >
+                        <h3 class="text-[20px] mb-4 text-teal-500">
+                            Community voting
+                        </h3>
+                        <p class="text-[16px]">
+                            Community members vote using the Project Catalyst
+                            voting app. Votes are weighted based on voter's
+                            token holding.
+                        </p>
+                    </div>
+
+                    <div
+                        class="flex flex-col rounded-sm shadow-md bg-primary-20 p-8 text-center"
+                    >
+                        <h3 class="text-[20px] mb-4 text-teal-500">
+                            Voting results
+                        </h3>
+                        <p class="text-[16px]">
+                            Votes are tallied and the results revealed. Voters
+                            and community reviewers receive their rewards.
+                        </p>
+                    </div>
+
+                    <div
+                        class="flex flex-col rounded-sm shadow-md bg-primary-20 p-8 text-center"
+                    >
+                        <h3 class="text-[20px] mb-4 text-teal-500">
+                            Project onboarding
+                        </h3>
+                        <p class="text-[16px]">
+                            Projects receive funding along with guidance to
+                            deliver them. Regular reports to the community
+                            ensure everything goes to plan.
+                        </p>
+                    </div>
+                </div>
             </div>
-            <div class="grid grid-cols-5 gap-8">
-
-                <div class="flex flex-col rounded-[15px] shadow-lg bg-primary-20 p-8 text-center">
-                    <h3 class="text-[20px] mb-4 text-teal-500">Submission</h3>
-                    <p class="text-[16px]">Participants submit initial proposals for ideas to solve challenges. A set amount of ada is allocated to the new funding round.</p>
-                </div>
-
-                <div class="flex flex-col rounded-[15px] shadow-lg bg-primary-20 p-8 text-center">
-                    <h3 class="text-[20px] mb-4 text-teal-500 ">Community reviews</h3>
-                    <p class="text-[16px]">Community members share ideas and insights to refine the proposals.</p>
-                </div>
-
-                <div class="flex flex-col rounded-[15px] shadow-lg bg-primary-20 p-8 text-center">
-                    <h3 class="text-[20px] mb-4 text-teal-500">Community voting</h3>
-                    <p class="text-[16px]">Community members vote using the Project Catalyst voting app. Votes are weighted based on voter's token holding.</p>
-                </div>
-
-                <div class="flex flex-col rounded-[15px] shadow-lg bg-primary-20 p-8 text-center">
-                    <h3 class="text-[20px] mb-4 text-teal-500">Voting results</h3>
-                    <p class="text-[16px]">Votes are tallied and the results revealed. Voters and community reviewers receive their rewards.</p>
-                </div>
-
-                <div class="flex flex-col rounded-[15px] shadow-lg bg-primary-20 p-8 text-center">
-                    <h3 class="text-[20px] mb-4 text-teal-500">Project onboarding</h3>
-                    <p class="text-[16px]">Projects receive funding along with guidance to deliver them. Regular reports to the community ensure everything goes to plan.</p>
-                </div>
-
-            </div>
-        </div>
         </div>
 
         <section class="my-16 bg-primary-20 p-20">
+            <h2 class="text-eggplant-500 font-bold text-[48px] mb-16">Project Catalyst Charts & Analysis</h2>
             <div class="grid grid-cols-4 gap-8">
-                <div class="bg-teal-900 rounded-[15px] p-4">
+                <div class="bg-teal-900 rounded-sm p-4">
                     <LargestWinningProposal :fundId="selectedFundRef" />
                 </div>
 
-                <div class="bg-teal-500/70 rounded-[15px] p-4">
+                <div class="bg-teal-500/70 rounded-sm p-4">
                     <Over75k :fundId="selectedFundRef" />
                 </div>
 
-                <div class="bg-eggplant-500 rounded-[15px] p-4">
+                <div class="bg-eggplant-500 rounded-sm p-4">
                     <MembersAwarded :fundId="selectedFundRef" />
                 </div>
 
-                <div class="bg-blue-dark-500 rounded-[15px] p-4">
+                <div class="bg-blue-dark-500 rounded-sm p-4">
                     <FundedAndCompleted :fundId="selectedFundRef" />
                 </div>
             </div>
 
             <div class="flex flex-row justify-between gap-8 w-full p-3 mt-16">
-                <div class="rounded-lg max-h-[60rem]">
+                <div class="rounded-sm max-h-[60rem]">
                     <WalletBalanceChart
                         :attachment-link="attachmentLink"
                         :chartData1Registration1Vote$="
@@ -88,21 +129,18 @@
                     />
                 </div>
 
-                <div class="rounded-lg max-h-[60rem]">
+                <div class="rounded-sm max-h-[60rem]">
                     <RegistrationChart :ada-power-ranges="adaPowerRanges" />
                 </div>
             </div>
 
             <div class="flex flex-row justify-between gap-8">
-                <!-- The pie by Ada Power -->
-                <div class="relative w-full p-3 bg-white round-sm">
-                    <div class="relative flex flex-col justify-start h-full">
-                        <AdaPowerChart
-                            :attachmentLink="attachmentLink"
-                            :chart-data1-ada1-vote$="chartData1Ada1Vote$"
-                            :chart-options="chartOptions"
-                        />
-                    </div>
+                <div class="rounded-sm max-h-[60rem] bg-white p-3 w-[60%]">
+                    <AdaPowerChart
+                        :attachmentLink="attachmentLink"
+                        :chart-data1-ada1-vote$="chartData1Ada1Vote$"
+                        :chart-options="chartOptions"
+                    />
                 </div>
                 <Suspense>
                     <div class="bg-white">
@@ -136,7 +174,7 @@
             <img
                 width="360"
                 height="360"
-                src="../../../../../public/img/speaker.jpg"
+                src="../../../../../public/img/speaker.png"
                 alt="Speaker"
             />
             <div class="p-12">
@@ -154,12 +192,19 @@
                 >
             </div>
         </div>
+
+        <div class="mb-16 p-20">
+       <h2 class="text-eggplant-500 font-bold text-[48px] mb-16">Catalyst Posts</h2>
+    <ul>
+      <li v-for="post in posts" :key="post.id">{{ post.title }}</li>
+    </ul>
+  </div>
     </section>
 </template>
 
 <script setup lang="ts">
 import { Head, router } from "@inertiajs/vue3";
-import { computed, watch, ref, defineAsyncComponent, onMounted } from "vue";
+import { watch, ref, defineAsyncComponent, onMounted } from "vue";
 import route from "ziggy-js";
 import Challenge from "@apps/catalyst-explorer/models/challenge";
 import Over75k from "@apps/catalyst-explorer/modules/charts/Over75k.vue";
@@ -170,11 +215,8 @@ import MembersAwarded from "@apps/catalyst-explorer/modules/charts/MembersAwarde
 import RegistrationChart from "@apps/catalyst-explorer/modules/charts/RegistrationChart.vue";
 import AdaPowerChart from "@apps/catalyst-explorer/modules/charts/AdaPowerChart.vue";
 import { VARIABLES } from "@apps/catalyst-explorer/models/variables";
-import axios from "@/global/utils/axios";
+import axios from "axios";
 import Fund from "@apps/catalyst-explorer/models/fund";
-import { storeToRefs } from "pinia";
-import { useFundsStore } from "../stores/funds-store";
-import BrowseByTaxonomy from "@apps/catalyst-explorer/modules/voterTool/BrowseByTaxonomy.vue";
 
 const VotingAggregates = defineAsyncComponent(
     () => import("@apps/catalyst-explorer/modules/charts/VotingAggrigates.vue")
@@ -184,18 +226,13 @@ const props = withDefaults(
     defineProps<{
         funds: Fund[];
         challenges: Challenge[];
-        categoriesFilter?: number | null,
-        tagsFilter?: number | null,
         filters?: {
             fundId: number;
         };
         locale: string;
     }>(),
-    {
-        categoriesFilter: null,
-    }
+    {}
 );
-
 
 let adaPowerRanges = ref<{ key: string; count: number; total: number }[]>([]);
 let fundedOver75KCount = ref<number>(null);
@@ -422,15 +459,19 @@ const animateText = () => {
     };
 };
 
-const funds = () => {
-    const {funds} = storeToRefs(useFundsStore())
+const posts = ref([]);
 
-    return funds
-}
+    const fetchPosts = () => {
+        axios
+        .get(route("catalystExplorerApi.posts"))
+        .then((res) => { posts.value = res?.data })
+        .catch((error) => {
+            console.error(error);
+        });
+    };
 
 onMounted(() => {
     animateText();
-    funds();
+    fetchPosts();
 });
-
 </script>

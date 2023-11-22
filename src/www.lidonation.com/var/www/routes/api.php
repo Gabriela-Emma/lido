@@ -16,6 +16,7 @@ use App\Http\Controllers\PromoController;
 use App\Http\Controllers\QuestionResponseController;
 use App\Http\Controllers\RewardController;
 use App\Http\Controllers\SnippetController;
+use App\Http\Controllers\PostController;
 use App\Http\Integrations\Blockfrost\Requests\BlockfrostRequest;
 use App\Inertia\CatalystExplorer\BookmarksController;
 use App\Inertia\CatalystExplorer\MyBookmarksController;
@@ -317,6 +318,8 @@ Route::prefix('catalyst-explorer')->as('catalystExplorerApi.')
 
         Route::get('/tags', [CatalystExplorer\TagController::class, 'tags'])->name('tags');
         Route::get('/tags/{tag}', [CatalystExplorer\TagController::class, 'tag'])->name('tag');
+
+        Route::get('/posts', [PostController::class, 'getCatalystPost'])->name('posts');
 
         Route::get('/ledger-snapshots/latest', [CatalystExplorer\CatalystLedgerSnapshotController::class, 'latestCatalystLedgerSnapshot'])->name('latestCatalystLedgerSnapshots');
         Route::get('/ledger-snapshots', [CatalystExplorer\CatalystLedgerSnapshotController::class, 'catalystLedgerSnapshots'])->name('catalystLedgerSnapshots');
