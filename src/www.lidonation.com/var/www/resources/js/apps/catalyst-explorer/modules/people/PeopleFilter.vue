@@ -59,8 +59,8 @@ import { storeToRefs } from "pinia";
 import BudgetRangePicker from "@apps/catalyst-explorer/modules/proposals/BudgetRangePicker.vue";
 import Picker from "@apps/catalyst-explorer/Components/Global/Picker.vue";
 import Filters from "@apps/catalyst-explorer/models/filters";
-import {useFundsStore} from "@apps/catalyst-explorer/stores/funds-store";
 import Fund from "@apps/catalyst-explorer/models/fund";
+import {VARIABLES} from "@apps/catalyst-explorer/models/variables";
 
 const props = withDefaults(
     defineProps<{
