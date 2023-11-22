@@ -5,7 +5,6 @@ namespace App\Http\View\Composers;
 use App\Models\CatalystExplorer\CatalystUser;
 use App\Models\CatalystExplorer\Proposal;
 use App\Models\Insight;
-use App\Models\News;
 use App\Models\Podcast;
 use App\Models\Post;
 use App\Models\Review;
@@ -40,7 +39,7 @@ class HomeComposer
 
         Post::withoutGlobalScopes([LimitScope::class]);
         $newToLibrary = Post::whereIn('type', [
-            News::class,
+            Post::class,
             Review::class,
             Insight::class,
         ])->limit($latestLidoMinute instanceof Podcast ? 3 : 4)->get()->map(fn ($m) => $m->load(['media', 'tags']));

@@ -24,6 +24,7 @@ use App\Http\View\Composers\PostComposer;
 use App\Http\View\Composers\PurposeDrivenPoolComposer;
 use App\Http\View\Composers\WalletComposer;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
 
 class ViewServiceProvider extends ServiceProvider
@@ -51,10 +52,10 @@ class ViewServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Vite::macro('image', fn (string $asset) => $this->asset("resources/images/{$asset}"));
         View::composer('*', GlobalComposer::class);
         View::composer(['phuffycoin'], PhuffycoinComposer::class);
         View::composer(['glossary'], DefinitionsComposer::class);
-        View::composer(['news'], NewsComposer::class);
         View::composer(['insights'], InsightsComposer::class);
 
         View::composer(['pool-tool'], PoolComposer::class);

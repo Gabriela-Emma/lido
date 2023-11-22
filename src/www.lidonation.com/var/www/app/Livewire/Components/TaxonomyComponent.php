@@ -5,9 +5,6 @@ namespace App\Livewire\Components;
 use App\Enums\ComponentThemesEnum;
 use App\Models\Category;
 use App\Models\Insight;
-use App\Models\ModelCategory;
-use App\Models\ModelTag;
-use App\Models\News;
 use App\Models\Post;
 use App\Models\Review;
 use App\Models\Tag;
@@ -26,6 +23,8 @@ class TaxonomyComponent extends Component
 
     public int $perPage = 6;
 
+    public int $offset = 0;
+
     public Category|Tag $taxonomy;
 
     public string $taxType;
@@ -34,17 +33,11 @@ class TaxonomyComponent extends Component
     {
         switch ($this->taxonomy) {
             case $this->taxonomy instanceof Category:
-                $taxonomyInstance = app(Category::class);
-                $taxPivotColumn = 'category_id';
-                $pivotInstance = app(ModelCategory::class);
-                $this->setPosts($taxonomyInstance, $taxPivotColumn, $pivotInstance);
+                $this->setPosts('categories', 'category_id');
                 break;
 
             case $this->taxonomy instanceof Tag:
-                $taxonomyInstance = app(Tag::class);
-                $taxPivotColumn = 'tag_id';
-                $pivotInstance = app(ModelTag::class);
-                $this->setPosts($taxonomyInstance, $taxPivotColumn, $pivotInstance);
+                $this->setPosts('tags', 'tag_id');
                 break;
         }
     }
@@ -56,25 +49,16 @@ class TaxonomyComponent extends Component
         ]);
     }
 
-    public function setPosts($taxInstance, $taxPivotColumn, $pivotInstance): void
+    public function setPosts($relation, $taxPivotColumn): void
     {
-        $this->posts = $taxInstance::where('id', $this->taxonomy->id)
-            ->get()
-            ->map(function ($cat) use ($taxPivotColumn, $pivotInstance) {
-                $catIds = $pivotInstance::where([
-                    $taxPivotColumn => $this->taxonomy->id,
-                ])->pluck('model_id')->all();
-                Post::withoutGlobalScope(LimitScope::class);
-                $cat->models = Post::whereIn('id', $catIds)
-                    ->whereIn('type', [Post::class, Insight::class, Review::class])
-                    ->orderByDesc('published_at')
-                    ->limit($this->perPage)->get();
-
-                return $cat;
-            })
-            ->first()
-            ?->models
-            ->collect();
+        Post::withoutGlobalScope(LimitScope::class);
+        $this->posts = Post::with(['media'])
+            ->whereRelation($relation, $taxPivotColumn, $this->taxonomy->id)
+            ->whereIn('type', [Post::class, Insight::class, Review::class])
+            ->orderByDesc('published_at')
+            ->limit($this->perPage)
+            ->offset($this->offset)
+            ->get();
     }
 
     public function render(): Factory|View|Application

@@ -1,2 +1,4 @@
 //npm.pkg.github.com/:_authToken=${GITHUB_PACKAGE_REGISTRY_TOKEN}
 @spatie:registry=https://npm.pkg.github.com
+
+node-options=--max-old-space-size=8192

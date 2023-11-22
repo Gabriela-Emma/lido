@@ -26,15 +26,17 @@ use App\Traits\SearchableLocale;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\UrlGenerator;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Str;
 use Laravel\Nova\Actions\Actionable;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 use Parental\HasChildren;
 use Spatie\Comments\Models\Concerns\HasComments;
+use Spatie\Feed\Feedable;
+use Spatie\Feed\FeedItem;
 use Spatie\Image\Manipulations;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -46,7 +48,7 @@ use Spatie\Sitemap\Tags\Url;
  * @property int $id
  * @property string thumbnail_url
  */
-class Post extends Model implements HasLink, HasMedia, Interfaces\IHasMetaData, Sitemapable
+class Post extends Model implements Feedable, HasLink, HasMedia, Interfaces\IHasMetaData, Sitemapable
 {
     use Actionable,
         HasAuthor,
@@ -93,14 +95,16 @@ class Post extends Model implements HasLink, HasMedia, Interfaces\IHasMetaData, 
     protected $guarded = ['user_id', 'created_at', 'published_at'];
 
     protected $withCount = [
-        'comments',
-        'hearts',
-        'eyes',
-        'party_popper',
-        'rocket',
-        'thumbs_down',
-        'thumbs_up',
+        //        'comments',
+        //        'hearts',
+        //        'eyes',
+        //        'party_popper',
+        //        'rocket',
+        //        'thumbs_down',
+        //        'thumbs_up',
     ];
+
+    protected $with = [];
 
     /**
      * The attributes that should be cast.
@@ -113,20 +117,20 @@ class Post extends Model implements HasLink, HasMedia, Interfaces\IHasMetaData, 
         'content' => 'array',
     ];
 
-    public function reactionsCounts(): Attribute
-    {
-        return Attribute::make(get: function () {
-            $counts = [];
-
-            foreach (ReactionEnum::REACTIONS as $reaction => $class) {
-                $counts[$reaction] = $this->lido_reactions()
-                    ->where('type', $class)
-                    ->count();
-            }
-
-            return (array) $counts;
-        });
-    }
+    //    public function reactionsCounts(): Attribute
+    //    {
+    //        return Attribute::make(get: function () {
+    //            $counts = [];
+    //
+    //            foreach (ReactionEnum::REACTIONS as $reaction => $class) {
+    //                $counts[$reaction] = $this->lido_reactions()
+    //                    ->where('type', $class)
+    //                    ->count();
+    //            }
+    //
+    //            return (array) $counts;
+    //        });
+    //    }
 
     public static function getFilterableAttributes(): array
     {
@@ -165,12 +169,12 @@ class Post extends Model implements HasLink, HasMedia, Interfaces\IHasMetaData, 
         Artisan::call('ln:index App\\\\Models\\\\Post ln__posts_sw');
     }
 
-    public function getTypeNameAttribute()
+    public function getTypeNameAttribute(): string
     {
         return Str::plural(class_basename($this));
     }
 
-    public function getExcerptAttribute($value)
+    public function getExcerptAttribute($value): string
     {
         if (isset($value)) {
             return $value;
@@ -254,9 +258,8 @@ class Post extends Model implements HasLink, HasMedia, Interfaces\IHasMetaData, 
      * Determine if the user owns the given team.
      *
      * @param  mixed  $team
-     * @return bool
      */
-    public function ownsTeam($team)
+    public function ownsTeam($team): bool
     {
         if (is_null($team)) {
             return false;
@@ -407,6 +410,23 @@ class Post extends Model implements HasLink, HasMedia, Interfaces\IHasMetaData, 
     public function lessons()
     {
         return $this->hasMany(Lesson::class, 'lesson_post');
+    }
+
+    public function toFeedItem(): FeedItem
+    {
+        return FeedItem::create()
+            ->id($this->id)
+            ->title($this->title)
+            ->summary($this->summary)
+            ->updated($this->updated_at)
+            ->link($this->link)
+            ->authorEmail($this->author?->email ?? config('app.email'))
+            ->authorName($this?->author?->name);
+    }
+
+    public static function getFeedItems(): Collection|array
+    {
+        return self::all();
     }
 
     /**

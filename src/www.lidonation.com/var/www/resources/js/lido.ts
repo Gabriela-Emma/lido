@@ -55,6 +55,7 @@ if (document.getElementById('proposal-secondary-slide')) {
         fixedHeight: 64,
         isNavigation: true,
         gap: 10,
+        // @ts-ignore
         focus: 'left',
         arrows: false,
         pagination: false,

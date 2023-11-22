@@ -14,7 +14,7 @@ class Insight extends Post implements Feedable
 {
     use HasParent, SearchableLocale, SoftDeletes;
 
-    protected $with = ['media', 'tags.media', 'categories.media', 'author.media'];
+    protected $with = [];
 
     public function getSummaryAttribute()
     {
@@ -29,11 +29,10 @@ class Insight extends Post implements Feedable
     /**
      * Get the class name for polymorphic relations.
      *
-     * @return string
      *
      * @throws \ReflectionException
      */
-    public function getMorphClass()
+    public function getMorphClass(): string
     {
         return self::class;
     }
@@ -56,21 +55,17 @@ class Insight extends Post implements Feedable
     }
 
     /**
-     * Get the indexable data array for the model.
-     *
-     * @return array
+     * Get the index able data array for the model.
      */
-    public function toSearchableArray()
+    public function toSearchableArray(): array
     {
         return parent::toSearchableArray();
     }
 
     /**
      * Get the index name for the model.
-     *
-     * @return string
      */
-    public function searchableAs()
+    public function searchableAs(): string
     {
         return parent::searchableAs();
     }

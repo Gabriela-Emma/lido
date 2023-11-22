@@ -4,7 +4,7 @@ namespace App\Http\View\Composers;
 
 use App\Models\ExternalPost;
 use App\Models\Insight;
-use App\Models\News;
+use App\Models\Post;
 use App\Repositories\PostRepository;
 use Illuminate\View\View;
 
@@ -24,7 +24,7 @@ class PostComposer
      */
     public function compose(View $view): void
     {
-        $news = $this->posts->setModel(new News)->get(
+        $news = $this->posts->setModel(new Post)->get(
             request()
                 ->route('slug')
         );

@@ -4,7 +4,7 @@ import vue from "@vitejs/plugin-vue";
 import topLevelAwait from "vite-plugin-top-level-await";
 import wasm from "vite-plugin-wasm";
 import path from 'path';
-
+import manifestSRI from 'vite-plugin-manifest-sri';
 
 export default defineConfig({
     plugins: [
@@ -23,7 +23,8 @@ export default defineConfig({
             ssr: "resources/js/ssr.ts",
             refresh: [
                 // ...refreshPaths,
-                "app/resources/**",
+                "routes/**",
+                "resources/views/**",
                 "app/Http/Livewire/**",
             ],
         }),
@@ -37,6 +38,7 @@ export default defineConfig({
         }),
         wasm(),
         topLevelAwait(),
+        manifestSRI(),
     ],
     optimizeDeps: {
         exclude: ["lucid-cardano"],

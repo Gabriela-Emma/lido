@@ -19,7 +19,7 @@ class ReactionFactory extends Factory
      *
      * @return array<string, mixed>
      */
-    public function definition()
+    public function definition(): array
     {
         $reaction = $this->faker->randomElement(['❤️', '👍', '🎉', '🚀', '👎', '👀']);
         $commenter = User::inRandomOrder()?->first();

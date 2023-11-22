@@ -77,7 +77,6 @@ class LearningLessons extends Resource
                 'Advance' => 'advance',
             ])->required(),
             MorphTo::make('model')->types([
-                News::class,
                 Insights::class,
                 Link::class,
                 Podcasts::class,

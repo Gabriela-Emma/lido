@@ -3,14 +3,8 @@
 namespace App\Livewire;
 
 use App\Models\Category;
-use App\Models\Insight;
-use App\Models\ModelCategory;
-use App\Models\News;
-use App\Models\Post;
-use App\Models\Review;
 use App\Models\Tag;
 use App\Repositories\PostRepository;
-use App\Scopes\LimitScope;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;

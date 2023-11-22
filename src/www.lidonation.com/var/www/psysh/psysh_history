@@ -85,3 +85,10 @@ $t->posts->count();
 $t = Category::find(5);
 $t->posts->count();
 exit
+$p = Post::find(198);
+$p->media;
+$p->media()->count();
+$p->media()->get();
+$p->load(['media']);
+$p->toArray();
+exit

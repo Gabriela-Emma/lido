@@ -13,7 +13,7 @@
                 </p>
 
                 <div>
-                    <x-global.mailchimp-form layout="row"/>
+                    <x-global.mailchimp-form layout="row" />
                 </div>
             </div>
 
@@ -29,7 +29,7 @@
 
     <livewire:components.new-to-library lazy="on-load" />
 
-    @if($categories && !empty($categories))
+    @if( !empty($categories))
         @foreach(collect($categories)->take(2) as $cat)
             @if($cat->posts && $cat->posts->isNotEmpty())
                 <section class="relative py-16 bg-white border-t border-slate-300">

@@ -23,7 +23,7 @@ class ModelAverageRatingComponent extends Component
 
     public ?int $size = 5;
 
-    public function mount()
+    public function mount(): void
     {
         if ($this->modelType && $this->modelId) {
             $proposal = $this->modelType::find($this->modelId);

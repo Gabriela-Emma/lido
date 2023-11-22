@@ -7,7 +7,6 @@ namespace App\Livewire\GlobalSearch;
 use App\DataTransferObjects\PostSearchResultData;
 use App\Models\Insight;
 use App\Models\Meta;
-use App\Models\News;
 use App\Models\Post;
 use App\Models\Review;
 use Illuminate\Contracts\Foundation\Application;
@@ -34,8 +33,6 @@ class GlobalSearchComponent extends Component
 
     public array $allItems;
 
-    public array $newsItems;
-
     public array $insightsItems;
 
     public array $reviewsItems;
@@ -57,7 +54,6 @@ class GlobalSearchComponent extends Component
         if ($this->inputTerm === '') {
             $this->displayData = [];
             $this->allItems = [];
-            $this->newsItems = [];
             $this->insightsItems = [];
             $this->reviewsItems = [];
         }
@@ -67,12 +63,6 @@ class GlobalSearchComponent extends Component
     {
         $this->displayData = $this->allItems;
         $this->selectedType = 'all';
-    }
-
-    public function setNews(): void
-    {
-        $this->displayData = $this->newsItems;
-        $this->selectedType = 'news';
     }
 
     public function setInsights(): void
@@ -109,7 +99,6 @@ class GlobalSearchComponent extends Component
 
         return $hits->map(function ($hit) {
             $hit['type'] = match ($hit['type']) {
-                News::class => 'news',
                 Insight::class => 'insights',
                 Review::class => 'reviews',
                 default => 'posts',
@@ -128,7 +117,6 @@ class GlobalSearchComponent extends Component
     public function extractAndOrganizeData(): void
     {
         $this->allItems = [];
-        $this->newsItems = [];
         $this->insightsItems = [];
         $this->reviewsItems = [];
         $this->postsItems = [];
@@ -139,9 +127,7 @@ class GlobalSearchComponent extends Component
 
             $this->allItems = array_merge($this->allItems, $items);
 
-            if ($type === 'news') {
-                $this->newsItems = array_merge($this->newsItems, $items);
-            } elseif ($type === 'insights') {
+            if ($type === 'insights') {
                 $this->insightsItems = array_merge($this->insightsItems, $items);
             } elseif ($type === 'reviews') {
                 $this->reviewsItems = array_merge($this->reviewsItems, $items);

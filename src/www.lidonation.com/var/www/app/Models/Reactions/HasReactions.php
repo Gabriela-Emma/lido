@@ -42,16 +42,16 @@ trait HasReactions
         }
     }
 
-    public function hearts()
+    public function heart()
     {
         return $this->hasMany(ReactionHeart::class, 'model_id')
             ->where('type', ReactionHeart::class);
     }
 
-    public function eyes()
+    public function eye()
     {
-        return $this->hasMany(ReactionEyes::class, 'model_id')
-            ->where('type', ReactionEyes::class);
+        return $this->hasMany(ReactionEye::class, 'model_id')
+            ->where('type', ReactionEye::class);
     }
 
     public function party_popper()

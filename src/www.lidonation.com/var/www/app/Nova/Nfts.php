@@ -3,6 +3,7 @@
 namespace App\Nova;
 
 use App\Models\Nft;
+use App\Models\Post;
 use App\Nova\Actions\AddMetaData;
 use App\Nova\Actions\CacheNftImage;
 use App\Nova\Actions\EditMetaData;
@@ -78,7 +79,7 @@ class Nfts extends Resource
             URL::make(__('Preview Link'), 'preview_link')->rules(['required']),
             URL::make(__('Storage URI'), 'storage_link')->rules(['required'])->hideFromIndex(),
             MorphTo::make(__('Model'), 'model')->types([
-                News::class,
+                Post::class,
                 Reviews::class,
                 Insights::class,
                 Podcasts::class,

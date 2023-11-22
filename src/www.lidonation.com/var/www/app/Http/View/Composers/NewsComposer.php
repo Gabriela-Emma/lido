@@ -2,7 +2,7 @@
 
 namespace App\Http\View\Composers;
 
-use App\Models\News;
+use App\Models\Post;
 use App\Repositories\AdaRepository;
 use App\Repositories\PostRepository;
 use Illuminate\View\View;
@@ -27,7 +27,7 @@ class NewsComposer
     {
         $view->with([
             'title' => 'Cardano and Blockchain news',
-            'news' => $this->posts->setModel(new News)?->paginate(24),
+            'news' => $this->posts->setModel(new Post)?->paginate(24),
         ]);
     }
 }

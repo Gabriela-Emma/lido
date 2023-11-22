@@ -26,7 +26,7 @@
                     class="flex justify-center p-3 rounded-full border border-{{$theme}}-500 w-32 h-32 bg-{{$theme}}-700 shadow-inner shadow-lg">
                     <div class="inline-flex flex-col items-center justify-center">
                         <div class="text-4xl inline-block font-bold">
-                            <x-public.animated-number :number="App\Models\News::count()"
+                            <x-public.animated-number :number="34"  
                                                       :time="1000"></x-public.animated-number>
                         </div>
                         <div class="text-xs inline-block text-center">

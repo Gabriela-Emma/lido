@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use App\Models\EveryEpoch;
 use App\Models\Giveaway;
 use App\Models\Insight;
-use App\Models\News;
+use App\Models\Post;
 use App\Models\Quiz;
 use App\Models\Translation;
 use Faker\Generator as Faker;
@@ -22,7 +22,7 @@ class QuizSeeder extends Seeder
     {
         Quiz::factory(5)
             ->hasAttached(EveryEpoch::factory()->count(2), ['model_type' => EveryEpoch::class], 'everyEpochs')
-            ->hasAttached(News::factory(), ['model_type' => News::class], 'posts')
+            ->hasAttached(Post::factory(), ['model_type' => Post::class], 'posts')
             ->hasAttached(Giveaway::factory()->count(1), ['model_type' => Quiz::class], 'giveaways')
             ->has(
                 Translation::factory()

@@ -2,7 +2,6 @@
 
 namespace App\Nova;
 
-use App\Models\Post;
 use App\Nova\CatalystExplorer\Proposals;
 use Ebess\AdvancedNovaMediaLibrary\Fields\Images;
 use Illuminate\Http\Request;

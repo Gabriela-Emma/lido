@@ -2,21 +2,22 @@
 
 use App\Models\Category;
 use App\Models\ModelCategory;
-use App\Models\News;
 use App\Models\Post;
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
 
 return new class extends Migration
 {
+    protected string $newsClass = "App\Models\News";
+
     protected $trackedChanges = [
         'category_created' => false,
-        'updated_ids' => []
+        'updated_ids' => [],
     ];
+
     protected $directory = 'news_model_deprecation_tracker';
+
     protected $fileName = 'news_updated_with_news-and-interviews_category.json';
 
     /**
@@ -29,8 +30,8 @@ return new class extends Migration
 
         if (empty($category)) {
             $category = new Category();
-            $category->title = "news and interviews";
-            $category->meta_title = "";
+            $category->title = 'news and interviews';
+            $category->meta_title = '';
             $category->slug = 'news-and-interviews';
             $category->content = '';
 
@@ -42,41 +43,39 @@ return new class extends Migration
         }
 
         // assign every existing news model "news and interviews" category
-        $newsColl = Post::where('type', News::class)->get();
-        $newsColl->each(function($news) use($category){
-            $modelCategory = ModelCategory::where('model_type', News::class)
+        $newsColl = Post::where('type', $this->newsClass)->get();
+        $newsColl->each(function ($news) use ($category) {
+            $modelCategory = ModelCategory::where('model_type', $this->newsClass)
                 ->where('model_id', $news->id)
                 ->where('category_id', $category->id)
                 ->first();
 
-                
             // if news don't have the category attached then attach it and track the changed id
             if (empty($modelCategory)) {
                 $news->categories()->attach([
                     $category->id => [
                         'model_id' => $news->id,
-                        'model_type' => News::class,
-                        ] 
-                    ]);
+                        'model_type' => $this->newsClass,
+                    ],
+                ]);
 
                 array_push($this->trackedChanges['updated_ids'], $news->id);
             }
         });
 
-       $fileStoragePath = $this->directory.'/'.$this->fileName;
-       $fileFullPath = Storage::path($fileStoragePath);
-    
-       // if a tracking file already exists then delete it
-       $fileExists = Storage::exists($fileStoragePath);
-       if ($fileExists) {
-           File::delete($fileFullPath);
+        $fileStoragePath = $this->directory.'/'.$this->fileName;
+        $fileFullPath = Storage::path($fileStoragePath);
+
+        // if a tracking file already exists then delete it
+        $fileExists = Storage::exists($fileStoragePath);
+        if ($fileExists) {
+            File::delete($fileFullPath);
         }
 
         // Write JSON trackedChanges to a file
         $jsonData = json_encode($this->trackedChanges);
         Storage::put($fileStoragePath, $jsonData);
     }
-
 
     /**
      * Reverse the migrations.
@@ -95,7 +94,7 @@ return new class extends Migration
             foreach ($trackedJsonData->updated_ids as $key => $value) {
                 $mt = ModelCategory::where('category_id', $category->id)
                     ->where('model_id', $value)
-                    ->where('model_type', News::class)
+                    ->where('model_type', $this->newsClass)
                     ->first();
 
                 $mt->forceDelete();
@@ -104,7 +103,7 @@ return new class extends Migration
             if ($trackedJsonData->category_created) {
                 $category->forceDelete();
             }
-    
+
             // delete the directory where we are tracking these changes
             Storage::deleteDirectory($this->directory);
         }

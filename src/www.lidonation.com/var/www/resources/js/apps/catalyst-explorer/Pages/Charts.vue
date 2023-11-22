@@ -40,7 +40,7 @@
 
                 <!-- Registrations -->
                 <div class="w-full col-span-1 md:col-span-5 xl:col-span-8">
-                    <div class="bg-slate-900 text-white p-3 w-full text-center text-xl lg:text-2xl xl:text-3xl shadow rounded-sm">
+                    <div class="w-full p-3 text-xl text-center text-white rounded-sm shadow bg-slate-900 lg:text-2xl xl:text-3xl">
                         by the Registrations
                     </div>
                 </div>
@@ -85,7 +85,7 @@
 
                 <!-- Voters -->
                 <div class="w-full col-span-1 md:col-span-5 xl:col-span-8">
-                    <div class="bg-slate-900 text-white p-3 w-full text-center text-xl lg:text-2xl xl:text-3xl shadow rounded-sm">
+                    <div class="w-full p-3 text-xl text-center text-white rounded-sm shadow bg-slate-900 lg:text-2xl xl:text-3xl">
                         by the Confirm Voters
                     </div>
                 </div>
@@ -104,7 +104,7 @@
 
                 <!-- Leaderboards -->
                 <div class="w-full col-span-1 md:col-span-5 xl:col-span-8">
-                    <div class="bg-slate-900 text-white p-3 w-full text-center text-xl lg:text-2xl xl:text-3xl shadow rounded-sm">
+                    <div class="w-full p-3 text-xl text-center text-white rounded-sm shadow bg-slate-900 lg:text-2xl xl:text-3xl">
                         by the Leaderboards
                     </div>
                 </div>
