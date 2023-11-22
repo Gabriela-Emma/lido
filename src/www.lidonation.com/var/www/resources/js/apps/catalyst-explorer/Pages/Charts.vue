@@ -208,7 +208,7 @@ const chartOptions = ref<object>();
 function query() {
     const data = getQueryData();
     router.get(
-        `/${props.locale}/catalyst-explorer/charts`,
+        route('catalyst-explorer.charts'),
         data,
         { preserveState: false, preserveScroll: false }
     );
