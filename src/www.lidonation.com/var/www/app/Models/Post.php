@@ -95,16 +95,16 @@ class Post extends Model implements HasLink, HasMedia, Interfaces\IHasMetaData, 
     protected $guarded = ['user_id', 'created_at', 'published_at'];
 
     protected $withCount = [
-        'comments',
-        'hearts',
-        'eyes',
-        'party_popper',
-        'rocket',
-        'thumbs_down',
-        'thumbs_up',
+//        'comments',
+//        'hearts',
+//        'eyes',
+//        'party_popper',
+//        'rocket',
+//        'thumbs_down',
+//        'thumbs_up',
     ];
 
-    protected $with = ['media', 'tags.media', 'categories.media', 'author.media'];
+    protected $with = [];
 
     /**
      * The attributes that should be cast.
@@ -117,20 +117,20 @@ class Post extends Model implements HasLink, HasMedia, Interfaces\IHasMetaData, 
         'content' => 'array',
     ];
 
-    public function reactionsCounts(): Attribute
-    {
-        return Attribute::make(get: function () {
-            $counts = [];
-
-            foreach (ReactionEnum::REACTIONS as $reaction => $class) {
-                $counts[$reaction] = $this->lido_reactions()
-                    ->where('type', $class)
-                    ->count();
-            }
-
-            return (array) $counts;
-        });
-    }
+//    public function reactionsCounts(): Attribute
+//    {
+//        return Attribute::make(get: function () {
+//            $counts = [];
+//
+//            foreach (ReactionEnum::REACTIONS as $reaction => $class) {
+//                $counts[$reaction] = $this->lido_reactions()
+//                    ->where('type', $class)
+//                    ->count();
+//            }
+//
+//            return (array) $counts;
+//        });
+//    }
 
     public static function getFilterableAttributes(): array
     {
@@ -169,12 +169,12 @@ class Post extends Model implements HasLink, HasMedia, Interfaces\IHasMetaData, 
         Artisan::call('ln:index App\\\\Models\\\\Post ln__posts_sw');
     }
 
-    public function getTypeNameAttribute()
+    public function getTypeNameAttribute(): string
     {
         return Str::plural(class_basename($this));
     }
 
-    public function getExcerptAttribute($value)
+    public function getExcerptAttribute($value): string
     {
         if (isset($value)) {
             return $value;

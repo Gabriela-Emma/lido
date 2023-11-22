@@ -35,17 +35,11 @@ class TaxonomyComponent extends Component
     {
         switch ($this->taxonomy) {
             case $this->taxonomy instanceof Category:
-                $taxonomyInstance = app(Category::class);
-                $taxPivotColumn = 'category_id';
-                $pivotInstance = app(ModelCategory::class);
-                $this->setPosts($taxonomyInstance, $taxPivotColumn, $pivotInstance);
+                $this->setPosts('categories', 'category_id');
                 break;
 
             case $this->taxonomy instanceof Tag:
-                $taxonomyInstance = app(Tag::class);
-                $taxPivotColumn = 'tag_id';
-                $pivotInstance = app(ModelTag::class);
-                $this->setPosts($taxonomyInstance, $taxPivotColumn, $pivotInstance);
+                $this->setPosts('tags', 'tag_id');
                 break;
         }
     }
@@ -57,11 +51,12 @@ class TaxonomyComponent extends Component
         ]);
     }
 
-    public function setPosts($taxInstance, $taxPivotColumn, $pivotInstance): void
+    public function setPosts($relation, $taxPivotColumn): void
     {
         Post::withoutGlobalScope(LimitScope::class);
         $this->posts = Post::with(['media'])
-            ->whereRelation('categories', 'slug', 'news-and-interviews')
+            ->whereRelation($relation, $taxPivotColumn, $this->taxonomy->id)
+            ->whereIn('type', [Post::class, Insight::class, Review::class])
             ->orderByDesc('published_at')
             ->limit($this->perPage)
             ->offset($this->offset)

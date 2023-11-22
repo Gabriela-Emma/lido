@@ -2,16 +2,14 @@
 
 namespace App\Models\Reactions;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\Model;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Parental\HasChildren;
 
 class Reaction extends Model
 {
-    use HasChildren;
-    use HasFactory;
-    use SoftDeletes;
+    use HasChildren, SoftDeletes;
 
     protected $table = 'lido_reactions';
 
@@ -24,7 +22,7 @@ class Reaction extends Model
         'type',
     ];
 
-    public function model()
+    public function model(): MorphTo
     {
         return $this->morphTo();
     }

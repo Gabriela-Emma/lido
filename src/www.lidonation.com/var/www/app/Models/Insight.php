@@ -14,7 +14,7 @@ class Insight extends Post implements Feedable
 {
     use HasParent, SearchableLocale, SoftDeletes;
 
-    protected $with = ['media', 'tags.media', 'categories.media', 'author.media'];
+    protected $with = [];
 
     public function getSummaryAttribute()
     {
