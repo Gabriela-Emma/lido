@@ -15,6 +15,7 @@ import {timeAgo} from "@/global/utils/timeago";
 import { marked } from 'marked';
 import ziggy from '../../global/models/ziggy';
 import page from '@/global/utils/page';
+import 'vue-plyr/dist/vue-plyr.css'
 
 const appName = import.meta.env.VITE_APP_NAME || 'LIDO Nation';
 declare module '@vue/runtime-core' {
