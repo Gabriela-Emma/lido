@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div ref="target" >
         <li class="flow-root menu-item">
             <a @click="openMenu = !openMenu"
                 class="px-1 py-3 font-semibold text-white menu-link hover:text-yellow-500" href="#">
@@ -10,9 +10,8 @@
             </a>
         </li>
         <teleport to="header">
-            <Transition name="fade" appear appear-active-class="transition-opacity duration-300"
-                appear-to-class="opacity-100">
-                <div ref="target" class="fixed left-1/2 -translate-x-1/2 w-[1250px] h-[300px] mt-11 transition-opacity font-semibold rounded-sm shadow-md bg-white" v-if="openMenu">
+            <Transition name="fade">
+                <div class="fixed left-1/2 -translate-x-1/2 w-[1250px] h-[300px] mt-11 font-semibold rounded-sm shadow-md bg-white" v-if="openMenu">
                     <ul class="flex flex-row gap-28">
                         <ul class="block px-4 py-2 text-teal-600">Proposals
                             <li>
@@ -102,8 +101,7 @@
                             </li>
                         </ul>
                     </ul>
-                    <button
-                    @click="openMenu = !openMenu"
+                    <button    
                     class="p-2 text-gray-900 menu-link font-normal hover:text-teal-800"
                     style="position: absolute; top: 0; right: 0;">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
