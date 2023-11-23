@@ -2,7 +2,6 @@
 
 namespace App\Nova\Metrics;
 
-use App\Models\Insight;
 use App\Models\Post;
 use App\Models\Review;
 use Laravel\Nova\Http\Requests\NovaRequest;
@@ -24,7 +23,6 @@ class NewArticleRecordings extends Value
                 'collection_name' => 'audio',
             ])->whereIn('model_type', [
                 Post::class,
-                Insight::class,
                 Review::class,
             ]));
     }

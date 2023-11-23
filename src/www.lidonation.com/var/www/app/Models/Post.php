@@ -286,9 +286,7 @@ class Post extends Model implements Feedable, HasLink, HasMedia, Interfaces\IHas
     public function getPostTypeUrlAttribute(): string
     {
         return match ($this->post_type_name) {
-            'news' => localizeRoute('news'),
             'reviews' => localizeRoute('reviews'),
-            'insights' => localizeRoute('insights'),
             'lido-minutes' => localizeRoute('lido-minute'),
             'post' => localizeRoute('post', ['slug' => $this->slug]),
             default => localizeRoute('library'),

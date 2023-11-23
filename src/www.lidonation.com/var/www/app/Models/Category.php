@@ -31,12 +31,6 @@ class Category extends Taxonomy
             ->withPivot(['model_type']);
     }
 
-    public function insights(): MorphToMany
-    {
-        return $this->morphedByMany(Insight::class, 'model', ModelCategory::class, 'category_id', 'model_id')
-            ->withPivot(['model_type']);
-    }
-
     public function proposals(): MorphToMany
     {
         return $this->morphedByMany(Proposal::class, 'model', ModelCategory::class, 'category_id', 'model_id')

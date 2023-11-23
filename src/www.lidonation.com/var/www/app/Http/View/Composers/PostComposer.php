@@ -3,7 +3,6 @@
 namespace App\Http\View\Composers;
 
 use App\Models\ExternalPost;
-use App\Models\Insight;
 use App\Models\Post;
 use App\Repositories\PostRepository;
 use Illuminate\View\View;
@@ -24,20 +23,17 @@ class PostComposer
      */
     public function compose(View $view): void
     {
-        $news = $this->posts->setModel(new Post)->get(
+        $posts = $this->posts->setModel(new Post)->get(
             request()
                 ->route('slug')
         );
-        $insight = $this->posts->setModel(new Insight)->get(
-            request()
-                ->route('slug')
-        );
+        
         $externalPost = $this->posts->setModel(new ExternalPost)->get(
             request()
                 ->route('slug')
         );
 
-        $post = $news ?? $insight ?? $externalPost;
+        $post = $posts ?? $externalPost;
         $title = $post?->title;
         $view->with(compact('post', 'title'));
     }

@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
+
 function localizeRoute($routeName, $locale = null, $parameters = []): bool|string
 {
     if (! $locale && Auth::user()) {

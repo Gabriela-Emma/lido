@@ -2,7 +2,6 @@
 
 namespace App\Livewire\Tags;
 
-use App\Models\Insight;
 use App\Models\Podcast;
 use App\Models\Post;
 use App\Models\Review;
@@ -28,14 +27,14 @@ class TagsComponent extends Component
 
     protected function posts(): Builder
     {
-        return Post::whereIn('type', [Post::class, Review::class, Insight::class]);
+        return Post::whereIn('type', [Post::class, Review::class]);
     }
 
     public function mount(PostRepository $posts)
     {
         $this->latestLidoMinute = Podcast::where('status', 'published')->orderBy('published_at', 'DESC')->first();
         $this->latestLidoMinutes = Podcast::orderBy('published_at')->limit(5)->get();
-        $this->tags = Tag::whereHas('insights')->orWhereHas('posts')->orWhereHas('reviews')->get();
+        $this->tags = Tag::whereHas('posts')->orWhereHas('reviews')->get();
         $this->newToLibrary = $this->posts()->limit($this->latestLidoMinute instanceof Podcast ? 3 : 4)
             ->get()
             ->map(fn ($m) => $m->load(['media', 'tags']))

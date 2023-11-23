@@ -64,8 +64,6 @@ class Tag extends Resource
 
             MorphedByMany::make('Post', 'posts', Articles::class),
 
-            MorphedByMany::make('Insight', 'insights', Insights::class),
-
             MorphedByMany::make('Review', 'reviews', Reviews::class),
 
             MorphedByMany::make('Articles', 'posts', Articles::class),

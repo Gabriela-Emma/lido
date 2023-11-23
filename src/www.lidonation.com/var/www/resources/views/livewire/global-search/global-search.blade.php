@@ -35,9 +35,6 @@
         <div class="mx-auto border-b-2 border-gray-400 flex justify-evenly items-center w-5/6 px-6 py-4">
             <button wire:click="setAll" class="{{ $selectedType === 'all' ? 'border-b-2 border-gray-900' : '' }}">All
                 Results <span class="bg-gray-100 px-1 py-0.5 rounded-full">{{ count($allItems) }}</span></button>
-            <button wire:click="setInsights"
-                class="{{ $selectedType === 'insights' ? 'border-b-2 border-gray-900' : '' }}">Insights <span
-                    class="bg-gray-100 px-1 py-0.5 rounded-full">{{ count($insightsItems) }}</span></button>
             <button wire:click="setReviews"
                 class="{{ $selectedType === 'reviews' ? 'border-b-2 border-gray-900' : '' }}">Reviews <span
                     class="bg-gray-100 px-1 py-0.5 rounded-full">{{ count($reviewsItems) }}</span></button>

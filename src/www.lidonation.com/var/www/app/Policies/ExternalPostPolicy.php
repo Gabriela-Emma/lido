@@ -3,7 +3,7 @@
 namespace App\Policies;
 
 use App\Enums\PermissionEnum;
-use App\Mo\ExternalPost;
+use App\Models\ExternalPost;
 use App\Models\User;
 
 class ExternalPostPolicy extends AppPolicy
@@ -24,7 +24,7 @@ class ExternalPostPolicy extends AppPolicy
      */
     public function view(User $user, ExternalPost $externalPost): bool
     {
-        return $user->hasAnyPermission([PermissionEnum::read_external_posts()->value]) || $this->canView($user, $insight);
+        return $user->hasAnyPermission([PermissionEnum::read_external_posts()->value]);
     }
 
     /**

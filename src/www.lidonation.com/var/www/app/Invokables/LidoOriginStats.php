@@ -6,7 +6,6 @@ use App\Enums\FathomEventIdsEnum;
 use App\Http\Integrations\Fathom\FathomConnector;
 use App\Http\Integrations\Fathom\Requests\GetCatalystQueries;
 use App\Http\Integrations\Fathom\Requests\GetPageViews;
-use App\Models\Insight;
 use App\Models\Post;
 use Exception;
 use Illuminate\Support\Facades\Log;
@@ -32,10 +31,13 @@ class LidoOriginStats
     public function __invoke(): array
     {
         $this->newsArticles = Post::whereHas('categories', function ($q) {
-            $q->where('slug', 'news-and-interviews');
-        })
+                $q->where('slug', 'news-and-interviews');
+            })
             ->count();
-        $this->educationalArticles = Insight::count();
+        $this->educationalArticles = Post::whereHas('categories', function ($q) {
+                $q->where('slug', 'insights');
+            })
+            ->count();
         $this->minutesOfAudioReadings = $this->getAudioMinutes();
         $this->hrsOfTwitterSpacesWork = $this->getHoursOfTwitterSpace();
 
