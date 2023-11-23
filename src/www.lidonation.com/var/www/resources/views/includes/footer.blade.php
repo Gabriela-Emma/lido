@@ -39,18 +39,18 @@
                                    {{$snippets->library}}
                                 </a>
                             </li>
-                            <li>
-                                <a href="{{localizeRoute('news')}}"
-                                   class="font-medium text-white hover:text-yellow-500">
-                                   {{$snippets->news}}
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{localizeRoute('insights')}}"
-                                   class="font-medium text-white hover:text-yellow-500">
-                                   {{$snippets->insights}}
-                                </a>
-                            </li>
+{{--                            <li>--}}
+{{--                                <a href="{{localizeRoute('news')}}"--}}
+{{--                                   class="font-medium text-white hover:text-yellow-500">--}}
+{{--                                   {{$snippets->news}}--}}
+{{--                                </a>--}}
+{{--                            </li>--}}
+{{--                            <li>--}}
+{{--                                <a href="{{localizeRoute('insights')}}"--}}
+{{--                                   class="font-medium text-white hover:text-yellow-500">--}}
+{{--                                   {{$snippets->insights}}--}}
+{{--                                </a>--}}
+{{--                            </li>--}}
                         </ul>
                     </div>
                     <div>
