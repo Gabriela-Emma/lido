@@ -238,6 +238,10 @@ class ProposalsController extends Controller
             'proposals' => $this->query(),
             'crumbs' => [
                 [
+                    'label' => 'Funds',
+                    'link' => route('catalyst-explorer.funds.index'),
+                ],
+                [
                     'label' => 'Proposal',
                 ],
             ],

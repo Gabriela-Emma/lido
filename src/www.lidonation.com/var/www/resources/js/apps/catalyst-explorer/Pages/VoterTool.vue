@@ -90,14 +90,12 @@ import Search from "@apps/catalyst-explorer/Components/Global/Search.vue";
 const props = withDefaults(
     defineProps<{
       search?: string,
-      proposal: Proposal
       currPage?: number,
       currFilterGroup?: number,
       filterPerPage?: number,
       perPage?: number,
-      currentFilter?: string,
+      currentFilter?: string | null,
       challengeFilter?: number,
-      locale: string,
       challenges: Fund[],
       tagsFilter?: number | null,
       categoriesFilter?: number | null,
@@ -136,7 +134,6 @@ const selectedId = computed(() => {
   }
 })
 
-
 let searchRender = ref(0);
 let search = ref(props.search);
 let currPageRef = ref<number>(props.currPage);
@@ -164,7 +161,6 @@ let handleResize = () => {
     query();
   }
 }
-
 
 watch([search, filterRef], () => {
   query();
@@ -238,7 +234,6 @@ async function query() {
     // @ts-ignore
     window?.fathom?.trackGoal(VARIABLES.TRACKER_ID_GROUPS, 0);
   }
-
 }
 
 function resetFilters() {

@@ -82,7 +82,7 @@
                         </span>
                     </div>
                 </dd>
-                <dt class="mt-3 text-lg font-medium truncate">
+                <dt class="mt-3 text-sm xl:text-lg font-medium truncate">
                     Total registered but didn't vote
                 </dt>
             </dl>
@@ -115,12 +115,12 @@ const props = defineProps<{
 }>()
 
 let loadingVotesRanges = ref(true);
-let votesCastAverage = ref(null);
-let votesCastMode = ref(null);
-let votesCastMedian = ref(null);
+let votesCastAverage = ref<number>(null);
+let votesCastMode = ref<number>(null);
+let votesCastMedian = ref<number>(null);
 let votesRanges = ref<{ 'key': string, 'count': number, 'total': number }[]>([]);
-let totalRegisteredAndVoted = ref(null);
-let totalRegisteredAndNeverVoted = ref(null);
+let totalRegisteredAndVoted = ref<number>(null);
+let totalRegisteredAndNeverVoted = ref<number>(null);
 
 query();
 

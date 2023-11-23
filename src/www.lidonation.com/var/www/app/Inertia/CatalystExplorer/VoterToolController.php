@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Inertia\CatalystExplorer;
 
@@ -11,6 +11,7 @@ use App\Models\Tag;
 use App\Repositories\FundRepository;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Fluent;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -60,10 +61,10 @@ class VoterToolController extends Controller
             ->fundChallenges($this->fund);
     }
 
-    public function index(Request $request)
+    public function index(Request $request): Response
     {
         $this->search = $request->input(CatalystExplorerQueryParams::SEARCH, null);
-        $this->limit = $request->input(CatalystExplorerQueryParams::PER_PAGE, 24);
+        $this->limit = (int) $request->input(CatalystExplorerQueryParams::PER_PAGE, 24);
         $this->currentPage = $request->input('p', 1);
         $this->searchGroup = $request->input('fg', null);
         $this->currentFilterGroup = $request->input('fgs', 1);
@@ -84,6 +85,14 @@ class VoterToolController extends Controller
             'proposals' => $this->proposals,
             'fund' => $this->fund,
             'crumbs' => [
+                [
+                    'label' => 'Funds',
+                    'link' => route('catalyst-explorer.funds.index'),
+                ],
+                [
+                    'label' => 'Proposals',
+                    'link' => route('catalyst-explorer.proposals'),
+                ],
                 ['label' => 'Voter Tool'],
             ],
             'filters' => $this->getGroupFilters(),
@@ -350,7 +359,7 @@ class VoterToolController extends Controller
         return $proposals['estimatedTotalHits'];
     }
 
-    public function setCounts(Request $request)
+    public function setCounts(Request $request): Collection
     {
         $params = $request->input();
         $counts = collect([]);

@@ -371,6 +371,17 @@ class ChartsController extends Controller
             'filters' => [
                 'fundId' => $this->fundFilter,
             ],
+            'crumbs' => [
+                [
+                    'label' => 'Funds',
+                    'link' => route('catalyst-explorer.funds.index'),
+                ],
+                [
+                    'label' => 'Proposals',
+                    'link' => route('catalyst-explorer.proposals'),
+                ],
+                ['label' => 'Catalyst by the Numbers'],
+            ],
             'locale' => app()->getLocale(),
         ];
 
@@ -462,7 +473,7 @@ class ChartsController extends Controller
         return new Fluent($searchBuilder->raw());
     }
 
-    protected function setVotesCastedStats()
+    protected function setVotesCastedStats(): void
     {
         $fundIds = $this->getFundIds();
 
@@ -511,7 +522,7 @@ class ChartsController extends Controller
             });
     }
 
-    protected function setSnapshotStats()
+    protected function setSnapshotStats(): void
     {
         if ($this->fundFilter === CatalystExplorerQueryParams::ALL_FUNDS) {
             $fundIds = CatalystSnapshot::query()

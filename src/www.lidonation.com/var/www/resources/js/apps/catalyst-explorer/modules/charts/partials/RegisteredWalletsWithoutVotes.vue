@@ -1,11 +1,11 @@
 <template>
     <dl class="flex flex-col justify-between h-full">
         <dd>
-            <div class="text-4xl font-semibold text-white lg:text-5xl 2xltext-6xl">
+            <div class="text-4xl font-semibold text-white lg:text-5xl">
                 Coming Soon
             </div>
         </dd>
-        <dt class="mt-3 text-lg font-medium truncate text-slate-200">
+        <dt class="mt-3 text-xs xl:text-lg font-medium text-slate-200">
             Wallets registered but didn't vote
         </dt>
     </dl>

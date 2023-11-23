@@ -1,11 +1,11 @@
 <template>
     <dl class="flex flex-col justify-between h-full text-white">
         <dd>
-            <div class="text-4xl font-semibold lg:text-5xl 2xltext-6xl">
+            <div class="text-4xl font-semibold lg:text-5xl">
                 Coming Soon
             </div>
         </dd>
-        <dt class="mt-3 text-lg font-medium truncate">
+        <dt class="mt-3 text-xs xl:text-lg font-medium">
             ₳ registered but didn't vote
         </dt>
     </dl>
@@ -13,7 +13,7 @@
 
 <script setup lang="ts">
 import { watch } from 'vue';
-import { VARIABLES } from '../../../models/variables'; 
+import { VARIABLES } from '../../../models/variables';
 
 const props = defineProps<{
     fundId: number

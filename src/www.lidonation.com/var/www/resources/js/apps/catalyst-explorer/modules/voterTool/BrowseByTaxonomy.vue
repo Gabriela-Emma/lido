@@ -45,7 +45,7 @@ import Pagination from "@apps/catalyst-explorer/Components/Global/Pagination.vue
 
 const props = defineProps<{
     taxonomy: string,
-    selectedId: number
+    selectedId?: number| null
 }>()
 
 const emit = defineEmits<{
@@ -72,7 +72,7 @@ let currTagGroupRef = ref(null);
 let perPage = ref(24);
 
 const setTaxonomies = async () => {
-    let data = {} 
+    let data = {}
     if (currTagGroupRef.value) {
         data[VARIABLES.PAGE] = currTagGroupRef.value;
     }
