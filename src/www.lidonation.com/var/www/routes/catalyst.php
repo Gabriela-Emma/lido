@@ -96,7 +96,12 @@ Route::group(
                 Route::get('/{fund:slug}', [FundController::class, 'index'])
                     ->name('fund');
 
-                Route::get('/challenges/{slug}', [ChallengeController::class, 'index'])
+
+            });
+
+            // Funds
+            Route::prefix('/challenges')->as('funds.')->group(function () {
+                Route::get('/{fund:slug}', [ChallengeController::class, 'index'])
                     ->name('challenge');
             });
 

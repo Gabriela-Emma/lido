@@ -12,6 +12,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Fluent;
 use Inertia\Inertia;
+use Inertia\Response;
 use JetBrains\PhpStorm\ArrayShape;
 use Laravel\Scout\Builder;
 use Meilisearch\Endpoints\Indexes;
@@ -34,7 +35,7 @@ class ChallengeController extends Controller
 
     public Collection $peopleFilter;
 
-    public function index(Request $request, $slug)
+    public function index(Request $request, Fund $fund): Response
     {
         $this->setSortFilters($request);
 
@@ -43,8 +44,6 @@ class ChallengeController extends Controller
         $this->currentPage = $request->input('p', 1);
 
         $this->peopleFilter = $request->collect(CatalystExplorerQueryParams::PEOPLE)->map(fn ($n) => intval($n));
-
-        $fund = Fund::where('slug', $slug)->first();
 
         $props = [
             'fund' => new FundResource($fund),
@@ -101,7 +100,7 @@ class ChallengeController extends Controller
             ->sum('amount_requested');
     }
 
-    public function query($fund)
+    public function query($fund): array
     {
         $_options = [
             'filters' => array_merge([], $this->getUserFilters($fund)),
