@@ -8,6 +8,7 @@ use App\Models\CatalystExplorer\Fund;
 use App\Models\CatalystExplorer\Proposal;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class FundController extends Controller
 {
@@ -17,14 +18,12 @@ class FundController extends Controller
 
     public $challenges;
 
-    public function index(Request $request, $slug)
+    public function index(Request $request, Fund $fund): Response
     {
-        $this->fund = Fund::where('slug', $slug)->first();
-        if ($this->fund) {
-            $this->challenges = $this->fund->fundChallenges->map(function ($challenge) {
-                return (new FundResource($challenge))->toArray(null);
-            })->all();
-        }
+        $this->fund = $fund;
+        $this->challenges = $this->fund?->fundChallenges->map(function ($challenge) {
+            return (new FundResource($challenge))->toArray(null);
+        })->all();
         $this->type = match ($this->fund?->type) {
             'challenge_setting' => 'challenge',
             default => 'proposal'
@@ -49,7 +48,7 @@ class FundController extends Controller
     {
         return Proposal::where('type', $this->type)
             ->whereNotNull('funded_at')
-            ->whereIn('fund_id', $this->fund?->fundChallenges->pluck('id'))
+            ->whereIn('fund_id', $this->fund?->fundChallenges->pluck('id') ?? [])
             ->count();
     }
 
@@ -59,14 +58,14 @@ class FundController extends Controller
             'status' => 'complete',
             'type' => $this->type,
         ])
-            ->whereIn('fund_id', $this->fund?->fundChallenges->pluck('id'))
+            ->whereIn('fund_id', $this->fund?->fundChallenges->pluck('id') ?? [])
             ->count();
     }
 
     private function totalAmountRequested()
     {
         return Proposal::where('type', $this->type)
-            ->whereIn('fund_id', $this->fund?->fundChallenges->pluck('id'))
+            ->whereIn('fund_id', $this->fund?->fundChallenges->pluck('id') ?? [])
             ->sum('amount_requested');
     }
 
@@ -74,7 +73,7 @@ class FundController extends Controller
     {
         return Proposal::where('type', $this->type)
             ->whereNotNull('funded_at')
-            ->whereIn('fund_id', $this->fund?->fundChallenges->pluck('id'))
+            ->whereIn('fund_id', $this->fund?->fundChallenges->pluck('id') ?? [])
             ->sum('amount_requested');
     }
 }

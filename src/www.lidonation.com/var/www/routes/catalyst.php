@@ -93,7 +93,7 @@ Route::group(
                 Route::get('/', [FundsController::class, 'index'])
                     ->name('index');
 
-                Route::get('/funds/{slug}', [FundController::class, 'index'])
+                Route::get('/{fund:slug}', [FundController::class, 'index'])
                     ->name('fund');
 
                 Route::get('/challenges/{slug}', [ChallengeController::class, 'index'])
