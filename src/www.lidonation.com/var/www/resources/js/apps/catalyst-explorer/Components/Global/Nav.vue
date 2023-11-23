@@ -54,11 +54,27 @@
                         <li class="flow-root menu-item">
                             <Link
                                 class="px-1 py-3 text-white menu-link hover:text-yellow-500"
+                                :class="{ 'text-yellow-500': $page.component.startsWith('Home') }"
+                                :href="route('catalyst-explorer.home')">
+                                {{ $t('Home') }}
+                            </Link>
+                        </li>
+                        <li class="flow-root menu-item">
+                            <Link
+                                class="px-1 py-3 text-white menu-link hover:text-yellow-500"
                                 :class="{ 'text-yellow-500': $page.component.startsWith('Proposals') }"
                                 :href="route('catalyst-explorer.proposals')">
                                 {{ $t('Proposals') }}
                             </Link>
-                        </li>                       
+                        </li>
+                        <li class="flow-root menu-item">
+                            <Link
+                                class="px-1 py-3 text-white menu-link hover:text-yellow-500"
+                                :class="{ 'text-yellow-500': $page.component.startsWith('People') }"
+                                :href="route('catalyst-explorer.people.index')">
+                                {{ $t('People') }}
+                            </Link>
+                        </li>
                         <li class="flow-root menu-item">
                             <a
                                 class="px-1 py-3 text-white menu-link hover:text-yellow-500"
@@ -85,7 +101,7 @@
                                 {{ $t('Voter Tool') }}
                             </Link>
                         </li>
-                        <MenuDropdown />                     
+                        <MenuDropdown />
                         <!--                        <li class="flow-root menu-item" x-data="bookmarksMenuLink">-->
                         <!--                            <Link href="/catalyst-explorer/bookmarks" class="inline-flex items-center menu-link group">-->
                         <!--                            <span class="relative z-0 inline-flex rounded-md shadow-sm" x-cloak>-->

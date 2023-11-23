@@ -2,8 +2,8 @@
     <li class="flex flex-row justify-center px-6 py-8 text-center rounded-sm bg-primary-10 xl:px-8 xl:text-left">
         <div class="flex flex-col justify-between w-full space-y-6 xl:space-y-10">
             <a :href="catalystGroup?.link"
-                class="w-32 h-32 mx-auto rounded-full shadow-md shadow-inner lg:w-32 lg:h-32 xl:w-44 xl:h-44">
-                <img class="w-full h-full rounded-full" :src=" catalystGroup?.thumbnail_url ?? catalystGroup?.gravatar " alt={{catalystGroup.name}} />
+                class="w-32 h-32 mx-auto rounded-full shadow-inner lg:w-32 lg:h-32 xl:w-44 xl:h-44">
+                <img class="w-full h-full rounded-full" :src="catalystGroup?.thumbnail_url ?? catalystGroup?.gravatar " alt={{catalystGroup.name}} />
             </a>
             <div class="items-end w-full space-y-2 xl:flex xl:items-center xl:justify-between">
                 <div class="space-y-1 text-lg font-medium leading-6">

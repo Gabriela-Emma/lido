@@ -116,6 +116,7 @@ class Group extends Model implements HasLink, HasMedia
      */
     public function toSearchableArray(): array
     {
+        $this->load(['media']);
         $array = $this->toArray();
         $proposals = $this->proposals->map(fn ($p) => $p->toArray());
 

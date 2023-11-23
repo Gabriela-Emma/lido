@@ -92,3 +92,9 @@ $p->media()->get();
 $p->load(['media']);
 $p->toArray();
 exit
+$p = Proposal::inRandomOrder()->first();
+p->users->each(fn($u) => $u->media->isNotEmpty() ? $u->thumbnail_url : $uprofile_photo_url);
+p->users->each(fn($u) => $u->media->isNotEmpty() ? $u->thumbnail_url : $u->profile_photo_url);
+$p->users->each(fn($u) => $u->media->isNotEmpty() ? $u->thumbnail_url : $u->profile_photo_url);
+$url = $p->users->each(fn($u) => $u->media->isNotEmpty() ? $u->thumbnail_url : $u->profile_photo_url);
+echo $url
