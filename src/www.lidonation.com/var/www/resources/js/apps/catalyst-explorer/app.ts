@@ -69,7 +69,7 @@ createInertiaApp({
                 return `${base}/${locale}/${value}`
             },
             assetUrl(value: string) {
-                const base = usePage().props?.asset_url;
+                const base = page.props?.ziggy.asset_url;
                 return `${base}${value}`
             },
             // contrastColor: contrastColor
