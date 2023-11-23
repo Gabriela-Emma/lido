@@ -10,8 +10,8 @@
             </a>
         </li>
         <teleport to="header">
-            <Transition name="fade">
-                <div class="fixed left-1/2 -translate-x-1/2 w-[1250px] h-[300px] mt-11 font-semibold rounded-sm shadow-md bg-white" v-if="openMenu">
+            <transition  enter-from-class="opacity-0 scale-95">
+                <div v-show="openMenu" class="fixed left-1/2 -translate-x-1/2 w-[1250px] h-[300px] mt-11 font-semibold rounded-sm shadow-md bg-white">
                     <ul class="flex flex-row gap-28">
                         <ul class="block px-4 py-2 text-teal-600">Proposals
                             <li>
@@ -109,7 +109,7 @@
                         </svg>
                     </button>
                 </div>
-            </Transition>
+            </transition>
         </teleport>
     </div>
 </template>
