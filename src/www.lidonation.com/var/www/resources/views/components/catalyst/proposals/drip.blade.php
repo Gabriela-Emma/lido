@@ -114,11 +114,11 @@
 
                         <span>
                             <span class="font-bold">Challenge: </span>
-                            <span>{{ $proposal->fund->label}}</span>
+                            <span>{{ $proposal->fund?->label}}</span>
                         </span>
                     </div>
 
-                    @if($proposal->fund->amount && $proposal->amount_requested)
+                    @if($proposal->fund?->amount && $proposal->amount_requested)
                         <x-catalyst.proposals.status :proposal="$proposal" />
                     @endif
 
