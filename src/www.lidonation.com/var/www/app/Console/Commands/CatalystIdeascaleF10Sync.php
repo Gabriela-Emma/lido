@@ -34,7 +34,7 @@ class CatalystIdeascaleF10Sync extends Command
         parent::__construct();
     }
 
-    public function handle(SettingService $settingService)
+    public function handle(SettingService $settingService): void
     {
         Fund::filter(['fund_id' => $this->argument('fund')])
             ->whereHas('metas', function ($query) {
