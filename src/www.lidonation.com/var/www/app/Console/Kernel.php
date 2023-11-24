@@ -44,8 +44,8 @@ class Kernel extends ConsoleKernel
         $schedule->command('ln:sitemap:generate')->weekly();
 
         $schedule->command('media-library:delete-old-temporary-uploads')->daily();
-        // $schedule->command('ln:ca-sync-f10 113')->everyTwoHours();
-        // $schedule->command('ln:ca-cleanup-f10 113')->everyTwoHours();
+        $schedule->command('ln:ca-sync-f11 129')->everyTwoHours();
+        $schedule->command('ln:ca-cleanup-f11 129')->everyTwoHours();
 
         //crawler commands
         //        $schedule->command('ln:crawl-iohk-blog --lang=en')->daily()->at('05::00');

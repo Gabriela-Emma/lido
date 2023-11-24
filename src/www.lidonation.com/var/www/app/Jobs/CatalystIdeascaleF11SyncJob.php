@@ -12,8 +12,9 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 use Spatie\MediaLibrary\MediaCollections\Exceptions\FileCannotBeAdded;
+use Throwable;
 
-class CatalystIdeascaleF10SyncJob implements ShouldQueue
+class CatalystIdeascaleF11SyncJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -63,12 +64,16 @@ class CatalystIdeascaleF10SyncJob implements ShouldQueue
         if (! $response->successful()) {
             return;
         }
-
+        
         $proposals = $response->object()?->data?->content ?? [];
-
+        
         foreach ($proposals as $proposal) {
             $p = $this->processProposal($proposal);
-            dispatch(new CatalystUpdateProposalDetailsJob($p, true));
+            try{
+                dispatch_sync(new CatalystUpdateProposalDetailsJob($p, true));
+            }catch(Throwable $th){
+                report($th);
+            }
         }
     }
 
@@ -88,7 +93,7 @@ class CatalystIdeascaleF10SyncJob implements ShouldQueue
         }
 
         $proposal->title = $data->title;
-        $proposal->slug = Str::limit(Str::slug($proposal->title), 150, '').'-'.'f10';
+        $proposal->slug = Str::limit(Str::slug($proposal->title), 150, '').'-'.'f11';
         $proposal->save();
 
         if (! $proposal->meta_data?->ideascale_id) {

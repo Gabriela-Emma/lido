@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Spatie\MediaLibrary\MediaCollections\Exceptions\FileCannotBeAdded;
 
-class CatalystIdeascaleF10CleanupProposalsJob implements ShouldQueue
+class CatalystIdeascaleF11CleanupProposalsJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
