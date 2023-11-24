@@ -77,7 +77,8 @@ use App\Repositories\PostRepository;
             ->getQuery()
             ->latest('published_at')
             ->limit(4)
-            ->get();
+            ->get()
+            ->take(4);
 
         // Extracting necessary attributes from each post
         return $catalystPosts->map(function ($post) {
