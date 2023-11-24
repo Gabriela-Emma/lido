@@ -8,6 +8,9 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Inertia\Response;
+use App\Models\Post;
+use App\Models\Tag;
+use App\Repositories\PostRepository;
 
 class HomeController extends Controller
 {
@@ -63,5 +66,29 @@ class HomeController extends Controller
         return Inertia::render('Home', [
             'crumbs' => [],
         ]);
+    }
+
+    public function getCatalystPost(PostRepository $posts)
+    {
+        $tag = Tag::where('slug', 'project-catalyst')->first();
+         $posts->inTaxonomies($tag)->get();
+
+         $catalystPosts = $posts->inTaxonomies($tag)->get();
+
+    // Extracting necessary attributes from each post
+    $result = $catalystPosts->map(function ($post) {
+        return [
+            'title'   => $post->title,
+            'subtitle' => $post->subtitle,
+            'image'      => $post->getFirstMediaUrl('hero'),
+            'author'       => $post->author->name, 
+            'author_gravatar' => $post->author->gravatar,
+            'published_at' => $post->published_at->format('M d, Y'),
+        ];
+    });
+
+    // dd($result);
+
+    return $result;
     }
 }

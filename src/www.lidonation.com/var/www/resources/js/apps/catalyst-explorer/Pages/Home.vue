@@ -2,28 +2,37 @@
     <Head title="Cardano Project Catalyst" />
 
     <section class="">
-        <div class="flex flex-col gap-4 h-screen p-20">
-            <div class="flex flex-col gap-4">
-                <h2 class="text-teal-500 font-bold text-[60px] text-start">
-                    {{ animatedText }}
-                </h2>
+        <div class="flex flex-col gap-4 h-[90vh] p-20">
+            <div class="flex flex-row gap-8">
+                <div class="w-40 rounded-sm lg:w-32">
+                    <img
+                        alt="catalyst explorer logo"
+                        src="/img/catalyst-explorer-logo.jpg"
+                    />
+                </div>
+                <div class="flex flex-col gap-4">
+                    <h2 class="text-teal-500 font-bold text-[60px] text-start">
+                        {{ animatedText }}
+                    </h2>
 
-                <p class="text-[14px] text-blue-dark-500 mt-8 mb-4 w-[50%]">
-                    Project Catalyst propels collaborative innovation to new
-                    heights and fuels Cardano ecosystem expansion by connecting
-                    people with groundbreaking ideas to a funding source,
-                    collaborating with and voted for by the Cardano community,
-                    and spearheaded by the Cardano treasury.
-                </p>
-                <a
-                    href="https://docs.projectcatalyst.io/about-project-catalyst/what-is-project-catalyst"
-                    class="bg-teal-900 text-white py-2 rounded-lg w-[15%] text-center"
-                    >Read more</a
-                >
+                    <p class="text-[14px] text-blue-dark-500 mt-8 mb-4 w-[50%]">
+                        Project Catalyst propels collaborative innovation to new
+                        heights and fuels Cardano ecosystem expansion by
+                        connecting people with groundbreaking ideas to a funding
+                        source, collaborating with and voted for by the Cardano
+                        community, and spearheaded by the Cardano treasury.
+                    </p>
+                    <a
+                        href="https://docs.projectcatalyst.io/about-project-catalyst/what-is-project-catalyst"
+                        class="bg-teal-900 text-white py-2 rounded-xs w-[15%] text-center"
+                        target="_blank"
+                        >Read more</a
+                    >
+                </div>
             </div>
 
-            <div class="w-[100%] flex flex-col mt-20">
-                <div class="mb-16">
+            <div class="w-[100%] flex flex-col mt-16">
+                <div class="mb-10">
                     <h2 class="text-eggplant-500 font-bold text-[48px] mb-4">
                         Idea journey
                     </h2>
@@ -98,8 +107,18 @@
             </div>
         </div>
 
-        <section class="my-16 bg-primary-20 p-20">
-            <h2 class="text-eggplant-500 font-bold text-[48px] mb-16">Project Catalyst Charts & Analysis</h2>
+        <section class="bg-primary-20 p-20">
+            <div class="flex flex-col gap-4 mb-16">
+                <h1
+                    class="text-2xl font-semibold lg:text-3xl 2xl:text-4xl text-slate-900"
+                >
+                    Catalyst <span class="text-teal-600"> by the Numbers</span>
+                </h1>
+                <p class="mr-3 text-slate-600">
+                    View projects charts and filter results based on funds
+                </p>
+            </div>
+
             <div class="grid grid-cols-4 gap-8">
                 <div class="bg-teal-900 rounded-sm p-4">
                     <LargestWinningProposal :fundId="selectedFundRef" />
@@ -118,8 +137,8 @@
                 </div>
             </div>
 
-            <div class="flex flex-row justify-between gap-8 w-full p-3 mt-16">
-                <div class="rounded-sm max-h-[60rem]">
+            <div class="flex flex-row justify-between gap-8 w-full mt-16">
+                <div class="rounded-sm max-h-[60rem] bg-white w-[60%] p-4">
                     <WalletBalanceChart
                         :attachment-link="attachmentLink"
                         :chartData1Registration1Vote$="
@@ -129,13 +148,13 @@
                     />
                 </div>
 
-                <div class="rounded-sm max-h-[60rem]">
+                <div class="rounded-sm max-h-[60rem] bg-white w-[40%] p-4">
                     <RegistrationChart :ada-power-ranges="adaPowerRanges" />
                 </div>
             </div>
 
-            <div class="flex flex-row justify-between gap-8">
-                <div class="rounded-sm max-h-[60rem] bg-white p-3 w-[60%]">
+            <div class="flex flex-row justify-between gap-8 mt-16">
+                <div class="rounded-sm max-h-[60rem] bg-white p-4 w-[60%]">
                     <AdaPowerChart
                         :attachmentLink="attachmentLink"
                         :chart-data1-ada1-vote$="chartData1Ada1Vote$"
@@ -143,7 +162,7 @@
                     />
                 </div>
                 <Suspense>
-                    <div class="bg-white">
+                    <div class="bg-white w-[40%]">
                         <VotingAggregates :fund-id="selectedFundRef" />
                     </div>
 
@@ -157,9 +176,9 @@
                 </Suspense>
             </div>
 
-            <div class="flex flex-row items-center justify-center mt-10">
+            <div class="flex flex-row items-center justify-center mt-16">
                 <a
-                    class="px-8 py-4 rounded-[15px] bg-blue-dark-500 text-white menu-link text-lg"
+                    class="px-8 py-4 rounded-xs bg-blue-dark-500 text-white menu-link text-lg"
                     :class="{
                         'text-yellow-500': $page.component.startsWith('Charts'),
                     }"
@@ -170,7 +189,7 @@
             </div>
         </section>
 
-        <div class="bg-teal-10 flex flex-row w-[60%] gap-8 m-auto mb-8">
+        <div class="bg-teal-10 flex flex-row w-[60%] gap-8 m-auto mt-20">
             <img
                 width="360"
                 height="360"
@@ -187,24 +206,47 @@
                 </p>
                 <a
                     href="https://zoom.us/meeting/register/tJEtduyupzMvHNUczCQwfFJGcXzmw2lDwkIf#/registration"
-                    class="bg-blue-dark-500 text-white py-2 px-8 rounded-lg"
+                    class="bg-blue-dark-500 text-white py-2 px-8 rounded-xs"
                     >Join us</a
                 >
             </div>
         </div>
 
-        <div class="mb-16 p-20">
-       <h2 class="text-eggplant-500 font-bold text-[48px] mb-16">Catalyst Posts</h2>
-    <ul>
-      <li v-for="post in posts" :key="post.id">{{ post.title }}</li>
-    </ul>
-  </div>
+        <div class="mt-24 p-20 bg-primary-20/60">
+            <h2 class="font-bold text-[48px] mb-16">
+                Catalyst <span class="text-teal-500">Posts</span>
+            </h2>
+            <ul class="grid lg:grid-cols-4 sm:grid-cols-2 xs:grid-cols-1 gap-8">
+                <li v-for="post in posts" :key="post.id" class="border-l-2 border-eggplant-500 p-4 h-[500px]">
+                    <img v-if="post.image" :src="post.image" alt="Post Image" class="w-full h-[40%] object-cover mb-2">
+                    <div class="h-[50%]">
+                        <h2 class="text-2xl font-bold hover:text-teal-500 mb-4">{{ post.title }}</h2>
+                    <h3 class="text-xl font-normal">{{ post.subtitle }}</h3>
+                    <div class="flex flex-row items-center gap-2 mt-4">
+                        <p class="text-sm bg-teal-10 rounded-sm px-2">{{ post.published_at }}</p>
+                    <div class="flex flex-row items-center gap-2 text-sm bg-teal-10 rounded-sm px-2">
+                        <img v-if="post.author_gravatar" :src="post.author_gravatar" alt="Author avatar" class="w-4 h-4 rounded-full">
+                        <p>{{ post.author }}</p>
+                    </div>
+                    </div>
+                    </div>
+
+                   <a href="#" class="flex flex-row items-center text-base text-black/60 gap-3">
+                     <p>Continue reading</p>
+                    <ArrowRightIcon class="w-10 h-6" />
+                  </a>
+
+
+                </li>
+            </ul>
+        </div>
     </section>
 </template>
 
 <script setup lang="ts">
-import { Head, router } from "@inertiajs/vue3";
+import { Head, router, Link } from "@inertiajs/vue3";
 import { watch, ref, defineAsyncComponent, onMounted } from "vue";
+import { ArrowRightIcon } from "@heroicons/vue/24/solid";
 import route from "ziggy-js";
 import Challenge from "@apps/catalyst-explorer/models/challenge";
 import Over75k from "@apps/catalyst-explorer/modules/charts/Over75k.vue";
@@ -461,14 +503,20 @@ const animateText = () => {
 
 const posts = ref([]);
 
-    const fetchPosts = () => {
-        axios
+//get the title and content from the post array
+
+const fetchPosts = async () => {
+    axios
         .get(route("catalystExplorerApi.posts"))
-        .then((res) => { posts.value = res?.data })
+        .then((res) => {
+            const allPosts = res.data;
+            posts.value = allPosts.slice(0, 4);
+            console.log(posts.value)
+        })
         .catch((error) => {
-            console.error(error);
+            console.log(error);
         });
-    };
+};
 
 onMounted(() => {
     animateText();

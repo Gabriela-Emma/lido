@@ -63,13 +63,4 @@ class PostController extends Controller
         return $post->fresh()->reactionsCounts;
     }
 
-    public function getCatalystPost()
-    {
-
-        $tagSlug = 'project-catalyst';
-
-        $posts = Post::whereHas('tags', function ($query) use ($tagSlug) {
-          $query->where('slug', $tagSlug);
-        })->get();
-    }
 }
