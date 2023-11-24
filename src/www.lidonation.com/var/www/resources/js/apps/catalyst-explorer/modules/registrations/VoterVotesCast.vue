@@ -195,7 +195,7 @@ function getQueryData() {
 let query = () => {
     let params = getQueryData();
     isLoading.value = true
-    axios.get(route('catalyst-explorer.voterData'), { params }).then((res) => {
+    axios.get(route('catalyst-explorer.voter-data'), { params }).then((res) => {
         voterData.value = res.data
         isLoading.value = false
     }).catch((e) => {
