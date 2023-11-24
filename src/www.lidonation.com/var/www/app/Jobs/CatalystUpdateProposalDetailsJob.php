@@ -41,20 +41,20 @@ class CatalystUpdateProposalDetailsJob implements ShouldQueue
      */
     public function handle(): void
     {
-        if (! $this->proposal instanceof Proposal) {
+        if (!$this->proposal instanceof Proposal) {
             $this->proposal = Proposal::find($this->proposal);
         }
         $parts = collect(explode('/', $this->proposal->ideascale_link))->last();
         $ideascaleId = collect(explode('-', $parts))->first();
 
         $authResponse = Http::get('https://cardano.ideascale.com/a/community/api/get-token');
-        if (! $authResponse->successful()) {
+        if (!$authResponse->successful()) {
             return;
         }
         $response = Http::withToken($authResponse->body())
             ->get("https://cardano.ideascale.com/a/community/api/idea/{$ideascaleId}/detail");
 
-        if (! $response->successful()) {
+        if (!$response->successful()) {
             return;
         }
 
@@ -81,22 +81,36 @@ class CatalystUpdateProposalDetailsJob implements ShouldQueue
             if ($this->proposal->fund?->parent?->id == 58) {
                 [$solution, $experience] = $this->getFund7BasicDetails($data->fieldSections);
             }
-            if ($data?->description && ! $this->proposal?->problem) {
+            if ($this->proposal->fund?->parent_id == 129) {
+                $this->proposal->problem = $converter->convert(
+                    Str::replace('/a/attachments/', 'https://cardano.ideascale.com/a/attachments/', $data->description)
+                );
+
+                $solution = collect($data->fieldSections)
+                    ->filter(fn ($field) => isset($field->ideaFieldValues[0]) && $field->ideaFieldValues[0]?->fieldName === 'CF_286')
+                    ->first()?->ideaFieldValues[0]?->value ?? null;
+                $this->proposal->solution = $converter->convert(
+                    Str::replace('/a/attachments/', 'https://cardano.ideascale.com/a/attachments/', $solution)
+                );
+            }
+            if ($data?->description && !$this->proposal?->problem) {
                 $this->proposal->problem = $converter->convert(
                     Str::replace('/a/attachments/', 'https://cardano.ideascale.com/a/attachments/', $data->description)
                 );
             }
-            if ($solution && ! $this->proposal?->solution) {
+            if ($solution && !$this->proposal?->solution) {
                 $this->proposal->solution = $solution;
             }
-            if ($experience && ! $this->proposal?->experience) {
+            if ($experience && !$this->proposal?->experience) {
                 $this->proposal->experience = $experience;
             }
         }
 
         // sync co-proposers
+        dump($this->proposal->id);
         $coSubmitters = $this->processCoProposers($data);
         $this->proposal?->users()->sync($coSubmitters->filter()->values()->push($author->id));
+
 
         // save detailed content
         $content = null;
@@ -113,12 +127,17 @@ class CatalystUpdateProposalDetailsJob implements ShouldQueue
 
             $content = (string) $fieldSections->implode('');
         }
-        if ($this->proposal->fund?->parent_id == 113) {
+        if ($this->proposal->fund?->parent_id == 113 || $this->proposal->fund?->parent_id == 129) {
             $fieldSections = $this->getFund10ProposalDetails($data->fieldSections);
             $content = (string) $fieldSections->implode('');
 
             // save requested amount
-            $proposalMeta = $this->getFund10ProposalMetas($data->fieldSections);
+            if ($this->proposal->fund?->parent_id == 113) {
+                $proposalMeta = $this->getFund10ProposalMetas($data->fieldSections);
+            } elseif ($this->proposal->fund?->parent_id == 129) {
+                $proposalMeta = $this->getFund11ProposalMetas($data->fieldSections);
+            }
+
             $this->proposal->amount_requested = $proposalMeta?->amount_requested;
 
             // opensource status
@@ -133,6 +152,8 @@ class CatalystUpdateProposalDetailsJob implements ShouldQueue
 
             $this->proposal->saveMeta('project_length', $proposalMeta?->project_length, $this->proposal);
         }
+
+
         if ($this->proposal->fund?->parent_id == 61) {
             $fieldSections = $this->getFund8ProposalDetails($data->fieldSections);
             $content = (string) $fieldSections->implode('');
@@ -153,7 +174,7 @@ class CatalystUpdateProposalDetailsJob implements ShouldQueue
                     'link' => $link,
                     'status' => 'published',
                     'label' => 'link',
-                    'title' => 'Relevant Link '.$index + 1,
+                    'title' => 'Relevant Link ' . $index + 1,
                     'valid' => true,
                 ],
             ));
@@ -184,7 +205,7 @@ class CatalystUpdateProposalDetailsJob implements ShouldQueue
         }
 
         // save attachments
-        if (! $this->proposal->hasMedia('hero')) {
+        if (!$this->proposal->hasMedia('hero')) {
             $attachments = collect($data?->attachments);
             if ($attachments->isNotEmpty()) {
                 $attachments->each(function ($att) {
@@ -195,8 +216,14 @@ class CatalystUpdateProposalDetailsJob implements ShouldQueue
         }
 
         // Save Tags
-        if (! ($this->proposal->tags?->count() ?? null)) {
-            $tags = $this->getFundProposalTags($data->ideaTagHolder);
+        if (!($this->proposal->tags?->count() ?? null)) {
+            $category = $this->getFieldByTitle(
+                $data->fieldSections,
+                '[METADATA] Themes:'
+            )->ideaFieldValues[0]['value'];
+
+            $tags = collect(explode(", ", $category));
+
             $tags = $tags->map(function ($tag, $index) {
                 return Tag::updateOrCreate(
                     [
@@ -214,59 +241,69 @@ class CatalystUpdateProposalDetailsJob implements ShouldQueue
 
         //save proposal category
         // clean previous categories
-        $existingCategoryIDs = $this->proposal->categories()->pluck('id');
-        $this->proposal->categories()->detach($existingCategoryIDs);
-        // Delete the categories
-        foreach ($existingCategoryIDs as $categoryId) {
-            $category = Category::find($categoryId);
-            $category->delete();
-        }
-        if (! $this->proposal->categories?->count() ?? null) {
-            $category = $this->getFieldByTitle(
-                $data->fieldSections,
-                '[METADATA] Category of proposal'
-            )->ideaFieldValues[0]['value'];
+        // $existingCategoryIDs = $this->proposal->categories()->pluck('id');
+        // $this->proposal->categories()->detach($existingCategoryIDs);
+        // // Delete the categories
+        // foreach ($existingCategoryIDs as $categoryId) {
+        //     $category = Category::find($categoryId);
+        //     $category->delete();
+        // }
 
-            $existingCat = Category::where('title', $category)->first();
+        // if (! $this->proposal->categories?->count() ?? null) {
+        //     // $category = $this->getFieldByTitle(
+        //     //     $data->fieldSections,
+        //     //     '[METADATA] Category of proposal'
+        //     // )->ideaFieldValues[0]['value'];
 
-            if ($existingCat instanceof Category) {
+        //     $category = $this->getFieldByTitle(
+        //         $data->fieldSections,
+        //         '[METADATA] Themes:'
+        //     )->ideaFieldValues[0]['value'];
 
-                $this->proposal?->categories()->syncWithPivotValues($existingCat->pluck('id'), [
-                    'model_type' => Proposal::class,
-                ], false);
+        //     $items = explode(", ", $category);
 
-                Proposal::withoutSyncingToSearch(fn () => $this->proposal->save());
-            } else {
+        //     foreach ($items as $item) {
+        //         $existingCat = Category::where('title', $item)->first();
+        //     }
 
-                $category = Category::updateOrCreate(
-                    [
-                        'slug' => Str::slug($category),
-                    ],
-                    [
-                        'title' => ucfirst($category),
-                    ],
-                );
-                $this->proposal?->categories()->syncWithPivotValues($category->pluck('id'), [
-                    'model_type' => Proposal::class,
-                ], false);
+        //     if ($existingCat instanceof Category) {
 
-                Proposal::withoutSyncingToSearch(fn () => $this->proposal->save());
-            }
+        //         $this->proposal?->categories()->syncWithPivotValues($existingCat->pluck('id'), [
+        //             'model_type' => Proposal::class,
+        //         ], false);
 
-        }
+        //         Proposal::withoutSyncingToSearch(fn () => $this->proposal->save());
+        //     } else {
+
+        //         $category = Category::updateOrCreate(
+        //             [
+        //                 'slug' => Str::slug($category),
+        //             ],
+        //             [
+        //                 'title' => ucfirst($category),
+        //             ],
+        //         );
+        //         $this->proposal?->categories()->syncWithPivotValues($category->pluck('id'), [
+        //             'model_type' => Proposal::class,
+        //         ], false);
+
+        //         Proposal::withoutSyncingToSearch(fn () => $this->proposal->save());
+        //     }
+
+        // }
     }
 
     protected function processCoProposers(&$data): Collection
     {
         return collect($data->coSubmitters)->map(function ($user) {
-            if (! $user->username) {
+            if (!$user->username) {
                 return false;
             }
             $cu = CatalystUser::where('username', $user->username)
                 ->orWhere('ideascale_id', $user->id)
                 ->first();
 
-            if (! $cu instanceof CatalystUser) {
+            if (!$cu instanceof CatalystUser) {
                 $cu = new CatalystUser;
             }
             $cu->name = $user?->name;
@@ -274,8 +311,9 @@ class CatalystUpdateProposalDetailsJob implements ShouldQueue
             $cu->ideascale_id = $user?->id;
             $cu->save();
 
+
             try {
-                if (! $cu->hero) {
+                if (!$cu->hero) {
                     $cu->addMediaFromUrl($user?->avatar)
                         ->toMediaCollection('hero');
                 }
@@ -300,13 +338,13 @@ class CatalystUpdateProposalDetailsJob implements ShouldQueue
     protected function processPrimaryAuthor(&$data)
     {
         $author = CatalystUser::where('username', $data->submitter?->username)->first();
-        if (! $author instanceof CatalystUser) {
+        if (!$author instanceof CatalystUser) {
             $author = new CatalystUser;
             $author->username = $data->submitter?->username;
         }
         $author->name = $data->submitter?->name;
         $author->ideascale_id = $data->submitter?->id;
-        if (! $author->hero) {
+        if (!$author->hero) {
             $author->addMediaFromUrl($data->submitter?->avatar)
                 ->toMediaCollection('hero');
         }
@@ -345,7 +383,7 @@ class CatalystUpdateProposalDetailsJob implements ShouldQueue
             $ideaFieldValues = collect($field->ideaFieldValues)->pluck('value')->implode('<br /><br />>');
             $converter = new HtmlConverter();
 
-            return $converter->convert('<h3 class="mt-6">'.$field?->title.'</h3>'.$ideaFieldValues.'<br /><br /><p></p>');
+            return $converter->convert('<h3 class="mt-6">' . $field?->title . '</h3>' . $ideaFieldValues . '<br /><br /><p></p>');
         });
 
         //        return $fieldSections->map(function ($field) {
@@ -359,6 +397,7 @@ class CatalystUpdateProposalDetailsJob implements ShouldQueue
     {
         $fieldSections = collect($sections)
             ->filter(fn ($field) => isset($field->ideaFieldValues[0]) && $field->ideaFieldValues[0]?->fieldDisplayType === 'TEXTAREA');
+
         if ($this->proposal->type == 'proposal') {
             $fieldSections = $fieldSections->filter(fn ($field) => Str::contains($field?->title, ['[IMPACT]', '[CAPABILITY/ FEASIBILITY]', '[RESOURCES & VALUE FOR MONEY]', '[FEASIBILITY]', '[AUDITABILITY]', '(SDG) Rating'], true));
         }
@@ -367,7 +406,7 @@ class CatalystUpdateProposalDetailsJob implements ShouldQueue
             $ideaFieldValues = collect($field->ideaFieldValues)->pluck('value')->implode('<br /><br />>');
             $converter = new HtmlConverter();
 
-            return $converter->convert('<h3 class="mt-6">'.$field?->title.'</h3>'.$ideaFieldValues.'<br /><br /><p></p>');
+            return $converter->convert('<h3 class="mt-6">' . $field?->title . '</h3>' . $ideaFieldValues . '<br /><br /><p></p>');
         });
     }
 
@@ -378,6 +417,20 @@ class CatalystUpdateProposalDetailsJob implements ShouldQueue
 
         $length = collect($sections)
             ->filter(fn ($field) => isset($field->ideaFieldValues[0]) && $field->ideaFieldValues[0]?->fieldName === 'CF_211');
+
+        return new Fluent([
+            'amount_requested' => intval($requestedAmount->first()?->ideaFieldValues[0]?->value ?? 0),
+            'project_length' => intval($length->first()?->ideaFieldValues[0]?->value ?? 0),
+        ]);
+    }
+
+    protected function getFund11ProposalMetas($sections): Fluent
+    {
+        $requestedAmount = collect($sections)
+            ->filter(fn ($field) => isset($field->ideaFieldValues[0]) && $field->ideaFieldValues[0]?->fieldName === 'CF_273');
+
+        $length = collect($sections)
+            ->filter(fn ($field) => isset($field->ideaFieldValues[0]) && $field->ideaFieldValues[0]?->fieldName === 'CF_274');
 
         return new Fluent([
             'amount_requested' => intval($requestedAmount->first()?->ideaFieldValues[0]?->value ?? 0),
@@ -397,14 +450,14 @@ class CatalystUpdateProposalDetailsJob implements ShouldQueue
                 $ideaFieldValues = collect($field->ideaFieldValues)->pluck('value')->implode('<br /><br />');
                 $converter = new HtmlConverter();
 
-                return $converter->convert('<h3>Detailed Plan</h3>'.$ideaFieldValues.'<br /><br />');
+                return $converter->convert('<h3>Detailed Plan</h3>' . $ideaFieldValues . '<br /><br />');
             });
         }
 
         return $fieldSections->map(function ($field) {
             $converter = new HtmlConverter();
 
-            return $converter->convert('<h3>'.$field->ideaFieldValues[0]?->name.'</h3>'.$field->ideaFieldValues[0]?->value.'<br /><br />');
+            return $converter->convert('<h3>' . $field->ideaFieldValues[0]?->name . '</h3>' . $field->ideaFieldValues[0]?->value . '<br /><br />');
         });
     }
 
@@ -420,14 +473,14 @@ class CatalystUpdateProposalDetailsJob implements ShouldQueue
                 $ideaFieldValues = collect($field->ideaFieldValues)->pluck('value')->implode('<br /><br />');
                 $converter = new HtmlConverter();
 
-                return $converter->convert('<h3>'.$field->title.'</h3>'.$ideaFieldValues.'<br /><br />');
+                return $converter->convert('<h3>' . $field->title . '</h3>' . $ideaFieldValues . '<br /><br />');
             });
         }
 
         return $fieldSections->map(function ($field) {
             $converter = new HtmlConverter();
 
-            return $converter->convert('<h3>'.$field->ideaFieldValues[0]?->name.'</h3>'.$field->ideaFieldValues[0]?->value.'<br /><br />');
+            return $converter->convert('<h3>' . $field->ideaFieldValues[0]?->name . '</h3>' . $field->ideaFieldValues[0]?->value . '<br /><br />');
         });
     }
 
@@ -448,7 +501,7 @@ class CatalystUpdateProposalDetailsJob implements ShouldQueue
             fn ($obj) => strtolower($obj->title) === strtolower($title)
         );
 
-        if (! $targetField) {
+        if (!$targetField) {
             return new Fluent([]);
         }
 
