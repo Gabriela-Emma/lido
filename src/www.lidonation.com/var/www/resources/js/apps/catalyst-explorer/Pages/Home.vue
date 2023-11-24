@@ -200,7 +200,7 @@
                     alt="Speaker"
                 />
                 <div class="p-12">
-                    <h2 class="text-[40px] font-title text-blue-dark-500 mb-12">
+                    <h2 class="text-[40px] text-blue-dark-500 mb-12">
                         Weekly Town Hall
                     </h2>
                     <p class="text-[24px] text-blue-dark-500/90 mb-8">
