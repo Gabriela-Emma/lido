@@ -18,7 +18,7 @@
                             <span class="text-slate-700 text-xl">
                                 Proposals
                             </span>
-                            <ul class="block">
+                            <ul class="flex flex-col gap-2">
                                 <li>
                                     <Link
                                         class="text-gray-900 menu-link font-normal hover:text-teal-800"
@@ -42,7 +42,7 @@
                             <span class="text-slate-700 text-xl">
                                 People
                             </span>
-                            <ul class="block">
+                            <ul class="flex flex-col gap-2">
                                 <li>
                                     <Link
                                         class="text-gray-900 menu-link font-normal hover:text-teal-800"
@@ -72,7 +72,7 @@
 
                         <li>
                             <span class="text-slate-700 text-xl">Charts</span>
-                            <ul class="block">
+                            <ul class="flex flex-col gap-2">
                                 <li>
                                     <a
                                         class="text-gray-900 menu-link font-normal hover:text-teal-800"
@@ -92,7 +92,7 @@
                         </li>
                         <li>
                             <span class="text-slate-700 text-xl">Tools</span>
-                            <ul class="block">
+                            <ul class="flex flex-col gap-2">
                                 <li>
                                     <Link
                                         class="text-gray-900 menu-link font-normal hover:text-teal-800"

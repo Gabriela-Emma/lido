@@ -3,11 +3,11 @@
         <header class="py-16">
             <div class="container">
                 <h1
-                    class="text-3xl font-light leading-8 tracking-tight text-slate-800 sm:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl pr-8 xl:px-36 2xl:max-w-7xl"
+                    class="text-3xl font-light leading-8 tracking-tight text-slate-800 sm:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl pr-8 2xl:max-w-7xl"
                 >
-                    <span class="font-bold text-yellow-500 inline-block mr-0.5">dReps.</span>
+                    <span class="font-bold text-yellow-500 inline-block mr-0.5">DReps.</span>
                     <span
-                    > Introducing the Concept of Delegate Representatives.</span
+                    > Delegate Representatives in Project Catalyst.</span
                     >
                 </h1>
             </div>
@@ -43,28 +43,26 @@
                 </section>
 
                 <section class="bg-white py-24">
-                    <div class="xl:px-36">
-                        <div class="container">
-                            <p
-                                class="text-2xl font-bold text-teal-600 hover:text-teal-800"
-                            >
-                                Empowering Passive Voters through Delegation
-                            </p>
+                    <div class="container">
+                        <p
+                            class="text-2xl font-bold text-teal-600 hover:text-teal-800"
+                        >
+                            Empowering Passive Voters through Delegation
+                        </p>
 
-                            <p
-                                class="text-xl font-light leading-relaxed tracking-wide"
-                            >
-                                Delegation allows ADA holders to entrust their
-                                voting power to one or more Delegate Representatives
-                                (dReps). This system empowers passive voters,
-                                enabling them to have their voices heard across a
-                                broader range of proposals than they could
-                                personally evaluate. dReps will play a crucial role
-                                in Project Catalyst by voting on the majority of
-                                proposals, enhancing decision-making quality within
-                                each Fund.
-                            </p>
-                        </div>
+                        <p
+                            class="text-xl font-light leading-relaxed tracking-wide"
+                        >
+                            Delegation allows ADA holders to entrust their
+                            voting power to one or more Delegate Representatives
+                            (dReps). This system empowers passive voters,
+                            enabling them to have their voices heard across a
+                            broader range of proposals than they could
+                            personally evaluate. dReps will play a crucial role
+                            in Project Catalyst by voting on the majority of
+                            proposals, enhancing decision-making quality within
+                            each Fund.
+                        </p>
                     </div>
                 </section>
 
@@ -100,8 +98,10 @@
                 <section class="bg-white">
                     <div class="container">
                         <div class="py-24 sm:py-32 lg:flex lg:items-center lg:justify-between xl:px-36">
-                            <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Ready to dive
-                                in?<br/>Start your free trial today.</h2>
+                            <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+                                Excited for for DReps in  catalyst?
+                                <br/>Jump in be a pioneer!
+                            </h2>
                             <div class="mt-10 flex items-center gap-x-6 lg:mt-0 lg:flex-shrink-0">
                                 <button
                                     type="button"
