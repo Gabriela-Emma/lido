@@ -136,7 +136,7 @@ function getQueryData() {
 let query = () => {
     let params = getQueryData();
     isLoading.value = true
-    axios.get(route('catalyst-explorer.registrations-registrations-data'), { params }).then((res) => {
+    axios.get(route('catalyst-explorer.registrations-data'), { params }).then((res) => {
         registrations.value = res.data
         isLoading.value = false
     }).catch((e) => {

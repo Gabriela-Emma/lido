@@ -41,6 +41,10 @@ class GroupsController extends Controller
             'sort' => $this->sort,
             'groups' => $this->query(),
             'crumbs' => [
+                [
+                    'label' => 'Funds',
+                    'link' => route('catalyst-explorer.funds.index'),
+                ],
                 ['label' => 'Groups'],
             ],
         ];
