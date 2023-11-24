@@ -71,6 +71,11 @@ class PeopleController extends Controller
             ],
             'users' => $this->query(),
             'crumbs' => [
+                [
+                    'label' => 'Funds',
+                    'link' => route('catalyst-explorer.funds.index'),
+                ],
+                ['label' => 'Proposals', 'link' => route('catalyst-explorer.proposals')],
                 ['label' => 'People'],
             ],
         ];

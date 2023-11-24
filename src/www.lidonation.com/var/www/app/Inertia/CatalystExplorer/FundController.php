@@ -38,7 +38,11 @@ class FundController extends Controller
             'challenges' => $this->challenges,
             'challengesCount' => $this->fund->fundChallenges->count(),
             'crumbs' => [
-                ['link' => '/catalyst-explorer/funds', 'label' => 'Funds'],
+                [
+                    'label' => 'Funds',
+                    'link' => route('catalyst-explorer.funds.index'),
+                ],
+                ['label' => 'Proposals', 'link' => route('catalyst-explorer.proposals')],
                 ['label' => $this->fund->title],
             ],
         ]);

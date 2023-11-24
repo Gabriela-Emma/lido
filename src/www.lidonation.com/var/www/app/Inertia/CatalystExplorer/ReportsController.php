@@ -35,6 +35,11 @@ class ReportsController extends Controller
             'currPage' => $this->currentPage,
             'perPage' => $this->perPage,
             'crumbs' => [
+                [
+                    'label' => 'Funds',
+                    'link' => route('catalyst-explorer.funds.index'),
+                ],
+                ['label' => 'Proposals', 'link' => route('catalyst-explorer.proposals')],
                 ['label' => 'Reports'],
             ],
         ]);
