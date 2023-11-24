@@ -71,7 +71,13 @@ class HomeController extends Controller
     public function getCatalystPost(PostRepository $posts)
     {
         $tag = Tag::where('slug', 'project-catalyst')->first();
-         $posts->inTaxonomies($tag)->get();
+        Post::withoutGlobalScopes();
+        $catalystPosts = $posts->inTaxonomies(Tag::class, $tag)
+            ->getQuery()
+            ->latest('published_at')
+            ->limit(4)
+            ->get()
+            ->take(4);
 
          $catalystPosts = $posts->inTaxonomies($tag)->get();
 
