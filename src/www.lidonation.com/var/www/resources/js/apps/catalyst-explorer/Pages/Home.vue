@@ -207,10 +207,23 @@
                         Join Project Catalyst team and community for our weekly town
                         hall followed by an open space with break out rooms.
                     </p>
-                    <a
-                        href="https://zoom.us/meeting/register/tJEtduyupzMvHNUczCQwfFJGcXzmw2lDwkIf#/registration"
-                        class="bg-blue-dark-500 text-white py-2 px-8 rounded-sm"
-                    >Join us</a>
+                    <div class="flex flex-row gap-2.5 flex-wrap w-full">
+                        <a
+                            href="https://bit.ly/3rCicSR"
+                            target="_blank"
+                            class="bg-blue-dark-500 text-white py-2 px-5 rounded-sm items-center inline-flex gap-1.5">
+                            <span>Register for the next meeting</span>
+                            <ArrowTopRightOnSquareIcon class="w-4 h-4"/>
+                        </a>
+                        <a
+                            href="https://forms.gle/rQrrZSCVEyekF8sG9"
+                            target="_blank"
+                            class="border-2 border-blue-dark-500 text-blue-dark-500 py-2 items-center px-5 inline-flex gap-1.5 rounded-sm"
+                        >
+                            <span>Signup to Host breakout room</span>
+                            <ArrowTopRightOnSquareIcon class="w-4 h-4"/>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -257,7 +270,7 @@
                 <a
                     class="px-8 py-4 rounded-sm bg-blue-dark-500 text-white inline-flex flex-row gap-0.5 text-lg"
                     href="/tags/project-catalyst">
-                    <span>{{ $t("See more catalyst educational content") }}</span>
+                    <span>{{ $t("See more Catalyst news & content") }}</span>
                     <ArrowRightIcon class="w-10 h-6"/>
                 </a>
             </div>
@@ -269,6 +282,7 @@
 import {Head, router, Link} from "@inertiajs/vue3";
 import {watch, ref, defineAsyncComponent, onMounted} from "vue";
 import {ArrowRightIcon} from "@heroicons/vue/24/solid";
+import {ArrowTopRightOnSquareIcon} from "@heroicons/vue/24/solid";
 import route from "ziggy-js";
 import Challenge from "@apps/catalyst-explorer/models/challenge";
 import Over75k from "@apps/catalyst-explorer/modules/charts/Over75k.vue";
