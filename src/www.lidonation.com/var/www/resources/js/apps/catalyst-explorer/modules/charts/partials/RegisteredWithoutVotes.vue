@@ -1,8 +1,11 @@
 <template>
     <dl class="flex flex-col justify-between h-full text-white">
         <dd>
-            <div class="text-4xl font-semibold lg:text-5xl">
+            <div class="text-4xl font-semibold lg:text-5xl" v-if="totalRegisteredAdaWithoutVotes">
                 ₳{{ $filters.shortNumber(totalRegisteredAdaWithoutVotes, 3) }}           
+            </div>
+            <div class="text-4xl font-semibold lg:text-5xl" v-else>
+            {{'-'}}
             </div>
         </dd>
         <dt class="mt-3 text-xs xl:text-lg font-medium">
