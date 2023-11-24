@@ -16,12 +16,12 @@
                         source, collaborating with and voted for by the Cardano
                         community, and spearheaded by the Cardano treasury.
                     </p>
-                    <a
+                    <!-- <a
                         href="https://docs.projectcatalyst.io/about-project-catalyst/what-is-project-catalyst"
                         class="bg-teal-900 text-white py-2 rounded-sm w-[15%] text-center"
                         target="_blank"
                     >Read more</a
-                    >
+                    > -->
                 </div>
                 <div class="w-40 rounded-sm lg:w-32 xl:w-100">
                     <img
