@@ -1,10 +1,18 @@
 <template>
     <div class="bg-white p-6" v-if="(search && !voterData?.data) || voterData?.data?.length === 0">
-        <p v-if="!isLoading">
-            Could not find any registration transactions for the stake address <span class="font-bold">{{
+        <div v-if="!isLoading">
+            <p>
+            Could not find any votes associated with this stake address <span class="font-bold">{{
                 search
             }}</span>.
-        </p>
+            </p>
+            <p>
+                If we haven’t pre-generated your voting results we may need to retrieve your
+                voting history and metadata via offline fragment and jormungandr sidechain analysis
+                <a href="https://github.com/input-output-hk/catalyst-core/blob/main/src/audit/src/find/README.md "
+                   target="_blank">replay</a>.
+            </p>
+        </div>
 
         <div class="flex flex-col justify-center items-center text-lg gap-3" v-if="isLoading">
             <p>
