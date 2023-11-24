@@ -171,6 +171,26 @@ class ChartsController extends Controller
         return null;
     }
 
+    public function metricSumAdaRegisteredNotVoted(Request $request): float|int|null
+{
+    $this->fundFilter = $request->input(CatalystExplorerQueryParams::FUNDS, 113);
+
+    if ($this->fundFilter === CatalystExplorerQueryParams::ALL_FUNDS) {
+        $sumAdaRegisteredNotVoted = CatalystVotingPower::where('consumed', 'f')->sum('voting_power');
+    } else {
+        $sumAdaRegisteredNotVoted = CatalystVotingPower::whereRelation('catalyst_snapshot', 'model_id', $this->fundFilter)
+            ->where('consumed', 'f')
+            ->sum('voting_power');
+    }
+
+    if ($sumAdaRegisteredNotVoted && $sumAdaRegisteredNotVoted > 0) {
+        return $sumAdaRegisteredNotVoted / 1000000;
+    }
+
+    return null;
+}
+
+
     public function metricTotalRegistrations(Request $request)
     {
         $this->fundFilter = $request->input(CatalystExplorerQueryParams::FUNDS, 113);
