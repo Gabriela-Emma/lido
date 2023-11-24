@@ -1,15 +1,9 @@
 <template>
-    <Head title="Cardano Project Catalyst" />
+    <Head title="Cardano Project Catalyst"/>
 
-    <section class="">
-        <div class="flex flex-col gap-4 h-[90vh] p-20">
-            <div class="flex flex-row gap-8">
-                <div class="w-40 rounded-sm lg:w-32">
-                    <img
-                        alt="catalyst explorer logo"
-                        src="/img/catalyst-explorer-logo.jpg"
-                    />
-                </div>
+    <section class="py-16">
+        <div class="container">
+            <div class="flex flex-row gap-8 items-center justify-between py-16">
                 <div class="flex flex-col gap-4">
                     <h2 class="text-teal-500 font-bold text-[60px] text-start">
                         {{ animatedText }}
@@ -24,14 +18,20 @@
                     </p>
                     <a
                         href="https://docs.projectcatalyst.io/about-project-catalyst/what-is-project-catalyst"
-                        class="bg-teal-900 text-white py-2 rounded-xs w-[15%] text-center"
+                        class="bg-teal-900 text-white py-2 rounded-sm w-[15%] text-center"
                         target="_blank"
-                        >Read more</a
+                    >Read more</a
                     >
+                </div>
+                <div class="w-40 rounded-sm lg:w-32 xl:w-100">
+                    <img
+                        alt="catalyst explorer logo"
+                        src="/img/catalyst-explorer-logo.jpg"
+                    />
                 </div>
             </div>
 
-            <div class="w-[100%] flex flex-col mt-16">
+            <div class="w-[100%] flex flex-col border-t-2 border-eggplant-600 py-16">
                 <div class="mb-10">
                     <h2 class="text-eggplant-500 font-bold text-[48px] mb-4">
                         Idea journey
@@ -106,38 +106,38 @@
                 </div>
             </div>
         </div>
+    </section>
 
-        <section class="bg-primary-20 p-20">
-            <div class="flex flex-col gap-4 mb-16">
-                <h1
-                    class="text-2xl font-semibold lg:text-3xl 2xl:text-4xl text-slate-900"
-                >
+    <section class="py-16 bg-primary-20">
+        <div class="container">
+            <div class="flex flex-col gap-1 mb-16">
+                <h1 class="text-2xl font-semibold lg:text-3xl 2xl:text-4xl text-slate-900">
                     Catalyst <span class="text-teal-600"> by the Numbers</span>
                 </h1>
-                <p class="mr-3 text-slate-600">
+                <p class="text-slate-600">
                     View projects charts and filter results based on funds
                 </p>
             </div>
 
             <div class="grid grid-cols-4 gap-8">
                 <div class="bg-teal-900 rounded-sm p-4">
-                    <LargestWinningProposal :fundId="selectedFundRef" />
+                    <LargestWinningProposal :fundId="selectedFundRef"/>
                 </div>
 
                 <div class="bg-teal-500/70 rounded-sm p-4">
-                    <Over75k :fundId="selectedFundRef" />
+                    <Over75k :fundId="selectedFundRef"/>
                 </div>
 
                 <div class="bg-eggplant-500 rounded-sm p-4">
-                    <MembersAwarded :fundId="selectedFundRef" />
+                    <MembersAwarded :fundId="selectedFundRef"/>
                 </div>
 
                 <div class="bg-blue-dark-500 rounded-sm p-4">
-                    <FundedAndCompleted :fundId="selectedFundRef" />
+                    <FundedAndCompleted :fundId="selectedFundRef"/>
                 </div>
             </div>
 
-            <div class="flex flex-row justify-between gap-8 w-full mt-16">
+            <div class="flex flex-row justify-between gap-8 w-full mt-8">
                 <div class="rounded-sm max-h-[60rem] bg-white w-[60%] p-4">
                     <WalletBalanceChart
                         :attachment-link="attachmentLink"
@@ -149,11 +149,11 @@
                 </div>
 
                 <div class="rounded-sm max-h-[60rem] bg-white w-[40%] p-4">
-                    <RegistrationChart :ada-power-ranges="adaPowerRanges" />
+                    <RegistrationChart :ada-power-ranges="adaPowerRanges"/>
                 </div>
             </div>
 
-            <div class="flex flex-row justify-between gap-8 mt-16">
+            <div class="flex flex-row justify-between gap-8 mt-8">
                 <div class="rounded-sm max-h-[60rem] bg-white p-4 w-[60%]">
                     <AdaPowerChart
                         :attachmentLink="attachmentLink"
@@ -163,7 +163,7 @@
                 </div>
                 <Suspense>
                     <div class="bg-white w-[40%]">
-                        <VotingAggregates :fund-id="selectedFundRef" />
+                        <VotingAggregates :fund-id="selectedFundRef"/>
                     </div>
 
                     <template #fallback>
@@ -178,75 +178,97 @@
 
             <div class="flex flex-row items-center justify-center mt-16">
                 <a
-                    class="px-8 py-4 rounded-xs bg-blue-dark-500 text-white menu-link text-lg"
+                    class="px-8 py-4 rounded-sm bg-blue-dark-500 text-white menu-link text-lg"
                     :class="{
                         'text-yellow-500': $page.component.startsWith('Charts'),
                     }"
                     :href="route('catalyst-explorer.charts')"
                 >
-                    {{ $t("See more charts") }}
+                    {{ $t("See more numbers") }}
                 </a>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <div class="bg-teal-10 flex flex-row w-[60%] gap-8 m-auto mt-20">
-            <img
-                width="360"
-                height="360"
-                src="../../../../../public/img/speaker.png"
-                alt="Speaker"
-            />
-            <div class="p-12">
-                <h2 class="text-[40px] font-title text-blue-dark-500 mb-12">
-                    Weekly Town Hall
-                </h2>
-                <p class="text-[24px] text-blue-dark-500/90 mb-8">
-                    Join Project Catalyst team and community for our weekly town
-                    hall followed by an open space with break out rooms.
-                </p>
-                <a
-                    href="https://zoom.us/meeting/register/tJEtduyupzMvHNUczCQwfFJGcXzmw2lDwkIf#/registration"
-                    class="bg-blue-dark-500 text-white py-2 px-8 rounded-xs"
-                    >Join us</a
-                >
+    <section class="py-16">
+        <div class="container">
+            <div class="bg-teal-10 flex flex-row gap-8 m-auto">
+                <img
+                    width="360"
+                    height="360"
+                    src="../../../../../public/img/speaker.png"
+                    alt="Speaker"
+                />
+                <div class="p-12">
+                    <h2 class="text-[40px] font-title text-blue-dark-500 mb-12">
+                        Weekly Town Hall
+                    </h2>
+                    <p class="text-[24px] text-blue-dark-500/90 mb-8">
+                        Join Project Catalyst team and community for our weekly town
+                        hall followed by an open space with break out rooms.
+                    </p>
+                    <a
+                        href="https://zoom.us/meeting/register/tJEtduyupzMvHNUczCQwfFJGcXzmw2lDwkIf#/registration"
+                        class="bg-blue-dark-500 text-white py-2 px-8 rounded-sm"
+                    >Join us</a>
+                </div>
             </div>
         </div>
+    </section>
 
-        <div class="mt-24 p-20 bg-primary-20/60">
-            <h2 class="font-bold text-[48px] mb-16">
-                Catalyst <span class="text-teal-500">Posts</span>
-            </h2>
-            <ul class="grid lg:grid-cols-4 sm:grid-cols-2 xs:grid-cols-1 gap-8">
-                <li v-for="post in posts" :key="post.id" class="border-l-2 border-eggplant-500 p-4 h-[500px]">
-                    <img v-if="post.image" :src="post.image" alt="Post Image" class="w-full h-[40%] object-cover mb-2">
-                    <div class="h-[50%]">
-                        <h2 class="text-2xl font-bold hover:text-teal-500 mb-4">{{ post.title }}</h2>
-                    <h3 class="text-xl font-normal">{{ post.subtitle }}</h3>
-                    <div class="flex flex-row items-center gap-2 mt-4">
-                        <p class="text-sm bg-teal-10 rounded-sm px-2">{{ post.published_at }}</p>
-                    <div class="flex flex-row items-center gap-2 text-sm bg-teal-10 rounded-sm px-2">
-                        <img v-if="post.author_gravatar" :src="post.author_gravatar" alt="Author avatar" class="w-4 h-4 rounded-full">
-                        <p>{{ post.author }}</p>
+    <section class="py-16 bg-primary-20/60">
+        <div class="container">
+            <div class="mb-8">
+                <h2 class="font-bold text-[48px] mb-1">
+                    Catalyst <span class="text-teal-500">Posts</span>
+                </h2>
+                <p>Latest news and articles from our library</p>
+            </div>
+
+            <ul class="grid xl:grid-cols-4 sm:grid-cols-2 xs:grid-cols-1">
+                <li v-for="post in posts" :key="post.id"
+                    class="border-2 -m-px xl:-ml-px border-eggplant-500 p-4 flex flex-col justify-start">
+                    <img v-if="post.image" :src="post.image" alt="Post Image" class="w-full object-cover mb-2">
+
+                    <div class="flex flex-col justify-between flex-1">
+                        <div>
+                            <h2 class="text-2xl font-bold hover:text-teal-500 mb-4">{{ post.title }}</h2>
+                            <h3 class="text-xl font-normal">{{ post.subtitle }}</h3>
+                        </div>
+
+                        <div class="flex flex-row items-center gap-2 mt-4">
+                            <p class="text-sm bg-teal-10 rounded-sm px-2">{{ post.published_at }}</p>
+                            <div class="flex flex-row items-center gap-2 text-sm bg-teal-10 rounded-sm px-2">
+                                <img v-if="post.author_gravatar" :src="post.author_gravatar" alt="Author avatar"
+                                     class="w-4 h-4 rounded-full">
+                                <p>{{ post.author }}</p>
+                            </div>
+                        </div>
                     </div>
-                    </div>
-                    </div>
 
-                   <a href="#" class="flex flex-row items-center text-base text-black/60 gap-3">
-                     <p>Continue reading</p>
-                    <ArrowRightIcon class="w-10 h-6" />
-                  </a>
-
-
+                    <a href="#" class="flex flex-row items-center text-base text-black/60 gap-3 mt-1">
+                        <p>Continue reading</p>
+                        <ArrowRightIcon class="w-10 h-6"/>
+                    </a>
                 </li>
             </ul>
+
+            <div class="mt-10">
+                <a
+                    class="px-8 py-4 rounded-sm bg-blue-dark-500 text-white inline-flex flex-row gap-0.5 text-lg"
+                    href="/tags/project-catalyst">
+                    <span>{{ $t("See more catalyst educational content") }}</span>
+                    <ArrowRightIcon class="w-10 h-6"/>
+                </a>
+            </div>
         </div>
     </section>
 </template>
 
 <script setup lang="ts">
-import { Head, router, Link } from "@inertiajs/vue3";
-import { watch, ref, defineAsyncComponent, onMounted } from "vue";
-import { ArrowRightIcon } from "@heroicons/vue/24/solid";
+import {Head, router, Link} from "@inertiajs/vue3";
+import {watch, ref, defineAsyncComponent, onMounted} from "vue";
+import {ArrowRightIcon} from "@heroicons/vue/24/solid";
 import route from "ziggy-js";
 import Challenge from "@apps/catalyst-explorer/models/challenge";
 import Over75k from "@apps/catalyst-explorer/modules/charts/Over75k.vue";
@@ -256,7 +278,7 @@ import WalletBalanceChart from "@apps/catalyst-explorer/modules/charts/WalletBal
 import MembersAwarded from "@apps/catalyst-explorer/modules/charts/MembersAwarded.vue";
 import RegistrationChart from "@apps/catalyst-explorer/modules/charts/RegistrationChart.vue";
 import AdaPowerChart from "@apps/catalyst-explorer/modules/charts/AdaPowerChart.vue";
-import { VARIABLES } from "@apps/catalyst-explorer/models/variables";
+import {VARIABLES} from "@apps/catalyst-explorer/models/variables";
 import axios from "axios";
 import Fund from "@apps/catalyst-explorer/models/fund";
 
@@ -279,7 +301,7 @@ const props = withDefaults(
 let adaPowerRanges = ref<{ key: string; count: number; total: number }[]>([]);
 let fundedOver75KCount = ref<number>(null);
 
-let selectedFundRef = ref<number | string>(props.filters?.fundId);
+let selectedFundRef = ref<number | null>(props.filters?.fundId);
 
 let currPage$ = ref<number>(1);
 let perPage$ = ref<number>(36);
@@ -295,12 +317,12 @@ watch(
     () => {
         query();
     },
-    { deep: true }
+    {deep: true}
 );
 
-watch([currPage$, perPage$], () => {
-    fundedOver75KCount.value = fundedOver75KCount.value;
-});
+// watch([currPage$, perPage$], () => {
+//     fundedOver75KCount.value = fundedOver75KCount.value;
+// });
 
 const chartDataVotesCastScatter$ = ref<object>();
 const chartData1Registration1Vote$ = ref<object>();
@@ -320,7 +342,7 @@ function getMetrics() {
 
     // fetch adaRanges
     axios
-        .get(route("catalyst-explorer.metrics.adaPowerRanges"), { params })
+        .get(route("catalyst-explorer.metrics.adaPowerRanges"), {params})
         .then((res) => {
             adaPowerRanges.value = res?.data;
 
@@ -453,7 +475,7 @@ function getMetrics() {
         });
 
     axios
-        .get(route("catalystExplorerApi.talliesSum"), { params })
+        .get(route("catalystExplorerApi.talliesSum"), {params})
         .then((res) => {
             talliesSum$.value = res?.data;
         })
@@ -475,12 +497,13 @@ function getAttachmentLink() {
     const params = getQueryData();
 
     axios
-        .get(route("catalyst-explorer.attachments.votingPowers"), { params })
+        .get(route("catalyst-explorer.attachments.votingPowers"), {params})
         .then((res) => (attachmentLink.value = res?.data))
         .catch((error) => {
             console.error(error);
         });
 }
+
 const originalText = "Project Catalyst";
 const animatedText = ref("");
 
@@ -511,7 +534,6 @@ const fetchPosts = async () => {
         .then((res) => {
             const allPosts = res.data;
             posts.value = allPosts.slice(0, 4);
-            console.log(posts.value)
         })
         .catch((error) => {
             console.log(error);
