@@ -18,7 +18,7 @@
                             <span class="text-slate-700 text-xl">
                                 Proposals
                             </span>
-                            <ul class="flex flex-col gap-2">
+                            <ul class="flex flex-col gap-1">
                                 <li>
                                     <Link
                                         class="text-gray-900 menu-link font-normal hover:text-teal-800"
@@ -30,11 +30,28 @@
                                 <li>
                                     <Link
                                         class="text-gray-900 menu-link font-normal hover:text-teal-800"
+                                        :class="{ 'text-teal-600': $page.component.startsWith('Assessments') }"
+                                        :href="route('catalyst-explorer.assessments')">
+                                        {{ $t('Proposal Reviews') }}
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link
+                                        class="text-gray-900 menu-link font-normal hover:text-teal-800"
+                                        :class="{ 'text-teal-600': $page.component.startsWith('Reports') }"
+                                        :href="route('catalyst-explorer.reports')">
+                                        {{ $t('Monthly Reports') }}
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link
+                                        class="text-gray-900 menu-link font-normal hover:text-teal-800"
                                         :class="{ 'text-teal-600': $page.component.startsWith('Funds') }"
                                         :href="route('catalyst-explorer.funds.index')">
                                         {{ $t('Funds') }}
                                     </Link>
                                 </li>
+
                             </ul>
                         </li>
 
@@ -42,7 +59,7 @@
                             <span class="text-slate-700 text-xl">
                                 People
                             </span>
-                            <ul class="flex flex-col gap-2">
+                            <ul class="flex flex-col gap-1">
                                 <li>
                                     <Link
                                         class="text-gray-900 menu-link font-normal hover:text-teal-800"
@@ -72,7 +89,7 @@
 
                         <li>
                             <span class="text-slate-700 text-xl">Charts</span>
-                            <ul class="flex flex-col gap-2">
+                            <ul class="flex flex-col gap-1">
                                 <li>
                                     <a
                                         class="text-gray-900 menu-link font-normal hover:text-teal-800"
@@ -92,7 +109,7 @@
                         </li>
                         <li>
                             <span class="text-slate-700 text-xl">Tools</span>
-                            <ul class="flex flex-col gap-2">
+                            <ul class="flex flex-col gap-1">
                                 <li>
                                     <Link
                                         class="text-gray-900 menu-link font-normal hover:text-teal-800"
@@ -115,6 +132,14 @@
                                         :class="{ 'text-teal-600': $page.component.startsWith('Registrations') }"
                                         :href="route('catalyst-explorer.registrations')">
                                         {{ $t('Check my vote') }}
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link
+                                        class="text-gray-900 menu-link font-normal hover:text-teal-800"
+                                        :class="{ 'text-teal-600': $page.component.startsWith('MyBookmarks') }"
+                                        :href="route('catalyst-explorer.myBookmarks')">
+                                        {{ $t('My Bookmarks') }}
                                     </Link>
                                 </li>
                             </ul>

@@ -44,8 +44,8 @@ class ReportsController extends Controller
     {
         $query = CatalystReport::withOnly(['proposal.author'])
             ->withCount([
-                'hearts',
-                'eyes',
+                'heart',
+                'eye',
                 'party_popper',
                 'rocket',
                 'thumbs_down',

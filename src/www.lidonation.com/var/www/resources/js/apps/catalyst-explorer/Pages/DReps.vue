@@ -1,4 +1,6 @@
 <template>
+    <Head title="Project Catalyst Delegated Representatives (DRreps)" />
+
     <section class="bg-white">
         <header class="py-16">
             <div class="container">
@@ -133,4 +135,10 @@
 </template>
 
 <script>
+import {defineComponent} from "vue";
+import {Head} from "@inertiajs/vue3";
+
+export default defineComponent({
+    components: {Head}
+})
 </script>
