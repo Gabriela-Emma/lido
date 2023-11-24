@@ -188,18 +188,18 @@ Route::group(
                     ->name('completedProposalsCount');
                 Route::get('/total-registrations-ada-power', [ChartsController::class, 'metricTotalRegisteredAdaPower'])
                     ->name('totalRegisteredAdaPower');
+                Route::get('/registeredAdaNotVoted', [ChartsController::class, 'metricSumAdaRegisteredNotVoted'])
+                    ->name('registeredAdaNotVoted');
                 Route::get('/total-registrations', [ChartsController::class, 'metricTotalRegistrations'])
                     ->name('totalRegistrations');
                 Route::get('/total-delegation-registrations', [ChartsController::class, 'metricTotalDelegationRegistrations'])
                     ->name('totalDelegationRegistrations');
                 Route::get('/total-delegation-registrations-ada-power', [ChartsController::class, 'metricTotalDelegationRegistrationsAdaPower'])
                     ->name('totalDelegationRegistrationsAdaPower');
-
                 Route::get('/total-yes-votes', [ChartsController::class, 'metricsTotalYesVotes'])
                     ->name('totalYesVotes');
                 Route::get('/total-no-votes', [ChartsController::class, 'metricsTotalNoVotes'])
                     ->name('totalNoVotes');
-
                 Route::get('/votes-casted-average', [ChartsController::class, 'metricVotesCastAverage'])
                     ->name('votesCastAverage');
                 Route::get('/votes-casted-mode', [ChartsController::class, 'metricVotesCastMode'])
