@@ -7,7 +7,7 @@
             </h3>
         </div>
 
-        <div class="flex w-full gap-8 gridgrid-cols-6 md:gap-16 lg:gap-4 combined-ratings">
+        <div class="flex w-full gap-8 md:gap-16 lg:gap-4 combined-ratings">
             @if ($allTimeCaRatingCount)
                 <div class="flex flex-col justify-center px-16 all-time-combine-reviews">
                     <div class="text-sm text-right">

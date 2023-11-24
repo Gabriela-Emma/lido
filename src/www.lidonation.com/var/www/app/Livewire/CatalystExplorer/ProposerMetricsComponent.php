@@ -167,10 +167,10 @@ class ProposerMetricsComponent extends Component
             'currency' => $currency,
             'totalAda' => $adaProposal->flatMap(function ($proposalCollection) {
                 return $proposalCollection?->pluck('amount_received');
-            })->sum(),
+            }),
             'totalUsd' => $usdProposal->flatMap(function ($proposalCollection) {
                 return $proposalCollection?->pluck('amount_received');
-            })->sum(),
+            }),
             'data' => $proposals->map(
                 fn ($ps) => $ps->sum('amount_received')
             )->values(),
@@ -188,12 +188,12 @@ class ProposerMetricsComponent extends Component
                 return $proposalCollection?->filter(function ($proposal) {
                     return $proposal['funded'];
                 })->pluck('amount_requested');
-            })->sum(),
+            }),
             'totalUsd' => $usdProposal->flatMap(function ($proposalCollection) {
                 return $proposalCollection?->filter(function ($proposal) {
                     return $proposal['funded'];
                 })->pluck('amount_requested');
-            })->sum(),
+            }),
             'data' => $proposals->map(
                 fn ($ps) => $ps->filter(fn ($p) => $p->funded)->sum('amount_requested')
             )->values(),
@@ -209,10 +209,10 @@ class ProposerMetricsComponent extends Component
             'currency' => $currency,
             'totalAda' => $adaProposal->flatMap(function ($proposalCollection) {
                 return $proposalCollection?->pluck('amount_requested');
-            })->sum(),
+            }),
             'totalUsd' => $usdProposal->flatMap(function ($proposalCollection) {
                 return $proposalCollection?->pluck('amount_requested');
-            })->sum(),
+            }),
             'data' => $proposals->map(
                 fn ($ps) => $ps->sum('amount_requested')
             )->values(),
