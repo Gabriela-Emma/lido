@@ -5,11 +5,11 @@
         <div class="container">
             <div class="flex flex-row gap-8 items-center justify-between py-16">
                 <div class="flex flex-col gap-4">
-                    <h2 class="text-teal-500 font-bold text-[60px] text-start">
+                    <h2 class="text-teal-500 font-bold text-[24px] sm:text-[36px] xl:text-[60px] text-start">
                         {{ animatedText }}
                     </h2>
 
-                    <p class="text-[14px] text-blue-dark-500 mt-8 mb-4 w-[50%]">
+                    <p class="xl:text-[14px] text-[12px] text-blue-dark-500 mt-8 mb-4 w-[80%] xl:w-[50%]">
                         Project Catalyst propels collaborative innovation to new
                         heights and fuels Cardano ecosystem expansion by
                         connecting people with groundbreaking ideas to a funding
@@ -40,7 +40,7 @@
                         See how an idea comes to life within Project Catalyst.
                     </p>
                 </div>
-                <div class="grid grid-cols-5 gap-8">
+                <div class="grid xl:grid-cols-5 sm:grid-cols-3 xs:grid-cols-1 gap-8">
                     <div
                         class="flex flex-col rounded-sm shadow-md bg-primary-20 p-8 text-center"
                     >
@@ -119,7 +119,7 @@
                 </p>
             </div>
 
-            <div class="grid grid-cols-4 gap-8">
+            <div class="grid xl:grid-cols-4 sm:grid-cols-2 xs:grid-cols-1 gap-8">
                 <div class="bg-teal-900 rounded-sm p-4">
                     <LargestWinningProposal :fundId="selectedFundRef"/>
                 </div>
@@ -137,8 +137,8 @@
                 </div>
             </div>
 
-            <div class="flex flex-row justify-between gap-8 w-full mt-8">
-                <div class="rounded-sm max-h-[60rem] bg-white w-[60%] p-4">
+            <div class="flex xl:flex-row flex-col justify-between gap-8 w-full mt-8">
+                <div class="rounded-sm max-h-[60rem] bg-white xl:w-[60%] p-4">
                     <WalletBalanceChart
                         :attachment-link="attachmentLink"
                         :chartData1Registration1Vote$="
@@ -148,13 +148,13 @@
                     />
                 </div>
 
-                <div class="rounded-sm max-h-[60rem] bg-white w-[40%] p-4">
+                <div class="rounded-sm max-h-[60rem] bg-white xl:w-[40%] p-4">
                     <RegistrationChart :ada-power-ranges="adaPowerRanges"/>
                 </div>
             </div>
 
-            <div class="flex flex-row justify-between gap-8 mt-8">
-                <div class="rounded-sm max-h-[60rem] bg-white p-4 w-[60%]">
+            <div class="flex xl:flex-row flex-col justify-between gap-8 mt-8">
+                <div class="rounded-sm max-h-[60rem] bg-white p-4 xl:w-[60%]">
                     <AdaPowerChart
                         :attachmentLink="attachmentLink"
                         :chart-data1-ada1-vote$="chartData1Ada1Vote$"
@@ -162,7 +162,7 @@
                     />
                 </div>
                 <Suspense>
-                    <div class="bg-white w-[40%]">
+                    <div class="bg-white xl:w-[40%]">
                         <VotingAggregates :fund-id="selectedFundRef"/>
                     </div>
 
@@ -192,22 +192,23 @@
 
     <section class="py-16">
         <div class="container">
-            <div class="bg-teal-10 flex flex-row gap-8 m-auto">
+            <div class="bg-teal-10 flex flex-col xl:flex-row gap-8 m-auto">
                 <img
                     width="360"
                     height="360"
                     src="../../../../../public/img/speaker.png"
                     alt="Speaker"
+                    class="hidden xl:block"
                 />
-                <div class="p-12">
-                    <h2 class="text-[40px] text-blue-dark-500 mb-12">
+                <div class="p-4 xl:p-12 flex flex-col item-center justify-center">
+                    <h2 class="text-[24px] xl:text-[40px] text-blue-dark-500 mb-12 text-center xl:text-start">
                         Weekly Town Hall
                     </h2>
-                    <p class="text-[24px] text-blue-dark-500/90 mb-8">
+                    <p class="text-[16px] text-center xl:text-start xl:text-[24px] text-blue-dark-500/90 mb-8">
                         Join Project Catalyst team and community for our weekly town
                         hall followed by an open space with break out rooms.
                     </p>
-                    <div class="flex flex-row gap-2.5 flex-wrap w-full">
+                    <div class="flex flex-row items-center justify-center xl:items-start xl:justify-start gap-2.5 w-full">
                         <a
                             href="https://bit.ly/3rCicSR"
                             target="_blank"
