@@ -63,6 +63,14 @@
                                 <li>
                                     <Link
                                         class="text-gray-900 menu-link font-normal hover:text-teal-800"
+                                        :class="{ 'text-teal-600': $page.component.startsWith('People') }"
+                                        :href="route('catalyst-explorer.people.index')">
+                                        {{ $t('Proposers') }}
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link
+                                        class="text-gray-900 menu-link font-normal hover:text-teal-800"
                                         :class="{ 'text-teal-600': $page.component.startsWith('Groups') }"
                                         :href="route('catalyst-explorer.groups')">
                                         {{ $t('Groups') }}
@@ -76,19 +84,11 @@
                                         {{ $t('dReps') }}
                                     </Link>
                                 </li>
-                                <li>
-                                    <Link
-                                        class="text-gray-900 menu-link font-normal hover:text-teal-800"
-                                        :class="{ 'text-teal-600': $page.component.startsWith('People') }"
-                                        :href="route('catalyst-explorer.people.index')">
-                                        {{ $t('Proposers') }}
-                                    </Link>
-                                </li>
                             </ul>
                         </li>
 
                         <li>
-                            <span class="text-slate-700 text-xl">Charts</span>
+                            <span class="text-slate-700 text-xl">Data</span>
                             <ul class="flex flex-col gap-1">
                                 <li>
                                     <a
@@ -103,6 +103,13 @@
                                         class="text-gray-900 menu-link font-normal hover:text-teal-800"
                                         :href="route('projectCatalyst.votes.ccv4')">
                                         {{ $t('CCV4 Votes') }}
+                                    </a>
+                                </li>
+                                <li>
+                                    <a
+                                        class="text-gray-900 menu-link font-normal hover:text-teal-800"
+                                        href="/catalyst-explorer/api">
+                                        {{ $t('Catalyst Api') }}
                                     </a>
                                 </li>
                             </ul>

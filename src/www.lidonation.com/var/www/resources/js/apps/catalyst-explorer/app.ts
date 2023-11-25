@@ -36,7 +36,6 @@ createInertiaApp({
     },
     title: (title) => `${title} - ${appName}`,
     // @ts-ignore
-    // resolve: (name) => resolvePageComponent(`./catalyst-explorer/Pages/${name}.vue`, import.meta.glob('../catalyst-explorer/Pages/**/*.vue')),
     resolve: name => {
         const pages = import.meta.glob('../catalyst-explorer/Pages/**/*.vue', { eager: true });
         let page = pages[`./Pages/${name}.vue`]

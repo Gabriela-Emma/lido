@@ -41,7 +41,6 @@ class RewardController extends Controller
 
     public function withdrawal(WithdrawalData $withdrawalData)
     {
-
         return Inertia::render('Withdrawal', [
             'withdrawal' => $withdrawalData,
             'crumbs' => [

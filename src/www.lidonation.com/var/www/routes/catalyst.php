@@ -79,7 +79,7 @@ Route::group(
                 ->name('home');
 
             // Auth
-            Route::get('/login', fn () => Inertia::render('Auth/Login'))
+            Route::get('/D', fn () => Inertia::render('Auth/Login'))
                 ->name('login');
 
             Route::get('/auth/login', [UserController::class, 'utilityLogin'])
