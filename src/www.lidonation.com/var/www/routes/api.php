@@ -34,6 +34,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
+use App\Inertia\CatalystExplorer\HomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -319,7 +320,7 @@ Route::prefix('catalyst-explorer')->as('catalystExplorerApi.')
         Route::get('/tags', [CatalystExplorer\TagController::class, 'tags'])->name('tags');
         Route::get('/tags/{tag}', [CatalystExplorer\TagController::class, 'tag'])->name('tag');
 
-        Route::get('/posts', [PostController::class, 'getCatalystPost'])->name('posts');
+        Route::get('/posts', [HomeController::class, 'getCatalystPost'])->name('posts');
 
         Route::get('/ledger-snapshots/latest', [CatalystExplorer\CatalystLedgerSnapshotController::class, 'latestCatalystLedgerSnapshot'])->name('latestCatalystLedgerSnapshots');
         Route::get('/ledger-snapshots', [CatalystExplorer\CatalystLedgerSnapshotController::class, 'catalystLedgerSnapshots'])->name('catalystLedgerSnapshots');
