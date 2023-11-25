@@ -11,16 +11,17 @@
             <div>
                 <ul class="flex flex-row items-center gap-3">
                     @foreach ($catalystMenu as $menu)
-                        <li>
-                            <a href="{{ route($menu->route) }}" wire:navigate.hover
-                                class="text-white hover:text-yellow-400">
-                                <span>{{ $menu->title }}</span>
-                            </a>
-                        </li>
+                        @if ($loop->index < 5)
+                            <li>
+                                <a class="font-bold text-white hover:text-yellow-400" href="{{ route($menu?->route) }}">
+                                    {{ $menu?->title }}
+                                </a>
+                            </li>
+                        @endif
                     @endforeach
                     <li>
                         <a @click.prevent="$dispatch('toggle-catalyst-menu')" href="#"
-                            class="flex justify-between items-center text-white hover:text-yellow-400">More
+                            class="flex justify-between items-center text-white hover:text-teal-800">More
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                 stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
