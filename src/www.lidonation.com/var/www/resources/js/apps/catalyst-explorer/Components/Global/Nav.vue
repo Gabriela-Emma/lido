@@ -51,56 +51,15 @@
                 <nav class="relative hidden xl:inline-flex">
                     <ul
                         class="flex flex-row items-center justify-end h-full gap-2 py-2 overflow-x-auto text-xs md:text-sm flex-nowrap">
-                        <li class="flow-root menu-item">
+                        <li v-for="link in menulinks" :key="link.name" class="flow-root menu-item">
                             <Link
                                 class="px-1 py-3 text-white menu-link hover:text-yellow-500"
-                                :class="{ 'text-yellow-500': $page.component.startsWith('Home') }"
-                                :href="route('catalyst-explorer.home')">
-                                {{ $t('Home') }}
+                                :class="{ 'text-yellow-500': $page.component.startsWith(link.name) }"
+                                :href="route(link.route)">
+                                {{ $t(link.name) }}          
                             </Link>
                         </li>
-                        <li class="flow-root menu-item">
-                            <Link
-                                class="px-1 py-3 text-white menu-link hover:text-yellow-500"
-                                :class="{ 'text-yellow-500': $page.component.startsWith('Proposals') }"
-                                :href="route('catalyst-explorer.proposals')">
-                                {{ $t('Proposals') }}
-                            </Link>
-                        </li>
-                        <li class="flow-root menu-item">
-                            <Link
-                                class="px-1 py-3 text-white menu-link hover:text-yellow-500"
-                                :class="{ 'text-yellow-500': $page.component.startsWith('People') }"
-                                :href="route('catalyst-explorer.people.index')">
-                                {{ $t('People') }}
-                            </Link>
-                        </li>
-                        <li class="flow-root menu-item">
-                            <a
-                                class="px-1 py-3 text-white menu-link hover:text-yellow-500"
-                                :class="{ 'text-yellow-500': $page.component.startsWith('Charts') }"
-                                :href="route('catalyst-explorer.charts')">
-                                {{ $t('Charts') }}
-                            </a>
-                        </li>
-
-                        <!-- <li class="flow-root menu-item">
-                            <Link
-                                class="px-1 py-3 text-white menu-link hover:text-yellow-500"
-                                :class="{ 'text-yellow-500': $page.component.startsWith('Bookmark') }"
-                                :href="$utils.localizeRoute('catalyst-explorer/bookmarks')">
-                                {{ $t('Bookmarks') }}
-                            </Link>
-                        </li> -->
-
-                        <li class="flow-root menu-item">
-                            <Link
-                                class="px-1 py-3 text-white menu-link hover:text-yellow-500"
-                                :class="{ 'text-yellow-500': $page.component.startsWith('VoterTool') }"
-                                :href="route('catalyst-explorer.voter-tool')">
-                                {{ $t('Voter Tool') }}
-                            </Link>
-                        </li>
+                        
                         <MenuDropdown />
                         <!--                        <li class="flow-root menu-item" x-data="bookmarksMenuLink">-->
                         <!--                            <Link href="/catalyst-explorer/bookmarks" class="inline-flex items-center menu-link group">-->
@@ -261,7 +220,9 @@ import {Bars3Icon, XMarkIcon, HomeIcon} from '@heroicons/vue/20/solid';
 import {onClickOutside} from '@vueuse/core';
 import route from "ziggy-js";
 import MenuDropdown from "../Navigation/MenuDropdown.vue"
+import { menulinkStore } from '../../stores/menu-links-store';
 
+const { menulinks } = menulinkStore();
 
 const $utils: any = inject('$utils');
 
