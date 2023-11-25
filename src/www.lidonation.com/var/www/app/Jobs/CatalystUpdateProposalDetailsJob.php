@@ -85,9 +85,8 @@ class CatalystUpdateProposalDetailsJob implements ShouldQueue
                 $this->proposal->problem = $converter->convert(
                     Str::replace('/a/attachments/', 'https://cardano.ideascale.com/a/attachments/', $data->description)
                 );
-
                 $solution = collect($data->fieldSections)
-                    ->filter(fn ($field) => isset($field->ideaFieldValues[0]) && $field->ideaFieldValues[0]?->fieldName === 'CF_286')
+                    ->filter(fn ($field) => isset($field->ideaFieldValues[0]) && $field->ideaFieldValues[0]?->fieldName === 'CF_276')
                     ->first()?->ideaFieldValues[0]?->value ?? null;
                 $this->proposal->solution = $converter->convert(
                     Str::replace('/a/attachments/', 'https://cardano.ideascale.com/a/attachments/', $solution)
@@ -107,7 +106,6 @@ class CatalystUpdateProposalDetailsJob implements ShouldQueue
         }
 
         // sync co-proposers
-        dump($this->proposal->id);
         $coSubmitters = $this->processCoProposers($data);
         $this->proposal?->users()->sync($coSubmitters->filter()->values()->push($author->id));
 
@@ -128,7 +126,11 @@ class CatalystUpdateProposalDetailsJob implements ShouldQueue
             $content = (string) $fieldSections->implode('');
         }
         if ($this->proposal->fund?->parent_id == 113 || $this->proposal->fund?->parent_id == 129) {
-            $fieldSections = $this->getFund10ProposalDetails($data->fieldSections);
+            if ($this->proposal->fund?->parent_id == 113) {
+                $fieldSections = $this->getFund10ProposalDetails($data->fieldSections);
+            } elseif ($this->proposal->fund?->parent_id == 129) {
+                $fieldSections = $this->getFund11ProposalDetails($data->fieldSections);
+            }
             $content = (string) $fieldSections->implode('');
 
             // save requested amount
@@ -397,9 +399,24 @@ class CatalystUpdateProposalDetailsJob implements ShouldQueue
     {
         $fieldSections = collect($sections)
             ->filter(fn ($field) => isset($field->ideaFieldValues[0]) && $field->ideaFieldValues[0]?->fieldDisplayType === 'TEXTAREA');
-
         if ($this->proposal->type == 'proposal') {
             $fieldSections = $fieldSections->filter(fn ($field) => Str::contains($field?->title, ['[IMPACT]', '[CAPABILITY/ FEASIBILITY]', '[RESOURCES & VALUE FOR MONEY]', '[FEASIBILITY]', '[AUDITABILITY]', '(SDG) Rating'], true));
+        }
+
+        return $fieldSections->map(function ($field) {
+            $ideaFieldValues = collect($field->ideaFieldValues)->pluck('value')->implode('<br /><br />>');
+            $converter = new HtmlConverter();
+
+            return $converter->convert('<h3 class="mt-6">' . $field?->title . '</h3>' . $ideaFieldValues . '<br /><br /><p></p>');
+        });
+    }
+
+    protected function getFund11ProposalDetails($sections)
+    {
+        $fieldSections = collect($sections)
+            ->filter(fn ($field) => isset($field->ideaFieldValues[0]) && $field->ideaFieldValues[0]?->fieldDisplayType === 'TEXTAREA');
+        if ($this->proposal->type == 'proposal') {
+            $fieldSections = $fieldSections->filter(fn ($field) => Str::contains($field?->title, ['[SOLUTION]','[IMPACT]', '[CAPABILITY & FEASIBILITY]', '[Project Milestones]', '[RESOURCES]', '[BUDGET & COSTS]', '[FEASIBILITY]', '[VALUE FOR MONEY]'], true));
         }
 
         return $fieldSections->map(function ($field) {
