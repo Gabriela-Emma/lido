@@ -52,7 +52,7 @@
     @include('includes.footer')
 
     <!-- Scripts -->
-{{--    @livewireScriptConfig--}}
+    @livewireScriptConfig
 
     @include('includes.global-search-handler')
 
