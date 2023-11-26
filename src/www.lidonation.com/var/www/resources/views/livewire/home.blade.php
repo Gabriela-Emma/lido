@@ -9,7 +9,7 @@
     </section>
 
     <section class="relative py-16 bg-primary-10">
-        <livewire:components.new-to-library lazy="on-load" />
+        <livewire:components.new-to-library />
     </section>
 
     <section class="relative py-10 mb-8 bg-white">
