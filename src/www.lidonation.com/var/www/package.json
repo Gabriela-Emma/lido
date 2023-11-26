@@ -35,6 +35,7 @@
         "@headlessui/vue": "^1.7.16",
         "@heroicons/vue": "^2.0.18",
         "@splidejs/splide": "^4.1.4",
+        "@splidejs/splide-extension-video": "^0.8.0",
         "@tailwindcss/aspect-ratio": "^0.4.2",
         "@types/marked": "^6.0.0",
         "@types/rellax": "^1.7.5",
