@@ -49,6 +49,8 @@ class CatalystUser extends User implements CanComment, HasMedia
 
     protected $withCount = ['own_proposals', 'proposals'];
 
+    public $appends = ['co_proposals'];
+
     protected string $urlGroup = 'project-catalyst/users';
 
     protected $casts = [
@@ -114,6 +116,9 @@ class CatalystUser extends User implements CanComment, HasMedia
             'proposals_completed',
             'amount_awarded_ada',
             'amount_awarded_usd',
+            'own_proposals_count',
+            'co_proposals',
+
         ];
     }
 
@@ -167,8 +172,8 @@ class CatalystUser extends User implements CanComment, HasMedia
         $query->when(
             $filters['search'] ?? false,
             fn (Builder $query, $search) => $query
-                ->where('username', 'ILIKE', '%'.$search.'%')
-                ->orWhere('name', 'ILIKE', '%'.$search.'%')
+                ->where('username', 'ILIKE', '%' . $search . '%')
+                ->orWhere('name', 'ILIKE', '%' . $search . '%')
         );
 
         $query->when(
@@ -214,6 +219,15 @@ class CatalystUser extends User implements CanComment, HasMedia
     {
         return $this->hasMany(Proposal::class, 'user_id', 'id')
             ->where('type', 'proposal');
+    }
+
+    public function coProposals(): Attribute
+    {
+        return Attribute::make(get: function (){
+            $ownProposalIds = $this->own_proposals->pluck('id');
+
+        return $this->proposals()->whereNotIn('id', $ownProposalIds)->count();
+        });
     }
 
     /**
@@ -268,8 +282,9 @@ class CatalystUser extends User implements CanComment, HasMedia
             'proposals_completed' => $proposals->filter(fn ($p) => $p['status'] === 'complete')?->count() ?? 0,
             'first_timer' => ($proposals?->map(fn ($p) => $p['fund']['id'])->unique()->count() === 1),
             'proposals_approved' => $proposals->filter(fn ($p) => (bool) $p['funded_at'])?->count() ?? 0,
-            'amount_awarded_ada' => intval($this->amount_awarded_ada),
+            'amount_awarded_ada' => $this->amount_awarded_ada,
             'amount_awarded_usd' => intval($this->amount_awarded_usd),
+            'co_proposals' => intval($this-> co_proposals),
             'proposals_total_amount_requested' => intval($proposals->filter(fn ($p) => (bool) $p['amount_requested'])?->sum('amount_requested')) ?? 0,
         ]);
     }
@@ -297,7 +312,7 @@ class CatalystUser extends User implements CanComment, HasMedia
     #[Pure]
     public function getGravatarEmailField(): string
     {
-        if (! empty($this->email)) {
+        if (!empty($this->email)) {
             return 'email';
         }
 
