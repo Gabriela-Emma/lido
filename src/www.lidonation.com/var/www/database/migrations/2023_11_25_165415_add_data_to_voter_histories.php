@@ -1,10 +1,10 @@
 <?php
 
-use App\Models\VoterHistory;
 use App\Models\Wallet;
 use Illuminate\Support\Fluent;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
+use App\Models\CatalystExplorer\VoterHistory;
 use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration
