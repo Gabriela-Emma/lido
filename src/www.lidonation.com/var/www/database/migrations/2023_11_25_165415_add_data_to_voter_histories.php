@@ -14,47 +14,47 @@ return new class extends Migration
      */
     public function up(): void
     {
+        if (app()->environment('production')) {
+            $filePath = '/data/catalyst-tools/voting-history/f10/';
 
-        $filePath = '/data/catalyst-tools/voting-history/f10/';
+            if ($handle = opendir($filePath)) {
+                while (false !== ($entry = readdir($handle))) {
+                    if ($entry !== "." && $entry !== "..") {
+                        if (is_file($filePath . $entry)) {
+                            $fileContent = file_get_contents($filePath . $entry);
 
-        if ($handle = opendir($filePath)) {
-            while (false !== ($entry = readdir($handle))) {
-                if ($entry !== "." && $entry !== "..") {
-                    if (is_file($filePath . $entry)) {
-                        $fileContent = file_get_contents($filePath . $entry);
+                            $dataArray = json_decode($fileContent, true);
 
-                        $dataArray = json_decode($fileContent, true);
-
-                        if (is_array($dataArray) && empty($dataArray)) {
-                            continue; 
-                        }
-                        $voting_stake_key = str_replace('.json', '', $entry);
-                        
-                        $wallet = new  Wallet ;
-                        $wallet->context = 'voter_wallet';
-                        $wallet->stake_address = $voting_stake_key;
-                        $wallet->save();
-
-                        collect($dataArray)->each(
-                            function($item) use($wallet) {
-                                $item = new Fluent($item);
-                                VoterHistory::create([
-                                    'wallet_id' => $wallet->id,
-                                    'fragment_id' => $item->fragment_id,
-                                    'caster' => $item->caster,
-                                    'time' => $item->time,
-                                    'raw_fragment' => $item->raw_fragment,
-                                    'proposal' => $item->proposal,
-                                    'choice' => $item->choice
-                                ]);
+                            if (is_array($dataArray) && empty($dataArray)) {
+                                continue;
                             }
-                        );
+                            $voting_stake_key = str_replace('.json', '', $entry);
+
+                            $wallet = new  Wallet;
+                            $wallet->context = 'voter_wallet';
+                            $wallet->stake_address = $voting_stake_key;
+                            $wallet->save();
+
+                            collect($dataArray)->each(
+                                function ($item) use ($wallet) {
+                                    $item = new Fluent($item);
+                                    VoterHistory::create([
+                                        'wallet_id' => $wallet->id,
+                                        'fragment_id' => $item->fragment_id,
+                                        'caster' => $item->caster,
+                                        'time' => $item->time,
+                                        'raw_fragment' => $item->raw_fragment,
+                                        'proposal' => $item->proposal,
+                                        'choice' => $item->choice
+                                    ]);
+                                }
+                            );
+                        }
                     }
                 }
+                closedir($handle);
             }
-            closedir($handle);
         }
-
     }
 
     /**
@@ -62,6 +62,5 @@ return new class extends Migration
      */
     public function down(): void
     {
-
     }
 };
