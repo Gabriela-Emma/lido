@@ -122,7 +122,7 @@ class CatalystUser extends User implements CanComment, HasMedia
         ];
     }
 
-    public static function runCustomIndex()
+    public static function runCustomIndex(): void
     {
         Artisan::call('ln:index App\\\\Models\\\\CatalystExplorer\\\\CatalystUser ln__catalyst_users');
     }
