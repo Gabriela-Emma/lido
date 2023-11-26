@@ -21,7 +21,7 @@
     <!-- Styles -->
     <link rel="stylesheet" href="https://cdn.plyr.io/3.7.2/plyr.css" />
 
-    @livewireStyles
+{{--    @livewireStyles--}}
 
     @stack('styles')
 
@@ -43,7 +43,7 @@
     <script src="https://unpkg.com/smoothscroll-polyfill@0.4.4/dist/smoothscroll.js"></script>
 
 {{--    @livewireScripts--}}
-    @livewireScriptConfig
+{{--    @livewireScriptConfig--}}
 
     @vite(['resources/js/lido.ts'])
 
@@ -74,7 +74,7 @@
 
     @include('includes.footer')
 
-    <livewire:components.lido-menu lazy="on-load" />
+    <livewire:components.lido-menu  />
 
     @persist('lido-global-player')
         <div class="fixed z-40 bottom-8 left-12">
