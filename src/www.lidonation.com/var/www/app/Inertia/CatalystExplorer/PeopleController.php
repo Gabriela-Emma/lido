@@ -85,7 +85,7 @@ class PeopleController extends Controller
 
     protected function setFilters(Request $request)
     {
-         
+
         $this->limit = $request->input(CatalystExplorerQueryParams::PER_PAGE, 24);
 
         $sort = collect(explode(':', $request->input(CatalystExplorerQueryParams::SORTS, '')))->filter();
@@ -132,7 +132,7 @@ class PeopleController extends Controller
                     'id',
                     'name',
                     'own_proposals_count',
-                    'co-proposals',
+                    'co_proposals',
                     'username',
                     'first_timer',
                     'proposals_count',
