@@ -85,6 +85,7 @@ class PeopleController extends Controller
 
     protected function setFilters(Request $request)
     {
+
         $this->limit = $request->input(CatalystExplorerQueryParams::PER_PAGE, 24);
 
         $sort = collect(explode(':', $request->input(CatalystExplorerQueryParams::SORTS, '')))->filter();
@@ -96,8 +97,13 @@ class PeopleController extends Controller
                 'amount_awarded_ada:desc',
                 'amount_awarded_usd:asc',
                 'amount_awarded_usd:desc',
+                'own_proposals_count:asc',
+                'own_proposals_count:desc',
+                'co_proposals:asc',
+                'co_proposals:desc'
             ])->random()));
         }
+
         $this->sortBy = $sort->first();
         $this->sortOrder = $sort->last();
 
@@ -125,6 +131,8 @@ class PeopleController extends Controller
                 $options['attributesToRetrieve'] = $attrs ?? [
                     'id',
                     'name',
+                    'own_proposals_count',
+                    'co_proposals',
                     'username',
                     'first_timer',
                     'proposals_count',
