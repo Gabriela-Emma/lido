@@ -84,9 +84,9 @@ class AppServiceProvider extends ServiceProvider
             'lido'
         );
 
-        Livewire::setScriptRoute(function ($handle) {
-            return Route::get('/vendor/livewire/livewire.js', $handle);
-        });
+//        Livewire::setScriptRoute(function ($handle) {
+//            return Route::get('/vendor/livewire/livewire.js', $handle);
+//        });
 
         Sanctum::usePersonalAccessTokenModel(PersonalAccessToken::class);
         Blade::directive('percent', fn ($expression) => (round(((float) $expression) * 100, 3).'%'));
