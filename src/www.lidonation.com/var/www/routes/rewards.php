@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\RewardController;
-use App\Http\Controllers\WithdrawalController;
+use App\Http\Controllers\WithdrawalsController;
 use Illuminate\Support\Facades\Route;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
@@ -22,10 +22,10 @@ Route::group(
                 Route::get('/', [RewardController::class, 'index'])->name('index');
 
                 Route::prefix('/withdrawals')->as('withdrawals.')->group(function () {
-                    Route::get('/', [WithdrawalController::class, 'index'])
+                    Route::get('/', [WithdrawalsController::class, 'index'])
                         ->name('index');
 
-                    Route::get('/{withdrawal:id}', [WithdrawalController::class, 'view'])
+                    Route::get('/{withdrawal:id}', [WithdrawalsController::class, 'view'])
                         ->name('view');
                 });
 

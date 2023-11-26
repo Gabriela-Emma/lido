@@ -141,14 +141,14 @@ const props = withDefaults(
             {
                 label: 'Primary Proposal Count: Low to High',
                 value: 'own_proposals_count:asc',
-            }, 
+            },
             {
                 label: 'Co-Proposal Count: High to Low',
-                value: 'co_proposals:desc',
+                value: 'co_proposals_count:desc',
             },
             {
                 label: 'Co-Proposal Count: Low to High',
-                value: 'co_proposals:asc',
+                value: 'co_proposals_count:asc',
             },
         ]
     });

@@ -99,8 +99,8 @@ class PeopleController extends Controller
                 'amount_awarded_usd:desc',
                 'own_proposals_count:asc',
                 'own_proposals_count:desc',
-                'co_proposals:asc',
-                'co_proposals:desc'
+                'co_proposals_count:asc',
+                'co_proposals_count:desc'
             ])->random()));
         }
 
@@ -132,7 +132,7 @@ class PeopleController extends Controller
                     'id',
                     'name',
                     'own_proposals_count',
-                    'co_proposals',
+                    'co_proposals_count',
                     'username',
                     'first_timer',
                     'proposals_count',

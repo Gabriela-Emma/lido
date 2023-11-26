@@ -49,7 +49,7 @@ class CatalystUser extends User implements CanComment, HasMedia
 
     protected $withCount = ['own_proposals', 'proposals'];
 
-    public $appends = ['co_proposals'];
+    public $appends = ['co_proposals_count'];
 
     protected string $urlGroup = 'project-catalyst/users';
 
@@ -117,7 +117,7 @@ class CatalystUser extends User implements CanComment, HasMedia
             'amount_awarded_ada',
             'amount_awarded_usd',
             'own_proposals_count',
-            'co_proposals',
+            'co_proposals_count',
 
         ];
     }
@@ -284,7 +284,7 @@ class CatalystUser extends User implements CanComment, HasMedia
             'proposals_approved' => $proposals->filter(fn ($p) => (bool) $p['funded_at'])?->count() ?? 0,
             'amount_awarded_ada' => $this->amount_awarded_ada,
             'amount_awarded_usd' => intval($this->amount_awarded_usd),
-            'co_proposals' => intval($this-> co_proposals),
+            'co_proposals_count' => intval($this-> co_proposals_count),
             'proposals_total_amount_requested' => intval($proposals->filter(fn ($p) => (bool) $p['amount_requested'])?->sum('amount_requested')) ?? 0,
         ]);
     }

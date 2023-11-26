@@ -15,7 +15,7 @@
             <div class="pb-8 border border-teal-300 border-t-0 col-span-6 xl:col-span-7">
                 <div class="flex flex-row gap-3 justify-between p-5">
                     <div class="flex flex-col md:flex-row md:gap-2 md:items-center">
-                        <h2 class="text-sm md:text-2xl xl:text-3xl">Rewards History</h2>
+                        <h2 class="text-sm md:text-2xl xl:text-3xl">Withdrawals</h2>
                     </div>
                 </div>
                 <div class="relative">
@@ -37,7 +37,7 @@
                                 <div class="flex justify-between items-center px-4">
                                     <h3 class="py-2 font-semibold">
                                         <span>
-                                            History
+                                            Withdrawals
                                         </span>
                                     </h3>
                                     <div class="flex flex-row gap-3">
