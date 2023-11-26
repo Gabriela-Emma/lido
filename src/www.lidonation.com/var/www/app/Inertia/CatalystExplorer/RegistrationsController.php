@@ -71,12 +71,10 @@ class RegistrationsController extends Controller
         return $_options;
     }
 
-    public function getVoterData(Request $request)
+    public function getVoterData(Request $request):array
     {
         $search = $request->input('s', null);
         $perPage = $request->input('l', 24);
-        $currentPage = $request->input('p', 1);
-        // $filePath = '/data/catalyst-tools/voting-history/f10/'.$search.'.json';
 
         $wallet = Wallet::where([
             'context' => 'voter_wallet',
@@ -85,19 +83,8 @@ class RegistrationsController extends Controller
 
         $collection = VoterHistoryData::collection($wallet->voting_history()->fastPaginate($perPage, ['*'], 'p')?->setPath('/')->onEachSide(0));
 
-        // $paginatedData = $collection->slice(($currentPage - 1) * $perPage, $perPage)->values();
 
-        // $paginator = new LengthAwarePaginator(
-        //     $paginatedData,
-        //     $collection->count(),
-        //     $perPage,
-        //     $currentPage,
-        //     [
-        //         'pageName' => 'p',
-        //     ]
-        // );
-
-        return $collection;
+        return $collection->toArray();
 
     }
 }
