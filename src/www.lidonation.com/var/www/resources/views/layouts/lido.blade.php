@@ -42,7 +42,7 @@
     <!-- @todo move to npm package -->
     <script src="https://unpkg.com/smoothscroll-polyfill@0.4.4/dist/smoothscroll.js"></script>
 
-    @livewireScripts
+{{--    @livewireScripts--}}
 
     @vite(['resources/js/lido.ts'])
 

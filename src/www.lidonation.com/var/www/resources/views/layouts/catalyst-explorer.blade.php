@@ -46,7 +46,7 @@
 
         @include('includes.footer')
 
-        @livewireScripts
+{{--        @livewireScripts--}}
 
         @vite(['resources/js/apps/catalyst-explorer/app.ts'])
 

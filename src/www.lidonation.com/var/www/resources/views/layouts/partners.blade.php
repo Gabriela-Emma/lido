@@ -50,7 +50,7 @@
     @include('includes.footer')
 
     <livewire:components.lido-menu lazy="on-load" />
-    @livewireScriptConfig
+{{--    @livewireScriptConfig--}}
 </body>
 
 </html>

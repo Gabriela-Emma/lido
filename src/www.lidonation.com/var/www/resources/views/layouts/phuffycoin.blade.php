@@ -47,7 +47,7 @@
     <livewire:components.lido-menu lazy="on-load" />
 
     <section>
-        @livewireScripts
+{{--        @livewireScripts--}}
 
         @include('includes.global-search-handler')
 
