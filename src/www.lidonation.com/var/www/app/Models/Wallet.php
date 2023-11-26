@@ -14,6 +14,8 @@ class Wallet extends Model
     use HasAuthor, HasFactory, SoftDeletes;
 
     public $guarded = [];
+    protected $with = ['voting_history'];
+
 
     public function models(): MorphToMany
     {
@@ -21,7 +23,7 @@ class Wallet extends Model
             ->wherePivot('model_type', static::class);
     }
 
-    public function votingHistory():HasMany
+    public function voting_history():HasMany
     {
         return $this->hasMany(VoterHistory::class, 'wallet_id'); 
     }

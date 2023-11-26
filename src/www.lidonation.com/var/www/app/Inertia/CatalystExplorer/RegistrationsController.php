@@ -2,18 +2,20 @@
 
 namespace App\Inertia\CatalystExplorer;
 
-use App\Http\Controllers\Controller;
-use App\Jobs\GetVoterHistory;
-use App\Models\CatalystExplorer\CatalystRegistration;
-use App\Models\CatalystExplorer\CatalystVoter;
-use App\Models\CatalystExplorer\Fund;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Http\Request;
-use Illuminate\Pagination\LengthAwarePaginator;
+use App\DataTransferObjects\VoterHistoryData;
 use Inertia\Inertia;
 use Inertia\Response;
-use JetBrains\PhpStorm\ArrayShape;
+use App\Models\Wallet;
 use JsonMachine\Items;
+use Illuminate\Http\Request;
+use App\Jobs\GetVoterHistory;
+use JetBrains\PhpStorm\ArrayShape;
+use App\Http\Controllers\Controller;
+use App\Models\CatalystExplorer\Fund;
+use Illuminate\Database\Eloquent\Collection;
+use App\Models\CatalystExplorer\CatalystVoter;
+use Illuminate\Pagination\LengthAwarePaginator;
+use App\Models\CatalystExplorer\CatalystRegistration;
 
 class RegistrationsController extends Controller
 {
@@ -69,46 +71,33 @@ class RegistrationsController extends Controller
         return $_options;
     }
 
-    public function getVoterData(Request $request): array
+    public function getVoterData(Request $request)
     {
         $search = $request->input('s', null);
         $perPage = $request->input('l', 24);
         $currentPage = $request->input('p', 1);
-        $filePath = '/data/catalyst-tools/voting-history/f10/'.$search.'.json';
+        // $filePath = '/data/catalyst-tools/voting-history/f10/'.$search.'.json';
 
-        if (! file_exists($filePath)) {
-            $voter = CatalystVoter::with('voting_powers')
-                ->where('stake_pub', $search)->whereHas('voting_powers', function ($q) {
-                    $q->whereHas('snapshot', function ($q) {
-                        $q->where('model_type', Fund::class)->where('model_id', 113);
-                    });
-                })->first();
+        $wallet = Wallet::where([
+            'context' => 'voter_wallet',
+            'stake_address' => $search
+        ])->first();
 
-            if ($voter instanceof CatalystVoter) {
-                GetVoterHistory::dispatchSync($voter->voting_powers?->first());
-                sleep(5);
-            }
-        }
+        $collection = VoterHistoryData::collection($wallet->voting_history()->fastPaginate($perPage, ['*'], 'p')?->setPath('/')->onEachSide(0));
 
-        if (file_exists($filePath)) {
-            $jsonContents = Items::fromFile($filePath);
-            $collection = new Collection($jsonContents);
+        // $paginatedData = $collection->slice(($currentPage - 1) * $perPage, $perPage)->values();
 
-            $paginatedData = $collection->slice(($currentPage - 1) * $perPage, $perPage)->values();
+        // $paginator = new LengthAwarePaginator(
+        //     $paginatedData,
+        //     $collection->count(),
+        //     $perPage,
+        //     $currentPage,
+        //     [
+        //         'pageName' => 'p',
+        //     ]
+        // );
 
-            $paginator = new LengthAwarePaginator(
-                $paginatedData,
-                $collection->count(),
-                $perPage,
-                $currentPage,
-                [
-                    'pageName' => 'p',
-                ]
-            );
+        return $collection;
 
-            return $paginator->onEachSide(1)->toArray();
-        }
-
-        return [];
     }
 }
