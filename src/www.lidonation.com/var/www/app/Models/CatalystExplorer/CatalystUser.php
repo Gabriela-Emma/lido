@@ -221,7 +221,7 @@ class CatalystUser extends User implements CanComment, HasMedia
             ->where('type', 'proposal');
     }
 
-    public function coProposals(): Attribute
+    public function coProposalsCount(): Attribute
     {
         return Attribute::make(get: function (){
             $ownProposalIds = $this->own_proposals->pluck('id');
