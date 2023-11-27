@@ -128,9 +128,11 @@ class PeopleController extends Controller
                 if (count($_options['filters']) > 0) {
                     $options['filter'] = implode(' AND ', $_options['filters']);
                 }
+                $options['facets'] = ['proposals.is_co_proposer', 'proposals.is_primary_proposer'];
                 $options['attributesToRetrieve'] = $attrs ?? [
                     'id',
                     'name',
+                    'proposals.fund',
                     'own_proposals_count',
                     'co_proposals_count',
                     'username',
@@ -153,6 +155,7 @@ class PeopleController extends Controller
         if ($returnBuilder) {
             return $this->searchBuilder;
         }
+        
         $response = new Fluent($this->searchBuilder->raw());
         $pagination = new LengthAwarePaginator(
             $response->hits,
