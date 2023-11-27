@@ -49,7 +49,7 @@
 
 <script lang="ts" setup>
 import {defineEmits, ref, Ref} from 'vue';
-import {C} from "@lucid-cardano";
+import {C} from "lucid-cardano";
 import {onClickOutside} from '@vueuse/core';
 import {storeToRefs} from "pinia";
 import WalletService from "@/global/services/wallet-service";

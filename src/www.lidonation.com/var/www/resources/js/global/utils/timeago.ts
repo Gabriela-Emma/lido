@@ -1,5 +1,4 @@
 import moment from "moment-timezone";
-
 export function timeAgo(time) {
     moment.updateLocale('en', {
         relativeTime: {
