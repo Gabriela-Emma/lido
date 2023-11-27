@@ -19,16 +19,15 @@
                     </div>
                 </div>
                 <div class="relative">
-                    <section class="border-t border-teal-300 p-6">
-                        <div class="flex flex-col gap-4 items-center max-w-2xl mx-auto text-center">
+                    <section class="p-6 border-t border-teal-300">
+                        <div class="flex flex-col justify-start max-w-4xl gap-2">
                             <p>
                                 Lido Rewards are tips and prizes you earn around lidonation for completing
                                 challenges or contributing to the site, or delegating to the stake pool.
+                                They are typically in the form of cardano native tokens
+                                (ie: $hosky, $discoin, etc). They can also be NFTs!
                             </p>
-                            <p>
-                                Below is history of rewards sent to your wallet and pending withdrawals.
-                            </p>
-                            <p>Happy earning!</p>
+                            <p>All your rewards shows up here for accounting and withdrawal!</p>
                         </div>
                     </section>
                     <section class="border-t border-teal-300 p-6 -my-1 ">

@@ -1,4 +1,5 @@
-import SupportedWallet from '../../global/Shared/Models/supported-wallets'
+// import SupportedWallet from '../../global/Shared/Models/supported-wallets'
+import SupportedWallet from "@/global/models/supported-wallets";
 
 export const AvailableWallets:SupportedWallet[] = [
   {
