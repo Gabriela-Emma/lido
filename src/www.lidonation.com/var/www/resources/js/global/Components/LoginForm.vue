@@ -57,7 +57,7 @@
                         </div>
                     </div>
 
-                    <div class="flex items-end justify-between ">
+                    <div class="flex items-center justify-between mt-2">
                         <button @click.prevent="submit" type="submit"
                             class="flex items-center justify-center w-full gap-3 px-4 py-2 text-xl font-medium text-white bg-teal-600 border border-transparent rounded-sm shadow-sm 2xl:text-2xl hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
