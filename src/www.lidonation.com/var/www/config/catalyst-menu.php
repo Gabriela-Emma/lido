@@ -108,7 +108,7 @@ return [
             new Illuminate\Support\Fluent([
                 'title' => 'Check my vote',
                 'route_type' => 'route_name',
-                'route' => 'catalyst-explorer.registrations'
+                'route' => 'catalyst-explorer.my-votes'
             ]),
             new Illuminate\Support\Fluent([
                 'title' => 'My Bookmarks',
