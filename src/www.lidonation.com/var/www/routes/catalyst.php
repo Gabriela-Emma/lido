@@ -114,6 +114,10 @@ Route::group(
             Route::get('/registrations', [RegistrationsController::class, 'index'])
                 ->name('registrations');
 
+            Route::get('/check-my-votes', [RegistrationsController::class, 'vote'])
+                ->name('my-votes');
+
+
             Route::get('/registrations-data', [RegistrationsController::class, 'registrationsData'])
                 ->name('registrations-data');
 

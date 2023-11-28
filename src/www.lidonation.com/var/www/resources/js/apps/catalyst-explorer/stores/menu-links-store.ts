@@ -30,7 +30,7 @@ export const menulinkStore = defineStore('menulinks', () => {
         { title:'Tools', links:[
             { name: 'Voter Tool', route: 'catalyst-explorer.voter-tool', component: 'VoterTool'},
             { name: 'Check my registration', route: 'catalyst-explorer.registrations', component: 'Registrations'},
-            { name: 'Check my vote', route: 'catalyst-explorer.registrations', component: 'Registrations'},
+            { name: 'Check my vote', route: 'catalyst-explorer.my-votes', component: 'CheckMyVotes'},
             { name: 'My Bookmarks', route: 'catalyst-explorer.myBookmarks', component: 'MyBookmarks'}        
         ]}        
      ]);
