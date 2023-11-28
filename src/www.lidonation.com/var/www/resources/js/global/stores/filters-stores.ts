@@ -1,6 +1,6 @@
 import {defineStore} from "pinia";
-import {Ref, onMounted, ref, watch} from "vue";
-import {filter, isArray} from "lodash";
+import {Ref, ref, watch} from "vue";
+import {isArray} from "lodash";
 import FiltersService from "@/global/services/filters-service";
 import {VARIABLES} from "@apps/catalyst-explorer/models/variables";
 
@@ -60,7 +60,7 @@ export const useFiltersStore = defineStore('filters', () => {
         }
 
 
-        let searchUrl = searchParams.toString();        
+        let searchUrl = searchParams.toString();
         if (searchUrl.length) {
             history.pushState(null, '', `?${searchUrl}`);
         }
@@ -96,7 +96,7 @@ export const useFiltersStore = defineStore('filters', () => {
         if (currentModel.value.filters?.fundingStatus) {
             data[VARIABLES.FUNDING_STATUS] = currentModel.value.filters?.fundingStatus;
         }
-        
+
         if (currentModel.value.filters?.funded) {
             data[VARIABLES.FUNDED_PROPOSALS] = currentModel.value.filters?.funded;
         }
@@ -147,7 +147,7 @@ export const useFiltersStore = defineStore('filters', () => {
 
 
     watch(() => currentModel.value, () => {
-        if (canFetch.value) {         
+        if (canFetch.value) {
             getFilteredData();
         }
     }, {deep: true});

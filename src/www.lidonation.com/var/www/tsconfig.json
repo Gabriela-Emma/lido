@@ -1,7 +1,13 @@
 {
     "compilerOptions": {
-        "target": "esnext",
+        "target": "ES2020",
         "module": "esnext",
+        "declaration": true,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "allowSyntheticDefaultImports": true,
+        "skipLibCheck": true,
+        "incremental": true,
         "moduleResolution": "node",
         "strict": false,
         "jsx": "preserve",
@@ -9,7 +15,7 @@
         "resolveJsonModule": true,
         "esModuleInterop": true,
         "allowJs": true,
-        "lib": ["esnext", "dom"],
+        "lib": ["es7","dom"],
         "types": [
             "@types/node",
             "@types/ziggy-js"

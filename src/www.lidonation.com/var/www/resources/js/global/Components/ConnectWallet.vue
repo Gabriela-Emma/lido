@@ -48,8 +48,7 @@
 </template>
 
 <script lang="ts" setup>
-import {defineEmits, ref, Ref} from 'vue';
-import {C} from "@lucid-cardano";
+import {defineEmits, ref, Ref} from 'vue'
 import {onClickOutside} from '@vueuse/core';
 import {storeToRefs} from "pinia";
 import WalletService from "@/global/services/wallet-service";
@@ -105,7 +104,6 @@ async function enableWallet(wallet_name: string) {
         walletData = {
             ...walletData,
             ...await getWalletAddress(),
-            // ...await getWalletBalance(),
         }
         await walletStore.saveWallet(walletData);
         walletLoading.value = false;
@@ -123,29 +121,6 @@ async function getWalletAddress(): Promise<Wallet> {
         stakeAddress: await walletService.getStakeAddress()
     } as Wallet
 }
-
-async function getWalletBalance(): Promise<Wallet> {
-    let walletBalance;
-    walletBalance = await walletService.getBalance(walletName.value);
-    walletBalance = C.Value.from_bytes(Buffer.from(walletBalance, 'hex')).coin().to_str();
-
-    if (!!walletBalance) {
-        return {
-            lovelacesBalance: walletBalance,
-            balance: (walletBalance / (1000000)).toLocaleString(undefined, {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-            })
-        }
-    }
-
-    return {
-lovelacesBalance: null,
-balance: null
-} as unknown as Wallet;
-
-}
-
 
 if (props.autoConnect && walletName.value && supports(walletName.value)) {
     enableWallet(walletName.value)

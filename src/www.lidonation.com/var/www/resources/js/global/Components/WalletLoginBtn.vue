@@ -44,7 +44,6 @@ import {useWalletStore} from "@/global/stores/wallet-store";
 import User from "@/global/models/user";
 import DisconnectWalletBtn from "@/global/Components/DisconnectWalletBtn.vue";
 
-
 const ConnectWallet = defineAsyncComponent(() => import('./ConnectWallet.vue'));
 
 const props = withDefaults(
