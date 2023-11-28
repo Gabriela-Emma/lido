@@ -190,6 +190,8 @@ Route::group(
                     ->name('totalRegisteredAdaPower');
                 Route::get('/registeredAdaNotVoted', [ChartsController::class, 'metricSumAdaRegisteredNotVoted'])
                     ->name('registeredAdaNotVoted');
+                Route::get('/registeredWalletsNotVoted', [ChartsController::class, 'metricSumWalletsRegisteredNotVoted'])
+                    ->name('registeredWalletsNotVoted');
                 Route::get('/total-registrations', [ChartsController::class, 'metricTotalRegistrations'])
                     ->name('totalRegistrations');
                 Route::get('/total-delegation-registrations', [ChartsController::class, 'metricTotalDelegationRegistrations'])
