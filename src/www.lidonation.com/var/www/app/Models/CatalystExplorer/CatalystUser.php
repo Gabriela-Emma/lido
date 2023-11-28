@@ -104,6 +104,8 @@ class CatalystUser extends User implements CanComment, HasMedia
             'proposals.tags',
             'proposals_approved',
             'proposals_total_amount_requested',
+            'proposals.is_co_proposer',
+            'proposals.is_primary_proposer'
 
         ];
     }
@@ -223,10 +225,10 @@ class CatalystUser extends User implements CanComment, HasMedia
 
     public function coProposalsCount(): Attribute
     {
-        return Attribute::make(get: function (){
+        return Attribute::make(get: function () {
             $ownProposalIds = $this->own_proposals->pluck('id');
 
-        return $this->proposals()->whereNotIn('id', $ownProposalIds)->count();
+            return $this->proposals()->whereNotIn('id', $ownProposalIds)->count();
         });
     }
 
@@ -275,7 +277,10 @@ class CatalystUser extends User implements CanComment, HasMedia
     public function toSearchableArray(): array
     {
         $array = $this->toArray();
-        $proposals = $this->proposals->map(fn ($p) => $p->toArray());
+        $proposals = $this->proposals->map(fn ($p) => array_merge($p->toArray(), [
+            'is_co_proposer' => $p->user_id !== $this->id,
+            'is_primary_proposer' => $p->user_id == $this->id,
+        ]));
 
         return array_merge($array, [
             'proposals' => $proposals,
@@ -284,7 +289,7 @@ class CatalystUser extends User implements CanComment, HasMedia
             'proposals_approved' => $proposals->filter(fn ($p) => (bool) $p['funded_at'])?->count() ?? 0,
             'amount_awarded_ada' => $this->amount_awarded_ada,
             'amount_awarded_usd' => intval($this->amount_awarded_usd),
-            'co_proposals_count' => intval($this-> co_proposals_count),
+            'co_proposals_count' => intval($this->co_proposals_count),
             'proposals_total_amount_requested' => intval($proposals->filter(fn ($p) => (bool) $p['amount_requested'])?->sum('amount_requested')) ?? 0,
         ]);
     }
