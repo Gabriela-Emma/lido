@@ -86,8 +86,10 @@ class CatalystUser extends User implements CanComment, HasMedia
     {
         return [
             'words',
-            'sort',
+            'typo',
+            'proximity',
             'attribute',
+            'sort',
             'exactness',
         ];
     }
