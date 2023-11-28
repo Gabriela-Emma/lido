@@ -15,11 +15,57 @@ use Livewire\Component;
 class TranslationsComponent extends Component
 {
     public $translations;
+
     public $perPage = 50;
+
     public $onlyMissing = false;
+
     public $onlyMine = false;
+
     public $groupRelated = false;
+
     public $filter = null;
+
+    // @todo refactor to use wire:model
+    public function toggleGroupRelated($groupRelated)
+    {
+        $this->groupRelated = $groupRelated;
+    }
+
+    public function toggleOnlyMine($onlyMine)
+    {
+        $this->onlyMine = $onlyMine;
+    }
+
+    public function toggleMissing($missing)
+    {
+        $this->onlyMissing = $missing;
+    }
+
+    public function toggleFilter($filter)
+    {
+        $this->filter = $filter;
+    }
+
+    public function getMissingProperty(): bool
+    {
+        return true;
+    }
+
+    public function edited($value, $key, $column, $rowId)
+    {
+        $translation = Translation::findOrFail($rowId);
+        $translation->{$column} = $value;
+        $translation->status = 'published';
+        $translation->save();
+
+        $this->dispatch('fieldEdited', $translation->id);
+    }
+
+    public function computeType($source_type)
+    {
+        return collect(explode('\\', $source_type))->last();
+    }
 
     public function render()
     {
@@ -69,46 +115,6 @@ class TranslationsComponent extends Component
             ->orderBy('source_type')
             ->paginate($this->perPage);
 
+        return view('livewire.translations');
     }
-
-    public function toggleGroupRelated($groupRelated)
-    {
-        $this->groupRelated = $groupRelated;
-    }
-
-    public function toggleOnlyMine($onlyMine)
-    {
-        $this->onlyMine = $onlyMine;
-    }
-
-    public function toggleMissing($missing)
-    {
-        $this->onlyMissing = $missing;
-    }
-
-    public function toggleFilter($filter)
-    {
-        $this->filter = $filter;
-    }
-
-    public function getMissingProperty(): bool
-   {
-       return true;
-   }
-
-   public function edited($value, $key, $column, $rowId)
-   {
-       $translation = Translation::findOrFail($rowId);
-       $translation->{$column} = $value;
-       $translation->status = 'published';
-       $translation->save();
-
-       $this->dispatch('fieldEdited', $translation->id);
-   }
-
-   public function computeType($source_type)
-   {
-       return collect(explode('\\', $source_type))->last();
-   }
 }
-

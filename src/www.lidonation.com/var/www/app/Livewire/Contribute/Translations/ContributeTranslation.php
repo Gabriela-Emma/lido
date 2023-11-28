@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\ContributeContent;
+namespace App\Livewire\Contribute\Translations;
 
 use App\Models\Model;
 use App\Models\Translation;

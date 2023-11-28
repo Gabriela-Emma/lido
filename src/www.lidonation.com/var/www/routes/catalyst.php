@@ -50,7 +50,7 @@ Route::group(
                 ->whereRelation('fund', 'parent_id', $proposal->fund?->parent_id)
                 ->whereHas('users', fn ($q) => $q->whereIn('id', $proposal->users->pluck('id')))
                 ->where('id', '!=', $proposal->id);
-//
+            //
             $relatedProposals = $relatedProposalsQuery->limit(6)->get();
 
             // other proposals form same category
@@ -95,7 +95,6 @@ Route::group(
 
                 Route::get('/{fund:slug}', [FundController::class, 'index'])
                     ->name('fund');
-
 
             });
 

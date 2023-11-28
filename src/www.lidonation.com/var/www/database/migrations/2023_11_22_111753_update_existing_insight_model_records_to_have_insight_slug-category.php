@@ -10,11 +10,14 @@ use Illuminate\Support\Facades\Storage;
 return new class extends Migration
 {
     protected string $insightClass = "App\Models\Insight";
+
     protected $trackedChanges = [
         'category_created' => false,
-        'updated_ids' => []
+        'updated_ids' => [],
     ];
+
     protected $directory = 'insight_model_deprecation_tracker';
+
     protected $fileName = 'insight_updated_with_news-and-interviews_category.json';
 
     /**
@@ -27,8 +30,8 @@ return new class extends Migration
 
         if (empty($category)) {
             $category = new Category();
-            $category->title = "insights";
-            $category->meta_title = "";
+            $category->title = 'insights';
+            $category->meta_title = '';
             $category->slug = 'insights';
             $category->content = '';
 
@@ -41,40 +44,38 @@ return new class extends Migration
 
         // assign every existing news model "news and interviews" category
         $newsColl = Post::where('type', $this->insightClass)->get();
-        $newsColl->each(function($news) use($category){
+        $newsColl->each(function ($news) use ($category) {
             $modelCategory = ModelCategory::where('model_type', $this->insightClass)
                 ->where('model_id', $news->id)
                 ->where('category_id', $category->id)
                 ->first();
 
-                
             // if news don't have the category attached then attach it and track the changed id
             if (empty($modelCategory)) {
                 $news->categories()->attach([
                     $category->id => [
                         'model_id' => $news->id,
                         'model_type' => $this->insightClass,
-                        ] 
-                    ]);
+                    ],
+                ]);
 
                 array_push($this->trackedChanges['updated_ids'], $news->id);
             }
         });
 
-       $fileStoragePath = $this->directory.'/'.$this->fileName;
-       $fileFullPath = Storage::path($fileStoragePath);
-    
-       // if a tracking file already exists then delete it
-       $fileExists = Storage::exists($fileStoragePath);
-       if ($fileExists) {
-           File::delete($fileFullPath);
+        $fileStoragePath = $this->directory.'/'.$this->fileName;
+        $fileFullPath = Storage::path($fileStoragePath);
+
+        // if a tracking file already exists then delete it
+        $fileExists = Storage::exists($fileStoragePath);
+        if ($fileExists) {
+            File::delete($fileFullPath);
         }
 
         // Write JSON trackedChanges to a file
         $jsonData = json_encode($this->trackedChanges);
         Storage::put($fileStoragePath, $jsonData);
     }
-
 
     /**
      * Reverse the migrations.
@@ -102,7 +103,7 @@ return new class extends Migration
             if ($trackedJsonData->category_created) {
                 $category->forceDelete();
             }
-    
+
             // delete the directory where we are tracking these changes
             Storage::deleteDirectory($this->directory);
         }

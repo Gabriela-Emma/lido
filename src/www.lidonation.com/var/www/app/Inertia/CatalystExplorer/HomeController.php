@@ -5,13 +5,13 @@ namespace App\Inertia\CatalystExplorer;
 use AllowDynamicProperties;
 use App\Http\Controllers\Controller;
 use App\Models\CatalystExplorer\Fund;
+use App\Models\Post;
+use App\Models\Tag;
+use App\Repositories\PostRepository;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Inertia\Response;
-use App\Models\Post;
-use App\Models\Tag;
-use App\Repositories\PostRepository;
 
 #[AllowDynamicProperties] class HomeController extends Controller
 {
@@ -42,21 +42,21 @@ use App\Repositories\PostRepository;
             ->withCount([
                 'parent_proposals as proposals_count_amount_requested' => function ($query) {
                     $query->whereNotNull('funded_at')->where('proposals.type', 'proposal');
-                },],
+                }, ],
                 'amount_requested'
             )
             ->withAvg([
                 'parent_proposals as proposals_avg_amount_requested' => function ($query) {
                     $query->whereNotNull('funded_at')->where('proposals.type', 'proposal');
-                },],
+                }, ],
                 'amount_requested'
             )->orderBy('launched_at')
             ->get();
-        $this->fundedAverageSet = $funds->map(fn($p) => [
+        $this->fundedAverageSet = $funds->map(fn ($p) => [
             'label' => $p->title,
             'avg' => $p->proposals_avg_amount_requested,
             'count' => $p->proposals_count_amount_requested,
-        ])->filter(fn($p) => $p['avg'] > 0);
+        ])->filter(fn ($p) => $p['avg'] > 0);
     }
 
     /**

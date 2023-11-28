@@ -15,10 +15,15 @@ use Livewire\Component;
 class TranslationsComponent extends Component
 {
     public $translations;
+
     public $perPage = 50;
+
     public $onlyMissing = false;
+
     public $onlyMine = false;
+
     public $groupRelated = false;
+
     public $filter = null;
 
     public function render()
@@ -92,23 +97,22 @@ class TranslationsComponent extends Component
     }
 
     public function getMissingProperty(): bool
-   {
-       return true;
-   }
+    {
+        return true;
+    }
 
-   public function edited($value, $key, $column, $rowId)
-   {
-       $translation = Translation::findOrFail($rowId);
-       $translation->{$column} = $value;
-       $translation->status = 'published';
-       $translation->save();
+    public function edited($value, $key, $column, $rowId)
+    {
+        $translation = Translation::findOrFail($rowId);
+        $translation->{$column} = $value;
+        $translation->status = 'published';
+        $translation->save();
 
-       $this->dispatch('fieldEdited', $translation->id);
-   }
+        $this->dispatch('fieldEdited', $translation->id);
+    }
 
-   public function computeType($source_type)
-   {
-       return collect(explode('\\', $source_type))->last();
-   }
+    public function computeType($source_type)
+    {
+        return collect(explode('\\', $source_type))->last();
+    }
 }
-
