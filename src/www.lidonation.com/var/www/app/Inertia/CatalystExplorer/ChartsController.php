@@ -190,6 +190,20 @@ class ChartsController extends Controller
     return null;
 }
 
+    public function metricSumWalletsRegisteredNotVoted(Request $request): float|int|null
+    {
+        $this->fundFilter = $request->input(CatalystExplorerQueryParams::FUNDS, 113);
+
+        if ($this->fundFilter === CatalystExplorerQueryParams::ALL_FUNDS) {
+            $walletsRegisteredNotVoted = CatalystVotingPower::where('consumed', false)
+                ->count('voter_id');
+        } else {
+            $walletsRegisteredNotVoted = CatalystVotingPower::whereRelation('catalyst_snapshot', 'model_id', $this->fundFilter)
+                ->where('consumed', false)
+                ->count('voter_id');
+        }
+        return $walletsRegisteredNotVoted ?? null;
+    }
 
     public function metricTotalRegistrations(Request $request)
     {
