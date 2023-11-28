@@ -20,12 +20,21 @@
                             </span>
                             <ul class="flex flex-col gap-1">
                                 <li v-for="link in heading.links" :key="link.name">
-                                    <Link
+                                    <div v-if="link.route">
+                                        <Link
                                         class="text-gray-900 menu-link font-normal hover:text-teal-800"
                                         :class="{ 'text-teal-600': $page.component.startsWith(link.component) }"
                                         :href="route(link.route)">
                                         {{ $t(link.name) }}
-                                    </Link>
+                                        </Link>
+                                    </div>
+                                    <div v-else>
+                                        <a 
+                                        class="text-gray-900 menu-link font-normal hover:text-teal-800"
+                                        :href=link.url>
+                                        <span class="inline-block">{{ link.name }}</span>
+                                        </a>
+                                    </div>                                    
                                 </li>
                             </ul> 
                         </li>
