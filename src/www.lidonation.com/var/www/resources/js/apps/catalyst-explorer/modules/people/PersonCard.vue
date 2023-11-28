@@ -9,7 +9,7 @@
             </a>
 
             <div class="space-y-2">
-                <div class="text-xs font-medium lg:text-sm">
+                <div class="text-xs font-medium lg:text-sm flx flex-col justify-between">
                     <h3>
                         <a class="block" target="_blank"
                            :href="$utils.localizeRoute(`project-catalyst/users/${user.id}`)">
