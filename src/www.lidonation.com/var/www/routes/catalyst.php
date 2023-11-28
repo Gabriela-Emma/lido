@@ -161,8 +161,8 @@ Route::group(
                     Route::get('/metrics/sum/completed-proposals', [ProposerController::class, 'getCompletedProposalCount']);
                     Route::get('/metrics/sum/outstanding-proposals', [ProposerController::class, 'getOutstandingProposalCount']);
                     Route::get('/metrics/sum/outstanding-co-proposals', [ProposerController::class, 'getCoProposalCount']);
-                    Route::get('/metrics/sum/f10primary-proposals', [ProposerController::class, 'getF10PrimaryProposalCount']);
-                    Route::get('/metrics/sum/f10-co-proposals', [ProposerController::class, 'getF10CoProposalCount']);
+                    Route::get('/metrics/sum/f11primary-proposals', [ProposerController::class, 'getF11PrimaryProposalCount']);
+                    Route::get('/metrics/sum/f11-co-proposals', [ProposerController::class, 'getF11CoProposalCount']);
                 });
             });
 
