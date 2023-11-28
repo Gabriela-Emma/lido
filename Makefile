@@ -23,7 +23,6 @@ frontend-install:
 	make frontend-clean
 	make lucid-install
 	$(sail) yarn install
-	make cp-wasm
 
 .PHONY: image-build
 image-build:
@@ -57,7 +56,6 @@ watch:
 
 .PHONY: vite
  vite:
-	make cp-wasm
 	$(sail) npx vite
 
 .PHONY: build
