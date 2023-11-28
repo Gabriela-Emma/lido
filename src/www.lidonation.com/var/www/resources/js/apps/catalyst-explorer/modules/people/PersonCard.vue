@@ -16,11 +16,18 @@
                             {{ user.name }}
                         </a>
                     </h3>
-                    <p class="">
-                        <span>
-                            {{user.proposals_count}} {{ user.proposals_count > 1 ? $t('Proposals') : $t('Proposal') }}
-                        </span>
-                    </p>
+                    <div class="flex flex-col divide-y mt-2">
+                        <div class="py-2">
+                            <span>
+                                {{user.own_proposals_count}} {{ user.own_proposals_count > 1 ? $t('Own Proposals') : $t('Own Proposal') }}
+                            </span>
+                        </div>
+                        <div class="py-2">
+                            <span>
+                                {{user.co_proposals_count}} {{ user.co_proposals_count > 1 ? $t('Co Proposals') : $t('Co Proposal') }}
+                            </span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

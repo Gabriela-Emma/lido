@@ -8,8 +8,8 @@
 </template>
 
 <script lang="ts" setup>
-import User from "../../../global/Shared/Models/user";
 import PersonCard from "./PersonCard.vue";
+import User from "@/global/models/user";
 
 const props = withDefaults(
     defineProps<{
