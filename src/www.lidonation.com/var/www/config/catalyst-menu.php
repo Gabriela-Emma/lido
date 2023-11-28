@@ -87,8 +87,8 @@ return [
             ]),
             new Illuminate\Support\Fluent([
                 'title' => 'Catalyst Api',
-                'route_type' => 'route_name',
-                'route' => ''
+                'route_type' => 'url',
+                'route' => '/catalyst-explorer/api'
             ]),
         ],
     ]),

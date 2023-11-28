@@ -25,7 +25,7 @@ export const menulinkStore = defineStore('menulinks', () => {
         { title:'Data', links:[
             { name: 'Catalyst by the Numbers', route: 'catalyst-explorer.charts', component: 'Charts'},
             { name: 'CCV4 Votes', route: 'projectCatalyst.votes.ccv4'},
-            { name: 'Catalyst Api', route: 'catalyst-explorer.dReps.index'}
+            { name: 'Catalyst Api', url: '/catalyst-explorer/api'}
         ]},
         { title:'Tools', links:[
             { name: 'Voter Tool', route: 'catalyst-explorer.voter-tool', component: 'VoterTool'},

@@ -20,12 +20,21 @@
                                             {{ $menu?->title }}
                                         </p>
                                         @foreach ($menu?->items as $m)
+                                            @if($m?->route_type === 'route_name')
                                             <li class="mb-1">
                                                 <a class="text-gray-900 hover:text-teal-800 font-normal text-lg"
                                                     href={{ $m->route }}>
                                                     {{ $m->title }}
                                                 </a>
                                             </li>
+                                            @else
+                                            <li class="mb-1">
+                                                <a class="text-gray-900 hover:text-teal-800 font-normal text-lg"
+                                                    href="{{ $m->route }}">
+                                                    {{ $m->title }}
+                                                </a>
+                                            </li>
+                                            @endif
                                         @endforeach
                                     @endif
                                 @endforeach
