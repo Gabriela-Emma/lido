@@ -20,7 +20,7 @@ class ProposerController extends Controller
     public function getCoProposalCount(CatalystUser $catalystUser)
     {
         $allProposals = $catalystUser->proposals()->where('status', 'in_progress')->count();
-        $ownProposals = $this->getOutsandingProposalCount($catalystUser);
+        $ownProposals = $this->getOutstandingProposalCount($catalystUser);
 
         return $allProposals - $ownProposals;
     }
