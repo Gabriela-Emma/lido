@@ -1,20 +1,20 @@
 <template>
-    <div class="bg-white p-6" v-if="(search && !voterData?.data) || voterData?.data?.length === 0">
+    <div class="p-6 bg-white" v-if="(search && !voterData?.data) || voterData?.data?.length === 0">
         <div v-if="!isLoading">
             <p>
-            Could not find any votes associated with this stake address <span class="font-bold">{{
-                search
-            }}</span>.
+                Could not find any votes associated with this stake address <span class="font-bold">{{
+                    search
+                }}</span>.
             </p>
             <p>
                 If we haven’t pre-generated your voting results we may need to retrieve your
                 voting history and metadata via offline fragment and jormungandr sidechain analysis
                 <a href="https://github.com/input-output-hk/catalyst-core/blob/main/src/audit/src/find/README.md "
-                   target="_blank">replay</a>.
+                    target="_blank">replay</a>.
             </p>
         </div>
 
-        <div class="flex flex-col justify-center items-center text-lg gap-3" v-if="isLoading">
+        <div class="flex flex-col items-center justify-center gap-3 text-lg" v-if="isLoading">
             <p>
                 If we haven’t pre-generated your voting results we may need to retrieve your
                 voting history and metadata via offline fragment and jormungandr sidechain analysis
@@ -34,18 +34,18 @@
         </div>
     </div>
 
-    <ul v-if="isLoading" role="list" class="bg-white/90 p-4">
+    <ul v-if="isLoading" role="list" class="p-4 bg-white/90">
         <li v-for="index in 12" :key="index">
-            <div class="rounded-sm p-4 w-full mx-auto">
+            <div class="w-full p-4 mx-auto rounded-sm">
                 <div class="animate-pulse">
-                    <div class="flex-1 space-y-6 py-1">
-                        <div class="h-2 bg-primary-50 rounded"></div>
+                    <div class="flex-1 py-1 space-y-6">
+                        <div class="h-2 rounded bg-primary-50"></div>
                         <div class="space-y-3">
                             <div class="grid grid-cols-3 gap-4">
-                                <div class="h-2 bg-primary-50 rounded col-span-2"></div>
-                                <div class="h-2 bg-primary-50 rounded col-span-1"></div>
+                                <div class="h-2 col-span-2 rounded bg-primary-50"></div>
+                                <div class="h-2 col-span-1 rounded bg-primary-50"></div>
                             </div>
-                            <div class="h-2 bg-primary-50 rounded"></div>
+                            <div class="h-2 rounded bg-primary-50"></div>
                         </div>
                     </div>
                 </div>
@@ -53,7 +53,7 @@
         </li>
     </ul>
 
-    <div class="bg-white/90 p-4" v-if="search && voterData?.data?.length > 0 && !isLoading">
+    <div class="p-4 bg-white/90" v-if="search && voterData?.data?.length > 0 && !isLoading">
         <div class="flex items-center gap-4 rounded-sm">
             <div class="sm:flex-auto">
                 <div class="flex flex-col gap-2 text-gray-700">
@@ -143,8 +143,8 @@
                     </div>
                 </div>
                 <div class="flex-1 mb-9">
-                    <Pagination :links="voterData?.links" :per-page="perPageRef" :total="voterData?.total"
-                        :from="voterData?.from" :to="voterData?.to" @perPageUpdated="(payload) => perPageRef = payload"
+                    <Pagination :links="voterData?.links" :per-page="perPageRef" :total="voterData?.meta.total"
+                        :from="voterData?.meta.from" :to="voterData?.meta.to" @perPageUpdated="(payload) => perPageRef = payload"
                         @paginated="(payload) => currPageRef = payload" />
                 </div>
             </div>
@@ -160,8 +160,8 @@ import route from 'ziggy-js';
 import { watch } from 'vue';
 import { storeToRefs } from "pinia";
 import VoteData from "@apps/catalyst-explorer/models/vote-data";
-import {useRegistrationsSearchStore} from "@apps/catalyst-explorer/stores/registrations-search-store";
-import {VARIABLES} from "@apps/catalyst-explorer/models/variables";
+import { useRegistrationsSearchStore } from "@apps/catalyst-explorer/stores/registrations-search-store";
+import { VARIABLES } from "@apps/catalyst-explorer/models/variables";
 import Pagination from "@apps/catalyst-explorer/Components/Global/Pagination.vue";
 
 const props = defineProps<{
@@ -171,14 +171,16 @@ const props = defineProps<{
 
 let voterData = ref<{
     links: [],
-    total: number,
-    to: number,
-    from: number,
+    meta: {
+        total: number,
+        to: number,
+        from: number,
+    },
     data: VoteData[]
 }>(null);
 
 const registrationsStore = useRegistrationsSearchStore();
-const {search} =storeToRefs(registrationsStore);
+const { search } = storeToRefs(registrationsStore);
 
 let currPageRef = ref<number>(props.currPage);
 let perPageRef = ref<number>(props.perPage);
