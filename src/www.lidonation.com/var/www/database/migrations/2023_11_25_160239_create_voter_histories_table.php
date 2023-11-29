@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->softDeletes();
-            $table->bigInteger('wallet_id');
+            $table->text('stake_address');
             $table->text('fragment_id');
             $table->text('caster');
             $table->text('time');

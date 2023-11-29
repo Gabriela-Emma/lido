@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Collection;
 use App\Models\CatalystExplorer\CatalystVoter;
 use Illuminate\Pagination\LengthAwarePaginator;
 use App\Models\CatalystExplorer\CatalystRegistration;
+use App\Models\CatalystExplorer\VoterHistory;
 
 class RegistrationsController extends Controller
 {
@@ -76,13 +77,7 @@ class RegistrationsController extends Controller
         $search = $request->input('s', null);
         $perPage = $request->input('l', 24);
 
-        $wallet = Wallet::where([
-            'context' => 'voter_wallet',
-            'stake_address' => $search
-        ])->first();
-
-        $collection = VoterHistoryData::collection($wallet->voting_history()->fastPaginate($perPage, ['*'], 'p')?->setPath('/')->onEachSide(0));
-
+        $collection = VoterHistoryData::collection(VoterHistory::where('stake_address', $search )->fastPaginate($perPage, ['*'], 'p')?->setPath('/')->onEachSide(0));
 
         return $collection->toArray();
 
