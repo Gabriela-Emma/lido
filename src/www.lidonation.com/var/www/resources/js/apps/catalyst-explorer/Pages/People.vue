@@ -134,6 +134,22 @@ const props = withDefaults(
                 label: 'Amount Awarded USD: Low to High',
                 value: 'amount_awarded_usd:asc',
             },
+            {
+                label: 'Primary Proposal Count: High to Low',
+                value: 'own_proposals_count:desc',
+            },
+            {
+                label: 'Primary Proposal Count: Low to High',
+                value: 'own_proposals_count:asc',
+            },
+            {
+                label: 'Co-Proposal Count: High to Low',
+                value: 'co_proposals_count:desc',
+            },
+            {
+                label: 'Co-Proposal Count: Low to High',
+                value: 'co_proposals_count:asc',
+            },
         ]
     });
 

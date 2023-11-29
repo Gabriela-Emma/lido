@@ -39,7 +39,7 @@
 <body class="h-full delegators" x-cloak x-transition.duration.500ms
     x-data="earnCcv4" >
     <livewire:components.lido-menu lazy="on-load" />
-    
+
     @include('includes.header')
 
     <main class="flex flex-col px-8 bg-white min-h-[68vh]">
@@ -57,7 +57,7 @@
     @include('includes.global-search-handler')
 
     @vite(['resources/js/earn-ccv4.ts'])
-    
+
 
 
     @if (Route::currentRouteName() != 'phuffycoin' && Route::currentRouteName() != 'delegators' && Route::currentRouteName() != 'governanceMarathon' )

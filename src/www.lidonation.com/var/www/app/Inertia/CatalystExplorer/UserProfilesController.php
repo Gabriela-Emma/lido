@@ -5,6 +5,7 @@ namespace App\Inertia\CatalystExplorer;
 use App\Http\Controllers\Controller;
 use App\Models\CatalystExplorer\CatalystUser;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Fluent;
 use Inertia\Inertia;
@@ -19,7 +20,7 @@ class UserProfilesController extends Controller
      *
      * @return Response
      */
-    public function index(Request $request)
+    public function index(Request $request): Response
     {
         $user = auth()->user();
         $query = CatalystUser::with('claimed_by_user')
@@ -35,7 +36,7 @@ class UserProfilesController extends Controller
         ]);
     }
 
-    public function update(Request $request, CatalystUser $catalystUser)
+    public function update(Request $request, CatalystUser $catalystUser): RedirectResponse
     {
         if (! $catalystUser->id) {
             throw (new ModelNotFoundException())->setModel(CatalystUser::class);

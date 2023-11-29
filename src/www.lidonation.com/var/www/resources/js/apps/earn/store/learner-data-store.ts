@@ -1,5 +1,5 @@
 import {defineStore} from "pinia";
-import {Ref, ref} from "vue";
+import {Ref} from "vue";
 import LearnerData = App.DataTransferObjects.LearnerData
 import { AxiosError } from "axios";
 import {useStorage} from "@vueuse/core";

@@ -5,6 +5,7 @@ import Chart from 'chart.js/auto';
 import {WordCloudController, WordElement} from 'chartjs-chart-wordcloud';
 import globalVideoPlayer from './global/utils/globalVideoPlayer';
 import {Splide} from '@splidejs/splide';
+import {Video} from '@splidejs/splide-extension-video';
 
 Chart.register(WordCloudController, WordElement);
 

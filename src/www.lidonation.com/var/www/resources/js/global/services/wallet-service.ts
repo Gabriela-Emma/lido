@@ -6,7 +6,7 @@ import BlockfrostService from "./BlockfrostService"
 export { };
 declare global {
     interface Window {
-        cardano: CardanoWallet;
+        cardano: any;
         delegationLearningModule: any;
     }
 }

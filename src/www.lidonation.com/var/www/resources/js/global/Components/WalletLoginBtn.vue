@@ -1,5 +1,5 @@
 <template>
-    <div class="mt-3">
+    <div class="mt-3 w-full">
         <a v-show="wallet?.name" href="#" @click="loginUser"
             class="flex items-center justify-center w-full gap-3 px-4 py-2 mx-auto text-lg font-medium text-teal-800 rounded-sm shadow bg-slate-200 xl:text-xl 2xl:text-2xl ">
             <WalletLogo :wallet="wallet" />
@@ -12,13 +12,13 @@
         </div>
     </div>
 
-    <DisconnectWalletBtn v-if="wallet?.name" class="my-1">
+    <DisconnectWalletBtn v-if="wallet?.name" class="my-1 text-right">
         <button type="button" class="text-sm text-slate-800 hover:text-slate-800">
             {{ $t("Disconnect") }} {{ wallet?.name }}
         </button>
     </DisconnectWalletBtn>
 
-    <div>
+    <div class="flex justify-center">
         <Toggle v-model="signTx" offLabel="Use hardware wallet" onLabel="Use hot wallet" :classes="{
             container: 'inline-block rounded-xl outline-none focus:ring focus:ring-teal-500 focus:ring-opacity-40 w-48',
             toggle: 'flex w-full h-6 rounded-xl relative cursor-pointer transition items-center box-content border-0 text-xs lg:text-sm xl:text-md leading-none',
@@ -42,7 +42,7 @@ import WalletLogo from "./WalletLogo.vue";
 import Toggle from '@vueform/toggle';
 import {useWalletStore} from "@/global/stores/wallet-store";
 import User from "@/global/models/user";
-
+import DisconnectWalletBtn from "@/global/Components/DisconnectWalletBtn.vue";
 
 const ConnectWallet = defineAsyncComponent(() => import('./ConnectWallet.vue'));
 

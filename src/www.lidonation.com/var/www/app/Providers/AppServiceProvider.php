@@ -15,10 +15,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Laravel\Sanctum\Sanctum;
+use Livewire\Livewire;
 use Saloon\Laravel\SaloonServiceProvider;
 use Vinkla\Hashids\Facades\Hashids;
 
@@ -81,6 +83,10 @@ class AppServiceProvider extends ServiceProvider
             __DIR__.'/../views/components',
             'lido'
         );
+
+//        Livewire::setScriptRoute(function ($handle) {
+//            return Route::get('/vendor/livewire/livewire.js', $handle);
+//        });
 
         Sanctum::usePersonalAccessTokenModel(PersonalAccessToken::class);
         Blade::directive('percent', fn ($expression) => (round(((float) $expression) * 100, 3).'%'));

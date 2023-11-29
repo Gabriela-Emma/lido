@@ -20,29 +20,29 @@ class ProposerController extends Controller
     public function getCoProposalCount(CatalystUser $catalystUser)
     {
         $allProposals = $catalystUser->proposals()->where('status', 'in_progress')->count();
-        $ownProposals = $this->getOutsandingProposalCount($catalystUser);
+        $ownProposals = $this->getOutstandingProposalCount($catalystUser);
 
         return $allProposals - $ownProposals;
     }
 
-    public function getF10PrimaryProposalCount(CatalystUser $catalystUser)
+    public function getF11PrimaryProposalCount(CatalystUser $catalystUser)
     {
         return $catalystUser->own_proposals()->whereHas('fund', function ($q) {
             $q->whereHas('parent', function ($q) {
-                $q->where('title', 'Fund 10');
+                $q->where('title', 'Fund 11');
             });
         })->count();
     }
 
-    public function getF10CoProposalCount(CatalystUser $catalystUser)
+    public function getF11CoProposalCount(CatalystUser $catalystUser)
     {
         $allProposals = $catalystUser->proposals()->whereHas('fund', function ($q) {
             $q->whereHas('parent', function ($q) {
-                $q->where('title', 'Fund 10');
+                $q->where('title', 'Fund 11');
             });
         })->count();
 
-        $ownProposals = $this->getF10PrimaryProposalCount($catalystUser);
+        $ownProposals = $this->getF11PrimaryProposalCount($catalystUser);
 
         return $allProposals - $ownProposals;
     }

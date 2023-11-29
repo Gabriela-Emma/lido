@@ -5,7 +5,7 @@
 import Wallet from "@apps/catalyst-explorer/models/wallet";
 
 const props = defineProps<{
-    wallet: Wallet
+    wallet?: Wallet
 }>();
 
 let walletSources = {

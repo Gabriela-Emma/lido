@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\NewsletterController;
+use App\Http\Controllers\WalletLoginController;
 use App\Http\Livewire\Delegators\DelegatorsComponent;
 use App\Livewire\BazaarComponent;
 use App\Livewire\CommunityComponent;
@@ -120,6 +121,7 @@ Route::group(
 );
 
 Route::get('/delegators', DelegatorsComponent::class)->name('delegators');
+
 // localize vendor routes
 Route::prefix(LaravelLocalization::setLocale())->middleware('localeSessionRedirect', 'localizationRedirect', 'localeViewPath')->group(function () {
     Route::feeds('feeds/rss');
@@ -233,4 +235,8 @@ Route::get('/reset-password/{token}', function (Request $request, $token) {
 // Route::get('reset-password/{token}', ResetPasswordForm::class)->name('password.reset');
 Route::post('reset-password', [ForgotPasswordController::class, 'submitResetPasswordForm'])->name('password.update');
 Route::post('logout', [AuthController::class, 'logout'])->name('logout');
+
+// wallet login
+Route::post('/wallet-login', [WalletLoginController::class, 'login'])->name('walletLogin');
+
 Route::comments();

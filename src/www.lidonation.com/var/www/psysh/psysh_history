@@ -98,4 +98,5 @@ p->users->each(fn($u) => $u->media->isNotEmpty() ? $u->thumbnail_url : $u->profi
 $p->users->each(fn($u) => $u->media->isNotEmpty() ? $u->thumbnail_url : $u->profile_photo_url);
 $url = $p->users->each(fn($u) => $u->media->isNotEmpty() ? $u->thumbnail_url : $u->profile_photo_url);
 echo $url
-
+CatalystUser::runCustomIndex();
+exit

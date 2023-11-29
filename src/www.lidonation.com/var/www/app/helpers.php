@@ -50,7 +50,7 @@ function previous_route_url(): string
     return app('router')->getRoutes()
         ->match(
             app('request')->create(url()->previous())
-        )->uri();
+        )?->uri();
 }
 
 function previous_route_name_is(string $routeName): bool

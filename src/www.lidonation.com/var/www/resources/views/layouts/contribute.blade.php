@@ -48,7 +48,7 @@
 <livewire:components.lido-menu lazy="on-load"/>
 
 <section>
-    @livewireScripts
+{{--    @livewireScripts--}}
 
     <script src="https:////js.stripe.com/v3/"></script>
 

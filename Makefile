@@ -56,7 +56,7 @@ watch:
 
 .PHONY: vite
  vite:
-	 $(sail) npx vite
+	$(sail) npx vite
 
 .PHONY: build
 build:

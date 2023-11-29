@@ -52,6 +52,27 @@ class RegistrationsController extends Controller
         return Inertia::render('Registrations', $props);
     }
 
+    public function vote(Request $request)
+    {
+        $this->search = $request->input('s', null);
+        $this->perPage = $request->input('l', 24);
+        $this->currentPage = $request->input('p', 1);
+
+        // props
+        $props = [
+            'searchTerm' => $this->search,
+            'perPage' => $this->perPage,
+            'crumbs' => [
+                ['label' => 'Votes'],
+            ],
+        ];
+        if ($this->currentPage > 1) {
+            $props['currPage'] = $this->currentPage;
+        }
+
+        return Inertia::render('CheckMyVotes', $props);
+    } 
+
     public function registrationsData(Request $request)
     {
         $this->search = $request->input('s', null);

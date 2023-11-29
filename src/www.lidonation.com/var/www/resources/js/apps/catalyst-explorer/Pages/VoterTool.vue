@@ -5,8 +5,8 @@
                     subTitle="All Votes must be submitted in the official Catalyst Voting App. This is a research & planning tool only!"/>
 
   <main class="flex flex-col gap-2 bg-primary-20 bottom-8">
-    <section class="container py-8">
-      <div class="flex flex-col ">
+    <section class="container">
+      <div class="flex flex-col py-8">
         <div class="flex items-center w-full h-10 lg:h-16">
           <Search :search="search" :key="searchRender" @search="(term) => search = term"></Search>
         </div>
@@ -33,6 +33,7 @@
           Reset Filters
         </button>
       </div>
+
       <Proposals :proposals="props.proposals?.data"></Proposals>
 
       <div class="flex items-start justify-between w-full gap-16 my-16 xl:gap-24">
@@ -46,9 +47,9 @@
     </section>
 
     <section class='container my-16'>
-      <BrowseByTaxonomy :taxonomy="'Category'" :selected-id="taxonomyRef == 'Category' ? selectedId : null"
+      <BrowseByTaxonomy :taxonomy="'Category'" :selected-id="taxonomyRef == 'Tag' ? selectedId : null"
                         @taxonomy="(payload) => taxonomyRef = payload"
-                        @taxon="(payload) => categoriesFilterRef = payload"/>
+                        @taxon="(payload) => tagsFilterRef = payload"/>
 
     </section>
 
@@ -65,9 +66,9 @@
     </section>
 
     <section class='container mb-16'>
-      <BrowseByTaxonomy :taxonomy="'Tag'" :selected-id="taxonomyRef == 'Tag' ? selectedId : null"
+      <BrowseByTaxonomy :taxonomy="'Tag'" :selected-id="taxonomyRef == 'Category' ? selectedId : null"
                         @taxonomy="(payload) => taxonomyRef = payload"
-                        @taxon="(payload) => tagsFilterRef = payload"/>
+                        @taxon="(payload) => categoriesFilterRef = payload"/>
     </section>
   </main>
 </template>
