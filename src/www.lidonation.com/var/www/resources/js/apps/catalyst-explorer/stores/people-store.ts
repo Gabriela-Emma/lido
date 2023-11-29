@@ -51,28 +51,6 @@ export const usePeopleStore = defineStore('people', () => {
         selected.value = [...pp];
     }
 
-    // function setProposals(proposal:Proposal[])
-    // {
-    //     userProposals.value = proposal;
-    // }
-
-    // proposalCount.value = computed(()=>{
-    //     const fundFilter = appFilters.currentModel.filters.funds
-    //     const currentFundProposals = userProposals.value.filter((proposal) => fundFilter.includes(proposal.fund.parent.id));
-    //    return {
-
-    //         co_proposals:()=>{
-    //            if (fundFilter.length) {
-    //                return ;
-    //            }
-    //             return 2
-    //         },
-    //         primary_proposal:()=>{
-    //             return 2
-    //         }
-    //     } 
-    // })
-
     return {
         search,
         select,

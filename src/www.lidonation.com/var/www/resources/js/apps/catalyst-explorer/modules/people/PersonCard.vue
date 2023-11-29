@@ -17,12 +17,15 @@
                     <div class="flex flex-col mt-2 divide-y">
                         <div class="py-2">
                             <span>
-                                {{ proposalCount.primary_proposal() }} {{ proposalCount.primary_proposal() > 1 ? $t('Own Proposals') : $t('OwnProposal') }}
+                                {{ proposalCount.primary_proposal }} {{ proposalCount.primary_proposal > 1 ?
+                                    $t('OwnProposals') :
+                                    $t('OwnProposal') }}
                             </span>
                         </div>
                         <div class="py-2">
                             <span>
-                                {{ proposalCount.co_proposals() }} {{ proposalCount.co_proposals() ? $t('Co Proposals') : $t('CoProposal') }}
+                                {{ proposalCount.co_proposals }} {{ proposalCount.co_proposals ? $t('Co Proposals') :
+                                    $t('CoProposal') }}
                             </span>
                         </div>
                     </div>
@@ -53,22 +56,33 @@ let appFilters = useFiltersStore();
 let userProposals = ref(props.user.proposals);
 
 const proposalCount = computed(() => {
-    const fundFilter = appFilters.currentModel.filters.funds
-    const currentFundProposals = userProposals.value.filter((proposal) => fundFilter.includes(proposal.fund.parent.id));
-    return {
+    const fundFilter = appFilters.currentModel.filters?.funds;
+    const tagsFilter = appFilters.currentModel.filters?.tags;
+    const fundingStatusFilter = appFilters.currentModel.filters?.funded
+    const budgetFilter = appFilters.currentModel.filters?.budgets
 
-        co_proposals: () => {
-            if (fundFilter.length) {
-                return currentFundProposals.filter((proposal) => proposal.is_co_proposer).length;
-            }
-            return props.user.co_proposals_count
-        },
-        primary_proposal: () => {
-            if (fundFilter.length) {
-                return currentFundProposals.filter((proposal) => proposal.is_primary_proposer).length;
-            }
-            return props.user.own_proposals_count
+    const currentFundProposals = () => {
+        let filteredProposals = userProposals.value;
+        if (fundFilter.length) {
+            filteredProposals = filteredProposals.filter((proposal) => fundFilter.includes(proposal.fund.parent.id));
         }
+        if (tagsFilter.length) {
+            filteredProposals = filteredProposals.filter((proposal) => tagsFilter.includes(proposal.fund.parent.id));
+        }
+        if (fundingStatusFilter) {
+            filteredProposals = filteredProposals.filter((proposal) => proposal.funding_status = 'funded');
+        }
+
+        if (budgetFilter?.length) {
+            filteredProposals = filteredProposals.filter((proposal) => proposal.amount_requested >= parseInt(budgetFilter[0]) && proposal.amount_requested <= parseInt(budgetFilter[1]));
+        }
+
+        return filteredProposals;
+    }
+    
+    return {
+        co_proposals: currentFundProposals().filter((proposal) => proposal.is_co_proposer).length,
+        primary_proposal: currentFundProposals().filter((proposal) => proposal.is_primary_proposer).length
     }
 })
 </script>
