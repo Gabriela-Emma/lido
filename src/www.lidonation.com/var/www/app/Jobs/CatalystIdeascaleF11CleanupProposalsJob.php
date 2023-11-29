@@ -45,17 +45,14 @@ class CatalystIdeascaleF11CleanupProposalsJob implements ShouldQueue
         }
 
         $token = $authResponse->body();
-        // $ideascaleProposls = array_merge(
-        //     $this->getActiveProposals($settingService, $ideascaleId, $token),
-        //     $this->getArchiveProposals($settingService, $ideascaleId, $token)
-        // );
-        $ideascaleProposls = $this->getArchiveProposals($token);
-        if ($ideascaleProposls && ! empty($ideascaleProposls)) {
+        $this->updateDeletedProposals($token);
+
+        $ideascaleProposals = $this->getArchiveProposals($token);
+        if ($ideascaleProposals && ! empty($ideascaleProposals)) {
             $proposalsToDelete = Proposal::with('metas')->where('fund_id', $this->challenge->id)->whereHas(
                 'metas',
-                fn ($q) => $q->whereIn('content', $ideascaleProposls)->where('key', 'ideascale_id')
-            )->get();
-
+                fn ($q) => $q->whereIn('content', $ideascaleProposals)->where('key', 'ideascale_id')
+            )->get();             
             Log::info('Deleting '.$proposalsToDelete->count('id').'proposals for fund '.$this->challenge->id);
             if ($proposalsToDelete->isNotEmpty()) {
                 $proposalsToDelete->each(
@@ -118,5 +115,43 @@ class CatalystIdeascaleF11CleanupProposalsJob implements ShouldQueue
         return collect(
             $response->object()?->data?->content ?? []
         )->pluck('id')->toArray();
+    }
+
+    public function updateDeletedProposals($token)
+    {
+        $url = $this->challenge->meta_data?->ideascale_sync_link;
+
+        $response = Http::withToken($token)
+            ->post(
+                $url,
+                [
+                    'tag' => '',
+                    'labelKey' => '',
+                    'applicableIdeasOnly' => false,
+                    'moderatorTag' => '',
+                    'pageParameters' => [
+                        'limit' => 600,
+                        'page' => 0,
+                    ],
+                ]
+            );
+
+        if (!$response->successful()) {
+            return;
+        }
+
+        $ideascaleProposals = collect(
+            $response->object()?->data?->content ?? []
+        )->pluck('id')->toArray();
+
+        Proposal::with('metas')->where('fund_id', $this->challenge->id)
+        ->get()->each(
+            function($p) use($ideascaleProposals){
+                 if(!in_array($p->meta_data?->ideascale_id, $ideascaleProposals)){
+                    Log::info('Deleting proposal '.$p->id. ' for fund ' . $this->challenge->id);
+                    $p->delete();
+                 }
+            }
+        );
     }
 }

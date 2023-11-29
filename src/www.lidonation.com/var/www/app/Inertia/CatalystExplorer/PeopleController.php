@@ -128,7 +128,7 @@ class PeopleController extends Controller
                 if (count($_options['filters']) > 0) {
                     $options['filter'] = implode(' AND ', $_options['filters']);
                 }
-//                $options['facets'] = ['proposals.is_co_proposer', 'proposals.is_primary_proposer'];
+
                 $options['attributesToRetrieve'] = $attrs ?? [
                     'id',
                     'name',
@@ -138,6 +138,9 @@ class PeopleController extends Controller
                     'proposals.fund.label',
                     'proposals.is_co_proposer',
                     'proposals.is_primary_proposer',
+                    'proposals.funding_status',
+                    'proposals.tags.id',
+                    'proposals.amount_requested',
                     'own_proposals_count',
                     'co_proposals_count',
                     'username',
