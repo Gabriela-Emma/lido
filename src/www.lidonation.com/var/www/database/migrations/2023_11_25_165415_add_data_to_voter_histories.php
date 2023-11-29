@@ -14,7 +14,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // if (app()->environment('production')) {
+        if (app()->environment('production')) {
             $filePath = '/data/catalyst-tools/voting-history/f10/';
 
             if ($handle = opendir($filePath)) {
@@ -28,7 +28,7 @@ return new class extends Migration
                             if (is_array($dataArray) && empty($dataArray)) {
                                 continue;
                             }
-                            
+
                             $voting_stake_key = str_replace('.json', '', $entry);
 
                             collect($dataArray)->each(
@@ -50,7 +50,7 @@ return new class extends Migration
                 }
                 closedir($handle);
             }
-        // }
+        }
     }
 
     /**
