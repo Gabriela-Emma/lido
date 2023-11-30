@@ -63,9 +63,13 @@ const proposalCount = computed(() => {
         if (filters.funds.length) {
             filteredProposals = filteredProposals.filter((proposal) => filters.funds.includes(proposal.fund.parent.id));
         }
+        
         if (filters.tags.length) {
-            filteredProposals = filteredProposals.filter((proposal) => filters.tags.some((tag)=>proposal.tags.includes(tag)));
+            filteredProposals = filteredProposals.filter((proposal) => filters.tags.some(tag =>
+                 proposal.tags.flatMap(obj => obj.id).includes(tag)
+            ));
         }
+        
         if (filters.funded) {
             filteredProposals = filteredProposals.filter((proposal) => proposal.funding_status = 'funded');
         }

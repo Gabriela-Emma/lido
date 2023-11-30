@@ -8,7 +8,9 @@ export const useUserStore = defineStore('user', () => {
     let user$: Ref<User|null> = ref(null);
 
     function setUser() {
-        user$.value =  usePage().props?.user as User;
+        console.log({page:usePage()});
+        
+        user$.value =  usePage().props?.ziggy.user as User;
     }
 
     function logout() {

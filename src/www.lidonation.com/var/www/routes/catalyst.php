@@ -82,11 +82,15 @@ Route::group(
             Route::get('/D', fn () => Inertia::render('Auth/Login'))
                 ->name('login');
 
-            Route::get('/auth/login', [UserController::class, 'utilityLogin'])
+            Route::get('/utility-login', [UserController::class, 'utilityLogin'])
                 ->name('login.utility');
 
             Route::get('/register', fn () => Inertia::render('Auth/Register'))
                 ->name('register');
+
+            Route::post('/login', [UserController::class, 'login'])->name('login.store');
+
+            Route::post('/register', [UserController::class, 'create']);
 
             // Funds
             Route::prefix('/funds')->as('funds.')->group(function () {

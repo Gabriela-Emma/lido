@@ -35,7 +35,7 @@
 
             <div :class="{ 'gap-5': showFilters }" class="relative flex flex-row w-full">
                 <!-- Proposal Filters -->
-                <div class="absolute left-0 z-10 bg-white shadow-lg lg:static lg:shadow-0 mt-8">
+                <div class="absolute left-0 z-10 mt-8 bg-white shadow-lg lg:static lg:shadow-0">
                     <button type="button"
                         class="absolute right-0 inline-flex items-center p-2 text-white bg-teal-600 border border-transparent rounded-t-sm -top-9 lg:hidden hover:bg-teal-700 focus:outline-none focus:ring-0 focus:ring-teal-500 focus:ring-offset-0">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -60,7 +60,7 @@
                         <PeopleList :users="currentModel?.data?.data" />
                     </section>
 
-                    <div class="flex-1 pb-16 container">
+                    <div class="container flex-1 pb-16">
                         <Pagination :links="currentModel.data.links" :per-page="perPageRef"
                                 :total="currentModel.data.total" :from="currentModel.data.from" :to="currentModel.data.to"
                                 @perPageUpdated="(payload:number) => perPageRef = payload"
