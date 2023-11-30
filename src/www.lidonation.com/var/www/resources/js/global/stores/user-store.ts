@@ -7,9 +7,7 @@ import User from "@/global/models/user";
 export const useUserStore = defineStore('user', () => {
     let user$: Ref<User|null> = ref(null);
 
-    function setUser() {
-        console.log({page:usePage()});
-        
+    function setUser() {        
         user$.value =  usePage().props?.ziggy.user as User;
     }
 
