@@ -36,7 +36,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, inject, ref } from "vue";
+import { computed, inject, ref, } from "vue";
 import User from "@/global/models/user";
 import { useFiltersStore } from "@/global/stores/filters-stores";
 
@@ -56,25 +56,22 @@ let appFilters = useFiltersStore();
 let userProposals = ref(props.user.proposals);
 
 const proposalCount = computed(() => {
-    const fundFilter = appFilters.currentModel.filters?.funds;
-    const tagsFilter = appFilters.currentModel.filters?.tags;
-    const fundingStatusFilter = appFilters.currentModel.filters?.funded
-    const budgetFilter = appFilters.currentModel.filters?.budgets
+    const filters = appFilters.currentModel.filters;
 
     const currentFundProposals = () => {
         let filteredProposals = userProposals.value;
-        if (fundFilter.length) {
-            filteredProposals = filteredProposals.filter((proposal) => fundFilter.includes(proposal.fund.parent.id));
+        if (filters.funds.length) {
+            filteredProposals = filteredProposals.filter((proposal) => filters.funds.includes(proposal.fund.parent.id));
         }
-        if (tagsFilter.length) {
-            filteredProposals = filteredProposals.filter((proposal) => tagsFilter.includes(proposal.fund.parent.id));
+        if (filters.tags.length) {
+            filteredProposals = filteredProposals.filter((proposal) => filters.tags.some((tag)=>proposal.tags.includes(tag)));
         }
-        if (fundingStatusFilter) {
+        if (filters.funded) {
             filteredProposals = filteredProposals.filter((proposal) => proposal.funding_status = 'funded');
         }
 
-        if (budgetFilter?.length) {
-            filteredProposals = filteredProposals.filter((proposal) => proposal.amount_requested >= parseInt(budgetFilter[0]) && proposal.amount_requested <= parseInt(budgetFilter[1]));
+        if (filters.budgets?.length) {
+            filteredProposals = filteredProposals.filter((proposal) => proposal.amount_requested >= parseInt(filters.budgets[0]) && proposal.amount_requested <= parseInt(filters.budgets[1]));
         }
 
         return filteredProposals;
