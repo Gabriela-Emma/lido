@@ -25,7 +25,7 @@
                             <div class="flex flex-row justify-center pt-4 gap-2">
                                 <span class="text-lg font-medium text-gray-500">Budget:</span>
                                 <span class="text-lg font-semibold text-gray-600">
-                                    {{ $filters.shortNumber(fund.amount, 2) }} {{ fund.currency_symbol }}
+                                    {{ $filters.shortNumber(fund.amount, 2) }} ₳
                                 </span>
                             </div>
                         </div>
@@ -34,33 +34,29 @@
             </div>
         </div>
 
-            <!-- proposed and approved, very bottom -->   
-            <div class="w-full mt-6 grid grid-cols-2 -mt-px text-sm divide-x xl:text-sm 2xl:text-md">
-                <div class="flex items-center justify-center flex-1 gap-2 p-2">
-                    <div class="text-sm">
-                        {{  $t("Proposals") }}:
-                    </div>
-                    <div class="font-semibold">
-                        {{ fund.proposals_count }}
-                    </div>
+        <!-- proposed and approved, very bottom -->   
+        <div class="w-full mt-6 grid grid-cols-2 -mt-px text-sm divide-x xl:text-sm 2xl:text-md">
+            <div class="flex items-center justify-center flex-1 gap-2 p-2">
+                <div class="text-sm">
+                    {{  $t("Proposals") }}:
                 </div>
-
-                <div class="flex flex-1 -ml-px">
-                    <div
-                        class="flex items-center justify-center flex-1 gap-2 p-2">
-                        <div class="text-sm">
-                            {{  $t("Approved") }}:
-                        </div>
-                        <div class="font-semibold">
-                            {{ fund.funded_proposals }}
-                        </div>
-                    </div>
+                <div class="font-semibold">
+                    {{ fund.proposals_count }}
                 </div>
             </div>
 
-
-
-
+            <div class="flex flex-1 -ml-px">
+                <div
+                    class="flex items-center justify-center flex-1 gap-2 p-2">
+                    <div class="text-sm">
+                        {{  $t("Approved") }}:
+                    </div>
+                    <div class="font-semibold">
+                        {{ fund.funded_proposals }}
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 <script lang="ts" setup>
