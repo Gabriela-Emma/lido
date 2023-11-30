@@ -22,7 +22,7 @@ class FundsController extends Controller
                     'link' => route('catalyst-explorer.funds.index'),
                 ],
                 ['label' => 'Proposals', 'link' => route('catalyst-explorer.proposals')],
-                ['link' => '/catalyst-explorer/funds', 'label' => 'Funds'],
+                ['label' => 'Funds', 'link' => '/catalyst-explorer/funds'],
             ],
         ]);
     }
