@@ -15,6 +15,7 @@ class UserController extends Controller implements UpdatesUserProfileInformation
 {
     public function login(Request $request)
     {
+        
         $credentials = $request->validate([
             'email' => 'nullable|bail|required_unless:catalyst_explorer,null|email',
             'password' => 'nullable|bail|required_with:email|min:5',
@@ -39,7 +40,7 @@ class UserController extends Controller implements UpdatesUserProfileInformation
 
         $remember = $request->input('remember', false);
 
-        if (Auth::attempt($credentials, $remember)) {
+        if (Auth::guard('web')->attempt($credentials, $remember)) {
             if (isset($request->baseURL)) {
                 return redirect($request->baseURL);
             }
@@ -127,6 +128,7 @@ class UserController extends Controller implements UpdatesUserProfileInformation
         // ->with([
         //     'nft' => $topicNft,
         // ])
+
         return Inertia::modal('Auth/UtilityLogin')
             ->baseUrl(
                 previous_route_url()

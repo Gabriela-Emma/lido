@@ -7,8 +7,8 @@ import User from "@/global/models/user";
 export const useUserStore = defineStore('user', () => {
     let user$: Ref<User|null> = ref(null);
 
-    function setUser() {
-        user$.value =  usePage().props?.user as User;
+    function setUser() {        
+        user$.value =  usePage().props?.ziggy.user as User;
     }
 
     function logout() {
