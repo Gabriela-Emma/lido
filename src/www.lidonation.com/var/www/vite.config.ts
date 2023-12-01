@@ -3,8 +3,8 @@ import laravel, {refreshPaths} from 'laravel-vite-plugin';
 import vue from "@vitejs/plugin-vue";
 import topLevelAwait from "vite-plugin-top-level-await";
 import wasm from "vite-plugin-wasm";
-import path from 'path';
 import manifestSRI from 'vite-plugin-manifest-sri';
+import * as path from "path";
 
 export default defineConfig({
     plugins: [
@@ -20,7 +20,7 @@ export default defineConfig({
                 "resources/js/apps/rewards/app.ts",
                 "resources/js/apps/delegators/app.ts",
             ],
-            ssr: "resources/js/ssr.ts",
+            // ssr: "resources/js/ssr.ts",
             refresh: [
                 // ...refreshPaths,
                 "routes/**",
