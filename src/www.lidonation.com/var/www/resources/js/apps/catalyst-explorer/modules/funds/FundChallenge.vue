@@ -11,8 +11,7 @@
                     {{ fund.label }}
                 </a>
             </h2>
-            <p class="text-sm text-gray-500 h-auto">{{ fund.content.length > 150 ? fund.content.slice(0, 300) + ' ...' :
-                fund.content }}</p>
+            <p class="text-sm text-gray-500 h-auto">{{ fund.excerpt}}</p>
             <div class="flex flex-col justify-end flex-1 divide-y">
                 <p class="text-lg font-medium text-gray-900">
                     Budget: <span class="font-bold">{{ $filters.shortNumber(fund.amount, 2) }} ₳</span>
