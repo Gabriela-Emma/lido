@@ -11,11 +11,16 @@
     chartName: @js($chartName),
     modelId: @js($modelId),
     dataType: @js($dataType),
+    chart: null, 
     init() {
+        this.setupChart();
         Livewire.on('ownMetricsToggle', async () => {
-            this.values = await $wire.getMetricData(this.chartName, this.modelId);
+            this.chart.destroy();
+            this.setupChart();
         });
-        let chart = new Chart(this.$refs.canvas.getContext('2d'), {
+    },
+    setupChart() {
+        this.chart = new Chart(this.$refs.canvas.getContext('2d'), {
             type: 'bar',
             data: {
                 labels: this.labels,
@@ -29,7 +34,7 @@
                     aspectRatio: 3,
                     borderSkipped: false,
                     minBarLength: 3,
-                    dataType: @js($dataType)
+                    dataType: this.dataType,
                 }],
             },
             options: {
@@ -40,16 +45,16 @@
                         display: false,
                         min: 0,
                         grid: {
-                            display: false
-                        }
+                            display: false,
+                        },
                     },
                     y: {
                         display: false,
                         min: 0,
                         grid: {
-                            display: false
-                        }
-                    }
+                            display: false,
+                        },
+                    },
                 },
                 plugins: {
                     legend: { display: false },
@@ -74,19 +79,13 @@
                                     default:
                                         return point;
                                 }
-                            }
-                        }
-                    }
-                }
-            }
-        })
-        this.$watch('values', () => {
-            chart.data.labels = this.labels
-            chart.data.datasets[0].data = this.values
-            chart.data.datasets[0].dataType = this.values
-            chart.update()
-        })
-    }
+                            },
+                        },
+                    },
+                },
+            },
+        });
+    },
 }">
     <canvas x-ref="canvas" class="p-0 bg-transparent rounded-sm w-44h-24 "></canvas>
 </div>

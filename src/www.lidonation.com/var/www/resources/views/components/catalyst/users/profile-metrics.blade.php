@@ -1,5 +1,32 @@
 @props(['catalystUser', 'allTimeCaAverage', 'allTimeCaRatingCount', 'allTimeCaAverageGroups', 'allTimeFundedPerRound', 'allTimeAwardedPerRound', 'allTimeReceivedPerRound', 'allTimeFundingPerRound', 'allTimeProposedPerRound', 'allTimeCompletedPerRound', 'discussionData'])
-<div>
+<div class="relative" wire:key="{{ $catalystUser->id }}">
+ <div wire:loading.class.remove="hidden" wire:loading.delay.shortest.class="absolute" wire:target="toggleOwnMetrics"
+        class="sticky left-0 z-10 flex items-center justify-center hidden w-full h-0 p-0 overflow-visible top-1/2">
+        <div
+            class="flex items-center justify-center w-24 h-24 p-3 bg-white rounded-full xl:w-40 xl:h-40 lg:h-32 lg:w-32 bg-opacity-80">
+            <svg class="relative w-8 h-8 border-t-2 border-b-2 rounded-full lg:w-16 lg:h-16 animate-spin border-primary-600"
+                viewBox="0 0 24 24"></svg>
+        </div>
+    </div>
+
+    <div class="flex flex-row justify-end font-semibold text-yellow-400 right-0top-0p-4">
+        <div class="flex items-center" x-data="{ ownMetrics: @entangle('ownMetrics') }">
+            <button type="button" :class="{ 'bg-teal-800': ownMetrics, 'bg-gray-200': !ownMetrics }"
+                wire:click="toggleOwnMetrics({{ $catalystUser->id }})"
+                class="relative inline-flex flex-shrink-0 h-6 transition-colors duration-200 ease-in-out bg-gray-200 border-2 border-transparent rounded-full cursor-pointer w-11 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+                role="switch" aria-checked="false" aria-labelledby="annual-billing-label">
+                <span aria-hidden="true" :class="{ 'translate-x-5': ownMetrics, 'translate-x-0': !ownMetrics }"
+                    class="inline-block w-5 h-5 transition duration-200 ease-in-out transform translate-x-0 bg-white rounded-full shadow pointer-events-none ring-0"></span>
+            </button>
+            <span class="ml-3 text-sm">
+                @if ($ownMetrics)
+                    <span class="font-bold">{{ $catalystUser->name }}</span> own proposals
+                @else
+                    <span class="font-bold">{{ $catalystUser->name }}</span> own + co-authored proposals
+                @endif
+            </span>
+        </div>
+    </div>
     <div class="user-summary">
         <div>
             <h3 class="mb-4 text-sm capitalize">
