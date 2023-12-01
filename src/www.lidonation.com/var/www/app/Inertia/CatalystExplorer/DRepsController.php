@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Inertia\CatalystExplorer;
 
@@ -63,13 +63,13 @@ class DRepsController extends Controller
     private function isVoter($stakeKey)
     {
         $voter = CatalystVoter::where('stake_pub', $stakeKey)->first();
-        $votingRounds = $voter->voting_powers;
+        $votingRegistrations = $voter->voting_powers;
 
         $votedTwiceOrMore = false;
         $consumedCount = 0;
 
-        if ($votingRounds->count() >= 2) {
-            foreach ($votingRounds as $votingRound) {
+        if ($votingRegistrations->count() >= 2) {
+            foreach ($votingRegistrations as $votingRound) {
                 if ($votingRound->consumed) {
                     $consumedCount++;
 

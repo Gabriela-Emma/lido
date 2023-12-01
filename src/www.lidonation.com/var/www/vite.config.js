@@ -51,7 +51,7 @@ export default defineConfig({
         alias: {
             "@": path.resolve(__dirname, "./resources/js"),
             "@apps": path.resolve(__dirname, "./resources/js/apps"),
-            "@lucid-cardano": "/node_modules/lucid-cardano/web/mod.js",
+            "@lucid-cardano": "/node_modules/lucid-cardano/esm/mod.js",
             "@ziggy": "./vendor/tightenco/ziggy/dist/vue.m",
         },
     },
