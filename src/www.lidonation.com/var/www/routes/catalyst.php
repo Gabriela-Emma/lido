@@ -178,6 +178,10 @@ Route::group(
             Route::prefix('/dreps')->as('dReps.')->group(function () {
                 Route::get('/', [DRepsController::class, 'index'])
                     ->name('index');
+                Route::get('/signup', [DRepsController::class, 'signUp'])
+                    ->name('signUp');
+                Route::post('/store', [DRepsController::class, 'store'])
+                    ->name('store');
             });
 
             //catalyst charts metrics

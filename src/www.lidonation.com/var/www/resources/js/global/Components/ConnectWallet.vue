@@ -7,7 +7,7 @@
             :class="[{'rounded-sm': !open},backgroundColor]"
             class="relative inline-flex items-center justify-between gap-2 px-3 py-2 font-medium text-white rounded-sm menu-link xl:text-xl 3xl:text-2xl">
             <span
-                v-show="walletLoading && walletName"
+                v-show="walletLoading"
                 class="flex items-center justify-center w-4 p-1 bg-white rounded-full bg-opacity-90">
                 <svg
                     class="relative w-3 h-3 border-t-2 border-b-2 rounded-full animate-spin border-primary-600"
