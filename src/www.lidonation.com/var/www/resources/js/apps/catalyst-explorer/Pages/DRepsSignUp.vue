@@ -49,8 +49,8 @@
                 </div>
                 <div class="mt-4 flex items-center justify-between">
                     <span class="border-b w-1/5 lg:w-1/2"></span>
-                    <a href="#" class="text-xs text-center uppercase"
-                        >connect your Cardano wallet</a
+                    <a href="#" class="text-xs text-center uppercase text-slate-400"
+                        >connect your wallet</a
                     >
                     <span class="border-b w-1/5 lg:w-1/2"></span>
                 </div>
@@ -58,11 +58,12 @@
                     class="border border-gray-100 bg-gray-50 rounded-sm px-4 py-10"
                 >
                     <div
-                        class="md:flex md:flex-row md:justify-between md:items-center"
-                    >
-                        <div class="md:w-1/2">
+                        class="flex flex-col justify-center items-center gap-4">
+                        <ConnectWallet />
+
+                        <div class="px-4 md:px-10 xl:px-24 2xl:px-36">
                             <p
-                                class="text-xl font-light leading-relaxed tracking-wide"
+                                class="text-base font-light leading-relaxed tracking-wide"
                             >
                                 To ensure your eligibility to be a dRep, please
                                 connect your Cardano wallet. This will allow us
@@ -72,7 +73,7 @@
                                 initiative.
                             </p>
                         </div>
-                        <ConnectWallet />
+
                     </div>
                 </div>
                 <div class="md:flex md:flex-row md:items-center gap-4">
