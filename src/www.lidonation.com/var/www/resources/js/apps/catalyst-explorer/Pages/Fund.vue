@@ -133,7 +133,7 @@
                     <span class="text-gray-800 text-lg font-normal">The community was asked to povide solutions to these challenges</span>
                 </h2>
                 <div
-                    class="space-y-12 sm:grid sm:grid-cols-2 sm:gap-6 sm:space-y-0 lg:grid-cols-3 2xl:grid-cols-4 lg:gap-6">
+                    class="grid grid-cols-1 gap-3 mt-5 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3 lg:gap-6 ">
                     <template v-for="(fund, index) in challenges">
                         <FundChallenge v-if="fund" :key="fund?.id" :fund="fund"></FundChallenge>
                     </template>
