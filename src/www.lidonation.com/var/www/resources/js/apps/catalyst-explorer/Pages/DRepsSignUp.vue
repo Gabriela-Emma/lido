@@ -4,7 +4,7 @@
             <form
                 v-if="!success && isValidDrep"
                 @submit.prevent="save()"
-                class="space-y-4 text-lg bg-white rounded shadow-md p-4 px-4 container mx-auto"
+                class="space-y-4 text-lg bg-white rounded shadow-md p-4 container mx-auto"
             >
                 <div>
                     <h2>Become a dRep - Delegate Representative in Catalyst</h2>
@@ -63,7 +63,7 @@
 
                         <div class="px-4 md:px-10 xl:px-24 2xl:px-36">
                             <p
-                                class="text-base font-light leading-relaxed tracking-wide"
+                                class="text-lg font-light leading-relaxed tracking-wide"
                             >
                                 To ensure your eligibility to be a dRep, please
                                 connect your Cardano wallet. This will allow us
