@@ -1,7 +1,7 @@
 import { AxiosError } from "axios";
 import WalletService from "../services/wallet-service";
 import { messageLogin } from "./walletLogin";
-import { UTxO } from "lucid-cardano";
+import { UTxO } from "@lucid-cardano";
 import cardanoWallet from "./cardanoWallet";
 
 
@@ -48,7 +48,7 @@ export default function lidoPartners(this: any) {
             this.walletService = new WalletService();
             this.cardanoWallet =   cardanoWallet();
             console.log({this:this.$wire});
-            
+
             if (this.walletName) {
                 await this.walletService.connectWallet(this.walletName);
                 await this.getAssets();
@@ -90,7 +90,7 @@ export default function lidoPartners(this: any) {
             const assetsPromises = utxos.map((utxo: UTxO) => utxo.assets)
                 .map(asset => Object.keys(asset))
                 .flat()
-                .filter(asset => asset.includes(policies[0]))                
+                .filter(asset => asset.includes(policies[0]))
                 .map(async (asset) => {
                     //@todo parallelized this for when user has multiple assets
                     const res = await window.axios.get(`/api/cardano/assets/${asset}`);
@@ -106,15 +106,15 @@ export default function lidoPartners(this: any) {
                     return _asset;
 
                 });
-                
+
             Promise.all(assetsPromises).then((assets) => {
                 this.assets = assets;
                 for (let asset of this.assets) {
                     this.meta_data = asset.metadata;
                 }
             });
-            
-            
+
+
         },
         registerPartner() {
             this.registering = true;

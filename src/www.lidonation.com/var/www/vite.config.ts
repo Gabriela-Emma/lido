@@ -41,6 +41,9 @@ export default defineConfig({
         manifestSRI(),
     ],
     optimizeDeps: {
+        esbuildOptions: {
+            target: 'es2020',
+        },
         exclude: ["lucid-cardano"],
     },
     worker: {
@@ -53,10 +56,11 @@ export default defineConfig({
             "@apps": path.resolve(__dirname, "./resources/js/apps"),
             "@lucid-cardano": "/node_modules/lucid-cardano/web/mod.js",
             "@ziggy": "./vendor/tightenco/ziggy/dist/vue.m",
+            'node-fetch': 'node-fetch-polyfill',
         },
     },
     build: {
-        target: "esnext",
+        target: "es2020",
         rollupOptions: {
             external: ["lucid-cardano"],
         },
