@@ -1,6 +1,6 @@
 import WalletService from "../services/wallet-service";
 // @ts-ignore
-import { C } from "lucid-cardano";
+import { C } from "@lucid-cardano";
 
 /**
  * Requires alpine persist plugin.

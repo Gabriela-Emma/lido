@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { Blockfrost, Lucid, Network, Tx, C } from 'lucid-cardano';
+import { Blockfrost, Lucid, Network, Tx, C } from '@ucid-cardano';
 import BlockfrostService from "./BlockfrostService"
 
 export { };

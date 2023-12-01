@@ -1,7 +1,8 @@
+// @ts-nocheck
+import { UTxO } from "@lucid-cardano";
 import { AxiosError } from "axios";
 import WalletService from "../services/wallet-service";
 import { messageLogin } from "./walletLogin";
-import { UTxO } from "@lucid-cardano";
 import cardanoWallet from "./cardanoWallet";
 
 

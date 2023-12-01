@@ -201,10 +201,11 @@
 </template>
 
 <script lang="ts" setup>
+// @ts-nocheck
+import { fromText } from "@lucid-cardano";
 import ConnectWallet from "@/global/Components/ConnectWallet.vue";
 import { useWalletStore } from "@/global/stores/wallet-store";
 import { storeToRefs } from "pinia";
-import { fromText } from "lucid-cardano";
 import WalletService from "@/global/services/wallet-service";
 import { useForm } from "@inertiajs/vue3";
 import route from "ziggy-js";
