@@ -4,7 +4,7 @@
             <form
                 v-if="!success && isValidDrep"
                 @submit.prevent="save()"
-                class="space-y-4 text-lg bg-white rounded shadow-md p-4 container mx-auto"
+                class="space-y-4 text-lg bg-white rounded shadow-md p-8 container mx-auto"
             >
                 <div>
                     <h2>Become a dRep - Delegate Representative in Catalyst</h2>
