@@ -15,7 +15,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
-        <link rel="stylesheet" href="https://www.lidonation.com/css/app.css">
+        @vite(['resources/js/lido.ts'])
         <title>{{$proposal->title}} summary card</title>
     </head>
     <body class="proposal bg-gradient-to-br from-primary-800 via-primary-600 to-accent-900 h-screen">
@@ -52,6 +52,5 @@
                 </div>
             @endif
         </main>
-        <script src="{{ mix('js/app.js') }}" defer></script>
     </body>
 </html>
