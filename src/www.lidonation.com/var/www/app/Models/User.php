@@ -345,6 +345,11 @@ class User extends Authenticatable implements CanComment, CanResetPassword, HasM
         return $this->hasMany(LearningAttempt::class)->orderByDesc('created_at');
     }
 
+    public function signatures(): HasMany
+    {
+        return $this->hasMany(Signature::class);
+    }
+
     public function registerMediaConversions(Media $media = null): void
     {
         $this->addMediaConversion('thumbnail')
