@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\WalletLoginController;
 use App\Http\Livewire\Delegators\DelegatorsComponent;
+use App\Invokables\GenerateProposalImage;
 use App\Livewire\BazaarComponent;
 use App\Livewire\CommunityComponent;
 use App\Livewire\FinancialDetails;
@@ -22,9 +23,11 @@ use App\Livewire\TaxonomyPageComponent;
 use App\Livewire\TeamComponent;
 use App\Livewire\WhatIsCardanoComponent;
 use App\Livewire\WhatIsStakingComponent;
+use App\Models\CatalystExplorer\Proposal;
 use App\Models\Mint;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Laravel\Fortify\Features;
@@ -240,3 +243,15 @@ Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 Route::post('/wallet-login', [WalletLoginController::class, 'login'])->name('walletLogin');
 
 Route::comments();
+
+// Test
+Route::get('test', function () {
+    $image = (new GenerateProposalImage)(
+        proposal: Proposal::whereNotNull('funded_at')->inRandomOrder()->first()
+    )->windowSize(520, 320);
+    $image = base64_decode(str_replace('data:image/png;base64,', '', $image->base64Screenshot()));
+    $response = Response::make($image, 200);
+    $response->header('Content-Type', 'image/png');
+
+    return $response;
+});
