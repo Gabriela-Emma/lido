@@ -38,7 +38,7 @@ export default defineConfig({
         }),
         wasm(),
         topLevelAwait(),
-        manifestSRI(),
+        // manifestSRI(),
     ],
     optimizeDeps: {
         esbuildOptions: {
