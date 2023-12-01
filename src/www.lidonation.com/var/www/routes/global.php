@@ -246,6 +246,9 @@ Route::comments();
 
 // Test
 Route::get('test', function () {
+//    $proposal = Proposal::whereNotNull('funded_at')->inRandomOrder()->first();
+//    return view('catalyst-proposal-summary', compact('proposal'));
+
     $image = (new GenerateProposalImage)(
         proposal: Proposal::whereNotNull('funded_at')->inRandomOrder()->first()
     )->windowSize(520, 320);
