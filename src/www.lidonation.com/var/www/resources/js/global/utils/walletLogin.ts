@@ -1,5 +1,5 @@
 // @ts-ignore
-import { fromText, getAddressDetails } from "@lucid-cardano";
+import { fromText, getAddressDetails } from "lucid-cardano";
 import WalletService from "@/global/services/wallet-service";
 import axios from "@/global/utils/axios";
 

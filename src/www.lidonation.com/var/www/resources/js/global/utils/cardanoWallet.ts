@@ -1,6 +1,6 @@
 import WalletService from "../services/wallet-service";
 // @ts-ignore
-import { C } from "@lucid-cardano";
+import { C } from "lucid-cardano";
 
 /**
  * Requires alpine persist plugin.
@@ -9,7 +9,7 @@ import { C } from "@lucid-cardano";
 
 export default function cardanoWallet(this: any) {
     return {
-        walletName: null, 
+        walletName: null,
         api: null,
         lucid: null,
         walletBalance: null,
@@ -46,7 +46,7 @@ export default function cardanoWallet(this: any) {
             this.walletAddress = await this.walletService.getAddress();
             this.stakeAddress = await this.walletService.getStakeAddress();
             console.log({ addr: this.walletAddress, stake: this.stakeAddress });
-            
+
         },
         async setWalletBalance() {
             if (!this.walletName) {

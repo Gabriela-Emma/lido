@@ -50,7 +50,7 @@ return [
     */
     'aliases' => [
         '@' => 'resources',
-        '@lucid-cardano' => 'node_modules/lucid-cardano/web/mod.js',
+//        '@lucid-cardano' => 'node_modules/lucid-cardano/web/mod.js',
     ],
 
     /*
