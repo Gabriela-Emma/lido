@@ -35,7 +35,9 @@
                         </span>
                         @endif
                     </span>
-                    <span
+
+
+{{--                    <span--}}
                         {{-- onclick='Livewire.emit("openModal", "catalyst.proposal-quick-view-component", {{ json_encode(["proposalId" => $proposal->id]) }})'
                         x-tooltip.theme.teal="'Proposal Quick View'"
                         class="relative flex flex-row items-center gap-1 ml-3 font-semibold text-gray-500 cursor-pointer text-md hover:text-teal-600 top-1 flex-nowrap">
@@ -49,7 +51,11 @@
                                 clip-rule="evenodd"/>
                         </svg>
                     </span> --}}
+
+
                 </h2>
+
+
                 <div x-data="{ tooltip: 'Updated {{$proposal->funding_updated_at}}' }"
                      class="flex flex-row mb-2 text-white flex-nowrap">
                     @if($proposal->amount_received > 0.00)
@@ -122,27 +128,28 @@
                         <x-catalyst.proposals.status :proposal="$proposal" />
                     @endif
 
-                    <div class="relative z-0 flex flex-row-reverse mt-3 -space-x-1 overflowhidden">
-                        @foreach($proposal->users->reverse() as $catalystUser)
-                            <div class="mr-auto" wire:key="{{$proposal->id}}-{{$catalystUser->id}}" x-data="{ tooltip: '{{$catalystUser->name}}'}">
-                                <a class="block" href="{{$catalystUser->link}}">
-                                    @if($loop->first)
-                                        <img
-                                            class="h-10 w-10 relative -left-2 z-{{$loop->index}} inline-block h-10 w-10 rounded-full ring-2 ring-white"
-                                            x-tooltip.theme.teal="tooltip"
-                                            src="{{$catalystUser->thumbnail_url ?? $catalystUser->gravatar}}"
-                                            alt="{{$catalystUser->name}} gravatar"/>
-                                    @else
-                                        <img
-                                            class="h-10 w-10 relative z-{{$loop->index}} inline-block h-10 w-10 rounded-full ring-2 ring-white"
-                                            x-tooltip.theme.teal="tooltip"
-                                            src="{{$catalystUser->thumbnail_url ?? $catalystUser->gravatar}}"
-                                            alt="{{$catalystUser->name}} gravatar"/>
-                                    @endif
-                                </a>
-                            </div>
-                        @endforeach
-                    </div>
+
+{{--                    <div class="relative z-0 flex flex-row-reverse mt-3 -space-x-1">--}}
+{{--                        @foreach($proposal->users->reverse() as $catalystUser)--}}
+{{--                            <div class="mr-auto" wire:key="{{$proposal->id}}-{{$catalystUser->id}}" x-data="{ tooltip: '{{$catalystUser->name}}'}">--}}
+{{--                                <a class="block" href="{{$catalystUser->link}}">--}}
+{{--                                    @if($loop->first)--}}
+{{--                                        <img--}}
+{{--                                            class="h-10 w-10 relative -left-2 z-{{$loop->index}} inline-block h-10 w-10 rounded-full ring-2 ring-white"--}}
+{{--                                            x-tooltip.theme.teal="tooltip"--}}
+{{--                                            src="{{$catalystUser->thumbnail_url ?? $catalystUser->gravatar}}"--}}
+{{--                                            alt="{{$catalystUser->name}} gravatar"/>--}}
+{{--                                    @else--}}
+{{--                                        <img--}}
+{{--                                            class="h-10 w-10 relative z-{{$loop->index}} inline-block h-10 w-10 rounded-full ring-2 ring-white"--}}
+{{--                                            x-tooltip.theme.teal="tooltip"--}}
+{{--                                            src="{{$catalystUser->thumbnail_url ?? $catalystUser->gravatar}}"--}}
+{{--                                            alt="{{$catalystUser->name}} gravatar"/>--}}
+{{--                                    @endif--}}
+{{--                                </a>--}}
+{{--                            </div>--}}
+{{--                        @endforeach--}}
+{{--                    </div>--}}
                 </div>
             </div>
         </div>

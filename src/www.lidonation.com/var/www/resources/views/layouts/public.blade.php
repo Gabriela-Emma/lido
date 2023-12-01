@@ -86,7 +86,7 @@
 
 <section>
     <!-- Scripts -->
-{{--    @livewireScripts--}}
+    @livewireScripts
 
     <script src="//js.stripe.com/v3/"></script>
 

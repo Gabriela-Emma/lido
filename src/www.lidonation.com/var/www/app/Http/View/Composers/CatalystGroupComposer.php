@@ -66,10 +66,12 @@ class CatalystGroupComposer
             )->collapse();
         $this->allDiscussions = $discussions;
         $this->discussionsRatings();
+
         // combined ratings across all CA reviews
         $ratings = $discussions->map(fn ($disc) => $disc->ratings)->collapse();
         $this->allTimeCaRatingCount = $ratings->count();
         $this->allTimeCaAverage = $ratings->avg('rating');
+
         // combined ratings by discussion
         $groups = $ratings->map(fn ($v) => ([
             'rating' => $v->rating,
@@ -82,6 +84,7 @@ class CatalystGroupComposer
                 ]
             );
         $this->allTimeCaAverageGroups = $groups;
+
         $proposalGroups = $this->fundRepository->funds('funds')->map(
             fn ($fund) => new Fluent([
                 'fund' => $fund,
@@ -90,6 +93,7 @@ class CatalystGroupComposer
                 ),
             ])
         )->reverse();
+
         $labels = $proposalGroups->pluck('fund.title');
         $proposals = $proposalGroups->pluck('proposals');
         $currency = $proposalGroups->pluck('fund.currency');
@@ -102,6 +106,7 @@ class CatalystGroupComposer
 
             return $item;
         })->pluck('proposals');
+
         $adaProposal = collect($proposalGroups->toArray())->map(function ($item) {
             if ($item['fund']->currency === 'USD') {
                 $item['proposals'] = $item['proposals']->map(function ($p) {
@@ -111,6 +116,8 @@ class CatalystGroupComposer
 
             return $item;
         })->pluck('proposals');
+
+
 
         $this->proposalChallenges = $this->catalystGroup->proposals
             ->map(fn ($p) => new Fluent([
@@ -122,11 +129,15 @@ class CatalystGroupComposer
                 'challenge' => $cg?->first()?->proposal?->fund,
                 'proposals_count' => $cg?->pluck('proposal')->count(),
             ]))->sortByDesc('proposals_count');
+
+
+
         // ## Proposed
         $this->allTimeProposedPerRound = new Fluent([
             'labels' => $labels,
             'data' => $proposals->map(fn ($ps) => $ps->count()),
         ]);
+
         // ## Funded
         $this->allTimeFundedPerRound = new Fluent([
             'labels' => $labels,
@@ -139,6 +150,7 @@ class CatalystGroupComposer
                 return $complete + $funded;
             })->values(),
         ]);
+
         // ## Completed
         $this->allTimeCompletedPerRound = new Fluent([
             'labels' => $labels,
@@ -146,6 +158,7 @@ class CatalystGroupComposer
                 fn ($ps) => $ps->countBy(fn ($p) => $p->status)
             )->map(fn ($g) => $g->get('complete') ?? 0)->values(),
         ]);
+
         // $$ Requested
         $this->allTimeFundingPerRound = new Fluent([
             'labels' => $labels,
@@ -160,6 +173,7 @@ class CatalystGroupComposer
                 fn ($ps) => $ps->sum('amount_requested')
             )->values(),
         ]);
+
         // $$ Awarded
         $this->allTimeAwardedPerRound = new Fluent([
             'labels' => $labels,
@@ -208,11 +222,11 @@ class CatalystGroupComposer
                 'allTimeCaRatingCount' => $this->allTimeCaRatingCount,
                 'allTimeCaAverageGroups' => $this->allTimeCaAverageGroups,
                 'allTimeFundedPerRound' => $this->allTimeFundedPerRound,
-                'allTimeFundingPerRound' => $this->allTimeFundingPerRound,
-                'allTimeAwardedPerRound' => $this->allTimeAwardedPerRound,
-                'allTimeReceivedPerRound' => $this->allTimeReceivedPerRound,
-                'allTimeProposedPerRound' => $this->allTimeProposedPerRound,
-                'allTimeCompletedPerRound' => $this->allTimeCompletedPerRound,
+                'allTimeFundingPerRound' => $this->allTimeFundingPerRound ?? null,
+                'allTimeAwardedPerRound' => $this->allTimeAwardedPerRound ?? null,
+                'allTimeReceivedPerRound' => $this->allTimeReceivedPerRound ?? null,
+                'allTimeProposedPerRound' => $this->allTimeProposedPerRound ?? null,
+                'allTimeCompletedPerRound' => $this->allTimeCompletedPerRound ?? null,
                 'proposalChallenges' => $this->proposalChallenges,
                 'wordCloudSet' => $this->wordCloudSet,
                 'discussionData' => $this->discussionData,

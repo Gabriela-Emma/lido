@@ -102,7 +102,7 @@
                         <div class="py-24 sm:py-32 lg:flex lg:items-center lg:justify-between xl:px-36">
                             <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
                                 Excited for for DReps in  catalyst?
-                                <br/>Jump in be a pioneer!
+                                <br/>Jump in & be a pioneer!
                             </h2>
                             <div class="mt-10 flex items-center gap-x-6 lg:mt-0 lg:flex-shrink-0">
                                 <button

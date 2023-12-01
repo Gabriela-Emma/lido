@@ -3,6 +3,7 @@
   <component name="BladeInjectionConfiguration" default="false">
     <directives>
       <data directive="@append" />
+      <data directive="@assets" />
       <data directive="@auth" injection="true" prefix="&lt;?php if(auth()-&gt;guard(" suffix=")-&gt;check()): ?&gt;" />
       <data directive="@aware" injection="true" prefix="&lt;?php $attributes = $attributes-&gt;exceptProps(" suffix="); ?&gt;" />
       <data directive="@break" injection="true" prefix="&lt;?php if(" suffix=") break; ?&gt;" />
@@ -38,6 +39,7 @@
       <data directive="@empty" injection="true" prefix="&lt;?php if(empty(" suffix=")): ?&gt;" />
       <data directive="@endBsMultilangualFormTabs" />
       <data directive="@endMultilangualForm" />
+      <data directive="@endassets" />
       <data directive="@endauth" />
       <data directive="@endcan" />
       <data directive="@endcanany" />
@@ -70,6 +72,7 @@
       <data directive="@endpushif" />
       <data directive="@endpushonce" />
       <data directive="@endrole" />
+      <data directive="@endscript" />
       <data directive="@endsection" />
       <data directive="@endslot" />
       <data directive="@endswitch" />
@@ -134,6 +137,7 @@
       <data directive="@readonly" injection="true" prefix="&lt;?php if(" suffix="): echo 'readonly'; endif; ?&gt;" />
       <data directive="@role" injection="true" prefix="&lt;?php if(\Spatie\Permission\PermissionServiceProvider::bladeMethodWrapper('hasRole', {" suffix="})): ?&gt;" />
       <data directive="@routes" injection="true" prefix="&lt;?php _bladeDirective(" suffix="); ?&gt;" />
+      <data directive="@script" />
       <data directive="@section" injection="true" prefix="&lt;?php $__env-&gt;startSection(" suffix="); ?&gt;" />
       <data directive="@sectionMissing" injection="true" prefix="&lt;?php if (empty(trim($__env-&gt;yieldContent(" suffix=")))): ?&gt;" />
       <data directive="@selected" injection="true" prefix="&lt;?php if(" suffix=") {echo 'selected';}?&gt;" />

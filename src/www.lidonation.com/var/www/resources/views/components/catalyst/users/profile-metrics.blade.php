@@ -9,6 +9,7 @@
         </div>
     </div>
 
+    @if($catalystUser instanceof \App\Models\CatalystExplorer\CatalystUser)
     <div class="flex flex-row justify-end font-semibold text-yellow-400 right-0top-0p-4">
         <div class="flex items-center" x-data="{ ownMetrics: @entangle('ownMetrics') }">
             <button type="button" :class="{ 'bg-teal-800': ownMetrics, 'bg-gray-200': !ownMetrics }"
@@ -27,6 +28,8 @@
             </span>
         </div>
     </div>
+    @endif
+
     <div class="user-summary">
         <div>
             <h3 class="mb-4 text-sm capitalize">

@@ -26,8 +26,6 @@ class Discussion extends Model implements Interfaces\IHasMetaData
         HasTimestamps,
         SoftDeletes;
 
-    public int|DateTime|null $cacheFor = 3600;
-
     /**
      * The attributes that should be cast.
      *

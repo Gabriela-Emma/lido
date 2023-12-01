@@ -44,9 +44,15 @@ class Fund extends Model implements HasMedia, IHasMetaData
 
     protected $dateFormat = 'Y-m-d';
 
-    protected $withCount = ['proposals', 'parent_proposals'];
+    protected $withCount = [
+        'proposals',
+        'parent_proposals'
+    ];
 
-    protected $with = ['media', 'parent'];
+    protected $with = [
+        'media',
+ 'parent'
+    ];
 
     protected $appends = ['link', 'hero_url', 'thumbnail_url'];
 

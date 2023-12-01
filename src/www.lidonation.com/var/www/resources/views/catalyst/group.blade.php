@@ -411,6 +411,4 @@
 
         </section>
     @endif
-
-
 </x-public-layout>
