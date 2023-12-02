@@ -14,7 +14,7 @@
             <p class="text-sm text-gray-500 h-auto">{{ fund.excerpt}}</p>
             <div class="flex flex-col justify-end flex-1 divide-y">
                 <p class="text-lg font-medium text-gray-900">
-                    Budget: <span class="font-bold">{{ $filters.shortNumber(fund.amount, 2) }} ₳</span>
+                    Budget: <span class="font-bold">{{ $filters.shortNumber(fund.amount, 2) }} {{ fund.currency_symbol }}</span>
                 </p>
                 <div class="w-full grid mt-4 grid-cols-2 -mt-px text-sm divide-x xl:text-sm 2xl:text-md">
                     <div class="flex items-center justify-center flex-1 gap-2 p-2">
