@@ -136,7 +136,7 @@ class CatalystIdeascaleF11CleanupProposalsJob implements ShouldQueue
                 ]
             );
 
-        if (!$response->successful()) {
+        if (!$response->successful() && count($response->object()?->data?->content)) {
             return;
         }
 
