@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Inertia\CatalystExplorer;
 
@@ -9,10 +11,11 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Hash;
+use Inertia\Response;
 
 class DRepsController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request): Response
     {
         return Inertia::render(
             'DReps',
@@ -20,12 +23,12 @@ class DRepsController extends Controller
         );
     }
 
-    public function signUp()
+    public function signUp(): Response
     {
-        return Inertia::render('DRepsSignUp', ['crumbs' => [['label' => 'dReps sign up']]]);
+        return Inertia::render('DRepsSignUp', ['crumbs' => [['label' => 'dReps', 'link' => route('catalyst-explorer.dReps.index')], ['label' => 'Sign up']]]);
     }
 
-    public function store(Request $request)
+    public function store(Request $request): void
     {
         $existingUser = User::where('email', $request->email)->first();
 
@@ -60,7 +63,7 @@ class DRepsController extends Controller
     }
 
 
-    private function isVoter($stakeKey)
+    private function isVoter($stakeKey): bool
     {
         $voter = CatalystVoter::where('stake_pub', $stakeKey)->first();
         $votingRegistrations = $voter->voting_powers;

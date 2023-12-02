@@ -1,6 +1,7 @@
 <template>
+    <Head title="Project Catalyst Delegated Representatives (DRreps) sign up" />
     <div class="bg-gray-100 flex items-center justify-center py-6">
-        <div class="bg-gray-100 mb-6 w-full container">
+        <div class="bg-gray-100 my-6 w-full container">
             <form
                 v-if="!success && isValidDrep"
                 @submit.prevent="save()"
@@ -14,8 +15,8 @@
                     <input
                         v-model="form.name"
                         type="text"
-                        name="full_name"
-                        id="full_name"
+                        name="name"
+                        id="name"
                         class="h-10 mt-1 px-4 w-full bg-gray-50 outline-none border border-gray-100 rounded-sm text-sm focus:border-blue-500"
                         placeholder="John Doe"
                         required
@@ -191,7 +192,7 @@
                         encourage you to continue participating in the
                         governance process by voting in future rounds. Once you
                         have voted in two consecutive rounds, you will be
-                        eligible to apply for dRep status again.** Thank you for
+                        eligible to apply for dRep status again. Thank you for
                         your interest in serving as a dRep!
                     </p>
                 </div>
@@ -207,7 +208,7 @@ import ConnectWallet from "@/global/Components/ConnectWallet.vue";
 import { useWalletStore } from "@/global/stores/wallet-store";
 import { storeToRefs } from "pinia";
 import WalletService from "@/global/services/wallet-service";
-import { useForm } from "@inertiajs/vue3";
+import { useForm, Head } from "@inertiajs/vue3";
 import route from "ziggy-js";
 import { ref } from "vue";
 import axios from "axios";
@@ -238,10 +239,6 @@ async function save() {
     isConnected.value = true;
 
     const messageHex = fromText("Catalyst dReps sign up");
-    // const signature = (await new WalletService().signMessage(
-    //     walletData.value?.name,
-    //     messageHex
-    // )) as {};
 
     try {
         const signature = (await new WalletService().signMessage(
@@ -263,13 +260,19 @@ async function save() {
     axios
         .post(route("catalyst-explorer.dReps.store"), form)
         .then((response) => {
-            success.value = true;
-            loading.value = false;
-            form.reset();
+            if(response.statusText = 'OK'){
+                success.value = true;
+                loading.value = false;
+                form.reset();
+            }
         })
         .catch((error) => {
-            isValidDrep.value = false;
-            loading.value = false;
+            if(error.message = "Not valid to be a dRep."){
+                isValidDrep.value = false;
+                loading.value = false;
+            } else{
+                console.log(error.message);
+            }
         });
 }
 </script>
