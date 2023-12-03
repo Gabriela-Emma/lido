@@ -8,18 +8,11 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
 use livewire\Component;
 
 class TaxonomyPageComponent extends Component
 {
-    public $category;
-
-    public $tag;
-
     public $featurePost;
-
-    public $postsByTag;
 
     public $taxonomy;
 
@@ -27,22 +20,12 @@ class TaxonomyPageComponent extends Component
 
     public function mount(Request $request, Category $category, Tag $tag): void
     {
-        if (Route::currentRouteNamed('category')) {
-            $this->featurePost = $this->category->posts()->first();
-            $this->taxonomy = $category;
-        } else {
-            $this->featurePost = $this->tag->posts()->first();
-            $this->taxonomy = $tag;
-        }
+        $this->taxonomy = $category->id ? $category : $tag;
+        $this->featurePost = $this->taxonomy->posts()->first();
     }
 
     public function render(): Factory|View|Application
     {
-        if (Route::currentRouteNamed('category')) {
-            return view('livewire.category')->withShortcodes();
-        }
-
-        return view('livewire.tag')
-            ->title($this->taxonomy->title)->withShortcodes();
+        return view('livewire.taxonomy')->withShortcodes();
     }
 }

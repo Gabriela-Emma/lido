@@ -28,6 +28,8 @@ class TaxonomyComponent extends Component
 
     public string $taxType;
 
+    public bool $showTitle = true;
+
     public function mount(): void
     {
         switch ($this->taxonomy) {
