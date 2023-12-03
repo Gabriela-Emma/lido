@@ -100,3 +100,5 @@ $url = $p->users->each(fn($u) => $u->media->isNotEmpty() ? $u->thumbnail_url : $
 echo $url
 CatalystUser::runCustomIndex();
 exit
+Post::count();
+Post::offset(2)->count();
