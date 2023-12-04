@@ -40,6 +40,9 @@ class ContributeTranslation extends ModalComponent
 
     protected array $rules = [];
 
+    public $collapsed = false;
+public $scrollPosition;
+
     public function back()
     {
         unset($this->translation);
@@ -110,7 +113,7 @@ class ContributeTranslation extends ModalComponent
 
     public function render(): Factory|View|Application
     {
-        return view('livewire.contribute.contribute-translation');
+        return view('livewire.contribute.translations.single');
     }
 
     protected function updateEditor()

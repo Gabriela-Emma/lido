@@ -65,19 +65,14 @@
                                                 class="flex items-center gap-2 px-3 py-2 m-0 mr-auto text-xs font-medium text-white border border-transparent rounded-sm shadow-xs xl:text-sm bg-teal-600 hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
                                             Publish
                                         </button>
-                                        @if($this->translatingTo !== 'Kiswahili')
+
+
                                             <button type="button"
-                                                    @click="preTranslate"
+                                                    @click="preTtranslate"
                                                     x-transition
-                                                    x-tooltip.theme.primary="tooltip"
-                                                    :class="{
-                                                    'bg-primary-700 hover:bg-teal-600 focus:ring-primary-500': (canAutoGenerate),
-                                                    'bg-gray-600 cursor-not-allowed hover:cursor-not-allowed': !canAutoGenerate
-                                                }"
-                                                    class="flex items-center gap-2 px-3 py-2 m-0 text-xs font-medium text-white border border-transparent rounded-sm shadow-xs xl:text-sm focus:ring-2 focus:ring-offset-2 focus:outline-none">
+                                                    class="flex items-center gap-2 px-3 py-2 m-0 text-xs font-medium bg-slate-600 text-white border border-transparent rounded-sm shadow-xs xl:text-sm focus:ring-2 focus:ring-offset-2 focus:outline-none">
                                                 Generate Draft Translation
                                             </button>
-                                        @endif
 
                                         <a href="{{route('contributeTranslations')}}" type="button"
                                            x-transition
@@ -87,6 +82,9 @@
                                     </div>
                                 </div>
                             </div>
+
+
+
                             <div
                                 class="flex flex-col justify-center py-1 mb-4 border-t-4 bg-gray-50 sm:px-3 lg:px-4 min-w-3/5">
                                 <div class="p-1" x-data="{expanded: true}">
@@ -112,6 +110,8 @@
                                             </div>
                                         </div>
                                     </div>
+
+
                                     <div x-show="expanded" x-transition
                                          class="max-h-[44rem] overflow-y-auto flex flex-col gap-6">
                                         <div class="bg-white p-3">
