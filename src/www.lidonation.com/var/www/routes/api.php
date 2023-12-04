@@ -334,6 +334,8 @@ Route::prefix('catalyst-explorer')->as('catalystExplorerApi.')
             Route::get('/{catalystReport:id}', [CatalystExplorer\ReportController::class, 'listComments']);
         });
 
+        Route::post('/login', [CatalystExplorer\UserController::class, 'login'])->name('login');
+
 
         // counts
         Route::get('/metrics/proposals/count/approved', [ProposalsController::class, 'metricCountFunded']);
