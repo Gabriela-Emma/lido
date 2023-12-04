@@ -98,10 +98,10 @@ class Groups extends Resource
 
             HasMany::make('Metadata', 'metas', Metas::class),
 
-            BelongsTo::make(__('Owner'), 'owner', Users::class)
+            BelongsTo::make(__('Owner'), 'owner', CatalystUsers::class)
                 ->searchable(),
 
-            BelongsToMany::make(__('Members'), 'members', Users::class)
+            BelongsToMany::make(__('Members'), 'members', CatalystUsers::class)
                 ->searchable()
                 ->hideFromIndex(),
 

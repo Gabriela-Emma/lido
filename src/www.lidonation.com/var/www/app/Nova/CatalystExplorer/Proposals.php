@@ -152,7 +152,7 @@ class Proposals extends Resource
 
             Boolean::make(__('Opensource'), 'opensource')->hideFromIndex()->filterable(),
 
-            BelongsTo::make(__('Author'), 'author', Users::class)
+            BelongsTo::make(__('Author'), 'author', CatalystUsers::class)
                 ->searchable(),
             BelongsTo::make(__('Fund'), 'fund', Funds::class)
                 ->searchable()
@@ -167,7 +167,7 @@ class Proposals extends Resource
                 ->hideFromIndex()
                 ->searchable(),
 
-            BelongsToMany::make(__('Catalyst Users'), 'users', Users::class)
+            BelongsToMany::make(__('Catalyst Users'), 'users', CatalystUsers::class)
                 ->hideFromIndex()
                 ->searchable(),
 

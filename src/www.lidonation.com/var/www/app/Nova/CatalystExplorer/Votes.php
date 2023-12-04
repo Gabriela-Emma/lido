@@ -51,7 +51,7 @@ class Votes extends Resource
         return [
             ID::make()->sortable(),
 
-            BelongsTo::make(__('Author'), 'author', Users::class)
+            BelongsTo::make(__('Author'), 'author', CatalystUsers::class)
                 ->searchable(),
 
             MorphTo::make('model')->types([
