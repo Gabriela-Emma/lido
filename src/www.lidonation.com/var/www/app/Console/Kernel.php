@@ -44,7 +44,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('ln:sitemap:generate')->weekly();
 
         $schedule->command('media-library:delete-old-temporary-uploads')->daily();
-        $schedule->command('ln:update-fund-details 129')->everyTwoHours();
+//        $schedule->command('ln:update-fund-details 129')->everyTwoHours();
         $schedule->command('ln:ca-sync-f11 129')->everyTwoHours();
         $schedule->command('ln:ca-cleanup-f11 129')->everyTwoHours();
 
