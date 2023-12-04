@@ -25,14 +25,16 @@ export const menulinkStore = defineStore('menulinks', () => {
         { title:'Data', links:[
             { name: 'Catalyst by the Numbers', route: 'catalyst-explorer.charts', component: 'Charts'},
             { name: 'CCV4 Votes', route: 'projectCatalyst.votes.ccv4'},
-            { name: 'Catalyst Api', url: '/catalyst-explorer/api'}
+            { name: 'Catalyst Api', url: '/catalyst-explorer/api'},
+            { name: 'Proposals CSV', url: 'https://ncdb.lidonation.com/dashboard/#/nc/view/26a2a22e-c722-445d-bbad-3ca6009fb890'}
         ]},
         { title:'Tools', links:[
             { name: 'Voter Tool', route: 'catalyst-explorer.voter-tool', component: 'VoterTool'},
             { name: 'Check my registration', route: 'catalyst-explorer.registrations', component: 'Registrations'},
             { name: 'Check my vote', route: 'catalyst-explorer.my-votes', component: 'CheckMyVotes'},
-            { name: 'My Bookmarks', route: 'catalyst-explorer.myBookmarks', component: 'MyBookmarks'}        
-        ]}        
+            { name: 'My Bookmarks', route: 'catalyst-explorer.myBookmarks', component: 'MyBookmarks'},
+            { name: 'My Draft Ballots', route: 'catalyst-explorer.myDraftBallots', component: 'MyDraftBallots'}
+        ]}
      ]);
 
      return {

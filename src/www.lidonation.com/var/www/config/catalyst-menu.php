@@ -58,7 +58,7 @@ return [
                 'title' => 'Proposers',
                 'route_type' => 'route_name',
                 'route' => 'catalyst-explorer.people.index'
-            ]), 
+            ]),
             new Illuminate\Support\Fluent([
                 'title' => 'Groups',
                 'route_type' => 'route_name',
@@ -69,7 +69,7 @@ return [
                 'route_type' => 'route_name',
                 'route' => 'catalyst-explorer.dReps.index'
             ]),
-                    
+
         ],
     ]),
     new \Illuminate\Support\Fluent([
@@ -90,6 +90,13 @@ return [
                 'route_type' => 'url',
                 'route' => '/catalyst-explorer/api'
             ]),
+            new Illuminate\Support\Fluent([
+                'title' => 'Proposal CSVs',
+                'route_type' => 'url',
+                'route' => 'https://ncdb.lidonation.com/dashboard/#/nc/view/26a2a22e-c722-445d-bbad-3ca6009fb890',
+                'target' => '_blank',
+                'eager' => false,
+            ]),
         ],
     ]),
     new \Illuminate\Support\Fluent([
@@ -109,6 +116,11 @@ return [
                 'title' => 'Check my vote',
                 'route_type' => 'route_name',
                 'route' => 'catalyst-explorer.my-votes'
+            ]),
+            new Illuminate\Support\Fluent([
+                'title' => 'My Ballots',
+                'route_type' => 'route_name',
+                'route' => 'catalyst-explorer.myDraftBallots'
             ]),
             new Illuminate\Support\Fluent([
                 'title' => 'My Bookmarks',

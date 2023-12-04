@@ -10,17 +10,20 @@ use App\Models\BookmarkItem;
 use App\Models\CatalystExplorer\Proposal;
 use App\Models\Discussion;
 use App\Models\DraftBallot;
+use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Fluent;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class BookmarksController extends Controller
 {
     protected int $perPage = 12;
 
-    public function createItem(Request $request)
+    public function createItem(Request $request): array|\JsonSerializable|Arrayable
     {
         $modelTable = $request->get('model_type');
         $data = new Fluent($request->validate([
@@ -70,9 +73,8 @@ class BookmarksController extends Controller
         return (new BookmarkCollectionResource($collection))->toArray($request);
     }
 
-    public function view(Request $request, BookmarkCollection $bookmarkCollection)
+    public function view(Request $request, BookmarkCollection $bookmarkCollection): Response|RedirectResponse
     {
-
         if ($bookmarkCollection instanceof DraftBallot) {
             return to_route('catalyst-explorer.draftBallot.view', $bookmarkCollection->hash);
         }
@@ -89,7 +91,7 @@ class BookmarksController extends Controller
         ]);
     }
 
-    public function viewDraftBallot(Request $request, DraftBallot $draftBallot)
+    public function viewDraftBallot(Request $request, DraftBallot $draftBallot): Response
     {
         return Inertia::render('DraftBallot')->with([
             'draftBallot' => (new DraftBallotResource($draftBallot))->toArray($request),

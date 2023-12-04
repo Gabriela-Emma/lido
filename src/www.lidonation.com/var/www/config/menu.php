@@ -172,9 +172,21 @@ return [
                 'eager' => false,
             ]),
             new Illuminate\Support\Fluent([
+                'title' => 'Catalyst Numbers',
+                'route_type' => 'route_name',
+                'route' => 'catalyst-explorer.charts',
+                'eager' => false,
+            ]),
+            new Illuminate\Support\Fluent([
                 'title' => 'Voter Tool',
                 'route_type' => 'route_name',
                 'route' => 'catalyst-explorer.voter-tool',
+                'eager' => false,
+            ]),
+            new Illuminate\Support\Fluent([
+                'title' => 'My Draft Ballots',
+                'route_type' => 'route_name',
+                'route' => 'catalyst-explorer.myDraftBallots',
                 'eager' => false,
             ]),
             new Illuminate\Support\Fluent([
@@ -190,9 +202,9 @@ return [
                 'eager' => false,
             ]),
             new Illuminate\Support\Fluent([
-                'title' => 'Proposal Assessments',
+                'title' => 'Funds',
                 'route_type' => 'route_name',
-                'route' => 'catalyst-explorer.assessments',
+                'route' => 'catalyst-explorer.funds.index',
                 'eager' => false,
             ]),
             new Illuminate\Support\Fluent([
@@ -201,42 +213,26 @@ return [
                 'route' => 'catalyst-explorer.groups',
                 'eager' => false,
             ]),
-            new Illuminate\Support\Fluent([
-                'title' => 'Funds',
-                'route_type' => 'route_name',
-                'route' => 'catalyst-explorer.funds.index',
-                'eager' => false,
-            ]),
-            new Illuminate\Support\Fluent([
-                'title' => 'Charts',
-                'route_type' => 'route_name',
-                'route' => 'catalyst-explorer.charts',
-                'eager' => false,
-            ]),
-            new Illuminate\Support\Fluent([
-                'title' => 'Monthly Reports',
-                'route_type' => 'route_name',
-                'route' => 'catalyst-explorer.reports',
-                'eager' => false,
-            ]),
-            new Illuminate\Support\Fluent([
-                'title' => 'CCV4 Results',
-                'route_type' => 'route_name',
-                'route' => 'projectCatalyst.votes.ccv4',
-                'eager' => false,
-            ]),
-            new Illuminate\Support\Fluent([
-                'title' => 'My Bookmarks',
-                'route_type' => 'route_name',
-                'route' => 'catalyst-explorer.myBookmarks',
-                'eager' => false,
-            ]),
-            new Illuminate\Support\Fluent([
-                'title' => 'Catalyst API',
-                'route_type' => 'url',
-                'route' => '/catalyst-explorer/api',
-                'eager' => false,
-            ]),
+
+//            new Illuminate\Support\Fluent([
+//                'title' => 'Monthly Reports',
+//                'route_type' => 'route_name',
+//                'route' => 'catalyst-explorer.reports',
+//                'eager' => false,
+//            ]),
+//            new Illuminate\Support\Fluent([
+//                'title' => 'CCV4 Results',
+//                'route_type' => 'route_name',
+//                'route' => 'projectCatalyst.votes.ccv4',
+//                'eager' => false,
+//            ]),
+
+//            new Illuminate\Support\Fluent([
+//                'title' => 'Catalyst API',
+//                'route_type' => 'url',
+//                'route' => '/catalyst-explorer/api',
+//                'eager' => false,
+//            ]),
             new Illuminate\Support\Fluent([
                 'title' => 'Weekly Townhall',
                 'route_type' => 'url',

@@ -12,7 +12,7 @@
         <teleport to="header">
             <transition enter-from-class="opacity-0 scale-95">
                 <div v-show="openMenu"
-                     class="fixed left-1/2 -translate-x-1/2 w-[1250px] h-[200px] mt-12 font-semibold rounded-sm p-6 shadow-md bg-white">
+                     class="fixed left-1/2 -translate-x-1/2 w-[1250px] h-[220px] mt-12 font-semibold rounded-sm p-6 shadow-md bg-white">
                     <ul class="flex flex-row gap-28 text-lg">
                         <li v-for="heading in menudrops" :key="heading.title">
                             <span class="text-slate-700 text-xl">
@@ -29,14 +29,14 @@
                                         </Link>
                                     </div>
                                     <div v-else>
-                                        <a 
+                                        <a
                                         class="text-gray-900 menu-link font-normal hover:text-teal-800"
                                         :href=link.url>
                                         <span class="inline-block">{{ link.name }}</span>
                                         </a>
-                                    </div>                                    
+                                    </div>
                                 </li>
-                            </ul> 
+                            </ul>
                         </li>
                     </ul>
                 </div>
