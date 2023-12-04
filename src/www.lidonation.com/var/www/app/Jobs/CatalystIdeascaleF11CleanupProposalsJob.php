@@ -144,7 +144,6 @@ class CatalystIdeascaleF11CleanupProposalsJob implements ShouldQueue
                 ]
             );
 
-            dump(!count($response->object()?->data?->content));
         if (!$response->successful() || !count($response->object()?->data?->content)) {
             return;
         }
@@ -153,27 +152,28 @@ class CatalystIdeascaleF11CleanupProposalsJob implements ShouldQueue
             $response->object()?->data?->content ?? []
         )->pluck('id')->toArray();
 
-        // Begin the transaction
         DB::beginTransaction();
 
         try {
-            $deletedProposals = Proposal::query()->where('fund_id', $this->challenge->id)
-                ->whereHas('metas', function($query)  use($ideascaleProposals){
-                    $query->where('key', 'ideascale_id')->whereNotIn('content', $ideascaleProposals);
-                })->get();
+            Proposal::withoutSyncingToSearch(function () use ($ideascaleProposals) {
+                $deletedProposals = Proposal::query()->where('fund_id', $this->challenge->id)
+                    ->whereHas('metas', function ($query) use ($ideascaleProposals) {
+                        $query->where('key', 'ideascale_id')->whereNotIn('content', $ideascaleProposals);
+                    })->get();
 
-            foreach ($deletedProposals as $p) {
-                Log::info('Deleting proposal ' . $p->id . ' for fund ' . $this->challenge->id);
-                $p->delete();
-            }
+                foreach ($deletedProposals as $p) {
+                    Log::info('Deleting proposal ' . $p->id . ' for fund ' . $this->challenge->id);
+                    $p->delete();
+                }
 
-            $remainingProposalsCount = Proposal::with('metas')
-                ->where('fund_id', $this->challenge->id)
-                ->count();
+                $remainingProposalsCount = Proposal::with('metas')
+                    ->where('fund_id', $this->challenge->id)
+                    ->count();
 
-            if ($remainingProposalsCount === 0) {
-                throw new \Exception('User not created for account');
-            }
+                if ($remainingProposalsCount === 0) {
+                    throw new \Exception('invalid action');
+                }
+            });
 
             DB::commit();
         } catch (\Throwable $th) {
