@@ -59,7 +59,7 @@ class UpdateFundDetail implements ShouldQueue
             }
         ))->first();
 
-        $newSyncLink = 'https://cardano.ideascale.com/a/community/api/campaigns/'. $ideascale_id.'/stages/'. $ideascale_Challenge->defaultStage->key.'/ideas/recent/desc';
+        $newSyncLink = 'https://cardano.ideascale.com/a/community/api/campaigns/'.$ideascale_id.'/stages/'. $ideascale_Challenge->defaultStage->key.'/ideas/recent/desc';
         $this->challenge->saveMeta('ideascale_sync_link',$newSyncLink,$this->challenge,true);
     }
 }
