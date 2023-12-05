@@ -1,6 +1,6 @@
 <template>
     <Head title="My Bookmarks" />
-    
+
     <header-component titleName0="Catalyst" titleName1="My Bookmarks" subTitle=""/>
 
     <main class="flex flex-col gap-2 py-8 bg-primary-20">
