@@ -24,7 +24,7 @@ class SendContentIdeaClaimedNotification implements ShouldQueue
      *
      * @return void
      */
-    public function handle(ContentIdeaClaimed $event)
+    public function handle(ContentIdeaClaimed $event): void
     {
         Mail::to('hello@lidonation.com')
             ->send(new ContentIdeaClaimedMail($event->post));
