@@ -33,7 +33,7 @@
                 <li class="p-4">
                     <BudgetRangePicker v-model="currentModel.filters.budgets" />
                 </li>
-                <li class="">
+                <li class="border-b divide-b">
                     <Picker v-model:type="currentModel.filters.type"
                             :customize-ui="{
                         'placeholder': 'Type'
@@ -46,21 +46,21 @@
                 </li>
 
                 <li class="">
-                    <Picker v-model:funds="currentModel.filters.funds"
+                    <Checklist v-model:funds="currentModel.filters.funds"
                             :customize-ui="{
                         'label': 'title',
                         'placeholder' : 'Limit to Fund(s)'
                     }"/>
                 </li>
                 <li class="">
-                    <Picker v-model:challenges="currentModel.filters.challenges"
+                    <Checklist v-model:challenges="currentModel.filters.challenges"
                             :customize-ui="{
                         'label': 'title',
                         'placeholder': 'Limit to Challenge(s)'
                     }"/>
                 </li>
 
-                <li class="">
+                <li class="border-b divide-b">
                     <Picker v-model:fundingStatus="currentModel.filters.fundingStatus"
                             :customize-ui="{
                         'placeholder': 'Funding Status'
@@ -74,7 +74,7 @@
                 </li>
 
                 <li class="">
-                    <Picker v-model:tags="currentModel.filters.tags"
+                    <Checklist v-model:tags="currentModel.filters.tags"
                             :customize-ui="{
                         'label': 'title',
                         'placeholder': 'Limit to Tag(s)'
@@ -158,6 +158,7 @@ import Filters from "@apps/catalyst-explorer/models/filters";
 import Picker from "@apps/catalyst-explorer/Components/Global/Picker.vue";
 import BudgetRangePicker from "@apps/catalyst-explorer/modules/proposals/BudgetRangePicker.vue";
 import { Ref } from "vue";
+import Checklist from "../../Components/Global/Checklist.vue";
 
 ////
 // props and class properties

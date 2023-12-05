@@ -67,9 +67,9 @@
                                         value: 'xls',
                                     },
                                 ]" :classes="{
-                                    container: 'multiselect border-0 p-0.5 flex-wrap',
-                                    containerActive: 'shadow-none shadow-transparent box-shadow-none',
-                                }" />
+    container: 'multiselect border-0 p-0.5 flex-wrap',
+    containerActive: 'shadow-none shadow-transparent box-shadow-none',
+}" />
                         </div>
                     </span>
                 </div>
@@ -104,11 +104,12 @@
                     :class="{ 'lg:pr-16 opacity-10 lg:opacity-100': showFilters, 'container': !showFilters }">
                     <Proposals :proposals="currentModel?.data?.data"></Proposals>
 
-                    <div class="flex items-start justify-between w-full gap-16 my-16 xl:gap-24" v-if="currentModel?.data?.data">
+                    <div class="flex items-start justify-between w-full gap-16 my-16 xl:gap-24"
+                        v-if="currentModel?.data?.data">
                         <div class="flex-1">
                             <Pagination :links="currentModel.data.links" :per-page="props.perPage"
                                 :total="currentModel.data.total" :from="currentModel.data.from" :to="currentModel.data.to"
-                                @perPageUpdated="(payload:number) => perPageRef = payload"
+                                @perPageUpdated="(payload: number) => perPageRef = payload"
                                 @paginated="(payload) => currPageRef = payload" />
                         </div>
                     </div>
@@ -205,8 +206,8 @@
                                                 $ {{ $t('Distributed') }}
                                             </span>
                                         </div>
-                                        <div class="flex flex-col text-center text-teal-light-500" v-if="metricSumAdaApproved"
-                                            key="sumAdaApproved">
+                                        <div class="flex flex-col text-center text-teal-light-500"
+                                            v-if="metricSumAdaApproved" key="sumAdaApproved">
                                             <span class="font-semibold">
                                                 ₳{{ $filters.shortNumber(metricSumAdaApproved, 2) }}
                                             </span>
@@ -246,17 +247,17 @@
 <script lang="ts" setup>
 import Multiselect from '@vueform/multiselect';
 import { computed, ref, watch } from "vue";
-import { usePeopleStore} from "@apps/catalyst-explorer/stores/people-store";
+import { usePeopleStore } from "@apps/catalyst-explorer/stores/people-store";
 import { storeToRefs } from 'pinia';
 import { PlayCircleIcon } from '@heroicons/vue/20/solid';
 import Sort from "@apps/catalyst-explorer/models/sort";
 import Filters from "@/global/models/filters";
-import {usePlayStore} from "@/global/stores/play-store";
-import {useUserStore} from "@/global/stores/user-store";
-import {useProposalsRankingStore} from "@apps/catalyst-explorer/stores/proposals-ranking-store";
-import {useProposalsStore} from "@apps/catalyst-explorer/stores/proposals-store";
-import {useFiltersStore} from "@/global/stores/filters-stores";
-import {useBookmarksStore} from "@apps/catalyst-explorer/stores/bookmarks-store";
+import { usePlayStore } from "@/global/stores/play-store";
+import { useUserStore } from "@/global/stores/user-store";
+import { useProposalsRankingStore } from "@apps/catalyst-explorer/stores/proposals-ranking-store";
+import { useProposalsStore } from "@apps/catalyst-explorer/stores/proposals-store";
+import { useFiltersStore } from "@/global/stores/filters-stores";
+import { useBookmarksStore } from "@apps/catalyst-explorer/stores/bookmarks-store";
 import axios from "@/global/utils/axios";
 import ProposalFilter from "@apps/catalyst-explorer/modules/proposals/ProposalFilter.vue";
 import Pagination from "@apps/catalyst-explorer/Components/Global/Pagination.vue";
@@ -264,7 +265,7 @@ import Proposals from "@apps/catalyst-explorer/modules/proposals/Proposals.vue";
 import ProposalViewTypes from "@apps/catalyst-explorer/modules/proposals/partials/ProposalViewTypes.vue";
 import Search from "@apps/catalyst-explorer/Components/Global/Search.vue";
 import Proposal from '../models/proposal';
-import {Head, usePage} from '@inertiajs/vue3';
+import { Head, usePage } from '@inertiajs/vue3';
 import page from '@/global/utils/page';
 
 /// props and class properties
@@ -365,7 +366,7 @@ let selectedDownloadFormat = ref(null);
 
 let viewPlayer = computed(
     () => props.proposals?.data.length < 36 && props.proposals?.data.length > 0 && viewType.value == 'quickpitch'
-)
+);
 
 // metrics count
 let metricCountApproved = ref<number>(0);
@@ -394,7 +395,12 @@ const filtering = computed(() => {
     return getFiltering();
 });
 
-let showFilters = ref(getFiltering() || true);
+let showFilters = ref();
+if (window.innerWidth <= 640) {
+    showFilters.value = false;
+} else {
+    showFilters.value = true;
+}
 
 const playStore = usePlayStore();
 let { showPlayer } = storeToRefs(playStore);
@@ -413,8 +419,8 @@ const proposalsStore = useProposalsStore();
 let { viewType } = storeToRefs(proposalsStore);
 
 const filterStore = useFiltersStore();
-const {currentModel} = storeToRefs(filterStore);
-const {canFetch} = storeToRefs(filterStore);
+const { currentModel } = storeToRefs(filterStore);
+const { canFetch } = storeToRefs(filterStore);
 
 let quickpitchingRef = ref<boolean>(false);
 let rankedViewingRef = ref<boolean>(false);
@@ -427,10 +433,10 @@ filterStore.setModel({
     data: props.proposals,
     filters: props.filters,
     sorts: selectedSortRef.value,
-    search:search.value,
+    search: search.value,
     model_type: 'proposal'
 })
-
+getMetrics();
 
 watch([selectedSortRef], () => {
     currPageRef.value = undefined;
@@ -463,11 +469,11 @@ watch(selectedDownloadFormat, () => {
     }
 });
 
-watch(()=> currentModel.value,()=>{
+watch(() => currentModel.value.filters.length, (value, newvalue) => {
+    console.log({ value, newvalue });
     getMetrics();
-},{deep:true});
+}, { deep: true });
 
-getMetrics();
 
 ////
 // initializers
@@ -476,15 +482,15 @@ getMetrics();
 function getFiltering() {
     if (props.filters?.cohort) {
         return true;
-    } else if (props.filters?.funds?.length ?? 0 ) {
+    } else if (props.filters?.funds?.length ?? 0) {
         return true;
-    } else if (props.filters?.challenges?.length ?? 0 ) {
+    } else if (props.filters?.challenges?.length ?? 0) {
         return true;
-    } else if (props.filters?.tags?.length ?? 0 ) {
+    } else if (props.filters?.tags?.length ?? 0) {
         return true;
-    } else if (props.filters?.people?.length ?? 0 ) {
+    } else if (props.filters?.people?.length ?? 0) {
         return true;
-    } else if (props.filters?.groups?.length ?? 0 ) {
+    } else if (props.filters?.groups?.length ?? 0) {
         return true;
     } else if (!!props.filters?.fundingStatus) {
         return true;
