@@ -15,51 +15,6 @@
         </h2>
         <div>
             <ul class="border-b divide-y">
-                <li class="p-4 ">
-                    <p class="mb-3 text-slate-400">{{ $t("Funding Status") }}</p>
-                    <Toggle onLabel="Funded Proposals" offLabel="All Proposals" v-model="currentModel.filters['funded']" :classes="{
-                        container: 'inline-block rounded-xl outline-none focus:ring focus:ring-teal-500 focus:ring-opacity-30 w-full',
-                        toggle: 'flex w-full h-8 rounded-xl relative cursor-pointer transition items-center box-content border-2 text-xs leading-none',
-                        toggleOn: 'bg-teal-500 border-teal-500 justify-start text-white',
-                        toggleOff: 'bg-slate-200 border-slate-200 justify-end text-slate-700',
-                        handle: 'inline-block bg-white w-8 h-8 top-0 rounded-xl absolute transition-all',
-                        handleOn: 'left-full transform -translate-x-full',
-                        handleOff: 'left-0',
-                        handleOnDisabled: 'bg-slate-100 left-full transform -translate-x-full',
-                        handleOffDisabled: 'bg-slate-100 left-0',
-                        label: 'text-center w-auto px-2 border-box whitespace-nowrap select-none',
-                    }" />
-                </li>
-                <li class="p-4">
-                    <BudgetRangePicker v-model="currentModel.filters.budgets" />
-                </li>
-                <li class="border-b divide-b">
-                    <Picker v-model:type="currentModel.filters.type"
-                            :customize-ui="{
-                        'placeholder': 'Type'
-                    }"
-                            :custom-options="{
-                        p: 'Only Proposals',
-                        c: 'Only Challenges',
-                        b: 'Both Proposals & Challenges'
-                    }" />
-                </li>
-
-                <li class="">
-                    <Checklist v-model:funds="currentModel.filters.funds"
-                            :customize-ui="{
-                        'label': 'title',
-                        'placeholder' : 'Limit to Fund(s)'
-                    }"/>
-                </li>
-                <li class="">
-                    <Checklist v-model:challenges="currentModel.filters.challenges"
-                            :customize-ui="{
-                        'label': 'title',
-                        'placeholder': 'Limit to Challenge(s)'
-                    }"/>
-                </li>
-
                 <li class="border-b divide-b">
                     <Picker v-model:fundingStatus="currentModel.filters.fundingStatus"
                             :customize-ui="{
@@ -72,6 +27,57 @@
                         p: 'Fully Paid'
                     }" />
                 </li>
+
+                <li class="">
+                    <Picker v-model:projectStatus="currentModel.filters.projectStatus "
+                            :customize-ui="{
+                        'placeholder': 'Project Status'
+                    }"
+                            :custom-options="{
+                        c: 'Complete',
+                        i: 'In Progress',
+                        u: 'Unfunded',
+                        // p: 'Paused'
+                    }" />
+                </li>
+
+<!--                <li class="p-4 ">-->
+<!--                    <p class="mb-3 text-slate-400">{{ $t("Funding Status") }}</p>-->
+<!--                    <Toggle onLabel="Funded Proposals" offLabel="All Proposals" v-model="currentModel.filters['funded']" :classes="{-->
+<!--                        container: 'inline-block rounded-xl outline-none focus:ring focus:ring-teal-500 focus:ring-opacity-30 w-full',-->
+<!--                        toggle: 'flex w-full h-8 rounded-xl relative cursor-pointer transition items-center box-content border-2 text-xs leading-none',-->
+<!--                        toggleOn: 'bg-teal-500 border-teal-500 justify-start text-white',-->
+<!--                        toggleOff: 'bg-slate-200 border-slate-200 justify-end text-slate-700',-->
+<!--                        handle: 'inline-block bg-white w-8 h-8 top-0 rounded-xl absolute transition-all',-->
+<!--                        handleOn: 'left-full transform -translate-x-full',-->
+<!--                        handleOff: 'left-0',-->
+<!--                        handleOnDisabled: 'bg-slate-100 left-full transform -translate-x-full',-->
+<!--                        handleOffDisabled: 'bg-slate-100 left-0',-->
+<!--                        label: 'text-center w-auto px-2 border-box whitespace-nowrap select-none',-->
+<!--                    }" />-->
+<!--                </li>-->
+                <li class="p-4">
+                    <BudgetRangePicker v-model="currentModel.filters.budgets" />
+                </li>
+
+
+                <li class="">
+                    <Checklist v-model:funds="currentModel.filters.funds"
+                            :customize-ui="{
+                        'label': 'title',
+                        'placeholder' : 'Limit to Fund(s)'
+                    }"/>
+                </li>
+
+                <li class="">
+                    <Checklist v-model:challenges="currentModel.filters.challenges"
+                            :customize-ui="{
+                        'label': 'title',
+                        'placeholder': 'Limit to Challenge(s)'
+                    }"/>
+                </li>
+
+
 
                 <li class="">
                     <Checklist v-model:tags="currentModel.filters.tags"
@@ -97,18 +103,7 @@
                     }"/>
                 </li>
 
-                <li class="">
-                    <Picker v-model:projectStatus="currentModel.filters.projectStatus "
-                            :customize-ui="{
-                        'placeholder': 'Project Status'
-                    }"
-                            :custom-options="{
-                        c: 'Complete',
-                        i: 'In Progress',
-                        u: 'Unfunded',
-                        // p: 'Paused'
-                    }" />
-                </li>
+
 
                 <li class="p-4 ">
                     <p class="mb-3 text-slate-400">{{ $t("Opensource") }}</p>
@@ -123,6 +118,18 @@
                         handleOnDisabled: 'bg-slate-100 left-full transform -translate-x-full',
                         handleOffDisabled: 'bg-slate-100 left-0',
                         label: 'text-center w-auto px-2 border-box whitespace-nowrap select-none',
+                    }" />
+                </li>
+
+                <li class="border-b divide-b">
+                    <Picker v-model:type="currentModel.filters.type"
+                            :customize-ui="{
+                        'placeholder': 'Type'
+                    }"
+                            :custom-options="{
+                        p: 'Only Proposals',
+                        c: 'Only Challenges',
+                        b: 'Both Proposals & Challenges'
                     }" />
                 </li>
 
