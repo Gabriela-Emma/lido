@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\CatalystExplorer\Traits;
 
 use App\Http\Resources\ProposalResource;
 use App\Models\CatalystExplorer\Proposal;
+use App\Scopes\OrderByDateScope;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Database\Eloquent\Builder;
@@ -142,8 +143,9 @@ trait Proposals
         Proposal::withoutGlobalScope(OrderByDateScope::class);
         if (request()->has('search')) {
             $proposals = Proposal::search(request('search'))->query(
-                fn (Builder $query) => $query->filter(request(['user_id', 'fund_id', 'challenge_id']))
+                fn(Builder $query) => $query->filter(request(['user_id', 'fund_id', 'challenge_id']))
             );
+
 
         } else {
             $proposals = Proposal::query()

@@ -83,10 +83,10 @@ class Proposal extends Model implements HasLink, HasMedia, Interfaces\IHasMetaDa
         'fund',
         'media',
         'metas',
-        'ratings',
-        'repos',
+//        'ratings',
+//        'repos',
         'tags',
-        'categories',
+//        'categories',
         // 'users',
     ];
 
