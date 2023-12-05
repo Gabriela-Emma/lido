@@ -4,7 +4,7 @@
 
     <main class="flex flex-col gap-2 py-8 bg-primary-20">
         <div class="container">
-            <section class="sticky mb-4 overflow-visible bg-white border-t rounded-sm shadow-md top-9 z-5">
+            <section class="sticky mb-4 overflow-visible bg-white border-t rounded-sm shadow-md top-0 z-5">
                 <div class="relative overflow-visible">
                     <div class="flex items-center w-full h-10 lg:h-16">
                         <Search :search="search" @search="(term) => search = term" />

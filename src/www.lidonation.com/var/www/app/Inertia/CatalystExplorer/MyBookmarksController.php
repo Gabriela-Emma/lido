@@ -91,7 +91,7 @@ class MyBookmarksController extends Controller
             'bookmarkCollection' => new BookmarkCollectionResource($bookmarkCollection),
             'crumbs' => [
                 ['label' => 'Proposals', 'link' => route('catalyst-explorer.proposals')],
-                ['label' => 'Bookmarks', 'link' => route('catalyst-explorer.bookmarks')],
+                ['label' => 'My Bookmarks', 'link' => route('catalyst-explorer.myBookmarks')],
                 ['label' => $bookmarkCollection->title, 'link' => $bookmarkCollection->link],
             ],
         ]);

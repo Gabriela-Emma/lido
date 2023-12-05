@@ -85,7 +85,7 @@ class BookmarksController extends Controller
                 ->toArray($request),
             'crumbs' => [
                 ['label' => 'Proposals', 'link' => route('catalyst-explorer.proposals')],
-                ['label' => 'Bookmarks', 'link' => route('catalyst-explorer.myBookmarks')],
+                ['label' => 'My Bookmarks', 'link' => route('catalyst-explorer.myBookmarks')],
                 ['label' => $bookmarkCollection->title, 'link' => $bookmarkCollection->link],
             ],
         ]);
@@ -97,7 +97,7 @@ class BookmarksController extends Controller
             'draftBallot' => (new DraftBallotResource($draftBallot))->toArray($request),
             'crumbs' => [
                 ['label' => 'Proposals', 'link' => route('catalyst-explorer.proposals')],
-                ['label' => 'Bookmarks', 'link' => route('catalyst-explorer.myDraftBallots')],
+                ['label' => 'My Ballots', 'link' => route('catalyst-explorer.myDraftBallots')],
                 ['label' => $draftBallot->title, 'link' => $draftBallot->link],
             ],
         ]);
@@ -137,7 +137,7 @@ class BookmarksController extends Controller
             'draftBallot' => (new DraftBallotResource($draftBallot))->toArray($request),
             'crumbs' => [
                 ['label' => 'Proposals', 'link' => route('catalyst-explorer.proposals')],
-                ['label' => 'Bookmarks', 'link' => route('catalyst-explorer.myDraftBallots')],
+                ['label' => 'My Ballots', 'link' => route('catalyst-explorer.myDraftBallots')],
                 ['label' => $draftBallot->title, 'link' => $draftBallot->link],
             ],
         ]);
@@ -148,7 +148,7 @@ class BookmarksController extends Controller
         return Inertia::render('Bookmarks')->with([
             'crumbs' => [
                 ['label' => 'Proposals', 'link' => route('catalyst-explorer.proposals')],
-                ['label' => 'Bookmarks', 'link' => route('catalyst-explorer.myBookmarks')],
+                ['label' => 'My Bookmarks', 'link' => route('catalyst-explorer.myBookmarks')],
             ],
         ]);
     }
