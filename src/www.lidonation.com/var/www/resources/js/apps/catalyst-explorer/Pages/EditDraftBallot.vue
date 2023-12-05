@@ -1,4 +1,6 @@
 <template>
+    <Head :title="`Edit ${draftBallot$?.title} Draft Ballot`" />
+
     <header-component titleName0="Draft Ballot" :titleName1="draftBallot$?.title"
         :subTitle="`Created ${$filters.timeAgo(draftBallot$.created_at)}. Has ${draftBallot$?.items_count} item${draftBallot$?.items_count > 1 ? 's' : ''}.`" />
 
@@ -52,7 +54,7 @@
                     </a>
                     <Link :href="route('catalyst-explorer.draftBallotUpdate.view', { draftBallot: draftBallot?.hash })"
                         class="bg-white rounded-sm px-3 py-2.5 text-gray-400 flex-wrap hover:text-yellow-500">
-                    Edit
+                    Ballot Settings
                     </Link>
                 </div>
                 <DraftBallotGroupCard v-for="group in draftBallot$.groups" :key="group.id" :group="group"
@@ -68,7 +70,7 @@ import axios from 'axios';
 import { storeToRefs } from 'pinia';
 import moment from "moment-timezone";
 import route from 'ziggy-js';
-import { Link } from '@inertiajs/vue3';
+import {Head, Link} from '@inertiajs/vue3';
 import { CheckIcon } from '@heroicons/vue/20/solid'
 import { onClickOutside } from '@vueuse/core';
 import {useUserStore} from "@/global/stores/user-store";

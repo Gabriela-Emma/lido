@@ -1,4 +1,6 @@
 <template>
+    <Head title="My Draft Ballots" />
+
     <header-component titleName0="Draft" titleName1="Ballots" subTitle="" />
     <div class="py-16 bg-primary-20">
         <main class="container">
@@ -41,7 +43,7 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
 import route from 'ziggy-js';
-import { Link } from '@inertiajs/vue3';
+import {Head, Link} from '@inertiajs/vue3';
 import {useBookmarksStore} from "@apps/catalyst-explorer/stores/bookmarks-store";
 import {useUserStore} from "@/global/stores/user-store";
 import DraftBallotCard from "@apps/catalyst-explorer/modules/bookmarks/DraftBallotCard.vue";

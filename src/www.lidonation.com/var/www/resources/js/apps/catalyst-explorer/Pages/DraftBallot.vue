@@ -1,4 +1,5 @@
 <template>
+    <Head :title="`View ${draftBallot?.title} Draft Ballot`" />
     <header-component titleName0="Draft Ballot" :titleName1="draftBallot?.title"
         :subTitle="`Updated ${$filters.timeAgo(draftBallot.updated_at)}. Has ${draftBallot?.items_count} item${draftBallot?.items_count > 1 ? 's' : ''}.`" />
 
@@ -87,7 +88,7 @@
 </template>
 
 <script lang="ts" setup>
-import { router, usePage } from '@inertiajs/vue3';
+import {Head, router, usePage} from '@inertiajs/vue3';
 import DraftBallot from "@apps/catalyst-explorer/models/draft-ballot";
 import { HandThumbUpIcon, HandThumbDownIcon } from '@heroicons/vue/20/solid';
 import {Link} from "@inertiajs/vue3";
