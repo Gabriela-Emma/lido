@@ -49,10 +49,6 @@ class MorePostsComponent extends Component
             $count = Post::count();
             $this->hasMorePages = $count > $this->offset;
         }
-
-//                ->cursorPaginate($this->perPage);
-
-//            $this->setNextCursor($postsCursor);
     }
 
     public function mountTaxonomy(): void

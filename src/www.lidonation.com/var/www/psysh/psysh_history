@@ -102,3 +102,9 @@ CatalystUser::runCustomIndex();
 exit
 Post::count();
 Post::offset(2)->count();
+$t = Tag::where('slug', 'blockchain')->first();
+$t = Category::where('slug', 'blockchain')->first();
+Tag::find(20);
+$t = Category::where('slug', 'blockchain')->first();
+Category::find(20);
+Category::where('slug', 'blockchainssss')->first();

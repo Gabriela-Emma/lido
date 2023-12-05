@@ -16,7 +16,7 @@ class FundResource extends JsonResource
      * @param  Request  $request
      * @return array|Arrayable|\JsonSerializable
      */
-    public function toArray($request)
+    public function toArray($request): array|\JsonSerializable|Arrayable
     {
         return [
             'id' => $this->id,
@@ -31,6 +31,7 @@ class FundResource extends JsonResource
             'thumbnail_url' => $this->thumbnail_url,
             'gravatar' => $this->gravatar,
             'slug' => $this->slug,
+            //@todo parse content using the same parser nova uses
             'content' => $this->content,
             'excerpt' => $this->excerpt,
             'label' => $this->label,
