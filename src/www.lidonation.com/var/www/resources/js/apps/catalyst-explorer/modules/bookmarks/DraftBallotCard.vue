@@ -1,29 +1,6 @@
 <template>
     <div :style="{ backgroundColor: draftBallot?.color }"
         class="relative flex flex-col justify-center object-cover w-full h-full text-white shadow-md hover:shadow-xl rounded-l-xl rounded-r-xs">
-        <div class="absolute flex justify-end w-full gap-2 top-3 right-3">
-            <button @click="download()" type="button"
-                class="inline-flex items-center gap-x-0.5 rounded-sm border py-1 px-1.5 bg-black text-white hover:text-slate-400 text-xs font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-800">
-                {{ $t("Download") }}
-            </button>
-            <Link as="button" type="button"
-                :href="route('catalyst-explorer.draftBallot.edit', { draftBallot: draftBallot?.hash })"
-                class="inline-flex items-center gap-x-0.5 rounded-sm border py-1 px-1.5 bg-black text-white hover:text-slate-400 text-xs font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-800">
-            {{ $t("Edit") }}
-            <PencilIcon class="-mr-0.5 h-3 w-3" aria-hidden="true" />
-            </Link>
-            <Link
-                :href="draftBallot?.link"
-                class="inline-flex items-center gap-x-0.5 rounded-sm border py-1 px-1.5 bg-black text-white hover:text-slate-400 text-xs font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-800">
-                {{ $t("View") }}
-                <LinkIcon class="-mr-0.5 h-3 w-3" aria-hidden="true" />
-            </Link>
-            <button @click.prevent="deleteDraftBallot()"
-                class="inline-flex items-center gap-x-0.5 rounded-sm border py-1 px-1.5 bg-black text-white hover:text-slate-400 text-xs font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-800">
-                {{ $t("Delete") }}
-                <TrashIcon  aria-hidden="true" class="mr-0.5 w-3 h-3 hover:text-red-600 hover:cursor-pointer" />
-            </button>
-        </div>
         <a :href="draftBallot?.link">
             <div class="relative flex justify-end my-auto">
                 <h2

@@ -100,7 +100,7 @@ class MyBookmarksController extends Controller
     public function index(Request $request)
     {
         $collections = BookmarkCollection::where('user_id', Auth::id())->whereNotNull('user_id')
-            ->with(['items']);
+            ->withCount(['items']);
 
         $hashes = $request->get('hashes', false);
 

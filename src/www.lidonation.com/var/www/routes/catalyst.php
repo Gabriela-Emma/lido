@@ -259,7 +259,7 @@ Route::group(
                 ->name('bookmarks');
 
             Route::get('/bookmarks/{bookmarkCollection:id}', [BookmarksController::class, 'view'])
-                ->name('bookmark`');
+                ->name('bookmark');
 
             Route::get('/draft-ballots/{draftBallot:id}', [BookmarksController::class, 'viewDraftBallot'])
                 ->name('draftBallot.view');
@@ -375,7 +375,8 @@ Route::group(
     }
 );
 Route::prefix('project-catalyst')->group(function () {
-    Route::get('/bookmarks/share/{anonymousBookmark}', [AnonymousBookmarkController::class, 'show']);
+    Route::get('/bookmarks/share/{anonymousBookmark}', [AnonymousBookmarkController::class, 'show'])
+        ->name('bookmarks.share');
     Route::get('/bookmarks/share/{anonymousBookmark}', [AnonymousBookmarkController::class, 'show']);
     Route::post('/bookmarks/share', [AnonymousBookmarkController::class, 'share']);
     Route::post('/proposals/search/bookmarks', [ProposalSearchController::class, 'bookmarks']);

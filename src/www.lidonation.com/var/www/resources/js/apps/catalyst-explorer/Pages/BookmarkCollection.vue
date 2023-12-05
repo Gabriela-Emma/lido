@@ -7,63 +7,67 @@
     <main class="flex flex-col gap-2 py-8 bg-primary-20">
         <div class="container">
             <section
-                class="relative flex flex-row items-end justify-between object-cover p-6 shadow-xs rounded-tl-2xl rounded-r-xs"
-                :class="[textColor$]"
+                class="relative flex flex-col justify-center items-start object-cover py-10 px-6 shadow-xs rounded-tl-2xl rounded-r-xs"
                 :style="{backgroundColor: bookmarkCollection?.color}">
 
-                <div class="absolute right-0 z-0 flex flex-row items-center justify-end top-1/3">
-                    <h2 class="box-border inline py-4 pl-3 pr-32 text-xl font-bold tracking-tight bg-white rounded-l-lg text-slate-100 sm:text-2xl box-decoration-clone text-slate-800">
-                        {{ bookmarkCollection?.title }}
-                    </h2>
-                </div>
+                <div class="relative inline-flex flex-col -left-6 z-0 px-4 py-2 justify-start bg-white rounded-r-lg">
+                    <div class="text-xl sm:text-2xl font-bold tracking-tight text-slate-800 flex flex-col items-start">
+                        <small
+                            class="inline-flex items-center rounded-sm py-0.5 pr-1 text-xs font-medium">
+                            {{ $t("Items") }}
+                            <span
+                                class="ml-0.5 inline-flex flex-shrink-0 items-center justify-center rounded-full font-bold focus:outline-none">
+                            {{ bookmarkCollection?.items_count }}
+                        </span>
+                        </small>
+                        <span class="inline-flex line-clamp-3">{{ bookmarkCollection?.title }}</span>
+                    </div>
 
-                <div class="z-10 flex gap-3 pt-20">
-                    <Link :href="$utils.localizeRoute('catalyst-explorer/bookmarks')"
-                          :class="[textColor$, borderColor$]"
-                          class="inline-flex items-center gap-x-0.5 rounded-sm border py-1 px-1.5 text-xs font-semibold text-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-600">
-                        <ArrowUturnLeftIcon class="mr-0.5 h-3 w-3" aria-hidden="true"/>
-                        {{ $t("All Bookmarks") }}
-                    </Link>
+                    <div class="flex gap-2 mt-2">
+                        <Link :href="route('catalyst-explorer.myBookmarks')"
+                              class="inline-flex items-center gap-x-0.5 rounded-sm text-xs font-semibold text-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-600">
+                            <ArrowUturnLeftIcon class="mr-0.5 h-3 w-3" aria-hidden="true"/>
+                            {{ $t("All Bookmarks") }}
+                        </Link>
 
-                    <button @click="download"
-                            type="button"
-                            :class="[textColor$, borderColor$]"
-                            class="inline-flex items-center gap-x-0.5 rounded-sm border py-1 hover:text-teal-600 px-1.5 text-xs font-semibold text-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-600">
-                        <ArrowDownTrayIcon class="mr-0.5 h-3 w-3" aria-hidden="true"/>
-                        {{ $t("Export") }}
-                    </button>
-                    <button @click="openIdeascaleLinks"
-                            type="button"
-                            :class="[textColor$, borderColor$]"
-                            class="inline-flex items-center gap-x-0.5 rounded-sm border py-1 hover:text-teal-600 px-1.5 text-xs font-semibold text-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-600">
-                        <BookOpenIcon class="mr-0.5 h-3 w-3" aria-hidden="true"/>
-                        {{ $t("Open All items") }}
-                    </button>
+                        <button @click="download"
+                                type="button"
+                                class="inline-flex items-center gap-x-0.5 hover:text-teal-600 px-1.5 text-xs font-semibold text-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-600">
+                            <ArrowDownTrayIcon class="mr-0.5 h-3 w-3" aria-hidden="true"/>
+                            {{ $t("Export") }}
+                        </button>
+                        <button @click="openIdeascaleLinks"
+                                type="button"
+                                class="inline-flex items-center gap-x-0.5 hover:text-teal-600 px-1.5 text-xs font-semibold text-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-600">
+                            <BookOpenIcon class="mr-0.5 h-3 w-3" aria-hidden="true"/>
+                            {{ $t("Open All items") }}
+                        </button>
 
-                    <button @click="createDraftBallot"
-                            type="button" v-if="user$?.id === bookmarkCollection?.user_id"
-                            :disabled="!user$?.id"
-                            :title="!user$?.id ? $t('You must be logged in to create a draft ballot') : 'Convert to draft ballot'"
-                            :class="[textColor$, borderColor$, user$?.id ? 'hover:text-teal-light-400' : 'cursor-not-allowed']"
-                            class="inline-flex items-center gap-x-0.5 rounded-sm border py-1 px-1.5 text-xs bg-black font-semibold text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-600">
-                        <ArchiveBoxArrowDownIcon class="mr-0.5 h-3 w-3" aria-hidden="true"/>
-                        {{ $t("Create Draft Ballot") }}
-                    </button>
-                    <button @click="remove = !remove"
-                            type="button"
-                            :disabled="canDelete===false"
-                            :class="[textColor$, borderColor$,( remove ? 'bg-stone-100' : '' ),(canDelete===false?'bg-slate-400  cursor-not-allowed':'')]"
-                            class="inline-flex items-center gap-x-0.5 rounded-sm border py-1 px-1.5 text-xs font-semibold text-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-600">
-                        <div class="flex flex-row" v-show="!remove">
-                            <TrashIcon class="mr-0.5 h-3 w-3" :class="{'hover:text-teal-600':canDelete===true}" aria-hidden="true"/>
-                                <!-- <span :class="{'hover:text-teal-600':canDelete===true}">{{ $t("Delete Collection") }} </span> -->
-                        </div>
-                        <div class="flex flex-row gap-1 text-slate-800" v-show="remove">
+                        <button @click="createDraftBallot"
+                                type="button" v-if="user$?.id === bookmarkCollection?.user_id"
+                                :disabled="!user$?.id"
+                                :title="!user$?.id ? $t('You must be logged in to create a draft ballot') : 'Convert to draft ballot'"
+                                :class="[user$?.id ? 'hover:text-teal-light-400' : 'cursor-not-allowed']"
+                                class="inline-flex items-center gap-x-0.5 rounded-sm border py-1 px-1.5 text-xs bg-black font-semibold text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-600">
+                            <ArchiveBoxArrowDownIcon class="mr-0.5 h-3 w-3" aria-hidden="true"/>
+                            {{ $t("Create Draft Ballot") }}
+                        </button>
+                        <button @click="remove = !remove"
+                                type="button"
+                                :disabled="canDelete===false"
+                                :class="[(remove ? 'bg-stone-100' : '' ),(canDelete===false?'bg-slate-400  cursor-not-allowed':'')]"
+                                class="inline-flex items-center gap-x-0.5 rounded-sm border py-1 px-1.5 text-xs font-semibold text-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-600">
+                            <div class="flex flex-row" v-show="!remove">
+                                <TrashIcon class="mr-0.5 h-3 w-3" :class="{'hover:text-teal-600':canDelete===true}" aria-hidden="true"/>
+                            </div>
+                            <div class="flex flex-row gap-1 text-slate-800" v-show="remove">
                                 <span class="mr-1">{{ $t("Are you sure? ") }} </span>
                                 <span type="button" class="hover:bg-pink-500 bg-pink-400 py-0.5 px-1 rounded-sm" @click="removeCollection" >{{ $t("Yes") }}</span>
                                 <span type="button" class="hover:text-teal-600 bg-slate-200 py-0.5 px-1 rounded-sm">{{ $t("No") }}</span>
-                        </div>
-                    </button>
+                            </div>
+                        </button>
+                    </div>
+
                 </div>
             </section>
 
@@ -154,12 +158,6 @@ const props = withDefaults(
     defineProps<{
         bookmarkCollection: BookmarkCollection<Proposal>
     }>(), {});
-const textColor$ = computed<string>(() =>
-    $utils?.contrastColor(props.bookmarkCollection?.color) === 'light' ? 'text-white' : 'text-black'
-);
-const borderColor$ = computed<string>(() =>
-    $utils?.contrastColor(props.bookmarkCollection?.color) === 'light' ? 'border-white' : 'border-black'
-);
 
 const download = () => {
     const data = {} as any;
