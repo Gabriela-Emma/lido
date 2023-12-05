@@ -69,7 +69,7 @@
     <!-- Heroicon name: outline/user-group -->
     <PencilSquareIcon class="flex-shrink-0 w-6 h-6 mr-3 -ml-1 text-slate-400 group-hover:text-slate-500"
       aria-hidden="true" />
-    <span class="truncate">{{ $t("Draft Ballots") }}</span>
+    <span class="truncate">{{ $t("My Draft Ballots") }}</span>
     </Link>
 
     <Link :href="$utils.localizeRoute('catalyst-explorer/my/bookmarks')" :class="{

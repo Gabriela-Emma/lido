@@ -47,7 +47,7 @@
     </section>
 
     <section class='container my-16'>
-      <BrowseByTaxonomy :taxonomy="'Category'" :selected-id="taxonomyRef == 'Tag' ? selectedId : null"
+      <BrowseByTaxonomy :taxonomy="'Tag'" :selected-id="taxonomyRef == 'Tag' ? selectedId : null"
                         @taxonomy="(payload) => taxonomyRef = payload"
                         @taxon="(payload) => tagsFilterRef = payload"/>
 
@@ -66,7 +66,7 @@
     </section>
 
     <section class='container mb-16'>
-      <BrowseByTaxonomy :taxonomy="'Tag'" :selected-id="taxonomyRef == 'Category' ? selectedId : null"
+      <BrowseByTaxonomy :taxonomy="'Category'" :selected-id="taxonomyRef == 'Category' ? selectedId : null"
                         @taxonomy="(payload) => taxonomyRef = payload"
                         @taxon="(payload) => categoriesFilterRef = payload"/>
     </section>
@@ -120,7 +120,6 @@ const props = withDefaults(
       currPage: 1,
       perPage: 24,
       locale: 'en',
-      categoriesFilter: null,
       fund: null
     });
 
