@@ -616,6 +616,25 @@
   dependencies:
     vue-demi ">=0.14.6"
 
+"@yeger/vue-lib-adapter@2.0.1":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@yeger/vue-lib-adapter/-/vue-lib-adapter-2.0.1.tgz#0ff277d1287d9c450e60bfd8e16607ca20e4af07"
+  integrity sha512-s2t/4tLB/qd6GgvsUNZR+K2CqEufs0PB0RdOx4Fql/EryIQddRYV9WWOMR9fAyLMdlV8x28oNet0Nddn8II6Rw==
+
+"@yeger/vue-masonry-wall-core@5.0.1":
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/@yeger/vue-masonry-wall-core/-/vue-masonry-wall-core-5.0.1.tgz#4e29c93dbf301bdafbac48e558564f5d70672b82"
+  integrity sha512-BNnv4cwdM07rBh46NvWXDhwbNDn/IDexui/oMIKjc+VMJGAyF5ieuvmAp1YhjvmqqcIzBROiYFqVqWbiuuyLeg==
+  dependencies:
+    "@yeger/vue-lib-adapter" "2.0.1"
+
+"@yeger/vue-masonry-wall@^5.0.2":
+  version "5.0.2"
+  resolved "https://registry.yarnpkg.com/@yeger/vue-masonry-wall/-/vue-masonry-wall-5.0.2.tgz#3573b6db29447ddcfbc1009cb763073052bf54e3"
+  integrity sha512-rcOvMOW7zqU+HitFfu+IlX5pk9ObtyL4s6v71J3zWtDA/KQuQelEAh2VOYHpfkM4Ag8pZSKm1iWoXUHyv4QE5A==
+  dependencies:
+    "@yeger/vue-masonry-wall-core" "5.0.1"
+
 alpinejs@^3.13.2:
   version "3.13.3"
   resolved "https://registry.yarnpkg.com/alpinejs/-/alpinejs-3.13.3.tgz#92eb7e869b99ff548e7a55044e45660597cf530b"

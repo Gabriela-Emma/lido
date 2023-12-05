@@ -97,7 +97,7 @@ class MyBookmarksController extends Controller
         ]);
     }
 
-    public function index(Request $request)
+    public function index(Request $request): array
     {
         $collections = BookmarkCollection::where('user_id', Auth::id())->whereNotNull('user_id')
             ->withCount(['items']);

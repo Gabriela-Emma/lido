@@ -85,7 +85,7 @@ class BookmarksController extends Controller
                 ->toArray($request),
             'crumbs' => [
                 ['label' => 'Proposals', 'link' => route('catalyst-explorer.proposals')],
-                ['label' => 'Bookmarks', 'link' => route('catalyst-explorer.bookmarks')],
+                ['label' => 'Bookmarks', 'link' => route('catalyst-explorer.myBookmarks')],
                 ['label' => $bookmarkCollection->title, 'link' => $bookmarkCollection->link],
             ],
         ]);
@@ -97,7 +97,7 @@ class BookmarksController extends Controller
             'draftBallot' => (new DraftBallotResource($draftBallot))->toArray($request),
             'crumbs' => [
                 ['label' => 'Proposals', 'link' => route('catalyst-explorer.proposals')],
-                ['label' => 'Bookmarks', 'link' => route('catalyst-explorer.bookmarks')],
+                ['label' => 'Bookmarks', 'link' => route('catalyst-explorer.myDraftBallots')],
                 ['label' => $draftBallot->title, 'link' => $draftBallot->link],
             ],
         ]);
@@ -126,7 +126,7 @@ class BookmarksController extends Controller
             ->fastPaginate(24);
     }
 
-    public function editDraftBallot(Request $request, DraftBallot $draftBallot)
+    public function editDraftBallot(Request $request, DraftBallot $draftBallot): Response
     {
         if (! Gate::allows('update', $draftBallot)) {
             abort(403);
@@ -137,23 +137,23 @@ class BookmarksController extends Controller
             'draftBallot' => (new DraftBallotResource($draftBallot))->toArray($request),
             'crumbs' => [
                 ['label' => 'Proposals', 'link' => route('catalyst-explorer.proposals')],
-                ['label' => 'Bookmarks', 'link' => route('catalyst-explorer.bookmarks')],
+                ['label' => 'Bookmarks', 'link' => route('catalyst-explorer.myDraftBallots')],
                 ['label' => $draftBallot->title, 'link' => $draftBallot->link],
             ],
         ]);
     }
 
-    public function index(Request $request)
+    public function index(Request $request): Response
     {
         return Inertia::render('Bookmarks')->with([
             'crumbs' => [
                 ['label' => 'Proposals', 'link' => route('catalyst-explorer.proposals')],
-                ['label' => 'Bookmarks', 'link' => route('catalyst-explorer.bookmarks')],
+                ['label' => 'Bookmarks', 'link' => route('catalyst-explorer.myBookmarks')],
             ],
         ]);
     }
 
-    public function createDraftBallot(Request $request)
+    public function createDraftBallot(Request $request): RedirectResponse
     {
         $db = new DraftBallot;
         $db->user_id = Auth::id();
@@ -169,7 +169,7 @@ class BookmarksController extends Controller
         );
     }
 
-    public function updateDraftBallot(DraftBallot $draftBallot, Request $request)
+    public function updateDraftBallot(DraftBallot $draftBallot, Request $request): RedirectResponse
     {
         $draftBallot->title = request('title');
         $draftBallot->color = request('color');

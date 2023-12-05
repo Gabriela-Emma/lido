@@ -18,6 +18,7 @@ import page from '@/global/utils/page';
 import 'vue-plyr/dist/vue-plyr.css'
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { modal } from 'momentum-modal';
+import MasonryWall from '@yeger/vue-masonry-wall';
 
 const appName = import.meta.env.VITE_APP_NAME || 'LIDO Nation';
 declare module '@vue/runtime-core' {
@@ -59,6 +60,7 @@ createInertiaApp({
             .use(ZiggyVue)
             .use(i18n)
             .use(pinia)
+            .use(MasonryWall)
             .use(modal, {
                 resolve: (name) => resolvePageComponent(`./Pages/${name}.vue`, import.meta.glob<DefineComponent>('./Pages/**/*.vue')),
             })

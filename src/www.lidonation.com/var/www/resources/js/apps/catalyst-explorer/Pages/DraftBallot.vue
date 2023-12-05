@@ -6,12 +6,13 @@
         <div class="container">
             <section>
                 <div v-if="userOwnDraftBallot" class="flex justify-center gap-2 mb-4">
-                    <a type="button"
-                        :href="$utils.localizeRoute(`catalyst-explorer/my/draft-ballots/${props.draftBallot.hash}/edit`)"
+                    <Link type="button"
+                        :href="route( 'catalyst-explorer.draftBallot.edit', {draftBallot: props.draftBallot.hash})"
                         class="inline-flex items-center px-4 py-2 font-medium text-white bg-teal-700 border border-transparent rounded-sm shadow-sm hover:bg-white hover:text-slate-700">
                         Edit Draft
-                    </a>
+                    </Link>
                 </div>
+
                 <masonry-wall :items="draftBallot.groups" :ssr-columns="1" :column-width="600" :gap="16" :max-columns="2">
                     <template #default="{ item: group, index }">
                         <div class="px-3 py-8 bg-white">
@@ -89,6 +90,7 @@
 import { router, usePage } from '@inertiajs/vue3';
 import DraftBallot from "@apps/catalyst-explorer/models/draft-ballot";
 import { HandThumbUpIcon, HandThumbDownIcon } from '@heroicons/vue/20/solid';
+import {Link} from "@inertiajs/vue3";
 import { computed, inject, Ref, ref, watch } from "vue";
 import axios from 'axios';
 import { useBookmarksStore } from "../stores/bookmarks-store";

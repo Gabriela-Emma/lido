@@ -76,6 +76,7 @@ import DraftBallot from "@apps/catalyst-explorer/models/draft-ballot";
 import Proposal from "@apps/catalyst-explorer/models/proposal";
 import DraftBallotGroupCard from "@apps/catalyst-explorer/modules/bookmarks/DraftBallotGroupCard.vue";
 import {useBookmarksStore} from "@apps/catalyst-explorer/stores/bookmarks-store";
+import Search from "@apps/catalyst-explorer/Components/Global/Search.vue";
 
 const userStore = useUserStore();
 const { user$ } = storeToRefs(userStore);
