@@ -61,7 +61,7 @@ class CatalystIdeascaleF11SyncJob implements ShouldQueue
                 ]
             );
 
-        if (! $response->successful()) {
+        if (!$response->successful() || !count($response->object()?->data?->content)) {
             return;
         }
         
