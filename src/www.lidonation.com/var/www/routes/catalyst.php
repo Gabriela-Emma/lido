@@ -272,13 +272,11 @@ Route::group(
                 ->name('download.proposals');
 
             // Bookmarks
-            Route::post('/bookmarks/items', [MyBookmarksController::class, 'createItem'])->name('bookmarkItem.create');
+            Route::post('/bookmarks/items', [MyBookmarksController::class, 'createItem'])
+                ->name('bookmarkItem.create');
             Route::get('/export/bookmarked-proposals', [MyBookmarksController::class, 'exportBookmarks']);
             Route::delete('/bookmark-collection', [MyBookmarksController::class, 'deleteCollection'])->name('bookmarkCollection.delete');
             Route::delete('/bookmark-item/{bookmarkItem:id}', [MyBookmarksController::class, 'deleteItem'])->name('bookmarkItem.delete');
-
-            Route::middleware(['auth.catalyst'])->prefix('/my')->group(function () {
-            });
 
             Route::middleware(['auth.catalyst'])->prefix('/my')->group(function () {
                 Route::post('/bookmarks/{bookmarkCollection:id}/create-ballot', [BookmarksController::class, 'createDraftBallotFromCollection'])

@@ -28,15 +28,11 @@
 <script lang="ts" setup>
 import {storeToRefs} from "pinia";
 import UserNav from "./UserNav.vue";
-import BookmarkCollection from "../../models/bookmark-collection";
-import Proposal from "../../models/proposal";
 import {useBookmarksStore} from "@apps/catalyst-explorer/stores/bookmarks-store";
 import BookmarkCollectionCard from "../../modules/bookmarks/BookmarkCollectionCard.vue";
 
 withDefaults(
-    defineProps<{
-        bookmarkCollections?: BookmarkCollection<Proposal>[]
-    }>(), {});
+    defineProps<{}>(), {});
 
 const bookmarksStore = useBookmarksStore();
 const {collections$} = storeToRefs(bookmarksStore);

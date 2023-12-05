@@ -307,7 +307,7 @@ async function addToNewCollection(title) {
 async function bookmarkProposal(item: BookmarkItem<Proposal>) {
     // get response
     try {
-        const res = await axios.post(`${usePage().props.base_url}/catalyst-explorer/bookmarks/items`, item);
+        const res = await axios.post(route('catalyst-explorer.bookmarkItem.create'), item);
 
         // update ui
         bookmarked$.value = true;

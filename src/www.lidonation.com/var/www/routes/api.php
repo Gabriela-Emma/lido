@@ -388,7 +388,6 @@ Route::prefix('catalyst-explorer')->as('catalystExplorerApi.')
         });
 
         Route::prefix('/my')->group(function () {
-
             Route::get('/bookmarks', [MyBookmarksController::class, 'index'])
                 ->name('myBookmarks');
         });
