@@ -2,14 +2,17 @@
 
 namespace Database\Seeders;
 
-use App\Enums\RoleEnum;
 use App\Models\User;
+use App\Enums\RoleEnum;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Hash;
+use Database\Factories\Traits\UnsplashProvider;
 
 class UserSeeder extends Seeder
 {
+    use UnsplashProvider;
+
     /**
      * Run the database seeds.
      */
@@ -21,6 +24,10 @@ class UserSeeder extends Seeder
             'password' => Hash::make('TeLO8T2xjM48Rox'),
         ])->hasAttached(Role::where('name', RoleEnum::super_admin())->first())
             ->create();
-        User::factory(15)->create();
+        User::factory(15)->create()->each(
+            function ($po) {
+                $po->addMediaFromUrl($this->getRandomImageLink(2048, 2048))->toMediaCollection('hero');
+            }
+        );
     }
 }
