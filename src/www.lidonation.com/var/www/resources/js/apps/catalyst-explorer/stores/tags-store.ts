@@ -25,6 +25,7 @@ export const useTagsStore = defineStore('tags', () => {
                 }
             );
             tags.value = data?.data;
+            setCounts();
         } catch (e: AxiosError | any) {
             console.log({e});
         }
@@ -40,16 +41,34 @@ export const useTagsStore = defineStore('tags', () => {
                 }
             );
             tags.value = data?.data;
+            setCounts();
         } catch (e: AxiosError | any) {
             console.log({e});
         }
     }
 
-    // watch(currentModel.value.filters, () => {
-    //     if (currentModel.value.filters.tags.length) {
-    //         search(currentModel.value.filters);
-    //     } 
-    // });
+    function setCounts() {
+        let tagCounts = currentModel.value.props.filterCounts['tagsCount'];
+        tags.value.map(tag => {
+            const title = tag.title;
+            console.log({ title });
+
+            if (tagCounts[title]) {
+                tag['count'] = tagCounts[title];
+                console.log({ hghgh: tag['count'] });
+
+            } else {
+                tag['count'] = 0;
+            }
+            return tag;
+        });
+        
+        tags.value.sort((a, b) => b['count'] - a['count']);
+    }
+
+    watch(currentModel.value.filters, () => {
+        setCounts();
+    });
 
     onMounted(
         () => load(currentModel.value.filters.tags ?? [])

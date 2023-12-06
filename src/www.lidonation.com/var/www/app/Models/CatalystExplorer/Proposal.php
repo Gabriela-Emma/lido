@@ -83,10 +83,10 @@ class Proposal extends Model implements HasLink, HasMedia, Interfaces\IHasMetaDa
         'fund',
         'media',
         'metas',
-//        'ratings',
-//        'repos',
+        //        'ratings',
+        //        'repos',
         'tags',
-//        'categories',
+        //        'categories',
         // 'users',
     ];
 
@@ -137,6 +137,7 @@ class Proposal extends Model implements HasLink, HasMedia, Interfaces\IHasMetaDa
             'feasibility_score',
             'auditability_score',
             'over_budget',
+            'challenge',
             'challenge.id',
             'groups',
             'amount_requested',
@@ -145,6 +146,7 @@ class Proposal extends Model implements HasLink, HasMedia, Interfaces\IHasMetaDa
             'opensource',
             'paid',
             'fund.id',
+            'fund',
             'type',
             'users',
             'tags',
@@ -152,6 +154,14 @@ class Proposal extends Model implements HasLink, HasMedia, Interfaces\IHasMetaDa
             'funding_status',
             'status',
             'votes_cast',
+            'amount_requested_USD',
+            'amount_requested_ADA',
+            'amount_received_ADA',
+            'amount_received_USD',
+            'amount_awarded_ADA',
+            'amount_awarded_USD',
+            'completed_amount_paid_USD',
+            'completed_amount_paid_ADA',
         ];
     }
 
@@ -268,12 +278,12 @@ class Proposal extends Model implements HasLink, HasMedia, Interfaces\IHasMetaDa
 
     public function getFormattedAmountRequestedAttribute()
     {
-        return $this->currency_symbol.number_format($this->amount_requested, 0, '.', ',');
+        return $this->currency_symbol . number_format($this->amount_requested, 0, '.', ',');
     }
 
     public function getFormattedAmountReceivedAttribute()
     {
-        return $this->currency_symbol.number_format($this->amount_received, 0, '.', ',');
+        return $this->currency_symbol . number_format($this->amount_received, 0, '.', ',');
     }
 
     public function getGroupAttribute()
@@ -293,20 +303,20 @@ class Proposal extends Model implements HasLink, HasMedia, Interfaces\IHasMetaDa
 
     public function getNoVotesCountFormattedAttribute()
     {
-        if (! isset($this->no_votes_count)) {
+        if (!isset($this->no_votes_count)) {
             return $this->no_votes_count;
         }
 
-        return '₳ '.number_format($this->no_votes_count, 0, '.', ',');
+        return '₳ ' . number_format($this->no_votes_count, 0, '.', ',');
     }
 
     public function getYesVotesCountFormattedAttribute()
     {
-        if (! isset($this->yes_votes_count)) {
+        if (!isset($this->yes_votes_count)) {
             return $this->yes_votes_count;
         }
 
-        return '₳ '.number_format($this->yes_votes_count, 0, '.', ',');
+        return '₳ ' . number_format($this->yes_votes_count, 0, '.', ',');
     }
 
     public function generatedSummaryPic(): Attribute
@@ -327,7 +337,8 @@ class Proposal extends Model implements HasLink, HasMedia, Interfaces\IHasMetaDa
             get: fn () => $this->quickpitch ? collect(
                 explode(
                     '/',
-                    $this->quickpitch)
+                    $this->quickpitch
+                )
             )?->last() : null
         );
     }
@@ -398,19 +409,23 @@ class Proposal extends Model implements HasLink, HasMedia, Interfaces\IHasMetaDa
     public function scopeFilter($query, array $filters)
     {
         $query->when(
-            $filters['search'] ?? false, fn (Builder $query, $search) => $query->where('title', 'ILIKE', '%'.$search.'%')
+            $filters['search'] ?? false,
+            fn (Builder $query, $search) => $query->where('title', 'ILIKE', '%' . $search . '%')
         );
 
         $query->when(
-            $filters['user_id'] ?? false, fn (Builder $query, $user_id) => $query->where('user_id', $user_id)
+            $filters['user_id'] ?? false,
+            fn (Builder $query, $user_id) => $query->where('user_id', $user_id)
         );
 
         $query->when(
-            $filters['challenge_id'] ?? false, fn (Builder $query, $fund_id) => $query->where('fund_id', $fund_id)
+            $filters['challenge_id'] ?? false,
+            fn (Builder $query, $fund_id) => $query->where('fund_id', $fund_id)
         );
 
         $query->when(
-            $filters['fund_id'] ?? false, fn (Builder $query, $fund_id) => $query->whereRelation('fund.parent', 'id', '=', $fund_id)
+            $filters['fund_id'] ?? false,
+            fn (Builder $query, $fund_id) => $query->whereRelation('fund.parent', 'id', '=', $fund_id)
         );
     }
 
@@ -424,8 +439,11 @@ class Proposal extends Model implements HasLink, HasMedia, Interfaces\IHasMetaDa
         if (static::whereSlug($slug = Str::slug($title))->exists()) {
             $max = intval(static::whereTitle($title)->latest('id')->count());
 
-            return "{$slug}-".preg_replace_callback('/(\d+)$/', fn ($matches) => $matches[1] + 1,
-                $max);
+            return "{$slug}-" . preg_replace_callback(
+                '/(\d+)$/',
+                fn ($matches) => $matches[1] + 1,
+                $max
+            );
         }
 
         return $slug;
@@ -487,7 +505,8 @@ class Proposal extends Model implements HasLink, HasMedia, Interfaces\IHasMetaDa
             'catalyst_group_id',
             'id',
             'id',
-            'groups');
+            'groups'
+        );
     }
 
     public function fund(): BelongsTo
@@ -545,7 +564,11 @@ class Proposal extends Model implements HasLink, HasMedia, Interfaces\IHasMetaDa
             'completed' => $this->status === 'complete' ? 1 : 0,
             'over_budget' => $this->status === 'over_budget' ? 1 : 0,
             'currency' => $this->currency,
+            "amount_received_{$this->currency}" => $this->amount_received ? intval($this->amount_received) : 0,
+            "amount_requested_{$this->currency}" => $this->amount_requested ? intval($this->amount_requested) : 0,
+            "amount_awarded_{$this->currency}" => (bool) $this->funded_at ? ($this->amount_requested ? intval($this->amount_requested) : 0) : null,
             'groups' => $this->groups,
+            "completed_amount_paid{$this->currency}"=> ($this->amount_received && $this->status === 'complete') ? intval($this->amount_received) : 0,
             'ca_rating' => $this->ratings_average ?? 0.00,
             'aligment_score' => $this->meta_data->aligment_score ?? null,
             'feasibility_score' => $this->meta_data->feasibility_score ?? null,
@@ -586,6 +609,7 @@ class Proposal extends Model implements HasLink, HasMedia, Interfaces\IHasMetaDa
                 'label' => $this->fund?->label,
                 'status' => $this->fund?->status,
             ],
+            'tags' => $this->tags->toArray(),
         ]);
     }
 

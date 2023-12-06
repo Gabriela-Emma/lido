@@ -22,4 +22,7 @@ export default interface Fund {
     content: string;
     excerpt: string;
     funded_proposals: number;
+
+    //filters
+    count:number
 }
