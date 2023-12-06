@@ -1,13 +1,16 @@
 import {defineStore} from "pinia";
 import {AxiosError} from "axios";
-import {Ref, ref} from "vue";
+import {Ref, computed, ref} from "vue";
 import PeopleFilters from "../models/people-filters";
 import Profile from "../models/profile";
+import Proposal from "../models/proposal";
+import { useFiltersStore } from "@/global/stores/filters-stores";
 
 export const usePeopleStore = defineStore('people', () => {
     let filters: Ref<PeopleFilters> = ref();
     let people = ref<Profile[]>([]);
     let selected = ref<number[]>([]);
+
 
     async function search(f: PeopleFilters) {
         filters.value = f;

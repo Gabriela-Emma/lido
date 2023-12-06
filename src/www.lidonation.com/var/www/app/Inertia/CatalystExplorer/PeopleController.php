@@ -85,6 +85,7 @@ class PeopleController extends Controller
 
     protected function setFilters(Request $request)
     {
+
         $this->limit = $request->input(CatalystExplorerQueryParams::PER_PAGE, 24);
 
         $sort = collect(explode(':', $request->input(CatalystExplorerQueryParams::SORTS, '')))->filter();
@@ -96,8 +97,13 @@ class PeopleController extends Controller
                 'amount_awarded_ada:desc',
                 'amount_awarded_usd:asc',
                 'amount_awarded_usd:desc',
+                'own_proposals_count:asc',
+                'own_proposals_count:desc',
+                'co_proposals_count:asc',
+                'co_proposals_count:desc'
             ])->random()));
         }
+
         $this->sortBy = $sort->first();
         $this->sortOrder = $sort->last();
 
@@ -122,9 +128,21 @@ class PeopleController extends Controller
                 if (count($_options['filters']) > 0) {
                     $options['filter'] = implode(' AND ', $_options['filters']);
                 }
+
                 $options['attributesToRetrieve'] = $attrs ?? [
                     'id',
                     'name',
+                    'proposals.fund.parent.id',
+                    'proposals.fund.parent.label',
+                    'proposals.fund.id',
+                    'proposals.fund.label',
+                    'proposals.is_co_proposer',
+                    'proposals.is_primary_proposer',
+                    'proposals.funding_status',
+                    'proposals.tags.id',
+                    'proposals.amount_requested',
+                    'own_proposals_count',
+                    'co_proposals_count',
                     'username',
                     'first_timer',
                     'proposals_count',
@@ -145,6 +163,7 @@ class PeopleController extends Controller
         if ($returnBuilder) {
             return $this->searchBuilder;
         }
+
         $response = new Fluent($this->searchBuilder->raw());
         $pagination = new LengthAwarePaginator(
             $response->hits,

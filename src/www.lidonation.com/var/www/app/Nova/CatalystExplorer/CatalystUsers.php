@@ -21,7 +21,7 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
 
-class Users extends Resource
+class CatalystUsers extends Resource
 {
     /**
      * The model the resource corresponds to.

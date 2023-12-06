@@ -326,6 +326,7 @@
       <path value="$PROJECT_DIR$/src/www.lidonation.com/var/www/vendor/jean85/pretty-package-versions" />
       <path value="$PROJECT_DIR$/src/www.lidonation.com/var/www/vendor/ta-tikoma/phpunit-architecture-test" />
       <path value="$PROJECT_DIR$/src/www.lidonation.com/var/www/vendor/fidry/cpu-core-counter" />
+      <path value="$PROJECT_DIR$/src/www.lidonation.com/var/www/vendor/league/html-to-markdown" />
     </include_path>
   </component>
   <component name="PhpInterpreters">

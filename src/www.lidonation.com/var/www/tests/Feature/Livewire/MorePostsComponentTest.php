@@ -17,8 +17,6 @@ it('sets hasMorePages', function () {
 
     Post::factory()->create(['title' => 'First hasMorePages', 'type' => Post::class, 'status' => 'published']);
     Post::factory()->create(['title' => 'Second hasMorePages', 'type' => Post::class, 'status' => 'published']);
-    Post::factory()->create(['title' => 'Third hasMorePages', 'type' => Post::class, 'status' => 'published']);
-    Post::factory()->create(['title' => 'Fourth hasMorePages', 'type' => Post::class, 'status' => 'published']);
 
     $componentInstance = Livewire::test(MorePostsComponent::class, ['perPage' => $perPage]);
 
@@ -38,8 +36,8 @@ it('sets offset', function () {
 
     // seed posts and make sure to set published_at date column, this will help in knowing the order of posts
     $dateToday = Illuminate\Support\Carbon::now();
-    Post::factory()->create(['title' => 'Warn costs of South Africa', 'type' => Post::class, 'status' => 'published', 'published_at' => $dateToday->subDays(6)]);
-    Post::factory()->create(['title' => 'Testing the first water-pr', 'type' => Post::class, 'status' => 'published', 'published_at' => $dateToday->subDays(5)]);
+//    Post::factory()->create(['title' => 'Warn costs of South Africa', 'type' => Post::class, 'status' => 'published', 'published_at' => $dateToday->subDays(6)]);
+//    Post::factory()->create(['title' => 'Testing the first water-pr', 'type' => Post::class, 'status' => 'published', 'published_at' => $dateToday->subDays(5)]);
     Post::factory()->create(['title' => 'Rubber duckies that float', 'type' => Post::class, 'status' => 'published', 'published_at' => $dateToday->subDays(4)]);
     Post::factory()->create(['title' => 'New Axe capital hedge fund', 'type' => Post::class, 'status' => 'published', 'published_at' => $dateToday->subDays(3)]);
 

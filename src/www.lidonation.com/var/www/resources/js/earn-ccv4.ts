@@ -2,7 +2,7 @@ import { Livewire, Alpine } from '../../vendor/livewire/livewire/dist/livewire.e
 import './bootstrap';
 import '../scss/earn-ccv4.scss';
 import WalletService from './global/services/wallet-service';
-import {C, Cardano} from "lucid-cardano";
+import {C, Cardano} from "@lucid-cardano";
 import {Axios, AxiosError} from "axios";
 
 export {};

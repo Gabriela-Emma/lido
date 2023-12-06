@@ -27,7 +27,6 @@ use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 class Group extends Model implements HasLink, HasMedia
 {
     use HasBelongsToManyEvents,
-        HasFactory,
         HasGravatar,
         HasHero,
         HasMetaData,
@@ -39,9 +38,18 @@ class Group extends Model implements HasLink, HasMedia
 
     protected $table = 'catalyst_groups';
 
-    protected $withCount = ['proposals', 'members', 'owner', 'challenges'];
+    protected $withCount = [
+        'proposals',
+        'members',
+        'owner',
+        'challenges'
+    ];
 
-    protected $appends = ['link', 'thumbnail_url', 'gravatar'];
+    protected $appends = [
+        'link',
+        'thumbnail_url',
+        'gravatar'
+    ];
 
     protected $casts = [
         'name' => 'string',

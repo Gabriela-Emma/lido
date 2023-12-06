@@ -1,26 +1,39 @@
 {
     "compilerOptions": {
-        "target": "esnext",
         "module": "esnext",
-        "moduleResolution": "node",
-        "strict": false,
+        "declaration": true,
+        "removeComments": true,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "allowJs": true,
+        "allowSyntheticDefaultImports": true,
         "jsx": "preserve",
+        "lib": ["es7","dom"],
+        "target": "ES2020",
         "sourceMap": true,
+        "outDir": "./dist",
+        "baseUrl": "./",
+        "incremental": true,
+        "skipLibCheck": true,
+        "strict": false,
+        "strictNullChecks": false,
+        "noImplicitAny": false,
+        "strictBindCallApply": false,
+        "forceConsistentCasingInFileNames": false,
+        "noFallthroughCasesInSwitch": false,
+        "moduleResolution": "node",
         "resolveJsonModule": true,
         "esModuleInterop": true,
-        "allowJs": true,
-        "lib": ["esnext", "dom"],
+        "typeRoots": ["./node_modules/@types", "resources/js/types"],
         "types": [
-            "@types/node",
-            "@types/ziggy-js"
+            "node",
+            "ziggy-js"
         ],
         "paths": {
             "@/*": ["./resources/js/*"],
             "@apps/*": ["./resources/js/apps/*"]
         },
-        "outDir": "./public/build/assets"
     },
-    "typeRoots": ["./node_modules/@types", "resources/js/types"],
     "include": [
         "resources/js/**/*.ts",
         "resources/js/**/*.d.ts",

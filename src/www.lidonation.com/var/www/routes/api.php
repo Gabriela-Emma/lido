@@ -335,7 +335,6 @@ Route::prefix('catalyst-explorer')->as('catalystExplorerApi.')
 
         Route::post('/login', [CatalystExplorer\UserController::class, 'login'])->name('login');
 
-        Route::post('/register', [CatalystExplorer\UserController::class, 'create']);
 
         // counts
         Route::get('/metrics/proposals/count/approved', [ProposalsController::class, 'metricCountFunded']);
@@ -388,7 +387,6 @@ Route::prefix('catalyst-explorer')->as('catalystExplorerApi.')
         });
 
         Route::prefix('/my')->group(function () {
-
             Route::get('/bookmarks', [MyBookmarksController::class, 'index'])
                 ->name('myBookmarks');
         });

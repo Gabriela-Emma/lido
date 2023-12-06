@@ -1,10 +1,12 @@
 <template>
+    <Head :title="`Edit ${draftBallot$?.title} Draft Ballot`" />
+
     <header-component titleName0="Draft Ballot" :titleName1="draftBallot$?.title"
         :subTitle="`Created ${$filters.timeAgo(draftBallot$.created_at)}. Has ${draftBallot$?.items_count} item${draftBallot$?.items_count > 1 ? 's' : ''}.`" />
 
     <main class="flex flex-col gap-2 py-8 bg-primary-20">
         <div class="container">
-            <section class="sticky mb-4 overflow-visible bg-white border-t rounded-sm shadow-md top-9 z-5">
+            <section class="sticky mb-4 overflow-visible bg-white border-t rounded-sm shadow-md top-0 z-5">
                 <div class="relative overflow-visible">
                     <div class="flex items-center w-full h-10 lg:h-16">
                         <Search :search="search" @search="(term) => search = term" />
@@ -52,7 +54,7 @@
                     </a>
                     <Link :href="route('catalyst-explorer.draftBallotUpdate.view', { draftBallot: draftBallot?.hash })"
                         class="bg-white rounded-sm px-3 py-2.5 text-gray-400 flex-wrap hover:text-yellow-500">
-                    Edit
+                    Ballot Settings
                     </Link>
                 </div>
                 <DraftBallotGroupCard v-for="group in draftBallot$.groups" :key="group.id" :group="group"
@@ -68,7 +70,7 @@ import axios from 'axios';
 import { storeToRefs } from 'pinia';
 import moment from "moment-timezone";
 import route from 'ziggy-js';
-import { Link } from '@inertiajs/vue3';
+import {Head, Link} from '@inertiajs/vue3';
 import { CheckIcon } from '@heroicons/vue/20/solid'
 import { onClickOutside } from '@vueuse/core';
 import {useUserStore} from "@/global/stores/user-store";
@@ -76,6 +78,7 @@ import DraftBallot from "@apps/catalyst-explorer/models/draft-ballot";
 import Proposal from "@apps/catalyst-explorer/models/proposal";
 import DraftBallotGroupCard from "@apps/catalyst-explorer/modules/bookmarks/DraftBallotGroupCard.vue";
 import {useBookmarksStore} from "@apps/catalyst-explorer/stores/bookmarks-store";
+import Search from "@apps/catalyst-explorer/Components/Global/Search.vue";
 
 const userStore = useUserStore();
 const { user$ } = storeToRefs(userStore);
@@ -125,7 +128,7 @@ watch([onLocal, inLastTenMins], () => {
 function searchProposals() {
     const params = {
         search: search.value,
-        fund_id: 113,
+        fund_id: 129,
     }
     axios.get(
         route('catalystExplorerApi.proposals', params)

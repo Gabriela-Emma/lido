@@ -8,6 +8,8 @@ use App\Enums\ComponentThemesEnum;
 use App\Models\Category;
 use App\Models\Post;
 use App\Models\Tag;
+use App\Scopes\LimitScope;
+use App\Scopes\OrderByPublishedDateScope;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -41,15 +43,11 @@ class MorePostsComponent extends Component
     public function mount(): void
     {
         if (isset($this->taxonomy)) {
-            $this->moreLabel = 'More '.ucfirst($this->taxonomy->title).' Posts';
+            $this->moreLabel = 'More ' . ucfirst($this->taxonomy->title).' Posts';
             $this->mountTaxonomy();
         } else {
-            $postsCursor = Post::with(['media', 'tags'])
-                ->latest('published_at')
-                ->offset($this->offset)
-                ->cursorPaginate($this->perPage);
-
-            $this->setNextCursor($postsCursor);
+            $count = Post::count();
+            $this->hasMorePages = $count > $this->offset;
         }
     }
 
@@ -123,12 +121,22 @@ class MorePostsComponent extends Component
 
     public function morePosts(): void
     {
-        $postsCursor = Post::latest('published_at')
-            ->cursorPaginate($this->perPage, ['*'], 'cursor', $this->nextCursor);
+        Post::withoutGlobalScopes([LimitScope::class, OrderByPublishedDateScope::class]);
+        $postsCursor = Post::with(['media', 'tags'])
+            ->latest('published_at');
 
-        $newPosts = collect($postsCursor->items())->each(fn ($p) => $p->load(['media', 'tags']));
+        if (! $this->nextCursor) {
+            $postsCursor  = $postsCursor->offset($this->offset)
+                ->cursorPaginate($this->perPage);;
+        } else {
+            $postsCursor = $postsCursor->cursorPaginate(
+                $this->perPage, ['*'], 'cursor', $this->nextCursor
+            );
+        }
 
-        $this->addNewPosts($newPosts);
+        $this->addNewPosts(
+            collect($postsCursor->items())
+        );
         $this->setNextCursor($postsCursor);
     }
 

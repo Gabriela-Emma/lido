@@ -28,9 +28,11 @@ use App\Inertia\CatalystExplorer\RegistrationsController;
 use App\Inertia\CatalystExplorer\ReportsController;
 use App\Inertia\CatalystExplorer\UserProfilesController;
 use App\Inertia\CatalystExplorer\VoterToolController;
+use App\Invokables\GenerateProposalImage;
 use App\Livewire\CatalystExplorer\ProposalComponent;
 use App\Livewire\CatalystExplorer\VotesComponent;
 use App\Models\CatalystExplorer\Proposal;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
@@ -79,14 +81,18 @@ Route::group(
                 ->name('home');
 
             // Auth
-            Route::get('/login', fn () => Inertia::render('Auth/Login'))
+            Route::get('/D', fn () => Inertia::render('Auth/Login'))
                 ->name('login');
 
-            Route::get('/auth/login', [UserController::class, 'utilityLogin'])
+            Route::get('/utility-login', [UserController::class, 'utilityLogin'])
                 ->name('login.utility');
 
             Route::get('/register', fn () => Inertia::render('Auth/Register'))
                 ->name('register');
+
+            Route::post('/login', [UserController::class, 'login'])->name('login.store');
+
+            Route::post('/register', [UserController::class, 'create']);
 
             // Funds
             Route::prefix('/funds')->as('funds.')->group(function () {
@@ -112,6 +118,10 @@ Route::group(
 
             Route::get('/registrations', [RegistrationsController::class, 'index'])
                 ->name('registrations');
+
+            Route::get('/check-my-votes', [RegistrationsController::class, 'vote'])
+                ->name('my-votes');
+
 
             Route::get('/registrations-data', [RegistrationsController::class, 'registrationsData'])
                 ->name('registrations-data');
@@ -160,8 +170,8 @@ Route::group(
                     Route::get('/metrics/sum/completed-proposals', [ProposerController::class, 'getCompletedProposalCount']);
                     Route::get('/metrics/sum/outstanding-proposals', [ProposerController::class, 'getOutstandingProposalCount']);
                     Route::get('/metrics/sum/outstanding-co-proposals', [ProposerController::class, 'getCoProposalCount']);
-                    Route::get('/metrics/sum/f10primary-proposals', [ProposerController::class, 'getF10PrimaryProposalCount']);
-                    Route::get('/metrics/sum/f10-co-proposals', [ProposerController::class, 'getF10CoProposalCount']);
+                    Route::get('/metrics/sum/f11primary-proposals', [ProposerController::class, 'getF11PrimaryProposalCount']);
+                    Route::get('/metrics/sum/f11-co-proposals', [ProposerController::class, 'getF11CoProposalCount']);
                 });
             });
 
@@ -169,6 +179,10 @@ Route::group(
             Route::prefix('/dreps')->as('dReps.')->group(function () {
                 Route::get('/', [DRepsController::class, 'index'])
                     ->name('index');
+                Route::get('/signup', [DRepsController::class, 'signUp'])
+                    ->name('signUp');
+                Route::post('/store', [DRepsController::class, 'store'])
+                    ->name('store');
             });
 
             //catalyst charts metrics
@@ -189,6 +203,8 @@ Route::group(
                     ->name('totalRegisteredAdaPower');
                 Route::get('/registeredAdaNotVoted', [ChartsController::class, 'metricSumAdaRegisteredNotVoted'])
                     ->name('registeredAdaNotVoted');
+                Route::get('/registeredWalletsNotVoted', [ChartsController::class, 'metricSumWalletsRegisteredNotVoted'])
+                    ->name('registeredWalletsNotVoted');
                 Route::get('/total-registrations', [ChartsController::class, 'metricTotalRegistrations'])
                     ->name('totalRegistrations');
                 Route::get('/total-delegation-registrations', [ChartsController::class, 'metricTotalDelegationRegistrations'])
@@ -242,7 +258,7 @@ Route::group(
                 ->name('bookmarks');
 
             Route::get('/bookmarks/{bookmarkCollection:id}', [BookmarksController::class, 'view'])
-                ->name('bookmark`');
+                ->name('bookmark');
 
             Route::get('/draft-ballots/{draftBallot:id}', [BookmarksController::class, 'viewDraftBallot'])
                 ->name('draftBallot.view');
@@ -255,13 +271,11 @@ Route::group(
                 ->name('download.proposals');
 
             // Bookmarks
-            Route::post('/bookmarks/items', [MyBookmarksController::class, 'createItem'])->name('bookmarkItem.create');
+            Route::post('/bookmarks/items', [MyBookmarksController::class, 'createItem'])
+                ->name('bookmarkItem.create');
             Route::get('/export/bookmarked-proposals', [MyBookmarksController::class, 'exportBookmarks']);
             Route::delete('/bookmark-collection', [MyBookmarksController::class, 'deleteCollection'])->name('bookmarkCollection.delete');
             Route::delete('/bookmark-item/{bookmarkItem:id}', [MyBookmarksController::class, 'deleteItem'])->name('bookmarkItem.delete');
-
-            Route::middleware(['auth.catalyst'])->prefix('/my')->group(function () {
-            });
 
             Route::middleware(['auth.catalyst'])->prefix('/my')->group(function () {
                 Route::post('/bookmarks/{bookmarkCollection:id}/create-ballot', [BookmarksController::class, 'createDraftBallotFromCollection'])
@@ -360,7 +374,8 @@ Route::group(
     }
 );
 Route::prefix('project-catalyst')->group(function () {
-    Route::get('/bookmarks/share/{anonymousBookmark}', [AnonymousBookmarkController::class, 'show']);
+    Route::get('/bookmarks/share/{anonymousBookmark}', [AnonymousBookmarkController::class, 'show'])
+        ->name('bookmarks.share');
     Route::get('/bookmarks/share/{anonymousBookmark}', [AnonymousBookmarkController::class, 'show']);
     Route::post('/bookmarks/share', [AnonymousBookmarkController::class, 'share']);
     Route::post('/proposals/search/bookmarks', [ProposalSearchController::class, 'bookmarks']);

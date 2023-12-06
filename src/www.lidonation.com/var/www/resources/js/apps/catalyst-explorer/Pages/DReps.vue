@@ -102,11 +102,11 @@
                         <div class="py-24 sm:py-32 lg:flex lg:items-center lg:justify-between xl:px-36">
                             <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
                                 Excited for for DReps in  catalyst?
-                                <br/>Jump in be a pioneer!
+                                <br/>Jump in & be a pioneer!
                             </h2>
                             <div class="mt-10 flex items-center gap-x-6 lg:mt-0 lg:flex-shrink-0">
-                                <button
-                                    type="button"
+                                <Link
+                                    :href="route('catalyst-explorer.dReps.signUp')"
                                     class="inline-flex items-center gap-x-2 rounded-md bg-teal-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-teal-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600"
                                 >
                                     <svg
@@ -124,7 +124,7 @@
                                     Sign up to be a dRep
                                     <span
                                         aria-hidden="true">→</span>
-                                </button>
+                                </Link>
                             </div>
                         </div>
                     </div>
@@ -136,9 +136,9 @@
 
 <script>
 import {defineComponent} from "vue";
-import {Head} from "@inertiajs/vue3";
+import {Head, Link} from "@inertiajs/vue3";
 
 export default defineComponent({
-    components: {Head}
+    components: {Head, Link}
 })
 </script>

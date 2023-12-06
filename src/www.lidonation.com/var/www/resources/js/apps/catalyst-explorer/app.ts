@@ -1,6 +1,6 @@
 // import './bootstrap';
 import '../../../scss/catalyst-explorer.scss';
-import { createApp, h } from 'vue';
+import { DefineComponent, createApp, h } from 'vue';
 import {createInertiaApp, usePage} from "@inertiajs/vue3";
 import { ZiggyVue } from "../../../../vendor/tightenco/ziggy/dist/vue.m.js";
 import Layout from './Layouts/Public.vue';
@@ -16,6 +16,9 @@ import { marked } from 'marked';
 import ziggy from '../../global/models/ziggy';
 import page from '@/global/utils/page';
 import 'vue-plyr/dist/vue-plyr.css'
+import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
+import { modal } from 'momentum-modal';
+import MasonryWall from '@yeger/vue-masonry-wall';
 
 const appName = import.meta.env.VITE_APP_NAME || 'LIDO Nation';
 declare module '@vue/runtime-core' {
@@ -36,7 +39,6 @@ createInertiaApp({
     },
     title: (title) => `${title} - ${appName}`,
     // @ts-ignore
-    // resolve: (name) => resolvePageComponent(`./catalyst-explorer/Pages/${name}.vue`, import.meta.glob('../catalyst-explorer/Pages/**/*.vue')),
     resolve: name => {
         const pages = import.meta.glob('../catalyst-explorer/Pages/**/*.vue', { eager: true });
         let page = pages[`./Pages/${name}.vue`]
@@ -58,6 +60,10 @@ createInertiaApp({
             .use(ZiggyVue)
             .use(i18n)
             .use(pinia)
+            .use(MasonryWall)
+            .use(modal, {
+                resolve: (name) => resolvePageComponent(`./Pages/${name}.vue`, import.meta.glob<DefineComponent>('./Pages/**/*.vue')),
+            })
             .use(VuePlyr, {
                 plyr: {}
             });

@@ -137,11 +137,13 @@ class Articles extends Resource
                 'scheduled' => 'Scheduled',
             ])->sortable()
                 ->required(),
-            Select::make(__('Type'), 'type')->options([
-                Review::class => 'Reviews',
-                \App\Models\OnboardingContent::class => 'OnboardingContent',
-                \App\Models\ExternalPost::class => 'ExternalPost',
-            ])->onlyOnForms(),
+
+//            Select::make(__('Type'), 'type')->options([
+//                Review::class => 'Reviews',
+//                \App\Models\OnboardingContent::class => 'OnboardingContent',
+//                \App\Models\ExternalPost::class => 'ExternalPost',
+//            ])->onlyOnForms(),
+
             DateTime::make('Published At')
                 ->help('Defaults to today. ')
                 ->hideWhenUpdating()

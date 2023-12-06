@@ -173,7 +173,7 @@ class User extends Resource
                 ->hideFromIndex()
                 ->searchable(),
 
-            BelongsToMany::make(__('Roles'), 'roles')
+            BelongsToMany::make(__('Roles'), 'roles', Role::class)
                 ->hideFromIndex()
                 ->filterable()
                 ->searchable()->fields(function () {

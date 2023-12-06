@@ -3,8 +3,7 @@ import laravel, {refreshPaths} from 'laravel-vite-plugin';
 import vue from "@vitejs/plugin-vue";
 import topLevelAwait from "vite-plugin-top-level-await";
 import wasm from "vite-plugin-wasm";
-import path from 'path';
-import manifestSRI from 'vite-plugin-manifest-sri';
+import * as path from "path";
 
 export default defineConfig({
     plugins: [
@@ -20,7 +19,7 @@ export default defineConfig({
                 "resources/js/apps/rewards/app.ts",
                 "resources/js/apps/delegators/app.ts",
             ],
-            ssr: "resources/js/ssr.ts",
+            // ssr: "resources/js/ssr.ts",
             refresh: [
                 // ...refreshPaths,
                 "routes/**",
@@ -38,9 +37,12 @@ export default defineConfig({
         }),
         wasm(),
         topLevelAwait(),
-        manifestSRI(),
+        // manifestSRI(),
     ],
     optimizeDeps: {
+        esbuildOptions: {
+            target: 'es2020',
+        },
         exclude: ["lucid-cardano"],
     },
     worker: {
@@ -51,12 +53,13 @@ export default defineConfig({
         alias: {
             "@": path.resolve(__dirname, "./resources/js"),
             "@apps": path.resolve(__dirname, "./resources/js/apps"),
-            "@lucid-cardano": "./node_modules/lucid-cardano/web/mod.js",
+            "@lucid-cardano": "/node_modules/lucid-cardano/web/mod.js",
             "@ziggy": "./vendor/tightenco/ziggy/dist/vue.m",
+            'node-fetch': 'node-fetch-polyfill',
         },
     },
     build: {
-        target: "esnext",
+        target: "es2020",
         rollupOptions: {
             external: ["lucid-cardano"],
         },

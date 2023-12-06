@@ -1,4 +1,6 @@
 <template>
+    <Head title="My Bookmarks" />
+
     <header-component titleName0="Catalyst" titleName1="My Bookmarks" subTitle=""/>
 
     <main class="flex flex-col gap-2 py-8 bg-primary-20">
@@ -28,15 +30,12 @@
 <script lang="ts" setup>
 import {storeToRefs} from "pinia";
 import UserNav from "./UserNav.vue";
-import BookmarkCollection from "../../models/bookmark-collection";
-import Proposal from "../../models/proposal";
 import {useBookmarksStore} from "@apps/catalyst-explorer/stores/bookmarks-store";
 import BookmarkCollectionCard from "../../modules/bookmarks/BookmarkCollectionCard.vue";
+import {Head} from "@inertiajs/vue3";
 
 withDefaults(
-    defineProps<{
-        bookmarkCollections?: BookmarkCollection<Proposal>[]
-    }>(), {});
+    defineProps<{}>(), {});
 
 const bookmarksStore = useBookmarksStore();
 const {collections$} = storeToRefs(bookmarksStore);

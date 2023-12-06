@@ -724,6 +724,7 @@ yarn:
     echo '@spatie:registry=https://npm.pkg.github.com' >> .npmrc
     echo '@splidejs:registry=https://npm.pkg.github.com' >> .npmrc
     yarn config set ignore-engines true
+    git config --global url.https://github.com/.insteadOf git://github.com/
     yarn install 
     yarn run build
 

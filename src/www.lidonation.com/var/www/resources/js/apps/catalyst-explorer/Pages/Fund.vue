@@ -126,14 +126,14 @@
                 </section>
             </div>
         </header>
-        <section class="relative py-10 overflow-visible bg-white lg:py-20">
+        <section class="relative py-10 overflow-visible bg-teal-10 lg:py-20">
             <div class="container">
-                <h2 class='flex flex-row flex-wrap items-end gap-2 mb-6 text-3xl font-bold 2xl:text-5xl decorate dark'>
-                    {{ fund.data.label }} <span class="text-teal-600">Challenges</span>
-                    <span class="text-gray-500 2xl:text-4xl">({{ challengesCount }})</span>
+                <h2 class='flex flex-col flex-wrap items-start gap-3 mb-6 text-3xl 2xl:text-5xl dark'>
+                    <span class="text-gray-800 font-bold"> Browse By Challenges in {{ fund.data.label }} </span>
+                    <span class="text-gray-800 text-lg font-normal">The community was asked to povide solutions to these challenges</span>
                 </h2>
                 <div
-                    class="space-y-12 sm:grid sm:grid-cols-2 sm:gap-6 sm:space-y-0 lg:grid-cols-3 2xl:grid-cols-4 lg:gap-6">
+                    class="grid grid-cols-1 gap-3 mt-5 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3 lg:gap-6 ">
                     <template v-for="(fund, index) in challenges">
                         <FundChallenge v-if="fund" :key="fund?.id" :fund="fund"></FundChallenge>
                     </template>

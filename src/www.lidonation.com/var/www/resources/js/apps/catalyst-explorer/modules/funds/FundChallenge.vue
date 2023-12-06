@@ -1,36 +1,39 @@
 <template>
     <div
-        class="flex flex-row items-start justify-center px-6 py-8 text-center rounded-sm bg-primary-10 xl:px-8 xl:text-left">
-        <div class="flex flex-col items-start justify-between w-full space-y-6 xl:space-y-10">
-            <a v-bind:href="fund.link" class="w-32 h-32 mx-auto rounded-full shadow-inner lg:w-32 lg:h-32 xl:w-44 xl:h-44">
-                <img class="w-full h-full rounded-full" v-bind:src="fund.thumbnail_url ?? fund.gravatar"
-                    v-bind:alt="fund.title" />
-            </a>
-            <div class="items-end w-full space-y-2 xl:flex xl:items-center xl:justify-between">
-                <div class="w-full space-y-1 text-lg font-medium leading-6">
-                    <h3 class="mb-2">
-                        <a v-bind:href="fund.link" class="text-gray-800 hover:text-teal-700">
-                            {{ fund.label }}
-                        </a>
-                    </h3>
-                    <div class="flex flex-row items-start justify-between w-full gap-2">
-                        <div class="flex flex-col justify-center">
-                            <span class="text-lg font-semibold text-gray-600">
-                                {{ $filters.currency(fund.amount, fund?.currency) }}
-                            </span>
-                            <span class="text-xs text-gray-500">Budget</span>
+        class="relative flex flex-col overflow-hidden bg-white border border-gray-200 rounded-lg group hover:cursor-pointer">
+        <a :href="fund.link" class="bg-gray-200 aspect-w-2 aspect-h-2 group-hover:opacity-75 sm:aspect-none sm:h-60">
+            <img :alt="fund.title" :src="fund.thumbnail_url ?? fund.hero_url"
+                class="object-cover object-center w-full h-full sm:w-full sm:h-full">
+        </a>
+        <div class="flex flex-col flex-1 p-4 space-y-2">
+            <h2>
+                <a v-bind:href="fund.link" class="text-left text-gray-800 hover:text-teal-700">
+                    {{ fund.label }}
+                </a>
+            </h2>
+            <p class="text-sm text-gray-500 h-auto">{{ fund.excerpt}}</p>
+            <div class="flex flex-col justify-end flex-1 divide-y">
+                <p class="text-lg font-medium text-gray-900">
+                    Budget: <span class="font-bold">{{ $filters.shortNumber(fund.amount, 2) }} {{ fund.currency_symbol }}</span>
+                </p>
+                <div class="w-full grid mt-4 grid-cols-2 -mt-px text-sm divide-x xl:text-sm 2xl:text-md">
+                    <div class="flex items-center justify-center flex-1 gap-2 p-2">
+                        <div class="text-sm">
+                            {{ $t("Proposals") }}:
                         </div>
-                        <div class="flex flex-col justify-center">
-                            <span class="text-lg font-semibold text-gray-600">
-                                {{ fund.proposals_count }}
-                            </span>
-                            <span class="text-xs text-gray-500">Proposals</span>
+                        <div class="font-semibold">
+                            {{ fund.proposals_count }}
                         </div>
-                        <div class="flex flex-col justify-center">
-                            <span class="text-lg font-semibold text-gray-600">
+                    </div>
+
+                    <div class="flex flex-1 -ml-px">
+                        <div class="flex items-center justify-center flex-1 gap-2 p-2">
+                            <div class="text-sm">
+                                {{ $t("Approved") }}:
+                            </div>
+                            <div class="font-semibold">
                                 {{ fund.funded_proposals }}
-                            </span>
-                            <span class="text-xs text-gray-500">Approved</span>
+                            </div>
                         </div>
                     </div>
                 </div>

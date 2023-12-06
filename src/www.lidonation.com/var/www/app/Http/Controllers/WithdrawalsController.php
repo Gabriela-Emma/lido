@@ -7,7 +7,7 @@ use App\Models\Withdrawal;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-class WithdrawalController extends Controller
+class WithdrawalsController extends Controller
 {
     public function view(Request $request, Withdrawal $withdrawal)
     {
@@ -25,7 +25,7 @@ class WithdrawalController extends Controller
 
     public function index(Request $request)
     {
-        return Inertia::render('RewardHistory', [
+        return Inertia::render('Withdrawals', [
             'withdrawalsPaginated' => WithdrawalData::collection(
                 $request->user()
                     ->withdrawals()

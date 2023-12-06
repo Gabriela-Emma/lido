@@ -113,12 +113,11 @@ let form = useForm({
 
 let submit = () =>
 {
-    form.post(route('catalystExplorerApi.login'), {
+    form.post(route('catalyst-explorer.login.store'), {
         onSuccess: () => {
             userStore.setUser();
         }
     });
 }
-
 
 </script>

@@ -12,135 +12,29 @@
         <teleport to="header">
             <transition enter-from-class="opacity-0 scale-95">
                 <div v-show="openMenu"
-                     class="fixed left-1/2 -translate-x-1/2 w-[1250px] h-[200px] mt-12 font-semibold rounded-sm p-6 shadow-md bg-white">
+                     class="fixed left-1/2 -translate-x-1/2 w-[1250px] h-[220px] mt-12 font-semibold rounded-sm p-6 shadow-md bg-white">
                     <ul class="flex flex-row gap-28 text-lg">
-                        <li>
+                        <li v-for="heading in menudrops" :key="heading.title">
                             <span class="text-slate-700 text-xl">
-                                Proposals
+                                {{heading.title}}
                             </span>
                             <ul class="flex flex-col gap-1">
-                                <li>
-                                    <Link
+                                <li v-for="link in heading.links" :key="link.name">
+                                    <div v-if="link.route">
+                                        <Link
                                         class="text-gray-900 menu-link font-normal hover:text-teal-800"
-                                        :class="{ 'text-teal-600': $page.component.startsWith('Proposals') }"
-                                        :href="route('catalyst-explorer.proposals')">
-                                        {{ $t('All Proposals') }}
-                                    </Link>
-                                </li>
-                                <li>
-                                    <Link
+                                        :class="{ 'text-teal-600': $page.component.startsWith(link.component) }"
+                                        :href="route(link.route)">
+                                        {{ $t(link.name) }}
+                                        </Link>
+                                    </div>
+                                    <div v-else>
+                                        <a
                                         class="text-gray-900 menu-link font-normal hover:text-teal-800"
-                                        :class="{ 'text-teal-600': $page.component.startsWith('Assessments') }"
-                                        :href="route('catalyst-explorer.assessments')">
-                                        {{ $t('Proposal Reviews') }}
-                                    </Link>
-                                </li>
-                                <li>
-                                    <Link
-                                        class="text-gray-900 menu-link font-normal hover:text-teal-800"
-                                        :class="{ 'text-teal-600': $page.component.startsWith('Reports') }"
-                                        :href="route('catalyst-explorer.reports')">
-                                        {{ $t('Monthly Reports') }}
-                                    </Link>
-                                </li>
-                                <li>
-                                    <Link
-                                        class="text-gray-900 menu-link font-normal hover:text-teal-800"
-                                        :class="{ 'text-teal-600': $page.component.startsWith('Funds') }"
-                                        :href="route('catalyst-explorer.funds.index')">
-                                        {{ $t('Funds') }}
-                                    </Link>
-                                </li>
-
-                            </ul>
-                        </li>
-
-                        <li>
-                            <span class="text-slate-700 text-xl">
-                                People
-                            </span>
-                            <ul class="flex flex-col gap-1">
-                                <li>
-                                    <Link
-                                        class="text-gray-900 menu-link font-normal hover:text-teal-800"
-                                        :class="{ 'text-teal-600': $page.component.startsWith('Groups') }"
-                                        :href="route('catalyst-explorer.groups')">
-                                        {{ $t('Groups') }}
-                                    </Link>
-                                </li>
-                                <li>
-                                    <Link
-                                        class="text-gray-900 menu-link font-normal hover:text-teal-800"
-                                        :class="{ 'text-teal-600': $page.component.startsWith('DReps') }"
-                                        :href="route('catalyst-explorer.dReps.index')">
-                                        {{ $t('dReps') }}
-                                    </Link>
-                                </li>
-                                <li>
-                                    <Link
-                                        class="text-gray-900 menu-link font-normal hover:text-teal-800"
-                                        :class="{ 'text-teal-600': $page.component.startsWith('People') }"
-                                        :href="route('catalyst-explorer.people.index')">
-                                        {{ $t('Proposers') }}
-                                    </Link>
-                                </li>
-                            </ul>
-                        </li>
-
-                        <li>
-                            <span class="text-slate-700 text-xl">Charts</span>
-                            <ul class="flex flex-col gap-1">
-                                <li>
-                                    <a
-                                        class="text-gray-900 menu-link font-normal hover:text-teal-800"
-                                        :class="{ 'text-teal-600': $page.component.startsWith('Charts') }"
-                                        :href="route('catalyst-explorer.charts')">
-                                        {{ $t('Catalyst by the Numbers') }}
-                                    </a>
-                                </li>
-                                <li>
-                                    <a
-                                        class="text-gray-900 menu-link font-normal hover:text-teal-800"
-                                        :href="route('projectCatalyst.votes.ccv4')">
-                                        {{ $t('CCV4 Votes') }}
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li>
-                            <span class="text-slate-700 text-xl">Tools</span>
-                            <ul class="flex flex-col gap-1">
-                                <li>
-                                    <Link
-                                        class="text-gray-900 menu-link font-normal hover:text-teal-800"
-                                        :class="{ 'text-teal-600': $page.component.startsWith('VoterTool') }"
-                                        :href="route('catalyst-explorer.voter-tool')">
-                                        {{ $t('Voter Tool') }}
-                                    </Link>
-                                </li>
-                                <li>
-                                    <a
-                                        class="text-gray-900 menu-link font-normal hover:text-teal-800"
-                                        :href="route('catalyst-explorer.registrations')"
-                                        :class="{ 'text-teal-600': $page.component.startsWith('Registrations') }">
-                                        {{ $t('Check my registration') }}
-                                    </a>
-                                </li>
-                                <li>
-                                    <Link
-                                        class="text-gray-900 menu-link font-normal hover:text-teal-800"
-                                        :class="{ 'text-teal-600': $page.component.startsWith('Registrations') }"
-                                        :href="route('catalyst-explorer.registrations')">
-                                        {{ $t('Check my vote') }}
-                                    </Link>
-                                </li>
-                                <li>
-                                    <Link
-                                        class="text-gray-900 menu-link font-normal hover:text-teal-800"
-                                        :class="{ 'text-teal-600': $page.component.startsWith('MyBookmarks') }"
-                                        :href="route('catalyst-explorer.myBookmarks')">
-                                        {{ $t('My Bookmarks') }}
-                                    </Link>
+                                        :href=link.url>
+                                        <span class="inline-block">{{ link.name }}</span>
+                                        </a>
+                                    </div>
                                 </li>
                             </ul>
                         </li>
@@ -156,6 +50,9 @@ import route from "ziggy-js";
 import {Link} from '@inertiajs/vue3';
 import {onClickOutside} from '@vueuse/core';
 import {ChevronDownIcon} from "@heroicons/vue/20/solid";
+import { menulinkStore } from '../../stores/menu-links-store';
+
+const { menudrops } = menulinkStore();
 
 const $utils: any = inject('$utils');
 

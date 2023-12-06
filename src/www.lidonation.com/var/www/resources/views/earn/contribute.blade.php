@@ -16,7 +16,7 @@
 
     @include('includes.site-icons')
 
-    <link rel="manifest" href="/site.webmanifest">
+{{--    <link rel="manifest" href="/site.webmanifest">--}}
 
     <!-- Styles -->
     <link rel="stylesheet" href="//unpkg.com/tippy.js@6/dist/tippy.css"/>
@@ -326,7 +326,7 @@
 
     <section>
         <!-- Scripts -->
-        @livewireScripts
+{{--        @livewireScripts--}}
 
         <script src="//js.stripe.com/v3/"></script>
 

@@ -8,7 +8,7 @@
             value-prop="id"
             :label="customizeUi.label"
             mode="tags"
-            @search-change="propName=='funds'? currentInstance.store.load(selectedRef): currentInstance.store.search($event)"
+            @search-change=" currentInstance.store.search($event)"
             :minChars="3"
             @open = "currentInstance.store.load(selectedRef)"
             :options="currentInstance.options"
@@ -43,7 +43,7 @@
 
 <script lang="ts" setup>
 import Multiselect from '@vueform/multiselect';
-import { computed, defineEmits, ref, watch, watchEffect } from "vue";
+import { computed, ref, watch } from "vue";
 import { StoreGeneric, storeToRefs } from "pinia";
 import {useFiltersStore} from "@/global/stores/filters-stores";
 import {useTagsStore} from "@apps/catalyst-explorer/stores/tags-store";
@@ -54,11 +54,8 @@ import {useFundsStore} from "@apps/catalyst-explorer/stores/funds-store";
 
 const props = withDefaults(
     defineProps<{
-        funds?: number[]
-        challenges?: number[]
         type?: string
         fundingStatus?: string
-        tags?: number[]
         groups?: number[]
         people?: number[]
         status?: string
@@ -86,11 +83,8 @@ const { currentModel } = storeToRefs(filterStore);
 const {canFetch} = storeToRefs(filterStore);
 
 const stores = {
-    'funds': fundsStore,
     'groups': groupsStore,
     'people': peopleStore,
-    'tags': tagsStore,
-    'challenges': challengesStore
 }
 
 interface CurrentInstance {

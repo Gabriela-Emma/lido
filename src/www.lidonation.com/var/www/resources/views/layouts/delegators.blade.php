@@ -36,7 +36,7 @@
 
         @include('includes.footer')
 
-        @livewireScripts
+{{--        @livewireScripts--}}
 
         @include('includes.global-search-handler')
 

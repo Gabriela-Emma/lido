@@ -23,7 +23,7 @@ export const useProposalsStore = defineStore('proposals', () => {
             } else if( urlParams.has(VARIABLES.CARD_VIEW) ) {
                 viewType.value = 'card';
             } else {
-                viewType.value = getRandomElementFromArray(viewTypes);
+                viewType.value = 'card';;
             }
             return;
         }

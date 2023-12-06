@@ -23,9 +23,13 @@ class BookmarkCollection extends Model
 
     protected $hidden = ['id'];
 
-    protected $withCount = ['items'];
+    protected $withCount = [
+        'items'
+    ];
 
-    protected $appends = ['link', 'hash'];
+    protected $appends = [
+        'link', 'hash'
+    ];
 
     protected $fillable = ['title', 'content', 'type'];
 
@@ -43,13 +47,13 @@ class BookmarkCollection extends Model
         return $this->hasMany(BookmarkItem::class);
     }
 
-    public function proposals()
+    public function proposals(): HasMany
     {
         return $this->hasMany(BookmarkItem::class)
             ->where('model_type', Proposal::class);
     }
 
-    public function rationales()
+    public function rationales(): HasMany
     {
         return $this->hasMany(Discussion::class, 'model_id')
             ->where('model_type', BookmarkCollection::class);

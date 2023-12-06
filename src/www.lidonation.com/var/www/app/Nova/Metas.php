@@ -6,7 +6,7 @@ use App\Models\Meta;
 use App\Nova\CatalystExplorer\Funds;
 use App\Nova\CatalystExplorer\Groups;
 use App\Nova\CatalystExplorer\Proposals;
-use App\Nova\CatalystExplorer\Users;
+use App\Nova\CatalystExplorer\CatalystUsers;
 use Illuminate\Support\Str;
 use Laravel\Nova\Actions\ExportAsCsv;
 use Laravel\Nova\Fields\ID;
@@ -113,7 +113,7 @@ class Metas extends Resource
                 Proposals::class,
                 Rating::class,
                 Rewards::class,
-                Users::class,
+                CatalystUsers::class,
                 Groups::class,
             ])->searchable()
                 ->filterable(),

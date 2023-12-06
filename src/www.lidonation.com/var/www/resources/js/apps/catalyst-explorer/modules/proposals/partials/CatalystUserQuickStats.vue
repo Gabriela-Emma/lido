@@ -2,7 +2,7 @@
     <div class="grid grid-cols-3 p-4 text-left gap-y-3 bg-gray-50">
         <div class="flex flex-col items-start justify-between p-2">
             <span class="flex justify-start text-xs font-medium text-gray-900">
-                <span class="inline-flex">F10 Primary Proposals</span>
+                <span class="inline-flex">F11 Primary Proposals</span>
             </span>
             <span class="font-bold block text-xs text-gray-500">
                 {{ singlePrimaryProposalCount ?? 0 }}
@@ -10,7 +10,7 @@
         </div>
         <div class="flex flex-col items-start justify-between p-2">
             <span class="flex justify-start text-xs font-medium text-gray-900">
-                <span class="indline-flex">F10 Co-proposing</span>
+                <span class="indline-flex">F11 Co-proposing</span>
             </span>
             <span class="font-bold block text-xs text-gray-500">
                 {{ multipleProposalCount ?? 0 }}
@@ -79,7 +79,7 @@ let outstandingProposalCount = ref(null)
 let outstandingCoProposalCount = ref(null)
 let singlePrimaryProposalCount = ref(null)
 let multipleProposalCount = ref(null)
-axios.get(`${usePage().props.base_url}/catalyst-explorer/people/${props.profileQuickView.id}/metrics/sum/completed-proposals`, {})
+axios.get(`${usePage().props.ziggy.base_url}/catalyst-explorer/people/${props.profileQuickView.id}/metrics/sum/completed-proposals`, {})
     .then((res) => {
         completedProposalCount.value = res.data
     })
@@ -87,7 +87,7 @@ axios.get(`${usePage().props.base_url}/catalyst-explorer/people/${props.profileQ
         console.error(error);
     });
 
-axios.get(`${usePage().props.base_url}/catalyst-explorer/people/${props.profileQuickView.id}/metrics/sum/outstanding-proposals`, {})
+axios.get(`${usePage().props.ziggy.base_url}/catalyst-explorer/people/${props.profileQuickView.id}/metrics/sum/outstanding-proposals`, {})
     .then((res) => {
         outstandingProposalCount.value = res.data
     })
@@ -95,7 +95,7 @@ axios.get(`${usePage().props.base_url}/catalyst-explorer/people/${props.profileQ
         console.error(error);
     });
 
-axios.get(`${usePage().props.base_url}/catalyst-explorer/people/${props.profileQuickView.id}/metrics/sum/outstanding-co-proposals`, {})
+axios.get(`${usePage().props.ziggy.base_url}/catalyst-explorer/people/${props.profileQuickView.id}/metrics/sum/outstanding-co-proposals`, {})
     .then((res) => {
         outstandingCoProposalCount.value = res.data
     })
@@ -103,7 +103,7 @@ axios.get(`${usePage().props.base_url}/catalyst-explorer/people/${props.profileQ
         console.error(error);
     });
 
-axios.get(`${usePage().props.base_url}/catalyst-explorer/people/${props.profileQuickView.id}/metrics/sum/f10primary-proposals`, {})
+axios.get(`${usePage().props.ziggy.base_url}/catalyst-explorer/people/${props.profileQuickView.id}/metrics/sum/f11primary-proposals`, {})
     .then((res) => {
         singlePrimaryProposalCount.value = res.data
     })
@@ -111,7 +111,7 @@ axios.get(`${usePage().props.base_url}/catalyst-explorer/people/${props.profileQ
         console.error(error);
     });
 
-axios.get(`${usePage().props.base_url}/catalyst-explorer/people/${props.profileQuickView.id}/metrics/sum/f10-co-proposals`, {})
+axios.get(`${usePage().props.ziggy.base_url}/catalyst-explorer/people/${props.profileQuickView.id}/metrics/sum/f11-co-proposals`, {})
     .then((res) => {
         multipleProposalCount.value = res.data
     })

@@ -55,7 +55,7 @@
                                                 $items[] = new Illuminate\Support\Fluent([
                                                        'title' => 'My Catalyst Dashboard',
                                                        'route_type' => 'route_name',
-                                                       'route' => 'catalystExplorer.myDashboard',
+                                                       'route' => 'catalyst-explorer.home',
                                                    ]);
                                             }
                                             $userMenu = (new \App\Invokables\GetLidoMenu)([new Illuminate\Support\Fluent(compact('title', 'items'))]);

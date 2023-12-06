@@ -16,12 +16,14 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Fluent;
 use Inertia\Inertia;
+use Inertia\Response;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class MyBookmarksController extends Controller
 {
     protected int $perPage = 12;
 
-    public function createItem(Request $request)
+    public function createItem(Request $request): array
     {
         DB::beginTransaction();
         try {
@@ -37,7 +39,12 @@ class MyBookmarksController extends Controller
             ]));
 
             // if collection doesn't exist, create one
-            $collection = BookmarkCollection::byHash($data->collection['hash'] ?? null) ?? DraftBallot::byHash($data->collection['hash'] ?? null);
+//            $collection = BookmarkCollection::byHash($data->collection['hash'] ?? null) ?? DraftBallot::byHash($data->collection['hash'] ?? null);
+
+            $collection = null;
+            if (isset($data->collection['hash'])) {
+                $collection = BookmarkCollection::byHash($data->collection['hash']) ?? DraftBallot::byHash($data->collection['hash']);
+            }
 
             if (! $collection instanceof BookmarkCollection) {
                 $collection = new BookmarkCollection;
@@ -73,27 +80,27 @@ class MyBookmarksController extends Controller
             // return new BookmarkCollectionResource($collection);
         } catch (\Exception $e) {
             DB::rollback();
-            Log::error($e->getMessage());
+            report($e->getMessage());
             throw new \Exception('Error creating bookmark');
         }
     }
 
-    public function view(Request $request, BookmarkCollection $bookmarkCollection)
+    public function view(Request $request, BookmarkCollection $bookmarkCollection): Response
     {
         return Inertia::render('BookmarkCollection')->with([
             'bookmarkCollection' => new BookmarkCollectionResource($bookmarkCollection),
             'crumbs' => [
                 ['label' => 'Proposals', 'link' => route('catalyst-explorer.proposals')],
-                ['label' => 'Bookmarks', 'link' => route('catalyst-explorer.bookmarks')],
+                ['label' => 'My Bookmarks', 'link' => route('catalyst-explorer.myBookmarks')],
                 ['label' => $bookmarkCollection->title, 'link' => $bookmarkCollection->link],
             ],
         ]);
     }
 
-    public function index(Request $request)
+    public function index(Request $request): array
     {
         $collections = BookmarkCollection::where('user_id', Auth::id())->whereNotNull('user_id')
-            ->with(['items']);
+            ->withCount(['items']);
 
         $hashes = $request->get('hashes', false);
 
@@ -104,7 +111,7 @@ class MyBookmarksController extends Controller
         return $collections->get(['id', 'title', 'items.id'])->toArray();
     }
 
-    public function deleteCollection(Request $request)
+    public function deleteCollection(Request $request): void
     {
         $collection = BookmarkCollection::byHash($request->hash);
         $this->authorize('delete', $collection);
@@ -113,17 +120,18 @@ class MyBookmarksController extends Controller
         $collection->delete();
     }
 
-    public function deleteItem(BookmarkItem $bookmarkItem)
+    public function deleteItem(BookmarkItem $bookmarkItem): void
     {
         $this->authorize('delete', $bookmarkItem);
         $bookmarkItem->delete();
     }
 
-    public function exportBookmarks(Request $request)
+    public function exportBookmarks(Request $request): BinaryFileResponse
     {
         $collection = BookmarkCollection::byHash($request->hash);
         $itemsArr = $collection->items()->pluck('id');
 
-        return (new ExportModelService)->export(new BookmarksCollectionExport($itemsArr, $request->locale), $collection->title.'-proposals.csv');
+        return (new ExportModelService)
+            ->export(new BookmarksCollectionExport($itemsArr, $request->get('locale')), $collection->title.'-proposals.csv');
     }
 }

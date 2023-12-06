@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\CatalystExplorer\Proposal;
 use App\Models\Tag;
 use Illuminate\Database\Seeder;
 
@@ -58,6 +59,12 @@ class TagSeeder extends Seeder
                 'slug' => 'scale-up-cardanos-defi-ecosystem',
             ]);
 
-        Tag::factory(25)->create();
+        Tag::factory(25)->create()->each(
+            function($t){
+                Proposal::inRandomOrder()->first()?->tags()->syncWithPivotValues($t->pluck('id'), [
+                'model_type' => Proposal::class,
+            ], false);
+            }
+        );
     }
 }

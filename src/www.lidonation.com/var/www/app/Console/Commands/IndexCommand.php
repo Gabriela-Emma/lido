@@ -30,7 +30,7 @@ class IndexCommand extends Command
      *
      * @return void
      */
-    public function handle(EngineManager $manager)
+    public function handle(EngineManager $manager): void
     {
         collect(['en', 'es', 'fr', 'sw'])
             ->each(
@@ -41,7 +41,7 @@ class IndexCommand extends Command
             );
     }
 
-    public function createIndex(EngineManager $manager)
+    public function createIndex(EngineManager $manager): void
     {
         $engine = $manager->engine();
         try {
