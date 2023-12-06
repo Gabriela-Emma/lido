@@ -190,13 +190,6 @@ class ChartsController extends Controller
         return null;
     }
 
-    if ($sumAdaRegisteredNotVoted && $sumAdaRegisteredNotVoted > 0) {
-        return $sumAdaRegisteredNotVoted / 1000000;
-    }
-
-    return null;
-}
-
     public function metricSumWalletsRegisteredNotVoted(Request $request): float|int|null
     {
         $this->fundFilter = $request->input(CatalystExplorerQueryParams::FUNDS, 113);
@@ -716,11 +709,11 @@ class ChartsController extends Controller
                         function ($q) {
                             $q->whereNotNull('funded_at');
                         })->when(
-                            $fund,
-                            function ($query, $param) {
-                                $query->whereRelation('fund.parent', 'id', $param);
-                            }
-                        );
+                        $fund,
+                        function ($query, $param) {
+                            $query->whereRelation('fund.parent', 'id', $param);
+                        }
+                    );
                 },
             ], 'amount_requested')
             ->orderBy('amount_requested', 'desc')
