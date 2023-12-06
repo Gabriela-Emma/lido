@@ -70,6 +70,32 @@ class ProposalsController extends Controller
 
     public Collection $budgets;
 
+    public array $tagsCount = [];
+
+    public array $fundsCount = [];
+
+    public array $challengesCount  = [];
+
+    public int $submittedProposals = 0;
+
+    public int $approvedProposals = 0;
+
+    public int $completedProposals = 0;
+
+    public int $sumBudgetsADA = 0;
+
+    public int $sumBudgetsUSD = 0;
+
+    public int $sumApprovedADA = 0;
+
+    public int $sumApprovedUSD = 0;
+
+    public int $sumDistributedADA = 0;
+
+    public int $sumDistributedUSD = 0;
+
+    public int $sumCompletedUSD = 0;
+
     public function metricCountFunded(Request $request)
     {
         $this->setFilters($request);
@@ -236,6 +262,22 @@ class ProposalsController extends Controller
                 'groups' => $this->groupsFilter->toArray(),
             ],
             'proposals' => $this->query(),
+            'metrics' => [
+                'sumApprovedUSD' => $this->sumApprovedUSD,
+                'sumApprovedADA' => $this->sumApprovedADA,
+                'sumBudgetsUSD' => $this->sumBudgetsUSD,
+                'sumBudgetsADA' => $this->sumBudgetsADA,
+                'sumDistributedADA' => $this->sumDistributedADA,
+                'sumDistributedUSD' => $this->sumDistributedUSD,
+                'submittedProposals' => $this->submittedProposals,
+                'approvedProposals' => $this->approvedProposals,
+                'completedProposals' => $this->completedProposals,
+            ],
+            'filterCounts' => [
+                'tagsCount' => $this->tagsCount,
+                'challengesCount' => $this->challengesCount,
+                'fundsCount' => $this->fundsCount
+            ],
             'crumbs' => [
                 [
                     'label' => 'Funds',
@@ -260,7 +302,7 @@ class ProposalsController extends Controller
         $this->ranked = $request->has(CatalystExplorerQueryParams::RANKED_VIEW);
         if (
             $this->ranked &&
-            ! Str::of($request->input(CatalystExplorerQueryParams::SORTS))
+            !Str::of($request->input(CatalystExplorerQueryParams::SORTS))
                 ->contains('ranking_total')
         ) {
             $sort = collect(['ranking_total', 'desc']);
@@ -397,9 +439,28 @@ class ProposalsController extends Controller
                     'challenge.label',
                     'challenge.amount',
                 ];
+
                 if ((bool) $this->sortBy && (bool) $this->sortOrder) {
                     $options['sort'] = ["$this->sortBy:$this->sortOrder"];
                 }
+
+                $options['facets'] = [
+                    'tags',
+                    'tags.title',
+                    'funding_status',
+                    'status',
+                    'challenge',
+                    'fund',
+                    'amount_requested_USD',
+                    'amount_requested_ADA',
+                    'amount_received_ADA',
+                    'amount_received_USD',
+                    'amount_awarded_ADA',
+                    'amount_awarded_USD',
+                    'completed_amount_paid_USD',
+                    'completed_amount_paid_ADA',
+                    'amount_requested'
+                ];
 
                 $options['offset'] = (($this->currentPage ?? 1) - 1) * $this->limit;
                 $options['limit'] = $this->limit;
@@ -412,6 +473,8 @@ class ProposalsController extends Controller
             return $this->searchBuilder;
         }
         $response = new Fluent($this->searchBuilder->raw());
+
+        $this->setCounts($response->facetDistribution, $response->facetStats);
 
         $pagination = new LengthAwarePaginator(
             $response->hits,
@@ -461,29 +524,29 @@ class ProposalsController extends Controller
 
         // filter by fund
         if ($this->fundsFilter->isNotEmpty()) {
-            $_options[] = '('.$this->fundsFilter->map(fn ($f) => "fund.id = {$f}")->implode(' OR ').')';
+            $_options[] = '(' . $this->fundsFilter->map(fn ($f) => "fund.id = {$f}")->implode(' OR ') . ')';
         }
 
         // filter by challenge
         if ($this->challengesFilter->isNotEmpty()) {
-            $_options[] = '('.$this->challengesFilter->map(fn ($c) => "challenge.id = {$c}")->implode(' OR ').')';
+            $_options[] = '(' . $this->challengesFilter->map(fn ($c) => "challenge.id = {$c}")->implode(' OR ') . ')';
         }
 
         // filter by tags
         if ($this->tagsFilter->isNotEmpty()) {
-            $_options[] = 'tags.id IN '.$this->tagsFilter->toJson();
+            $_options[] = 'tags.id IN ' . $this->tagsFilter->toJson();
         }
 
         if ($this->categoriesFilter->isNotEmpty()) {
-            $_options[] = 'categories.id IN '.$this->categoriesFilter->toJson();
+            $_options[] = 'categories.id IN ' . $this->categoriesFilter->toJson();
         }
 
         if ($this->peopleFilter->isNotEmpty()) {
-            $_options[] = 'users.id IN '.$this->peopleFilter->toJson();
+            $_options[] = 'users.id IN ' . $this->peopleFilter->toJson();
         }
 
         if ($this->groupsFilter->isNotEmpty()) {
-            $_options[] = 'groups.id IN '.$this->groupsFilter->toJson();
+            $_options[] = 'groups.id IN ' . $this->groupsFilter->toJson();
         }
 
         // filter by budget range
@@ -502,9 +565,101 @@ class ProposalsController extends Controller
     {
         $this->setFilters($request);
 
-        return $this->query();
+        return [
+            'proposals' => $this->query(),
+            'props' => [
+                'metrics' => [
+                    'sumApprovedUSD' => $this->sumApprovedUSD,
+                    'sumApprovedADA' => $this->sumApprovedADA,
+                    'sumBudgetsUSD' => $this->sumBudgetsUSD,
+                    'sumBudgetsADA' => $this->sumBudgetsADA,
+                    'sumDistributedADA' => $this->sumDistributedADA,
+                    'sumDistributedUSD' => $this->sumDistributedUSD,
+                    'submittedProposals' => $this->submittedProposals,
+                    'approvedProposals' => $this->approvedProposals,
+                    'completedProposals' => $this->completedProposals,
+                ],
+                'filterCounts' => [
+                    'tagsCount' => $this->tagsCount,
+                    'challengesCount' => $this->challengesCount,
+                    'fundsCount' => $this->fundsCount
+                ],
+            ]
+        ];
+    }
+
+
+    public function setCounts($facets,$facetStats)
+    {
+        if (isset($facets["amount_awarded_USD"])) {
+            foreach ($facets["amount_awarded_USD"] as $key => $value) {
+                $this->sumApprovedUSD += $key * $value;
+            }
+        }
+
+        if (isset($facets["amount_awarded_ADA"])) {
+            foreach ($facets["amount_awarded_ADA"] as $key => $value) {
+                $this->sumApprovedADA += $key * $value;
+            }
+        }
+
+        if (isset($facets["amount_received_ADA"])) {
+            foreach ($facets["amount_received_ADA"] as $key => $value) {
+                $this->sumDistributedADA += $key * $value;
+            }
+        }
+
+        if (isset($facets["amount_received_USD"])) {
+            foreach ($facets["amount_received_USD"] as $key => $value) {
+                $this->sumDistributedUSD += $key * $value;
+            }
+        }
+
+        if (isset($facets["amount_requested_ADA"])) {
+            foreach ($facets["amount_requested_ADA"] as $key => $value) {
+                $this->sumBudgetsADA += $key * $value;
+            }
+        }
+
+        if (isset($facets["amount_requested_USD"])) {
+            foreach ($facets["amount_requested_USD"] as $key => $value) {
+                $this->sumBudgetsUSD += $key * $value;
+            }
+        }
+
+        if (isset($facets["status"]["complete"])) {
+            $this->completedProposals = $facets["status"]["complete"];
+        }
+
+        if (isset($facets["status"])) {
+            foreach ($facets["status"] as $key => $value) {
+                $this->submittedProposals +=  $value;
+            }
+        }
+
+        if (isset($facets["funding_status"]["funded"])) {
+            $this->approvedProposals = $facets["funding_status"]["funded"];
+        }   
+        
+        if (count($facets['challenge.label'])){
+            $this->challengesCount = $facets['challenge.label'];
+        }
+
+        if (count($facets['tags.title'])) {
+            $this->tagsCount = $facets['tags.title'];
+        }
+
+        if (count($facets['fund.label'])) {
+            $this->fundsCount = $facets['fund.label'];
+        }
+
+        if (isset($facetStats["amount_requested"])) {
+            $this->budgets = collect(array_values($facetStats["amount_requested"]));
+        }
+        
 
     }
+
 
     /**
      * @throws Exception
@@ -533,13 +688,13 @@ class ProposalsController extends Controller
     {
         $this->download = $request->input('d', false);
         $this->downloadType = $request->input('d_t', null);
-        if (! isset($request->ballot)) {
+        if (!isset($request->ballot)) {
             return;
         }
 
         $ballot = DraftBallot::byHash($request->ballot);
 
-        if (! $ballot instanceof DraftBallot) {
+        if (!$ballot instanceof DraftBallot) {
             return;
         }
         $proposalIds = $ballot->proposals()->get(['model_id'])
@@ -549,7 +704,8 @@ class ProposalsController extends Controller
             ->export(
                 new ProposalExport(
                     $proposalIds,
-                    app()->getLocale()),
+                    app()->getLocale()
+                ),
                 "proposals.{$this->downloadType}"
             );
     }

@@ -133,106 +133,107 @@
                                         class="inline-flex flex-wrap justify-center h-full gap-1 mx-auto space-x-2 divide-x-reverse md:flex-nowrap md:gap-2 divide-slate-100 md:space-x-4">
                                         <div class="flex flex-col text-center" key="countTotal">
                                             <span class="font-semibold">
-                                                {{ $filters.number(currentModel.data.total, 4) }}
+                                                {{ $filters.number(proposalMetrics.submittedProposals, 4) }}
                                             </span>
                                             <span class="text-xs">
                                                 {{ $t('Submitted') }}
                                             </span>
                                         </div>
-                                        <div class="flex flex-col text-center" v-if="metricCountApproved" key="countFunded">
+                                        <div class="flex flex-col text-center" v-if="proposalMetrics.approvedProposals"
+                                            key="countFunded">
                                             <span class="font-semibold">
-                                                {{ $filters.number(metricCountApproved, 4) }}
+                                                {{ $filters.number(proposalMetrics.approvedProposals, 4) }}
                                             </span>
                                             <span class="text-xs">
                                                 {{ $t('Approved') }}
                                             </span>
                                         </div>
-                                        <div class="flex flex-col text-center" v-if="metricCountTotalPaid" key="countPaid">
+                                        <!-- <div class="flex flex-col text-center" v-if="proposalMetrics.completedProposals" key="countPaid">
                                             <span class="font-semibold">
-                                                {{ $filters.number(metricCountTotalPaid, 4) }}
+                                                {{ $filters.number(proposalMetrics.completedProposals, 4) }}
                                             </span>
                                             <span class="text-xs">
                                                 {{ $t('Fully Paid') }}
                                             </span>
-                                        </div>
-                                        <div class="flex flex-col text-center text-pink-500" v-if="metricCountCompleted"
-                                            key="completed">
+                                        </div> -->
+                                        <div class="flex flex-col text-center text-pink-500"
+                                            v-if="proposalMetrics.completedProposals" key="completed">
                                             <span class="font-semibold">
-                                                {{ $filters.number(metricCountCompleted, 4) }}
+                                                {{ $filters.number(proposalMetrics.completedProposals, 4) }}
                                             </span>
                                             <span class="text-xs">
                                                 {{ $t('Completed') }}
                                             </span>
                                         </div>
                                         <div class="w-full h-[1px] md:h-full md:w-[1px] bg-slate-100 relative"
-                                            v-if="(metricCountApproved || metricCountCompleted) && metricSumApproved">
+                                            v-if="(proposalMetrics.approvedProposals || proposalMetrics.completedProposals) && proposalMetrics.approvedProposals">
                                             <b
                                                 class="absolute hidden px-2 py-1 text-xs text-center text-yellow-500 rounded-full md:inline-block -top-6 -left-10 w-28 bg-slate-800">
-                                                {{ $t('Search metrics') }}
+                                                {{ $t('Search Metrics') }}
                                             </b>
                                         </div>
-                                        <div class="flex flex-col text-center" v-if="metricSumBudget" key="sumBudget">
+                                        <div class="flex flex-col text-center" v-if="proposalMetrics.sumBudgetsUSD" key="sumBudget">
                                             <span class="font-semibold">
-                                                ${{ $filters.shortNumber(metricSumBudget, 2) }}
+                                                ${{ $filters.shortNumber(proposalMetrics.sumBudgetsUSD, 2) }}
                                             </span>
                                             <span class="text-xs">
                                                 $ {{ $t('Requested') }}
                                             </span>
                                         </div>
-                                        <div class="flex flex-col text-center" v-if="metricSumAdaBudget"
-                                            key="metricSumAdaBudget">
+                                        <div class="flex flex-col text-center" v-if="proposalMetrics.sumBudgetsADA"
+                                            key="proposalMetrics.sumBudgetsADA">
                                             <span class="font-semibold">
-                                                ₳{{ $filters.shortNumber(metricSumAdaBudget, 2) }}
+                                                ₳{{ $filters.shortNumber(proposalMetrics.sumBudgetsADA, 2) }}
                                             </span>
                                             <span class="text-xs">
                                                 ₳ {{ $t('Requested') }}
                                             </span>
                                         </div>
-                                        <div class="flex flex-col text-center text-teal-light-500" v-if="metricSumApproved"
-                                            key="sumApproved">
+                                        <div class="flex flex-col text-center text-teal-light-500"
+                                            v-if="proposalMetrics.sumApprovedUSD" key="sumApproved">
                                             <span class="font-semibold">
-                                                ${{ $filters.shortNumber(metricSumApproved, 2) }}
+                                                ${{ $filters.shortNumber(proposalMetrics.sumApprovedUSD, 2) }}
                                             </span>
                                             <span class="text-xs">
                                                 $ {{ $t('Awarded') }}
                                             </span>
                                         </div>
-                                        <div class="flex flex-col text-center text-teal-400" v-if="metricSumDistributed"
-                                            key="sumDistributed">
+                                        <div class="flex flex-col text-center text-teal-400"
+                                            v-if="proposalMetrics.sumDistributedUSD" key="sumDistributed">
                                             <span class="font-semibold">
-                                                ${{ $filters.shortNumber(metricSumDistributed, 2) }}
+                                                ${{ $filters.shortNumber(proposalMetrics.sumDistributedUSD, 2) }}
                                             </span>
                                             <span class="text-xs">
                                                 $ {{ $t('Distributed') }}
                                             </span>
                                         </div>
                                         <div class="flex flex-col text-center text-teal-light-500"
-                                            v-if="metricSumAdaApproved" key="sumAdaApproved">
+                                            v-if="proposalMetrics.sumApprovedADA" key="sumAdaApproved">
                                             <span class="font-semibold">
-                                                ₳{{ $filters.shortNumber(metricSumAdaApproved, 2) }}
+                                                ₳{{ $filters.shortNumber(proposalMetrics.sumApprovedADA, 2) }}
                                             </span>
                                             <span class="text-xs">
                                                 ₳ {{ $t('Awarded') }}
                                             </span>
                                         </div>
-                                        <div class="flex flex-col text-center text-teal-400" v-if="metricSumAdaDistributed"
-                                            key="sumAdaDistributed">
+                                        <div class="flex flex-col text-center text-teal-400"
+                                            v-if="proposalMetrics.sumDistributedADA" key="sumAdaDistributed">
                                             <span class="font-semibold">
-                                                ₳{{ $filters.shortNumber(metricSumAdaDistributed, 2) }}
+                                                ₳{{ $filters.shortNumber(proposalMetrics.sumDistributedADA, 2) }}
                                             </span>
                                             <span class="text-xs">
                                                 ₳ {{ $t('Distributed') }}
                                             </span>
                                         </div>
-                                        <div class="flex flex-col text-center text-pink-500" v-if="metricSumCompleted"
+                                        <!-- <div class="flex flex-col text-center text-pink-500" v-if="proposalMetrics."
                                             key="sumCompleted">
                                             <span class="font-semibold">
-                                                ${{ $filters.shortNumber(metricSumCompleted, 2) }}
+                                                ${{ $filters.shortNumber(proposalMetrics., 2) }}
                                             </span>
                                             <span class="text-xs">
                                                 $ {{ $t('Completed') }}
                                             </span>
-                                        </div>
+                                        </div> -->
                                     </TransitionGroup>
                                 </div>
                             </div>
@@ -278,6 +279,22 @@ const props = withDefaults(
         currPage?: number,
         perPage?: number,
         locale: string,
+        metrics: {
+            sumApprovedUSD: number,
+            sumApprovedADA: number,
+            sumBudgetsUSD: number,
+            sumBudgetsADA: number,
+            sumDistributedADA: number,
+            sumDistributedUSD: number,
+            submittedProposals: number,
+            approvedProposals: number,
+            completedProposals: number,
+        },
+        filterCounts: {
+            tagsCount: []
+            fundsCount: []
+            challengesCount: []
+        }
         proposals: {
             links: [],
             total: number,
@@ -434,9 +451,13 @@ filterStore.setModel({
     filters: props.filters,
     sorts: selectedSortRef.value,
     search: search.value,
-    model_type: 'proposal'
+    model_type: 'proposal',
+    props: {
+        metrics: props.metrics,
+        filterCounts: props.filterCounts
+    }
 })
-getMetrics();
+// getMetrics();
 
 watch([selectedSortRef], () => {
     currPageRef.value = undefined;
@@ -445,7 +466,8 @@ watch([selectedSortRef], () => {
     currentModel.value.sorts = selectedSortRef.value
 }, { deep: true });
 
-
+let proposalMetrics = computed(()=>currentModel.value.props.metrics);
+let proposalFilterCounts = computed(()=>currentModel.value.props.filterCounts);
 
 watch([rankedViewingRef], () => {
     if (!selectedSortRef.value?.includes('ranking_total')) {
@@ -468,11 +490,6 @@ watch(selectedDownloadFormat, () => {
         download(selectedDownloadFormat.value);
     }
 });
-
-watch(() => currentModel.value.filters.length, (value, newvalue) => {
-    console.log({ value, newvalue });
-    getMetrics();
-}, { deep: true });
 
 
 ////
@@ -547,9 +564,6 @@ async function getMetrics() {
         .catch((error: string) => {
             console.error(error);
         });
-
-
-
 
     // get funded ada sum
     axios.get(`${page.props.ziggy.base_url}/catalyst-explorer/proposals/metrics/sum/approved?currency=ADA`, { params })

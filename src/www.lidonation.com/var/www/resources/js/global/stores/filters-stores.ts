@@ -4,20 +4,21 @@ import {isArray} from "lodash";
 import FiltersService from "@/global/services/filters-service";
 import {VARIABLES} from "@apps/catalyst-explorer/models/variables";
 
-interface CurrentFilteredModel<T , K , S , ST , M > {
+interface CurrentFilteredModel<T , K , S , ST ,M, P > {
     data?: T
     filters?: K
     search?: S
     sorts?: ST
     model_type?: string
+    props?:P
 }
 
 export const useFiltersStore = defineStore('filters', () => {
-    let currentModel = ref(({} as CurrentFilteredModel<any, any, any, any, string>) || null);
+    let currentModel = ref(({} as CurrentFilteredModel<any, any, any, any, string, any>) || null);
     let params: Ref<{ [x: string]: any; } | null>  = ref(null);
     let canFetch = ref(false);
 
-    function setModel<T, K, S, ST, M>(model: CurrentFilteredModel<T, K, S, ST, M>) {
+    function setModel<T, K, S, ST, M, P>(model: CurrentFilteredModel<T, K, S, ST, M, P>) {
         currentModel.value = model
     }
 
@@ -27,7 +28,8 @@ export const useFiltersStore = defineStore('filters', () => {
         await setUrlHistory(params.value);
 
         if (currentModel.value.model_type == 'proposal') {
-            currentModel.value.data = await FiltersService.filterProposals(params.value);
+            currentModel.value.data = (await FiltersService.filterProposals(params.value)).proposals;
+            currentModel.value.props = (await FiltersService.filterProposals(params.value)).props;
             canFetch.value = false;
         } else if (currentModel.value.model_type == 'group') {
             currentModel.value.data = await FiltersService.filterGroups(params.value);
