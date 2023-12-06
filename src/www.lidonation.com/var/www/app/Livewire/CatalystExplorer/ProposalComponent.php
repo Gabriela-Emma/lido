@@ -14,6 +14,7 @@ use Livewire\Component;
 class ProposalComponent extends Component
 {
     public Proposal $proposal;
+
     public function mount(Proposal $proposal): void
     {
         $this->proposal = $proposal;

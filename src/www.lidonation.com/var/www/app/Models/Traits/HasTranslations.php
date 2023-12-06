@@ -5,6 +5,7 @@ namespace App\Models\Traits;
 use App\Models\Translation;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\Translatable\HasTranslations as BaseHasTranslations;
+use App\Models\Commitment;
 
 trait HasTranslations
 {
@@ -56,5 +57,11 @@ trait HasTranslations
     {
         return $this->hasMany(Translation::class, 'source_id', 'id')
             ->where('source_type', static::class);
+    }
+
+    public function commitments(): HasMany
+    {
+        return $this->hasMany(Commitment::class, 'model_id', 'id')
+            ->where('model_class', static::class);
     }
 }

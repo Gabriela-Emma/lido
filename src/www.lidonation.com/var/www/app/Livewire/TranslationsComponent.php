@@ -26,6 +26,47 @@ class TranslationsComponent extends Component
 
     public $filter = null;
 
+    // @todo refactor to use wire:model
+    public function toggleGroupRelated($groupRelated)
+    {
+        $this->groupRelated = $groupRelated;
+    }
+
+    public function toggleOnlyMine($onlyMine)
+    {
+        $this->onlyMine = $onlyMine;
+    }
+
+    public function toggleMissing($missing)
+    {
+        $this->onlyMissing = $missing;
+    }
+
+    public function toggleFilter($filter)
+    {
+        $this->filter = $filter;
+    }
+
+    public function getMissingProperty(): bool
+    {
+        return true;
+    }
+
+    public function edited($value, $key, $column, $rowId)
+    {
+        $translation = Translation::findOrFail($rowId);
+        $translation->{$column} = $value;
+        $translation->status = 'published';
+        $translation->save();
+
+        $this->dispatch('fieldEdited', $translation->id);
+    }
+
+    public function computeType($source_type)
+    {
+        return collect(explode('\\', $source_type))->last();
+    }
+
     public function render()
     {
         $user = Auth::user();
@@ -74,45 +115,6 @@ class TranslationsComponent extends Component
             ->orderBy('source_type')
             ->paginate($this->perPage);
 
-    }
-
-    public function toggleGroupRelated($groupRelated)
-    {
-        $this->groupRelated = $groupRelated;
-    }
-
-    public function toggleOnlyMine($onlyMine)
-    {
-        $this->onlyMine = $onlyMine;
-    }
-
-    public function toggleMissing($missing)
-    {
-        $this->onlyMissing = $missing;
-    }
-
-    public function toggleFilter($filter)
-    {
-        $this->filter = $filter;
-    }
-
-    public function getMissingProperty(): bool
-    {
-        return true;
-    }
-
-    public function edited($value, $key, $column, $rowId)
-    {
-        $translation = Translation::findOrFail($rowId);
-        $translation->{$column} = $value;
-        $translation->status = 'published';
-        $translation->save();
-
-        $this->dispatch('fieldEdited', $translation->id);
-    }
-
-    public function computeType($source_type)
-    {
-        return collect(explode('\\', $source_type))->last();
+        return view('livewire.translations');
     }
 }

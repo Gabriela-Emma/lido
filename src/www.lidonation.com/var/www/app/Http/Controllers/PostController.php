@@ -13,7 +13,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Fluent;
 use Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist;
 use Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig;
-use Illuminate\Support\Facades\DB;
 
 class PostController extends Controller
 {
@@ -62,5 +61,4 @@ class PostController extends Controller
 
         return $post->fresh()->reactionsCounts;
     }
-
 }

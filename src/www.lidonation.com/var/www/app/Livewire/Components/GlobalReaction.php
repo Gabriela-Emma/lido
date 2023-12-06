@@ -17,27 +17,27 @@ class GlobalReaction extends Component
     public array $reactions = [
         'heart' => [
             'label' => 'heart',
-            'count' => 0
+            'count' => 0,
         ],
         'eye' => [
             'label' => 'eye',
-            'count' => 0
+            'count' => 0,
         ],
         'party_popper' => [
             'label' => 'party_popper',
-            'count' => 0
+            'count' => 0,
         ],
         'rocket' => [
             'label' => 'rocket',
-            'count' => 0
+            'count' => 0,
         ],
         'thumbs_down' => [
             'label' => 'thumbs_down',
-            'count' => 0
+            'count' => 0,
         ],
         'thumbs_up' => [
             'label' => 'thumbs_up',
-            'count' => 0
+            'count' => 0,
         ],
     ];
 
@@ -50,6 +50,7 @@ class GlobalReaction extends Component
         $this->user = Auth::user();
         $this->post = $post;
     }
+
     public function addReaction($reactionType, $postId): void
     {
         $this->post->addLidoReaction($reactionType, $this->user);
@@ -59,6 +60,7 @@ class GlobalReaction extends Component
     {
 
         $this->loadReactions();
+
         return view('livewire.components.global-reaction')
             ->with('loading', true);
     }
@@ -87,8 +89,8 @@ class GlobalReaction extends Component
                 return [
                     $key => [
                         'label' => (ReactionEnum::from($reaction['label']))->value,
-                        'count' => $this->post->{$prop}
-                    ]
+                        'count' => $this->post->{$prop},
+                    ],
                 ];
             })->toArray();
     }

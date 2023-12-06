@@ -31,12 +31,12 @@ class LidoOriginStats
     public function __invoke(): array
     {
         $this->newsArticles = Post::whereHas('categories', function ($q) {
-                $q->where('slug', 'news-and-interviews');
-            })
+            $q->where('slug', 'news-and-interviews');
+        })
             ->count();
         $this->educationalArticles = Post::whereHas('categories', function ($q) {
-                $q->where('slug', 'insights');
-            })
+            $q->where('slug', 'insights');
+        })
             ->count();
         $this->minutesOfAudioReadings = $this->getAudioMinutes();
         $this->hrsOfTwitterSpacesWork = $this->getHoursOfTwitterSpace();
