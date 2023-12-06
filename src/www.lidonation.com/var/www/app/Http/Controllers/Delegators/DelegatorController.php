@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Delegators;
 
-use App\Enums\RoleEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Invokable;
 use App\Http\Integrations\Blockfrost\Requests\BlockfrostRequest;
@@ -13,7 +12,6 @@ use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Inertia\Inertia;
 
 class DelegatorController extends Controller
