@@ -2,6 +2,7 @@
 
 namespace App\Nova;
 
+use App\Models\Post;
 use App\Models\Tx;
 use App\Nova\Actions\MintNft;
 use Illuminate\Http\Request;
@@ -63,9 +64,8 @@ class Txs extends Resource
             Text::make(__('Address')),
             Number::make(__('Quantity')),
             MorphTo::make('model')->types([
-                Post::class,
+                Articles::class,
                 Reviews::class,
-                Insights::class,
                 Podcasts::class,
                 Nfts::class,
                 Withdrawals::class,
