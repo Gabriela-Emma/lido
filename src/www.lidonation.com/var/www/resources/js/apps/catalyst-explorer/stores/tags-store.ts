@@ -51,11 +51,9 @@ export const useTagsStore = defineStore('tags', () => {
         let tagCounts = currentModel.value.props.filterCounts['tagsCount'];
         tags.value.map(tag => {
             const title = tag.title;
-            console.log({ title });
 
             if (tagCounts[title]) {
                 tag['count'] = tagCounts[title];
-                console.log({ hghgh: tag['count'] });
 
             } else {
                 tag['count'] = 0;

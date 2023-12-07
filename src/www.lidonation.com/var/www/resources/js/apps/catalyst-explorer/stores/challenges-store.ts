@@ -61,7 +61,6 @@ export const useChallengesStore = defineStore('challenges', () => {
 
             if (challengeCounts[title]) {
                 challenge['count'] = challengeCounts[title];
-                console.log({ cf: challenge['count'] });
             } else {
                 challenge['count'] = 0;
             }

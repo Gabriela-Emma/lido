@@ -5,14 +5,14 @@
         <TransitionGroup tag="ul" list-enter-active list-leave-active=" transition: all 0.5s ease" list-enter-from
             list-leave-to="">
             <ul class="flex flex-col items-start mb-2 ml-2" v-for="(item, index) in currentInstance.options" :key="item.id">
-                <div :id="item.id">
+                <div :for="item.id" class="flex flex-row items-start justify-start w-full flex-nowrap">
                     <input :id="item.id" type="checkbox" :value="item.id" v-model="selectedRef"
-                        class="w-4 h-4 text-teal-500 bg-gray-100 border-gray-300 rounded focus:ring-teal-500 ">
-                    <label :for="item.id" class="font-medium text-gray-900 ms-2">
-                        {{ item[customizeUi.label] }} <span>({{ item.count ?? 0 }})</span>
+                        class="w-4 h-4 text-teal-500 bg-gray-100 border-gray-300 rounded focus:ring-teal-500">
+                    <label :for="item.id" class="w-full ml-auto font-medium text-gray-900 ms-2">
+                        {{ item[customizeUi.label] }} <span class="ml-auto">({{ item.count ?? 0 }})</span>
                     </label>
                 </div>
-                <div class="w-full py-1">
+                <div class="w-full py-1" v-if="index!= currentInstance.options.length-1">
                     <div class="w-full border-t border-gray-200" />
                 </div>
             </ul>
