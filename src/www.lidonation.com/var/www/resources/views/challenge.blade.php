@@ -18,7 +18,7 @@
         <meta property="twitter:site" content="@lidonation"/>
     @endpush
 
-    @livewire('catalyst.catalyst-sub-menu-component')
+{{--    @livewire('catalyst.catalyst-sub-menu-component')--}}
 
     <header class="text-white bg-teal-600">
         <div class="container">
