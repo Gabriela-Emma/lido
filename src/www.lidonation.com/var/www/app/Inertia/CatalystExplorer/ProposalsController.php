@@ -278,6 +278,7 @@ class ProposalsController extends Controller
                 'challengesCount' => $this->challengesCount,
                 'fundsCount' => $this->fundsCount
             ],
+            'budgets' => $this->budgets,
             'crumbs' => [
                 [
                     'label' => 'Funds',
@@ -584,6 +585,7 @@ class ProposalsController extends Controller
                     'challengesCount' => $this->challengesCount,
                     'fundsCount' => $this->fundsCount
                 ],
+                'budgets' => $this->budgets,
             ]
         ];
     }
@@ -645,8 +647,8 @@ class ProposalsController extends Controller
             $this->challengesCount = $facets['challenge.label'];
         }
 
-        if (isset($facets['tags.title']) && count($facets['tags.title'])) {
-            $this->tagsCount = $facets['tags.title'];
+        if (count($facets['tags.id'])) {
+            $this->tagsCount = $facets['tags.id'];
         }
 
         if (count($facets['fund.label'])) {

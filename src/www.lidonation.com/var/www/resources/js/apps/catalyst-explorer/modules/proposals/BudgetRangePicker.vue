@@ -22,7 +22,7 @@
 
 <script lang="ts" setup>
 import Slider from '@vueform/slider'
-import { defineEmits, ref, watch, onMounted } from "vue";
+import { defineEmits, ref, watch, onMounted, computed } from "vue";
 import { VARIABLES } from "../../models/variables";
 import { storeToRefs } from 'pinia';
 import { useFiltersStore } from '@/global/stores/filters-stores';
@@ -44,8 +44,9 @@ let showClearRange = ref(false);
 let clearRange = ref(false);
 const filterStore = useFiltersStore();
 const { currentModel } = storeToRefs(filterStore);
-const min = parseInt(currentModel.value.filters.budgets[0]) ?? null;
-const max = parseInt(currentModel.value.filters.budgets[1]) ?? null;
+
+const min = computed(()=>parseInt(currentModel.value.props['budgets'][0]) ?? null);
+const max = computed(() => parseInt(currentModel.value.props['budgets'][1]) ?? null);
 
 
 ////

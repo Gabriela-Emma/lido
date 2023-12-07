@@ -294,14 +294,15 @@ const props = withDefaults(
             tagsCount: []
             fundsCount: []
             challengesCount: []
-        }
+        },
         proposals: {
             links: [],
             total: number,
             to: number,
             from: number,
             data: Proposal[]
-        };
+        },
+        budgets:[]
     }>(), {
     sorts: () => [
         {
@@ -454,7 +455,8 @@ filterStore.setModel({
     model_type: 'proposal',
     props: {
         metrics: props.metrics,
-        filterCounts: props.filterCounts
+        filterCounts: props.filterCounts,
+        budgets:props.budgets,
     }
 })
 // getMetrics();
