@@ -593,7 +593,6 @@ class ProposalsController extends Controller
 
     public function setCounts($facets,$facetStats)
     {
-        dd($facets, $facetStats);
         if (isset($facets["amount_awarded_USD"])) {
             foreach ($facets["amount_awarded_USD"] as $key => $value) {
                 $this->sumApprovedUSD += $key * $value;
