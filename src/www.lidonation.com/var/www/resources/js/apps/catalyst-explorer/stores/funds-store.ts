@@ -35,9 +35,9 @@ export const useFundsStore = defineStore('funds', () => {
         funds.value.sort((a, b) => b['count'] - a['count']);;
     }
 
-    watch(() => currentModel.value.filters, () => {
+    watch([() => currentModel.value], () => {
         setCounts()
-    }, { immediate: true });
+    }, { immediate: true,deep:true });
     onMounted(load);
 
     return {
