@@ -641,7 +641,7 @@ class ProposalsController extends Controller
             $this->approvedProposals = $facets["funding_status"]["funded"];
         }
 
-        if (issest($facets['challenge.label']) && count($facets['challenge.label'])){
+        if (isset($facets['challenge.label']) && count($facets['challenge.label'])){
             $this->challengesCount = $facets['challenge.label'];
         }
 
