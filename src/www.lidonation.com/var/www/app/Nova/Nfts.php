@@ -79,9 +79,8 @@ class Nfts extends Resource
             URL::make(__('Preview Link'), 'preview_link')->rules(['required']),
             URL::make(__('Storage URI'), 'storage_link')->rules(['required'])->hideFromIndex(),
             MorphTo::make(__('Model'), 'model')->types([
-                Post::class,
+                Articles::class,
                 Reviews::class,
-                Insights::class,
                 Podcasts::class,
                 User::class,
                 LearningTopics::class,

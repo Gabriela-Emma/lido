@@ -64,14 +64,14 @@ class CatalystIdeascaleF11SyncJob implements ShouldQueue
         if (!$response->successful() || !count($response->object()?->data?->content)) {
             return;
         }
-        
+
         $proposals = $response->object()?->data?->content ?? [];
-        
+
         foreach ($proposals as $proposal) {
             $p = $this->processProposal($proposal);
-            try{
+            try {
                 dispatch_sync(new CatalystUpdateProposalDetailsJob($p, true));
-            }catch(Throwable $th){
+            } catch (Throwable $th) {
                 report($th);
             }
         }

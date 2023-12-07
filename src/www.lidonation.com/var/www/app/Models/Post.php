@@ -104,7 +104,7 @@ class Post extends Model implements Feedable, HasLink, HasMedia, Interfaces\IHas
         //        'thumbs_up',
     ];
 
-    protected $with = [];
+    protected $with = ['translations'];
 
     /**
      * The attributes that should be cast.

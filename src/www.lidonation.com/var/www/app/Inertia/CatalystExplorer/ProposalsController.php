@@ -641,9 +641,9 @@ class ProposalsController extends Controller
 
         if (isset($facets["funding_status"]["funded"])) {
             $this->approvedProposals = $facets["funding_status"]["funded"];
-        }   
-        
-        if (count($facets['challenge.label'])){
+        }
+
+        if (isset($facets['challenge.label']) && count($facets['challenge.label'])){
             $this->challengesCount = $facets['challenge.label'];
         }
 
@@ -658,7 +658,7 @@ class ProposalsController extends Controller
         if (isset($facetStats["amount_requested"])) {
             $this->budgets = collect(array_values($facetStats["amount_requested"]));
         }
-        
+
 
     }
 

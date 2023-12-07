@@ -27,7 +27,7 @@ class PostComposer
             request()
                 ->route('slug')
         );
-        
+
         $externalPost = $this->posts->setModel(new ExternalPost)->get(
             request()
                 ->route('slug')

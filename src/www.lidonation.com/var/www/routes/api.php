@@ -16,9 +16,9 @@ use App\Http\Controllers\PromoController;
 use App\Http\Controllers\QuestionResponseController;
 use App\Http\Controllers\RewardController;
 use App\Http\Controllers\SnippetController;
-use App\Http\Controllers\PostController;
 use App\Http\Integrations\Blockfrost\Requests\BlockfrostRequest;
 use App\Inertia\CatalystExplorer\BookmarksController;
+use App\Inertia\CatalystExplorer\HomeController;
 use App\Inertia\CatalystExplorer\MyBookmarksController;
 use App\Inertia\CatalystExplorer\MyRankingController;
 use App\Inertia\CatalystExplorer\ProposalsController;
@@ -34,7 +34,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
-use App\Inertia\CatalystExplorer\HomeController;
 
 /*
 |--------------------------------------------------------------------------

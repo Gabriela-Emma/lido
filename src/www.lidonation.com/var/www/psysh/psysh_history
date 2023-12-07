@@ -108,3 +108,6 @@ Tag::find(20);
 $t = Category::where('slug', 'blockchain')->first();
 Category::find(20);
 Category::where('slug', 'blockchainssss')->first();
+Proposal::runCustomIndex();
+Proposal::runCustomIndex();
+CatalystUser::runCustomIndex();

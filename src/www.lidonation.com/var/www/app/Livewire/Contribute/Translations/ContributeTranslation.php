@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\ContributeContent;
+namespace App\Livewire\Contribute\Translations;
 
 use App\Models\Model;
 use App\Models\Translation;
@@ -39,6 +39,9 @@ class ContributeTranslation extends ModalComponent
     public ?string $content = null;
 
     protected array $rules = [];
+
+    public $collapsed = false;
+public $scrollPosition;
 
     public function back()
     {
@@ -110,9 +113,7 @@ class ContributeTranslation extends ModalComponent
 
     public function render(): Factory|View|Application
     {
-        return view('livewire.contribute-content.contribute-translation')->layout('layouts.app', [
-            'metaTitle' => 'Contribute Translation',
-        ]);
+        return view('livewire.contribute.translations.single');
     }
 
     protected function updateEditor()

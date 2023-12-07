@@ -141,12 +141,12 @@
                         Tools
                     </h3>
                     <ul class="mt-4 space-y-4 md:text-gray-500">
-                        <li>
+                        {{-- <li>
                             <a href="{{localizeRoute('contributeContent')}}"
                                class="font-medium text-white md:text-gray-500">
                                {{$snippets->contributeContent}}
                             </a>
-                        </li>
+                        </li> --}}
                     </ul>
                 </div>
             </div>

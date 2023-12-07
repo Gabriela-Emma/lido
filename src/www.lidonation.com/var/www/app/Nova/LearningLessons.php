@@ -3,6 +3,7 @@
 namespace App\Nova;
 
 use App\Models\LearningLesson;
+use App\Models\Post;
 use App\Scopes\PublishedScope;
 use Illuminate\Database\Eloquent\Builder;
 use Laravel\Nova\Actions\ExportAsCsv;
@@ -77,7 +78,7 @@ class LearningLessons extends Resource
                 'Advance' => 'advance',
             ])->required(),
             MorphTo::make('model')->types([
-                Insights::class,
+                Articles::class,
                 Link::class,
                 Podcasts::class,
             ])->searchable()->nullable(),

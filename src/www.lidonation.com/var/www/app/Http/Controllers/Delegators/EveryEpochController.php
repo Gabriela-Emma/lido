@@ -9,9 +9,8 @@ use App\Invokables\GetLidoRewardsPot;
 use App\Invokables\GetPoolMultiplier;
 use App\Models\AnswerResponse;
 use App\Models\EveryEpoch;
-use App\Models\Quiz;
+use App\Models\Giveaway;
 use App\Models\Reward;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
