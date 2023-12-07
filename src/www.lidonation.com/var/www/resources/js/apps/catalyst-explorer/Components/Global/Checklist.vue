@@ -5,7 +5,7 @@
         <TransitionGroup tag="ul" list-enter-active list-leave-active=" transition: all 0.5s ease" list-enter-from
             list-leave-to="">
             <ul class="flex flex-col items-start mb-2 ml-2" v-for="(item, index) in currentInstance.options" :key="item.id">
-                <div :id="item.id" >
+                <div :id="item.id">
                     <input :id="item.id" type="checkbox" :value="item.id" v-model="selectedRef"
                         class="w-4 h-4 text-teal-500 bg-gray-100 border-gray-300 rounded focus:ring-teal-500 ">
                     <label :for="item.id" class="font-medium text-gray-900 ms-2">
@@ -16,6 +16,16 @@
                     <div class="w-full border-t border-gray-200" />
                 </div>
             </ul>
+
+            <div v-if="!currentInstance.options.length" class="flex flex-col items-start mb-2 ml-2" v-for="index in 9" :key="index">
+                <div class="flex animate-pulse">
+                    <div class="h-3 w-3 bg-gray-300  dark:bg-gray-600 mb-2.5 mr-2"></div>
+                    <div class="w-32 h-3.5 bg-gray-200 rounded-full dark:bg-gray-700"></div>
+                </div>
+                <div class="w-full py-1">
+                    <div class="w-full border-t border-gray-200" />
+                </div>
+            </div>
         </TransitionGroup>
     </div>
 </template>
