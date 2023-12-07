@@ -150,6 +150,7 @@ class Proposal extends Model implements HasLink, HasMedia, Interfaces\IHasMetaDa
             'type',
             'users',
             'tags',
+            'tags.id',
             'categories',
             'funding_status',
             'status',

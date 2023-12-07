@@ -278,6 +278,7 @@ class ProposalsController extends Controller
                 'challengesCount' => $this->challengesCount,
                 'fundsCount' => $this->fundsCount
             ],
+            'budgets' => $this->budgets,
             'crumbs' => [
                 [
                     'label' => 'Funds',
@@ -584,6 +585,7 @@ class ProposalsController extends Controller
                     'challengesCount' => $this->challengesCount,
                     'fundsCount' => $this->fundsCount
                 ],
+                'budgets' => $this->budgets,
             ]
         ];
     }
@@ -591,6 +593,7 @@ class ProposalsController extends Controller
 
     public function setCounts($facets,$facetStats)
     {
+        dd($facets, $facetStats);
         if (isset($facets["amount_awarded_USD"])) {
             foreach ($facets["amount_awarded_USD"] as $key => $value) {
                 $this->sumApprovedUSD += $key * $value;
@@ -645,8 +648,8 @@ class ProposalsController extends Controller
             $this->challengesCount = $facets['challenge.label'];
         }
 
-        if (count($facets['tags.title'])) {
-            $this->tagsCount = $facets['tags.title'];
+        if (count($facets['tags.id'])) {
+            $this->tagsCount = $facets['tags.id'];
         }
 
         if (count($facets['fund.label'])) {
