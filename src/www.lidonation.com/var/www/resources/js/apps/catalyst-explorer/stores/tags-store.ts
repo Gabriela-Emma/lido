@@ -66,9 +66,9 @@ export const useTagsStore = defineStore('tags', () => {
         tags.value.sort((a, b) => b['count'] - a['count']);
     }
 
-    watch(currentModel.value.filters, () => {
+    watch([() => currentModel.value], () => {
         setCounts();
-    });
+    }, { immediate: true, deep: true });
 
     onMounted(
         () => load(currentModel.value.filters.tags ?? [])

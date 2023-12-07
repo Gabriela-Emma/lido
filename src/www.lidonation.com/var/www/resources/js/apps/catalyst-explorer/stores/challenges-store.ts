@@ -72,7 +72,7 @@ export const useChallengesStore = defineStore('challenges', () => {
         challenges.value.sort((a, b) => b['count'] - a['count']);
     }
 
-    watch(currentModel.value.filters, () => {
+    watch([() => currentModel.value], () => {
         setCounts();
         if (currentModel.value.filters.funds.length) {
             challenges.value = allChallenges.value;
@@ -80,7 +80,7 @@ export const useChallengesStore = defineStore('challenges', () => {
         } else {
             challenges.value = allChallenges.value;
         }
-    });
+    }, { immediate: true, deep: true });
     onMounted(load);
 
     return {
