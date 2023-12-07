@@ -31,13 +31,11 @@ export const useFundsStore = defineStore('funds', () => {
             }
             return fund;
         });
-        
-        funds.value.sort((a, b) => b['count'] - a['count']);;
     }
 
     watch([() => currentModel.value], () => {
         setCounts()
-    }, { immediate: true,deep:true });
+    }, { immediate: true, deep: true });
     onMounted(load);
 
     return {

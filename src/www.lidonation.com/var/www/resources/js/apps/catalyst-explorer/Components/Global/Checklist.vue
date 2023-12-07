@@ -2,17 +2,21 @@
     <div class="flex-wrap px-2 pb-2 overflow-scroll max-h-96">
         <div class="border-t"></div>
         <p class="sticky top-0 w-full py-2 pl-3 mb-3 text-gray-400 bg-white">Limit to {{ propName }}</p>
-        <TransitionRoot :show="!!currentInstance.options.length" enter-active-class="transition duration-300 ease-out" enter-from-class="transform scale-95 opacity-0"
-            enter-to-class="duration-75 transform scale-100 opacity-300" leave-active-class="transition duration-75 ease-in"
-            leave-from-class="transform scale-100 opacity-100" leave-to-class="transform scale-95 opacity-0">
-            <div class="flex items-center mb-4 ml-2" v-for="item in currentInstance.options">
-                <input id="default-checkbox" type="checkbox" :value="item.id" v-model="selectedRef"
-                    class="w-4 h-4 text-teal-500 bg-gray-100 border-gray-300 rounded focus:ring-teal-500 ">
-                <label for="default-checkbox" class="font-medium text-gray-900 ms-2">
-                    {{ item[customizeUi.label]}} <span>({{item.count??0}})</span>
-                </label>
-            </div>
-        </TransitionRoot>
+        <TransitionGroup tag="ul" list-enter-active list-leave-active=" transition: all 0.5s ease" list-enter-from
+            list-leave-to="">
+            <ul class="flex flex-col items-start mb-2 ml-2" v-for="(item, index) in currentInstance.options" :key="item.id">
+                <div :id="item.id" >
+                    <input :id="item.id" type="checkbox" :value="item.id" v-model="selectedRef"
+                        class="w-4 h-4 text-teal-500 bg-gray-100 border-gray-300 rounded focus:ring-teal-500 ">
+                    <label :for="item.id" class="font-medium text-gray-900 ms-2">
+                        {{ item[customizeUi.label] }} <span>({{ item.count ?? 0 }})</span>
+                    </label>
+                </div>
+                <div class="w-full py-1">
+                    <div class="w-full border-t border-gray-200" />
+                </div>
+            </ul>
+        </TransitionGroup>
     </div>
 </template>
 
