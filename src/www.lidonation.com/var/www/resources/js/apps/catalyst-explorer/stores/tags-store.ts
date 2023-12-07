@@ -61,7 +61,6 @@ export const useTagsStore = defineStore('tags', () => {
             return tag;
         });
         
-        tags.value.sort((a, b) => b['count'] - a['count']);
     }
 
     watch([() => currentModel.value], () => {
