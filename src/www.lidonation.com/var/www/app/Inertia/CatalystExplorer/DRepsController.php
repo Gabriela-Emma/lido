@@ -34,7 +34,6 @@ class DRepsController extends Controller
 
         $validDrep = $this->isVoter($request->stakeAddress);
 
-
         if (!$validDrep) {
             abort(400, 'Not valid to be a dRep.');
         }
@@ -46,7 +45,6 @@ class DRepsController extends Controller
 
             $existingUser->signatures()->save($signature);
         } else {
-
             $newUser = User::create([
                 'name' => $request->name,
                 'email' => $request->email,
@@ -71,12 +69,12 @@ class DRepsController extends Controller
         $votedTwiceOrMore = false;
         $consumedCount = 0;
 
-        if ($votingRegistrations->count() >= 2) {
+        if ($votingRegistrations->count() >= 1) {
             foreach ($votingRegistrations as $votingRound) {
                 if ($votingRound->consumed) {
                     $consumedCount++;
 
-                    if ($consumedCount >= 2) {
+                    if ($consumedCount >= 1) {
                         $votedTwiceOrMore = true;
                         break;
                     }
