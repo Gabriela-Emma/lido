@@ -41,7 +41,6 @@ class DRepsController extends Controller
         // get or make lido user
         $dRepUser = auth()?->user();
 
-
         if (!$dRepUser) {
             //@todo if user already exists with email, bail and let the user know... tell to sign in
             $userWithEmailExists = User::where('email', $request->email)->first();
@@ -77,10 +76,9 @@ class DRepsController extends Controller
 
     private function isVoter($stakeKey): bool
     {
-        $voter = CatalystVoter::where('stake_pub', $stakeKey)->first();
-        $voterVotes =  $voter?->voting_powers
-            ->map(fn($vp) => ((int) $vp->consumed))
-            ->sum();
+        $voterProfiles = CatalystVoter::where('stake_pub', $stakeKey)->get();
+        $votingPowers = $voterProfiles->map(fn($vp) => ($vp->voting_powers))->collapse();
+        $voterVotes =  $votingPowers->map(fn($vp) => ((int) $vp->consumed))->sum();
 
          return $voterVotes >= 1;
 
