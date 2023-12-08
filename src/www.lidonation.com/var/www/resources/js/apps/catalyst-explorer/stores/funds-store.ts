@@ -20,7 +20,7 @@ export const useFundsStore = defineStore('funds', () => {
         }
     }
     function setCounts() {
-        let fundCounts = currentModel.value.props.filterCounts['fundsCount'];
+        let fundCounts = currentModel.value.props?.filterCounts['fundsCount'];
 
         funds.value.map(fund => {
             const title = fund.title;

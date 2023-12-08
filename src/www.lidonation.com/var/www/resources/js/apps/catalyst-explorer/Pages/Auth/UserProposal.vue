@@ -168,6 +168,10 @@ const props = withDefaults(
         proposal: Proposal,
     }>(), {});
 const gitRepo = computed(() => {
+    if( typeof  props.proposal?.repos === 'undefined') {
+        return null;
+    }
+
     if (props.proposal?.repos?.length === 0) {
         return null
     }

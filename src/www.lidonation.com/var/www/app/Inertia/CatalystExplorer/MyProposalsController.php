@@ -22,6 +22,7 @@ class MyProposalsController extends Controller
 
     public function manage(Proposal $proposal)
     {
+        $proposal->load(['repos']);
         return Inertia::render('Auth/UserProposal', [
             'proposal' => $proposal,
         ]);
