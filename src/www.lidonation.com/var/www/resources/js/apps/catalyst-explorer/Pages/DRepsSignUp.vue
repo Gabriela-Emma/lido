@@ -115,15 +115,15 @@
                 <div
                     class="text-gray-600 flex flex-col justify-center rounded shadow-md p-4 px-4 bg-white"
                 >
-                    <div class="flex items-start flex-col gap-4 text-center">
-                        <CheckBadgeIcon class="w-6 h-6 text-green-600" />
+                    <div class="flex items-center flex-col gap-4 text-center px-8 lg:px-36">
+                        <CheckBadgeIcon class="w-32 h-32 text-green-600" />
 
                         <p class="text-black font-bold text-2xl">
                             Congratulations on successfully registering to be a
                             dRep!
                         </p>
 
-                        <p class="text-sm leading-relaxed tracking-wide py-8">
+                        <p class="text-base leading-relaxed tracking-wide py-8">
                             We are excited to have you join our community of dReps
                             and contribute to the governance of Cardano. Your
                             participation is essential in ensuring that Cardano

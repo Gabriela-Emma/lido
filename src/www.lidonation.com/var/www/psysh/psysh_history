@@ -111,3 +111,6 @@ Category::where('slug', 'blockchainssss')->first();
 Proposal::runCustomIndex();
 Proposal::runCustomIndex();
 CatalystUser::runCustomIndex();
+$voterProfiles = CatalystVoter::where('stake_pub', 'stake_test1uzwyq8jh93f5mzxz89hd58j5k6hedv92uy5ftawak2342eqg5r9v5')->get();
+$votingPowers = $voterProfiles->map(fn($vp) => ($vp->voting_powers))->collapse();
+$voterVotes =  $votingPowers->map(fn($vp) => ((int) $vp->consumed))->sum();
