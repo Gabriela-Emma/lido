@@ -6,6 +6,7 @@ namespace App\Inertia\CatalystExplorer;
 
 use App\Http\Controllers\Controller;
 use App\Models\CatalystExplorer\CatalystVoter;
+use App\Models\CatalystExplorer\DRep;
 use App\Models\Signature;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -30,58 +31,78 @@ class DRepsController extends Controller
 
     public function store(Request $request): void
     {
-        $existingUser = User::where('email', $request->email)->first();
-
+        // validate user can bote
         $validDrep = $this->isVoter($request->stakeAddress);
 
         if (!$validDrep) {
             abort(400, 'Not valid to be a dRep.');
         }
-        if ($existingUser) {
-            $signature = new Signature([
-                'wallet_signature' => $request->signature,
-                'platform_statement' => $request->platformStatement,
-            ]);
 
-            $existingUser->signatures()->save($signature);
-        } else {
-            $newUser = User::create([
+        // get or make lido user
+        $dRepUser = auth()?->user();
+
+
+        if (!$dRepUser) {
+            //@todo if user already exists with email, bail and let the user know... tell to sign in
+            $userWithEmailExists = User::where('email', $request->email)->first();
+
+            $dRepUser = User::create([
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => Hash::make($request->signature),
+                'bio' => $request->platformStatement,
             ]);
-
-            $newSignature = new Signature([
-                'wallet_signature' => $request->signature,
-                'platform_statement' => $request->platformStatement,
-            ]);
-
-            $newUser->signatures()->save($newSignature);
         }
-    }
 
+        // @todo lets make sure signatures are unique
+        $signature = new Signature([
+            'wallet_signature' => $request->signature,
+            'stake_address' => $request->stakeAddress,
+        ]);
+
+        // Create dREp Profile
+        $catalystDrep = DRep::whereRelation('catalyst_voter', 'stake_pub', $request->stakeAddress)
+            ->orWhere('user_id', $dRepUser->id)
+            ->first();
+        if ( $catalystDrep) {
+            new DRep([
+                'wallet_signature' => $request->signature,
+                'stake_address' => $request->stakeAddress,
+                'user_id' => $dRepUser->id
+            ]);
+        }
+
+        $dRepUser->signatures()->save($signature);
+    }
 
     private function isVoter($stakeKey): bool
     {
         $voter = CatalystVoter::where('stake_pub', $stakeKey)->first();
-        $votingRegistrations = $voter->voting_powers;
+        $voterVotes =  $voter?->voting_powers
+            ->map(fn($vp) => ((int) $vp->consumed))
+            ->sum();
 
-        $votedTwiceOrMore = false;
-        $consumedCount = 0;
+         return $voterVotes >= 1;
 
-        if ($votingRegistrations->count() >= 1) {
-            foreach ($votingRegistrations as $votingRound) {
-                if ($votingRound->consumed) {
-                    $consumedCount++;
 
-                    if ($consumedCount >= 1) {
-                        $votedTwiceOrMore = true;
-                        break;
-                    }
-                }
-            }
-        }
-
-        return $votedTwiceOrMore;
+//        $votingRegistrations = $voter->voting_powers;
+//
+//        $votedTwiceOrMore = false;
+//        $consumedCount = 0;
+//
+//        if ($votingRegistrations->count() >= 1) {
+//            foreach ($votingRegistrations as $votingRound) {
+//                if ($votingRound->consumed) {
+//                    $consumedCount++;
+//
+//                    if ($consumedCount >= 1) {
+//                        $votedTwiceOrMore = true;
+//                        break;
+//                    }
+//                }
+//            }
+//        }
+//
+//        return $votedTwiceOrMore;
     }
 }
