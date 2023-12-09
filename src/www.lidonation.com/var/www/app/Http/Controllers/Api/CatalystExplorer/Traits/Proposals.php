@@ -146,21 +146,12 @@ trait Proposals
         Proposal::withoutGlobalScope(OrderByDateScope::class);
         if (request()->has('search')) {
             $proposals = Proposal::search(request('search'))->query(
-                fn (Builder $query) => $query->filter(request(['user_id', 'fund_id', 'challenge_id']))->withOut([
-                    'users',
-                    'metas',
-                    'tags'
-                ])
+                fn (Builder $query) => $query->filter(request(['user_id', 'fund_id', 'challenge_id']))
             );
         } else {
             $proposals = Proposal::query()
                 ->orderByDesc('id')
-                ->filter(request(['user_id', 'fund_id', 'challenge_id']))->without([
-                    'fund',
-                    'media',
-                    'users',
-                    'metas',
-                ]);
+                ->filter(request(['user_id', 'fund_id', 'challenge_id']));
         }
 
         return ProposalResource::collection($proposals->fastPaginate($per_page)->onEachSide(0));
