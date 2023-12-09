@@ -52,4 +52,8 @@ export default interface Proposal {
     selected:boolean
     is_co_proposer:boolean
     is_primary_proposer:boolean
+    links:{
+        rel:string
+        href:string
+    }[]
 }

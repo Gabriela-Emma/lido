@@ -24,7 +24,6 @@ class ProposalResource extends JsonResource
             'challenge_name' => $this->fund?->title,
             'title' => $this->title,
             'website' => $this->website,
-            'link' => $this->link,
             'embedded_uris' => $this->embeddedUris($this->content),
             'ideascale_link' => $this->ideascale_link,
             'ideascale_user' => Str::remove(' ', $this->author?->username),
@@ -41,12 +40,29 @@ class ProposalResource extends JsonResource
             'problem' => $this->problem,
             'solution' => $this->solution,
             'experience' => $this->experience,
-            'tags' => $this->tags,
             'currency_symbol' => $this->currency_symbol,
             'currency' => $this->currency,
             'ranking_total' => $this->ranking_total,
             'vote' => $this->vote,
-            'users' => $this->users,
+            'links' => [
+                [
+                    "rel" => "self",
+                    "href" => $this->link,
+                ],
+                [
+                    "rel" => "tags",
+                    "href" => "/api/catalyst-explorer/proposals/{$this->id}/tags"
+                ],
+                [
+                    "rel" => "users",
+                    "href" => "/api/catalyst-explorer/proposals/{$this->id}/users"
+                ],
+                [
+                    "rel" => "fund",
+                    "href" => "/api/catalyst-explorer/proposals/{$this->id}/fund"
+                ],
+
+            ],
         ];
     }
 

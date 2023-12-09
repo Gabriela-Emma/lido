@@ -68,7 +68,7 @@ export const useTagsStore = defineStore('tags', () => {
     }, { immediate: true, deep: true });
 
     onMounted(
-        () => load(currentModel.value.filters.tags ?? [])
+        () => load([])
         );
 
     return {

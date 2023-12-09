@@ -5,10 +5,21 @@ import PeopleFilters from "../models/people-filters";
 import Profile from "../models/profile";
 import Proposal from "../models/proposal";
 import { useFiltersStore } from "@/global/stores/filters-stores";
+import axios from "@/global/utils/axios";
+
+interface Author {
+    id: number;
+    name: string;
+    username: string;
+    profile_photo_url: string;
+    ideascale_id: number;
+    media: { original_url: string }[]
+}
 
 export const usePeopleStore = defineStore('people', () => {
     let filters: Ref<PeopleFilters> = ref();
     let people = ref<Profile[]>([]);
+    let proposers = ref<Author[]>([]);
     let selected = ref<number[]>([]);
 
 
@@ -47,6 +58,17 @@ export const usePeopleStore = defineStore('people', () => {
         }
     }
 
+    async function loadProposers(proposerUri:string) {
+        try {
+            const { data } = await window.axios.get(proposerUri, {});
+            
+            proposers.value = data
+        } catch (e) {
+            console.log({ e });
+        }
+
+    }
+
     async function select(pp: number[]) {
         selected.value = [...pp];
     }
@@ -55,8 +77,10 @@ export const usePeopleStore = defineStore('people', () => {
         search,
         select,
         load,
+        loadProposers,
         selectedPeople: selected,
         filters,
-        people
+        people,
+        proposers
     };
 });

@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers\Api\CatalystExplorer;
 
-use App\Http\Controllers\Controller;
-use App\Http\Resources\TagResource;
 use App\Models\Tag;
+use OpenApi\Annotations as OA;
+use App\Http\Resources\TagResource;
+use App\Http\Controllers\Controller;
+use App\Models\CatalystExplorer\Proposal;
+use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
-use OpenApi\Annotations as OA;
-use Symfony\Component\HttpFoundation\Response;
 
 class TagController extends Controller
 {
@@ -110,5 +111,10 @@ class TagController extends Controller
     public function tag(Tag $tag): \Illuminate\Http\Response|TagResource|Application|ResponseFactory
     {
         return new TagResource($tag);
+    }
+
+    public function proposalsTags(Proposal $proposal)
+    {
+        return $proposal->tags;
     }
 }

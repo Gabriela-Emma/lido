@@ -2,18 +2,20 @@
 
 namespace App\Http\Controllers\Api\CatalystExplorer\Traits;
 
-use App\Http\Resources\ProposalResource;
-use App\Models\CatalystExplorer\Proposal;
-use App\Scopes\OrderByDateScope;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\Routing\ResponseFactory;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
 use OpenApi\Annotations as OA;
+use App\Scopes\OrderByDateScope;
+use App\Http\Resources\ProposalResource;
+use App\Models\CatalystExplorer\Proposal;
+use Illuminate\Database\Eloquent\Builder;
+use Hammerstone\FastPaginate\FastPaginate;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\Routing\ResponseFactory;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 trait Proposals
 {
+    // use  FastPaginate;
     /**
      * @OA\Get(
      *     path="/proposals",
@@ -137,16 +139,15 @@ trait Proposals
         if ($per_page > 100) {
             return response([
                 'status_code' => 100,
-                'message' => 'query parameter \'per_page\' should not exceed 60'], 100);
+                'message' => 'query parameter \'per_page\' should not exceed 60'
+            ], 100);
         }
 
         Proposal::withoutGlobalScope(OrderByDateScope::class);
         if (request()->has('search')) {
             $proposals = Proposal::search(request('search'))->query(
-                fn(Builder $query) => $query->filter(request(['user_id', 'fund_id', 'challenge_id']))
+                fn (Builder $query) => $query->filter(request(['user_id', 'fund_id', 'challenge_id']))
             );
-
-
         } else {
             $proposals = Proposal::query()
                 ->orderByDesc('id')
