@@ -80,4 +80,9 @@ class ProfileController extends Controller
 
         return $nrt;
     }
+
+    public function proposalsUsers(Proposal $proposal)
+    {
+        return $proposal->users;
+    }
 }

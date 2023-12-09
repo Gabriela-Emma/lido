@@ -6,7 +6,7 @@
 
     <main class="flex flex-col gap-2 py-8 bg-primary-20">
         <div class="container">
-            <section class="sticky mb-4 overflow-visible bg-white border-t rounded-sm shadow-md top-0 z-5">
+            <section class="sticky top-0 mb-4 overflow-visible bg-white border-t rounded-sm shadow-md z-5">
                 <div class="relative overflow-visible">
                     <div class="flex items-center w-full h-10 lg:h-16">
                         <Search :search="search" @search="(term) => search = term" />
@@ -40,6 +40,19 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                    <div class="absolute left-0 w-full mt-4 bg-white shadow-lg top-12" ref="target" v-if="searching">
+                        <div class="relative overflow-auto divide-y divide-gray-200">
+                            <div class="py-2 pl-6 animate-pulse" v-for="index in 3" :key="index">
+                                <div class="h-6  bg-gray-300 rounded dark:bg-gray-600 mb-2.5 mr-2 w-3/4"></div>
+                                <div class="h-5 bg-gray-200 rounded dark:bg-gray-500 w-1/2 mb-2.5 "></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="absolute left-0 w-full mt-4 bg-white shadow-lg top-12" ref="target" v-if="!searching && search.length && !(searchResults && searchResults?.length > 0)">
+                        <div class="py-2 pl-6 animate-pulse" >
+                            <p>No Results for "{{ search }}"</p>
                         </div>
                     </div>
                 </div>
@@ -105,7 +118,7 @@ let proposalsInDraft = props.draftBallot?.groups.reduce((acc, obj) => {
     let modelIds = obj.items.map(item => item.model?.id);
     return acc.concat(modelIds);
 }, []);
-
+let searching = ref(false)
 watch([storeCollections$], (newValue, oldValue) => {
     onLocal.value = storeCollections$.value?.some(collection => collection.hash === collectionHash.value);
 });
@@ -130,6 +143,7 @@ function searchProposals() {
         search: search.value,
         fund_id: 129,
     }
+    searching.value = true;
     axios.get(
         route('catalystExplorerApi.proposals', params)
     ).then((res) => {
@@ -139,6 +153,8 @@ function searchProposals() {
         });
     }).catch((error) => {
         console.error(error);
+    }).finally(()=>{
+        searching.value = false
     });
 }
 

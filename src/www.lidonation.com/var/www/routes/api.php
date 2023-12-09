@@ -121,7 +121,7 @@ Route::get('/ccv4/check-eligibility', function (Request $request) {
 
     // check user by account and log them in
     $user = User::where('wallet_stake_address', $stake_address)->first();
-    ! is_null($user) ? Auth::login($user) : '';
+    !is_null($user) ? Auth::login($user) : '';
 
     // build response based on ballots casted
     $response = [];
@@ -182,12 +182,12 @@ Route::post('/ccv4/claim-rewards', function (Request $request) {
 
     $ballots = $ballots->get();
     if ($ballots->isNotEmpty()) {
-        if (! $user instanceof User) {
+        if (!$user instanceof User) {
             $user = new User;
             $user->name = $request->account;
             $user->wallet_stake_address = $request->account;
             $user->wallet_address = $request->wallet_address;
-            $user->email = $request->email ?? substr($request->account, -4).'@anonymous.com';
+            $user->email = $request->email ?? substr($request->account, -4) . '@anonymous.com';
             $user->password = Hash::make(Str::random(10));
             $user->save();
         }
@@ -208,7 +208,7 @@ Route::post('/ccv4/claim-rewards', function (Request $request) {
             ->where('model_id', $giveaway?->id)
             ->get();
 
-        if (! $reward instanceof Reward) {
+        if (!$reward instanceof Reward) {
             $asset_name = trim($rule->subject, '.amount');
             $amount = $rule->predicate;
 
@@ -285,7 +285,7 @@ Route::group(
         })->name('cardano-config');
 
         Route::any('cardano/{relativePath?}', function (Request $request, $relativePath = null) {
-            $uri = '/'.$relativePath;
+            $uri = '/' . $relativePath;
             $frost = new BlockfrostRequest($uri);
 
             return $frost->send()->json();
@@ -303,7 +303,13 @@ Route::prefix('catalyst-explorer')->as('catalystExplorerApi.')
         Route::get('/challenges', [CatalystExplorer\ChallengeController::class, 'challenges'])->name('challenges');
         Route::get('/challenges/{challenge_id}', [CatalystExplorer\ChallengeController::class, 'challenge'])->name('challenge');
 
-        Route::get('/proposals', [CatalystExplorer\ProposalController::class, 'proposals'])->name('proposals');
+        Route::prefix('proposals')->group(
+            function () {
+                Route::get('/', [CatalystExplorer\ProposalController::class, 'proposals'])->name('proposals');
+                Route::get('/{proposal:id}/users', [CatalystExplorer\ProfileController::class, 'proposalsUsers'])->name('proposals.users');
+                Route::get('/{proposal:id}/tags', [CatalystExplorer\TagController::class, 'proposalsTags'])->name('proposals.tags');
+            }
+        );
         Route::get('/proposals/{proposal_id}', [CatalystExplorer\ProposalController::class, 'proposal']);
 
         Route::get('/proposals-ranks', [MyRankingController::class, 'ranks'])->name('proposals.ranks');
