@@ -18,7 +18,7 @@ class BookmarkCollection extends Model
 
     protected $with = [
         // 'items',
-        // 'rationales.metas'
+        'rationales.metas'
     ];
 
     protected $hidden = ['id'];

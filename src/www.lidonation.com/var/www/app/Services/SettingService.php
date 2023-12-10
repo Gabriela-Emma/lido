@@ -3,18 +3,23 @@
 namespace App\Services;
 
 use App\Models\Setting;
-use Illuminate\Database\QueryException;
 use Illuminate\Support\Fluent;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Database\QueryException;
 
 class SettingService
 {
     public function getSettings(): Fluent
     {
+
         try {
-            $settings = Setting::all(['key', 'value'])->map(function ($snippet) {
-                return [
-                    $snippet->key => $snippet->value,
-                ];
+
+            $settings = Cache::remember('snippets', now()->addHours(12), function () {
+                return Setting::all(['key', 'value'])->map(function ($snippet) {
+                    return [
+                        $snippet->key => $snippet->value,
+                    ];
+                });
             });
 
             return new Fluent($settings->collapse()->toArray());
