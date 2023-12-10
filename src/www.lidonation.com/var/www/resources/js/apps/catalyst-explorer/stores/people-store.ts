@@ -19,7 +19,6 @@ interface Author {
 export const usePeopleStore = defineStore('people', () => {
     let filters: Ref<PeopleFilters> = ref();
     let people = ref<Profile[]>([]);
-    let proposers = ref<Author[]>([]);
     let selected = ref<number[]>([]);
 
 
@@ -58,16 +57,6 @@ export const usePeopleStore = defineStore('people', () => {
         }
     }
 
-    async function loadProposers(proposerUri:string) {
-        try {
-            const { data } = await window.axios.get(proposerUri, {});
-            
-            proposers.value = data
-        } catch (e) {
-            console.log({ e });
-        }
-
-    }
 
     async function select(pp: number[]) {
         selected.value = [...pp];
@@ -77,10 +66,8 @@ export const usePeopleStore = defineStore('people', () => {
         search,
         select,
         load,
-        loadProposers,
         selectedPeople: selected,
         filters,
         people,
-        proposers
     };
 });

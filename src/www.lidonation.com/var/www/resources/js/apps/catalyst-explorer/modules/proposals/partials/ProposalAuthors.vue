@@ -3,10 +3,10 @@
         <div class="mr-auto" v-for="(author, index) in authors">
             <button class="rounded-full" @click="emit('profileQuickView', author)" :class="[`w-${size}`, `h-${size}`]">
                 <img v-if="index === 0" class="relative inline-block w-10 h-10 rounded-full -left-2 ring-2 ring-white"
-                    :src="author.profile_photo_url" :alt="`${author.name} gravatar`"
+                    :src="author['profile_photo_url']" :alt="`${author['name']} gravatar`"
                     :class="[`w-${size}`, `h-${size}`, `z-${index}`]" />
                 <img v-else class="relative z-{{index}} inline-block rounded-full ring-2 ring-white"
-                    :src="author.profile_photo_url" :alt="`${author.name} gravatar`"
+                    :src="author['profile_photo_url']" :alt="`${author['name']} gravatar`"
                     :class="[`w-${size}`, `h-${size}`, `z-${index}`]" />
             </button>
         </div>
@@ -15,8 +15,7 @@
 <script lang="ts" setup>
 import Proposal from "../../../models/proposal";
 import { ComputedRef, computed, ref } from 'vue';
-import { usePeopleStore } from "@/apps/catalyst-explorer/stores/people-store";
-import { storeToRefs } from "pinia";
+
 
 interface Author {
     id: number;
@@ -40,21 +39,17 @@ const props = withDefaults(
     },
 );
 
-const peopleStore = usePeopleStore();
-const proposerUri = props.proposal.links.find(item => item.rel === "users")?.href;
-peopleStore.loadProposers(proposerUri);
-let { proposers: proposer$ } = storeToRefs(peopleStore);
-
-
-
-
+const proposerUri = props.proposal?.links ? props.proposal.links.find(item => item.rel === "users")?.href : null;
+let proposers = ref<Author[]>([]);
 
 const emit = defineEmits<{
     (e: 'quickpitch'): void,
     (e: 'profileQuickView', profile: Author): void,
 }>();
 
-
+if (proposerUri) {
+    loadProposers(proposerUri);
+}
 
 const authors: ComputedRef<Author[]> = computed(() => {
     if (props.proposal?.users) {
@@ -65,13 +60,16 @@ const authors: ComputedRef<Author[]> = computed(() => {
             }
         })
     } else {
-        return proposer$.value.map((user) => {
-            return {
-                ...user,
-                profile_photo_url: user.media?.length > 0 ? user.media[0]?.original_url : user.profile_photo_url
-            }
-        })
+        return proposers.value
     }
-
 });
+
+async function loadProposers(proposerUri: string) {
+    try {
+        const  data  = (await window.axios.get(proposerUri, {})).data;
+        proposers.value = data.data
+    } catch (e) {
+        console.log({ e });
+    }
+}
 </script>

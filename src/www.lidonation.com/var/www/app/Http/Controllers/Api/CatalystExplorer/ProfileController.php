@@ -83,6 +83,6 @@ class ProfileController extends Controller
 
     public function proposalsUsers(Proposal $proposal)
     {
-        return $proposal->users;
+        return PeopleResource::collection($proposal->users);
     }
 }

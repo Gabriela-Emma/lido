@@ -15,7 +15,6 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 trait Proposals
 {
-    // use  FastPaginate;
     /**
      * @OA\Get(
      *     path="/proposals",
@@ -146,7 +145,7 @@ trait Proposals
         Proposal::withoutGlobalScope(OrderByDateScope::class);
         if (request()->has('search')) {
             $proposals = Proposal::search(request('search'))->query(
-                fn (Builder $query) => $query->filter(request(['user_id', 'fund_id', 'challenge_id']))
+                fn(Builder $query) => $query->filter(request(['user_id', 'fund_id', 'challenge_id']))
             );
         } else {
             $proposals = Proposal::query()
@@ -156,4 +155,5 @@ trait Proposals
 
         return ProposalResource::collection($proposals->fastPaginate($per_page)->onEachSide(0));
     }
+
 }
