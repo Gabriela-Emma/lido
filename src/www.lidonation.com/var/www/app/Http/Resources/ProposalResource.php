@@ -47,7 +47,7 @@ class ProposalResource extends JsonResource
             'links' => [
                 [
                     "rel" => "self",
-                    "href" => $this->link,
+                    "href" => "/api/catalyst-explorer/proposals/{$this->id}",
                 ],
                 [
                     "rel" => "tags",

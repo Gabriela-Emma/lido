@@ -25,6 +25,7 @@ class PeopleResource extends JsonResource
             'ideascale_user' => Str::remove(' ', $this->author?->username),
             'ideascale_id' => (int) $this->meta_data?->ideascale_id,
             'average_rating' => $this->ratings_average_formatted,
+            'profile_photo_url' => $this->media->first()->original_url ?? $this->gravatar,
         ];
     }
 }
