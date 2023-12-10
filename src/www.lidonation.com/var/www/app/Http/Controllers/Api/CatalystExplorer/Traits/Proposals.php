@@ -156,8 +156,4 @@ trait Proposals
         return ProposalResource::collection($proposals->fastPaginate($per_page)->onEachSide(0));
     }
 
-    public function proposal(Proposal $proposal)
-    {
-        return ProposalResource::make($proposal);
-    }
 }
