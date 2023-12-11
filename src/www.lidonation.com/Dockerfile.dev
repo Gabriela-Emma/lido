@@ -15,7 +15,7 @@ FROM php:8.2-fpm-alpine3.17
 ARG WWWGROUP
 ARG GITHUB_PACKAGE_REGISTRY_TOKEN
 
-RUN addgroup -g ${WWWGROUP} sail && adduser -D -s /bin/sh -G sail -u 1337 sail
+RUN addgroup -g 1000 sail && adduser -D -s /bin/sh -G sail -u 1337 sail
 
 COPY --from=cc /opt/catalyst-core/target/release/ /opt/catalyst-tools
 

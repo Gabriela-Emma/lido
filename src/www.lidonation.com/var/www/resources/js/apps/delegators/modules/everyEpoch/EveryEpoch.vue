@@ -1,5 +1,5 @@
 <template>
-    <section class="relative mt-12 mb-12 border-t border-slate-200 ">
+    <section class="relative mt-12 mb-12 border-t border-slate-200">
         <div class="">
             <div class=" text-white bg-teal-800 rounded-sm min-h-[652px]">
                 <Spinner :fillColor="'fill-teal-600'" />
@@ -7,10 +7,20 @@
                     <h2 class="p-4 mx-auto text-center font-display xl:text-4xl">
                         {{ epochDetails?.title }}
                     </h2>
+                
+                    <div class="flex gap-4 justify-center bg-yellow-500 ">
+                        <span>Epoch: {{ latestEpoch?.['epoch'] }} </span>
+                        <countdown :time="latestEpoch?.end_time" v-slot="{ hours, minutes, seconds }" class="flex flex-row">
+                            <span class="mr-1 text-white"> {{ $t('timeLeft') }}: </span>
+                            <div>
+                                {{ hours }} {{ $t('hours') }} : {{ minutes }} {{ $t('minutes') }} : {{ seconds }} {{ $t('seconds') }}.
+                            </div>
+                        </countdown>
+                        </div>
                     <div class="flex flex-row flex-wrap items-center justify-center gap-8 px-8 xl:justify-start xl:gap-4">
 
                         <div class="text-green-500">
-                            <div v-if="rewardPot"
+                            <div v-if="1"
                                 class="w-full mb-2 text-xs font-semibold -rotate-45relative -left-24-bottom-1 xl:text-left">
                                 Available in Prizes for completing successfully.
                             </div>
@@ -96,9 +106,7 @@
                                     </a>
                                 </div>
                                 <div class="relative rounded-sm">
-                                    <Promo :customise="true"
-                                            @promo-data="setPromo($event)"
-                                            :background-color="''"/>
+                                    <Promo :customise="true" @promo-data="setPromo($event)" :background-color="''" />
                                 </div>
                             </div>
                         </div>
@@ -136,10 +144,11 @@ import { useWalletStore } from '@/global/stores/wallet-store';
 import ClaimRewards from './ClaimRewards.vue';
 import LidoEpochRewards from './LidoEpochRewards.vue';
 import Promo from '@/global/Components/Promo.vue';
-import Spinner from '@/global/Components/Spinner.vue';
+// import Spinner from '@/global/Components/Spinner.vue';
+import countdown from '@/global/Components/countdown';
 import route from "ziggy-js";
-import {useEveryEpochStore} from "@apps/delegators/stores/every-epoch-store";
-import {useSpinnerStore} from "@/global/stores/spinner-store";
+import { useEveryEpochStore } from "@apps/delegators/stores/every-epoch-store";
+import { useSpinnerStore } from "@/global/stores/spinner-store";
 import EveryEpochQuiz from "@apps/delegators/modules/everyEpoch/EveryEpochQuiz.vue";
 import User from '@/global/models/user';
 const RewardPot = defineAsyncComponent(() => import('@apps/delegators/modules/everyEpoch/RewardPot.vue'));
@@ -162,6 +171,8 @@ const { quiz } = storeToRefs(epochStore);
 const { loaded } = storeToRefs(epochStore);
 const { processing } = storeToRefs(epochStore);
 const { epochErrors } = storeToRefs(epochStore);
+const { latestEpoch } = storeToRefs(epochStore);
+
 let isConnected = computed(() => walletData.value != null)
 let partnerPromo = ref(null);
 let setPromo = (promo) => {
@@ -195,6 +206,5 @@ let submit = (form) => {
 let makeClaim = (asset) => {
     epochStore.claimAsset(asset)
 }
-
 
 </script>

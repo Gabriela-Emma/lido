@@ -284,6 +284,12 @@ Route::group(
             return json_encode($credentials);
         })->name('cardano-config');
 
+        Route::get('latest/epoch', function (Request $request) {
+            $frost = new BlockfrostRequest('/epochs/latest');
+            
+            return $frost->send()->json();
+        })->name('latestEpoch');
+
         Route::any('cardano/{relativePath?}', function (Request $request, $relativePath = null) {
             $uri = '/' . $relativePath;
             $frost = new BlockfrostRequest($uri);

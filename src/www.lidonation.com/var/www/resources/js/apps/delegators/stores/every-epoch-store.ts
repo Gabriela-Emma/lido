@@ -16,6 +16,7 @@ export const useEveryEpochStore = defineStore("every-epoch", () => {
     let reward = ref(null);
     let epochErrors = ref(null)
     let processing = ref(false);
+    let latestEpoch = ref();
     const spinnerStore = useSpinnerStore();
 
 
@@ -27,6 +28,7 @@ export const useEveryEpochStore = defineStore("every-epoch", () => {
         getQuiz();
         getRewardPot();
         getRewardtemplate();
+        getLatestEpoch();
     }
 
     function getQuiz() {
@@ -117,6 +119,11 @@ export const useEveryEpochStore = defineStore("every-epoch", () => {
         }
     }
 
+    async function getLatestEpoch() 
+    {
+        latestEpoch.value = (await axios.get(route('latestEpoch'))).data;
+    }
+
     let loaded = computed(() => quiz.value != null && epochDetails.value != null && rewardPot.value != null &&
         rewardTemplate.value != null);
 
@@ -133,6 +140,7 @@ export const useEveryEpochStore = defineStore("every-epoch", () => {
         claimAsset,
         loaded,
         epochErrors,
-        processing
+        processing,
+        latestEpoch
     };
 });
