@@ -38,8 +38,13 @@ class GlobalComposer
         protected AdaRepository $adaRepository
     ) {
         $this->user = Auth::user();
-        $this->snippets = app(SnippetService::class)->getSnippets();
-        $this->settings = app(SettingService::class)->getSettings();
+        if (!isset($this->snippets)) {
+            $this->snippets = app(SnippetService::class)->getSnippets();
+        }
+        if (!isset($this->settings)) {
+            $this->settings = app(SettingService::class)->getSettings();
+        }
+        
     }
 
     /**

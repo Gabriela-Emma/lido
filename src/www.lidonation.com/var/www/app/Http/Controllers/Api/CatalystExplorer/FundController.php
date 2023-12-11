@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers\Api\CatalystExplorer;
 
+use OpenApi\Annotations as OA;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\FundResource;
 use App\Models\CatalystExplorer\Fund;
+use App\Models\CatalystExplorer\Proposal;
+use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
-use OpenApi\Annotations as OA;
-use Symfony\Component\HttpFoundation\Response;
 
 class FundController extends Controller
 {
@@ -112,8 +113,10 @@ class FundController extends Controller
      *
      * )
      */
-    public function fund($proposal_id): \Illuminate\Http\Response|FundResource|Application|ResponseFactory
+    public function fund($proposal_id=null): \Illuminate\Http\Response|FundResource|Application|ResponseFactory
     {
+
+
         $fund = Fund::find($proposal_id);
 
         if (is_null($fund)) {
@@ -124,4 +127,17 @@ class FundController extends Controller
             return new FundResource($fund);
         }
     }
+
+    public function proposalFund(Proposal $proposal): \Illuminate\Http\Response|FundResource|Application|ResponseFactory
+    {
+        if ($proposal instanceof Proposal) {
+            return new FundResource($proposal->fund);
+        }else {
+            return response([
+                'errors' => 'Fund not found',
+            ], Response::HTTP_NOT_FOUND);
+        }
+    }
+
+
 }

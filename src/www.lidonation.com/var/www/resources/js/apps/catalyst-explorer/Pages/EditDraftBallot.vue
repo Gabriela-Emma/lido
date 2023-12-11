@@ -14,17 +14,22 @@
                     <div class="absolute left-0 w-full bg-white shadow-lg top-12" ref="target"
                         v-if="searchResults && searchResults?.length > 0">
                         <div class="relative overflow-auto divide-y divide-gray-200 max-h-96">
-                            <div v-for="(proposal,index) in searchResults" @click="bookmarkProposal(proposal, index)"
-                                class="py-2 hover:bg-primary-20 "
-                                :class="{'text-slate-500 cursor-not-allowed': proposal.disabled,
-                                            'text-teal-800':proposal.selected,
-                                            'hover:cursor-pointer hover:text-teal-800': !proposal.disabled}">
+                            <div v-for="(proposal, index) in searchResults" @click="bookmarkProposal(proposal, index)"
+                                class="py-2 hover:bg-primary-20 " :class="{
+                                    'text-slate-500 cursor-not-allowed': proposal.disabled,
+                                    'text-teal-800': proposal.selected,
+                                    'hover:cursor-pointer hover:text-teal-800': !proposal.disabled
+                                }">
                                 <div class="flex w-full ">
                                     <div class="ml-3">
-                                        <h4 class="px-3" :class="{ 'line-through': proposal.disabled}">{{ proposal.title }}</h4>
+                                        <h4 class="px-3" :class="{ 'line-through': proposal.disabled }">{{ proposal.title }}
+                                        </h4>
                                     </div>
-                                    <div v-if="proposal.disabled || proposal.selected" class="flex flex-row justify-self-end ">
-                                        <span class="text-slate-300 mr-1.5 italic text-lg"> {{ proposal.disabled?'Already added':'Proposal Added'}}</span>
+                                    <div v-if="proposal.disabled || proposal.selected"
+                                        class="flex flex-row justify-self-end ">
+                                        <span class="text-slate-300 mr-1.5 italic text-lg"> 
+                                            {{ proposal.disabled ? 'Already added':'Proposal Added'}}
+                                        </span>
                                         <CheckIcon class="-mr-0.5 h-3 w-3 " aria-hidden="true" />
                                     </div>
                                 </div>
@@ -50,8 +55,9 @@
                             </div>
                         </div>
                     </div>
-                    <div class="absolute left-0 w-full mt-4 bg-white shadow-lg top-12" ref="target" v-if="!searching && search.length && !(searchResults && searchResults?.length > 0)">
-                        <div class="py-2 pl-6 animate-pulse" >
+                    <div class="absolute left-0 w-full mt-4 bg-white shadow-lg top-12" ref="target"
+                        v-if="!searching && search.length && !(searchResults && searchResults?.length > 0)">
+                        <div class="py-2 pl-6 animate-pulse">
                             <p>No Results for "{{ search }}"</p>
                         </div>
                     </div>
@@ -59,16 +65,24 @@
             </section>
 
             <section class="">
-                <div class="flex w-full items-center justify-start space-x-0.5 mb-3 gap-2 text-base">
-                    <a :href="draftBallot?.link" target="_blank">
-                        <button class="bg-white rounded-sm px-3 py-2.5 text-gray-400 flex-wrap hover:text-yellow-500">
-                            Share
+                <div class="flex w-full items-center justify-between space-x-0.5 mb-3 gap-2 text-base">
+                    <div class="flex w-1/4 gap-4">
+                        <a :href="draftBallot?.link" target="_blank">
+                            <button class="bg-white rounded-sm px-3 py-2.5 text-gray-400 flex-wrap hover:text-yellow-500">
+                                Share
+                            </button>
+                        </a>
+                        <Link :href="route('catalyst-explorer.draftBallotUpdate.view', { draftBallot: draftBallot?.hash })"
+                            class="bg-white rounded-sm px-3 py-2.5 text-gray-400 flex-wrap hover:text-yellow-500">
+                        Ballot Settings
+                        </Link>
+                    </div>
+                    <div>
+                        <button class="bg-teal-400 rounded-sm px-3 py-2.5 text-white flex-wrap hover:text-yellow-500" @click="deleteDraftBallot">
+                            delete
                         </button>
-                    </a>
-                    <Link :href="route('catalyst-explorer.draftBallotUpdate.view', { draftBallot: draftBallot?.hash })"
-                        class="bg-white rounded-sm px-3 py-2.5 text-gray-400 flex-wrap hover:text-yellow-500">
-                    Ballot Settings
-                    </Link>
+                    </div>
+
                 </div>
                 <DraftBallotGroupCard v-for="group in draftBallot$.groups" :key="group.id" :group="group"
                     class="py-8 mb-8 bg-white border-t rounded-sm shadow-sm" />
@@ -83,14 +97,14 @@ import axios from 'axios';
 import { storeToRefs } from 'pinia';
 import moment from "moment-timezone";
 import route from 'ziggy-js';
-import {Head, Link} from '@inertiajs/vue3';
+import { Head, Link, router } from '@inertiajs/vue3';
 import { CheckIcon } from '@heroicons/vue/20/solid'
 import { onClickOutside } from '@vueuse/core';
-import {useUserStore} from "@/global/stores/user-store";
+import { useUserStore } from "@/global/stores/user-store";
 import DraftBallot from "@apps/catalyst-explorer/models/draft-ballot";
 import Proposal from "@apps/catalyst-explorer/models/proposal";
 import DraftBallotGroupCard from "@apps/catalyst-explorer/modules/bookmarks/DraftBallotGroupCard.vue";
-import {useBookmarksStore} from "@apps/catalyst-explorer/stores/bookmarks-store";
+import { useBookmarksStore } from "@apps/catalyst-explorer/stores/bookmarks-store";
 import Search from "@apps/catalyst-explorer/Components/Global/Search.vue";
 
 const userStore = useUserStore();
@@ -153,15 +167,20 @@ function searchProposals() {
         });
     }).catch((error) => {
         console.error(error);
-    }).finally(()=>{
+    }).finally(() => {
         searching.value = false
     });
 }
 
+let deleteDraftBallot = () => {
+    bookmarksStore.deleteCollection(props.draftBallot.hash);
+    router.get(route('catalyst-explorer.myDraftBallots'));
+}
+
 async function bookmarkProposal(proposal: Proposal, index: number) {
-    if(!proposalsInDraft.includes(proposal?.id) && !searchResults.value[index].selected){
+    if (!proposalsInDraft.includes(proposal?.id) && !searchResults.value[index].selected) {
         searchResults.value[index].selected = true,
-        bookmarksStore.bookmarkProposal(proposal);
+            bookmarksStore.bookmarkProposal(proposal);
     }
 
 }

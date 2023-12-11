@@ -307,7 +307,7 @@ Route::prefix('catalyst-explorer')->as('catalystExplorerApi.')
             function () {
                 Route::get('/', [CatalystExplorer\ProposalController::class, 'proposals'])->name('proposals');
                 Route::get('/{proposal:id}', [CatalystExplorer\ProposalController::class, 'proposal'])->name('proposal');
-
+                Route::get('/{proposal:id}/fund', [CatalystExplorer\FundController::class, 'proposalFund'])->name('proposals.fund');
                 Route::get('/{proposal:id}/users', [CatalystExplorer\ProfileController::class, 'proposalsUsers'])->name('proposals.users');
                 Route::get('/{proposal:id}/tags', [CatalystExplorer\TagController::class, 'proposalsTags'])->name('proposals.tags');
             }
