@@ -140,45 +140,45 @@ watch([onLocal, inLastTenMins], () => {
     canDelete.value = onLocal.value && inLastTenMins.value;
 })
 
-const removeCollection = () => {
-    if (onLocal.value && inLastTenMins.value) {
-        axios.delete(`${usePage().props.base_url}/catalyst-explorer/bookmark-collection?hash=${collectionHash.value}`)
-            .then((res) => {
-                bookmarksStore.deleteCollection(collectionHash.value)
-                router.get(`${usePage().props.base_url}/catalyst-explorer/bookmarks`)
-            })
-            .catch((error) => {
-                if (error.response && error.response.status === 403) {
-                    console.error(error);
-                }
-            });
-    }
-}
+// const removeCollection = () => {
+//     if (onLocal.value && inLastTenMins.value) {
+//         axios.delete(`${usePage().props.base_url}/catalyst-explorer/bookmark-collection?hash=${collectionHash.value}`)
+//             .then((res) => {
+//                 bookmarksStore.deleteCollection(collectionHash.value)
+//                 router.get(`${usePage().props.base_url}/catalyst-explorer/bookmarks`)
+//             })
+//             .catch((error) => {
+//                 if (error.response && error.response.status === 403) {
+//                     console.error(error);
+//                 }
+//             });
+//     }
+// }
 
-const removeItem = (id: number) => {
-    if (onLocal.value && inLastTenMins.value) {
-        axios.delete(route('catalyst-explorer.bookmarkItem.delete', { bookmarkItem: id }))
-            .then((res) => {
-                bookmarksStore.deleteItem(id, collectionHash.value)
-                router.get(route('catalyst-explorer.bookmark', { bookmarkCollection: collectionHash.value }))
-            })
-            .catch((error) => {
-                if (error.response && error.response.status === 403) {
-                    console.error(error);
-                }
-            });
-    }
-}
+// const removeItem = (id: number) => {
+//     if (onLocal.value && inLastTenMins.value) {
+//         axios.delete(route('catalyst-explorer.bookmarkItem.delete', { bookmarkItem: id }))
+//             .then((res) => {
+//                 bookmarksStore.deleteItem(id, collectionHash.value)
+//                 router.get(route('catalyst-explorer.bookmark', { bookmarkCollection: collectionHash.value }))
+//             })
+//             .catch((error) => {
+//                 if (error.response && error.response.status === 403) {
+//                     console.error(error);
+//                 }
+//             });
+//     }
+// }
 
-function createDraftBallot() {
-    axios.post(route('catalyst-explorer.bookmark.createBallot', { bookmarkCollection: collectionHash.value }))
-        .then((res) => {
-            console.log(res);
-        })
-        .catch((error) => {
-            if (error.response && error.response.status === 403) {
-                console.error(error);
-            }
-        });
-}
+// function createDraftBallot() {
+//     axios.post(route('catalyst-explorer.bookmark.createBallot', { bookmarkCollection: collectionHash.value }))
+//         .then((res) => {
+//             console.log(res);
+//         })
+//         .catch((error) => {
+//             if (error.response && error.response.status === 403) {
+//                 console.error(error);
+//             }
+//         });
+// }
 </script>

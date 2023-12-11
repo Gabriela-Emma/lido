@@ -13,8 +13,17 @@ export const useBookmarksStore = defineStore('bookmarks', () => {
     let draftBallots = ref<DraftBallot<Proposal>[]>([]);
     let loadingDraftBallots = ref<boolean>(false);
 
-    async function deleteCollection(collectionHash: string) {
-        loadCollections().then();
+    async function deleteCollection(collectionHash: string) {        
+        axios.delete(route('catalyst-explorer.draftBallot.delete', { draftBallot:collectionHash}))
+            .then((res) => {
+            })
+            .catch((error) => {
+                if (error.response && error.response.status === 403) {
+                    console.error(error);
+                }
+            }).finally(()=>{
+                loadCollections().then();
+            });
     }
 
     async function deleteItem(itemId: number, collectionHash: string) {
@@ -72,6 +81,7 @@ export const useBookmarksStore = defineStore('bookmarks', () => {
             const res = await axios.post(route('catalyst-explorer.bookmarkItem.create'), item);
             if (res.status == 200) {
                 loadDraftBallot().then();
+                loadCollections().then();
             }
         } catch (e) {
             console.log(e);
@@ -81,7 +91,9 @@ export const useBookmarksStore = defineStore('bookmarks', () => {
     let collectionsArray = computed<BookmarkCollection<Proposal>[]>(() => Object.values(collections.value))
 
     let bookmarkedModels = computed<number[]>(() => {
-        return [...collectionsArray.value.flatMap((collection) => collection?.items?.map((item) => item?.model_id))]
+        return [...new Set(collections.value.flatMap((collection)=>{
+            return collection.proposals.map((proposal)=>proposal.model_id)
+        }))];
     });
 
     // let bookmarkedModels = computed<BookmarkItemModel[]>(() => {

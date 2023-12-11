@@ -7,11 +7,11 @@
     <main class="flex flex-col gap-2 py-8 bg-primary-20">
         <div class="container">
             <section
-                class="relative flex flex-col justify-center items-start object-cover py-10 px-6 shadow-xs rounded-tl-2xl rounded-r-xs"
+                class="relative flex flex-col items-start justify-center object-cover px-6 py-10 shadow-xs rounded-tl-2xl rounded-r-xs"
                 :style="{backgroundColor: bookmarkCollection?.color}">
 
-                <div class="relative inline-flex flex-col -left-6 z-0 px-4 py-2 justify-start bg-white rounded-r-lg">
-                    <div class="text-xl sm:text-2xl font-bold tracking-tight text-slate-800 flex flex-col items-start">
+                <div class="relative z-0 inline-flex flex-col justify-start px-4 py-2 bg-white rounded-r-lg -left-6">
+                    <div class="flex flex-col items-start text-xl font-bold tracking-tight sm:text-2xl text-slate-800">
                         <small
                             class="inline-flex items-center rounded-sm py-0.5 pr-1 text-xs font-medium">
                             {{ $t("Items") }}
@@ -148,11 +148,14 @@ import Proposal from '@apps/catalyst-explorer/models/proposal';
 import route from 'ziggy-js';
 import {useUserStore} from "@/global/stores/user-store";
 import axios from "@/global/utils/axios";
+import Page from '@/global/utils/page';
 
 const userStore = useUserStore();
 const {user$} = storeToRefs(userStore);
 
 const $utils: any = inject('$utils');
+const locale  = Page.props.ziggy.locale;
+const baseUrl   = Page.props.ziggy.base_url;
 
 const props = withDefaults(
     defineProps<{
@@ -161,11 +164,11 @@ const props = withDefaults(
 
 const download = () => {
     const data = {} as any;
-    data['locale'] = usePage().props.locale;
+    data['locale'] = locale;
     data['hash'] = props.bookmarkCollection.hash;
     const fileName = `${props.bookmarkCollection.title}-proposals.csv`;
 
-    const res = axios.get(`/${usePage().props.locale}/catalyst-explorer/export/bookmarked-proposals`, {
+    const res = axios.get(`/${locale}/catalyst-explorer/export/bookmarked-proposals`, {
         responseType: 'blob',
         params: data,
     });
@@ -203,10 +206,9 @@ watch([onLocal,inLastTenMins],()=> {
 
 const removeCollection = () => {
     if(onLocal.value && inLastTenMins.value){
-        axios.delete(`${usePage().props.base_url}/catalyst-explorer/bookmark-collection?hash=${collectionHash.value}`)
+        axios.delete(`${baseUrl}/catalyst-explorer/bookmark-collection?hash=${collectionHash.value}`)
         .then((res) =>{
-            bookmarksStore.deleteCollection(collectionHash.value)
-            router.get(`${usePage().props.base_url}/catalyst-explorer/bookmarks`)
+            router.get(`${baseUrl}/catalyst-explorer/bookmarks`)
         })
         .catch((error) => {
             if (error.response && error.response.status === 403) {

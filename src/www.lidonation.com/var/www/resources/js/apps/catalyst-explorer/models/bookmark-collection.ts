@@ -14,4 +14,5 @@ export default interface BookmarkCollection<T> {
     items?: BookmarkItem<T>[];
     items_count?: number;
     created_at: string;
+    proposals?: BookmarkItem<T>[]
 }

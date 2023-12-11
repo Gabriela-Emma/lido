@@ -222,7 +222,7 @@ class BookmarksController extends Controller
         return redirect()->back();
     }
 
-    public function deleteDraftBallot(Request $request, BookmarkCollection $bookmarkCollection)
+    public function deleteDraftBallot( BookmarkCollection $bookmarkCollection)
     {
         $bookmarkCollection->delete();
 
